@@ -33,7 +33,7 @@ const MiiUpdates: React.FC<MiiUpdatesProps> = ({ userId, limit = 5 }) => {
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-slate-300">
-      <div className="p-6 border-b border-gray-200 flex items-center gap-2">
+      <div className="p-6 border-b border-slate-300 flex items-center gap-2">
         <BellIcon className="w-5 h-5 text-blue-600" />
         <h3 className="text-lg font-bold text-gray-900">Your Updates</h3>
       </div>
@@ -56,7 +56,7 @@ const MiiUpdates: React.FC<MiiUpdatesProps> = ({ userId, limit = 5 }) => {
 
       {updates.length === 0 && (
         <div className="p-8 text-center text-gray-500">
-          <BellIcon className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+          <BellIcon className="w-12 h-12 mx-auto mb-3 text-slate-700" />
           <p>No updates yet</p>
         </div>
       )}

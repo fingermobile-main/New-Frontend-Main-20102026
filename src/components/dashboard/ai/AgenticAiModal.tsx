@@ -17,7 +17,7 @@ const AgenticAiModal: React.FC<AgenticAiModalProps> = ({ isOpen = false, onClose
             <SparklesIcon className="w-6 h-6 text-purple-600" />
             <h2 className="text-xl font-bold text-gray-900">AI Assistant</h2>
           </div>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600" aria-label="Button"><svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <button onClick={onClose} className="text-slate-700 hover:text-gray-600" aria-label="Button"><svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
           </button>
@@ -29,7 +29,7 @@ const AgenticAiModal: React.FC<AgenticAiModalProps> = ({ isOpen = false, onClose
           <input
             type="text"
             placeholder="Ask me anything..."
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500" />
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400" />
           <button className="w-full px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
             Send
           </button>

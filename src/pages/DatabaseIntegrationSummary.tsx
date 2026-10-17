@@ -48,7 +48,7 @@ const DatabaseIntegrationSummary: React.FC = () => {
 
           <div className="bg-white rounded-lg shadow p-6">
             <div className="flex items-center">
-              <div className="p-3 bg-blue-100 rounded-full">
+              <div className="p-3 bg-blue-100 rounded-full border text-blue-950 border-blue-400 font-black">
                 <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                 </svg>
@@ -62,7 +62,7 @@ const DatabaseIntegrationSummary: React.FC = () => {
 
           <div className="bg-white rounded-lg shadow p-6">
             <div className="flex items-center">
-              <div className="p-3 bg-purple-100 rounded-full">
+              <div className="p-3 bg-purple-100 rounded-full border text-purple-950 border-purple-400 font-black">
                 <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
@@ -76,7 +76,7 @@ const DatabaseIntegrationSummary: React.FC = () => {
         </div>
 
         <div className="bg-white rounded-lg shadow overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-200">
+          <div className="px-6 py-4 border-b border-slate-300">
             <h2 className="text-xl font-semibold text-gray-800">Component Integration Status</h2>
           </div>
           <div className="p-6">
@@ -95,7 +95,7 @@ const DatabaseIntegrationSummary: React.FC = () => {
         </div>
 
         <div className="mt-8 bg-white rounded-lg shadow overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-200">
+          <div className="px-6 py-4 border-b border-slate-300">
             <h2 className="text-xl font-semibold text-gray-800">Integration Details</h2>
           </div>
           <div className="p-6">

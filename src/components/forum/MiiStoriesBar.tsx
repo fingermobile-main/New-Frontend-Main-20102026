@@ -334,7 +334,7 @@ export const MiiStoriesBar: React.FC<MiiStoriesBarProps> = ({
                 type="file"
                 accept={miiType === 'video' ? 'video/*' : miiType === 'audio' ? 'audio/*' : 'image/*'}
                 onChange={handleFileUpload}
-                className="hidden"
+                className="hidden text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
               />
 
               <div
@@ -361,7 +361,7 @@ export const MiiStoriesBar: React.FC<MiiStoriesBarProps> = ({
                 onChange={(e) => setMiiCaption(e.target.value)}
                 placeholder="Write an ephemeral caption..."
                 rows={2}
-                className="w-full p-3 rounded-xl border border-slate-300 bg-white text-slate-900 font-medium text-xs focus:ring-2 focus:ring-orange-500 focus:outline-none resize-none"
+                className="w-full p-3 rounded-xl border border-slate-300 bg-white text-slate-900 font-medium text-xs focus:ring-2 focus:ring-orange-500 focus:outline-none resize-none font-bold placeholder:text-slate-400"
               />
             </div>
 

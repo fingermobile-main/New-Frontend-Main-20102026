@@ -30,9 +30,9 @@ const CosmosGiftCardModal: React.FC<CosmosGiftCardModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white rounded-xl shadow-2xl max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
-        <div className="flex items-center justify-between p-6 border-b border-gray-200">
+        <div className="flex items-center justify-between p-6 border-b border-slate-300">
           <h2 className="text-xl font-bold text-gray-900">Send Gift Card</h2>
-          <button onClick={onClose} aria-label="Close" className="text-gray-400 hover:text-gray-600">
+          <button onClick={onClose} aria-label="Close" className="text-slate-700 hover:text-gray-600">
             <XMarkIcon className="w-6 h-6" />
           </button>
         </div>
@@ -45,7 +45,7 @@ const CosmosGiftCardModal: React.FC<CosmosGiftCardModalProps> = ({
               value={formData.recipientName}
               onChange={(e) => setFormData({...formData, recipientName: e.target.value})}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               placeholder="Enter recipient name"
             />
           </div>
@@ -57,7 +57,7 @@ const CosmosGiftCardModal: React.FC<CosmosGiftCardModalProps> = ({
               value={formData.recipientEmail}
               onChange={(e) => setFormData({...formData, recipientEmail: e.target.value})}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               placeholder="recipient@example.com"
             />
           </div>
@@ -70,7 +70,7 @@ const CosmosGiftCardModal: React.FC<CosmosGiftCardModalProps> = ({
               onChange={(e) => setFormData({...formData, amount: e.target.value})}
               required
               min="100"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400 font-mono"
               placeholder="1000"
             />
           </div>
@@ -81,7 +81,7 @@ const CosmosGiftCardModal: React.FC<CosmosGiftCardModalProps> = ({
               value={formData.message}
               onChange={(e) => setFormData({...formData, message: e.target.value})}
               rows={3}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               placeholder="Add a personal message..."
             />
           </div>

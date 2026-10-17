@@ -91,7 +91,7 @@ const CreatorsCenterPage: React.FC = () => {
                     name="legalName"
                     value={formData.legalName}
                     onChange={handleInputChange}
-                    className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                    className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                     placeholder="As it appears on your passport"
                   />
                 </div>
@@ -102,7 +102,7 @@ const CreatorsCenterPage: React.FC = () => {
                     name="nationality"
                     value={formData.nationality}
                     onChange={handleInputChange}
-                    className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                    className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                   />
                 </div>
                 <div>
@@ -112,7 +112,7 @@ const CreatorsCenterPage: React.FC = () => {
                     name="passportNumber"
                     value={formData.passportNumber}
                     onChange={handleInputChange}
-                    className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                    className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                   />
                 </div>
                 <div>
@@ -122,7 +122,7 @@ const CreatorsCenterPage: React.FC = () => {
                     name="dateOfBirth"
                     value={formData.dateOfBirth}
                     onChange={handleInputChange}
-                    className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                    className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                   />
                 </div>
                 <button
@@ -146,7 +146,7 @@ const CreatorsCenterPage: React.FC = () => {
                   <div className="flex text-sm text-gray-600">
                     <label className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
                       <span>Upload a file</span>
-                      <input type="file" className="sr-only" accept="image/*" onChange={(e) => {
+                      <input type="file" className="sr-only text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" accept="image/*" onChange={(e) => {
                         if (e.target.files && e.target.files[0]) {
                           setPassportImage(e.target.files[0]);
                         }

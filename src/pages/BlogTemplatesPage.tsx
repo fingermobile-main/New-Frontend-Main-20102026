@@ -246,7 +246,7 @@ const BlogTemplatesPage: React.FC = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search templates..."
-              className="w-full pl-9 pr-3 py-2 text-xs border border-gray-300 rounded-xl focus:ring-brand-blue focus:border-brand-blue bg-white"
+              className="w-full pl-9 pr-3 py-2 text-xs border border-gray-300 rounded-xl focus:ring-brand-blue focus:border-brand-blue bg-white text-slate-900 font-bold border-slate-300 focus:ring-2 placeholder:text-slate-400"
             />
           </div>
         </div>
@@ -281,8 +281,8 @@ const BlogTemplatesPage: React.FC = () => {
                 </div>
 
                 {/* Heading Outline */}
-                <div className="bg-gray-50 p-3.5 rounded-2xl border border-gray-100 space-y-1.5">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400 block">
+                <div className="bg-gray-50 p-3.5 rounded-2xl border border-slate-200 space-y-1.5">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-700 block">
                     Structured Outline ({tmpl.headings.length} Sections)
                   </span>
                   <ul className="text-xs text-gray-700 space-y-1">
@@ -292,7 +292,7 @@ const BlogTemplatesPage: React.FC = () => {
                       </li>
                     ))}
                     {tmpl.headings.length > 3 && (
-                      <li className="text-[11px] text-gray-400 italic">
+                      <li className="text-[11px] text-slate-700 italic">
                         + {tmpl.headings.length - 3} more structured sections
                       </li>
                     )}
@@ -307,7 +307,7 @@ const BlogTemplatesPage: React.FC = () => {
               </div>
 
               {/* Action Footer */}
-              <div className="p-4 bg-gray-50/70 border-t border-gray-100 flex items-center justify-between gap-2">
+              <div className="p-4 bg-gray-50/70 border-t border-slate-200 flex items-center justify-between gap-2">
                 <button
                   type="button"
                   onClick={() => setActiveJsonLdModal(tmpl)}

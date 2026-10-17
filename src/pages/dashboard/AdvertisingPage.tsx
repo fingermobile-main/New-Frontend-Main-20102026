@@ -114,7 +114,7 @@ const DashboardAdvertisingPage: React.FC = () => {
                     >
                       <td className="p-4">
                         <p className="text-sm font-bold text-slate-900">{campaign.title || campaign.name}</p>
-                        <p className="text-xs font-mono text-slate-400">{campaign.id}</p>
+                        <p className="text-xs font-mono text-slate-700">{campaign.id}</p>
                       </td>
                       <td className="p-4 text-xs font-medium text-slate-600 uppercase">
                         {campaign.campaign_type || campaign.type || 'Display'}

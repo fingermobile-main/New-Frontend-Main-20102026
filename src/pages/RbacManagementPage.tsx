@@ -151,7 +151,7 @@ const RbacManagementPage: React.FC = () => {
               </button>
             </div>
 
-            <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+            <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden">
               <div className="p-6">
                 {activeView === 'dashboard' && <RbacDashboard />}
 
@@ -166,20 +166,20 @@ const RbacManagementPage: React.FC = () => {
                             <label className="block text-sm font-medium text-gray-700 mb-1">Role Name</label>
                             <input
                               type="text"
-                              className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent font-bold border-slate-300 placeholder:text-slate-400"
                               placeholder="Enter role name" />
                           </div>
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
                             <textarea
-                              className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent font-bold border-slate-300 placeholder:text-slate-400"
                               placeholder="Enter role description"
                               rows={3}
                             ></textarea>
                           </div>
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Department</label>
-                            <select className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <select className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent font-bold border-slate-300">
                               <option>Select department</option>
                               {departments.map((dept: any) => (
                                 <option key={dept.id} value={dept.name}>{dept.name}</option>
@@ -211,7 +211,7 @@ const RbacManagementPage: React.FC = () => {
                               <input
                                 type="checkbox"
                                 id={`perm-${index}`}
-                                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                                className="w-4 h-4 text-slate-900 bg-white border-gray-300 rounded focus:ring-blue-500 font-bold border border-slate-300 focus:ring-2 placeholder:text-slate-400"
                               />
                               <label htmlFor={`perm-${index}`} className="ml-3 text-gray-700">
                                 {permission}
@@ -229,7 +229,7 @@ const RbacManagementPage: React.FC = () => {
                     <h2 className="text-2xl font-bold text-gray-900 mb-6">Department Management</h2>
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                       {departments.map((dept: any) => (
-                        <div key={dept.id} className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-5 border border-gray-200">
+                        <div key={dept.id} className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-5 border border-slate-300">
                           <h3 className="font-bold text-gray-900 text-lg">{dept.name}</h3>
                           <div className="flex justify-between mt-4">
                             <div>
@@ -415,7 +415,7 @@ const RbacManagementPage: React.FC = () => {
                     value={assignUserId}
                     onChange={(e) => setAssignUserId(e.target.value)}
                     placeholder="Enter user ID"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                   />
                 </div>
 
@@ -426,7 +426,7 @@ const RbacManagementPage: React.FC = () => {
                   <select
                     value={assignRole}
                     onChange={(e) => setAssignRole(e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white"
                   >
                     <option value="">Select a role</option>
                     {roles.map((r: any) => (

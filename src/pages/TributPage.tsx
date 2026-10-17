@@ -380,7 +380,7 @@ export const TributPage: React.FC = () => {
                   FingerMobile <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-300 to-indigo-300">Sovereign Tribut</span> & Smart Feed
                 </h1>
 
-                <p className="text-slate-300 text-base sm:text-lg leading-relaxed font-normal">
+                <p className="text-slate-700 text-base sm:text-lg leading-relaxed font-normal">
                   Where digital inspiration meets commercial transactions. The <strong className="text-white font-bold">Guardian AI</strong> curates the highest-ranking user-generated content, organizing media into multi-style collage displays, collaborative design critique discussions, and shoppable product cards.
                 </p>
 
@@ -417,7 +417,7 @@ export const TributPage: React.FC = () => {
                     {isSelectMode ? 'Exit Batch Mode' : 'Batch Select & Multi-Delete'}
                   </button>
 
-                  <div className="flex items-center gap-2 text-xs text-slate-300">
+                  <div className="flex items-center gap-2 text-xs text-slate-700">
                     <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                     <span>Shopping Engine Synced (MarketPlace, Storefront, OwnIt, Flamingo)</span>
                   </div>
@@ -473,7 +473,7 @@ export const TributPage: React.FC = () => {
                   <span className="text-sm font-black text-slate-900">
                     {currentStyleMeta.label}
                   </span>
-                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-purple-100 text-purple-950 font-bold border border-purple-200">
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-purple-100 text-purple-950 font-bold border border-purple-400 border-purple-400 font-black">
                     {currentStyleMeta.layoutCount}
                   </span>
                 </div>
@@ -635,7 +635,7 @@ export const TributPage: React.FC = () => {
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         placeholder="Search pins, creators, prompts, tags..."
-                        className="w-full pl-9 pr-3 py-2 text-xs text-slate-900 font-bold border border-slate-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        className="w-full pl-9 pr-3 py-2 text-xs text-slate-900 font-bold border border-slate-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-purple-500 placeholder:text-slate-400"
                       />
                     </div>
                   </div>
@@ -651,7 +651,7 @@ export const TributPage: React.FC = () => {
                         type="checkbox"
                         checked={onlyShoppable}
                         onChange={(e) => setOnlyShoppable(e.target.checked)}
-                        className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500"
+                        className="w-4 h-4 text-slate-900 rounded focus:ring-purple-500 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                       />
                       <span>Shoppable Pins Only (Live Checkout)</span>
                     </label>
@@ -661,7 +661,7 @@ export const TributPage: React.FC = () => {
                         type="checkbox"
                         checked={onlyPromoted}
                         onChange={(e) => setOnlyPromoted(e.target.checked)}
-                        className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500"
+                        className="w-4 h-4 text-slate-900 rounded focus:ring-purple-500 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                       />
                       <span>Promoted Canary Ads Only</span>
                     </label>
@@ -675,7 +675,7 @@ export const TributPage: React.FC = () => {
                     <select
                       value={selectedStoreEngine}
                       onChange={(e) => setSelectedStoreEngine(e.target.value)}
-                      className="w-full py-2 px-3 rounded-xl text-slate-900 font-bold border border-slate-300 bg-white text-xs"
+                      className="w-full py-2 px-3 rounded-xl text-slate-900 font-bold border border-slate-300 bg-white text-xs focus:ring-2 focus:ring-indigo-500"
                     >
                       <option value="all">All E-Commerce Gateways</option>
                       <option value="MarketPlace">MarketPlace</option>
@@ -767,7 +767,7 @@ export const TributPage: React.FC = () => {
                   <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 pt-3 border-t border-purple-800/80 items-center text-xs">
                     {/* Sort Order Selector (All Measures) */}
                     <div className="sm:col-span-7 flex items-center gap-2">
-                      <span className="font-bold text-slate-300 text-[11px] whitespace-nowrap">
+                      <span className="font-bold text-slate-700 text-[11px] whitespace-nowrap">
                         Rank Order:
                       </span>
                       <select
@@ -786,7 +786,7 @@ export const TributPage: React.FC = () => {
 
                     {/* UGC Platform Origin Filter */}
                     <div className="sm:col-span-5 flex items-center gap-2">
-                      <span className="font-bold text-slate-300 text-[11px] whitespace-nowrap">
+                      <span className="font-bold text-slate-700 text-[11px] whitespace-nowrap">
                         Origin:
                       </span>
                       <select
@@ -1071,7 +1071,7 @@ export const TributPage: React.FC = () => {
                   </div>
                   <button
                     onClick={() => setShowPillarsModal(false)}
-                    className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700"
+                    className="p-1.5 rounded-lg text-slate-700 hover:text-slate-700"
                   >
                     <XMarkIcon className="w-5 h-5" />
                   </button>
@@ -1125,7 +1125,7 @@ export const TributPage: React.FC = () => {
                   </div>
                   <button
                     onClick={() => setShowSaveToBoardModal(null)}
-                    className="p-1 rounded-lg text-slate-400 hover:text-slate-700"
+                    className="p-1 rounded-lg text-slate-700 hover:text-slate-700"
                   >
                     <XMarkIcon className="w-5 h-5" />
                   </button>
@@ -1158,7 +1158,7 @@ export const TributPage: React.FC = () => {
                         value={board.id}
                         checked={selectedBoardIdToSave === board.id}
                         onChange={() => setSelectedBoardIdToSave(board.id)}
-                        className="text-purple-600 focus:ring-purple-500"
+                        className="text-slate-900 focus:ring-purple-500 font-bold border border-slate-300 rounded bg-white focus:ring-2 placeholder:text-slate-400"
                       />
                     </label>
                   ))}

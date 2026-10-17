@@ -48,7 +48,7 @@ const MusicUploadForm: React.FC<MusicUploadFormProps> = ({ onUpload }) => {
             type="file"
             accept="audio/*"
             onChange={handleFileChange}
-            className="hidden"
+            className="hidden text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
             id="music-upload"
           />
           <label htmlFor="music-upload" className="cursor-pointer">
@@ -67,7 +67,7 @@ const MusicUploadForm: React.FC<MusicUploadFormProps> = ({ onUpload }) => {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
             placeholder="Enter track title"
           />
         </div>
@@ -78,7 +78,7 @@ const MusicUploadForm: React.FC<MusicUploadFormProps> = ({ onUpload }) => {
             type="text"
             value={artist}
             onChange={(e) => setArtist(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
             placeholder="Enter artist name"
           />
         </div>
@@ -88,7 +88,7 @@ const MusicUploadForm: React.FC<MusicUploadFormProps> = ({ onUpload }) => {
           <select
             value={genre}
             onChange={(e) => setGenre(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white"
           >
             <option value="">Select genre</option>
             <option value="pop">Pop</option>

@@ -190,12 +190,12 @@ const ContentModerationPage: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-1">
           <div className="bg-white rounded-lg shadow">
-            <div className="p-6 border-b border-gray-200">
+            <div className="p-6 border-b border-slate-300">
               <h2 className="text-xl font-semibold text-gray-900">Moderation Queue</h2>
             </div>
 
-            <div className="p-4 border-b border-gray-200">
-              <Select
+            <div className="p-4 border-b border-slate-300">
+              <Select className="text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500"
                 value={selectedItem?.id || 'all'}
                 onValueChange={(value) => {
                   if (value === 'all') {
@@ -286,7 +286,7 @@ const ContentModerationPage: React.FC = () => {
               transition={{ duration: 0.2 }}
               className="bg-white rounded-lg shadow"
             >
-              <div className="p-6 border-b border-gray-200">
+              <div className="p-6 border-b border-slate-300">
                 <div className="flex justify-between items-center">
                   <h2 className="text-xl font-semibold text-gray-900">Report Details</h2>
                   <span className={`text-sm px-3 py-1 rounded-full ${
@@ -372,7 +372,7 @@ const ContentModerationPage: React.FC = () => {
           ) : (
             <div className="bg-white rounded-lg shadow h-full flex items-center justify-center p-12">
               <div className="text-center">
-                <Shield className="w-16 h-16 mx-auto mb-4 text-gray-300" />
+                <Shield className="w-16 h-16 mx-auto mb-4 text-slate-700" />
                 <h3 className="text-lg font-medium text-gray-700 mb-1">No content selected</h3>
                 <p className="text-gray-500">Select an item from the queue to view details</p>
               </div>

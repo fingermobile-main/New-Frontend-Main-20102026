@@ -143,7 +143,7 @@ export const FingerLuxPaymentsPOS: React.FC<FingerLuxPaymentsPOSProps> = ({
   return (
     <div className="space-y-6">
       {/* Sub-Tabs Toolbar */}
-      <div className="bg-white rounded-3xl p-5 border border-gray-100 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="bg-white rounded-3xl p-5 border border-slate-200 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex flex-wrap items-center gap-1.5">
           {[
             { id: 'pos_terminal', label: 'In-Person POS & Tap to Pay', icon: '📱' },
@@ -226,7 +226,7 @@ export const FingerLuxPaymentsPOS: React.FC<FingerLuxPaymentsPOSProps> = ({
                   type="number"
                   value={posAmount}
                   onChange={(e) => setPosAmount(Number(e.target.value))}
-                  className="flex-1 px-4 py-3 bg-white border border-slate-300 rounded-xl text-xl font-black text-slate-900 focus:ring-2 focus:ring-indigo-500 outline-none"
+                  className="flex-1 px-4 py-3 bg-white border border-slate-300 rounded-xl text-xl font-black text-slate-900 focus:ring-2 focus:ring-indigo-500 outline-none font-bold placeholder:text-slate-400 font-mono"
                 />
                 <span className="text-sm font-bold text-slate-700">
                   ≈ {formatPrice(posAmount)}
@@ -256,7 +256,7 @@ export const FingerLuxPaymentsPOS: React.FC<FingerLuxPaymentsPOSProps> = ({
                   value={customerRef}
                   onChange={(e) => setCustomerRef(e.target.value)}
                   placeholder="e.g. Penthouse Suite 5401 - Sir Reginald Vance"
-                  className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:outline-none"
+                  className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
             </div>
@@ -404,7 +404,7 @@ export const FingerLuxPaymentsPOS: React.FC<FingerLuxPaymentsPOSProps> = ({
                   placeholder="e.g. Countess Vivian Chen"
                   value={invoiceClientName}
                   onChange={(e) => setInvoiceClientName(e.target.value)}
-                  className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl font-bold text-slate-900 focus:bg-white outline-none"
+                  className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl font-bold text-slate-900 focus:bg-white outline-none focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
 
@@ -415,7 +415,7 @@ export const FingerLuxPaymentsPOS: React.FC<FingerLuxPaymentsPOSProps> = ({
                   placeholder="client@chenholdings.sg"
                   value={invoiceClientEmail}
                   onChange={(e) => setInvoiceClientEmail(e.target.value)}
-                  className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl font-bold text-slate-900 focus:bg-white outline-none"
+                  className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl font-bold text-slate-900 focus:bg-white outline-none focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
 
@@ -426,7 +426,7 @@ export const FingerLuxPaymentsPOS: React.FC<FingerLuxPaymentsPOSProps> = ({
                     type="number"
                     value={invoiceAmount}
                     onChange={(e) => setInvoiceAmount(Number(e.target.value))}
-                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl font-bold text-slate-900 focus:bg-white outline-none"
+                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl font-bold text-slate-900 focus:bg-white outline-none focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
                   />
                 </div>
                 <div>
@@ -435,7 +435,7 @@ export const FingerLuxPaymentsPOS: React.FC<FingerLuxPaymentsPOSProps> = ({
                     type="text"
                     value={invoiceBookingCode}
                     onChange={(e) => setInvoiceBookingCode(e.target.value)}
-                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl font-bold text-slate-900 focus:bg-white outline-none"
+                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl font-bold text-slate-900 focus:bg-white outline-none focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                 </div>
               </div>

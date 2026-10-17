@@ -122,7 +122,7 @@ const ModerationDashboardPage: React.FC = () => {
 
         {/* Dashboard Tabs */}
         <div className="bg-white rounded-xl shadow-sm border border-slate-300">
-          <div className="border-b border-gray-200">
+          <div className="border-b border-slate-300">
             <nav className="flex space-x-8 px-6">
               <button
                 onClick={() => setActiveTab('pending')}
@@ -179,7 +179,7 @@ const ModerationDashboardPage: React.FC = () => {
                     <select
                       value={filter}
                       onChange={(e) => setFilter(e.target.value)}
-                      className="border border-gray-300 rounded-md px-3 py-2 text-sm"
+                      className="border border-gray-300 rounded-md px-3 py-2 text-sm text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500"
                     >
                       <option value="all">All Categories</option>
                       <option value="violence">Violence</option>
@@ -209,7 +209,7 @@ const ModerationDashboardPage: React.FC = () => {
                     pendingContent.map((item) => (
                       <div
                         key={item.id}
-                        className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
+                        className="border border-slate-300 rounded-lg p-4 hover:shadow-md transition-shadow"
                       >
                         <div className="flex justify-between">
                           <div className="flex items-center">
@@ -237,7 +237,7 @@ const ModerationDashboardPage: React.FC = () => {
                           <p className="text-sm font-medium text-gray-900">
                             Reported by: {item.reporter_username || item.reported_by || 'Anonymous'}
                           </p>
-                          <p className="text-sm text-gray-700 mt-1 bg-gray-50 p-2.5 rounded border border-gray-100">
+                          <p className="text-sm text-gray-700 mt-1 bg-gray-50 p-2.5 rounded border border-slate-200">
                             {item.contentPreview || item.description || `Target ID: ${item.content_id}`}
                           </p>
                         </div>
@@ -402,7 +402,7 @@ const ModerationDashboardPage: React.FC = () => {
                     </p>
                   </div>
                 ) : (
-                  <div className="overflow-x-auto border border-gray-200 rounded-lg">
+                  <div className="overflow-x-auto border border-slate-300 rounded-lg">
                     <table className="min-w-full divide-y divide-gray-200">
                       <thead className="bg-gray-50">
                         <tr>

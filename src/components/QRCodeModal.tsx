@@ -59,7 +59,7 @@ const QRCodeModal: React.FC<QRCodeModalProps> = ({
       <div className="relative min-h-screen flex items-center justify-center p-4">
         <div className="relative bg-white rounded-lg shadow-xl max-w-md w-full">
           {/* Header */}
-          <div className="border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+          <div className="border-b border-slate-300 px-6 py-4 flex items-center justify-between">
             <h2 className="text-xl font-bold text-gray-900">{title}</h2>
             <button
               onClick={onClose}
@@ -127,7 +127,7 @@ const QRCodeModal: React.FC<QRCodeModalProps> = ({
           </div>
 
           {/* Footer Actions */}
-          <div className="border-t border-gray-200 px-6 py-4 flex gap-3">
+          <div className="border-t border-slate-300 px-6 py-4 flex gap-3">
             <button
               onClick={handleDownload}
               className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium flex items-center justify-center gap-2"

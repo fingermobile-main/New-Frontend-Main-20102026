@@ -77,7 +77,7 @@ const LiveStreamTipModal: React.FC<LiveStreamTipModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="bg-white rounded-3xl w-full max-w-md overflow-hidden shadow-2xl border border-gray-100 animate-fade-in">
+      <div className="bg-white rounded-3xl w-full max-w-md overflow-hidden shadow-2xl border border-slate-200 animate-fade-in">
         {/* Modal Header */}
         <div className="bg-gradient-to-r from-yellow-500 via-amber-500 to-orange-500 p-6 text-white relative">
           <button
@@ -169,7 +169,7 @@ const LiveStreamTipModal: React.FC<LiveStreamTipModalProps> = ({
                   placeholder="Or enter custom amount..."
                   value={customAmount}
                   onChange={(e) => setCustomAmount(e.target.value)}
-                  className="mt-2 w-full p-2.5 text-xs border border-gray-200 rounded-xl focus:ring-amber-500 focus:border-amber-500"
+                  className="mt-2 w-full p-2.5 text-xs border border-slate-300 rounded-xl focus:ring-amber-500 focus:border-amber-500 text-slate-900 font-bold bg-white focus:ring-2 placeholder:text-slate-400 font-mono"
                 />
               </div>
 
@@ -184,7 +184,7 @@ const LiveStreamTipModal: React.FC<LiveStreamTipModalProps> = ({
                   placeholder="Amazing stream! Keep it going! 🚀"
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  className="w-full p-2.5 text-xs border border-gray-200 rounded-xl focus:ring-amber-500 focus:border-amber-500"
+                  className="w-full p-2.5 text-xs border border-slate-300 rounded-xl focus:ring-amber-500 focus:border-amber-500 text-slate-900 font-bold bg-white focus:ring-2 placeholder:text-slate-400"
                 />
               </div>
 

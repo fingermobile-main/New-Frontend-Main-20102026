@@ -67,7 +67,7 @@ const ComposerModal: React.FC<ComposerModalProps> = ({
       <div className="relative min-h-screen flex items-center justify-center p-4">
         <div className="relative bg-white rounded-lg shadow-xl max-w-2xl w-full">
           {/* Header */}
-          <div className="border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+          <div className="border-b border-slate-300 px-6 py-4 flex items-center justify-between">
             <h2 className="text-xl font-bold text-gray-900">Create Post</h2>
             <button
               onClick={onClose}
@@ -86,7 +86,7 @@ const ComposerModal: React.FC<ComposerModalProps> = ({
               placeholder="What's on your mind?"
               rows={6}
               maxLength={maxChars}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
             />
 
             {/* Character Counter */}
@@ -169,7 +169,7 @@ const ComposerModal: React.FC<ComposerModalProps> = ({
                 id="allowComments"
                 checked={allowComments}
                 onChange={(e) => setAllowComments(e.target.checked)}
-                className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
+                className="w-4 h-4 text-slate-900 rounded focus:ring-blue-500 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
               />
               <label htmlFor="allowComments" className="text-sm text-gray-700">
                 Allow comments
@@ -178,7 +178,7 @@ const ComposerModal: React.FC<ComposerModalProps> = ({
           </div>
 
           {/* Footer */}
-          <div className="border-t border-gray-200 px-6 py-4 flex items-center justify-between">
+          <div className="border-t border-slate-300 px-6 py-4 flex items-center justify-between">
             {/* Media Upload Button */}
             <label className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors cursor-pointer">
               <span className="text-xl">📷</span>
@@ -188,7 +188,7 @@ const ComposerModal: React.FC<ComposerModalProps> = ({
                 multiple
                 accept="image/*,video/*"
                 onChange={handleMediaSelect}
-                className="hidden"
+                className="hidden text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
               />
             </label>
 

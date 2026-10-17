@@ -84,14 +84,14 @@ export const CreateMiiStatusModal: React.FC<CreateMiiStatusModalProps> = ({ isOp
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
       <div className="w-full max-w-md bg-white dark:bg-gray-900 rounded-2xl shadow-xl overflow-hidden flex flex-col">
-        <div className="p-4 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
+        <div className="p-4 border-b border-slate-200 dark:border-gray-800 flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold flex items-center justify-center">
+            <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold flex items-center justify-center font-black">
               <Camera className="w-4 h-4" />
             </div>
             <h2 className="text-lg font-bold text-gray-900 dark:text-white">Create Mii™ Status</h2>
           </div>
-          <button onClick={onClose} className="text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 p-1.5 rounded-full">
+          <button onClick={onClose} className="text-slate-700 hover:bg-gray-100 dark:hover:bg-gray-800 p-1.5 rounded-full">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -124,7 +124,7 @@ export const CreateMiiStatusModal: React.FC<CreateMiiStatusModalProps> = ({ isOp
                 {cards.length < 20 && (
                   <label className="w-20 h-20 flex-shrink-0 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-xl flex items-center justify-center cursor-pointer hover:border-emerald-500">
                     <Plus className="w-6 h-6 text-slate-500" />
-                    <input type="file" className="hidden" accept="image/*,video/*" onChange={handleFileChange} />
+                    <input type="file" className="hidden text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" accept="image/*,video/*" onChange={handleFileChange} />
                   </label>
                 )}
               </div>
@@ -132,7 +132,7 @@ export const CreateMiiStatusModal: React.FC<CreateMiiStatusModalProps> = ({ isOp
           </form>
         </div>
 
-        <div className="p-4 border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50 flex justify-end gap-3">
+        <div className="p-4 border-t border-slate-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50 flex justify-end gap-3">
           <button type="button" onClick={onClose} className="px-4 py-2 text-sm font-semibold text-gray-600 hover:text-gray-800">
             Cancel
           </button>

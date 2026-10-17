@@ -29,7 +29,7 @@ const ForumPopularTags: React.FC<ForumPopularTagsProps> = ({ onTagClick }) => {
           <button
             key={tag.name}
             onClick={() => onTagClick?.(tag.name)}
-            className="flex items-center gap-2 px-3 py-1.5 bg-white/60 hover:bg-white text-gray-700 hover:text-brand-blue text-sm rounded-lg cursor-pointer transition-colors border border-gray-100 hover:border-brand-blue/30 shadow-sm"
+            className="flex items-center gap-2 px-3 py-1.5 bg-white/60 hover:bg-white text-gray-700 hover:text-brand-blue text-sm rounded-lg cursor-pointer transition-colors border border-slate-200 hover:border-brand-blue/30 shadow-sm"
           >
             <span className="text-brand-blue font-bold">#{tag.name}</span>
             <span className="text-xs text-gray-500 bg-gray-50 px-1.5 py-0.5 rounded-md font-medium">

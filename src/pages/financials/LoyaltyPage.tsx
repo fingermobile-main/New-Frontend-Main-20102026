@@ -131,7 +131,7 @@ const LoyaltyPage: React.FC = () => {
   const RewardRow: React.FC<{ reward: HistoryReward }> = ({ reward }) => (
     <div className="flex justify-between items-center py-3.5 border-b border-slate-200 last:border-b-0">
       <div className="flex items-center space-x-3">
-        <div className="bg-emerald-100 p-2 rounded-full text-emerald-900 border border-emerald-300">
+        <div className="bg-emerald-100 p-2 rounded-full text-emerald-950 border border-emerald-400 text-emerald-950 border-emerald-400 font-black">
           <SparklesIcon className="w-5 h-5" />
         </div>
         <div>

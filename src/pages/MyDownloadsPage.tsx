@@ -401,7 +401,7 @@ const MyDownloadsPage: React.FC = () => {
               <div className="space-y-0.5">
                 <h4 className="text-xs font-black uppercase tracking-wider text-amber-950 flex items-center gap-2">
                   <span>Guardian AI TTL Policy: 10-Day Retention Window</span>
-                  <span className="px-2 py-0.5 rounded-full bg-amber-200 text-amber-950 text-[10px] font-bold">
+                  <span className="px-2 py-0.5 rounded-full bg-amber-200 text-amber-950 text-[10px] font-bold border border-amber-400 font-black">
                     Active
                   </span>
                 </h4>
@@ -669,7 +669,7 @@ const MyDownloadsPage: React.FC = () => {
               placeholder="Search by title, lot ID, .fma, .fmv..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 font-bold placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 shadow-2xs"
+              className="w-full pl-9 pr-4 py-2 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 font-bold placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500 shadow-2xs"
             />
           </div>
         </div>

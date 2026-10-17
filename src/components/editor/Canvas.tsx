@@ -37,7 +37,7 @@ const Canvas: React.FC<CanvasProps> = ({
     >
       <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-sm min-h-[600px] p-8">
         {components.length === 0 ? (
-          <div className="flex items-center justify-center h-full text-gray-400">
+          <div className="flex items-center justify-center h-full text-slate-700">
             <div className="text-center">
               <p className="text-lg mb-2">Drag components here</p>
               <p className="text-sm">Start building your page</p>

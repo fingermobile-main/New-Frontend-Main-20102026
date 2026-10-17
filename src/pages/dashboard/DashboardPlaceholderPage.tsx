@@ -15,7 +15,7 @@ const DashboardPlaceholderPage: React.FC = () => {
     <div>
       <h1 className="text-2xl font-bold mb-6">{pageName}</h1>
       <div className="bg-white p-12 rounded-xl shadow-md text-center">
-        <div className="mx-auto mb-4 bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center">
+        <div className="mx-auto mb-4 bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center border text-blue-950 border-blue-400 font-black">
           <ChartBarIcon className="w-8 h-8 text-brand-blue" />
         </div>
         <h2 className="text-xl font-bold mb-2">Content Coming Soon</h2>

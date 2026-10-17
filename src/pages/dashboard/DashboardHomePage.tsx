@@ -258,7 +258,7 @@ const DashboardHomePage: React.FC = () => {
               onClick={() => navigate('/createpost')}
               className="flex flex-col items-center justify-center p-6 border border-slate-300 rounded-lg hover:bg-gray-50 transition-colors active:scale-95"
             >
-              <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-3">
+              <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-3 border text-blue-950 border-blue-400 font-black">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6 text-blue-600"
@@ -304,7 +304,7 @@ const DashboardHomePage: React.FC = () => {
               onClick={() => navigate('/subscriptions')}
               className="flex flex-col items-center justify-center p-6 border border-slate-300 rounded-lg hover:bg-gray-50 transition-colors active:scale-95"
             >
-              <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-3">
+              <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-3 border text-purple-950 border-purple-400 font-black">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6 text-purple-600"

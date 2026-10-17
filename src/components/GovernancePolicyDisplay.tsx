@@ -205,20 +205,20 @@ const GovernancePolicyDisplay: React.FC<GovernancePolicyDisplayProps> = ({
                     {getStatusIcon(policy.status)}
                     <h3 className="text-base font-black text-white uppercase tracking-tight">{policy.title}</h3>
                   </div>
-                  <p className="text-sm text-gray-400 leading-relaxed mb-4">{policy.description}</p>
+                  <p className="text-sm text-slate-700 leading-relaxed mb-4">{policy.description}</p>
 
                   <div className="flex items-center space-x-6 text-xs">
                     <div className="flex items-center space-x-2">
                       <Clock size={14} className="text-gray-500" />
-                      <span className="text-gray-400">Updated {policy.lastUpdated.toLocaleDateString()}</span>
+                      <span className="text-slate-700">Updated {policy.lastUpdated.toLocaleDateString()}</span>
                     </div>
                     <div className="flex items-center space-x-2">
                       <AlertTriangle size={14} className="text-orange-500" />
-                      <span className="text-gray-400">{policy.violations} violations</span>
+                      <span className="text-slate-700">{policy.violations} violations</span>
                     </div>
                     <div className="flex items-center space-x-2">
                       {getEnforcementBadge(policy.enforcementLevel)}
-                      <span className="text-gray-400 capitalize">{policy.enforcementLevel}</span>
+                      <span className="text-slate-700 capitalize">{policy.enforcementLevel}</span>
                     </div>
                   </div>
                 </div>
@@ -255,19 +255,19 @@ const GovernancePolicyDisplay: React.FC<GovernancePolicyDisplayProps> = ({
                     <h4 className="text-xs font-black text-gray-500 uppercase tracking-widest mb-3">Policy Details</h4>
                     <div className="space-y-3 text-sm">
                       <div className="flex justify-between">
-                        <span className="text-gray-400">Category:</span>
+                        <span className="text-slate-700">Category:</span>
                         <span className="text-white font-bold capitalize">{policy.category}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-400">Status:</span>
+                        <span className="text-slate-700">Status:</span>
                         <span className="text-white font-bold capitalize">{policy.status}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-400">Effective Date:</span>
+                        <span className="text-slate-700">Effective Date:</span>
                         <span className="text-white font-bold">{policy.effectiveDate.toLocaleDateString()}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-400">Enforcement:</span>
+                        <span className="text-slate-700">Enforcement:</span>
                         <span className="text-white font-bold capitalize">{policy.enforcementLevel}</span>
                       </div>
                     </div>
@@ -277,15 +277,15 @@ const GovernancePolicyDisplay: React.FC<GovernancePolicyDisplayProps> = ({
                     <h4 className="text-xs font-black text-gray-500 uppercase tracking-widest mb-3">Enforcement & Monitoring</h4>
                     <div className="space-y-3 text-sm">
                       <div className="flex items-center justify-between">
-                        <span className="text-gray-400">AI Monitoring:</span>
+                        <span className="text-slate-700">AI Monitoring:</span>
                         <CheckCircle size={16} className="text-green-500" />
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-gray-400">Real-time Scanning:</span>
+                        <span className="text-slate-700">Real-time Scanning:</span>
                         <Eye size={16} className="text-blue-500" />
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-gray-400">Alerts Enabled:</span>
+                        <span className="text-slate-700">Alerts Enabled:</span>
                         <Bell size={16} className="text-purple-500" />
                       </div>
                     </div>

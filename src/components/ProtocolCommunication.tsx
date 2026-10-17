@@ -421,7 +421,7 @@ const ProtocolCommunication: React.FC<ProtocolCommunicationProps> = ({
 
       {/* Security Settings Panel */}
       {showSecuritySettings && (
-        <div className="bg-blue-50 p-4 border-b border-gray-200">
+        <div className="bg-blue-50 p-4 border-b border-slate-300">
           <div className="flex justify-between items-center mb-3">
             <h3 className="font-medium text-blue-800 flex items-center">
               <FiShield className="mr-2" aria-hidden="true" /> Security Settings
@@ -449,7 +449,7 @@ const ProtocolCommunication: React.FC<ProtocolCommunicationProps> = ({
                       initializeEncryption();
                     }
                   }}
-                  className="rounded"
+                  className="rounded text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
                 <span className="text-sm">Enable End-to-End Encryption</span>
               </label>
@@ -460,7 +460,7 @@ const ProtocolCommunication: React.FC<ProtocolCommunicationProps> = ({
                   id="encryption-algorithm"
                   value={securitySettings.encryptionAlgorithm || 'AES-GCM'}
                   onChange={() => { /* Algorithm selection disabled */ }}
-                  className="w-full text-sm border border-gray-300 rounded px-2 py-1"
+                  className="w-full text-sm border border-gray-300 rounded px-2 py-1 text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500"
                   disabled
                 >
                   <option value="AES-GCM">AES-GCM (Recommended)</option>
@@ -534,7 +534,7 @@ const ProtocolCommunication: React.FC<ProtocolCommunicationProps> = ({
               onChange={(e) => setNewMessage(e.target.value)}
               onKeyDown={handleKeyPress}
               placeholder="Type a message..."
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               rows={1}
             />
           </div>

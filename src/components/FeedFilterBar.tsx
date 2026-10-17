@@ -67,7 +67,7 @@ const FeedFilterBar: React.FC<FeedFilterBarProps> = ({
             <select
               value={sortBy}
               onChange={(e) => handleSortChange(e.target.value as any)}
-              className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm"
+              className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm text-slate-900 font-bold border-slate-300 bg-white"
             >
               <option value="recent">Most Recent</option>
               <option value="popular">Most Popular</option>
@@ -86,7 +86,7 @@ const FeedFilterBar: React.FC<FeedFilterBarProps> = ({
                   onFilterChange({ category: selectedCategory, sortBy, dateRange: e.target.value, contentType });
                 }
               }}
-              className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm"
+              className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm text-slate-900 font-bold border-slate-300 bg-white"
             >
               <option value="today">Today</option>
               <option value="week">This Week</option>
@@ -108,7 +108,7 @@ const FeedFilterBar: React.FC<FeedFilterBarProps> = ({
 
         {/* Advanced Filters Panel */}
         {showFilters && (
-          <div className="border-t border-gray-200 pt-4 mt-4 space-y-4 animate-fade-in">
+          <div className="border-t border-slate-300 pt-4 mt-4 space-y-4 animate-fade-in">
             {/* Content Type Filters */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Content Type</label>
@@ -136,7 +136,7 @@ const FeedFilterBar: React.FC<FeedFilterBarProps> = ({
                 <input
                   type="number"
                   placeholder="0"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400 font-mono"
                 />
               </div>
 
@@ -145,7 +145,7 @@ const FeedFilterBar: React.FC<FeedFilterBarProps> = ({
                 <input
                   type="text"
                   placeholder="Search author..."
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400" />
               </div>
             </div>
 
@@ -188,13 +188,13 @@ const FeedFilterBar: React.FC<FeedFilterBarProps> = ({
           <span className="text-sm text-gray-600 font-medium">Active filters:</span>
 
           {selectedCategory !== 'All' && (
-            <span className="px-2 py-1 bg-blue-100 text-blue-950 border border-blue-400 font-bold rounded-full text-xs font-medium">
+            <span className="px-2 py-1 bg-blue-100 text-blue-950 border border-blue-400 font-bold rounded-full text-xs font-medium font-black">
               {selectedCategory} ✕
             </span>
           )}
 
           {sortBy !== 'recent' && (
-            <span className="px-2 py-1 bg-purple-100 text-purple-950 border border-purple-400 font-bold rounded-full text-xs font-medium capitalize">
+            <span className="px-2 py-1 bg-purple-100 text-purple-950 border border-purple-400 font-bold rounded-full text-xs font-medium capitalize font-black">
               {sortBy} ✕
             </span>
           )}

@@ -27,7 +27,7 @@ const CommunityStandardsNudityPage: React.FC = () => {
           </p>
         </div>
 
-        <hr className="border-gray-200 mb-8" />
+        <hr className="border-slate-300 mb-8" />
 
         {/* Core Principles */}
         <section className="mb-8">
@@ -240,7 +240,7 @@ const CommunityStandardsNudityPage: React.FC = () => {
         {/* Enforcement Notice */}
         <section className="p-6 bg-gradient-to-r from-slate-900 to-rose-950 rounded-2xl text-white">
           <h2 className="text-lg font-bold mb-2">Enforcement &amp; Penalties</h2>
-          <p className="text-slate-300 text-sm leading-relaxed mb-3">
+          <p className="text-slate-700 text-sm leading-relaxed mb-3">
             Violation of this Community Standard may result in content removal, account warning, temporary suspension, or permanent
             termination of the offending account — depending on severity, pattern of behavior, and applicable legislation.
             Repeated or severe violations are escalated to our Guardian Protocol AI enforcement layer and, where applicable, reported
@@ -256,7 +256,7 @@ const CommunityStandardsNudityPage: React.FC = () => {
         </section>
 
         {/* Footer */}
-        <div className="mt-8 pt-6 border-t border-gray-200 text-center">
+        <div className="mt-8 pt-6 border-t border-slate-300 text-center">
           <p className="text-xs text-gray-500">
             This policy is part of the FingerMobile Protocol™ Legal Trust Center. For policy inquiries, contact{' '}
             <a href="mailto:info@fingermobileprotocol.com" className="text-blue-600 underline hover:text-blue-800">

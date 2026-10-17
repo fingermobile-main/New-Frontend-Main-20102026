@@ -70,7 +70,7 @@ export const FingerLuxChannels: React.FC<FingerLuxChannelsProps> = ({
                 type="text"
                 readOnly
                 value={MASTER_BOOKING_LINK}
-                className="flex-1 px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-mono font-bold text-slate-900 select-all"
+                className="flex-1 px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-mono font-bold text-slate-900 select-all focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
               />
               <button
                 type="button"

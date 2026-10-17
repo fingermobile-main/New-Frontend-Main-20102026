@@ -86,7 +86,7 @@ const OfficialVerificationPage: React.FC = () => {
                     type="text"
                     value={formData.businessLegalName}
                     onChange={(e) => setFormData(prev => ({ ...prev, businessLegalName: e.target.value }))}
-                    className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                    className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                     placeholder="e.g. Acme Corporation"
                   />
                 </div>
@@ -96,7 +96,7 @@ const OfficialVerificationPage: React.FC = () => {
                     type="text"
                     value={formData.businessRegistrationNumber}
                     onChange={(e) => setFormData(prev => ({ ...prev, businessRegistrationNumber: e.target.value }))}
-                    className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                    className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                   />
                 </div>
                 <button
@@ -118,19 +118,19 @@ const OfficialVerificationPage: React.FC = () => {
                 <div>
                   <h3 className="text-sm font-medium text-gray-900 mb-2">1. Business Registration / Certificate of Incorporation</h3>
                   <p className="text-xs text-gray-500 mb-2">Upload your local Certificate of Incorporation or Business License. Must include certified translation if not in English.</p>
-                  <input type="file" onChange={(e) => handleDocUpload(e, 'businessRegistration')} className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" />
+                  <input type="file" onChange={(e) => handleDocUpload(e, 'businessRegistration')} className="block w-full text-sm text-slate-900 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border file:text-sm file:font-semibold file:bg-white file:text-slate-900 hover:file:bg-white font-bold border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" />
                 </div>
 
                 <div>
                   <h3 className="text-sm font-medium text-gray-900 mb-2">2. Trademark Certificate</h3>
                   <p className="text-xs text-gray-500 mb-2">Upload your brand's trademark registration certificate to secure exclusive rights.</p>
-                  <input type="file" onChange={(e) => handleDocUpload(e, 'trademarkCertificate')} className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" />
+                  <input type="file" onChange={(e) => handleDocUpload(e, 'trademarkCertificate')} className="block w-full text-sm text-slate-900 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border file:text-sm file:font-semibold file:bg-white file:text-slate-900 hover:file:bg-white font-bold border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" />
                 </div>
 
                 <div>
                   <h3 className="text-sm font-medium text-gray-900 mb-2">3. Legal Representative Identification</h3>
                   <p className="text-xs text-gray-500 mb-2">Provide the passport or local ID of the company's legal representative or authorized manager.</p>
-                  <input type="file" onChange={(e) => handleDocUpload(e, 'legalRepId')} className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" />
+                  <input type="file" onChange={(e) => handleDocUpload(e, 'legalRepId')} className="block w-full text-sm text-slate-900 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border file:text-sm file:font-semibold file:bg-white file:text-slate-900 hover:file:bg-white font-bold border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" />
                 </div>
               </div>
 
@@ -161,17 +161,17 @@ const OfficialVerificationPage: React.FC = () => {
                 <div className="mt-4 text-3xl font-bold text-gray-900">$105.00 <span className="text-base font-normal text-gray-500">USD</span></div>
               </div>
 
-              <div className="border border-gray-200 rounded-lg p-4 mb-6">
+              <div className="border border-slate-300 rounded-lg p-4 mb-6">
                 <div className="flex items-center mb-4">
-                  <CreditCardIcon className="h-6 w-6 text-gray-400 mr-2" />
+                  <CreditCardIcon className="h-6 w-6 text-slate-700 mr-2" />
                   <span className="font-medium">International Credit Card</span>
                 </div>
-                <input type="text" placeholder="Card Number" className="w-full mb-3 px-4 py-2 border rounded-md" />
+                <input type="text" placeholder="Card Number" className="w-full mb-3 px-4 py-2 border rounded-md text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" />
                 <div className="flex space-x-3 mb-3">
-                  <input type="text" placeholder="MM/YY" className="w-1/2 px-4 py-2 border rounded-md" />
-                  <input type="text" placeholder="CVC" className="w-1/2 px-4 py-2 border rounded-md" />
+                  <input type="text" placeholder="MM/YY" className="w-1/2 px-4 py-2 border rounded-md text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" />
+                  <input type="text" placeholder="CVC" className="w-1/2 px-4 py-2 border rounded-md text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" />
                 </div>
-                <input type="text" placeholder="Name on Card" className="w-full px-4 py-2 border rounded-md" />
+                <input type="text" placeholder="Name on Card" className="w-full px-4 py-2 border rounded-md text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" />
               </div>
 
               <div className="flex justify-between">

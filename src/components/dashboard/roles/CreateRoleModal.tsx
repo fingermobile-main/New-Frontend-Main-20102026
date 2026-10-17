@@ -81,7 +81,7 @@ export const CreateRoleModal: React.FC<CreateRoleModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+            className="p-2 text-slate-700 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
           >
             <X className="w-5 h-5" />
           </button>
@@ -106,7 +106,7 @@ export const CreateRoleModal: React.FC<CreateRoleModalProps> = ({
               placeholder="e.g. Live Event Streamer, Reservations Manager"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-4 py-2.5 text-sm bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 dark:text-white"
+              className="w-full px-4 py-2.5 text-sm bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 dark:text-white font-bold border-slate-300 placeholder:text-slate-400"
             />
           </div>
 
@@ -119,7 +119,7 @@ export const CreateRoleModal: React.FC<CreateRoleModalProps> = ({
               placeholder="Explain what collaborators with this role can do..."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full px-4 py-2 text-sm bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 dark:text-white"
+              className="w-full px-4 py-2 text-sm bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 dark:text-white font-bold border-slate-300 placeholder:text-slate-400"
             />
           </div>
 
@@ -130,7 +130,7 @@ export const CreateRoleModal: React.FC<CreateRoleModalProps> = ({
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value as RoleCategory)}
-              className="w-full px-3 py-2 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white"
+              className="w-full px-3 py-2 text-xs bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500"
             >
               <option value="CUSTOM">Custom Roles</option>
               <option value="GENERAL">General Roles</option>

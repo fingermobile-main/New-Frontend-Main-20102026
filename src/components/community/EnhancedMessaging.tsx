@@ -36,7 +36,7 @@ const EnhancedMessaging: React.FC<EnhancedMessagingProps> = ({ userId, conversat
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-slate-300 h-[600px] flex flex-col">
-      <div className="p-4 border-b border-gray-200 flex items-center gap-2">
+      <div className="p-4 border-b border-slate-300 flex items-center gap-2">
         <ChatBubbleLeftIcon className="w-6 h-6 text-blue-600" />
         <h3 className="text-lg font-bold text-gray-900">Messages</h3>
       </div>
@@ -59,7 +59,7 @@ const EnhancedMessaging: React.FC<EnhancedMessagingProps> = ({ userId, conversat
         ))}
       </div>
 
-      <div className="p-4 border-t border-gray-200">
+      <div className="p-4 border-t border-slate-300">
         <div className="flex gap-2">
           <input
             type="text"
@@ -67,7 +67,7 @@ const EnhancedMessaging: React.FC<EnhancedMessagingProps> = ({ userId, conversat
             onChange={(e) => setNewMessage(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && handleSend()}
             placeholder="Type a message..."
-            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
           />
           <button
             onClick={handleSend}

@@ -403,7 +403,7 @@ export const LushEncoreView: React.FC<LushEncoreViewProps> = ({
         </div>
 
         {/* Rating & Tag Sub-Filters */}
-        <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-gray-100">
+        <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-200">
           {/* Star Threshold Selector */}
           <div className="flex items-center gap-1.5 text-xs text-gray-600">
             <FunnelIcon className="w-3.5 h-3.5 text-emerald-600" />
@@ -513,7 +513,7 @@ export const LushEncoreView: React.FC<LushEncoreViewProps> = ({
                         </div>
 
                         {/* Rating Display */}
-                        <div className="flex items-center gap-1 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200 flex-shrink-0">
+                        <div className="flex items-center gap-1 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-400 flex-shrink-0 text-amber-950 border-amber-400 font-black">
                           <StarIconSolid className="w-3.5 h-3.5 text-amber-500" />
                           <span className="text-xs font-black text-amber-900">
                             {member.rating.toFixed(1)}
@@ -589,7 +589,7 @@ export const LushEncoreView: React.FC<LushEncoreViewProps> = ({
                 </div>
 
                 {/* Primary Action Buttons */}
-                <div className="pt-3 border-t border-gray-100 space-y-2">
+                <div className="pt-3 border-t border-slate-200 space-y-2">
                   <div className="grid grid-cols-2 gap-2">
                     {/* 1. Propose Date / Meet */}
                     <button

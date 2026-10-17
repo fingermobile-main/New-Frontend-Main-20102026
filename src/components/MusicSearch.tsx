@@ -43,7 +43,7 @@ const MusicSearch: React.FC<MusicSearchProps> = ({ onSearch, onSelect }) => {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-            className="w-full px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
             placeholder="Search for tracks, artists..."
           />
           <MagnifyingGlassIcon className="absolute left-3 top-2.5 w-5 h-5 text-slate-500" />

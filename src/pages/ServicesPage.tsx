@@ -69,7 +69,7 @@ const ServicesPage: React.FC = () => {
                 id="serviceType"
                 type="text"
                 placeholder="What type of service are you looking for?"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400" />
             </div>
 
             <div>
@@ -80,7 +80,7 @@ const ServicesPage: React.FC = () => {
                 id="serviceDescription"
                 rows={4}
                 placeholder="Please describe your requirements in detail"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               />
             </div>
 
@@ -92,7 +92,7 @@ const ServicesPage: React.FC = () => {
                 id="budgetRange"
                 type="text"
                 placeholder="What is your budget range?"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400" />
             </div>
 
             <button className="bg-blue-500 text-white px-6 py-3 rounded-md hover:bg-blue-600">

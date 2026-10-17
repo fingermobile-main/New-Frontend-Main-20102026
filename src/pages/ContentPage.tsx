@@ -69,7 +69,7 @@ const ContentPage: React.FC = () => {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="bg-white rounded-xl shadow p-6 border border-gray-100">
+        <div className="bg-white rounded-xl shadow p-6 border border-slate-200">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-semibold">Content Items</h2>
             <div className="flex space-x-3">
@@ -79,11 +79,11 @@ const ContentPage: React.FC = () => {
                   placeholder="Search content..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                 />
-                <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
+                <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-700" />
               </div>
-              <button className="p-2 text-gray-400 hover:text-gray-500 border border-gray-300 rounded-lg">
+              <button className="p-2 text-slate-700 hover:text-gray-500 border border-gray-300 rounded-lg">
                 <Filter className="h-4 w-4" />
               </button>
             </div>
@@ -94,7 +94,7 @@ const ContentPage: React.FC = () => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredItems.map((item) => (
-                <div key={item.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                <div key={item.id} className="border border-slate-300 rounded-lg p-4 hover:shadow-md transition-shadow">
                   <div className="flex justify-between items-start">
                     <div>
                       <h3 className="font-medium text-gray-900">{item.title}</h3>

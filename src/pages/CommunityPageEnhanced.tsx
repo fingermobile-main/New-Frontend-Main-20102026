@@ -123,7 +123,7 @@ const CommunityPageEnhanced: React.FC = () => {
                 value={filters.query}
                 onChange={(e) => setFilters((prev) => ({ ...prev, query: e.target.value }))
                 }
-                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-brand-blue focus:border-transparent sm:text-base lg:text-lg"
+                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-brand-blue focus:border-transparent sm:text-base lg:text-lg text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               />
             </div>
             <div className="flex gap-2">
@@ -134,7 +134,7 @@ const CommunityPageEnhanced: React.FC = () => {
                     e.target.value as 'newest' | 'popular' | 'active',
                   )
                 }
-                className="p-3 border rounded-lg focus:ring-2 focus:ring-brand-blue focus:border-transparent sm:text-base lg:text-lg"
+                className="p-3 border rounded-lg focus:ring-2 focus:ring-brand-blue focus:border-transparent sm:text-base lg:text-lg text-slate-900 font-bold border-slate-300 bg-white"
               >
                 <option value="popular">Most Popular</option>
                 <option value="newest">Newest</option>
@@ -147,7 +147,7 @@ const CommunityPageEnhanced: React.FC = () => {
                     e.target.value as 'all' | 'posts' | 'groups' | 'members',
                   )
                 }
-                className="p-3 border rounded-lg focus:ring-2 focus:ring-brand-blue focus:border-transparent sm:text-base lg:text-lg"
+                className="p-3 border rounded-lg focus:ring-2 focus:ring-brand-blue focus:border-transparent sm:text-base lg:text-lg text-slate-900 font-bold border-slate-300 bg-white"
               >
                 <option value="all">All Content</option>
                 <option value="posts">Posts</option>

@@ -235,7 +235,7 @@ const CanaryAdsPage: React.FC = () => {
         {/* Top Metric Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <div className="bg-white rounded-2xl p-5 border border-slate-300 shadow-sm">
-            <span className="text-xs font-bold text-gray-400 uppercase tracking-wider block">Total Impressions</span>
+            <span className="text-xs font-bold text-slate-700 uppercase tracking-wider block">Total Impressions</span>
             <span className="text-2xl font-black text-gray-900 mt-1 block">
               {marketingStats?.reach || '450,000+'}
             </span>
@@ -245,7 +245,7 @@ const CanaryAdsPage: React.FC = () => {
           </div>
 
           <div className="bg-white rounded-2xl p-5 border border-slate-300 shadow-sm">
-            <span className="text-xs font-bold text-gray-400 uppercase tracking-wider block">Total Clicks</span>
+            <span className="text-xs font-bold text-slate-700 uppercase tracking-wider block">Total Clicks</span>
             <span className="text-2xl font-black text-gray-900 mt-1 block">
               {(marketingStats?.totalClicks || 18400).toLocaleString()}
             </span>
@@ -255,7 +255,7 @@ const CanaryAdsPage: React.FC = () => {
           </div>
 
           <div className="bg-white rounded-2xl p-5 border border-slate-300 shadow-sm">
-            <span className="text-xs font-bold text-gray-400 uppercase tracking-wider block">Active Campaigns</span>
+            <span className="text-xs font-bold text-slate-700 uppercase tracking-wider block">Active Campaigns</span>
             <span className="text-2xl font-black text-blue-600 mt-1 block">
               {marketingStats?.activeCampaigns || (campaigns.length > 0 ? campaigns.length : 4)}
             </span>
@@ -263,7 +263,7 @@ const CanaryAdsPage: React.FC = () => {
           </div>
 
           <div className="bg-white rounded-2xl p-5 border border-slate-300 shadow-sm">
-            <span className="text-xs font-bold text-gray-400 uppercase tracking-wider block">Total Spend</span>
+            <span className="text-xs font-bold text-slate-700 uppercase tracking-wider block">Total Spend</span>
             <span className="text-2xl font-black text-amber-600 mt-1 block">
               {(marketingStats?.totalSpend || 1560).toLocaleString()} FIC
             </span>
@@ -321,7 +321,7 @@ const CanaryAdsPage: React.FC = () => {
                         placeholder="e.g. Summer Visuals Showcase"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
-                        className="w-full px-4 py-3 bg-gray-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                        className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 text-slate-900 font-bold placeholder:text-slate-400"
                       />
                     </div>
 
@@ -334,7 +334,7 @@ const CanaryAdsPage: React.FC = () => {
                         placeholder="https://brand.com/collection"
                         value={destinationUrl}
                         onChange={(e) => setDestinationUrl(e.target.value)}
-                        className="w-full px-4 py-3 bg-gray-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                        className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 text-slate-900 font-bold placeholder:text-slate-400"
                       />
                     </div>
                   </div>
@@ -374,7 +374,7 @@ const CanaryAdsPage: React.FC = () => {
                       placeholder="Write a captivating headline for your audience..."
                       value={description}
                       onChange={(e) => setDescription(e.target.value)}
-                      className="w-full px-4 py-3 bg-gray-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                      className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 text-slate-900 font-bold placeholder:text-slate-400"
                     />
                   </div>
 
@@ -397,7 +397,7 @@ const CanaryAdsPage: React.FC = () => {
                             }`}
                           >
                             <span className="text-xs block truncate">{p.name}</span>
-                            <span className="text-[10px] text-gray-400 block mt-0.5">{isSelected ? '✓ Active' : '+ Add'}</span>
+                            <span className="text-[10px] text-slate-700 block mt-0.5">{isSelected ? '✓ Active' : '+ Add'}</span>
                           </div>
                         );
                       })}
@@ -422,7 +422,7 @@ const CanaryAdsPage: React.FC = () => {
                           step="5"
                           value={dailyBudget}
                           onChange={(e) => setDailyBudget(Number(e.target.value))}
-                          className="w-full"
+                          className="w-full text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                         />
                       </div>
                       <div>
@@ -433,7 +433,7 @@ const CanaryAdsPage: React.FC = () => {
                           max="30"
                           value={budgetDays}
                           onChange={(e) => setBudgetDays(Number(e.target.value))}
-                          className="w-full"
+                          className="w-full text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                         />
                       </div>
                     </div>
@@ -442,7 +442,7 @@ const CanaryAdsPage: React.FC = () => {
                   <button
                     type="submit"
                     disabled={isSubmitting || selectedPlacements.length === 0}
-                    className={`w-full py-4 rounded-2xl font-black text-sm text-black transition-all shadow-md ${
+                    className={`w-full py-4 rounded-2xl font-black text-sm text-slate-700 transition-all shadow-md ${
                       isSubmitting || selectedPlacements.length === 0
                         ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
                         : 'bg-gradient-to-r from-yellow-400 via-yellow-500 to-amber-500 hover:from-yellow-300 hover:to-amber-400'
@@ -459,7 +459,7 @@ const CanaryAdsPage: React.FC = () => {
                   <h2 className="text-lg font-black text-gray-900">Live Campaigns</h2>
                   <button
                     onClick={() => { refreshAds(); loadData(); }}
-                    className="p-2 border border-gray-200 rounded-lg text-gray-600 hover:text-yellow-600"
+                    className="p-2 border border-slate-300 rounded-lg text-gray-600 hover:text-yellow-600"
                     title="Refresh"
                   >
                     <ArrowPathIcon className={`w-4 h-4 ${campaignsLoading || adsLoading ? 'animate-spin' : ''}`} />
@@ -467,9 +467,9 @@ const CanaryAdsPage: React.FC = () => {
                 </div>
 
                 {adsLoading || campaignsLoading ? (
-                  <div className="p-8 text-center text-xs text-gray-400">Loading active campaigns...</div>
+                  <div className="p-8 text-center text-xs text-slate-700">Loading active campaigns...</div>
                 ) : ads.length === 0 && campaigns.length === 0 ? (
-                  <div className="p-8 text-center text-xs text-gray-400 border border-dashed rounded-2xl">
+                  <div className="p-8 text-center text-xs text-slate-700 border border-dashed rounded-2xl">
                     No active campaigns running. Launch your first campaign above!
                   </div>
                 ) : (
@@ -477,7 +477,7 @@ const CanaryAdsPage: React.FC = () => {
                     {ads.map((ad) => (
                       <div
                         key={ad.id}
-                        className="p-4 rounded-2xl border border-gray-100 bg-gray-50/60 hover:bg-gray-50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 transition-all"
+                        className="p-4 rounded-2xl border border-slate-200 bg-gray-50/60 hover:bg-gray-50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 transition-all"
                       >
                         <div className="flex items-center gap-3">
                           {ad.imageUrl ? (
@@ -503,14 +503,14 @@ const CanaryAdsPage: React.FC = () => {
                         <div className="flex items-center gap-2 self-end sm:self-center">
                           <button
                             onClick={() => handleToggleCampaignStatus(ad.id, 'active')}
-                            className="p-2 rounded-lg border border-gray-200 text-gray-600 hover:text-amber-600 hover:bg-amber-50"
+                            className="p-2 rounded-lg border border-slate-300 text-gray-600 hover:text-amber-600 hover:bg-amber-50"
                             title="Pause Campaign"
                           >
                             <PauseIcon className="w-4 h-4" />
                           </button>
                           <button
                             onClick={() => handleDeleteCampaign(ad.id)}
-                            className="p-2 rounded-lg border border-gray-200 text-gray-600 hover:text-red-600 hover:bg-red-50"
+                            className="p-2 rounded-lg border border-slate-300 text-gray-600 hover:text-red-600 hover:bg-red-50"
                             title="Delete Campaign"
                           >
                             <TrashIcon className="w-4 h-4" />
@@ -583,12 +583,12 @@ const CanaryAdsPage: React.FC = () => {
                     </div>
                     <h3 className="text-base font-black text-gray-900 mb-1">{p.name}</h3>
                     <p className="text-xs text-gray-600 leading-relaxed mb-4">{p.description}</p>
-                    <div className="bg-gray-50 p-3 rounded-xl border border-gray-100 text-[11px] text-gray-500 space-y-1 mb-4">
+                    <div className="bg-gray-50 p-3 rounded-xl border border-slate-200 text-[11px] text-gray-500 space-y-1 mb-4">
                       <p className="font-semibold text-gray-700">{p.specs}</p>
                     </div>
                   </div>
 
-                  <div className="pt-3 border-t border-gray-100 flex items-center justify-between text-xs">
+                  <div className="pt-3 border-t border-slate-200 flex items-center justify-between text-xs">
                     <span className="font-bold text-gray-500">Rate Card:</span>
                     <span className="font-black text-yellow-600">{p.pricing}</span>
                   </div>
@@ -607,7 +607,7 @@ const CanaryAdsPage: React.FC = () => {
                   <h3 className="text-lg font-black text-gray-900">Cross-Placement Yield & Performance</h3>
                   <p className="text-xs text-gray-500">Live impression telemetry aggregated across all 8 native ad corridors</p>
                 </div>
-                <span className="text-xs font-black text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full">
+                <span className="text-xs font-black text-emerald-950 bg-emerald-50 px-3 py-1 rounded-full border text-emerald-950 border-emerald-400">
                   Verified Clean Traffic
                 </span>
               </div>

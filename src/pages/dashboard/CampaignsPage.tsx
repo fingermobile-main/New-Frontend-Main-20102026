@@ -79,7 +79,7 @@ const DashboardCampaignsPage: React.FC = () => {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="e.g. VIP Member Rewards"
-                className="w-full mt-1.5 px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"
+                className="w-full mt-1.5 px-3 py-2 text-sm bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none text-slate-900 font-bold border-slate-300 placeholder:text-slate-400"
                 required
               />
             </div>
@@ -92,7 +92,7 @@ const DashboardCampaignsPage: React.FC = () => {
                 onChange={(e) => setDescription(e.target.value)}
                 rows={3}
                 placeholder="Brief explanation of campaign incentives and rules..."
-                className="w-full mt-1.5 px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"
+                className="w-full mt-1.5 px-3 py-2 text-sm bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none text-slate-900 font-bold border-slate-300 placeholder:text-slate-400"
                 required
               />
             </div>
@@ -105,7 +105,7 @@ const DashboardCampaignsPage: React.FC = () => {
                 min="1"
                 value={couponValue}
                 onChange={(e) => setCouponValue(e.target.value)}
-                className="w-full mt-1.5 px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"
+                className="w-full mt-1.5 px-3 py-2 text-sm bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none text-slate-900 font-bold border-slate-300 placeholder:text-slate-400 font-mono"
                 required
               />
             </div>
@@ -154,7 +154,7 @@ const DashboardCampaignsPage: React.FC = () => {
                 <div className="flex justify-between items-start gap-4">
                   <div>
                     <p className="font-bold text-slate-900 text-base">{campaign.title || campaign.name}</p>
-                    <p className="text-xs text-slate-400 mt-0.5 font-mono">
+                    <p className="text-xs text-slate-700 mt-0.5 font-mono">
                       ID: {campaign.id} • Type: {campaign.campaign_type || campaign.type || 'Standard'}
                     </p>
                   </div>

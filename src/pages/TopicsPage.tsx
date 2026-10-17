@@ -275,7 +275,7 @@ const TopicsPage: React.FC = () => {
               placeholder="Search topics, categories, or #hashtags..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 bg-white border border-slate-300 rounded-2xl text-sm font-bold text-slate-900 placeholder:text-slate-700 shadow-xs focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
+              className="w-full pl-10 pr-4 py-3 bg-white border border-slate-300 rounded-2xl text-sm font-bold text-slate-900 placeholder:text-slate-400 shadow-xs focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
             />
           </div>
 
@@ -391,7 +391,7 @@ const TopicsPage: React.FC = () => {
             <div className="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-300 animate-in fade-in zoom-in-95 space-y-4">
               <div className="flex justify-between items-center pb-4 border-b border-slate-200">
                 <h3 className="text-lg font-black text-slate-900">Start New Topic Category</h3>
-                <button onClick={() => setShowCreateModal(false)} className="text-slate-400 hover:text-slate-600">
+                <button onClick={() => setShowCreateModal(false)} className="text-slate-700 hover:text-slate-600">
                   <XMarkIcon className="w-5 h-5" />
                 </button>
               </div>
@@ -405,7 +405,7 @@ const TopicsPage: React.FC = () => {
                     placeholder="e.g. Lagos Street Food & Culinary Culture"
                     value={createForm.name}
                     onChange={(e) => setCreateForm({ ...createForm, name: e.target.value })}
-                    className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm font-bold text-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
+                    className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm font-bold text-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-hidden bg-white placeholder:text-slate-400"
                   />
                 </div>
 
@@ -414,7 +414,7 @@ const TopicsPage: React.FC = () => {
                   <select
                     value={createForm.category}
                     onChange={(e) => setCreateForm({ ...createForm, category: e.target.value })}
-                    className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm font-bold text-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
+                    className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm font-bold text-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-hidden bg-white"
                   >
                     <option value="culture">🏛️ Culture & Heritage</option>
                     <option value="music">🎵 Music & Audio</option>
@@ -437,11 +437,11 @@ const TopicsPage: React.FC = () => {
                     placeholder="What will members explore and discuss in this topic?"
                     value={createForm.description}
                     onChange={(e) => setCreateForm({ ...createForm, description: e.target.value })}
-                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                   />
                 </div>
 
-                <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
+                <div className="flex justify-end gap-3 pt-4 border-t border-slate-200">
                   <button
                     type="button"
                     onClick={() => setShowCreateModal(false)}

@@ -60,11 +60,11 @@ const EnhancedComponentLibrary: React.FC<EnhancedComponentLibraryProps> = ({
 
   return (
     <div className="w-72 bg-white border-r border-slate-300 flex flex-col h-full">
-      <div className="p-4 border-b border-gray-200">
+      <div className="p-4 border-b border-slate-300">
         <h2 className="text-lg font-semibold text-gray-800">Component Library</h2>
       </div>
 
-      <div className="flex border-b border-gray-200">
+      <div className="flex border-b border-slate-300">
         {categories.map((category) => (
           <button
             key={category.id}

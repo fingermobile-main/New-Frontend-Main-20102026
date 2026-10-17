@@ -139,13 +139,13 @@ const CommentThread: React.FC<CommentThreadProps> = ({ postId, currentUserId }) 
 
           {/* Reply Form */}
           {replyTo === comment.id && (
-            <div className="mt-3 pt-3 border-t border-gray-100">
+            <div className="mt-3 pt-3 border-t border-slate-200">
               <textarea
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
                 placeholder="Write a reply..."
                 rows={2}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               />
               <div className="flex gap-2 mt-2">
                 <button
@@ -213,7 +213,7 @@ const CommentThread: React.FC<CommentThreadProps> = ({ postId, currentUserId }) 
             onChange={(e) => setNewComment(e.target.value)}
             placeholder="Write a comment..."
             rows={3}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
           />
           <div className="flex justify-end mt-2">
             <button

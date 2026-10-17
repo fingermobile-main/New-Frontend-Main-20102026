@@ -55,7 +55,7 @@ const IntegrationDashboard: React.FC<IntegrationDashboardProps> = ({ integration
       </div>
 
       <div className="bg-white rounded-lg shadow-sm border border-slate-300">
-        <div className="border-b border-gray-200">
+        <div className="border-b border-slate-300">
           <nav className="flex space-x-8 px-6">
             {(['overview', 'connections', 'logs'] as const).map((tab) => (
               <button
@@ -77,7 +77,7 @@ const IntegrationDashboard: React.FC<IntegrationDashboardProps> = ({ integration
           {activeTab === 'overview' && (
             <div className="space-y-4">
               {mockIntegrations.map((integration) => (
-                <div key={integration.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                <div key={integration.id} className="flex items-center justify-between p-4 border border-slate-300 rounded-lg">
                   <div>
                     <h4 className="font-medium text-gray-900">{integration.name}</h4>
                     <p className="text-sm text-gray-500">Last sync: {integration.lastSync}</p>
@@ -96,14 +96,14 @@ const IntegrationDashboard: React.FC<IntegrationDashboardProps> = ({ integration
 
           {activeTab === 'connections' && (
             <div className="text-center py-12 text-gray-500">
-              <DatabaseIcon className="w-16 h-16 mx-auto mb-4 text-gray-300" />
+              <DatabaseIcon className="w-16 h-16 mx-auto mb-4 text-slate-700" />
               <p>Connection management interface coming soon</p>
             </div>
           )}
 
           {activeTab === 'logs' && (
             <div className="text-center py-12 text-gray-500">
-              <ChartBarIcon className="w-16 h-16 mx-auto mb-4 text-gray-300" />
+              <ChartBarIcon className="w-16 h-16 mx-auto mb-4 text-slate-700" />
               <p>Integration logs viewer coming soon</p>
             </div>
           )}

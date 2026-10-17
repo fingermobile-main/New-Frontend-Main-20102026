@@ -47,7 +47,7 @@ const SubscriptionGate: React.FC<SubscriptionGateProps> = ({
   return (
     <div className="flex items-center justify-center h-full min-h-[calc(100vh-200px)] p-8">
       <div className="text-center bg-white p-10 rounded-xl shadow-lg max-w-md mx-auto">
-        <div className="mx-auto mb-4 bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center">
+        <div className="mx-auto mb-4 bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center border text-blue-950 border-blue-400 font-black">
           <SubscriptionIcon className="w-8 h-8 text-brand-blue" />
         </div>
         <h2 className="text-2xl font-bold text-gray-800">

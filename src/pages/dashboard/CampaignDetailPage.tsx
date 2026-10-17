@@ -48,7 +48,7 @@ const DashboardCampaignDetailPage: React.FC = () => {
             key={item.day}
             className="flex-1 flex flex-col items-center justify-end h-full group"
           >
-            <span className="text-[10px] font-bold text-slate-400 group-hover:text-slate-900 transition-colors mb-1.5 opacity-0 group-hover:opacity-100">
+            <span className="text-[10px] font-bold text-slate-700 group-hover:text-slate-900 transition-colors mb-1.5 opacity-0 group-hover:opacity-100">
               {item.value.toLocaleString()}
             </span>
             <div
@@ -132,7 +132,7 @@ const DashboardCampaignDetailPage: React.FC = () => {
           <p className="text-3xl font-black text-slate-900 mt-2">
             {(analytics.spend?.total || 0).toLocaleString()} FIC
           </p>
-          <p className="text-xs text-slate-400 font-semibold mt-1">Accredited Escrow Spend</p>
+          <p className="text-xs text-slate-700 font-semibold mt-1">Accredited Escrow Spend</p>
         </div>
       </div>
 

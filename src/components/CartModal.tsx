@@ -144,7 +144,7 @@ const CartModal: React.FC<CartModalProps> = ({
                 ))}
 
                 {/* Order Summary */}
-                <div className="border-t border-gray-200 pt-4 mt-6">
+                <div className="border-t border-slate-300 pt-4 mt-6">
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-600">Subtotal</span>
@@ -154,7 +154,7 @@ const CartModal: React.FC<CartModalProps> = ({
                       <span className="text-gray-600">Tax (8%)</span>
                       <span className="font-medium">{formatCurrency(calculateTax())}</span>
                     </div>
-                    <div className="flex justify-between text-lg font-bold border-t border-gray-200 pt-2">
+                    <div className="flex justify-between text-lg font-bold border-t border-slate-300 pt-2">
                       <span>Total</span>
                       <span className="text-blue-600">{formatCurrency(calculateTotal())}</span>
                     </div>
@@ -166,7 +166,7 @@ const CartModal: React.FC<CartModalProps> = ({
 
           {/* Footer Actions */}
           {cartItems.length > 0 && (
-            <div className="border-t border-gray-200 p-6 space-y-3">
+            <div className="border-t border-slate-300 p-6 space-y-3">
               <button
                 onClick={handleCheckout}
                 disabled={checkoutProcessing}

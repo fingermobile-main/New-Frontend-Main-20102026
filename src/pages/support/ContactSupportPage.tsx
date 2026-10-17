@@ -139,7 +139,7 @@ const ContactSupportPage: React.FC = () => {
                       onChange={handleChange}
                       required
                       placeholder="e.g. Alex Johnson"
-                      className="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-bold placeholder:text-slate-400"
                     />
                   </div>
                   <div>
@@ -153,7 +153,7 @@ const ContactSupportPage: React.FC = () => {
                       onChange={handleChange}
                       required
                       placeholder="you@domain.com"
-                      className="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-bold placeholder:text-slate-400"
                     />
                   </div>
                 </div>
@@ -167,7 +167,7 @@ const ContactSupportPage: React.FC = () => {
                       name="category"
                       value={formData.category}
                       onChange={handleChange}
-                      className="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-bold"
                     >
                       <option value="general">General Support</option>
                       <option value="billing">FIC Wallet & Billing</option>
@@ -184,7 +184,7 @@ const ContactSupportPage: React.FC = () => {
                       name="priority"
                       value={formData.priority}
                       onChange={handleChange}
-                      className="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-bold"
                     >
                       <option value="low">Low (General guidance)</option>
                       <option value="medium">Medium (Standard issue)</option>
@@ -205,7 +205,7 @@ const ContactSupportPage: React.FC = () => {
                     onChange={handleChange}
                     required
                     placeholder="Brief description of the issue"
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-bold placeholder:text-slate-400"
                   />
                 </div>
 
@@ -220,7 +220,7 @@ const ContactSupportPage: React.FC = () => {
                     onChange={handleChange}
                     required
                     placeholder="Provide full details, steps to reproduce, or transaction reference numbers..."
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-bold placeholder:text-slate-400"
                   />
                 </div>
 

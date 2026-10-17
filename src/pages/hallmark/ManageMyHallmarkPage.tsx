@@ -158,7 +158,7 @@ const ManageMyHallmarkPage: React.FC = () => {
               <select
                 value={selectedHallmarkId}
                 onChange={(e) => setSelectedHallmarkId(e.target.value)}
-                className="w-full p-2 border rounded mb-4"
+                className="w-full p-2 border rounded mb-4 text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500"
               >
                 <option value="">Select a hallmark</option>
                 {hallmarks.map((hallmark) => (
@@ -176,7 +176,7 @@ const ManageMyHallmarkPage: React.FC = () => {
                       type="text"
                       value={name || selectedHallmark.name || ''}
                       onChange={(e) => setName(e.target.value)}
-                      className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                      className="mt-1 block w-full border border-gray-300 rounded-md p-2 text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                     />
                   </div>
 
@@ -185,7 +185,7 @@ const ManageMyHallmarkPage: React.FC = () => {
                     <textarea
                       value={description || selectedHallmark.description || ''}
                       onChange={(e) => setDescription(e.target.value)}
-                      className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                      className="mt-1 block w-full border border-gray-300 rounded-md p-2 text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       rows={3}
                     />
                   </div>
@@ -198,7 +198,7 @@ const ManageMyHallmarkPage: React.FC = () => {
                         value={currentTag}
                         onChange={(e) => setCurrentTag(e.target.value)}
                         placeholder="Add a tag"
-                        className="flex-1 border border-gray-300 rounded-l-md p-2"
+                        className="flex-1 border border-gray-300 rounded-l-md p-2 text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                       <button
                         onClick={handleAddTag}
@@ -210,7 +210,7 @@ const ManageMyHallmarkPage: React.FC = () => {
 
                     <div className="mt-2 flex flex-wrap gap-2">
                       {tags && tags.length > 0 ? tags.map((tag, index) => (
-                        <div key={index} className="bg-blue-100 text-blue-950 border border-blue-400 font-bold px-3 py-1 rounded-full flex items-center">
+                        <div key={index} className="bg-blue-100 text-blue-950 border border-blue-400 font-bold px-3 py-1 rounded-full flex items-center font-black">
                           {tag}
                           <button
                             onClick={() => handleRemoveTag(index)}
@@ -220,7 +220,7 @@ const ManageMyHallmarkPage: React.FC = () => {
                           </button>
                         </div>
                       )) : (selectedHallmark.tags || []).map((tag: string, index: number) => (
-                        <div key={index} className="bg-blue-100 text-blue-950 border border-blue-400 font-bold px-3 py-1 rounded-full flex items-center">
+                        <div key={index} className="bg-blue-100 text-blue-950 border border-blue-400 font-bold px-3 py-1 rounded-full flex items-center font-black">
                           {tag}
                           <button
                             onClick={() => handleRemoveTag(index)}
@@ -265,7 +265,7 @@ const ManageMyHallmarkPage: React.FC = () => {
                       value={newMemberEmail}
                       onChange={(e) => setNewMemberEmail(e.target.value)}
                       placeholder="Enter member email"
-                      className="flex-1 border border-gray-300 rounded-l-md p-2"
+                      className="flex-1 border border-gray-300 rounded-l-md p-2 text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                     />
                     <button
                       onClick={handleAddMember}
@@ -336,7 +336,7 @@ const ManageMyHallmarkPage: React.FC = () => {
                   <select
                     value={memberRole}
                     onChange={(e) => setMemberRole(e.target.value)}
-                    className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                    className="mt-1 block w-full border border-gray-300 rounded-md p-2 text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500"
                   >
                     <option value="admin">Admin</option>
                     <option value="moderator">Moderator</option>

@@ -334,7 +334,7 @@ const PortfolioPage: React.FC = () => {
 
                   <div className="flex items-center gap-4 mt-3 text-xs text-gray-500 flex-wrap">
                     <span className="flex items-center gap-1 font-medium">
-                      <MapPinIcon className="w-3.5 h-3.5 text-gray-400" />
+                      <MapPinIcon className="w-3.5 h-3.5 text-slate-700" />
                       {creatorProfile.location}
                     </span>
                     <a
@@ -379,21 +379,21 @@ const PortfolioPage: React.FC = () => {
             </div>
 
             {/* Quick Metrics Bar */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 pt-6 border-t border-gray-100">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 pt-6 border-t border-slate-200">
               <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100">
-                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Followers</span>
+                <span className="text-[10px] font-bold text-slate-700 uppercase tracking-wider">Followers</span>
                 <p className="text-lg font-black text-gray-900 mt-0.5">{creatorProfile.followersCount.toLocaleString()}</p>
               </div>
               <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100">
-                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Creative Assets</span>
+                <span className="text-[10px] font-bold text-slate-700 uppercase tracking-wider">Creative Assets</span>
                 <p className="text-lg font-black text-gray-900 mt-0.5">{creatorProfile.totalWorks} Works</p>
               </div>
               <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100">
-                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Lifetime Volume</span>
+                <span className="text-[10px] font-bold text-slate-700 uppercase tracking-wider">Lifetime Volume</span>
                 <p className="text-lg font-black text-indigo-600 mt-0.5">{creatorProfile.lifetimeRoyaltiesFic.toLocaleString()} FIC</p>
               </div>
               <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100">
-                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Response Speed</span>
+                <span className="text-[10px] font-bold text-slate-700 uppercase tracking-wider">Response Speed</span>
                 <p className="text-lg font-black text-emerald-600 mt-0.5">{creatorProfile.responseTime}</p>
               </div>
             </div>
@@ -402,7 +402,7 @@ const PortfolioPage: React.FC = () => {
 
         {/* Tab Navigation Deck */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
-          <div className="flex border-b border-gray-200 gap-6">
+          <div className="flex border-b border-slate-300 gap-6">
             <button
               onClick={() => setActiveTab('projects')}
               className={`pb-3.5 text-sm font-bold flex items-center gap-2 border-b-2 transition-all ${
@@ -473,7 +473,7 @@ const PortfolioPage: React.FC = () => {
                     </div>
 
                     <div className="p-5">
-                      <span className="text-[10px] text-gray-400 uppercase font-semibold">Client: {proj.client} · {proj.completionDate}</span>
+                      <span className="text-[10px] text-slate-700 uppercase font-semibold">Client: {proj.client} · {proj.completionDate}</span>
                       <h3 className="font-bold text-gray-900 text-base mt-1 leading-snug">{proj.title}</h3>
                       <p className="text-xs text-gray-600 mt-2 leading-relaxed">{proj.description}</p>
 
@@ -485,7 +485,7 @@ const PortfolioPage: React.FC = () => {
                   </div>
 
                   <div className="p-5 pt-0">
-                    <div className="flex flex-wrap gap-1.5 pt-3 border-t border-gray-100">
+                    <div className="flex flex-wrap gap-1.5 pt-3 border-t border-slate-200">
                       {proj.tags.map((tag) => (
                         <span key={tag} className="px-2 py-0.5 bg-gray-100 text-gray-600 rounded-md text-[10px] font-semibold">
                           #{tag}
@@ -530,7 +530,7 @@ const PortfolioPage: React.FC = () => {
 
                     <div className="p-4">
                       <h4 className="font-bold text-sm text-gray-900 truncate">{ph.title}</h4>
-                      <div className="flex justify-between items-center text-[10px] text-gray-400 mt-2 pt-2 border-t border-gray-100">
+                      <div className="flex justify-between items-center text-[10px] text-slate-700 mt-2 pt-2 border-t border-slate-200">
                         <span>Lens: {ph.lens}</span>
                         <span>{ph.likes + (isLiked ? 1 : 0)} Likes</span>
                       </div>
@@ -577,10 +577,10 @@ const PortfolioPage: React.FC = () => {
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-3 w-full sm:w-auto justify-end border-t sm:border-t-0 pt-3 sm:pt-0 border-gray-100">
+                    <div className="flex items-center gap-3 w-full sm:w-auto justify-end border-t sm:border-t-0 pt-3 sm:pt-0 border-slate-200">
                       <div className="text-right">
                         <span className="text-sm font-black text-gray-900">{au.licensePriceFic} FIC</span>
-                        <span className="text-[10px] text-gray-400 block">Beatwave Sync Rights</span>
+                        <span className="text-[10px] text-slate-700 block">Beatwave Sync Rights</span>
                       </div>
                       <button
                         onClick={() => showToast(`Sync license opened for ${au.title}`, 'info')}
@@ -605,14 +605,14 @@ const PortfolioPage: React.FC = () => {
                       <img
                         src={rev.avatarUrl}
                         alt={rev.clientName}
-                        className="w-10 h-10 rounded-full object-cover border border-gray-200"
+                        className="w-10 h-10 rounded-full object-cover border border-slate-300"
                       />
                       <div>
                         <h4 className="font-bold text-gray-900 text-sm">{rev.clientName}</h4>
-                        <p className="text-[10px] text-gray-400">{rev.clientRole}</p>
+                        <p className="text-[10px] text-slate-700">{rev.clientRole}</p>
                       </div>
                     </div>
-                    <span className="text-xs text-gray-400">{rev.date}</span>
+                    <span className="text-xs text-slate-700">{rev.date}</span>
                   </div>
 
                   <div className="flex text-amber-400 mb-2">
@@ -634,14 +634,14 @@ const PortfolioPage: React.FC = () => {
         {isCommissionModalOpen && (
           <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
             <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-slate-300 animate-in fade-in zoom-in-95">
-              <div className="flex justify-between items-center pb-4 border-b border-gray-100">
+              <div className="flex justify-between items-center pb-4 border-b border-slate-200">
                 <div className="flex items-center gap-2">
                   <BriefcaseIcon className="w-6 h-6 text-indigo-600" />
                   <h3 className="text-lg font-black text-gray-900">Commission {creatorProfile.name}</h3>
                 </div>
                 <button
                   onClick={() => setIsCommissionModalOpen(false)}
-                  className="text-gray-400 hover:text-gray-600"
+                  className="text-slate-700 hover:text-gray-600"
                 >
                   <XMarkIcon className="w-5 h-5" />
                 </button>
@@ -653,7 +653,7 @@ const PortfolioPage: React.FC = () => {
                   <select
                     value={commissionForm.projectType}
                     onChange={(e) => setCommissionForm({ ...commissionForm, projectType: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-gray-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-indigo-600 focus:outline-none"
+                    className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-indigo-600 focus:outline-none text-slate-900 font-bold"
                   >
                     <option value="Commercial Photography">Commercial Photography / Studio Shoot</option>
                     <option value="Audio Sync Production">Audio Sync Production / Beatwave Beat</option>
@@ -669,7 +669,7 @@ const PortfolioPage: React.FC = () => {
                     placeholder="Describe your creative requirements, deliverables, and vision..."
                     value={commissionForm.scopeDescription}
                     onChange={(e) => setCommissionForm({ ...commissionForm, scopeDescription: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-gray-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-indigo-600 focus:outline-none"
+                    className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-indigo-600 focus:outline-none text-slate-900 font-bold placeholder:text-slate-400"
                     required
                   />
                 </div>
@@ -684,7 +684,7 @@ const PortfolioPage: React.FC = () => {
                         min="25"
                         value={commissionForm.budgetFic}
                         onChange={(e) => setCommissionForm({ ...commissionForm, budgetFic: Number(e.target.value) })}
-                        className="w-full pl-9 pr-3 py-2 bg-gray-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-indigo-600 focus:outline-none font-bold"
+                        className="w-full pl-9 pr-3 py-2 bg-white border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-indigo-600 focus:outline-none font-bold text-slate-900 placeholder:text-slate-400 font-mono"
                       />
                     </div>
                   </div>
@@ -697,7 +697,7 @@ const PortfolioPage: React.FC = () => {
                         type="text"
                         value={commissionForm.timeline}
                         onChange={(e) => setCommissionForm({ ...commissionForm, timeline: e.target.value })}
-                        className="w-full pl-9 pr-3 py-2 bg-gray-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-indigo-600 focus:outline-none"
+                        className="w-full pl-9 pr-3 py-2 bg-white border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-indigo-600 focus:outline-none text-slate-900 font-bold placeholder:text-slate-400"
                       />
                     </div>
                   </div>
@@ -708,7 +708,7 @@ const PortfolioPage: React.FC = () => {
                   <span className="font-semibold text-indigo-700">Protected Escrow Guarantee</span>
                 </div>
 
-                <div className="flex gap-3 pt-3 border-t border-gray-100">
+                <div className="flex gap-3 pt-3 border-t border-slate-200">
                   <button
                     type="button"
                     onClick={() => setIsCommissionModalOpen(false)}

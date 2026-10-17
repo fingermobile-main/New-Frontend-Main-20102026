@@ -79,11 +79,11 @@ const ManageMyGroupPage = () => {
         <div className="max-w-2xl mx-auto bg-white p-6 rounded-xl shadow-md space-y-4">
           <div>
             <label htmlFor="groupName" className="block text-sm font-medium">Group Name</label>
-            <input id="groupName" type="text" value={name} onChange={(e) => setName(e.target.value)} className="w-full mt-1 p-2 border rounded-md" />
+            <input id="groupName" type="text" value={name} onChange={(e) => setName(e.target.value)} className="w-full mt-1 p-2 border rounded-md text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" />
           </div>
           <div>
             <label htmlFor="groupRules" className="block text-sm font-medium">Group Rules</label>
-            <textarea id="groupRules" value={rules} onChange={e => setRules(e.target.value)} rows={5} className="w-full mt-1 p-2 border rounded-md" />
+            <textarea id="groupRules" value={rules} onChange={e => setRules(e.target.value)} rows={5} className="w-full mt-1 p-2 border rounded-md text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" />
           </div>
           <div className="mt-6 flex justify-end">
             <button onClick={handleSaveChanges} disabled={isSaving} className="px-6 py-2 font-semibold bg-brand-blue text-white rounded-full disabled:bg-gray-400">

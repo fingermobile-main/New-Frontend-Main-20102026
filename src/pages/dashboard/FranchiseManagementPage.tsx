@@ -113,7 +113,7 @@ const FranchiseManagementPage: React.FC = () => {
               type="text"
               value={formState.name}
               onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-              className={`mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 ${!isEditing ? 'bg-gray-50' : 'bg-white'}`}
+              className={`mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2  text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400${!isEditing ? 'bg-gray-50' : 'bg-white'}`}
               readOnly={!isEditing}
             />
           </div>
@@ -124,7 +124,7 @@ const FranchiseManagementPage: React.FC = () => {
               type="text"
               value={formState.region}
               onChange={(e) => setFormState({ ...formState, region: e.target.value })}
-              className={`mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 ${!isEditing ? 'bg-gray-50' : 'bg-white'}`}
+              className={`mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2  text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400${!isEditing ? 'bg-gray-50' : 'bg-white'}`}
               readOnly={!isEditing}
             />
           </div>
@@ -136,7 +136,7 @@ const FranchiseManagementPage: React.FC = () => {
                 type="email"
                 value={formState.contact_email}
                 onChange={(e) => setFormState({ ...formState, contact_email: e.target.value })}
-                className={`mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 ${!isEditing ? 'bg-gray-50' : 'bg-white'}`}
+                className={`mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2  text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400${!isEditing ? 'bg-gray-50' : 'bg-white'}`}
                 readOnly={!isEditing}
               />
             </div>
@@ -146,7 +146,7 @@ const FranchiseManagementPage: React.FC = () => {
                 type="text"
                 value={formState.contact_phone}
                 onChange={(e) => setFormState({ ...formState, contact_phone: e.target.value })}
-                className={`mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 ${!isEditing ? 'bg-gray-50' : 'bg-white'}`}
+                className={`mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2  text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400${!isEditing ? 'bg-gray-50' : 'bg-white'}`}
                 readOnly={!isEditing}
               />
             </div>

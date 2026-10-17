@@ -188,7 +188,7 @@ const PrivateMessagesPage: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             {/* Left Sidebar */}
             <div className="hidden lg:block lg:col-span-3">
-              <div className="sticky top-20 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+              <div className="sticky top-20 bg-white p-6 rounded-xl shadow-sm border border-slate-200">
                 <h3 className="font-bold text-gray-900 mb-2">Private Encryption</h3>
                 <p className="text-xs text-gray-500 mb-4">Direct peer-to-peer secure messaging channels verified on protocol.</p>
                 <div className="p-3 bg-blue-50/60 rounded-lg text-xs text-blue-800 border border-blue-100">
@@ -202,7 +202,7 @@ const PrivateMessagesPage: React.FC = () => {
             <div className="lg:col-span-9">
               <div className="w-full">
                 <div className="bg-white rounded-xl shadow-md overflow-hidden">
-                  <div className="px-6 py-5 border-b border-gray-200">
+                  <div className="px-6 py-5 border-b border-slate-300">
                     <div className="flex justify-between items-center">
                       <div>
                         <h1 className="text-2xl font-bold text-gray-900">Private Messages</h1>
@@ -223,7 +223,7 @@ const PrivateMessagesPage: React.FC = () => {
 
                   <div className="flex flex-col md:flex-row h-[calc(100vh-200px)]">
                     {/* Conversations sidebar */}
-                    <div className="md:w-1/3 border-r border-gray-200 flex flex-col">
+                    <div className="md:w-1/3 border-r border-slate-300 flex flex-col">
                       <div className="p-4 border-b border-slate-300 bg-gray-50">
                         <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
                           Channels ({conversations.length})
@@ -238,7 +238,7 @@ const PrivateMessagesPage: React.FC = () => {
                           conversations.map((conversation) => (
                             <div
                               key={conversation.id}
-                              className={`p-4 border-b border-gray-200 cursor-pointer hover:bg-gray-50 ${
+                              className={`p-4 border-b border-slate-300 cursor-pointer hover:bg-gray-50 ${
                                 activeChat === conversation.id ? 'bg-blue-50/80 border-l-4 border-blue-600' : ''
                               }`}
                               onClick={() => selectChat(conversation.id)}
@@ -262,7 +262,7 @@ const PrivateMessagesPage: React.FC = () => {
                                     <h3 className="text-sm font-medium text-gray-900 truncate">
                                       {conversation.name}
                                     </h3>
-                                    <span className="text-xs text-gray-400">
+                                    <span className="text-xs text-slate-700">
                                       {conversation.timestamp}
                                     </span>
                                   </div>
@@ -286,7 +286,7 @@ const PrivateMessagesPage: React.FC = () => {
                             </div>
                           ))
                         ) : (
-                          <div className="p-8 text-center text-gray-400 text-sm">
+                          <div className="p-8 text-center text-slate-700 text-sm">
                             No private conversations found.
                           </div>
                         )}
@@ -297,7 +297,7 @@ const PrivateMessagesPage: React.FC = () => {
                     <div className="md:w-2/3 flex flex-col bg-white">
                       {activeChat ? (
                         <>
-                          <div className="p-4 border-b border-gray-200">
+                          <div className="p-4 border-b border-slate-300">
                             <div className="flex items-center justify-between">
                               <div className="flex items-center">
                                 <div className="relative">
@@ -363,7 +363,7 @@ const PrivateMessagesPage: React.FC = () => {
                                 ))}
                               </div>
                             ) : (
-                              <div className="h-full flex flex-col items-center justify-center text-gray-400 text-sm">
+                              <div className="h-full flex flex-col items-center justify-center text-slate-700 text-sm">
                                 No messages exchanged in this channel yet.
                               </div>
                             )}
@@ -376,7 +376,7 @@ const PrivateMessagesPage: React.FC = () => {
                                 value={newMessage}
                                 onChange={(e) => setNewMessage(e.target.value)}
                                 placeholder="Type a secure message..."
-                                className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                                className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                                 onKeyPress={(e) => {
                                   if (e.key === 'Enter') handleSendMessage();
                                 }}
@@ -393,7 +393,7 @@ const PrivateMessagesPage: React.FC = () => {
                           </div>
                         </>
                       ) : (
-                        <div className="flex-1 flex items-center justify-center text-gray-400 text-sm">
+                        <div className="flex-1 flex items-center justify-center text-slate-700 text-sm">
                           Select a conversation to begin encrypted messaging.
                         </div>
                       )}
@@ -411,7 +411,7 @@ const PrivateMessagesPage: React.FC = () => {
             <div className="bg-white rounded-xl shadow-xl max-w-md w-full p-6">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-bold text-gray-900">Start Private Channel</h3>
-                <button onClick={() => setShowNewModal(false)} className="text-gray-400 hover:text-gray-600 text-xl font-bold">×</button>
+                <button onClick={() => setShowNewModal(false)} className="text-slate-700 hover:text-gray-600 text-xl font-bold">×</button>
               </div>
               <form onSubmit={handleStartNewChat} className="space-y-4">
                 <div>
@@ -422,7 +422,7 @@ const PrivateMessagesPage: React.FC = () => {
                     value={newRecipientId}
                     onChange={(e) => setNewRecipientId(e.target.value)}
                     placeholder="Enter member ID (e.g. 1, 4, 5)..."
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                   />
                 </div>
                 <div>
@@ -433,7 +433,7 @@ const PrivateMessagesPage: React.FC = () => {
                     value={newRecipientMessage}
                     onChange={(e) => setNewRecipientMessage(e.target.value)}
                     placeholder="Type initial message..."
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                   />
                 </div>
                 <div className="flex justify-end gap-2 pt-2">

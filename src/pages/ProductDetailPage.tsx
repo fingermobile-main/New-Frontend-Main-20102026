@@ -206,7 +206,7 @@ const ProductDetailPage: React.FC = () => {
                   max={product.stock}
                   value={quantity}
                   onChange={(e) => setQuantity(parseInt(e.target.value, 10) || 1)}
-                  className="border border-gray-300 rounded p-2 w-20 dark:bg-gray-700 dark:text-white dark:border-gray-600"
+                  className="border border-gray-300 rounded p-2 w-20 dark:bg-gray-700 dark:text-white dark:border-gray-600 text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
                 />
                 <span className="ml-2 text-gray-600 dark:text-gray-300">Available: {product.stock}</span>
               </div>
@@ -230,7 +230,7 @@ const ProductDetailPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
+            <div className="border-t border-slate-300 dark:border-gray-700 pt-6">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Product Details</h3>
               <ul className="space-y-2">
                 <li className="flex justify-between">
@@ -251,13 +251,13 @@ const ProductDetailPage: React.FC = () => {
         </div>
 
         {/* Reviews Section */}
-        <div className="p-6 border-t border-gray-200 dark:border-gray-700">
+        <div className="p-6 border-t border-slate-300 dark:border-gray-700">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Customer Reviews</h2>
 
           {reviews.length > 0 ? (
             <div className="space-y-4">
               {reviews.map(review => (
-                <div key={review.id} className="border-b border-gray-200 dark:border-gray-700 pb-4">
+                <div key={review.id} className="border-b border-slate-300 dark:border-gray-700 pb-4">
                   <div className="flex items-center mb-2">
                     <div className="flex text-yellow-400">
                       {[...Array(5)].map((_, i) => (
@@ -283,7 +283,7 @@ const ProductDetailPage: React.FC = () => {
         </div>
 
         {/* Q&A Section */}
-        <div className="p-6 border-t border-gray-200 dark:border-gray-700">
+        <div className="p-6 border-t border-slate-300 dark:border-gray-700">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Questions & Answers</h2>
 
           {qaList.length > 0 ? (

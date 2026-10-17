@@ -165,7 +165,7 @@ export const LapidaireQuestionModal: React.FC<LapidaireQuestionModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="p-1 text-gray-400 hover:text-gray-600 rounded-lg"
+            className="p-1 text-slate-700 hover:text-gray-600 rounded-lg"
           >
             <X className="w-5 h-5" />
           </button>
@@ -194,7 +194,7 @@ export const LapidaireQuestionModal: React.FC<LapidaireQuestionModalProps> = ({
 
         {/* Question Content */}
         <div className="space-y-4">
-          <div className="inline-block px-2.5 py-1 rounded-full bg-emerald-100/70 text-emerald-800 text-[10px] font-bold uppercase tracking-wider">
+          <div className="inline-block px-2.5 py-1 rounded-full bg-emerald-100/70 text-emerald-950 text-[10px] font-bold uppercase tracking-wider border text-emerald-950 border-emerald-400 font-black">
             {currentQ.category}
           </div>
 
@@ -238,7 +238,7 @@ export const LapidaireQuestionModal: React.FC<LapidaireQuestionModalProps> = ({
               }
             }}
             disabled={currentIndex === 0}
-            className="text-xs font-bold text-gray-400 hover:text-gray-600 disabled:opacity-30"
+            className="text-xs font-bold text-slate-700 hover:text-gray-600 disabled:opacity-30"
           >
             Previous
           </button>

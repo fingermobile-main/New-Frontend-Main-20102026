@@ -78,7 +78,7 @@ export const ManageLocationsModal: React.FC<ManageLocationsModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+            className="p-2 text-slate-700 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
           >
             <X className="w-5 h-5" />
           </button>
@@ -111,7 +111,7 @@ export const ManageLocationsModal: React.FC<ManageLocationsModalProps> = ({
                   type="radio"
                   checked={locationType === 'ALL'}
                   onChange={() => setLocationType('ALL')}
-                  className="w-4 h-4 text-blue-600"
+                  className="w-4 h-4 text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
                 <div>
                   <div className="font-semibold text-xs text-slate-900 dark:text-white">
@@ -138,7 +138,7 @@ export const ManageLocationsModal: React.FC<ManageLocationsModalProps> = ({
                   type="radio"
                   checked={locationType === 'SPECIFIC'}
                   onChange={() => setLocationType('SPECIFIC')}
-                  className="w-4 h-4 text-blue-600"
+                  className="w-4 h-4 text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
                 <div>
                   <div className="font-semibold text-xs text-slate-900 dark:text-white">

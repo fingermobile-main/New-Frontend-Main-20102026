@@ -165,7 +165,7 @@ export const LushProposeMeetModal: React.FC<LushProposeMeetModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/70 backdrop-blur-md animate-fadeIn">
       <div className="bg-white rounded-3xl border border-emerald-200/90 shadow-2xl max-w-2xl w-full max-h-[92vh] overflow-y-auto relative p-5 sm:p-7">
         {/* Header */}
-        <div className="flex items-start justify-between pb-4 border-b border-gray-100">
+        <div className="flex items-start justify-between pb-4 border-b border-slate-200">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-500 to-emerald-600 flex items-center justify-center text-white shadow-md">
               <SparklesIcon className="w-6 h-6" />
@@ -175,7 +175,7 @@ export const LushProposeMeetModal: React.FC<LushProposeMeetModalProps> = ({
                 <h2 className="text-lg sm:text-xl font-bold text-gray-900">
                   Propose Date, Meet or Expedition
                 </h2>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-950 border border-amber-400 font-bold border border-amber-200">
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-950 border border-amber-400 font-bold border border-amber-400 font-black">
                   FingerLux™ Protocol
                 </span>
               </div>
@@ -186,7 +186,7 @@ export const LushProposeMeetModal: React.FC<LushProposeMeetModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-700 transition"
+            className="p-1.5 rounded-full hover:bg-gray-100 text-slate-700 hover:text-gray-700 transition"
           >
             <XMarkIcon className="w-5 h-5" />
           </button>
@@ -207,7 +207,7 @@ export const LushProposeMeetModal: React.FC<LushProposeMeetModalProps> = ({
 
         {isSent ? (
           <div className="py-12 text-center space-y-4">
-            <div className="w-16 h-16 mx-auto rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold flex items-center justify-center text-3xl shadow-inner">
+            <div className="w-16 h-16 mx-auto rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold flex items-center justify-center text-3xl shadow-inner font-black">
               ✨
             </div>
             <h3 className="text-xl font-bold text-gray-900">
@@ -270,7 +270,7 @@ export const LushProposeMeetModal: React.FC<LushProposeMeetModalProps> = ({
                   value={destinationCity}
                   onChange={(e) => setDestinationCity(e.target.value)}
                   placeholder="e.g. Lagos, Paris, London, Kyoto"
-                  className="w-full bg-white text-gray-900 border border-gray-300 rounded-xl px-3 py-2 text-xs focus:ring-1 focus:ring-emerald-500 focus:border-emerald-600 outline-hidden"
+                  className="w-full bg-white text-slate-900 border border-gray-300 rounded-xl px-3 py-2 text-xs focus:ring-1 focus:ring-emerald-500 focus:border-emerald-600 outline-hidden font-bold border-slate-300 placeholder:text-slate-400"
                   required
                 />
               </div>
@@ -285,7 +285,7 @@ export const LushProposeMeetModal: React.FC<LushProposeMeetModalProps> = ({
                   value={customVenue}
                   onChange={(e) => setCustomVenue(e.target.value)}
                   placeholder="e.g. Musée d'Orsay, Private Rooftop Terrace"
-                  className="w-full bg-white text-gray-900 border border-gray-300 rounded-xl px-3 py-2 text-xs focus:ring-1 focus:ring-emerald-500 focus:border-emerald-600 outline-hidden"
+                  className="w-full bg-white text-slate-900 border border-gray-300 rounded-xl px-3 py-2 text-xs focus:ring-1 focus:ring-emerald-500 focus:border-emerald-600 outline-hidden font-bold border-slate-300 placeholder:text-slate-400"
                 />
               </div>
             </div>
@@ -301,7 +301,7 @@ export const LushProposeMeetModal: React.FC<LushProposeMeetModalProps> = ({
                   type="date"
                   value={proposedDate}
                   onChange={(e) => setProposedDate(e.target.value)}
-                  className="w-full bg-white text-gray-900 border border-gray-300 rounded-xl px-3 py-2 text-xs focus:ring-1 focus:ring-emerald-500 focus:border-emerald-600 outline-hidden"
+                  className="w-full bg-white text-slate-900 border border-gray-300 rounded-xl px-3 py-2 text-xs focus:ring-1 focus:ring-emerald-500 focus:border-emerald-600 outline-hidden font-bold border-slate-300 placeholder:text-slate-400"
                   required
                 />
               </div>
@@ -315,7 +315,7 @@ export const LushProposeMeetModal: React.FC<LushProposeMeetModalProps> = ({
                   type="time"
                   value={proposedTime}
                   onChange={(e) => setProposedTime(e.target.value)}
-                  className="w-full bg-white text-gray-900 border border-gray-300 rounded-xl px-3 py-2 text-xs focus:ring-1 focus:ring-emerald-500 focus:border-emerald-600 outline-hidden"
+                  className="w-full bg-white text-slate-900 border border-gray-300 rounded-xl px-3 py-2 text-xs focus:ring-1 focus:ring-emerald-500 focus:border-emerald-600 outline-hidden font-bold border-slate-300 placeholder:text-slate-400"
                   required
                 />
               </div>
@@ -331,7 +331,7 @@ export const LushProposeMeetModal: React.FC<LushProposeMeetModalProps> = ({
                 onChange={(e) => setPersonalMessage(e.target.value)}
                 placeholder={`Dear ${member.name}, I would be delighted to host you for a curated ${currentOption.title.toLowerCase()}...`}
                 rows={3}
-                className="w-full bg-white text-gray-900 border border-gray-300 rounded-xl p-3 text-xs focus:ring-1 focus:ring-emerald-500 focus:border-emerald-600 outline-hidden resize-none"
+                className="w-full bg-white text-slate-900 border border-gray-300 rounded-xl p-3 text-xs focus:ring-1 focus:ring-emerald-500 focus:border-emerald-600 outline-hidden resize-none font-bold border-slate-300 placeholder:text-slate-400"
               />
             </div>
 
@@ -350,12 +350,12 @@ export const LushProposeMeetModal: React.FC<LushProposeMeetModalProps> = ({
                 type="checkbox"
                 checked={includeFingerLuxConcierge}
                 onChange={(e) => setIncludeFingerLuxConcierge(e.target.checked)}
-                className="w-4 h-4 text-emerald-600 rounded-sm border-gray-300 focus:ring-emerald-500"
+                className="w-4 h-4 text-slate-900 rounded-sm border-gray-300 focus:ring-emerald-500 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
               />
             </div>
 
             {/* Actions */}
-            <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+            <div className="flex items-center justify-between pt-3 border-t border-slate-200">
               <div className="text-xs text-gray-500">
                 Escrow Deposit: <strong className="text-emerald-800">{currentOption.suggestedEscrow} FIC</strong> (Refundable if declined)
               </div>

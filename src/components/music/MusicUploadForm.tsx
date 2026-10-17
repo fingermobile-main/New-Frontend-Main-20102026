@@ -130,7 +130,7 @@ const MusicUploadForm: React.FC<MusicUploadFormProps> = ({
                 <FileAudio className="h-8 w-8 text-green-600" />
                 <div className="flex-1 min-w-0">
                   <p className="font-medium truncate">{file.name}</p>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-slate-700">
                     {(file.size / 1024 / 1024).toFixed(2)} MB
                   </p>
                 </div>

@@ -121,7 +121,7 @@ export const LushPlushiesGiftCheckoutModal: React.FC<LushPlushiesGiftCheckoutMod
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-sm animate-fadeIn">
       <div className="bg-white dark:bg-slate-900 rounded-3xl border border-emerald-200 dark:border-emerald-800 shadow-2xl max-w-2xl w-full max-h-[92vh] overflow-y-auto relative flex flex-col">
         {/* Top Header */}
-        <div className="flex items-center justify-between p-5 border-b border-gray-100 dark:border-slate-800 bg-gradient-to-r from-emerald-50/70 via-teal-50/40 to-amber-50/40 dark:from-emerald-950/40 dark:via-teal-950/20 dark:to-amber-950/20 rounded-t-3xl">
+        <div className="flex items-center justify-between p-5 border-b border-slate-200 dark:border-slate-800 bg-gradient-to-r from-emerald-50/70 via-teal-50/40 to-amber-50/40 dark:from-emerald-950/40 dark:via-teal-950/20 dark:to-amber-950/20 rounded-t-3xl">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#DC582A] to-amber-500 text-white flex items-center justify-center shadow-md">
               <GiftIcon className="w-6 h-6" />
@@ -129,7 +129,7 @@ export const LushPlushiesGiftCheckoutModal: React.FC<LushPlushiesGiftCheckoutMod
             <div>
               <h2 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
                 Send Lush Escrow Gift
-                <span className="text-[10px] uppercase font-black px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-900/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-700">
+                <span className="text-[10px] uppercase font-black px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-900/60 dark:text-emerald-300 border border-emerald-400 dark:border-emerald-700">
                   FIC Vault Protected
                 </span>
               </h2>
@@ -140,7 +140,7 @@ export const LushPlushiesGiftCheckoutModal: React.FC<LushPlushiesGiftCheckoutMod
           </div>
           <button
             onClick={onClose}
-            className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-400 hover:text-gray-600 transition"
+            className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-slate-800 text-slate-700 hover:text-gray-600 transition"
           >
             <XMarkIcon className="w-6 h-6" />
           </button>
@@ -178,7 +178,7 @@ export const LushPlushiesGiftCheckoutModal: React.FC<LushPlushiesGiftCheckoutMod
                     <span className="text-lg font-black text-[#DC582A]">
                       {productPrice} FIC
                     </span>
-                    <p className="text-[10px] text-gray-400">≈ ${(productPrice * 1.0).toFixed(2)} USD</p>
+                    <p className="text-[10px] text-slate-700">≈ ${(productPrice * 1.0).toFixed(2)} USD</p>
                   </div>
                 </div>
                 <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">
@@ -186,12 +186,12 @@ export const LushPlushiesGiftCheckoutModal: React.FC<LushPlushiesGiftCheckoutMod
                 </p>
               </div>
 
-              <div className="flex flex-wrap items-center gap-2 mt-2 pt-2 border-t border-gray-200/60 dark:border-slate-700/60">
+              <div className="flex flex-wrap items-center gap-2 mt-2 pt-2 border-t border-slate-300 dark:border-slate-700/60">
                 <span className="text-[11px] text-emerald-700 dark:text-emerald-400 font-semibold flex items-center gap-1">
                   <ShieldCheckIcon className="w-3.5 h-3.5" />
                   Sovereign Escrow Guarantee
                 </span>
-                <span className="text-gray-300 dark:text-gray-600">•</span>
+                <span className="text-slate-700 dark:text-gray-600">•</span>
                 <span className="text-[11px] text-gray-500 dark:text-gray-400">
                   {product.product_category}
                 </span>
@@ -229,7 +229,7 @@ export const LushPlushiesGiftCheckoutModal: React.FC<LushPlushiesGiftCheckoutMod
                 <select
                   value={selectedRecipientId}
                   onChange={(e) => setSelectedRecipientId(e.target.value)}
-                  className="text-xs bg-gray-50 dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-xl px-2.5 py-1.5 font-medium text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                  className="text-xs bg-white dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-xl px-2.5 py-1.5 font-medium text-slate-900 dark:text-gray-200 focus:outline-none focus:ring-1 focus:ring-emerald-500 font-bold border-slate-300"
                 >
                   {availableRecipients.map((rec) => (
                     <option key={rec.id} value={rec.id}>
@@ -247,14 +247,14 @@ export const LushPlushiesGiftCheckoutModal: React.FC<LushPlushiesGiftCheckoutMod
               <label className="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
                 Personalized Note / Postcard Message
               </label>
-              <span className="text-[11px] text-gray-400">Optional</span>
+              <span className="text-[11px] text-slate-700">Optional</span>
             </div>
             <textarea
               rows={3}
               value={cardMessage}
               onChange={(e) => setCardMessage(e.target.value)}
               placeholder="Write a sweet or thoughtful message to accompany your gift..."
-              className="w-full px-4 py-2.5 rounded-2xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#DC582A]/30 focus:border-[#DC582A] transition"
+              className="w-full px-4 py-2.5 rounded-2xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#DC582A]/30 focus:border-[#DC582A] transition font-bold placeholder:text-slate-400"
             />
           </div>
 
@@ -327,7 +327,7 @@ export const LushPlushiesGiftCheckoutModal: React.FC<LushPlushiesGiftCheckoutMod
               type="checkbox"
               checked={isAnonymous}
               onChange={(e) => setIsAnonymous(e.target.checked)}
-              className="w-4 h-4 text-[#DC582A] rounded border-gray-300 focus:ring-[#DC582A]"
+              className="w-4 h-4 text-[#DC582A] rounded border-gray-300 focus:ring-[#DC582A] text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
             />
           </div>
 
@@ -365,7 +365,7 @@ export const LushPlushiesGiftCheckoutModal: React.FC<LushPlushiesGiftCheckoutMod
         </div>
 
         {/* Modal Footer */}
-        <div className="p-5 border-t border-gray-100 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-900/50 flex flex-col-reverse sm:flex-row items-center justify-end gap-3 rounded-b-3xl mt-auto">
+        <div className="p-5 border-t border-slate-200 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-900/50 flex flex-col-reverse sm:flex-row items-center justify-end gap-3 rounded-b-3xl mt-auto">
           <button
             type="button"
             onClick={onClose}

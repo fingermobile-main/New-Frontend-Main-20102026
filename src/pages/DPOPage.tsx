@@ -88,8 +88,8 @@ const DPOPage: React.FC = () => {
                 <Lock className="w-4 h-4" />
                 <span>Regulatory Jurisdiction</span>
               </div>
-              <p className="text-slate-300">Nigeria (NDPA 2023) • EU (GDPR) • Global</p>
-              <div className="text-[11px] text-slate-400 pt-1 border-t border-white/10">
+              <p className="text-slate-700">Nigeria (NDPA 2023) • EU (GDPR) • Global</p>
+              <div className="text-[11px] text-slate-700 pt-1 border-t border-white/10">
                 Official Contact: <span className="text-white font-mono">dpo@fingermobileprotocol.com</span>
               </div>
             </div>
@@ -127,7 +127,7 @@ const DPOPage: React.FC = () => {
         {activeTab === 'overview' && (
           <div className="space-y-8 animate-fade-in">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-100 dark:border-gray-700 shadow-sm space-y-3">
+              <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-slate-200 dark:border-gray-700 shadow-sm space-y-3">
                 <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
                   <UserCheck className="w-5 h-5" />
                 </div>
@@ -139,7 +139,7 @@ const DPOPage: React.FC = () => {
                 </p>
               </div>
 
-              <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-100 dark:border-gray-700 shadow-sm space-y-3">
+              <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-slate-200 dark:border-gray-700 shadow-sm space-y-3">
                 <div className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
                   <Mail className="w-5 h-5" />
                 </div>
@@ -151,7 +151,7 @@ const DPOPage: React.FC = () => {
                 </p>
               </div>
 
-              <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-100 dark:border-gray-700 shadow-sm space-y-3">
+              <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-slate-200 dark:border-gray-700 shadow-sm space-y-3">
                 <div className="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-950/40 flex items-center justify-center text-purple-600 dark:text-purple-400">
                   <Building2 className="w-5 h-5" />
                 </div>
@@ -165,7 +165,7 @@ const DPOPage: React.FC = () => {
             </div>
 
             {/* Principles Matrix */}
-            <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 border border-gray-100 dark:border-gray-700 shadow-sm space-y-6">
+            <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 border border-slate-200 dark:border-gray-700 shadow-sm space-y-6">
               <div>
                 <h2 className="text-xl font-bold text-gray-900 dark:text-white">
                   Statutory Data Protection Framework
@@ -202,7 +202,7 @@ const DPOPage: React.FC = () => {
                     desc: 'Protected by STERCS™ & PRO-MPTS™ Guardian Protection, AES-256 field-level encryption, and hardware-secured JWT tokens.'
                   }
                 ].map((item, idx) => (
-                  <div key={idx} className="p-4 rounded-2xl bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 text-xs">
+                  <div key={idx} className="p-4 rounded-2xl bg-gray-50 dark:bg-gray-900/50 border border-slate-200 dark:border-gray-800 text-xs">
                     <h4 className="font-bold text-gray-900 dark:text-white mb-1">{item.title}</h4>
                     <p className="text-gray-600 dark:text-gray-400 leading-relaxed">{item.desc}</p>
                   </div>
@@ -224,7 +224,7 @@ const DPOPage: React.FC = () => {
                 STATUS: ENFORCING
               </span>
             </div>
-            <div className="bg-white dark:bg-gray-800 rounded-3xl p-6 border border-gray-100 dark:border-gray-700 shadow-sm overflow-hidden">
+            <div className="bg-white dark:bg-gray-800 rounded-3xl p-6 border border-slate-200 dark:border-gray-700 shadow-sm overflow-hidden">
               <DPODashboard />
             </div>
           </div>
@@ -232,7 +232,7 @@ const DPOPage: React.FC = () => {
 
         {/* TAB 3: DATA SUBJECT REQUEST (SAR) */}
         {activeTab === 'sar' && (
-          <div className="max-w-3xl mx-auto bg-white dark:bg-gray-800 rounded-3xl p-8 border border-gray-100 dark:border-gray-700 shadow-sm space-y-6 animate-fade-in">
+          <div className="max-w-3xl mx-auto bg-white dark:bg-gray-800 rounded-3xl p-8 border border-slate-200 dark:border-gray-700 shadow-sm space-y-6 animate-fade-in">
             <div>
               <h2 className="text-xl font-bold text-gray-900 dark:text-white">
                 Submit a Data Subject Access Request (SAR)
@@ -267,7 +267,7 @@ const DPOPage: React.FC = () => {
                     value={sarForm.fullName}
                     onChange={(e) => setSarForm({ ...sarForm, fullName: e.target.value })}
                     placeholder="e.g. Israel Obinna Mbah"
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-xs text-slate-900 dark:text-white font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-xs text-slate-900 dark:text-white font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm placeholder:text-slate-400"
                   />
                 </div>
                 <div>
@@ -280,7 +280,7 @@ const DPOPage: React.FC = () => {
                     value={sarForm.email}
                     onChange={(e) => setSarForm({ ...sarForm, email: e.target.value })}
                     placeholder="your-account@fingermobileprotocol.com"
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-xs text-slate-900 dark:text-white font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-xs text-slate-900 dark:text-white font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm placeholder:text-slate-400"
                   />
                 </div>
               </div>
@@ -295,7 +295,7 @@ const DPOPage: React.FC = () => {
                     value={sarForm.accountIdentifier}
                     onChange={(e) => setSarForm({ ...sarForm, accountIdentifier: e.target.value })}
                     placeholder="@username or Sovereign ID"
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-xs text-slate-900 dark:text-white font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-xs text-slate-900 dark:text-white font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm placeholder:text-slate-400"
                   />
                 </div>
                 <div>
@@ -327,7 +327,7 @@ const DPOPage: React.FC = () => {
                   value={sarForm.details}
                   onChange={(e) => setSarForm({ ...sarForm, details: e.target.value })}
                   placeholder="Detail the specific telemetry, transactions, or records you wish to review or redact..."
-                  className="w-full p-4 rounded-xl border border-slate-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-xs text-slate-900 dark:text-white font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm"
+                  className="w-full p-4 rounded-xl border border-slate-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-xs text-slate-900 dark:text-white font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm placeholder:text-slate-400"
                 />
               </div>
 
@@ -337,7 +337,7 @@ const DPOPage: React.FC = () => {
                   id="consentConfirmed"
                   checked={sarForm.consentConfirmed}
                   onChange={(e) => setSarForm({ ...sarForm, consentConfirmed: e.target.checked })}
-                  className="mt-0.5 rounded text-indigo-600 focus:ring-indigo-500"
+                  className="mt-0.5 rounded text-slate-900 focus:ring-indigo-500 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                 />
                 <label htmlFor="consentConfirmed" className="text-xs text-slate-800 dark:text-slate-200 font-semibold cursor-pointer">
                   I confirm that I am the authorized account holder or legal representative making this statutory request, and I consent to cryptographic verification of my identity.
@@ -358,7 +358,7 @@ const DPOPage: React.FC = () => {
 
         {/* TAB 4: AUDIT & CRYPTOGRAPHIC VERIFICATION */}
         {activeTab === 'audit' && (
-          <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 border border-gray-100 dark:border-gray-700 shadow-sm space-y-6 animate-fade-in">
+          <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 border border-slate-200 dark:border-gray-700 shadow-sm space-y-6 animate-fade-in">
             <div>
               <h2 className="text-xl font-bold text-gray-900 dark:text-white">
                 Cryptographic Consent & Audit Verification

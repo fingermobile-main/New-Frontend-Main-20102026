@@ -37,7 +37,7 @@ const GiftModal: React.FC<GiftModalProps> = ({
           <h2 className="text-xl font-bold text-gray-900">Send Gift</h2>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600"
+            className="text-slate-700 hover:text-gray-600"
           >
             ✕
           </button>
@@ -53,7 +53,7 @@ const GiftModal: React.FC<GiftModalProps> = ({
               type="number"
               value={giftAmount}
               onChange={(e) => setGiftAmount(e.target.value)}
-              className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400 font-mono"
               placeholder="Enter amount"
               min="0"
               step="0.01"

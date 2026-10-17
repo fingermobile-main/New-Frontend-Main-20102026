@@ -41,7 +41,7 @@ const UGCDashboardPage: React.FC = () => {
       </div>
 
       <div className="mt-6 bg-white rounded-xl shadow-md overflow-hidden">
-        <div className="border-b border-gray-200">
+        <div className="border-b border-slate-300">
           <nav className="flex -mb-px">
             <button
               className={`flex-1 py-4 px-1 text-center border-b-2 font-medium text-sm flex items-center justify-center ${

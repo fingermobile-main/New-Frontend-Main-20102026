@@ -121,7 +121,7 @@ const DomainsPage: React.FC = () => {
               value={domainInput}
               onChange={(e) => setDomainInput(e.target.value)}
               placeholder="subdomain.fingermobile.io"
-              className="flex-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-600 text-sm"
+              className="flex-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-600 text-sm text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
               required
             />
             <button

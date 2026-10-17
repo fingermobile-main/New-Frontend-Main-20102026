@@ -110,7 +110,7 @@ export const FingerLuxHeader: React.FC<FingerLuxHeaderProps> = ({
             <select
               value={selectedLocationId}
               onChange={(e) => onLocationChange(e.target.value)}
-              className="bg-transparent text-xs font-bold text-slate-900 focus:outline-none cursor-pointer"
+              className="bg-transparent text-xs font-bold text-slate-900 focus:outline-none cursor-pointer border border-slate-300 rounded focus:ring-2 focus:ring-indigo-500"
             >
               <option value="all">All Locations (Global)</option>
               {locations.map((loc) => (

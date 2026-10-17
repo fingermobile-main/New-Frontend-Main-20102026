@@ -50,7 +50,7 @@ const Header: React.FC<HeaderProps> = ({
                 </div>
                 <input
                   type="text"
-                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder:text-slate-500 focus:outline-none focus:placeholder:text-slate-500 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder:text-slate-400 focus:outline-none focus:placeholder:text-slate-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-slate-900 font-bold border-slate-300"
                   placeholder="Search..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -65,7 +65,7 @@ const Header: React.FC<HeaderProps> = ({
       <div className="flex items-center">
         <button
           type="button"
-          className="p-1 text-gray-400 rounded-full hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="p-1 text-slate-700 rounded-full hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
         >
           <span className="sr-only">View notifications</span>
           <BellIcon className="w-6 h-6" aria-hidden="true" />

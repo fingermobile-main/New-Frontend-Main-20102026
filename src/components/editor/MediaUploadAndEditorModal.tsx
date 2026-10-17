@@ -157,7 +157,7 @@ export const MediaUploadAndEditorModal: React.FC<MediaUploadAndEditorModalProps>
           <button
             type="button"
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+            className="p-2 text-slate-700 hover:text-slate-600 dark:hover:text-slate-200 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition"
           >
             <X className="w-5 h-5" />
           </button>
@@ -213,7 +213,7 @@ export const MediaUploadAndEditorModal: React.FC<MediaUploadAndEditorModalProps>
                 type="file"
                 accept={activeMediaType === 'photo' ? 'image/*' : (activeMediaType === 'video' ? 'video/*' : 'audio/*')}
                 onChange={handleFileUpload}
-                className="hidden"
+                className="hidden text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
               />
               <div className="w-14 h-14 rounded-2xl bg-orange-500/10 text-orange-500 flex items-center justify-center mb-4">
                 <Upload className="w-7 h-7" />
@@ -232,7 +232,7 @@ export const MediaUploadAndEditorModal: React.FC<MediaUploadAndEditorModalProps>
                 >
                   Choose File
                 </button>
-                <span className="text-xs text-slate-400">or</span>
+                <span className="text-xs text-slate-700">or</span>
                 <input
                   type="text"
                   placeholder="Paste direct media URL..."
@@ -241,7 +241,7 @@ export const MediaUploadAndEditorModal: React.FC<MediaUploadAndEditorModalProps>
                       setMediaUrl((e.target as HTMLInputElement).value);
                     }
                   }}
-                  className="flex-1 px-3 py-2 text-xs border border-slate-300 dark:border-slate-700 rounded-xl dark:bg-slate-800 dark:text-white"
+                  className="flex-1 px-3 py-2 text-xs border border-slate-300 dark:border-slate-700 rounded-xl dark:bg-slate-800 dark:text-white text-slate-900 font-bold bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
             </div>
@@ -389,7 +389,7 @@ export const MediaUploadAndEditorModal: React.FC<MediaUploadAndEditorModalProps>
                         max={150}
                         value={brightness}
                         onChange={(e) => setBrightness(parseInt(e.target.value))}
-                        className="w-full accent-orange-500"
+                        className="w-full accent-orange-500 text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                     </div>
                     <div>
@@ -403,7 +403,7 @@ export const MediaUploadAndEditorModal: React.FC<MediaUploadAndEditorModalProps>
                         max={150}
                         value={contrast}
                         onChange={(e) => setContrast(parseInt(e.target.value))}
-                        className="w-full accent-orange-500"
+                        className="w-full accent-orange-500 text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                     </div>
                     <div>
@@ -417,7 +417,7 @@ export const MediaUploadAndEditorModal: React.FC<MediaUploadAndEditorModalProps>
                         max={200}
                         value={saturation}
                         onChange={(e) => setSaturation(parseInt(e.target.value))}
-                        className="w-full accent-orange-500"
+                        className="w-full accent-orange-500 text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                     </div>
                     <div>
@@ -431,7 +431,7 @@ export const MediaUploadAndEditorModal: React.FC<MediaUploadAndEditorModalProps>
                         max={8}
                         value={blur}
                         onChange={(e) => setBlur(parseInt(e.target.value))}
-                        className="w-full accent-orange-500"
+                        className="w-full accent-orange-500 text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                     </div>
                   </div>
@@ -448,7 +448,7 @@ export const MediaUploadAndEditorModal: React.FC<MediaUploadAndEditorModalProps>
                   value={caption}
                   onChange={(e) => setCaption(e.target.value)}
                   placeholder="Describe this media object for followers..."
-                  className="w-full px-4 py-2.5 text-xs border border-slate-300 dark:border-slate-700 rounded-xl dark:bg-slate-800 dark:text-white"
+                  className="w-full px-4 py-2.5 text-xs border border-slate-300 dark:border-slate-700 rounded-xl dark:bg-slate-800 dark:text-white text-slate-900 font-bold bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
             </div>

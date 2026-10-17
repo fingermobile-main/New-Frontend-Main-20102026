@@ -76,7 +76,7 @@ const EditorToolbar: React.FC<EditorToolbarProps> = React.memo(({
           value={aiPrompt}
           onChange={(e) => onAiPromptChange(e.target.value)}
           placeholder="Describe component to AI..."
-          className="px-4 py-2 text-sm border border-white/30 rounded-full bg-white/20 placeholder-white/70 text-white, focus:outline-none, focus:ring-2, focus:ring-white/30"
+          className="px-4 py-2 text-sm border border-white/30 rounded-full bg-white placeholder-white/70 text-white, focus:outline-none, focus:ring-2, focus:ring-white/30 text-slate-900 font-bold border-slate-300 focus:ring-2 placeholder:text-slate-400"
         />
         <button
           onClick={onGenerateWithAi}

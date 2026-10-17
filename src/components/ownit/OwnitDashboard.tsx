@@ -221,7 +221,7 @@ const OwnitDashboard: React.FC = () => {
                 <div key={item.id} className="flex justify-between items-center p-2 bg-white dark:bg-gray-900 rounded">
                   <div>
                     <p className="font-medium">{item.title}</p>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-slate-700">
                       Expires: {new Date(item.warranty_end_date!).toLocaleDateString()}
                     </p>
                   </div>

@@ -361,23 +361,23 @@ const FingerWarsPage: React.FC = () => {
                     <h3 className="text-xl font-black text-gray-900 tracking-tight">{t.title}</h3>
                     <p className="text-xs text-gray-600 mt-2 leading-relaxed">{t.description}</p>
 
-                    <div className="grid grid-cols-3 gap-2 bg-gray-50 p-4 rounded-2xl border border-gray-100 mt-5 text-center text-xs">
+                    <div className="grid grid-cols-3 gap-2 bg-gray-50 p-4 rounded-2xl border border-slate-200 mt-5 text-center text-xs">
                       <div>
-                        <span className="text-gray-400 block text-[10px] font-bold uppercase">Entry Fee</span>
+                        <span className="text-slate-700 block text-[10px] font-bold uppercase">Entry Fee</span>
                         <span className="font-black text-gray-900">{t.entry_fee} FIC</span>
                       </div>
                       <div>
-                        <span className="text-gray-400 block text-[10px] font-bold uppercase">Max Players</span>
+                        <span className="text-slate-700 block text-[10px] font-bold uppercase">Max Players</span>
                         <span className="font-black text-gray-900">{t.max_participants}</span>
                       </div>
                       <div>
-                        <span className="text-gray-400 block text-[10px] font-bold uppercase">Structure</span>
+                        <span className="text-slate-700 block text-[10px] font-bold uppercase">Structure</span>
                         <span className="font-black text-gray-900">Knockout</span>
                       </div>
                     </div>
                   </div>
 
-                  <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between gap-4">
+                  <div className="mt-6 pt-4 border-t border-slate-200 flex items-center justify-between gap-4">
                     <span className="text-xs text-gray-500 font-medium">Smart contract escrow verified</span>
                     <button
                       onClick={() => handleJoinTournament(t)}
@@ -430,7 +430,7 @@ const FingerWarsPage: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="mt-6 pt-3 border-t border-gray-100">
+                  <div className="mt-6 pt-3 border-t border-slate-200">
                     {c.is_claimed ? (
                       <span className="block text-center py-2 text-xs font-bold text-green-700 bg-green-50 rounded-xl">
                         ✓ Reward Claimed
@@ -475,7 +475,7 @@ const FingerWarsPage: React.FC = () => {
                   <div className="flex items-center gap-2">
                     <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
                     <span className="font-bold text-sm text-gray-900">{m.player1}</span>
-                    <span className="text-xs text-gray-400 font-black">VS</span>
+                    <span className="text-xs text-slate-700 font-black">VS</span>
                     <span className="text-xs text-gray-500">{m.player2}</span>
                   </div>
                   <p className="text-xs text-gray-500 mt-1">Lobby Wager: <strong className="text-yellow-700">{m.wager} FIC</strong></p>
@@ -496,7 +496,7 @@ const FingerWarsPage: React.FC = () => {
           <div className="bg-white rounded-2xl border border-slate-300 shadow-sm overflow-hidden">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider border-b border-gray-100">
+                <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider border-b border-slate-200">
                   <th className="py-3 px-5">Rank</th>
                   <th className="py-3 px-5">Player Handle</th>
                   <th className="py-3 px-5">Tier</th>
@@ -514,7 +514,7 @@ const FingerWarsPage: React.FC = () => {
                     </td>
                     <td className="py-4 px-5 font-bold text-gray-900">{player.username}</td>
                     <td className="py-4 px-5">
-                      <span className="px-2.5 py-1 text-xs font-bold rounded-full bg-purple-50 text-purple-700">
+                      <span className="px-2.5 py-1 text-xs font-bold rounded-full bg-purple-50 text-purple-950 border text-purple-950 border-purple-400 font-black">
                         {player.tier}
                       </span>
                     </td>
@@ -534,10 +534,10 @@ const FingerWarsPage: React.FC = () => {
         {/* Create Match Modal */}
         {showCreateMatchModal && (
           <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-gray-100 animate-in fade-in zoom-in-95">
-              <div className="flex justify-between items-center pb-4 border-b border-gray-100">
+            <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 animate-in fade-in zoom-in-95">
+              <div className="flex justify-between items-center pb-4 border-b border-slate-200">
                 <h3 className="text-lg font-black text-gray-900">Create PvP Challenge</h3>
-                <button onClick={() => setShowCreateMatchModal(false)} className="text-gray-400 hover:text-gray-600">
+                <button onClick={() => setShowCreateMatchModal(false)} className="text-slate-700 hover:text-gray-600">
                   <XMarkIcon className="w-5 h-5" />
                 </button>
               </div>
@@ -550,7 +550,7 @@ const FingerWarsPage: React.FC = () => {
                     placeholder="Leave empty for Open Public Lobby"
                     value={opponentName}
                     onChange={(e) => setOpponentName(e.target.value)}
-                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-yellow-500 focus:outline-none"
+                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-yellow-500 focus:outline-none text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                   />
                 </div>
 
@@ -577,11 +577,11 @@ const FingerWarsPage: React.FC = () => {
                     min="5"
                     value={matchWager}
                     onChange={(e) => setMatchWager(Number(e.target.value))}
-                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-yellow-500 focus:outline-none"
+                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-yellow-500 focus:outline-none text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400 font-mono"
                   />
                 </div>
 
-                <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
+                <div className="flex justify-end gap-3 pt-4 border-t border-slate-200">
                   <button
                     type="button"
                     onClick={() => setShowCreateMatchModal(false)}

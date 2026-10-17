@@ -857,7 +857,7 @@ export const StorefrontTrackingPage: React.FC = () => {
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="text-2xl font-black text-slate-900">E-Commerce & Storefront Sovereign Operations</h1>
-                <span className="px-2.5 py-0.5 text-xs font-bold rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400">
+                <span className="px-2.5 py-0.5 text-xs font-bold rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-black">
                   Unified Admin
                 </span>
               </div>
@@ -1030,7 +1030,7 @@ export const StorefrontTrackingPage: React.FC = () => {
                     placeholder="Search by Tracking Code, Order ID, Customer, or Destination..."
                     value={searchQuery}
                     onChange={e => setSearchQuery(e.target.value)}
-                    className="w-full pl-9 pr-3 py-2 text-slate-900 font-bold border border-slate-300 rounded-lg text-sm bg-white focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+                    className="w-full pl-9 pr-3 py-2 text-slate-900 font-bold border border-slate-300 rounded-lg text-sm bg-white focus:outline-hidden focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400"
                   />
                 </div>
 
@@ -1622,7 +1622,7 @@ export const StorefrontTrackingPage: React.FC = () => {
                   placeholder="e.g. Flamingo Luxury Leather Hub"
                   value={newStoreForm.name}
                   onChange={e => setNewStoreForm({ ...newStoreForm, name: e.target.value })}
-                  className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white"
+                  className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
 
@@ -1632,7 +1632,7 @@ export const StorefrontTrackingPage: React.FC = () => {
                   <select
                     value={newStoreForm.platform}
                     onChange={e => setNewStoreForm({ ...newStoreForm, platform: e.target.value as any })}
-                    className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white"
+                    className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500"
                   >
                     <option value="storefront">Storefront Network</option>
                     <option value="marketplace">Decentralized Marketplace</option>
@@ -1647,7 +1647,7 @@ export const StorefrontTrackingPage: React.FC = () => {
                     required
                     value={newStoreForm.category}
                     onChange={e => setNewStoreForm({ ...newStoreForm, category: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white"
+                    className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                 </div>
               </div>
@@ -1661,7 +1661,7 @@ export const StorefrontTrackingPage: React.FC = () => {
                     placeholder="Merchant Principal"
                     value={newStoreForm.ownerName}
                     onChange={e => setNewStoreForm({ ...newStoreForm, ownerName: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white"
+                    className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                 </div>
                 <div>
@@ -1671,7 +1671,7 @@ export const StorefrontTrackingPage: React.FC = () => {
                     placeholder="owner@domain.ng"
                     value={newStoreForm.ownerEmail}
                     onChange={e => setNewStoreForm({ ...newStoreForm, ownerEmail: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white"
+                    className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                 </div>
               </div>
@@ -1684,7 +1684,7 @@ export const StorefrontTrackingPage: React.FC = () => {
                     step={0.5}
                     value={newStoreForm.commissionRate}
                     onChange={e => setNewStoreForm({ ...newStoreForm, commissionRate: parseFloat(e.target.value) || 0 })}
-                    className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white"
+                    className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
                   />
                 </div>
                 <div>
@@ -1692,7 +1692,7 @@ export const StorefrontTrackingPage: React.FC = () => {
                   <select
                     value={newStoreForm.warehouseHub}
                     onChange={e => setNewStoreForm({ ...newStoreForm, warehouseHub: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white"
+                    className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500"
                   >
                     {WAREHOUSE_NODES.map(w => (
                       <option key={w.id} value={w.name}>{w.name}</option>
@@ -1747,7 +1747,7 @@ export const StorefrontTrackingPage: React.FC = () => {
                   placeholder="e.g. Handmade Leather Loafers"
                   value={newProductForm.title}
                   onChange={e => setNewProductForm({ ...newProductForm, title: e.target.value })}
-                  className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white"
+                  className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
 
@@ -1757,7 +1757,7 @@ export const StorefrontTrackingPage: React.FC = () => {
                   <select
                     value={newProductForm.storeId}
                     onChange={e => setNewProductForm({ ...newProductForm, storeId: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white"
+                    className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500"
                   >
                     {stores.map(st => (
                       <option key={st.id} value={st.id}>{st.name}</option>
@@ -1772,7 +1772,7 @@ export const StorefrontTrackingPage: React.FC = () => {
                     placeholder="e.g. SK-ITEM-009"
                     value={newProductForm.sku}
                     onChange={e => setNewProductForm({ ...newProductForm, sku: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white font-mono"
+                    className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white font-mono focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                 </div>
               </div>
@@ -1784,7 +1784,7 @@ export const StorefrontTrackingPage: React.FC = () => {
                     type="number"
                     value={newProductForm.price}
                     onChange={e => setNewProductForm({ ...newProductForm, price: parseFloat(e.target.value) || 0 })}
-                    className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white"
+                    className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
                   />
                 </div>
                 <div>
@@ -1792,7 +1792,7 @@ export const StorefrontTrackingPage: React.FC = () => {
                   <select
                     value={newProductForm.currency}
                     onChange={e => setNewProductForm({ ...newProductForm, currency: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white"
+                    className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500"
                   >
                     <option value="FIC">FIC</option>
                     <option value="NGN">NGN</option>
@@ -1805,7 +1805,7 @@ export const StorefrontTrackingPage: React.FC = () => {
                     type="number"
                     value={newProductForm.stock}
                     onChange={e => setNewProductForm({ ...newProductForm, stock: parseInt(e.target.value, 10) || 0 })}
-                    className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white"
+                    className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
                   />
                 </div>
               </div>
@@ -1817,7 +1817,7 @@ export const StorefrontTrackingPage: React.FC = () => {
                   placeholder="e.g. Lagos Island MegaBay 01 / Bay 4"
                   value={newProductForm.warehouseLocation}
                   onChange={e => setNewProductForm({ ...newProductForm, warehouseLocation: e.target.value })}
-                  className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white"
+                  className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
 
@@ -1870,7 +1870,7 @@ export const StorefrontTrackingPage: React.FC = () => {
                   placeholder="Detail policy breach (e.g. unauthorized brand replica, SLA fulfillment delinquency, or unverified contact)..."
                   value={warningMessage}
                   onChange={e => setWarningMessage(e.target.value)}
-                  className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white"
+                  className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
               <div className="flex justify-end gap-2 pt-2">
@@ -1920,7 +1920,7 @@ export const StorefrontTrackingPage: React.FC = () => {
                     placeholder="Recipient Name"
                     value={newShipment.customer_name}
                     onChange={e => setNewShipment({ ...newShipment, customer_name: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white"
+                    className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                 </div>
                 <div>
@@ -1930,7 +1930,7 @@ export const StorefrontTrackingPage: React.FC = () => {
                     placeholder="Auto-generated if blank"
                     value={newShipment.order_id}
                     onChange={e => setNewShipment({ ...newShipment, order_id: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white font-mono"
+                    className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white font-mono focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                 </div>
               </div>
@@ -1941,7 +1941,7 @@ export const StorefrontTrackingPage: React.FC = () => {
                   <select
                     value={newShipment.storefront_id}
                     onChange={e => setNewShipment({ ...newShipment, storefront_id: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white"
+                    className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500"
                   >
                     {stores.map(st => (
                       <option key={st.id} value={st.id}>{st.name}</option>
@@ -1953,7 +1953,7 @@ export const StorefrontTrackingPage: React.FC = () => {
                   <select
                     value={newShipment.carrier}
                     onChange={e => setNewShipment({ ...newShipment, carrier: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white"
+                    className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500"
                   >
                     {CARRIERS.map(c => (
                       <option key={c} value={c}>{c}</option>
@@ -1971,7 +1971,7 @@ export const StorefrontTrackingPage: React.FC = () => {
                     placeholder="e.g. Lekki Phase 1, Lagos"
                     value={newShipment.destination}
                     onChange={e => setNewShipment({ ...newShipment, destination: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white"
+                    className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                 </div>
                 <div>
@@ -1979,7 +1979,7 @@ export const StorefrontTrackingPage: React.FC = () => {
                   <select
                     value={newShipment.warehouse_bay}
                     onChange={e => setNewShipment({ ...newShipment, warehouse_bay: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white"
+                    className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500"
                   >
                     {WAREHOUSE_NODES.map(w => (
                       <option key={w.id} value={w.name}>{w.name}</option>
@@ -1996,7 +1996,7 @@ export const StorefrontTrackingPage: React.FC = () => {
                     placeholder="Merchant goods"
                     value={newShipment.item_title}
                     onChange={e => setNewShipment({ ...newShipment, item_title: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white"
+                    className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                 </div>
                 <div>
@@ -2006,7 +2006,7 @@ export const StorefrontTrackingPage: React.FC = () => {
                     min={1}
                     value={newShipment.item_qty}
                     onChange={e => setNewShipment({ ...newShipment, item_qty: parseInt(e.target.value, 10) || 1 })}
-                    className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white"
+                    className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
                   />
                 </div>
                 <div>
@@ -2015,7 +2015,7 @@ export const StorefrontTrackingPage: React.FC = () => {
                     type="number"
                     value={newShipment.total}
                     onChange={e => setNewShipment({ ...newShipment, total: parseFloat(e.target.value) || 0 })}
-                    className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white"
+                    className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
                   />
                 </div>
               </div>
@@ -2063,7 +2063,7 @@ export const StorefrontTrackingPage: React.FC = () => {
                 <select
                   value={statusForm.status}
                   onChange={e => setStatusForm({ ...statusForm, status: e.target.value })}
-                  className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white"
+                  className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500"
                 >
                   <option value="processing">Processing (Manifest Generated)</option>
                   <option value="shipped">Shipped (Departed Merchant Node)</option>
@@ -2080,7 +2080,7 @@ export const StorefrontTrackingPage: React.FC = () => {
                   placeholder="e.g. Lagos Mainland Toll Hub"
                   value={statusForm.area}
                   onChange={e => setStatusForm({ ...statusForm, area: e.target.value })}
-                  className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white"
+                  className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
 
@@ -2091,7 +2091,7 @@ export const StorefrontTrackingPage: React.FC = () => {
                   placeholder="e.g. Package cleared regional customs inspection"
                   value={statusForm.note}
                   onChange={e => setStatusForm({ ...statusForm, note: e.target.value })}
-                  className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white"
+                  className="w-full p-2 border border-slate-300 rounded font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
 

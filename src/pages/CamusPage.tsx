@@ -164,7 +164,7 @@ const CamusPage: React.FC = () => {
     };
 
     return (
-      <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-sm flex items-center gap-4 border border-gray-100 dark:border-gray-800">
+      <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-sm flex items-center gap-4 border border-slate-200 dark:border-gray-800">
         <div className="bg-blue-100 dark:bg-blue-950 p-3 rounded-2xl">
           {icons[stat.icon] || (
             <BookOpenIcon className="w-8 h-8 text-blue-600 dark:text-blue-400" />
@@ -208,7 +208,7 @@ const CamusPage: React.FC = () => {
   const InstructorCard: React.FC<{ instructor: Instructor }> = ({
     instructor
   }) => (
-    <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xs p-5 flex flex-col items-center text-center border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
+    <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xs p-5 flex flex-col items-center text-center border border-slate-200 dark:border-gray-800 hover:shadow-md transition-shadow">
       <AnimatedAvatar
         staticUrl={instructor.avatarUrl || ''}
         altText={instructor.name}
@@ -239,7 +239,7 @@ const CamusPage: React.FC = () => {
   const TestimonialCard: React.FC<{ testimonial: Testimonial }> = ({
     testimonial
   }) => (
-    <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xs p-6 border border-gray-100 dark:border-gray-800 flex flex-col justify-between">
+    <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xs p-6 border border-slate-200 dark:border-gray-800 flex flex-col justify-between">
       <div>
         <div className="flex items-center">
           <AnimatedAvatar
@@ -256,7 +256,7 @@ const CamusPage: React.FC = () => {
           &ldquo;{testimonial.content}&rdquo;
         </p>
       </div>
-      <div className="flex mt-4 pt-3 border-t border-gray-100 dark:border-gray-800">
+      <div className="flex mt-4 pt-3 border-t border-slate-200 dark:border-gray-800">
         {[...Array(5)].map((_, i) => (
           <svg
             key={i}
@@ -281,7 +281,7 @@ const CamusPage: React.FC = () => {
             </div>
             <div className="ml-4">
               <div className="flex items-center gap-2">
-                <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300">
+                <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-950 dark:text-blue-300 border text-blue-950 border-blue-400 font-black">
                   LMS &amp; Academy Protocol
                 </span>
               </div>
@@ -299,7 +299,7 @@ const CamusPage: React.FC = () => {
           {/* Left Sidebar */}
           <div className="hidden lg:block lg:col-span-3 space-y-6">
             <div className="sticky top-20 space-y-6">
-              <div className="bg-white dark:bg-gray-900 p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-800">
+              <div className="bg-white dark:bg-gray-900 p-6 rounded-3xl shadow-sm border border-slate-200 dark:border-gray-800">
                 <h3 className="font-bold text-sm text-gray-900 dark:text-white mb-4">Camus Navigation</h3>
                 <ul className="space-y-2">
                   <li>
@@ -309,7 +309,7 @@ const CamusPage: React.FC = () => {
                     >
                       <AcademicCapIcon className="w-5 h-5 mr-3 text-blue-600 dark:text-blue-400" />
                       <span>My Courses</span>
-                      <span className="ml-auto text-xs px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 font-mono">
+                      <span className="ml-auto text-xs px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-950 dark:text-blue-200 font-mono border text-blue-950 border-blue-400 font-black">
                         {enrolledCourseIds.length}
                       </span>
                     </button>
@@ -321,7 +321,7 @@ const CamusPage: React.FC = () => {
                     >
                       <BookOpenIcon className="w-5 h-5 mr-3 text-gray-500" />
                       <span>Certificates</span>
-                      <span className="ml-auto text-xs px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 font-mono">
+                      <span className="ml-auto text-xs px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-950 font-mono border text-emerald-950 border-emerald-400 font-black">
                         3
                       </span>
                     </button>
@@ -342,16 +342,16 @@ const CamusPage: React.FC = () => {
               </div>
 
               {/* Learning Stats */}
-              <div className="bg-white dark:bg-gray-900 p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-800">
+              <div className="bg-white dark:bg-gray-900 p-6 rounded-3xl shadow-sm border border-slate-200 dark:border-gray-800">
                 <h3 className="font-bold text-sm text-gray-900 dark:text-white mb-4">Your Learning</h3>
                 <div className="space-y-4">
-                  <div className="flex justify-between items-center border-b border-gray-100 dark:border-gray-800 pb-2.5">
+                  <div className="flex justify-between items-center border-b border-slate-200 dark:border-gray-800 pb-2.5">
                     <span className="text-xs text-gray-500">Courses Enrolled</span>
                     <span className="text-base font-black font-mono text-gray-900 dark:text-white">
                       {enrolledCourseIds.length}
                     </span>
                   </div>
-                  <div className="flex justify-between items-center border-b border-gray-100 dark:border-gray-800 pb-2.5">
+                  <div className="flex justify-between items-center border-b border-slate-200 dark:border-gray-800 pb-2.5">
                     <span className="text-xs text-gray-500">Courses Completed</span>
                     <span className="text-base font-black font-mono text-emerald-600 dark:text-emerald-400">
                       2
@@ -496,8 +496,8 @@ const CamusPage: React.FC = () => {
               />
 
               {filteredCourses.length === 0 ? (
-                <div className="text-center py-12 bg-white dark:bg-gray-900 rounded-3xl shadow-xs border border-gray-100 dark:border-gray-800 p-8">
-                  <BookOpenIcon className="mx-auto h-12 w-12 text-gray-400 mb-3" />
+                <div className="text-center py-12 bg-white dark:bg-gray-900 rounded-3xl shadow-xs border border-slate-200 dark:border-gray-800 p-8">
+                  <BookOpenIcon className="mx-auto h-12 w-12 text-slate-700 mb-3" />
                   <h3 className="text-base font-bold text-gray-900 dark:text-white">
                     No courses match your filter
                   </h3>
@@ -670,7 +670,7 @@ const CamusPage: React.FC = () => {
       {isCertificatesModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200">
           <div className="bg-white dark:bg-gray-900 border border-slate-300 dark:border-gray-800 rounded-3xl w-full max-w-2xl max-h-[85vh] overflow-y-auto p-6 space-y-6 shadow-2xl">
-            <div className="flex items-start justify-between border-b border-gray-100 dark:border-gray-800 pb-4">
+            <div className="flex items-start justify-between border-b border-slate-200 dark:border-gray-800 pb-4">
               <div>
                 <span className="text-xs font-mono uppercase text-blue-600 font-bold">Credential Verification</span>
                 <h3 className="text-xl font-black text-gray-900 dark:text-white mt-0.5 flex items-center gap-2">
@@ -680,7 +680,7 @@ const CamusPage: React.FC = () => {
               </div>
               <button
                 onClick={() => setIsCertificatesModalOpen(false)}
-                className="p-2 rounded-xl text-gray-400 hover:text-gray-600 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+                className="p-2 rounded-xl text-slate-700 hover:text-gray-600 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -716,10 +716,10 @@ const CamusPage: React.FC = () => {
                 >
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950 dark:text-emerald-300">
+                      <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950 dark:text-emerald-300 font-black">
                         {cert.id}
                       </span>
-                      <span className="text-[10px] text-gray-400 font-semibold">{cert.date}</span>
+                      <span className="text-[10px] text-slate-700 font-semibold">{cert.date}</span>
                     </div>
                     <h4 className="font-bold text-sm text-gray-900 dark:text-white">{cert.title}</h4>
                     <p className="text-xs text-gray-500">{cert.grade} • Instructor: {cert.instructor}</p>
@@ -763,7 +763,7 @@ const CamusPage: React.FC = () => {
       {isLiveSessionsModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200">
           <div className="bg-white dark:bg-gray-900 border border-slate-300 dark:border-gray-800 rounded-3xl w-full max-w-2xl max-h-[85vh] overflow-y-auto p-6 space-y-6 shadow-2xl">
-            <div className="flex items-start justify-between border-b border-gray-100 dark:border-gray-800 pb-4">
+            <div className="flex items-start justify-between border-b border-slate-200 dark:border-gray-800 pb-4">
               <div>
                 <span className="text-xs font-mono uppercase text-red-600 font-bold flex items-center gap-1.5">
                   <span className="w-2 h-2 rounded-full bg-red-600 animate-ping" />
@@ -775,7 +775,7 @@ const CamusPage: React.FC = () => {
               </div>
               <button
                 onClick={() => setIsLiveSessionsModalOpen(false)}
-                className="p-2 rounded-xl text-gray-400 hover:text-gray-600 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+                className="p-2 rounded-xl text-slate-700 hover:text-gray-600 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -860,7 +860,7 @@ const CamusPage: React.FC = () => {
       {isLessonPreviewModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200">
           <div className="bg-white dark:bg-gray-900 border border-slate-300 dark:border-gray-800 rounded-3xl w-full max-w-3xl max-h-[90vh] overflow-y-auto p-6 space-y-6 shadow-2xl">
-            <div className="flex items-start justify-between border-b border-gray-100 dark:border-gray-800 pb-4">
+            <div className="flex items-start justify-between border-b border-slate-200 dark:border-gray-800 pb-4">
               <div>
                 <span className="text-xs font-mono uppercase text-blue-600 font-bold">Interactive Lesson Stream</span>
                 <h3 className="text-xl font-black text-gray-900 dark:text-white mt-0.5">
@@ -869,7 +869,7 @@ const CamusPage: React.FC = () => {
               </div>
               <button
                 onClick={() => setIsLessonPreviewModalOpen(false)}
-                className="p-2 rounded-xl text-gray-400 hover:text-gray-600 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+                className="p-2 rounded-xl text-slate-700 hover:text-gray-600 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -907,11 +907,11 @@ const CamusPage: React.FC = () => {
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <span className="font-mono text-gray-400">{item.num}</span>
+                      <span className="font-mono text-slate-700">{item.num}</span>
                       <span>{item.title}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-[11px] font-mono text-gray-400">{item.duration}</span>
+                      <span className="text-[11px] font-mono text-slate-700">{item.duration}</span>
                       {item.done ? (
                         <CheckCircle className="w-4 h-4 text-emerald-500" />
                       ) : (
@@ -923,7 +923,7 @@ const CamusPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex items-center justify-between pt-2 border-t border-gray-100 dark:border-gray-800">
+            <div className="flex items-center justify-between pt-2 border-t border-slate-200 dark:border-gray-800">
               <button
                 onClick={() => {
                   setIsLessonPreviewModalOpen(false);

@@ -559,7 +559,7 @@ const CompliancePage: React.FC = () => {
         )}
 
         {/* Tabs */}
-        <div className="border-b border-gray-200 mb-6">
+        <div className="border-b border-slate-300 mb-6">
           <nav className="-mb-px flex space-x-8">
             <button
               onClick={() => setActiveTab('requirements')}
@@ -624,12 +624,12 @@ const CompliancePage: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search className="h-5 w-5 text-gray-400" />
+                <Search className="h-5 w-5 text-slate-700" />
               </div>
               <input
                 type="text"
                 placeholder={`Search ${activeTab}...`}
-                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder:text-slate-500 focus:outline-none focus:placeholder:text-slate-500 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder:text-slate-400 focus:outline-none focus:placeholder:text-slate-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-slate-900 font-bold border-slate-300"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -638,7 +638,7 @@ const CompliancePage: React.FC = () => {
             {activeTab === 'requirements' && (
               <>
                 <select
-                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-slate-900 font-bold border-slate-300 bg-white focus:ring-2"
                   value={filterCategory}
                   onChange={(e) => setFilterCategory(e.target.value)}
                 >
@@ -652,7 +652,7 @@ const CompliancePage: React.FC = () => {
                 </select>
                 
                 <select
-                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-slate-900 font-bold border-slate-300 bg-white focus:ring-2"
                   value={filterPriority}
                   onChange={(e) => setFilterPriority(e.target.value)}
                 >
@@ -664,7 +664,7 @@ const CompliancePage: React.FC = () => {
                 </select>
                 
                 <select
-                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-slate-900 font-bold border-slate-300 bg-white focus:ring-2"
                   value={filterStatus}
                   onChange={(e) => setFilterStatus(e.target.value)}
                 >
@@ -1189,7 +1189,7 @@ const CompliancePage: React.FC = () => {
                 <div className="bg-white rounded-xl shadow p-6">
                   <h3 className="text-lg font-medium text-gray-900 mb-4">Jurisdiction Coverage</h3>
                   <div className="h-64 flex items-center justify-center">
-                    <BarChart3 className="h-16 w-16 text-gray-300" />
+                    <BarChart3 className="h-16 w-16 text-slate-700" />
                     <p className="ml-4 text-gray-500">Jurisdiction coverage visualization would appear here</p>
                   </div>
                 </div>
@@ -1208,21 +1208,21 @@ const CompliancePage: React.FC = () => {
                         <div className="flex items-center justify-between">
                           <span className="text-sm text-gray-600">Deadline Reminders</span>
                           <label className="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" className="sr-only peer" defaultChecked />
+                            <input type="checkbox" className="sr-only peer text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" defaultChecked />
                             <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                           </label>
                         </div>
                         <div className="flex items-center justify-between">
                           <span className="text-sm text-gray-600">Audit Notifications</span>
                           <label className="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" className="sr-only peer" defaultChecked />
+                            <input type="checkbox" className="sr-only peer text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" defaultChecked />
                             <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                           </label>
                         </div>
                         <div className="flex items-center justify-between">
                           <span className="text-sm text-gray-600">Compliance Alerts</span>
                           <label className="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" className="sr-only peer" />
+                            <input type="checkbox" className="sr-only peer text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" />
                             <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                           </label>
                         </div>
@@ -1235,13 +1235,13 @@ const CompliancePage: React.FC = () => {
                         <div className="flex items-center justify-between">
                           <span className="text-sm text-gray-600">Auto-Generate Reports</span>
                           <label className="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" className="sr-only peer" defaultChecked />
+                            <input type="checkbox" className="sr-only peer text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" defaultChecked />
                             <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                           </label>
                         </div>
                         <div className="flex items-center justify-between">
                           <span className="text-sm text-gray-600">Report Frequency</span>
-                          <select className="rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                          <select className="rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2">
                             <option>Monthly</option>
                             <option>Quarterly</option>
                             <option>Annually</option>
@@ -1250,7 +1250,7 @@ const CompliancePage: React.FC = () => {
                         <div className="flex items-center justify-between">
                           <span className="text-sm text-gray-600">Approval Workflow</span>
                           <label className="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" className="sr-only peer" defaultChecked />
+                            <input type="checkbox" className="sr-only peer text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" defaultChecked />
                             <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                           </label>
                         </div>
@@ -1266,7 +1266,7 @@ const CompliancePage: React.FC = () => {
                       <input
                         id="gdpr-framework"
                         type="checkbox"
-                        className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded mt-1"
+                        className="h-4 w-4 text-slate-900 focus:ring-blue-500 border-gray-300 rounded mt-1 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                         defaultChecked
                       />
                       <div className="ml-3">
@@ -1280,7 +1280,7 @@ const CompliancePage: React.FC = () => {
                       <input
                         id="ccpa-framework"
                         type="checkbox"
-                        className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded mt-1"
+                        className="h-4 w-4 text-slate-900 focus:ring-blue-500 border-gray-300 rounded mt-1 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                         defaultChecked
                       />
                       <div className="ml-3">
@@ -1294,7 +1294,7 @@ const CompliancePage: React.FC = () => {
                       <input
                         id="sox-framework"
                         type="checkbox"
-                        className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded mt-1"
+                        className="h-4 w-4 text-slate-900 focus:ring-blue-500 border-gray-300 rounded mt-1 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                         defaultChecked
                       />
                       <div className="ml-3">
@@ -1409,7 +1409,7 @@ const CompliancePage: React.FC = () => {
                   <input
                     type="text"
                     id="requirement-name"
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-900 leading-tight focus:outline-none focus:shadow-outline font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                     value={newRequirement.name}
                     onChange={(e) => setNewRequirement({...newRequirement, name: e.target.value})}
                     required
@@ -1422,7 +1422,7 @@ const CompliancePage: React.FC = () => {
                   </label>
                   <textarea
                     id="requirement-description"
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-900 leading-tight focus:outline-none focus:shadow-outline font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                     value={newRequirement.description}
                     onChange={(e) => setNewRequirement({...newRequirement, description: e.target.value})}
                   />
@@ -1435,7 +1435,7 @@ const CompliancePage: React.FC = () => {
                   <input
                     type="text"
                     id="requirement-regulation"
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-900 leading-tight focus:outline-none focus:shadow-outline font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                     value={newRequirement.regulation}
                     onChange={(e) => setNewRequirement({...newRequirement, regulation: e.target.value})}
                     required
@@ -1449,7 +1449,7 @@ const CompliancePage: React.FC = () => {
                     </label>
                     <select
                       id="requirement-category"
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-900 leading-tight focus:outline-none focus:shadow-outline font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500"
                       value={newRequirement.category}
                       onChange={(e) => setNewRequirement({...newRequirement, category: e.target.value as any})}
                     >
@@ -1468,7 +1468,7 @@ const CompliancePage: React.FC = () => {
                     </label>
                     <select
                       id="requirement-priority"
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-900 leading-tight focus:outline-none focus:shadow-outline font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500"
                       value={newRequirement.priority}
                       onChange={(e) => setNewRequirement({...newRequirement, priority: e.target.value as any})}
                     >
@@ -1488,7 +1488,7 @@ const CompliancePage: React.FC = () => {
                     <input
                       type="date"
                       id="requirement-deadline"
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-900 leading-tight focus:outline-none focus:shadow-outline font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       value={newRequirement.deadline}
                       onChange={(e) => setNewRequirement({...newRequirement, deadline: e.target.value})}
                     />
@@ -1501,7 +1501,7 @@ const CompliancePage: React.FC = () => {
                     <input
                       type="text"
                       id="requirement-assigned"
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-900 leading-tight focus:outline-none focus:shadow-outline font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       value={newRequirement.assignedToName}
                       onChange={(e) => setNewRequirement({...newRequirement, assignedToName: e.target.value})}
                     />

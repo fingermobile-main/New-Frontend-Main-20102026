@@ -68,7 +68,7 @@ const TokenizePostModal: React.FC<TokenizePostModalProps> = ({
                 type="text"
                 value={tokenName}
                 onChange={(e) => setTokenName(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 placeholder="e.g. My Awesome Post Token"
                 required
               />
@@ -80,7 +80,7 @@ const TokenizePostModal: React.FC<TokenizePostModalProps> = ({
                 type="text"
                 value={tokenSymbol}
                 onChange={(e) => setTokenSymbol(e.target.value.toUpperCase())}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md uppercase"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md uppercase text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 placeholder="e.g. MAPT"
                 maxLength={6}
                 required
@@ -93,7 +93,7 @@ const TokenizePostModal: React.FC<TokenizePostModalProps> = ({
                 type="number"
                 value={initialSupply}
                 onChange={(e) => setInitialSupply(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
                 min="1"
                 max="1000000"
                 required
@@ -106,7 +106,7 @@ const TokenizePostModal: React.FC<TokenizePostModalProps> = ({
                 type="number"
                 value={royaltyPercentage}
                 onChange={(e) => setRoyaltyPercentage(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
                 min="0"
                 max="50"
                 required

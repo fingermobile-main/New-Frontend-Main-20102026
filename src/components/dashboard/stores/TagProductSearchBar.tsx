@@ -97,7 +97,7 @@ export const TagProductSearchBar: React.FC<TagProductSearchBarProps> = ({
       {/* Mini Search Bar (Crawler across MarketPlace, OwnIt, Flamingo, Storefront, FingerLux) */}
       <div className="relative">
         <div className="flex items-center bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden focus-within:ring-2 focus-within:ring-blue-500">
-          <div className="pl-3.5 text-slate-400">
+          <div className="pl-3.5 text-slate-700">
             <Search className="w-4 h-4" />
           </div>
 
@@ -110,11 +110,11 @@ export const TagProductSearchBar: React.FC<TagProductSearchBarProps> = ({
               setIsOpenDropdown(true);
             }}
             onFocus={() => setIsOpenDropdown(true)}
-            className="w-full px-3 py-2.5 text-xs bg-transparent focus:outline-none text-slate-900 dark:text-white"
+            className="w-full px-3 py-2.5 text-xs bg-transparent focus:outline-none text-slate-900 dark:text-white font-bold border border-slate-300 rounded focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
           />
 
           {loading && (
-            <div className="pr-3 text-xs text-slate-400 animate-pulse font-mono">
+            <div className="pr-3 text-xs text-slate-700 animate-pulse font-mono">
               Crawling...
             </div>
           )}
@@ -153,11 +153,11 @@ export const TagProductSearchBar: React.FC<TagProductSearchBarProps> = ({
             className="absolute left-0 right-0 top-full mt-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl p-2 z-30 max-h-72 overflow-y-auto space-y-1 animate-in fade-in"
             onMouseLeave={() => setIsOpenDropdown(false)}
           >
-            <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center justify-between">
+            <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-700 flex items-center justify-between">
               <span>Matching Products & Entitlements ({results.length})</span>
               <button
                 onClick={() => setIsOpenDropdown(false)}
-                className="text-slate-400 hover:text-slate-600"
+                className="text-slate-700 hover:text-slate-600"
               >
                 Close
               </button>
@@ -207,7 +207,7 @@ export const TagProductSearchBar: React.FC<TagProductSearchBarProps> = ({
                         {product.price} {product.currency}
                       </div>
                       {product.fiatPrice && (
-                        <div className="text-[10px] text-slate-400">{product.fiatPrice}</div>
+                        <div className="text-[10px] text-slate-700">{product.fiatPrice}</div>
                       )}
                     </div>
                     <button

@@ -143,7 +143,7 @@ const RoleManagementPage: React.FC = () => {
       {/* Create Role Modal */}
       {showCreateModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="bg-white rounded-2xl shadow-xl border border-gray-100 w-full max-w-md p-6">
+          <div className="bg-white rounded-2xl shadow-xl border border-slate-200 w-full max-w-md p-6">
             <h3 className="text-lg font-bold text-gray-900 mb-4">Create Platform Role</h3>
             <form onSubmit={handleCreateRole} className="space-y-4">
               <div>
@@ -154,7 +154,7 @@ const RoleManagementPage: React.FC = () => {
                   placeholder="e.g. Compliance Auditor"
                   value={newRoleTitle}
                   onChange={(e) => setNewRoleTitle(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                 />
               </div>
 
@@ -166,7 +166,7 @@ const RoleManagementPage: React.FC = () => {
                   max="100"
                   value={newRoleLevel}
                   onChange={(e) => setNewRoleLevel(Number(e.target.value))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400 font-mono"
                 />
               </div>
 
@@ -177,11 +177,11 @@ const RoleManagementPage: React.FC = () => {
                   placeholder="Describe the operational mandate and scope for this role"
                   value={newRoleDesc}
                   onChange={(e) => setNewRoleDesc(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                 />
               </div>
 
-              <div className="flex justify-end gap-3 pt-3 border-t border-gray-100">
+              <div className="flex justify-end gap-3 pt-3 border-t border-slate-200">
                 <button
                   type="button"
                   onClick={() => setShowCreateModal(false)}
@@ -205,14 +205,14 @@ const RoleManagementPage: React.FC = () => {
       {/* Permissions Inspection Modal */}
       {activeRoleForPerms && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="bg-white rounded-2xl shadow-xl border border-gray-100 w-full max-w-lg p-6">
-            <div className="flex justify-between items-center mb-4 pb-2 border-b border-gray-100">
+          <div className="bg-white rounded-2xl shadow-xl border border-slate-200 w-full max-w-lg p-6">
+            <div className="flex justify-between items-center mb-4 pb-2 border-b border-slate-200">
               <h3 className="text-lg font-bold text-gray-900">
                 Permissions for {activeRoleForPerms.title || activeRoleForPerms.name}
               </h3>
               <button
                 onClick={() => setActiveRoleForPerms(null)}
-                className="text-gray-400 hover:text-gray-600 text-lg"
+                className="text-slate-700 hover:text-gray-600 text-lg"
               >
                 ✕
               </button>

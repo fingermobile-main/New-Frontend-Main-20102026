@@ -23,7 +23,7 @@ const CommercePage: React.FC = () => {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-xl shadow p-6 border border-gray-100">
+          <div className="bg-white rounded-xl shadow p-6 border border-slate-200">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-500">Total Revenue</p>
@@ -39,7 +39,7 @@ const CommercePage: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow p-6 border border-gray-100">
+          <div className="bg-white rounded-xl shadow p-6 border border-slate-200">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-500">Orders</p>
@@ -55,7 +55,7 @@ const CommercePage: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow p-6 border border-gray-100">
+          <div className="bg-white rounded-xl shadow p-6 border border-slate-200">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-500">Conversion Rate</p>
@@ -71,7 +71,7 @@ const CommercePage: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow p-6 border border-gray-100">
+          <div className="bg-white rounded-xl shadow p-6 border border-slate-200">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-500">Avg. Order Value</p>
@@ -88,7 +88,7 @@ const CommercePage: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow p-6 border border-gray-100">
+        <div className="bg-white rounded-xl shadow p-6 border border-slate-200">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-semibold">Products</h2>
             <div className="flex space-x-3">
@@ -96,11 +96,11 @@ const CommercePage: React.FC = () => {
                 <input
                   type="text"
                   placeholder="Search products..."
-                  className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                 />
-                <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
+                <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-700" />
               </div>
-              <button className="p-2 text-gray-400 hover:text-gray-500 border border-gray-300 rounded-lg">
+              <button className="p-2 text-slate-700 hover:text-gray-500 border border-gray-300 rounded-lg">
                 <Filter className="h-4 w-4" />
               </button>
             </div>

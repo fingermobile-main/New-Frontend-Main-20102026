@@ -83,7 +83,7 @@ const CommunitiesSection: React.FC = () => {
         ))}
       </div>
 
-      <div className="mt-4 pt-4 border-t border-gray-100">
+      <div className="mt-4 pt-4 border-t border-slate-200">
         <Link to="/communities/create" className="flex items-center justify-center text-fm-orange hover:underline text-sm font-medium">
           <span className="mr-1">+</span> Create a new community
         </Link>

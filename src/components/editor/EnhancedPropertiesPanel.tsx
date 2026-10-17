@@ -16,7 +16,7 @@ const EnhancedPropertiesPanel: React.FC<EnhancedPropertiesPanelProps> = ({
   if (!component) {
     return (
       <div className="w-80 bg-white border-l border-slate-300 flex flex-col h-full">
-        <div className="p-4 border-b border-gray-200">
+        <div className="p-4 border-b border-slate-300">
           <h2 className="text-lg font-semibold text-gray-800">Properties</h2>
         </div>
         <div className="flex-1 flex items-center justify-center p-4">
@@ -40,11 +40,11 @@ const EnhancedPropertiesPanel: React.FC<EnhancedPropertiesPanelProps> = ({
 
   return (
     <div className="w-80 bg-white border-l border-slate-300 flex flex-col h-full">
-      <div className="p-4 border-b border-gray-200">
+      <div className="p-4 border-b border-slate-300">
         <h2 className="text-lg font-semibold text-gray-800">Properties</h2>
       </div>
 
-      <div className="flex border-b border-gray-200">
+      <div className="flex border-b border-slate-300">
         {(['properties', 'styles', 'advanced'] as const).map((tab) => (
           <button
             key={tab}
@@ -69,7 +69,7 @@ const EnhancedPropertiesPanel: React.FC<EnhancedPropertiesPanelProps> = ({
                 type="text"
                 value={component.id}
                 disabled
-                className="w-full px-2 py-1.5 border border-gray-300 rounded text-xs bg-gray-50" />
+                className="w-full px-2 py-1.5 border border-gray-300 rounded text-xs bg-white text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" />
             </div>
 
             <div>
@@ -78,7 +78,7 @@ const EnhancedPropertiesPanel: React.FC<EnhancedPropertiesPanelProps> = ({
                 type="text"
                 value={component.type}
                 disabled
-                className="w-full px-2 py-1.5 border border-gray-300 rounded text-xs bg-gray-50 capitalize" />
+                className="w-full px-2 py-1.5 border border-gray-300 rounded text-xs bg-white capitalize text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" />
             </div>
 
             {component.props && Object.entries(component.props).map(([key, value]) => (
@@ -90,7 +90,7 @@ const EnhancedPropertiesPanel: React.FC<EnhancedPropertiesPanelProps> = ({
                   type="text"
                   value={String(value || '')}
                   onChange={(e) => handlePropChange(key, e.target.value)}
-                  className="w-full px-2 py-1.5 border border-gray-300 rounded text-xs focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-2 py-1.5 border border-gray-300 rounded text-xs focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                 />
               </div>
             ))}

@@ -76,7 +76,7 @@ const CopyrightFairUsePage: React.FC = () => {
                 value={contentId}
                 onChange={(e) => setContentId(e.target.value)}
                 placeholder="e.g. Educational Commentary Video #101"
-                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-2 border"
+                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-2 border text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
               />
             </div>
             <button
@@ -103,7 +103,7 @@ const CopyrightFairUsePage: React.FC = () => {
               type="checkbox"
               checked={agreed}
               onChange={(e) => setAgreed(e.target.checked)}
-              className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+              className="h-4 w-4 text-slate-900 border-gray-300 rounded focus:ring-blue-500 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
             />
             <label htmlFor="accept-copyright-policy" className="ml-3 text-sm font-medium text-gray-900">
               I have read, understood, and agree to enforce the FingerMobile Copyright & AI Fair Use Compliance Policy.

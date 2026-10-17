@@ -76,14 +76,14 @@ const InstructorDashboard: React.FC<InstructorDashboardProps> = ({ courses: prop
           <div className="bg-white rounded-lg shadow-sm border border-slate-300 p-6">
             <h2 className="text-lg font-semibold mb-4">Recent Activity</h2>
             <div className="space-y-3">
-              <div className="flex items-center justify-between py-2 border-b border-gray-100">
+              <div className="flex items-center justify-between py-2 border-b border-slate-200">
                 <div>
                   <p className="text-sm font-medium text-gray-900">New enrollment in "Introduction to Web Development"</p>
                   <p className="text-xs text-gray-500">2 hours ago</p>
                 </div>
                 <span className="text-sm text-green-600 font-medium">+1 student</span>
               </div>
-              <div className="flex items-center justify-between py-2 border-b border-gray-100">
+              <div className="flex items-center justify-between py-2 border-b border-slate-200">
                 <div>
                   <p className="text-sm font-medium text-gray-900">Course review received</p>
                   <p className="text-xs text-gray-500">5 hours ago</p>
@@ -98,7 +98,7 @@ const InstructorDashboard: React.FC<InstructorDashboardProps> = ({ courses: prop
       {/* Courses Tab */}
       {activeTab === 'courses' && (
         <div className="bg-white rounded-lg shadow-sm border border-slate-300">
-          <div className="p-6 border-b border-gray-200">
+          <div className="p-6 border-b border-slate-300">
             <h2 className="text-lg font-semibold">My Courses</h2>
           </div>
           <div className="divide-y divide-gray-200">
@@ -136,13 +136,13 @@ const InstructorDashboard: React.FC<InstructorDashboardProps> = ({ courses: prop
             <div>
               <h3 className="text-sm font-medium text-gray-700 mb-2">Enrollment Trends</h3>
               <div className="h-48 bg-gray-50 rounded-lg flex items-center justify-center">
-                <p className="text-gray-400">Chart coming soon</p>
+                <p className="text-slate-700">Chart coming soon</p>
               </div>
             </div>
             <div>
               <h3 className="text-sm font-medium text-gray-700 mb-2">Revenue Breakdown</h3>
               <div className="h-48 bg-gray-50 rounded-lg flex items-center justify-center">
-                <p className="text-gray-400">Chart coming soon</p>
+                <p className="text-slate-700">Chart coming soon</p>
               </div>
             </div>
           </div>

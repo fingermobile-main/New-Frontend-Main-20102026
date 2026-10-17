@@ -227,7 +227,7 @@ export const MiiPinExchangeModal: React.FC<PinExchangeModalProps> = ({
                     value={partnerPhone}
                     onChange={(e) => setPartnerPhone(e.target.value)}
                     placeholder="+1 555 0192 or hash..."
-                    className="w-full pl-9 pr-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-gray-900 dark:text-white"
+                    className="w-full pl-9 pr-3 py-2 text-sm bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-slate-900 dark:text-white font-bold border-slate-300 placeholder:text-slate-400"
                   />
                 </div>
               </div>
@@ -245,7 +245,7 @@ export const MiiPinExchangeModal: React.FC<PinExchangeModalProps> = ({
                     value={pinCode}
                     onChange={(e) => setPinCode(e.target.value.replace(/\D/g, ''))}
                     placeholder="e.g. 749201"
-                    className="w-full pl-9 pr-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl tracking-widest font-mono focus:ring-2 focus:ring-emerald-500 outline-none text-gray-900 dark:text-white"
+                    className="w-full pl-9 pr-3 py-2 text-sm bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl tracking-widest font-mono focus:ring-2 focus:ring-emerald-500 outline-none text-slate-900 dark:text-white font-bold border-slate-300 placeholder:text-slate-400"
                   />
                 </div>
                 <span className="text-[10px] text-gray-500 mt-1 block">PIN must be numbers only (6 to 8 digits).</span>
@@ -271,7 +271,7 @@ export const MiiPinExchangeModal: React.FC<PinExchangeModalProps> = ({
               </div>
 
               {contacts.length === 0 ? (
-                <div className="text-center py-8 text-gray-400 text-xs">
+                <div className="text-center py-8 text-slate-700 text-xs">
                   No verified PIN peers found yet. Use Phonebook Sync or enter a PIN above.
                 </div>
               ) : (
@@ -282,12 +282,12 @@ export const MiiPinExchangeModal: React.FC<PinExchangeModalProps> = ({
                         <div className="font-bold text-sm text-gray-900 dark:text-white flex items-center gap-1.5">
                           <span>{contact.contact_phone_hash || 'Contact Peer'}</span>
                           {contact.pin_verified && (
-                            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 font-bold">
+                            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-950 dark:text-emerald-300 font-bold border text-emerald-950 border-emerald-400 font-black">
                               PIN OK
                             </span>
                           )}
                         </div>
-                        <div className="text-[11px] text-gray-400">
+                        <div className="text-[11px] text-slate-700">
                           Disappearing sync active • ShowCase connected
                         </div>
                       </div>
@@ -317,7 +317,7 @@ export const MiiPinExchangeModal: React.FC<PinExchangeModalProps> = ({
                 value={rawContactsList}
                 onChange={(e) => setRawContactsList(e.target.value)}
                 placeholder="+1 555 123 4567&#10;+44 7911 123456&#10;+234 803 123 4567"
-                className="w-full p-3 text-xs font-mono bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-gray-900 dark:text-white"
+                className="w-full p-3 text-xs font-mono bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-slate-900 dark:text-white font-bold border-slate-300 placeholder:text-slate-400"
               />
               <button
                 type="submit"
@@ -469,11 +469,11 @@ export const MiiFingerOrbitModal: React.FC<FingerOrbitModalProps> = ({
                 <div>
                   <h4 className="font-bold text-sm text-gray-900 dark:text-white flex items-center gap-2">
                     {item.title}
-                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300">
+                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-950 dark:text-blue-300 border text-blue-950 border-blue-400 font-black">
                       {item.timer}
                     </span>
                     {item.isPrivate && (
-                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300">
+                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-950 dark:text-amber-300 border text-amber-950 border-amber-400 font-black">
                         PIN Required
                       </span>
                     )}
@@ -509,7 +509,7 @@ export const MiiFingerOrbitModal: React.FC<FingerOrbitModalProps> = ({
                   placeholder="Enter 6–8 Digit Peer PIN"
                   value={downloadPin}
                   onChange={(e) => setDownloadPin(e.target.value.replace(/\D/g, ''))}
-                  className="flex-1 px-3 py-2 text-xs font-mono bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg outline-none text-gray-900 dark:text-white"
+                  className="flex-1 px-3 py-2 text-xs font-mono bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg outline-none text-slate-900 dark:text-white font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
                 <button
                   type="submit"
@@ -642,7 +642,7 @@ export const MiiMiniStoreModal: React.FC<MiniStoreModalProps> = ({
                   </h4>
                 </div>
 
-                <div className="mt-4 pt-3 border-t border-gray-100 dark:border-gray-700">
+                <div className="mt-4 pt-3 border-t border-slate-200 dark:border-gray-700">
                   <div className="flex items-center justify-between mb-3 text-xs font-bold">
                     <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400">
                       <Coins className="w-3.5 h-3.5" /> {product.ficPrice} FIC

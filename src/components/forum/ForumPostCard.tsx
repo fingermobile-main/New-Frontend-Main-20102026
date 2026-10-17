@@ -520,7 +520,7 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
                   </span>
                 )}
                 {post.privacy === 'public' && (
-                  <span title="Public" className="text-slate-400">
+                  <span title="Public" className="text-slate-700">
                     <GlobeAltIcon className="w-3 h-3" />
                   </span>
                 )}
@@ -623,7 +623,7 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
                 <ChartBarIcon className="w-4 h-4 text-purple-700" />
                 {pollData.question}
               </span>
-              <span className="text-[10px] text-purple-950 bg-purple-100 px-2 py-0.5 rounded-full font-bold border border-purple-300">
+              <span className="text-[10px] text-purple-950 bg-purple-100 px-2 py-0.5 rounded-full font-bold border border-purple-400 border-purple-400 font-black">
                 {pollData.totalVotes} votes • {pollData.durationDays}d left
               </span>
             </div>
@@ -1037,7 +1037,7 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
                 placeholder="Write a sovereign comment..."
                 value={commentInput}
                 onChange={(e) => setCommentInput(e.target.value)}
-                className="flex-1 px-3.5 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-orange-500 focus:outline-hidden"
+                className="flex-1 px-3.5 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-orange-500 focus:outline-hidden font-bold placeholder:text-slate-400"
               />
               <button
                 type="submit"
@@ -1161,7 +1161,7 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
                   placeholder="Enter custom FIC amount..."
                   value={customTip}
                   onChange={(e) => setCustomTip(e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-white placeholder:text-slate-700 focus:ring-2 focus:ring-amber-500 focus:outline-hidden"
+                  className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-white placeholder:text-slate-400 focus:ring-2 focus:ring-amber-500 focus:outline-hidden font-mono"
                 />
                 <span className="absolute right-3.5 top-2.5 text-xs font-black text-amber-700">FIC</span>
               </div>
@@ -1175,7 +1175,7 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
                 placeholder="Awesome insight! Keep building..."
                 value={tipNote}
                 onChange={(e) => setTipNote(e.target.value)}
-                className="w-full px-3.5 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white placeholder:text-slate-700 focus:ring-2 focus:ring-amber-500 focus:outline-hidden"
+                className="w-full px-3.5 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white placeholder:text-slate-400 focus:ring-2 focus:ring-amber-500 focus:outline-hidden font-bold"
               />
             </div>
 
@@ -1244,7 +1244,7 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
                   type="text"
                   readOnly
                   value={postUrl}
-                  className="flex-1 px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-xs font-medium text-slate-800 dark:text-slate-200 select-all focus:outline-hidden"
+                  className="flex-1 px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-xs font-medium text-slate-900 dark:text-slate-200 select-all focus:outline-hidden font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
                 <button
                   type="button"

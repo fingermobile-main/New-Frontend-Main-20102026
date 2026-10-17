@@ -29,9 +29,9 @@ const RequestPayoutModal: React.FC<RequestPayoutModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white rounded-xl shadow-2xl max-w-md w-full mx-4">
-        <div className="flex items-center justify-between p-6 border-b border-gray-200">
+        <div className="flex items-center justify-between p-6 border-b border-slate-300">
           <h2 className="text-xl font-bold text-gray-900">Request Payout</h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+          <button onClick={onClose} className="text-slate-700 hover:text-gray-600">
             <XMarkIcon className="w-6 h-6" />
           </button>
         </div>
@@ -51,7 +51,7 @@ const RequestPayoutModal: React.FC<RequestPayoutModalProps> = ({
               required
               min="100"
               max={availableBalance}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400 font-mono"
               placeholder="Enter amount"
             />
             <p className="text-xs text-gray-500 mt-1">Minimum: 100 FIC</p>
@@ -63,7 +63,7 @@ const RequestPayoutModal: React.FC<RequestPayoutModalProps> = ({
               value={bankAccount}
               onChange={(e) => setBankAccount(e.target.value)}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white"
             >
               <option value="">Select bank account</option>
               <option value="account1">****1234 - First Bank</option>
@@ -78,7 +78,7 @@ const RequestPayoutModal: React.FC<RequestPayoutModalProps> = ({
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               rows={3}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               placeholder="Add any additional notes..."
             />
           </div>

@@ -135,7 +135,7 @@ const FeedManagement: React.FC = () => {
         <p className="text-gray-600">Customize what appears in your feed and manage content preferences</p>
       </div>
 
-      <div className="flex flex-wrap gap-2 mb-8 border-b border-gray-200">
+      <div className="flex flex-wrap gap-2 mb-8 border-b border-slate-300">
         <button
           onClick={() => setActiveTab('personal')}
           className={`px-4 py-2 rounded-t-lg font-medium ${
@@ -187,7 +187,7 @@ const FeedManagement: React.FC = () => {
                       type="checkbox"
                       checked={enabled as boolean}
                       onChange={(e) => handleFeedTypeChange(type, e.target.checked)}
-                      className="sr-only peer"
+                      className="sr-only peer text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                     />
                     <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                   </label>
@@ -215,7 +215,7 @@ const FeedManagement: React.FC = () => {
                         ...preferences.personal.notificationPreferences,
                         [activity]: e.target.checked
                       })}
-                      className="sr-only peer"
+                      className="sr-only peer text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                     />
                     <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                   </label>
@@ -276,7 +276,7 @@ const FeedManagement: React.FC = () => {
                         ...preferences.platform.allowedContent,
                         [type]: e.target.checked
                       })}
-                      className="sr-only peer"
+                      className="sr-only peer text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                     />
                     <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                   </label>
@@ -305,7 +305,7 @@ const FeedManagement: React.FC = () => {
                       type="checkbox"
                       checked={enabled as boolean}
                       onChange={(e) => handleContentFilterChange(filter, e.target.checked)}
-                      className="sr-only peer"
+                      className="sr-only peer text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                     />
                     <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                   </label>
@@ -356,7 +356,7 @@ const FeedManagement: React.FC = () => {
                 value={newKeyword}
                 onChange={(e) => setNewKeyword(e.target.value)}
                 placeholder="Enter keyword to block..."
-                className="flex-grow px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="flex-grow px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               />
               <button
                 onClick={handleAddKeyword}
@@ -394,7 +394,7 @@ const FeedManagement: React.FC = () => {
                 value={newTopic}
                 onChange={(e) => setNewTopic(e.target.value)}
                 placeholder="Enter topic to follow..."
-                className="flex-grow px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="flex-grow px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               />
               <button
                 onClick={handleAddTopic}
@@ -450,7 +450,7 @@ const FeedManagement: React.FC = () => {
         </div>
       )}
 
-      <div className="mt-8 pt-6 border-t border-gray-200 flex justify-end">
+      <div className="mt-8 pt-6 border-t border-slate-300 flex justify-end">
         <button className="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg mr-4 hover:bg-gray-300">
           Cancel
         </button>

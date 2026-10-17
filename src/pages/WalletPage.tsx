@@ -682,21 +682,21 @@ const WalletPage: React.FC = () => {
 
           {/* BALANCE OVERVIEW & QUICK ACTIONS */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <Card className="lg:col-span-2 bg-white border border-slate-200/80 shadow-xs rounded-3xl overflow-hidden">
-              <CardHeader className="bg-slate-50/50 border-b border-slate-100 pb-4">
+            <Card className="lg:col-span-2 bg-white border border-slate-300 shadow-sm rounded-3xl overflow-hidden">
+              <CardHeader className="bg-slate-50/70 border-b border-slate-300 pb-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <CardDescription className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                    <CardDescription className="text-xs font-bold text-slate-700 uppercase tracking-wider">
                       Confirmed Live Balance
                     </CardDescription>
                     <CardTitle className="text-4xl font-black text-slate-900 mt-1">
-                      {ficBalance.toLocaleString()} <span className="text-indigo-600 text-2xl font-bold">FIC</span>
+                      {ficBalance.toLocaleString()} <span className="text-indigo-700 text-2xl font-bold">FIC</span>
                     </CardTitle>
                   </div>
                   <div className="text-right">
-                    <span className="text-xs font-medium text-slate-500 block">FIAT Valuation</span>
-                    <span className="text-xl font-bold text-slate-900">₦{(ficBalance * 650).toLocaleString()} NGN</span>
-                    <span className="text-xs text-slate-400 block font-mono">~${(ficBalance * 0.5).toFixed(2)} USD</span>
+                    <span className="text-xs font-bold text-slate-700 uppercase tracking-wider block">FIAT Valuation</span>
+                    <span className="text-xl font-black text-slate-900 font-mono">₦{(ficBalance * 650).toLocaleString()} NGN</span>
+                    <span className="text-xs text-slate-700 block font-mono font-semibold mt-0.5">~${(ficBalance * 0.5).toFixed(2)} USD</span>
                   </div>
                 </div>
               </CardHeader>
@@ -704,35 +704,35 @@ const WalletPage: React.FC = () => {
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   <Button
                     onClick={() => setShowFundModal(true)}
-                    className="flex flex-col items-center justify-center h-20 bg-indigo-50 hover:bg-indigo-100 text-indigo-900 border border-indigo-200 rounded-2xl gap-1"
+                    className="flex flex-col items-center justify-center h-20 bg-indigo-50 hover:bg-indigo-100 text-indigo-950 border border-indigo-300 rounded-2xl gap-1 cursor-pointer font-bold"
                   >
-                    <PlusIcon className="w-5 h-5 text-indigo-600" />
+                    <PlusIcon className="w-5 h-5 text-indigo-700" />
                     <span className="text-xs font-bold">Deposit Funds</span>
                   </Button>
 
                   <Button
                     variant="outline"
                     onClick={() => setShowSendModal(true)}
-                    className="flex flex-col items-center justify-center h-20 hover:bg-slate-100 border border-slate-200 rounded-2xl gap-1 text-slate-800"
+                    className="flex flex-col items-center justify-center h-20 hover:bg-slate-50 border border-slate-300 rounded-2xl gap-1 text-slate-900 font-bold cursor-pointer"
                   >
-                    <ArrowUpIcon className="w-5 h-5 text-emerald-600" />
+                    <ArrowUpIcon className="w-5 h-5 text-emerald-700" />
                     <span className="text-xs font-bold">Send FIC</span>
                   </Button>
 
                   <Button
                     variant="outline"
                     onClick={() => setShowWithdrawModal(true)}
-                    className="flex flex-col items-center justify-center h-20 hover:bg-slate-100 border border-slate-200 rounded-2xl gap-1 text-slate-800"
+                    className="flex flex-col items-center justify-center h-20 hover:bg-slate-50 border border-slate-300 rounded-2xl gap-1 text-slate-900 font-bold cursor-pointer"
                   >
-                    <ArrowDownIcon className="w-5 h-5 text-rose-600" />
+                    <ArrowDownIcon className="w-5 h-5 text-rose-700" />
                     <span className="text-xs font-bold">Withdraw</span>
                   </Button>
 
                   <Link
                     to="/dashboard/financials?subtab=treasury"
-                    className="flex flex-col items-center justify-center h-20 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-2xl gap-1 text-slate-800"
+                    className="flex flex-col items-center justify-center h-20 bg-slate-50 hover:bg-slate-100 border border-slate-300 rounded-2xl gap-1 text-slate-900 font-bold transition-colors"
                   >
-                    <Lock className="w-5 h-5 text-purple-600" />
+                    <Lock className="w-5 h-5 text-purple-700" />
                     <span className="text-xs font-bold">Master Treasury</span>
                   </Link>
                 </div>
@@ -740,28 +740,28 @@ const WalletPage: React.FC = () => {
             </Card>
 
             {/* Quick Wallet Address Card */}
-            <Card className="bg-white border border-slate-200/80 shadow-xs rounded-3xl p-6 flex flex-col justify-between">
+            <Card className="bg-white border border-slate-300 shadow-sm rounded-3xl p-6 flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <span className="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
-                    <WalletIcon className="w-4 h-4 text-indigo-600" />
+                  <span className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
+                    <WalletIcon className="w-4 h-4 text-indigo-700" />
                     Member Protocol ID
                   </span>
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse border border-emerald-600"></span>
                 </div>
-                <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200 font-mono text-xs text-slate-700 break-all select-all">
+                <div className="p-3.5 bg-slate-50 rounded-2xl border border-slate-300 font-mono text-xs font-bold text-slate-900 break-all select-all">
                   {walletAddress || '0xDEF482...987A21'}
                 </div>
-                <p className="text-[11px] text-slate-500 mt-2">
+                <p className="text-xs text-slate-700 font-medium mt-2.5 leading-relaxed">
                   Permanent cryptographic account linked to your verified NIN identity.
                 </p>
               </div>
 
-              <div className="pt-4 border-t border-slate-100 flex gap-2">
+              <div className="pt-4 border-t border-slate-200 flex gap-2">
                 <Button
                   size="sm"
                   variant="outline"
-                  className="flex-1 text-xs font-bold"
+                  className="flex-1 text-xs font-bold border-slate-300 text-slate-800 hover:bg-slate-50 cursor-pointer"
                   onClick={() => {
                     navigator.clipboard.writeText(walletAddress || '0xDEF482...987A21');
                     toast({ title: 'Copied', description: 'Wallet address copied to clipboard.' });
@@ -799,21 +799,21 @@ const WalletPage: React.FC = () => {
 
             {/* TAB 1: TREASURY FUNDING REQUESTS TRACKER */}
             <TabsContent value="treasury_funding" className="space-y-6">
-              <Card className="bg-white border border-slate-200/80 shadow-xs rounded-3xl overflow-hidden">
-                <CardHeader className="border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <Card className="bg-white border border-slate-300 shadow-sm rounded-3xl overflow-hidden">
+                <CardHeader className="border-b border-slate-300 bg-slate-50/70 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div>
-                    <CardTitle className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                      <FileText className="w-5 h-5 text-indigo-600" />
+                    <CardTitle className="text-lg font-black text-slate-900 flex items-center gap-2">
+                      <FileText className="w-5 h-5 text-indigo-700" />
                       Alternative Bank Treasury Funding Requests
                     </CardTitle>
-                    <CardDescription className="text-xs text-slate-500 mt-0.5">
+                    <CardDescription className="text-xs font-semibold text-slate-700 mt-0.5">
                       Live status from payment confirmation by Treasury Staff to final release by CFO Mrs. Mbah Eunice Emonena.
                     </CardDescription>
                   </div>
                   <Button
                     size="sm"
                     onClick={() => setShowFundModal(true)}
-                    className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs"
+                    className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-sm cursor-pointer"
                   >
                     <PlusIcon className="w-4 h-4 mr-1" />
                     New Funding Request
@@ -823,15 +823,15 @@ const WalletPage: React.FC = () => {
                 <CardContent className="p-0">
                   {treasuryRequests.length === 0 ? (
                     <div className="text-center py-12 px-4">
-                      <FileText className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-                      <p className="text-sm font-semibold text-slate-700">No Treasury Funding Requests Found</p>
-                      <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
+                      <FileText className="w-12 h-12 text-slate-400 mx-auto mb-3" />
+                      <p className="text-base font-bold text-slate-900">No Treasury Funding Requests Found</p>
+                      <p className="text-xs text-slate-700 font-medium mt-1 max-w-sm mx-auto leading-relaxed">
                         Make a transfer to Alternative Bank (0514108422) and submit your transaction reference to fund your wallet.
                       </p>
                       <Button
                         size="sm"
                         onClick={() => setShowFundModal(true)}
-                        className="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs"
+                        className="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-sm cursor-pointer"
                       >
                         Submit Deposit Proof
                       </Button>
@@ -839,7 +839,7 @@ const WalletPage: React.FC = () => {
                   ) : (
                     <div className="overflow-x-auto">
                       <table className="w-full text-left text-xs">
-                        <thead className="bg-slate-50 border-b border-slate-200 text-slate-600 uppercase font-mono font-bold text-[10px]">
+                        <thead className="bg-slate-50 border-b border-slate-300 text-slate-700 uppercase font-mono font-bold text-[10px]">
                           <tr>
                             <th className="py-3.5 px-4">Request Ref</th>
                             <th className="py-3.5 px-4">Amount / Consideration</th>
@@ -849,12 +849,12 @@ const WalletPage: React.FC = () => {
                             <th className="py-3.5 px-4 text-right">Actions</th>
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-slate-100">
+                        <tbody className="divide-y divide-slate-200">
                           {treasuryRequests.map((req) => (
-                            <tr key={req.id} className="hover:bg-slate-50/80 transition-colors">
+                            <tr key={req.id} className="hover:bg-slate-50 transition-colors">
                               <td className="py-4 px-4 font-mono">
                                 <span className="font-bold text-indigo-700 block">{req.requestReference}</span>
-                                <span className="text-[10px] text-slate-400">
+                                <span className="text-[10px] text-slate-700 font-semibold">
                                   {new Date(req.createdAt).toLocaleDateString()} {new Date(req.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                 </span>
                               </td>
@@ -863,35 +863,35 @@ const WalletPage: React.FC = () => {
                                 <span className="font-bold text-slate-900 block text-sm">
                                   {req.amountFIC.toLocaleString()} FIC
                                 </span>
-                                <span className="text-[11px] text-slate-500 font-mono">
+                                <span className="text-[11px] text-slate-700 font-mono font-semibold">
                                   ₦{req.amountNGN.toLocaleString()} (Rate: ₦{req.ratePerFIC}/FIC)
                                 </span>
                               </td>
 
-                              <td className="py-4 px-4 font-mono text-slate-700">
-                                <span className="font-semibold block text-slate-900">{req.depositorName}</span>
-                                <span className="text-[11px] text-slate-500 block">{req.depositorBank}</span>
-                                <span className="text-[10px] text-slate-400">{req.bankTxReference}</span>
+                              <td className="py-4 px-4 font-mono text-slate-800">
+                                <span className="font-bold block text-slate-900">{req.depositorName}</span>
+                                <span className="text-[11px] text-slate-700 block font-semibold">{req.depositorBank}</span>
+                                <span className="text-[10px] text-slate-600 font-medium">{req.bankTxReference}</span>
                               </td>
 
                               <td className="py-4 px-4">
                                 {req.status === 'PENDING_CONFIRMATION' && (
                                   <div>
-                                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-100 text-amber-900 border border-amber-300">
-                                      <Clock className="w-3 h-3 text-amber-600 animate-spin" />
+                                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-100 text-amber-950 border border-amber-400">
+                                      <Clock className="w-3 h-3 text-amber-700 animate-spin" />
                                       Pending Treasury Staff (Staff 1-7)
                                     </span>
-                                    <p className="text-[10px] text-slate-400 mt-1">Awaiting confirmation at Accounts</p>
+                                    <p className="text-[10px] text-slate-700 font-medium mt-1">Awaiting confirmation at Accounts</p>
                                   </div>
                                 )}
 
                                 {req.status === 'CONFIRMED_BY_TREASURY' && (
                                   <div>
-                                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-blue-100 text-blue-900 border border-blue-300">
-                                      <CheckCircle2 className="w-3 h-3 text-blue-600" />
+                                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-blue-100 text-blue-950 border border-blue-400">
+                                      <CheckCircle2 className="w-3 h-3 text-blue-700" />
                                       Confirmed by {req.treasuryStaffName || 'Staff Accountant'}
                                     </span>
-                                    <p className="text-[10px] text-amber-600 font-bold mt-1">
+                                    <p className="text-[10px] text-amber-800 font-bold mt-1">
                                       Awaiting CFO Mrs. Mbah Eunice Emonena final sign-off
                                     </p>
                                   </div>
@@ -899,24 +899,24 @@ const WalletPage: React.FC = () => {
 
                                 {req.status === 'APPROVED_AND_FUNDED' && (
                                   <div>
-                                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300">
-                                      <ShieldCheck className="w-3 h-3 text-emerald-600" />
+                                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-950 border border-emerald-400">
+                                      <ShieldCheck className="w-3 h-3 text-emerald-700" />
                                       CFO Approved & Wallet Funded
                                     </span>
-                                    <p className="text-[10px] text-slate-500 mt-1">
+                                    <p className="text-[10px] text-slate-700 font-semibold mt-1">
                                       Authorized by {req.cfoName || 'Mrs. Mbah Eunice Emonena (CFO)'}
                                     </p>
                                   </div>
                                 )}
                               </td>
 
-                              <td className="py-4 px-4 font-mono text-[11px] text-slate-600">
+                              <td className="py-4 px-4 font-mono text-[11px] text-slate-700">
                                 {req.deductedFromVault ? (
-                                  <span className="px-2 py-0.5 rounded-md bg-purple-50 text-purple-800 border border-purple-200 font-semibold">
+                                  <span className="px-2 py-0.5 rounded-md bg-purple-50 text-purple-950 border border-purple-300 font-bold">
                                     {req.deductedFromVault.includes('004') ? 'Wallet 004 Treasury & Seed' : req.deductedFromVault}
                                   </span>
                                 ) : (
-                                  <span className="text-slate-400 italic">Waterfall 004 Queue</span>
+                                  <span className="text-slate-700 italic font-semibold">Waterfall 004 Queue</span>
                                 )}
                               </td>
 
@@ -925,13 +925,13 @@ const WalletPage: React.FC = () => {
                                   <Button
                                     size="sm"
                                     onClick={() => handleDownloadReceipt(req)}
-                                    className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs gap-1.5"
+                                    className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs gap-1.5 shadow-sm cursor-pointer"
                                   >
                                     <Download className="w-3.5 h-3.5" />
                                     PDF Receipt
                                   </Button>
                                 ) : (
-                                  <span className="text-[11px] text-slate-400 font-mono block">In Processing Pipeline</span>
+                                  <span className="text-[11px] text-slate-700 font-mono font-bold block">In Processing Pipeline</span>
                                 )}
                               </td>
                             </tr>
@@ -1167,36 +1167,36 @@ const WalletPage: React.FC = () => {
 
             {/* TAB 3: GENERAL LEDGER TRANSACTIONS */}
             <TabsContent value="tx_history" className="space-y-6">
-              <Card className="bg-white border border-slate-200/80 shadow-xs rounded-3xl overflow-hidden">
-                <CardHeader className="border-b border-slate-100">
-                  <CardTitle className="text-lg font-bold text-slate-900">General Ledger Activity</CardTitle>
-                  <CardDescription className="text-xs text-slate-500">
+              <Card className="bg-white border border-slate-300 shadow-sm rounded-3xl overflow-hidden">
+                <CardHeader className="border-b border-slate-300 bg-slate-50/70">
+                  <CardTitle className="text-lg font-black text-slate-900">General Ledger Activity</CardTitle>
+                  <CardDescription className="text-xs font-semibold text-slate-700">
                     Cryptographic record of deposits, transfers, and disbursements verified on PostgreSQL.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="p-0">
-                  <div className="divide-y divide-slate-100">
+                  <div className="divide-y divide-slate-200">
                     {transactions.length === 0 ? (
-                      <p className="text-center py-10 text-slate-400 text-xs">No transactions recorded.</p>
+                      <p className="text-center py-10 text-slate-700 text-xs font-medium">No transactions recorded yet.</p>
                     ) : (
                       transactions.map((tx) => (
                         <div key={tx.id} className="p-4 flex items-center justify-between hover:bg-slate-50 transition-colors">
                           <div className="flex items-center gap-3">
-                            <div className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs ${
-                              tx.type === 'received' ? 'bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold' : 'bg-rose-100 text-rose-800'
+                            <div className={`w-9 h-9 rounded-full flex items-center justify-center font-black text-xs ${
+                              tx.type === 'received' ? 'bg-emerald-100 text-emerald-950 border border-emerald-400' : 'bg-rose-100 text-rose-950 border border-rose-400'
                             }`}>
                               {tx.type === 'received' ? '↓' : '↑'}
                             </div>
                             <div>
-                              <p className="font-semibold text-slate-900 text-xs">{tx.description || 'Transaction'}</p>
-                              <p className="text-[10px] text-slate-400 font-mono">{tx.date} • Ref #{String(tx.id)}</p>
+                              <p className="font-bold text-slate-900 text-xs">{tx.description || 'Transaction'}</p>
+                              <p className="text-[10px] text-slate-700 font-mono font-semibold">{tx.date} • Ref #{String(tx.id)}</p>
                             </div>
                           </div>
                           <div className="text-right">
-                            <p className={`font-bold text-xs ${tx.type === 'received' ? 'text-emerald-600' : 'text-rose-600'}`}>
+                            <p className={`font-mono font-black text-xs ${tx.type === 'received' ? 'text-emerald-700' : 'text-rose-700'}`}>
                               {tx.type === 'received' ? '+' : '-'}{tx.amount} FIC
                             </p>
-                            <span className="text-[10px] text-slate-400 capitalize">{tx.status || 'completed'}</span>
+                            <span className="text-[10px] font-bold text-slate-700 uppercase tracking-wider">{tx.status || 'completed'}</span>
                           </div>
                         </div>
                       ))
@@ -1261,34 +1261,34 @@ const WalletPage: React.FC = () => {
             <form onSubmit={handleSubmitTreasuryFunding} className="space-y-4 text-xs">
               {/* Rate Tier Selector */}
               <div>
-                <label className="block font-bold text-slate-700 mb-1">Pricing Tier & Vault Allocation</label>
+                <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-2">Pricing Tier & Vault Allocation</label>
                 <div className="grid grid-cols-2 gap-3">
                   <button
                     type="button"
                     onClick={() => handleRateTypeChange('treasury_seed')}
-                    className={`p-3 rounded-2xl border text-left transition-all ${
+                    className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer ${
                       fundRateType === 'treasury_seed'
-                        ? 'bg-amber-50 border-amber-400 ring-2 ring-amber-200'
-                        : 'bg-slate-50 border-slate-200'
+                        ? 'bg-amber-50 border-2 border-amber-500 shadow-sm ring-1 ring-amber-400'
+                        : 'bg-white border-slate-300 hover:bg-slate-50'
                     }`}
                   >
-                    <span className="font-bold text-amber-950 block">Wallet 004 Seed Tier</span>
-                    <span className="text-amber-800 font-mono text-[11px]">₦65.00 / FIC ($0.05)</span>
-                    <span className="text-[10px] text-slate-500 block mt-0.5">Depleted 1st</span>
+                    <span className="font-black text-amber-950 block">Wallet 004 Seed Tier</span>
+                    <span className="text-amber-900 font-mono font-bold text-xs mt-0.5 block">₦65.00 / FIC ($0.05)</span>
+                    <span className="text-[10px] text-slate-700 font-semibold block mt-1">Depleted 1st</span>
                   </button>
 
                   <button
                     type="button"
                     onClick={() => handleRateTypeChange('standard')}
-                    className={`p-3 rounded-2xl border text-left transition-all ${
+                    className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer ${
                       fundRateType === 'standard'
-                        ? 'bg-indigo-50 border-indigo-400 ring-2 ring-indigo-200'
-                        : 'bg-slate-50 border-slate-200'
+                        ? 'bg-indigo-50 border-2 border-indigo-600 shadow-sm ring-1 ring-indigo-400'
+                        : 'bg-white border-slate-300 hover:bg-slate-50'
                     }`}
                   >
-                    <span className="font-bold text-indigo-950 block">Standard Protocol Rate</span>
-                    <span className="text-indigo-800 font-mono text-[11px]">₦650.00 / FIC ($0.50)</span>
-                    <span className="text-[10px] text-slate-500 block mt-0.5">Official Anchor</span>
+                    <span className="font-black text-indigo-950 block">Standard Protocol Rate</span>
+                    <span className="text-indigo-900 font-mono font-bold text-xs mt-0.5 block">₦650.00 / FIC ($0.50)</span>
+                    <span className="text-[10px] text-slate-700 font-semibold block mt-1">Official Anchor</span>
                   </button>
                 </div>
               </div>
@@ -1296,7 +1296,7 @@ const WalletPage: React.FC = () => {
               {/* Amount Inputs */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-semibold text-slate-700 mb-1">Quantity in FIC</label>
+                  <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1.5">Quantity in FIC</label>
                   <input
                     type="number"
                     min="1"
@@ -1304,13 +1304,13 @@ const WalletPage: React.FC = () => {
                     value={fundAmountFic}
                     onChange={(e) => handleFicAmountChange(e.target.value)}
                     placeholder="e.g. 500"
-                    className="w-full px-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl font-bold font-mono text-slate-900 focus:ring-2 focus:ring-indigo-500"
+                    className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl font-bold font-mono text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-xs placeholder:text-slate-400"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-slate-700 mb-1">Amount to Pay (NGN)</label>
+                  <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1.5">Amount to Pay (NGN)</label>
                   <input
                     type="number"
                     min="1"
@@ -1318,7 +1318,7 @@ const WalletPage: React.FC = () => {
                     value={fundAmountNgn}
                     onChange={(e) => handleNgnAmountChange(e.target.value)}
                     placeholder="e.g. 32500"
-                    className="w-full px-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl font-bold font-mono text-slate-900 focus:ring-2 focus:ring-indigo-500"
+                    className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl font-bold font-mono text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-xs placeholder:text-slate-400"
                     required
                   />
                 </div>
@@ -1327,23 +1327,23 @@ const WalletPage: React.FC = () => {
               {/* Depositor Info */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-semibold text-slate-700 mb-1">Depositor Full Name</label>
+                  <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1.5">Depositor Full Name</label>
                   <input
                     type="text"
                     value={depositorName}
                     onChange={(e) => setDepositorName(e.target.value)}
                     placeholder="As shown on your bank receipt"
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:ring-2 focus:ring-indigo-500"
+                    className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-xs placeholder:text-slate-400"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-slate-700 mb-1">Depositor Bank</label>
+                  <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1.5">Depositor Bank</label>
                   <select
                     value={depositorBank}
                     onChange={(e) => setDepositorBank(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:ring-2 focus:ring-indigo-500 font-medium"
+                    className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 font-bold shadow-xs"
                   >
                     {NIGERIAN_BANKS.map((b) => (
                       <option key={b} value={b}>{b}</option>
@@ -1355,42 +1355,42 @@ const WalletPage: React.FC = () => {
               {/* Transaction Reference & Email */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-semibold text-slate-700 mb-1">Bank Reference / Teller No.</label>
+                  <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1.5">Bank Reference / Teller No.</label>
                   <input
                     type="text"
                     value={bankTxRef}
                     onChange={(e) => setBankTxRef(e.target.value)}
                     placeholder="e.g. ALT/20261014/99120"
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 font-mono focus:ring-2 focus:ring-indigo-500"
+                    className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 font-mono font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-xs placeholder:text-slate-400"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-slate-700 mb-1">Recipient Email (PDF Delivery)</label>
+                  <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1.5">Recipient Email (PDF Delivery)</label>
                   <input
                     type="email"
                     value={receiptEmail}
                     onChange={(e) => setReceiptEmail(e.target.value)}
                     placeholder="Where receipt will be sent"
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 font-mono focus:ring-2 focus:ring-indigo-500"
+                    className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 font-mono font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-xs placeholder:text-slate-400"
                     required
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">Notes / Deposit Memo</label>
+                <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1.5">Notes / Deposit Memo</label>
                 <input
                   type="text"
                   value={proofNotes}
                   onChange={(e) => setProofNotes(e.target.value)}
                   placeholder="e.g. Alternative Bank Sovereign Rail Direct Transfer"
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-xs placeholder:text-slate-400"
                 />
               </div>
 
-              <div className="p-3 rounded-xl bg-slate-100 text-[11px] text-slate-600">
+              <div className="p-3.5 rounded-2xl bg-slate-100 border border-slate-300 text-xs text-slate-700 font-medium leading-relaxed">
                 Payment will be confirmed at MasterDashboard Accounts by Treasury Staff (Staff 1-7),
                 finally approved by Executive CFO Mrs. Mbah Eunice Emonena, deducted from Wallet 004,
                 and an official PDF receipt will be dispatched to your email.
@@ -1400,7 +1400,7 @@ const WalletPage: React.FC = () => {
                 <Button
                   type="button"
                   variant="outline"
-                  className="flex-1 rounded-2xl"
+                  className="flex-1 rounded-2xl border-slate-300 text-slate-800 font-bold hover:bg-slate-50 cursor-pointer"
                   onClick={() => setShowFundModal(false)}
                 >
                   Cancel
@@ -1408,7 +1408,7 @@ const WalletPage: React.FC = () => {
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-950 font-black rounded-2xl shadow-md"
+                  className="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-950 font-black rounded-2xl shadow-sm cursor-pointer"
                 >
                   {isSubmitting ? 'Registering...' : 'Submit Deposit Proof'}
                 </Button>
@@ -1515,13 +1515,15 @@ const WalletPage: React.FC = () => {
       {/* MODAL 3: WITHDRAW MODAL                                                   */}
       {/* ========================================================================= */}
       {showWithdrawModal && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-xl space-y-4 animate-in fade-in">
-            <h3 className="text-xl font-bold text-gray-900">Withdraw to Bank</h3>
-            <p className="text-xs text-gray-500">Available balance: {ficBalance.toLocaleString()} FIC</p>
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl space-y-4 border border-slate-300 animate-in fade-in">
+            <h3 className="text-xl font-black text-slate-900">Withdraw to Bank</h3>
+            <p className="text-xs font-semibold text-slate-700">
+              Available balance: <span className="font-mono font-black text-slate-900">{ficBalance.toLocaleString()} FIC</span>
+            </p>
             <form onSubmit={handleWithdraw} className="space-y-4 text-xs">
               <div>
-                <label className="block font-semibold text-gray-700 mb-1">Amount (FIC)</label>
+                <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1.5">Amount (FIC)</label>
                 <input
                   type="number"
                   min="1"
@@ -1530,16 +1532,16 @@ const WalletPage: React.FC = () => {
                   value={actionAmount}
                   onChange={(e) => setActionAmount(e.target.value)}
                   placeholder="e.g. 50"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3.5 py-2.5 bg-white border border-slate-300 text-slate-900 font-bold rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-xs placeholder:text-slate-400"
                   required
                 />
               </div>
               <div>
-                <label className="block font-semibold text-gray-700 mb-1">Bank Destination</label>
+                <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1.5">Bank Destination</label>
                 <select
                   value={selectedMethod}
                   onChange={(e) => setSelectedMethod(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 font-medium"
+                  className="w-full px-3.5 py-2.5 bg-white border border-slate-300 text-slate-900 font-bold rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-xs"
                 >
                   <option value="Alternative Bank">Alternative Bank (0514108422)</option>
                   <option value="Zenith Bank">Zenith Bank (0123456789)</option>
@@ -1547,11 +1549,11 @@ const WalletPage: React.FC = () => {
                   <option value="Access Bank">Access Bank (0555666777)</option>
                 </select>
               </div>
-              <div className="flex gap-3 pt-2">
-                <Button type="button" variant="outline" className="flex-1 rounded-2xl" onClick={() => setShowWithdrawModal(false)}>
+              <div className="flex gap-3 pt-3">
+                <Button type="button" variant="outline" className="flex-1 rounded-2xl border-slate-300 text-slate-800 font-bold hover:bg-slate-50 cursor-pointer" onClick={() => setShowWithdrawModal(false)}>
                   Cancel
                 </Button>
-                <Button type="submit" disabled={isSubmitting} className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl">
+                <Button type="submit" disabled={isSubmitting} className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl shadow-sm cursor-pointer">
                   {isSubmitting ? 'Processing...' : 'Withdraw'}
                 </Button>
               </div>
@@ -1564,24 +1566,24 @@ const WalletPage: React.FC = () => {
       {/* MODAL 4: SEND MONEY MODAL                                                 */}
       {/* ========================================================================= */}
       {showSendModal && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-xl space-y-4 animate-in fade-in">
-            <h3 className="text-xl font-bold text-gray-900">Send FIC Tokens</h3>
-            <p className="text-xs text-gray-500">Transfer instantly to any FingerMobile member.</p>
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl space-y-4 border border-slate-300 animate-in fade-in">
+            <h3 className="text-xl font-black text-slate-900">Send FIC Tokens</h3>
+            <p className="text-xs font-semibold text-slate-700">Transfer instantly to any FingerMobile member.</p>
             <form onSubmit={handleSendMoney} className="space-y-4 text-xs">
               <div>
-                <label className="block font-semibold text-gray-700 mb-1">Recipient Address or Member ID</label>
+                <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1.5">Recipient Address or Member ID</label>
                 <input
                   type="text"
                   value={recipientAddress}
                   onChange={(e) => setRecipientAddress(e.target.value)}
                   placeholder="0x819... or 5"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-xl font-mono focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3.5 py-2.5 bg-white border border-slate-300 text-slate-900 font-mono font-bold rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-xs placeholder:text-slate-400"
                   required
                 />
               </div>
               <div>
-                <label className="block font-semibold text-gray-700 mb-1">Amount (FIC)</label>
+                <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1.5">Amount (FIC)</label>
                 <input
                   type="number"
                   min="1"
@@ -1590,15 +1592,15 @@ const WalletPage: React.FC = () => {
                   value={actionAmount}
                   onChange={(e) => setActionAmount(e.target.value)}
                   placeholder="e.g. 25"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-xl font-mono focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3.5 py-2.5 bg-white border border-slate-300 text-slate-900 font-mono font-bold rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-xs placeholder:text-slate-400"
                   required
                 />
               </div>
-              <div className="flex gap-3 pt-2">
-                <Button type="button" variant="outline" className="flex-1 rounded-2xl" onClick={() => setShowSendModal(false)}>
+              <div className="flex gap-3 pt-3">
+                <Button type="button" variant="outline" className="flex-1 rounded-2xl border-slate-300 text-slate-800 font-bold hover:bg-slate-50 cursor-pointer" onClick={() => setShowSendModal(false)}>
                   Cancel
                 </Button>
-                <Button type="submit" disabled={isSubmitting} className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl">
+                <Button type="submit" disabled={isSubmitting} className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl shadow-sm cursor-pointer">
                   {isSubmitting ? 'Sending...' : 'Confirm Transfer'}
                 </Button>
               </div>
@@ -1611,23 +1613,23 @@ const WalletPage: React.FC = () => {
       {/* MODAL 5: RECEIVE MODAL & QR CODE                                          */}
       {/* ========================================================================= */}
       {showReceiveModal && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-xl text-center space-y-4 animate-in fade-in">
-            <h3 className="text-xl font-bold text-gray-900">Receive FIC</h3>
-            <p className="text-xs text-gray-500">Share your protocol wallet address to receive funds.</p>
-            <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl my-4 text-center">
-              <div className="w-32 h-32 mx-auto bg-slate-200 rounded-xl flex items-center justify-center mb-3">
-                <QrCodeIcon className="w-16 h-16 text-slate-500" />
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl text-center space-y-4 border border-slate-300 animate-in fade-in">
+            <h3 className="text-xl font-black text-slate-900">Receive FIC</h3>
+            <p className="text-xs font-medium text-slate-700">Share your protocol wallet address to receive funds.</p>
+            <div className="p-4 bg-slate-50 border border-slate-300 rounded-2xl my-4 text-center">
+              <div className="w-32 h-32 mx-auto bg-slate-200 rounded-xl flex items-center justify-center mb-3 border border-slate-300">
+                <QrCodeIcon className="w-16 h-16 text-slate-700" />
               </div>
-              <p className="text-xs font-mono text-gray-800 break-all select-all">{walletAddress || '0xDEF482...987A21'}</p>
+              <p className="text-xs font-mono font-bold text-slate-900 break-all select-all">{walletAddress || '0xDEF482...987A21'}</p>
             </div>
-            <div className="flex gap-3 pt-2">
-              <Button type="button" variant="outline" className="flex-1 rounded-2xl" onClick={() => setShowReceiveModal(false)}>
+            <div className="flex gap-3 pt-3">
+              <Button type="button" variant="outline" className="flex-1 rounded-2xl border-slate-300 text-slate-800 font-bold hover:bg-slate-50 cursor-pointer" onClick={() => setShowReceiveModal(false)}>
                 Close
               </Button>
               <Button
                 type="button"
-                className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl"
+                className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl shadow-sm cursor-pointer"
                 onClick={() => {
                   navigator.clipboard.writeText(walletAddress || '0xDEF482...987A21');
                   toast({ title: 'Copied!', description: 'Address copied to clipboard.' });

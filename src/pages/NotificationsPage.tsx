@@ -107,7 +107,7 @@ const NotificationsPage: React.FC = () => {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white shadow rounded-lg overflow-hidden">
           {/* Header */}
-          <div className="border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+          <div className="border-b border-slate-300 px-6 py-4 flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Notifications</h1>
               <p className="mt-1 text-sm text-gray-500">
@@ -137,7 +137,7 @@ const NotificationsPage: React.FC = () => {
           <div className="divide-y divide-gray-200">
             {notifications.length === 0 ? (
               <div className="p-12 text-center">
-                <BellIcon className="mx-auto h-12 w-12 text-gray-400" />
+                <BellIcon className="mx-auto h-12 w-12 text-slate-700" />
                 <h3 className="mt-2 text-sm font-medium text-gray-900">No notifications</h3>
                 <p className="mt-1 text-sm text-gray-500">Check back later for updates.</p>
               </div>
@@ -168,7 +168,7 @@ const NotificationsPage: React.FC = () => {
                       <p className="mt-0.5 text-sm text-gray-500">
                         {notification.message}
                       </p>
-                      <p className="mt-1 text-xs text-gray-400">
+                      <p className="mt-1 text-xs text-slate-700">
                         {notification.timestamp}
                       </p>
                     </div>

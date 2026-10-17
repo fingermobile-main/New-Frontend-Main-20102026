@@ -97,7 +97,7 @@ const DataSubjectRequestPage: React.FC = () => {
                 value={formData.name}
                 onChange={handleChange}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400" />
             </div>
 
             <div className="mb-4">
@@ -111,7 +111,7 @@ const DataSubjectRequestPage: React.FC = () => {
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400" />
             </div>
 
             <div className="mb-4">
@@ -124,7 +124,7 @@ const DataSubjectRequestPage: React.FC = () => {
                 value={formData.requestType}
                 onChange={handleChange}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white"
               >
                 <option value="access">Access my personal data</option>
                 <option value="correction">Correct my personal data</option>
@@ -146,7 +146,7 @@ const DataSubjectRequestPage: React.FC = () => {
                 value={formData.message}
                 onChange={handleChange}
                 rows={5}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               />
             </div>
 

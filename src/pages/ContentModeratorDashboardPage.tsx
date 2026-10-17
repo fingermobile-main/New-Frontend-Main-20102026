@@ -320,7 +320,7 @@ export const ContentModeratorDashboardPage: React.FC = () => {
                   <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
                     Platform Governance & Moderation Console
                   </h1>
-                  <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-amber-100 text-amber-950 border border-amber-400 font-bold dark:bg-amber-950 dark:text-amber-300 border border-amber-200 dark:border-amber-800">
+                  <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-amber-100 text-amber-950 border border-amber-400 font-bold dark:bg-amber-950 dark:text-amber-300 border border-amber-400 dark:border-amber-800 font-black">
                     64-Bit Bitmask RBAC
                   </span>
                 </div>
@@ -466,7 +466,7 @@ export const ContentModeratorDashboardPage: React.FC = () => {
                             <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
                               {item.type}
                             </span>
-                            <span className="text-[11px] text-slate-400 font-mono">
+                            <span className="text-[11px] text-slate-700 font-mono">
                               {item.time}
                             </span>
                             <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800 flex items-center gap-1">
@@ -477,7 +477,7 @@ export const ContentModeratorDashboardPage: React.FC = () => {
 
                           <button
                             onClick={() => setSelectedItem(item)}
-                            className="p-1.5 text-slate-400 hover:text-amber-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition"
+                            className="p-1.5 text-slate-700 hover:text-amber-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition"
                             title="Inspect Item"
                           >
                             <Eye className="w-4 h-4" />
@@ -615,7 +615,7 @@ export const ContentModeratorDashboardPage: React.FC = () => {
                           <CheckCircle2 className="w-3.5 h-3.5" /> Enabled
                         </span>
                       ) : (
-                        <span className="text-slate-400 dark:text-slate-600 font-bold flex items-center gap-1">
+                        <span className="text-slate-700 dark:text-slate-600 font-bold flex items-center gap-1">
                           <Lock className="w-3.5 h-3.5" /> Gated
                         </span>
                       )}
@@ -711,7 +711,7 @@ export const ContentModeratorDashboardPage: React.FC = () => {
                 </div>
                 <button
                   onClick={() => setSelectedItem(null)}
-                  className="p-1 rounded-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                  className="p-1 rounded-full text-slate-700 hover:text-slate-600 dark:hover:text-slate-200"
                 >
                   <XCircle className="w-5 h-5" />
                 </button>

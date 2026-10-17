@@ -16,8 +16,8 @@ export default function ForumCategories() {
   ];
 
   return (
-    <div className="bg-white/60 backdrop-blur-sm rounded-xl border border-gray-100 shadow-[0_4px_20px_rgb(0,0,0,0.03)] mb-6 overflow-hidden">
-      <div className="px-5 py-4 border-b border-gray-100/80 bg-gradient-to-r from-gray-50/50 to-white/50">
+    <div className="bg-white/60 backdrop-blur-sm rounded-xl border border-slate-200 shadow-[0_4px_20px_rgb(0,0,0,0.03)] mb-6 overflow-hidden">
+      <div className="px-5 py-4 border-b border-slate-200 bg-gradient-to-r from-gray-50/50 to-white/50">
         <h2 className="text-sm font-bold text-gray-900 tracking-wide uppercase">Categories</h2>
       </div>
       <div className="p-3">

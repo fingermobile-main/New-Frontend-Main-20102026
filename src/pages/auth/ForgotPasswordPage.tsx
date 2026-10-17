@@ -106,7 +106,7 @@ const ForgotPasswordPage = () => {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-gray-400" />
+                  <Mail className="h-5 w-5 text-slate-700" />
                 </div>
                 <input
                   id="emailOrPhone"
@@ -115,7 +115,7 @@ const ForgotPasswordPage = () => {
                   autoComplete="email"
                   value={emailOrPhone}
                   onChange={(e) => setEmailOrPhone(e.target.value)}
-                  className={`block w-full pl-10 pr-3 py-3 border ${
+                  className={`block w-full pl-10 pr-3 py-3 border  text-slate-900 font-bold border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400${
                     errors.emailOrPhone ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
                   } rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white`}
                   placeholder="Enter your email or phone number"

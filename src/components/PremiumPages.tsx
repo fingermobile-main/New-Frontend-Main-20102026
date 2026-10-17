@@ -134,7 +134,7 @@ const PremiumPages: React.FC = () => {
             <select
               value={paymentMethod}
               onChange={(e) => setPaymentMethod(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white"
             >
               <option value="card">Credit/Debit Card</option>
               <option value="paypal">PayPal</option>
@@ -180,28 +180,28 @@ const PremiumPages: React.FC = () => {
         <h2 className="text-2xl font-semibold text-gray-800 mb-4">Premium Pages Benefits</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="p-4 border border-gray-200 rounded-lg">
+          <div className="p-4 border border-slate-300 rounded-lg">
             <h3 className="text-lg font-medium text-gray-800 mb-2">Visitor Analytics</h3>
             <p className="text-gray-600">
               See who visited your page, including job titles and locations. Understand your audience better to tailor your content.
             </p>
           </div>
 
-          <div className="p-4 border border-gray-200 rounded-lg">
+          <div className="p-4 border border-slate-300 rounded-lg">
             <h3 className="text-lg font-medium text-gray-800 mb-2">AI Writing Assistance</h3>
             <p className="text-gray-600">
               Get AI-powered suggestions to improve your page content, headlines, and descriptions to match the algorithm.
             </p>
           </div>
 
-          <div className="p-4 border border-gray-200 rounded-lg">
+          <div className="p-4 border border-slate-300 rounded-lg">
             <h3 className="text-lg font-medium text-gray-800 mb-2">Auto-Invites</h3>
             <p className="text-gray-600">
               Automatically invite highly engaged followers to visit your page based on their interactions with your content.
             </p>
           </div>
 
-          <div className="p-4 border border-gray-200 rounded-lg">
+          <div className="p-4 border border-slate-300 rounded-lg">
             <h3 className="text-lg font-medium text-gray-800 mb-2">Competitor Tracking</h3>
             <p className="text-gray-600">
               Track competitor content and analyze trending posts to stay ahead in your niche.

@@ -111,7 +111,7 @@ export const FingerMobileLogoViewerModal: React.FC<FingerMobileLogoViewerModalPr
             <div>
               <h3 className="text-base font-black text-slate-900 dark:text-white flex items-center gap-2">
                 FingerMobile™ Official HD Brand Assets
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-950 border border-emerald-400">
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 font-black">
                   4K / UHD Verified
                 </span>
               </h3>

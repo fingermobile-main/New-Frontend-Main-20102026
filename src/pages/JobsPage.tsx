@@ -147,7 +147,7 @@ const JobsPage: React.FC = () => {
                 placeholder="Search jobs by role, company, or keyword..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               />
             </div>
             <button
@@ -158,7 +158,7 @@ const JobsPage: React.FC = () => {
             </button>
           </form>
 
-          <div className="flex flex-wrap items-center justify-between gap-4 pt-3 border-t border-gray-100">
+          <div className="flex flex-wrap items-center justify-between gap-4 pt-3 border-t border-slate-200">
             {/* Category tabs */}
             <div className="flex flex-wrap gap-2">
               <span className="text-sm font-semibold text-gray-500 self-center mr-2">Category:</span>
@@ -211,10 +211,10 @@ const JobsPage: React.FC = () => {
               >
                 <div className="flex-1">
                   <div className="flex flex-wrap items-center gap-2 mb-2">
-                    <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-950 border border-blue-400 font-bold">
+                    <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-950 border border-blue-400 font-bold font-black">
                       {job.type}
                     </span>
-                    <span className="text-xs font-medium px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-950 border border-purple-400 font-bold">
+                    <span className="text-xs font-medium px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-950 border border-purple-400 font-bold font-black">
                       {job.category || 'Engineering'}
                     </span>
                     <span className="text-xs font-medium px-2.5 py-0.5 rounded-full bg-green-100 text-green-950 border border-green-400 font-bold font-mono">
@@ -264,7 +264,7 @@ const JobsPage: React.FC = () => {
           </div>
         ) : (
           <div className="text-center py-16 bg-white rounded-xl border border-slate-300">
-            <BriefcaseIcon className="mx-auto h-12 w-12 text-gray-400" />
+            <BriefcaseIcon className="mx-auto h-12 w-12 text-slate-700" />
             <h3 className="mt-2 text-lg font-bold text-gray-900">No job vacancies match your criteria</h3>
             <p className="mt-1 text-sm text-gray-500">Try adjusting your search terms or filters.</p>
           </div>
@@ -279,7 +279,7 @@ const JobsPage: React.FC = () => {
                   <h2 className="text-2xl font-bold text-gray-900">Apply for Position</h2>
                   <p className="text-sm text-gray-600">{applyingJob.title} at {applyingJob.company}</p>
                 </div>
-                <button onClick={() => setApplyingJob(null)} className="text-gray-400 hover:text-gray-600 text-xl font-bold">
+                <button onClick={() => setApplyingJob(null)} className="text-slate-700 hover:text-gray-600 text-xl font-bold">
                   &times;
                 </button>
               </div>
@@ -298,7 +298,7 @@ const JobsPage: React.FC = () => {
                       placeholder="https://storage.fingermobileprotocol.com/resumes/my_resume.pdf"
                       value={resumeUrl}
                       onChange={(e) => setResumeUrl(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                     />
                   </div>
 
@@ -310,11 +310,11 @@ const JobsPage: React.FC = () => {
                       placeholder="Explain why you are an ideal fit for this role..."
                       value={coverLetter}
                       onChange={(e) => setCoverLetter(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                     />
                   </div>
 
-                  <div className="flex justify-end gap-3 pt-3 border-t border-gray-100">
+                  <div className="flex justify-end gap-3 pt-3 border-t border-slate-200">
                     <button
                       type="button"
                       onClick={() => setApplyingJob(null)}
@@ -342,7 +342,7 @@ const JobsPage: React.FC = () => {
             <div className="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
               <div className="flex justify-between items-start mb-4">
                 <h2 className="text-2xl font-bold text-gray-900">Post New Job Vacancy</h2>
-                <button onClick={() => setIsPosting(false)} className="text-gray-400 hover:text-gray-600 text-xl font-bold">
+                <button onClick={() => setIsPosting(false)} className="text-slate-700 hover:text-gray-600 text-xl font-bold">
                   &times;
                 </button>
               </div>
@@ -355,7 +355,7 @@ const JobsPage: React.FC = () => {
                     required
                     value={newJob.title}
                     onChange={(e) => setNewJob({ ...newJob, title: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                     placeholder="e.g. Senior Frontend Engineer"
                   />
                 </div>
@@ -368,7 +368,7 @@ const JobsPage: React.FC = () => {
                       required
                       value={newJob.company}
                       onChange={(e) => setNewJob({ ...newJob, company: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       placeholder="e.g. Acme Corp"
                     />
                   </div>
@@ -379,7 +379,7 @@ const JobsPage: React.FC = () => {
                       required
                       value={newJob.location}
                       onChange={(e) => setNewJob({ ...newJob, location: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       placeholder="e.g. Lagos, Nigeria / Remote"
                     />
                   </div>
@@ -391,7 +391,7 @@ const JobsPage: React.FC = () => {
                     <select
                       value={newJob.type}
                       onChange={(e) => setNewJob({ ...newJob, type: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500"
                     >
                       <option value="Full-time">Full-time</option>
                       <option value="Part-time">Part-time</option>
@@ -404,7 +404,7 @@ const JobsPage: React.FC = () => {
                     <select
                       value={newJob.category}
                       onChange={(e) => setNewJob({ ...newJob, category: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500"
                     >
                       <option value="Engineering">Engineering</option>
                       <option value="Design">Design</option>
@@ -418,7 +418,7 @@ const JobsPage: React.FC = () => {
                       type="text"
                       value={newJob.salaryRange}
                       onChange={(e) => setNewJob({ ...newJob, salaryRange: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       placeholder="$80k - $110k"
                     />
                   </div>
@@ -431,7 +431,7 @@ const JobsPage: React.FC = () => {
                     required
                     value={newJob.description}
                     onChange={(e) => setNewJob({ ...newJob, description: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                     placeholder="Key responsibilities and role summary..."
                   />
                 </div>
@@ -442,12 +442,12 @@ const JobsPage: React.FC = () => {
                     type="text"
                     value={newJob.requirements}
                     onChange={(e) => setNewJob({ ...newJob, requirements: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                     placeholder="React, TypeScript, Node.js, PostgreSQL"
                   />
                 </div>
 
-                <div className="flex justify-end gap-3 pt-3 border-t border-gray-100">
+                <div className="flex justify-end gap-3 pt-3 border-t border-slate-200">
                   <button
                     type="button"
                     onClick={() => setIsPosting(false)}

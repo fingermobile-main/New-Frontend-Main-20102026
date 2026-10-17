@@ -229,7 +229,7 @@ const AuditLogAdminPage: React.FC = () => {
                 type="date"
                 value={filters.dateFrom}
                 onChange={(e) => setFilters({ ...filters, dateFrom: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               />
             </div>
             <div>
@@ -238,7 +238,7 @@ const AuditLogAdminPage: React.FC = () => {
                 type="date"
                 value={filters.dateTo}
                 onChange={(e) => setFilters({ ...filters, dateTo: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               />
             </div>
             <div>
@@ -248,7 +248,7 @@ const AuditLogAdminPage: React.FC = () => {
                 value={filters.user}
                 onChange={(e) => setFilters({ ...filters, user: e.target.value })}
                 placeholder="Search user..."
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               />
             </div>
             <div>
@@ -256,7 +256,7 @@ const AuditLogAdminPage: React.FC = () => {
               <select
                 value={filters.action}
                 onChange={(e) => setFilters({ ...filters, action: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white"
               >
                 <option value="">All Actions</option>
                 <option value="USER_LOGIN">User Login</option>
@@ -270,7 +270,7 @@ const AuditLogAdminPage: React.FC = () => {
               <select
                 value={filters.resourceType}
                 onChange={(e) => setFilters({ ...filters, resourceType: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white"
               >
                 <option value="">All Resources</option>
                 <option value="user">User</option>
@@ -318,18 +318,18 @@ const AuditLogAdminPage: React.FC = () => {
                     <tr key={log.id} className="hover:bg-gray-50">
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                         <div className="flex items-center">
-                          <ClockIcon className="h-4 w-4 mr-2 text-gray-400" />
+                          <ClockIcon className="h-4 w-4 mr-2 text-slate-700" />
                           {new Date(log.timestamp).toLocaleString()}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
-                          <UserCircleIcon className="h-5 w-5 text-gray-400 mr-2" />
+                          <UserCircleIcon className="h-5 w-5 text-slate-700 mr-2" />
                           <span className="text-sm font-medium text-gray-900">{log.username}</span>
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-950 border border-blue-400 font-bold rounded-full">
+                        <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-950 border border-blue-400 font-bold rounded-full font-black">
                           {log.action}
                         </span>
                       </td>
@@ -348,7 +348,7 @@ const AuditLogAdminPage: React.FC = () => {
                             {JSON.stringify(log.details, null, 2)}
                           </pre>
                         ) : (
-                          <span className="text-gray-400">-</span>
+                          <span className="text-slate-700">-</span>
                         )}
                       </td>
                     </tr>
@@ -358,7 +358,7 @@ const AuditLogAdminPage: React.FC = () => {
             </div>
 
             {/* Pagination Placeholder */}
-            <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
+            <div className="px-6 py-4 border-t border-slate-300 flex items-center justify-between">
               <div className="text-sm text-gray-700">
                 Showing <span className="font-medium">1</span> to <span className="font-medium">{logs.length}</span> of{' '}
                 <span className="font-medium">{logs.length}</span> results

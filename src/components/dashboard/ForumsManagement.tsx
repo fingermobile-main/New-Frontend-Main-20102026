@@ -228,7 +228,7 @@ const ForumsManagement: React.FC = () => {
               Master Forum & UGC Curation Control Plane
             </h2>
           </div>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-slate-700 mt-1">
             Centrally manage 53 Forum Categories, Feed In-Card Algorithms, Ad Slots, and UGC Moderation for{' '}
             <span className="text-orange-400 font-mono">http://localhost:3000/forum</span>
           </p>
@@ -288,7 +288,7 @@ const ForumsManagement: React.FC = () => {
                 placeholder="Search categories by name, slug or description..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-3 py-2 text-xs border border-slate-200 rounded-xl focus:outline-hidden focus:ring-2 focus:ring-orange-500 bg-slate-50/50"
+                className="w-full pl-9 pr-3 py-2 text-xs border border-slate-200 rounded-xl focus:outline-hidden focus:ring-2 focus:ring-orange-500 bg-white text-slate-900 font-bold border-slate-300 placeholder:text-slate-400"
               />
             </div>
             <button
@@ -329,14 +329,14 @@ const ForumsManagement: React.FC = () => {
                       <div className="flex items-center justify-end gap-1">
                         <button
                           onClick={() => handleOpenEditCategory(cat)}
-                          className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition"
+                          className="p-1.5 text-slate-700 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition"
                           title="Edit Category"
                         >
                           <PencilSquareIcon className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => handleDeleteCategory(cat.id, cat.name)}
-                          className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition"
+                          className="p-1.5 text-slate-700 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition"
                           title="Delete Category"
                         >
                           <TrashIcon className="w-4 h-4" />
@@ -347,7 +347,7 @@ const ForumsManagement: React.FC = () => {
                 ))}
                 {filteredCategories.length === 0 && (
                   <tr>
-                    <td colSpan={6} className="py-8 text-center text-slate-400 text-xs">
+                    <td colSpan={6} className="py-8 text-center text-slate-800 text-xs">
                       No categories found matching &quot;{searchQuery}&quot;
                     </td>
                   </tr>
@@ -382,7 +382,7 @@ const ForumsManagement: React.FC = () => {
                   </span>
                   <div>
                     <h5 className="text-xs font-black text-slate-900">FingerShorts Rail</h5>
-                    <p className="text-[10px] text-slate-400">Vertical 9:16 Ephemeral Video Carousel</p>
+                    <p className="text-[10px] text-slate-700">Vertical 9:16 Ephemeral Video Carousel</p>
                   </div>
                 </div>
                 <input
@@ -391,7 +391,7 @@ const ForumsManagement: React.FC = () => {
                   onChange={(e) =>
                     setAlgoConfig({ ...algoConfig, enableFingerShorts: e.target.checked })
                   }
-                  className="rounded-sm text-orange-500 focus:ring-orange-500 w-4 h-4 cursor-pointer"
+                  className="rounded-sm text-slate-900 focus:ring-orange-500 w-4 h-4 cursor-pointer font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                 />
               </div>
               <div className="flex items-center justify-between text-xs pt-2 border-t border-slate-100">
@@ -404,10 +404,10 @@ const ForumsManagement: React.FC = () => {
                   onChange={(e) =>
                     setAlgoConfig({ ...algoConfig, fingerShortsInterval: parseInt(e.target.value) || 3 })
                   }
-                  className="w-16 px-2 py-1 text-center font-bold text-xs border border-slate-200 rounded-lg"
+                  className="w-16 px-2 py-1 text-center font-bold text-xs border border-slate-200 rounded-lg text-slate-900 border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
                 />
               </div>
-              <div className="text-[10px] text-slate-400">Default: Permanent after the first 3 Post Cards</div>
+              <div className="text-[10px] text-slate-700">Default: Permanent after the first 3 Post Cards</div>
             </div>
 
             {/* Slot 2: Publicitee */}
@@ -419,7 +419,7 @@ const ForumsManagement: React.FC = () => {
                   </span>
                   <div>
                     <h5 className="text-xs font-black text-slate-900">Publicitee Broadcast</h5>
-                    <p className="text-[10px] text-slate-400">Verified Platform Brand Banner</p>
+                    <p className="text-[10px] text-slate-700">Verified Platform Brand Banner</p>
                   </div>
                 </div>
                 <input
@@ -428,7 +428,7 @@ const ForumsManagement: React.FC = () => {
                   onChange={(e) =>
                     setAlgoConfig({ ...algoConfig, enablePublicitee: e.target.checked })
                   }
-                  className="rounded-sm text-orange-500 focus:ring-orange-500 w-4 h-4 cursor-pointer"
+                  className="rounded-sm text-slate-900 focus:ring-orange-500 w-4 h-4 cursor-pointer font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                 />
               </div>
               <div className="flex items-center justify-between text-xs pt-2 border-t border-slate-100">
@@ -441,10 +441,10 @@ const ForumsManagement: React.FC = () => {
                   onChange={(e) =>
                     setAlgoConfig({ ...algoConfig, publiciteeInterval: parseInt(e.target.value) || 5 })
                   }
-                  className="w-16 px-2 py-1 text-center font-bold text-xs border border-slate-200 rounded-lg"
+                  className="w-16 px-2 py-1 text-center font-bold text-xs border border-slate-200 rounded-lg text-slate-900 border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
                 />
               </div>
-              <div className="text-[10px] text-slate-400">Default: Permanent after the first 5 Post Cards</div>
+              <div className="text-[10px] text-slate-700">Default: Permanent after the first 5 Post Cards</div>
             </div>
 
             {/* Slot 3: Discover */}
@@ -456,7 +456,7 @@ const ForumsManagement: React.FC = () => {
                   </span>
                   <div>
                     <h5 className="text-xs font-black text-slate-900">Discover Module</h5>
-                    <p className="text-[10px] text-slate-400">Cross-ecosystem recommendations</p>
+                    <p className="text-[10px] text-slate-700">Cross-ecosystem recommendations</p>
                   </div>
                 </div>
                 <input
@@ -465,7 +465,7 @@ const ForumsManagement: React.FC = () => {
                   onChange={(e) =>
                     setAlgoConfig({ ...algoConfig, enableDiscover: e.target.checked })
                   }
-                  className="rounded-sm text-orange-500 focus:ring-orange-500 w-4 h-4 cursor-pointer"
+                  className="rounded-sm text-slate-900 focus:ring-orange-500 w-4 h-4 cursor-pointer font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                 />
               </div>
               <div className="flex items-center justify-between text-xs pt-2 border-t border-slate-100">
@@ -478,10 +478,10 @@ const ForumsManagement: React.FC = () => {
                   onChange={(e) =>
                     setAlgoConfig({ ...algoConfig, discoverInterval: parseInt(e.target.value) || 5 })
                   }
-                  className="w-16 px-2 py-1 text-center font-bold text-xs border border-slate-200 rounded-lg"
+                  className="w-16 px-2 py-1 text-center font-bold text-xs border border-slate-200 rounded-lg text-slate-900 border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
                 />
               </div>
-              <div className="text-[10px] text-slate-400">Default: Permanent after the next 5 Post Cards</div>
+              <div className="text-[10px] text-slate-700">Default: Permanent after the next 5 Post Cards</div>
             </div>
 
             {/* Slot 4: In-feed Ads */}
@@ -493,7 +493,7 @@ const ForumsManagement: React.FC = () => {
                   </span>
                   <div>
                     <h5 className="text-xs font-black text-slate-900">In-Feed Ads (Canary / Google Ads)</h5>
-                    <p className="text-[10px] text-slate-400">Monetization auction impressions</p>
+                    <p className="text-[10px] text-slate-700">Monetization auction impressions</p>
                   </div>
                 </div>
                 <input
@@ -502,7 +502,7 @@ const ForumsManagement: React.FC = () => {
                   onChange={(e) =>
                     setAlgoConfig({ ...algoConfig, enableInfeedAds: e.target.checked })
                   }
-                  className="rounded-sm text-orange-500 focus:ring-orange-500 w-4 h-4 cursor-pointer"
+                  className="rounded-sm text-slate-900 focus:ring-orange-500 w-4 h-4 cursor-pointer font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                 />
               </div>
               <div className="flex items-center justify-between text-xs pt-2 border-t border-slate-100">
@@ -512,14 +512,14 @@ const ForumsManagement: React.FC = () => {
                   onChange={(e) =>
                     setAlgoConfig({ ...algoConfig, adsProvider: e.target.value as any })
                   }
-                  className="px-2 py-1 text-xs border border-slate-200 rounded-lg bg-white"
+                  className="px-2 py-1 text-xs border border-slate-200 rounded-lg bg-white text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500"
                 >
                   <option value="canary">Canary Ad Engine</option>
                   <option value="google_adsense">Google AdSense / AdMob</option>
                   <option value="hybrid">Hybrid Waterfall</option>
                 </select>
               </div>
-              <div className="text-[10px] text-slate-400">Default: Interstitial after the next 5 Post Cards</div>
+              <div className="text-[10px] text-slate-700">Default: Interstitial after the next 5 Post Cards</div>
             </div>
 
             {/* Slot 5: Hero Section (Guardian/Sentinel) */}
@@ -531,7 +531,7 @@ const ForumsManagement: React.FC = () => {
                   </span>
                   <div>
                     <h5 className="text-xs font-black text-slate-900">Hero Section (Guardian & Sentinel Agentic Media)</h5>
-                    <p className="text-[10px] text-slate-400">Autonomous platform compliance updates & security alerts</p>
+                    <p className="text-[10px] text-slate-700">Autonomous platform compliance updates & security alerts</p>
                   </div>
                 </div>
                 <input
@@ -540,7 +540,7 @@ const ForumsManagement: React.FC = () => {
                   onChange={(e) =>
                     setAlgoConfig({ ...algoConfig, enableHeroSentinel: e.target.checked })
                   }
-                  className="rounded-sm text-orange-500 focus:ring-orange-500 w-4 h-4 cursor-pointer"
+                  className="rounded-sm text-slate-900 focus:ring-orange-500 w-4 h-4 cursor-pointer font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                 />
               </div>
               <div className="flex items-center justify-between text-xs pt-2 border-t border-slate-100">
@@ -553,10 +553,10 @@ const ForumsManagement: React.FC = () => {
                   onChange={(e) =>
                     setAlgoConfig({ ...algoConfig, heroSentinelInterval: parseInt(e.target.value) || 5 })
                   }
-                  className="w-16 px-2 py-1 text-center font-bold text-xs border border-slate-200 rounded-lg"
+                  className="w-16 px-2 py-1 text-center font-bold text-xs border border-slate-200 rounded-lg text-slate-900 border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
                 />
               </div>
-              <div className="text-[10px] text-slate-400">Default: Permanent Hero Section after the next 5 Post Cards</div>
+              <div className="text-[10px] text-slate-700">Default: Permanent Hero Section after the next 5 Post Cards</div>
             </div>
           </div>
 
@@ -576,17 +576,17 @@ const ForumsManagement: React.FC = () => {
         <div className="p-6 space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="p-4 rounded-xl border border-slate-200 bg-slate-50/50">
-              <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Active Threads</span>
+              <span className="text-[10px] font-black uppercase tracking-wider text-slate-700">Active Threads</span>
               <div className="text-2xl font-black text-slate-900 mt-1">1,482</div>
               <div className="text-[10px] text-emerald-600 mt-0.5">● 99.4% Clean Compliance</div>
             </div>
             <div className="p-4 rounded-xl border border-slate-200 bg-slate-50/50">
-              <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Flagged For Review</span>
+              <span className="text-[10px] font-black uppercase tracking-wider text-slate-700">Flagged For Review</span>
               <div className="text-2xl font-black text-amber-600 mt-1">7</div>
               <div className="text-[10px] text-amber-700 mt-0.5">Automated Guardian NLP scan</div>
             </div>
             <div className="p-4 rounded-xl border border-slate-200 bg-slate-50/50">
-              <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Censored Items</span>
+              <span className="text-[10px] font-black uppercase tracking-wider text-slate-700">Censored Items</span>
               <div className="text-2xl font-black text-rose-600 mt-1">3</div>
               <div className="text-[10px] text-rose-700 mt-0.5">CSAE & Violent text quarantined</div>
             </div>
@@ -621,7 +621,7 @@ const ForumsManagement: React.FC = () => {
                       <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-50 text-rose-600 border border-rose-100">
                         {item.reason}
                       </span>
-                      <span className="text-[10px] text-slate-400">{item.time}</span>
+                      <span className="text-[10px] text-slate-700">{item.time}</span>
                     </div>
                     <p className="text-slate-600 italic">&ldquo;{item.snippet}&rdquo;</p>
                   </div>
@@ -683,7 +683,7 @@ const ForumsManagement: React.FC = () => {
                   placeholder="e.g. Artificial Intelligence & Robotics"
                   value={catName}
                   onChange={(e) => setCatName(e.target.value)}
-                  className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-500"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                 />
               </div>
 
@@ -695,7 +695,7 @@ const ForumsManagement: React.FC = () => {
                     placeholder="ai-robotics"
                     value={catSlug}
                     onChange={(e) => setCatSlug(e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-500 font-mono"
+                    className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-500 font-mono text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                   />
                 </div>
                 <div>
@@ -705,7 +705,7 @@ const ForumsManagement: React.FC = () => {
                     placeholder="🤖"
                     value={catIcon}
                     onChange={(e) => setCatIcon(e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-500 text-center"
+                    className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-500 text-center text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                   />
                 </div>
               </div>
@@ -717,7 +717,7 @@ const ForumsManagement: React.FC = () => {
                   placeholder="Discussions covering autonomous agents, LLMs, and robotics..."
                   value={catDesc}
                   onChange={(e) => setCatDesc(e.target.value)}
-                  className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-500 resize-none"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-500 resize-none text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                 />
               </div>
 

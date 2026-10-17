@@ -106,7 +106,7 @@ const PayoutHistory: React.FC = () => {
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
-            className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white"
           >
             <option value="all">All Statuses</option>
             <option value="completed">Completed</option>
@@ -121,7 +121,7 @@ const PayoutHistory: React.FC = () => {
             type="month"
             value={filterDate}
             onChange={(e) => setFilterDate(e.target.value)}
-            className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
           />
         </div>
       </div>

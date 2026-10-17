@@ -526,7 +526,7 @@ export const ConsoleCard: React.FC<{
         {/* Top Header: Badge, Group, Health Indicator */}
         <div className="flex items-start justify-between gap-2 mb-2">
           <div>
-            <span className="text-[10px] font-mono uppercase tracking-wider font-bold text-slate-400 block">
+            <span className="text-[10px] font-mono uppercase tracking-wider font-bold text-slate-700 block">
               {item.groupName}
             </span>
             <h4 className="text-base font-black text-slate-900 dark:text-white tracking-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition">
@@ -674,19 +674,19 @@ export const ConsoleDetailModal: React.FC<{
         {/* Telemetry Metrics Strip */}
         <div className="grid grid-cols-3 gap-3 text-center">
           <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
-            <div className="text-[10px] text-slate-400 font-semibold uppercase">Latency Index</div>
+            <div className="text-[10px] text-slate-700 font-semibold uppercase">Latency Index</div>
             <div className="text-base font-black font-mono text-slate-900 dark:text-white mt-0.5">
               {item.responseTime} ms
             </div>
           </div>
           <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
-            <div className="text-[10px] text-slate-400 font-semibold uppercase">Active Incidents</div>
+            <div className="text-[10px] text-slate-700 font-semibold uppercase">Active Incidents</div>
             <div className="text-base font-black font-mono text-slate-900 dark:text-white mt-0.5">
               {item.activeIncidents}
             </div>
           </div>
           <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
-            <div className="text-[10px] text-slate-400 font-semibold uppercase">Assigned Route</div>
+            <div className="text-[10px] text-slate-700 font-semibold uppercase">Assigned Route</div>
             <div className="text-base font-black font-mono text-blue-600 dark:text-blue-400 truncate mt-0.5">
               {item.route}
             </div>

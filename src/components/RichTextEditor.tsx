@@ -83,7 +83,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
         <select
           value={fontSize}
           onChange={(e) => setFontSize(Number(e.target.value))}
-          className="px-2 py-1 border border-gray-300 rounded text-sm"
+          className="px-2 py-1 border border-gray-300 rounded text-sm text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500"
         >
           {[12, 14, 16, 18, 20, 24, 28, 32].map(size => (
             <option key={size} value={size}>{size}px</option>
@@ -94,7 +94,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
         <select
           value={fontFamily}
           onChange={(e) => setFontFamily(e.target.value)}
-          className="px-2 py-1 border border-gray-300 rounded text-sm"
+          className="px-2 py-1 border border-gray-300 rounded text-sm text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500"
         >
           {['Arial', 'Times New Roman', 'Courier New', 'Georgia', 'Verdana'].map(font => (
             <option key={font} value={font}>{font}</option>
@@ -106,7 +106,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
         {/* Color Picker */}
         <input
           type="color"
-          className="w-8 h-8 rounded cursor-pointer"
+          className="w-8 h-8 rounded cursor-pointer text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
           title="Text Color"
         />
 

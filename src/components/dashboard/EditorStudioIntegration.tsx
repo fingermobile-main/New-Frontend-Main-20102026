@@ -13,11 +13,11 @@ const EditorStudioIntegration: React.FC<EditorStudioIntegrationProps> = ({ proje
         <h3 className="text-lg font-bold text-gray-900">Editor Studio</h3>
       </div>
       <div className="grid grid-cols-2 gap-4">
-        <button className="p-4 border border-gray-200 rounded-lg hover:border-purple-400 hover:bg-purple-50 transition-all text-center">
+        <button className="p-4 border border-slate-300 rounded-lg hover:border-purple-400 hover:bg-purple-50 transition-all text-center">
           <div className="text-3xl mb-2">🎨</div>
           <p className="font-medium text-gray-900">Page Editor</p>
         </button>
-        <button className="p-4 border border-gray-200 rounded-lg hover:border-purple-400 hover:bg-purple-50 transition-all text-center">
+        <button className="p-4 border border-slate-300 rounded-lg hover:border-purple-400 hover:bg-purple-50 transition-all text-center">
           <div className="text-3xl mb-2">📄</div>
           <p className="font-medium text-gray-900">Templates</p>
         </button>

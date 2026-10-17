@@ -337,7 +337,7 @@ const EcommercePage: React.FC = () => {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Tabs */}
-        <div className="border-b border-gray-200 mb-6">
+        <div className="border-b border-slate-300 mb-6">
           <nav className="-mb-px flex space-x-8">
             <button
               onClick={() => setActiveTab('products')}
@@ -380,19 +380,19 @@ const EcommercePage: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search className="h-5 w-5 text-gray-400" />
+                <Search className="h-5 w-5 text-slate-700" />
               </div>
               <input
                 type="text"
                 placeholder={`${activeTab === 'products' ? 'Search products...' : activeTab === 'orders' ? 'Search orders...' : 'Search inventory...'}`}
-                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder:text-slate-500 focus:outline-none focus:placeholder:text-slate-500 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder:text-slate-400 focus:outline-none focus:placeholder:text-slate-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-slate-900 font-bold border-slate-300"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
             
             <select
-              className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-slate-900 font-bold border-slate-300 bg-white focus:ring-2"
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
             >
@@ -409,7 +409,7 @@ const EcommercePage: React.FC = () => {
             
             {activeTab === 'products' && (
               <select
-                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-slate-900 font-bold border-slate-300 bg-white focus:ring-2"
                 value={filterCategory}
                 onChange={(e) => setFilterCategory(e.target.value)}
               >
@@ -864,7 +864,7 @@ const EcommercePage: React.FC = () => {
                   <input
                     type="text"
                     id="name"
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-900 leading-tight focus:outline-none focus:shadow-outline font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                     value={newProduct.name}
                     onChange={(e) => setNewProduct({...newProduct, name: e.target.value})}
                     required
@@ -877,7 +877,7 @@ const EcommercePage: React.FC = () => {
                   </label>
                   <textarea
                     id="description"
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-900 leading-tight focus:outline-none focus:shadow-outline font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                     value={newProduct.description}
                     onChange={(e) => setNewProduct({...newProduct, description: e.target.value})}
                   />
@@ -893,7 +893,7 @@ const EcommercePage: React.FC = () => {
                       id="price"
                       step="0.01"
                       min="0"
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-900 leading-tight focus:outline-none focus:shadow-outline font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
                       value={newProduct.price}
                       onChange={(e) => setNewProduct({...newProduct, price: parseFloat(e.target.value) || 0})}
                       required
@@ -908,7 +908,7 @@ const EcommercePage: React.FC = () => {
                       type="number"
                       id="stockQuantity"
                       min="0"
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-900 leading-tight focus:outline-none focus:shadow-outline font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
                       value={newProduct.stockQuantity}
                       onChange={(e) => setNewProduct({...newProduct, stockQuantity: parseInt(e.target.value) || 0})}
                       required
@@ -923,7 +923,7 @@ const EcommercePage: React.FC = () => {
                     </label>
                     <select
                       id="category"
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-900 leading-tight focus:outline-none focus:shadow-outline font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500"
                       value={newProduct.category}
                       onChange={(e) => setNewProduct({...newProduct, category: e.target.value})}
                     >
@@ -943,7 +943,7 @@ const EcommercePage: React.FC = () => {
                     </label>
                     <select
                       id="status"
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-900 leading-tight focus:outline-none focus:shadow-outline font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500"
                       value={newProduct.status}
                       onChange={(e) => setNewProduct({...newProduct, status: e.target.value})}
                     >
@@ -961,7 +961,7 @@ const EcommercePage: React.FC = () => {
                   <input
                     type="text"
                     id="sku"
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-900 leading-tight focus:outline-none focus:shadow-outline font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                     value={newProduct.sku}
                     onChange={(e) => setNewProduct({...newProduct, sku: e.target.value})}
                     required

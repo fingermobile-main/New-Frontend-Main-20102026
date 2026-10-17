@@ -100,7 +100,7 @@ export default function CensorshipSelector({ options, onChange }: CensorshipSele
                     <input
                       type="radio"
                       name="visualEffect"
-                      className="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300"
+                      className="h-4 w-4 text-slate-900 focus:ring-red-500 border-gray-300 font-bold border border-slate-300 rounded bg-white focus:ring-2 placeholder:text-slate-400"
                       checked={options.visualEffect === effect.value}
                       onChange={() => onChange({ ...options, visualEffect: effect.value as VisualEffect })}
                     />
@@ -123,7 +123,7 @@ export default function CensorshipSelector({ options, onChange }: CensorshipSele
                     <input
                       type="radio"
                       name="interactionRule"
-                      className="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300"
+                      className="h-4 w-4 text-slate-900 focus:ring-red-500 border-gray-300 font-bold border border-slate-300 rounded bg-white focus:ring-2 placeholder:text-slate-400"
                       checked={options.interactionRule === rule.value}
                       onChange={() => onChange({ ...options, interactionRule: rule.value as InteractionRule })}
                     />

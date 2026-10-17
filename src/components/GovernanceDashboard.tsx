@@ -107,7 +107,7 @@ const GovernanceDashboard: React.FC = () => {
                       {new Date(log.timestamp).toLocaleTimeString()}
                     </span>
                   </div>
-                  <p className="text-sm text-gray-300 mt-2 font-medium leading-relaxed">{log.description}</p>
+                  <p className="text-sm text-slate-700 mt-2 font-medium leading-relaxed">{log.description}</p>
                 </div>
               </div>
             ))}

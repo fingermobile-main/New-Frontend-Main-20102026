@@ -37,7 +37,7 @@ export const ReplyModal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit }) 
       <div className="p-4">
         <textarea
           autoFocus
-          className="w-full bg-gray-50 dark:bg-gray-900 border border-slate-300 dark:border-gray-700 rounded-xl p-3 focus:ring-2 focus:ring-orange-500 focus:outline-none resize-none min-h-[120px] text-sm"
+          className="w-full bg-white dark:bg-gray-900 border border-slate-300 dark:border-gray-700 rounded-xl p-3 focus:ring-2 focus:ring-orange-500 focus:outline-none resize-none min-h-[120px] text-sm text-slate-900 font-bold placeholder:text-slate-400"
           placeholder="Write your reply..."
           value={content}
           onChange={e => setContent(e.target.value)}
@@ -92,7 +92,7 @@ export const ReportModal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit })
           ))}
         </div>
         <textarea
-          className="w-full bg-gray-50 dark:bg-gray-900 border border-slate-300 dark:border-gray-700 rounded-xl p-3 focus:ring-2 focus:ring-red-500 focus:outline-none resize-none min-h-[70px] text-sm"
+          className="w-full bg-white dark:bg-gray-900 border border-slate-300 dark:border-gray-700 rounded-xl p-3 focus:ring-2 focus:ring-red-500 focus:outline-none resize-none min-h-[70px] text-sm text-slate-900 font-bold placeholder:text-slate-400"
           placeholder="Additional details (optional)..."
           value={extra}
           onChange={e => setExtra(e.target.value)}
@@ -139,7 +139,7 @@ export const EditPostModal: React.FC<EditPostModalProps> = ({ isOpen, onClose, o
       <div className="p-4">
         <textarea
           autoFocus
-          className="w-full bg-gray-50 dark:bg-gray-900 border border-slate-300 dark:border-gray-700 rounded-xl p-3 focus:ring-2 focus:ring-orange-500 focus:outline-none resize-none min-h-[150px] text-sm text-gray-800 dark:text-gray-200"
+          className="w-full bg-white dark:bg-gray-900 border border-slate-300 dark:border-gray-700 rounded-xl p-3 focus:ring-2 focus:ring-orange-500 focus:outline-none resize-none min-h-[150px] text-sm text-slate-900 dark:text-gray-200 font-bold placeholder:text-slate-400"
           value={content}
           onChange={e => setContent(e.target.value)}
         />

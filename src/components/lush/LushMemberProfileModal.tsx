@@ -86,7 +86,7 @@ export const LushMemberProfileModal: React.FC<LushMemberProfileModalProps> = ({
             </div>
 
             {/* Sovereign PIN Badge */}
-            <div className="px-3 py-1 bg-emerald-50 border border-emerald-200/90 rounded-full text-xs font-semibold text-emerald-800 flex items-center gap-1.5">
+            <div className="px-3 py-1 bg-emerald-50 border border-emerald-400 rounded-full text-xs font-semibold text-emerald-950 flex items-center gap-1.5 text-emerald-950 border-emerald-400 font-black">
               <ShieldCheckIcon className="w-4 h-4 text-emerald-600" />
               <span>6-Digit PIN Exchanged</span>
             </div>
@@ -118,11 +118,11 @@ export const LushMemberProfileModal: React.FC<LushMemberProfileModalProps> = ({
           {/* Compatibility Highlights */}
           <div className="grid grid-cols-2 gap-3 text-xs">
             <div className="p-3 bg-white rounded-xl border border-slate-300">
-              <span className="text-[10px] text-gray-400 font-bold uppercase">Matching Intent</span>
+              <span className="text-[10px] text-slate-700 font-bold uppercase">Matching Intent</span>
               <p className="font-bold text-emerald-800 mt-0.5">Thoughtful Interactions</p>
             </div>
             <div className="p-3 bg-white rounded-xl border border-slate-300">
-              <span className="text-[10px] text-gray-400 font-bold uppercase">Lapidaire Score</span>
+              <span className="text-[10px] text-slate-700 font-bold uppercase">Lapidaire Score</span>
               <p className="font-bold text-teal-800 mt-0.5">28 / 30 Core Values Aligned</p>
             </div>
           </div>
@@ -164,7 +164,7 @@ export const LushMemberProfileModal: React.FC<LushMemberProfileModalProps> = ({
           </div>
 
           {/* PIN Revocation & Connection Closing Section */}
-          <div className="pt-3 border-t border-gray-200 space-y-3">
+          <div className="pt-3 border-t border-slate-300 space-y-3">
             {!showRevokeConfirm ? (
               <div className="flex items-center justify-between p-3 rounded-xl bg-amber-50/70 border border-amber-200 text-xs">
                 <div>

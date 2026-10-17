@@ -87,7 +87,7 @@ const VerificationPage: React.FC = () => {
           </p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+        <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-200">
           <div className="p-1 bg-gradient-to-r from-blue-500 to-indigo-500"></div>
 
           <div className="p-6 md:p-8">
@@ -136,13 +136,13 @@ const VerificationPage: React.FC = () => {
                         placeholder={
                           verificationMethod === 'phone' ? '+1 (555) 123-4567' : 'your@email.com'
                         }
-                        className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                       />
                       <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
                         {verificationMethod === 'phone' ? (
-                          <PhoneIcon className="h-5 w-5 text-gray-400" />
+                          <PhoneIcon className="h-5 w-5 text-slate-700" />
                         ) : (
-                          <MailIcon className="h-5 w-5 text-gray-400" />
+                          <MailIcon className="h-5 w-5 text-slate-700" />
                         )}
                       </div>
                     </div>
@@ -193,7 +193,7 @@ const VerificationPage: React.FC = () => {
                           value={verificationCode}
                           onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, ''))}
                           placeholder="123456"
-                          className="w-full px-4 py-3 text-lg text-center border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          className="w-full px-4 py-3 text-lg text-center border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                         />
                         <button
                           onClick={handleSubmitCode}

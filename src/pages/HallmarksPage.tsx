@@ -692,7 +692,7 @@ const HallmarksPage: React.FC = () => {
                     <CardContent className="pb-3 text-xs text-gray-500 space-y-1.5">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center">
-                          <UsersIcon className="w-3.5 h-3.5 mr-1 text-gray-400" />
+                          <UsersIcon className="w-3.5 h-3.5 mr-1 text-slate-700" />
                           <span>{community.members.toLocaleString()} members</span>
                         </div>
                         <div className="flex items-center">
@@ -700,13 +700,13 @@ const HallmarksPage: React.FC = () => {
                           <span>{community.badgesAwarded} badges</span>
                         </div>
                       </div>
-                      <div className="flex items-center text-gray-400 text-[11px]">
+                      <div className="flex items-center text-slate-700 text-[11px]">
                         <CalendarIcon className="w-3.5 h-3.5 mr-1" />
                         <span>Created {new Date(community.createdAt).toLocaleDateString()}</span>
                       </div>
                     </CardContent>
 
-                    <CardFooter className="pt-2 pb-4 px-4 border-t border-gray-100 flex flex-col gap-2">
+                    <CardFooter className="pt-2 pb-4 px-4 border-t border-slate-200 flex flex-col gap-2">
                       <div className="flex items-center justify-between w-full">
                         <Button variant="outline" className="text-xs font-semibold px-3 py-1.5 h-8 border-gray-300 text-gray-700">
                           <EyeIcon className="w-3.5 h-3.5 mr-1.5" /> View
@@ -717,8 +717,8 @@ const HallmarksPage: React.FC = () => {
                       </div>
 
                       {/* Moderation & Admin Control Bar */}
-                      <div className="w-full pt-2 mt-1 border-t border-dashed border-gray-200 flex flex-wrap items-center justify-between gap-1">
-                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Moderation:</span>
+                      <div className="w-full pt-2 mt-1 border-t border-dashed border-slate-300 flex flex-wrap items-center justify-between gap-1">
+                        <span className="text-[10px] font-bold text-slate-700 uppercase tracking-wider">Moderation:</span>
                         <div className="flex items-center gap-1">
                           {!isSuspended && !isFrozen && (
                             <>
@@ -763,7 +763,7 @@ const HallmarksPage: React.FC = () => {
                           )}
                           <button
                             onClick={() => handleDeleteHallmark(community.id, community.name)}
-                            className="p-1 rounded text-gray-400 hover:text-rose-600 transition"
+                            className="p-1 rounded text-slate-700 hover:text-rose-600 transition"
                             title="Delete page and release 1 creation slot (Creator / SuperAdmin)"
                           >
                             <TrashIcon className="w-3.5 h-3.5" />
@@ -801,7 +801,7 @@ const HallmarksPage: React.FC = () => {
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <div className="flex items-center text-xs text-gray-400">
+                    <div className="flex items-center text-xs text-slate-700">
                       <CalendarIcon className="w-3.5 h-3.5 mr-1" />
                       <span>Awarded {new Date(hallmark.createdAt).toLocaleDateString()}</span>
                     </div>
@@ -863,7 +863,7 @@ const HallmarksPage: React.FC = () => {
 
         {/* Discourse / Commendations */}
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-300 space-y-5">
-          <div className="flex items-center justify-between border-b border-gray-100 pb-3">
+          <div className="flex items-center justify-between border-b border-slate-200 pb-3">
             <div>
               <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
                 <span>🏅</span> Hallmark Commendations & Discourse
@@ -883,7 +883,7 @@ const HallmarksPage: React.FC = () => {
               value={commentInput}
               onChange={(e) => setCommentInput(e.target.value)}
               placeholder="Leave an encouraging comment or commendation..."
-              className="flex-1 bg-gray-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#ff6b00]"
+              className="flex-1 bg-white border border-slate-300 rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#ff6b00] font-bold placeholder:text-slate-400"
             />
             <Button type="submit" className="bg-[#ff6b00] hover:bg-[#e05e00] text-white font-bold text-xs px-5 rounded-xl">
               Post
@@ -892,10 +892,10 @@ const HallmarksPage: React.FC = () => {
 
           <div className="space-y-2 pt-1">
             {comments.map((c) => (
-              <div key={c.id} className="p-3 bg-gray-50 rounded-xl border border-gray-100 flex items-start justify-between text-xs">
+              <div key={c.id} className="p-3 bg-gray-50 rounded-xl border border-slate-200 flex items-start justify-between text-xs">
                 <div>
                   <span className="font-bold text-gray-900 mr-2">@{c.author}</span>
-                  <span className="text-[10px] text-gray-400">{c.time}</span>
+                  <span className="text-[10px] text-slate-700">{c.time}</span>
                   <p className="text-gray-700 mt-1">{c.text}</p>
                 </div>
               </div>
@@ -925,8 +925,8 @@ const HallmarksPage: React.FC = () => {
       {/* MODAL 2: 2-Page Quota Limit Explainer Modal */}
       {isQuotaExplainerOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-          <div className="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-gray-100 space-y-5">
-            <div className="flex items-start justify-between border-b border-gray-100 pb-3">
+          <div className="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-5">
+            <div className="flex items-start justify-between border-b border-slate-200 pb-3">
               <div className="flex items-center gap-2">
                 <span className="text-2xl">⚠️</span>
                 <div>
@@ -936,7 +936,7 @@ const HallmarksPage: React.FC = () => {
               </div>
               <button
                 onClick={() => setIsQuotaExplainerOpen(false)}
-                className="text-gray-400 hover:text-gray-600 text-lg font-bold"
+                className="text-slate-700 hover:text-gray-600 text-lg font-bold"
               >
                 ✕
               </button>
@@ -1000,8 +1000,8 @@ const HallmarksPage: React.FC = () => {
       {/* MODAL 3: 50-PIN Moderation Audit Ledger Modal */}
       {isAuditModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-          <div className="bg-white rounded-3xl max-w-2xl w-full p-6 shadow-2xl border border-gray-100 space-y-4 max-h-[85vh] flex flex-col">
-            <div className="flex items-center justify-between border-b border-gray-100 pb-3">
+          <div className="bg-white rounded-3xl max-w-2xl w-full p-6 shadow-2xl border border-slate-200 space-y-4 max-h-[85vh] flex flex-col">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
               <div className="flex items-center gap-2">
                 <span className="text-xl">📜</span>
                 <div>
@@ -1011,7 +1011,7 @@ const HallmarksPage: React.FC = () => {
               </div>
               <button
                 onClick={() => setIsAuditModalOpen(false)}
-                className="text-gray-400 hover:text-gray-600 text-lg font-bold"
+                className="text-slate-700 hover:text-gray-600 text-lg font-bold"
               >
                 ✕
               </button>
@@ -1028,7 +1028,7 @@ const HallmarksPage: React.FC = () => {
                 </div>
               ) : (
                 auditLogs.map((log) => (
-                  <div key={log.id} className="p-3 bg-gray-50 rounded-xl border border-gray-100 flex items-center justify-between text-xs">
+                  <div key={log.id} className="p-3 bg-gray-50 rounded-xl border border-slate-200 flex items-center justify-between text-xs">
                     <div className="space-y-0.5">
                       <div className="flex items-center gap-2">
                         <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
@@ -1040,14 +1040,14 @@ const HallmarksPage: React.FC = () => {
                         </span>
                         <span className="font-bold text-gray-900">Hallmark #{log.hallmark_id}</span>
                         {log.duration_hours && (
-                          <span className="text-gray-400">({log.duration_hours}h duration)</span>
+                          <span className="text-slate-700">({log.duration_hours}h duration)</span>
                         )}
                       </div>
                       <div className="text-gray-600 text-[11px] italic">"{log.reason}"</div>
                     </div>
                     <div className="text-right">
                       <div className="font-bold text-rose-600 text-[11px]">-{log.pins_consumed} PIN</div>
-                      <div className="text-[10px] text-gray-400">
+                      <div className="text-[10px] text-slate-700">
                         {log.created_at ? new Date(log.created_at).toLocaleDateString() : 'Recent'}
                       </div>
                     </div>
@@ -1056,7 +1056,7 @@ const HallmarksPage: React.FC = () => {
               )}
             </div>
 
-            <div className="flex justify-between items-center pt-3 border-t border-gray-100">
+            <div className="flex justify-between items-center pt-3 border-t border-slate-200">
               <span className="text-xs text-gray-500 font-medium">
                 Remaining Balance: <strong>{remainingPins} / 50 PINs</strong>
               </span>
@@ -1074,8 +1074,8 @@ const HallmarksPage: React.FC = () => {
       {/* MODAL 4: Moderation Action Execution Modal (Warn / Suspend / Freeze) */}
       {modModal.isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-          <form onSubmit={handleExecuteModAction} className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-gray-100 space-y-4">
-            <div className="flex items-center justify-between border-b border-gray-100 pb-3">
+          <form onSubmit={handleExecuteModAction} className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
               <div className="flex items-center gap-2">
                 <span className="text-xl">
                   {modModal.type === 'warn' ? '⚠️' : modModal.type === 'suspend' ? '🚫' : '❄️'}
@@ -1092,7 +1092,7 @@ const HallmarksPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setModModal(prev => ({ ...prev, isOpen: false }))}
-                className="text-gray-400 hover:text-gray-600 text-lg font-bold"
+                className="text-slate-700 hover:text-gray-600 text-lg font-bold"
               >
                 ✕
               </button>
@@ -1125,9 +1125,9 @@ const HallmarksPage: React.FC = () => {
                   max="7"
                   value={modModal.durationDays}
                   onChange={(e) => setModModal(prev => ({ ...prev, durationDays: Number(e.target.value) }))}
-                  className="w-full accent-[#ff6b00]"
+                  className="w-full accent-[#ff6b00] text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
-                <div className="flex justify-between text-[10px] text-gray-400 mt-0.5">
+                <div className="flex justify-between text-[10px] text-slate-700 mt-0.5">
                   <span>1 Day</span>
                   <span>3 Days</span>
                   <span>7 Days (Max)</span>
@@ -1145,11 +1145,11 @@ const HallmarksPage: React.FC = () => {
                 value={modModal.reason}
                 onChange={(e) => setModModal(prev => ({ ...prev, reason: e.target.value }))}
                 placeholder="Enter specific protocol rule violation reason..."
-                className="w-full bg-gray-50 border border-slate-300 rounded-xl p-3 text-xs text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#ff6b00]"
+                className="w-full bg-white border border-slate-300 rounded-xl p-3 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#ff6b00] font-bold placeholder:text-slate-400"
               />
             </div>
 
-            <div className="flex justify-end gap-2 pt-2 border-t border-gray-100">
+            <div className="flex justify-end gap-2 pt-2 border-t border-slate-200">
               <Button
                 type="button"
                 variant="outline"

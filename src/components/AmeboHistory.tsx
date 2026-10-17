@@ -33,7 +33,7 @@ const AmeboHistory: React.FC<AmeboHistoryProps> = ({ userId, limit = 10 }) => {
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-slate-300">
-      <div className="p-6 border-b border-gray-200">
+      <div className="p-6 border-b border-slate-300">
         <h3 className="text-lg font-bold text-gray-900">Activity History</h3>
       </div>
 
@@ -59,7 +59,7 @@ const AmeboHistory: React.FC<AmeboHistoryProps> = ({ userId, limit = 10 }) => {
 
       {history.length === 0 && (
         <div className="p-8 text-center text-gray-500">
-          <ClockIcon className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+          <ClockIcon className="w-12 h-12 mx-auto mb-3 text-slate-700" />
           <p>No activity yet</p>
         </div>
       )}

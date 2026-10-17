@@ -97,7 +97,7 @@ export const MemberTributProjectsModal: React.FC<MemberTributProjectsModalProps>
                   </span>
                 </div>
                 <div className="text-sm font-semibold text-purple-200">{author.handle}</div>
-                <div className="flex items-center gap-2 text-xs text-slate-300 pt-1">
+                <div className="flex items-center gap-2 text-xs text-slate-700 pt-1">
                   <SparklesIcon className="w-3.5 h-3.5 text-amber-400" />
                   <span>{author.consistencyStreak || 'Consistent Daily Creator'}</span>
                   <span>•</span>
@@ -131,19 +131,19 @@ export const MemberTributProjectsModal: React.FC<MemberTributProjectsModalProps>
           {/* Quick Stats Strip */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-6 mt-6 border-t border-white/10 text-xs">
             <div>
-              <span className="block text-slate-400 font-medium">Published Tribut Pins</span>
+              <span className="block text-slate-700 font-medium">Published Tribut Pins</span>
               <strong className="text-lg font-black text-white">{displayPins.length} Pins</strong>
             </div>
             <div>
-              <span className="block text-slate-400 font-medium">Curated Project Boards</span>
+              <span className="block text-slate-700 font-medium">Curated Project Boards</span>
               <strong className="text-lg font-black text-white">{displayBoards.length} Boards</strong>
             </div>
             <div>
-              <span className="block text-slate-400 font-medium">Community Pin Saves</span>
+              <span className="block text-slate-700 font-medium">Community Pin Saves</span>
               <strong className="text-lg font-black text-white">{totalSaves.toLocaleString()} Saves</strong>
             </div>
             <div>
-              <span className="block text-slate-400 font-medium">Total Likes</span>
+              <span className="block text-slate-700 font-medium">Total Likes</span>
               <strong className="text-lg font-black text-white">{totalLikes.toLocaleString()} Likes</strong>
             </div>
           </div>

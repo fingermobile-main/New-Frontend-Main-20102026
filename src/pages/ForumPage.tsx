@@ -1583,7 +1583,7 @@ export const ForumPage: React.FC = () => {
                   placeholder="Search sovereign posts, stems, keycards, tags..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-9 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white placeholder:text-slate-500 focus:ring-2 focus:ring-orange-500 focus:outline-none font-medium"
+                  className="w-full pl-9 pr-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white placeholder:text-slate-400 focus:ring-2 focus:ring-orange-500 focus:outline-none font-medium font-bold border-slate-300"
                 />
               </div>
             </div>
@@ -1721,7 +1721,7 @@ export const ForumPage: React.FC = () => {
                       </div>
                       <div className="text-[11px] text-slate-700 dark:text-slate-300 font-medium truncate mt-0.5">{item.description}</div>
                     </div>
-                    <ArrowTopRightOnSquareIcon className="w-3.5 h-3.5 text-slate-400 group-hover:text-orange-500 shrink-0" />
+                    <ArrowTopRightOnSquareIcon className="w-3.5 h-3.5 text-slate-700 group-hover:text-orange-500 shrink-0" />
                   </button>
                 ))}
               </div>
@@ -1826,7 +1826,7 @@ export const ForumPage: React.FC = () => {
                   <SparklesIcon className="w-3.5 h-3.5 text-amber-500" />
                   Mii™®©℠
                 </span>
-                <span className="text-[10px] text-slate-400 font-mono">48H Disappearing</span>
+                <span className="text-[10px] text-slate-700 font-mono">48H Disappearing</span>
               </div>
               <div className="flex items-center gap-3 overflow-x-auto scrollbar-none py-1">
                 {/* Create Mii Button */}
@@ -1869,7 +1869,7 @@ export const ForumPage: React.FC = () => {
                   />
                   <div>
                     <span className="text-xs font-bold text-slate-900 dark:text-white">{syncedProfile.name}</span>
-                    <span className="text-[10px] text-slate-400 block font-mono">@{syncedProfile.username}</span>
+                    <span className="text-[10px] text-slate-700 block font-mono">@{syncedProfile.username}</span>
                   </div>
                 </div>
 
@@ -1907,7 +1907,7 @@ export const ForumPage: React.FC = () => {
                   placeholder="Post title or headline (optional)..."
                   value={composerTitle}
                   onChange={(e) => setComposerTitle(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold focus:ring-1 focus:ring-orange-500 focus:outline-none"
+                  className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold focus:ring-1 focus:ring-orange-500 focus:outline-none text-slate-900 border-slate-300 placeholder:text-slate-400"
                 />
 
                 {/* Mandatory Category Dropdown */}
@@ -1916,7 +1916,7 @@ export const ForumPage: React.FC = () => {
                     value={composerCategory}
                     onChange={(e) => setComposerCategory(e.target.value)}
                     required
-                    className="w-full px-3 py-2 bg-amber-50/60 dark:bg-slate-800 border border-amber-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-800 dark:text-slate-200 focus:ring-1 focus:ring-orange-500 focus:outline-none"
+                    className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-amber-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-slate-200 focus:ring-1 focus:ring-orange-500 focus:outline-none border-slate-300"
                   >
                     <option value="">▼ Select Mandatory Category (54 Available Topics)...</option>
                     {apiCategories.map((c) => (
@@ -1935,11 +1935,11 @@ export const ForumPage: React.FC = () => {
                       placeholder="Share discussions, paste https:// URLs for instant OG previews, or attach media/stems..."
                       value={composerContent}
                       onChange={handleContentChange}
-                      className="w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:ring-1 focus:ring-orange-500 focus:outline-none resize-none leading-relaxed"
+                      className="w-full p-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:ring-1 focus:ring-orange-500 focus:outline-none resize-none leading-relaxed text-slate-900 font-bold border-slate-300 placeholder:text-slate-400"
                     />
 
                     {/* Markdown Inserters */}
-                    <div className="flex items-center gap-1 text-[11px] text-slate-400">
+                    <div className="flex items-center gap-1 text-[11px] text-slate-700">
                       <span>Format:</span>
                       <button type="button" onClick={() => insertMarkdownSyntax('bold')} className="hover:text-slate-700 font-bold px-1">B</button>
                       <button type="button" onClick={() => insertMarkdownSyntax('italic')} className="hover:text-slate-700 italic px-1">I</button>
@@ -1955,7 +1955,7 @@ export const ForumPage: React.FC = () => {
                         <p className="whitespace-pre-wrap">{composerContent}</p>
                       </div>
                     ) : (
-                      <span className="text-slate-400 italic">No content typed yet. Switch back to write.</span>
+                      <span className="text-slate-700 italic">No content typed yet. Switch back to write.</span>
                     )}
                   </div>
                 )}
@@ -2304,7 +2304,7 @@ export const ForumPage: React.FC = () => {
                           placeholder="Or paste media URL (https://...)"
                           value={mediaInputUrl}
                           onChange={(e) => setMediaInputUrl(e.target.value)}
-                          className="flex-1 px-3 py-1.5 bg-white border border-sky-200 rounded-xl text-xs"
+                          className="flex-1 px-3 py-1.5 bg-white border border-sky-200 rounded-xl text-xs text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                         />
                         <button
                           type="button"
@@ -2371,7 +2371,7 @@ export const ForumPage: React.FC = () => {
                       placeholder="Poll Question (e.g. Which feature should we prioritize next?)"
                       value={pollDraftQuestion}
                       onChange={(e) => setPollDraftQuestion(e.target.value)}
-                      className="w-full px-3 py-1.5 bg-white border border-purple-200 rounded-xl text-xs font-semibold"
+                      className="w-full px-3 py-1.5 bg-white border border-purple-200 rounded-xl text-xs font-semibold text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                     />
 
                     <div className="space-y-1.5">
@@ -2386,7 +2386,7 @@ export const ForumPage: React.FC = () => {
                               updated[idx] = e.target.value;
                               setPollDraftOptions(updated);
                             }}
-                            className="flex-1 px-3 py-1.5 bg-white border border-purple-200 rounded-xl text-xs"
+                            className="flex-1 px-3 py-1.5 bg-white border border-purple-200 rounded-xl text-xs text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                           />
                           {pollDraftOptions.length > 2 && (
                             <button
@@ -2419,7 +2419,7 @@ export const ForumPage: React.FC = () => {
                         <select
                           value={pollDraftDays}
                           onChange={(e) => setPollDraftDays(Number(e.target.value))}
-                          className="bg-white border border-purple-200 rounded-lg px-2 py-0.5 text-xs font-semibold"
+                          className="bg-white border border-purple-200 rounded-lg px-2 py-0.5 text-xs font-semibold text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500"
                         >
                           <option value={1}>24 Hours</option>
                           <option value={3}>3 Days</option>
@@ -2475,7 +2475,7 @@ export const ForumPage: React.FC = () => {
                       placeholder="Event Title (e.g. Sovereign Keycard Onboarding Workshop)"
                       value={eventDraftTitle}
                       onChange={(e) => setEventDraftTitle(e.target.value)}
-                      className="w-full px-3 py-1.5 bg-white border border-emerald-200 rounded-xl text-xs font-semibold"
+                      className="w-full px-3 py-1.5 bg-white border border-emerald-200 rounded-xl text-xs font-semibold text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                     />
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
@@ -2483,20 +2483,20 @@ export const ForumPage: React.FC = () => {
                         type="date"
                         value={eventDraftDate}
                         onChange={(e) => setEventDraftDate(e.target.value)}
-                        className="px-3 py-1.5 bg-white border border-emerald-200 rounded-xl text-xs"
+                        className="px-3 py-1.5 bg-white border border-emerald-200 rounded-xl text-xs text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                       <input
                         type="time"
                         value={eventDraftTime}
                         onChange={(e) => setEventDraftTime(e.target.value)}
-                        className="px-3 py-1.5 bg-white border border-emerald-200 rounded-xl text-xs"
+                        className="px-3 py-1.5 bg-white border border-emerald-200 rounded-xl text-xs text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                       <input
                         type="text"
                         placeholder="Location or Stream Link"
                         value={eventDraftLocation}
                         onChange={(e) => setEventDraftLocation(e.target.value)}
-                        className="px-3 py-1.5 bg-white border border-emerald-200 rounded-xl text-xs"
+                        className="px-3 py-1.5 bg-white border border-emerald-200 rounded-xl text-xs text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                     </div>
 
@@ -2553,7 +2553,7 @@ export const ForumPage: React.FC = () => {
                           placeholder="Or type Document Name (e.g. Protocol_Specs.pdf)"
                           value={fileDraftName}
                           onChange={(e) => setFileDraftName(e.target.value)}
-                          className="flex-1 px-3 py-1.5 bg-white border border-indigo-200 rounded-xl text-xs"
+                          className="flex-1 px-3 py-1.5 bg-white border border-indigo-200 rounded-xl text-xs text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                         />
                         <button
                           type="button"
@@ -2624,7 +2624,7 @@ export const ForumPage: React.FC = () => {
                         placeholder="Paste URL (https://facebook.com, https://fingermobile.io, ...)"
                         value={linkInputUrl}
                         onChange={(e) => setLinkInputUrl(e.target.value)}
-                        className="flex-1 px-3 py-1.5 bg-white border border-blue-200 rounded-xl text-xs"
+                        className="flex-1 px-3 py-1.5 bg-white border border-blue-200 rounded-xl text-xs text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                       <button
                         type="button"
@@ -2642,7 +2642,7 @@ export const ForumPage: React.FC = () => {
                       <div className="p-3 bg-white border border-blue-200 rounded-xl space-y-2">
                         <div className="text-[10px] font-black uppercase text-blue-600 tracking-wider flex items-center justify-between">
                           <span>Live OG Preview Snippet</span>
-                          <span className="font-mono text-slate-400">{linkOgData.domain}</span>
+                          <span className="font-mono text-slate-700">{linkOgData.domain}</span>
                         </div>
 
                         <div className="flex gap-3">
@@ -2682,14 +2682,14 @@ export const ForumPage: React.FC = () => {
                             placeholder="Override Title"
                             value={ogManualTitle}
                             onChange={(e) => setOgManualTitle(e.target.value)}
-                            className="px-2.5 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs"
+                            className="px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-xs text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                           />
                           <input
                             type="url"
                             placeholder="Override Image URL"
                             value={ogManualImage}
                             onChange={(e) => setOgManualImage(e.target.value)}
-                            className="px-2.5 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs"
+                            className="px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-xs text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                           />
                         </div>
 
@@ -2747,7 +2747,7 @@ export const ForumPage: React.FC = () => {
                           placeholder="Or enter Map Address..."
                           value={locationInput}
                           onChange={(e) => setLocationInput(e.target.value)}
-                          className="flex-1 px-3 py-1.5 bg-white border border-rose-200 rounded-xl text-xs"
+                          className="flex-1 px-3 py-1.5 bg-white border border-rose-200 rounded-xl text-xs text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                         />
                         <button
                           type="button"
@@ -2825,7 +2825,7 @@ export const ForumPage: React.FC = () => {
                           placeholder="Or type custom track name..."
                           value={customStemTitle}
                           onChange={(e) => setCustomStemTitle(e.target.value)}
-                          className="flex-1 px-3 py-1.5 bg-white border border-orange-200 rounded-xl text-xs"
+                          className="flex-1 px-3 py-1.5 bg-white border border-orange-200 rounded-xl text-xs text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                         />
                         <button
                           type="button"
@@ -2897,7 +2897,7 @@ export const ForumPage: React.FC = () => {
                           placeholder="Or type live stream channel..."
                           value={customStreamTitle}
                           onChange={(e) => setCustomStreamTitle(e.target.value)}
-                          className="flex-1 px-3 py-1.5 bg-white border border-purple-200 rounded-xl text-xs"
+                          className="flex-1 px-3 py-1.5 bg-white border border-purple-200 rounded-xl text-xs text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                         />
                         <button
                           type="button"
@@ -2932,7 +2932,7 @@ export const ForumPage: React.FC = () => {
                           className="w-full text-left p-2 bg-white border border-purple-200 rounded-xl hover:bg-purple-100 font-semibold text-purple-950 flex justify-between items-center transition"
                         >
                           <span>📺 {stream.title}</span>
-                          <span className="text-[10px] font-mono font-bold text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full">{stream.badge}</span>
+                          <span className="text-[10px] font-mono font-bold text-purple-950 bg-purple-50 px-2 py-0.5 rounded-full border text-purple-950 border-purple-400 font-black">{stream.badge}</span>
                         </button>
                       ))}
                     </div>
@@ -3042,7 +3042,7 @@ export const ForumPage: React.FC = () => {
                           placeholder="Mini Search: Crawl all stores (e.g. Birkin, Rolex, Gift Card, Tip, Coupon, Agbada, Stem, Penthouse)..."
                           value={productSearchQuery}
                           onChange={(e) => setProductSearchQuery(e.target.value)}
-                          className="w-full pl-9 pr-24 py-2 bg-white border-2 border-amber-300 focus:border-amber-500 rounded-xl text-xs font-medium placeholder-amber-700/50 text-slate-900 focus:outline-none shadow-xs"
+                          className="w-full pl-9 pr-24 py-2 bg-white border-2 border-amber-300 focus:border-amber-500 rounded-xl text-xs font-medium placeholder-amber-700/50 text-slate-900 focus:outline-none shadow-xs font-bold border border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                         />
                         <div className="absolute inset-y-0 right-0 pr-2 flex items-center gap-1">
                           {productSearchQuery && (
@@ -3287,19 +3287,19 @@ export const ForumPage: React.FC = () => {
                             placeholder="Item, Tip or Gift Title..."
                             value={customProdName}
                             onChange={(e) => setCustomProdName(e.target.value)}
-                            className="px-3 py-1.5 bg-slate-50 border border-amber-200 rounded-xl text-xs"
+                            className="px-3 py-1.5 bg-white border border-amber-200 rounded-xl text-xs text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                           />
                           <input
                             type="text"
                             placeholder="Price / Amount (e.g. 250 FIC)..."
                             value={customProdPrice}
                             onChange={(e) => setCustomProdPrice(e.target.value)}
-                            className="px-3 py-1.5 bg-slate-50 border border-amber-200 rounded-xl text-xs"
+                            className="px-3 py-1.5 bg-white border border-amber-200 rounded-xl text-xs text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                           />
                           <select
                             value={customProdMedium}
                             onChange={(e) => setCustomProdMedium(e.target.value as any)}
-                            className="px-3 py-1.5 bg-slate-50 border border-amber-200 rounded-xl text-xs font-semibold"
+                            className="px-3 py-1.5 bg-white border border-amber-200 rounded-xl text-xs font-semibold text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500"
                           >
                             <option value="product">Physical Product / Good</option>
                             <option value="gift_card">🎁 Sovereign Gift Card</option>
@@ -3366,8 +3366,8 @@ export const ForumPage: React.FC = () => {
             {/* Protocol Market Ticker & Live Stats */}
             <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 shadow-xs">
               <div className="flex items-center justify-between mb-3">
-                <span className="text-xs font-black uppercase text-slate-400">Live Network</span>
-                <span className="flex items-center gap-1 text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
+                <span className="text-xs font-black uppercase text-slate-700">Live Network</span>
+                <span className="flex items-center gap-1 text-[10px] font-bold text-emerald-950 bg-emerald-50 px-2 py-0.5 rounded-full border text-emerald-950 border-emerald-400 font-black">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
                   P2P Online
                 </span>
@@ -3454,7 +3454,7 @@ export const ForumPage: React.FC = () => {
                   setMiiMediaFileSize('');
                   setMiiCaption('');
                 }}
-                className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-bold text-lg p-1 rounded-lg"
+                className="text-slate-700 hover:text-slate-600 dark:hover:text-slate-200 font-bold text-lg p-1 rounded-lg"
               >
                 ✕
               </button>
@@ -3505,7 +3505,7 @@ export const ForumPage: React.FC = () => {
               id="mii-story-file-picker"
               ref={miiFileInputRef}
               type="file"
-              className="hidden"
+              className="hidden text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
               accept={
                 miiType === 'photo'
                   ? 'image/*'
@@ -3639,7 +3639,7 @@ export const ForumPage: React.FC = () => {
                   setMiiMediaFileName('');
                   setMiiMediaFileSize('');
                 }}
-                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-orange-500 focus:outline-none font-bold border-slate-300 placeholder:text-slate-400"
               />
             </div>
 
@@ -3650,13 +3650,13 @@ export const ForumPage: React.FC = () => {
                 placeholder="Caption (e.g. Backstage live session in Lagos!)..."
                 value={miiCaption}
                 onChange={(e) => setMiiCaption(e.target.value)}
-                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-orange-500 focus:outline-none font-bold border-slate-300 placeholder:text-slate-400"
               />
             </div>
 
             {/* Modal Footer Controls */}
             <div className="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800">
-              <span className="text-[10px] text-slate-400 font-mono">
+              <span className="text-[10px] text-slate-700 font-mono">
                 Duration: 48 Hours
               </span>
               <div className="flex items-center gap-2">

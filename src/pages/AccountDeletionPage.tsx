@@ -140,7 +140,7 @@ const AccountDeletionPage: React.FC = () => {
                         value={formData.email}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-base" />
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-base text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400" />
                     </div>
 
                     <div className="mb-6">
@@ -157,7 +157,7 @@ const AccountDeletionPage: React.FC = () => {
                         value={formData.password}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-base" />
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-base text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400" />
                     </div>
 
                     <div className="mb-6">
@@ -173,7 +173,7 @@ const AccountDeletionPage: React.FC = () => {
                         value={formData.reason}
                         onChange={handleChange}
                         rows={4}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-base"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-base text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                       />
                     </div>
 
@@ -186,7 +186,7 @@ const AccountDeletionPage: React.FC = () => {
                           checked={formData.confirmDeletion}
                           onChange={handleChange}
                           required
-                          className="focus:ring-red-500 h-5 w-5 text-red-600 border-gray-300 rounded"
+                          className="focus:ring-red-500 h-5 w-5 text-slate-900 border-gray-300 rounded font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                         />
                       </div>
                       <div className="ml-3 text-sm">

@@ -322,7 +322,7 @@ const GameOnPage: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="p-6 pt-0 border-t border-gray-100 flex items-center justify-between">
+                  <div className="p-6 pt-0 border-t border-slate-200 flex items-center justify-between">
                     <span className="text-xs text-gray-500 flex items-center gap-1">
                       <UserGroupIcon className="w-4 h-4 text-slate-500" />
                       Max {event.max_participants}
@@ -364,7 +364,7 @@ const GameOnPage: React.FC = () => {
                       <span className="text-xs font-bold text-purple-600">Odds: {m.odds_a}x</span>
                     </div>
 
-                    <span className="text-xs font-black text-gray-400 px-3 py-1 bg-gray-100 rounded-full">VS</span>
+                    <span className="text-xs font-black text-slate-700 px-3 py-1 bg-gray-100 rounded-full">VS</span>
 
                     <div className="text-left flex-1">
                       <p className="text-base font-black text-gray-900">{m.team_b}</p>
@@ -373,9 +373,9 @@ const GameOnPage: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4 self-stretch md:self-auto justify-between md:justify-end border-t md:border-t-0 pt-4 md:pt-0 border-gray-100">
+                <div className="flex items-center gap-4 self-stretch md:self-auto justify-between md:justify-end border-t md:border-t-0 pt-4 md:pt-0 border-slate-200">
                   <div className="text-right">
-                    <span className="text-[10px] text-gray-400 font-bold uppercase block">Prize Pool</span>
+                    <span className="text-[10px] text-slate-700 font-bold uppercase block">Prize Pool</span>
                     <span className="text-base font-black text-amber-600">{m.prize_pool_fic} FIC</span>
                   </div>
 
@@ -396,7 +396,7 @@ const GameOnPage: React.FC = () => {
           <div className="bg-white rounded-3xl border border-slate-300 shadow-sm overflow-hidden">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider border-b border-gray-100">
+                <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider border-b border-slate-200">
                   <th className="py-3.5 px-6">Rank</th>
                   <th className="py-3.5 px-6">Player Handle</th>
                   <th className="py-3.5 px-6">Wins</th>
@@ -464,10 +464,10 @@ const GameOnPage: React.FC = () => {
         {/* Prediction Modal */}
         {selectedMatch && (
           <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-            <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-gray-100">
-              <div className="flex justify-between items-center pb-4 border-b border-gray-100">
+            <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-200">
+              <div className="flex justify-between items-center pb-4 border-b border-slate-200">
                 <h3 className="text-lg font-black text-gray-900">Make Match Prediction</h3>
-                <button onClick={() => setSelectedMatch(null)} className="text-gray-400 hover:text-gray-600">
+                <button onClick={() => setSelectedMatch(null)} className="text-slate-700 hover:text-gray-600">
                   <XMarkIcon className="w-5 h-5" />
                 </button>
               </div>
@@ -527,7 +527,7 @@ const GameOnPage: React.FC = () => {
                     min="5"
                     value={wagerAmount}
                     onChange={(e) => setWagerAmount(Number(e.target.value))}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-purple-500 focus:outline-none text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400 font-mono"
                   />
                 </div>
 

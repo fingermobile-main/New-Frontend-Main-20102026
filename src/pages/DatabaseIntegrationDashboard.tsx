@@ -37,7 +37,7 @@ const DatabaseIntegrationDashboard: React.FC = () => {
             <div className="ml-4">
               <div className="flex items-center gap-2">
                 <h1 className="text-3xl font-black text-gray-900 tracking-tight">Database Integration Dashboard</h1>
-                <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold border border-emerald-300">
+                <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold border border-emerald-400 font-black">
                   B-Tree Indexed
                 </span>
               </div>
@@ -241,7 +241,7 @@ const DatabaseIntegrationDashboard: React.FC = () => {
           <div className="lg:col-span-3 space-y-6">
             <DatabaseIntegrationReport />
 
-            <div className="bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
+            <div className="bg-white rounded-2xl shadow-xl p-6 border border-slate-200">
               <h2 className="text-xl font-semibold mb-4 text-gray-900">Integration Status Overview</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="border-l-4 border-blue-500 pl-4 py-2">
@@ -263,7 +263,7 @@ const DatabaseIntegrationDashboard: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
+            <div className="bg-white rounded-2xl shadow-xl p-6 border border-slate-200">
               <h2 className="text-xl font-semibold mb-4 text-gray-900">Component Integration Status</h2>
               <div className="space-y-4">
                 {[
@@ -275,7 +275,7 @@ const DatabaseIntegrationDashboard: React.FC = () => {
                   { name: 'Marketplace Components', desc: 'Storefront, OwnIt, Flamingo, PhotoCredits', cat: 'Commerce' },
                   { name: 'Guardian AI Cyber Protection', desc: 'Biometric telemetry & intrusion prevention DB', cat: 'Security' }
                 ].map((comp, idx) => (
-                  <div key={idx} className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl border border-gray-200/60">
+                  <div key={idx} className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl border border-slate-300">
                     <div>
                       <h3 className="font-bold text-gray-900">{comp.name}</h3>
                       <p className="text-xs text-gray-600">{comp.desc}</p>
@@ -318,33 +318,33 @@ const DatabaseIntegrationDashboard: React.FC = () => {
               <div className="space-y-2.5">
                 <button
                   onClick={() => showToast('Diagnostics complete: 0 unindexed tables detected. Latency: 0.8ms.', 'success')}
-                  className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl hover:from-blue-50 hover:to-indigo-50 transition-colors flex items-center justify-between text-xs font-bold text-gray-800 border border-gray-200/50"
+                  className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl hover:from-blue-50 hover:to-indigo-50 transition-colors flex items-center justify-between text-xs font-bold text-gray-800 border border-slate-300"
                 >
                   <span className="flex items-center">
                     <DatabaseIcon className="h-4 w-4 text-blue-600 mr-3" />
                     Run Index Diagnostics
                   </span>
-                  <ArrowRight className="w-3.5 h-3.5 text-gray-400" />
+                  <ArrowRight className="w-3.5 h-3.5 text-slate-700" />
                 </button>
                 <button
                   onClick={() => showToast('Rebuilding inverted token indexes... B-Tree rebalanced in 1.2ms.', 'success')}
-                  className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl hover:from-blue-50 hover:to-indigo-50 transition-colors flex items-center justify-between text-xs font-bold text-gray-800 border border-gray-200/50"
+                  className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl hover:from-blue-50 hover:to-indigo-50 transition-colors flex items-center justify-between text-xs font-bold text-gray-800 border border-slate-300"
                 >
                   <span className="flex items-center">
                     <ChartBarIcon className="h-4 w-4 text-emerald-600 mr-3" />
                     Rebalance B-Tree Indexes
                   </span>
-                  <ArrowRight className="w-3.5 h-3.5 text-gray-400" />
+                  <ArrowRight className="w-3.5 h-3.5 text-slate-700" />
                 </button>
                 <button
                   onClick={() => showToast('Displaying real-time PostgreSQL replication logs.', 'info')}
-                  className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl hover:from-blue-50 hover:to-indigo-50 transition-colors flex items-center justify-between text-xs font-bold text-gray-800 border border-gray-200/50"
+                  className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl hover:from-blue-50 hover:to-indigo-50 transition-colors flex items-center justify-between text-xs font-bold text-gray-800 border border-slate-300"
                 >
                   <span className="flex items-center">
                     <ClockIcon className="h-4 w-4 text-indigo-600 mr-3" />
                     View Replication Logs
                   </span>
-                  <ArrowRight className="w-3.5 h-3.5 text-gray-400" />
+                  <ArrowRight className="w-3.5 h-3.5 text-slate-700" />
                 </button>
               </div>
             </div>

@@ -57,7 +57,7 @@ const SupportDashboardPage: React.FC = () => {
       </div>
       <div className="p-4 border-t bg-gray-50">
         <form onSubmit={handleSendReply}>
-          <textarea value={reply} onChange={e => setReply(e.target.value)} rows={3} className="w-full p-2 border rounded-md" placeholder="Type your reply..."></textarea>
+          <textarea value={reply} onChange={e => setReply(e.target.value)} rows={3} className="w-full p-2 border rounded-md text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" placeholder="Type your reply..."></textarea>
           <div className="flex justify-between items-center mt-2">
             <div className="flex gap-2">
               <button onClick={() => onUpdateStatus(selectedTicket!.id, 'resolved')} type="button" className="px-3 py-1 text-xs font-semibold bg-green-100 text-green-950 border border-green-400 font-bold rounded-full hover:bg-green-200">Mark as Resolved</button>

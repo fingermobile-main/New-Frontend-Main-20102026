@@ -248,7 +248,7 @@ const DiscoverPage: React.FC = () => {
           {/* Left Sidebar */}
           <div className="hidden lg:block lg:col-span-3 space-y-6">
             <div className="sticky top-20 space-y-6">
-              <div className="bg-white p-6 rounded-2xl shadow-md border border-gray-100">
+              <div className="bg-white p-6 rounded-2xl shadow-md border border-slate-200">
                 <h3 className="font-bold text-gray-900 mb-4 flex items-center">
                   <MagnifyingGlassIcon className="w-5 h-5 text-blue-600 mr-2" />
                   Explore
@@ -260,7 +260,7 @@ const DiscoverPage: React.FC = () => {
                 </ul>
               </div>
 
-              <div className="bg-white p-6 rounded-2xl shadow-md border border-gray-100">
+              <div className="bg-white p-6 rounded-2xl shadow-md border border-slate-200">
                 <h3 className="font-bold text-gray-900 mb-4 flex items-center">
                   <FireIcon className="w-5 h-5 text-red-500 mr-2" />
                   Popular Topics
@@ -318,7 +318,7 @@ const DiscoverPage: React.FC = () => {
                 <input
                   type="text"
                   placeholder="Recipient's membername"
-                  className="w-full px-4 py-2 border rounded-lg"
+                  className="w-full px-4 py-2 border rounded-lg text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
                 <div className="flex gap-4">
                   <button
@@ -352,7 +352,7 @@ const DiscoverPage: React.FC = () => {
                 <input
                   type="text"
                   placeholder="Paylink description"
-                  className="w-full px-4 py-2 border rounded-lg"
+                  className="w-full px-4 py-2 border rounded-lg text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
                 <div className="flex gap-4">
                   <button

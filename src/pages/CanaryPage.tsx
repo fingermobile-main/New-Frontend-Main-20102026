@@ -288,7 +288,7 @@ const CanaryPage: React.FC = () => {
           {/* Left Sidebar */}
           <div className="hidden lg:block lg:col-span-3 space-y-6">
             <div className="sticky top-20 space-y-6">
-              <div className="bg-white p-6 rounded-2xl shadow-md border border-gray-100">
+              <div className="bg-white p-6 rounded-2xl shadow-md border border-slate-200">
                 <h3 className="font-bold text-gray-900 mb-4 flex items-center">
                   <ShieldIcon className="w-5 h-5 text-amber-600 mr-2" />
                   Ad Specifications
@@ -318,7 +318,7 @@ const CanaryPage: React.FC = () => {
               </div>
 
               {/* Ad Dimension Guide */}
-              <div className="bg-white p-6 rounded-2xl shadow-md border border-gray-100">
+              <div className="bg-white p-6 rounded-2xl shadow-md border border-slate-200">
                 <h3 className="font-bold text-gray-900 mb-4">Ad Dimensions Guide</h3>
                 <div className="space-y-2 text-xs">
                   <div className="flex justify-between">
@@ -345,7 +345,7 @@ const CanaryPage: React.FC = () => {
               </div>
 
               {/* Advertiser Status */}
-              <div className="bg-white p-6 rounded-2xl shadow-md border border-gray-100">
+              <div className="bg-white p-6 rounded-2xl shadow-md border border-slate-200">
                 <h3 className="font-bold text-gray-900 mb-4">Advertiser Status</h3>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">

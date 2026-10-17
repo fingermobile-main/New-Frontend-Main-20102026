@@ -307,7 +307,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                             permissions: { ...sm.permissions, canViewFinances: e.target.checked }
                           })
                         }
-                        className="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+                        className="w-4 h-4 rounded text-slate-900 focus:ring-indigo-500 cursor-pointer font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                       />
                     </td>
                     <td className="py-3.5 px-4 text-center">
@@ -320,7 +320,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                             permissions: { ...sm.permissions, canEditSchedule: e.target.checked }
                           })
                         }
-                        className="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+                        className="w-4 h-4 rounded text-slate-900 focus:ring-indigo-500 cursor-pointer font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                       />
                     </td>
                     <td className="py-3.5 px-4 text-center">
@@ -333,7 +333,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                             permissions: { ...sm.permissions, canIssueRefunds: e.target.checked }
                           })
                         }
-                        className="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+                        className="w-4 h-4 rounded text-slate-900 focus:ring-indigo-500 cursor-pointer font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                       />
                     </td>
                     <td className="py-3.5 px-4 text-center">
@@ -346,7 +346,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                             permissions: { ...sm.permissions, canManageClients: e.target.checked }
                           })
                         }
-                        className="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+                        className="w-4 h-4 rounded text-slate-900 focus:ring-indigo-500 cursor-pointer font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                       />
                     </td>
                   </tr>
@@ -493,7 +493,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                         calendarSync: { ...editingStaff.calendarSync, googleCalendar: e.target.checked }
                       })
                     }
-                    className="w-4 h-4 rounded text-indigo-600"
+                    className="w-4 h-4 rounded text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                   <span>Google Cal</span>
                 </label>
@@ -507,7 +507,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                         calendarSync: { ...editingStaff.calendarSync, outlookCalendar: e.target.checked }
                       })
                     }
-                    className="w-4 h-4 rounded text-indigo-600"
+                    className="w-4 h-4 rounded text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                   <span>Outlook</span>
                 </label>
@@ -521,7 +521,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                         calendarSync: { ...editingStaff.calendarSync, appleCalendar: e.target.checked }
                       })
                     }
-                    className="w-4 h-4 rounded text-indigo-600"
+                    className="w-4 h-4 rounded text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                   <span>Apple Cal</span>
                 </label>
@@ -551,7 +551,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                           }
                         })
                       }
-                      className="w-4 h-4 rounded text-indigo-600"
+                      className="w-4 h-4 rounded text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                     />
                     <span>{day}</span>
                   </label>
@@ -570,7 +570,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                             }
                           })
                         }
-                        className="px-2 py-1 bg-white border border-slate-300 rounded-lg text-xs font-bold text-slate-900"
+                        className="px-2 py-1 bg-white border border-slate-300 rounded-lg text-xs font-bold text-slate-900 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                       <span>to</span>
                       <input
@@ -585,7 +585,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                             }
                           })
                         }
-                        className="px-2 py-1 bg-white border border-slate-300 rounded-lg text-xs font-bold text-slate-900"
+                        className="px-2 py-1 bg-white border border-slate-300 rounded-lg text-xs font-bold text-slate-900 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                     </div>
                   ) : (
@@ -641,7 +641,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                   placeholder="e.g. Lord Julian Vance"
                   value={newStaffName}
                   onChange={(e) => setNewStaffName(e.target.value)}
-                  className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white outline-none"
+                  className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white outline-none focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
 
@@ -650,7 +650,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                 <select
                   value={newStaffRole}
                   onChange={(e) => setNewStaffRole(e.target.value as any)}
-                  className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none"
+                  className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:ring-2 focus:ring-indigo-500"
                 >
                   <option value="Master Concierge">Master Concierge</option>
                   <option value="Senior Specialist">Senior Specialist</option>
@@ -666,7 +666,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                   placeholder="specialist@fingerlux.protocol"
                   value={newStaffEmail}
                   onChange={(e) => setNewStaffEmail(e.target.value)}
-                  className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white outline-none"
+                  className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white outline-none focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
 
@@ -677,7 +677,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                   placeholder="+1 800 589 8478"
                   value={newStaffPhone}
                   onChange={(e) => setNewStaffPhone(e.target.value)}
-                  className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white outline-none"
+                  className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white outline-none focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
             </div>
@@ -725,7 +725,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                   placeholder="e.g. VIP Penthouse Salon B, Audio Suite"
                   value={newResourceName}
                   onChange={(e) => setNewResourceName(e.target.value)}
-                  className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white outline-none"
+                  className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white outline-none focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
 
@@ -735,7 +735,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                   <select
                     value={newResourceType}
                     onChange={(e) => setNewResourceType(e.target.value as any)}
-                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none"
+                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:ring-2 focus:ring-indigo-500"
                   >
                     <option value="room">Room / Suite</option>
                     <option value="equipment">Equipment</option>
@@ -748,7 +748,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                     type="number"
                     value={newResourceCapacity}
                     onChange={(e) => setNewResourceCapacity(Number(e.target.value))}
-                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none"
+                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
                   />
                 </div>
               </div>
@@ -758,7 +758,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                 <select
                   value={newResourceLocationId}
                   onChange={(e) => setNewResourceLocationId(e.target.value)}
-                  className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none"
+                  className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:ring-2 focus:ring-indigo-500"
                 >
                   {locations.map((l) => (
                     <option key={l.id} value={l.id}>
@@ -775,7 +775,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                   placeholder="Features, amenities, specifications..."
                   value={newResourceDesc}
                   onChange={(e) => setNewResourceDesc(e.target.value)}
-                  className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none"
+                  className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
             </div>

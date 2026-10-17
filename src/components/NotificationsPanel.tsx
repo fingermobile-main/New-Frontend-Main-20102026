@@ -57,7 +57,7 @@ const NotificationsPanel: React.FC<NotificationsPanelProps> = ({
         >
           <div className="sticky top-0 bg-white border-b border-slate-300 p-4 flex justify-between items-center">
             <h3 className="text-lg font-semibold text-gray-900">Notifications</h3>
-            <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+            <button onClick={onClose} className="text-slate-700 hover:text-gray-600">
               ✕
             </button>
           </div>

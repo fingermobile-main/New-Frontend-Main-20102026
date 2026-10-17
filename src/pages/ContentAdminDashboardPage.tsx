@@ -71,7 +71,7 @@ const ContentAdminDashboardPage: React.FC = () => {
             <div className="bg-white/80 backdrop-blur-xl rounded-3xl p-8 border border-slate-200/60 shadow-sm">
               <div className="flex items-center justify-between mb-8">
                 <h2 className="text-xl font-bold text-slate-900">Platform Growth</h2>
-                <select className="bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-xl focus:ring-rose-500 focus:border-rose-500 block p-2.5 font-medium">
+                <select className="bg-white border border-slate-200 text-slate-900 text-sm rounded-xl focus:ring-rose-500 focus:border-rose-500 block p-2.5 font-medium font-bold border-slate-300 focus:ring-2">
                   <option>Last 7 days</option>
                   <option>Last 30 days</option>
                   <option>This Year</option>

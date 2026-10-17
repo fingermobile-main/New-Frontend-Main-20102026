@@ -81,7 +81,7 @@ export default function CenterFeed() {
   return (
     <div className="w-full pb-20">
       {/* Create Post Input */}
-      <div className="p-4 border-b border-gray-100 bg-white">
+      <div className="p-4 border-b border-slate-200 bg-white">
         <div className="flex items-center flex-wrap">
           <CategorySelector
             selectedCategoryId={selectedCategoryId}
@@ -96,13 +96,13 @@ export default function CenterFeed() {
           <div className="w-10 h-10 rounded-full bg-indigo-500 flex-shrink-0" />
           <div className="flex-1">
             <textarea
-              className="w-full bg-transparent border-none text-lg resize-none outline-none placeholder:text-slate-500 mt-2"
+              className="w-full bg-transparent border-none text-lg resize-none outline-none placeholder:text-slate-400 mt-2 text-slate-900 font-bold border border-slate-300 rounded focus:ring-2 focus:ring-indigo-500"
               placeholder="What's happening in the community?"
               rows={2}
             />
           </div>
         </div>
-        <div className="flex justify-between items-center mt-4 pt-3 border-t border-gray-100">
+        <div className="flex justify-between items-center mt-4 pt-3 border-t border-slate-200">
           <div className="flex space-x-2 text-indigo-500">
             <button className="p-2 hover:bg-indigo-50 rounded-full transition-colors">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
@@ -133,7 +133,7 @@ export default function CenterFeed() {
                 <div className="flex items-center space-x-1 mb-2">
                   <h3 className="font-bold text-gray-900 truncate">{post.author}</h3>
                   <span className="text-gray-500 text-sm truncate">{post.handle}</span>
-                  <span className="text-gray-400 text-sm">·</span>
+                  <span className="text-slate-700 text-sm">·</span>
                   <span className="text-gray-500 text-sm">{post.time}</span>
                 </div>
 

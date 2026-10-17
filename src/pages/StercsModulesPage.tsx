@@ -20,18 +20,18 @@ const StercsModulesPage: React.FC = () => {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="bg-white rounded-xl shadow p-6 border border-gray-100">
+        <div className="bg-white rounded-xl shadow p-6 border border-slate-200">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-semibold">Module Management</h2>
             <div className="flex space-x-3">
-              <button className="p-2 text-gray-400 hover:text-gray-500 border border-gray-300 rounded-lg">
+              <button className="p-2 text-slate-700 hover:text-gray-500 border border-gray-300 rounded-lg">
                 <Settings className="h-4 w-4" />
               </button>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+            <div className="border border-slate-300 rounded-lg p-4 hover:shadow-md transition-shadow">
               <div className="flex items-center">
                 <div className="p-2 rounded-lg bg-blue-100">
                   <Zap className="h-5 w-5 text-blue-500" />
@@ -61,7 +61,7 @@ const StercsModulesPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+            <div className="border border-slate-300 rounded-lg p-4 hover:shadow-md transition-shadow">
               <div className="flex items-center">
                 <div className="p-2 rounded-lg bg-green-100">
                   <ShieldCheck className="h-5 w-5 text-green-500" />
@@ -91,7 +91,7 @@ const StercsModulesPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+            <div className="border border-slate-300 rounded-lg p-4 hover:shadow-md transition-shadow">
               <div className="flex items-center">
                 <div className="p-2 rounded-lg bg-purple-100">
                   <Sparkles className="h-5 w-5 text-purple-500" />
@@ -121,7 +121,7 @@ const StercsModulesPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+            <div className="border border-slate-300 rounded-lg p-4 hover:shadow-md transition-shadow">
               <div className="flex items-center">
                 <div className="p-2 rounded-lg bg-yellow-100">
                   <FileEdit className="h-5 w-5 text-yellow-500" />
@@ -132,7 +132,7 @@ const StercsModulesPage: React.FC = () => {
                 </div>
               </div>
               <div className="mt-3 flex justify-between items-center">
-                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-950 border border-amber-400 font-bold">
+                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-950 border border-amber-400 font-bold font-black">
                   Maintenance
                 </span>
                 <span className="text-xs text-gray-500">v0.9.8</span>
@@ -151,7 +151,7 @@ const StercsModulesPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+            <div className="border border-slate-300 rounded-lg p-4 hover:shadow-md transition-shadow">
               <div className="flex items-center">
                 <div className="p-2 rounded-lg bg-red-100">
                   <Scissors className="h-5 w-5 text-red-500" />
@@ -181,7 +181,7 @@ const StercsModulesPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+            <div className="border border-slate-300 rounded-lg p-4 hover:shadow-md transition-shadow">
               <div className="flex items-center">
                 <div className="p-2 rounded-lg bg-indigo-100">
                   <Globe className="h-5 w-5 text-indigo-500" />

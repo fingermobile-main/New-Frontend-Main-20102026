@@ -184,7 +184,7 @@ const PerksAndRosterComponent: React.FC = () => {
     <div className="space-y-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* MRR & Metrics Overview */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
+        <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
           <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
             Total Active VIPs
           </p>
@@ -192,7 +192,7 @@ const PerksAndRosterComponent: React.FC = () => {
           <span className="text-xs text-green-600 font-semibold">↑ 12% this month</span>
         </div>
 
-        <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
+        <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
           <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
             Monthly Recurring Revenue (MRR)
           </p>
@@ -202,7 +202,7 @@ const PerksAndRosterComponent: React.FC = () => {
           <span className="text-xs text-green-600 font-semibold">100% on-chain guaranteed</span>
         </div>
 
-        <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
+        <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
           <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
             Retention Rate
           </p>
@@ -210,7 +210,7 @@ const PerksAndRosterComponent: React.FC = () => {
           <span className="text-xs text-gray-500">Churn rate &lt; 5.2%</span>
         </div>
 
-        <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
+        <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
           <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
             Average Member LTV
           </p>
@@ -221,7 +221,7 @@ const PerksAndRosterComponent: React.FC = () => {
 
       {/* Tier Perks Configuration Studio */}
       <div className="bg-white rounded-2xl shadow-sm border border-slate-300 overflow-hidden">
-        <div className="p-6 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+        <div className="p-6 border-b border-slate-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
           <div>
             <h3 className="text-lg font-bold text-gray-900">
               Creator Tier Perks Management Studio
@@ -247,7 +247,7 @@ const PerksAndRosterComponent: React.FC = () => {
         )}
 
         {/* Tier switcher tabs */}
-        <div className="px-6 pt-4 border-b border-gray-100 flex gap-4">
+        <div className="px-6 pt-4 border-b border-slate-200 flex gap-4">
           {tierConfigs.map((t) => (
             <button
               key={t.tier}
@@ -275,7 +275,7 @@ const PerksAndRosterComponent: React.FC = () => {
                 type="text"
                 value={activeTier.badgeName}
                 onChange={(e) => handleUpdateBadgeName(e.target.value)}
-                className="w-full p-2.5 text-xs border border-gray-300 rounded-xl focus:ring-brand-blue focus:border-brand-blue"
+                className="w-full p-2.5 text-xs border border-gray-300 rounded-xl focus:ring-brand-blue focus:border-brand-blue text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
               />
             </div>
             <div>
@@ -304,7 +304,7 @@ const PerksAndRosterComponent: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => handleRemovePerk(idx)}
-                    className="text-gray-400 hover:text-red-500 font-bold"
+                    className="text-slate-700 hover:text-red-500 font-bold"
                   >
                     Remove
                   </button>
@@ -318,7 +318,7 @@ const PerksAndRosterComponent: React.FC = () => {
                 value={newPerkInput}
                 onChange={(e) => setNewPerkInput(e.target.value)}
                 placeholder="Add custom perk (e.g. Free monthly UGC merchandise drop)"
-                className="flex-1 p-2 text-xs border border-gray-300 rounded-xl focus:ring-brand-blue focus:border-brand-blue"
+                className="flex-1 p-2 text-xs border border-gray-300 rounded-xl focus:ring-brand-blue focus:border-brand-blue text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
               />
               <button
                 type="button"
@@ -334,7 +334,7 @@ const PerksAndRosterComponent: React.FC = () => {
 
       {/* Subscriber Roster Table */}
       <div className="bg-white rounded-2xl shadow-sm border border-slate-300 overflow-hidden">
-        <div className="p-6 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="p-6 border-b border-slate-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
             <h3 className="text-lg font-bold text-gray-900">VIP Subscriber Roster</h3>
             <p className="text-xs text-gray-500">
@@ -348,12 +348,12 @@ const PerksAndRosterComponent: React.FC = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search subscribers..."
-              className="p-2 text-xs border border-gray-300 rounded-xl focus:ring-brand-blue w-full sm:w-48"
+              className="p-2 text-xs border border-gray-300 rounded-xl focus:ring-brand-blue w-full sm:w-48 text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
             />
             <select
               value={filterTier}
               onChange={(e) => setFilterTier(e.target.value)}
-              className="p-2 text-xs border border-gray-300 rounded-xl bg-white"
+              className="p-2 text-xs border border-gray-300 rounded-xl bg-white text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500"
             >
               <option value="all">All Tiers</option>
               <option value="tier_1">Silver</option>

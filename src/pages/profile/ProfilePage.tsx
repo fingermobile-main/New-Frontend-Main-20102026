@@ -1340,7 +1340,7 @@ export const ProfilePage: React.FC = () => {
 
                 <div className="flex items-center justify-center sm:justify-start gap-2">
                   <span className="text-xs font-mono font-bold text-slate-700">@{profile.username || 'israelobinna'}</span>
-                  <span className="text-slate-400">•</span>
+                  <span className="text-slate-700">•</span>
                   <div className="flex text-amber-500 items-center gap-0.5">
                     {[...Array(5)].map((_, i) => (
                       <Star key={i} className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
@@ -1763,11 +1763,11 @@ export const ProfilePage: React.FC = () => {
               </div>
               <div>
                 <div className="text-lg font-black text-white">STERCS™ Level 5 Node</div>
-                <p className="text-xs font-medium text-slate-300 mt-1 leading-relaxed">
+                <p className="text-xs font-medium text-slate-700 mt-1 leading-relaxed">
                   Cryptographically verified decentralized node. Profile Wall changes and Media uploads are sealed with sovereign zero-knowledge hashes.
                 </p>
               </div>
-              <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-xs font-mono font-bold text-slate-400">
+              <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-xs font-mono font-bold text-slate-700">
                 <span>Hash Seal:</span>
                 <span className="text-emerald-400">0x7F98...A4B2</span>
               </div>
@@ -2421,7 +2421,7 @@ export const ProfilePage: React.FC = () => {
                 value={pinInput}
                 onChange={(e) => setPinInput(e.target.value)}
                 placeholder="Enter 749822 or 91"
-                className="w-full px-4 py-3 rounded-2xl border border-slate-300 bg-white text-slate-900 font-mono font-bold text-lg tracking-widest text-center focus:ring-2 focus:ring-slate-900 focus:outline-hidden"
+                className="w-full px-4 py-3 rounded-2xl border border-slate-300 bg-white text-slate-900 font-mono font-bold text-lg tracking-widest text-center focus:ring-2 focus:ring-slate-900 focus:outline-hidden placeholder:text-slate-400"
               />
             </div>
 

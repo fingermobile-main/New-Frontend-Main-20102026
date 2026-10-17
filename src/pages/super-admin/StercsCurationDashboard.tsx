@@ -123,15 +123,15 @@ const StercsCurationDashboard: React.FC = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-bold text-slate-700 mb-1">Name / Title</label>
-                  <input type="text" value={newItem.name} onChange={(e) => setNewItem({...newItem, name: e.target.value})} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2" required />
+                  <input type="text" value={newItem.name} onChange={(e) => setNewItem({...newItem, name: e.target.value})} className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" required />
                 </div>
                 <div>
                   <label className="block text-sm font-bold text-slate-700 mb-1">Price / Budget</label>
-                  <input type="number" value={newItem.price} onChange={(e) => setNewItem({...newItem, price: e.target.value})} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2" required />
+                  <input type="number" value={newItem.price} onChange={(e) => setNewItem({...newItem, price: e.target.value})} className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono" required />
                 </div>
                 <div>
                   <label className="block text-sm font-bold text-slate-700 mb-1">Target Platform</label>
-                  <select value={newItem.platform} onChange={(e) => setNewItem({...newItem, platform: e.target.value})} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2">
+                  <select value={newItem.platform} onChange={(e) => setNewItem({...newItem, platform: e.target.value})} className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500">
                     <option value="marketplace">Marketplace</option>
                     <option value="flamingo">Flamingo</option>
                     <option value="ownit">OwnIt</option>
@@ -141,12 +141,12 @@ const StercsCurationDashboard: React.FC = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-bold text-slate-700 mb-1">Category</label>
-                  <input type="text" value={newItem.category} onChange={(e) => setNewItem({...newItem, category: e.target.value})} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2" required />
+                  <input type="text" value={newItem.category} onChange={(e) => setNewItem({...newItem, category: e.target.value})} className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" required />
                 </div>
               </div>
               <div>
                 <label className="block text-sm font-bold text-slate-700 mb-1">Description</label>
-                <textarea value={newItem.description} onChange={(e) => setNewItem({...newItem, description: e.target.value})} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 h-24" required></textarea>
+                <textarea value={newItem.description} onChange={(e) => setNewItem({...newItem, description: e.target.value})} className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 h-24 text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" required></textarea>
               </div>
               <button type="submit" className="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl transition-colors">
                 Save & Publish

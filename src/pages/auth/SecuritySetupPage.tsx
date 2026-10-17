@@ -76,7 +76,7 @@ const SecuritySetupPage = () => {
       return (
         <div className="space-y-6">
           <div className="text-center">
-            <div className="mx-auto w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mb-4">
+            <div className="mx-auto w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mb-4 border text-blue-950 border-blue-400 font-black">
               <Fingerprint className="h-8 w-8 text-blue-600 dark:text-blue-400" />
             </div>
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Biometric Authentication</h2>

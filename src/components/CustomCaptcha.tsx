@@ -64,10 +64,10 @@ export const CustomCaptcha: React.FC<CustomCaptchaProps> = ({ onSuccess }) => {
                   max="30" 
                   value={valueUp} 
                   onChange={(e) => setValueUp(parseInt(e.target.value))}
-                  className="w-32 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600 -rotate-90 origin-center"
+                  className="w-32 h-2 bg-white rounded-lg appearance-none cursor-pointer accent-blue-600 -rotate-90 origin-center text-slate-900 font-bold border border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
-              <span className="text-sm font-bold bg-blue-100 text-blue-950 border border-blue-400 font-bold px-3 py-1 rounded-full">{valueUp}</span>
+              <span className="text-sm font-bold bg-blue-100 text-blue-950 border border-blue-400 font-bold px-3 py-1 rounded-full font-black">{valueUp}</span>
             </div>
 
             {/* Horizontal Slider */}
@@ -82,11 +82,11 @@ export const CustomCaptcha: React.FC<CustomCaptchaProps> = ({ onSuccess }) => {
                   max="30" 
                   value={valueDown} 
                   onChange={(e) => setValueDown(parseInt(e.target.value))}
-                  className="w-32 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                  className="w-32 h-2 bg-white rounded-lg appearance-none cursor-pointer accent-blue-600 text-slate-900 font-bold border border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   style={{ direction: 'rtl' }}
                 />
               </div>
-              <span className="text-sm font-bold bg-blue-100 text-blue-950 border border-blue-400 font-bold px-3 py-1 rounded-full">{valueDown}</span>
+              <span className="text-sm font-bold bg-blue-100 text-blue-950 border border-blue-400 font-bold px-3 py-1 rounded-full font-black">{valueDown}</span>
             </div>
           </div>
           

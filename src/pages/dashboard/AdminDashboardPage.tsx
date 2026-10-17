@@ -138,7 +138,7 @@ const AdminDashboardPage: React.FC = () => {
 
         {/* Dashboard Tabs */}
         <div className="bg-white rounded-xl shadow-sm border border-slate-300">
-          <div className="border-b border-gray-200">
+          <div className="border-b border-slate-300">
             <nav className="flex space-x-8 px-6">
               <button
                 onClick={() => setActiveTab('overview')}
@@ -196,7 +196,7 @@ const AdminDashboardPage: React.FC = () => {
                       {recentActivity.map((activity) => (
                         <div
                           key={activity.id}
-                          className="flex items-center justify-between py-3 border-b border-gray-100"
+                          className="flex items-center justify-between py-3 border-b border-slate-200"
                         >
                           <div>
                             <p className="text-sm font-medium text-gray-900">
@@ -239,7 +239,7 @@ const AdminDashboardPage: React.FC = () => {
                         <span className="text-sm font-medium text-gray-900">
                           Media Processing
                         </span>
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-950 border border-amber-400 font-bold">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-950 border border-amber-400 font-bold font-black">
                           Degraded
                         </span>
                       </div>
@@ -477,7 +477,7 @@ const AdminDashboardPage: React.FC = () => {
                   {memberRoles.map((role) => (
                     <div
                       key={role.id}
-                      className="border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow"
+                      className="border border-slate-300 rounded-lg p-5 hover:shadow-md transition-shadow"
                     >
                       <div className="flex justify-between items-start">
                         <div>
@@ -488,7 +488,7 @@ const AdminDashboardPage: React.FC = () => {
                             {role.members} members
                           </p>
                         </div>
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-950 border border-blue-400 font-bold">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-950 border border-blue-400 font-bold font-black">
                           {role.permissions} permissions
                         </span>
                       </div>

@@ -26,7 +26,7 @@ const EnhancedEvents: React.FC<EnhancedEventsProps> = ({ userId }) => {
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-slate-300">
-      <div className="p-6 border-b border-gray-200">
+      <div className="p-6 border-b border-slate-300">
         <h3 className="text-lg font-bold text-gray-900 mb-4">Events</h3>
         <div className="flex space-x-2">
           {(['upcoming', 'past', 'my'] as const).map((tab) => (
@@ -63,7 +63,7 @@ const EnhancedEvents: React.FC<EnhancedEventsProps> = ({ userId }) => {
                 </div>
                 <p className="text-xs text-gray-500 mt-1">{event.location}</p>
               </div>
-              <span className="px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-950 border border-purple-400 font-bold capitalize">
+              <span className="px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-950 border border-purple-400 font-bold capitalize font-black">
                 {event.type}
               </span>
             </div>
@@ -73,7 +73,7 @@ const EnhancedEvents: React.FC<EnhancedEventsProps> = ({ userId }) => {
 
       {filteredEvents.length === 0 && (
         <div className="p-8 text-center text-gray-500">
-          <CalendarIcon className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+          <CalendarIcon className="w-12 h-12 mx-auto mb-3 text-slate-700" />
           <p>No events found</p>
         </div>
       )}

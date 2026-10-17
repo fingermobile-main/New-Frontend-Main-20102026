@@ -17,7 +17,7 @@ const EnhancedCanvas: React.FC<EnhancedCanvasProps> = ({
     <div className="flex-1 bg-gray-50 overflow-auto">
       <div className="max-w-6xl mx-auto p-8">
         <div className="bg-white rounded-lg shadow-sm border border-slate-300 min-h-[800px] p-8">
-          <div className="mb-6 pb-4 border-b border-gray-200">
+          <div className="mb-6 pb-4 border-b border-slate-300">
             <h2 className="text-2xl font-bold text-gray-800">Enhanced Canvas</h2>
             <p className="text-sm text-gray-600 mt-1">
               {projectId ? `Project: ${projectId}` : 'No project selected'}
@@ -28,7 +28,7 @@ const EnhancedCanvas: React.FC<EnhancedCanvasProps> = ({
           <div className="grid grid-cols-1 gap-4">
             <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-400 transition-colors cursor-pointer">
               <p className="text-gray-500 mb-2">Drop components here to build your page</p>
-              <p className="text-sm text-gray-400">Support for drag-and-drop component placement</p>
+              <p className="text-sm text-slate-700">Support for drag-and-drop component placement</p>
             </div>
           </div>
 

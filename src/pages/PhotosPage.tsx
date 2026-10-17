@@ -393,7 +393,7 @@ const PhotosPage: React.FC = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by title, photographer, location, camera gear, or tags..."
-              className="w-full pl-9 pr-4 py-2.5 text-xs bg-white border border-slate-300 rounded-xl text-slate-900 font-bold placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 shadow-2xs"
+              className="w-full pl-9 pr-4 py-2.5 text-xs bg-white border border-slate-300 rounded-xl text-slate-900 font-bold placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 shadow-2xs"
             />
             {searchQuery && (
               <button
@@ -681,7 +681,7 @@ const PhotosPage: React.FC = () => {
                     value={newTitle}
                     onChange={(e) => setNewTitle(e.target.value)}
                     placeholder="e.g. Dawn Mist Over Zuma Rock"
-                    className="w-full px-3.5 py-2.5 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 font-bold placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    className="w-full px-3.5 py-2.5 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 font-bold placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500"
                   />
                 </div>
 
@@ -731,7 +731,7 @@ const PhotosPage: React.FC = () => {
                     value={newLocation}
                     onChange={(e) => setNewLocation(e.target.value)}
                     placeholder="e.g. Niger State, Nigeria"
-                    className="w-full px-3.5 py-2.5 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 font-bold placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    className="w-full px-3.5 py-2.5 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 font-bold placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500"
                   />
                 </div>
 
@@ -745,7 +745,7 @@ const PhotosPage: React.FC = () => {
                     value={newCamera}
                     onChange={(e) => setNewCamera(e.target.value)}
                     placeholder="e.g. Sony Alpha 7R V • 24-70mm GM II"
-                    className="w-full px-3.5 py-2.5 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 font-bold placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    className="w-full px-3.5 py-2.5 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 font-bold placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500"
                   />
                 </div>
 
@@ -759,7 +759,7 @@ const PhotosPage: React.FC = () => {
                     value={newImageUrl}
                     onChange={(e) => setNewImageUrl(e.target.value)}
                     placeholder="https://images.unsplash.com/..."
-                    className="w-full px-3.5 py-2.5 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 font-bold placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    className="w-full px-3.5 py-2.5 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 font-bold placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500"
                   />
                 </div>
 

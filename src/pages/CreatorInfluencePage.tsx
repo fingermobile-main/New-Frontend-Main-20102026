@@ -90,7 +90,7 @@ const CreatorInfluencePage: React.FC = () => {
               Creator &amp; Influence Infrastructure Program
             </h1>
             <div className="flex space-x-4">
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-950 border border-blue-400 font-bold">
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-950 border border-blue-400 font-bold font-black">
                 Followers: {followers.toLocaleString()}
               </span>
               <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-950 border border-green-400 font-bold">
@@ -103,7 +103,7 @@ const CreatorInfluencePage: React.FC = () => {
 
       {/* Navigation Tabs */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="border-b border-gray-200">
+        <div className="border-b border-slate-300">
           <nav className="-mb-px flex space-x-8" aria-label="Tabs">
             <button
               onClick={() => setActiveTab('dashboard')}

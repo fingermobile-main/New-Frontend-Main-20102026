@@ -41,7 +41,7 @@ const PlatformStatusPage: React.FC = () => {
     case 'healthy':
       return <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-950 border border-green-400 font-bold dark:bg-green-900/30 dark:text-green-400">Operational</span>;
     case 'degraded':
-      return <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-950 border border-amber-400 font-bold dark:bg-yellow-900/30 dark:text-yellow-400">Degraded</span>;
+      return <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-950 border border-amber-400 font-bold dark:bg-yellow-900/30 dark:text-yellow-400 font-black">Degraded</span>;
     case 'offline':
       return <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-100 text-red-950 border border-red-400 font-bold dark:bg-red-900/30 dark:text-red-400">Offline</span>;
     default:
@@ -71,12 +71,12 @@ const PlatformStatusPage: React.FC = () => {
             <div className="flex justify-between items-start mb-3">
               <div>
                 <h3 className="font-semibold text-gray-900 dark:text-white text-base">{node.service_name}</h3>
-                <span className="text-xs uppercase font-mono tracking-wider text-gray-400">{node.category}</span>
+                <span className="text-xs uppercase font-mono tracking-wider text-slate-700">{node.category}</span>
               </div>
               {getStatusBadge(node.status)}
             </div>
 
-            <div className="grid grid-cols-2 gap-4 mt-4 pt-4 border-t border-gray-100 dark:border-gray-700/50 text-sm">
+            <div className="grid grid-cols-2 gap-4 mt-4 pt-4 border-t border-slate-200 dark:border-gray-700/50 text-sm">
               <div>
                 <span className="text-xs text-gray-500 block">Latency</span>
                 <span className="font-semibold text-gray-800 dark:text-gray-200">{node.latency_ms} ms</span>

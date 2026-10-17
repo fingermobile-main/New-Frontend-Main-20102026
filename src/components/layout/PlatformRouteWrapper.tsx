@@ -18,7 +18,7 @@ const PlatformRouteWrapper: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             {/* Left Sidebar (Generic) */}
             <div className="hidden lg:block lg:col-span-3">
-              <div className="sticky top-20 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+              <div className="sticky top-20 bg-white p-6 rounded-xl shadow-sm border border-slate-200">
                 <h3 className="font-bold text-gray-900 mb-4">{title}</h3>
                 <p className="text-sm text-gray-500 mb-4">Explore {title.toLowerCase()} and discover more.</p>
 

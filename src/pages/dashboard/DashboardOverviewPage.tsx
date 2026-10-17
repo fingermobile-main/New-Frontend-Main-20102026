@@ -53,7 +53,7 @@ const DashboardOverviewPage: React.FC = () => {
                   <span className="font-semibold">{post.author.name}</span>{' '}
                   created a new post: "{post.title || 'Untitled Post'}"
                 </p>
-                <p className="text-xs text-gray-400">
+                <p className="text-xs text-slate-700">
                   {new Date(post.timestamp || Date.now()).toLocaleString()}
                 </p>
               </div>

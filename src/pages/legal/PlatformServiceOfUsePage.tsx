@@ -441,7 +441,7 @@ const PlatformServiceOfUsePage: React.FC = () => {
           {/* Sidebar Navigation */}
           <aside className="lg:col-span-1 space-y-4">
             <div className="sticky top-20 bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm">
-              <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">
+              <h2 className="text-xs font-bold uppercase tracking-wider text-slate-900 mb-3">
                 Search Sections
               </h2>
               <div className="relative mb-4">
@@ -451,11 +451,11 @@ const PlatformServiceOfUsePage: React.FC = () => {
                   placeholder="Filter clauses..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  className="w-full pl-9 pr-3 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 font-bold border-slate-300 placeholder:text-slate-400"
                 />
               </div>
 
-              <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">
+              <h2 className="text-xs font-bold uppercase tracking-wider text-slate-900 mb-2">
                 Table of Contents
               </h2>
               <nav className="space-y-1 max-h-[60vh] overflow-y-auto pr-1">
@@ -516,7 +516,7 @@ const PlatformServiceOfUsePage: React.FC = () => {
                   id="agree-checkbox"
                   checked={agreed}
                   onChange={(e) => setAgreed(e.target.checked)}
-                  className="mt-1 w-5 h-5 rounded border-emerald-300 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
+                  className="mt-1 w-5 h-5 rounded border-emerald-300 text-slate-900 focus:ring-emerald-500 cursor-pointer font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                 />
                 <label htmlFor="agree-checkbox" className="cursor-pointer text-sm text-slate-800 dark:text-slate-200">
                   <span className="font-bold">Affirmative Acceptance:</span> I confirm that I am at least 18 years of age, have read and comprehended the 14 statutory clauses of the FingerMobile Platform Service of Use, and accept full legal binding under the jurisdiction of the Republic of Singapore.

@@ -279,7 +279,7 @@ const AdvancedGiftingEngine: React.FC = () => {
         </div>
 
         {/* Gift Customization & Amount */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-gray-100">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-slate-200">
           <div>
             <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2 flex items-center gap-1.5">
               <CurrencyDollarIcon className="w-4 h-4 text-emerald-600" />
@@ -292,9 +292,9 @@ const AdvancedGiftingEngine: React.FC = () => {
                 step="0.5"
                 value={customAmount}
                 onChange={(e) => setCustomAmount(Math.max(1, parseFloat(e.target.value) || 1))}
-                className="w-full pl-4 pr-16 py-2.5 border border-gray-300 rounded-xl font-bold text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full pl-4 pr-16 py-2.5 border border-gray-300 rounded-xl font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-purple-500 border-slate-300 bg-white placeholder:text-slate-400 font-mono"
               />
-              <span className="absolute right-3 top-2.5 text-xs font-bold text-gray-400">FIC</span>
+              <span className="absolute right-3 top-2.5 text-xs font-bold text-slate-700">FIC</span>
             </div>
             <p className="text-xs text-gray-500 mt-1">
               Wallet Balance: <span className="font-semibold text-gray-900">{ficBalance.toFixed(2)} FIC</span>
@@ -310,7 +310,7 @@ const AdvancedGiftingEngine: React.FC = () => {
               value={giftNote}
               onChange={(e) => setGiftNote(e.target.value)}
               placeholder="e.g. Loved your latest beat session on FingerMobile!"
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
             />
           </div>
         </div>
@@ -322,7 +322,7 @@ const AdvancedGiftingEngine: React.FC = () => {
               type="checkbox"
               checked={isAnonymous}
               onChange={(e) => setIsAnonymous(e.target.checked)}
-              className="rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+              className="rounded border-gray-300 text-slate-900 focus:ring-purple-500 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
             />
             <span>Send as Anonymous Admirer / Supporter</span>
           </label>

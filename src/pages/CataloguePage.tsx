@@ -359,7 +359,7 @@ const CataloguePage: React.FC = () => {
                   placeholder="Search by title, creator, stem, tags..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:bg-white transition-all"
+                  className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:bg-white transition-all text-slate-900 font-bold placeholder:text-slate-400"
                 />
               </div>
 
@@ -368,7 +368,7 @@ const CataloguePage: React.FC = () => {
                 <select
                   value={sortBy}
                   onChange={(e: any) => setSortBy(e.target.value)}
-                  className="px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl text-sm font-semibold text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                  className="px-3 py-2 bg-white border border-slate-300 rounded-xl text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-600 font-bold"
                 >
                   <option value="featured">Featured Picks</option>
                   <option value="price_low">Price: Low to High</option>
@@ -380,7 +380,7 @@ const CataloguePage: React.FC = () => {
             </div>
 
             {/* Category Filter Pills */}
-            <div className="flex items-center gap-2 overflow-x-auto pb-1 pt-1 border-t border-gray-100">
+            <div className="flex items-center gap-2 overflow-x-auto pb-1 pt-1 border-t border-slate-200">
               {[
                 { id: 'all', label: 'All Catalogues', icon: TagIcon },
                 { id: 'photography', label: 'Stock Photos', icon: PhotoIcon },
@@ -409,11 +409,11 @@ const CataloguePage: React.FC = () => {
 
               {/* License Filter */}
               <div className="ml-auto flex items-center gap-2 pl-4">
-                <span className="text-xs text-gray-400 font-semibold uppercase">License:</span>
+                <span className="text-xs text-slate-700 font-semibold uppercase">License:</span>
                 <select
                   value={selectedLicense}
                   onChange={(e) => setSelectedLicense(e.target.value)}
-                  className="px-3 py-1.5 bg-gray-100 border border-gray-200 rounded-lg text-xs font-medium text-gray-700 focus:outline-none"
+                  className="px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-medium text-slate-900 focus:outline-none font-bold focus:ring-2 focus:ring-indigo-500"
                 >
                   <option value="all">All Licenses</option>
                   <option value="Royalty-Free">Royalty-Free</option>
@@ -440,7 +440,7 @@ const CataloguePage: React.FC = () => {
 
           {filteredAssets.length === 0 ? (
             <div className="bg-white rounded-2xl p-12 text-center border border-slate-300 shadow-sm">
-              <CatalogueIcon className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+              <CatalogueIcon className="w-12 h-12 text-slate-700 mx-auto mb-3" />
               <h3 className="text-base font-bold text-gray-800">No assets match your search</h3>
               <p className="text-xs text-gray-500 mt-1">Try resetting the category filter or searching for another keyword.</p>
               <button
@@ -536,11 +536,11 @@ const CataloguePage: React.FC = () => {
                         </p>
 
                         {/* Creator Info */}
-                        <div className="mt-4 flex items-center gap-3 pt-3 border-t border-gray-100">
+                        <div className="mt-4 flex items-center gap-3 pt-3 border-t border-slate-200">
                           <img
                             src={asset.creator.avatarUrl}
                             alt={asset.creator.name}
-                            className="w-8 h-8 rounded-full object-cover border border-gray-200"
+                            className="w-8 h-8 rounded-full object-cover border border-slate-300"
                           />
                           <div className="min-w-0">
                             <p className="text-xs font-bold text-gray-800 truncate flex items-center gap-1">
@@ -549,11 +549,11 @@ const CataloguePage: React.FC = () => {
                                 <CheckCircleIcon className="w-3.5 h-3.5 text-blue-500 flex-shrink-0" />
                               )}
                             </p>
-                            <p className="text-[10px] text-gray-400">@{asset.creator.handle}</p>
+                            <p className="text-[10px] text-slate-700">@{asset.creator.handle}</p>
                           </div>
                           <div className="ml-auto text-right">
                             <span className="text-xs font-bold text-amber-500">★ {asset.rating}</span>
-                            <span className="text-[10px] text-gray-400 block">{asset.downloadsCount} uses</span>
+                            <span className="text-[10px] text-slate-700 block">{asset.downloadsCount} uses</span>
                           </div>
                         </div>
                       </div>
@@ -592,7 +592,7 @@ const CataloguePage: React.FC = () => {
         {selectedAsset && (
           <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
             <div className="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-slate-300 animate-in fade-in zoom-in-95 max-h-[90vh] overflow-y-auto">
-              <div className="flex justify-between items-start pb-4 border-b border-gray-100">
+              <div className="flex justify-between items-start pb-4 border-b border-slate-200">
                 <div>
                   <span className="px-2.5 py-1 rounded-md text-xs font-bold uppercase bg-indigo-50 text-indigo-700">
                     {selectedAsset.category.replace('_', ' ')}
@@ -601,7 +601,7 @@ const CataloguePage: React.FC = () => {
                 </div>
                 <button
                   onClick={() => setSelectedAsset(null)}
-                  className="p-1 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100"
+                  className="p-1 rounded-full text-slate-700 hover:text-gray-600 hover:bg-gray-100"
                 >
                   <XMarkIcon className="w-6 h-6" />
                 </button>
@@ -618,21 +618,21 @@ const CataloguePage: React.FC = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100">
                   <div>
-                    <span className="text-[10px] uppercase font-bold text-gray-400">Master Format</span>
+                    <span className="text-[10px] uppercase font-bold text-slate-700">Master Format</span>
                     <p className="text-xs font-bold text-gray-800 mt-0.5">{selectedAsset.specs.format}</p>
                   </div>
                   <div>
-                    <span className="text-[10px] uppercase font-bold text-gray-400">Resolution / Specs</span>
+                    <span className="text-[10px] uppercase font-bold text-slate-700">Resolution / Specs</span>
                     <p className="text-xs font-bold text-gray-800 mt-0.5">{selectedAsset.specs.resolutionOrDuration}</p>
                   </div>
                   <div>
-                    <span className="text-[10px] uppercase font-bold text-gray-400">Package Size</span>
+                    <span className="text-[10px] uppercase font-bold text-slate-700">Package Size</span>
                     <p className="text-xs font-bold text-gray-800 mt-0.5">{selectedAsset.specs.fileSize}</p>
                   </div>
                 </div>
 
                 <div>
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-1">Description</h4>
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900 mb-1">Description</h4>
                   <p className="text-sm text-gray-700 leading-relaxed">{selectedAsset.description}</p>
                 </div>
 
@@ -660,9 +660,9 @@ const CataloguePage: React.FC = () => {
                 </div>
 
                 {/* Pricing & Checkout Modal Trigger */}
-                <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                <div className="flex items-center justify-between pt-4 border-t border-slate-200">
                   <div>
-                    <span className="text-xs text-gray-400 block font-semibold">Total License Fee</span>
+                    <span className="text-xs text-slate-700 block font-semibold">Total License Fee</span>
                     <span className="text-2xl font-black text-gray-900">{selectedAsset.priceFic} FIC</span>
                     <span className="text-xs text-gray-500 ml-2">(₦{selectedAsset.priceNgn.toLocaleString()})</span>
                   </div>
@@ -696,14 +696,14 @@ const CataloguePage: React.FC = () => {
         {purchasingAsset && (
           <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
             <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-slate-300 animate-in fade-in zoom-in-95">
-              <div className="flex justify-between items-center pb-4 border-b border-gray-100">
+              <div className="flex justify-between items-center pb-4 border-b border-slate-200">
                 <div className="flex items-center gap-2">
                   <ShieldCheckIcon className="w-6 h-6 text-indigo-600" />
                   <h3 className="text-lg font-black text-gray-900">Secure Creative License</h3>
                 </div>
                 <button
                   onClick={() => setPurchasingAsset(null)}
-                  className="text-gray-400 hover:text-gray-600"
+                  className="text-slate-700 hover:text-gray-600"
                 >
                   <XMarkIcon className="w-5 h-5" />
                 </button>
@@ -727,7 +727,7 @@ const CataloguePage: React.FC = () => {
                     <span>Protocol Infrastructure (20%)</span>
                     <span className="font-semibold text-gray-900">{(purchasingAsset.priceFic * 0.2).toFixed(1)} FIC</span>
                   </div>
-                  <div className="flex justify-between text-base font-black text-gray-900 border-t border-gray-200 pt-2">
+                  <div className="flex justify-between text-base font-black text-gray-900 border-t border-slate-300 pt-2">
                     <span>Total Deduction</span>
                     <span className="text-indigo-600">{purchasingAsset.priceFic} FIC</span>
                   </div>
@@ -738,7 +738,7 @@ const CataloguePage: React.FC = () => {
                   <span className="font-bold">{ficBalance.toFixed(2)} FIC</span>
                 </div>
 
-                <div className="flex gap-3 pt-4 border-t border-gray-100">
+                <div className="flex gap-3 pt-4 border-t border-slate-200">
                   <button
                     onClick={() => setPurchasingAsset(null)}
                     disabled={isProcessingPurchase}

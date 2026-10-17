@@ -624,7 +624,7 @@ const StercsDashboardPage: React.FC = () => {
                 <select
                   value={selectedCluster}
                   onChange={(e) => setSelectedCluster(e.target.value)}
-                  className="bg-white border border-slate-300 text-slate-900 font-bold text-xs rounded-md pl-2.5 pr-8 py-1.5 hover:bg-slate-50 transition-colors cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-blue-600"
+                  className="bg-white border border-slate-300 text-slate-900 font-bold text-xs rounded-md pl-2.5 pr-8 py-1.5 hover:bg-white transition-colors cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-blue-600"
                 >
                   <option>Global Production [Enclave Alpha]</option>
                   <option>Regional Failover [US-East Sovereign]</option>
@@ -632,7 +632,7 @@ const StercsDashboardPage: React.FC = () => {
                   <option>Sandbox Staging Enclave</option>
                 </select>
               </div>
-              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-950 border border-emerald-400">
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 font-black">
                 <span className={`w-1.5 h-1.5 rounded-full ${loading ? 'bg-amber-600 animate-spin' : 'bg-emerald-600 animate-pulse'}`} />
                 {loading ? 'Syncing Telemetry...' : `Live Enclave Sync (${metrics.length || 12} Nodes)`}
               </span>
@@ -1166,7 +1166,7 @@ const StercsDashboardPage: React.FC = () => {
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       placeholder="Search module or tool..."
-                      className="pl-9 pr-3 py-1.5 bg-white border border-slate-300 rounded-md text-xs text-slate-900 placeholder:text-slate-500 font-bold focus:outline-hidden focus:ring-2 focus:ring-blue-600 w-64 shadow-2xs"
+                      className="pl-9 pr-3 py-1.5 bg-white border border-slate-300 rounded-md text-xs text-slate-900 placeholder:text-slate-400 font-bold focus:outline-hidden focus:ring-2 focus:ring-blue-600 w-64 shadow-2xs"
                     />
                     {searchQuery.trim() && (
                       <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-950 font-black border border-emerald-400">
@@ -1301,7 +1301,7 @@ const StercsDashboardPage: React.FC = () => {
                         <td className="px-4 py-3 text-slate-700 font-medium">{chk.lastRun}</td>
                         <td className="px-4 py-3 font-bold text-slate-900">{chk.score}%</td>
                         <td className="px-4 py-3">
-                          <span className="inline-flex items-center gap-1 text-emerald-950 font-bold bg-emerald-100 border border-emerald-400 px-2 py-0.5 rounded-full text-[11px]">
+                          <span className="inline-flex items-center gap-1 text-emerald-950 font-bold bg-emerald-100 border border-emerald-400 px-2 py-0.5 rounded-full text-[11px] font-black">
                             <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
                             {chk.status}
                           </span>
@@ -1697,7 +1697,7 @@ const StercsDashboardPage: React.FC = () => {
                         </td>
                         <td className="px-4 py-3 font-bold text-slate-800">{r.activeAgents} agents</td>
                         <td className="px-4 py-3">
-                          <span className="inline-flex items-center gap-1 text-emerald-950 font-bold bg-emerald-100 border border-emerald-300 px-2 py-0.5 rounded-full text-[11px]">
+                          <span className="inline-flex items-center gap-1 text-emerald-950 font-bold bg-emerald-100 border border-emerald-400 px-2 py-0.5 rounded-full text-[11px] border-emerald-400 font-black">
                             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                             {r.status}
                           </span>
@@ -1761,7 +1761,7 @@ const StercsDashboardPage: React.FC = () => {
                   rows={3}
                   value={aiTestPrompt}
                   onChange={(e) => setAiTestPrompt(e.target.value)}
-                  className="w-full bg-white border border-slate-300 rounded p-2.5 text-xs text-slate-900 font-bold focus:outline-hidden focus:ring-2 focus:ring-blue-500 font-mono"
+                  className="w-full bg-white border border-slate-300 rounded p-2.5 text-xs text-slate-900 font-bold focus:outline-hidden focus:ring-2 focus:ring-blue-500 font-mono placeholder:text-slate-400"
                 />
               </div>
 
@@ -2035,7 +2035,7 @@ const StercsDashboardPage: React.FC = () => {
                   type="text"
                   value={selectedPolicyForModal.title}
                   onChange={(e) => setSelectedPolicyForModal({ ...selectedPolicyForModal, title: e.target.value })}
-                  className="w-full p-2 border border-slate-300 rounded text-xs font-bold text-slate-900 bg-white focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-2 border border-slate-300 rounded text-xs font-bold text-slate-900 bg-white focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400"
                 />
               </div>
               <div>
@@ -2044,7 +2044,7 @@ const StercsDashboardPage: React.FC = () => {
                   type="text"
                   value={selectedPolicyForModal.category}
                   onChange={(e) => setSelectedPolicyForModal({ ...selectedPolicyForModal, category: e.target.value as any })}
-                  className="w-full p-2 border border-slate-300 rounded text-xs font-bold text-slate-900 bg-white"
+                  className="w-full p-2 border border-slate-300 rounded text-xs font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
               <div>
@@ -2053,7 +2053,7 @@ const StercsDashboardPage: React.FC = () => {
                   rows={3}
                   value={selectedPolicyForModal.description}
                   onChange={(e) => setSelectedPolicyForModal({ ...selectedPolicyForModal, description: e.target.value })}
-                  className="w-full p-2 border border-slate-300 rounded text-xs font-medium text-slate-900 bg-white focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-2 border border-slate-300 rounded text-xs font-medium text-slate-900 bg-white focus:ring-2 focus:ring-blue-500 font-bold placeholder:text-slate-400"
                 />
               </div>
               <div className="grid grid-cols-2 gap-3">
@@ -2062,7 +2062,7 @@ const StercsDashboardPage: React.FC = () => {
                   <select
                     value={selectedPolicyForModal.complianceLevel}
                     onChange={(e) => setSelectedPolicyForModal({ ...selectedPolicyForModal, complianceLevel: e.target.value as any })}
-                    className="w-full p-2 border border-slate-300 rounded text-xs font-bold text-slate-900 bg-white"
+                    className="w-full p-2 border border-slate-300 rounded text-xs font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500"
                   >
                     <option value="strict">Strict (Auto-Block)</option>
                     <option value="moderate">Moderate (Flag & Review)</option>
@@ -2078,7 +2078,7 @@ const StercsDashboardPage: React.FC = () => {
                     step={0.1}
                     value={selectedPolicyForModal.passedPercent}
                     onChange={(e) => setSelectedPolicyForModal({ ...selectedPolicyForModal, passedPercent: parseFloat(e.target.value) || 0 })}
-                    className="w-full p-2 border border-slate-300 rounded text-xs font-bold text-slate-900 bg-white"
+                    className="w-full p-2 border border-slate-300 rounded text-xs font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
                   />
                 </div>
               </div>

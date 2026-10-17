@@ -168,7 +168,7 @@ const OrderTracker: React.FC<OrderTrackerProps> = ({ userId }) => {
               )}
 
               {/* Footer */}
-              <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+              <div className="flex items-center justify-between pt-3 border-t border-slate-200">
                 <div>
                   <p className="text-sm text-gray-600">Total</p>
                   <p className="text-lg font-bold text-gray-900">

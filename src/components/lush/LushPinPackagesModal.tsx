@@ -152,7 +152,7 @@ export const LushPinPackagesModal: React.FC<LushPinPackagesModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
       <div className="bg-white rounded-3xl w-full max-w-2xl shadow-2xl border border-emerald-100 overflow-hidden flex flex-col max-h-[92vh]">
         {/* Header */}
-        <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gradient-to-r from-emerald-50/70 via-white to-teal-50/70">
+        <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-gradient-to-r from-emerald-50/70 via-white to-teal-50/70">
           <div className="flex items-center gap-2.5">
             <div className="p-2 bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold rounded-xl">
               <ShieldCheckIcon className="w-5 h-5 text-emerald-700" />
@@ -168,7 +168,7 @@ export const LushPinPackagesModal: React.FC<LushPinPackagesModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-700 transition"
+            className="p-1.5 rounded-full hover:bg-gray-100 text-slate-700 hover:text-gray-700 transition"
           >
             <XMarkIcon className="w-5 h-5" />
           </button>
@@ -185,7 +185,7 @@ export const LushPinPackagesModal: React.FC<LushPinPackagesModalProps> = ({
                 </span>
                 <h3 className="text-2xl font-black text-white mt-0.5">
                   {quota.isUnlimited ? 'Unlimited' : `${quota.generationsRemaining} PINs`}
-                  <span className="text-xs font-normal text-gray-300 ml-1.5">
+                  <span className="text-xs font-normal text-slate-700 ml-1.5">
                     / {quota.totalAllocated} Total Allocated
                   </span>
                 </h3>
@@ -194,7 +194,7 @@ export const LushPinPackagesModal: React.FC<LushPinPackagesModalProps> = ({
                 <span className="px-2.5 py-1 rounded-full bg-emerald-800/80 border border-emerald-400/40 text-emerald-200 text-[11px] font-semibold">
                   50 Free Signup Quota
                 </span>
-                <p className="text-[10px] text-gray-400 mt-1">
+                <p className="text-[10px] text-slate-700 mt-1">
                   {quota.generationsUsed} used so far
                 </p>
               </div>
@@ -273,7 +273,7 @@ export const LushPinPackagesModal: React.FC<LushPinPackagesModalProps> = ({
                       </ul>
                     </div>
 
-                    <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between">
+                    <div className="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
                       <span className="text-[11px] font-bold text-gray-500">
                         {isSelected ? 'Selected' : 'Click to select'}
                       </span>
@@ -330,7 +330,7 @@ export const LushPinPackagesModal: React.FC<LushPinPackagesModalProps> = ({
           </div>
 
           {/* Purchase Actions */}
-          <div className="pt-2 flex items-center justify-end gap-3 border-t border-gray-100">
+          <div className="pt-2 flex items-center justify-end gap-3 border-t border-slate-200">
             <button
               type="button"
               onClick={onClose}

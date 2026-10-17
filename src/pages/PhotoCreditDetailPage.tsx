@@ -191,7 +191,7 @@ const PhotoCreditDetailPage: React.FC = () => {
           <div className="mb-6">
             <div className="flex flex-wrap gap-2">
               {photoCredit.tags?.map((tag: string) => (
-                <span key={tag} className="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm">
+                <span key={tag} className="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-950 dark:text-blue-200 rounded-full text-sm border text-blue-950 border-blue-400 font-black">
                   #{tag}
                 </span>
               ))}

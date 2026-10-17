@@ -336,7 +336,7 @@ const LoginPage = () => {
                   <Sparkles className="w-3.5 h-3.5 text-amber-500" />
                   Platform Credentials & Demo Accounts
                 </span>
-                <span className="text-[11px] text-slate-400">1-click fill</span>
+                <span className="text-[11px] text-slate-700">1-click fill</span>
               </div>
               <div className="grid grid-cols-2 gap-2 text-xs">
                 <button
@@ -376,28 +376,28 @@ const LoginPage = () => {
                   onClick={() => fillQuickAccount('admin@fingermobileprotocol.com', 'admin123')}
                   className="px-2.5 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:border-indigo-500 font-medium text-left truncate transition-colors"
                 >
-                  👑 Platform Admin <span className="text-slate-400 text-[10px] block">admin123</span>
+                  👑 Platform Admin <span className="text-slate-700 text-[10px] block">admin123</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => fillQuickAccount('user@fingermobileprotocol.com', 'user123')}
                   className="px-2.5 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:border-indigo-500 font-medium text-left truncate transition-colors"
                 >
-                  👤 Test User <span className="text-slate-400 text-[10px] block">user123</span>
+                  👤 Test User <span className="text-slate-700 text-[10px] block">user123</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => fillQuickAccount('creator@fingermobileprotocol.com', 'creator123')}
                   className="px-2.5 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:border-indigo-500 font-medium text-left truncate transition-colors"
                 >
-                  🎨 Creator <span className="text-slate-400 text-[10px] block">creator123</span>
+                  🎨 Creator <span className="text-slate-700 text-[10px] block">creator123</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => fillQuickAccount('merchant@fingermobileprotocol.com', 'merchant123')}
                   className="px-2.5 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:border-indigo-500 font-medium text-left truncate transition-colors"
                 >
-                  🛍️ Merchant <span className="text-slate-400 text-[10px] block">merchant123</span>
+                  🛍️ Merchant <span className="text-slate-700 text-[10px] block">merchant123</span>
                 </button>
               </div>
             </div>
@@ -409,11 +409,11 @@ const LoginPage = () => {
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   {identifier.includes('@') ? (
-                    <Mail className="h-5 w-5 text-gray-400" />
+                    <Mail className="h-5 w-5 text-slate-700" />
                   ) : /^[+0-9]/.test(identifier) ? (
-                    <Phone className="h-5 w-5 text-gray-400" />
+                    <Phone className="h-5 w-5 text-slate-700" />
                   ) : (
-                    <User className="h-5 w-5 text-gray-400" />
+                    <User className="h-5 w-5 text-slate-700" />
                   )}
                 </div>
                 <input
@@ -423,7 +423,7 @@ const LoginPage = () => {
                   autoComplete="username"
                   value={identifier}
                   onChange={(e) => setIdentifier(e.target.value)}
-                  className={`block w-full pl-10 pr-3 py-3 border ${
+                  className={`block w-full pl-10 pr-3 py-3 border  text-slate-900 font-bold border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400${
                     errors.identifier ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
                   } rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white`}
                   placeholder="admin, user@fingermobileprotocol.com, or +234..."
@@ -455,7 +455,7 @@ const LoginPage = () => {
                   autoComplete="current-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className={`block w-full px-3 py-3 pr-10 border ${
+                  className={`block w-full px-3 py-3 pr-10 border  text-slate-900 font-bold border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400${
                     errors.password ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
                   } rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white`}
                   placeholder="Enter your password"
@@ -466,9 +466,9 @@ const LoginPage = () => {
                   className="absolute inset-y-0 right-0 pr-3 flex items-center"
                 >
                   {showPassword ? (
-                    <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-500" />
+                    <EyeOff className="h-5 w-5 text-slate-700 hover:text-gray-500" />
                   ) : (
-                    <Eye className="h-5 w-5 text-gray-400 hover:text-gray-500" />
+                    <Eye className="h-5 w-5 text-slate-700 hover:text-gray-500" />
                   )}
                 </button>
               </div>

@@ -103,7 +103,7 @@ const PolicyPage: React.FC = () => {
                     <td className="p-4 font-mono text-xs text-slate-500">{doc.slug}</td>
                     <td className="p-4 font-semibold text-slate-700 dark:text-slate-300">v{doc.version}</td>
                     <td className="p-4">
-                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-900/40 dark:text-emerald-300">
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-900/40 dark:text-emerald-300 font-black">
                         <CheckCircleIcon className="w-3 h-3" />
                         {doc.is_active ? 'Active' : 'Draft'}
                       </span>

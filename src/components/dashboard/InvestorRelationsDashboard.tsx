@@ -148,42 +148,42 @@ STATUS: AUDITED & SEC REGISTERED`;
     <div className="space-y-6">
       {/* Metrics Banner */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
+        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
           <div className="p-3 bg-emerald-50 text-emerald-600 rounded-xl">
             <BuildingOfficeIcon className="w-6 h-6" />
           </div>
           <div>
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Total Investment</p>
+            <p className="text-xs font-semibold text-slate-700 uppercase tracking-wider">Total Investment</p>
             <p className="text-2xl font-black text-gray-900 mt-0.5">{(metrics.total_investment_fic).toLocaleString()} FIC</p>
           </div>
         </div>
 
-        <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
+        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
           <div className="p-3 bg-green-50 text-green-600 rounded-xl">
             <ArrowTrendingUpIcon className="w-6 h-6" />
           </div>
           <div>
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Portfolio ROI</p>
+            <p className="text-xs font-semibold text-slate-700 uppercase tracking-wider">Portfolio ROI</p>
             <p className="text-2xl font-black text-green-600 mt-0.5">+{metrics.portfolio_roi_percentage}%</p>
           </div>
         </div>
 
-        <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
+        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
           <div className="p-3 bg-blue-50 text-blue-600 rounded-xl">
             <ChartBarIcon className="w-6 h-6" />
           </div>
           <div>
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Estimated Market Cap</p>
+            <p className="text-xs font-semibold text-slate-700 uppercase tracking-wider">Estimated Market Cap</p>
             <p className="text-2xl font-black text-gray-900 mt-0.5">{(metrics.market_cap_fic / 1000000).toFixed(1)}M FIC</p>
           </div>
         </div>
 
-        <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
+        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
           <div className="p-3 bg-purple-50 text-purple-600 rounded-xl">
             <ShieldCheckIcon className="w-6 h-6" />
           </div>
           <div>
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Audited Filings</p>
+            <p className="text-xs font-semibold text-slate-700 uppercase tracking-wider">Audited Filings</p>
             <p className="text-2xl font-black text-gray-900 mt-0.5">{reports.length} Reports</p>
           </div>
         </div>
@@ -192,7 +192,7 @@ STATUS: AUDITED & SEC REGISTERED`;
       {/* Main Tabbed Container */}
       <div className="bg-white rounded-2xl border border-slate-300 shadow-sm overflow-hidden">
         {/* Navigation Tabs */}
-        <div className="p-5 border-b border-gray-100 flex items-center justify-between">
+        <div className="p-5 border-b border-slate-200 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <button
               onClick={() => setActiveTab('filings')}
@@ -222,7 +222,7 @@ STATUS: AUDITED & SEC REGISTERED`;
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider border-b border-gray-100">
+                <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider border-b border-slate-200">
                   <th className="py-3 px-5">Report Title</th>
                   <th className="py-3 px-5">Filing Type</th>
                   <th className="py-3 px-5">Period</th>
@@ -236,10 +236,10 @@ STATUS: AUDITED & SEC REGISTERED`;
                   <tr key={r.id} className="hover:bg-emerald-50/30 transition-colors">
                     <td className="py-4 px-5">
                       <div className="font-bold text-gray-900">{r.title}</div>
-                      <div className="text-xs text-gray-400">Filed on: {new Date(r.filing_date).toLocaleDateString()}</div>
+                      <div className="text-xs text-slate-700">Filed on: {new Date(r.filing_date).toLocaleDateString()}</div>
                     </td>
                     <td className="py-4 px-5">
-                      <span className="px-2.5 py-1 text-xs font-bold rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold">
+                      <span className="px-2.5 py-1 text-xs font-bold rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold font-black">
                         {r.report_type}
                       </span>
                     </td>

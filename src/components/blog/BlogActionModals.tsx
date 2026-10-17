@@ -62,8 +62,8 @@ export const BlogCommentModal: React.FC<CommentModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fade-in">
-      <div className="relative w-full max-w-lg bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-100 dark:border-gray-800 overflow-hidden flex flex-col max-h-[85vh]">
-        <div className="px-6 py-4 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900">
+      <div className="relative w-full max-w-lg bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-gray-800 overflow-hidden flex flex-col max-h-[85vh]">
+        <div className="px-6 py-4 border-b border-slate-200 dark:border-gray-800 flex items-center justify-between bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900">
           <div>
             <h3 className="font-bold text-gray-900 dark:text-white text-base flex items-center gap-2">
               <span>💬</span> Comments & Discussion
@@ -72,7 +72,7 @@ export const BlogCommentModal: React.FC<CommentModalProps> = ({
               {postTitle || 'Community Blog Article'}
             </p>
           </div>
-          <button onClick={onClose} className="p-1.5 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800">
+          <button onClick={onClose} className="p-1.5 rounded-full text-slate-700 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800">
             <XIcon className="w-5 h-5" />
           </button>
         </div>
@@ -84,7 +84,7 @@ export const BlogCommentModal: React.FC<CommentModalProps> = ({
               onChange={(e) => setCommentText(e.target.value)}
               placeholder="Join the discussion... Share your thoughts, critique, or insights."
               rows={3}
-              className="w-full p-3 rounded-xl border border-slate-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full p-3 rounded-xl border border-slate-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 font-bold placeholder:text-slate-400"
             />
             <div className="flex justify-end">
               <button
@@ -97,15 +97,15 @@ export const BlogCommentModal: React.FC<CommentModalProps> = ({
             </div>
           </form>
 
-          <div className="border-t border-gray-100 dark:border-gray-800 pt-4 space-y-3">
+          <div className="border-t border-slate-200 dark:border-gray-800 pt-4 space-y-3">
             <h4 className="text-xs font-bold uppercase tracking-wider text-gray-500">
               Community Responses ({commentsList.length})
             </h4>
             {commentsList.map((c) => (
-              <div key={c.id} className="p-3 rounded-xl bg-gray-50 dark:bg-gray-800/60 border border-gray-100 dark:border-gray-700/60 text-xs">
+              <div key={c.id} className="p-3 rounded-xl bg-gray-50 dark:bg-gray-800/60 border border-slate-200 dark:border-gray-700/60 text-xs">
                 <div className="flex items-center justify-between mb-1">
                   <span className="font-bold text-gray-900 dark:text-white">@{c.author}</span>
-                  <span className="text-[10px] text-gray-400">{c.createdAt}</span>
+                  <span className="text-[10px] text-slate-700">{c.createdAt}</span>
                 </div>
                 <p className="text-gray-700 dark:text-gray-300">{c.text}</p>
               </div>
@@ -160,8 +160,8 @@ export const BlogSendGiftModal: React.FC<SendGiftModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fade-in">
-      <div className="relative w-full max-w-md bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-100 dark:border-gray-800 overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-gray-800 dark:to-gray-900">
+      <div className="relative w-full max-w-md bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-gray-800 overflow-hidden">
+        <div className="px-6 py-4 border-b border-slate-200 dark:border-gray-800 flex items-center justify-between bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-gray-800 dark:to-gray-900">
           <div>
             <h3 className="font-bold text-gray-900 dark:text-white text-base flex items-center gap-2">
               <span>🎁</span> Send Sovereign Gift
@@ -170,7 +170,7 @@ export const BlogSendGiftModal: React.FC<SendGiftModalProps> = ({
               Reward @{authorName || 'Author'} for &quot;{postTitle || 'Article'}&quot;
             </p>
           </div>
-          <button onClick={onClose} className="p-1.5 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800">
+          <button onClick={onClose} className="p-1.5 rounded-full text-slate-700 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800">
             <XIcon className="w-5 h-5" />
           </button>
         </div>
@@ -214,7 +214,7 @@ export const BlogSendGiftModal: React.FC<SendGiftModalProps> = ({
               value={memo}
               onChange={(e) => setMemo(e.target.value)}
               placeholder="Add an encouraging note..."
-              className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500 font-bold placeholder:text-slate-400"
             />
           </div>
 
@@ -275,8 +275,8 @@ export const BlogPaylinkModal: React.FC<PaylinkModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fade-in">
-      <div className="relative w-full max-w-md bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-100 dark:border-gray-800 overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900">
+      <div className="relative w-full max-w-md bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-gray-800 overflow-hidden">
+        <div className="px-6 py-4 border-b border-slate-200 dark:border-gray-800 flex items-center justify-between bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900">
           <div>
             <h3 className="font-bold text-gray-900 dark:text-white text-base flex items-center gap-2">
               <span>🔗</span> Create Sovereign Paylink
@@ -285,7 +285,7 @@ export const BlogPaylinkModal: React.FC<PaylinkModalProps> = ({
               For: {postTitle || 'Editorial Content'}
             </p>
           </div>
-          <button onClick={onClose} className="p-1.5 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800">
+          <button onClick={onClose} className="p-1.5 rounded-full text-slate-700 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800">
             <XIcon className="w-5 h-5" />
           </button>
         </div>
@@ -300,7 +300,7 @@ export const BlogPaylinkModal: React.FC<PaylinkModalProps> = ({
                 type="number"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm font-bold text-gray-900 dark:text-white"
+                className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
               />
             </div>
             <div>
@@ -310,7 +310,7 @@ export const BlogPaylinkModal: React.FC<PaylinkModalProps> = ({
               <select
                 value={currency}
                 onChange={(e) => setCurrency(e.target.value as any)}
-                className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm font-bold text-gray-900 dark:text-white"
+                className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500"
               >
                 <option value="FIC">FIC Token</option>
                 <option value="NGN">NGN (₦)</option>
@@ -380,8 +380,8 @@ export const BlogTokenizeModal: React.FC<TokenizeModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fade-in">
-      <div className="relative w-full max-w-md bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-100 dark:border-gray-800 overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between bg-gradient-to-r from-indigo-50 to-blue-50 dark:from-gray-800 dark:to-gray-900">
+      <div className="relative w-full max-w-md bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-gray-800 overflow-hidden">
+        <div className="px-6 py-4 border-b border-slate-200 dark:border-gray-800 flex items-center justify-between bg-gradient-to-r from-indigo-50 to-blue-50 dark:from-gray-800 dark:to-gray-900">
           <div>
             <h3 className="font-bold text-gray-900 dark:text-white text-base flex items-center gap-2">
               <span>🪙</span> Tokenize Article to Hallmarks
@@ -390,7 +390,7 @@ export const BlogTokenizeModal: React.FC<TokenizeModalProps> = ({
               Mint as Sovereign Proof-of-Achievement NFT
             </p>
           </div>
-          <button onClick={onClose} className="p-1.5 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800">
+          <button onClick={onClose} className="p-1.5 rounded-full text-slate-700 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800">
             <XIcon className="w-5 h-5" />
           </button>
         </div>
@@ -398,7 +398,7 @@ export const BlogTokenizeModal: React.FC<TokenizeModalProps> = ({
         <div className="p-6 space-y-4">
           {!mintSuccess ? (
             <>
-              <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-xl text-xs space-y-2 border border-gray-100 dark:border-gray-700">
+              <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-xl text-xs space-y-2 border border-slate-200 dark:border-gray-700">
                 <div className="flex justify-between">
                   <span className="text-gray-500">Asset:</span>
                   <span className="font-bold text-gray-900 dark:text-white truncate max-w-[200px]">{postTitle}</span>
@@ -423,9 +423,9 @@ export const BlogTokenizeModal: React.FC<TokenizeModalProps> = ({
                   max={25}
                   value={royaltyRate}
                   onChange={(e) => setRoyaltyRate(Number(e.target.value))}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm font-bold text-gray-900 dark:text-white"
+                  className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
                 />
-                <span className="text-[10px] text-gray-400 mt-0.5 block">
+                <span className="text-[10px] text-slate-700 mt-0.5 block">
                   Earn {royaltyRate}% perpetually on every secondary trade and ad revenue commission.
                 </span>
               </div>

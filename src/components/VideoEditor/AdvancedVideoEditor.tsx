@@ -40,7 +40,7 @@ const AdvancedVideoEditor: React.FC<AdvancedVideoEditorProps> = ({
               max="100"
               value={trimStart}
               onChange={(e) => setTrimStart(Number(e.target.value))}
-              className="w-full"
+              className="w-full text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
             />
             <p className="text-xs text-gray-500 mt-1">{trimStart}%</p>
           </div>
@@ -53,7 +53,7 @@ const AdvancedVideoEditor: React.FC<AdvancedVideoEditorProps> = ({
               max="100"
               value={trimEnd}
               onChange={(e) => setTrimEnd(Number(e.target.value))}
-              className="w-full"
+              className="w-full text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
             />
             <p className="text-xs text-gray-500 mt-1">{trimEnd}%</p>
           </div>
@@ -64,7 +64,7 @@ const AdvancedVideoEditor: React.FC<AdvancedVideoEditorProps> = ({
           <select
             value={speed}
             onChange={(e) => setSpeed(Number(e.target.value))}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500"
           >
             <option value={0.5}>0.5x (Slow)</option>
             <option value={1}>1x (Normal)</option>
@@ -78,7 +78,7 @@ const AdvancedVideoEditor: React.FC<AdvancedVideoEditorProps> = ({
           <select
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500"
           >
             <option value="none">None</option>
             <option value="grayscale">Grayscale</option>

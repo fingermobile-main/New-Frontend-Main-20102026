@@ -314,7 +314,7 @@ export const MasterDancia4TvConsole: React.FC = () => {
       );
     case 'yellow':
       return (
-        <span className="px-2.5 py-1 rounded-full bg-amber-100 text-amber-950 dark:bg-amber-950 dark:text-amber-300 border border-amber-400 text-xs font-mono font-bold flex items-center gap-1">
+        <span className="px-2.5 py-1 rounded-full bg-amber-100 text-amber-950 dark:bg-amber-950 dark:text-amber-300 border border-amber-400 text-xs font-mono font-bold flex items-center gap-1 font-black">
           <Flag size={12} className="fill-amber-500 text-amber-500" />
             YELLOW FLAG
         </span>
@@ -322,7 +322,7 @@ export const MasterDancia4TvConsole: React.FC = () => {
     case 'green':
     default:
       return (
-        <span className="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-950 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-400 text-xs font-mono font-bold flex items-center gap-1">
+        <span className="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-950 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-400 text-xs font-mono font-bold flex items-center gap-1 font-black">
           <Flag size={12} className="fill-emerald-500 text-emerald-500" />
             GREEN FLAG
         </span>
@@ -400,13 +400,13 @@ export const MasterDancia4TvConsole: React.FC = () => {
       <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 shadow-sm space-y-3">
         <div className="flex flex-col md:flex-row items-center justify-between gap-3">
           <div className="relative w-full md:w-80">
-            <Search className="w-4 h-4 absolute left-3 top-3 text-slate-400" />
+            <Search className="w-4 h-4 absolute left-3 top-3 text-slate-700" />
             <input
               type="text"
               placeholder="Search video stream title, creator, genre..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-9 pr-3 py-2 text-xs font-bold text-slate-900 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-1 focus:ring-rose-500"
+              className="w-full pl-9 pr-3 py-2 text-xs font-bold text-slate-900 bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-1 focus:ring-rose-500 placeholder:text-slate-400"
             />
           </div>
 
@@ -415,7 +415,7 @@ export const MasterDancia4TvConsole: React.FC = () => {
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value as any)}
-              className="py-1.5 px-3 rounded-xl text-xs font-bold text-slate-900 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700"
+              className="py-1.5 px-3 rounded-xl text-xs font-bold text-slate-900 bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 focus:ring-2 focus:ring-indigo-500"
             >
               <option value="all">Status: All</option>
               <option value="active">Active Streams</option>
@@ -427,7 +427,7 @@ export const MasterDancia4TvConsole: React.FC = () => {
             <select
               value={flagFilter}
               onChange={(e) => setFlagFilter(e.target.value as any)}
-              className="py-1.5 px-3 rounded-xl text-xs font-bold text-slate-900 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700"
+              className="py-1.5 px-3 rounded-xl text-xs font-bold text-slate-900 bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 focus:ring-2 focus:ring-indigo-500"
             >
               <option value="all">Flags: All Icons</option>
               <option value="red">🔴 Red Flags Only</option>
@@ -440,7 +440,7 @@ export const MasterDancia4TvConsole: React.FC = () => {
             <select
               value={sourceFilter}
               onChange={(e) => setSourceFilter(e.target.value as any)}
-              className="py-1.5 px-3 rounded-xl text-xs font-bold text-slate-900 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700"
+              className="py-1.5 px-3 rounded-xl text-xs font-bold text-slate-900 bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 focus:ring-2 focus:ring-indigo-500"
             >
               <option value="all">Source: All Types</option>
               <option value="live_broadcast">📡 Live Broadcast</option>
@@ -695,7 +695,7 @@ export const MasterDancia4TvConsole: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setEditingItem(null)}
-                className="text-slate-400 hover:text-slate-600 dark:hover:text-white font-bold"
+                className="text-slate-700 hover:text-slate-600 dark:hover:text-white font-bold"
               >
                 ✕
               </button>
@@ -711,7 +711,7 @@ export const MasterDancia4TvConsole: React.FC = () => {
                   required
                   value={editTitle}
                   onChange={(e) => setEditTitle(e.target.value)}
-                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 dark:text-white"
+                  className="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
 
@@ -724,7 +724,7 @@ export const MasterDancia4TvConsole: React.FC = () => {
                   required
                   value={editCreator}
                   onChange={(e) => setEditCreator(e.target.value)}
-                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 dark:text-white"
+                  className="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
 
@@ -736,7 +736,7 @@ export const MasterDancia4TvConsole: React.FC = () => {
                   rows={2}
                   value={editAdminNotes}
                   onChange={(e) => setEditAdminNotes(e.target.value)}
-                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-3 py-2 text-xs font-mono text-slate-900 dark:text-white"
+                  className="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-3 py-2 text-xs font-mono text-slate-900 dark:text-white font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
 
@@ -772,7 +772,7 @@ export const MasterDancia4TvConsole: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setWarningItem(null)}
-                className="text-slate-400 hover:text-slate-600 dark:hover:text-white font-bold"
+                className="text-slate-700 hover:text-slate-600 dark:hover:text-white font-bold"
               >
                 ✕
               </button>
@@ -792,7 +792,7 @@ export const MasterDancia4TvConsole: React.FC = () => {
                   required
                   value={warningText}
                   onChange={(e) => setWarningText(e.target.value)}
-                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-3 py-2 text-xs font-medium text-slate-900 dark:text-white"
+                  className="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-3 py-2 text-xs font-medium text-slate-900 dark:text-white font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
 

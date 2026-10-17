@@ -507,7 +507,7 @@ export const TributDisplayStyleRenderer: React.FC<TributDisplayStyleRendererProp
               max="100"
               value={sliderPos}
               onChange={(e) => setSliderPos(Number(e.target.value))}
-              className="absolute inset-0 w-full h-full opacity-0 cursor-ew-resize z-30"
+              className="absolute inset-0 w-full h-full opacity-0 cursor-ew-resize z-30 text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
               aria-label="Before and after split slider"
             />
           </div>

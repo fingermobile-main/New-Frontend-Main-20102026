@@ -365,7 +365,7 @@ export const TributCreatorUploadModal: React.FC<TributCreatorUploadModalProps> =
           accept="image/*,video/*"
           multiple
           onChange={handleHardwareFileSelect}
-          className="hidden"
+          className="hidden text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
         />
         <input
           type="file"
@@ -373,7 +373,7 @@ export const TributCreatorUploadModal: React.FC<TributCreatorUploadModalProps> =
           accept="image/*"
           capture="environment"
           onChange={handleHardwareFileSelect}
-          className="hidden"
+          className="hidden text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
         />
 
         {/* Header */}
@@ -383,7 +383,7 @@ export const TributCreatorUploadModal: React.FC<TributCreatorUploadModalProps> =
               <span className="text-[11px] font-black uppercase tracking-wider text-purple-700">
                 FingerMobile Creator Studio
               </span>
-              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-100 border border-emerald-400 text-emerald-950 text-[10px] font-bold">
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-100 border border-emerald-400 text-emerald-950 text-[10px] font-bold font-black">
                 {detectedDevice.type === 'phone' ? (
                   <Smartphone className="w-3 h-3 text-emerald-800" />
                 ) : detectedDevice.type === 'laptop' ? (
@@ -517,7 +517,7 @@ export const TributCreatorUploadModal: React.FC<TributCreatorUploadModalProps> =
               }`}
             >
               <div className="flex flex-col items-center justify-center space-y-2">
-                <div className="p-3 rounded-full bg-purple-100 border border-purple-200 text-purple-700">
+                <div className="p-3 rounded-full bg-purple-100 border border-purple-400 text-purple-950 text-purple-950 border-purple-400 font-black">
                   <UploadCloud className="w-6 h-6" />
                 </div>
                 <div>
@@ -621,7 +621,7 @@ export const TributCreatorUploadModal: React.FC<TributCreatorUploadModalProps> =
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="e.g. Modern Minimalist Lekki Residence"
-                className="w-full p-2.5 rounded-xl text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2 focus:ring-purple-500"
+                className="w-full p-2.5 rounded-xl text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2 focus:ring-purple-500 placeholder:text-slate-400"
               />
             </div>
 
@@ -633,7 +633,7 @@ export const TributCreatorUploadModal: React.FC<TributCreatorUploadModalProps> =
               <select
                 value={boardName}
                 onChange={(e) => setBoardName(e.target.value)}
-                className="w-full p-2.5 rounded-xl text-slate-900 font-bold border border-slate-300 bg-white"
+                className="w-full p-2.5 rounded-xl text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500"
               >
                 {userBoards.map((b) => (
                   <option key={b.id} value={b.name}>
@@ -657,7 +657,7 @@ export const TributCreatorUploadModal: React.FC<TributCreatorUploadModalProps> =
                 required
                 value={mediaUrl}
                 onChange={(e) => setMediaUrl(e.target.value)}
-                className="w-full p-2.5 rounded-xl text-slate-900 font-bold border border-slate-300 bg-white"
+                className="w-full p-2.5 rounded-xl text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
               />
             </div>
           )}
@@ -691,7 +691,7 @@ export const TributCreatorUploadModal: React.FC<TributCreatorUploadModalProps> =
                       updated[i] = e.target.value;
                       setMultiUrls(updated);
                     }}
-                    className="flex-1 p-2 rounded-xl text-slate-900 font-bold border border-slate-300 bg-white"
+                    className="flex-1 p-2 rounded-xl text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                   {multiUrls.length > 2 && (
                     <button
@@ -718,7 +718,7 @@ export const TributCreatorUploadModal: React.FC<TributCreatorUploadModalProps> =
                 value={videoUrl}
                 onChange={(e) => setVideoUrl(e.target.value)}
                 placeholder="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-                className="w-full p-2.5 rounded-xl text-slate-900 font-bold border border-slate-300 bg-white"
+                className="w-full p-2.5 rounded-xl text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
               />
             </div>
           )}
@@ -733,7 +733,7 @@ export const TributCreatorUploadModal: React.FC<TributCreatorUploadModalProps> =
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Detail the materials, lighting setup, silhouette notes, or architectural process..."
-              className="w-full p-2.5 rounded-xl text-slate-900 font-bold border border-slate-300 bg-white"
+              className="w-full p-2.5 rounded-xl text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
             />
           </div>
 
@@ -748,7 +748,7 @@ export const TributCreatorUploadModal: React.FC<TributCreatorUploadModalProps> =
                 rows={2}
                 value={promptRecipe}
                 onChange={(e) => setPromptRecipe(e.target.value)}
-                className="w-full p-2 rounded-xl text-slate-900 font-bold border border-slate-300 bg-white"
+                className="w-full p-2 rounded-xl text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
               />
             </div>
 
@@ -772,7 +772,7 @@ export const TributCreatorUploadModal: React.FC<TributCreatorUploadModalProps> =
                 value={palette.join(', ')}
                 onChange={(e) => setPalette(e.target.value.split(',').map((s) => s.trim()))}
                 placeholder="#1A2B4C, #28467A, #52796F..."
-                className="w-full p-2 rounded-xl text-slate-900 font-bold border border-slate-300 bg-white"
+                className="w-full p-2 rounded-xl text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
               />
             </div>
           </div>
@@ -784,7 +784,7 @@ export const TributCreatorUploadModal: React.FC<TributCreatorUploadModalProps> =
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value as any)}
-                className="w-full p-2.5 rounded-xl text-slate-900 font-bold border border-slate-300 bg-white"
+                className="w-full p-2.5 rounded-xl text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500"
               >
                 <option value="fashion">Fashion & Wearables</option>
                 <option value="architecture">Architecture & Living</option>
@@ -800,7 +800,7 @@ export const TributCreatorUploadModal: React.FC<TributCreatorUploadModalProps> =
               <select
                 value={priority}
                 onChange={(e) => setPriority(e.target.value as any)}
-                className="w-full p-2.5 rounded-xl text-slate-900 font-bold border border-slate-300 bg-white"
+                className="w-full p-2.5 rounded-xl text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500"
               >
                 <option value="high">⭐ High Priority (Hero Pin / Top Placement)</option>
                 <option value="medium">Standard Priority</option>
@@ -816,7 +816,7 @@ export const TributCreatorUploadModal: React.FC<TributCreatorUploadModalProps> =
                 type="checkbox"
                 checked={isShoppable}
                 onChange={(e) => setIsShoppable(e.target.checked)}
-                className="w-4 h-4 text-purple-600 rounded"
+                className="w-4 h-4 text-slate-900 rounded font-bold border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
               />
               <span>Make this Pin Shoppable (Rich Profile OOC Sync & Buy & Share)</span>
             </label>
@@ -829,7 +829,7 @@ export const TributCreatorUploadModal: React.FC<TributCreatorUploadModalProps> =
                     <select
                       value={storeEngine}
                       onChange={(e) => setStoreEngine(e.target.value as any)}
-                      className="w-full p-2 rounded-lg text-slate-900 font-bold border border-slate-300 bg-white"
+                      className="w-full p-2 rounded-lg text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500"
                     >
                       <option value="MarketPlace">MarketPlace</option>
                       <option value="Storefront">Storefront</option>
@@ -844,7 +844,7 @@ export const TributCreatorUploadModal: React.FC<TributCreatorUploadModalProps> =
                       type="number"
                       value={priceNgn}
                       onChange={(e) => setPriceNgn(Number(e.target.value))}
-                      className="w-full p-2 rounded-lg text-slate-900 font-bold border border-slate-300 bg-white"
+                      className="w-full p-2 rounded-lg text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
                     />
                   </div>
 
@@ -854,7 +854,7 @@ export const TributCreatorUploadModal: React.FC<TributCreatorUploadModalProps> =
                       type="number"
                       value={buyAndShareCommissionPercent}
                       onChange={(e) => setBuyAndShareCommissionPercent(Number(e.target.value))}
-                      className="w-full p-2 rounded-lg text-slate-900 font-bold border border-slate-300 bg-white"
+                      className="w-full p-2 rounded-lg text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
                     />
                   </div>
                 </div>

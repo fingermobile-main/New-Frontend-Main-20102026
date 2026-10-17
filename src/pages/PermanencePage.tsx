@@ -274,7 +274,7 @@ const PermanencePage: React.FC = () => {
               value={newChallenge.title}
               onChange={(e) => setNewChallenge({ ...newChallenge, title: e.target.value })
               }
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               placeholder="Enter challenge title"
             />
           </div>
@@ -291,7 +291,7 @@ const PermanencePage: React.FC = () => {
                   description: e.target.value
                 })
               }
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               placeholder="Describe your challenge"
               rows={3}
             />
@@ -307,7 +307,7 @@ const PermanencePage: React.FC = () => {
                 onChange={(e) =>
                   setNewChallenge({ ...newChallenge, category: e.target.value })
                 }
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white"
               >
                 {categories.map((cat) => (
                   <option key={cat} value={cat}>
@@ -330,7 +330,7 @@ const PermanencePage: React.FC = () => {
                     stakeAmount: Number(e.target.value)
                   })
                 }
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400 font-mono"
                 min="0"
                 placeholder="0"
               />

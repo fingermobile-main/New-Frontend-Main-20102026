@@ -384,7 +384,7 @@ export const FriendsDirectorySection: React.FC<FriendsDirectorySectionProps> = (
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search connections by name or handle..."
-                className="pl-9 pr-4 py-1.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold w-64 focus:ring-2 focus:ring-slate-900 focus:outline-hidden"
+                className="pl-9 pr-4 py-1.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold w-64 focus:ring-2 focus:ring-slate-900 focus:outline-hidden placeholder:text-slate-400"
               />
             </div>
           </div>

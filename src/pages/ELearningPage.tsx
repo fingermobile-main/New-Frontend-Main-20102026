@@ -369,7 +369,7 @@ const ELearningPage: React.FC = () => {
 
           {filteredCourses.length === 0 ? (
             <div className="text-center py-12">
-              <BookOpenIcon className="mx-auto h-12 w-12 text-gray-400" />
+              <BookOpenIcon className="mx-auto h-12 w-12 text-slate-700" />
               <h3 className="mt-2 text-lg font-medium text-gray-900">No courses found</h3>
               <p className="mt-1 text-gray-500 text-base sm:text-lg">Try adjusting your search or filter criteria.</p>
             </div>

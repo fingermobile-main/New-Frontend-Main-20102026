@@ -346,7 +346,7 @@ export const CoverPhotoEditorModal: React.FC<CoverPhotoEditorModalProps> = ({
                   </span>
                 </h2>
               </div>
-              <p className="text-xs text-slate-300 font-medium">
+              <p className="text-xs text-slate-700 font-medium">
                 FingerMobile Sovereign Canvas Engine • 4K & UHD Ultra-Fidelity Standards
               </p>
             </div>
@@ -360,7 +360,7 @@ export const CoverPhotoEditorModal: React.FC<CoverPhotoEditorModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition"
+              className="p-2 rounded-xl text-slate-700 hover:text-white hover:bg-slate-800 transition"
               aria-label="Close"
             >
               <X className="w-5 h-5" />
@@ -626,7 +626,7 @@ export const CoverPhotoEditorModal: React.FC<CoverPhotoEditorModalProps> = ({
                   max="100"
                   value={positionY}
                   onChange={(e) => setPositionY(Number(e.target.value))}
-                  className="w-full h-2 bg-slate-300 rounded-lg appearance-none cursor-pointer accent-orange-600"
+                  className="w-full h-2 bg-white rounded-lg appearance-none cursor-pointer accent-orange-600 text-slate-900 font-bold border border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
                 <div className="flex items-center justify-between text-[10px] font-bold text-slate-700">
                   <button
@@ -671,7 +671,7 @@ export const CoverPhotoEditorModal: React.FC<CoverPhotoEditorModalProps> = ({
                   step="0.05"
                   value={zoomLevel}
                   onChange={(e) => setZoomLevel(Number(e.target.value))}
-                  className="w-full h-2 bg-slate-300 rounded-lg appearance-none cursor-pointer accent-orange-600"
+                  className="w-full h-2 bg-white rounded-lg appearance-none cursor-pointer accent-orange-600 text-slate-900 font-bold border border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
                 <div className="flex items-center justify-between text-[10px] font-bold text-slate-700">
                   <span>1.00x (Standard)</span>
@@ -700,7 +700,7 @@ export const CoverPhotoEditorModal: React.FC<CoverPhotoEditorModalProps> = ({
                   ref={fileInputRef}
                   onChange={handleFileUpload}
                   accept="image/png,image/jpeg,image/webp,image/avif"
-                  className="hidden"
+                  className="hidden text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
                 <button
                   type="button"
@@ -779,7 +779,7 @@ export const CoverPhotoEditorModal: React.FC<CoverPhotoEditorModalProps> = ({
                     placeholder="https://images.example.com/ultra-hd-cover-4k.webp"
                     value={customUrlInput}
                     onChange={(e) => setCustomUrlInput(e.target.value)}
-                    className="flex-1 px-3 py-1.5 rounded-xl border border-slate-300 text-slate-900 font-bold bg-white text-xs focus:ring-2 focus:ring-orange-500 focus:outline-hidden"
+                    className="flex-1 px-3 py-1.5 rounded-xl border border-slate-300 text-slate-900 font-bold bg-white text-xs focus:ring-2 focus:ring-orange-500 focus:outline-hidden placeholder:text-slate-400"
                   />
                   <button
                     type="submit"
@@ -821,7 +821,7 @@ export const CoverPhotoEditorModal: React.FC<CoverPhotoEditorModalProps> = ({
             <span className="text-xs font-bold text-slate-700">
               Format: <strong className="text-slate-900">{activeSpec.title}</strong>
             </span>
-            <span className="text-slate-400">•</span>
+            <span className="text-slate-700">•</span>
             <span className="text-xs font-bold text-slate-700">
               Y-Offset: <strong className="text-slate-900">{positionY}%</strong>
             </span>

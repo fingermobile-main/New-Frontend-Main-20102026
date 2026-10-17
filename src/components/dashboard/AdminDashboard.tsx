@@ -108,7 +108,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ adminId }) => {
         <div className="bg-white border border-slate-300 rounded-lg p-6">
           <div className="flex items-center justify-between mb-4">
             <span className="text-3xl">📝</span>
-            <span className="px-2 py-1 bg-amber-100 text-amber-950 border border-amber-400 font-bold rounded-full text-xs font-medium">
+            <span className="px-2 py-1 bg-amber-100 text-amber-950 border border-amber-400 font-bold rounded-full text-xs font-medium font-black">
               {stats.content.flagged} flagged
             </span>
           </div>
@@ -150,22 +150,22 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ adminId }) => {
       <div className="bg-white border border-slate-300 rounded-lg p-6">
         <h3 className="font-semibold text-gray-900 mb-4">Quick Actions</h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <button className="p-4 border-2 border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all">
+          <button className="p-4 border-2 border-slate-300 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all">
             <div className="text-2xl mb-2">👤</div>
             <div className="font-medium text-sm">Manage Users</div>
           </button>
 
-          <button className="p-4 border-2 border-gray-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all">
+          <button className="p-4 border-2 border-slate-300 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all">
             <div className="text-2xl mb-2">📊</div>
             <div className="font-medium text-sm">View Reports</div>
           </button>
 
-          <button className="p-4 border-2 border-gray-200 rounded-lg hover:border-orange-500 hover:bg-orange-50 transition-all">
+          <button className="p-4 border-2 border-slate-300 rounded-lg hover:border-orange-500 hover:bg-orange-50 transition-all">
             <div className="text-2xl mb-2">🚩</div>
             <div className="font-medium text-sm">Moderation Queue</div>
           </button>
 
-          <button className="p-4 border-2 border-gray-200 rounded-lg hover:border-green-500 hover:bg-green-50 transition-all">
+          <button className="p-4 border-2 border-slate-300 rounded-lg hover:border-green-500 hover:bg-green-50 transition-all">
             <div className="text-2xl mb-2">⚙️</div>
             <div className="font-medium text-sm">System Settings</div>
           </button>

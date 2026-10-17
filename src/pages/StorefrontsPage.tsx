@@ -412,7 +412,7 @@ const StorefrontsPage: React.FC = () => {
                       placeholder="Search store name, creator, product catalog..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full pl-9 pr-4 py-2 bg-white border-2 border-slate-300 rounded-xl text-xs text-slate-900 font-bold placeholder:text-slate-500 focus:outline-none focus:border-amber-400"
+                      className="w-full pl-9 pr-4 py-2 bg-white border-2 border-slate-300 rounded-xl text-xs text-slate-900 font-bold placeholder:text-slate-400 focus:outline-none focus:border-amber-400 border focus:ring-2 focus:ring-indigo-500"
                     />
                   </div>
 
@@ -421,7 +421,7 @@ const StorefrontsPage: React.FC = () => {
                     <select
                       value={sortBy}
                       onChange={(e) => setSortBy(e.target.value)}
-                      className="px-3 py-2 bg-white border-2 border-slate-300 rounded-xl text-xs text-slate-900 font-bold focus:outline-none focus:border-amber-400"
+                      className="px-3 py-2 bg-white border-2 border-slate-300 rounded-xl text-xs text-slate-900 font-bold focus:outline-none focus:border-amber-400 border focus:ring-2 focus:ring-indigo-500"
                     >
                       <option value="popular">Most Followers</option>
                       <option value="highest-rated">Highest Rated</option>
@@ -583,7 +583,7 @@ const StorefrontsPage: React.FC = () => {
                     step="50000"
                     value={monthlyVolume}
                     onChange={(e) => setMonthlyVolume(Number(e.target.value))}
-                    className="w-full accent-amber-500 cursor-pointer h-2 bg-slate-200 rounded-lg"
+                    className="w-full accent-amber-500 cursor-pointer h-2 bg-white rounded-lg text-slate-900 font-bold border border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
 
                   <div className="flex justify-between text-[11px] text-slate-700 font-mono font-bold">
@@ -685,7 +685,7 @@ const StorefrontsPage: React.FC = () => {
                     placeholder="e.g. Lagos Vintage Stems"
                     value={storeName}
                     onChange={(e) => setStoreName(e.target.value)}
-                    className="w-full px-3.5 py-2.5 bg-white border-2 border-slate-300 rounded-xl text-sm text-slate-900 font-bold placeholder:text-slate-500 focus:outline-none focus:border-amber-400"
+                    className="w-full px-3.5 py-2.5 bg-white border-2 border-slate-300 rounded-xl text-sm text-slate-900 font-bold placeholder:text-slate-400 focus:outline-none focus:border-amber-400 border focus:ring-2 focus:ring-indigo-500"
                   />
                 </div>
 
@@ -701,7 +701,7 @@ const StorefrontsPage: React.FC = () => {
                       placeholder="lagos-vintage-stems"
                       value={storeSlug}
                       onChange={(e) => setStoreSlug(e.target.value)}
-                      className="flex-1 px-3.5 py-2.5 bg-white border-2 border-slate-300 rounded-r-xl text-sm text-slate-900 font-bold placeholder:text-slate-500 focus:outline-none focus:border-amber-400"
+                      className="flex-1 px-3.5 py-2.5 bg-white border-2 border-slate-300 rounded-r-xl text-sm text-slate-900 font-bold placeholder:text-slate-400 focus:outline-none focus:border-amber-400 border focus:ring-2 focus:ring-indigo-500"
                     />
                   </div>
                 </div>
@@ -712,7 +712,7 @@ const StorefrontsPage: React.FC = () => {
                     <select
                       value={storeCategory}
                       onChange={(e) => setStoreCategory(e.target.value)}
-                      className="w-full px-3.5 py-2.5 bg-white border-2 border-slate-300 rounded-xl text-sm text-slate-900 font-bold focus:outline-none focus:border-amber-400"
+                      className="w-full px-3.5 py-2.5 bg-white border-2 border-slate-300 rounded-xl text-sm text-slate-900 font-bold focus:outline-none focus:border-amber-400 border focus:ring-2 focus:ring-indigo-500"
                     >
                       <option value="Music & Audio">Music & Master Stems</option>
                       <option value="Merchandise & Fashion">Fashion & Merchandise</option>
@@ -726,7 +726,7 @@ const StorefrontsPage: React.FC = () => {
                     <select
                       value={storeBusinessType}
                       onChange={(e) => setStoreBusinessType(e.target.value)}
-                      className="w-full px-3.5 py-2.5 bg-white border-2 border-slate-300 rounded-xl text-sm text-slate-900 font-bold focus:outline-none focus:border-amber-400"
+                      className="w-full px-3.5 py-2.5 bg-white border-2 border-slate-300 rounded-xl text-sm text-slate-900 font-bold focus:outline-none focus:border-amber-400 border focus:ring-2 focus:ring-indigo-500"
                     >
                       <option value="individual">Solo Creator / Artist</option>
                       <option value="boutique">Independent Boutique</option>
@@ -743,7 +743,7 @@ const StorefrontsPage: React.FC = () => {
                     placeholder="e.g. Mastered Afro-Fusion Sounds & Stems"
                     value={storeTagline}
                     onChange={(e) => setStoreTagline(e.target.value)}
-                    className="w-full px-3.5 py-2.5 bg-white border-2 border-slate-300 rounded-xl text-sm text-slate-900 font-bold placeholder:text-slate-500 focus:outline-none focus:border-amber-400"
+                    className="w-full px-3.5 py-2.5 bg-white border-2 border-slate-300 rounded-xl text-sm text-slate-900 font-bold placeholder:text-slate-400 focus:outline-none focus:border-amber-400 border focus:ring-2 focus:ring-indigo-500"
                   />
                 </div>
 
@@ -805,7 +805,7 @@ const StorefrontsPage: React.FC = () => {
                     min="1"
                     value={giftAmount}
                     onChange={(e) => setGiftAmount(e.target.value)}
-                    className="w-full px-4 py-2 bg-white border-2 border-slate-300 rounded-xl text-slate-900 font-mono font-bold text-sm focus:outline-none focus:border-amber-400"
+                    className="w-full px-4 py-2 bg-white border-2 border-slate-300 rounded-xl text-slate-900 font-mono font-bold text-sm focus:outline-none focus:border-amber-400 border focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                   <p className="text-xs text-amber-600 mt-1.5 font-mono font-bold">
                     Available Vault: {ficBalance.toLocaleString()} FIC

@@ -188,7 +188,7 @@ const CollaborationInviteModal: React.FC<CollaborationInviteModalProps> = ({
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="collaborator@example.com"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                 />
               </div>
             )}
@@ -203,7 +203,7 @@ const CollaborationInviteModal: React.FC<CollaborationInviteModalProps> = ({
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="@username"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                 />
               </div>
             )}
@@ -265,7 +265,7 @@ const CollaborationInviteModal: React.FC<CollaborationInviteModalProps> = ({
                   placeholder="Add a personal note..."
                   rows={3}
                   maxLength={500}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 resize-none"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 resize-none text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                 />
                 <p className="text-xs text-gray-500 mt-1">{message.length}/500 characters</p>
               </div>

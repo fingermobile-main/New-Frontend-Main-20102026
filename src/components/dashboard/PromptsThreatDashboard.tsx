@@ -144,7 +144,7 @@ const PromptsThreatDashboard: React.FC<PromptsThreatDashboardProps> = ({ userId 
             value={promptInput}
             onChange={(e) => setPromptInput(e.target.value)}
             placeholder="Enter prompt or input to analyze for security threats..."
-            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white"
+            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
             rows={4}
           />
 
@@ -182,7 +182,7 @@ const PromptsThreatDashboard: React.FC<PromptsThreatDashboardProps> = ({ userId 
                 <h4 className="font-medium mb-2">Threats Found ({lastAnalysis.threats_found.length})</h4>
                 <div className="space-y-2">
                   {lastAnalysis.threats_found.map((threat) => (
-                    <div key={threat.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-3">
+                    <div key={threat.id} className="border border-slate-300 dark:border-gray-700 rounded-lg p-3">
                       <div className="flex items-center justify-between mb-2">
                         <span className="font-medium">{threat.type}</span>
                         <span className={`px-2 py-1 rounded text-xs ${getSeverityColor(threat.severity)}`}>
@@ -238,7 +238,7 @@ const PromptsThreatDashboard: React.FC<PromptsThreatDashboardProps> = ({ userId 
         ) : (
           <div className="space-y-3">
             {threatHistory.slice(0, 10).map((analysis) => (
-              <div key={analysis.analysis_id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-3">
+              <div key={analysis.analysis_id} className="border border-slate-300 dark:border-gray-700 rounded-lg p-3">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm text-gray-500 dark:text-gray-400">
                     {new Date(analysis.timestamp).toLocaleString()}

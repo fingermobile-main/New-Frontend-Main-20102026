@@ -401,7 +401,7 @@ const AdSubmissionForm: React.FC<AdSubmissionFormProps> = ({
             id="aspect_ratio"
             value={formData.aspect_ratio}
             readOnly
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
             placeholder="Auto calculated"
           />
         </div>

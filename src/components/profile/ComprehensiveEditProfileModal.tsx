@@ -418,7 +418,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                     <select
                       value={formData.category_audiences['intro'] || 'public'}
                       onChange={(e) => handleAudienceChange('intro', e.target.value as any)}
-                      className="px-2.5 py-1 text-xs font-bold rounded-lg border border-slate-300 bg-white text-slate-900"
+                      className="px-2.5 py-1 text-xs font-bold rounded-lg border border-slate-300 bg-white text-slate-900 focus:ring-2 focus:ring-indigo-500"
                     >
                       <option value="public">🌐 Public</option>
                       <option value="friends">👥 Friends Only</option>
@@ -460,7 +460,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                       value={formData.headline}
                       onChange={(e) => setFormData({ ...formData, headline: e.target.value })}
                       placeholder="e.g. CEO & CTO, Founder | FingerMobile Protocol™ Architect"
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold focus:ring-2 focus:ring-slate-900 focus:outline-hidden"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold focus:ring-2 focus:ring-slate-900 focus:outline-hidden placeholder:text-slate-400"
                     />
                   </div>
 
@@ -471,7 +471,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                       value={formData.pronouns}
                       onChange={(e) => setFormData({ ...formData, pronouns: e.target.value })}
                       placeholder="e.g. he/him, she/her, they/them"
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold focus:ring-2 focus:ring-slate-900 focus:outline-hidden"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold focus:ring-2 focus:ring-slate-900 focus:outline-hidden placeholder:text-slate-400"
                     />
                   </div>
 
@@ -482,7 +482,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                       value={formData.bio}
                       onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
                       placeholder="Share your sovereign manifesto, cryptographic milestones and mission..."
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-medium leading-relaxed focus:ring-2 focus:ring-slate-900 focus:outline-hidden"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-medium leading-relaxed focus:ring-2 focus:ring-slate-900 focus:outline-hidden font-bold placeholder:text-slate-400"
                     />
                   </div>
                 </div>
@@ -501,7 +501,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                     <select
                       value={formData.category_audiences['category'] || 'public'}
                       onChange={(e) => handleAudienceChange('category', e.target.value as any)}
-                      className="px-2.5 py-1 text-xs font-bold rounded-lg border border-slate-300 bg-white text-slate-900"
+                      className="px-2.5 py-1 text-xs font-bold rounded-lg border border-slate-300 bg-white text-slate-900 focus:ring-2 focus:ring-indigo-500"
                     >
                       <option value="public">🌐 Public</option>
                       <option value="friends">👥 Friends Only</option>
@@ -516,7 +516,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                       value={formData.primary_category}
                       onChange={(e) => setFormData({ ...formData, primary_category: e.target.value })}
                       placeholder="e.g. Creator Level 5 / Sovereign Architect"
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold focus:ring-2 focus:ring-slate-900 focus:outline-hidden"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold focus:ring-2 focus:ring-slate-900 focus:outline-hidden placeholder:text-slate-400"
                     />
                   </div>
 
@@ -532,7 +532,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                           <button
                             type="button"
                             onClick={() => removeChip('subcategories', idx)}
-                            className="text-slate-400 hover:text-rose-600"
+                            className="text-slate-700 hover:text-rose-600"
                           >
                             <X className="w-3.5 h-3.5" />
                           </button>
@@ -551,7 +551,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                           }
                         }}
                         placeholder="Add subcategory tag (e.g. Zero-Knowledge Cryptography)..."
-                        className="flex-1 px-3.5 py-2 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold"
+                        className="flex-1 px-3.5 py-2 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                       <button
                         type="button"
@@ -578,7 +578,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                     <select
                       value={formData.category_audiences['names'] || 'public'}
                       onChange={(e) => handleAudienceChange('names', e.target.value as any)}
-                      className="px-2.5 py-1 text-xs font-bold rounded-lg border border-slate-300 bg-white text-slate-900"
+                      className="px-2.5 py-1 text-xs font-bold rounded-lg border border-slate-300 bg-white text-slate-900 focus:ring-2 focus:ring-indigo-500"
                     >
                       <option value="public">🌐 Public</option>
                       <option value="friends">👥 Friends Only</option>
@@ -593,18 +593,18 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                         type="text"
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold"
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                     </div>
                     <div>
                       <label className="block text-xs font-bold text-slate-800 mb-1">Sovereign Username / Handle</label>
                       <div className="relative">
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-mono text-xs">@</span>
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-700 font-mono text-xs">@</span>
                         <input
                           type="text"
                           value={formData.username.replace(/^@/, '')}
                           onChange={(e) => setFormData({ ...formData, username: e.target.value.replace(/^@/, '') })}
-                          className="w-full pl-8 pr-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold font-mono"
+                          className="w-full pl-8 pr-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold font-mono focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                         />
                       </div>
                     </div>
@@ -618,7 +618,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                         value={formData.legal_name}
                         onChange={(e) => setFormData({ ...formData, legal_name: e.target.value })}
                         placeholder="Encrypted sovereign legal name"
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold"
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                     </div>
                     <div>
@@ -628,7 +628,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                         value={formData.alias}
                         onChange={(e) => setFormData({ ...formData, alias: e.target.value })}
                         placeholder="e.g. redice200"
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold"
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                     </div>
                   </div>
@@ -648,7 +648,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                     <select
                       value={formData.category_audiences['personal_details'] || 'friends'}
                       onChange={(e) => handleAudienceChange('personal_details', e.target.value as any)}
-                      className="px-2.5 py-1 text-xs font-bold rounded-lg border border-slate-300 bg-white text-slate-900"
+                      className="px-2.5 py-1 text-xs font-bold rounded-lg border border-slate-300 bg-white text-slate-900 focus:ring-2 focus:ring-indigo-500"
                     >
                       <option value="public">🌐 Public</option>
                       <option value="friends">👥 Friends Only</option>
@@ -663,7 +663,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                         type="date"
                         value={formData.birthday}
                         onChange={(e) => setFormData({ ...formData, birthday: e.target.value })}
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold"
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                     </div>
                     <div>
@@ -673,7 +673,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                         value={formData.gender}
                         onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
                         placeholder="e.g. Male, Female, Non-Binary"
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold"
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                     </div>
                     <div>
@@ -695,7 +695,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                         value={formData.location}
                         onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                         placeholder="e.g. Lagos, Nigeria or click Pick Live IP"
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold"
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                     </div>
                   </div>
@@ -712,7 +712,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                           <button
                             type="button"
                             onClick={() => removeChip('languages', idx)}
-                            className="text-slate-400 hover:text-rose-600"
+                            className="text-slate-700 hover:text-rose-600"
                           >
                             <X className="w-3.5 h-3.5" />
                           </button>
@@ -731,7 +731,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                           }
                         }}
                         placeholder="Add language (e.g. English, French, Igbo)..."
-                        className="flex-1 px-3.5 py-2 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold"
+                        className="flex-1 px-3.5 py-2 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                       <button
                         type="button"
@@ -758,7 +758,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                     <select
                       value={formData.category_audiences['hobbies'] || 'public'}
                       onChange={(e) => handleAudienceChange('hobbies', e.target.value as any)}
-                      className="px-2.5 py-1 text-xs font-bold rounded-lg border border-slate-300 bg-white text-slate-900"
+                      className="px-2.5 py-1 text-xs font-bold rounded-lg border border-slate-300 bg-white text-slate-900 focus:ring-2 focus:ring-indigo-500"
                     >
                       <option value="public">🌐 Public</option>
                       <option value="friends">👥 Friends Only</option>
@@ -797,7 +797,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                           }
                         }}
                         placeholder="Add a hobby (e.g. Afrofusion Sound Synthesis, Chess)..."
-                        className="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold"
+                        className="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                       <button
                         type="button"
@@ -824,7 +824,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                     <select
                       value={formData.category_audiences['interests'] || 'public'}
                       onChange={(e) => handleAudienceChange('interests', e.target.value as any)}
-                      className="px-2.5 py-1 text-xs font-bold rounded-lg border border-slate-300 bg-white text-slate-900"
+                      className="px-2.5 py-1 text-xs font-bold rounded-lg border border-slate-300 bg-white text-slate-900 focus:ring-2 focus:ring-indigo-500"
                     >
                       <option value="public">🌐 Public</option>
                       <option value="friends">👥 Friends Only</option>
@@ -863,7 +863,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                           }
                         }}
                         placeholder="Add an interest (e.g. Biometric PIN Vaults, Offline Mesh)..."
-                        className="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold"
+                        className="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                       <button
                         type="button"
@@ -890,7 +890,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                     <select
                       value={formData.category_audiences['travel'] || 'public'}
                       onChange={(e) => handleAudienceChange('travel', e.target.value as any)}
-                      className="px-2.5 py-1 text-xs font-bold rounded-lg border border-slate-300 bg-white text-slate-900"
+                      className="px-2.5 py-1 text-xs font-bold rounded-lg border border-slate-300 bg-white text-slate-900 focus:ring-2 focus:ring-indigo-500"
                     >
                       <option value="public">🌐 Public</option>
                       <option value="friends">👥 Friends Only</option>
@@ -930,7 +930,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                           }
                         }}
                         placeholder="Add summit (e.g. Devcon Bangkok 2024, ETHLagos 2025)..."
-                        className="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold"
+                        className="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                       <button
                         type="button"
@@ -957,7 +957,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                     <select
                       value={formData.category_audiences['work'] || 'public'}
                       onChange={(e) => handleAudienceChange('work', e.target.value as any)}
-                      className="px-2.5 py-1 text-xs font-bold rounded-lg border border-slate-300 bg-white text-slate-900"
+                      className="px-2.5 py-1 text-xs font-bold rounded-lg border border-slate-300 bg-white text-slate-900 focus:ring-2 focus:ring-indigo-500"
                     >
                       <option value="public">🌐 Public</option>
                       <option value="friends">👥 Friends Only</option>
@@ -973,7 +973,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                         value={formData.workplace}
                         onChange={(e) => setFormData({ ...formData, workplace: e.target.value })}
                         placeholder="e.g. GraceLink Business Technologies Limited"
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold"
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                     </div>
                     <div>
@@ -983,7 +983,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                         value={formData.role}
                         onChange={(e) => setFormData({ ...formData, role: e.target.value })}
                         placeholder="e.g. Chief Technology Officer & Lead Architect"
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold"
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                     </div>
                   </div>
@@ -996,7 +996,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                         value={formData.work_duration}
                         onChange={(e) => setFormData({ ...formData, work_duration: e.target.value })}
                         placeholder="e.g. 2020 - Present"
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold"
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                     </div>
                     <div>
@@ -1006,7 +1006,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                         value={formData.previous_work}
                         onChange={(e) => setFormData({ ...formData, previous_work: e.target.value })}
                         placeholder="e.g. Distributed Systems R&D Lead"
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold"
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                     </div>
                   </div>
@@ -1026,7 +1026,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                     <select
                       value={formData.category_audiences['education'] || 'public'}
                       onChange={(e) => handleAudienceChange('education', e.target.value as any)}
-                      className="px-2.5 py-1 text-xs font-bold rounded-lg border border-slate-300 bg-white text-slate-900"
+                      className="px-2.5 py-1 text-xs font-bold rounded-lg border border-slate-300 bg-white text-slate-900 focus:ring-2 focus:ring-indigo-500"
                     >
                       <option value="public">🌐 Public</option>
                       <option value="friends">👥 Friends Only</option>
@@ -1042,7 +1042,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                         value={formData.institution}
                         onChange={(e) => setFormData({ ...formData, institution: e.target.value })}
                         placeholder="e.g. University of Nigeria, Nsukka / MIT OpenCourse"
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold"
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                     </div>
                     <div>
@@ -1052,7 +1052,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                         value={formData.degree}
                         onChange={(e) => setFormData({ ...formData, degree: e.target.value })}
                         placeholder="e.g. B.Eng Electronic Engineering & Decentralized Systems"
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold"
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                     </div>
                   </div>
@@ -1089,7 +1089,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                           }
                         }}
                         placeholder="Add credential (e.g. STERCS™ Certified Security Node #001)..."
-                        className="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold"
+                        className="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                       <button
                         type="button"
@@ -1116,7 +1116,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                     <select
                       value={formData.category_audiences['communities'] || 'public'}
                       onChange={(e) => handleAudienceChange('communities', e.target.value as any)}
-                      className="px-2.5 py-1 text-xs font-bold rounded-lg border border-slate-300 bg-white text-slate-900"
+                      className="px-2.5 py-1 text-xs font-bold rounded-lg border border-slate-300 bg-white text-slate-900 focus:ring-2 focus:ring-indigo-500"
                     >
                       <option value="public">🌐 Public</option>
                       <option value="friends">👥 Friends Only</option>
@@ -1144,7 +1144,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                               communities: prev.communities.filter((_, i) => i !== idx)
                             }))
                           }
-                          className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-rose-50"
+                          className="p-1.5 text-slate-700 hover:text-rose-600 rounded-lg hover:bg-rose-50"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
@@ -1160,21 +1160,21 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                         placeholder="Guild / DAO Name"
                         value={newCommName}
                         onChange={(e) => setNewCommName(e.target.value)}
-                        className="px-3 py-1.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold"
+                        className="px-3 py-1.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                       <input
                         type="text"
                         placeholder="Your Role (e.g. Founder, Moderator)"
                         value={newCommRole}
                         onChange={(e) => setNewCommRole(e.target.value)}
-                        className="px-3 py-1.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold"
+                        className="px-3 py-1.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                       <input
                         type="number"
                         placeholder="Members Count"
                         value={newCommMembers}
                         onChange={(e) => setNewCommMembers(e.target.value)}
-                        className="px-3 py-1.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold"
+                        className="px-3 py-1.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
                       />
                     </div>
                     <button
@@ -1217,7 +1217,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                     <select
                       value={formData.category_audiences['links'] || 'public'}
                       onChange={(e) => handleAudienceChange('links', e.target.value as any)}
-                      className="px-2.5 py-1 text-xs font-bold rounded-lg border border-slate-300 bg-white text-slate-900"
+                      className="px-2.5 py-1 text-xs font-bold rounded-lg border border-slate-300 bg-white text-slate-900 focus:ring-2 focus:ring-indigo-500"
                     >
                       <option value="public">🌐 Public</option>
                       <option value="friends">👥 Friends Only</option>
@@ -1233,7 +1233,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                         value={formData.website}
                         onChange={(e) => setFormData({ ...formData, website: e.target.value })}
                         placeholder="https://fingermobileprotocol.com"
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold"
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                     </div>
                     <div>
@@ -1243,7 +1243,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                         value={formData.github}
                         onChange={(e) => setFormData({ ...formData, github: e.target.value })}
                         placeholder="https://github.com/fingermobile-protocol"
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold"
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                     </div>
                   </div>
@@ -1256,7 +1256,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                         value={formData.twitter}
                         onChange={(e) => setFormData({ ...formData, twitter: e.target.value })}
                         placeholder="https://twitter.com/fingermobile"
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold"
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                     </div>
                     <div>
@@ -1266,7 +1266,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                         value={formData.node_endpoint}
                         onChange={(e) => setFormData({ ...formData, node_endpoint: e.target.value })}
                         placeholder="finger://node.fingermobileprotocol.com/israelobinna"
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold font-mono"
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold font-mono focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                     </div>
                   </div>
@@ -1286,7 +1286,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                     <select
                       value={formData.category_audiences['offers'] || 'public'}
                       onChange={(e) => handleAudienceChange('offers', e.target.value as any)}
-                      className="px-2.5 py-1 text-xs font-bold rounded-lg border border-slate-300 bg-white text-slate-900"
+                      className="px-2.5 py-1 text-xs font-bold rounded-lg border border-slate-300 bg-white text-slate-900 focus:ring-2 focus:ring-indigo-500"
                     >
                       <option value="public">🌐 Public</option>
                       <option value="friends">👥 Friends Only</option>
@@ -1314,7 +1314,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                               offers: prev.offers.filter((_, i) => i !== idx)
                             }))
                           }
-                          className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-rose-50"
+                          className="p-1.5 text-slate-700 hover:text-rose-600 rounded-lg hover:bg-rose-50"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
@@ -1330,19 +1330,19 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                         placeholder="Service Name (e.g. ZK Audit)"
                         value={newOfferName}
                         onChange={(e) => setNewOfferName(e.target.value)}
-                        className="px-3 py-1.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold"
+                        className="px-3 py-1.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                       <input
                         type="text"
                         placeholder="Rate (e.g. 2,500 FIC)"
                         value={newOfferRate}
                         onChange={(e) => setNewOfferRate(e.target.value)}
-                        className="px-3 py-1.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold"
+                        className="px-3 py-1.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                       <select
                         value={newOfferStatus}
                         onChange={(e) => setNewOfferStatus(e.target.value)}
-                        className="px-3 py-1.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold"
+                        className="px-3 py-1.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold focus:ring-2 focus:ring-indigo-500"
                       >
                         <option value="Available">Available</option>
                         <option value="Booked">Booked</option>
@@ -1388,7 +1388,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                     <select
                       value={formData.category_audiences['contact_info'] || 'friends'}
                       onChange={(e) => handleAudienceChange('contact_info', e.target.value as any)}
-                      className="px-2.5 py-1 text-xs font-bold rounded-lg border border-slate-300 bg-white text-slate-900"
+                      className="px-2.5 py-1 text-xs font-bold rounded-lg border border-slate-300 bg-white text-slate-900 focus:ring-2 focus:ring-indigo-500"
                     >
                       <option value="public">🌐 Public</option>
                       <option value="friends">👥 Friends Only</option>
@@ -1404,7 +1404,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                         value={formData.contact_email}
                         onChange={(e) => setFormData({ ...formData, contact_email: e.target.value })}
                         placeholder="founder@fingermobileprotocol.com"
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold"
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                     </div>
                     <div>
@@ -1414,7 +1414,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                         placeholder="+234 800 SOVEREIGN"
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold font-mono"
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold font-mono focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                     </div>
                   </div>
@@ -1426,7 +1426,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                       value={formData.node_address}
                       onChange={(e) => setFormData({ ...formData, node_address: e.target.value })}
                       placeholder="finger://node.fingermobileprotocol.com/israelobinna"
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold font-mono"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold font-mono focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                     />
                   </div>
                 </div>
@@ -1480,7 +1480,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                       type="text"
                       value={formData.encryption_tier}
                       onChange={(e) => setFormData({ ...formData, encryption_tier: e.target.value })}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                     />
                   </div>
 

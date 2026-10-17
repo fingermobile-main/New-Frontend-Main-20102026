@@ -135,7 +135,7 @@ export const TributDownloadModal: React.FC<TributDownloadModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-200"
+            className="p-1.5 rounded-lg text-slate-700 hover:text-slate-700 hover:bg-slate-200"
           >
             <XMarkIcon className="w-5 h-5" />
           </button>
@@ -155,7 +155,7 @@ export const TributDownloadModal: React.FC<TributDownloadModalProps> = ({
               type="radio"
               checked={downloadFormat === 'full-bundle'}
               onChange={() => setDownloadFormat('full-bundle')}
-              className="mt-0.5 text-purple-600 focus:ring-purple-500"
+              className="mt-0.5 text-slate-900 focus:ring-purple-500 font-bold border border-slate-300 rounded bg-white focus:ring-2 placeholder:text-slate-400"
             />
             <div className="space-y-1">
               <strong className="text-slate-900 block font-black">
@@ -179,7 +179,7 @@ export const TributDownloadModal: React.FC<TributDownloadModalProps> = ({
               type="radio"
               checked={downloadFormat === 'image'}
               onChange={() => setDownloadFormat('image')}
-              className="mt-0.5 text-purple-600 focus:ring-purple-500"
+              className="mt-0.5 text-slate-900 focus:ring-purple-500 font-bold border border-slate-300 rounded bg-white focus:ring-2 placeholder:text-slate-400"
             />
             <div className="space-y-1">
               <strong className="text-slate-900 block font-black">
@@ -203,7 +203,7 @@ export const TributDownloadModal: React.FC<TributDownloadModalProps> = ({
               type="radio"
               checked={downloadFormat === 'blueprint'}
               onChange={() => setDownloadFormat('blueprint')}
-              className="mt-0.5 text-purple-600 focus:ring-purple-500"
+              className="mt-0.5 text-slate-900 focus:ring-purple-500 font-bold border border-slate-300 rounded bg-white focus:ring-2 placeholder:text-slate-400"
             />
             <div className="space-y-1">
               <strong className="text-slate-900 block font-black">
@@ -227,7 +227,7 @@ export const TributDownloadModal: React.FC<TributDownloadModalProps> = ({
               type="radio"
               checked={downloadFormat === 'palette'}
               onChange={() => setDownloadFormat('palette')}
-              className="mt-0.5 text-purple-600 focus:ring-purple-500"
+              className="mt-0.5 text-slate-900 focus:ring-purple-500 font-bold border border-slate-300 rounded bg-white focus:ring-2 placeholder:text-slate-400"
             />
             <div className="space-y-1">
               <strong className="text-slate-900 block font-black">

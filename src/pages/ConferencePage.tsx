@@ -31,7 +31,7 @@ const ConferencePage: React.FC = () => {
                   placeholder="Enter Meeting Code..."
                   value={roomCode}
                   onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm font-mono text-center font-bold tracking-wider"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm font-mono text-center font-bold tracking-wider text-slate-900 border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
                 <button
                   onClick={() => setIsInMeeting(true)}

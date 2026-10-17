@@ -120,7 +120,7 @@ export function ProtocolLushDrawer({
           <p className="text-[11px] text-gray-500 mt-0.5">{userLocation}</p>
 
           {/* Membership & Consent Pill */}
-          <div className="mt-3 inline-flex items-center gap-2 px-3 py-1 bg-emerald-50 border border-emerald-200/80 rounded-full text-xs text-emerald-900">
+          <div className="mt-3 inline-flex items-center gap-2 px-3 py-1 bg-emerald-50 border border-emerald-400 rounded-full text-xs text-emerald-950 text-emerald-950 border-emerald-400 font-black">
             <ShieldCheckIcon className="w-4 h-4 text-emerald-600" />
             <span>Consent Verified</span>
             <span className="font-mono font-semibold text-emerald-700 ml-1">
@@ -129,9 +129,9 @@ export function ProtocolLushDrawer({
           </div>
 
           {/* Protocol Status Indicator */}
-          <div className="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-600">
+          <div className="mt-3 pt-3 border-t border-slate-200 flex items-center justify-between text-xs text-gray-600">
             <span className="text-gray-500">Security Grid:</span>
-            <span className="font-semibold text-emerald-700 bg-emerald-50/70 px-2.5 py-0.5 rounded-full border border-emerald-100">
+            <span className="font-semibold text-emerald-950 bg-emerald-50/70 px-2.5 py-0.5 rounded-full border border-emerald-400 text-emerald-950 border-emerald-400 font-black">
               STERCS™ Active
             </span>
           </div>
@@ -145,7 +145,7 @@ export function ProtocolLushDrawer({
             <SparklesIcon className="w-4 h-4 text-[#DC582A]" />
             Protocol Rewards
           </span>
-          <span className="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
+          <span className="text-[11px] font-semibold text-emerald-950 bg-emerald-50 px-2 py-0.5 rounded-full border text-emerald-950 border-emerald-400 font-black">
             Level 5
           </span>
         </div>
@@ -187,7 +187,7 @@ export function ProtocolLushDrawer({
         </div>
 
         {/* Quick Toggles: Radiate & Incognito */}
-        <div className="space-y-2 pt-2 border-t border-gray-100">
+        <div className="space-y-2 pt-2 border-t border-slate-200">
           <button
             type="button"
             onClick={() => setIsRadiating(!isRadiating)}
@@ -228,7 +228,7 @@ export function ProtocolLushDrawer({
 
       {/* 3. Platform Channels & Navigation (Matches Lushpressies) */}
       <nav className="bg-white rounded-2xl border border-emerald-100/80 shadow-xs p-2.5 space-y-1">
-        <div className="px-3 py-1.5 text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+        <div className="px-3 py-1.5 text-[11px] font-bold text-slate-700 uppercase tracking-wider">
           Platform Channels
         </div>
 
@@ -266,7 +266,7 @@ export function ProtocolLushDrawer({
         })}
 
         {/* Account and Profile Quick Controls */}
-        <div className="pt-2 border-t border-gray-100 space-y-1">
+        <div className="pt-2 border-t border-slate-200 space-y-1">
           {member ? (
             <>
               <Link

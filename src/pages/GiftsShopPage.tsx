@@ -71,7 +71,7 @@ export const GiftsShopPage: React.FC = () => {
           <div className="flex items-center gap-3">
             <button
               onClick={() => navigate('/lush-pressies')}
-              className="p-2 rounded-xl text-gray-600 hover:text-emerald-800 hover:bg-emerald-50 transition border border-gray-200"
+              className="p-2 rounded-xl text-gray-600 hover:text-emerald-800 hover:bg-emerald-50 transition border border-slate-300"
               title="Return to Lush-Pressies Feed"
             >
               <ArrowLeftIcon className="w-5 h-5" />
@@ -81,7 +81,7 @@ export const GiftsShopPage: React.FC = () => {
                 <h1 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
                   Lush Luxury Gift Shop
                 </h1>
-                <span className="text-[10px] uppercase font-extrabold tracking-wider bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold px-2.5 py-0.5 rounded-full border border-emerald-200">
+                <span className="text-[10px] uppercase font-extrabold tracking-wider bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold px-2.5 py-0.5 rounded-full border border-emerald-400 font-black">
                   Escrow Protected
                 </span>
               </div>
@@ -192,7 +192,7 @@ export const GiftsShopPage: React.FC = () => {
       {selectedProduct && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-sm animate-fadeIn">
           <div className="bg-white rounded-3xl border border-emerald-200 shadow-2xl max-w-lg w-full p-5 sm:p-6 relative space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200">
               <div className="flex items-center gap-2">
                 <GiftIcon className="w-5 h-5 text-[#DC582A]" />
                 <h3 className="text-base font-bold text-gray-900">
@@ -201,7 +201,7 @@ export const GiftsShopPage: React.FC = () => {
               </div>
               <button
                 onClick={() => setSelectedProduct(null)}
-                className="p-1 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition"
+                className="p-1 rounded-full text-slate-700 hover:text-gray-600 hover:bg-gray-100 transition"
               >
                 <XMarkIcon className="w-5 h-5" />
               </button>
@@ -243,7 +243,7 @@ export const GiftsShopPage: React.FC = () => {
                 onChange={(e) => setGiftNote(e.target.value)}
                 rows={2}
                 placeholder="A small luxury token in celebration of our mutual bond..."
-                className="w-full text-xs p-3 border border-gray-300 rounded-xl text-gray-900 focus:border-emerald-600 focus:ring-1 focus:ring-emerald-500 focus:outline-hidden resize-none"
+                className="w-full text-xs p-3 border border-gray-300 rounded-xl text-slate-900 focus:border-emerald-600 focus:ring-1 focus:ring-emerald-500 focus:outline-hidden resize-none font-bold border-slate-300 bg-white placeholder:text-slate-400"
               />
             </div>
 
@@ -281,7 +281,7 @@ export const GiftsShopPage: React.FC = () => {
       {showSuccessModal && selectedProduct && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-sm animate-fadeIn">
           <div className="bg-white rounded-3xl border border-emerald-200 shadow-2xl max-w-md w-full p-6 text-center space-y-4">
-            <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold mx-auto flex items-center justify-center">
+            <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold mx-auto flex items-center justify-center font-black">
               <CheckBadgeIcon className="w-10 h-10" />
             </div>
             <h3 className="text-lg font-black text-gray-900">

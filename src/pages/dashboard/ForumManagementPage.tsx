@@ -72,14 +72,14 @@ const ForumManagementPage: React.FC = () => {
               placeholder="Category Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
               required
             />
             <textarea
               placeholder="Description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
               rows={3}
               required
             />
@@ -88,7 +88,7 @@ const ForumManagementPage: React.FC = () => {
               placeholder="URL Slug (e.g., general-discussion)"
               value={slug}
               onChange={(e) => setSlug(e.target.value)}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
             />
           </div>
           <div className="flex justify-end gap-2 mt-4">

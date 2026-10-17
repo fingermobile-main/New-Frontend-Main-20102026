@@ -70,7 +70,7 @@ const SendFicModal: React.FC<SendFicModalProps> = ({ onClose, onSend }) => {
                 type="text"
                 value={recipient}
                 onChange={(e) => setRecipient(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 placeholder="Enter wallet address or username"
               />
             </div>
@@ -82,7 +82,7 @@ const SendFicModal: React.FC<SendFicModalProps> = ({ onClose, onSend }) => {
                   type="number"
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
-                  className="w-full px-3 py-2 pr-16 border border-gray-300 rounded-md"
+                  className="w-full px-3 py-2 pr-16 border border-gray-300 rounded-md text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
                   placeholder="0.00"
                   min="0"
                   step="any"
@@ -99,7 +99,7 @@ const SendFicModal: React.FC<SendFicModalProps> = ({ onClose, onSend }) => {
               <textarea
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 placeholder="Add a message..."
                 rows={3}
               />

@@ -207,7 +207,7 @@ const PaymentPayoutsPage: React.FC = () => {
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
                   placeholder="e.g. 500"
-                  className="w-full px-3.5 py-2.5 border-2 border-slate-300 rounded-xl text-slate-900 font-bold text-sm bg-white placeholder:text-slate-500 focus:outline-none focus:border-blue-500"
+                  className="w-full px-3.5 py-2.5 border-2 border-slate-300 rounded-xl text-slate-900 font-bold text-sm bg-white placeholder:text-slate-400 focus:outline-none focus:border-blue-500 border focus:ring-2 focus:ring-indigo-500 font-mono"
                   required
                 />
                 <p className="text-[11px] text-slate-700 font-semibold mt-1">
@@ -222,7 +222,7 @@ const PaymentPayoutsPage: React.FC = () => {
                 <select
                   value={bankName}
                   onChange={(e) => setBankName(e.target.value)}
-                  className="w-full px-3.5 py-2.5 border-2 border-slate-300 rounded-xl text-slate-900 font-bold text-sm bg-white focus:outline-none focus:border-blue-500"
+                  className="w-full px-3.5 py-2.5 border-2 border-slate-300 rounded-xl text-slate-900 font-bold text-sm bg-white focus:outline-none focus:border-blue-500 border focus:ring-2 focus:ring-indigo-500"
                   required
                 >
                   {NIGERIAN_BANKS.map((bank) => (
@@ -243,7 +243,7 @@ const PaymentPayoutsPage: React.FC = () => {
                   value={accountNumber}
                   onChange={(e) => setAccountNumber(e.target.value.replace(/\D/g, ''))}
                   placeholder="0123456789"
-                  className="w-full px-3.5 py-2.5 border-2 border-slate-300 rounded-xl text-slate-900 font-mono font-bold text-sm bg-white placeholder:text-slate-500 focus:outline-none focus:border-blue-500"
+                  className="w-full px-3.5 py-2.5 border-2 border-slate-300 rounded-xl text-slate-900 font-mono font-bold text-sm bg-white placeholder:text-slate-400 focus:outline-none focus:border-blue-500 border focus:ring-2 focus:ring-indigo-500"
                   required
                 />
               </div>
@@ -268,7 +268,7 @@ const PaymentPayoutsPage: React.FC = () => {
                 <Clock className="w-5 h-5 text-amber-600" />
                 Pending Requests ({pendingRequests.length})
               </h2>
-              <span className="text-xs font-bold text-slate-700 bg-amber-50 px-3 py-1 rounded-full border border-amber-300">
+              <span className="text-xs font-bold text-amber-950 bg-amber-50 px-3 py-1 rounded-full border border-amber-400 text-amber-950 border-amber-400 font-black">
                 In Verification Queue
               </span>
             </div>

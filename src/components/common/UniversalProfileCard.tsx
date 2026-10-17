@@ -368,7 +368,7 @@ export const UniversalProfileCard: React.FC<UniversalProfileCardProps> = ({
           <p className="text-xs text-emerald-800 dark:text-emerald-400 font-semibold mt-1 line-clamp-1">
             {profileData.headline}
           </p>
-          <p className="text-[10px] text-gray-400 mt-0.5">{profileData.location}</p>
+          <p className="text-[10px] text-slate-700 mt-0.5">{profileData.location}</p>
 
           {/* Quick Action Badges */}
           <div className="mt-3 flex items-center justify-center gap-2">
@@ -391,7 +391,7 @@ export const UniversalProfileCard: React.FC<UniversalProfileCardProps> = ({
           </div>
 
           {/* Consent Verified & 6-Digit PIN Pill */}
-          <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/80 dark:border-emerald-800/40 rounded-full text-[11px] text-emerald-900 dark:text-emerald-300">
+          <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-400 dark:border-emerald-800/40 rounded-full text-[11px] text-emerald-950 dark:text-emerald-300 text-emerald-950 border-emerald-400 font-black">
             <ShieldCheckIcon className="w-3.5 h-3.5 text-emerald-600" />
             <span className="font-semibold">Consent Verified</span>
             <button
@@ -406,7 +406,7 @@ export const UniversalProfileCard: React.FC<UniversalProfileCardProps> = ({
             <button
               type="button"
               onClick={() => setShowPinInfo(!showPinInfo)}
-              className="w-4 h-4 rounded-full bg-emerald-200 dark:bg-emerald-800 text-emerald-800 dark:text-emerald-200 text-[10px] font-bold flex items-center justify-center hover:bg-emerald-300 transition"
+              className="w-4 h-4 rounded-full bg-emerald-200 dark:bg-emerald-800 text-emerald-950 dark:text-emerald-200 text-[10px] font-bold flex items-center justify-center hover:bg-emerald-300 transition border text-emerald-950 border-emerald-400 font-black"
               title="Why 6-Digit Protocol PIN? (Click for info)"
             >
               ?
@@ -463,7 +463,7 @@ export const UniversalProfileCard: React.FC<UniversalProfileCardProps> = ({
             <SparklesIcon className="w-3.5 h-3.5 text-[#DC582A]" />
             Lush Rewards
           </span>
-          <span className="text-[10px] font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-200/60 dark:border-emerald-800/40">
+          <span className="text-[10px] font-semibold text-emerald-950 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-400 dark:border-emerald-800/40 text-emerald-950 border-emerald-400 font-black">
             Level {level}
           </span>
         </div>
@@ -483,7 +483,7 @@ export const UniversalProfileCard: React.FC<UniversalProfileCardProps> = ({
         </div>
 
         {/* Quick Stats Grid */}
-        <div className="grid grid-cols-2 gap-2 pt-1 border-t border-gray-100 dark:border-gray-700 text-center">
+        <div className="grid grid-cols-2 gap-2 pt-1 border-t border-slate-200 dark:border-gray-700 text-center">
           <div className="bg-emerald-50/60 dark:bg-emerald-950/30 rounded-xl p-2 border border-emerald-100 dark:border-emerald-900/40">
             <div className="text-[10px] text-emerald-900 dark:text-emerald-300 font-semibold flex items-center justify-center gap-1">
               <WalletIcon className="w-3 h-3 text-emerald-600" />
@@ -506,7 +506,7 @@ export const UniversalProfileCard: React.FC<UniversalProfileCardProps> = ({
         </div>
 
         {/* Quick Links Menu */}
-        <div className="grid grid-cols-4 gap-1 pt-1 border-t border-gray-100 dark:border-gray-700 text-center">
+        <div className="grid grid-cols-4 gap-1 pt-1 border-t border-slate-200 dark:border-gray-700 text-center">
           <button
             type="button"
             onClick={() => navigate('/financials')}
@@ -664,7 +664,7 @@ export const UniversalProfileCard: React.FC<UniversalProfileCardProps> = ({
                     value={draftName}
                     onChange={(e) => setDraftName(e.target.value)}
                     required
-                    className="w-full px-3 py-1.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 focus:border-orange-500 focus:outline-none bg-slate-50 dark:bg-slate-800"
+                    className="w-full px-3 py-1.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 focus:border-orange-500 focus:outline-none bg-white dark:bg-slate-800 text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                 </div>
                 <div>
@@ -676,7 +676,7 @@ export const UniversalProfileCard: React.FC<UniversalProfileCardProps> = ({
                     value={draftUsername}
                     onChange={(e) => setDraftUsername(e.target.value)}
                     required
-                    className="w-full px-3 py-1.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 focus:border-orange-500 focus:outline-none bg-slate-50 dark:bg-slate-800 font-mono"
+                    className="w-full px-3 py-1.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 focus:border-orange-500 focus:outline-none bg-white dark:bg-slate-800 font-mono text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                 </div>
               </div>
@@ -691,7 +691,7 @@ export const UniversalProfileCard: React.FC<UniversalProfileCardProps> = ({
                   value={draftHeadline}
                   onChange={(e) => setDraftHeadline(e.target.value)}
                   placeholder="e.g. Protocol Architect • Sovereign Creator"
-                  className="w-full px-3 py-1.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 focus:border-orange-500 focus:outline-none bg-slate-50 dark:bg-slate-800"
+                  className="w-full px-3 py-1.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 focus:border-orange-500 focus:outline-none bg-white dark:bg-slate-800 text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
 
@@ -706,7 +706,7 @@ export const UniversalProfileCard: React.FC<UniversalProfileCardProps> = ({
                     value={draftLocation}
                     onChange={(e) => setDraftLocation(e.target.value)}
                     placeholder="e.g. Lagos, NG"
-                    className="w-full px-3 py-1.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 focus:border-orange-500 focus:outline-none bg-slate-50 dark:bg-slate-800"
+                    className="w-full px-3 py-1.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 focus:border-orange-500 focus:outline-none bg-white dark:bg-slate-800 text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                 </div>
                 <div>
@@ -718,7 +718,7 @@ export const UniversalProfileCard: React.FC<UniversalProfileCardProps> = ({
                     maxLength={6}
                     value={draftPin}
                     onChange={(e) => setDraftPin(e.target.value)}
-                    className="w-full px-3 py-1.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 focus:border-orange-500 focus:outline-none bg-slate-50 dark:bg-slate-800 font-mono font-bold"
+                    className="w-full px-3 py-1.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 focus:border-orange-500 focus:outline-none bg-white dark:bg-slate-800 font-mono font-bold text-slate-900 border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                 </div>
               </div>

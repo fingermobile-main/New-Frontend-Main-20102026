@@ -95,7 +95,7 @@ const PublishedPage: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto p-4">
       <article className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
-        <header className="mb-6 pb-6 border-b border-gray-200 dark:border-gray-700">
+        <header className="mb-6 pb-6 border-b border-slate-300 dark:border-gray-700">
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white">{page.title}</h1>
           <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
             Published: {new Date(page.publishedAt || page.updatedAt).toLocaleDateString()}
@@ -110,7 +110,7 @@ const PublishedPage: React.FC = () => {
           ))}
         </div>
 
-        <footer className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700 text-sm text-gray-500 dark:text-gray-400">
+        <footer className="mt-8 pt-6 border-t border-slate-300 dark:border-gray-700 text-sm text-gray-500 dark:text-gray-400">
           Last updated: {new Date(page.updatedAt).toLocaleDateString()}
         </footer>
       </article>

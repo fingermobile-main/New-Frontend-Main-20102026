@@ -483,7 +483,7 @@ const AboutPage: React.FC = () => {
                     <p className="text-lg font-bold text-blue-300">
                       Senior Data Analyst, Intellectual Property Owner, Social Media Ideologist
                     </p>
-                    <p className="text-sm text-slate-300 max-w-2xl font-medium">
+                    <p className="text-sm text-slate-700 max-w-2xl font-medium">
                       Pioneer of Cultural Heritage Integration with Modern Cloud & Decentralized Technology.
                       Architect of the Customer Engagement Score (CES) and Sovereign Enterprise Governance Framework.
                     </p>
@@ -597,7 +597,7 @@ const AboutPage: React.FC = () => {
                   </div>
                 </div>
                 <div className="space-y-2 text-center md:text-left flex-1">
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 border border-emerald-400 text-emerald-950 text-xs font-bold uppercase tracking-wider">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 border border-emerald-400 text-emerald-950 text-xs font-bold uppercase tracking-wider font-black">
                     Executive Council • Co-Founder
                   </div>
                   <h3 className="text-2xl font-black text-slate-900">
@@ -633,7 +633,7 @@ const AboutPage: React.FC = () => {
                   <span className="text-xs font-bold uppercase tracking-widest text-blue-600">Supreme Corporate Governance</span>
                   <h3 className="text-xl font-black text-slate-900">Executive Portfolios & Oversight Matrix</h3>
                 </div>
-                <span className="px-3 py-1 rounded-full bg-blue-100 text-blue-950 border border-blue-400 text-xs font-bold">
+                <span className="px-3 py-1 rounded-full bg-blue-100 text-blue-950 border border-blue-400 text-xs font-bold font-black">
                   18 Mandates Active
                 </span>
               </div>
@@ -649,7 +649,7 @@ const AboutPage: React.FC = () => {
                       <span className="px-2 py-0.5 rounded bg-slate-200 text-slate-800 text-xs font-black">
                         Portfolio #{port.id}
                       </span>
-                      <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 text-xs font-bold">
+                      <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 text-xs font-bold font-black">
                         {port.status}
                       </span>
                     </div>
@@ -763,7 +763,7 @@ const AboutPage: React.FC = () => {
                   <span className="text-xs font-bold uppercase tracking-widest text-purple-600">Acoustic Cultural Layer</span>
                   <h3 className="text-xl font-black text-slate-900">53 Lagos Urban Voice Commentaries</h3>
                 </div>
-                <span className="px-3 py-1 rounded-full bg-purple-100 text-purple-950 border border-purple-400 text-xs font-bold">
+                <span className="px-3 py-1 rounded-full bg-purple-100 text-purple-950 border border-purple-400 text-xs font-bold font-black">
                   Pipecat / Edge-TTS Audio
                 </span>
               </div>
@@ -950,7 +950,7 @@ const AboutPage: React.FC = () => {
                           value={contactForm.name}
                           onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
                           placeholder="e.g. Dr. Ngozi Adebayo"
-                          className="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-slate-900 font-bold bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                          className="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-slate-900 font-bold bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none placeholder:text-slate-400"
                         />
                       </div>
                       <div>
@@ -963,7 +963,7 @@ const AboutPage: React.FC = () => {
                           value={contactForm.email}
                           onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
                           placeholder="name@organization.com"
-                          className="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-slate-900 font-bold bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                          className="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-slate-900 font-bold bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none placeholder:text-slate-400"
                         />
                       </div>
                     </div>
@@ -996,7 +996,7 @@ const AboutPage: React.FC = () => {
                           value={contactForm.subject}
                           onChange={(e) => setContactForm({ ...contactForm, subject: e.target.value })}
                           placeholder="e.g. Franchise Regional Deployment"
-                          className="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-slate-900 font-bold bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                          className="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-slate-900 font-bold bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none placeholder:text-slate-400"
                         />
                       </div>
                     </div>
@@ -1011,7 +1011,7 @@ const AboutPage: React.FC = () => {
                         value={contactForm.message}
                         onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
                         placeholder="Detail your request, proposal, or inquiry here..."
-                        className="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-slate-900 font-bold bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                        className="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-slate-900 font-bold bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none placeholder:text-slate-400"
                       />
                     </div>
 

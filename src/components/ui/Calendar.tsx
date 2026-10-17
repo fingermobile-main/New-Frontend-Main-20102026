@@ -108,7 +108,7 @@ const Calendar: React.FC<CalendarProps> = ({
         {dayNames.map((day) => (
           <div
             key={day}
-            className="text-muted-foreground rounded text-center text-sm font-normal"
+            className="text-slate-700 rounded text-center text-sm font-normal"
           >
             {day}
           </div>

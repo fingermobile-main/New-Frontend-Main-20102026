@@ -146,13 +146,13 @@ const MyStorefrontPage: React.FC = () => {
                         type="text"
                         value={editForm.name}
                         onChange={(e) => setEditForm(prev => ({ ...prev, name: e.target.value }))}
-                        className="text-2xl font-bold text-gray-900 border border-blue-400 rounded px-2 py-1 w-full"
+                        className="text-2xl font-bold text-slate-900 border border-blue-400 rounded px-2 py-1 w-full border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                         placeholder="Store Name"
                       />
                       <textarea
                         value={editForm.description}
                         onChange={(e) => setEditForm(prev => ({ ...prev, description: e.target.value }))}
-                        className="text-gray-600 border border-blue-400 rounded px-2 py-1 w-full text-sm"
+                        className="text-slate-900 border border-blue-400 rounded px-2 py-1 w-full text-sm font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                         placeholder="Store Description"
                         rows={2}
                       />
@@ -166,7 +166,7 @@ const MyStorefrontPage: React.FC = () => {
                     </>
                   )}
                   <div className="flex items-center mt-2">
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-950 border border-blue-400 font-bold">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-950 border border-blue-400 font-bold font-black">
                       {storefrontData.category || 'General'}
                     </span>
                     <span className="ml-2 text-sm text-gray-500">
@@ -180,7 +180,7 @@ const MyStorefrontPage: React.FC = () => {
         )}
 
         {/* Navigation Tabs */}
-        <div className="border-b border-gray-200 mb-8">
+        <div className="border-b border-slate-300 mb-8">
           <nav className="flex space-x-8">
             <button
               onClick={() => setActiveTab('overview')}
@@ -257,7 +257,7 @@ const MyStorefrontPage: React.FC = () => {
                   <h2 className="text-2xl font-black mt-2">
                     {storageTier === 'individual' ? 'Individual Store Tier (600MB)' : 'Business Store Tier (1500MB)'}
                   </h2>
-                  <p className="text-xs text-slate-300 mt-1 max-w-xl">
+                  <p className="text-xs text-slate-700 mt-1 max-w-xl">
                     Allocated storage for product high-res images, lookbooks, 3D glTF media, and previews.
                   </p>
                 </div>
@@ -273,7 +273,7 @@ const MyStorefrontPage: React.FC = () => {
               {/* Storage Meter Visual Gauge */}
               <div className="mt-6 pt-6 border-t border-white/10">
                 <div className="flex justify-between items-center text-xs mb-2">
-                  <span className="text-slate-300 font-medium">
+                  <span className="text-slate-700 font-medium">
                     Used: <strong className="text-white">{usedStorageMB} MB</strong> of {storageTier === 'individual' ? 600 : 1500} MB
                   </span>
                   <span className="font-extrabold text-blue-300">
@@ -292,7 +292,7 @@ const MyStorefrontPage: React.FC = () => {
                     style={{ width: `${Math.min(100, (usedStorageMB / (storageTier === 'individual' ? 600 : 1500)) * 100)}%` }}
                   />
                 </div>
-                <p className="text-[11px] text-slate-400 mt-2">
+                <p className="text-[11px] text-slate-700 mt-2">
                   Remaining capacity: {(storageTier === 'individual' ? 600 : 1500) - usedStorageMB} MB available.
                 </p>
               </div>
@@ -322,7 +322,7 @@ const MyStorefrontPage: React.FC = () => {
                     <div>
                       <div className="flex justify-between items-center mb-2">
                         <span className="font-bold text-sm text-gray-900">{plan.title}</span>
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-950 border border-blue-400 font-bold">
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-950 border border-blue-400 font-bold font-black">
                           {plan.badge}
                         </span>
                       </div>
@@ -638,7 +638,7 @@ const MyStorefrontPage: React.FC = () => {
                 Performance Metrics
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div className="border border-gray-200 rounded-lg p-4">
+                <div className="border border-slate-300 rounded-lg p-4">
                   <p className="text-sm font-medium text-gray-500">
                     Conversion Rate
                   </p>
@@ -649,7 +649,7 @@ const MyStorefrontPage: React.FC = () => {
                     ↑ 12% from last month
                   </p>
                 </div>
-                <div className="border border-gray-200 rounded-lg p-4">
+                <div className="border border-slate-300 rounded-lg p-4">
                   <p className="text-sm font-medium text-gray-500">
                     Avg. Order Value
                   </p>
@@ -660,7 +660,7 @@ const MyStorefrontPage: React.FC = () => {
                     ↑ 5% from last month
                   </p>
                 </div>
-                <div className="border border-gray-200 rounded-lg p-4">
+                <div className="border border-slate-300 rounded-lg p-4">
                   <p className="text-sm font-medium text-gray-500">
                     Customer Retention
                   </p>
@@ -669,7 +669,7 @@ const MyStorefrontPage: React.FC = () => {
                     ↓ 3% from last month
                   </p>
                 </div>
-                <div className="border border-gray-200 rounded-lg p-4">
+                <div className="border border-slate-300 rounded-lg p-4">
                   <p className="text-sm font-medium text-gray-500">
                     Page Views
                   </p>
@@ -815,7 +815,7 @@ const MyStorefrontPage: React.FC = () => {
                       Jun 12, 2023
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-amber-100 text-amber-950 border border-amber-400 font-bold">
+                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-amber-100 text-amber-950 border border-amber-400 font-bold font-black">
                         Processing
                       </span>
                     </td>
@@ -845,7 +845,7 @@ const MyStorefrontPage: React.FC = () => {
                     <input
                       type="text"
                       defaultValue={storefrontData.name}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" />
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400" />
                   </div>
 
                   <div>
@@ -855,7 +855,7 @@ const MyStorefrontPage: React.FC = () => {
                     <textarea
                       rows={3}
                       defaultValue={storefrontData.description}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                     />
                   </div>
 
@@ -865,7 +865,7 @@ const MyStorefrontPage: React.FC = () => {
                     </label>
                     <select
                       defaultValue={storefrontData.category}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-slate-900 font-bold border-slate-300 bg-white focus:ring-2"
                     >
                       <option>Music</option>
                       <option>Art</option>
@@ -888,7 +888,7 @@ const MyStorefrontPage: React.FC = () => {
                         <input
                           type="text"
                           defaultValue={storefrontData.socialLinks?.website}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" />
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400" />
                       </div>
                       <div>
                         <label className="block text-xs text-gray-500">
@@ -897,7 +897,7 @@ const MyStorefrontPage: React.FC = () => {
                         <input
                           type="text"
                           defaultValue={storefrontData.socialLinks?.twitter}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" />
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400" />
                       </div>
                       <div>
                         <label className="block text-xs text-gray-500">
@@ -906,7 +906,7 @@ const MyStorefrontPage: React.FC = () => {
                         <input
                           type="text"
                           defaultValue={storefrontData.socialLinks?.instagram}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" />
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400" />
                       </div>
                     </div>
                   </div>
@@ -932,7 +932,7 @@ const MyStorefrontPage: React.FC = () => {
                     <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg">
                       <div className="space-y-1 text-center">
                         <svg
-                          className="mx-auto h-12 w-12 text-gray-400"
+                          className="mx-auto h-12 w-12 text-slate-500"
                           stroke="currentColor"
                           fill="none"
                           viewBox="0 0 48 48"
@@ -947,7 +947,7 @@ const MyStorefrontPage: React.FC = () => {
                         <div className="flex text-sm text-gray-600">
                           <label className="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500">
                             <span>Upload a file</span>
-                            <input type="file" className="sr-only" />
+                            <input type="file" className="sr-only text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" />
                           </label>
                           <p className="pl-1">or drag and drop</p>
                         </div>
@@ -965,7 +965,7 @@ const MyStorefrontPage: React.FC = () => {
                     <div className="mt-1 flex items-center">
                       <span className="inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100">
                         <svg
-                          className="h-full w-full text-gray-300"
+                          className="h-full w-full text-slate-500"
                           fill="currentColor"
                           viewBox="0 0 24 24"
                         >
@@ -989,7 +989,7 @@ const MyStorefrontPage: React.FC = () => {
         {/* Storage Tier Upgrade Modal */}
         {showUpgradeModal && (
           <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative border border-gray-100">
+            <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative border border-slate-200">
               <h3 className="text-lg font-black text-gray-900 mb-1">Upgrade Storefront Quota</h3>
               <p className="text-xs text-gray-500 mb-4">Expand your digital asset hosting on FingerMobile Protocol</p>
 

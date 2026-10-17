@@ -220,7 +220,7 @@ const AnalyticsPage: React.FC = () => {
             </div>
             <div className="flex items-center space-x-4">
               <select
-                className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+                className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2"
                 value={dateRange}
                 onChange={(e) => setDateRange(e.target.value)}
               >
@@ -240,7 +240,7 @@ const AnalyticsPage: React.FC = () => {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Tabs */}
-        <div className="border-b border-gray-200 mb-6">
+        <div className="border-b border-slate-300 mb-6">
           <nav className="-mb-px flex space-x-8">
             <button
               onClick={() => setActiveTab('overview')}
@@ -346,14 +346,14 @@ const AnalyticsPage: React.FC = () => {
                   <div className="bg-white rounded-xl shadow p-6">
                     <h3 className="text-lg font-medium text-gray-900 mb-4">Platform Growth</h3>
                     <div className="h-64 flex items-center justify-center">
-                      <LineChart className="h-16 w-16 text-gray-300" />
+                      <LineChart className="h-16 w-16 text-slate-700" />
                       <p className="ml-4 text-gray-500">Growth chart visualization would appear here</p>
                     </div>
                   </div>
                   <div className="bg-white rounded-xl shadow p-6">
                     <h3 className="text-lg font-medium text-gray-900 mb-4">User Acquisition Sources</h3>
                     <div className="h-64 flex items-center justify-center">
-                      <PieChart className="h-16 w-16 text-gray-300" />
+                      <PieChart className="h-16 w-16 text-slate-700" />
                       <p className="ml-4 text-gray-500">User acquisition pie chart would appear here</p>
                     </div>
                   </div>
@@ -620,7 +620,7 @@ const AnalyticsPage: React.FC = () => {
                 <div className="bg-white rounded-xl shadow p-6">
                   <h3 className="text-lg font-medium text-gray-900 mb-4">Content Views Trend</h3>
                   <div className="h-64 flex items-center justify-center">
-                    <LineChart className="h-16 w-16 text-gray-300" />
+                    <LineChart className="h-16 w-16 text-slate-700" />
                     <p className="ml-4 text-gray-500">Content views trend chart would appear here</p>
                   </div>
                 </div>
@@ -722,7 +722,7 @@ const AnalyticsPage: React.FC = () => {
                 <div className="bg-white rounded-xl shadow p-6">
                   <h3 className="text-lg font-medium text-gray-900 mb-4">Revenue Trend</h3>
                   <div className="h-64 flex items-center justify-center">
-                    <LineChart className="h-16 w-16 text-gray-300" />
+                    <LineChart className="h-16 w-16 text-slate-700" />
                     <p className="ml-4 text-gray-500">Revenue trend chart would appear here</p>
                   </div>
                 </div>
@@ -735,7 +735,7 @@ const AnalyticsPage: React.FC = () => {
                 <div className="bg-white rounded-xl shadow p-6">
                   <h3 className="text-lg font-medium text-gray-900 mb-4">Historical Analytics Data</h3>
                   <div className="h-96 flex items-center justify-center">
-                    <LineChart className="h-16 w-16 text-gray-300" />
+                    <LineChart className="h-16 w-16 text-slate-700" />
                     <p className="ml-4 text-gray-500">Historical data visualization would appear here</p>
                   </div>
                 </div>
@@ -760,7 +760,7 @@ const AnalyticsPage: React.FC = () => {
                   <div className="bg-white rounded-xl shadow p-6">
                     <h4 className="font-medium text-gray-900 mb-2">Time Range</h4>
                     <p className="text-sm text-gray-600 mb-4">Select time period for historical data</p>
-                    <select className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
+                    <select className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2">
                       <option>Last 30 days</option>
                       <option>Last 90 days</option>
                       <option>Last 6 months</option>

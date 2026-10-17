@@ -109,10 +109,10 @@ const SizeGuide: React.FC<SizeGuideProps> = ({ brandName, categoryId }) => {
                   {chart.brand_name} - {chart.category_id}
                 </h3>
                 <div className="flex gap-2 mt-2">
-                  <span className="px-2 py-1 bg-blue-100 text-blue-950 border border-blue-400 font-bold text-xs rounded-full">
+                  <span className="px-2 py-1 bg-blue-100 text-blue-950 border border-blue-400 font-bold text-xs rounded-full font-black">
                     {chart.region}
                   </span>
-                  <span className="px-2 py-1 bg-purple-100 text-purple-950 border border-purple-400 font-bold text-xs rounded-full">
+                  <span className="px-2 py-1 bg-purple-100 text-purple-950 border border-purple-400 font-bold text-xs rounded-full font-black">
                     {chart.gender}
                   </span>
                 </div>
@@ -166,7 +166,7 @@ const SizeGuide: React.FC<SizeGuideProps> = ({ brandName, categoryId }) => {
 
               {/* Source Info */}
               {chart.source_url && (
-                <div className="mt-4 pt-4 border-t border-gray-100">
+                <div className="mt-4 pt-4 border-t border-slate-200">
                   <a
                     href={chart.source_url}
                     target="_blank"

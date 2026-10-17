@@ -184,7 +184,7 @@ export const CreatePubliciteeShortsModal: React.FC<CreatePubliciteeShortsModalPr
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 overflow-y-auto">
       <div className="relative w-full max-w-xl bg-white dark:bg-gray-900 rounded-3xl shadow-2xl border border-slate-300 dark:border-gray-800 overflow-hidden my-8">
         {/* Header */}
-        <div className="p-6 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
+        <div className="p-6 border-b border-slate-200 dark:border-gray-800 flex items-center justify-between">
           <div>
             <h2 className="text-xl font-bold text-gray-900 dark:text-white">Create New Post</h2>
             <p className="text-xs text-gray-500 dark:text-gray-400">Choose between Publicitee (Reels) or FingerShorts (Stories)</p>
@@ -198,7 +198,7 @@ export const CreatePubliciteeShortsModal: React.FC<CreatePubliciteeShortsModalPr
         </div>
 
         {/* Choice Selector Tabs */}
-        <div className="grid grid-cols-2 p-4 gap-3 bg-gray-50/70 dark:bg-gray-800/40 border-b border-gray-100 dark:border-gray-800">
+        <div className="grid grid-cols-2 p-4 gap-3 bg-gray-50/70 dark:bg-gray-800/40 border-b border-slate-200 dark:border-gray-800">
           <button
             type="button"
             onClick={() => setSelectedType('publicitee')}
@@ -265,7 +265,7 @@ export const CreatePubliciteeShortsModal: React.FC<CreatePubliciteeShortsModalPr
                   placeholder="e.g. Behind The Scenes: Lagos Movie Set"
                   value={pubTitle}
                   onChange={(e) => setPubTitle(e.target.value)}
-                  className="w-full px-3 py-2 text-sm rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-500 outline-none"
+                  className="w-full px-3 py-2 text-sm rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-orange-500 outline-none font-bold border-slate-300 placeholder:text-slate-400"
                 />
               </div>
 
@@ -275,7 +275,7 @@ export const CreatePubliciteeShortsModal: React.FC<CreatePubliciteeShortsModalPr
                   <select
                     value={pubCategory}
                     onChange={(e: any) => setPubCategory(e.target.value)}
-                    className="w-full px-3 py-2 text-sm rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                    className="w-full px-3 py-2 text-sm rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-slate-900 dark:text-white font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500"
                   >
                     <option value="short_film">Short Film</option>
                     <option value="vlog">Vlog</option>
@@ -289,9 +289,9 @@ export const CreatePubliciteeShortsModal: React.FC<CreatePubliciteeShortsModalPr
                     max={6900}
                     value={pubDurationSeconds}
                     onChange={(e) => setPubDurationSeconds(Math.min(6900, parseInt(e.target.value, 10) || 0))}
-                    className="w-full px-3 py-2 text-sm rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                    className="w-full px-3 py-2 text-sm rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-slate-900 dark:text-white font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
                   />
-                  <span className="text-[10px] text-gray-400">Max 6,900s (1Hr 55Mins)</span>
+                  <span className="text-[10px] text-slate-700">Max 6,900s (1Hr 55Mins)</span>
                 </div>
               </div>
 
@@ -308,7 +308,7 @@ export const CreatePubliciteeShortsModal: React.FC<CreatePubliciteeShortsModalPr
                       setPubFileSizeBytes(file.size);
                     }
                   }}
-                  className="w-full px-3 py-2 text-sm rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white outline-none"
+                  className="w-full px-3 py-2 text-sm rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-slate-900 dark:text-white outline-none font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
 
@@ -320,7 +320,7 @@ export const CreatePubliciteeShortsModal: React.FC<CreatePubliciteeShortsModalPr
                   onChange={(e) => {
                     if (e.target.files?.[0]) setPubThumbnailFile(e.target.files[0]);
                   }}
-                  className="w-full px-3 py-2 text-sm rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white outline-none"
+                  className="w-full px-3 py-2 text-sm rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-slate-900 dark:text-white outline-none font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
 
@@ -331,7 +331,7 @@ export const CreatePubliciteeShortsModal: React.FC<CreatePubliciteeShortsModalPr
                   placeholder="Add a synopsis or creator note..."
                   value={pubDescription}
                   onChange={(e) => setPubDescription(e.target.value)}
-                  className="w-full px-3 py-2 text-sm rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white outline-none resize-none"
+                  className="w-full px-3 py-2 text-sm rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-slate-900 dark:text-white outline-none resize-none font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
 
@@ -352,7 +352,7 @@ export const CreatePubliciteeShortsModal: React.FC<CreatePubliciteeShortsModalPr
                   placeholder="e.g. Lagos City Weekend Vibes"
                   value={shortTitle}
                   onChange={(e) => setShortTitle(e.target.value)}
-                  className="w-full px-3 py-2 text-sm rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white outline-none"
+                  className="w-full px-3 py-2 text-sm rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-slate-900 dark:text-white outline-none font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
 
@@ -393,7 +393,7 @@ export const CreatePubliciteeShortsModal: React.FC<CreatePubliciteeShortsModalPr
                         <select
                           value={card.media_type}
                           onChange={(e: any) => handleCardChange(idx, 'media_type', e.target.value)}
-                          className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                          className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-slate-900 dark:text-white font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500"
                         >
                           <option value="video">Video (Max 60s)</option>
                           <option value="image">Image (JPG/PNG)</option>
@@ -407,7 +407,7 @@ export const CreatePubliciteeShortsModal: React.FC<CreatePubliciteeShortsModalPr
                           placeholder="Duration (sec, max 60)"
                           value={card.duration_seconds}
                           onChange={(e) => handleCardChange(idx, 'duration_seconds', Math.min(60, parseFloat(e.target.value) || 0))}
-                          className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                          className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-slate-900 dark:text-white font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
                         />
                       </div>
                     </div>
@@ -421,7 +421,7 @@ export const CreatePubliciteeShortsModal: React.FC<CreatePubliciteeShortsModalPr
                           const file = e.target.files?.[0];
                           if (file) handleCardChange(idx, 'file', file);
                         }}
-                        className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white outline-none"
+                        className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-slate-900 dark:text-white outline-none font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                     </div>
 
@@ -431,7 +431,7 @@ export const CreatePubliciteeShortsModal: React.FC<CreatePubliciteeShortsModalPr
                         placeholder="Sound / Track Title (Optional)"
                         value={card.sound_title || ''}
                         onChange={(e) => handleCardChange(idx, 'sound_title', e.target.value)}
-                        className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white outline-none"
+                        className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-slate-900 dark:text-white outline-none font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                     </div>
                   </div>

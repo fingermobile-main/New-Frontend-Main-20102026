@@ -130,7 +130,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({
       )}
 
       {previewMode ? (
-        <div className="border border-gray-200 rounded-lg p-6 min-h-[400px]">
+        <div className="border border-slate-300 rounded-lg p-6 min-h-[400px]">
           {renderPreview()}
         </div>
       ) : (
@@ -144,7 +144,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({
               type="text"
               value={formData.title}
               onChange={(e) => handleChange('title', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               placeholder="Enter post title"
               required
             />
@@ -159,7 +159,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({
               type="text"
               value={formData.slug}
               onChange={(e) => handleChange('slug', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               placeholder="url-friendly-slug"
               required
             />
@@ -174,7 +174,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({
               value={formData.excerpt}
               onChange={(e) => handleChange('excerpt', e.target.value)}
               rows={2}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               placeholder="Brief summary of the post..."
             />
           </div>
@@ -187,7 +187,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({
             <select
               value={formData.content_format}
               onChange={(e) => handleChange('content_format', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white"
             >
               {contentFormats.map((format) => (
                 <option key={format.value} value={format.value}>
@@ -206,7 +206,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({
               value={formData.content}
               onChange={(e) => handleChange('content', e.target.value)}
               rows={12}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-sm"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-sm text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               placeholder="Write your post content here..."
               required
             />
@@ -221,7 +221,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({
               type="url"
               value={formData.featured_image_url}
               onChange={(e) => handleChange('featured_image_url', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               placeholder="https://example.com/image.jpg"
             />
           </div>
@@ -237,7 +237,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({
                 value={newTag}
                 onChange={(e) => setNewTag(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                 placeholder="Add a tag"
               />
               <button
@@ -253,7 +253,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({
                 {formData.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="px-2 py-1 bg-blue-100 text-blue-950 border border-blue-400 font-bold text-xs rounded-full flex items-center gap-1"
+                    className="px-2 py-1 bg-blue-100 text-blue-950 border border-blue-400 font-bold text-xs rounded-full flex items-center gap-1 font-black"
                   >
                     {tag}
                     <button
@@ -270,7 +270,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({
           </div>
 
           {/* SEO Fields */}
-          <div className="border-t border-gray-200 pt-4">
+          <div className="border-t border-slate-300 pt-4">
             <h4 className="text-sm font-semibold text-gray-900 mb-3">SEO Settings</h4>
 
             <div className="space-y-3">
@@ -282,7 +282,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({
                   type="text"
                   value={formData.seo_title}
                   onChange={(e) => handleChange('seo_title', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                   placeholder="Optimized title for search engines"
                 />
               </div>
@@ -295,7 +295,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({
                   value={formData.seo_description}
                   onChange={(e) => handleChange('seo_description', e.target.value)}
                   rows={2}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                   placeholder="Meta description for search engines"
                 />
               </div>
@@ -303,7 +303,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({
           </div>
 
           {/* Settings */}
-          <div className="border-t border-gray-200 pt-4">
+          <div className="border-t border-slate-300 pt-4">
             <h4 className="text-sm font-semibold text-gray-900 mb-3">Post Settings</h4>
 
             <div className="space-y-3">
@@ -313,7 +313,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({
                     type="checkbox"
                     checked={formData.allow_comments}
                     onChange={(e) => handleChange('allow_comments', e.target.checked)}
-                    className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                    className="w-4 h-4 text-slate-900 border-gray-300 rounded focus:ring-blue-500 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                   />
                   <span className="text-sm text-gray-700">Allow Comments</span>
                 </label>
@@ -323,7 +323,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({
                     type="checkbox"
                     checked={formData.is_featured}
                     onChange={(e) => handleChange('is_featured', e.target.checked)}
-                    className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                    className="w-4 h-4 text-slate-900 border-gray-300 rounded focus:ring-blue-500 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                   />
                   <span className="text-sm text-gray-700">Featured Post</span>
                 </label>
@@ -333,7 +333,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({
                     type="checkbox"
                     checked={formData.is_pinned}
                     onChange={(e) => handleChange('is_pinned', e.target.checked)}
-                    className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                    className="w-4 h-4 text-slate-900 border-gray-300 rounded focus:ring-blue-500 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                   />
                   <span className="text-sm text-gray-700">Pinned</span>
                 </label>
@@ -346,7 +346,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({
                 <select
                   value={formData.status}
                   onChange={(e) => handleChange('status', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white"
                 >
                   <option value="draft">Draft</option>
                   <option value="published">Published</option>
@@ -358,7 +358,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({
           </div>
 
           {/* Action Buttons */}
-          <div className="flex gap-3 pt-4 border-t border-gray-200">
+          <div className="flex gap-3 pt-4 border-t border-slate-300">
             <button
               type="submit"
               disabled={submitting}

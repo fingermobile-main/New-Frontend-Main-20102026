@@ -40,7 +40,7 @@ const RequestTitleModal: React.FC<RequestTitleModalProps> = ({
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Enter title"
-              className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-black dark:text-white"
+              className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-slate-900 dark:text-white font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
               required
             />
           </div>

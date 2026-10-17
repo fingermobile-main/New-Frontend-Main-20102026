@@ -65,7 +65,7 @@ const SearchPage: React.FC = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search for people, topics, posts..."
-            className="w-full px-4 py-3 pl-12 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+            className="w-full px-4 py-3 pl-12 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-slate-900 dark:text-white font-bold border-slate-300 placeholder:text-slate-400"
           />
           <svg
             className="absolute left-4 top-3.5 h-5 w-5 text-gray-400"
@@ -163,7 +163,7 @@ const SearchPage: React.FC = () => {
                   <a
                     key={hashtag.id}
                     href={`/hashtag/${hashtag.name || hashtag.tag}`}
-                    className="px-4 py-2 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm"
+                    className="px-4 py-2 bg-blue-100 dark:bg-blue-900 text-blue-950 dark:text-blue-200 rounded-full text-sm border text-blue-950 border-blue-400 font-black"
                   >
                     #{hashtag.name || hashtag.tag}
                   </a>
@@ -238,7 +238,7 @@ const SearchPage: React.FC = () => {
                 <a
                   key={hashtag.id}
                   href={`/hashtag/${hashtag.name || hashtag.tag}`}
-                  className="px-4 py-2 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm"
+                  className="px-4 py-2 bg-blue-100 dark:bg-blue-900 text-blue-950 dark:text-blue-200 rounded-full text-sm border text-blue-950 border-blue-400 font-black"
                 >
                   #{hashtag.name || hashtag.tag}
                 </a>

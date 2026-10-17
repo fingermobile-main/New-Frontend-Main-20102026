@@ -238,7 +238,7 @@ export const CreateBadgeModal: React.FC<CreateBadgeModalProps> = ({
                       type="file"
                       accept=".svg"
                       onChange={handleFileUpload}
-                      className="sr-only"
+                      className="sr-only text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                     />
                   </label>
                 </div>
@@ -277,13 +277,13 @@ export const CreateBadgeModal: React.FC<CreateBadgeModalProps> = ({
                       type="color"
                       value={bgColor}
                       onChange={(e) => setBgColor(e.target.value)}
-                      className="w-8 h-8 rounded-lg cursor-pointer border border-slate-300"
+                      className="w-8 h-8 rounded-lg cursor-pointer border border-slate-300 text-slate-900 font-bold bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                     />
                     <input
                       type="text"
                       value={bgColor}
                       onChange={(e) => setBgColor(e.target.value)}
-                      className="w-full px-2.5 py-1.5 text-xs bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg font-mono font-bold text-slate-900 dark:text-white uppercase"
+                      className="w-full px-2.5 py-1.5 text-xs bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg font-mono font-bold text-slate-900 dark:text-white uppercase focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                     />
                   </div>
                 </div>
@@ -297,13 +297,13 @@ export const CreateBadgeModal: React.FC<CreateBadgeModalProps> = ({
                       type="color"
                       value={textColor}
                       onChange={(e) => setTextColor(e.target.value)}
-                      className="w-8 h-8 rounded-lg cursor-pointer border border-slate-300"
+                      className="w-8 h-8 rounded-lg cursor-pointer border border-slate-300 text-slate-900 font-bold bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                     />
                     <input
                       type="text"
                       value={textColor}
                       onChange={(e) => setTextColor(e.target.value)}
-                      className="w-full px-2.5 py-1.5 text-xs bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg font-mono font-bold text-slate-900 dark:text-white uppercase"
+                      className="w-full px-2.5 py-1.5 text-xs bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg font-mono font-bold text-slate-900 dark:text-white uppercase focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                     />
                   </div>
                 </div>
@@ -326,7 +326,7 @@ export const CreateBadgeModal: React.FC<CreateBadgeModalProps> = ({
                   type="checkbox"
                   checked={badgeAccessEnabled}
                   onChange={(e) => setBadgeAccessEnabled(e.target.checked)}
-                  className="w-5 h-5 text-blue-600 rounded cursor-pointer border-slate-300"
+                  className="w-5 h-5 text-slate-900 rounded cursor-pointer border-slate-300 font-bold border bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
 

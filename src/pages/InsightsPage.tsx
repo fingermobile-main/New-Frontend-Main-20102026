@@ -157,7 +157,7 @@ Month-Over-Month Velocity,${stats?.trend_month_over_month || '+18.2%'},Last 30 D
         {/* 4 Metric KPI Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <div className="bg-white p-6 rounded-2xl border border-slate-300 shadow-sm">
-            <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">Total Audience Reach</p>
+            <p className="text-xs font-bold text-slate-700 uppercase tracking-wider">Total Audience Reach</p>
             <p className="text-3xl font-black text-gray-900 mt-1">{(stats?.totalReach || 14250).toLocaleString()}</p>
             <span className="inline-block mt-2 text-xs font-bold text-green-600">
               ↑ {stats?.trend_month_over_month || '+18.2%'} this month
@@ -165,7 +165,7 @@ Month-Over-Month Velocity,${stats?.trend_month_over_month || '+18.2%'},Last 30 D
           </div>
 
           <div className="bg-white p-6 rounded-2xl border border-slate-300 shadow-sm">
-            <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">Published Assets</p>
+            <p className="text-xs font-bold text-slate-700 uppercase tracking-wider">Published Assets</p>
             <p className="text-3xl font-black text-gray-900 mt-1">{stats?.totalPosts || 38}</p>
             <span className="inline-block mt-2 text-xs font-bold text-blue-600">
               Photos, Videos & Articles
@@ -173,7 +173,7 @@ Month-Over-Month Velocity,${stats?.trend_month_over_month || '+18.2%'},Last 30 D
           </div>
 
           <div className="bg-white p-6 rounded-2xl border border-slate-300 shadow-sm">
-            <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">Interactions</p>
+            <p className="text-xs font-bold text-slate-700 uppercase tracking-wider">Interactions</p>
             <p className="text-3xl font-black text-gray-900 mt-1">{(stats?.totalEngagement || 2840).toLocaleString()}</p>
             <span className="inline-block mt-2 text-xs font-bold text-green-600">
               Likes, Comments & Reposts
@@ -181,7 +181,7 @@ Month-Over-Month Velocity,${stats?.trend_month_over_month || '+18.2%'},Last 30 D
           </div>
 
           <div className="bg-white p-6 rounded-2xl border border-slate-300 shadow-sm">
-            <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">Engagement Rate</p>
+            <p className="text-xs font-bold text-slate-700 uppercase tracking-wider">Engagement Rate</p>
             <p className="text-3xl font-black text-purple-700 mt-1">{stats?.engagementRate || '6.4%'}</p>
             <span className="inline-block mt-2 text-xs font-bold text-purple-600">
               Top 10% on Protocol
@@ -233,12 +233,12 @@ Month-Over-Month Velocity,${stats?.trend_month_over_month || '+18.2%'},Last 30 D
 
         {/* Community Performance Table */}
         <div className="bg-white rounded-2xl border border-slate-300 shadow-sm overflow-hidden">
-          <div className="p-5 border-b border-gray-100">
+          <div className="p-5 border-b border-slate-200">
             <h2 className="text-base font-black text-gray-900">Community Channel Breakdown</h2>
           </div>
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider border-b border-gray-100">
+              <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider border-b border-slate-200">
                 <th className="py-3 px-5">Community</th>
                 <th className="py-3 px-5">Category</th>
                 <th className="py-3 px-5">Members</th>

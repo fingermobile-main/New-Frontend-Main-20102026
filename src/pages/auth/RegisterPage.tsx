@@ -207,7 +207,7 @@ const RegisterPage = () => {
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <User className="h-5 w-5 text-gray-400" />
+                    <User className="h-5 w-5 text-slate-700" />
                   </div>
                   <input
                     id="firstName"
@@ -216,7 +216,7 @@ const RegisterPage = () => {
                     autoComplete="given-name"
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
-                    className={`block w-full pl-10 pr-3 py-3 border ${
+                    className={`block w-full pl-10 pr-3 py-3 border  text-slate-900 font-bold border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400${
                       errors.firstName
                         ? 'border-red-500'
                         : 'border-gray-300 dark:border-gray-600'
@@ -240,7 +240,7 @@ const RegisterPage = () => {
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <User className="h-5 w-5 text-gray-400" />
+                    <User className="h-5 w-5 text-slate-700" />
                   </div>
                   <input
                     id="lastName"
@@ -249,7 +249,7 @@ const RegisterPage = () => {
                     autoComplete="family-name"
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
-                    className={`block w-full pl-10 pr-3 py-3 border ${
+                    className={`block w-full pl-10 pr-3 py-3 border  text-slate-900 font-bold border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400${
                       errors.lastName
                         ? 'border-red-500'
                         : 'border-gray-300 dark:border-gray-600'
@@ -274,7 +274,7 @@ const RegisterPage = () => {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-gray-400" />
+                  <Mail className="h-5 w-5 text-slate-700" />
                 </div>
                 <input
                   id="email"
@@ -283,7 +283,7 @@ const RegisterPage = () => {
                   autoComplete="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white"
+                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                   placeholder="name@example.com"
                 />
               </div>
@@ -298,7 +298,7 @@ const RegisterPage = () => {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Phone className="h-5 w-5 text-gray-400" />
+                  <Phone className="h-5 w-5 text-slate-700" />
                 </div>
                 <input
                   id="phone"
@@ -307,7 +307,7 @@ const RegisterPage = () => {
                   autoComplete="tel"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className={`block w-full pl-10 pr-3 py-3 border ${
+                  className={`block w-full pl-10 pr-3 py-3 border  text-slate-900 font-bold border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400${
                     errors.phone
                       ? 'border-red-500'
                       : 'border-gray-300 dark:border-gray-600'
@@ -337,7 +337,7 @@ const RegisterPage = () => {
                   autoComplete="new-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className={`block w-full px-3 py-3 pr-10 border ${
+                  className={`block w-full px-3 py-3 pr-10 border  text-slate-900 font-bold border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400${
                     errors.password
                       ? 'border-red-500'
                       : 'border-gray-300 dark:border-gray-600'
@@ -350,9 +350,9 @@ const RegisterPage = () => {
                   className="absolute inset-y-0 right-0 pr-3 flex items-center"
                 >
                   {showPassword ? (
-                    <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-500" />
+                    <EyeOff className="h-5 w-5 text-slate-700 hover:text-gray-500" />
                   ) : (
-                    <Eye className="h-5 w-5 text-gray-400 hover:text-gray-500" />
+                    <Eye className="h-5 w-5 text-slate-700 hover:text-gray-500" />
                   )}
                 </button>
               </div>
@@ -378,7 +378,7 @@ const RegisterPage = () => {
                   autoComplete="new-password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className={`block w-full px-3 py-3 pr-10 border ${
+                  className={`block w-full px-3 py-3 pr-10 border  text-slate-900 font-bold border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400${
                     errors.confirmPassword
                       ? 'border-red-500'
                       : 'border-gray-300 dark:border-gray-600'
@@ -391,9 +391,9 @@ const RegisterPage = () => {
                   className="absolute inset-y-0 right-0 pr-3 flex items-center"
                 >
                   {showConfirmPassword ? (
-                    <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-500" />
+                    <EyeOff className="h-5 w-5 text-slate-700 hover:text-gray-500" />
                   ) : (
-                    <Eye className="h-5 w-5 text-gray-400 hover:text-gray-500" />
+                    <Eye className="h-5 w-5 text-slate-700 hover:text-gray-500" />
                   )}
                 </button>
               </div>

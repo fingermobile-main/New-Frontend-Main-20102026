@@ -123,7 +123,7 @@ const SocialLinksPanel: React.FC = () => {
                   id="platform"
                   value={newLink.platform}
                   onChange={(e) => setNewLink({ ...newLink, platform: e.target.value })}
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-blue focus:ring-brand-blue sm:text-sm"
+                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-blue focus:ring-brand-blue sm:text-sm text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2"
                 >
                   <option value="">Select platform</option>
                   {platforms.map(platform => (
@@ -141,7 +141,7 @@ const SocialLinksPanel: React.FC = () => {
                   value={newLink.url}
                   onChange={(e) => setNewLink({ ...newLink, url: e.target.value })}
                   placeholder="https://example.com/username"
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-blue focus:ring-brand-blue sm:text-sm"
+                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-blue focus:ring-brand-blue sm:text-sm text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                 />
               </div>
             </div>
@@ -186,7 +186,7 @@ const SocialLinksPanel: React.FC = () => {
                         id={`edit-platform-${link.id}`}
                         value={editLink.platform}
                         onChange={(e) => setEditLink({ ...editLink, platform: e.target.value })}
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-blue focus:ring-brand-blue sm:text-sm"
+                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-blue focus:ring-brand-blue sm:text-sm text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2"
                       >
                         <option value="">Select platform</option>
                         {platforms.map(platform => (
@@ -204,7 +204,7 @@ const SocialLinksPanel: React.FC = () => {
                         value={editLink.url}
                         onChange={(e) => setEditLink({ ...editLink, url: e.target.value })}
                         placeholder="https://example.com/username"
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-blue focus:ring-brand-blue sm:text-sm"
+                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-blue focus:ring-brand-blue sm:text-sm text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                       />
                     </div>
                   </div>
@@ -274,7 +274,7 @@ const SocialLinksPanel: React.FC = () => {
           {links.length === 0 && (
             <div className="text-center py-8">
               <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-gray-100">
-                <LinkIcon className="h-6 w-6 text-gray-400" />
+                <LinkIcon className="h-6 w-6 text-slate-700" />
               </div>
               <h3 className="mt-2 text-sm font-medium text-gray-900">No social links</h3>
               <p className="mt-1 text-sm text-gray-500">
@@ -293,7 +293,7 @@ const SocialLinksPanel: React.FC = () => {
           )}
         </div>
 
-        <div className="mt-6 pt-4 border-t border-gray-200">
+        <div className="mt-6 pt-4 border-t border-slate-300">
           <h3 className="text-sm font-medium text-gray-900 mb-2">Verification Tips</h3>
           <ul className="text-sm text-gray-500 space-y-1">
             <li className="flex items-start">

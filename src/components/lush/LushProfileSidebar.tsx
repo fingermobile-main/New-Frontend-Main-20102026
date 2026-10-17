@@ -150,7 +150,7 @@ export const LushProfileSidebar: React.FC<LushProfileSidebarProps> = ({
               <button
                 type="button"
                 onClick={onOpenEditProfile}
-                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200/90 transition shadow-2xs"
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold text-emerald-950 bg-emerald-50 hover:bg-emerald-100 border border-emerald-400 transition shadow-2xs text-emerald-950 border-emerald-400 font-black"
                 title="Edit Bio, Headline, Avatars & Banners"
               >
                 <PencilSquareIcon className="w-3.5 h-3.5 text-emerald-600" />
@@ -160,7 +160,7 @@ export const LushProfileSidebar: React.FC<LushProfileSidebarProps> = ({
           )}
 
           {/* Membership & PIN Pill */}
-          <div className="mt-3 inline-flex items-center gap-2 px-3 py-1 bg-emerald-50 border border-emerald-200/80 rounded-full text-xs text-emerald-900">
+          <div className="mt-3 inline-flex items-center gap-2 px-3 py-1 bg-emerald-50 border border-emerald-400 rounded-full text-xs text-emerald-950 text-emerald-950 border-emerald-400 font-black">
             <ShieldCheckIcon className="w-4 h-4 text-emerald-600" />
             <span>Consent Verified</span>
             <button
@@ -200,9 +200,9 @@ export const LushProfileSidebar: React.FC<LushProfileSidebarProps> = ({
           )}
 
           {/* Matching Intent Tag */}
-          <div className="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-600">
+          <div className="mt-3 pt-3 border-t border-slate-200 flex items-center justify-between text-xs text-gray-600">
             <span className="text-gray-500">Matching Intent:</span>
-            <span className="font-semibold text-emerald-700 bg-emerald-50/70 px-2.5 py-0.5 rounded-full border border-emerald-100">
+            <span className="font-semibold text-emerald-950 bg-emerald-50/70 px-2.5 py-0.5 rounded-full border border-emerald-400 text-emerald-950 border-emerald-400 font-black">
               {user.matchingIntent}
             </span>
           </div>
@@ -216,7 +216,7 @@ export const LushProfileSidebar: React.FC<LushProfileSidebarProps> = ({
             <SparklesIcon className="w-4 h-4 text-[#DC582A]" />
             Lush Rewards
           </span>
-          <span className="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
+          <span className="text-[11px] font-semibold text-emerald-950 bg-emerald-50 px-2 py-0.5 rounded-full border text-emerald-950 border-emerald-400 font-black">
             Level {user.level}
           </span>
         </div>
@@ -271,7 +271,7 @@ export const LushProfileSidebar: React.FC<LushProfileSidebarProps> = ({
         )}
 
         {/* Quick Toggles: Radiate & Incognito */}
-        <div className="space-y-2 pt-2 border-t border-gray-100">
+        <div className="space-y-2 pt-2 border-t border-slate-200">
           <button
             onClick={onToggleRadiate}
             className={`w-full py-2 px-3 rounded-xl text-xs font-semibold flex items-center justify-between transition ${
@@ -310,7 +310,7 @@ export const LushProfileSidebar: React.FC<LushProfileSidebarProps> = ({
 
       {/* 3. Feed Navigation & Filter Channels */}
       <nav className="bg-white rounded-2xl border border-emerald-100/80 shadow-xs p-2.5 space-y-1">
-        <div className="px-3 py-1.5 text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+        <div className="px-3 py-1.5 text-[11px] font-bold text-slate-700 uppercase tracking-wider">
           Feed Channels
         </div>
 
@@ -350,7 +350,7 @@ export const LushProfileSidebar: React.FC<LushProfileSidebarProps> = ({
             <StarIcon className="w-4 h-4 text-amber-500" />
             Encore™ (3–5★)
           </span>
-          <span className="text-[10px] bg-amber-200 text-amber-900 px-1.5 py-0.5 rounded-full font-bold">
+          <span className="text-[10px] bg-amber-200 text-amber-950 px-1.5 py-0.5 rounded-full font-bold border text-amber-950 border-amber-400 font-black">
             VIP Bonds
           </span>
         </button>
@@ -367,7 +367,7 @@ export const LushProfileSidebar: React.FC<LushProfileSidebarProps> = ({
             <Square2StackIcon className="w-4 h-4 text-emerald-600" />
             Discover Deck
           </span>
-          <span className="text-[10px] bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold px-1.5 py-0.5 rounded-full font-bold">
+          <span className="text-[10px] bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold px-1.5 py-0.5 rounded-full font-bold font-black">
             Swipe
           </span>
         </button>
@@ -420,7 +420,7 @@ export const LushProfileSidebar: React.FC<LushProfileSidebarProps> = ({
           </span>
         </button>
 
-        <div className="pt-2 border-t border-gray-100 space-y-1">
+        <div className="pt-2 border-t border-slate-200 space-y-1">
           {onOpenHeatmap && (
             <button
               onClick={onOpenHeatmap}

@@ -479,7 +479,7 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search 385 pages, features..."
-                className="w-full pl-9 pr-14 py-2.5 text-xs rounded-xl bg-white border-2 border-slate-300 text-slate-900 placeholder:text-slate-500 font-bold focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all font-sans shadow-sm"
+                className="w-full pl-9 pr-14 py-2.5 text-xs rounded-xl bg-white border-2 border-slate-300 text-slate-900 placeholder:text-slate-400 font-bold focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all font-sans shadow-sm border"
                 style={{ color: '#0f172a', backgroundColor: '#ffffff' }}
               />
               {searchQuery && (

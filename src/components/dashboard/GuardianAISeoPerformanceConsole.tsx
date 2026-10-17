@@ -117,7 +117,7 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
 
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
             <div className="px-4 py-2 rounded-2xl bg-white/5 border border-white/10 flex flex-col justify-center">
-              <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Next 12H Auto-Run</span>
+              <span className="text-[10px] uppercase font-bold text-slate-700 tracking-wider">Next 12H Auto-Run</span>
               <span className="font-mono font-bold text-sm text-emerald-400 flex items-center gap-1.5">
                 <Clock className="w-3.5 h-3.5" />
                 {formatCountdown(countdownSeconds)}
@@ -179,7 +179,7 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
                 <span>Core Web Vitals Real-Time Health Gauges</span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950 dark:text-emerald-300 font-bold">
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950 dark:text-emerald-300 font-bold font-black">
                   ALL PASSING (GOOD)
                 </span>
               </h2>
@@ -201,14 +201,14 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
                 >
                   <div>
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-[10px] font-mono font-bold text-slate-400 uppercase">{key}</span>
+                      <span className="text-[10px] font-mono font-bold text-slate-700 uppercase">{key}</span>
                       <span className="px-1.5 py-0.5 rounded-md text-[9px] font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950 dark:text-emerald-300">
                         GOOD
                       </span>
                     </div>
                     <div className="text-lg font-black text-slate-900 dark:text-white font-mono mt-0.5">
                       {metric.value}
-                      <span className="text-xs font-normal text-slate-400 ml-0.5">{metric.unit}</span>
+                      <span className="text-xs font-normal text-slate-700 ml-0.5">{metric.unit}</span>
                     </div>
                     <div className="text-[11px] font-semibold text-slate-700 dark:text-slate-300 mt-1 line-clamp-1">
                       {metric.label}
@@ -216,7 +216,7 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
                   </div>
                   <div className="mt-3 pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-[10px] text-slate-500">
                     <span>Target: {target}</span>
-                    <span className="text-slate-400 truncate ml-1">{desc}</span>
+                    <span className="text-slate-700 truncate ml-1">{desc}</span>
                   </div>
                 </div>
               ))}
@@ -294,7 +294,7 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
                       <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300">
                         {run.cycle}
                       </span>
-                      <span className="text-[11px] text-slate-400">
+                      <span className="text-[11px] text-slate-700">
                         {new Date(run.timestamp).toLocaleString()}
                       </span>
                     </div>
@@ -334,7 +334,7 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
                   <div className="w-10 h-10 rounded-2xl bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 flex items-center justify-center font-black text-sm">
                     PSI
                   </div>
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950 dark:text-emerald-300">
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950 dark:text-emerald-300 font-black">
                     PASSED
                   </span>
                 </div>
@@ -343,11 +343,11 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
                 <div className="mt-4 grid grid-cols-2 gap-2 text-center">
                   <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
                     <div className="text-xl font-black text-emerald-600 dark:text-emerald-400 font-mono">98</div>
-                    <div className="text-[10px] text-slate-400 font-semibold mt-0.5">Mobile Score</div>
+                    <div className="text-[10px] text-slate-700 font-semibold mt-0.5">Mobile Score</div>
                   </div>
                   <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
                     <div className="text-xl font-black text-emerald-600 dark:text-emerald-400 font-mono">100</div>
-                    <div className="text-[10px] text-slate-400 font-semibold mt-0.5">Desktop Score</div>
+                    <div className="text-[10px] text-slate-700 font-semibold mt-0.5">Desktop Score</div>
                   </div>
                 </div>
               </div>
@@ -364,7 +364,7 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
                   <div className="w-10 h-10 rounded-2xl bg-amber-50 dark:bg-amber-950 text-amber-600 dark:text-amber-400 flex items-center justify-center font-black text-sm">
                     GTM
                   </div>
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950 dark:text-emerald-300">
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950 dark:text-emerald-300 font-black">
                     GRADE A
                   </span>
                 </div>
@@ -373,11 +373,11 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
                 <div className="mt-4 grid grid-cols-2 gap-2 text-center">
                   <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
                     <div className="text-xl font-black text-emerald-600 dark:text-emerald-400 font-mono">99%</div>
-                    <div className="text-[10px] text-slate-400 font-semibold mt-0.5">Performance</div>
+                    <div className="text-[10px] text-slate-700 font-semibold mt-0.5">Performance</div>
                   </div>
                   <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
                     <div className="text-xl font-black text-emerald-600 dark:text-emerald-400 font-mono">98%</div>
-                    <div className="text-[10px] text-slate-400 font-semibold mt-0.5">Structure</div>
+                    <div className="text-[10px] text-slate-700 font-semibold mt-0.5">Structure</div>
                   </div>
                 </div>
               </div>
@@ -394,7 +394,7 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
                   <div className="w-10 h-10 rounded-2xl bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-black text-sm">
                     PNG
                   </div>
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950 dark:text-emerald-300">
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950 dark:text-emerald-300 font-black">
                     GRADE 97
                   </span>
                 </div>
@@ -403,11 +403,11 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
                 <div className="mt-4 grid grid-cols-2 gap-2 text-center">
                   <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
                     <div className="text-xl font-black text-emerald-600 dark:text-emerald-400 font-mono">1.1 MB</div>
-                    <div className="text-[10px] text-slate-400 font-semibold mt-0.5">Page Size</div>
+                    <div className="text-[10px] text-slate-700 font-semibold mt-0.5">Page Size</div>
                   </div>
                   <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
                     <div className="text-xl font-black text-emerald-600 dark:text-emerald-400 font-mono">28</div>
-                    <div className="text-[10px] text-slate-400 font-semibold mt-0.5">Requests</div>
+                    <div className="text-[10px] text-slate-700 font-semibold mt-0.5">Requests</div>
                   </div>
                 </div>
               </div>
@@ -424,7 +424,7 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
                   <div className="w-10 h-10 rounded-2xl bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-black text-sm">
                     WPT
                   </div>
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950 dark:text-emerald-300">
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950 dark:text-emerald-300 font-black">
                     CATCHPOINT
                   </span>
                 </div>
@@ -433,11 +433,11 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
                 <div className="mt-4 grid grid-cols-2 gap-2 text-center">
                   <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
                     <div className="text-xl font-black text-emerald-600 dark:text-emerald-400 font-mono">18 ms</div>
-                    <div className="text-[10px] text-slate-400 font-semibold mt-0.5">Lagos TTFB</div>
+                    <div className="text-[10px] text-slate-700 font-semibold mt-0.5">Lagos TTFB</div>
                   </div>
                   <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
                     <div className="text-xl font-black text-emerald-600 dark:text-emerald-400 font-mono">24 ms</div>
-                    <div className="text-[10px] text-slate-400 font-semibold mt-0.5">London TTFB</div>
+                    <div className="text-[10px] text-slate-700 font-semibold mt-0.5">London TTFB</div>
                   </div>
                 </div>
               </div>
@@ -458,7 +458,7 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead>
-                  <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-400 font-mono uppercase text-[10px]">
+                  <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-700 font-mono uppercase text-[10px]">
                     <th className="py-2.5 px-3">Location &amp; Node</th>
                     <th className="py-2.5 px-3">Backbone Provider</th>
                     <th className="py-2.5 px-3">TTFB (First Byte)</th>
@@ -476,7 +476,7 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
                       <td className="py-3 px-3 font-mono text-slate-700 dark:text-slate-300">{b.renderMs} ms</td>
                       <td className="py-3 px-3 font-mono text-slate-700 dark:text-slate-300">{b.speedIndexMs} ms</td>
                       <td className="py-3 px-3 text-right">
-                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950 dark:text-emerald-300 uppercase">
+                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950 dark:text-emerald-300 uppercase font-black">
                           {b.status}
                         </span>
                       </td>
@@ -502,10 +502,10 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="text-sm font-bold text-slate-900 dark:text-white">Chrome DevTools Performance &amp; Network Panel</h3>
-                    <p className="text-[11px] text-slate-400">CPU Usage, Layout Shifts, and Server Response Timeline</p>
+                    <p className="text-[11px] text-slate-700">CPU Usage, Layout Shifts, and Server Response Timeline</p>
                   </div>
                 </div>
-                <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950 dark:text-emerald-300">
+                <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950 dark:text-emerald-300 font-black">
                   HEALTHY
                 </span>
               </div>
@@ -553,10 +553,10 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="text-sm font-bold text-slate-900 dark:text-white">Google Search Console Indexing Health</h3>
-                    <p className="text-[11px] text-slate-400">Real-world crawl stats, URL inspection &amp; Rich Results</p>
+                    <p className="text-[11px] text-slate-700">Real-world crawl stats, URL inspection &amp; Rich Results</p>
                   </div>
                 </div>
-                <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-950 border border-blue-400 font-bold dark:bg-blue-950 dark:text-blue-300">
+                <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-950 border border-blue-400 font-bold dark:bg-blue-950 dark:text-blue-300 font-black">
                   100% INDEXED
                 </span>
               </div>
@@ -582,7 +582,7 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
                   {gscMetrics.topOrganicKeywords.map((k) => (
                     <div key={k.keyword} className="flex items-center justify-between text-[11px]">
                       <span className="font-semibold text-slate-900 dark:text-white">{k.keyword}</span>
-                      <div className="flex items-center gap-3 text-slate-400 font-mono">
+                      <div className="flex items-center gap-3 text-slate-700 font-mono">
                         <span>{k.clicks.toLocaleString()} clicks</span>
                         <span className="font-bold text-amber-500">Pos #{k.position}</span>
                       </div>
@@ -704,7 +704,7 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
           {/* Indexing Architecture Overview */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200 dark:border-slate-800 shadow-xs">
-              <span className="text-[10px] uppercase font-bold text-slate-400">Total Indexed Items</span>
+              <span className="text-[10px] uppercase font-bold text-slate-700">Total Indexed Items</span>
               <div className="text-2xl font-black text-slate-900 dark:text-white font-mono mt-0.5">
                 {indexStats.totalIndexedEntities}
               </div>
@@ -712,7 +712,7 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
             </div>
 
             <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200 dark:border-slate-800 shadow-xs">
-              <span className="text-[10px] uppercase font-bold text-slate-400">Database Tables Indexed</span>
+              <span className="text-[10px] uppercase font-bold text-slate-700">Database Tables Indexed</span>
               <div className="text-2xl font-black text-blue-600 dark:text-blue-400 font-mono mt-0.5">
                 {indexStats.databaseTablesIndexed}
               </div>
@@ -720,7 +720,7 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
             </div>
 
             <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200 dark:border-slate-800 shadow-xs">
-              <span className="text-[10px] uppercase font-bold text-slate-400">Master &amp; Stercs Consoles</span>
+              <span className="text-[10px] uppercase font-bold text-slate-700">Master &amp; Stercs Consoles</span>
               <div className="text-2xl font-black text-amber-600 dark:text-amber-400 font-mono mt-0.5">
                 {indexStats.masterConsolesIndexed + indexStats.stercsModulesIndexed}
               </div>
@@ -728,7 +728,7 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
             </div>
 
             <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200 dark:border-slate-800 shadow-xs">
-              <span className="text-[10px] uppercase font-bold text-slate-400">Seek Execution Latency</span>
+              <span className="text-[10px] uppercase font-bold text-slate-700">Seek Execution Latency</span>
               <div className="text-2xl font-black text-emerald-600 dark:text-emerald-400 font-mono mt-0.5">
                 &lt; 1.5 ms
               </div>
@@ -780,7 +780,7 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search across Database tables, MasterDashboard consoles, Stercs modules, or routes (e.g. 'auth', 'fic', 'render', 'orders')..."
-                className="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-xs sm:text-sm text-slate-900 dark:text-white placeholder:text-slate-500 focus:outline-hidden focus:ring-2 focus:ring-indigo-500 shadow-inner"
+                className="w-full pl-12 pr-4 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-xs sm:text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-hidden focus:ring-2 focus:ring-indigo-500 shadow-inner font-bold border-slate-300"
               />
             </div>
 
@@ -790,11 +790,11 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
                 <span className="font-mono font-bold text-indigo-700 dark:text-indigo-300">
                   {searchBenchmark.totalHits} Hits Found
                 </span>
-                <span className="text-slate-400">•</span>
+                <span className="text-slate-700">•</span>
                 <span className="font-mono font-bold text-emerald-600 dark:text-emerald-400">
                   Execution: {searchBenchmark.executionTimeMs} ms
                 </span>
-                <span className="text-slate-400">•</span>
+                <span className="text-slate-700">•</span>
                 <span className="font-mono text-slate-600 dark:text-slate-300">
                   Index Structure: {searchBenchmark.indexStructureUsed}
                 </span>

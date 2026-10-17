@@ -194,7 +194,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden max-w-4xl mx-auto">
+    <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden max-w-4xl mx-auto">
       {/* Studio Header */}
       <div className="bg-gradient-to-r from-purple-700 via-indigo-600 to-blue-600 p-6 text-white flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -254,7 +254,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
             onChange={(e) => setCaption(e.target.value)}
             placeholder="Write your postcard message or caption here... (Mandatory non-empty text required)"
             rows={4}
-            className={`w-full p-4 rounded-xl border text-sm transition-all focus:outline-none focus:ring-2 ${
+            className={`w-full p-4 rounded-xl border text-sm transition-all focus:outline-none focus:ring-2  text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400${
               !caption && isSubmitting
                 ? 'border-red-400 bg-red-50/30 focus:ring-red-500'
                 : 'border-gray-200 focus:border-purple-500 focus:ring-purple-200 bg-gray-50/50'
@@ -287,7 +287,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
                 type="checkbox"
                 checked={isAiGenerated}
                 onChange={(e) => setIsAiGenerated(e.target.checked)}
-                className="sr-only peer"
+                className="sr-only peer text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
               />
               <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
             </label>
@@ -302,7 +302,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
                 id="ai-badge-label-select"
                 value={aiBadgeLabel}
                 onChange={(e) => setAiBadgeLabel(e.target.value)}
-                className="w-full sm:w-auto px-3 py-1.5 text-xs bg-white border border-purple-300 rounded-lg text-purple-900 focus:outline-none focus:ring-2 focus:ring-purple-400 font-medium"
+                className="w-full sm:w-auto px-3 py-1.5 text-xs bg-white border border-purple-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-purple-400 font-medium font-bold border-slate-300"
               >
                 {AI_BADGE_OPTIONS.map((opt) => (
                   <option key={opt} value={opt}>
@@ -445,7 +445,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
         {/* Active Attachment Configuration Drawer */}
         {activeAttachmentDrawer && (
           <div className="p-5 bg-gray-50 rounded-xl border border-slate-300 animate-fade-in space-y-4">
-            <div className="flex justify-between items-center pb-2 border-b border-gray-200">
+            <div className="flex justify-between items-center pb-2 border-b border-slate-300">
               <h4 className="text-sm font-bold text-gray-900 capitalize">
                 Configure {activeAttachmentDrawer.replace('_', ' ')}
               </h4>
@@ -467,7 +467,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
                     id="gift-currency-select"
                     value={giftCurrency}
                     onChange={(e) => setGiftCurrency(e.target.value as 'GEMS' | 'FIC')}
-                    className="w-full p-2 text-xs border rounded-lg bg-white"
+                    className="w-full p-2 text-xs border rounded-lg bg-white text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500"
                   >
                     <option value="GEMS">💎 Gems</option>
                     <option value="FIC">🪙 FIC Tokens</option>
@@ -480,7 +480,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
                     type="number"
                     value={giftAmount}
                     onChange={(e) => setGiftAmount(e.target.value)}
-                    className="w-full p-2 text-xs border rounded-lg bg-white"
+                    className="w-full p-2 text-xs border rounded-lg bg-white text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
                   />
                 </div>
                 <div>
@@ -491,7 +491,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
                     value={giftMessage}
                     onChange={(e) => setGiftMessage(e.target.value)}
                     placeholder="Enjoy this postcard gift!"
-                    className="w-full p-2 text-xs border rounded-lg bg-white"
+                    className="w-full p-2 text-xs border rounded-lg bg-white text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                 </div>
                 <div className="sm:col-span-3 flex justify-end">
@@ -523,7 +523,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
                     value={ficRecipient}
                     onChange={(e) => setFicRecipient(e.target.value)}
                     placeholder="@creator_wallet"
-                    className="w-full p-2 text-xs border rounded-lg bg-white"
+                    className="w-full p-2 text-xs border rounded-lg bg-white text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                 </div>
                 <div>
@@ -533,7 +533,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
                     type="number"
                     value={ficAmount}
                     onChange={(e) => setFicAmount(e.target.value)}
-                    className="w-full p-2 text-xs border rounded-lg bg-white"
+                    className="w-full p-2 text-xs border rounded-lg bg-white text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
                   />
                 </div>
                 <div className="sm:col-span-2 flex justify-end">
@@ -564,7 +564,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
                     value={productTitle}
                     onChange={(e) => setProductTitle(e.target.value)}
                     placeholder="FingerMobile Merch Hoodie"
-                    className="w-full p-2 text-xs border rounded-lg bg-white"
+                    className="w-full p-2 text-xs border rounded-lg bg-white text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                 </div>
                 <div>
@@ -575,7 +575,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
                     value={productId}
                     onChange={(e) => setProductId(e.target.value)}
                     placeholder="PROD-FM-001"
-                    className="w-full p-2 text-xs border rounded-lg bg-white"
+                    className="w-full p-2 text-xs border rounded-lg bg-white text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                 </div>
                 <div>
@@ -585,7 +585,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
                     type="number"
                     value={productPrice}
                     onChange={(e) => setProductPrice(e.target.value)}
-                    className="w-full p-2 text-xs border rounded-lg bg-white"
+                    className="w-full p-2 text-xs border rounded-lg bg-white text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
                   />
                 </div>
                 <div className="sm:col-span-3 flex justify-end">
@@ -617,7 +617,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
                     value={audioTitle}
                     onChange={(e) => setAudioTitle(e.target.value)}
                     placeholder="Afrobeats Sunrise"
-                    className="w-full p-2 text-xs border rounded-lg bg-white"
+                    className="w-full p-2 text-xs border rounded-lg bg-white text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                 </div>
                 <div>
@@ -628,7 +628,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
                     value={audioUrl}
                     onChange={(e) => setAudioUrl(e.target.value)}
                     placeholder="https://audio.fingermobileprotocol.com/tracks/123.mp3"
-                    className="w-full p-2 text-xs border rounded-lg bg-white"
+                    className="w-full p-2 text-xs border rounded-lg bg-white text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                 </div>
                 <div>
@@ -638,7 +638,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
                     type="number"
                     value={audioBpm}
                     onChange={(e) => setAudioBpm(e.target.value)}
-                    className="w-full p-2 text-xs border rounded-lg bg-white"
+                    className="w-full p-2 text-xs border rounded-lg bg-white text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
                   />
                 </div>
                 <div className="sm:col-span-3 flex justify-end">
@@ -669,7 +669,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
                     type="text"
                     value={voiceUrl}
                     onChange={(e) => setVoiceUrl(e.target.value)}
-                    className="w-full p-2 text-xs border rounded-lg bg-white"
+                    className="w-full p-2 text-xs border rounded-lg bg-white text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                 </div>
                 <div>
@@ -679,7 +679,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
                     type="number"
                     value={voiceDuration}
                     onChange={(e) => setVoiceDuration(e.target.value)}
-                    className="w-full p-2 text-xs border rounded-lg bg-white"
+                    className="w-full p-2 text-xs border rounded-lg bg-white text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
                   />
                 </div>
                 <div className="sm:col-span-2 flex justify-end">
@@ -710,7 +710,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
                     value={uhdMediaUrl}
                     onChange={(e) => setUhdMediaUrl(e.target.value)}
                     placeholder="https://media.fingermobileprotocol.com/uhd/4k-film.mp4"
-                    className="w-full p-2 text-xs border rounded-lg bg-white"
+                    className="w-full p-2 text-xs border rounded-lg bg-white text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                 </div>
                 <div>
@@ -719,7 +719,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
                     id="uhd-resolution-select"
                     value={uhdResolution}
                     onChange={(e) => setUhdResolution(e.target.value)}
-                    className="w-full p-2 text-xs border rounded-lg bg-white"
+                    className="w-full p-2 text-xs border rounded-lg bg-white text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500"
                   >
                     <option value="3840x2160 (4K UHD)">3840x2160 (4K UHD)</option>
                     <option value="7680x4320 (8K FUHD)">7680x4320 (8K FUHD)</option>
@@ -731,7 +731,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
                       type="checkbox"
                       checked={isHdr}
                       onChange={(e) => setIsHdr(e.target.checked)}
-                      className="rounded text-purple-600 focus:ring-purple-500"
+                      className="rounded text-slate-900 focus:ring-purple-500 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                     />
                     HDR10+ / Dolby Vision Color Profile
                   </label>
@@ -763,7 +763,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
                     value={socialUrl}
                     onChange={(e) => setSocialUrl(e.target.value)}
                     placeholder="https://fingermobileprotocol.com/doc"
-                    className="w-full p-2 text-xs border rounded-lg bg-white"
+                    className="w-full p-2 text-xs border rounded-lg bg-white text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                 </div>
                 <div>
@@ -774,7 +774,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
                     value={socialTitle}
                     onChange={(e) => setSocialTitle(e.target.value)}
                     placeholder="fingermobileprotocol Specification"
-                    className="w-full p-2 text-xs border rounded-lg bg-white"
+                    className="w-full p-2 text-xs border rounded-lg bg-white text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                 </div>
                 <div className="sm:col-span-2 flex justify-end">
@@ -804,7 +804,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
                     type="text"
                     value={stickerName}
                     onChange={(e) => setStickerName(e.target.value)}
-                    className="w-full p-2 text-xs border rounded-lg bg-white"
+                    className="w-full p-2 text-xs border rounded-lg bg-white text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                 </div>
                 <div>
@@ -814,7 +814,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
                     type="text"
                     value={stickerId}
                     onChange={(e) => setStickerId(e.target.value)}
-                    className="w-full p-2 text-xs border rounded-lg bg-white"
+                    className="w-full p-2 text-xs border rounded-lg bg-white text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                 </div>
                 <div className="sm:col-span-2 flex justify-end">
@@ -847,7 +847,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
                       value={heavyFileName}
                       onChange={(e) => setHeavyFileName(e.target.value)}
                       placeholder="Protocol-Master-Archive-2GB.iso"
-                      className="w-full p-2 text-xs border rounded-lg bg-white"
+                      className="w-full p-2 text-xs border rounded-lg bg-white text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                     />
                   </div>
                   <div>
@@ -858,7 +858,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
                       max="2048"
                       value={heavyFileSizeMb}
                       onChange={(e) => setHeavyFileSizeMb(e.target.value)}
-                      className="w-full p-2 text-xs border rounded-lg bg-white"
+                      className="w-full p-2 text-xs border rounded-lg bg-white text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
                     />
                   </div>
                 </div>
@@ -899,7 +899,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
               {attachments.map((att, idx) => (
                 <div
                   key={`${att.type}-${idx}`}
-                  className="px-3 py-1.5 bg-gray-100 border border-gray-200 rounded-lg flex items-center gap-2 text-xs"
+                  className="px-3 py-1.5 bg-gray-100 border border-slate-300 rounded-lg flex items-center gap-2 text-xs"
                 >
                   <PaperClipIcon className="w-3.5 h-3.5 text-gray-500" />
                   <span className="font-semibold text-gray-800 capitalize">
@@ -908,7 +908,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
                   <button
                     type="button"
                     onClick={() => handleRemoveAttachment(idx)}
-                    className="text-gray-400 hover:text-red-500 font-bold ml-1"
+                    className="text-slate-700 hover:text-red-500 font-bold ml-1"
                   >
                     &times;
                   </button>
@@ -919,14 +919,14 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
         )}
 
         {/* Postcard Publish Bar */}
-        <div className="pt-4 border-t border-gray-100 flex items-center justify-between">
+        <div className="pt-4 border-t border-slate-200 flex items-center justify-between">
           <div className="text-xs text-gray-500">
             {isCaptionValid ? (
               <span className="text-green-600 font-medium flex items-center gap-1">
                 <CheckCircleIcon className="w-4 h-4" /> Ready to publish
               </span>
             ) : (
-              <span className="text-gray-400">Caption required to publish</span>
+              <span className="text-slate-700">Caption required to publish</span>
             )}
           </div>
 

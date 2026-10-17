@@ -182,7 +182,7 @@ const LmsPage: React.FC = () => {
 
       {/* Stats Summary */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
           <div className="flex items-center">
             <BookOpenIcon className="w-8 h-8 text-blue-500" />
             <div className="ml-4">
@@ -194,7 +194,7 @@ const LmsPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
           <div className="flex items-center">
             <ChartBarIcon className="w-8 h-8 text-green-500" />
             <div className="ml-4">
@@ -206,7 +206,7 @@ const LmsPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
           <div className="flex items-center">
             <AcademicCapIcon className="w-8 h-8 text-purple-500" />
             <div className="ml-4">
@@ -218,7 +218,7 @@ const LmsPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
           <div className="flex items-center">
             <DocumentTextIcon className="w-8 h-8 text-indigo-500" />
             <div className="ml-4">
@@ -270,7 +270,7 @@ const LmsPage: React.FC = () => {
             {myCourses.map((course) => (
               <div
                 key={course.id}
-                className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100"
+                className="bg-white rounded-xl shadow-sm overflow-hidden border border-slate-200"
               >
                 <div className="relative">
                   <img

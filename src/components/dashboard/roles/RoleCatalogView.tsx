@@ -105,7 +105,7 @@ export const RoleCatalogView: React.FC<RoleCatalogViewProps> = ({
               placeholder="Search roles by title or scope..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-9 pr-3 py-2 text-xs bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 dark:text-white"
+              className="w-full pl-9 pr-3 py-2 text-xs bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 dark:text-white font-bold border-slate-300 placeholder:text-slate-400"
             />
           </div>
 
@@ -176,11 +176,11 @@ export const RoleCatalogView: React.FC<RoleCatalogViewProps> = ({
                   {/* Assigned Count */}
                   <td className="py-3.5 px-4">
                     {role.assignedUsersCount > 0 ? (
-                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 dark:bg-blue-950/40 text-blue-950 dark:text-blue-300 border border-blue-400 dark:border-blue-800 text-blue-950 border-blue-400 font-black">
                         {role.assignedUsersCount} Assigned
                       </span>
                     ) : (
-                      <span className="text-slate-400 text-[11px]">Not assigned</span>
+                      <span className="text-slate-700 text-[11px]">Not assigned</span>
                     )}
                   </td>
 

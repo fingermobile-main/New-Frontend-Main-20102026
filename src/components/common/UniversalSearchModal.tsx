@@ -466,12 +466,12 @@ export const UniversalSearchModal: React.FC<UniversalSearchModalProps> = ({ isOp
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Type a screen, product, radio, or ask Guardian AI..."
-            className="w-full bg-transparent text-slate-900 dark:text-white placeholder:text-slate-500 text-base focus:outline-none font-medium"
+            className="w-full bg-transparent text-slate-900 dark:text-white placeholder:text-slate-400 text-base focus:outline-none font-medium font-bold border border-slate-300 rounded focus:ring-2 focus:ring-indigo-500"
           />
           {query ? (
             <button
               onClick={() => setQuery('')}
-              className="p-1 rounded-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-200/50 dark:hover:bg-slate-800 transition"
+              className="p-1 rounded-full text-slate-700 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-200/50 dark:hover:bg-slate-800 transition"
             >
               <X className="w-4 h-4" />
             </button>
@@ -526,13 +526,13 @@ export const UniversalSearchModal: React.FC<UniversalSearchModalProps> = ({ isOp
                   </div>
 
                   <div className="flex items-center gap-2 pl-3 shrink-0">
-                    <span className="text-[10px] font-semibold text-slate-400 dark:text-slate-500 hidden sm:inline">
+                    <span className="text-[10px] font-semibold text-slate-700 dark:text-slate-500 hidden sm:inline">
                       {item.category}
                     </span>
                     {isSelected ? (
                       <CornerDownLeft className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />
                     ) : (
-                      <ArrowRight className="w-3.5 h-3.5 text-slate-300 dark:text-slate-600" />
+                      <ArrowRight className="w-3.5 h-3.5 text-slate-700 dark:text-slate-600" />
                     )}
                   </div>
                 </div>

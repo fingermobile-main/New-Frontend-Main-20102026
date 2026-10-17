@@ -156,7 +156,7 @@ const UGCMonetizationPanel = () => {
         </div>
       </div>
 
-      <div className="border-b border-gray-200 mb-6">
+      <div className="border-b border-slate-300 mb-6">
         <nav className="-mb-px flex space-x-8">
           <button
             type="button"
@@ -251,7 +251,7 @@ const UGCMonetizationPanel = () => {
               id="amount"
               value={formData.amount}
               onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
-              className="w-full p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+              className="w-full p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400 font-mono"
               placeholder="Enter amount"
               min="0"
               step="0.01"
@@ -266,7 +266,7 @@ const UGCMonetizationPanel = () => {
               id="method"
               value={formData.method}
               onChange={(e) => setFormData({ ...formData, method: e.target.value })}
-              className="w-full p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+              className="w-full p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 text-slate-900 font-bold border-slate-300 bg-white focus:ring-2"
             >
               <option value="">Select method</option>
               {withdrawalMethods.map((method) => (

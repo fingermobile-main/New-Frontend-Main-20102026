@@ -80,7 +80,7 @@ const MarketingPage: React.FC = () => {
           </div>
 
           {loading ? (
-            <p className="text-sm text-slate-400 py-6 text-center">Loading campaigns...</p>
+            <p className="text-sm text-slate-700 py-6 text-center">Loading campaigns...</p>
           ) : recentCampaigns.length === 0 ? (
             <div className="text-center py-8 text-slate-500">
               <p className="font-semibold text-sm">No active campaigns running</p>
@@ -119,11 +119,11 @@ const MarketingPage: React.FC = () => {
                   </h3>
                   <div className="mt-4 pt-3 border-t border-slate-200/60 grid grid-cols-2 gap-2 text-xs">
                     <div>
-                      <span className="text-slate-400 text-[10px] uppercase font-bold">Spent</span>
+                      <span className="text-slate-700 text-[10px] uppercase font-bold">Spent</span>
                       <p className="font-bold text-slate-800">{camp.spent ? `${camp.spent} FIC` : '0 FIC'}</p>
                     </div>
                     <div>
-                      <span className="text-slate-400 text-[10px] uppercase font-bold">Budget</span>
+                      <span className="text-slate-700 text-[10px] uppercase font-bold">Budget</span>
                       <p className="font-bold text-slate-500">{camp.budget ? `${camp.budget} FIC` : `${camp.total_budget || 0} FIC`}</p>
                     </div>
                   </div>

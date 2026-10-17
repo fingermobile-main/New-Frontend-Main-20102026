@@ -82,10 +82,10 @@ export const SiteMemberAccessView: React.FC<SiteMemberAccessViewProps> = ({
           <div>
             <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
               <span>Site Member Access</span>
-              <span className="text-xs font-mono font-medium px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+              <span className="text-xs font-mono font-medium px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-950 dark:text-emerald-300 border border-emerald-400 dark:border-emerald-800 text-emerald-950 border-emerald-400 font-black">
                 Gatekeeper Active
               </span>
-              <span className="text-xs font-mono font-medium px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800">
+              <span className="text-xs font-mono font-medium px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-950 dark:text-amber-300 border border-amber-400 dark:border-amber-800 text-amber-950 border-amber-400 font-black">
                 Subscription Synced
               </span>
             </h1>
@@ -179,7 +179,7 @@ export const SiteMemberAccessView: React.FC<SiteMemberAccessViewProps> = ({
                 placeholder="Search member roles & plans..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="pl-9 pr-3 py-2 text-xs bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 w-56 sm:w-64 text-slate-900 dark:text-white"
+                className="pl-9 pr-3 py-2 text-xs bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 w-56 sm:w-64 text-slate-900 dark:text-white font-bold border-slate-300 placeholder:text-slate-400"
               />
             </div>
           </div>
@@ -230,7 +230,7 @@ export const SiteMemberAccessView: React.FC<SiteMemberAccessViewProps> = ({
                           </span>
                         </div>
                       ) : (
-                        <span className="text-slate-400 text-[10px]">Standard System Role</span>
+                        <span className="text-slate-700 text-[10px]">Standard System Role</span>
                       )}
                     </td>
 
@@ -244,7 +244,7 @@ export const SiteMemberAccessView: React.FC<SiteMemberAccessViewProps> = ({
 
                     {/* Accessible Pages */}
                     <td className="py-3.5 px-4">
-                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800 font-mono font-bold text-[11px]">
+                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-50 dark:bg-blue-950/40 text-blue-950 dark:text-blue-300 border border-blue-400 dark:border-blue-800 font-mono font-bold text-[11px] text-blue-950 border-blue-400 font-black">
                         <Lock className="w-3 h-3 text-blue-500" />
                         <span>{role.accessiblePagesCount} pages</span>
                       </span>
@@ -263,7 +263,7 @@ export const SiteMemberAccessView: React.FC<SiteMemberAccessViewProps> = ({
                             await onDeleteMemberRole(role.id);
                           }
                         }}
-                        className="p-1.5 text-slate-400 hover:text-red-600 rounded-lg hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors"
+                        className="p-1.5 text-slate-700 hover:text-red-600 rounded-lg hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors"
                         title="Delete role"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -321,7 +321,7 @@ export const SiteMemberAccessView: React.FC<SiteMemberAccessViewProps> = ({
                       {page.requiredSubscriptionTier || 'Open / Public'}
                     </td>
                     <td className="p-3">
-                      <span className="px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 text-[10px] font-mono">
+                      <span className="px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-950 dark:text-blue-300 text-[10px] font-mono border text-blue-950 border-blue-400 font-black">
                         {page.allowedRoleIds?.[0] || 'Standard Member'}
                       </span>
                     </td>
@@ -444,7 +444,7 @@ export const SiteMemberAccessView: React.FC<SiteMemberAccessViewProps> = ({
                   placeholder="e.g. VIP Subscriber"
                   value={newRoleName}
                   onChange={(e) => setNewRoleName(e.target.value)}
-                  className="w-full px-3 py-2 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl"
+                  className="w-full px-3 py-2 text-xs bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
 
@@ -457,7 +457,7 @@ export const SiteMemberAccessView: React.FC<SiteMemberAccessViewProps> = ({
                   placeholder="Optional description"
                   value={newRoleDesc}
                   onChange={(e) => setNewRoleDesc(e.target.value)}
-                  className="w-full px-3 py-2 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl"
+                  className="w-full px-3 py-2 text-xs bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
 

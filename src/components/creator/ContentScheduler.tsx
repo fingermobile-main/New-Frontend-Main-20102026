@@ -129,7 +129,7 @@ const ContentScheduler: React.FC<ContentSchedulerProps> = ({ creatorId, onSchedu
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
             placeholder="Enter post title"
             required
           />
@@ -144,7 +144,7 @@ const ContentScheduler: React.FC<ContentSchedulerProps> = ({ creatorId, onSchedu
             value={content}
             onChange={(e) => setContent(e.target.value)}
             rows={6}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
             placeholder="Write your content here..."
             required
           />
@@ -162,7 +162,7 @@ const ContentScheduler: React.FC<ContentSchedulerProps> = ({ creatorId, onSchedu
               value={scheduledDate}
               onChange={(e) => setScheduledDate(e.target.value)}
               min={new Date().toISOString().split('T')[0]}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               required
             />
           </div>
@@ -175,7 +175,7 @@ const ContentScheduler: React.FC<ContentSchedulerProps> = ({ creatorId, onSchedu
               type="time"
               value={scheduledTime}
               onChange={(e) => setScheduledTime(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               required
             />
           </div>
@@ -213,7 +213,7 @@ const ContentScheduler: React.FC<ContentSchedulerProps> = ({ creatorId, onSchedu
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white"
           >
             <option value="">Select a category</option>
             {categories.map((cat) => (
@@ -231,7 +231,7 @@ const ContentScheduler: React.FC<ContentSchedulerProps> = ({ creatorId, onSchedu
             type="text"
             value={tags}
             onChange={(e) => setTags(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
             placeholder="tech, tutorial, beginner"
           />
         </div>
@@ -254,7 +254,7 @@ const ContentScheduler: React.FC<ContentSchedulerProps> = ({ creatorId, onSchedu
         )}
 
         {/* Submit Button */}
-        <div className="flex gap-3 pt-4 border-t border-gray-200">
+        <div className="flex gap-3 pt-4 border-t border-slate-300">
           <button
             type="submit"
             disabled={submitting}

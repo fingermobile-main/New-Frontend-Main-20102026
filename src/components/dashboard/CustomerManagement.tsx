@@ -208,13 +208,13 @@ const CustomerManagement: React.FC = () => {
 
       <div className="mb-6 flex flex-wrap gap-4">
         <div className="relative flex-grow">
-          <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+          <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-700" />
           <input
             type="text"
             placeholder="Search customers..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
           />
         </div>
 
@@ -223,7 +223,7 @@ const CustomerManagement: React.FC = () => {
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
-            className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white"
           >
             <option value="all">All Statuses</option>
             <option value="active">Active</option>
@@ -265,13 +265,13 @@ const CustomerManagement: React.FC = () => {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   <div className="flex items-center">
-                    <FiMapPin className="mr-1 text-gray-400" />
+                    <FiMapPin className="mr-1 text-slate-700" />
                     {customer.location}
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   <div className="flex items-center">
-                    <FiCalendar className="mr-1 text-gray-400" />
+                    <FiCalendar className="mr-1 text-slate-700" />
                     {customer.joinDate}
                   </div>
                 </td>
@@ -282,7 +282,7 @@ const CustomerManagement: React.FC = () => {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">
                   <div className="flex items-center">
-                    <FiDollarSign className="mr-1 text-gray-400" />
+                    <FiDollarSign className="mr-1 text-slate-700" />
                     {customer.totalSpent.toFixed(2)}
                   </div>
                 </td>

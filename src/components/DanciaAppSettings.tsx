@@ -237,7 +237,7 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                   </label>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="p-5 bg-white/5 border border-white/5 rounded-2xl">
-                      <label htmlFor="subtitleBackgroundColor" className="text-xs font-bold text-gray-400 block mb-3">Background Color</label>
+                      <label htmlFor="subtitleBackgroundColor" className="text-xs font-bold text-slate-800 block mb-3">Background Color</label>
                       <div className="flex space-x-3">
                         {['black', 'white'].map(color => (
                           <button
@@ -254,7 +254,7 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                       </div>
                     </div>
                     <div className="p-5 bg-white/5 border border-white/5 rounded-2xl">
-                      <label htmlFor="subtitleOutlineColor" className="text-xs font-bold text-gray-400 block mb-3">Outline Color</label>
+                      <label htmlFor="subtitleOutlineColor" className="text-xs font-bold text-slate-800 block mb-3">Outline Color</label>
                       <div className="flex space-x-3">
                         {['white', 'black', 'yellow', 'red'].map(color => (
                           <button
@@ -312,7 +312,7 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     id="equalizerPreset"
                     value={settings.equalizerPreset}
                     onChange={(e) => handleSelect('equalizerPreset', e.target.value)}
-                    className="w-full p-4 bg-white/5 border border-white/5 rounded-2xl text-white font-bold focus:border-blue-500 focus:ring-blue-500/20"
+                    className="w-full p-4 bg-white border border-white/5 rounded-2xl text-slate-900 font-bold focus:border-blue-500 focus:ring-blue-500/20 border-slate-300 focus:ring-2"
                   >
                     <option value="Flat">Flat</option>
                     <option value="Bass Boost">Bass Boost</option>
@@ -352,7 +352,7 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                         </div>
                         <div>
                           <p className="text-sm font-bold text-white uppercase tracking-tight">{item.label}</p>
-                          <p className="text-xs text-gray-400 mt-1">{item.desc}</p>
+                          <p className="text-xs text-slate-700 mt-1">{item.desc}</p>
                         </div>
                       </div>
                       <div className={`w-14 h-8 rounded-full p-1 transition-colors ${settings[item.id as keyof ProtocolSettings] ? 'bg-blue-600' : 'bg-gray-800'}`}>
@@ -378,7 +378,7 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                         <Heart className="text-red-500" size={20} />
                         <div>
                           <p className="text-sm font-bold text-white uppercase tracking-tight">Show Only Favorites</p>
-                          <p className="text-xs text-gray-400 mt-1">Display only bookmarked media</p>
+                          <p className="text-xs text-slate-700 mt-1">Display only bookmarked media</p>
                         </div>
                       </div>
                       <div className={`w-14 h-8 rounded-full p-1 transition-colors ${false ? 'bg-blue-600' : 'bg-gray-800'}`}>
@@ -390,7 +390,7 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                         <Video className="text-blue-500" size={20} />
                         <div>
                           <p className="text-sm font-bold text-white uppercase tracking-tight">Group Videos</p>
-                          <p className="text-xs text-gray-400 mt-1">Organize videos by categories</p>
+                          <p className="text-xs text-slate-700 mt-1">Organize videos by categories</p>
                         </div>
                       </div>
                       <div className={`w-14 h-8 rounded-full p-1 transition-colors ${false ? 'bg-blue-600' : 'bg-gray-800'}`}>
@@ -402,7 +402,7 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                         <Music className="text-purple-500" size={20} />
                         <div>
                           <p className="text-sm font-bold text-white uppercase tracking-tight">Group Audio</p>
-                          <p className="text-xs text-gray-400 mt-1">Organize audio by album/artist</p>
+                          <p className="text-xs text-slate-700 mt-1">Organize audio by album/artist</p>
                         </div>
                       </div>
                       <div className={`w-14 h-8 rounded-full p-1 transition-colors ${false ? 'bg-blue-600' : 'bg-gray-800'}`}>
@@ -484,7 +484,7 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                         <CheckCircle className={settings.emailVerificationEnabled ? 'text-green-500' : 'text-gray-500'} size={20} />
                         <div>
                           <p className="text-sm font-bold text-white">Email Verification</p>
-                          <p className="text-xs text-gray-400">Require email confirmation for sensitive actions</p>
+                          <p className="text-xs text-slate-700">Require email confirmation for sensitive actions</p>
                         </div>
                       </div>
                       <div className={`w-10 h-6 rounded-full p-1 transition-colors ${settings.emailVerificationEnabled ? 'bg-green-600' : 'bg-gray-800'}`}>
@@ -496,7 +496,7 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                         <CheckCircle className={settings.phoneVerificationEnabled ? 'text-green-500' : 'text-gray-500'} size={20} />
                         <div>
                           <p className="text-sm font-bold text-white">Phone Verification</p>
-                          <p className="text-xs text-gray-400">Require phone confirmation for sensitive actions</p>
+                          <p className="text-xs text-slate-700">Require phone confirmation for sensitive actions</p>
                         </div>
                       </div>
                       <div className={`w-10 h-6 rounded-full p-1 transition-colors ${settings.phoneVerificationEnabled ? 'bg-green-600' : 'bg-gray-800'}`}>

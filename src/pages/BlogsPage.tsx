@@ -395,7 +395,7 @@ const BlogsPage: React.FC = () => {
           <div className="lg:col-span-3">
 
             {/* Search and filters */}
-            <div className="bg-white rounded-2xl p-4 mb-6 shadow-md border border-gray-100">
+            <div className="bg-white rounded-2xl p-4 mb-6 shadow-md border border-slate-200">
               <div className="flex flex-col md:flex-row gap-4">
                 <div className="flex-1 relative">
                   <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-500" />
@@ -404,14 +404,14 @@ const BlogsPage: React.FC = () => {
                     placeholder="Search blog posts..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full bg-gray-100 text-gray-900 pl-10 pr-4 py-2 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                    className="w-full bg-white text-slate-900 pl-10 pr-4 py-2 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none font-bold border border-slate-300 placeholder:text-slate-400"
                   />
                 </div>
                 <div className="flex gap-2 flex-wrap">
                   <select
                     value={categoryFilter}
                     onChange={(e) => setCategoryFilter(e.target.value)}
-                    className="bg-gray-100 text-gray-900 px-3 py-2 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                    className="bg-white text-slate-900 px-3 py-2 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none font-bold border border-slate-300"
                   >
                     {categories.map((category) => (
                       <option key={category} value={category}>
@@ -422,7 +422,7 @@ const BlogsPage: React.FC = () => {
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
-                    className="bg-gray-100 text-gray-900 px-3 py-2 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                    className="bg-white text-slate-900 px-3 py-2 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none font-bold border border-slate-300"
                   >
                     <option value="recent">Most Recent</option>
                     <option value="popular">Most Popular</option>
@@ -452,11 +452,11 @@ const BlogsPage: React.FC = () => {
 
             {/* Stats */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-              <div className="bg-white rounded-xl p-4 shadow-md border border-gray-100">
+              <div className="bg-white rounded-xl p-4 shadow-md border border-slate-200">
                 <h3 className="text-gray-600 text-sm">Total Posts</h3>
                 <p className="text-2xl font-bold text-gray-900">{allPosts.length}</p>
               </div>
-              <div className="bg-white rounded-xl p-4 shadow-md border border-gray-100">
+              <div className="bg-white rounded-xl p-4 shadow-md border border-slate-200">
                 <h3 className="text-gray-600 text-sm">Authors</h3>
                 <p className="text-2xl font-bold text-gray-900">
                   {
@@ -465,7 +465,7 @@ const BlogsPage: React.FC = () => {
                   }
                 </p>
               </div>
-              <div className="bg-white rounded-xl p-4 shadow-md border border-gray-100">
+              <div className="bg-white rounded-xl p-4 shadow-md border border-slate-200">
                 <h3 className="text-gray-600 text-sm">Views</h3>
                 <p className="text-2xl font-bold text-gray-900">
                   {allPosts
@@ -473,7 +473,7 @@ const BlogsPage: React.FC = () => {
                     .toLocaleString()}
                 </p>
               </div>
-              <div className="bg-white rounded-xl p-4 shadow-md border border-gray-100">
+              <div className="bg-white rounded-xl p-4 shadow-md border border-slate-200">
                 <h3 className="text-gray-600 text-sm">Categories</h3>
                 <p className="text-2xl font-bold text-gray-900">
                   {categories.length - 1}
@@ -528,7 +528,7 @@ const BlogsPage: React.FC = () => {
                 )}
               </div>
             ) : (
-              <div className="bg-white rounded-2xl p-12 text-center shadow-md border border-gray-100">
+              <div className="bg-white rounded-2xl p-12 text-center shadow-md border border-slate-200">
                 <p className="text-gray-600 text-lg">
               No blog posts found matching your criteria.
                 </p>

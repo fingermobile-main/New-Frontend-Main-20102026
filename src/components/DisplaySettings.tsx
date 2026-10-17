@@ -89,7 +89,7 @@ const DisplaySettings: React.FC<DisplaySettingsProps> = ({
         <select
           value={sortCriteria}
           onChange={(e) => onSortChange?.(e.target.value as SortCriteria)}
-          className="bg-transparent border-none text-[10px] font-black text-white focus:ring-0 uppercase tracking-widest cursor-pointer"
+          className="bg-transparent border-none text-[10px] font-black text-slate-900 focus:ring-0 uppercase tracking-widest cursor-pointer font-bold border border-slate-300 rounded"
         >
           <option value="name">Name A-Z</option>
           <option value="number">Track No.</option>

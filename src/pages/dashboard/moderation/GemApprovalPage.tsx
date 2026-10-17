@@ -102,14 +102,14 @@ const GemApprovalPage: React.FC = () => {
               <div>
                 <div className="flex items-center gap-2">
                   <span className="font-bold text-gray-900 text-lg">{sub.title}</span>
-                  <span className="px-2 py-0.5 text-xs font-semibold bg-purple-100 text-purple-950 border border-purple-400 font-bold rounded-full">
+                  <span className="px-2 py-0.5 text-xs font-semibold bg-purple-100 text-purple-950 border border-purple-400 font-bold rounded-full font-black">
                     💎 {sub.gemAmount} Gems
                   </span>
                 </div>
                 <p className="text-sm text-gray-500 mt-0.5">
                   Requested for <strong className="text-gray-700">{sub.userName}</strong> (@{sub.userHandle}) &middot; {sub.submittedAt}
                 </p>
-                <p className="text-sm text-gray-600 mt-2 bg-gray-50 p-2.5 rounded-lg border border-gray-100">
+                <p className="text-sm text-gray-600 mt-2 bg-gray-50 p-2.5 rounded-lg border border-slate-200">
                   {sub.reason}
                 </p>
               </div>

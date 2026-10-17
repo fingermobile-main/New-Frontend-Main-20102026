@@ -32,9 +32,9 @@ const CreatePostPaylinkModal: React.FC<CreatePostPaylinkModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white rounded-xl shadow-2xl max-w-md w-full mx-4">
-        <div className="flex items-center justify-between p-6 border-b border-gray-200">
+        <div className="flex items-center justify-between p-6 border-b border-slate-300">
           <h2 className="text-xl font-bold text-gray-900">Create Paylink</h2>
-          <button onClick={onClose} aria-label="Close" className="text-gray-400 hover:text-gray-600">
+          <button onClick={onClose} aria-label="Close" className="text-slate-700 hover:text-gray-600">
             <XMarkIcon className="w-6 h-6" />
           </button>
         </div>
@@ -48,7 +48,7 @@ const CreatePostPaylinkModal: React.FC<CreatePostPaylinkModalProps> = ({
               onChange={(e) => setFormData({...formData, amount: e.target.value})}
               required
               min="1"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400 font-mono"
               placeholder="Enter amount"
             />
           </div>
@@ -58,7 +58,7 @@ const CreatePostPaylinkModal: React.FC<CreatePostPaylinkModalProps> = ({
             <select
               value={formData.currency}
               onChange={(e) => setFormData({...formData, currency: e.target.value})}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white"
             >
               <option value="FIC">FIC</option>
               <option value="USD">USD</option>
@@ -71,7 +71,7 @@ const CreatePostPaylinkModal: React.FC<CreatePostPaylinkModalProps> = ({
               value={formData.description}
               onChange={(e) => setFormData({...formData, description: e.target.value})}
               rows={3}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               placeholder="What is this payment for?"
             />
           </div>
@@ -81,7 +81,7 @@ const CreatePostPaylinkModal: React.FC<CreatePostPaylinkModalProps> = ({
             <select
               value={formData.expirationDays}
               onChange={(e) => setFormData({...formData, expirationDays: e.target.value})}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white"
             >
               <option value="1">1 day</option>
               <option value="7">7 days</option>

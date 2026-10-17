@@ -134,7 +134,7 @@ const MemberEarningPage: React.FC = () => {
             <div className="bg-white p-6 rounded-2xl border border-slate-300 shadow-sm">
               <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">Pending Settlement</h3>
               <p className="text-3xl font-extrabold text-amber-600 mt-2">${earningSummary.pendingEarnings.toFixed(2)}</p>
-              <span className="text-xs text-gray-400 mt-1 inline-block">Automated 24h cycle</span>
+              <span className="text-xs text-slate-700 mt-1 inline-block">Automated 24h cycle</span>
             </div>
             <div className="bg-white p-6 rounded-2xl border border-slate-300 shadow-sm">
               <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">Total Orders</h3>
@@ -167,13 +167,13 @@ const MemberEarningPage: React.FC = () => {
                 <div>
                   <div className="flex justify-between items-start gap-2">
                     <h3 className="font-bold text-gray-900 text-base">{service.title}</h3>
-                    <span className="text-xs px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 font-semibold flex-shrink-0">
+                    <span className="text-xs px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-950 font-semibold flex-shrink-0 border text-blue-950 border-blue-400 font-black">
                       {service.category}
                     </span>
                   </div>
                   <p className="text-xs text-gray-600 mt-2 line-clamp-2">{service.description}</p>
                 </div>
-                <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between">
+                <div className="mt-4 pt-4 border-t border-slate-200 flex items-center justify-between">
                   <span className="text-lg font-extrabold text-gray-900">${service.price}</span>
                   <div className="flex items-center gap-1 text-xs text-gray-500">
                     <span className="text-amber-500 font-bold">★ {service.rating}</span>
@@ -284,7 +284,7 @@ const MemberEarningPage: React.FC = () => {
                   value={newService.title}
                   onChange={(e) => setNewService({ ...newService, title: e.target.value })}
                   placeholder="e.g. 4K Video Color Grading"
-                  className="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                 />
               </div>
               <div>
@@ -294,7 +294,7 @@ const MemberEarningPage: React.FC = () => {
                   value={newService.description}
                   onChange={(e) => setNewService({ ...newService, description: e.target.value })}
                   placeholder="Describe your deliverable, turnaround time, and requirements..."
-                  className="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                 />
               </div>
               <div className="grid grid-cols-2 gap-3">
@@ -306,7 +306,7 @@ const MemberEarningPage: React.FC = () => {
                     step="1"
                     value={newService.price}
                     onChange={(e) => setNewService({ ...newService, price: parseFloat(e.target.value) || 5 })}
-                    className="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400 font-mono"
                   />
                 </div>
                 <div>
@@ -314,7 +314,7 @@ const MemberEarningPage: React.FC = () => {
                   <select
                     value={newService.category}
                     onChange={(e) => setNewService({ ...newService, category: e.target.value })}
-                    className="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white"
                   >
                     <option value="Design">Design</option>
                     <option value="Audio">Audio</option>

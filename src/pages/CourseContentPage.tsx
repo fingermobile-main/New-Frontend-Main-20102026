@@ -86,7 +86,7 @@ const CourseContentPage: React.FC = () => {
                 <p>{content?.currentModule?.description}</p>
               </div>
 
-              <div className="mt-8 pt-6 border-t border-gray-200 flex justify-between">
+              <div className="mt-8 pt-6 border-t border-slate-300 flex justify-between">
                 <button className="px-4 py-2 border border-gray-300 rounded text-gray-600 hover:bg-gray-50" disabled>Previous</button>
                 <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 font-medium shadow-sm transition-colors">Next Module</button>
               </div>

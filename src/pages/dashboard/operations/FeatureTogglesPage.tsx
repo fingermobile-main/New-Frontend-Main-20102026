@@ -114,7 +114,7 @@ const FeatureTogglesPage: React.FC = () => {
                   <input
                     type="checkbox"
                     id="tropical-toggle"
-                    className="sr-only"
+                    className="sr-only text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                     checked={tropicalGiftsToggle.enabled}
                     onChange={(e) => handleToggle('tropical_gifts', e.target.checked)}
                   />
@@ -132,7 +132,7 @@ const FeatureTogglesPage: React.FC = () => {
                   type="date"
                   value={newSpecialDay}
                   onChange={e => setNewSpecialDay(e.target.value)}
-                  className="p-2 border rounded-md"
+                  className="p-2 border rounded-md text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
                 <button type="submit" className="px-4 py-2 text-sm font-semibold bg-gray-200 rounded-md hover:bg-gray-300">Add Day</button>
               </form>

@@ -95,38 +95,38 @@ const GiftCardsPage: React.FC = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-bold text-gray-900">Gift Cards</h2>
-        <p className="mt-1 text-gray-600">Buy, send, or redeem gift cards</p>
+        <h2 className="text-2xl font-black text-slate-900">Gift Cards</h2>
+        <p className="mt-1 text-sm font-medium text-slate-700">Buy, send, or redeem gift cards securely</p>
       </div>
 
-      <div className="border-b border-gray-200">
+      <div className="border-b border-slate-300">
         <nav className="-mb-px flex space-x-8">
           <button
             onClick={() => setActiveTab('your-cards')}
-            className={`py-4 px-1 border-b-2 font-medium text-sm ${
+            className={`py-4 px-1 border-b-2 font-bold text-sm transition-colors ${
               activeTab === 'your-cards'
                 ? 'border-brand-blue text-brand-blue'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300'
             }`}
           >
             Your Gift Cards
           </button>
           <button
             onClick={() => setActiveTab('buy')}
-            className={`py-4 px-1 border-b-2 font-medium text-sm ${
+            className={`py-4 px-1 border-b-2 font-bold text-sm transition-colors ${
               activeTab === 'buy'
                 ? 'border-brand-blue text-brand-blue'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300'
             }`}
           >
             Buy Gift Cards
           </button>
           <button
             onClick={() => setActiveTab('redeem')}
-            className={`py-4 px-1 border-b-2 font-medium text-sm ${
+            className={`py-4 px-1 border-b-2 font-bold text-sm transition-colors ${
               activeTab === 'redeem'
                 ? 'border-brand-blue text-brand-blue'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300'
             }`}
           >
             Redeem Gift Card
@@ -137,55 +137,55 @@ const GiftCardsPage: React.FC = () => {
       {activeTab === 'your-cards' && (
         <div>
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold text-gray-900">Your Gift Cards</h3>
+            <h3 className="text-lg font-bold text-slate-900">Your Gift Cards</h3>
             <button
               onClick={() => openModal('gift')}
-              className="px-4 py-2 bg-brand-blue text-white rounded-md hover:bg-blue-700"
+              className="px-4 py-2 bg-brand-blue text-white font-bold rounded-lg hover:bg-blue-700 shadow-sm transition-colors"
             >
               Send Gift Card
             </button>
           </div>
 
           {isLoading ? (
-            <div className="py-12 text-center text-gray-500">Loading gift cards...</div>
+            <div className="py-12 text-center text-slate-700 font-medium">Loading gift cards...</div>
           ) : yourGiftCards.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {yourGiftCards.map((card: GiftCard) => (
                 <div key={card.id} className="bg-white border border-slate-300 rounded-xl overflow-hidden shadow-sm">
                   <div className="h-32 bg-gradient-to-r from-brand-blue to-purple-600 flex items-center justify-center">
-                    <span className="text-white font-bold text-3xl">{card.value} FIC</span>
+                    <span className="text-white font-black text-3xl tracking-tight">{card.value} FIC</span>
                   </div>
                   <div className="p-6">
                     <div className="flex justify-between items-start">
                       <div>
-                        <h4 className="text-lg font-bold text-gray-900">{card.value} FIC</h4>
-                        <p className="text-sm text-gray-600">Gift Card</p>
+                        <h4 className="text-lg font-black text-slate-900">{card.value} FIC</h4>
+                        <p className="text-xs font-semibold text-slate-700 uppercase tracking-wider">Gift Card</p>
                       </div>
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold ${
                         card.status === 'active'
-                          ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
+                          ? 'bg-emerald-100 text-emerald-950 border border-emerald-400'
                           : card.status === 'used'
-                            ? 'bg-gray-100 text-gray-800'
-                            : 'bg-red-100 text-red-950 border border-red-400 font-bold'
+                            ? 'bg-slate-100 text-slate-900 border border-slate-300'
+                            : 'bg-rose-100 text-rose-950 border border-rose-400'
                       }`}>
                         {card.status.charAt(0).toUpperCase() + card.status.slice(1)}
                       </span>
                     </div>
 
                     <div className="mt-4">
-                      <p className="text-sm text-gray-600">Code</p>
-                      <p className="font-mono font-semibold text-gray-900 select-all">{card.code}</p>
+                      <p className="text-xs font-semibold text-slate-700 uppercase tracking-wider">Code</p>
+                      <p className="font-mono font-bold text-slate-900 select-all mt-0.5">{card.code}</p>
                     </div>
 
                     <div className="mt-4">
-                      <p className="text-sm text-gray-600">Expires</p>
-                      <p className="text-gray-900">{new Date(card.expiryDate).toLocaleDateString()}</p>
+                      <p className="text-xs font-semibold text-slate-700 uppercase tracking-wider">Expires</p>
+                      <p className="text-sm font-semibold text-slate-800 mt-0.5">{new Date(card.expiryDate).toLocaleDateString()}</p>
                     </div>
 
                     {card.status === 'active' && (
                       <button
                         onClick={() => openModal('giftCardQR', { card })}
-                        className="mt-4 w-full px-4 py-2 bg-brand-blue text-white rounded-md hover:bg-blue-700"
+                        className="mt-5 w-full px-4 py-2.5 bg-brand-blue text-white font-bold rounded-lg hover:bg-blue-700 shadow-sm transition-colors"
                       >
                         View QR Code
                       </button>
@@ -195,16 +195,16 @@ const GiftCardsPage: React.FC = () => {
               ))}
             </div>
           ) : (
-            <div className="bg-white rounded-xl shadow-md p-12 text-center">
-              <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="bg-white border border-slate-300 rounded-xl shadow-sm p-12 text-center">
+              <svg className="mx-auto h-12 w-12 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"></path>
               </svg>
-              <h3 className="mt-2 text-lg font-medium text-gray-900">No gift cards</h3>
-              <p className="mt-1 text-gray-500">Get started by buying a gift card.</p>
+              <h3 className="mt-3 text-lg font-bold text-slate-900">No gift cards found</h3>
+              <p className="mt-1 text-sm font-medium text-slate-700">Get started by purchasing a gift card for yourself or a colleague.</p>
               <div className="mt-6">
                 <button
                   onClick={() => setActiveTab('buy')}
-                  className="px-4 py-2 bg-brand-blue text-white rounded-md hover:bg-blue-700"
+                  className="px-5 py-2.5 bg-brand-blue text-white font-bold rounded-lg hover:bg-blue-700 shadow-sm transition-colors"
                 >
                   Buy Gift Card
                 </button>
@@ -216,37 +216,37 @@ const GiftCardsPage: React.FC = () => {
 
       {activeTab === 'buy' && (
         <div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Buy Gift Cards</h3>
+          <h3 className="text-lg font-bold text-slate-900 mb-4">Buy Gift Cards</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[25, 50, 100, 250].map((amount) => (
               <div key={amount} className="bg-white border border-slate-300 rounded-xl p-6 text-center hover:shadow-md transition-shadow">
                 <div className="w-16 h-16 mx-auto bg-gradient-to-r from-brand-blue to-purple-600 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-xl">{amount}</span>
+                  <span className="text-white font-black text-xl">{amount}</span>
                 </div>
-                <h4 className="mt-4 font-bold text-gray-900">{amount} FIC</h4>
-                <p className="mt-1 text-gray-600">Gift Card</p>
+                <h4 className="mt-4 font-black text-slate-900">{amount} FIC</h4>
+                <p className="mt-1 text-xs font-semibold text-slate-700 uppercase tracking-wider">Gift Card</p>
                 <button
                   onClick={() => handleBuyCard(amount)}
-                  className="mt-4 w-full px-4 py-2 bg-brand-blue text-white rounded-md hover:bg-blue-700"
+                  className="mt-4 w-full px-4 py-2.5 bg-brand-blue text-white font-bold rounded-lg hover:bg-blue-700 shadow-sm transition-colors"
                 >
                   Buy for {amount} FIC
                 </button>
               </div>
             ))}
 
-            <div className="bg-white border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-gray-400 transition-colors">
-              <div className="w-16 h-16 mx-auto bg-gray-100 rounded-full flex items-center justify-center">
-                <svg className="w-8 h-8 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="bg-white border-2 border-dashed border-slate-300 rounded-xl p-6 text-center hover:border-slate-400 transition-colors">
+              <div className="w-16 h-16 mx-auto bg-slate-100 rounded-full flex items-center justify-center">
+                <svg className="w-8 h-8 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                 </svg>
               </div>
-              <h4 className="mt-4 font-bold text-gray-900">Custom Amount</h4>
-              <p className="mt-1 text-gray-600">Choose your own value</p>
+              <h4 className="mt-4 font-black text-slate-900">Custom Amount</h4>
+              <p className="mt-1 text-xs font-semibold text-slate-700 uppercase tracking-wider">Choose your own value</p>
               <button
                 onClick={() => openModal('gift')}
-                className="mt-4 w-full px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50"
+                className="mt-4 w-full px-4 py-2.5 border border-slate-300 text-slate-800 font-bold rounded-lg hover:bg-slate-50 shadow-sm transition-colors"
               >
-                Select
+                Select Amount
               </button>
             </div>
           </div>
@@ -255,36 +255,36 @@ const GiftCardsPage: React.FC = () => {
 
       {activeTab === 'redeem' && (
         <div className="max-w-md mx-auto">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Redeem Gift Card</h3>
-          <form onSubmit={handleRedeem} className="bg-white rounded-xl shadow-md p-6">
+          <h3 className="text-lg font-bold text-slate-900 mb-4">Redeem Gift Card</h3>
+          <form onSubmit={handleRedeem} className="bg-white border border-slate-300 rounded-xl shadow-sm p-6">
             <div>
-              <label htmlFor="gift-card-code" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="gift-card-code" className="block text-sm font-bold text-slate-800">
                 Gift Card Code
               </label>
-              <div className="mt-1">
+              <div className="mt-1.5">
                 <input
                   type="text"
                   id="gift-card-code"
                   value={redeemCode}
                   onChange={(e) => setRedeemCode(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-brand-blue focus:border-brand-blue font-mono"
+                  className="w-full px-3.5 py-2.5 bg-white border border-slate-300 text-slate-900 font-bold rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-brand-blue font-mono placeholder:text-slate-400"
                   placeholder="e.g. GC-XXXXXXXX"
                   required
                 />
               </div>
             </div>
 
-            <div className="mt-4">
-              <label htmlFor="security-code" className="block text-sm font-medium text-gray-700">
+            <div className="mt-5">
+              <label htmlFor="security-code" className="block text-sm font-bold text-slate-800">
                 Security Code (Optional)
               </label>
-              <div className="mt-1">
+              <div className="mt-1.5">
                 <input
                   type="password"
                   id="security-code"
                   value={securityCode}
                   onChange={(e) => setSecurityCode(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-brand-blue focus:border-brand-blue"
+                  className="w-full px-3.5 py-2.5 bg-white border border-slate-300 text-slate-900 font-bold rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-brand-blue placeholder:text-slate-400"
                   placeholder="Enter security code if applicable"
                 />
               </div>
@@ -293,7 +293,7 @@ const GiftCardsPage: React.FC = () => {
             <button
               type="submit"
               disabled={isRedeeming}
-              className="mt-6 w-full px-4 py-2 bg-brand-blue text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
+              className="mt-6 w-full px-4 py-2.5 bg-brand-blue text-white font-bold rounded-lg hover:bg-blue-700 shadow-sm disabled:opacity-50 transition-colors"
             >
               {isRedeeming ? 'Redeeming...' : 'Redeem Gift Card'}
             </button>

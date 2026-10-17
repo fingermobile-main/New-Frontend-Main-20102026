@@ -259,7 +259,7 @@ const AdminControlDashboard: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           <div className="lg:col-span-3">
             {/* Security Controls */}
-            <div className="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-gray-100">
+            <div className="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-slate-200">
               <div className="p-1 bg-gradient-to-r from-red-500 to-orange-500 rounded-lg mb-6"></div>
               <h2 className="text-lg font-medium text-gray-900 mb-4">
                 Security Controls
@@ -274,7 +274,7 @@ const AdminControlDashboard: React.FC = () => {
                     type="password"
                     value={pin}
                     onChange={(e) => setPin(e.target.value)}
-                    className="w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-lg px-4 py-2"
+                    className="w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-lg px-4 py-2 text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                     placeholder="Enter admin PIN"
                   />
                 </div>
@@ -289,7 +289,7 @@ const AdminControlDashboard: React.FC = () => {
                       type="checkbox"
                       checked={biometricVerified}
                       onChange={(e) => setBiometricVerified(e.target.checked)}
-                      className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                      className="h-4 w-4 text-slate-900 focus:ring-indigo-500 border-gray-300 rounded font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                     />
                     <span className="ml-2 text-sm text-gray-700">
                       Verify biometric identity
@@ -306,7 +306,7 @@ const AdminControlDashboard: React.FC = () => {
                     type="text"
                     value={otp}
                     onChange={(e) => setOtp(e.target.value)}
-                    className="w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-lg px-4 py-2"
+                    className="w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-lg px-4 py-2 text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                     placeholder="Enter OTP"
                   />
                 </div>
@@ -351,8 +351,8 @@ const AdminControlDashboard: React.FC = () => {
 
             {/* Tab Content */}
             {activeTab === 'actions' && (
-              <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
-                <div className="px-6 py-5 border-b border-gray-200">
+              <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-200">
+                <div className="px-6 py-5 border-b border-slate-300">
                   <h3 className="text-lg leading-6 font-medium text-gray-900">
                     Available Actions
                   </h3>
@@ -373,12 +373,12 @@ const AdminControlDashboard: React.FC = () => {
                           </p>
                           <div className="mt-2 flex flex-wrap gap-2">
                             {action.requiresOTP && (
-                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-950 border border-amber-400 font-bold">
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-950 border border-amber-400 font-bold font-black">
                                 OTP Required
                               </span>
                             )}
                             {action.requiresBiometric && (
-                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-950 border border-blue-400 font-bold">
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-950 border border-blue-400 font-bold font-black">
                                 Biometric
                               </span>
                             )}
@@ -403,7 +403,7 @@ const AdminControlDashboard: React.FC = () => {
                       </div>
 
                       {selectedAction?.id === action.id && (
-                        <div className="mt-4 pt-4 border-t border-gray-200">
+                        <div className="mt-4 pt-4 border-t border-slate-300">
                           <div className="flex justify-between items-center">
                             <div>
                               <p className="text-sm text-gray-500">
@@ -446,7 +446,7 @@ const AdminControlDashboard: React.FC = () => {
                   </button>
                 </div>
 
-                <div className="bg-white shadow overflow-hidden sm:rounded-md rounded-2xl border border-gray-100">
+                <div className="bg-white shadow overflow-hidden sm:rounded-md rounded-2xl border border-slate-200">
                   <ul className="divide-y divide-gray-200">
                     {members.map((member) => (
                       <li key={member.id}>
@@ -510,8 +510,8 @@ const AdminControlDashboard: React.FC = () => {
             )}
 
             {activeTab === 'audit' && (
-              <div className="bg-white shadow overflow-hidden sm:rounded-md rounded-2xl border border-gray-100">
-                <div className="px-6 py-5 border-b border-gray-200">
+              <div className="bg-white shadow overflow-hidden sm:rounded-md rounded-2xl border border-slate-200">
+                <div className="px-6 py-5 border-b border-slate-300">
                   <h3 className="text-lg leading-6 font-medium text-gray-900">
                     Audit Logs
                   </h3>
@@ -632,7 +632,7 @@ const AdminControlDashboard: React.FC = () => {
                     type="text"
                     value={newMember.name}
                     onChange={(e) => setNewMember({ ...newMember, name: e.target.value })}
-                    className="mt-1 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-lg px-4 py-2"
+                    className="mt-1 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-lg px-4 py-2 text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                   />
                 </div>
                 <div>
@@ -648,7 +648,7 @@ const AdminControlDashboard: React.FC = () => {
                         role: e.target.value as AdminMemberItem['role']
                       })
                     }
-                    className="mt-1 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-lg px-4 py-2"
+                    className="mt-1 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-lg px-4 py-2 text-slate-900 font-bold border-slate-300 bg-white focus:ring-2"
                   >
                     <option value="ADMIN">Admin</option>
                     <option value="MODERATOR">Moderator</option>
@@ -705,7 +705,7 @@ const AdminControlDashboard: React.FC = () => {
                       name: e.target.value
                     })
                     }
-                    className="mt-1 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-lg px-4 py-2"
+                    className="mt-1 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-lg px-4 py-2 text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                   />
                 </div>
                 <div>
@@ -721,7 +721,7 @@ const AdminControlDashboard: React.FC = () => {
                         role: e.target.value as AdminMemberItem['role']
                       })
                     }
-                    className="mt-1 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-lg px-4 py-2"
+                    className="mt-1 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-lg px-4 py-2 text-slate-900 font-bold border-slate-300 bg-white focus:ring-2"
                   >
                     <option value="ADMIN">Admin</option>
                     <option value="MODERATOR">Moderator</option>
@@ -744,7 +744,7 @@ const AdminControlDashboard: React.FC = () => {
                             isActive: e.target.checked
                           })
                         }
-                        className="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                        className="rounded border-gray-300 text-slate-900 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                       />
                       <span className="ml-2">Active</span>
                     </label>

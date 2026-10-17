@@ -97,7 +97,7 @@ const SupportPage: React.FC = () => {
                         value={formData.subject}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-slate-900 font-bold border-slate-300 placeholder:text-slate-400"
                         placeholder="Briefly describe your issue" />
                     </div>
 
@@ -110,7 +110,7 @@ const SupportPage: React.FC = () => {
                         name="category"
                         value={formData.category}
                         onChange={handleChange}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-slate-900 font-bold border-slate-300"
                       >
                         <option value="general">General Inquiry</option>
                         <option value="billing">Billing</option>
@@ -131,7 +131,7 @@ const SupportPage: React.FC = () => {
                       name="ticketType"
                       value={formData.ticketType}
                       onChange={handleChange}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-slate-900 font-bold border-slate-300"
                     >
                       <option value="support">Support Request</option>
                       <option value="bug">Bug Report</option>
@@ -149,7 +149,7 @@ const SupportPage: React.FC = () => {
                       name="priority"
                       value={formData.priority}
                       onChange={handleChange}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-slate-900 font-bold border-slate-300"
                     >
                       <option value="low">Low</option>
                       <option value="medium">Medium</option>
@@ -168,7 +168,7 @@ const SupportPage: React.FC = () => {
                       onChange={handleChange}
                       required
                       rows={6}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-slate-900 font-bold border-slate-300 placeholder:text-slate-400"
                       placeholder="Please provide detailed information about your issue..."
                     ></textarea>
                   </div>
@@ -246,12 +246,12 @@ const SupportPage: React.FC = () => {
           <h2 className="text-xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
 
           <div className="space-y-4">
-            <div className="border-b border-gray-200 pb-4">
+            <div className="border-b border-slate-300 pb-4">
               <h3 className="font-medium text-gray-900">How long does it take to respond to tickets?</h3>
               <p className="text-gray-600 mt-2">We typically respond to support tickets within 24-48 hours during business days.</p>
             </div>
 
-            <div className="border-b border-gray-200 pb-4">
+            <div className="border-b border-slate-300 pb-4">
               <h3 className="font-medium text-gray-900">Can I update my ticket after submission?</h3>
               <p className="text-gray-600 mt-2">Yes, you can update your ticket by replying to the confirmation email or contacting support directly.</p>
             </div>

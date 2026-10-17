@@ -128,7 +128,7 @@ const GamificationDashboard: React.FC = () => {
   return (
     <div className="bg-white rounded-xl shadow-md overflow-hidden">
       {/* Tabs */}
-      <div className="border-b border-gray-200">
+      <div className="border-b border-slate-300">
         <nav className="-mb-px flex space-x-8 px-6" aria-label="Tabs">
           <button
             onClick={() => setActiveTab('stats')}
@@ -173,7 +173,7 @@ const GamificationDashboard: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-5 border border-blue-100">
                 <div className="flex items-center">
-                  <div className="p-3 bg-blue-100 rounded-full">
+                  <div className="p-3 bg-blue-100 rounded-full border text-blue-950 border-blue-400 font-black">
                     <CurrencyDollarIcon className="h-6 w-6 text-blue-600" />
                   </div>
                   <div className="ml-4">
@@ -185,7 +185,7 @@ const GamificationDashboard: React.FC = () => {
 
               <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-lg p-5 border border-amber-100">
                 <div className="flex items-center">
-                  <div className="p-3 bg-amber-100 rounded-full">
+                  <div className="p-3 bg-amber-100 rounded-full border text-amber-950 border-amber-400 font-black">
                     <TrophyIcon className="h-6 w-6 text-amber-600" />
                   </div>
                   <div className="ml-4">
@@ -226,7 +226,7 @@ const GamificationDashboard: React.FC = () => {
 
             <div className="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg p-5 border border-purple-100">
               <div className="flex items-center">
-                <div className="p-3 bg-purple-100 rounded-full">
+                <div className="p-3 bg-purple-100 rounded-full border text-purple-950 border-purple-400 font-black">
                   <GiftIcon className="h-6 w-6 text-purple-600" />
                 </div>
                 <div className="ml-4">
@@ -271,7 +271,7 @@ const GamificationDashboard: React.FC = () => {
                       <h4 className="font-medium text-gray-900">{achievement.title}</h4>
                       <p className="text-sm text-gray-600 mt-1">{achievement.description}</p>
                       <div className="mt-2 flex items-center justify-between">
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-950 border border-blue-400 font-bold">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-950 border border-blue-400 font-bold font-black">
                           {achievement.points} pts
                         </span>
                         {achievement.completed ? (
@@ -279,7 +279,7 @@ const GamificationDashboard: React.FC = () => {
                             Completed
                           </span>
                         ) : (
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-950 border border-amber-400 font-bold">
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-950 border border-amber-400 font-bold font-black">
                             In Progress
                           </span>
                         )}
@@ -343,7 +343,7 @@ const GamificationDashboard: React.FC = () => {
                         </div>
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-950 border border-purple-400 font-bold">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-950 border border-purple-400 font-bold font-black">
                           {entry.level}
                         </span>
                       </td>

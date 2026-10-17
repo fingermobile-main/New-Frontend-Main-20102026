@@ -205,7 +205,7 @@ const ProtocolDemoPage: React.FC = () => {
                   id="encryption"
                   checked={useEncryption}
                   onChange={(e) => setUseEncryption(e.target.checked)}
-                  className="mr-2"
+                  className="mr-2 text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
                 <label htmlFor="encryption">Enable Encryption</label>
               </div>
@@ -251,7 +251,7 @@ const ProtocolDemoPage: React.FC = () => {
                   type="text"
                   value={destination}
                   onChange={(e) => setDestination(e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded-md"
+                  className="w-full p-2 border border-gray-300 rounded-md text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   placeholder="Enter destination"
                 />
               </div>
@@ -263,7 +263,7 @@ const ProtocolDemoPage: React.FC = () => {
                 <select
                   value={messageType}
                   onChange={(e) => setMessageType(e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded-md"
+                  className="w-full p-2 border border-gray-300 rounded-md text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500"
                 >
                   <option value="notification">Notification</option>
                   <option value="data_request">Data Request</option>
@@ -282,7 +282,7 @@ const ProtocolDemoPage: React.FC = () => {
                   value={messageContent}
                   onChange={(e) => setMessageContent(e.target.value)}
                   placeholder="Enter message content"
-                  className="w-full p-2 border border-gray-300 rounded-md h-24"
+                  className="w-full p-2 border border-gray-300 rounded-md h-24 text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
 

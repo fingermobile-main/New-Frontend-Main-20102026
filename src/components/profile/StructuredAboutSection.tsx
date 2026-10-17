@@ -354,7 +354,7 @@ export const StructuredAboutSection: React.FC<StructuredAboutSectionProps> = ({
                     rows={4}
                     value={editingValues.bio || ''}
                     onChange={(e) => setEditingValues({ ...editingValues, bio: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border border-slate-300 bg-white text-slate-900 font-medium text-xs focus:ring-2 focus:ring-slate-900 focus:outline-hidden"
+                    className="w-full px-4 py-3 rounded-xl border border-slate-300 bg-white text-slate-900 font-medium text-xs focus:ring-2 focus:ring-slate-900 focus:outline-hidden font-bold placeholder:text-slate-400"
                   />
                   <div className="flex items-center justify-end gap-2">
                     <button
@@ -469,7 +469,7 @@ export const StructuredAboutSection: React.FC<StructuredAboutSectionProps> = ({
                   {isOwner || isFriend ? (
                     <span className="font-black text-slate-900">{profileData.birthday || '18 June 1992'}</span>
                   ) : (
-                    <span className="text-slate-400 italic flex items-center gap-1">
+                    <span className="text-slate-700 italic flex items-center gap-1">
                       <Lock className="w-3.5 h-3.5" /> Hidden from strangers
                     </span>
                   )}
@@ -715,7 +715,7 @@ export const StructuredAboutSection: React.FC<StructuredAboutSectionProps> = ({
                   {isOwner || isFriend ? (
                     <span className="font-mono font-black text-slate-900">{profileData.contact_email || 'founder@fingermobileprotocol.com'}</span>
                   ) : (
-                    <span className="text-slate-400 italic flex items-center gap-1">
+                    <span className="text-slate-700 italic flex items-center gap-1">
                       <Lock className="w-3.5 h-3.5" /> Restricted to Verified Friends
                     </span>
                   )}

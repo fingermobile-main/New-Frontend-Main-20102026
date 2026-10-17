@@ -302,7 +302,7 @@ const EditCourse: React.FC = () => {
                 name="title"
                 value={formData.title}
                 onChange={handleChange}
-                className={`w-full px-3 py-2 border rounded-lg ${
+                className={`w-full px-3 py-2 border rounded-lg  text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400${
                   errors.title
                     ? 'border-red-500'
                     : 'border-slate-300 dark:border-gray-600'
@@ -326,7 +326,7 @@ const EditCourse: React.FC = () => {
                 name="category"
                 value={formData.category}
                 onChange={handleChange}
-                className={`w-full px-3 py-2 border rounded-lg ${
+                className={`w-full px-3 py-2 border rounded-lg  text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400${
                   errors.category
                     ? 'border-red-500'
                     : 'border-slate-300 dark:border-gray-600'
@@ -352,7 +352,7 @@ const EditCourse: React.FC = () => {
                 onChange={handleChange}
                 min="0"
                 step="0.01"
-                className={`w-full px-3 py-2 border rounded-lg ${
+                className={`w-full px-3 py-2 border rounded-lg  text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono${
                   errors.price
                     ? 'border-red-500'
                     : 'border-slate-300 dark:border-gray-600'
@@ -376,7 +376,7 @@ const EditCourse: React.FC = () => {
                 name="level"
                 value={formData.level}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-slate-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-slate-900 dark:text-white font-bold shadow-sm"
+                className="w-full px-3 py-2 border border-slate-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-slate-900 dark:text-white font-bold shadow-sm focus:ring-2 focus:ring-indigo-500"
               >
                 <option value="beginner">Beginner</option>
                 <option value="intermediate">Intermediate</option>
@@ -398,7 +398,7 @@ const EditCourse: React.FC = () => {
               value={formData.description}
               onChange={handleChange}
               rows={4}
-              className={`w-full px-3 py-2 border rounded-lg ${
+              className={`w-full px-3 py-2 border rounded-lg  text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400${
                 errors.description
                   ? 'border-red-500'
                   : 'border-slate-300 dark:border-gray-600'
@@ -427,7 +427,7 @@ const EditCourse: React.FC = () => {
             {formData.modules.map((module, moduleIndex) => (
               <div
                 key={moduleIndex}
-                className="mb-6 p-4 border border-gray-200 dark:border-gray-700 rounded-xl"
+                className="mb-6 p-4 border border-slate-300 dark:border-gray-700 rounded-xl"
               >
                 <div className="flex justify-between items-center mb-4">
                   <div className="flex-1 mr-4">
@@ -439,7 +439,7 @@ const EditCourse: React.FC = () => {
                       value={module.title}
                       onChange={(e) => handleModuleChange(moduleIndex, 'title', e.target.value)
                       }
-                      className={`w-full px-3 py-2 border rounded-lg ${
+                      className={`w-full px-3 py-2 border rounded-lg  text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400${
                         errors[`module_${moduleIndex}_title`]
                           ? 'border-red-500'
                           : 'border-slate-300 dark:border-gray-600'
@@ -498,7 +498,7 @@ const EditCourse: React.FC = () => {
                               e.target.value,
                             )
                             }
-                            className={`w-full px-3 py-2 text-sm border rounded-lg ${
+                            className={`w-full px-3 py-2 text-sm border rounded-lg  text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400${
                               errors[
                                 `module_${moduleIndex}_lesson_${lessonIndex}_title`
                               ]
@@ -524,7 +524,7 @@ const EditCourse: React.FC = () => {
                               )
                             }
                             rows={2}
-                            className="w-full px-3 py-2 text-sm border border-slate-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-slate-900 dark:text-white font-bold shadow-sm"
+                            className="w-full px-3 py-2 text-sm border border-slate-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-slate-900 dark:text-white font-bold shadow-sm focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                             placeholder="Lesson content or description"
                           />
                         </div>
@@ -544,7 +544,7 @@ const EditCourse: React.FC = () => {
                                 e.target.value,
                               )
                               }
-                              className="w-full px-2 py-1 text-sm border border-slate-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-slate-900 dark:text-white font-bold shadow-sm"
+                              className="w-full px-2 py-1 text-sm border border-slate-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-slate-900 dark:text-white font-bold shadow-sm focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                               placeholder="https://example.com/video"
                             />
                           </div>
@@ -565,7 +565,7 @@ const EditCourse: React.FC = () => {
                                 )
                               }
                               min="0"
-                              className="w-full px-2 py-1 text-sm border border-slate-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-slate-900 dark:text-white font-bold shadow-sm"
+                              className="w-full px-2 py-1 text-sm border border-slate-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-slate-900 dark:text-white font-bold shadow-sm focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
                               placeholder="0"
                             />
                           </div>

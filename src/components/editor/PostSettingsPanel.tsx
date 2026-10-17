@@ -227,7 +227,7 @@ export const PostSettingsPanel: React.FC<PostSettingsPanelProps> = ({
               type="checkbox"
               checked={settings.isScheduled}
               onChange={(e) => update({ isScheduled: e.target.checked })}
-              className="accent-orange-500 rounded"
+              className="accent-orange-500 rounded text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
             />
             <span className="text-[11px] font-semibold text-slate-600 dark:text-slate-300">
               Enable Scheduled Publishing
@@ -247,7 +247,7 @@ export const PostSettingsPanel: React.FC<PostSettingsPanelProps> = ({
                 value={settings.scheduleTime}
                 onChange={(e) => update({ scheduleTime: e.target.value })}
                 placeholder="e.g. 06:30 PM"
-                className="w-full px-2.5 py-1.5 text-xs border rounded-lg dark:bg-slate-800 dark:text-white"
+                className="w-full px-2.5 py-1.5 text-xs border rounded-lg dark:bg-slate-800 dark:text-white text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
               />
             </div>
 
@@ -259,7 +259,7 @@ export const PostSettingsPanel: React.FC<PostSettingsPanelProps> = ({
               <select
                 value={settings.scheduleDay}
                 onChange={(e) => update({ scheduleDay: e.target.value })}
-                className="w-full px-2.5 py-1.5 text-xs border rounded-lg dark:bg-slate-800 dark:text-white"
+                className="w-full px-2.5 py-1.5 text-xs border rounded-lg dark:bg-slate-800 dark:text-white text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500"
               >
                 {DAYS.map(d => (
                   <option key={d} value={d}>Day {d}</option>
@@ -275,7 +275,7 @@ export const PostSettingsPanel: React.FC<PostSettingsPanelProps> = ({
               <select
                 value={settings.scheduleMonth}
                 onChange={(e) => update({ scheduleMonth: e.target.value })}
-                className="w-full px-2.5 py-1.5 text-xs border rounded-lg dark:bg-slate-800 dark:text-white"
+                className="w-full px-2.5 py-1.5 text-xs border rounded-lg dark:bg-slate-800 dark:text-white text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500"
               >
                 {MONTHS.map(m => (
                   <option key={m} value={m}>{m}</option>

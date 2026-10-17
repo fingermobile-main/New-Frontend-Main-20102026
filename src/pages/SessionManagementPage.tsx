@@ -93,7 +93,7 @@ const SessionManagementPage: React.FC = () => {
                 className="bg-white rounded-xl shadow-sm border border-slate-300 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-gray-300 transition"
               >
                 <div className="flex items-start sm:items-center gap-4">
-                  <div className="p-3 bg-gray-50 rounded-xl border border-gray-100 flex-shrink-0">
+                  <div className="p-3 bg-gray-50 rounded-xl border border-slate-200 flex-shrink-0">
                     {getPlatformIcon(session.platform)}
                   </div>
                   <div>
@@ -102,7 +102,7 @@ const SessionManagementPage: React.FC = () => {
                         {session.memberAgent || session.userAgent || 'Web Browser'}
                       </h3>
                       {session.current && (
-                        <span className="px-2.5 py-0.5 text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full">
+                        <span className="px-2.5 py-0.5 text-xs font-semibold bg-emerald-50 text-emerald-950 border border-emerald-400 rounded-full text-emerald-950 border-emerald-400 font-black">
                           Current Device
                         </span>
                       )}

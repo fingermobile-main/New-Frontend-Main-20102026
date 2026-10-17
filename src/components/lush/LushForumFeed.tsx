@@ -332,7 +332,7 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
       ) : activeTab === 'discover' ? (
         <div className="bg-white rounded-3xl border border-emerald-100/90 p-5 sm:p-7 shadow-xs">
           <div className="text-center mb-5 space-y-1">
-            <span className="text-[11px] font-extrabold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+            <span className="text-[11px] font-extrabold uppercase tracking-wider text-emerald-950 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-400 text-emerald-950 border-emerald-400 font-black">
               Cross-Device Swipe Engine
             </span>
             <h2 className="text-xl font-black text-gray-900 mt-2">
@@ -356,7 +356,7 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
                 type="file"
                 accept="image/*,video/*"
                 onChange={handleFileSelect}
-                className="hidden"
+                className="hidden text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
               />
 
               <div className="flex gap-3">
@@ -377,7 +377,7 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
                       <button
                         type="button"
                         onClick={() => setSelectedLapidaire(null)}
-                        className="text-gray-400 hover:text-gray-600 font-bold ml-2"
+                        className="text-slate-700 hover:text-gray-600 font-bold ml-2"
                       >
                         ✕
                       </button>
@@ -389,7 +389,7 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
                     onChange={(e) => setNewPostText(e.target.value)}
                     placeholder="Share a thoughtful thought, answer a Lapidaire question, or post a date idea..."
                     rows={3}
-                    className="w-full bg-white text-gray-900 placeholder:text-slate-500 border border-gray-300 rounded-xl p-3 text-sm focus:border-emerald-600 focus:ring-2 focus:ring-emerald-400/30 focus:outline-hidden transition resize-none shadow-xs"
+                    className="w-full bg-white text-slate-900 placeholder:text-slate-400 border border-gray-300 rounded-xl p-3 text-sm focus:border-emerald-600 focus:ring-2 focus:ring-emerald-400/30 focus:outline-hidden transition resize-none shadow-xs font-bold border-slate-300"
                   />
 
                   {/* Attached Media Preview (Photo or Video) */}
@@ -441,7 +441,7 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
                 </div>
               </div>
 
-              <div className="flex items-center justify-between pt-3 mt-2 border-t border-gray-100">
+              <div className="flex items-center justify-between pt-3 mt-2 border-t border-slate-200">
                 <div className="flex items-center gap-1.5 sm:gap-2">
                   <button
                     type="button"
@@ -561,14 +561,14 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
                         onClick={() =>
                           onOpenChat?.(post.author.id, post.author.name)
                         }
-                        className="flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200/80 transition"
+                        className="flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold text-emerald-950 bg-emerald-50 hover:bg-emerald-100 border border-emerald-400 transition text-emerald-950 border-emerald-400 font-black"
                         title={`Sovereign Encrypted Chat with ${post.author.name}`}
                       >
                         <LockClosedIcon className="w-3.5 h-3.5 text-emerald-600" />
                         <span>Encrypted Chat</span>
                       </button>
 
-                      <span className="text-[11px] font-semibold text-emerald-800 bg-emerald-50/70 px-2.5 py-1 rounded-full border border-emerald-100/80 hidden sm:inline">
+                      <span className="text-[11px] font-semibold text-emerald-950 bg-emerald-50/70 px-2.5 py-1 rounded-full border border-emerald-400 hidden sm:inline text-emerald-950 border-emerald-400 font-black">
                         {post.author.intentTag}
                       </span>
                     </div>
@@ -611,7 +611,7 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
                         <img
                           src={post.mediaUrl}
                           alt="Attachment"
-                          className="w-full max-h-80 rounded-xl object-cover border border-gray-100 shadow-inner"
+                          className="w-full max-h-80 rounded-xl object-cover border border-slate-200 shadow-inner"
                         />
                       )}
                     </div>
@@ -656,7 +656,7 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
                   )}
 
                   {/* Action Bar */}
-                  <div className="px-4 sm:px-5 py-2.5 bg-gray-50/70 border-t border-gray-100 flex items-center justify-between text-xs text-gray-600">
+                  <div className="px-4 sm:px-5 py-2.5 bg-gray-50/70 border-t border-slate-200 flex items-center justify-between text-xs text-gray-600">
                     <div className="flex items-center gap-4 sm:gap-6">
                       <button
                         onClick={() => onLikePost(post.id)}
@@ -704,7 +704,7 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
                       </button>
                     </div>
 
-                    <div className="flex items-center gap-2 sm:gap-3 text-gray-400">
+                    <div className="flex items-center gap-2 sm:gap-3 text-slate-700">
                       <button
                         type="button"
                         onClick={() => handleSharePost(post)}
@@ -754,7 +754,7 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
                                   <span className="font-bold text-gray-900">
                                     {c.authorName}
                                   </span>
-                                  <span className="text-[10px] text-gray-400">
+                                  <span className="text-[10px] text-slate-700">
                                     {c.timestamp}
                                   </span>
                                 </div>
@@ -809,7 +809,7 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
                                 })
                               }
                               placeholder="Write a thoughtful comment..."
-                              className="w-full bg-white text-gray-900 placeholder:text-slate-500 border border-gray-300 rounded-xl pl-3 pr-8 py-2 text-xs focus:border-emerald-600 focus:ring-1 focus:ring-emerald-500 focus:outline-hidden transition shadow-2xs"
+                              className="w-full bg-white text-slate-900 placeholder:text-slate-400 border border-gray-300 rounded-xl pl-3 pr-8 py-2 text-xs focus:border-emerald-600 focus:ring-1 focus:ring-emerald-500 focus:outline-hidden transition shadow-2xs font-bold border-slate-300"
                             />
                             <button
                               type="button"

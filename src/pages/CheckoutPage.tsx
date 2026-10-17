@@ -175,7 +175,7 @@ const CheckoutPage: React.FC = () => {
                 ))}
               </div>
             </div>
-            <div className="border-t border-gray-200 p-6">
+            <div className="border-t border-slate-300 p-6">
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
                   <p className="text-gray-500">Subtotal</p>
@@ -242,7 +242,7 @@ const CheckoutPage: React.FC = () => {
               <input
                 type="text"
                 placeholder="Enter recipient's membername"
-                className="w-full px-4 py-2 border rounded-lg" />
+                className="w-full px-4 py-2 border rounded-lg text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" />
               <div className="flex gap-4">
                 <button
                   onClick={() => setShowGiftModal(false)}
@@ -276,7 +276,7 @@ const CheckoutPage: React.FC = () => {
               <input
                 type="text"
                 placeholder="Enter paylink description"
-                className="w-full px-4 py-2 border rounded-lg" />
+                className="w-full px-4 py-2 border rounded-lg text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" />
               <div className="flex gap-4">
                 <button
                   onClick={() => setShowPaylinkModal(false)}

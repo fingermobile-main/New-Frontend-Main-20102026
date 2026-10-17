@@ -103,7 +103,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onClose }) => 
       </div>
 
       {/* Tabs */}
-      <div className="border-b border-gray-200">
+      <div className="border-b border-slate-300">
         <div className="flex">
           {[
             { id: 'details', label: 'Details' },
@@ -144,7 +144,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onClose }) => 
               </div>
               <div>
                 <p className="text-sm text-gray-600 mb-1">Category</p>
-                <span className="px-2 py-1 bg-blue-100 text-blue-950 border border-blue-400 font-bold text-xs rounded-full">
+                <span className="px-2 py-1 bg-blue-100 text-blue-950 border border-blue-400 font-bold text-xs rounded-full font-black">
                   {product.category_id}
                 </span>
               </div>

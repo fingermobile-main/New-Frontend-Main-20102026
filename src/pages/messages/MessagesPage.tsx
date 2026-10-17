@@ -481,7 +481,7 @@ const MessagesPage: React.FC = () => {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search conversations & chats..."
-                  className="w-full pl-9 pr-3 py-2 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 font-bold placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 shadow-2xs"
+                  className="w-full pl-9 pr-3 py-2 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 font-bold placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500 shadow-2xs"
                 />
               </div>
             </div>
@@ -645,7 +645,7 @@ const MessagesPage: React.FC = () => {
               
               {/* Security Banner */}
               <div className="flex justify-center">
-                <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-100 border border-emerald-400 text-emerald-950 text-xs font-bold">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-100 border border-emerald-400 text-emerald-950 text-xs font-bold font-black">
                   <LockClosedIcon className="w-3.5 h-3.5 text-emerald-800" />
                   <span>Messages and calls are end-to-end encrypted under STERCS™ v2.5 sovereign protocol.</span>
                 </div>
@@ -687,7 +687,7 @@ const MessagesPage: React.FC = () => {
                               <span>🎵</span>
                               <span className="truncate">{msg.fileName || msg.text}</span>
                             </span>
-                            <span className="text-[10px] text-slate-400 font-mono shrink-0">{msg.fileSize}</span>
+                            <span className="text-[10px] text-slate-700 font-mono shrink-0">{msg.fileSize}</span>
                           </div>
                           {msg.mediaUrl && (
                             <audio controls src={msg.mediaUrl} className="w-full h-8 rounded" />
@@ -831,7 +831,7 @@ const MessagesPage: React.FC = () => {
                   multiple
                   accept="audio/*,video/*,.pdf,.doc,.docx,.xls,.xlsx,.txt,.zip,.fma,.fmv,.fmp"
                   onChange={handleFilesSelected}
-                  className="hidden"
+                  className="hidden text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
 
                 {/* Media & Attachments Button */}
@@ -862,7 +862,7 @@ const MessagesPage: React.FC = () => {
                   onChange={(e) => setTypedMessage(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
                   placeholder={`Write an encrypted message to ${activeConversation?.title}...`}
-                  className="flex-1 px-4 py-2.5 text-xs sm:text-sm rounded-xl bg-white border border-slate-300 text-slate-900 font-bold placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 shadow-2xs"
+                  className="flex-1 px-4 py-2.5 text-xs sm:text-sm rounded-xl bg-white border border-slate-300 text-slate-900 font-bold placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 shadow-2xs"
                 />
 
                 {/* Send Button */}
@@ -907,7 +907,7 @@ const MessagesPage: React.FC = () => {
                   min="1"
                   value={paylinkAmountInput}
                   onChange={(e) => setPaylinkAmountInput(e.target.value)}
-                  className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 font-bold placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 font-bold placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500 font-mono"
                 />
               </div>
 
@@ -955,7 +955,7 @@ const MessagesPage: React.FC = () => {
                   value={newChatRecipient}
                   onChange={(e) => setNewChatRecipient(e.target.value)}
                   placeholder="e.g. @aminabello or Chidi Okonkwo"
-                  className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 font-bold placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 font-bold placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500"
                 />
               </div>
 

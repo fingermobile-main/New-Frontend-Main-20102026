@@ -161,7 +161,7 @@ export const TributDiscussionsTab: React.FC<TributDiscussionsTabProps> = ({
                 </div>
 
                 <div className="flex items-center gap-2 text-xs">
-                  <span className="px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-950 font-bold border border-purple-200 text-[10px]">
+                  <span className="px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-950 font-bold border border-purple-400 text-[10px] border-purple-400 font-black">
                     {d.category}
                   </span>
                   <span className="text-slate-500 text-[11px]">{d.createdAt}</span>
@@ -258,7 +258,7 @@ export const TributDiscussionsTab: React.FC<TributDiscussionsTabProps> = ({
               </div>
               <button
                 onClick={() => setShowCreateModal(false)}
-                className="p-1 rounded-lg text-slate-400 hover:text-slate-700"
+                className="p-1 rounded-lg text-slate-700 hover:text-slate-700"
               >
                 ✕
               </button>
@@ -273,7 +273,7 @@ export const TributDiscussionsTab: React.FC<TributDiscussionsTabProps> = ({
                   value={newTitle}
                   onChange={(e) => setNewTitle(e.target.value)}
                   placeholder="e.g. Best lighting angle for Adire indigo portraits"
-                  className="w-full p-2.5 rounded-xl text-slate-900 font-bold border border-slate-300 bg-white"
+                  className="w-full p-2.5 rounded-xl text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
 
@@ -282,7 +282,7 @@ export const TributDiscussionsTab: React.FC<TributDiscussionsTabProps> = ({
                 <select
                   value={newCategory}
                   onChange={(e) => setNewCategory(e.target.value)}
-                  className="w-full p-2.5 rounded-xl text-slate-900 font-bold border border-slate-300 bg-white"
+                  className="w-full p-2.5 rounded-xl text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500"
                 >
                   <option value="Fashion & Styling">Fashion & Styling</option>
                   <option value="Textile & Dyeing">Textile & Dyeing</option>
@@ -302,7 +302,7 @@ export const TributDiscussionsTab: React.FC<TributDiscussionsTabProps> = ({
                   value={newContent}
                   onChange={(e) => setNewContent(e.target.value)}
                   placeholder="Detail your question, material challenges, prompt techniques, or aesthetic goals..."
-                  className="w-full p-2.5 rounded-xl text-slate-900 font-bold border border-slate-300 bg-white"
+                  className="w-full p-2.5 rounded-xl text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
 
@@ -312,7 +312,7 @@ export const TributDiscussionsTab: React.FC<TributDiscussionsTabProps> = ({
                   type="text"
                   value={newTags}
                   onChange={(e) => setNewTags(e.target.value)}
-                  className="w-full p-2.5 rounded-xl text-slate-900 font-bold border border-slate-300 bg-white"
+                  className="w-full p-2.5 rounded-xl text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
 

@@ -315,7 +315,7 @@ const CreatePostPage: React.FC = () => {
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="Give your story an engaging headline..."
-                  className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800/80 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm font-semibold transition"
+                  className="w-full px-4 py-2.5 bg-white dark:bg-slate-800/80 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm font-semibold transition font-bold"
                 />
               </div>
 
@@ -325,13 +325,13 @@ const CreatePostPage: React.FC = () => {
                   <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
                     Story Content
                   </label>
-                  <span className="text-[11px] text-slate-400">{content.length} characters</span>
+                  <span className="text-[11px] text-slate-700">{content.length} characters</span>
                 </div>
                 <textarea
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
                   placeholder="Share what is on your mind or generate ideas using the AI assistant below..."
-                  className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800/80 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 h-32 text-sm leading-relaxed transition"
+                  className="w-full px-4 py-3 bg-white dark:bg-slate-800/80 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 h-32 text-sm leading-relaxed transition font-bold"
                 />
               </div>
 
@@ -352,7 +352,7 @@ const CreatePostPage: React.FC = () => {
                   multiple
                   accept="image/*,video/*"
                   onChange={handleFilesSelected}
-                  className="hidden"
+                  className="hidden text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   id="postcard-multi-file-input"
                 />
 
@@ -427,7 +427,7 @@ const CreatePostPage: React.FC = () => {
                             <p className="text-xs font-bold text-slate-800 dark:text-slate-200 truncate" title={item.name}>
                               {item.name}
                             </p>
-                            <p className="text-[10px] text-slate-400 font-mono">
+                            <p className="text-[10px] text-slate-700 font-mono">
                               {(item.size / (1024 * 1024)).toFixed(1)} MB
                             </p>
                           </div>
@@ -461,7 +461,7 @@ const CreatePostPage: React.FC = () => {
                     value={prompt}
                     onChange={(e) => setPrompt(e.target.value)}
                     placeholder="e.g. 'Excited to announce our new Web3 creator drop today!'"
-                    className="flex-1 px-3 py-2 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white placeholder:text-slate-500 focus:ring-2 focus:ring-indigo-500"
+                    className="flex-1 px-3 py-2 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-500 font-bold"
                     disabled={isGenerating}
                   />
                   <button
@@ -529,7 +529,7 @@ const CreatePostPage: React.FC = () => {
                       value={pollQuestion}
                       onChange={(e) => setPollQuestion(e.target.value)}
                       placeholder="Ask a question for your audience..."
-                      className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white placeholder:text-slate-500 focus:ring-2 focus:ring-emerald-500"
+                      className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white placeholder:text-slate-400 focus:ring-2 focus:ring-emerald-500 font-bold"
                     />
 
                     <div className="space-y-2">
@@ -543,13 +543,13 @@ const CreatePostPage: React.FC = () => {
                             value={opt}
                             onChange={(e) => handlePollOptionChange(idx, e.target.value)}
                             placeholder={`Option ${idx + 1}`}
-                            className="flex-1 px-3 py-1.5 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white"
+                            className="flex-1 px-3 py-1.5 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                           />
                           {pollOptions.length > 2 && (
                             <button
                               type="button"
                               onClick={() => handleRemovePollOption(idx)}
-                              className="p-1 text-slate-400 hover:text-rose-500"
+                              className="p-1 text-slate-700 hover:text-rose-500"
                             >
                               <XMarkIcon className="w-4 h-4" />
                             </button>
@@ -630,9 +630,9 @@ const CreatePostPage: React.FC = () => {
                   value={tags}
                   onChange={(e) => setTags(e.target.value)}
                   placeholder="#lifestyle, #travel, #ownit"
-                  className="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 text-xs"
+                  className="w-full px-4 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 focus:ring-2 focus:ring-blue-500 text-xs font-bold"
                 />
-                <p className="mt-1.5 text-[11px] text-slate-400">Separate multiple tags with commas</p>
+                <p className="mt-1.5 text-[11px] text-slate-700">Separate multiple tags with commas</p>
               </div>
 
               {/* FIC Balance Card */}

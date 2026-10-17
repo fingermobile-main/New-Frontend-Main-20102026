@@ -71,11 +71,11 @@ export const CustomCaptcha: React.FC<CustomCaptchaProps> = ({ onSuccess }) => {
           onChange={(e) => setValue(parseInt(e.target.value))}
           onMouseUp={handleRelease}
           onTouchEnd={handleRelease}
-          className={`cursor-pointer ${phase === 'vertical' ? 'w-48 -rotate-90' : 'w-64'}`}
+          className={`cursor-pointer  text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400${phase === 'vertical' ? 'w-48 -rotate-90' : 'w-64'}`}
           style={phase === 'vertical' ? { transformOrigin: 'center' } : {}}
         />
       </div>
-      <div className="text-3xl font-bold text-blue-600 w-16 h-16 flex items-center justify-center bg-blue-50 rounded-full border-2 border-blue-200 shadow-inner">
+      <div className="text-3xl font-bold text-blue-950 w-16 h-16 flex items-center justify-center bg-blue-50 rounded-full border-2 border-blue-400 shadow-inner border text-blue-950 border-blue-400 font-black">
         {value}
       </div>
     </div>

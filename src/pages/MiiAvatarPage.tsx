@@ -223,7 +223,7 @@ const MiiAvatarPage: React.FC = () => {
                 {avatars.map((avatar) => (
                   <Card
                     key={avatar.id}
-                    className={`overflow-hidden bg-white shadow-md rounded-xl border border-gray-200 hover:shadow-lg transition-shadow cursor-pointer ${
+                    className={`overflow-hidden bg-white shadow-md rounded-xl border border-slate-300 hover:shadow-lg transition-shadow cursor-pointer ${
                       selectedAvatar?.id === avatar.id ? 'ring-2 ring-indigo-500' : ''
                     }`}
                     onClick={() => {
@@ -276,7 +276,7 @@ const MiiAvatarPage: React.FC = () => {
               {templates.map((template) => (
                 <Card
                   key={template.id}
-                  className={`overflow-hidden bg-white shadow-md rounded-xl border border-gray-200 hover:shadow-lg transition-shadow cursor-pointer ${
+                  className={`overflow-hidden bg-white shadow-md rounded-xl border border-slate-300 hover:shadow-lg transition-shadow cursor-pointer ${
                     selectedTemplate?.id === template.id ? 'ring-2 ring-indigo-500' : ''
                   }`}
                   onClick={() => setSelectedTemplate(template)}
@@ -372,7 +372,7 @@ const MiiAvatarPage: React.FC = () => {
                           <div className="space-y-3">
                             <div>
                               <Label htmlFor="avatar-name">Avatar Name</Label>
-                              <Input
+                              <Input className="text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                                 id="avatar-name"
                                 value={selectedAvatar?.name || ''}
                                 onChange={(e) => selectedAvatar && setSelectedAvatar({...selectedAvatar, name: e.target.value})}
@@ -390,7 +390,7 @@ const MiiAvatarPage: React.FC = () => {
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                               <Label>Face Shape</Label>
-                              <Select
+                              <Select className="text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500"
                                 value={currentCustomization.faceShape || 'round'}
                                 onValueChange={(value) => handleCustomizationChange('faceShape', value)}
                               >
@@ -408,7 +408,7 @@ const MiiAvatarPage: React.FC = () => {
 
                             <div>
                               <Label>Eyebrow Style</Label>
-                              <Select
+                              <Select className="text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500"
                                 value={currentCustomization.eyebrowStyle || 'normal'}
                                 onValueChange={(value) => handleCustomizationChange('eyebrowStyle', value)}
                               >
@@ -426,7 +426,7 @@ const MiiAvatarPage: React.FC = () => {
 
                             <div>
                               <Label>Eye Shape</Label>
-                              <Select
+                              <Select className="text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500"
                                 value={currentCustomization.eyeShape || 'round'}
                                 onValueChange={(value) => handleCustomizationChange('eyeShape', value)}
                               >
@@ -444,7 +444,7 @@ const MiiAvatarPage: React.FC = () => {
 
                             <div>
                               <Label>Nose Style</Label>
-                              <Select
+                              <Select className="text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500"
                                 value={currentCustomization.noseStyle || 'standard'}
                                 onValueChange={(value) => handleCustomizationChange('noseStyle', value)}
                               >
@@ -462,7 +462,7 @@ const MiiAvatarPage: React.FC = () => {
 
                             <div>
                               <Label>Mouth Style</Label>
-                              <Select
+                              <Select className="text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500"
                                 value={currentCustomization.mouthStyle || 'smile'}
                                 onValueChange={(value) => handleCustomizationChange('mouthStyle', value)}
                               >
@@ -480,7 +480,7 @@ const MiiAvatarPage: React.FC = () => {
 
                             <div>
                               <Label>Facial Hair</Label>
-                              <Select
+                              <Select className="text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500"
                                 value={currentCustomization.facialHair || 'none'}
                                 onValueChange={(value) => handleCustomizationChange('facialHair', value)}
                               >
@@ -522,7 +522,7 @@ const MiiAvatarPage: React.FC = () => {
 
                             <div>
                               <Label>Hair Color</Label>
-                              <Select
+                              <Select className="text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500"
                                 value={currentCustomization.hairColor || 'black'}
                                 onValueChange={(value) => handleCustomizationChange('hairColor', value)}
                               >
@@ -541,7 +541,7 @@ const MiiAvatarPage: React.FC = () => {
 
                             <div>
                               <Label>Eye Color</Label>
-                              <Select
+                              <Select className="text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500"
                                 value={currentCustomization.eyeColor || 'brown'}
                                 onValueChange={(value) => handleCustomizationChange('eyeColor', value)}
                               >
@@ -559,7 +559,7 @@ const MiiAvatarPage: React.FC = () => {
 
                             <div>
                               <Label>Clothing Color</Label>
-                              <Select
+                              <Select className="text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500"
                                 value={currentCustomization.clothingColor || 'blue'}
                                 onValueChange={(value) => handleCustomizationChange('clothingColor', value)}
                               >
@@ -590,7 +590,7 @@ const MiiAvatarPage: React.FC = () => {
                                 <input
                                   type="checkbox"
                                   id="glasses-toggle"
-                                  className="sr-only"
+                                  className="sr-only text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                                   checked={currentCustomization.wearsGlasses || false}
                                   onChange={(e) => handleCustomizationChange('wearsGlasses', e.target.checked)}
                                 />
@@ -605,7 +605,7 @@ const MiiAvatarPage: React.FC = () => {
                                 <input
                                   type="checkbox"
                                   id="hat-toggle"
-                                  className="sr-only"
+                                  className="sr-only text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                                   checked={currentCustomization.wearsHat || false}
                                   onChange={(e) => handleCustomizationChange('wearsHat', e.target.checked)}
                                 />
@@ -620,7 +620,7 @@ const MiiAvatarPage: React.FC = () => {
                                 <input
                                   type="checkbox"
                                   id="jewelry-toggle"
-                                  className="sr-only"
+                                  className="sr-only text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                                   checked={currentCustomization.wearsJewelry || false}
                                   onChange={(e) => handleCustomizationChange('wearsJewelry', e.target.checked)}
                                 />

@@ -140,7 +140,7 @@ const ReferralsPage: React.FC = () => {
                 type="text"
                 readOnly
                 value={stats.referralLink}
-                className="w-full bg-slate-50 border-2 border-slate-300 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-900 font-mono font-bold select-all focus:outline-none focus:border-blue-500"
+                className="w-full bg-white border-2 border-slate-300 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-900 font-mono font-bold select-all focus:outline-none focus:border-blue-500 border focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
               />
               <button
                 type="button"
@@ -162,7 +162,7 @@ const ReferralsPage: React.FC = () => {
                 type="text"
                 readOnly
                 value={stats.referralCode}
-                className="w-full bg-slate-50 border-2 border-slate-300 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-900 font-mono font-black tracking-wider select-all focus:outline-none focus:border-blue-500"
+                className="w-full bg-white border-2 border-slate-300 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-900 font-mono font-black tracking-wider select-all focus:outline-none focus:border-blue-500 font-bold border focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
               />
               <button
                 type="button"
@@ -207,7 +207,7 @@ const ReferralsPage: React.FC = () => {
                   <tr key={r.id || idx} className="hover:bg-slate-50 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-900 border border-blue-300 font-black flex items-center justify-center text-xs">
+                        <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-950 border border-blue-400 font-black flex items-center justify-center text-xs text-blue-950 border-blue-400">
                           {(r.referredDisplayName || r.referredUsername || 'U').charAt(0).toUpperCase()}
                         </div>
                         <div>

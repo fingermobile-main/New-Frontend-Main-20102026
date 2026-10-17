@@ -86,7 +86,7 @@ const AIAvatarGenerator: React.FC = () => {
                 value={generationPrompt}
                 onChange={(e) => setGenerationPrompt(e.target.value)}
                 placeholder="Example: A professional avatar with a smile, wearing glasses, in a business suit..."
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                 rows={4}
               />
             </div>
@@ -99,7 +99,7 @@ const AIAvatarGenerator: React.FC = () => {
                 accept="image/*"
                 onChange={handleImageUpload}
                 ref={fileInputRef}
-                className="hidden"
+                className="hidden text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
               />
               <button
                 onClick={() => fileInputRef.current?.click()}

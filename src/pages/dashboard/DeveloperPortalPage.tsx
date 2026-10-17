@@ -203,7 +203,7 @@ const dashboard = await sdk.getDashboardData('monthly');`}</pre>
               { name: 'Payments', icon: '💳', count: 6 },
               { name: 'Staking', icon: '⚡', count: 5 }
             ].map((category, idx) => (
-              <div key={idx} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+              <div key={idx} className="border border-slate-300 rounded-lg p-4 hover:shadow-md transition-shadow">
                 <div className="flex items-center justify-between">
                   <div>
                     <span className="text-2xl mr-2">{category.icon}</span>

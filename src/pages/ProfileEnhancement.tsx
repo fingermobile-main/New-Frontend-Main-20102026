@@ -107,7 +107,7 @@ const ProfileEnhancement: React.FC = () => {
                   placeholder="e.g. Lead Smart Contract Auditor | NYSC Fellow"
                   value={headline}
                   onChange={(e) => setHeadline(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                 />
               </div>
 
@@ -122,7 +122,7 @@ const ProfileEnhancement: React.FC = () => {
                     placeholder="https://yourportfolio.com"
                     value={portfolioUrl}
                     onChange={(e) => setPortfolioUrl(e.target.value)}
-                    className="w-full px-3 py-2 text-sm focus:outline-none"
+                    className="w-full px-3 py-2 text-sm focus:outline-none text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                 </div>
               </div>
@@ -142,7 +142,7 @@ const ProfileEnhancement: React.FC = () => {
                       addSkill();
                     }
                   }}
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                 />
                 <button
                   type="button"
@@ -157,7 +157,7 @@ const ProfileEnhancement: React.FC = () => {
                 {skills.map((skill) => (
                   <span
                     key={skill}
-                    className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-50 text-blue-700 border border-blue-200 rounded-full text-xs font-medium"
+                    className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-50 text-blue-950 border border-blue-400 rounded-full text-xs font-medium text-blue-950 border-blue-400 font-black"
                   >
                     {skill}
                     <button
@@ -170,7 +170,7 @@ const ProfileEnhancement: React.FC = () => {
                   </span>
                 ))}
                 {skills.length === 0 && (
-                  <p className="text-xs text-gray-400">No skills added yet.</p>
+                  <p className="text-xs text-slate-700">No skills added yet.</p>
                 )}
               </div>
             </div>
@@ -189,7 +189,7 @@ const ProfileEnhancement: React.FC = () => {
                       addCert();
                     }
                   }}
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                 />
                 <button
                   type="button"

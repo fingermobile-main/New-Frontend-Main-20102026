@@ -96,7 +96,7 @@ const SystemStatusPage: React.FC = () => {
                 <div className={`w-3 h-3 rounded-full ${node.status === 'healthy' ? 'bg-green-500' : 'bg-yellow-500'}`}></div>
                 <div>
                   <p className="font-semibold text-gray-900 dark:text-white text-sm">{node.service_name}</p>
-                  <p className="text-xs text-gray-400 capitalize">{node.category} &bull; {node.version}</p>
+                  <p className="text-xs text-slate-700 capitalize">{node.category} &bull; {node.version}</p>
                 </div>
               </div>
               <div className="flex items-center gap-4">
@@ -104,7 +104,7 @@ const SystemStatusPage: React.FC = () => {
                   {node.status}
                 </span>
                 <span className="text-xs font-mono text-gray-500">{node.latency_ms}ms</span>
-                <p className="text-xs text-gray-400 hidden sm:block">
+                <p className="text-xs text-slate-700 hidden sm:block">
                   Checked: {node.last_check_at ? new Date(node.last_check_at).toLocaleTimeString() : 'now'}
                 </p>
               </div>

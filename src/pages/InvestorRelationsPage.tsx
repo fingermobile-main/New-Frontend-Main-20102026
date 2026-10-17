@@ -104,7 +104,7 @@ const InvestorRelationsPage: React.FC = () => {
               <div className="space-y-2.5">
                 <button
                   onClick={() => setShowFilingModal(true)}
-                  className="w-full text-left px-4 py-3 bg-gray-50 hover:bg-emerald-50 hover:text-emerald-700 rounded-xl font-semibold text-sm transition-colors border border-gray-100 flex items-center"
+                  className="w-full text-left px-4 py-3 bg-gray-50 hover:bg-emerald-50 hover:text-emerald-700 rounded-xl font-semibold text-sm transition-colors border border-slate-200 flex items-center"
                 >
                   <DocumentTextIcon className="h-4 w-4 mr-2.5 text-emerald-600" />
                   Submit Financial Disclosure
@@ -120,7 +120,7 @@ const InvestorRelationsPage: React.FC = () => {
                     a.click();
                     showToast('Market telemetry exported!', 'success');
                   }}
-                  className="w-full text-left px-4 py-3 bg-gray-50 hover:bg-emerald-50 hover:text-emerald-700 rounded-xl font-semibold text-sm transition-colors border border-gray-100 flex items-center"
+                  className="w-full text-left px-4 py-3 bg-gray-50 hover:bg-emerald-50 hover:text-emerald-700 rounded-xl font-semibold text-sm transition-colors border border-slate-200 flex items-center"
                 >
                   <ChartBarIcon className="h-4 w-4 mr-2.5 text-emerald-600" />
                   Export Market Telemetry (CSV)
@@ -147,10 +147,10 @@ const InvestorRelationsPage: React.FC = () => {
         {/* Regulatory Filing Modal */}
         {showFilingModal && (
           <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-gray-100 animate-in fade-in zoom-in-95">
-              <div className="flex justify-between items-center pb-4 border-b border-gray-100">
+            <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 animate-in fade-in zoom-in-95">
+              <div className="flex justify-between items-center pb-4 border-b border-slate-200">
                 <h3 className="text-lg font-black text-gray-900">Publish Regulatory Disclosure</h3>
-                <button onClick={() => setShowFilingModal(false)} className="text-gray-400 hover:text-gray-600">
+                <button onClick={() => setShowFilingModal(false)} className="text-slate-700 hover:text-gray-600">
                   <XMarkIcon className="w-5 h-5" />
                 </button>
               </div>
@@ -164,7 +164,7 @@ const InvestorRelationsPage: React.FC = () => {
                     placeholder="e.g. Q2 2026 Quarterly Financial Statement"
                     value={filingForm.title}
                     onChange={(e) => setFilingForm({ ...filingForm, title: e.target.value })}
-                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                   />
                 </div>
 
@@ -174,7 +174,7 @@ const InvestorRelationsPage: React.FC = () => {
                     <select
                       value={filingForm.report_type}
                       onChange={(e) => setFilingForm({ ...filingForm, report_type: e.target.value })}
-                      className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                      className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none text-slate-900 font-bold border-slate-300 bg-white"
                     >
                       <option value="10-Q">10-Q Quarterly</option>
                       <option value="10-K">10-K Annual</option>
@@ -187,7 +187,7 @@ const InvestorRelationsPage: React.FC = () => {
                       type="text"
                       value={`${filingForm.quarter} ${filingForm.fiscal_year}`}
                       readOnly
-                      className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-sm"
+                      className="w-full px-3.5 py-2.5 bg-white border border-gray-300 rounded-xl text-sm text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                     />
                   </div>
                 </div>
@@ -199,7 +199,7 @@ const InvestorRelationsPage: React.FC = () => {
                       type="number"
                       value={filingForm.net_income}
                       onChange={(e) => setFilingForm({ ...filingForm, net_income: Number(e.target.value) })}
-                      className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                      className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400 font-mono"
                     />
                   </div>
                   <div>
@@ -208,7 +208,7 @@ const InvestorRelationsPage: React.FC = () => {
                       type="number"
                       value={filingForm.ebitda}
                       onChange={(e) => setFilingForm({ ...filingForm, ebitda: Number(e.target.value) })}
-                      className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                      className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400 font-mono"
                     />
                   </div>
                 </div>
@@ -219,11 +219,11 @@ const InvestorRelationsPage: React.FC = () => {
                     type="text"
                     value={filingForm.auditor_firm}
                     onChange={(e) => setFilingForm({ ...filingForm, auditor_firm: e.target.value })}
-                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                   />
                 </div>
 
-                <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
+                <div className="flex justify-end gap-3 pt-4 border-t border-slate-200">
                   <button
                     type="button"
                     onClick={() => setShowFilingModal(false)}

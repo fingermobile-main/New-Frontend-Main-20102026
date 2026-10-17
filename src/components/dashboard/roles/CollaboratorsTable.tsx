@@ -74,7 +74,7 @@ export const CollaboratorsTable: React.FC<CollaboratorsTableProps> = ({
           </nav>
           <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
             <span>Roles & Permissions</span>
-            <span className="text-xs font-mono font-medium px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
+            <span className="text-xs font-mono font-medium px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-950 dark:text-blue-300 border border-blue-400 dark:border-blue-800 text-blue-950 border-blue-400 font-black">
               Enterprise RBAC
             </span>
           </h1>
@@ -159,7 +159,7 @@ export const CollaboratorsTable: React.FC<CollaboratorsTableProps> = ({
                 placeholder="Search..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="pl-9 pr-3 py-2 text-xs bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 sm:w-64 text-slate-900 dark:text-white"
+                className="pl-9 pr-3 py-2 text-xs bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 sm:w-64 text-slate-900 dark:text-white font-bold border-slate-300 placeholder:text-slate-400"
               />
             </div>
           </div>
@@ -248,7 +248,7 @@ export const CollaboratorsTable: React.FC<CollaboratorsTableProps> = ({
                   <td className="py-3.5 px-4 text-right relative">
                     <button
                       onClick={() => setActiveMenuId(activeMenuId === collab.id ? null : collab.id)}
-                      className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                      className="p-1.5 rounded-lg text-slate-700 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
                     >
                       <MoreHorizontal className="w-4 h-4" />
                     </button>
@@ -341,7 +341,7 @@ export const CollaboratorsTable: React.FC<CollaboratorsTableProps> = ({
             <select
               value={selectedRoleForEdit}
               onChange={(e) => setSelectedRoleForEdit(e.target.value)}
-              className="w-full p-2.5 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white mb-6"
+              className="w-full p-2.5 text-xs bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white mb-6 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500"
             >
               {availableRoles.map((r) => (
                 <option key={r.id} value={r.id}>

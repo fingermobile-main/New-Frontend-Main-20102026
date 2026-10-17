@@ -33,7 +33,7 @@ const AdvancedAnalyticsDashboard: React.FC<AdvancedAnalyticsDashboardProps> = ({
       <div className="bg-white rounded-lg shadow-sm border border-slate-300 p-6">
         <h3 className="text-lg font-bold text-gray-900 mb-4">Detailed Analytics</h3>
         <div className="h-96 bg-gray-50 rounded-lg flex items-center justify-center">
-          <p className="text-gray-400">Advanced charts coming soon</p>
+          <p className="text-slate-700">Advanced charts coming soon</p>
         </div>
       </div>
     </div>

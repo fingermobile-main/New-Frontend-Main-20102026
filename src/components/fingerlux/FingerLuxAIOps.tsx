@@ -113,7 +113,7 @@ export const FingerLuxAIOps: React.FC<FingerLuxAIOpsProps> = ({
   return (
     <div className="space-y-6">
       {/* Sub-Tabs Header */}
-      <div className="bg-white rounded-3xl p-5 border border-gray-100 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="bg-white rounded-3xl p-5 border border-slate-200 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex flex-wrap items-center gap-1.5">
           {[
             { id: 'concierge_chat', label: '24/7 AI Booking Concierge', icon: '🤖' },
@@ -227,7 +227,7 @@ export const FingerLuxAIOps: React.FC<FingerLuxAIOpsProps> = ({
                 value={userInput}
                 onChange={(e) => setUserInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
-                className="flex-1 px-4 py-3 bg-white border border-slate-300 rounded-2xl text-xs font-bold text-slate-900 focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none"
+                className="flex-1 px-4 py-3 bg-white border border-slate-300 rounded-2xl text-xs font-bold text-slate-900 focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none placeholder:text-slate-400"
               />
               <button
                 type="button"
@@ -315,7 +315,7 @@ export const FingerLuxAIOps: React.FC<FingerLuxAIOpsProps> = ({
                   type="checkbox"
                   checked={whatsappEnabled}
                   onChange={(e) => setWhatsappEnabled(e.target.checked)}
-                  className="w-5 h-5 rounded text-emerald-600 focus:ring-emerald-500 cursor-pointer"
+                  className="w-5 h-5 rounded text-slate-900 focus:ring-emerald-500 cursor-pointer font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                 />
               </div>
 
@@ -331,7 +331,7 @@ export const FingerLuxAIOps: React.FC<FingerLuxAIOpsProps> = ({
                   type="checkbox"
                   checked={smsEnabled}
                   onChange={(e) => setSmsEnabled(e.target.checked)}
-                  className="w-5 h-5 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+                  className="w-5 h-5 rounded text-slate-900 focus:ring-indigo-500 cursor-pointer font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                 />
               </div>
 
@@ -347,7 +347,7 @@ export const FingerLuxAIOps: React.FC<FingerLuxAIOpsProps> = ({
                   type="checkbox"
                   checked={emailEnabled}
                   onChange={(e) => setEmailEnabled(e.target.checked)}
-                  className="w-5 h-5 rounded text-blue-600 focus:ring-blue-500 cursor-pointer"
+                  className="w-5 h-5 rounded text-slate-900 focus:ring-blue-500 cursor-pointer font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                 />
               </div>
             </div>

@@ -262,7 +262,7 @@ export const SettingsPage: React.FC = () => {
                           type="url"
                           value={profile.avatarUrl}
                           onChange={(e) => setProfile({ ...profile, avatarUrl: e.target.value })}
-                          className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
+                          className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm placeholder:text-slate-400"
                         />
                       </div>
                     </div>
@@ -276,7 +276,7 @@ export const SettingsPage: React.FC = () => {
                           type="text"
                           value={profile.name}
                           onChange={(e) => setProfile({ ...profile, name: e.target.value })}
-                          className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
+                          className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm placeholder:text-slate-400"
                         />
                       </div>
                       <div>
@@ -287,7 +287,7 @@ export const SettingsPage: React.FC = () => {
                           type="text"
                           value={profile.username}
                           onChange={(e) => setProfile({ ...profile, username: e.target.value })}
-                          className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
+                          className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm placeholder:text-slate-400"
                         />
                       </div>
                       <div>
@@ -298,7 +298,7 @@ export const SettingsPage: React.FC = () => {
                           type="email"
                           value={profile.email}
                           onChange={(e) => setProfile({ ...profile, email: e.target.value })}
-                          className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
+                          className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm placeholder:text-slate-400"
                         />
                       </div>
                       <div>
@@ -309,7 +309,7 @@ export const SettingsPage: React.FC = () => {
                           type="tel"
                           value={profile.phone}
                           onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
-                          className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
+                          className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm placeholder:text-slate-400"
                         />
                       </div>
                     </div>
@@ -322,7 +322,7 @@ export const SettingsPage: React.FC = () => {
                         rows={3}
                         value={profile.bio}
                         onChange={(e) => setProfile({ ...profile, bio: e.target.value })}
-                        className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
+                        className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm placeholder:text-slate-400"
                       />
                     </div>
 
@@ -381,7 +381,7 @@ export const SettingsPage: React.FC = () => {
                           type="password"
                           value={security.currentPassword}
                           onChange={(e) => setSecurity({ ...security, currentPassword: e.target.value })}
-                          className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
+                          className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm placeholder:text-slate-400"
                         />
                       </div>
                       <div>
@@ -392,7 +392,7 @@ export const SettingsPage: React.FC = () => {
                           type="password"
                           value={security.newPassword}
                           onChange={(e) => setSecurity({ ...security, newPassword: e.target.value })}
-                          className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
+                          className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm placeholder:text-slate-400"
                         />
                       </div>
                       <div>
@@ -403,7 +403,7 @@ export const SettingsPage: React.FC = () => {
                           type="password"
                           value={security.confirmPassword}
                           onChange={(e) => setSecurity({ ...security, confirmPassword: e.target.value })}
-                          className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
+                          className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm placeholder:text-slate-400"
                         />
                       </div>
                     </div>
@@ -461,7 +461,7 @@ export const SettingsPage: React.FC = () => {
                         type="checkbox"
                         checked={privacy.showOnlineStatus}
                         onChange={(e) => setPrivacy({ ...privacy, showOnlineStatus: e.target.checked })}
-                        className="w-4 h-4 rounded text-blue-600 border-slate-300 focus:ring-blue-500"
+                        className="w-4 h-4 rounded text-slate-900 border-slate-300 focus:ring-blue-500 font-bold border bg-white focus:ring-2 placeholder:text-slate-400"
                       />
                     </div>
 
@@ -474,7 +474,7 @@ export const SettingsPage: React.FC = () => {
                         type="checkbox"
                         checked={privacy.readReceipts}
                         onChange={(e) => setPrivacy({ ...privacy, readReceipts: e.target.checked })}
-                        className="w-4 h-4 rounded text-blue-600 border-slate-300 focus:ring-blue-500"
+                        className="w-4 h-4 rounded text-slate-900 border-slate-300 focus:ring-blue-500 font-bold border bg-white focus:ring-2 placeholder:text-slate-400"
                       />
                     </div>
                   </div>
@@ -528,7 +528,7 @@ export const SettingsPage: React.FC = () => {
                           type="checkbox"
                           checked={(notifications as any)[item.key]}
                           onChange={(e) => setNotifications({ ...notifications, [item.key]: e.target.checked })}
-                          className="w-4 h-4 rounded text-purple-600 border-slate-300 focus:ring-purple-500"
+                          className="w-4 h-4 rounded text-slate-900 border-slate-300 focus:ring-purple-500 font-bold border bg-white focus:ring-2 placeholder:text-slate-400"
                         />
                       </div>
                     ))}
@@ -573,7 +573,7 @@ export const SettingsPage: React.FC = () => {
                           type="checkbox"
                           checked={voiceSettings.enabled}
                           onChange={(e) => handleToggleVoiceMaster(e.target.checked)}
-                          className="w-5 h-5 rounded text-amber-600 border-slate-300 focus:ring-amber-500 cursor-pointer"
+                          className="w-5 h-5 rounded text-slate-900 border-slate-300 focus:ring-amber-500 cursor-pointer font-bold border bg-white focus:ring-2 placeholder:text-slate-400"
                         />
                       </div>
                     </div>
@@ -618,7 +618,7 @@ export const SettingsPage: React.FC = () => {
                           step="1"
                           value={Math.round(voiceSettings.volume * 100)}
                           onChange={(e) => handleVolumeChange(Number(e.target.value) / 100)}
-                          className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-600"
+                          className="w-full h-2 bg-white rounded-lg appearance-none cursor-pointer accent-amber-600 text-slate-900 font-bold border border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                         />
                         <Volume2 className="w-4 h-4 text-amber-700" />
                       </div>
@@ -661,7 +661,7 @@ export const SettingsPage: React.FC = () => {
                                 checked={voiceSettings.microservices[ms.key] !== false}
                                 disabled={!voiceSettings.enabled}
                                 onChange={(e) => handleToggleMicroserviceVoice(ms.key, e.target.checked)}
-                                className="w-4 h-4 rounded text-amber-600 border-slate-300 focus:ring-amber-500 cursor-pointer"
+                                className="w-4 h-4 rounded text-slate-900 border-slate-300 focus:ring-amber-500 cursor-pointer font-bold border bg-white focus:ring-2 placeholder:text-slate-400"
                               />
                             </div>
                           );
@@ -725,7 +725,7 @@ export const SettingsPage: React.FC = () => {
                         type="checkbox"
                         checked={mediaSettings.hardwareAcceleration}
                         onChange={(e) => setMediaSettings({ ...mediaSettings, hardwareAcceleration: e.target.checked })}
-                        className="w-4 h-4 rounded text-blue-600 border-slate-300 focus:ring-blue-500"
+                        className="w-4 h-4 rounded text-slate-900 border-slate-300 focus:ring-blue-500 font-bold border bg-white focus:ring-2 placeholder:text-slate-400"
                       />
                     </div>
                     <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
@@ -737,7 +737,7 @@ export const SettingsPage: React.FC = () => {
                         type="checkbox"
                         checked={mediaSettings.autoplayVideos}
                         onChange={(e) => setMediaSettings({ ...mediaSettings, autoplayVideos: e.target.checked })}
-                        className="w-4 h-4 rounded text-blue-600 border-slate-300 focus:ring-blue-500"
+                        className="w-4 h-4 rounded text-slate-900 border-slate-300 focus:ring-blue-500 font-bold border bg-white focus:ring-2 placeholder:text-slate-400"
                       />
                     </div>
                   </div>
@@ -803,7 +803,7 @@ export const SettingsPage: React.FC = () => {
                         type="number"
                         value={billing.minPayoutThreshold}
                         onChange={(e) => setBilling({ ...billing, minPayoutThreshold: Number(e.target.value) })}
-                        className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm font-bold text-slate-900 focus:ring-2 focus:ring-blue-500 shadow-sm"
+                        className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm font-bold text-slate-900 focus:ring-2 focus:ring-blue-500 shadow-sm placeholder:text-slate-400 font-mono"
                       />
                     </div>
                   </div>
@@ -842,7 +842,7 @@ export const SettingsPage: React.FC = () => {
                         type="password"
                         readOnly
                         value={apiKey}
-                        className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl font-mono text-xs font-bold text-slate-900 shadow-sm"
+                        className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl font-mono text-xs font-bold text-slate-900 shadow-sm focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                       <button
                         type="button"
@@ -863,7 +863,7 @@ export const SettingsPage: React.FC = () => {
                       type="url"
                       value={webhookUrl}
                       onChange={(e) => setWebhookUrl(e.target.value)}
-                      className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl font-mono text-xs font-bold text-slate-900 focus:ring-2 focus:ring-indigo-500 shadow-sm"
+                      className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl font-mono text-xs font-bold text-slate-900 focus:ring-2 focus:ring-indigo-500 shadow-sm placeholder:text-slate-400"
                     />
                     <p className="text-[11px] font-medium text-slate-700">
                       Receives HTTP POST payloads for events: <code className="font-bold text-slate-900">order.completed</code>, <code className="font-bold text-slate-900">gem.gifted</code>, <code className="font-bold text-slate-900">license.purchased</code>.

@@ -151,7 +151,7 @@ const GiftCardQRModal: React.FC<GiftCardQRModalProps> = ({
           </div>
 
           {/* Footer Actions */}
-          <div className="border-t border-gray-200 px-6 py-4 flex gap-3">
+          <div className="border-t border-slate-300 px-6 py-4 flex gap-3">
             <button
               onClick={handleCopyCode}
               className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium"

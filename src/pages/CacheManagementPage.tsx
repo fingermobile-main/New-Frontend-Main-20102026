@@ -209,7 +209,7 @@ const CacheManagementPage: React.FC = () => {
 
         {/* Tabs */}
         <div className="bg-white rounded-xl shadow-lg mb-6">
-          <div className="border-b border-gray-200">
+          <div className="border-b border-slate-300">
             <nav className="flex overflow-x-auto px-6 -mb-px">
               {[
                 { id: 'overview', label: 'Overview' },
@@ -244,7 +244,7 @@ const CacheManagementPage: React.FC = () => {
                       value={invalidationPattern}
                       onChange={(e) => setInvalidationPattern(e.target.value)}
                       placeholder="Enter pattern (e.g., user:*, session:*)"
-                      className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                      className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                     />
                     <button
                       onClick={handleInvalidateCache}
@@ -314,7 +314,7 @@ const CacheManagementPage: React.FC = () => {
                     value={searchPattern}
                     onChange={(e) => setSearchPattern(e.target.value)}
                     placeholder="Search cache keys..."
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                   />
                 </div>
 
@@ -355,18 +355,18 @@ const CacheManagementPage: React.FC = () => {
                               {cacheKey.key}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                              <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-950 border border-blue-400 font-bold rounded-full">
+                              <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-950 border border-blue-400 font-bold rounded-full font-black">
                                 {cacheKey.type}
                               </span>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                               {cacheKey.ttl ? (
                                 <span className="flex items-center">
-                                  <ClockIcon className="h-4 w-4 mr-1 text-gray-400" />
+                                  <ClockIcon className="h-4 w-4 mr-1 text-slate-700" />
                                   {cacheKey.ttl}s
                                 </span>
                               ) : (
-                                <span className="text-gray-400">No expiry</span>
+                                <span className="text-slate-700">No expiry</span>
                               )}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">

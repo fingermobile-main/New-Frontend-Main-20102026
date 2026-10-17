@@ -82,7 +82,7 @@ const WalletConnectModal: React.FC<WalletConnectModalProps> = ({
       <div className="relative min-h-screen flex items-center justify-center p-4">
         <div className="relative bg-white rounded-lg shadow-xl max-w-md w-full">
           {/* Header */}
-          <div className="border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+          <div className="border-b border-slate-300 px-6 py-4 flex items-center justify-between">
             <div>
               <h2 className="text-xl font-bold text-gray-900">Connect Wallet</h2>
               <p className="text-sm text-gray-600 mt-1">Choose your preferred wallet</p>

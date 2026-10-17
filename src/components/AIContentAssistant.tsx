@@ -39,7 +39,7 @@ const AIContentAssistant: React.FC<AIContentAssistantProps> = ({
           <h3 className="text-lg font-bold text-gray-900">AI Content Assistant</h3>
         </div>
         {onClose && (
-          <button onClick={onClose} aria-label="Close" className="text-gray-400 hover:text-gray-600">
+          <button onClick={onClose} aria-label="Close" className="text-slate-700 hover:text-gray-600">
             <XMarkIcon className="w-5 h-5" />
           </button>
         )}
@@ -51,7 +51,7 @@ const AIContentAssistant: React.FC<AIContentAssistantProps> = ({
           <select
             value={contentType}
             onChange={(e) => setContentType(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-slate-900 font-bold border-slate-300 bg-white"
           >
             <option value="post">Social Post</option>
             <option value="article">Article</option>
@@ -66,7 +66,7 @@ const AIContentAssistant: React.FC<AIContentAssistantProps> = ({
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
             rows={4}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
             placeholder="E.g., Write an engaging post about sustainable fashion trends..."
           />
         </div>

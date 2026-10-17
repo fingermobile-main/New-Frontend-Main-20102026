@@ -30,7 +30,7 @@ const ContentCommunityDashboardPage: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-3 relative z-10">
-            <select className="bg-white border border-slate-200 text-slate-700 text-sm rounded-xl focus:ring-fuchsia-500 focus:border-fuchsia-500 block p-3 font-medium shadow-sm">
+            <select className="bg-white border border-slate-200 text-slate-900 text-sm rounded-xl focus:ring-fuchsia-500 focus:border-fuchsia-500 block p-3 font-medium shadow-sm font-bold border-slate-300 focus:ring-2">
               <option>All Communities</option>
               <option>Web3 Developers</option>
               <option>DeFi Enthusiasts</option>
@@ -97,7 +97,7 @@ const ContentCommunityDashboardPage: React.FC = () => {
                 <TrophyIcon className="w-6 h-6 text-amber-500" />
                  Top Contributors
               </h2>
-              <select className="bg-slate-50 border border-slate-200 text-slate-700 text-xs rounded-lg focus:ring-amber-500 focus:border-amber-500 block p-2 font-medium">
+              <select className="bg-white border border-slate-200 text-slate-900 text-xs rounded-lg focus:ring-amber-500 focus:border-amber-500 block p-2 font-medium font-bold border-slate-300 focus:ring-2">
                 <option>This Week</option>
                 <option>This Month</option>
               </select>

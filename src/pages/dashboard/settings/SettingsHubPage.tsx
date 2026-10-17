@@ -382,7 +382,7 @@ export const SettingsHubPage: React.FC = () => {
                   placeholder="Filter settings modules (e.g., enclave, collaborator, ipfs)..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 text-xs sm:text-sm bg-white border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm text-slate-900 font-bold"
+                  className="w-full pl-10 pr-4 py-2.5 text-xs sm:text-sm bg-white border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm text-slate-900 font-bold placeholder:text-slate-400"
                 />
               </div>
               <div className="text-xs font-bold text-slate-700">
@@ -456,7 +456,7 @@ export const SettingsHubPage: React.FC = () => {
                   type="text"
                   value={generalConfig.businessName}
                   onChange={(e) => setGeneralConfig({ ...generalConfig, businessName: e.target.value })}
-                  className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400"
                 />
               </div>
 
@@ -468,7 +468,7 @@ export const SettingsHubPage: React.FC = () => {
                   type="text"
                   value={generalConfig.brandTagline}
                   onChange={(e) => setGeneralConfig({ ...generalConfig, brandTagline: e.target.value })}
-                  className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400"
                 />
               </div>
 
@@ -480,7 +480,7 @@ export const SettingsHubPage: React.FC = () => {
                   type="email"
                   value={generalConfig.contactEmail}
                   onChange={(e) => setGeneralConfig({ ...generalConfig, contactEmail: e.target.value })}
-                  className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400"
                 />
               </div>
 
@@ -492,7 +492,7 @@ export const SettingsHubPage: React.FC = () => {
                   type="text"
                   value={generalConfig.supportPhone}
                   onChange={(e) => setGeneralConfig({ ...generalConfig, supportPhone: e.target.value })}
-                  className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400"
                 />
               </div>
 
@@ -536,7 +536,7 @@ export const SettingsHubPage: React.FC = () => {
                   type="text"
                   value={generalConfig.sovereignNodeDomain}
                   onChange={(e) => setGeneralConfig({ ...generalConfig, sovereignNodeDomain: e.target.value })}
-                  className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-500 font-mono"
+                  className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-500 font-mono placeholder:text-slate-400"
                 />
               </div>
             </div>
@@ -580,7 +580,7 @@ export const SettingsHubPage: React.FC = () => {
                       placeholder="Collaborator Full Name"
                       value={newCollabName}
                       onChange={(e) => setNewCollabName(e.target.value)}
-                      className="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400"
                     />
                   </div>
                   <div>
@@ -589,7 +589,7 @@ export const SettingsHubPage: React.FC = () => {
                       placeholder="Corporate Email Address"
                       value={newCollabEmail}
                       onChange={(e) => setNewCollabEmail(e.target.value)}
-                      className="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400"
                     />
                   </div>
                   <div className="flex gap-2">
@@ -637,12 +637,12 @@ export const SettingsHubPage: React.FC = () => {
                         </td>
                         <td className="py-3.5 px-4 font-bold text-slate-800">{seat.email}</td>
                         <td className="py-3.5 px-4">
-                          <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-950 border border-blue-300">
+                          <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-950 border border-blue-400 border-blue-400 font-black">
                             {seat.role}
                           </span>
                         </td>
                         <td className="py-3.5 px-4">
-                          <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-950 border border-emerald-300">
+                          <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 border-emerald-400 font-black">
                             {seat.status}
                           </span>
                         </td>
@@ -690,7 +690,7 @@ export const SettingsHubPage: React.FC = () => {
                   type="checkbox"
                   checked={securityConfig.enforceMfaAllAdmins}
                   onChange={(e) => setSecurityConfig({ ...securityConfig, enforceMfaAllAdmins: e.target.checked })}
-                  className="w-5 h-5 rounded text-blue-600 focus:ring-blue-500 mt-0.5"
+                  className="w-5 h-5 rounded text-slate-900 focus:ring-blue-500 mt-0.5 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                 />
               </div>
 
@@ -705,7 +705,7 @@ export const SettingsHubPage: React.FC = () => {
                   type="checkbox"
                   checked={securityConfig.camusEnclaveSigning}
                   onChange={(e) => setSecurityConfig({ ...securityConfig, camusEnclaveSigning: e.target.checked })}
-                  className="w-5 h-5 rounded text-blue-600 focus:ring-blue-500 mt-0.5"
+                  className="w-5 h-5 rounded text-slate-900 focus:ring-blue-500 mt-0.5 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                 />
               </div>
 
@@ -719,7 +719,7 @@ export const SettingsHubPage: React.FC = () => {
                   max="1440"
                   value={securityConfig.sessionTimeoutMinutes}
                   onChange={(e) => setSecurityConfig({ ...securityConfig, sessionTimeoutMinutes: parseInt(e.target.value) || 30 })}
-                  className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400 font-mono"
                 />
               </div>
 
@@ -731,7 +731,7 @@ export const SettingsHubPage: React.FC = () => {
                   type="text"
                   value={securityConfig.allowedIpSubnet}
                   onChange={(e) => setSecurityConfig({ ...securityConfig, allowedIpSubnet: e.target.value })}
-                  className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-500 font-mono"
+                  className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-500 font-mono placeholder:text-slate-400"
                 />
               </div>
 
@@ -783,7 +783,7 @@ export const SettingsHubPage: React.FC = () => {
                     type="checkbox"
                     checked={commConfig.emailAlertsDispatched}
                     onChange={(e) => setCommConfig({ ...commConfig, emailAlertsDispatched: e.target.checked })}
-                    className="w-4 h-4 text-blue-600 rounded"
+                    className="w-4 h-4 text-slate-900 rounded font-bold border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                 </div>
 
@@ -796,7 +796,7 @@ export const SettingsHubPage: React.FC = () => {
                     type="checkbox"
                     checked={commConfig.smsAlertsCritical}
                     onChange={(e) => setCommConfig({ ...commConfig, smsAlertsCritical: e.target.checked })}
-                    className="w-4 h-4 text-blue-600 rounded"
+                    className="w-4 h-4 text-slate-900 rounded font-bold border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                 </div>
 
@@ -809,7 +809,7 @@ export const SettingsHubPage: React.FC = () => {
                     type="checkbox"
                     checked={commConfig.inAppPopups}
                     onChange={(e) => setCommConfig({ ...commConfig, inAppPopups: e.target.checked })}
-                    className="w-4 h-4 text-blue-600 rounded"
+                    className="w-4 h-4 text-slate-900 rounded font-bold border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                 </div>
               </div>
@@ -823,7 +823,7 @@ export const SettingsHubPage: React.FC = () => {
                       <div>
                         <div className="flex items-center gap-2">
                           <span className="font-mono text-xs font-extrabold text-slate-900">{wh.id}</span>
-                          <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-950 border border-emerald-300">
+                          <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 border-emerald-400 font-black">
                             {wh.status}
                           </span>
                         </div>
@@ -892,7 +892,7 @@ export const SettingsHubPage: React.FC = () => {
                   type="text"
                   value={storageConfig.ipfsPinningService}
                   onChange={(e) => setStorageConfig({ ...storageConfig, ipfsPinningService: e.target.value })}
-                  className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400"
                 />
               </div>
 
@@ -904,7 +904,7 @@ export const SettingsHubPage: React.FC = () => {
                   type="number"
                   value={storageConfig.maxAssetUploadMb}
                   onChange={(e) => setStorageConfig({ ...storageConfig, maxAssetUploadMb: parseInt(e.target.value) || 250 })}
-                  className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400 font-mono"
                 />
               </div>
 
@@ -916,7 +916,7 @@ export const SettingsHubPage: React.FC = () => {
                   type="number"
                   value={storageConfig.localCacheQuotaGb}
                   onChange={(e) => setStorageConfig({ ...storageConfig, localCacheQuotaGb: parseInt(e.target.value) || 50 })}
-                  className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400 font-mono"
                 />
               </div>
 
@@ -928,7 +928,7 @@ export const SettingsHubPage: React.FC = () => {
                   type="number"
                   value={storageConfig.retentionDays}
                   onChange={(e) => setStorageConfig({ ...storageConfig, retentionDays: parseInt(e.target.value) || 365 })}
-                  className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400 font-mono"
                 />
               </div>
 
@@ -941,7 +941,7 @@ export const SettingsHubPage: React.FC = () => {
                   type="checkbox"
                   checked={storageConfig.encryptionAtRest}
                   onChange={(e) => setStorageConfig({ ...storageConfig, encryptionAtRest: e.target.checked })}
-                  className="w-4 h-4 text-blue-600 rounded"
+                  className="w-4 h-4 text-slate-900 rounded font-bold border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
 
@@ -954,7 +954,7 @@ export const SettingsHubPage: React.FC = () => {
                   type="checkbox"
                   checked={storageConfig.autoPurgeStaleTemp}
                   onChange={(e) => setStorageConfig({ ...storageConfig, autoPurgeStaleTemp: e.target.checked })}
-                  className="w-4 h-4 text-blue-600 rounded"
+                  className="w-4 h-4 text-slate-900 rounded font-bold border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
             </div>
@@ -996,7 +996,7 @@ export const SettingsHubPage: React.FC = () => {
                   max="50"
                   value={commerceConfig.defaultPlatformFeePercent}
                   onChange={(e) => setCommerceConfig({ ...commerceConfig, defaultPlatformFeePercent: parseFloat(e.target.value) || 0 })}
-                  className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400 font-mono"
                 />
               </div>
 
@@ -1008,7 +1008,7 @@ export const SettingsHubPage: React.FC = () => {
                   type="number"
                   value={commerceConfig.escrowHoldingPeriodHours}
                   onChange={(e) => setCommerceConfig({ ...commerceConfig, escrowHoldingPeriodHours: parseInt(e.target.value) || 48 })}
-                  className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400 font-mono"
                 />
               </div>
 
@@ -1020,7 +1020,7 @@ export const SettingsHubPage: React.FC = () => {
                   type="number"
                   value={commerceConfig.autoDisputeResolutionDays}
                   onChange={(e) => setCommerceConfig({ ...commerceConfig, autoDisputeResolutionDays: parseInt(e.target.value) || 7 })}
-                  className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400 font-mono"
                 />
               </div>
 
@@ -1033,7 +1033,7 @@ export const SettingsHubPage: React.FC = () => {
                   type="checkbox"
                   checked={commerceConfig.instantSettlementAllowed}
                   onChange={(e) => setCommerceConfig({ ...commerceConfig, instantSettlementAllowed: e.target.checked })}
-                  className="w-4 h-4 text-blue-600 rounded"
+                  className="w-4 h-4 text-slate-900 rounded font-bold border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
 
@@ -1045,7 +1045,7 @@ export const SettingsHubPage: React.FC = () => {
                   type="text"
                   value={commerceConfig.sovereignTreasuryVault}
                   onChange={(e) => setCommerceConfig({ ...commerceConfig, sovereignTreasuryVault: e.target.value })}
-                  className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-500 font-mono"
+                  className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-500 font-mono placeholder:text-slate-400"
                 />
               </div>
             </div>

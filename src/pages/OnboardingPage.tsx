@@ -809,7 +809,7 @@ const OnboardingPage: React.FC = () => {
                         type="text"
                         placeholder="Enter 6-digit code"
                         maxLength={6}
-                        className="text-center text-lg tracking-widest py-3 mt-1"
+                        className="text-center text-lg tracking-widest py-3 mt-1 text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                         value={tempData.twoFactorCode || ''}
                         onChange={(e) => setTempData({...tempData, twoFactorCode: e.target.value})}
                       />
@@ -1346,7 +1346,7 @@ const OnboardingPage: React.FC = () => {
                         value="TIER_3" 
                         checked={selectedTier === 'TIER_3'} 
                         onChange={() => setSelectedTier('TIER_3')}
-                        className="mt-1" 
+                        className="mt-1 text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" 
                       />
                       <label htmlFor="tier3" className="text-sm cursor-pointer">
                         <span className="font-medium text-gray-900 dark:text-slate-100 block">Tier 3 (Emerging/Micro)</span>
@@ -1362,7 +1362,7 @@ const OnboardingPage: React.FC = () => {
                         value="TIER_2" 
                         checked={selectedTier === 'TIER_2'}
                         onChange={() => setSelectedTier('TIER_2')}
-                        className="mt-1" 
+                        className="mt-1 text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" 
                       />
                       <label htmlFor="tier2" className="text-sm cursor-pointer">
                         <span className="font-medium text-gray-900 dark:text-slate-100 block">Tier 2 (Established / Pro)</span>
@@ -1378,7 +1378,7 @@ const OnboardingPage: React.FC = () => {
                         value="TIER_1" 
                         checked={selectedTier === 'TIER_1'}
                         onChange={() => setSelectedTier('TIER_1')}
-                        className="mt-1" 
+                        className="mt-1 text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" 
                       />
                       <label htmlFor="tier1" className="text-sm cursor-pointer">
                         <span className="font-medium text-gray-900 dark:text-slate-100 block">Tier 1 (Elite / Flagship)</span>
@@ -1388,7 +1388,7 @@ const OnboardingPage: React.FC = () => {
                   </div>
 
                   {selectedTier === 'TIER_1' && (
-                    <div className="mt-3 pt-3 border-t border-gray-200 dark:border-slate-800">
+                    <div className="mt-3 pt-3 border-t border-slate-300 dark:border-slate-800">
                       <Label htmlFor="inviteToken" className="text-xs text-amber-500 font-semibold block mb-1">
                         Enter Tier 1 SuperAdmin Single-Use Invite Token:
                       </Label>
@@ -1398,7 +1398,7 @@ const OnboardingPage: React.FC = () => {
                         placeholder="e.g. VIP-FM-2026-TOKEN-XYZ"
                         value={inviteToken}
                         onChange={(e) => setInviteToken(e.target.value)}
-                        className="text-xs font-mono"
+                        className="text-xs font-mono text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                     </div>
                   )}
@@ -1443,7 +1443,7 @@ const OnboardingPage: React.FC = () => {
                       <input 
                         type="file" 
                         id="creatorPassport" 
-                        className="hidden" 
+                        className="hidden text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" 
                         onChange={(e) => {
                           if (e.target.files && e.target.files.length > 0) {
                             setCreatorPassportFile(e.target.files[0]);
@@ -1468,7 +1468,7 @@ const OnboardingPage: React.FC = () => {
                       <input 
                         type="file" 
                         id="creatorSelfie" 
-                        className="hidden" 
+                        className="hidden text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" 
                         onChange={(e) => {
                           if (e.target.files && e.target.files.length > 0) {
                             setCreatorSelfieFile(e.target.files[0]);
@@ -1578,7 +1578,7 @@ const OnboardingPage: React.FC = () => {
                             id="businessDocuments" 
                             type="file" 
                             multiple 
-                            className="sr-only" 
+                            className="sr-only text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" 
                             onChange={(e) => {
                               if (e.target.files && e.target.files.length > 0) {
                                 setBusinessDocuments(e.target.files);

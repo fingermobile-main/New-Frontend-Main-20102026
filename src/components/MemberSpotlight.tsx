@@ -151,7 +151,7 @@ const MemberSpotlight: React.FC<MemberSpotlightProps> = ({
             </div>
 
             {/* Navigation */}
-            <div className="flex items-center justify-between pt-4 border-t border-gray-200">
+            <div className="flex items-center justify-between pt-4 border-t border-slate-300">
               <button
                 onClick={prevMember}
                 className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors font-medium"

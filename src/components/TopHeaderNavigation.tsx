@@ -90,7 +90,7 @@ const TopHeaderNavigation: React.FC = () => {
                   <input
                     type="text"
                     placeholder="Search for people, communities, jobs..."
-                    className="bg-transparent border-none focus:outline-none placeholder-white placeholder-opacity-70 w-full text-sm" />
+                    className="bg-transparent border-none focus:outline-none placeholder-white placeholder-opacity-70 w-full text-sm text-slate-900 font-bold border border-slate-300 rounded focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" />
                 </div>
               </div>
             </div>
@@ -197,7 +197,7 @@ const TopHeaderNavigation: React.FC = () => {
         <div className="fixed inset-0 z-50 md:hidden">
           <div className="fixed inset-0 bg-black/50" onClick={() => setIsMobileMenuOpen(false)}></div>
           <div className="fixed inset-y-0 left-0 w-64 bg-white shadow-xl flex flex-col z-50 overflow-y-auto">
-            <div className="p-4 flex justify-between items-center border-b border-gray-100 bg-slate-50/70">
+            <div className="p-4 flex justify-between items-center border-b border-slate-200 bg-slate-50/70">
               <div className="flex items-center space-x-2">
                 <img
                   src="/assets/branding/fingermobile/FRONT copy.webp"

@@ -177,7 +177,7 @@ const MemberManagementPage: React.FC = () => {
                     <select
                       value={member.role}
                       onChange={(e) => void handleUpdateMember(member.id, e.target.value)}
-                      className="p-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+                      className="p-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white"
                     >
                       <option value="user">User</option>
                       <option value="moderator">Moderator</option>

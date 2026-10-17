@@ -18,7 +18,7 @@ const PlatformTaskManager: React.FC<PlatformTaskManagerProps> = () => {
       </div>
       <div className="space-y-2">
         {tasks.map((task) => (
-          <div key={task.id} className="p-3 border border-gray-200 rounded-lg">
+          <div key={task.id} className="p-3 border border-slate-300 rounded-lg">
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-medium text-gray-900">{task.title}</p>

@@ -155,7 +155,7 @@ const PrometheusMetricsPage: React.FC = () => {
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="e.g., http_requests_total{method='GET'}"
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                 />
                 <button
                   onClick={fetchMetrics}
@@ -174,7 +174,7 @@ const PrometheusMetricsPage: React.FC = () => {
                 <select
                   value={timeRange}
                   onChange={(e) => setTimeRange(e.target.value)}
-                  className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                  className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white"
                 >
                   <option value="5m">Last 5 minutes</option>
                   <option value="15m">Last 15 minutes</option>
@@ -263,7 +263,7 @@ const PrometheusMetricsPage: React.FC = () => {
                             ))}
                           </div>
                         ) : (
-                          <span className="text-gray-400">-</span>
+                          <span className="text-slate-700">-</span>
                         )}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -283,9 +283,9 @@ const PrometheusMetricsPage: React.FC = () => {
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Metrics Visualization</h3>
             <div className="h-96 flex items-center justify-center bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
               <div className="text-center">
-                <MagnifyingGlassIcon className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+                <MagnifyingGlassIcon className="h-16 w-16 text-slate-700 mx-auto mb-4" />
                 <p className="text-gray-500">Graph visualization would be rendered here</p>
-                <p className="text-sm text-gray-400 mt-2">Integrate with Chart.js or D3.js for time-series charts</p>
+                <p className="text-sm text-slate-700 mt-2">Integrate with Chart.js or D3.js for time-series charts</p>
               </div>
             </div>
           </div>

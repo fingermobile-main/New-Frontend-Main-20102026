@@ -66,7 +66,7 @@ const PublishingToolsPage: React.FC = () => {
           {posts && posts.length > 0 ? (
             <div className="space-y-4">
               {posts.slice(0, 3).map((post) => (
-                <div key={post.id} className="border border-gray-200 rounded-lg p-4">
+                <div key={post.id} className="border border-slate-300 rounded-lg p-4">
                   <h3 className="font-semibold">{post.title || 'Untitled Post'}</h3>
                   <div className="flex justify-between mt-2">
                     <span className="text-gray-500 text-sm">

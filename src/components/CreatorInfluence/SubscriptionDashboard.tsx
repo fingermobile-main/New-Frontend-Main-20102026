@@ -261,7 +261,7 @@ const SubscriptionDashboard: React.FC<SubscriptionDashboardProps> = ({
 
       {/* Billing History */}
       <div className="bg-white shadow rounded-lg overflow-hidden">
-        <div className="px-6 py-5 border-b border-gray-200">
+        <div className="px-6 py-5 border-b border-slate-300">
           <h3 className="text-lg font-medium leading-6 text-gray-900">Billing History</h3>
         </div>
         <div className="overflow-x-auto">
@@ -348,7 +348,7 @@ const SubscriptionDashboard: React.FC<SubscriptionDashboardProps> = ({
                         <textarea
                           id="cancel-reason"
                           rows={3}
-                          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                           value={cancelReason}
                           onChange={(e) => setCancelReason(e.target.value)}
                         />

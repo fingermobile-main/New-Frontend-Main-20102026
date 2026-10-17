@@ -93,7 +93,7 @@ const LegalPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
-        <div className="flex flex-col md:flex-row md:items-center justify-between pb-8 border-b border-gray-200">
+        <div className="flex flex-col md:flex-row md:items-center justify-between pb-8 border-b border-slate-300">
           <div>
             <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Legal & Compliance Hub</h1>
             <p className="mt-2 text-base text-gray-600">
@@ -138,7 +138,7 @@ const LegalPage: React.FC = () => {
                 <h2 className="text-xl font-bold text-gray-900">File DMCA / Copyright Claim</h2>
                 <button
                   onClick={() => setShowDmcaModal(false)}
-                  className="text-gray-400 hover:text-gray-600 text-2xl font-bold"
+                  className="text-slate-700 hover:text-gray-600 text-2xl font-bold"
                 >
                   &times;
                 </button>
@@ -151,7 +151,7 @@ const LegalPage: React.FC = () => {
                     required
                     value={dmcaForm.claimant_name}
                     onChange={e => setDmcaForm({ ...dmcaForm, claimant_name: e.target.value })}
-                    className="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                   />
                 </div>
                 <div>
@@ -161,7 +161,7 @@ const LegalPage: React.FC = () => {
                     required
                     value={dmcaForm.claimant_email}
                     onChange={e => setDmcaForm({ ...dmcaForm, claimant_email: e.target.value })}
-                    className="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                   />
                 </div>
                 <div>
@@ -172,7 +172,7 @@ const LegalPage: React.FC = () => {
                     placeholder="https://fingermobile.io/posts/..."
                     value={dmcaForm.infringing_url}
                     onChange={e => setDmcaForm({ ...dmcaForm, infringing_url: e.target.value })}
-                    className="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                   />
                 </div>
                 <div>
@@ -181,7 +181,7 @@ const LegalPage: React.FC = () => {
                     type="url"
                     value={dmcaForm.original_work_url}
                     onChange={e => setDmcaForm({ ...dmcaForm, original_work_url: e.target.value })}
-                    className="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                   />
                 </div>
                 <div>
@@ -191,7 +191,7 @@ const LegalPage: React.FC = () => {
                     required
                     value={dmcaForm.description}
                     onChange={e => setDmcaForm({ ...dmcaForm, description: e.target.value })}
-                    className="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                   />
                 </div>
                 <div>
@@ -202,7 +202,7 @@ const LegalPage: React.FC = () => {
                     placeholder="Type legal representative name"
                     value={dmcaForm.signature}
                     onChange={e => setDmcaForm({ ...dmcaForm, signature: e.target.value })}
-                    className="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                   />
                 </div>
                 <div className="flex justify-end gap-3 pt-3">

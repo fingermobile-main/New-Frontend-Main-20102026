@@ -213,7 +213,7 @@ const MiiPage: React.FC = () => {
                       <Radio className="w-4 h-4 text-emerald-500 animate-pulse" />
                     Live ShowCase Activity
                     </h3>
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950 px-2 py-0.5 rounded-full">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-950 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950 px-2 py-0.5 rounded-full border text-emerald-950 border-emerald-400 font-black">
                     Live Broadcast
                     </span>
                   </div>
@@ -243,8 +243,8 @@ const MiiPage: React.FC = () => {
                   </div>
 
                   {/* Status message */}
-                  <div className="pt-2 border-t border-gray-100 dark:border-gray-800">
-                    <span className="text-[10px] font-bold text-gray-400 uppercase">Status Note</span>
+                  <div className="pt-2 border-t border-slate-200 dark:border-gray-800">
+                    <span className="text-[10px] font-bold text-slate-700 uppercase">Status Note</span>
                     <p className="text-xs text-gray-700 dark:text-gray-300 italic mt-0.5">
                     "{myActivity.statusText}"
                     </p>
@@ -297,10 +297,10 @@ const MiiPage: React.FC = () => {
                       >
                         <div>
                           <div className="flex items-center justify-between mb-2">
-                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">
+                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-950 dark:text-emerald-300 border text-emerald-950 border-emerald-400 font-black">
                               {story.duration}
                             </span>
-                            <span className="text-[10px] font-mono text-gray-400">
+                            <span className="text-[10px] font-mono text-slate-700">
                               {story.cards} Cards
                             </span>
                           </div>
@@ -308,7 +308,7 @@ const MiiPage: React.FC = () => {
                           <p className="text-xs text-gray-500 mt-1">{story.type} • by {story.author}</p>
                         </div>
 
-                        <div className="mt-4 pt-3 border-t border-gray-200/60 dark:border-gray-700 flex items-center justify-between">
+                        <div className="mt-4 pt-3 border-t border-slate-300 dark:border-gray-700 flex items-center justify-between">
                           <button
                             onClick={() => showToast(`Playing story by ${story.author}`, 'info')}
                             className="text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:underline"
@@ -464,7 +464,7 @@ const MiiPage: React.FC = () => {
                   value={chatInput}
                   onChange={(e) => setChatInput(e.target.value)}
                   placeholder="Type encrypted message or reply to Mii..."
-                  className="flex-1 px-4 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl text-xs outline-none focus:ring-2 focus:ring-emerald-500 text-gray-900 dark:text-white"
+                  className="flex-1 px-4 py-2.5 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl text-xs outline-none focus:ring-2 focus:ring-emerald-500 text-slate-900 dark:text-white font-bold border-slate-300 placeholder:text-slate-400"
                 />
                 <button
                   type="submit"

@@ -359,14 +359,14 @@ const EditPostPage: React.FC = () => {
                 </span>
               </div>
               <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">AI Content Enhancement Suite</h1>
-              <p className="text-sm text-slate-300 mt-1 max-w-2xl">
+              <p className="text-sm text-slate-700 mt-1 max-w-2xl">
                 Refine, polish, expand, or stylize your post in real time. Compare side-by-side revisions with automated token accounting.
               </p>
             </div>
             <div className="flex items-center gap-3 bg-white/10 backdrop-blur-md px-4 py-3 rounded-xl border border-white/15 self-start md:self-auto">
               <Zap className="w-5 h-5 text-amber-400" />
               <div>
-                <div className="text-xs text-slate-300 font-medium">FIC Balance</div>
+                <div className="text-xs text-slate-700 font-medium">FIC Balance</div>
                 <div className="text-lg font-extrabold text-white">{balance.toLocaleString()} FIC</div>
               </div>
               <div className="ml-2 text-[11px] font-semibold text-blue-200 bg-blue-600/40 px-2 py-0.5 rounded">
@@ -387,7 +387,7 @@ const EditPostPage: React.FC = () => {
             value={postTitle}
             onChange={(e) => setPostTitle(e.target.value)}
             placeholder="Enter post title..."
-            className="w-full px-3 py-2 text-base font-semibold border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 bg-white"
+            className="w-full px-3 py-2 text-base font-semibold border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 bg-white font-bold placeholder:text-slate-400"
           />
         </div>
 
@@ -463,7 +463,7 @@ const EditPostPage: React.FC = () => {
               value={instruction}
               onChange={(e) => setInstruction(e.target.value)}
               placeholder="e.g. 'Add 3 bullet points', 'Make it sound more urgent', 'Shorten by half'..."
-              className="flex-1 px-4 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="flex-1 px-4 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 font-bold bg-white placeholder:text-slate-400"
               disabled={isEditing}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') handleEdit();
@@ -510,7 +510,7 @@ const EditPostPage: React.FC = () => {
                 value={originalContent}
                 onChange={(e) => setOriginalContent(e.target.value)}
                 placeholder="Type or paste post content here..."
-                className="w-full h-64 sm:h-80 p-3 text-sm text-slate-800 bg-transparent border-0 focus:ring-0 resize-none font-sans leading-relaxed"
+                className="w-full h-64 sm:h-80 p-3 text-sm text-slate-900 bg-transparent border focus:ring-0 resize-none font-sans leading-relaxed font-bold border-slate-300 rounded placeholder:text-slate-400"
               />
             </div>
 
@@ -548,7 +548,7 @@ const EditPostPage: React.FC = () => {
                 >
                   <RotateCcw className="w-4 h-4" />
                 </button>
-                <span className="text-[11px] text-slate-400 font-mono">
+                <span className="text-[11px] text-slate-700 font-mono">
                   {historyIndex >= 0 ? `${historyIndex + 1}/${history.length}` : '0/0'}
                 </span>
                 <button
@@ -574,13 +574,13 @@ const EditPostPage: React.FC = () => {
                 <textarea
                   value={editedContent}
                   onChange={(e) => setEditedContent(e.target.value)}
-                  className="w-full h-64 sm:h-80 p-3 text-sm text-slate-900 bg-transparent border-0 focus:ring-0 resize-none font-sans leading-relaxed"
+                  className="w-full h-64 sm:h-80 p-3 text-sm text-slate-900 bg-transparent border focus:ring-0 resize-none font-sans leading-relaxed font-bold border-slate-300 rounded placeholder:text-slate-400"
                 />
               ) : (
-                <div className="h-64 sm:h-80 flex flex-col items-center justify-center text-center p-6 text-slate-400">
-                  <Wand2 className="w-10 h-10 text-slate-300 mb-3 stroke-[1.5]" />
+                <div className="h-64 sm:h-80 flex flex-col items-center justify-center text-center p-6 text-slate-700">
+                  <Wand2 className="w-10 h-10 text-slate-700 mb-3 stroke-[1.5]" />
                   <div className="text-sm font-semibold text-slate-600">No AI Edit Generated Yet</div>
-                  <p className="text-xs text-slate-400 max-w-xs mt-1">
+                  <p className="text-xs text-slate-700 max-w-xs mt-1">
                     Select a style preset above or enter custom instructions to generate transformed copy.
                   </p>
                 </div>

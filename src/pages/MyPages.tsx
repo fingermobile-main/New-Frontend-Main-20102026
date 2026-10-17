@@ -178,7 +178,7 @@ const MyPages: React.FC = () => {
                   type="number"
                   value={giftAmount}
                   onChange={(e) => setGiftAmount(e.target.value)}
-                  className="w-full px-4 py-2 border rounded-lg"
+                  className="w-full px-4 py-2 border rounded-lg text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
                   placeholder="Enter amount"
                   min="0"
                   step="0.01"
@@ -227,7 +227,7 @@ const MyPages: React.FC = () => {
                   type="number"
                   value={paylinkAmount}
                   onChange={(e) => setPaylinkAmount(e.target.value)}
-                  className="w-full px-4 py-2 border rounded-lg"
+                  className="w-full px-4 py-2 border rounded-lg text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
                   placeholder="Enter amount"
                   min="0"
                   step="0.01"
@@ -236,7 +236,7 @@ const MyPages: React.FC = () => {
               <input
                 type="text"
                 placeholder="Enter paylink description"
-                className="w-full px-4 py-2 border rounded-lg" />
+                className="w-full px-4 py-2 border rounded-lg text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" />
               <div className="flex gap-4">
                 <button
                   onClick={() => {

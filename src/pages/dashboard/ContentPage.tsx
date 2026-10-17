@@ -120,7 +120,7 @@ const ContentPage: React.FC = () => {
       </div>
 
       <div className="bg-white shadow rounded-lg">
-        <div className="px-4 py-5 sm:px-6 border-b border-gray-200">
+        <div className="px-4 py-5 sm:px-6 border-b border-slate-300">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between">
             <h3 className="text-lg leading-6 font-medium text-gray-900">
               Content Overview
@@ -230,7 +230,7 @@ const ContentPage: React.FC = () => {
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-950 border border-blue-400 font-bold">
+                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-950 border border-blue-400 font-bold font-black">
                       {item.type}
                     </span>
                   </td>
@@ -273,7 +273,7 @@ const ContentPage: React.FC = () => {
           </table>
         </div>
 
-        <div className="px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+        <div className="px-4 py-3 flex items-center justify-between border-t border-slate-300 sm:px-6">
           <div className="flex-1 flex justify-between sm:hidden">
             <button className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
               Previous

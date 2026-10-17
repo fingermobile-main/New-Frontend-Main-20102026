@@ -69,7 +69,7 @@ const ProtocolNotificationDemo: React.FC = () => {
               type="text"
               value={clientId}
               onChange={(e) => setClientId(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
             />
           </div>
 
@@ -156,7 +156,7 @@ const ProtocolNotificationDemo: React.FC = () => {
           {logs.length > 0 ? (
             <ul className="space-y-1">
               {logs.map((log, index) => (
-                <li key={index} className="py-1 border-b border-gray-100 last:border-0">
+                <li key={index} className="py-1 border-b border-slate-200 last:border-0">
                   {log}
                 </li>
               ))}

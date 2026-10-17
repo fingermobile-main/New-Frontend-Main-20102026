@@ -196,7 +196,7 @@ export const ReelsSection: React.FC<ReelsSectionProps> = ({ isOwner, onToast }) 
           <div>
             <h3 className="text-xl font-black text-slate-900 tracking-tight flex items-center gap-2">
               <span>Sovereign Reels & Short-Form Video</span>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-100 text-amber-950 border border-amber-300">
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-100 text-amber-950 border border-amber-400 border-amber-400 font-black">
                 Max 30s Playtime
               </span>
             </h3>
@@ -383,7 +383,7 @@ export const ReelsSection: React.FC<ReelsSectionProps> = ({ isOwner, onToast }) 
                   placeholder="e.g. Decentralized Media Enclave Demo"
                   value={newReelTitle}
                   onChange={(e) => setNewReelTitle(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 font-bold text-xs"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 font-bold text-xs focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
 
@@ -395,7 +395,7 @@ export const ReelsSection: React.FC<ReelsSectionProps> = ({ isOwner, onToast }) 
                   type="text"
                   value={newReelAudio}
                   onChange={(e) => setNewReelAudio(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 font-bold text-xs"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 font-bold text-xs focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
 
@@ -408,7 +408,7 @@ export const ReelsSection: React.FC<ReelsSectionProps> = ({ isOwner, onToast }) 
                   type="file"
                   accept="video/mp4,video/webm"
                   onChange={handleVideoSelect}
-                  className="w-full text-xs font-bold text-slate-800 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border file:border-slate-300 file:text-xs file:font-bold file:bg-slate-100 hover:file:bg-slate-200"
+                  className="w-full text-xs font-bold text-slate-900 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border file:border-slate-300 file:text-xs file:font-bold file:bg-white hover:file:bg-white border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
                 {newReelDuration > 0 && (
                   <p className="text-[11px] font-bold text-emerald-800 mt-1 flex items-center gap-1">

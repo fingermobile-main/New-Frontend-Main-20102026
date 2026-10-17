@@ -696,7 +696,7 @@ export const LushPressiesPage: React.FC = () => {
       {showCatalogModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-sm animate-fadeIn">
           <div className="bg-white rounded-3xl border border-emerald-200 shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto p-4 sm:p-6 relative">
-            <div className="flex items-center justify-between pb-4 border-b border-gray-100 mb-4">
+            <div className="flex items-center justify-between pb-4 border-b border-slate-200 mb-4">
               <div className="flex items-center gap-2">
                 <SparklesIcon className="w-6 h-6 text-[#DC582A]" />
                 <h2 className="text-xl font-bold text-gray-900">
@@ -799,7 +799,7 @@ export const LushPressiesPage: React.FC = () => {
       {showGamificationModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-sm animate-fadeIn">
           <div className="bg-white rounded-3xl border border-emerald-200 shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto p-4 sm:p-6 relative">
-            <div className="flex items-center justify-between pb-4 border-b border-gray-100 mb-4">
+            <div className="flex items-center justify-between pb-4 border-b border-slate-200 mb-4">
               <div className="flex items-center gap-2">
                 <SparklesIcon className="w-6 h-6 text-[#DC582A]" />
                 <h2 className="text-xl font-bold text-gray-900">
@@ -822,7 +822,7 @@ export const LushPressiesPage: React.FC = () => {
       {showHeatmapModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-sm animate-fadeIn">
           <div className="bg-white rounded-3xl border border-emerald-200 shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto p-4 sm:p-6 relative">
-            <div className="flex items-center justify-between pb-4 border-b border-gray-100 mb-4">
+            <div className="flex items-center justify-between pb-4 border-b border-slate-200 mb-4">
               <div className="flex items-center gap-2">
                 <SparklesIcon className="w-6 h-6 text-emerald-600" />
                 <h2 className="text-xl font-bold text-gray-900">
@@ -845,7 +845,7 @@ export const LushPressiesPage: React.FC = () => {
       {showCommitModal && selectedCommitMatch && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-sm animate-fadeIn">
           <div className="bg-white rounded-3xl border border-emerald-200 shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-4 sm:p-6 relative">
-            <div className="flex items-center justify-between pb-4 border-b border-gray-100 mb-4">
+            <div className="flex items-center justify-between pb-4 border-b border-slate-200 mb-4">
               <div className="flex items-center gap-2">
                 <span className="text-2xl">💍</span>
                 <h2 className="text-xl font-bold text-gray-900">

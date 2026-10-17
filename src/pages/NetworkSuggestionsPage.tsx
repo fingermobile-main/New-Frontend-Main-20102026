@@ -280,7 +280,7 @@ export const NetworkSuggestionsPage: React.FC = () => {
                 placeholder="Search by name, handle, role, or guild..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 placeholder:text-slate-700 focus:outline-hidden focus:ring-2 focus:ring-sky-500"
+                className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:ring-2 focus:ring-sky-500"
               />
               <Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-3" />
             </div>
@@ -357,7 +357,7 @@ export const NetworkSuggestionsPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => handleDismiss(peer.id)}
-                    className="text-slate-400 hover:text-slate-700 text-xs p-1"
+                    className="text-slate-700 hover:text-slate-700 text-xs p-1"
                     title="Dismiss recommendation"
                   >
                     ✕

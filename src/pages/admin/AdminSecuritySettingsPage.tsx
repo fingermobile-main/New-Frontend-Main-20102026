@@ -135,7 +135,7 @@ const AdminSecuritySettingsPage: React.FC = () => {
                   onChange={(e) =>
                     handleSettingChange(setting.id, e.target.checked.toString())
                   }
-                  className="form-checkbox h-5 w-5 text-indigo-600"
+                  className="form-checkbox h-5 w-5 text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               ) : (
                 <input
@@ -145,7 +145,7 @@ const AdminSecuritySettingsPage: React.FC = () => {
                   onChange={(e) =>
                     handleSettingChange(setting.id, e.target.value)
                   }
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-900 leading-tight focus:outline-none focus:shadow-outline font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               )}
               <p className="text-gray-600 text-xs mt-1">

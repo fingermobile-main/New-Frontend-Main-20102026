@@ -88,7 +88,7 @@ const EnhancedBeatwaveNGPlayer: React.FC<EnhancedBeatwaveNGPlayerProps> = ({
           max={duration || 100}
           value={currentTime}
           onChange={handleSeek}
-          className="w-full h-2 bg-white/20 rounded-lg appearance-none cursor-pointer"
+          className="w-full h-2 bg-white rounded-lg appearance-none cursor-pointer text-slate-900 font-bold border border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
         />
 
         <div className="flex items-center justify-between text-xs text-white/70">
@@ -122,7 +122,7 @@ const EnhancedBeatwaveNGPlayer: React.FC<EnhancedBeatwaveNGPlayerProps> = ({
                   audioRef.current.volume = vol / 100;
                 }
               }}
-              className="w-24 h-2 bg-white/20 rounded-lg appearance-none cursor-pointer"
+              className="w-24 h-2 bg-white rounded-lg appearance-none cursor-pointer text-slate-900 font-bold border border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
             />
           </div>
         </div>

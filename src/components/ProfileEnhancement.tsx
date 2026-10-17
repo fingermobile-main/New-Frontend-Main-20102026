@@ -136,7 +136,7 @@ const ProfileEnhancement: React.FC = () => {
                 value={profile.username}
                 onChange={handleInputChange}
                 placeholder="Enter your username"
-                className={inputClass}
+                className={[(inputClass), "text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"].filter(Boolean).join(" ")}
                 maxLength={30}
                 minLength={3}
               />
@@ -151,7 +151,7 @@ const ProfileEnhancement: React.FC = () => {
                 onChange={handleInputChange}
                 placeholder="Tell us about yourself..."
                 rows={4}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-gray-900 placeholder:text-slate-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-slate-900 placeholder:text-slate-400 font-bold border-slate-300"
               />
             </div>
 
@@ -166,7 +166,7 @@ const ProfileEnhancement: React.FC = () => {
                 value={profile.profilePicture}
                 onChange={handleInputChange}
                 placeholder="https://example.com/profile.jpg"
-                className={inputClass}
+                className={[(inputClass), "text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"].filter(Boolean).join(" ")}
               />
             </div>
 
@@ -181,7 +181,7 @@ const ProfileEnhancement: React.FC = () => {
                 value={profile.profileVideo || ''}
                 onChange={(e) => setProfile(prev => ({ ...prev, profileVideo: e.target.value || null }))}
                 placeholder="https://example.com/video.mp4"
-                className={inputClass}
+                className={[(inputClass), "text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"].filter(Boolean).join(" ")}
               />
             </div>
 
@@ -191,7 +191,7 @@ const ProfileEnhancement: React.FC = () => {
                 id="aiGenerated"
                 checked={profile.aiGenerated}
                 onChange={handleToggleAiGenerated}
-                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                className="h-4 w-4 text-slate-900 focus:ring-indigo-500 border-gray-300 rounded font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
               />
               <label htmlFor="aiGenerated" className="text-sm font-medium text-gray-700">
                 AI Generated Avatar
@@ -202,7 +202,7 @@ const ProfileEnhancement: React.FC = () => {
                 id="professional"
                 checked={profile.isProfessional}
                 onChange={handleToggleProfessional}
-                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                className="h-4 w-4 text-slate-900 focus:ring-indigo-500 border-gray-300 rounded font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
               />
               <label htmlFor="professional" className="text-sm font-medium text-gray-700">
                 Professional Mode
@@ -224,7 +224,7 @@ const ProfileEnhancement: React.FC = () => {
                   value={img}
                   onChange={(e) => handleCoverImageChange(index, e.target.value)}
                   placeholder={`https://example.com/cover-${index + 1}.jpg`}
-                  className={inputClass}
+                  className={[(inputClass), "text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"].filter(Boolean).join(" ")}
                 />
               </div>
             ))}
@@ -242,13 +242,13 @@ const ProfileEnhancement: React.FC = () => {
                 value={currentSkill.name}
                 onChange={(e) => setCurrentSkill({...currentSkill, name: e.target.value})}
                 placeholder="Add a skill"
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-gray-900 placeholder:text-slate-500"
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-slate-900 placeholder:text-slate-400 font-bold border-slate-300"
                 onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleAddSkill(); } }}
               />
               <select
                 value={currentSkill.level}
                 onChange={(e) => setCurrentSkill({...currentSkill, level: parseInt(e.target.value)})}
-                className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-gray-900"
+                className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-slate-900 font-bold border-slate-300"
               >
                 {[1, 2, 3, 4, 5].map(level => (
                   <option key={level} value={level} className="text-gray-900 bg-white">{level}</option>
@@ -289,7 +289,7 @@ const ProfileEnhancement: React.FC = () => {
             </div>
 
             {profile.skills.length === 0 && (
-              <p className="text-sm text-gray-400 mt-2">No skills added yet. Type a skill and click Add.</p>
+              <p className="text-sm text-slate-700 mt-2">No skills added yet. Type a skill and click Add.</p>
             )}
             <p className="text-sm text-gray-500 mt-2">
               {profile.skills.length}/25 skills added
@@ -305,7 +305,7 @@ const ProfileEnhancement: React.FC = () => {
                 value={newLink}
                 onChange={(e) => setNewLink(e.target.value)}
                 placeholder="https://example.com"
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-gray-900 placeholder:text-slate-500"
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-slate-900 placeholder:text-slate-400 font-bold border-slate-300"
                 onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleAddLink(); } }}
               />
               <button
@@ -325,7 +325,7 @@ const ProfileEnhancement: React.FC = () => {
                     rel="noopener noreferrer"
                     className="text-indigo-600 truncate max-w-[70%] hover:underline"
                   >
-                    {link || <span className="text-gray-400 italic text-sm">No URL entered</span>}
+                    {link || <span className="text-slate-700 italic text-sm">No URL entered</span>}
                   </a>
                   <button
                     onClick={() => handleRemoveLink(index)}
@@ -338,7 +338,7 @@ const ProfileEnhancement: React.FC = () => {
             </ul>
 
             {profile.links.length === 0 && (
-              <p className="text-sm text-gray-400 mt-2">No links added yet.</p>
+              <p className="text-sm text-slate-700 mt-2">No links added yet.</p>
             )}
           </div>
         </div>

@@ -46,7 +46,7 @@ const MONETIZATION_RESOURCES: ResourceLink[] = [
 // --- Subcomponent: Unauthenticated Gateway Screen ---
 const UnauthenticatedGate: React.FC = React.memo(() => (
   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <div className="bg-white rounded-xl shadow-sm p-8 text-center max-w-xl mx-auto border border-gray-100">
+    <div className="bg-white rounded-xl shadow-sm p-8 text-center max-w-xl mx-auto border border-slate-200">
       <h1 className="text-2xl font-bold text-gray-900 mb-4">Monetization Dashboard</h1>
       <p className="text-gray-600 mb-6">You need to be logged in to view monetization information.</p>
       <a
@@ -143,7 +143,7 @@ const MonetizationDashboardPage: React.FC = () => {
         <div className="space-y-8">
           <GemTransactions />
 
-          <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+          <div className="bg-white rounded-xl shadow-sm p-6 border border-slate-200">
             <h2 className="text-xl font-bold text-gray-900 mb-4">Monetization Resources</h2>
             <div className="space-y-4">
               {MONETIZATION_RESOURCES.map((resource) => (

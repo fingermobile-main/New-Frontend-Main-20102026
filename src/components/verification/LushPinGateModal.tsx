@@ -98,7 +98,7 @@ export const LushPinGateModal: React.FC<LushPinGateModalProps> = ({
         <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-emerald-600 via-teal-500 to-[#DC582A]" />
 
         <div className="text-center mb-6 pt-2">
-          <div className="w-16 h-16 rounded-full bg-emerald-100 border-2 border-emerald-500 flex items-center justify-center mx-auto mb-3 shadow-inner">
+          <div className="w-16 h-16 rounded-full bg-emerald-100 border-2 border-emerald-400 flex items-center justify-center mx-auto mb-3 shadow-inner border text-emerald-950 border-emerald-400 font-black">
             <LockClosedIcon className="w-8 h-8 text-emerald-700" />
           </div>
           <h2 className="text-2xl font-bold text-gray-900 tracking-tight">
@@ -145,7 +145,7 @@ export const LushPinGateModal: React.FC<LushPinGateModalProps> = ({
                   value={digit}
                   onChange={(e) => handleDigitChange(idx, e.target.value)}
                   onKeyDown={(e) => handleKeyDown(idx, e)}
-                  className="w-10 h-12 sm:w-12 sm:h-14 text-center text-xl sm:text-2xl font-bold bg-white text-gray-900 border-2 border-emerald-300 rounded-xl shadow-xs focus:border-emerald-600 focus:ring-2 focus:ring-emerald-400/40 focus:outline-hidden transition"
+                  className="w-10 h-12 sm:w-12 sm:h-14 text-center text-xl sm:text-2xl font-bold bg-white text-slate-900 border-2 border-emerald-300 rounded-xl shadow-xs focus:border-emerald-600 focus:ring-2 focus:ring-emerald-400/40 focus:outline-hidden transition border border-slate-300 placeholder:text-slate-400"
                 />
               ))}
             </div>
@@ -169,7 +169,7 @@ export const LushPinGateModal: React.FC<LushPinGateModalProps> = ({
                 type="checkbox"
                 checked={agreedToTerms}
                 onChange={(e) => setAgreedToTerms(e.target.checked)}
-                className="mt-0.5 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
+                className="mt-0.5 rounded border-gray-300 text-slate-900 focus:ring-emerald-500 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
               />
               <span className="leading-tight text-gray-700 font-medium">
                 I agree to the Lush Pressies Inclusivity & Mutual Respect Covenant, PIN Exchange Protocols, and Age-Verified Dating Guidelines.

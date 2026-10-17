@@ -626,7 +626,7 @@ export const SovereignMediaCropperModal: React.FC<SovereignMediaCropperModalProp
                       : 'Select All'}
                   </span>
                 </button>
-                <span className="text-slate-300">|</span>
+                <span className="text-slate-700">|</span>
                 <span className="text-xs font-bold text-slate-700">
                   {selectedItemIds.length} of {containerItems.length} selected
                 </span>
@@ -662,7 +662,7 @@ export const SovereignMediaCropperModal: React.FC<SovereignMediaCropperModalProp
               type="file"
               accept=".png,.jpg,.jpeg,.webp,.gif,.apng,.mp4,.webm,image/*,video/mp4,video/webm"
               onChange={handleFileChange}
-              className="hidden"
+              className="hidden text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
             />
 
             {/* Container Grid (Holds max 3 files) */}
@@ -758,7 +758,7 @@ export const SovereignMediaCropperModal: React.FC<SovereignMediaCropperModalProp
                         onChange={(e) =>
                           handleUpdateItemDuration(item.id, e.target.value as PhotoScheduleDuration)
                         }
-                        className="w-full px-2.5 py-1.5 rounded-xl border border-slate-300 bg-white text-slate-900 font-bold text-xs"
+                        className="w-full px-2.5 py-1.5 rounded-xl border border-slate-300 bg-white text-slate-900 font-bold text-xs focus:ring-2 focus:ring-indigo-500"
                       >
                         <option value="indefinite">Keep Indefinitely (Permanent)</option>
                         <option value="48h">48 Hours (Campaign)</option>
@@ -837,7 +837,7 @@ export const SovereignMediaCropperModal: React.FC<SovereignMediaCropperModalProp
                 type="checkbox"
                 checked={rotateWeekly}
                 onChange={(e) => setRotateWeekly(e.target.checked)}
-                className="w-5 h-5 rounded-md text-emerald-600 border-slate-300 focus:ring-emerald-500 cursor-pointer"
+                className="w-5 h-5 rounded-md text-slate-900 border-slate-300 focus:ring-emerald-500 cursor-pointer font-bold border bg-white focus:ring-2 placeholder:text-slate-400"
               />
             </div>
           </div>
@@ -950,7 +950,7 @@ export const SovereignMediaCropperModal: React.FC<SovereignMediaCropperModalProp
                       step="0.05"
                       value={zoom}
                       onChange={(e) => setZoom(parseFloat(e.target.value))}
-                      className="w-full accent-slate-900 cursor-pointer"
+                      className="w-full accent-slate-900 cursor-pointer text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                     />
                     <ZoomIn className="w-4 h-4 text-slate-500" />
                   </div>
@@ -1055,7 +1055,7 @@ export const SovereignMediaCropperModal: React.FC<SovereignMediaCropperModalProp
                   type="text"
                   value={mediaLabel}
                   onChange={(e) => setMediaLabel(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-slate-900 font-bold text-xs"
+                  className="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-slate-900 font-bold text-xs focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
 

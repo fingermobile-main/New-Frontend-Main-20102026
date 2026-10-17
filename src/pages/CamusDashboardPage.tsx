@@ -229,7 +229,7 @@ const CamusDashboardPage: React.FC = () => {
         <div className="flex flex-col lg:flex-row gap-8 items-start">
           {/* Sidebar Navigation */}
           <div className="lg:w-64 w-full flex-shrink-0 space-y-4">
-            <nav className="bg-white dark:bg-gray-900 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-800 p-3">
+            <nav className="bg-white dark:bg-gray-900 rounded-3xl shadow-sm border border-slate-200 dark:border-gray-800 p-3">
               <div className="space-y-1">
                 {navItems.map((item) => {
                   const isActive = activeTab === item.id;
@@ -286,9 +286,9 @@ const CamusDashboardPage: React.FC = () => {
                   {stats.map((stat, index) => (
                     <div
                       key={index}
-                      className="bg-white dark:bg-gray-900 p-5 rounded-3xl border border-gray-100 dark:border-gray-800 shadow-xs"
+                      className="bg-white dark:bg-gray-900 p-5 rounded-3xl border border-slate-200 dark:border-gray-800 shadow-xs"
                     >
-                      <div className="text-[10px] font-bold uppercase tracking-wider text-gray-400">
+                      <div className="text-[10px] font-bold uppercase tracking-wider text-slate-700">
                         {stat.label}
                       </div>
                       <div className="text-2xl font-black font-mono text-gray-900 dark:text-white mt-1">
@@ -299,7 +299,7 @@ const CamusDashboardPage: React.FC = () => {
                 </div>
 
                 {/* In Progress Courses */}
-                <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-6 shadow-xs space-y-4">
+                <div className="bg-white dark:bg-gray-900 rounded-3xl border border-slate-200 dark:border-gray-800 p-6 shadow-xs space-y-4">
                   <div className="flex items-center justify-between">
                     <div>
                       <h2 className="text-lg font-black text-gray-900 dark:text-white">
@@ -320,7 +320,7 @@ const CamusDashboardPage: React.FC = () => {
                       {enrolledCourses.map((course) => (
                         <div
                           key={course.id}
-                          className="p-5 rounded-2xl border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/40 space-y-3 hover:shadow-md transition"
+                          className="p-5 rounded-2xl border border-slate-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/40 space-y-3 hover:shadow-md transition"
                         >
                           <div className="flex items-start justify-between gap-2">
                             <h3 className="font-bold text-sm text-gray-900 dark:text-white line-clamp-1">
@@ -374,7 +374,7 @@ const CamusDashboardPage: React.FC = () => {
 
             {/* TAB 2: ENROLLED COURSES */}
             {activeTab === 'courses' && (
-              <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-6 shadow-xs space-y-6">
+              <div className="bg-white dark:bg-gray-900 rounded-3xl border border-slate-200 dark:border-gray-800 p-6 shadow-xs space-y-6">
                 <div className="flex items-center justify-between">
                   <div>
                     <h2 className="text-xl font-black text-gray-900 dark:text-white">
@@ -398,7 +398,7 @@ const CamusDashboardPage: React.FC = () => {
                     >
                       <div className="flex items-start justify-between gap-2">
                         <div>
-                          <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300">
+                          <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-950 dark:text-blue-300 border text-blue-950 border-blue-400 font-black">
                             {course.level || 'Beginner'}
                           </span>
                           <h3 className="font-bold text-base text-gray-900 dark:text-white mt-1">
@@ -417,7 +417,7 @@ const CamusDashboardPage: React.FC = () => {
                         />
                       </div>
 
-                      <div className="flex items-center justify-between text-xs pt-1 border-t border-gray-200 dark:border-gray-700">
+                      <div className="flex items-center justify-between text-xs pt-1 border-t border-slate-300 dark:border-gray-700">
                         <span className="text-gray-500">
                           {course.completedLessonsCount}/{course.totalLessons} Lessons
                         </span>
@@ -437,7 +437,7 @@ const CamusDashboardPage: React.FC = () => {
 
             {/* TAB 3: CERTIFICATES */}
             {activeTab === 'certificates' && (
-              <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-6 shadow-xs space-y-6">
+              <div className="bg-white dark:bg-gray-900 rounded-3xl border border-slate-200 dark:border-gray-800 p-6 shadow-xs space-y-6">
                 <div>
                   <h2 className="text-xl font-black text-gray-900 dark:text-white flex items-center gap-2">
                     <Award className="w-6 h-6 text-amber-500" />
@@ -463,7 +463,7 @@ const CamusDashboardPage: React.FC = () => {
                           <span className="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400">
                             {cert.id}
                           </span>
-                          <span className="text-xs text-gray-400 font-semibold">• Issued {cert.date}</span>
+                          <span className="text-xs text-slate-700 font-semibold">• Issued {cert.date}</span>
                         </div>
                         <h3 className="font-bold text-base text-gray-900 dark:text-white mt-1">
                           {cert.title}
@@ -495,7 +495,7 @@ const CamusDashboardPage: React.FC = () => {
 
             {/* TAB 4: QUIZ ATTEMPTS */}
             {activeTab === 'quiz' && (
-              <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-6 shadow-xs space-y-4">
+              <div className="bg-white dark:bg-gray-900 rounded-3xl border border-slate-200 dark:border-gray-800 p-6 shadow-xs space-y-4">
                 <h2 className="text-xl font-black text-gray-900 dark:text-white">
                   Quiz &amp; Assessment Records
                 </h2>
@@ -511,11 +511,11 @@ const CamusDashboardPage: React.FC = () => {
                     >
                       <div>
                         <h4 className="font-bold text-gray-900 dark:text-white">{q.title}</h4>
-                        <span className="text-gray-400">{q.date}</span>
+                        <span className="text-slate-700">{q.date}</span>
                       </div>
                       <div className="flex items-center gap-3">
                         <span className="font-mono font-bold text-emerald-600 text-sm">{q.score}</span>
-                        <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold font-bold text-[10px]">
+                        <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold font-bold text-[10px] font-black">
                           {q.status}
                         </span>
                       </div>
@@ -527,7 +527,7 @@ const CamusDashboardPage: React.FC = () => {
 
             {/* TAB 5: WISHLIST */}
             {activeTab === 'wishlist' && (
-              <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-6 shadow-xs space-y-4">
+              <div className="bg-white dark:bg-gray-900 rounded-3xl border border-slate-200 dark:border-gray-800 p-6 shadow-xs space-y-4">
                 <h2 className="text-xl font-black text-gray-900 dark:text-white">
                   Saved Wishlist Courses
                 </h2>
@@ -536,7 +536,7 @@ const CamusDashboardPage: React.FC = () => {
                     CAMUS_COURSES[3],
                     CAMUS_COURSES[4]
                   ].map((c) => (
-                    <div key={c.id} className="p-4 rounded-2xl border border-gray-200 dark:border-gray-800 space-y-2">
+                    <div key={c.id} className="p-4 rounded-2xl border border-slate-300 dark:border-gray-800 space-y-2">
                       <h4 className="font-bold text-sm text-gray-900 dark:text-white">{c.title}</h4>
                       <p className="text-xs text-gray-500">{c.description}</p>
                       <div className="flex items-center justify-between pt-2">
@@ -561,7 +561,7 @@ const CamusDashboardPage: React.FC = () => {
 
             {/* TAB 6: REVIEWS */}
             {activeTab === 'reviews' && (
-              <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-6 shadow-xs space-y-4">
+              <div className="bg-white dark:bg-gray-900 rounded-3xl border border-slate-200 dark:border-gray-800 p-6 shadow-xs space-y-4">
                 <h2 className="text-xl font-black text-gray-900 dark:text-white">
                   Your Course Reviews
                 </h2>
@@ -579,7 +579,7 @@ const CamusDashboardPage: React.FC = () => {
 
             {/* TAB 7: LIVE STREAM CLASSES */}
             {activeTab === 'live-sessions' && (
-              <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-6 shadow-xs space-y-4">
+              <div className="bg-white dark:bg-gray-900 rounded-3xl border border-slate-200 dark:border-gray-800 p-6 shadow-xs space-y-4">
                 <div className="flex items-center justify-between">
                   <h2 className="text-xl font-black text-gray-900 dark:text-white flex items-center gap-2">
                     <VideoCameraIcon className="w-6 h-6 text-red-600" />

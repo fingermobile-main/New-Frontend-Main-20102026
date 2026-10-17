@@ -169,7 +169,7 @@ const MyLearningPage: React.FC = () => {
                   <div className="p-6 flex flex-col justify-between flex-1">
                     <div>
                       <div className="flex items-center space-x-2">
-                        <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-950 border border-blue-400 font-bold">
+                        <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-950 border border-blue-400 font-bold font-black">
                           {course.category}
                         </span>
                         <span className="text-xs font-medium text-gray-500">
@@ -207,7 +207,7 @@ const MyLearningPage: React.FC = () => {
             </div>
           ) : (
             <div className="text-center py-12">
-              <BookOpenIcon className="mx-auto h-12 w-12 text-gray-400" />
+              <BookOpenIcon className="mx-auto h-12 w-12 text-slate-700" />
               <h3 className="mt-2 text-lg font-medium text-gray-900">No active course enrollments</h3>
               <p className="mt-1 text-sm text-gray-500">Explore our catalog and start learning today.</p>
               <div className="mt-6">

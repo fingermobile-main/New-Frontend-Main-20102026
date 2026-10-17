@@ -384,7 +384,7 @@ const EmailServiceConsolePage: React.FC = () => {
                 </span>
               </div>
               <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">Enterprise Email & Deliverability Suite</h1>
-              <p className="text-sm text-slate-300 mt-1 max-w-2xl">
+              <p className="text-sm text-slate-700 mt-1 max-w-2xl">
                 Self-hosted headless email automation for SuperAdmin, Admin & Back-Office operations. 16 curated open-source categories, cryptographic DNS validation, and IP warm-up reputation protection.
               </p>
             </div>
@@ -392,15 +392,15 @@ const EmailServiceConsolePage: React.FC = () => {
             {/* Quick Metrics */}
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               <div className="bg-white/10 backdrop-blur-md p-3.5 rounded-xl border border-white/10 text-center">
-                <div className="text-[11px] text-slate-300 font-medium">Deliverability Score</div>
+                <div className="text-[11px] text-slate-700 font-medium">Deliverability Score</div>
                 <div className="text-xl font-extrabold text-emerald-400">98/100 A+</div>
               </div>
               <div className="bg-white/10 backdrop-blur-md p-3.5 rounded-xl border border-white/10 text-center">
-                <div className="text-[11px] text-slate-300 font-medium">IP Warm-up Stage</div>
+                <div className="text-[11px] text-slate-700 font-medium">IP Warm-up Stage</div>
                 <div className="text-xl font-extrabold text-amber-400">Week {warmupStatus.current_week}</div>
               </div>
               <div className="bg-white/10 backdrop-blur-md p-3.5 rounded-xl border border-white/10 text-center col-span-2 sm:col-span-1">
-                <div className="text-[11px] text-slate-300 font-medium">Curated Templates</div>
+                <div className="text-[11px] text-slate-700 font-medium">Curated Templates</div>
                 <div className="text-xl font-extrabold text-blue-300">{templates.length} Templates</div>
               </div>
             </div>
@@ -450,13 +450,13 @@ const EmailServiceConsolePage: React.FC = () => {
                   placeholder="Search 16 categories by name, topic, or keyword..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full text-sm border-0 focus:ring-0 text-slate-800 placeholder:text-slate-500"
+                  className="w-full text-sm border focus:ring-0 text-slate-900 placeholder:text-slate-400 font-bold border-slate-300 rounded bg-white"
                 />
               </div>
 
               {/* Category Pills */}
               <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
-                <Filter className="w-3.5 h-3.5 text-slate-400 mr-1 flex-shrink-0" />
+                <Filter className="w-3.5 h-3.5 text-slate-700 mr-1 flex-shrink-0" />
                 {categories.map((cat) => (
                   <button
                     key={cat}
@@ -485,7 +485,7 @@ const EmailServiceConsolePage: React.FC = () => {
                       <span className="text-[11px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">
                         {tpl.category}
                       </span>
-                      <span className="text-xs text-slate-400 font-mono">#{tpl.slug}</span>
+                      <span className="text-xs text-slate-700 font-mono">#{tpl.slug}</span>
                     </div>
                     <h3 className="text-base font-bold text-slate-900 mb-1.5">{tpl.name}</h3>
                     <p className="text-xs text-slate-500 leading-relaxed mb-3">{tpl.description}</p>
@@ -498,7 +498,7 @@ const EmailServiceConsolePage: React.FC = () => {
                         </span>
                       ))}
                       {tpl.variables.length > 4 && (
-                        <span className="text-[10px] text-slate-400">+{tpl.variables.length - 4} more</span>
+                        <span className="text-[10px] text-slate-700">+{tpl.variables.length - 4} more</span>
                       )}
                     </div>
                   </div>
@@ -540,7 +540,7 @@ const EmailServiceConsolePage: React.FC = () => {
                     <select
                       value={targetSegment}
                       onChange={(e) => setTargetSegment(e.target.value)}
-                      className="text-sm font-bold border border-slate-300 rounded-lg px-3 py-2 bg-white text-slate-900 shadow-sm"
+                      className="text-sm font-bold border border-slate-300 rounded-lg px-3 py-2 bg-white text-slate-900 shadow-sm focus:ring-2 focus:ring-indigo-500"
                     >
                       <option value="all">All Platform Members (Broad Audience)</option>
                       <option value="verified">Verified Identity Members Only</option>
@@ -569,7 +569,7 @@ const EmailServiceConsolePage: React.FC = () => {
                     value={composerSubject}
                     onChange={(e) => setComposerSubject(e.target.value)}
                     placeholder="Enter email subject line..."
-                    className="w-full px-3.5 py-2 text-sm font-bold border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 bg-white shadow-sm"
+                    className="w-full px-3.5 py-2 text-sm font-bold border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 bg-white shadow-sm placeholder:text-slate-400"
                   />
                 </div>
               </div>
@@ -595,7 +595,7 @@ const EmailServiceConsolePage: React.FC = () => {
                       Live Render Preview
                     </button>
                   </div>
-                  <span className="text-xs text-slate-400 font-mono">{composerBody.length} chars</span>
+                  <span className="text-xs text-slate-700 font-mono">{composerBody.length} chars</span>
                 </div>
 
                 <div className="p-4">
@@ -604,7 +604,7 @@ const EmailServiceConsolePage: React.FC = () => {
                       value={composerBody}
                       onChange={(e) => setComposerBody(e.target.value)}
                       rows={14}
-                      className="w-full font-mono text-sm border-0 focus:ring-0 p-2 text-slate-800 leading-relaxed resize-none"
+                      className="w-full font-mono text-sm border focus:ring-0 p-2 text-slate-900 leading-relaxed resize-none font-bold border-slate-300 rounded bg-white placeholder:text-slate-400"
                     />
                   ) : (
                     <div className="p-4 bg-slate-50 rounded-lg min-h-[300px] border border-slate-200 prose prose-sm max-w-none">
@@ -653,7 +653,7 @@ const EmailServiceConsolePage: React.FC = () => {
                       type="email"
                       value={testEmailAddress}
                       onChange={(e) => setTestEmailAddress(e.target.value)}
-                      className="flex-1 px-3 py-1.5 text-xs font-bold border border-slate-300 rounded-lg text-slate-900 bg-white shadow-sm"
+                      className="flex-1 px-3 py-1.5 text-xs font-bold border border-slate-300 rounded-lg text-slate-900 bg-white shadow-sm focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                     />
                     <button
                       onClick={handleSendTest}
@@ -713,7 +713,7 @@ const EmailServiceConsolePage: React.FC = () => {
                     </div>
 
                     <div className="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
-                      <span className="text-[11px] text-slate-400">Template: {wf.tpl}</span>
+                      <span className="text-[11px] text-slate-700">Template: {wf.tpl}</span>
                       <button
                         onClick={() => showToast(`Test event "${wf.event}" dispatched successfully to test queue`, 'success')}
                         className="px-2.5 py-1 text-xs font-semibold bg-white border border-slate-200 hover:bg-slate-100 rounded text-slate-700"
@@ -824,7 +824,7 @@ const EmailServiceConsolePage: React.FC = () => {
                   </div>
                 </div>
                 <div className="text-right">
-                  <span className="text-xs font-bold px-3 py-1 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold">
+                  <span className="text-xs font-bold px-3 py-1 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold font-black">
                     {warmupStatus.remainingToday} Remaining Today
                   </span>
                 </div>
@@ -834,7 +834,7 @@ const EmailServiceConsolePage: React.FC = () => {
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs border-collapse">
                   <thead>
-                    <tr className="border-b border-slate-200 text-slate-400 uppercase">
+                    <tr className="border-b border-slate-200 text-slate-700 uppercase">
                       <th className="py-2.5 px-3">Stage</th>
                       <th className="py-2.5 px-3">Daily Cap</th>
                       <th className="py-2.5 px-3">Recommended Target</th>
@@ -905,7 +905,7 @@ const EmailServiceConsolePage: React.FC = () => {
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs border-collapse">
                   <thead>
-                    <tr className="border-b border-slate-200 text-slate-400 uppercase">
+                    <tr className="border-b border-slate-200 text-slate-700 uppercase">
                       <th className="py-2.5 px-3">Suppressed Email</th>
                       <th className="py-2.5 px-3">Reason</th>
                       <th className="py-2.5 px-3">Date Added</th>
@@ -920,11 +920,11 @@ const EmailServiceConsolePage: React.FC = () => {
                       <tr key={row.email}>
                         <td className="py-3 px-3 font-mono">{row.email}</td>
                         <td className="py-3 px-3 text-red-600 font-semibold">{row.reason}</td>
-                        <td className="py-3 px-3 text-slate-400">{row.date}</td>
+                        <td className="py-3 px-3 text-slate-800">{row.date}</td>
                         <td className="py-3 px-3 text-right">
                           <button
                             onClick={() => showToast(`Removed ${row.email} from blacklist`, 'info')}
-                            className="text-xs text-slate-400 hover:text-red-600"
+                            className="text-xs text-slate-700 hover:text-red-600"
                           >
                             Remove
                           </button>
@@ -950,7 +950,7 @@ const EmailServiceConsolePage: React.FC = () => {
               </div>
               <button
                 onClick={() => setPreviewTemplate(null)}
-                className="text-slate-400 hover:text-slate-600 font-bold p-1"
+                className="text-slate-700 hover:text-slate-600 font-bold p-1"
               >
                 &times;
               </button>

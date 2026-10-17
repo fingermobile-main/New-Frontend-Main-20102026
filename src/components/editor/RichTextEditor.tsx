@@ -434,7 +434,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
                   setTextColor(e.target.value);
                   executeCommand('foreColor', e.target.value);
                 }}
-                className="opacity-0 absolute w-0 h-0"
+                className="opacity-0 absolute w-0 h-0 text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
               />
             </label>
             <label className="cursor-pointer flex items-center p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800" title="Highlight Color">
@@ -446,7 +446,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
                   setHighlightColor(e.target.value);
                   executeCommand('hiliteColor', e.target.value);
                 }}
-                className="opacity-0 absolute w-0 h-0"
+                className="opacity-0 absolute w-0 h-0 text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
               />
             </label>
           </div>
@@ -578,7 +578,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
           onInput={triggerChange}
           onBlur={triggerChange}
           style={{ minHeight: '220px', display: activeTab === 'visual' ? 'block' : 'none' }}
-          className="outline-none text-slate-800 dark:text-slate-100 leading-relaxed font-sans prose prose-slate max-w-none focus:ring-0 empty:before:content-[attr(data-placeholder)] empty:before:text-slate-400 empty:before:pointer-events-none"
+          className="outline-none text-slate-800 dark:text-slate-100 leading-relaxed font-sans prose prose-slate max-w-none focus:ring-0 empty:before:content-[attr(data-placeholder)] empty:before:text-slate-700 empty:before:pointer-events-none"
           data-placeholder={placeholder}
         />
 
@@ -601,7 +601,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
                 triggerChange();
               }
             }}
-            className="w-full h-full font-mono text-xs p-3 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 border rounded-xl outline-none"
+            className="w-full h-full font-mono text-xs p-3 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-200 border rounded-xl outline-none font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
             rows={12}
           />
         )}
@@ -644,7 +644,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
                   max={20}
                   value={tableRows}
                   onChange={(e) => setTableRows(Math.max(1, parseInt(e.target.value) || 1))}
-                  className="w-full mt-1 px-3 py-2 border rounded-lg dark:bg-slate-700 dark:text-white text-sm"
+                  className="w-full mt-1 px-3 py-2 border rounded-lg dark:bg-slate-700 dark:text-white text-sm text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
                 />
               </div>
               <div>
@@ -655,7 +655,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
                   max={10}
                   value={tableCols}
                   onChange={(e) => setTableCols(Math.max(1, parseInt(e.target.value) || 1))}
-                  className="w-full mt-1 px-3 py-2 border rounded-lg dark:bg-slate-700 dark:text-white text-sm"
+                  className="w-full mt-1 px-3 py-2 border rounded-lg dark:bg-slate-700 dark:text-white text-sm text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
                 />
               </div>
             </div>

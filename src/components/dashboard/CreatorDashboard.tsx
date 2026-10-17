@@ -248,14 +248,14 @@ const CreatorDashboard: React.FC = () => {
   return (
     <div className="bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-xl border border-slate-300 dark:border-gray-700 overflow-hidden">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 sm:p-6 border-b border-slate-300 dark:border-gray-700">
         <div>
           <h2 className="text-xl sm:text-2xl font-bold">Creator Dashboard</h2>
           <p className="text-gray-600 dark:text-gray-400 mt-1 text-sm sm:text-base">Manage your content, audience, and earnings</p>
         </div>
         <div className="flex items-center space-x-2 sm:space-x-4 mt-4 sm:mt-0">
           <select
-            className="bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-bold border-slate-300"
             value={timeRange}
             onChange={(e) => setTimeRange(e.target.value)}
           >
@@ -272,7 +272,7 @@ const CreatorDashboard: React.FC = () => {
       </div>
 
       {/* Navigation Tabs */}
-      <div className="flex flex-wrap border-b border-gray-200 dark:border-gray-700">
+      <div className="flex flex-wrap border-b border-slate-300 dark:border-gray-700">
         {[
           { id: 'overview', name: 'Overview', icon: <ChartBarIcon className="w-4 h-4" /> },
           { id: 'content', name: 'Content Studio', icon: <VideoCameraIcon className="w-4 h-4" /> },
@@ -489,7 +489,7 @@ const CreatorDashboard: React.FC = () => {
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-lg font-bold">Content Analytics</h3>
               <div className="flex space-x-2">
-                <select className="bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <select className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-bold border-slate-300">
                   <option>By Content Type</option>
                   <option>By Date</option>
                   <option>By Engagement</option>
@@ -540,7 +540,7 @@ const CreatorDashboard: React.FC = () => {
               <h4 className="font-bold mb-6">Detailed Metrics</h4>
               <div className="overflow-x-auto">
                 <table className="w-full">
-                  <thead className="border-b border-gray-200 dark:border-gray-700">
+                  <thead className="border-b border-slate-300 dark:border-gray-700">
                     <tr>
                       <th className="text-left py-3 px-4 text-gray-600 dark:text-gray-400 font-medium text-sm">Content</th>
                       <th className="text-left py-3 px-4 text-gray-600 dark:text-gray-400 font-medium text-sm">Views</th>
@@ -553,7 +553,7 @@ const CreatorDashboard: React.FC = () => {
                   </thead>
                   <tbody>
                     {detailedMetrics.map((content) => (
-                      <tr key={content.id} className="border-b border-gray-200 dark:border-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-700/30">
+                      <tr key={content.id} className="border-b border-slate-300 dark:border-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-700/30">
                         <td className="py-3 px-4">
                           <div className="font-medium text-sm">{content.title}</div>
                         </td>
@@ -668,7 +668,7 @@ const CreatorDashboard: React.FC = () => {
               <h3 className="text-lg font-bold">Earnings Dashboard</h3>
               <div className="flex space-x-2">
                 <select
-                  className="bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-bold border-slate-300"
                   value={timeRange}
                   onChange={(e) => setTimeRange(e.target.value)}
                 >

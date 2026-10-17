@@ -129,7 +129,7 @@ const RecommendationCard: React.FC<RecommendationCardProps> = ({
       )}
 
       {showFeedback && (
-        <div className="border-t border-gray-200 pt-4 mt-4">
+        <div className="border-t border-slate-300 pt-4 mt-4">
           <p className="text-sm font-medium text-gray-700 mb-2">How did it fit?</p>
           <div className="flex items-center gap-2 mb-3">
             <span className={`px-2 py-1 rounded text-xs font-medium ${

@@ -725,7 +725,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
           </h2>
           <div className="flex items-center gap-2 flex-wrap text-xs text-slate-700 font-semibold mt-0.5">
             <span>Executive Governance: CFO Editing &amp; Super Admin Ratification.</span>
-            <span className="text-slate-400">•</span>
+            <span className="text-slate-700">•</span>
             <span>Database: Sovereign Client-Side WORM Ledger Active.</span>
           </div>
         </div>
@@ -938,7 +938,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                       <span className="px-2.5 py-1 rounded-md text-xs font-extrabold uppercase tracking-wide bg-emerald-700 text-white">
                         {rail.currency} Rail
                       </span>
-                      <span className="text-[11px] font-black text-emerald-950 flex items-center gap-1.5 bg-emerald-100 px-2 py-0.5 rounded-full border border-emerald-300">
+                      <span className="text-[11px] font-black text-emerald-950 flex items-center gap-1.5 bg-emerald-100 px-2 py-0.5 rounded-full border border-emerald-400 border-emerald-400">
                         <span className="w-2 h-2 rounded-full bg-emerald-600" />
                         Active Online
                       </span>
@@ -958,7 +958,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                               prev.map((r) => (r.id === rail.id ? { ...r, accountName: val } : r))
                             );
                           }}
-                          className="w-full text-xs font-bold text-slate-900 border border-slate-300 rounded px-2 py-1 mt-1 bg-white"
+                          className="w-full text-xs font-bold text-slate-900 border border-slate-300 rounded px-2 py-1 mt-1 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                         />
                       ) : (
                         <div className="text-sm font-black text-slate-900">{rail.accountName}</div>
@@ -981,7 +981,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                 prev.map((r) => (r.id === rail.id ? { ...r, accountNumber: val } : r))
                               );
                             }}
-                            className="w-full font-mono font-black text-sm text-slate-900 border border-slate-300 rounded px-1.5 py-0.5 bg-white"
+                            className="w-full font-mono font-black text-sm text-slate-900 border border-slate-300 rounded px-1.5 py-0.5 bg-white font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                           />
                         ) : (
                           <div className="font-mono font-black text-base text-slate-900 tracking-wider">
@@ -1015,7 +1015,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                 prev.map((r) => (r.id === rail.id ? { ...r, ussdCode: val } : r))
                               );
                             }}
-                            className="w-full font-mono font-black text-xs text-slate-900 border border-slate-300 rounded px-1 bg-white"
+                            className="w-full font-mono font-black text-xs text-slate-900 border border-slate-300 rounded px-1 bg-white font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                           />
                         ) : (
                           <div className="font-mono font-black text-slate-900">{rail.ussdCode}</div>
@@ -1033,7 +1033,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                 prev.map((r) => (r.id === rail.id ? { ...r, swiftCode: val } : r))
                               );
                             }}
-                            className="w-full font-mono font-black text-xs text-slate-900 border border-slate-300 rounded px-1 bg-white"
+                            className="w-full font-mono font-black text-xs text-slate-900 border border-slate-300 rounded px-1 bg-white font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                           />
                         ) : (
                           <div className="font-mono font-black text-slate-900">{rail.swiftCode}</div>
@@ -1194,7 +1194,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                     type="number"
                     value={sandboxAssets}
                     onChange={(e) => setSandboxAssets(Number(e.target.value))}
-                    className="w-full px-2.5 py-1.5 border border-slate-300 rounded font-mono font-bold text-slate-900 bg-white"
+                    className="w-full px-2.5 py-1.5 border border-slate-300 rounded font-mono font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                 </div>
                 <div>
@@ -1203,7 +1203,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                     type="number"
                     value={sandboxLiabilities}
                     onChange={(e) => setSandboxLiabilities(Number(e.target.value))}
-                    className="w-full px-2.5 py-1.5 border border-slate-300 rounded font-mono font-bold text-slate-900 bg-white"
+                    className="w-full px-2.5 py-1.5 border border-slate-300 rounded font-mono font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                 </div>
                 <div>
@@ -1212,7 +1212,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                     type="number"
                     value={sandboxEquity}
                     onChange={(e) => setSandboxEquity(Number(e.target.value))}
-                    className="w-full px-2.5 py-1.5 border border-slate-300 rounded font-mono font-bold text-slate-900 bg-white"
+                    className="w-full px-2.5 py-1.5 border border-slate-300 rounded font-mono font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                 </div>
                 <div>
@@ -1221,7 +1221,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                     type="number"
                     value={sandboxCurrentAssets}
                     onChange={(e) => setSandboxCurrentAssets(Number(e.target.value))}
-                    className="w-full px-2.5 py-1.5 border border-slate-300 rounded font-mono font-bold text-slate-900 bg-white"
+                    className="w-full px-2.5 py-1.5 border border-slate-300 rounded font-mono font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                 </div>
                 <div>
@@ -1230,7 +1230,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                     type="number"
                     value={sandboxCurrentLiabilities}
                     onChange={(e) => setSandboxCurrentLiabilities(Number(e.target.value))}
-                    className="w-full px-2.5 py-1.5 border border-slate-300 rounded font-mono font-bold text-slate-900 bg-white"
+                    className="w-full px-2.5 py-1.5 border border-slate-300 rounded font-mono font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                 </div>
                 <div>
@@ -1239,7 +1239,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                     type="number"
                     value={sandboxInventory}
                     onChange={(e) => setSandboxInventory(Number(e.target.value))}
-                    className="w-full px-2.5 py-1.5 border border-slate-300 rounded font-mono font-bold text-slate-900 bg-white"
+                    className="w-full px-2.5 py-1.5 border border-slate-300 rounded font-mono font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                 </div>
               </div>
@@ -1267,7 +1267,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                     type="number"
                     value={simpleP}
                     onChange={(e) => setSimpleP(Number(e.target.value))}
-                    className="w-full px-2.5 py-1.5 border border-slate-300 rounded font-mono font-bold text-slate-900 bg-white"
+                    className="w-full px-2.5 py-1.5 border border-slate-300 rounded font-mono font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-3">
@@ -1278,7 +1278,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                       step={0.01}
                       value={simpleR}
                       onChange={(e) => setSimpleR(Number(e.target.value))}
-                      className="w-full px-2.5 py-1.5 border border-slate-300 rounded font-mono font-bold text-slate-900 bg-white"
+                      className="w-full px-2.5 py-1.5 border border-slate-300 rounded font-mono font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                     />
                   </div>
                   <div>
@@ -1287,7 +1287,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                       type="number"
                       value={simpleT}
                       onChange={(e) => setSimpleT(Number(e.target.value))}
-                      className="w-full px-2.5 py-1.5 border border-slate-300 rounded font-mono font-bold text-slate-900 bg-white"
+                      className="w-full px-2.5 py-1.5 border border-slate-300 rounded font-mono font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                     />
                   </div>
                 </div>
@@ -1314,7 +1314,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                     type="number"
                     value={compoundPv}
                     onChange={(e) => setCompoundPv(Number(e.target.value))}
-                    className="w-full px-2.5 py-1.5 border border-slate-300 rounded font-mono font-bold text-slate-900 bg-white"
+                    className="w-full px-2.5 py-1.5 border border-slate-300 rounded font-mono font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                 </div>
                 <div className="grid grid-cols-3 gap-2">
@@ -1325,7 +1325,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                       step={0.01}
                       value={compoundR}
                       onChange={(e) => setCompoundR(Number(e.target.value))}
-                      className="w-full px-2 py-1.5 border border-slate-300 rounded font-mono font-bold text-slate-900 bg-white"
+                      className="w-full px-2 py-1.5 border border-slate-300 rounded font-mono font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                     />
                   </div>
                   <div>
@@ -1334,7 +1334,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                       type="number"
                       value={compoundN}
                       onChange={(e) => setCompoundN(Number(e.target.value))}
-                      className="w-full px-2 py-1.5 border border-slate-300 rounded font-mono font-bold text-slate-900 bg-white"
+                      className="w-full px-2 py-1.5 border border-slate-300 rounded font-mono font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                     />
                   </div>
                   <div>
@@ -1343,7 +1343,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                       type="number"
                       value={compoundT}
                       onChange={(e) => setCompoundT(Number(e.target.value))}
-                      className="w-full px-2 py-1.5 border border-slate-300 rounded font-mono font-bold text-slate-900 bg-white"
+                      className="w-full px-2 py-1.5 border border-slate-300 rounded font-mono font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                     />
                   </div>
                 </div>
@@ -1406,15 +1406,15 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
           <div className="p-4 rounded-xl bg-white border border-slate-300 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               {currentApproval.status === 'APPROVED_BY_SUPER_ADMIN' ? (
-                <div className="w-10 h-10 rounded-full bg-emerald-100 border border-emerald-400 flex items-center justify-center flex-shrink-0">
+                <div className="w-10 h-10 rounded-full bg-emerald-100 border border-emerald-400 flex items-center justify-center flex-shrink-0 text-emerald-950 font-black">
                   <Lock className="w-5 h-5 text-emerald-800" />
                 </div>
               ) : currentApproval.status === 'PENDING_SUPER_ADMIN_APPROVAL' ? (
-                <div className="w-10 h-10 rounded-full bg-amber-100 border border-amber-400 flex items-center justify-center flex-shrink-0 animate-pulse">
+                <div className="w-10 h-10 rounded-full bg-amber-100 border border-amber-400 flex items-center justify-center flex-shrink-0 animate-pulse text-amber-950 font-black">
                   <AlertTriangle className="w-5 h-5 text-amber-800" />
                 </div>
               ) : (
-                <div className="w-10 h-10 rounded-full bg-blue-100 border border-blue-400 flex items-center justify-center flex-shrink-0">
+                <div className="w-10 h-10 rounded-full bg-blue-100 border border-blue-400 flex items-center justify-center flex-shrink-0 text-blue-950 font-black">
                   <Unlock className="w-5 h-5 text-blue-800" />
                 </div>
               )}
@@ -1561,7 +1561,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                     revenues: prev.revenues.map((r, i) => (i === idx ? { ...r, name: val } : r))
                                   }));
                                 }}
-                                className="w-full px-2 py-1 text-slate-900 font-bold border border-slate-300 rounded bg-white"
+                                className="w-full px-2 py-1 text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                               />
                             ) : (
                               item.name
@@ -1579,7 +1579,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                     revenues: prev.revenues.map((r, i) => (i === idx ? { ...r, category: val } : r))
                                   }));
                                 }}
-                                className="w-32 px-2 py-1 text-slate-900 font-bold border border-slate-300 rounded bg-white"
+                                className="w-32 px-2 py-1 text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                               />
                             ) : (
                               item.category
@@ -1597,7 +1597,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                     revenues: prev.revenues.map((r, i) => (i === idx ? { ...r, notes: val } : r))
                                   }));
                                 }}
-                                className="w-full px-2 py-1 text-slate-900 font-medium border border-slate-300 rounded bg-white"
+                                className="w-full px-2 py-1 text-slate-900 font-medium border border-slate-300 rounded bg-white font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                               />
                             ) : (
                               item.notes
@@ -1615,7 +1615,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                   revenues: prev.revenues.map((r, i) => (i === idx ? { ...r, amountNgn: val } : r))
                                 }));
                               }}
-                              className="w-36 px-2 py-1 text-right font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white"
+                              className="w-36 px-2 py-1 text-right font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                             />
                           </td>
                           <td className="py-2 px-2 text-center">
@@ -1697,7 +1697,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                     cogs: prev.cogs.map((c, i) => (i === idx ? { ...c, name: val } : c))
                                   }));
                                 }}
-                                className="w-full px-2 py-1 text-slate-900 font-bold border border-slate-300 rounded bg-white"
+                                className="w-full px-2 py-1 text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                               />
                             ) : (
                               item.name
@@ -1715,7 +1715,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                     cogs: prev.cogs.map((c, i) => (i === idx ? { ...c, category: val } : c))
                                   }));
                                 }}
-                                className="w-32 px-2 py-1 text-slate-900 font-bold border border-slate-300 rounded bg-white"
+                                className="w-32 px-2 py-1 text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                               />
                             ) : (
                               item.category
@@ -1733,7 +1733,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                     cogs: prev.cogs.map((c, i) => (i === idx ? { ...c, notes: val } : c))
                                   }));
                                 }}
-                                className="w-full px-2 py-1 text-slate-900 font-medium border border-slate-300 rounded bg-white"
+                                className="w-full px-2 py-1 text-slate-900 font-medium border border-slate-300 rounded bg-white font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                               />
                             ) : (
                               item.notes
@@ -1751,7 +1751,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                   cogs: prev.cogs.map((c, i) => (i === idx ? { ...c, amountNgn: val } : c))
                                 }));
                               }}
-                              className="w-36 px-2 py-1 text-right font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white"
+                              className="w-36 px-2 py-1 text-right font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                             />
                           </td>
                           <td className="py-2 px-2 text-center">
@@ -1838,7 +1838,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                     opex: prev.opex.map((o, i) => (i === idx ? { ...o, name: val } : o))
                                   }));
                                 }}
-                                className="w-full px-2 py-1 text-slate-900 font-bold border border-slate-300 rounded bg-white"
+                                className="w-full px-2 py-1 text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                               />
                             ) : (
                               item.name
@@ -1856,7 +1856,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                     opex: prev.opex.map((o, i) => (i === idx ? { ...o, category: val } : o))
                                   }));
                                 }}
-                                className="w-32 px-2 py-1 text-slate-900 font-bold border border-slate-300 rounded bg-white"
+                                className="w-32 px-2 py-1 text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                               />
                             ) : (
                               item.category
@@ -1874,7 +1874,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                     opex: prev.opex.map((o, i) => (i === idx ? { ...o, notes: val } : o))
                                   }));
                                 }}
-                                className="w-full px-2 py-1 text-slate-900 font-medium border border-slate-300 rounded bg-white"
+                                className="w-full px-2 py-1 text-slate-900 font-medium border border-slate-300 rounded bg-white font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                               />
                             ) : (
                               item.notes
@@ -1892,7 +1892,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                   opex: prev.opex.map((o, i) => (i === idx ? { ...o, amountNgn: val } : o))
                                 }));
                               }}
-                              className="w-36 px-2 py-1 text-right font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white"
+                              className="w-36 px-2 py-1 text-right font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                             />
                           </td>
                           <td className="py-2 px-2 text-center">
@@ -1973,7 +1973,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                             loanInterestAnnualNgn: annualDebt
                           }));
                         }}
-                        className="w-16 px-1.5 py-1 border border-amber-500 rounded text-xs font-mono font-bold bg-white text-slate-950 text-center"
+                        className="w-16 px-1.5 py-1 border border-amber-500 rounded text-xs font-mono font-bold bg-white text-slate-900 text-center border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                       <label className="text-[11px] font-bold text-slate-800 ml-1">Principal (₦):</label>
                       <input
@@ -1992,7 +1992,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                             loanInterestAnnualNgn: annualDebt
                           }));
                         }}
-                        className="w-32 px-1.5 py-1 border border-amber-500 rounded text-xs font-mono font-bold bg-white text-slate-950"
+                        className="w-32 px-1.5 py-1 border border-amber-500 rounded text-xs font-mono font-bold bg-white text-slate-900 border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                     </div>
                     <strong className="font-mono text-amber-950 font-black whitespace-nowrap">
@@ -2026,7 +2026,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                           const rate = parseFloat(e.target.value) || 0;
                           setIncomeStatement((prev) => ({ ...prev, taxRatePercent: rate }));
                         }}
-                        className="w-16 px-1.5 py-1 border border-indigo-400 rounded text-xs font-mono font-bold bg-white text-slate-950 text-center"
+                        className="w-16 px-1.5 py-1 border border-indigo-400 rounded text-xs font-mono font-bold bg-white text-slate-900 text-center border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                     </div>
                     <strong className="font-mono text-indigo-950 font-black whitespace-nowrap">
@@ -2120,7 +2120,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                 currentAssets: prev.currentAssets.map((item, i) => (i === idx ? { ...item, name: val } : item))
                               }));
                             }}
-                            className="w-full text-slate-900 font-bold text-xs border border-slate-300 rounded px-2 py-0.5 bg-white"
+                            className="w-full text-slate-900 font-bold text-xs border border-slate-300 rounded px-2 py-0.5 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                           />
                         ) : (
                           <span className="text-slate-800 font-bold">{ca.name}</span>
@@ -2137,7 +2137,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                 currentAssets: prev.currentAssets.map((item, i) => (i === idx ? { ...item, amountNgn: val } : item))
                               }));
                             }}
-                            className="w-32 px-2 py-1 text-right font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white"
+                            className="w-32 px-2 py-1 text-right font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                           />
                           <button
                             disabled={!isEditingSheet || isLockedByAdmin}
@@ -2195,7 +2195,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                 fixedAssets: prev.fixedAssets.map((item, i) => (i === idx ? { ...item, name: val } : item))
                               }));
                             }}
-                            className="w-full text-slate-900 font-bold text-xs border border-slate-300 rounded px-2 py-0.5 bg-white"
+                            className="w-full text-slate-900 font-bold text-xs border border-slate-300 rounded px-2 py-0.5 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                           />
                         ) : (
                           <span className="text-slate-800 font-bold">{fa.name}</span>
@@ -2212,7 +2212,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                 fixedAssets: prev.fixedAssets.map((item, i) => (i === idx ? { ...item, amountNgn: val } : item))
                               }));
                             }}
-                            className="w-32 px-2 py-1 text-right font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white"
+                            className="w-32 px-2 py-1 text-right font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                           />
                           <button
                             disabled={!isEditingSheet || isLockedByAdmin}
@@ -2240,7 +2240,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                         disabled={!isEditingSheet || isLockedByAdmin}
                         value={balanceSheet.accumulatedDepreciationNgn}
                         onChange={(e) => setBalanceSheet((prev) => ({ ...prev, accumulatedDepreciationNgn: Number(e.target.value) }))}
-                        className="w-32 px-2 py-1 text-right font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white"
+                        className="w-32 px-2 py-1 text-right font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                     </div>
                     <div className="flex justify-between font-black text-slate-900 pt-1 border-t border-slate-300">
@@ -2293,7 +2293,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                 currentLiabilities: prev.currentLiabilities.map((item, i) => (i === idx ? { ...item, name: val } : item))
                               }));
                             }}
-                            className="w-full text-slate-900 font-bold text-xs border border-slate-300 rounded px-2 py-0.5 bg-white"
+                            className="w-full text-slate-900 font-bold text-xs border border-slate-300 rounded px-2 py-0.5 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                           />
                         ) : (
                           <span className="text-slate-800 font-bold">{cl.name}</span>
@@ -2310,7 +2310,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                 currentLiabilities: prev.currentLiabilities.map((item, i) => (i === idx ? { ...item, amountNgn: val } : item))
                               }));
                             }}
-                            className="w-32 px-2 py-1 text-right font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white"
+                            className="w-32 px-2 py-1 text-right font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                           />
                           <button
                             disabled={!isEditingSheet || isLockedByAdmin}
@@ -2341,7 +2341,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                 longTermLiabilities: prev.longTermLiabilities.map((item, i) => (i === idx ? { ...item, name: val } : item))
                               }));
                             }}
-                            className="w-full text-slate-900 font-bold text-xs border border-slate-300 rounded px-2 py-0.5 bg-white"
+                            className="w-full text-slate-900 font-bold text-xs border border-slate-300 rounded px-2 py-0.5 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                           />
                         ) : (
                           <span className="text-slate-800 font-bold">{lt.name}</span>
@@ -2358,7 +2358,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                 longTermLiabilities: prev.longTermLiabilities.map((item, i) => (i === idx ? { ...item, amountNgn: val } : item))
                               }));
                             }}
-                            className="w-32 px-2 py-1 text-right font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white"
+                            className="w-32 px-2 py-1 text-right font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                           />
                           <button
                             disabled={!isEditingSheet || isLockedByAdmin}
@@ -2415,7 +2415,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                 equityItems: prev.equityItems.map((item, i) => (i === idx ? { ...item, name: val } : item))
                               }));
                             }}
-                            className="w-full text-slate-900 font-bold text-xs border border-slate-300 rounded px-2 py-0.5 bg-white"
+                            className="w-full text-slate-900 font-bold text-xs border border-slate-300 rounded px-2 py-0.5 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                           />
                         ) : (
                           <span className="text-slate-800 font-bold">{eq.name}</span>
@@ -2432,7 +2432,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                 equityItems: prev.equityItems.map((item, i) => (i === idx ? { ...item, amountNgn: val } : item))
                               }));
                             }}
-                            className="w-32 px-2 py-1 text-right font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white"
+                            className="w-32 px-2 py-1 text-right font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                           />
                           <button
                             disabled={!isEditingSheet || isLockedByAdmin}
@@ -2489,7 +2489,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                       disabled={!isEditingSheet || isLockedByAdmin}
                       value={costTccBoq.usdExchangeRate}
                       onChange={(e) => setCostTccBoq((prev) => ({ ...prev, usdExchangeRate: Number(e.target.value) || 1550 }))}
-                      className="w-16 px-1 py-0.5 text-center font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white text-xs"
+                      className="w-16 px-1 py-0.5 text-center font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white text-xs focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                     />
                     <span className="text-xs font-mono font-bold text-slate-800">/ $)</span>
                   </div>
@@ -2527,7 +2527,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                     items: prev.items.map((item, i) => (i === idx ? { ...item, name: val } : item))
                                   }));
                                 }}
-                                className="w-full px-2 py-1 text-slate-900 font-bold border border-slate-300 rounded bg-white"
+                                className="w-full px-2 py-1 text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                               />
                             ) : (
                               it.name
@@ -2545,7 +2545,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                     items: prev.items.map((item, i) => (i === idx ? { ...item, category: val } : item))
                                   }));
                                 }}
-                                className="w-28 px-2 py-1 text-slate-900 font-bold border border-slate-300 rounded bg-white"
+                                className="w-28 px-2 py-1 text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                               />
                             ) : (
                               it.category
@@ -2563,7 +2563,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                   items: prev.items.map((item, i) => (i === idx ? { ...item, quantity: q } : item))
                                 }));
                               }}
-                              className="w-14 px-1.5 py-1 text-center font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white"
+                              className="w-14 px-1.5 py-1 text-center font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                             />
                           </td>
                           <td className="py-2 px-3 text-right">
@@ -2578,7 +2578,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                   items: prev.items.map((item, i) => (i === idx ? { ...item, unitPriceNgn: r } : item))
                                 }));
                               }}
-                              className="w-28 px-2 py-1 text-right font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white"
+                              className="w-28 px-2 py-1 text-right font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                             />
                           </td>
                           <td className="py-2 px-3 text-right font-mono font-black text-slate-950">
@@ -2676,7 +2676,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                               fixedAssets: prev.fixedAssets.map((item, i) => (i === idx ? { ...item, name: val } : item))
                             }));
                           }}
-                          className="w-full text-slate-900 font-bold text-xs border border-slate-300 rounded px-2 py-0.5 bg-white"
+                          className="w-full text-slate-900 font-bold text-xs border border-slate-300 rounded px-2 py-0.5 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                         />
                       ) : (
                         <span className="text-slate-800 font-bold">{fa.name}</span>
@@ -2693,7 +2693,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                               fixedAssets: prev.fixedAssets.map((item, i) => (i === idx ? { ...item, amountNgn: val } : item))
                             }));
                           }}
-                          className="w-32 px-2 py-1 text-right font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white"
+                          className="w-32 px-2 py-1 text-right font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                         />
                         <button
                           disabled={!isEditingSheet || isLockedByAdmin}
@@ -2751,7 +2751,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                               operatingCapital: prev.operatingCapital.map((item, i) => (i === idx ? { ...item, name: val } : item))
                             }));
                           }}
-                          className="w-full text-slate-900 font-bold text-xs border border-slate-300 rounded px-2 py-0.5 bg-white"
+                          className="w-full text-slate-900 font-bold text-xs border border-slate-300 rounded px-2 py-0.5 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                         />
                       ) : (
                         <span className="text-slate-800 font-bold">{op.name}</span>
@@ -2768,7 +2768,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                               operatingCapital: prev.operatingCapital.map((item, i) => (i === idx ? { ...item, amountNgn: val } : item))
                             }));
                           }}
-                          className="w-32 px-2 py-1 text-right font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white"
+                          className="w-32 px-2 py-1 text-right font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                         />
                         <button
                           disabled={!isEditingSheet || isLockedByAdmin}
@@ -2848,7 +2848,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                 items: prev.items.map((item, i) => (i === idx ? { ...item, name: val } : item))
                               }));
                             }}
-                            className="w-full font-bold text-slate-900 text-xs border border-slate-300 rounded px-1.5 py-0.5 bg-white mb-1"
+                            className="w-full font-bold text-slate-900 text-xs border border-slate-300 rounded px-1.5 py-0.5 bg-white mb-1 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                           />
                           <input
                             type="text"
@@ -2860,7 +2860,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                 items: prev.items.map((item, i) => (i === idx ? { ...item, notes: val } : item))
                               }));
                             }}
-                            className="w-full text-[11px] text-slate-800 font-semibold border border-slate-300 rounded px-1.5 py-0.5 bg-white"
+                            className="w-full text-[11px] text-slate-900 font-semibold border border-slate-300 rounded px-1.5 py-0.5 bg-white font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                           />
                         </>
                       ) : (
@@ -2882,7 +2882,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                             items: prev.items.map((item, i) => (i === idx ? { ...item, amountNgn: val } : item))
                           }));
                         }}
-                        className="w-32 px-2 py-1 text-right font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white flex-shrink-0"
+                        className="w-32 px-2 py-1 text-right font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white flex-shrink-0 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                       <button
                         disabled={!isEditingSheet || isLockedByAdmin}

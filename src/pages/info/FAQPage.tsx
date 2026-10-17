@@ -82,7 +82,7 @@ const FAQPage: React.FC = () => {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10 animate-in fade-in duration-500">
         {/* Hero */}
         <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-bold rounded-full mb-4 border border-blue-200 dark:border-blue-800">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-950 dark:text-blue-300 text-xs font-bold rounded-full mb-4 border border-blue-400 dark:border-blue-800 text-blue-950 border-blue-400 font-black">
             <QuestionMarkCircleIcon className="w-4 h-4" />
             <span>Official Knowledge Base</span>
           </div>
@@ -103,7 +103,7 @@ const FAQPage: React.FC = () => {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search by keywords (e.g. FIC, payout, privacy, security)..."
-              className="block w-full pl-11 pr-4 py-3 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-2xl shadow-sm text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 dark:text-white placeholder:text-slate-500"
+              className="block w-full pl-11 pr-4 py-3 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-2xl shadow-sm text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 dark:text-white placeholder:text-slate-400 font-bold"
             />
           </div>
         </div>

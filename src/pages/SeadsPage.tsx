@@ -270,7 +270,7 @@ const SeadsPage: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
+                  <div className="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between text-xs text-gray-500">
                     <span>Organizer: <strong className="text-gray-800">{proj.organizer_name}</strong></span>
                     <span>{proj.backers_count} Backers</span>
                   </div>
@@ -306,10 +306,10 @@ const SeadsPage: React.FC = () => {
         {/* Backing Modal */}
         {backingProject && (
           <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-gray-100 animate-in fade-in zoom-in-95">
-              <div className="flex justify-between items-center pb-4 border-b border-gray-100">
+            <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 animate-in fade-in zoom-in-95">
+              <div className="flex justify-between items-center pb-4 border-b border-slate-200">
                 <h3 className="text-lg font-black text-gray-900">Back Initiative</h3>
-                <button onClick={() => setBackingProject(null)} className="text-gray-400 hover:text-gray-600">
+                <button onClick={() => setBackingProject(null)} className="text-slate-700 hover:text-gray-600">
                   <XMarkIcon className="w-5 h-5" />
                 </button>
               </div>
@@ -343,11 +343,11 @@ const SeadsPage: React.FC = () => {
                     min="5"
                     value={pledgeAmount}
                     onChange={(e) => setPledgeAmount(Number(e.target.value))}
-                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400 font-mono"
                   />
                 </div>
 
-                <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
+                <div className="flex justify-end gap-3 pt-4 border-t border-slate-200">
                   <button
                     type="button"
                     onClick={() => setBackingProject(null)}
@@ -371,10 +371,10 @@ const SeadsPage: React.FC = () => {
         {/* Create Initiative Modal */}
         {showCreateModal && (
           <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-gray-100 animate-in fade-in zoom-in-95">
-              <div className="flex justify-between items-center pb-4 border-b border-gray-100">
+            <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 animate-in fade-in zoom-in-95">
+              <div className="flex justify-between items-center pb-4 border-b border-slate-200">
                 <h3 className="text-lg font-black text-gray-900">Launch New Seads Initiative</h3>
-                <button onClick={() => setShowCreateModal(false)} className="text-gray-400 hover:text-gray-600">
+                <button onClick={() => setShowCreateModal(false)} className="text-slate-700 hover:text-gray-600">
                   <XMarkIcon className="w-5 h-5" />
                 </button>
               </div>
@@ -388,7 +388,7 @@ const SeadsPage: React.FC = () => {
                     placeholder="e.g. Clean Water Solar Kiosks"
                     value={createForm.title}
                     onChange={(e) => setCreateForm({ ...createForm, title: e.target.value })}
-                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                   />
                 </div>
 
@@ -398,7 +398,7 @@ const SeadsPage: React.FC = () => {
                     <select
                       value={createForm.category}
                       onChange={(e) => setCreateForm({ ...createForm, category: e.target.value })}
-                      className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                      className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none text-slate-900 font-bold border-slate-300 bg-white"
                     >
                       <option value="Ecology & Urban Greenery">Ecology & Greenery</option>
                       <option value="Solar & Clean Power">Solar & Clean Power</option>
@@ -413,7 +413,7 @@ const SeadsPage: React.FC = () => {
                       min="100"
                       value={createForm.target_funding}
                       onChange={(e) => setCreateForm({ ...createForm, target_funding: Number(e.target.value) })}
-                      className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                      className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400 font-mono"
                     />
                   </div>
                 </div>
@@ -425,7 +425,7 @@ const SeadsPage: React.FC = () => {
                     placeholder="e.g. Yaba Tech Corridor, Lagos"
                     value={createForm.location}
                     onChange={(e) => setCreateForm({ ...createForm, location: e.target.value })}
-                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                   />
                 </div>
 
@@ -436,11 +436,11 @@ const SeadsPage: React.FC = () => {
                     placeholder="Describe how this initiative empowers the community..."
                     value={createForm.pitch_summary}
                     onChange={(e) => setCreateForm({ ...createForm, pitch_summary: e.target.value })}
-                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                   />
                 </div>
 
-                <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
+                <div className="flex justify-end gap-3 pt-4 border-t border-slate-200">
                   <button
                     type="button"
                     onClick={() => setShowCreateModal(false)}

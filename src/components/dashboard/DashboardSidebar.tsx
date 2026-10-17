@@ -18,7 +18,7 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ activeTab = 'overvi
 
   return (
     <div className="w-64 bg-white border-r border-slate-300 h-full p-4">
-      <div className="flex items-center gap-2 mb-6 pb-4 border-b border-gray-200">
+      <div className="flex items-center gap-2 mb-6 pb-4 border-b border-slate-300">
         <HomeIcon className="w-6 h-6 text-blue-600" />
         <h2 className="text-lg font-bold text-gray-900">Dashboard</h2>
       </div>

@@ -303,13 +303,13 @@ const ProgramsPage: React.FC = () => {
                   FingerMobile <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-indigo-300">Academic Programs</span> & Digital Training Academy
                 </h1>
 
-                <p className="text-slate-300 text-base sm:text-lg leading-relaxed font-normal">
+                <p className="text-slate-700 text-base sm:text-lg leading-relaxed font-normal">
                   A high-impact, <strong className="text-white font-bold">Quarterly Subscription-based E-Learning Academy</strong> designed to train and accredit <strong className="text-white font-bold">5,000 citizens across all 37 Nigerian states</strong> in high-demand digital skills: AI & Machine Learning, Cloud DevOps, CyberSecurity, Online Marketing, 4K Content Creation, and Agile Product Management. Modules feature flexible quarterly subscription tiers, with qualifying citizens eligible for 100% State Fellowship Grants.
                 </p>
 
                 {/* Multilateral Partner Badges */}
                 <div className="pt-2 flex flex-wrap items-center gap-2 text-xs">
-                  <span className="text-slate-400 font-semibold mr-1">Multilateral Alliances:</span>
+                  <span className="text-slate-700 font-semibold mr-1">Multilateral Alliances:</span>
                   <span className="px-2.5 py-1 rounded-md bg-slate-800/80 border border-slate-700 text-slate-200 font-medium">FAO eLearning Academy (UN)</span>
                   <span className="px-2.5 py-1 rounded-md bg-slate-800/80 border border-slate-700 text-slate-200 font-medium">eLearning Africa</span>
                   <span className="px-2.5 py-1 rounded-md bg-slate-800/80 border border-slate-700 text-slate-200 font-medium">atingi Agribusiness</span>
@@ -451,12 +451,12 @@ const ProgramsPage: React.FC = () => {
                     value={courseSearch}
                     onChange={(e) => setCourseSearch(e.target.value)}
                     placeholder="Search by skill, topic, or multilateral partner..."
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl text-slate-900 font-bold border border-slate-300 bg-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
+                    className="w-full pl-10 pr-4 py-2.5 rounded-xl text-slate-900 font-bold border border-slate-300 bg-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
                   />
                   {courseSearch && (
                     <button
                       onClick={() => setCourseSearch('')}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-700 hover:text-slate-600"
                     >
                       <XMarkIcon className="w-4 h-4" />
                     </button>
@@ -1100,7 +1100,7 @@ const ProgramsPage: React.FC = () => {
                   <select
                     value={calendarTermFilter}
                     onChange={(e) => setCalendarTermFilter(e.target.value)}
-                    className="py-2 px-3 rounded-xl text-slate-900 font-bold border border-slate-300 bg-white text-xs"
+                    className="py-2 px-3 rounded-xl text-slate-900 font-bold border border-slate-300 bg-white text-xs focus:ring-2 focus:ring-indigo-500"
                   >
                     <option value="ALL">All Academic Terms</option>
                     <option value="TERM_1_2026">Term 1 (Fall 2026)</option>
@@ -1112,7 +1112,7 @@ const ProgramsPage: React.FC = () => {
                   <select
                     value={calendarTypeFilter}
                     onChange={(e) => setCalendarTypeFilter(e.target.value)}
-                    className="py-2 px-3 rounded-xl text-slate-900 font-bold border border-slate-300 bg-white text-xs"
+                    className="py-2 px-3 rounded-xl text-slate-900 font-bold border border-slate-300 bg-white text-xs focus:ring-2 focus:ring-indigo-500"
                   >
                     <option value="ALL">All Event Types</option>
                     <option value="CLASS_SESSION">Class Sessions</option>
@@ -1234,7 +1234,7 @@ const ProgramsPage: React.FC = () => {
                   </div>
                   <button
                     onClick={() => setShowStateCohortModal(false)}
-                    className="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition"
+                    className="p-2 rounded-xl text-slate-700 hover:text-slate-700 hover:bg-slate-200 transition"
                   >
                     <XMarkIcon className="w-6 h-6" />
                   </button>
@@ -1321,7 +1321,7 @@ const ProgramsPage: React.FC = () => {
                   </div>
                   <button
                     onClick={() => setSelectedCourseForSubscription(null)}
-                    className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100"
+                    className="p-1.5 rounded-lg text-slate-700 hover:text-slate-700 hover:bg-slate-100"
                   >
                     <XMarkIcon className="w-5 h-5" />
                   </button>
@@ -1435,7 +1435,7 @@ const ProgramsPage: React.FC = () => {
                   </div>
                   <button
                     onClick={() => setSelectedCourseForSyllabus(null)}
-                    className="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition"
+                    className="p-2 rounded-xl text-slate-700 hover:text-slate-700 hover:bg-slate-200 transition"
                   >
                     <XMarkIcon className="w-6 h-6" />
                   </button>
@@ -1610,7 +1610,7 @@ const ProgramsPage: React.FC = () => {
                                       value={opt}
                                       checked={examAnswers[currentQ.id] === opt}
                                       onChange={() => setExamAnswers({ ...examAnswers, [currentQ.id]: opt })}
-                                      className="w-4 h-4 text-indigo-600 focus:ring-indigo-500"
+                                      className="w-4 h-4 text-slate-900 focus:ring-indigo-500 font-bold border border-slate-300 rounded bg-white focus:ring-2 placeholder:text-slate-400"
                                     />
                                     <span className="text-sm font-semibold">{opt}</span>
                                   </label>
@@ -1626,7 +1626,7 @@ const ProgramsPage: React.FC = () => {
                                   value={examAnswers[currentQ.id] || ''}
                                   onChange={(e) => setExamAnswers({ ...examAnswers, [currentQ.id]: e.target.value })}
                                   placeholder="Type your precise technical answer..."
-                                  className="w-full p-3.5 rounded-xl text-slate-900 font-bold border border-slate-300 bg-white placeholder:text-slate-500 focus:ring-2 focus:ring-indigo-500 text-sm"
+                                  className="w-full p-3.5 rounded-xl text-slate-900 font-bold border border-slate-300 bg-white placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-500 text-sm"
                                 />
                               </div>
                             )}
@@ -1639,7 +1639,7 @@ const ProgramsPage: React.FC = () => {
                                   value={examAnswers[currentQ.id] || ''}
                                   onChange={(e) => setExamAnswers({ ...examAnswers, [currentQ.id]: e.target.value })}
                                   placeholder="Write your comprehensive technical essay response here..."
-                                  className="w-full p-3.5 rounded-xl text-slate-900 font-bold border border-slate-300 bg-white placeholder:text-slate-500 focus:ring-2 focus:ring-indigo-500 text-sm leading-relaxed"
+                                  className="w-full p-3.5 rounded-xl text-slate-900 font-bold border border-slate-300 bg-white placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-500 text-sm leading-relaxed"
                                 />
                                 {currentQ.sampleRubric && (
                                   <div className="text-xs text-slate-600 bg-slate-50 p-3 rounded-lg border border-slate-200">
@@ -1889,7 +1889,7 @@ const ProgramsPage: React.FC = () => {
                   </div>
                   <button
                     onClick={() => setSelectedInvoiceToPay(null)}
-                    className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700"
+                    className="p-1.5 rounded-lg text-slate-700 hover:text-slate-700"
                   >
                     <XMarkIcon className="w-5 h-5" />
                   </button>

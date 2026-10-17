@@ -135,7 +135,7 @@ const OutfitBuilder: React.FC<OutfitBuilderProps> = ({
             type="text"
             value={formData.name}
             onChange={(e) => setFormData({...formData, name: e.target.value})}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
             placeholder="e.g., Summer Casual Look"
             required
           />
@@ -150,7 +150,7 @@ const OutfitBuilder: React.FC<OutfitBuilderProps> = ({
             value={formData.description}
             onChange={(e) => setFormData({...formData, description: e.target.value})}
             rows={3}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
             placeholder="Describe your outfit..."
           />
         </div>
@@ -215,7 +215,7 @@ const OutfitBuilder: React.FC<OutfitBuilderProps> = ({
               value={newTag}
               onChange={(e) => setNewTag(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
-              className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               placeholder="Add a tag (e.g., minimalist, vintage)"
             />
             <button
@@ -231,7 +231,7 @@ const OutfitBuilder: React.FC<OutfitBuilderProps> = ({
               {formData.style_tags.map((tag) => (
                 <span
                   key={tag}
-                  className="px-2 py-1 bg-blue-100 text-blue-950 border border-blue-400 font-bold text-xs rounded-full flex items-center gap-1"
+                  className="px-2 py-1 bg-blue-100 text-blue-950 border border-blue-400 font-bold text-xs rounded-full flex items-center gap-1 font-black"
                 >
                   {tag}
                   <button
@@ -257,7 +257,7 @@ const OutfitBuilder: React.FC<OutfitBuilderProps> = ({
               type="color"
               value={newColor}
               onChange={(e) => setNewColor(e.target.value)}
-              className="w-12 h-10 border border-gray-300 rounded cursor-pointer"
+              className="w-12 h-10 border border-gray-300 rounded cursor-pointer text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
             />
             <button
               type="button"
@@ -298,7 +298,7 @@ const OutfitBuilder: React.FC<OutfitBuilderProps> = ({
               type="checkbox"
               checked={formData.is_public}
               onChange={(e) => setFormData({...formData, is_public: e.target.checked})}
-              className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+              className="w-4 h-4 text-slate-900 border-gray-300 rounded focus:ring-blue-500 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
             />
             <span className="text-sm text-gray-700">Make Public</span>
           </label>
@@ -308,7 +308,7 @@ const OutfitBuilder: React.FC<OutfitBuilderProps> = ({
               type="checkbox"
               checked={formData.is_favorite}
               onChange={(e) => setFormData({...formData, is_favorite: e.target.checked})}
-              className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+              className="w-4 h-4 text-slate-900 border-gray-300 rounded focus:ring-blue-500 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
             />
             <span className="text-sm text-gray-700">Mark as Favorite</span>
           </label>

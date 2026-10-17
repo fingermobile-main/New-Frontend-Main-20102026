@@ -20,11 +20,11 @@ const StercsPoliciesPage: React.FC = () => {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="bg-white rounded-xl shadow p-6 border border-gray-100">
+        <div className="bg-white rounded-xl shadow p-6 border border-slate-200">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-semibold">Governance Policies</h2>
             <div className="flex space-x-3">
-              <button className="p-2 text-gray-400 hover:text-gray-500 border border-gray-300 rounded-lg">
+              <button className="p-2 text-slate-700 hover:text-gray-500 border border-gray-300 rounded-lg">
                 <Settings className="h-4 w-4" />
               </button>
             </div>
@@ -115,7 +115,7 @@ const StercsPoliciesPage: React.FC = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Privacy</td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-950 border border-amber-400 font-bold">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-950 border border-amber-400 font-bold font-black">
                       Review
                     </span>
                   </td>
@@ -173,7 +173,7 @@ const StercsPoliciesPage: React.FC = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Compliance</td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-950 border border-blue-400 font-bold">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-950 border border-blue-400 font-bold font-black">
                       Draft
                     </span>
                   </td>

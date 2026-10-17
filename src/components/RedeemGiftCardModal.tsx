@@ -129,7 +129,7 @@ const RedeemGiftCardModal: React.FC<RedeemGiftCardModalProps> = ({
                       ${giftCardInfo.amount} has been added to your account
                     </p>
                   </div>
-                  <div className="text-sm text-muted-foreground space-y-1">
+                  <div className="text-sm text-slate-700 space-y-1">
                     <p>Issuer: {giftCardInfo.issuer}</p>
                     <p>Expires: {new Date(giftCardInfo.expiryDate).toLocaleDateString()}</p>
                   </div>

@@ -216,7 +216,7 @@ const RestockForm: React.FC<RestockFormProps> = ({
               min="1"
               value={quantity}
               onChange={(e) => setQuantity(parseInt(e.target.value) || 0)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400 font-mono"
               placeholder="Enter quantity"
               required
             />
@@ -248,7 +248,7 @@ const RestockForm: React.FC<RestockFormProps> = ({
             min="0"
             value={unitCost}
             onChange={(e) => setUnitCost(parseFloat(e.target.value) || 0)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400 font-mono"
             placeholder="0.00"
           />
           <p className="text-xs text-gray-500 mt-1">Leave blank to keep current cost</p>
@@ -263,7 +263,7 @@ const RestockForm: React.FC<RestockFormProps> = ({
             type="text"
             value={warehouseLocation}
             onChange={(e) => setWarehouseLocation(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
             placeholder="e.g., A-12-3"
           />
         </div>
@@ -277,7 +277,7 @@ const RestockForm: React.FC<RestockFormProps> = ({
             type="text"
             value={supplierId}
             onChange={(e) => setSupplierId(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
             placeholder="Optional supplier reference"
           />
         </div>
@@ -291,7 +291,7 @@ const RestockForm: React.FC<RestockFormProps> = ({
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             rows={3}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
             placeholder="Add any additional notes about this restock..."
           />
         </div>
@@ -309,12 +309,12 @@ const RestockForm: React.FC<RestockFormProps> = ({
                 <span className="text-gray-600">Adding:</span>
                 <span className="font-medium text-green-600">+{quantity}</span>
               </div>
-              <div className="flex justify-between border-t border-gray-200 pt-1">
+              <div className="flex justify-between border-t border-slate-300 pt-1">
                 <span className="text-gray-600">New Total:</span>
                 <span className="font-bold text-gray-900">{inventory.quantity + quantity}</span>
               </div>
               {unitCost > 0 && (
-                <div className="flex justify-between border-t border-gray-200 pt-1">
+                <div className="flex justify-between border-t border-slate-300 pt-1">
                   <span className="text-gray-600">Total Value:</span>
                   <span className="font-bold text-gray-900">
                     ${calculateTotalValue().toFixed(2)}
@@ -326,7 +326,7 @@ const RestockForm: React.FC<RestockFormProps> = ({
         )}
 
         {/* Action Buttons */}
-        <div className="flex gap-3 pt-4 border-t border-gray-200">
+        <div className="flex gap-3 pt-4 border-t border-slate-300">
           <button
             type="submit"
             disabled={submitting || quantity <= 0}

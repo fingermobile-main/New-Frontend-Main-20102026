@@ -91,12 +91,12 @@ const ModerationPage: React.FC = () => {
                   </p>
                   <p className="text-xs text-gray-500 mt-1">Priority: {item.priority.toUpperCase()}</p>
                 </div>
-                <p className="text-xs text-gray-400">
+                <p className="text-xs text-slate-700">
                   {new Date(item.created_at).toLocaleString()}
                 </p>
               </div>
 
-              <div className="my-3 p-3 bg-gray-50 rounded-md text-gray-700 text-sm border border-gray-100">
+              <div className="my-3 p-3 bg-gray-50 rounded-md text-gray-700 text-sm border border-slate-200">
                 &quot;{item.contentPreview || item.description || `Item ID: ${item.content_id}`}&quot;
               </div>
 

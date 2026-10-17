@@ -157,7 +157,7 @@ const StoreManagementPage: React.FC = () => {
     value: string | number;
     icon: string;
   }> = ({ title, value, icon }) => (
-    <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100">
+    <div className="bg-white p-6 rounded-xl shadow-md border border-slate-200">
       <div className="flex items-center gap-4">
         <div className="text-3xl">{icon}</div>
         <div>
@@ -183,7 +183,7 @@ const StoreManagementPage: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 bg-white p-6 rounded-xl shadow-md border border-gray-100">
+        <div className="lg:col-span-2 bg-white p-6 rounded-xl shadow-md border border-slate-200">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold text-gray-900">Manage Products</h2>
             <button
@@ -195,9 +195,9 @@ const StoreManagementPage: React.FC = () => {
           </div>
 
           {loading ? (
-            <div className="py-12 text-center text-gray-400">Loading products...</div>
+            <div className="py-12 text-center text-slate-700">Loading products...</div>
           ) : products.length === 0 ? (
-            <div className="py-12 text-center text-gray-400">
+            <div className="py-12 text-center text-slate-700">
               No products found. Click "+ Add Product" to create your first store item.
             </div>
           ) : (
@@ -218,7 +218,7 @@ const StoreManagementPage: React.FC = () => {
                         <img
                           src={product.imageUrl}
                           alt={product.name}
-                          className="w-10 h-10 rounded-md object-cover border border-gray-100"
+                          className="w-10 h-10 rounded-md object-cover border border-slate-200"
                         />
                         <span className="font-medium text-gray-900">{product.name}</span>
                       </td>
@@ -248,13 +248,13 @@ const StoreManagementPage: React.FC = () => {
           )}
         </div>
 
-        <div className="lg:col-span-1 bg-white p-6 rounded-xl shadow-md border border-gray-100">
+        <div className="lg:col-span-1 bg-white p-6 rounded-xl shadow-md border border-slate-200">
           <h2 className="text-xl font-bold mb-4 text-gray-900">Recent Orders</h2>
           <div className="overflow-x-auto max-h-96">
             {loading ? (
-              <div className="py-12 text-center text-gray-400">Loading orders...</div>
+              <div className="py-12 text-center text-slate-700">Loading orders...</div>
             ) : orders.length === 0 ? (
-              <div className="py-12 text-center text-gray-400 text-sm">
+              <div className="py-12 text-center text-slate-700 text-sm">
                 No orders recorded yet.
               </div>
             ) : (
@@ -284,7 +284,7 @@ const StoreManagementPage: React.FC = () => {
                               e.target.value as StoreOrder['status']
                             )
                           }
-                          className="text-xs p-1 border rounded-md bg-white text-gray-700 outline-none focus:ring-1 focus:ring-blue-500"
+                          className="text-xs p-1 border rounded-md bg-white text-slate-900 outline-none focus:ring-1 focus:ring-blue-500 font-bold border-slate-300"
                         >
                           <option value="Pending">Pending</option>
                           <option value="Processing">Processing</option>
@@ -308,7 +308,7 @@ const StoreManagementPage: React.FC = () => {
           <div className="bg-white rounded-xl max-w-md w-full p-6 shadow-xl relative">
             <button
               onClick={() => setIsEditorOpen(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+              className="absolute top-4 right-4 text-slate-700 hover:text-gray-600"
             >
               <XMarkIcon className="w-6 h-6" />
             </button>
@@ -323,7 +323,7 @@ const StoreManagementPage: React.FC = () => {
                   value={formData.name}
                   onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
                   required
-                  className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm"
+                  className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                   placeholder="e.g., Wireless Earbuds"
                 />
               </div>
@@ -336,7 +336,7 @@ const StoreManagementPage: React.FC = () => {
                     value={formData.price}
                     onChange={(e) => setFormData(prev => ({ ...prev, price: e.target.value }))}
                     required
-                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm"
+                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400 font-mono"
                     placeholder="25.00"
                   />
                 </div>
@@ -347,7 +347,7 @@ const StoreManagementPage: React.FC = () => {
                     value={formData.stock}
                     onChange={(e) => setFormData(prev => ({ ...prev, stock: e.target.value }))}
                     required
-                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm"
+                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400 font-mono"
                   />
                 </div>
               </div>
@@ -356,7 +356,7 @@ const StoreManagementPage: React.FC = () => {
                 <select
                   value={formData.category}
                   onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
-                  className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm"
+                  className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm text-slate-900 font-bold border-slate-300 bg-white"
                 >
                   <option value="electronics">Electronics</option>
                   <option value="fashion">Fashion</option>
@@ -370,7 +370,7 @@ const StoreManagementPage: React.FC = () => {
                   type="url"
                   value={formData.imageUrl}
                   onChange={(e) => setFormData(prev => ({ ...prev, imageUrl: e.target.value }))}
-                  className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm"
+                  className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                   placeholder="https://..."
                 />
               </div>

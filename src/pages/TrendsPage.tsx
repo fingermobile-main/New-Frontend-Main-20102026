@@ -494,7 +494,7 @@ const TrendsPage: React.FC = () => {
 
           <div className="flex items-center gap-2 self-stretch md:self-auto justify-between md:justify-end">
             {/* Time Filter */}
-            <div className="flex bg-gray-100 p-1.5 rounded-xl border border-gray-200">
+            <div className="flex bg-gray-100 p-1.5 rounded-xl border border-slate-300">
               {(['24h', '7d', '30d'] as const).map((r) => (
                 <button
                   key={r}
@@ -564,12 +564,12 @@ const TrendsPage: React.FC = () => {
               <div className="p-12 text-center bg-white rounded-2xl border border-slate-300">
                 <ArrowPathIcon className="w-8 h-8 text-red-500 animate-spin mx-auto mb-3" />
                 <p className="text-sm font-bold text-gray-700">Syncing Worldwide Trends...</p>
-                <p className="text-xs text-gray-400 mt-1">Filtering feeds through Guardian AI</p>
+                <p className="text-xs text-slate-700 mt-1">Filtering feeds through Guardian AI</p>
               </div>
             ) : trends.length === 0 ? (
               <div className="p-12 text-center bg-white rounded-2xl border border-slate-300">
                 <p className="text-sm font-bold text-gray-700">No trends found in this category.</p>
-                <p className="text-xs text-gray-400 mt-1">Check back soon as new topics emerge globally.</p>
+                <p className="text-xs text-slate-700 mt-1">Check back soon as new topics emerge globally.</p>
               </div>
             ) : (
               trends.map((trend, index) => {
@@ -589,7 +589,7 @@ const TrendsPage: React.FC = () => {
                             <span className="text-xs font-black px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 uppercase tracking-wider">
                               {trend.category.replace('_', ' ')}
                             </span>
-                            <span className="text-xs text-gray-400">
+                            <span className="text-xs text-slate-700">
                               {(trend.metrics.likes + trend.metrics.comments + trend.metrics.shares).toLocaleString()} interactions
                             </span>
                           </div>
@@ -603,13 +603,13 @@ const TrendsPage: React.FC = () => {
                       </div>
 
                       <div className="flex items-center gap-2 shrink-0">
-                        <span className="px-3 py-1 bg-emerald-50 text-emerald-700 font-black text-xs rounded-full flex items-center gap-1">
+                        <span className="px-3 py-1 bg-emerald-50 text-emerald-950 font-black text-xs rounded-full flex items-center gap-1 border text-emerald-950 border-emerald-400">
                           <ArrowTrendingUpIcon className="w-3.5 h-3.5" />
                           {trend.velocityScore || 95} Velocity
                         </span>
                         <button
                           onClick={() => handleShareTrend(trend)}
-                          className="p-2 border border-gray-200 rounded-lg text-gray-500 hover:text-red-500 hover:bg-red-50 transition-colors"
+                          className="p-2 border border-slate-300 rounded-lg text-gray-500 hover:text-red-500 hover:bg-red-50 transition-colors"
                           title="Share Topic"
                         >
                           <ShareIcon className="w-4 h-4" />
@@ -617,17 +617,17 @@ const TrendsPage: React.FC = () => {
                       </div>
                     </div>
 
-                    <p className="text-xs text-gray-700 mt-3 leading-relaxed bg-gray-50 p-3.5 rounded-xl border border-gray-100">
+                    <p className="text-xs text-gray-700 mt-3 leading-relaxed bg-gray-50 p-3.5 rounded-xl border border-slate-200">
                       {trend.content}
                     </p>
 
                     {/* Author & Interaction Footer */}
-                    <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between">
+                    <div className="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <img
                           src={trend.author.avatarUrl}
                           alt={trend.author.username}
-                          className="w-6 h-6 rounded-full object-cover border border-gray-200"
+                          className="w-6 h-6 rounded-full object-cover border border-slate-300"
                         />
                         <span className="text-xs font-bold text-gray-800">{trend.author.username}</span>
                       </div>
@@ -685,16 +685,16 @@ const TrendsPage: React.FC = () => {
               </div>
               <div className="space-y-3.5">
                 {RISING_CREATORS.map((creator, i) => (
-                  <div key={i} className="flex justify-between items-center text-xs pb-3 border-b border-gray-100 last:border-b-0 last:pb-0">
+                  <div key={i} className="flex justify-between items-center text-xs pb-3 border-b border-slate-200 last:border-b-0 last:pb-0">
                     <div className="flex items-center gap-3">
                       <img
                         src={creator.avatar}
                         alt={creator.name}
-                        className="w-9 h-9 rounded-xl object-cover border border-gray-200"
+                        className="w-9 h-9 rounded-xl object-cover border border-slate-300"
                       />
                       <div>
                         <p className="font-bold text-gray-900">{creator.name}</p>
-                        <p className="text-[11px] text-gray-400">{creator.tag} • <span className="text-gray-500">{creator.niche}</span></p>
+                        <p className="text-[11px] text-slate-700">{creator.tag} • <span className="text-gray-500">{creator.niche}</span></p>
                       </div>
                     </div>
                     <span className="font-black text-emerald-600 text-xs">{creator.gain}</span>

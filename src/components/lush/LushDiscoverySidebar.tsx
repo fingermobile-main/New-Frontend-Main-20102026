@@ -147,7 +147,7 @@ export const LushDiscoverySidebar: React.FC<LushDiscoverySidebarProps> = ({
               value={dailyAnswer}
               onChange={(e) => setDailyAnswer(e.target.value)}
               placeholder="Your answer..."
-              className="w-full bg-white text-gray-900 placeholder:text-slate-500 border border-gray-300 rounded-xl px-3 py-2 text-xs focus:border-emerald-600 focus:ring-1 focus:ring-emerald-500 focus:outline-hidden transition shadow-2xs"
+              className="w-full bg-white text-slate-900 placeholder:text-slate-400 border border-gray-300 rounded-xl px-3 py-2 text-xs focus:border-emerald-600 focus:ring-1 focus:ring-emerald-500 focus:outline-hidden transition shadow-2xs font-bold border-slate-300"
             />
             <div className="flex gap-2">
               <button
@@ -216,7 +216,7 @@ export const LushDiscoverySidebar: React.FC<LushDiscoverySidebarProps> = ({
             <ChatBubbleLeftRightIcon className="w-4 h-4 text-emerald-600" />
             Mutual Matches
           </span>
-          <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
+          <span className="text-[11px] font-bold text-emerald-950 bg-emerald-50 px-2 py-0.5 rounded-full border text-emerald-950 border-emerald-400 font-black">
             {matches.length} Active
           </span>
         </div>

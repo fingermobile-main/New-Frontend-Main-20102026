@@ -792,7 +792,7 @@ const FingerLuxPage: React.FC = () => {
               value={giftAmount}
               onChange={(e) => setGiftAmount(e.target.value)}
               placeholder="Amount in FIC"
-              className="w-full px-4 py-2.5 border border-slate-300 rounded-xl mb-4 text-sm font-bold text-slate-900 bg-white placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none"
+              className="w-full px-4 py-2.5 border border-slate-300 rounded-xl mb-4 text-sm font-bold text-slate-900 bg-white placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none font-mono"
             />
             <div className="flex gap-2">
               <button
@@ -826,7 +826,7 @@ const FingerLuxPage: React.FC = () => {
               value={paylinkAmount}
               onChange={(e) => setPaylinkAmount(e.target.value)}
               placeholder="Request Price in FIC"
-              className="w-full px-4 py-2.5 border border-slate-300 rounded-xl mb-4 text-sm font-bold text-slate-900 bg-white placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none"
+              className="w-full px-4 py-2.5 border border-slate-300 rounded-xl mb-4 text-sm font-bold text-slate-900 bg-white placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none font-mono"
             />
             <div className="flex gap-2">
               <button

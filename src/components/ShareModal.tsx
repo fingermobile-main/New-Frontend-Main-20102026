@@ -44,7 +44,7 @@ const ShareModal: React.FC<ShareModalProps> = ({
         >
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-lg font-semibold text-gray-900">Share</h3>
-            <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+            <button onClick={onClose} className="text-slate-700 hover:text-gray-600">
               ✕
             </button>
           </div>
@@ -69,7 +69,7 @@ const ShareModal: React.FC<ShareModalProps> = ({
               type="text"
               value={url}
               readOnly
-              className="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm bg-gray-50" />
+              className="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm bg-white text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" />
             <button
               onClick={copyToClipboard}
               className="px-4 py-2 bg-brand-blue text-white rounded-md hover:bg-blue-700 transition-colors"

@@ -813,7 +813,7 @@ const MasterMembersConsole: React.FC = () => {
                     [FingerMobile™Protocol]
                   </span>
                 </div>
-                <p className="text-xs text-slate-400">
+                <p className="text-xs text-slate-700">
                   Role Assignment, Page/Screen Permission Mapping, Session Enforcement, Least Privilege & Instant Access Revocation
                 </p>
               </div>
@@ -931,17 +931,17 @@ const MasterMembersConsole: React.FC = () => {
                 placeholder="Search by name, email, or username..."
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-3 py-2 text-xs border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-orange-500"
+                className="w-full pl-9 pr-3 py-2 text-xs border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-orange-500 font-bold border-slate-300 placeholder:text-slate-400"
               />
             </div>
 
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-1.5">
-                <Filter className="w-3.5 h-3.5 text-slate-400" />
+                <Filter className="w-3.5 h-3.5 text-slate-700" />
                 <select
                   value={roleFilter}
                   onChange={e => setRoleFilter(e.target.value)}
-                  className="text-xs py-2 px-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-medium"
+                  className="text-xs py-2 px-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-200 font-medium font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500"
                 >
                   <option value="all">All Roles</option>
                   <option value="SuperAdmin">SuperAdmin</option>
@@ -956,7 +956,7 @@ const MasterMembersConsole: React.FC = () => {
               <select
                 value={statusFilter}
                 onChange={e => setStatusFilter(e.target.value)}
-                className="text-xs py-2 px-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-medium"
+                className="text-xs py-2 px-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-200 font-medium font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500"
               >
                 <option value="all">All Statuses</option>
                 <option value="Active">Active</option>
@@ -996,7 +996,7 @@ const MasterMembersConsole: React.FC = () => {
                               <Crown className="w-3.5 h-3.5 text-amber-500 shrink-0" />
                             )}
                           </div>
-                          <div className="text-[10px] text-slate-400 font-mono truncate">{m.email}</div>
+                          <div className="text-[10px] text-slate-700 font-mono truncate">{m.email}</div>
                         </div>
                       </div>
                     </td>
@@ -1030,7 +1030,7 @@ const MasterMembersConsole: React.FC = () => {
                           )}
                         </div>
                       ) : (
-                        <span className="text-slate-400 dark:text-slate-500 italic text-[10px]">
+                        <span className="text-slate-700 dark:text-slate-500 italic text-[10px]">
                           Unassigned (Member)
                         </span>
                       )}
@@ -1174,7 +1174,7 @@ const MasterMembersConsole: React.FC = () => {
                 <p className="text-xs text-slate-600 dark:text-slate-300">{spec.description}</p>
 
                 <div className="pt-2 border-t border-slate-100 dark:border-slate-800">
-                  <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Granted Scope:</div>
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-slate-700">Granted Scope:</div>
                   <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">{spec.accessScope}</div>
                 </div>
               </div>
@@ -1191,11 +1191,11 @@ const MasterMembersConsole: React.FC = () => {
               <h3 className="font-black text-sm text-slate-900 dark:text-white">
                 Platform Page & Screen Permission Mapping Matrix
               </h3>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-700">
                 Least-privilege mapping across all core public, UGC, commerce, governance, and treasury screens
               </p>
             </div>
-            <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300 border border-blue-200 dark:border-blue-900">
+            <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-blue-50 text-blue-950 dark:bg-blue-950 dark:text-blue-300 border border-blue-400 dark:border-blue-900 text-blue-950 border-blue-400 font-black">
               Active Policy Matrix V4.2
             </span>
           </div>
@@ -1217,7 +1217,7 @@ const MasterMembersConsole: React.FC = () => {
                   <tr key={row.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition">
                     <td className="py-3.5 px-4">
                       <div className="font-bold text-slate-900 dark:text-white">{row.screenName}</div>
-                      <div className="text-[10px] text-slate-400 font-mono">{row.route}</div>
+                      <div className="text-[10px] text-slate-700 font-mono">{row.route}</div>
                     </td>
                     <td className="py-3.5 px-4 text-center">
                       <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
@@ -1296,7 +1296,7 @@ const MasterMembersConsole: React.FC = () => {
                 <select
                   value={simSelectedRole}
                   onChange={e => setSimSelectedRole(e.target.value as any)}
-                  className="w-full text-xs py-2.5 px-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-bold"
+                  className="w-full text-xs py-2.5 px-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500"
                 >
                   <option value="Guest">Guest / Standard Member (Default)</option>
                   <option value="Editor">Editor (Publishing)</option>
@@ -1313,7 +1313,7 @@ const MasterMembersConsole: React.FC = () => {
                 <select
                   value={simSelectedScreen}
                   onChange={e => setSimSelectedScreen(e.target.value)}
-                  className="w-full text-xs py-2.5 px-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-bold"
+                  className="w-full text-xs py-2.5 px-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500"
                 >
                   <option value="/master-dashboard">/master-dashboard (Master Console)</option>
                   <option value="/forum">/forum (Community Forum Feed)</option>
@@ -1333,7 +1333,7 @@ const MasterMembersConsole: React.FC = () => {
                 <select
                   value={simSelectedAction}
                   onChange={e => setSimSelectedAction(e.target.value)}
-                  className="w-full text-xs py-2.5 px-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-bold"
+                  className="w-full text-xs py-2.5 px-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500"
                 >
                   <option value="READ">READ (View Page Content)</option>
                   <option value="WRITE_CREATE_UGC">WRITE_CREATE_UGC (Publish Post / Comment)</option>
@@ -1349,10 +1349,10 @@ const MasterMembersConsole: React.FC = () => {
           {/* Real-time enforcement evaluation card */}
           <div className="p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 space-y-4">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-700">
                 Evaluation Output
               </span>
-              <span className="text-[10px] font-mono text-slate-400">
+              <span className="text-[10px] font-mono text-slate-700">
                 Session Token Evaluated: JWT_ENFORCEMENT_V4
               </span>
             </div>
@@ -1436,7 +1436,7 @@ const MasterMembersConsole: React.FC = () => {
               </div>
               <button
                 onClick={() => setIsEditRoleModalOpen(false)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                className="p-1.5 rounded-lg text-slate-700 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -1452,7 +1452,7 @@ const MasterMembersConsole: React.FC = () => {
                 </div>
               </div>
               <div className="text-right shrink-0">
-                <div className="text-[10px] uppercase font-bold text-slate-400 dark:text-slate-400">Current Role</div>
+                <div className="text-[10px] uppercase font-bold text-slate-700 dark:text-slate-400">Current Role</div>
                 <span className={`inline-block mt-0.5 px-2 py-0.5 rounded text-[10px] font-extrabold ${
                   PREDEFINED_ROLES_SPEC.find(s => s.role === selectedMember.role)?.badgeColor || 'bg-slate-700 text-white'
                 }`}>
@@ -1560,7 +1560,7 @@ const MasterMembersConsole: React.FC = () => {
               </div>
               <button
                 onClick={() => setIsGrantFicModalOpen(false)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                className="p-1.5 rounded-lg text-slate-700 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -1585,7 +1585,7 @@ const MasterMembersConsole: React.FC = () => {
                   min="1"
                   value={ficGrantAmount}
                   onChange={e => setFicGrantAmount(parseInt(e.target.value) || 0)}
-                  className="w-full mt-1.5 px-3.5 py-2.5 text-xs border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-bold focus:ring-2 focus:ring-orange-500 focus:outline-hidden"
+                  className="w-full mt-1.5 px-3.5 py-2.5 text-xs border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-bold focus:ring-2 focus:ring-orange-500 focus:outline-hidden placeholder:text-slate-400 font-mono"
                 />
                 <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 font-mono">
                   Valuation: ₦{(ficGrantAmount * 500).toLocaleString()} &bull; ${(ficGrantAmount * 0.5).toLocaleString()} USD
@@ -1633,7 +1633,7 @@ const MasterMembersConsole: React.FC = () => {
               </div>
               <button
                 onClick={() => setIsAddMemberModalOpen(false)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                className="p-1.5 rounded-lg text-slate-700 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -1648,7 +1648,7 @@ const MasterMembersConsole: React.FC = () => {
                   value={newMemberName}
                   onChange={e => setNewMemberName(e.target.value)}
                   placeholder="e.g. Samuel Adeyemi"
-                  className="w-full mt-1.5 px-3.5 py-2.5 text-xs border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-orange-500 focus:outline-hidden"
+                  className="w-full mt-1.5 px-3.5 py-2.5 text-xs border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-orange-500 focus:outline-hidden font-bold placeholder:text-slate-400"
                 />
               </div>
 
@@ -1660,7 +1660,7 @@ const MasterMembersConsole: React.FC = () => {
                   value={newMemberEmail}
                   onChange={e => setNewMemberEmail(e.target.value)}
                   placeholder="e.g. samuel@example.com"
-                  className="w-full mt-1.5 px-3.5 py-2.5 text-xs border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-orange-500 focus:outline-hidden"
+                  className="w-full mt-1.5 px-3.5 py-2.5 text-xs border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-orange-500 focus:outline-hidden font-bold placeholder:text-slate-400"
                 />
               </div>
 
@@ -1727,7 +1727,7 @@ const MasterMembersConsole: React.FC = () => {
               </div>
               <button
                 onClick={() => setIsEditMemberModalOpen(false)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                className="p-1.5 rounded-lg text-slate-700 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -1742,7 +1742,7 @@ const MasterMembersConsole: React.FC = () => {
                     required
                     value={editName}
                     onChange={e => setEditName(e.target.value)}
-                    className="w-full mt-1.5 px-3.5 py-2 text-xs border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-emerald-500 focus:outline-hidden"
+                    className="w-full mt-1.5 px-3.5 py-2 text-xs border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-emerald-500 focus:outline-hidden font-bold placeholder:text-slate-400"
                   />
                 </div>
 
@@ -1753,7 +1753,7 @@ const MasterMembersConsole: React.FC = () => {
                     required
                     value={editUsername}
                     onChange={e => setEditUsername(e.target.value)}
-                    className="w-full mt-1.5 px-3.5 py-2 text-xs border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500 focus:outline-hidden"
+                    className="w-full mt-1.5 px-3.5 py-2 text-xs border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500 focus:outline-hidden font-bold placeholder:text-slate-400"
                   />
                 </div>
 
@@ -1764,7 +1764,7 @@ const MasterMembersConsole: React.FC = () => {
                     required
                     value={editEmail}
                     onChange={e => setEditEmail(e.target.value)}
-                    className="w-full mt-1.5 px-3.5 py-2 text-xs border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-emerald-500 focus:outline-hidden"
+                    className="w-full mt-1.5 px-3.5 py-2 text-xs border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-emerald-500 focus:outline-hidden font-bold placeholder:text-slate-400"
                   />
                 </div>
 
@@ -1774,7 +1774,7 @@ const MasterMembersConsole: React.FC = () => {
                     type="text"
                     value={editPhone}
                     onChange={e => setEditPhone(e.target.value)}
-                    className="w-full mt-1.5 px-3.5 py-2 text-xs border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500 focus:outline-hidden"
+                    className="w-full mt-1.5 px-3.5 py-2 text-xs border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500 focus:outline-hidden font-bold placeholder:text-slate-400"
                   />
                 </div>
 
@@ -1815,7 +1815,7 @@ const MasterMembersConsole: React.FC = () => {
                     type="text"
                     value={editDepartment}
                     onChange={e => setEditDepartment(e.target.value)}
-                    className="w-full mt-1.5 px-3.5 py-2 text-xs border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-emerald-500 focus:outline-hidden"
+                    className="w-full mt-1.5 px-3.5 py-2 text-xs border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-emerald-500 focus:outline-hidden font-bold placeholder:text-slate-400"
                   />
                 </div>
 
@@ -1842,7 +1842,7 @@ const MasterMembersConsole: React.FC = () => {
                     min="0"
                     value={editStoreCreditBalance}
                     onChange={e => setEditStoreCreditBalance(parseFloat(e.target.value) || 0)}
-                    className="w-full mt-1.5 px-3.5 py-2 text-xs border border-emerald-300 dark:border-emerald-700 rounded-xl bg-white dark:bg-slate-800 text-emerald-600 dark:text-emerald-400 font-mono font-bold focus:ring-2 focus:ring-emerald-500 focus:outline-hidden"
+                    className="w-full mt-1.5 px-3.5 py-2 text-xs border border-emerald-300 dark:border-emerald-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-emerald-400 font-mono font-bold focus:ring-2 focus:ring-emerald-500 focus:outline-hidden border-slate-300 placeholder:text-slate-400"
                   />
                   <p className="text-[10px] text-slate-500 mt-1">25% split from platform earnings algorithm</p>
                 </div>
@@ -1856,7 +1856,7 @@ const MasterMembersConsole: React.FC = () => {
                     min="0"
                     value={editFicBalance}
                     onChange={e => setEditFicBalance(parseInt(e.target.value) || 0)}
-                    className="w-full mt-1.5 px-3.5 py-2 text-xs border border-orange-300 dark:border-orange-700 rounded-xl bg-white dark:bg-slate-800 text-orange-600 dark:text-orange-400 font-mono font-bold focus:ring-2 focus:ring-orange-500 focus:outline-hidden"
+                    className="w-full mt-1.5 px-3.5 py-2 text-xs border border-orange-300 dark:border-orange-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-orange-400 font-mono font-bold focus:ring-2 focus:ring-orange-500 focus:outline-hidden border-slate-300 placeholder:text-slate-400"
                   />
                   <p className="text-[10px] text-slate-500 mt-1">Liquid FIC balance for on-chain/in-app transfer</p>
                 </div>
@@ -1868,7 +1868,7 @@ const MasterMembersConsole: React.FC = () => {
                     type="checkbox"
                     checked={editBiometricVerified}
                     onChange={e => setEditBiometricVerified(e.target.checked)}
-                    className="w-4 h-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+                    className="w-4 h-4 rounded border-slate-300 text-slate-900 focus:ring-emerald-500 font-bold border bg-white focus:ring-2 placeholder:text-slate-400"
                   />
                   <span>Biometric Passkey Verified & Hardware Attested</span>
                 </label>
@@ -1904,7 +1904,7 @@ const MasterMembersConsole: React.FC = () => {
                           setEditAssignedSubOffice('');
                         }
                       }}
-                      className="w-full mt-1.5 px-3.5 py-2 text-xs border border-indigo-300 dark:border-indigo-700 rounded-xl bg-white dark:bg-slate-800 text-indigo-900 dark:text-indigo-200 font-bold focus:ring-2 focus:ring-indigo-500 focus:outline-hidden"
+                      className="w-full mt-1.5 px-3.5 py-2 text-xs border border-indigo-300 dark:border-indigo-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-indigo-200 font-bold focus:ring-2 focus:ring-indigo-500 focus:outline-hidden border-slate-300"
                     >
                       <option value={0}>-- No Corporate Executive Role (Standard User) --</option>
                       {INITIAL_18_EXECUTIVE_ROLES.map(r => (
@@ -1923,7 +1923,7 @@ const MasterMembersConsole: React.FC = () => {
                       value={editAssignedSubOffice}
                       onChange={e => setEditAssignedSubOffice(e.target.value)}
                       disabled={editCorporateRoleNumber === 0}
-                      className="w-full mt-1.5 px-3.5 py-2 text-xs border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-indigo-500 focus:outline-hidden disabled:opacity-50"
+                      className="w-full mt-1.5 px-3.5 py-2 text-xs border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-indigo-500 focus:outline-hidden disabled:opacity-50 font-bold"
                     >
                       <option value="">-- Primary Executive Officer Direct --</option>
                       {INITIAL_18_EXECUTIVE_ROLES.find(r => r.roleNumber === editCorporateRoleNumber)?.subOffices.map(sub => (
@@ -1942,7 +1942,7 @@ const MasterMembersConsole: React.FC = () => {
                       value={editClearanceTier}
                       onChange={e => setEditClearanceTier(e.target.value)}
                       disabled={editCorporateRoleNumber === 0}
-                      className="w-full mt-1.5 px-3.5 py-2 text-xs border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-indigo-500 focus:outline-hidden disabled:opacity-50"
+                      className="w-full mt-1.5 px-3.5 py-2 text-xs border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-indigo-500 focus:outline-hidden disabled:opacity-50 font-bold"
                     >
                       <option value="Tier 1 (Board)">Tier 1 (Board of Directors)</option>
                       <option value="Tier 2 (ExCo)">Tier 2 (ExCo / GMD / CFO)</option>
@@ -1958,7 +1958,7 @@ const MasterMembersConsole: React.FC = () => {
                     <select
                       value={editAssignedByAdmin}
                       onChange={e => setEditAssignedByAdmin(e.target.value)}
-                      className="w-full mt-1.5 px-3.5 py-2 text-xs border border-purple-300 dark:border-purple-700 rounded-xl bg-white dark:bg-slate-800 text-purple-900 dark:text-purple-200 font-bold focus:ring-2 focus:ring-purple-500 focus:outline-hidden"
+                      className="w-full mt-1.5 px-3.5 py-2 text-xs border border-purple-300 dark:border-purple-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-purple-200 font-bold focus:ring-2 focus:ring-purple-500 focus:outline-hidden border-slate-300"
                     >
                       <option value="owner_mbah_israel_obinna">
                         Mr. Mbah Israel Obinna (Founder & SuperAdmin)
@@ -2012,7 +2012,7 @@ const MasterMembersConsole: React.FC = () => {
               </div>
               <button
                 onClick={() => setIsDeleteMemberModalOpen(false)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                className="p-1.5 rounded-lg text-slate-700 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -2043,7 +2043,7 @@ const MasterMembersConsole: React.FC = () => {
                     name="deleteMode"
                     checked={isPermanentDelete}
                     onChange={() => setIsPermanentDelete(true)}
-                    className="text-rose-600 focus:ring-rose-500"
+                    className="text-slate-900 focus:ring-rose-500 font-bold border border-slate-300 rounded bg-white focus:ring-2 placeholder:text-slate-400"
                   />
                   <span>Permanent Purge (Delete from Database, Wallets & StoreCredit Ledgers)</span>
                 </label>
@@ -2053,7 +2053,7 @@ const MasterMembersConsole: React.FC = () => {
                     name="deleteMode"
                     checked={!isPermanentDelete}
                     onChange={() => setIsPermanentDelete(false)}
-                    className="text-rose-600 focus:ring-rose-500"
+                    className="text-slate-900 focus:ring-rose-500 font-bold border border-slate-300 rounded bg-white focus:ring-2 placeholder:text-slate-400"
                   />
                   <span>Soft Deactivation (Suspend Account & Revoke Screen Access)</span>
                 </label>
@@ -2068,7 +2068,7 @@ const MasterMembersConsole: React.FC = () => {
                   value={deleteConfirmText}
                   onChange={e => setDeleteConfirmText(e.target.value)}
                   placeholder={selectedMember.username}
-                  className="w-full px-3 py-2 text-xs border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-rose-500 focus:outline-hidden"
+                  className="w-full px-3 py-2 text-xs border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-rose-500 focus:outline-hidden font-bold placeholder:text-slate-400"
                 />
               </div>
 

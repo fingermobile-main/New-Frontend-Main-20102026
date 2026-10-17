@@ -91,7 +91,7 @@ const DiscoveryItemCard: React.FC<DiscoveryItemCardProps> = React.memo(({ item, 
   }, [item.type, handleAction]);
 
   return (
-    <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
+    <div className="bg-white rounded-xl shadow-sm p-4 border border-slate-200">
       <div className="flex items-start">
         <img
           src={item.avatar}
@@ -109,7 +109,7 @@ const DiscoveryItemCard: React.FC<DiscoveryItemCardProps> = React.memo(({ item, 
             {item.description}
           </p>
           <div className="flex items-center mt-2 text-xs text-gray-500">
-            <span className="bg-blue-100 text-blue-950 border border-blue-400 font-bold px-2 py-0.5 rounded-full">
+            <span className="bg-blue-100 text-blue-950 border border-blue-400 font-bold px-2 py-0.5 rounded-full font-black">
               {item.category}
             </span>
             {item.mutualConnections && (
@@ -274,7 +274,7 @@ const DiscoveryPage: React.FC = () => {
               value={searchQuery}
               onChange={handleSearch}
               placeholder="Search for people, groups, or content..."
-              className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+              className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 font-bold border-slate-300 placeholder:text-slate-400" />
           </div>
         </div>
 
@@ -327,7 +327,7 @@ const DiscoveryPage: React.FC = () => {
 
           {/* Right sidebar with CuratedDiscovery */}
           <div>
-            <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <div className="bg-white rounded-xl shadow-sm p-6 border border-slate-200">
               <h2 className="text-lg font-bold text-gray-900 mb-4">
                 Discover More
               </h2>

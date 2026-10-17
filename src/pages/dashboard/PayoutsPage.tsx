@@ -121,49 +121,49 @@ const PayoutsPage: React.FC = () => {
     };
 
     return (
-      <div className="bg-white p-4 rounded-lg border border-slate-300">
+      <div className="bg-white p-5 rounded-xl border border-slate-300 shadow-sm">
         <div className="flex justify-between items-start">
           <div className="flex items-center gap-3">
             <AnimatedAvatar
               staticUrl={request.member?.avatarUrl || ''}
               altText={request.member?.name || 'Unknown'}
-              className="w-10 h-10 rounded-full"
+              className="w-10 h-10 rounded-full border border-slate-300 object-cover"
             />
             <div>
-              <p className="font-semibold">{request.member?.name || 'Unknown'}</p>
-              <p className="text-xs text-gray-500">{request.member?.id || request.memberId}</p>
+              <p className="font-bold text-slate-900">{request.member?.name || 'Unknown'}</p>
+              <p className="text-xs font-semibold text-slate-600">{request.member?.id || request.memberId}</p>
             </div>
           </div>
           <span
-            className={`px-2 py-1 text-xs font-semibold rounded-full capitalize ${statusStyles[statusLower] || 'bg-gray-100 text-gray-800'}`}
+            className={`px-2.5 py-0.5 text-xs font-bold rounded-full capitalize ${statusStyles[statusLower] || 'bg-slate-100 text-slate-900 border border-slate-300'}`}
           >
             {request.status}
           </span>
         </div>
-        <div className="mt-3 border-t pt-3 space-y-1 text-sm">
+        <div className="mt-3.5 border-t border-slate-200 pt-3 space-y-1.5 text-xs text-slate-800">
           <p>
-            <strong>Amount:</strong> {request.amount.toLocaleString()} FIC
+            <strong className="text-slate-900 font-bold">Amount:</strong> <span className="font-mono font-black text-slate-900 text-sm">{request.amount.toLocaleString()} FIC</span>
           </p>
           <p>
-            <strong>Bank:</strong> {request.bankName} - {request.accountNumber}
+            <strong className="text-slate-900 font-bold">Bank:</strong> <span className="font-semibold text-slate-800">{request.bankName} - {request.accountNumber}</span>
           </p>
           <p>
-            <strong>Date:</strong> {request.date}
+            <strong className="text-slate-900 font-bold">Date:</strong> <span className="text-slate-700 font-medium">{request.date}</span>
           </p>
         </div>
         {isPending && (
-          <div className="flex justify-end gap-2 mt-3">
+          <div className="flex justify-end gap-2 mt-4 pt-2 border-t border-slate-200">
             <button
               onClick={() => handleUpdateStatus(request.id, 'reject')}
               disabled={isProcessing}
-              className="px-3 py-1 text-sm font-semibold bg-red-100 text-red-950 border border-red-400 font-bold rounded-full hover:bg-red-200 disabled:opacity-50"
+              className="px-3.5 py-1.5 text-xs font-bold bg-rose-100 text-rose-950 border border-rose-400 rounded-lg hover:bg-rose-200 disabled:opacity-50 transition-colors"
             >
               Deny
             </button>
             <button
               onClick={() => handleUpdateStatus(request.id, 'approve')}
               disabled={isProcessing}
-              className="px-3 py-1 text-sm font-semibold bg-green-100 text-green-950 border border-green-400 font-bold rounded-full hover:bg-green-200 disabled:opacity-50"
+              className="px-3.5 py-1.5 text-xs font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 rounded-lg hover:bg-emerald-200 disabled:opacity-50 transition-colors"
             >
               Approve
             </button>
@@ -177,41 +177,43 @@ const PayoutsPage: React.FC = () => {
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
       {/* Left Column: Form */}
       <div className="lg:col-span-1">
-        <div className="bg-white p-6 rounded-xl shadow-md sticky top-24">
-          <h2 className="text-xl font-bold mb-4">Initiate Manual Payout</h2>
+        <div className="bg-white border border-slate-300 p-6 rounded-2xl shadow-sm sticky top-24">
+          <h2 className="text-xl font-black text-slate-900 mb-4">Initiate Manual Payout</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
                 Member ID
               </label>
               <input
                 type="text"
                 value={memberId}
                 onChange={(e) => setmemberId(e.target.value)}
-                className="w-full mt-1 p-2 border border-gray-300 rounded-md"
+                className="w-full px-3 py-2 border border-slate-300 bg-white text-slate-900 font-bold rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-blue placeholder:text-slate-400"
+                placeholder="Enter member ID"
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
                 Amount (FIC)
               </label>
               <input
                 type="number"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                className="w-full mt-1 p-2 border border-gray-300 rounded-md"
+                className="w-full px-3 py-2 border border-slate-300 bg-white text-slate-900 font-bold rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-blue placeholder:text-slate-400"
+                placeholder="e.g. 500"
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
                 Bank
               </label>
               <select
                 value={bankName}
                 onChange={(e) => setBankName(e.target.value)}
-                className="w-full mt-1 p-2 border border-gray-300 rounded-md bg-white"
+                className="w-full px-3 py-2 border border-slate-300 bg-white text-slate-900 font-bold rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-blue"
               >
                 {NIGERIAN_BANKS.map((bank) => (
                   <option key={bank.code} value={bank.name}>
@@ -221,20 +223,22 @@ const PayoutsPage: React.FC = () => {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
                 Account Number
               </label>
               <input
                 type="text"
+                maxLength={10}
                 value={accountNumber}
-                onChange={(e) => setAccountNumber(e.target.value)}
-                className="w-full mt-1 p-2 border border-gray-300 rounded-md"
+                onChange={(e) => setAccountNumber(e.target.value.replace(/\D/g, ''))}
+                className="w-full px-3 py-2 border border-slate-300 bg-white text-slate-900 font-mono font-bold rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-blue placeholder:text-slate-400"
+                placeholder="0123456789"
                 required
               />
             </div>
             <button
               type="submit"
-              className="w-full py-2 font-semibold bg-brand-blue text-white rounded-lg hover:bg-blue-700"
+              className="w-full py-2.5 font-bold text-sm bg-brand-blue text-white rounded-lg hover:bg-blue-700 shadow-sm transition-colors cursor-pointer"
             >
               Create Payout Request
             </button>
@@ -245,7 +249,7 @@ const PayoutsPage: React.FC = () => {
       {/* Right Column: Lists */}
       <div className="lg:col-span-2 space-y-8">
         <div>
-          <h2 className="text-xl font-bold mb-4">
+          <h2 className="text-xl font-black text-slate-900 mb-4">
             Pending Requests ({pendingRequests.length})
           </h2>
           {pendingRequests.length > 0 ? (
@@ -259,13 +263,13 @@ const PayoutsPage: React.FC = () => {
               ))}
             </div>
           ) : (
-            <p className="text-gray-500 text-sm bg-white p-6 rounded-lg text-center">
+            <p className="text-slate-700 text-sm bg-white border border-slate-300 p-6 rounded-xl text-center font-medium shadow-sm">
               No pending payout requests.
             </p>
           )}
         </div>
         <div>
-          <h2 className="text-xl font-bold mb-4">Payout History</h2>
+          <h2 className="text-xl font-black text-slate-900 mb-4">Payout History</h2>
           {processedRequests.length > 0 ? (
             <div className="space-y-4">
               {processedRequests.map((req: PayoutRequest) => (
@@ -277,7 +281,7 @@ const PayoutsPage: React.FC = () => {
               ))}
             </div>
           ) : (
-            <p className="text-gray-500 text-sm bg-white p-6 rounded-lg text-center">
+            <p className="text-slate-700 text-sm bg-white border border-slate-300 p-6 rounded-xl text-center font-medium shadow-sm">
               No processed payouts yet.
             </p>
           )}

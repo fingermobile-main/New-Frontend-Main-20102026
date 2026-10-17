@@ -288,7 +288,7 @@ const StorefrontDetailPage: React.FC = () => {
         </div>
 
         {/* Storefront Info */}
-        <div className="p-6 border-b border-gray-200">
+        <div className="p-6 border-b border-slate-300">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div className="flex items-center">
               <AnimatedAvatar
@@ -399,7 +399,7 @@ const StorefrontDetailPage: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="p-4 pt-0 border-t border-gray-100 mt-2">
+                <div className="p-4 pt-0 border-t border-slate-200 mt-2">
                   <div className="flex items-center justify-between mb-3 pt-3">
                     <span className="text-lg font-extrabold text-gray-900">{product.price} FIC</span>
                     <span className="text-xs text-emerald-600 font-semibold">Instant Escrow</span>
@@ -446,7 +446,7 @@ const StorefrontDetailPage: React.FC = () => {
                 min="1"
                 value={giftAmount}
                 onChange={(e) => setGiftAmount(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-brand-blue"
+                className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-brand-blue text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400 font-mono"
               />
               <p className="text-xs text-gray-500 mt-1">Available balance: {ficBalance.toFixed(2)} FIC</p>
             </div>
@@ -481,7 +481,7 @@ const StorefrontDetailPage: React.FC = () => {
                 min="1"
                 value={paylinkAmount}
                 onChange={(e) => setPaylinkAmount(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-brand-blue"
+                className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-brand-blue text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400 font-mono"
               />
             </div>
             <div className="flex justify-end gap-2">

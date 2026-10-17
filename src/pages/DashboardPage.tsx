@@ -137,7 +137,7 @@ const DashboardPage: React.FC = () => {
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center">
               <h1 className="text-2xl font-black text-slate-900">Dashboard</h1>
-              <span className="ml-3 inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-950 border border-blue-300">
+              <span className="ml-3 inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-950 border border-blue-400 border-blue-400 font-black">
                 Platform Management
               </span>
             </div>

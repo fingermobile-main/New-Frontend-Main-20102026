@@ -283,7 +283,7 @@ const CreateHallmarkModal: React.FC<CreateHallmarkModalProps> = ({
       <div className="relative w-full max-w-3xl my-8 bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-slate-300 dark:border-gray-800 flex flex-col max-h-[92vh] overflow-hidden">
         
         {/* Header Bar */}
-        <div className="px-6 py-4 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between bg-gradient-to-r from-orange-50 via-white to-amber-50 dark:from-gray-900 dark:to-gray-800">
+        <div className="px-6 py-4 border-b border-slate-200 dark:border-gray-800 flex items-center justify-between bg-gradient-to-r from-orange-50 via-white to-amber-50 dark:from-gray-900 dark:to-gray-800">
           <div>
             <div className="flex items-center gap-2">
               <span className="text-xl">🏛️</span>
@@ -298,7 +298,7 @@ const CreateHallmarkModal: React.FC<CreateHallmarkModalProps> = ({
           </div>
           <button
             onClick={handleClose}
-            className="p-2 rounded-full text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+            className="p-2 rounded-full text-slate-700 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition"
           >
             <XIcon className="w-5 h-5" />
           </button>
@@ -310,17 +310,17 @@ const CreateHallmarkModal: React.FC<CreateHallmarkModalProps> = ({
             <span className="w-5 h-5 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-[11px]">1</span>
             <span>Tier Selection</span>
           </div>
-          <span className="text-gray-300">›</span>
+          <span className="text-slate-700">›</span>
           <div className={`flex items-center gap-1.5 ${step === 2 ? 'text-[#ff6b00] font-bold' : 'text-gray-500'}`}>
             <span className="w-5 h-5 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-[11px]">2</span>
             <span>Naming & Policy</span>
           </div>
-          <span className="text-gray-300">›</span>
+          <span className="text-slate-700">›</span>
           <div className={`flex items-center gap-1.5 ${step === 3 ? 'text-[#ff6b00] font-bold' : 'text-gray-500'}`}>
             <span className="w-5 h-5 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-[11px]">3</span>
             <span>Verification & Roles</span>
           </div>
-          <span className="text-gray-300">›</span>
+          <span className="text-slate-700">›</span>
           <div className={`flex items-center gap-1.5 ${step === 4 ? 'text-[#ff6b00] font-bold' : 'text-gray-500'}`}>
             <span className="w-5 h-5 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-[11px]">4</span>
             <span>Subscription & Submit</span>
@@ -379,7 +379,7 @@ const CreateHallmarkModal: React.FC<CreateHallmarkModalProps> = ({
                           ))}
                         </ul>
                       </div>
-                      <div className="mt-4 pt-3 border-t border-gray-100 dark:border-gray-700/60 text-[10px] text-gray-500">
+                      <div className="mt-4 pt-3 border-t border-slate-200 dark:border-gray-700/60 text-[10px] text-gray-500">
                         {item.guarantorsNeeded > 0 && `• Requires ${item.guarantorsNeeded} Guarantor(s)\n`}
                         {item.managersNeeded > 0 && `• Requires ${item.managersNeeded} Manager(s)\n`}
                         {item.moderatorsNeeded > 0 && `• Requires ${item.moderatorsNeeded} Moderator(s)`}
@@ -410,7 +410,7 @@ const CreateHallmarkModal: React.FC<CreateHallmarkModalProps> = ({
                   value={pageName}
                   onChange={(e) => setPageName(e.target.value)}
                   placeholder="e.g. Sterling Creative Studio, or Apex Media by GlobalTech"
-                  className={`w-full px-4 py-2.5 rounded-xl border text-sm font-medium focus:outline-none focus:ring-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-white ${
+                  className={`w-full px-4 py-2.5 rounded-xl border text-sm font-medium focus:outline-none focus:ring-2 bg-white dark:bg-gray-800 text-slate-900 dark:text-white  font-bold border-slate-300 placeholder:text-slate-400${
                     pageName && !nameValidation.isValid
                       ? 'border-red-400 focus:ring-red-400'
                       : pageName && nameValidation.isValid
@@ -445,7 +445,7 @@ const CreateHallmarkModal: React.FC<CreateHallmarkModalProps> = ({
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
-                    className="w-full px-3 py-2.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-white"
+                    className="w-full px-3 py-2.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm text-slate-900 dark:text-white font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500"
                   >
                     <option value="Technology & Innovation">Technology & Innovation</option>
                     <option value="Arts, Culture & Entertainment">Arts, Culture & Entertainment</option>
@@ -466,7 +466,7 @@ const CreateHallmarkModal: React.FC<CreateHallmarkModalProps> = ({
                     value={websiteUrl}
                     onChange={(e) => setWebsiteUrl(e.target.value)}
                     placeholder="https://yourbrand.com (Must match branding)"
-                    className="w-full px-3 py-2.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-white"
+                    className="w-full px-3 py-2.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm text-slate-900 dark:text-white font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                 </div>
               </div>
@@ -480,7 +480,7 @@ const CreateHallmarkModal: React.FC<CreateHallmarkModalProps> = ({
                   onChange={(e) => setDescription(e.target.value)}
                   rows={3}
                   placeholder="Describe the purpose of this HallMarks page, public mission, and community updates schedule..."
-                  className="w-full px-3 py-2.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-white"
+                  className="w-full px-3 py-2.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm text-slate-900 dark:text-white font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
             </div>
@@ -502,7 +502,7 @@ const CreateHallmarkModal: React.FC<CreateHallmarkModalProps> = ({
                   <select
                     value={idType}
                     onChange={(e) => setIdType(e.target.value)}
-                    className="w-full px-3 py-2.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-white"
+                    className="w-full px-3 py-2.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm text-slate-900 dark:text-white font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500"
                   >
                     <option value="NIN">National Identity Card / Slip (NIN)</option>
                     <option value="PASSPORT">International Passport</option>
@@ -520,7 +520,7 @@ const CreateHallmarkModal: React.FC<CreateHallmarkModalProps> = ({
                     value={idNumber}
                     onChange={(e) => setIdNumber(e.target.value)}
                     placeholder="Enter ID number for verification"
-                    className="w-full px-3 py-2.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-white"
+                    className="w-full px-3 py-2.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm text-slate-900 dark:text-white font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                 </div>
               </div>
@@ -535,14 +535,14 @@ const CreateHallmarkModal: React.FC<CreateHallmarkModalProps> = ({
                     value={companyRegNumber}
                     onChange={(e) => setCompanyRegNumber(e.target.value)}
                     placeholder="e.g. RC-1849204 or BN-938201"
-                    className="w-full px-3 py-2.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-white"
+                    className="w-full px-3 py-2.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm text-slate-900 dark:text-white font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                   />
                 </div>
               )}
 
               {/* Required Appointments for Brand & Company */}
               {tierConfig.guarantorsNeeded > 0 && (
-                <div className="border-t border-gray-100 dark:border-gray-800 pt-4 space-y-3">
+                <div className="border-t border-slate-200 dark:border-gray-800 pt-4 space-y-3">
                   <h4 className="text-xs font-bold uppercase tracking-wider text-gray-800 dark:text-gray-200">
                     Appointed Platform Roles ({tierConfig.guarantorsNeeded} Guarantor, {tierConfig.managersNeeded} Manager, {tierConfig.moderatorsNeeded} Moderator)
                   </h4>
@@ -557,7 +557,7 @@ const CreateHallmarkModal: React.FC<CreateHallmarkModalProps> = ({
                         value={guarantors[0] || ''}
                         onChange={(e) => setGuarantors([e.target.value])}
                         placeholder="@guarantor_handle"
-                        className="w-full px-3 py-2 rounded-lg border text-xs bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                        className="w-full px-3 py-2 rounded-lg border text-xs bg-white dark:bg-gray-800 text-slate-900 dark:text-white font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                     </div>
                     <div>
@@ -569,7 +569,7 @@ const CreateHallmarkModal: React.FC<CreateHallmarkModalProps> = ({
                         value={managers[0] || ''}
                         onChange={(e) => setManagers([e.target.value])}
                         placeholder="@manager_handle"
-                        className="w-full px-3 py-2 rounded-lg border text-xs bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                        className="w-full px-3 py-2 rounded-lg border text-xs bg-white dark:bg-gray-800 text-slate-900 dark:text-white font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                     </div>
                     <div>
@@ -581,7 +581,7 @@ const CreateHallmarkModal: React.FC<CreateHallmarkModalProps> = ({
                         value={moderators[0] || ''}
                         onChange={(e) => setModerators([e.target.value])}
                         placeholder="@badge_moderator"
-                        className="w-full px-3 py-2 rounded-lg border text-xs bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                        className="w-full px-3 py-2 rounded-lg border text-xs bg-white dark:bg-gray-800 text-slate-900 dark:text-white font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                     </div>
                   </div>
@@ -626,7 +626,7 @@ const CreateHallmarkModal: React.FC<CreateHallmarkModalProps> = ({
                     type="checkbox"
                     checked={termsAgreed}
                     onChange={(e) => setTermsAgreed(e.target.checked)}
-                    className="mt-0.5 rounded text-[#ff6b00] focus:ring-[#ff6b00]"
+                    className="mt-0.5 rounded text-[#ff6b00] focus:ring-[#ff6b00] text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                   />
                   <span>
                     I confirm that I have an active FingerMobile profile with required 20–30 Live UGC, acknowledge that approval takes 3–4 weeks (or review request after 15 days), and agree to the 30-day member closure notice.
@@ -695,7 +695,7 @@ const CreateHallmarkModal: React.FC<CreateHallmarkModalProps> = ({
 
         {/* Footer Navigation Bar */}
         {step < 5 && (
-          <div className="px-6 py-3.5 border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/80 flex items-center justify-between">
+          <div className="px-6 py-3.5 border-t border-slate-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/80 flex items-center justify-between">
             {step > 1 ? (
               <button
                 type="button"

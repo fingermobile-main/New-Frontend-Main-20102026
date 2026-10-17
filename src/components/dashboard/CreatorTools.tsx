@@ -24,7 +24,7 @@ const CreatorTools: React.FC<CreatorToolsProps> = ({ userId }) => {
         {tools.map((tool) => (
           <button
             key={tool.id}
-            className="p-4 border border-gray-200 rounded-lg hover:border-blue-400 hover:bg-blue-50 transition-all text-left group"
+            className="p-4 border border-slate-300 rounded-lg hover:border-blue-400 hover:bg-blue-50 transition-all text-left group"
           >
             <div className="text-3xl mb-2">{tool.icon}</div>
             <h4 className="font-medium text-gray-900 group-hover:text-blue-600 transition-colors">{tool.name}</h4>

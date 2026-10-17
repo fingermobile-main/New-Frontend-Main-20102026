@@ -131,7 +131,7 @@ const ReadingListView: React.FC<ReadingListViewProps> = ({
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold text-gray-900">My Reading List</h2>
         {currentList && (
-          <span className="px-3 py-1 bg-purple-100 text-purple-950 border border-purple-400 font-bold rounded-full text-sm font-semibold">
+          <span className="px-3 py-1 bg-purple-100 text-purple-950 border border-purple-400 font-bold rounded-full text-sm font-semibold font-black">
             {listItems.length} item{listItems.length !== 1 ? 's' : ''}
           </span>
         )}
@@ -214,7 +214,7 @@ const ReadingListView: React.FC<ReadingListViewProps> = ({
 
                   <button
                     onClick={() => handleRemoveItem(item.id)}
-                    className="text-gray-400 hover:text-red-600 transition-colors ml-2"
+                    className="text-slate-700 hover:text-red-600 transition-colors ml-2"
                   >
                     🗑️
                   </button>
@@ -226,7 +226,7 @@ const ReadingListView: React.FC<ReadingListViewProps> = ({
                   <select
                     value={item.progress}
                     onChange={(e) => handleProgressChange(item.id, e.target.value)}
-                    className="px-3 py-1 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="px-3 py-1 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white"
                   >
                     <option value="unread">Unread</option>
                     <option value="reading">Reading</option>

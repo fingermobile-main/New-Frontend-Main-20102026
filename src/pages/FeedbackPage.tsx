@@ -88,14 +88,14 @@ const FeedbackPage: React.FC = () => {
                       id="category"
                       value={formData.category}
                       onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                      className="block w-full pl-5 pr-10 py-4 text-lg font-medium text-slate-900 border-2 border-slate-200/60 rounded-2xl focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-400 bg-white transition-all cursor-pointer shadow-sm appearance-none"
+                      className="block w-full pl-5 pr-10 py-4 text-lg font-medium text-slate-900 border-2 border-slate-200/60 rounded-2xl focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-400 bg-white transition-all cursor-pointer shadow-sm appearance-none font-bold border border-slate-300"
                     >
                       <option value="general">General Suggestion</option>
                       <option value="bug">Bug Report</option>
                       <option value="feature">Feature Request</option>
                       <option value="support">Customer Support</option>
                     </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-5 text-slate-400">
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-5 text-slate-700">
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
                     </div>
                   </div>
@@ -121,12 +121,12 @@ const FeedbackPage: React.FC = () => {
                           {star <= (hoveredRating || parseInt(formData.rating)) ? (
                             <StarIconSolid className="w-8 h-8 text-amber-400 drop-shadow-sm" />
                           ) : (
-                            <StarIcon className="w-8 h-8 text-slate-300" />
+                            <StarIcon className="w-8 h-8 text-slate-700" />
                           )}
                         </button>
                       ))}
                     </div>
-                    <span className="font-bold text-slate-400 text-sm hidden sm:block">
+                    <span className="font-bold text-slate-700 text-sm hidden sm:block">
                       {formData.rating === '5' ? 'Excellent' : formData.rating === '4' ? 'Good' : formData.rating === '3' ? 'Average' : formData.rating === '2' ? 'Poor' : 'Terrible'}
                     </span>
                   </div>
@@ -145,7 +145,7 @@ const FeedbackPage: React.FC = () => {
                   required
                   value={formData.comment}
                   onChange={(e) => setFormData({ ...formData, comment: e.target.value })}
-                  className="block w-full p-5 text-lg font-medium text-slate-900 border-2 border-slate-200/60 rounded-2xl focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-400 bg-white transition-all shadow-sm resize-y"
+                  className="block w-full p-5 text-lg font-medium text-slate-900 border-2 border-slate-200/60 rounded-2xl focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-400 bg-white transition-all shadow-sm resize-y font-bold border border-slate-300 placeholder:text-slate-400"
                   placeholder="Please provide as much detail as possible to help us understand your feedback..."
                 />
               </div>

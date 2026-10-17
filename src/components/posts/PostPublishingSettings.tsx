@@ -64,7 +64,7 @@ const PostPublishingSettings = () => {
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
-      <div className="border-b border-gray-200">
+      <div className="border-b border-slate-300">
         <nav className="flex -mb-px">
           <button
             onClick={() => setActiveTab('basic')}
@@ -136,7 +136,7 @@ const PostPublishingSettings = () => {
               <select
                 value={settings.comments}
                 onChange={(e) => updateSettings({ comments: e.target.value as any })}
-                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-brand-blue focus:border-brand-blue sm:text-sm rounded-md"
+                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-brand-blue focus:border-brand-blue sm:text-sm rounded-md text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2"
               >
                 <option value="everyone">Everyone</option>
                 <option value="followers">Followers Only</option>
@@ -194,7 +194,7 @@ const PostPublishingSettings = () => {
                   onChange={(e) => updateSettings({
                     monetization: { ...settings.monetization, model: e.target.value as any }
                   })}
-                  className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-brand-blue focus:border-brand-blue sm:text-sm rounded-md"
+                  className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-brand-blue focus:border-brand-blue sm:text-sm rounded-md text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2"
                 >
                   <option value="subscription">Subscription Required</option>
                   <option value="oneTime">One-time Purchase</option>
@@ -332,7 +332,7 @@ const PostPublishingSettings = () => {
                       }
                     })
                   }
-                  className="w-full p-2 text-sm border border-gray-300 rounded-md focus:ring-brand-blue focus:border-brand-blue"
+                  className="w-full p-2 text-sm border border-gray-300 rounded-md focus:ring-brand-blue focus:border-brand-blue text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400 font-mono"
                 />
               </div>
               <div>
@@ -352,7 +352,7 @@ const PostPublishingSettings = () => {
                       }
                     })
                   }
-                  className="w-full p-2 text-sm border border-gray-300 rounded-md focus:ring-brand-blue focus:border-brand-blue"
+                  className="w-full p-2 text-sm border border-gray-300 rounded-md focus:ring-brand-blue focus:border-brand-blue text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400 font-mono"
                 />
               </div>
             </div>
@@ -390,7 +390,7 @@ const PostPublishingSettings = () => {
           </div>
         )}
 
-        <div className="mt-8 pt-6 border-t border-gray-200 flex justify-end space-x-3">
+        <div className="mt-8 pt-6 border-t border-slate-300 flex justify-end space-x-3">
           <button
             onClick={resetSettings}
             disabled={!isDirty}

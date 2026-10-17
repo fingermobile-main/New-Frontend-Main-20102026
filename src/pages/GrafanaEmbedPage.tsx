@@ -65,7 +65,7 @@ const GrafanaEmbedPage: React.FC = () => {
                   <select
                     value={selectedDashboard}
                     onChange={(e) => setSelectedDashboard(e.target.value)}
-                    className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent min-w-[250px]"
+                    className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent min-w-[250px] text-slate-900 font-bold border-slate-300 bg-white"
                   >
                     {grafanaDashboards.map((dashboard) => (
                       <option key={dashboard.id} value={dashboard.id}>
@@ -82,7 +82,7 @@ const GrafanaEmbedPage: React.FC = () => {
                   <select
                     value={autoRefresh}
                     onChange={(e) => setAutoRefresh(Number(e.target.value))}
-                    className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white"
                   >
                     <option value={0}>Off</option>
                     <option value={5}>5 seconds</option>

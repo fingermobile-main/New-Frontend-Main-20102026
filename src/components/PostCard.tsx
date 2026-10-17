@@ -250,12 +250,12 @@ const PostCard: React.FC<PostCardProps> = ({
         </Link>
         <div className="flex items-center gap-2">
           {pollData && (
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold border border-emerald-300 dark:bg-emerald-950 dark:text-emerald-300 shadow-2xs">
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold border border-emerald-400 dark:bg-emerald-950 dark:text-emerald-300 shadow-2xs font-black">
               📊 Live Poll
             </span>
           )}
           {((post as any).is_ai_generated || (post as any).isAiGenerated) && (
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-purple-100 text-purple-950 border border-purple-400 font-bold border border-purple-200 shadow-xs flex-shrink-0">
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-purple-100 text-purple-950 border border-purple-400 font-bold border border-purple-400 shadow-xs flex-shrink-0 font-black">
               🤖 {((post as any).ai_badge_label || (post as any).aiBadgeLabel || 'AI Synthetic')}
             </span>
           )}
@@ -390,7 +390,7 @@ const PostCard: React.FC<PostCardProps> = ({
                 {pollData.question}
               </h4>
             </div>
-            <span className="text-[11px] font-mono text-emerald-800 dark:text-emerald-300 font-bold bg-emerald-100/80 dark:bg-emerald-900/40 px-2 py-0.5 rounded-full">
+            <span className="text-[11px] font-mono text-emerald-950 dark:text-emerald-300 font-bold bg-emerald-100/80 dark:bg-emerald-900/40 px-2 py-0.5 rounded-full border text-emerald-950 border-emerald-400 font-black">
               {totalPollVotes} votes
             </span>
           </div>
@@ -444,7 +444,7 @@ const PostCard: React.FC<PostCardProps> = ({
 
       {/* Postcard Attachments Section */}
       {Array.isArray((post as any).attachments) && (post as any).attachments.length > 0 && (
-        <div className="mt-4 pt-3 border-t border-gray-100 dark:border-gray-800 flex flex-wrap gap-2">
+        <div className="mt-4 pt-3 border-t border-slate-200 dark:border-gray-800 flex flex-wrap gap-2">
           {(post as any).attachments.map((att: any, idx: number) => (
             <div
               key={idx}
@@ -464,7 +464,7 @@ const PostCard: React.FC<PostCardProps> = ({
 
       {/* Tagged Products Commerce Strip */}
       {Array.isArray((post as any).tagged_products) && (post as any).tagged_products.length > 0 && (
-        <div className="mt-4 pt-3 border-t border-gray-100 dark:border-gray-800">
+        <div className="mt-4 pt-3 border-t border-slate-200 dark:border-gray-800">
           <div className="flex items-center gap-1.5 text-xs font-bold text-gray-500 mb-2">
             <span>🛍️ Tagged Products ({ (post as any).tagged_products.length })</span>
           </div>
@@ -487,7 +487,7 @@ const PostCard: React.FC<PostCardProps> = ({
       )}
 
       {/* Author and Date */}
-      <div className="mt-5 flex items-center justify-between border-b border-gray-100 dark:border-gray-800 pb-3 mb-3">
+      <div className="mt-5 flex items-center justify-between border-b border-slate-200 dark:border-gray-800 pb-3 mb-3">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white text-xs font-bold shadow-sm">
             {(post.author?.name || 'U').charAt(0).toUpperCase()}
@@ -502,7 +502,7 @@ const PostCard: React.FC<PostCardProps> = ({
         {/* Actions Dropdown Toggle */}
         <button
           onClick={() => setShowMoreActions(!showMoreActions)}
-          className="text-gray-400 hover:text-gray-600 p-1 transition-colors"
+          className="text-slate-700 hover:text-gray-600 p-1 transition-colors"
           title="More Options"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -543,7 +543,7 @@ const PostCard: React.FC<PostCardProps> = ({
         {onVote && (
           <button
             onClick={() => onVote(String(post.id), 'up')}
-            className="px-3 py-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full hover:bg-emerald-100 transition-colors text-xs font-bold"
+            className="px-3 py-1.5 bg-emerald-50 text-emerald-950 border border-emerald-400 rounded-full hover:bg-emerald-100 transition-colors text-xs font-bold text-emerald-950 border-emerald-400 font-black"
           >
             ▲ Upvote
           </button>
@@ -614,7 +614,7 @@ const PostCard: React.FC<PostCardProps> = ({
         {onOpenPollModal && (
           <button
             onClick={() => onOpenPollModal(String(post.id))}
-            className="px-3 py-1.5 bg-blue-50 text-blue-600 border border-blue-100 rounded-full hover:bg-blue-100 transition-colors text-xs font-bold"
+            className="px-3 py-1.5 bg-blue-50 text-blue-950 border border-blue-400 rounded-full hover:bg-blue-100 transition-colors text-xs font-bold text-blue-950 border-blue-400 font-black"
           >
             📊 Create Poll
           </button>
@@ -623,7 +623,7 @@ const PostCard: React.FC<PostCardProps> = ({
 
       {/* Secondary Actions / Add & Send Items (Toggleable) */}
       {showMoreActions && (
-        <div className="mt-3 pt-3 border-t border-gray-100 dark:border-gray-800 flex flex-wrap gap-2 items-center animate-fade-in">
+        <div className="mt-3 pt-3 border-t border-slate-200 dark:border-gray-800 flex flex-wrap gap-2 items-center animate-fade-in">
           {onOpenGiftModal && (
             <button onClick={() => onOpenGiftModal(String(post.id))} className="px-3 py-1.5 bg-yellow-50 text-yellow-600 border border-yellow-100 rounded-full hover:bg-yellow-100 transition-colors text-xs font-bold">
               🎁 Gift
@@ -645,12 +645,12 @@ const PostCard: React.FC<PostCardProps> = ({
             </button>
           )}
           {onOpenMarketplaceModal && (
-            <button onClick={() => onOpenMarketplaceModal(String(post.id))} className="px-3 py-1.5 bg-emerald-50 text-emerald-600 border border-emerald-100 rounded-full hover:bg-emerald-100 transition-colors text-xs font-bold">
+            <button onClick={() => onOpenMarketplaceModal(String(post.id))} className="px-3 py-1.5 bg-emerald-50 text-emerald-950 border border-emerald-400 rounded-full hover:bg-emerald-100 transition-colors text-xs font-bold text-emerald-950 border-emerald-400 font-black">
               🏪 Storefront
             </button>
           )}
           {onOpenPaylinkModal && (
-            <button onClick={() => onOpenPaylinkModal(String(post.id))} className="px-3 py-1.5 bg-purple-50 text-purple-600 border border-purple-100 rounded-full hover:bg-purple-100 transition-colors text-xs font-bold">
+            <button onClick={() => onOpenPaylinkModal(String(post.id))} className="px-3 py-1.5 bg-purple-50 text-purple-950 border border-purple-400 rounded-full hover:bg-purple-100 transition-colors text-xs font-bold text-purple-950 border-purple-400 font-black">
               🔗 Paylink
             </button>
           )}

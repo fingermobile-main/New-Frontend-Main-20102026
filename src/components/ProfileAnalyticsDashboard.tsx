@@ -71,7 +71,7 @@ const ProfileAnalyticsDashboard: React.FC = () => {
             <select
               value={dateRange}
               onChange={(e) => setDateRange(e.target.value as any)}
-              className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+              className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2"
             >
               <option value="week">Last Week</option>
               <option value="month">Last Month</option>
@@ -84,7 +84,7 @@ const ProfileAnalyticsDashboard: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-5 border border-blue-100">
             <div className="flex items-center">
-              <div className="p-3 bg-blue-100 rounded-full">
+              <div className="p-3 bg-blue-100 rounded-full border text-blue-950 border-blue-400 font-black">
                 <EyeIcon className="h-6 w-6 text-blue-600" />
               </div>
               <div className="ml-4">
@@ -108,7 +108,7 @@ const ProfileAnalyticsDashboard: React.FC = () => {
 
           <div className="bg-gradient-to-br from-purple-50 to-violet-50 rounded-lg p-5 border border-purple-100">
             <div className="flex items-center">
-              <div className="p-3 bg-purple-100 rounded-full">
+              <div className="p-3 bg-purple-100 rounded-full border text-purple-950 border-purple-400 font-black">
                 <ChatBubbleLeftRightIcon className="h-6 w-6 text-purple-600" />
               </div>
               <div className="ml-4">
@@ -120,7 +120,7 @@ const ProfileAnalyticsDashboard: React.FC = () => {
 
           <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-lg p-5 border border-amber-100">
             <div className="flex items-center">
-              <div className="p-3 bg-amber-100 rounded-full">
+              <div className="p-3 bg-amber-100 rounded-full border text-amber-950 border-amber-400 font-black">
                 <GiftIcon className="h-6 w-6 text-amber-600" />
               </div>
               <div className="ml-4">

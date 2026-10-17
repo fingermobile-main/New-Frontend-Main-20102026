@@ -335,14 +335,14 @@ const UserManagementPage: React.FC = () => {
               <input
                 type="text"
                 placeholder="Search by name, email, or username..."
-                className="block w-full pl-9 pr-3 py-2 text-slate-900 font-medium placeholder:text-slate-500 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="block w-full pl-9 pr-3 py-2 text-slate-900 font-medium placeholder:text-slate-400 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-bold"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
 
             <select
-              className="block w-full px-3 py-2 text-slate-900 font-medium border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="block w-full px-3 py-2 text-slate-900 font-medium border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 font-bold"
               value={filterRole}
               onChange={(e) => setFilterRole(e.target.value)}
             >
@@ -353,7 +353,7 @@ const UserManagementPage: React.FC = () => {
             </select>
 
             <select
-              className="block w-full px-3 py-2 text-slate-900 font-medium border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="block w-full px-3 py-2 text-slate-900 font-medium border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 font-bold"
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
             >
@@ -421,7 +421,7 @@ const UserManagementPage: React.FC = () => {
                     <tr key={user.id} className="hover:bg-slate-50/80 transition-colors">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
-                          <div className="h-10 w-10 rounded-full bg-blue-100 text-blue-950 border border-blue-400 font-bold flex items-center justify-center font-bold text-sm border border-blue-300">
+                          <div className="h-10 w-10 rounded-full bg-blue-100 text-blue-950 border border-blue-400 font-bold flex items-center justify-center font-bold text-sm border border-blue-400 font-black">
                             <UserIcon className="h-5 w-5" />
                           </div>
                           <div className="ml-3">
@@ -597,7 +597,7 @@ const UserManagementPage: React.FC = () => {
                 <input
                   type="email"
                   id="email"
-                  className="w-full py-2 px-3 text-slate-900 font-bold border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full py-2 px-3 text-slate-900 font-bold border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400"
                   value={newUser.email}
                   onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
                   required
@@ -611,7 +611,7 @@ const UserManagementPage: React.FC = () => {
                 <input
                   type="password"
                   id="password"
-                  className="w-full py-2 px-3 text-slate-900 font-bold border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full py-2 px-3 text-slate-900 font-bold border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400"
                   value={newUser.password}
                   onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
                   required
@@ -626,7 +626,7 @@ const UserManagementPage: React.FC = () => {
                   <input
                     type="text"
                     id="firstName"
-                    className="w-full py-2 px-3 text-slate-900 font-bold border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full py-2 px-3 text-slate-900 font-bold border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400"
                     value={newUser.firstName}
                     onChange={(e) => setNewUser({ ...newUser, firstName: e.target.value })}
                   />
@@ -638,7 +638,7 @@ const UserManagementPage: React.FC = () => {
                   <input
                     type="text"
                     id="lastName"
-                    className="w-full py-2 px-3 text-slate-900 font-bold border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full py-2 px-3 text-slate-900 font-bold border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400"
                     value={newUser.lastName}
                     onChange={(e) => setNewUser({ ...newUser, lastName: e.target.value })}
                   />

@@ -126,7 +126,7 @@ const ShipmentDetailsPanel: React.FC<ShipmentDetailsPanelProps> = React.memo(({ 
           </div>
           <div className="flex items-center gap-2">
             <span className="text-xs font-bold text-slate-800">Status:</span>
-            <span className="text-xs font-bold px-3 py-1 rounded-full border capitalize bg-blue-100 text-blue-950 border-blue-400">
+            <span className="text-xs font-bold px-3 py-1 rounded-full border capitalize bg-blue-100 text-blue-950 border-blue-400 font-black">
               {shipment.status.replace('-', ' ')}
             </span>
           </div>
@@ -311,7 +311,7 @@ const MarketplaceTrackingPage: React.FC = () => {
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="text-2xl font-bold text-slate-900">Marketplace Logistics Tracker</h1>
-                <span className="px-2.5 py-0.5 text-xs font-bold rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400">
+                <span className="px-2.5 py-0.5 text-xs font-bold rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-black">
                   Live Synced
                 </span>
               </div>

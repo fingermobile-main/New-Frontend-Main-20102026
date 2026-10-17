@@ -68,7 +68,7 @@ const TermsAndConditionsPage: React.FC = () => {
             </section>
           </div>
 
-          <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+          <div className="mt-8 pt-6 border-t border-slate-300 dark:border-gray-700">
             <p className="text-gray-600 dark:text-gray-400 text-sm">
               Last updated: {new Date().toLocaleDateString()}
             </p>

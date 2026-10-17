@@ -89,7 +89,7 @@ const WarrantyClaimForm: React.FC<WarrantyClaimFormProps> = ({
           <select
             value={formData.issue_category}
             onChange={(e) => handleChange('issue_category', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white"
             required
           >
             <option value="">Select issue category</option>
@@ -110,7 +110,7 @@ const WarrantyClaimForm: React.FC<WarrantyClaimFormProps> = ({
             value={formData.issue_description}
             onChange={(e) => handleChange('issue_description', e.target.value)}
             rows={4}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
             placeholder="Describe the issue in detail..."
             required
           />
@@ -125,7 +125,7 @@ const WarrantyClaimForm: React.FC<WarrantyClaimFormProps> = ({
             type="date"
             value={formData.purchase_date}
             onChange={(e) => handleChange('purchase_date', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
           />
         </div>
 
@@ -138,7 +138,7 @@ const WarrantyClaimForm: React.FC<WarrantyClaimFormProps> = ({
             type="text"
             value={formData.serial_number}
             onChange={(e) => handleChange('serial_number', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
             placeholder="Enter product serial number"
           />
         </div>

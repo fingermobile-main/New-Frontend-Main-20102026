@@ -154,9 +154,9 @@ const CourseCard: React.FC<CourseCardProps> = ({
 
         <CardContent className="space-y-3 pb-3">
           {/* Instructor & Meta */}
-          <div className="flex items-center justify-between pt-2 border-t border-gray-100 dark:border-gray-800 text-xs">
+          <div className="flex items-center justify-between pt-2 border-t border-slate-200 dark:border-gray-800 text-xs">
             <div className="flex items-center gap-2">
-              <div className="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 font-bold flex items-center justify-center text-[10px] uppercase">
+              <div className="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-950 dark:text-blue-300 font-bold flex items-center justify-center text-[10px] uppercase border text-blue-950 border-blue-400 font-black">
                 {instructorName.charAt(0)}
               </div>
               <span className="font-medium text-gray-700 dark:text-gray-300 truncate max-w-[130px]">
@@ -172,9 +172,9 @@ const CourseCard: React.FC<CourseCardProps> = ({
         </CardContent>
       </div>
 
-      <CardFooter className="flex items-center justify-between gap-3 pt-3 pb-4 border-t border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/20">
+      <CardFooter className="flex items-center justify-between gap-3 pt-3 pb-4 border-t border-slate-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/20">
         <div>
-          <span className="text-[10px] font-semibold text-gray-400 uppercase block">Tuition</span>
+          <span className="text-[10px] font-semibold text-slate-700 uppercase block">Tuition</span>
           <span className="text-lg font-black text-gray-900 dark:text-white">
             {coursePrice === 0 ? 'Free' : `$${coursePrice.toFixed(2)}`}
           </span>

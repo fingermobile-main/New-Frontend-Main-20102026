@@ -703,7 +703,7 @@ const StercsPage: React.FC = () => {
         )}
 
         {/* Tabs */}
-        <div className="border-b border-gray-200 mb-6">
+        <div className="border-b border-slate-300 mb-6">
           <nav className="-mb-px flex space-x-8">
             <button
               onClick={() => setActiveTab('modules')}
@@ -768,12 +768,12 @@ const StercsPage: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search className="h-5 w-5 text-gray-400" />
+                <Search className="h-5 w-5 text-slate-700" />
               </div>
               <input
                 type="text"
                 placeholder={`Search ${activeTab}...`}
-                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder:text-slate-500 focus:outline-none focus:placeholder:text-slate-500 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder:text-slate-400 focus:outline-none focus:placeholder:text-slate-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-slate-900 font-bold border-slate-300"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -782,7 +782,7 @@ const StercsPage: React.FC = () => {
             {activeTab === 'modules' && (
               <>
                 <select
-                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-slate-900 font-bold border-slate-300 bg-white focus:ring-2"
                   value={filterCategory}
                   onChange={(e) => setFilterCategory(e.target.value)}
                 >
@@ -796,7 +796,7 @@ const StercsPage: React.FC = () => {
                 </select>
 
                 <select
-                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-slate-900 font-bold border-slate-300 bg-white focus:ring-2"
                   value={filterStatus}
                   onChange={(e) => setFilterStatus(e.target.value)}
                 >
@@ -808,7 +808,7 @@ const StercsPage: React.FC = () => {
                 </select>
 
                 <select
-                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-slate-900 font-bold border-slate-300 bg-white focus:ring-2"
                   value={filterPriority}
                   onChange={(e) => setFilterPriority(e.target.value)}
                 >
@@ -1351,7 +1351,7 @@ const StercsPage: React.FC = () => {
                   <div className="bg-white rounded-xl shadow p-6">
                     <h3 className="text-lg font-medium text-gray-900 mb-4">Module Deployment Status</h3>
                     <div className="h-64 flex items-center justify-center">
-                      <BarChart3 className="h-16 w-16 text-gray-300" />
+                      <BarChart3 className="h-16 w-16 text-slate-700" />
                       <p className="ml-4 text-gray-500">Module deployment status visualization would appear here</p>
                     </div>
                   </div>
@@ -1360,7 +1360,7 @@ const StercsPage: React.FC = () => {
                 <div className="bg-white rounded-xl shadow p-6">
                   <h3 className="text-lg font-medium text-gray-900 mb-4">Recent Activities</h3>
                   <div className="h-64 flex items-center justify-center">
-                    <Activity className="h-16 w-16 text-gray-300" />
+                    <Activity className="h-16 w-16 text-slate-700" />
                     <p className="ml-4 text-gray-500">Recent STERCS activities timeline would appear here</p>
                   </div>
                 </div>
@@ -1467,7 +1467,7 @@ const StercsPage: React.FC = () => {
                   <input
                     type="text"
                     id="module-name"
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-900 leading-tight focus:outline-none focus:shadow-outline font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                     value={newModule.name}
                     onChange={(e) => setNewModule({...newModule, name: e.target.value})}
                     required
@@ -1480,7 +1480,7 @@ const StercsPage: React.FC = () => {
                   </label>
                   <textarea
                     id="module-description"
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-900 leading-tight focus:outline-none focus:shadow-outline font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                     value={newModule.description}
                     onChange={(e) => setNewModule({...newModule, description: e.target.value})}
                   />
@@ -1494,7 +1494,7 @@ const StercsPage: React.FC = () => {
                     <input
                       type="text"
                       id="module-version"
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-900 leading-tight focus:outline-none focus:shadow-outline font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       value={newModule.version}
                       onChange={(e) => setNewModule({...newModule, version: e.target.value})}
                       required
@@ -1507,7 +1507,7 @@ const StercsPage: React.FC = () => {
                     </label>
                     <select
                       id="module-category"
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-900 leading-tight focus:outline-none focus:shadow-outline font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500"
                       value={newModule.category}
                       onChange={(e) => setNewModule({...newModule, category: e.target.value as any})}
                     >
@@ -1528,7 +1528,7 @@ const StercsPage: React.FC = () => {
                     </label>
                     <select
                       id="module-priority"
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-900 leading-tight focus:outline-none focus:shadow-outline font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500"
                       value={newModule.priority}
                       onChange={(e) => setNewModule({...newModule, priority: e.target.value as any})}
                     >
@@ -1545,7 +1545,7 @@ const StercsPage: React.FC = () => {
                     </label>
                     <select
                       id="module-environment"
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-900 leading-tight focus:outline-none focus:shadow-outline font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500"
                       value={newModule.environment}
                       onChange={(e) => setNewModule({...newModule, environment: e.target.value as any})}
                     >
@@ -1563,7 +1563,7 @@ const StercsPage: React.FC = () => {
                   <input
                     type="text"
                     id="module-dependencies"
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-900 leading-tight focus:outline-none focus:shadow-outline font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                     value={newModule.dependencies}
                     onChange={(e) => setNewModule({...newModule, dependencies: e.target.value})}
                   />
@@ -1614,7 +1614,7 @@ const StercsPage: React.FC = () => {
             </div>
 
             {/* Sub-tabs inside inspector */}
-            <div className="px-5 pt-3 border-b border-gray-200 flex gap-4 text-xs font-semibold">
+            <div className="px-5 pt-3 border-b border-slate-300 flex gap-4 text-xs font-semibold">
               <button
                 onClick={() => setSelectedInspectorItem({ ...selectedInspectorItem, subTab: 'details' })}
                 className={`pb-2.5 border-b-2 transition ${
@@ -1651,16 +1651,16 @@ const StercsPage: React.FC = () => {
                     </div>
                   </div>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                    <div className="p-2.5 bg-gray-50 rounded-lg border border-gray-100">
-                      <span className="text-gray-400 block text-[10px]">ID</span>
+                    <div className="p-2.5 bg-gray-50 rounded-lg border border-slate-200">
+                      <span className="text-slate-700 block text-[10px]">ID</span>
                       <strong className="text-gray-900 font-mono">#{selectedInspectorItem.data.id}</strong>
                     </div>
-                    <div className="p-2.5 bg-gray-50 rounded-lg border border-gray-100">
-                      <span className="text-gray-400 block text-[10px]">Status</span>
+                    <div className="p-2.5 bg-gray-50 rounded-lg border border-slate-200">
+                      <span className="text-slate-700 block text-[10px]">Status</span>
                       <span className="font-semibold text-emerald-600 uppercase text-[11px]">{selectedInspectorItem.data.status || 'Active'}</span>
                     </div>
-                    <div className="p-2.5 bg-gray-50 rounded-lg border border-gray-100">
-                      <span className="text-gray-400 block text-[10px]">Category</span>
+                    <div className="p-2.5 bg-gray-50 rounded-lg border border-slate-200">
+                      <span className="text-slate-700 block text-[10px]">Category</span>
                       <strong className="text-gray-800 capitalize">{selectedInspectorItem.data.category || 'General'}</strong>
                     </div>
                   </div>

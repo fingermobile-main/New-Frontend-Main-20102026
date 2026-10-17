@@ -170,7 +170,7 @@ export const LushLuxuryGiftingModal: React.FC<LushLuxuryGiftingModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-md animate-fadeIn">
       <div className="bg-white rounded-3xl border border-amber-200/90 shadow-2xl max-w-4xl w-full max-h-[92vh] overflow-y-auto relative p-5 sm:p-7">
         {/* Header */}
-        <div className="flex items-start justify-between pb-4 border-b border-gray-100">
+        <div className="flex items-start justify-between pb-4 border-b border-slate-200">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 flex items-center justify-center text-white shadow-md">
               <GiftIcon className="w-6 h-6" />
@@ -180,7 +180,7 @@ export const LushLuxuryGiftingModal: React.FC<LushLuxuryGiftingModalProps> = ({
                 <h2 className="text-lg sm:text-xl font-bold text-gray-900">
                   Exclusive Luxury Gifting · OwnIt™ & Flamingo™
                 </h2>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold border border-emerald-200">
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold border border-emerald-400 font-black">
                   Subscription VIP Unlocked
                 </span>
               </div>
@@ -191,7 +191,7 @@ export const LushLuxuryGiftingModal: React.FC<LushLuxuryGiftingModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-700 transition"
+            className="p-1.5 rounded-full hover:bg-gray-100 text-slate-700 hover:text-gray-700 transition"
           >
             <XMarkIcon className="w-5 h-5" />
           </button>
@@ -379,7 +379,7 @@ export const LushLuxuryGiftingModal: React.FC<LushLuxuryGiftingModalProps> = ({
                       selectedItem.store === 'ownit' ? 'OwnIt' : 'Flamingo'
                     } in honor of your remarkable rating and grace...`}
                     rows={4}
-                    className="w-full bg-white text-gray-900 border border-gray-300 rounded-xl p-2.5 text-xs focus:ring-1 focus:ring-emerald-500 focus:border-emerald-600 outline-hidden resize-none shadow-2xs"
+                    className="w-full bg-white text-slate-900 border border-gray-300 rounded-xl p-2.5 text-xs focus:ring-1 focus:ring-emerald-500 focus:border-emerald-600 outline-hidden resize-none shadow-2xs font-bold border-slate-300 placeholder:text-slate-400"
                   />
                 </form>
               </div>

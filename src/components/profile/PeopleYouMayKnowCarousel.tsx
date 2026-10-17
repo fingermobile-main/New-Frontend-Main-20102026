@@ -226,7 +226,7 @@ export const PeopleYouMayKnowCarousel: React.FC<PeopleYouMayKnowCarouselProps> =
               <button
                 type="button"
                 onClick={(e) => handleDismissCard(rec.id, e)}
-                className="absolute top-2.5 right-2.5 p-1 rounded-full text-slate-400 hover:text-slate-800 hover:bg-slate-200 transition-colors z-10"
+                className="absolute top-2.5 right-2.5 p-1 rounded-full text-slate-700 hover:text-slate-800 hover:bg-slate-200 transition-colors z-10"
                 title="Dismiss recommendation"
                 aria-label={`Dismiss recommendation for ${rec.name}`}
               >

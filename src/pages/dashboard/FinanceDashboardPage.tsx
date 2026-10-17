@@ -105,13 +105,13 @@ const FinanceDashboardPage: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-slate-50">
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-2xl font-black text-slate-900">
             Finance & Treasury Dashboard
           </h1>
-          <p className="text-gray-600">
+          <p className="text-slate-700 font-medium mt-1">
             Monitor platform liquidity, merchant payouts, subscriptions, and financial settlement
           </p>
         </div>
@@ -123,10 +123,10 @@ const FinanceDashboardPage: React.FC = () => {
               key={index}
               className="bg-white rounded-xl shadow-sm border border-slate-300 p-6"
             >
-              <p className="text-sm font-medium text-gray-500">{stat.title}</p>
+              <p className="text-sm font-bold text-slate-700">{stat.title}</p>
               <div className="mt-2">
-                <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
-                <p className="text-sm text-gray-500 mt-1">{stat.subtitle}</p>
+                <p className="text-2xl font-black text-slate-900">{stat.value}</p>
+                <p className="text-xs text-slate-700 font-medium mt-1">{stat.subtitle}</p>
               </div>
             </div>
           ))}
@@ -135,17 +135,17 @@ const FinanceDashboardPage: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
           {/* Revenue Distribution Chart */}
           <div className="lg:col-span-1 bg-white rounded-xl shadow-sm border border-slate-300 p-6">
-            <h3 className="text-lg font-bold mb-6">Revenue Sources</h3>
+            <h3 className="text-lg font-black text-slate-900 mb-6">Revenue Sources</h3>
             <div className="space-y-4">
               {revenueSources.map((source, index) => (
                 <div key={index}>
                   <div className="flex justify-between text-sm mb-1">
-                    <span className="font-medium text-gray-700">
+                    <span className="font-bold text-slate-800">
                       {source.name}
                     </span>
-                    <span className="text-gray-500">{source.value}%</span>
+                    <span className="text-slate-800 font-bold">{source.value}%</span>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div className="w-full bg-slate-200 rounded-full h-2">
                     <div
                       className={`h-2 rounded-full ${source.color}`}
                       style={{ width: `${source.value}%` }}
@@ -158,17 +158,17 @@ const FinanceDashboardPage: React.FC = () => {
 
           {/* Quick Actions */}
           <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-slate-300 p-6">
-            <h3 className="text-lg font-bold mb-6">Financial Operations</h3>
+            <h3 className="text-lg font-black text-slate-900 mb-6">Financial Operations</h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <button
                 onClick={() => navigate('/dashboard/payouts')}
-                className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-blue-300 rounded-xl hover:bg-blue-50 transition-all text-center group"
+                className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-blue-400 rounded-xl hover:bg-blue-50 transition-all text-center group bg-white cursor-pointer"
               >
-                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform border border-blue-300">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6 text-blue-600"
+                    className="h-6 w-6 text-blue-700"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -181,20 +181,20 @@ const FinanceDashboardPage: React.FC = () => {
                     />
                   </svg>
                 </div>
-                <span className="font-semibold text-gray-900">Process Withdrawals</span>
-                <p className="text-xs text-slate-700 dark:text-slate-200 font-medium mt-1">
+                <span className="font-bold text-slate-900">Process Withdrawals</span>
+                <p className="text-xs text-slate-700 font-medium mt-1">
                   Review and approve pending merchant payout requests
                 </p>
               </button>
 
               <button
                 onClick={() => navigate('/monetization/dashboard')}
-                className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-green-300 rounded-xl hover:bg-green-50 transition-all text-center group"
+                className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-emerald-400 rounded-xl hover:bg-emerald-50 transition-all text-center group bg-white cursor-pointer"
               >
-                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform border border-emerald-300">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6 text-green-600"
+                    className="h-6 w-6 text-emerald-700"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -207,20 +207,20 @@ const FinanceDashboardPage: React.FC = () => {
                     />
                   </svg>
                 </div>
-                <span className="font-semibold text-gray-900">Monetization Analytics</span>
-                <p className="text-xs text-slate-700 dark:text-slate-200 font-medium mt-1">
+                <span className="font-bold text-slate-900">Monetization Analytics</span>
+                <p className="text-xs text-slate-700 font-medium mt-1">
                   Review platform income reports and fee breakdowns
                 </p>
               </button>
 
               <button
                 onClick={() => navigate('/financials/subscriptions')}
-                className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-purple-300 rounded-xl hover:bg-purple-50 transition-all text-center group"
+                className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-purple-400 rounded-xl hover:bg-purple-50 transition-all text-center group bg-white cursor-pointer"
               >
-                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform border border-purple-300">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6 text-purple-600"
+                    className="h-6 w-6 text-purple-700"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -233,20 +233,20 @@ const FinanceDashboardPage: React.FC = () => {
                     />
                   </svg>
                 </div>
-                <span className="font-semibold text-gray-900">Manage Subscriptions</span>
-                <p className="text-xs text-slate-700 dark:text-slate-200 font-medium mt-1">
+                <span className="font-bold text-slate-900">Manage Subscriptions</span>
+                <p className="text-xs text-slate-700 font-medium mt-1">
                   View and manage creator plans & auto-renewals
                 </p>
               </button>
 
               <button
                 onClick={() => navigate('/billing')}
-                className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-indigo-300 rounded-xl hover:bg-indigo-50 transition-all text-center group"
+                className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-indigo-400 rounded-xl hover:bg-indigo-50 transition-all text-center group bg-white cursor-pointer"
               >
-                <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform border border-indigo-300">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6 text-indigo-600"
+                    className="h-6 w-6 text-indigo-700"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -259,8 +259,8 @@ const FinanceDashboardPage: React.FC = () => {
                     />
                   </svg>
                 </div>
-                <span className="font-semibold text-gray-900">Billing & Gateways</span>
-                <p className="text-xs text-slate-700 dark:text-slate-200 font-medium mt-1">
+                <span className="font-bold text-slate-900">Billing & Gateways</span>
+                <p className="text-xs text-slate-700 font-medium mt-1">
                   Configure payment cards and billing settlements
                 </p>
               </button>
@@ -271,16 +271,16 @@ const FinanceDashboardPage: React.FC = () => {
         {/* Transaction History */}
         <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-lg font-bold">Transaction History</h2>
+            <h2 className="text-lg font-black text-slate-900">Transaction History</h2>
             <div className="flex gap-2">
               {['7d', '30d', '90d'].map((range) => (
                 <button
                   key={range}
                   onClick={() => setTimeRange(range)}
-                  className={`px-3 py-1 text-sm rounded-full ${
+                  className={`px-3 py-1 text-sm rounded-full transition cursor-pointer ${
                     timeRange === range
-                      ? 'bg-blue-100 text-blue-950 border border-blue-400 font-bold font-medium'
-                      : 'text-gray-600 hover:bg-gray-100'
+                      ? 'bg-blue-100 text-blue-950 border border-blue-400 font-black'
+                      : 'text-slate-800 bg-slate-100 border border-slate-300 hover:bg-slate-200 font-bold'
                   }`}
                 >
                   {range}
@@ -290,73 +290,73 @@ const FinanceDashboardPage: React.FC = () => {
           </div>
 
           {isLoading ? (
-            <div className="py-8 text-center text-gray-500">Loading platform transactions...</div>
+            <div className="py-8 text-center text-slate-700 font-semibold">Loading platform transactions...</div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
+              <table className="min-w-full divide-y divide-slate-200">
+                <thead className="bg-slate-50">
                   <tr>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      className="px-6 py-3 text-left text-xs font-bold text-slate-700 uppercase tracking-wider"
                     >
                       Date
                     </th>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      className="px-6 py-3 text-left text-xs font-bold text-slate-700 uppercase tracking-wider"
                     >
                       Account
                     </th>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      className="px-6 py-3 text-left text-xs font-bold text-slate-700 uppercase tracking-wider"
                     >
                       Description
                     </th>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      className="px-6 py-3 text-left text-xs font-bold text-slate-700 uppercase tracking-wider"
                     >
                       Amount
                     </th>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      className="px-6 py-3 text-left text-xs font-bold text-slate-700 uppercase tracking-wider"
                     >
                       Type
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody className="bg-white divide-y divide-slate-200">
                   {transactions.map((transaction) => (
                     <tr key={transaction.id}>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-700 font-medium">
                         {transaction.date}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-slate-900">
                         {transaction.member}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                         {transaction.description || 'No description'}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm">
                         <span
                           className={
                             transaction.type === 'credit'
-                              ? 'text-green-600 font-semibold'
-                              : 'text-red-600 font-semibold'
+                              ? 'text-emerald-700 font-bold'
+                              : 'text-rose-700 font-bold'
                           }
                         >
                           {transaction.amount}
                         </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm">
                         <span
-                          className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                          className={`px-2.5 py-0.5 inline-flex text-xs leading-5 rounded-full font-black ${
                             transaction.type === 'credit'
-                              ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
-                              : 'bg-red-100 text-red-950 border border-red-400 font-bold'
+                              ? 'bg-emerald-100 text-emerald-950 border border-emerald-400'
+                              : 'bg-rose-100 text-rose-950 border border-rose-400'
                           }`}
                         >
                           {transaction.type === 'credit' ? 'Credit' : 'Debit'}
@@ -366,7 +366,7 @@ const FinanceDashboardPage: React.FC = () => {
                   ))}
                   {transactions.length === 0 && (
                     <tr>
-                      <td colSpan={5} className="px-6 py-8 text-center text-gray-400">
+                      <td colSpan={5} className="px-6 py-8 text-center text-slate-700 font-semibold">
                         No transactions recorded on this account yet.
                       </td>
                     </tr>
@@ -379,7 +379,7 @@ const FinanceDashboardPage: React.FC = () => {
           <div className="mt-6 flex justify-center">
             <button
               onClick={() => navigate('/financials/wallet')}
-              className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 text-sm font-medium"
+              className="px-4 py-2 border border-slate-300 text-slate-900 bg-slate-100 rounded-lg hover:bg-slate-200 text-sm font-bold transition cursor-pointer"
             >
               View Full Ledger in Wallet
             </button>

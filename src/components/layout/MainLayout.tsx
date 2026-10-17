@@ -80,7 +80,7 @@ export default function MainLayout({ children, pageTitle }: MainLayoutProps) {
                       <input
                         type="text"
                         placeholder="Search protocol..."
-                        className="w-full pl-8 pr-3 py-1.5 text-xs bg-white border border-slate-300 rounded-xl text-slate-900 font-bold placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 shadow-2xs"
+                        className="w-full pl-8 pr-3 py-1.5 text-xs bg-white border border-slate-300 rounded-xl text-slate-900 font-bold placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 shadow-2xs"
                         onBlur={() => setShowSearch?.(false)}
                         autoFocus
                       />

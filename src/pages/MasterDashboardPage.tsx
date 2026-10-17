@@ -1005,17 +1005,17 @@ const MasterDashboardPage: React.FC = () => {
         <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2">
-              <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-blue-100 text-blue-950 border border-blue-400 font-bold dark:bg-blue-950 dark:text-blue-300">
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-blue-100 text-blue-950 border border-blue-400 font-bold dark:bg-blue-950 dark:text-blue-300 font-black">
                 {rawGroup.length} Consoles Cataloged
               </span>
               {degradedInGroup.length > 0 && (
-                <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-amber-100 text-amber-950 border border-amber-400 font-bold dark:bg-amber-950 dark:text-amber-300 flex items-center gap-1">
+                <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-amber-100 text-amber-950 border border-amber-400 font-bold dark:bg-amber-950 dark:text-amber-300 flex items-center gap-1 font-black">
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
                   {degradedInGroup.length} Degraded (&lt;85%)
                 </span>
               )}
               {benchmarkTelemetry && (
-                <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950 dark:text-emerald-300 flex items-center gap-1">
+                <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950 dark:text-emerald-300 flex items-center gap-1 font-black">
                   ⚡ B-Tree Seek: {benchmarkTelemetry.executionTimeMs.toFixed(2)}ms
                 </span>
               )}
@@ -1037,7 +1037,7 @@ const MasterDashboardPage: React.FC = () => {
                 placeholder="Search controls, safeguards, telemetry..."
                 value={consoleSearchTerm}
                 onChange={(e) => setConsoleSearchTerm(e.target.value)}
-                className="pl-9 pr-24 py-2 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-500 w-full sm:w-72 focus:outline-hidden focus:ring-2 focus:ring-blue-500 font-mono"
+                className="pl-9 pr-24 py-2 text-xs bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 w-full sm:w-72 focus:outline-hidden focus:ring-2 focus:ring-blue-500 font-mono font-bold border-slate-300"
               />
               {consoleSearchTerm && (
                 <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
@@ -1046,7 +1046,7 @@ const MasterDashboardPage: React.FC = () => {
                   </span>
                   <button
                     onClick={() => setConsoleSearchTerm('')}
-                    className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-0.5"
+                    className="text-slate-700 hover:text-slate-600 dark:hover:text-slate-200 p-0.5"
                   >
                     <X className="w-3.5 h-3.5" />
                   </button>
@@ -1164,7 +1164,7 @@ const MasterDashboardPage: React.FC = () => {
             <div>
               <div className="font-black text-sm flex items-center gap-2">
                 <span>3 Platform Consoles Operating with Degraded Health</span>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-amber-200 dark:bg-amber-900 text-amber-800 dark:text-amber-200 font-bold">
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-amber-200 dark:bg-amber-900 text-amber-950 dark:text-amber-200 font-bold border text-amber-950 border-amber-400 font-black">
                   SLA NOTICE
                 </span>
               </div>
@@ -1201,7 +1201,7 @@ const MasterDashboardPage: React.FC = () => {
         {metrics.map((metric, index) => (
           <div
             key={index}
-            className="bg-white rounded-xl shadow p-6 border border-gray-100"
+            className="bg-white rounded-xl shadow p-6 border border-slate-200"
           >
             <div className="flex items-center justify-between">
               <div>
@@ -1270,7 +1270,7 @@ const MasterDashboardPage: React.FC = () => {
             <h4 className="font-bold text-sm text-white group-hover:text-amber-300 transition-colors">
               FIC Minting & Reserves
             </h4>
-            <p className="text-xs text-slate-300 mt-1 line-clamp-2">
+            <p className="text-xs text-slate-700 mt-1 line-clamp-2">
               100M Total Minted, 38.42M circulating, cryptographic audit ledger & real-time allocation forms.
             </p>
             <div className="mt-3 text-[11px] font-semibold text-amber-400 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
@@ -1293,7 +1293,7 @@ const MasterDashboardPage: React.FC = () => {
             <h4 className="font-bold text-sm text-white group-hover:text-emerald-300 transition-colors">
               FIAT Rules & Payout Rails
             </h4>
-            <p className="text-xs text-slate-300 mt-1 line-clamp-2">
+            <p className="text-xs text-slate-700 mt-1 line-clamp-2">
               Fixed ₦100 parity safeguards, NIBSS, Paystack & Flutterwave rails with KYC Tier transfer ceilings.
             </p>
             <div className="mt-3 text-[11px] font-semibold text-emerald-400 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
@@ -1316,7 +1316,7 @@ const MasterDashboardPage: React.FC = () => {
             <h4 className="font-bold text-sm text-white group-hover:text-indigo-300 transition-colors">
               Creator Monetization Engine
             </h4>
-            <p className="text-xs text-slate-300 mt-1 line-clamp-2">
+            <p className="text-xs text-slate-700 mt-1 line-clamp-2">
               0.05 FIC/stream payout thresholds, tipping fee overrides & emergency monetization killswitch.
             </p>
             <div className="mt-3 text-[11px] font-semibold text-indigo-400 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
@@ -1339,7 +1339,7 @@ const MasterDashboardPage: React.FC = () => {
             <h4 className="font-bold text-sm text-white group-hover:text-cyan-300 transition-colors">
               Subscription Access Bridge
             </h4>
-            <p className="text-xs text-slate-300 mt-1 line-clamp-2">
+            <p className="text-xs text-slate-700 mt-1 line-clamp-2">
               Ties subscriptions directly to member roles and unlocks 20 gated platform modules and screens.
             </p>
             <div className="mt-3 text-[11px] font-semibold text-cyan-400 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
@@ -1393,7 +1393,7 @@ const MasterDashboardPage: React.FC = () => {
             <h4 className="font-bold text-sm text-white group-hover:text-indigo-300 transition-colors">
               Roles & Permissions
             </h4>
-            <p className="text-xs text-slate-300 mt-1 line-clamp-2">
+            <p className="text-xs text-slate-700 mt-1 line-clamp-2">
               Enterprise FingerMobile collaborator seats, 45+ granular permissions, custom roles & location scopes.
             </p>
             <div className="mt-3 text-[11px] font-semibold text-indigo-400 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
@@ -1416,7 +1416,7 @@ const MasterDashboardPage: React.FC = () => {
             <h4 className="font-bold text-sm text-white group-hover:text-amber-300 transition-colors">
               Site Member Access
             </h4>
-            <p className="text-xs text-slate-300 mt-1 line-clamp-2">
+            <p className="text-xs text-slate-700 mt-1 line-clamp-2">
               Gate site pages to specific member roles, VIP cohorts & monetization pricing plans.
             </p>
             <div className="mt-3 text-[11px] font-semibold text-amber-400 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
@@ -1439,7 +1439,7 @@ const MasterDashboardPage: React.FC = () => {
             <h4 className="font-bold text-sm text-white group-hover:text-rose-300 transition-colors">
               Member Badges Studio
             </h4>
-            <p className="text-xs text-slate-300 mt-1 line-clamp-2">
+            <p className="text-xs text-slate-700 mt-1 line-clamp-2">
               Design SVG badges, customize hex styling, unlock page privileges & assign members.
             </p>
             <div className="mt-3 text-[11px] font-semibold text-rose-400 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
@@ -1462,7 +1462,7 @@ const MasterDashboardPage: React.FC = () => {
             <h4 className="font-bold text-sm text-white group-hover:text-cyan-300 transition-colors">
               Settings Hub
             </h4>
-            <p className="text-xs text-slate-300 mt-1 line-clamp-2">
+            <p className="text-xs text-slate-700 mt-1 line-clamp-2">
               Central enterprise configuration console across platform modules & features.
             </p>
             <div className="mt-3 text-[11px] font-semibold text-cyan-400 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
@@ -1523,7 +1523,7 @@ const MasterDashboardPage: React.FC = () => {
       </div>
 
       {/* Dashboard Sections Grid */}
-      <div className="bg-white rounded-xl shadow p-6 border border-gray-100">
+      <div className="bg-white rounded-xl shadow p-6 border border-slate-200">
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-lg font-semibold text-gray-900">
             Platform Sections
@@ -1539,7 +1539,7 @@ const MasterDashboardPage: React.FC = () => {
           {sections.map((section) => (
             <div
               key={section.id}
-              className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer hover:border-blue-300 hover:bg-blue-50/50"
+              className="border border-slate-300 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer hover:border-blue-300 hover:bg-blue-50/50"
               onClick={() => handleSectionClick(section.route)}
             >
               <div className="flex items-center">
@@ -1601,13 +1601,13 @@ const MasterDashboardPage: React.FC = () => {
       {/* System Components and Alerts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* System Components */}
-        <div className="bg-white rounded-xl shadow p-6 border border-gray-100">
+        <div className="bg-white rounded-xl shadow p-6 border border-slate-200">
           <h3 className="text-lg font-semibold mb-4">System Components</h3>
           <div className="space-y-3">
             {systemComponents.map((component) => (
               <div
                 key={component.id}
-                className="flex items-center justify-between p-3 border border-gray-200 rounded-lg"
+                className="flex items-center justify-between p-3 border border-slate-300 rounded-lg"
               >
                 <div>
                   <p className="font-medium text-sm">{component.name}</p>
@@ -1648,13 +1648,13 @@ const MasterDashboardPage: React.FC = () => {
         </div>
 
         {/* System Alerts */}
-        <div className="bg-white rounded-xl shadow p-6 border border-gray-100">
+        <div className="bg-white rounded-xl shadow p-6 border border-slate-200">
           <h3 className="text-lg font-semibold mb-4">System Alerts</h3>
           <div className="space-y-4">
             {alerts.map((alert) => (
               <div
                 key={alert.id}
-                className="flex items-start space-x-3 pb-4 border-b border-gray-100 last:border-0"
+                className="flex items-start space-x-3 pb-4 border-b border-slate-200 last:border-0"
               >
                 <div
                   className={`p-2 rounded-full ${
@@ -1682,7 +1682,7 @@ const MasterDashboardPage: React.FC = () => {
                     {alert.title}
                   </p>
                   <p className="text-sm text-gray-500">{alert.description}</p>
-                  <div className="flex items-center mt-1 text-xs text-gray-400">
+                  <div className="flex items-center mt-1 text-xs text-slate-700">
                     <span>{alert.timestamp}</span>
                     <span className="mx-2">•</span>
                     <span
@@ -1707,7 +1707,7 @@ const MasterDashboardPage: React.FC = () => {
       </div>
 
       {/* Recent Activities */}
-      <div className="bg-white rounded-xl shadow p-6 border border-gray-100">
+      <div className="bg-white rounded-xl shadow p-6 border border-slate-200">
         <h3 className="text-lg font-semibold mb-4">Recent Activities</h3>
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
@@ -1940,7 +1940,7 @@ const MasterDashboardPage: React.FC = () => {
       <h2 className="text-xl font-semibold">System Monitoring</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div className="bg-white rounded-xl shadow p-6 border border-gray-100">
+        <div className="bg-white rounded-xl shadow p-6 border border-slate-200">
           <h3 className="text-lg font-medium text-gray-900 mb-4">
             Component Health
           </h3>
@@ -1974,7 +1974,7 @@ const MasterDashboardPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow p-6 border border-gray-100">
+        <div className="bg-white rounded-xl shadow p-6 border border-slate-200">
           <h3 className="text-lg font-medium text-gray-900 mb-4">
             Status Distribution
           </h3>
@@ -2003,7 +2003,7 @@ const MasterDashboardPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow p-6 border border-gray-100">
+        <div className="bg-white rounded-xl shadow p-6 border border-slate-200">
           <h3 className="text-lg font-medium text-gray-900 mb-4">
             Overall Health
           </h3>
@@ -2068,7 +2068,7 @@ const MasterDashboardPage: React.FC = () => {
         </div>
       </div>
 
-      <div className="bg-white rounded-xl shadow p-6 border border-gray-100">
+      <div className="bg-white rounded-xl shadow p-6 border border-slate-200">
         <h3 className="text-lg font-medium text-gray-900 mb-4">
           Component Details
         </h3>
@@ -2170,7 +2170,7 @@ const MasterDashboardPage: React.FC = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* System Alerts */}
-        <div className="bg-white rounded-xl shadow p-6 border border-gray-100">
+        <div className="bg-white rounded-xl shadow p-6 border border-slate-200">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-lg font-medium text-gray-900">
               System Alerts ({alerts.length})
@@ -2184,14 +2184,14 @@ const MasterDashboardPage: React.FC = () => {
           </div>
           <div className="space-y-4">
             {alerts.length === 0 ? (
-              <div className="text-center py-8 text-gray-400 text-sm">
+              <div className="text-center py-8 text-slate-700 text-sm">
                 No active alerts. All systems healthy.
               </div>
             ) : (
               alerts.map((alert) => (
                 <div
                   key={alert.id}
-                  className="flex items-start space-x-3 pb-4 border-b border-gray-100 last:border-0"
+                  className="flex items-start space-x-3 pb-4 border-b border-slate-200 last:border-0"
                 >
                   <div
                     className={`p-2 rounded-full shrink-0 ${
@@ -2221,7 +2221,7 @@ const MasterDashboardPage: React.FC = () => {
                     <p className="text-xs text-gray-500 break-words mt-0.5">
                       {alert.description}
                     </p>
-                    <div className="flex items-center mt-1 text-xs text-gray-400">
+                    <div className="flex items-center mt-1 text-xs text-slate-700">
                       <span>{alert.timestamp}</span>
                       <span className="mx-2">•</span>
                       <span
@@ -2240,7 +2240,7 @@ const MasterDashboardPage: React.FC = () => {
                     </div>
                   </div>
                   <button
-                    className="text-gray-400 hover:text-gray-600 p-1 hover:bg-gray-100 rounded transition shrink-0"
+                    className="text-slate-700 hover:text-gray-600 p-1 hover:bg-gray-100 rounded transition shrink-0"
                     onClick={() => handleDismissAlert(alert.id)}
                     title="Dismiss alert"
                   >
@@ -2253,7 +2253,7 @@ const MasterDashboardPage: React.FC = () => {
         </div>
 
         {/* Recent Activities */}
-        <div className="bg-white rounded-xl shadow p-6 border border-gray-100">
+        <div className="bg-white rounded-xl shadow p-6 border border-slate-200">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-lg font-medium text-gray-900">
               Recent Activities
@@ -2269,9 +2269,9 @@ const MasterDashboardPage: React.FC = () => {
             {activities.map((activity) => (
               <div
                 key={activity.id}
-                className="flex items-start space-x-3 pb-4 border-b border-gray-100 last:border-0"
+                className="flex items-start space-x-3 pb-4 border-b border-slate-200 last:border-0"
               >
-                <div className="bg-blue-100 p-2 rounded-full shrink-0">
+                <div className="bg-blue-100 p-2 rounded-full shrink-0 border text-blue-950 border-blue-400 font-black">
                   <User className="h-4 w-4 text-blue-500" />
                 </div>
                 <div className="flex-1 min-w-0">
@@ -2281,7 +2281,7 @@ const MasterDashboardPage: React.FC = () => {
                   <p className="text-xs text-gray-500 break-words mt-0.5">
                     {activity.action}
                   </p>
-                  <div className="flex items-center mt-1 text-xs text-gray-400">
+                  <div className="flex items-center mt-1 text-xs text-slate-700">
                     <span>{activity.timestamp}</span>
                     <span className="mx-2">•</span>
                     <span className="truncate">{activity.location}</span>
@@ -2320,7 +2320,7 @@ const MasterDashboardPage: React.FC = () => {
               <h1 className="text-2xl font-bold text-gray-900 ml-3">
                 Master Dashboard
               </h1>
-              <span className="ml-3 inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-950 border border-blue-400 font-bold">
+              <span className="ml-3 inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-950 border border-blue-400 font-bold font-black">
                 Platform Management
               </span>
             </div>
@@ -2385,7 +2385,7 @@ const MasterDashboardPage: React.FC = () => {
         <PlatformOwnershipCard />
 
         {/* Navigation Tabs */}
-        <div className="mb-8 border-b border-gray-200">
+        <div className="mb-8 border-b border-slate-300">
           <nav className="flex space-x-4 sm:space-x-8 overflow-x-auto pb-1">
             {[
               { id: 'overview', label: 'Executive Overview' },
@@ -2453,8 +2453,8 @@ const MasterDashboardPage: React.FC = () => {
                 {renderOverviewContent()}
 
                 {/* Category Explorer */}
-                <div className="bg-white rounded-xl shadow p-6 border border-gray-100">
-                  <div className="mb-6 border-b border-gray-200">
+                <div className="bg-white rounded-xl shadow p-6 border border-slate-200">
+                  <div className="mb-6 border-b border-slate-300">
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">
                       Platform Domain Categories
                     </h3>
@@ -2481,7 +2481,7 @@ const MasterDashboardPage: React.FC = () => {
                       ([category, categorySections]) => (
                         <div
                           key={category}
-                          className="col-span-1 border border-gray-100 rounded-xl p-4 bg-gray-50/50"
+                          className="col-span-1 border border-slate-200 rounded-xl p-4 bg-gray-50/50"
                         >
                           <h4 className="text-sm font-bold text-gray-800 mb-3 uppercase tracking-wider">
                             {category}
@@ -2603,7 +2603,7 @@ const MasterDashboardPage: React.FC = () => {
                       >
                         {section.description}
                       </p>
-                      <div className="pt-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
+                      <div className="pt-3 border-t border-slate-200 flex items-center justify-between text-xs text-gray-500">
                         <span className="font-mono text-blue-600 truncate max-w-[150px]">
                           {section.route}
                         </span>
@@ -2703,7 +2703,7 @@ const MasterDashboardPage: React.FC = () => {
                   'Commerce & Growth Consoles',
                   'Multi-vendor marketplace, individual vendor storefronts, VIP Flamingo tier, unified e-commerce checkout, Publicitee advertising engine, promotional marketing campaigns, and FingerWars competitive esports platform.'
                 )}
-                <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-800">
+                <div className="mt-8 pt-8 border-t border-slate-300 dark:border-gray-800">
                   <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
                     Active Subscription Models & Free Tier Engine
                   </h3>
@@ -2738,7 +2738,7 @@ const MasterDashboardPage: React.FC = () => {
 
             {/* Modules Tab */}
             {activeTab === 'modules' && (
-              <div className="bg-white rounded-xl shadow p-6 border border-gray-100">
+              <div className="bg-white rounded-xl shadow p-6 border border-slate-200">
                 <div className="flex justify-between items-center mb-6">
                   <div>
                     <h2 className="text-xl font-semibold text-gray-900">
@@ -2761,7 +2761,7 @@ const MasterDashboardPage: React.FC = () => {
                   {sections.map((section) => (
                     <div
                       key={section.id}
-                      className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer hover:border-blue-300 hover:bg-blue-50/40"
+                      className="border border-slate-300 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer hover:border-blue-300 hover:bg-blue-50/40"
                       onClick={() => handleSectionClick(section.route)}
                     >
                       <div className="flex items-center">
@@ -2850,7 +2850,7 @@ const MasterDashboardPage: React.FC = () => {
       {/* Notifications Modal */}
       {isNotificationsModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border border-gray-100 animate-in fade-in zoom-in-95 duration-150">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-200 animate-in fade-in zoom-in-95 duration-150">
             <div className="px-6 py-4 bg-gray-50 border-b border-slate-300 flex justify-between items-center">
               <div>
                 <h3 className="font-bold text-gray-900 text-base">
@@ -2862,7 +2862,7 @@ const MasterDashboardPage: React.FC = () => {
               </div>
               <button
                 onClick={() => setIsNotificationsModalOpen(false)}
-                className="text-gray-400 hover:text-gray-600 p-1 rounded-lg"
+                className="text-slate-700 hover:text-gray-600 p-1 rounded-lg"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -2886,7 +2886,7 @@ const MasterDashboardPage: React.FC = () => {
                       <div className="text-xs text-gray-600 break-words mt-0.5">
                         {a.description}
                       </div>
-                      <div className="text-[10px] text-gray-400 mt-1 font-mono">
+                      <div className="text-[10px] text-slate-700 mt-1 font-mono">
                         {a.timestamp}
                       </div>
                     </div>
@@ -2915,7 +2915,7 @@ const MasterDashboardPage: React.FC = () => {
       {/* Protocol Messages Modal */}
       {isMessagesModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border border-gray-100 animate-in fade-in zoom-in-95 duration-150">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-200 animate-in fade-in zoom-in-95 duration-150">
             <div className="px-6 py-4 bg-gray-50 border-b border-slate-300 flex justify-between items-center">
               <div>
                 <h3 className="font-bold text-gray-900 text-base">
@@ -2927,7 +2927,7 @@ const MasterDashboardPage: React.FC = () => {
               </div>
               <button
                 onClick={() => setIsMessagesModalOpen(false)}
-                className="text-gray-400 hover:text-gray-600 p-1 rounded-lg"
+                className="text-slate-700 hover:text-gray-600 p-1 rounded-lg"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -2977,7 +2977,7 @@ const MasterDashboardPage: React.FC = () => {
       {/* Edit Section Modal */}
       {selectedSectionForEdit && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden border border-gray-100 animate-in fade-in zoom-in-95 duration-150">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden border border-slate-200 animate-in fade-in zoom-in-95 duration-150">
             <div className="px-6 py-4 bg-gray-50 border-b border-slate-300 flex justify-between items-center">
               <div>
                 <h3 className="font-bold text-gray-900 text-base">
@@ -2989,7 +2989,7 @@ const MasterDashboardPage: React.FC = () => {
               </div>
               <button
                 onClick={() => setSelectedSectionForEdit(null)}
-                className="text-gray-400 hover:text-gray-600 p-1 rounded-lg"
+                className="text-slate-700 hover:text-gray-600 p-1 rounded-lg"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -3008,7 +3008,7 @@ const MasterDashboardPage: React.FC = () => {
                       title: e.target.value,
                     })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                 />
               </div>
               <div>
@@ -3024,7 +3024,7 @@ const MasterDashboardPage: React.FC = () => {
                     })
                   }
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                 />
               </div>
               <div>
@@ -3040,7 +3040,7 @@ const MasterDashboardPage: React.FC = () => {
                       route: e.target.value,
                     })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm font-mono focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm font-mono focus:outline-hidden focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                 />
               </div>
               <div>
@@ -3055,7 +3055,7 @@ const MasterDashboardPage: React.FC = () => {
                       status: e.target.value as any,
                     })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white"
                 >
                   <option value="online">Online</option>
                   <option value="maintenance">Maintenance</option>
@@ -3085,7 +3085,7 @@ const MasterDashboardPage: React.FC = () => {
       {/* Add New Section Modal */}
       {isAddSectionModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden border border-gray-100 animate-in fade-in zoom-in-95 duration-150">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden border border-slate-200 animate-in fade-in zoom-in-95 duration-150">
             <div className="px-6 py-4 bg-gray-50 border-b border-slate-300 flex justify-between items-center">
               <div>
                 <h3 className="font-bold text-gray-900 text-base">
@@ -3097,7 +3097,7 @@ const MasterDashboardPage: React.FC = () => {
               </div>
               <button
                 onClick={() => setIsAddSectionModalOpen(false)}
-                className="text-gray-400 hover:text-gray-600 p-1 rounded-lg"
+                className="text-slate-700 hover:text-gray-600 p-1 rounded-lg"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -3117,7 +3117,7 @@ const MasterDashboardPage: React.FC = () => {
                       title: e.target.value,
                     })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                 />
               </div>
               <div>
@@ -3134,7 +3134,7 @@ const MasterDashboardPage: React.FC = () => {
                     })
                   }
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                 />
               </div>
               <div>
@@ -3151,7 +3151,7 @@ const MasterDashboardPage: React.FC = () => {
                       route: e.target.value,
                     })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm font-mono focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm font-mono focus:outline-hidden focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                 />
               </div>
             </div>

@@ -64,7 +64,7 @@ const GeneralSettingsPage = () => {
               type="text"
               value={siteName}
               onChange={(e) => setSiteName(e.target.value)}
-              className="w-full mt-1 p-2 border border-gray-300 rounded-md"
+              className="w-full mt-1 p-2 border border-gray-300 rounded-md text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
               required
             />
           </div>
@@ -75,7 +75,7 @@ const GeneralSettingsPage = () => {
               value={siteDescription}
               onChange={(e) => setSiteDescription(e.target.value)}
               rows={3}
-              className="w-full mt-1 p-2 border border-gray-300 rounded-md"
+              className="w-full mt-1 p-2 border border-gray-300 rounded-md text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
               required
             />
           </div>

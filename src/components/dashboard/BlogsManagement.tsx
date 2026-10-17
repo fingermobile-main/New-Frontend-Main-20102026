@@ -14,7 +14,7 @@ const BlogsManagement: React.FC<BlogsManagementProps> = ({ userId }) => {
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-slate-300">
-      <div className="p-6 border-b border-gray-200 flex items-center justify-between">
+      <div className="p-6 border-b border-slate-300 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <DocumentTextIcon className="w-6 h-6 text-blue-600" />
           <h3 className="text-lg font-bold text-gray-900">Blog Management</h3>

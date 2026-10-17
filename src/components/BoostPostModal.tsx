@@ -152,7 +152,7 @@ const BoostPostModal: React.FC<BoostPostModalProps> = ({
 
             {/* Custom Targeting Options */}
             {selectedAudience === 'custom' && (
-              <div className="space-y-4 border-t border-gray-200 pt-4">
+              <div className="space-y-4 border-t border-slate-300 pt-4">
                 {/* Location */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -163,7 +163,7 @@ const BoostPostModal: React.FC<BoostPostModalProps> = ({
                     value={targeting.location}
                     onChange={(e) => setTargeting(prev => ({ ...prev, location: e.target.value }))}
                     placeholder="City, Country"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                   />
                 </div>
 
@@ -179,7 +179,7 @@ const BoostPostModal: React.FC<BoostPostModalProps> = ({
                       onChange={(e) => setTargeting(prev => ({ ...prev, ageMin: parseInt(e.target.value) }))}
                       min={13}
                       max={targeting.ageMax}
-                      className="w-24 px-3 py-2 border border-gray-300 rounded-lg"
+                      className="w-24 px-3 py-2 border border-gray-300 rounded-lg text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
                     />
                     <span className="text-gray-600">to</span>
                     <input
@@ -188,7 +188,7 @@ const BoostPostModal: React.FC<BoostPostModalProps> = ({
                       onChange={(e) => setTargeting(prev => ({ ...prev, ageMax: parseInt(e.target.value) }))}
                       min={targeting.ageMin}
                       max={100}
-                      className="w-24 px-3 py-2 border border-gray-300 rounded-lg"
+                      className="w-24 px-3 py-2 border border-gray-300 rounded-lg text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
                     />
                   </div>
                 </div>
@@ -230,7 +230,7 @@ const BoostPostModal: React.FC<BoostPostModalProps> = ({
                     value={budget}
                     onChange={(e) => setBudget(Math.max(5, parseInt(e.target.value) || 0))}
                     min={5}
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400 font-mono"
                   />
                 </div>
                 <p className="text-xs text-gray-500 mt-1">Min: $5</p>
@@ -243,7 +243,7 @@ const BoostPostModal: React.FC<BoostPostModalProps> = ({
                 <select
                   value={duration}
                   onChange={(e) => setDuration(parseInt(e.target.value))}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-slate-900 font-bold border-slate-300 bg-white"
                 >
                   {[1, 3, 7, 14, 30].map(days => (
                     <option key={days} value={days}>{days} day{days > 1 ? 's' : ''}</option>

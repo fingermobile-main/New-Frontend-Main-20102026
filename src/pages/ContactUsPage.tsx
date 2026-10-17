@@ -174,7 +174,7 @@ const ContactUsPage: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="mt-10 pt-8 border-t border-gray-200">
+                  <div className="mt-10 pt-8 border-t border-slate-300">
                     <h3 className="text-base sm:text-lg font-medium text-gray-900">
                       Leadership Team
                     </h3>
@@ -232,7 +232,7 @@ const ContactUsPage: React.FC = () => {
                           value={formData.name}
                           onChange={handleChange}
                           required
-                          className="py-3 px-4 block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 border-gray-300 rounded-md text-sm sm:text-base" />
+                          className="py-3 px-4 block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 border-gray-300 rounded-md text-sm sm:text-base text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400" />
                       </div>
                     </div>
 
@@ -251,7 +251,7 @@ const ContactUsPage: React.FC = () => {
                           value={formData.email}
                           onChange={handleChange}
                           required
-                          className="py-3 px-4 block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 border-gray-300 rounded-md text-sm sm:text-base" />
+                          className="py-3 px-4 block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 border-gray-300 rounded-md text-sm sm:text-base text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400" />
                       </div>
                     </div>
 
@@ -268,7 +268,7 @@ const ContactUsPage: React.FC = () => {
                           id="department"
                           value={formData.department}
                           onChange={handleChange}
-                          className="py-3 px-4 block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 border-gray-300 rounded-md text-sm sm:text-base bg-white"
+                          className="py-3 px-4 block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 border-gray-300 rounded-md text-sm sm:text-base bg-white text-slate-900 font-bold border border-slate-300 focus:ring-2"
                         >
                           <option value="general">General Inquiries</option>
                           <option value="support">Customer Support & Technical</option>
@@ -293,7 +293,7 @@ const ContactUsPage: React.FC = () => {
                           value={formData.subject}
                           onChange={handleChange}
                           required
-                          className="py-3 px-4 block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 border-gray-300 rounded-md text-sm sm:text-base" />
+                          className="py-3 px-4 block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 border-gray-300 rounded-md text-sm sm:text-base text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400" />
                       </div>
                     </div>
 
@@ -312,7 +312,7 @@ const ContactUsPage: React.FC = () => {
                           value={formData.message}
                           onChange={handleChange}
                           required
-                          className="py-3 px-4 block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 border-gray-300 rounded-md text-sm sm:text-base"
+                          className="py-3 px-4 block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 border-gray-300 rounded-md text-sm sm:text-base text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                         />
                       </div>
                     </div>
@@ -360,7 +360,7 @@ const ContactUsPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="mt-8 pt-6 border-t border-gray-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div className="mt-8 pt-6 border-t border-slate-300 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div className="flex items-center">
               <div className="bg-yellow-100 p-2 rounded-lg mr-3">
                 <UserCircleIcon className="h-5 w-5 text-yellow-600" />

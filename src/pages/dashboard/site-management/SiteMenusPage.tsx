@@ -126,7 +126,7 @@ const SiteMenusPage: React.FC = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {menus.map((menu) => (
-            <div key={menu.id} className="bg-white p-6 rounded-xl shadow-md border border-gray-100 flex flex-col justify-between">
+            <div key={menu.id} className="bg-white p-6 rounded-xl shadow-md border border-slate-200 flex flex-col justify-between">
               <div>
                 <div className="flex justify-between items-start mb-3">
                   <div>
@@ -143,10 +143,10 @@ const SiteMenusPage: React.FC = () => {
                 <div className="space-y-2 my-4 min-h-[100px]">
                   {Array.isArray(menu.items) && menu.items.length > 0 ? (
                     menu.items.map((link: MenuItem, linkIdx: number) => (
-                      <div key={linkIdx} className="p-2 bg-gray-50 rounded-lg border border-gray-100 flex items-center justify-between text-xs">
+                      <div key={linkIdx} className="p-2 bg-gray-50 rounded-lg border border-slate-200 flex items-center justify-between text-xs">
                         <div>
                           <span className="font-semibold text-gray-800">{link.label}</span>
-                          <span className="text-gray-400 font-mono ml-2">{link.url}</span>
+                          <span className="text-slate-700 font-mono ml-2">{link.url}</span>
                         </div>
                         <button
                           onClick={() => handleRemoveItem(menu.id, linkIdx)}
@@ -157,12 +157,12 @@ const SiteMenusPage: React.FC = () => {
                       </div>
                     ))
                   ) : (
-                    <p className="text-xs text-gray-400 italic py-2">No links in this menu.</p>
+                    <p className="text-xs text-slate-700 italic py-2">No links in this menu.</p>
                   )}
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-gray-100 flex gap-2">
+              <div className="pt-3 border-t border-slate-200 flex gap-2">
                 <button
                   type="button"
                   onClick={() => handleAddItem(menu.id)}
@@ -197,7 +197,7 @@ const SiteMenusPage: React.FC = () => {
                   value={newMenuTitle}
                   onChange={(e) => setNewMenuTitle(e.target.value)}
                   placeholder="e.g. Header Nav"
-                  className="w-full px-3 py-2 border rounded-lg text-sm"
+                  className="w-full px-3 py-2 border rounded-lg text-sm text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
               <div>
@@ -208,7 +208,7 @@ const SiteMenusPage: React.FC = () => {
                   value={newMenuSlug}
                   onChange={(e) => setNewMenuSlug(e.target.value)}
                   placeholder="e.g. header-nav"
-                  className="w-full px-3 py-2 border rounded-lg text-sm"
+                  className="w-full px-3 py-2 border rounded-lg text-sm text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
               <div>
@@ -216,7 +216,7 @@ const SiteMenusPage: React.FC = () => {
                 <select
                   value={newMenuLocation}
                   onChange={(e) => setNewMenuLocation(e.target.value)}
-                  className="w-full px-3 py-2 border rounded-lg text-sm"
+                  className="w-full px-3 py-2 border rounded-lg text-sm text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500"
                 >
                   <option value="header">Header</option>
                   <option value="footer">Footer</option>

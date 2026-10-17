@@ -14,7 +14,7 @@ interface StatCardProps {
 }
 
 const StatCard: React.FC<StatCardProps> = ({ title, value, subtitle, icon, trend }) => (
-  <div className="bg-white/60 backdrop-blur-sm rounded-xl p-4 border border-gray-100 hover:border-brand-blue/30 shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] transition-all group">
+  <div className="bg-white/60 backdrop-blur-sm rounded-xl p-4 border border-slate-200 hover:border-brand-blue/30 shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] transition-all group">
     <div className="flex items-center justify-between mb-3">
       <div className="text-gray-500 bg-gray-50 p-2 rounded-lg group-hover:bg-blue-50 group-hover:text-brand-blue transition-colors">{icon}</div>
       {trend && (

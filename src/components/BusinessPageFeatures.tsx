@@ -85,7 +85,7 @@ const BusinessPageFeatures: React.FC = () => {
                 value={pageName}
                 onChange={(e) => setPageName(e.target.value)}
                 placeholder="Enter your business name"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               />
             </div>
 
@@ -97,7 +97,7 @@ const BusinessPageFeatures: React.FC = () => {
                 onChange={(e) => setBusinessDescription(e.target.value)}
                 placeholder="Describe your business..."
                 rows={4}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               />
             </div>
 
@@ -109,7 +109,7 @@ const BusinessPageFeatures: React.FC = () => {
                 value={ctaButton}
                 onChange={(e) => setCtaButton(e.target.value)}
                 placeholder="e.g., Contact Us, Shop Now, Book Appointment"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               />
             </div>
           </div>
@@ -124,7 +124,7 @@ const BusinessPageFeatures: React.FC = () => {
                   id="visitorTracking"
                   checked={visitorTracking}
                   onChange={handleToggleVisitorTracking}
-                  className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded mt-1"
+                  className="h-4 w-4 text-slate-900 focus:ring-indigo-500 border-gray-300 rounded mt-1 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                 />
                 <div className="ml-3">
                   <label htmlFor="visitorTracking" className="block text-sm font-medium text-gray-700">
@@ -142,7 +142,7 @@ const BusinessPageFeatures: React.FC = () => {
                   id="aiWritingAssistance"
                   checked={aiWritingAssistance}
                   onChange={handleToggleAiWritingAssistance}
-                  className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded mt-1"
+                  className="h-4 w-4 text-slate-900 focus:ring-indigo-500 border-gray-300 rounded mt-1 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                 />
                 <div className="ml-3">
                   <label htmlFor="aiWritingAssistance" className="block text-sm font-medium text-gray-700">
@@ -160,7 +160,7 @@ const BusinessPageFeatures: React.FC = () => {
                   id="autoInviteFollowers"
                   checked={autoInviteFollowers}
                   onChange={handleToggleAutoInviteFollowers}
-                  className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded mt-1"
+                  className="h-4 w-4 text-slate-900 focus:ring-indigo-500 border-gray-300 rounded mt-1 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                 />
                 <div className="ml-3">
                   <label htmlFor="autoInviteFollowers" className="block text-sm font-medium text-gray-700">
@@ -193,7 +193,7 @@ const BusinessPageFeatures: React.FC = () => {
                 id="cardType"
                 value={currentCard.type}
                 onChange={(e) => setCurrentCard({...currentCard, type: e.target.value as 'image' | 'gif' | 'video'})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 font-bold border-slate-300 bg-white"
               >
                 <option value="image">Image</option>
                 <option value="gif">GIF</option>
@@ -209,7 +209,7 @@ const BusinessPageFeatures: React.FC = () => {
                 value={currentCard.url}
                 onChange={(e) => setCurrentCard({...currentCard, url: e.target.value})}
                 placeholder="https://example.com/media.jpg"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               />
             </div>
 
@@ -221,7 +221,7 @@ const BusinessPageFeatures: React.FC = () => {
                 value={currentCard.caption}
                 onChange={(e) => setCurrentCard({...currentCard, caption: e.target.value})}
                 placeholder="Describe this media..."
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               />
             </div>
 
@@ -264,7 +264,7 @@ const BusinessPageFeatures: React.FC = () => {
                 value={currentProduct.name}
                 onChange={(e) => setCurrentProduct({...currentProduct, name: e.target.value})}
                 placeholder="e.g., Premium Consultation"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               />
             </div>
 
@@ -276,7 +276,7 @@ const BusinessPageFeatures: React.FC = () => {
                 onChange={(e) => setCurrentProduct({...currentProduct, description: e.target.value})}
                 placeholder="Describe the product/service..."
                 rows={2}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               />
             </div>
 
@@ -288,7 +288,7 @@ const BusinessPageFeatures: React.FC = () => {
                 value={currentProduct.price}
                 onChange={(e) => setCurrentProduct({...currentProduct, price: e.target.value})}
                 placeholder="e.g., $99, Free, Contact for quote"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               />
             </div>
 

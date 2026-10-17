@@ -295,7 +295,7 @@ const LushSwipeController: React.FC<SwipeControllerProps> = ({
         <button
           onClick={() => handleSwipe('super_like')}
           disabled={isRevealing}
-          className="p-4 bg-purple-100 rounded-full text-purple-600 hover:bg-purple-200 disabled:opacity-50 transition-colors"
+          className="p-4 bg-purple-100 rounded-full text-purple-950 hover:bg-purple-200 disabled:opacity-50 transition-colors border text-purple-950 border-purple-400 font-black"
           aria-label="Super Like"
         >
           <StarIcon className="h-8 w-8" />

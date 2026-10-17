@@ -94,10 +94,10 @@ const CommunitiesPage: React.FC = () => {
         ) : (
           <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {communities.map((community) => (
-              <div key={community.id} className="bg-white p-6 rounded-lg shadow border border-gray-100 hover:shadow-md transition-shadow">
+              <div key={community.id} className="bg-white p-6 rounded-lg shadow border border-slate-200 hover:shadow-md transition-shadow">
                 <h3 className="font-semibold text-lg text-gray-900">{community.name}</h3>
                 <p className="text-gray-600 mt-2 line-clamp-3">{community.description}</p>
-                <div className="mt-4 pt-4 border-t border-gray-100 flex justify-between items-center">
+                <div className="mt-4 pt-4 border-t border-slate-200 flex justify-between items-center">
                   <span className="text-sm text-gray-500">
                     {community.memberCount ? `${community.memberCount.toLocaleString()} members` : 'New Community'}
                   </span>

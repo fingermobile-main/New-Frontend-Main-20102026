@@ -61,12 +61,12 @@ const AiPlaylistPage: React.FC = () => {
         description="Describe the vibe, and let Gemini curate the perfect playlist for you."
       />
       <div className="max-w-2xl mx-auto mt-6">
-        <form onSubmit={handleSubmit} className="bg-white p-8 rounded-xl shadow-md border border-gray-100">
+        <form onSubmit={handleSubmit} className="bg-white p-8 rounded-xl shadow-md border border-slate-200">
           <textarea
             value={prompt}
             onChange={e => setPrompt(e.target.value)}
             rows={4}
-            className="w-full p-4 border border-gray-200 rounded-lg text-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            className="w-full p-4 border border-slate-300 rounded-lg text-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-slate-900 font-bold bg-white placeholder:text-slate-400"
             placeholder="e.g., A playlist for a rainy day..."
           />
           <div className="mt-4">

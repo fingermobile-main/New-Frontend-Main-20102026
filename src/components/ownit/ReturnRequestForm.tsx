@@ -86,7 +86,7 @@ const ReturnRequestForm: React.FC<ReturnRequestFormProps> = ({
             type="text"
             value={formData.order_id}
             onChange={(e) => handleChange('order_id', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
             placeholder="Enter order number"
             required
           />
@@ -101,7 +101,7 @@ const ReturnRequestForm: React.FC<ReturnRequestFormProps> = ({
             type="text"
             value={formData.product_name}
             onChange={(e) => handleChange('product_name', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
             placeholder="Enter product name"
             required
           />
@@ -117,7 +117,7 @@ const ReturnRequestForm: React.FC<ReturnRequestFormProps> = ({
             min="1"
             value={formData.quantity}
             onChange={(e) => handleChange('quantity', parseInt(e.target.value))}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400 font-mono"
           />
         </div>
 
@@ -129,7 +129,7 @@ const ReturnRequestForm: React.FC<ReturnRequestFormProps> = ({
           <select
             value={formData.reason}
             onChange={(e) => handleChange('reason', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white"
             required
           >
             <option value="">Select return reason</option>
@@ -150,7 +150,7 @@ const ReturnRequestForm: React.FC<ReturnRequestFormProps> = ({
             value={formData.description}
             onChange={(e) => handleChange('description', e.target.value)}
             rows={4}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
             placeholder="Describe the issue in detail..."
             required
           />

@@ -85,7 +85,7 @@ export const InviteCollaboratorModal: React.FC<InviteCollaboratorModalProps> = (
           </div>
           <button
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            className="p-2 text-slate-700 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -112,7 +112,7 @@ export const InviteCollaboratorModal: React.FC<InviteCollaboratorModalProps> = (
                 placeholder="colleague@company.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 dark:text-white"
+                className="w-full pl-10 pr-4 py-2.5 text-sm bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 dark:text-white font-bold border-slate-300 placeholder:text-slate-400"
               />
             </div>
           </div>
@@ -128,7 +128,7 @@ export const InviteCollaboratorModal: React.FC<InviteCollaboratorModalProps> = (
                 placeholder="Marcus Ellery"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 dark:text-white"
+                className="w-full pl-10 pr-4 py-2.5 text-sm bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 dark:text-white font-bold border-slate-300 placeholder:text-slate-400"
               />
             </div>
           </div>
@@ -194,7 +194,7 @@ export const InviteCollaboratorModal: React.FC<InviteCollaboratorModalProps> = (
                   name="loc"
                   checked={locationType === 'ALL'}
                   onChange={() => setLocationType('ALL')}
-                  className="sr-only"
+                  className="sr-only text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
                 <MapPin className="w-4 h-4" />
                 <span className="font-medium">All Locations</span>
@@ -212,7 +212,7 @@ export const InviteCollaboratorModal: React.FC<InviteCollaboratorModalProps> = (
                   name="loc"
                   checked={locationType === 'SPECIFIC'}
                   onChange={() => setLocationType('SPECIFIC')}
-                  className="sr-only"
+                  className="sr-only text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
                 <MapPin className="w-4 h-4" />
                 <span className="font-medium">Specific Location</span>

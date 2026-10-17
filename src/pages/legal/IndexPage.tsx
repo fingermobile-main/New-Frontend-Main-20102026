@@ -75,7 +75,7 @@ const LegalIndexPage: React.FC = () => {
     <LegalLayout>
       <div className="bg-white rounded-2xl shadow-sm border border-slate-300 p-6 lg:p-10">
         <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 text-blue-700 text-xs font-bold rounded-full mb-3 border border-blue-200">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 text-blue-950 text-xs font-bold rounded-full mb-3 border border-blue-400 text-blue-950 border-blue-400 font-black">
             <ShieldCheckIcon className="w-4 h-4" />
             <span>FingerMobile Protocol™ Legal Trust Center</span>
           </div>
@@ -93,7 +93,7 @@ const LegalIndexPage: React.FC = () => {
             <Link
               key={index}
               to={doc.link}
-              className="group border border-gray-200 hover:border-blue-400 rounded-2xl p-6 hover:shadow-lg hover:shadow-blue-50/50 transition-all duration-200 flex flex-col justify-between"
+              className="group border border-slate-300 hover:border-blue-400 rounded-2xl p-6 hover:shadow-lg hover:shadow-blue-50/50 transition-all duration-200 flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center justify-between mb-4">
@@ -125,7 +125,7 @@ const LegalIndexPage: React.FC = () => {
             <div>
               <span className="text-xs uppercase tracking-widest text-blue-400 font-bold">Data Subject Sovereignty</span>
               <h2 className="text-2xl font-bold mt-1">Exercise Your Legal & Privacy Rights</h2>
-              <p className="text-slate-300 text-sm mt-1 max-w-xl">
+              <p className="text-slate-700 text-sm mt-1 max-w-xl">
                 Submit NDPA/GDPR Data Subject Requests for access, rectification, or porting of your account data. You may also initiate permanent account termination or report copyright infringement.
               </p>
             </div>
@@ -159,7 +159,7 @@ const LegalIndexPage: React.FC = () => {
         </div>
 
         {/* Contact Strip */}
-        <div className="pt-8 border-t border-gray-200">
+        <div className="pt-8 border-t border-slate-300">
           <h2 className="text-xl font-bold text-gray-900 mb-4">Statutory Contact & Data Protection Officer (DPO)</h2>
           <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

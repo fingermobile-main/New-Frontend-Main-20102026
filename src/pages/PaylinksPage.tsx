@@ -314,7 +314,7 @@ const PaylinksPage: React.FC = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search paylinks by title or description..."
-              className="w-full px-4 py-2.5 text-xs bg-white border border-slate-300 rounded-xl text-slate-900 font-bold placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 shadow-2xs"
+              className="w-full px-4 py-2.5 text-xs bg-white border border-slate-300 rounded-xl text-slate-900 font-bold placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500 shadow-2xs"
             />
           </div>
 
@@ -368,7 +368,7 @@ const PaylinksPage: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => handleDelete(link.id)}
-                        className="p-1 rounded-lg text-slate-400 hover:text-rose-600 transition-colors"
+                        className="p-1 rounded-lg text-slate-700 hover:text-rose-600 transition-colors"
                         title="Archive Paylink"
                       >
                         <TrashIcon className="w-4 h-4" />
@@ -466,7 +466,7 @@ const PaylinksPage: React.FC = () => {
                     value={newTitle}
                     onChange={(e) => setNewTitle(e.target.value)}
                     placeholder="e.g. Master Design Retainer or Digital Book"
-                    className="w-full px-3.5 py-2.5 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 font-bold placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    className="w-full px-3.5 py-2.5 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 font-bold placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500"
                   />
                 </div>
 
@@ -479,7 +479,7 @@ const PaylinksPage: React.FC = () => {
                     value={newDescription}
                     onChange={(e) => setNewDescription(e.target.value)}
                     placeholder="Describe what the payer receives upon settlement..."
-                    className="w-full px-3.5 py-2 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 font-bold placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    className="w-full px-3.5 py-2 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 font-bold placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500"
                   />
                 </div>
 
@@ -508,7 +508,7 @@ const PaylinksPage: React.FC = () => {
                       disabled={newType === 'donation'}
                       value={newAmount}
                       onChange={(e) => setNewAmount(e.target.value)}
-                      className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-orange-500 disabled:bg-slate-100"
+                      className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-orange-500 disabled:bg-white placeholder:text-slate-400 font-mono"
                     />
                   </div>
 
@@ -622,7 +622,7 @@ const PaylinksPage: React.FC = () => {
                   type="number"
                   value={giftAmount}
                   onChange={(e) => setGiftAmount(e.target.value)}
-                  className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-orange-500 placeholder:text-slate-400 font-mono"
                 />
               </div>
 

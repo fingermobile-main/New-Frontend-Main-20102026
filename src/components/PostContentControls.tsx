@@ -239,7 +239,7 @@ export const PostContentControls: React.FC<PostContentControlsProps> = ({
               <h3 className="font-bold text-gray-900">Privacy & Access Settings</h3>
               <button
                 onClick={() => setIsPrivacyModalOpen(false)}
-                className="text-gray-400 hover:text-gray-600"
+                className="text-slate-700 hover:text-gray-600"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                   <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
@@ -253,7 +253,7 @@ export const PostContentControls: React.FC<PostContentControlsProps> = ({
                 <select
                   value={privacySettings.visibility}
                   onChange={(e) => onPrivacyChange({...privacySettings, visibility: e.target.value as any})}
-                  className="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                  className="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2"
                 >
                   <option value="public">🌍 Public</option>
                   <option value="connections">🤝 Connections</option>
@@ -269,7 +269,7 @@ export const PostContentControls: React.FC<PostContentControlsProps> = ({
                   id="pinExchangeRequired"
                   checked={privacySettings.pinExchangeRequired}
                   onChange={(e) => onPrivacyChange({...privacySettings, pinExchangeRequired: e.target.checked})}
-                  className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                  className="h-4 w-4 text-slate-900 focus:ring-indigo-500 border-gray-300 rounded font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                 />
                 <label htmlFor="pinExchangeRequired" className="ml-2 block text-sm text-gray-900">
                   Require PIN exchange to view
@@ -282,7 +282,7 @@ export const PostContentControls: React.FC<PostContentControlsProps> = ({
                   id="giftRequiredToView"
                   checked={privacySettings.giftRequiredToView}
                   onChange={(e) => onPrivacyChange({...privacySettings, giftRequiredToView: e.target.checked})}
-                  className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                  className="h-4 w-4 text-slate-900 focus:ring-indigo-500 border-gray-300 rounded font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                 />
                 <label htmlFor="giftRequiredToView" className="ml-2 block text-sm text-gray-900">
                   Require gift to view

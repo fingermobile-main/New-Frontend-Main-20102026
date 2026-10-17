@@ -67,7 +67,7 @@ export const MiiStoriesBar: React.FC<MiiStoriesBarProps> = ({
   };
 
   return (
-    <div className={`bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-4 shadow-sm mb-6 ${className}`}>
+    <div className={`bg-white dark:bg-gray-900 border border-slate-300 dark:border-gray-800 rounded-2xl p-4 shadow-sm mb-6 ${className}`}>
       {/* Top Banner with Quick Actions: Pin Sync, Orbit, MiniStore */}
       <div className="flex items-center justify-between mb-3 text-xs">
         <div className="flex items-center space-x-2">
@@ -217,7 +217,7 @@ export const MiiStoriesBar: React.FC<MiiStoriesBarProps> = ({
               <input
                 type="text"
                 placeholder="Reply to Mii..."
-                className="flex-1 px-3 py-2 text-xs rounded-full bg-white/20 text-white placeholder:text-slate-500 border border-white/20 focus:outline-none"
+                className="flex-1 px-3 py-2 text-xs rounded-full bg-white text-slate-900 placeholder:text-slate-400 border border-white/20 focus:outline-none font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500"
               />
               <button className="px-3 py-2 bg-emerald-500 rounded-full text-white text-xs font-bold">
                 Send

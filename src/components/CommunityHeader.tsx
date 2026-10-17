@@ -138,10 +138,10 @@ const CommunityHeader: React.FC<CommunityHeaderProps> = ({
 
               {/* Tags */}
               <div className="flex items-center gap-2 mt-3">
-                <span className="px-3 py-1 bg-purple-100 text-purple-950 border border-purple-400 font-bold rounded-full text-sm font-medium">
+                <span className="px-3 py-1 bg-purple-100 text-purple-950 border border-purple-400 font-bold rounded-full text-sm font-medium font-black">
                   #technology
                 </span>
-                <span className="px-3 py-1 bg-blue-100 text-blue-950 border border-blue-400 font-bold rounded-full text-sm font-medium">
+                <span className="px-3 py-1 bg-blue-100 text-blue-950 border border-blue-400 font-bold rounded-full text-sm font-medium font-black">
                   #community
                 </span>
                 <span className="px-3 py-1 bg-green-100 text-green-950 border border-green-400 font-bold rounded-full text-sm font-medium">
@@ -153,7 +153,7 @@ const CommunityHeader: React.FC<CommunityHeaderProps> = ({
         </div>
 
         {/* Navigation Tabs */}
-        <div className="flex items-center gap-1 border-t border-gray-200">
+        <div className="flex items-center gap-1 border-t border-slate-300">
           <button className="px-4 py-3 border-b-2 border-purple-600 text-purple-600 font-medium">
             📝 Posts
           </button>

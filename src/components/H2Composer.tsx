@@ -33,7 +33,7 @@ const H2Composer: React.FC<H2ComposerProps> = ({
             value={value}
             onChange={handleChange}
             rows={3}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 font-mono text-sm"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 font-mono text-sm text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
             placeholder="Enter your heading content..."
           />
         </div>

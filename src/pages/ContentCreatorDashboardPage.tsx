@@ -103,7 +103,7 @@ const ContentCreatorDashboardPage: React.FC = () => {
                       <div className="flex items-center gap-1.5">
                         <HeartIcon className="w-4 h-4 text-slate-500" /> {content.likes}
                       </div>
-                      <button className="p-2 text-slate-400 hover:text-emerald-600 transition-colors">
+                      <button className="p-2 text-slate-700 hover:text-emerald-600 transition-colors">
                         <ChartBarIcon className="w-5 h-5" />
                       </button>
                     </div>

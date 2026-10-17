@@ -167,7 +167,7 @@ const ProductManager: React.FC<ProductManagerProps> = ({ storeId }) => {
                   type="text"
                   value={formData.name}
                   onChange={(e) => setFormData({...formData, name: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                   required
                 />
               </div>
@@ -180,7 +180,7 @@ const ProductManager: React.FC<ProductManagerProps> = ({ storeId }) => {
                   type="text"
                   value={formData.slug}
                   onChange={(e) => setFormData({...formData, slug: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                   required
                 />
               </div>
@@ -194,7 +194,7 @@ const ProductManager: React.FC<ProductManagerProps> = ({ storeId }) => {
                   step="0.01"
                   value={formData.price}
                   onChange={(e) => setFormData({...formData, price: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400 font-mono"
                   required
                 />
               </div>
@@ -207,7 +207,7 @@ const ProductManager: React.FC<ProductManagerProps> = ({ storeId }) => {
                   type="text"
                   value={formData.category}
                   onChange={(e) => setFormData({...formData, category: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                 />
               </div>
 
@@ -219,7 +219,7 @@ const ProductManager: React.FC<ProductManagerProps> = ({ storeId }) => {
                   value={formData.description}
                   onChange={(e) => setFormData({...formData, description: e.target.value})}
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                 />
               </div>
 

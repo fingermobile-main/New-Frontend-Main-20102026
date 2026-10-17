@@ -127,7 +127,7 @@ const SentientAIDashboard: React.FC<SentientAIDashboardProps> = ({ userId }) => 
             value={behaviorData}
             onChange={(e) => setBehaviorData(e.target.value)}
             placeholder='Enter behavior data as JSON array (e.g., [{"action": "login", "timestamp": "..."}])...'
-            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white"
+            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
             rows={4}
           />
 
@@ -165,7 +165,7 @@ const SentientAIDashboard: React.FC<SentientAIDashboardProps> = ({ userId }) => 
                 <h4 className="font-medium mb-2">Anomalies Detected ({lastAnalysis.anomalies.length})</h4>
                 <div className="space-y-2">
                   {lastAnalysis.anomalies.map((anomaly, idx) => (
-                    <div key={idx} className="border border-gray-200 dark:border-gray-700 rounded-lg p-3">
+                    <div key={idx} className="border border-slate-300 dark:border-gray-700 rounded-lg p-3">
                       <div className="flex items-center justify-between mb-2">
                         <span className="font-medium">{anomaly.type || 'Unknown'}</span>
                         <span className="text-xs text-gray-500 dark:text-gray-400">
@@ -217,7 +217,7 @@ const SentientAIDashboard: React.FC<SentientAIDashboardProps> = ({ userId }) => 
         ) : (
           <div className="space-y-3">
             {anomalies.slice(0, 10).map((anomaly, idx) => (
-              <div key={idx} className="border border-gray-200 dark:border-gray-700 rounded-lg p-3">
+              <div key={idx} className="border border-slate-300 dark:border-gray-700 rounded-lg p-3">
                 <div className="flex items-center justify-between mb-2">
                   <span className="font-medium">{anomaly.type || 'Unknown Anomaly'}</span>
                   <span className="text-xs text-gray-500 dark:text-gray-400">

@@ -119,13 +119,13 @@ const Dancia4TvHeader: React.FC<Dancia4TvHeaderProps> = ({
         )}
 
         <div className="hidden lg:flex items-center bg-white/10 border border-white/20 rounded-full px-4 py-2 w-64 focus-within:w-80 focus-within:border-blue-500/50 transition-all">
-          <Search size={18} className="text-slate-300" />
+          <Search size={18} className="text-slate-700" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => onSearchChange && onSearchChange(e.target.value)}
             placeholder="Search films, VoD, AI channels..."
-            className="bg-transparent border-0 text-sm text-white focus:ring-0 w-full ml-3 outline-none placeholder:text-slate-300"
+            className="bg-transparent border text-sm text-slate-900 focus:ring-0 w-full ml-3 outline-none placeholder:text-slate-400 font-bold border-slate-300 rounded"
           />
         </div>
 

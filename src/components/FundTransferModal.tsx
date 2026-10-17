@@ -171,7 +171,7 @@ const FundTransferModal: React.FC<FundTransferModalProps> = ({
                   placeholder="0.00"
                   step="0.01"
                   min="0"
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400 font-mono"
                   required
                 />
               </div>
@@ -201,7 +201,7 @@ const FundTransferModal: React.FC<FundTransferModalProps> = ({
                 value={recipient}
                 onChange={(e) => setRecipient(e.target.value)}
                 placeholder={transferType === 'send' ? 'Username or email' : 'Username or email'}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                 required
               />
             </div>
@@ -217,7 +217,7 @@ const FundTransferModal: React.FC<FundTransferModalProps> = ({
                 placeholder="Add a message..."
                 rows={3}
                 maxLength={200}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               />
               <p className="text-xs text-gray-500 mt-1">{note.length}/200 characters</p>
             </div>
@@ -235,7 +235,7 @@ const FundTransferModal: React.FC<FundTransferModalProps> = ({
                     <span className="text-gray-600">Fee:</span>
                     <span className="font-medium text-green-600">Free</span>
                   </div>
-                  <div className="flex justify-between border-t border-gray-200 pt-2 font-bold">
+                  <div className="flex justify-between border-t border-slate-300 pt-2 font-bold">
                     <span>Total:</span>
                     <span>{formatCurrency(parseFloat(amount))}</span>
                   </div>

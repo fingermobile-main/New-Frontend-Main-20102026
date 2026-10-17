@@ -56,7 +56,7 @@ const EnhancedFilterBar: React.FC<EnhancedFilterBarProps> = ({
           placeholder={filterOptions?.searchPlaceholder || 'Search...'}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent min-w-48"
+          className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent min-w-48 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
           onKeyPress={(e) => {
             if (e.key === 'Enter') {
               handleApplyFilters();
@@ -68,7 +68,7 @@ const EnhancedFilterBar: React.FC<EnhancedFilterBarProps> = ({
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+            className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white"
           >
             <option value="">All Categories</option>
             {filterOptions.categories.map((option, index) => (
@@ -83,7 +83,7 @@ const EnhancedFilterBar: React.FC<EnhancedFilterBarProps> = ({
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+            className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white"
           >
             <option value="">Sort By</option>
             {filterOptions.sortByOptions.map((option, index) => (

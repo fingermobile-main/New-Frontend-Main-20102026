@@ -103,7 +103,7 @@ const BlogPostCard: React.FC<BlogPostCardProps> = ({
               />
             ))}
             {post.gallery_images.length > 3 && (
-              <div className="w-20 h-20 bg-gray-100 rounded flex items-center justify-center text-sm text-muted-foreground">
+              <div className="w-20 h-20 bg-gray-100 rounded flex items-center justify-center text-sm text-slate-700">
                 +{post.gallery_images.length - 3}
               </div>
             )}

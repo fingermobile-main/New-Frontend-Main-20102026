@@ -378,7 +378,7 @@ export const ForumPostComposer: React.FC<ForumPostComposerProps> = ({
           placeholder="Post title or headline (optional)..."
           value={composerTitle}
           onChange={(e) => setComposerTitle(e.target.value)}
-          className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 placeholder:text-slate-700 focus:ring-1 focus:ring-orange-500 focus:outline-none"
+          className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-900 placeholder:text-slate-400 focus:ring-1 focus:ring-orange-500 focus:outline-none border-slate-300"
         />
 
         {/* Mandatory Category Dropdown */}
@@ -388,7 +388,7 @@ export const ForumPostComposer: React.FC<ForumPostComposerProps> = ({
               value={composerCategory}
               onChange={(e) => setComposerCategory(e.target.value)}
               required
-              className="w-full px-3 py-2 bg-amber-50/60 border border-amber-200 rounded-xl text-xs font-bold text-slate-900 focus:ring-1 focus:ring-orange-500 focus:outline-none cursor-pointer"
+              className="w-full px-3 py-2 bg-white border border-amber-200 rounded-xl text-xs font-bold text-slate-900 focus:ring-1 focus:ring-orange-500 focus:outline-none cursor-pointer border-slate-300"
             >
               <option value="">▼ Select Mandatory Category (54 Available Topics)...</option>
               {MASTER_CATEGORIES_CATALOG.map((c) => (
@@ -408,7 +408,7 @@ export const ForumPostComposer: React.FC<ForumPostComposerProps> = ({
               placeholder="Share discussions, paste https:// URLs for instant OG previews, or attach media/stems..."
               value={composerContent}
               onChange={(e) => setComposerContent(e.target.value)}
-              className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder:text-slate-500 focus:ring-1 focus:ring-orange-500 focus:outline-none resize-none leading-relaxed"
+              className="w-full p-3 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:ring-1 focus:ring-orange-500 focus:outline-none resize-none leading-relaxed font-bold border-slate-300"
             />
 
             {/* Markdown Inserters */}
@@ -453,7 +453,7 @@ export const ForumPostComposer: React.FC<ForumPostComposerProps> = ({
                 <p className="whitespace-pre-wrap font-medium">{composerContent}</p>
               </div>
             ) : (
-              <span className="text-slate-400 italic">No content typed yet. Switch back to write.</span>
+              <span className="text-slate-700 italic">No content typed yet. Switch back to write.</span>
             )}
           </div>
         )}
@@ -716,7 +716,7 @@ export const ForumPostComposer: React.FC<ForumPostComposerProps> = ({
         </div>
 
         {/* Hidden inputs for file triggers */}
-        <input ref={mediaFileInputRef} type="file" multiple accept="image/*,video/*" onChange={handleMediaUpload} className="hidden" />
+        <input ref={mediaFileInputRef} type="file" multiple accept="image/*,video/*" onChange={handleMediaUpload} className="hidden text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" />
         <input
           ref={fileInputRef}
           type="file"
@@ -733,7 +733,7 @@ export const ForumPostComposer: React.FC<ForumPostComposerProps> = ({
               triggerToast?.(`Attached file: ${f.name}`, 'success');
             }
           }}
-          className="hidden"
+          className="hidden text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
         />
 
         {/* SUB-PANEL 1: CAMERA */}
@@ -761,7 +761,7 @@ export const ForumPostComposer: React.FC<ForumPostComposerProps> = ({
                   placeholder="Or paste media URL (https://...)"
                   value={mediaInputUrl}
                   onChange={(e) => setMediaInputUrl(e.target.value)}
-                  className="flex-1 px-3 py-1.5 bg-white border border-sky-200 rounded-xl text-xs text-slate-900 font-medium"
+                  className="flex-1 px-3 py-1.5 bg-white border border-sky-200 rounded-xl text-xs text-slate-900 font-medium font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
                 <button
                   type="button"
@@ -834,7 +834,7 @@ export const ForumPostComposer: React.FC<ForumPostComposerProps> = ({
               placeholder="Poll Question (e.g. Which feature should we build next?)"
               value={pollDraftQuestion}
               onChange={(e) => setPollDraftQuestion(e.target.value)}
-              className="w-full px-3 py-1.5 bg-white border border-purple-200 rounded-xl text-xs font-semibold text-slate-900"
+              className="w-full px-3 py-1.5 bg-white border border-purple-200 rounded-xl text-xs font-semibold text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
             />
             <div className="space-y-1.5">
               {pollDraftOptions.map((opt, idx) => (
@@ -848,7 +848,7 @@ export const ForumPostComposer: React.FC<ForumPostComposerProps> = ({
                     u[idx] = e.target.value;
                     setPollDraftOptions(u);
                   }}
-                  className="w-full px-3 py-1.5 bg-white border border-purple-200 rounded-xl text-xs text-slate-900 font-medium"
+                  className="w-full px-3 py-1.5 bg-white border border-purple-200 rounded-xl text-xs text-slate-900 font-medium font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               ))}
             </div>
@@ -892,14 +892,14 @@ export const ForumPostComposer: React.FC<ForumPostComposerProps> = ({
                 placeholder="Event Title..."
                 value={eventDraftTitle}
                 onChange={(e) => setEventDraftTitle(e.target.value)}
-                className="w-full px-3 py-1.5 bg-white border border-emerald-200 rounded-xl text-xs font-semibold text-slate-900"
+                className="w-full px-3 py-1.5 bg-white border border-emerald-200 rounded-xl text-xs font-semibold text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
               />
               <input
                 type="text"
                 placeholder="Date & Time (e.g. Oct 20, 2026 • 18:00 WAT)"
                 value={eventDraftDate}
                 onChange={(e) => setEventDraftDate(e.target.value)}
-                className="w-full px-3 py-1.5 bg-white border border-emerald-200 rounded-xl text-xs text-slate-900 font-medium"
+                className="w-full px-3 py-1.5 bg-white border border-emerald-200 rounded-xl text-xs text-slate-900 font-medium font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
               />
             </div>
             <input
@@ -907,7 +907,7 @@ export const ForumPostComposer: React.FC<ForumPostComposerProps> = ({
               placeholder="Location or Virtual Node URL..."
               value={eventDraftLocation}
               onChange={(e) => setEventDraftLocation(e.target.value)}
-              className="w-full px-3 py-1.5 bg-white border border-emerald-200 rounded-xl text-xs text-slate-900 font-medium"
+              className="w-full px-3 py-1.5 bg-white border border-emerald-200 rounded-xl text-xs text-slate-900 font-medium font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
             />
             <button
               type="button"
@@ -968,7 +968,7 @@ export const ForumPostComposer: React.FC<ForumPostComposerProps> = ({
                 placeholder="https://fingermobileprotocol.com/..."
                 value={linkInputUrl}
                 onChange={(e) => setLinkInputUrl(e.target.value)}
-                className="flex-1 px-3 py-1.5 bg-white border border-blue-200 rounded-xl text-xs text-slate-900 font-medium"
+                className="flex-1 px-3 py-1.5 bg-white border border-blue-200 rounded-xl text-xs text-slate-900 font-medium font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
               />
               <button
                 type="button"
@@ -1068,7 +1068,7 @@ export const ForumPostComposer: React.FC<ForumPostComposerProps> = ({
                       }
                     }
                   }}
-                  className="flex-1 px-3 py-2 bg-white border border-rose-300 rounded-xl text-xs font-bold text-slate-900 placeholder:text-slate-700 focus:outline-hidden focus:ring-2 focus:ring-rose-500"
+                  className="flex-1 px-3 py-2 bg-white border border-rose-300 rounded-xl text-xs font-bold text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:ring-2 focus:ring-rose-500 border-slate-300"
                 />
                 <button
                   type="button"

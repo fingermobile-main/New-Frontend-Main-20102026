@@ -294,7 +294,7 @@ const RateLimitConfigPage: React.FC = () => {
                     value={newConfig.name}
                     onChange={(e) => setNewConfig({ ...newConfig, name: e.target.value })}
                     placeholder="e.g., Premium User Rate Limit"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                   />
                 </div>
 
@@ -307,7 +307,7 @@ const RateLimitConfigPage: React.FC = () => {
                     value={newConfig.endpointPattern}
                     onChange={(e) => setNewConfig({ ...newConfig, endpointPattern: e.target.value })}
                     placeholder="e.g., /api/users/* or /api/payments/process"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                   />
                   <p className="text-xs text-gray-500 mt-1">Use * as wildcard. Example: /api/* matches all API routes</p>
                 </div>
@@ -321,7 +321,7 @@ const RateLimitConfigPage: React.FC = () => {
                       type="number"
                       value={newConfig.maxRequests}
                       onChange={(e) => setNewConfig({ ...newConfig, maxRequests: parseInt(e.target.value) })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400 font-mono"
                     />
                   </div>
                   <div>
@@ -331,7 +331,7 @@ const RateLimitConfigPage: React.FC = () => {
                     <select
                       value={newConfig.windowMs}
                       onChange={(e) => setNewConfig({ ...newConfig, windowMs: parseInt(e.target.value) })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white"
                     >
                       <option value={60000}>1 minute</option>
                       <option value={300000}>5 minutes</option>
@@ -355,7 +355,7 @@ const RateLimitConfigPage: React.FC = () => {
                         setNewConfig({ ...newConfig, userRole: undefined, userId: undefined });
                       }
                     }}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white"
                   >
                     <option value="global">All Users (Global)</option>
                     <option value="role:admin">Admin Users</option>
@@ -370,7 +370,7 @@ const RateLimitConfigPage: React.FC = () => {
                     id="isActive"
                     checked={newConfig.isActive}
                     onChange={(e) => setNewConfig({ ...newConfig, isActive: e.target.checked })}
-                    className="h-4 w-4 text-yellow-600 focus:ring-yellow-500 border-gray-300 rounded"
+                    className="h-4 w-4 text-slate-900 focus:ring-yellow-500 border-gray-300 rounded font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                   />
                   <label htmlFor="isActive" className="ml-2 text-sm text-gray-700">
                     Enable this rule immediately

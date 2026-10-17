@@ -78,7 +78,7 @@ const HelpPage: React.FC = () => {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 animate-in fade-in duration-500">
         {/* Header Hero */}
         <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-bold rounded-full mb-4 border border-blue-200 dark:border-blue-800">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-950 dark:text-blue-300 text-xs font-bold rounded-full mb-4 border border-blue-400 dark:border-blue-800 text-blue-950 border-blue-400 font-black">
             <LifebuoyIcon className="w-4 h-4" />
             <span>FingerMobile Knowledge Center</span>
           </div>
@@ -99,7 +99,7 @@ const HelpPage: React.FC = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search guides, FIC vault, privacy, or error codes..."
-              className="block w-full pl-12 pr-4 py-3.5 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-2xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 dark:text-white placeholder:text-slate-500 text-base"
+              className="block w-full pl-12 pr-4 py-3.5 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-2xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 dark:text-white placeholder:text-slate-400 text-base font-bold"
             />
           </div>
         </div>
@@ -130,7 +130,7 @@ const HelpPage: React.FC = () => {
                 className="bg-white dark:bg-slate-800/90 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm p-6 transition-all"
               >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
-                  <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-50 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 w-fit">
+                  <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-50 dark:bg-blue-900/40 text-blue-950 dark:text-blue-300 w-fit border text-blue-950 border-blue-400 font-black">
                     {topic.category}
                   </span>
                 </div>

@@ -309,7 +309,7 @@ const DanciaMediaManager: React.FC = () => {
               </div>
               <button
                 onClick={fetchCatalog}
-                className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white transition-colors"
+                className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-700 hover:text-white transition-colors"
                 title="Refresh catalog"
               >
                 <RefreshCw size={16} className={loading ? 'animate-spin' : ''} />

@@ -41,7 +41,7 @@ const EditorHeader: React.FC<EditorHeaderProps> = React.memo(({
         type="text"
         value={pageName}
         onChange={(e) => onPageNameChange(e.target.value)}
-        className="font-semibold text-base, sm:text-lg border-transparent rounded-md, focus:ring-2, focus:ring-brand-blue, focus:border-transparent flex-1 min-w-[200px]"
+        className="font-semibold text-base, sm:text-lg border-transparent rounded-md, focus:ring-2, focus:ring-brand-blue, focus:border-transparent flex-1 min-w-[200px] text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
       />
       <div className="flex flex-wrap items-center gap-2">
         <button
@@ -61,7 +61,7 @@ const EditorHeader: React.FC<EditorHeaderProps> = React.memo(({
           value={aiPrompt}
           onChange={(e) => onAiPromptChange(e.target.value)}
           placeholder="Describe component to AI..."
-          className="px-4 py-2 text-xs, sm:text-sm border border-gray-300 rounded-full, focus:ring-2, focus:ring-brand-blue, focus:border-transparent flex-1 min-w-[150px]"
+          className="px-4 py-2 text-xs, sm:text-sm border border-gray-300 rounded-full, focus:ring-2, focus:ring-brand-blue, focus:border-transparent flex-1 min-w-[150px] text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
         />
         <button
           onClick={onGenerateWithAi}

@@ -493,7 +493,7 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
                     </h3>
                     <div className="flex items-center gap-1.5 pt-0.5">
                       <span className="text-xs font-bold text-slate-700">{pin.author.handle}</span>
-                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-950 font-bold border border-emerald-300">
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-950 font-bold border border-emerald-400 border-emerald-400 font-black">
                         {pin.author.domainReputation}
                       </span>
                     </div>
@@ -687,7 +687,7 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
                           value={commentText}
                           onChange={(e) => setCommentText(e.target.value)}
                           placeholder="Add a comment or design critique..."
-                          className="flex-1 pl-4 pr-24 py-2 bg-transparent text-xs font-bold text-slate-900 placeholder:text-slate-500 focus:outline-none"
+                          className="flex-1 pl-4 pr-24 py-2 bg-transparent text-xs font-bold text-slate-900 placeholder:text-slate-400 focus:outline-none border border-slate-300 rounded focus:ring-2 focus:ring-indigo-500"
                         />
 
                         {/* Input Accessories */}

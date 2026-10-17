@@ -39,7 +39,7 @@ const CapCutInspiredEditor: React.FC<CapCutInspiredEditorProps> = ({
               {effects.includes('Neon') && <div className="absolute inset-0 bg-gradient-to-r from-pink-500/20 to-cyan-500/20 pointer-events-none"></div>}
             </>
           ) : (
-            <p className="text-gray-400">No video loaded</p>
+            <p className="text-slate-700">No video loaded</p>
           )}
         </div>
 
@@ -96,7 +96,7 @@ const CapCutInspiredEditor: React.FC<CapCutInspiredEditorProps> = ({
               max="4"
               step="0.25"
               defaultValue="1"
-              className="w-full"
+              className="w-full text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
             />
             <div className="flex justify-between text-xs text-gray-500 mt-1">
               <span>0.25x</span>
@@ -112,7 +112,7 @@ const CapCutInspiredEditor: React.FC<CapCutInspiredEditorProps> = ({
           <select
             value={transitions}
             onChange={(e) => setTransitions(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500"
           >
             <option value="fade">Fade</option>
             <option value="slide">Slide</option>

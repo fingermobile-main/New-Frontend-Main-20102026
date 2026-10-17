@@ -323,7 +323,7 @@ const MasterEcommerceConsole: React.FC = () => {
                     [FingerMobile™Protocol]
                   </span>
                 </div>
-                <p className="text-xs text-slate-400">
+                <p className="text-xs text-slate-700">
                   Dual-Currency Settlement Engine (FIC / ₦), 90 Multi-Vendor Catalog SKUs, 10% Permanent Burn Controller & Order Escrow
                 </p>
               </div>
@@ -450,16 +450,16 @@ const MasterEcommerceConsole: React.FC = () => {
                 placeholder="Search flagship products by name, category, SKU..."
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-3 py-2 text-xs border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-orange-500"
+                className="w-full pl-9 pr-3 py-2 text-xs border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-orange-500 font-bold border-slate-300 placeholder:text-slate-400"
               />
             </div>
 
             <div className="flex items-center gap-2">
-              <Filter className="w-3.5 h-3.5 text-slate-400" />
+              <Filter className="w-3.5 h-3.5 text-slate-700" />
               <select
                 value={categoryFilter}
                 onChange={e => setCategoryFilter(e.target.value)}
-                className="text-xs py-2 px-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-medium"
+                className="text-xs py-2 px-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-200 font-medium font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500"
               >
                 <option value="ALL">All Categories ({flagshipProducts.length})</option>
                 {flagshipCategories.map(c => (
@@ -495,7 +495,7 @@ const MasterEcommerceConsole: React.FC = () => {
                         />
                         <div className="min-w-0">
                           <div className="font-bold text-slate-900 dark:text-white truncate max-w-xs">{prod.name}</div>
-                          <div className="text-[10px] text-slate-400 truncate max-w-xs">{prod.tagline}</div>
+                          <div className="text-[10px] text-slate-700 truncate max-w-xs">{prod.tagline}</div>
                         </div>
                       </div>
                     </td>
@@ -503,7 +503,7 @@ const MasterEcommerceConsole: React.FC = () => {
                       <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-300 border border-blue-200 dark:border-blue-900">
                         {prod.category}
                       </span>
-                      <div className="text-[10px] font-mono text-slate-400 mt-1">{prod.sku}</div>
+                      <div className="text-[10px] font-mono text-slate-700 mt-1">{prod.sku}</div>
                     </td>
                     <td className="py-3.5 px-4 text-right font-black font-mono text-orange-600 dark:text-orange-400">
                       {prod.priceFic.toLocaleString()} FIC
@@ -528,7 +528,7 @@ const MasterEcommerceConsole: React.FC = () => {
                           </span>
                           <button
                             onClick={() => copyToClipboard(prod.authenticity_ledger_hash || '', prod.id)}
-                            className="p-1 text-slate-400 hover:text-slate-600 rounded transition"
+                            className="p-1 text-slate-700 hover:text-slate-600 rounded transition"
                           >
                             <span title="Copy authenticity hash">
                               {copiedHash === prod.id ? (
@@ -540,7 +540,7 @@ const MasterEcommerceConsole: React.FC = () => {
                           </button>
                         </div>
                       ) : (
-                        <span className="text-slate-400">—</span>
+                        <span className="text-slate-700">—</span>
                       )}
                     </td>
                     <td className="py-3.5 px-4 text-right">
@@ -574,16 +574,16 @@ const MasterEcommerceConsole: React.FC = () => {
                 placeholder="Search creator items by name, creator, category..."
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-3 py-2 text-xs border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-orange-500"
+                className="w-full pl-9 pr-3 py-2 text-xs border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-orange-500 font-bold border-slate-300 placeholder:text-slate-400"
               />
             </div>
 
             <div className="flex items-center gap-2">
-              <Filter className="w-3.5 h-3.5 text-slate-400" />
+              <Filter className="w-3.5 h-3.5 text-slate-700" />
               <select
                 value={categoryFilter}
                 onChange={e => setCategoryFilter(e.target.value)}
-                className="text-xs py-2 px-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-medium"
+                className="text-xs py-2 px-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-200 font-medium font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500"
               >
                 <option value="ALL">All Categories ({storefrontProducts.length})</option>
                 {storefrontCategories.map(c => (
@@ -617,7 +617,7 @@ const MasterEcommerceConsole: React.FC = () => {
                         <span className="text-[10px] font-bold text-amber-500">★ {item.rating}</span>
                       </div>
                       <h4 className="font-bold text-xs text-slate-900 dark:text-white mt-1 truncate">{item.name}</h4>
-                      <p className="text-[10px] text-slate-400 truncate">{item.sellerName || 'Verified Merchant'}</p>
+                      <p className="text-[10px] text-slate-700 truncate">{item.sellerName || 'Verified Merchant'}</p>
                     </div>
                   </div>
 
@@ -636,7 +636,7 @@ const MasterEcommerceConsole: React.FC = () => {
                     </div>
 
                     <div className="text-right">
-                      <div className="text-[10px] text-slate-400">10% Protocol Burn</div>
+                      <div className="text-[10px] text-slate-700">10% Protocol Burn</div>
                       <div className="text-[11px] font-mono font-bold text-rose-500">
                         -{burnFic.toFixed(2)} FIC
                       </div>
@@ -670,19 +670,19 @@ const MasterEcommerceConsole: React.FC = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
               <div className="p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                <div className="text-xs font-bold text-slate-400">Creator Revenue Split</div>
+                <div className="text-xs font-bold text-slate-700">Creator Revenue Split</div>
                 <div className="text-2xl font-black text-emerald-500 mt-1">85.0%</div>
                 <div className="text-[11px] text-slate-500 mt-0.5">Instant settlement to Creator FIC Wallet</div>
               </div>
 
               <div className="p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                <div className="text-xs font-bold text-slate-400">Deflationary Protocol Burn</div>
+                <div className="text-xs font-bold text-slate-700">Deflationary Protocol Burn</div>
                 <div className="text-2xl font-black text-rose-500 mt-1">10.0%</div>
                 <div className="text-[11px] text-slate-500 mt-0.5">Permanent burn to dead address (0x0...dEaD)</div>
               </div>
 
               <div className="p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                <div className="text-xs font-bold text-slate-400">Protocol Operations Pool</div>
+                <div className="text-xs font-bold text-slate-700">Protocol Operations Pool</div>
                 <div className="text-2xl font-black text-blue-500 mt-1">5.0%</div>
                 <div className="text-[11px] text-slate-500 mt-0.5">Network upkeep & node validation reward</div>
               </div>
@@ -709,12 +709,12 @@ const MasterEcommerceConsole: React.FC = () => {
                     min="1"
                     value={calcInputFic}
                     onChange={e => setCalcInputFic(e.target.value)}
-                    className="flex-1 px-4 py-2.5 text-sm font-bold border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white"
+                    className="flex-1 px-4 py-2.5 text-sm font-bold border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
                   />
                   <select
                     value={calcSelectedCurrency}
                     onChange={e => setCalcSelectedCurrency(e.target.value as any)}
-                    className="px-3 py-2.5 text-xs font-bold border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white"
+                    className="px-3 py-2.5 text-xs font-bold border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border-slate-300 focus:ring-2 focus:ring-indigo-500"
                   >
                     <option value="FIC">FIC (Infinite Coin)</option>
                     <option value="NGN">NGN (Nigerian Naira)</option>
@@ -775,7 +775,7 @@ const MasterEcommerceConsole: React.FC = () => {
                   >
                     <div>
                       <div className="font-mono text-[11px] font-bold text-slate-900 dark:text-white">{burn.tx}</div>
-                      <div className="text-[10px] text-slate-400">{burn.item} • {burn.time}</div>
+                      <div className="text-[10px] text-slate-700">{burn.item} • {burn.time}</div>
                     </div>
                     <div className="text-right">
                       <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-rose-50 dark:bg-rose-950 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-900">
@@ -796,7 +796,7 @@ const MasterEcommerceConsole: React.FC = () => {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <h3 className="font-black text-sm text-slate-900 dark:text-white">Active Order Book & Escrow Tracking</h3>
-              <p className="text-xs text-slate-400">Multi-vendor orders settled via FIC and Nigerian Alternative Bank Rails</p>
+              <p className="text-xs text-slate-700">Multi-vendor orders settled via FIC and Nigerian Alternative Bank Rails</p>
             </div>
             <button
               onClick={() => showToast('Order receipts exported to PDF archive')}
@@ -824,19 +824,19 @@ const MasterEcommerceConsole: React.FC = () => {
                   <tr key={o.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition">
                     <td className="py-3.5 px-4">
                       <div className="font-mono font-bold text-slate-900 dark:text-white">{o.orderNumber}</div>
-                      <div className="text-[10px] text-slate-400">{o.date}</div>
+                      <div className="text-[10px] text-slate-700">{o.date}</div>
                     </td>
                     <td className="py-3.5 px-4">
                       <div className="font-bold text-slate-900 dark:text-white">{o.customerName}</div>
-                      <div className="text-[10px] text-slate-400 font-mono">{o.customerEmail}</div>
+                      <div className="text-[10px] text-slate-700 font-mono">{o.customerEmail}</div>
                     </td>
                     <td className="py-3.5 px-4 max-w-xs">
                       <div className="font-semibold text-slate-900 dark:text-white truncate">{o.itemTitle}</div>
-                      <div className="text-[10px] text-slate-400 truncate">{o.vendorName}</div>
+                      <div className="text-[10px] text-slate-700 truncate">{o.vendorName}</div>
                     </td>
                     <td className="py-3.5 px-4 text-right font-mono">
                       <div className="font-black text-orange-600 dark:text-orange-400">{o.amountFic} FIC</div>
-                      <div className="text-[10px] text-slate-400">₦{o.amountNgn.toLocaleString()}</div>
+                      <div className="text-[10px] text-slate-700">₦{o.amountNgn.toLocaleString()}</div>
                     </td>
                     <td className="py-3.5 px-4 text-center">
                       <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold ${
@@ -869,7 +869,7 @@ const MasterEcommerceConsole: React.FC = () => {
                           Release Escrow
                         </button>
                       ) : (
-                        <span className="text-[11px] text-slate-400 font-medium">Completed</span>
+                        <span className="text-[11px] text-slate-700 font-medium">Completed</span>
                       )}
                     </td>
                   </tr>
@@ -886,7 +886,7 @@ const MasterEcommerceConsole: React.FC = () => {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <h3 className="font-black text-sm text-slate-900 dark:text-white">Storefront Vendor Registry & Flamingo Tier</h3>
-              <p className="text-xs text-slate-400">Verified platform merchant accreditation and fee exemption controls</p>
+              <p className="text-xs text-slate-700">Verified platform merchant accreditation and fee exemption controls</p>
             </div>
             <button
               onClick={() => showToast('Vendor accreditation report generated')}
@@ -905,7 +905,7 @@ const MasterEcommerceConsole: React.FC = () => {
                 <div className="flex items-start justify-between">
                   <div>
                     <h4 className="font-black text-sm text-slate-900 dark:text-white">{ven.name}</h4>
-                    <p className="text-[11px] text-slate-400">{ven.owner}</p>
+                    <p className="text-[11px] text-slate-700">{ven.owner}</p>
                   </div>
                   <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
                     ven.tier === 'FLAMINGO_VIP'
@@ -918,15 +918,15 @@ const MasterEcommerceConsole: React.FC = () => {
 
                 <div className="grid grid-cols-2 gap-2 text-xs bg-slate-50 dark:bg-slate-800/50 p-3 rounded-xl border border-slate-100 dark:border-slate-800">
                   <div>
-                    <div className="text-[10px] text-slate-400">Total Sales</div>
+                    <div className="text-[10px] text-slate-700">Total Sales</div>
                     <div className="font-bold text-slate-900 dark:text-white">{ven.salesCount} orders</div>
                   </div>
                   <div>
-                    <div className="text-[10px] text-slate-400">Merchant Rating</div>
+                    <div className="text-[10px] text-slate-700">Merchant Rating</div>
                     <div className="font-bold text-amber-500">★ {ven.rating} / 5.0</div>
                   </div>
                   <div className="col-span-2 pt-2 border-t border-slate-200 dark:border-slate-700">
-                    <div className="text-[10px] text-slate-400">Total Settled Volume</div>
+                    <div className="text-[10px] text-slate-700">Total Settled Volume</div>
                     <div className="font-mono font-bold text-slate-900 dark:text-white">
                       {ven.gmvFic.toLocaleString()} FIC (₦{ven.gmvNgn.toLocaleString()})
                     </div>
@@ -964,7 +964,7 @@ const MasterEcommerceConsole: React.FC = () => {
               </h3>
               <button
                 onClick={() => setIsRestockModalOpen(false)}
-                className="text-slate-400 hover:text-slate-600"
+                className="text-slate-700 hover:text-slate-600"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -983,7 +983,7 @@ const MasterEcommerceConsole: React.FC = () => {
                 min="1"
                 value={restockAmount}
                 onChange={e => setRestockAmount(e.target.value)}
-                className="w-full px-3 py-2 text-xs border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white font-bold"
+                className="w-full px-3 py-2 text-xs border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
               />
             </div>
 

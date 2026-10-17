@@ -68,11 +68,11 @@ const FlamingoApprovalPage: React.FC = () => {
                   <span className="px-2 py-0.5 text-xs font-semibold rounded bg-pink-100 text-pink-800 dark:bg-pink-900/30 dark:text-pink-400">
                     Flamingo Asset
                   </span>
-                  <span className="text-xs text-gray-400">ID: {item.content_id}</span>
+                  <span className="text-xs text-slate-700">ID: {item.content_id}</span>
                 </div>
                 <h3 className="font-semibold text-gray-900 dark:text-white mt-1 text-base">{item.reason}</h3>
                 <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{item.description}</p>
-                <p className="text-xs text-gray-400 mt-2">Submitted on {new Date(item.created_at).toLocaleString()}</p>
+                <p className="text-xs text-slate-700 mt-2">Submitted on {new Date(item.created_at).toLocaleString()}</p>
               </div>
               <div className="flex items-center gap-3">
                 <button
@@ -94,7 +94,7 @@ const FlamingoApprovalPage: React.FC = () => {
       ) : (
         <div className="text-center text-gray-500 py-16 bg-white dark:bg-gray-800 rounded-xl border border-dashed border-gray-300 dark:border-gray-700">
           <p className="font-semibold text-gray-800 dark:text-gray-200">The Flamingo approval queue is clean</p>
-          <p className="text-sm text-gray-400 mt-1">No pending luxury outfits or sizing charts awaiting review.</p>
+          <p className="text-sm text-slate-700 mt-1">No pending luxury outfits or sizing charts awaiting review.</p>
         </div>
       )}
     </div>

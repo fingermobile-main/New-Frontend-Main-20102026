@@ -176,13 +176,13 @@ const NyscPage: React.FC = () => {
           {events.map((event) => (
             <div
               key={event.id}
-              className="border-b border-gray-200 pb-4 last:border-0 last:pb-0"
+              className="border-b border-slate-300 pb-4 last:border-0 last:pb-0"
             >
               <div className="flex justify-between items-start">
                 <h3 className="font-semibold text-lg text-gray-800">
                   {event.title}
                 </h3>
-                <span className="bg-blue-100 text-blue-950 border border-blue-400 font-bold text-xs font-medium px-2.5 py-0.5 rounded-full">
+                <span className="bg-blue-100 text-blue-950 border border-blue-400 font-bold text-xs font-medium px-2.5 py-0.5 rounded-full font-black">
                   {event.date}
                 </span>
               </div>
@@ -230,7 +230,7 @@ const NyscPage: React.FC = () => {
           {discussionsList.map((discussion) => (
             <div
               key={discussion.id}
-              className="border-b border-gray-200 pb-4 last:border-0 last:pb-0"
+              className="border-b border-slate-300 pb-4 last:border-0 last:pb-0"
             >
               <h3 className="font-semibold text-lg text-gray-800">
                 {discussion.title}

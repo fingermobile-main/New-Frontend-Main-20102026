@@ -83,7 +83,7 @@ const SubscriptionRecommendationForm: React.FC<SubscriptionRecommendationFormPro
 
   return (
     <div className="bg-white shadow overflow-hidden sm:rounded-lg max-w-3xl mx-auto">
-      <div className="px-4 py-5 sm:px-6 border-b border-gray-200">
+      <div className="px-4 py-5 sm:px-6 border-b border-slate-300">
         <h3 className="text-lg leading-6 font-medium text-gray-900">
           Get Your Personalized Plan Recommendation
         </h3>
@@ -117,7 +117,7 @@ const SubscriptionRecommendationForm: React.FC<SubscriptionRecommendationFormPro
                 <input
                   type="number"
                   id="followers"
-                  className="focus:ring-blue-500 focus:border-blue-500 block w-full pr-12 sm:text-sm border-gray-300 rounded-md"
+                  className="focus:ring-blue-500 focus:border-blue-500 block w-full pr-12 sm:text-sm border-gray-300 rounded-md text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400 font-mono"
                   placeholder="Enter follower count"
                   value={followers || ''}
                   onChange={(e) => setFollowers(Number(e.target.value))}
@@ -140,7 +140,7 @@ const SubscriptionRecommendationForm: React.FC<SubscriptionRecommendationFormPro
                   type="number"
                   step="0.01"
                   id="engagementRate"
-                  className="focus:ring-blue-500 focus:border-blue-500 block w-full pr-12 sm:text-sm border-gray-300 rounded-md"
+                  className="focus:ring-blue-500 focus:border-blue-500 block w-full pr-12 sm:text-sm border-gray-300 rounded-md text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400 font-mono"
                   placeholder="Enter engagement rate"
                   value={engagementRate || ''}
                   onChange={(e) => setEngagementRate(Number(e.target.value))}
@@ -164,7 +164,7 @@ const SubscriptionRecommendationForm: React.FC<SubscriptionRecommendationFormPro
                   type="number"
                   step="0.1"
                   id="bandwidthUsage"
-                  className="focus:ring-blue-500 focus:border-blue-500 block w-full pr-12 sm:text-sm border-gray-300 rounded-md"
+                  className="focus:ring-blue-500 focus:border-blue-500 block w-full pr-12 sm:text-sm border-gray-300 rounded-md text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400 font-mono"
                   placeholder="Enter bandwidth usage"
                   value={bandwidthUsage || ''}
                   onChange={(e) => setBandwidthUsage(Number(e.target.value))}
@@ -186,7 +186,7 @@ const SubscriptionRecommendationForm: React.FC<SubscriptionRecommendationFormPro
                 <input
                   type="number"
                   id="monetizationEarnings"
-                  className="focus:ring-blue-500 focus:border-blue-500 block w-full pr-12 pl-4 sm:text-sm border-gray-300 rounded-md"
+                  className="focus:ring-blue-500 focus:border-blue-500 block w-full pr-12 pl-4 sm:text-sm border-gray-300 rounded-md text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400 font-mono"
                   placeholder="Enter monthly earnings"
                   value={monetizationEarnings || ''}
                   onChange={(e) => setMonetizationEarnings(Number(e.target.value))}

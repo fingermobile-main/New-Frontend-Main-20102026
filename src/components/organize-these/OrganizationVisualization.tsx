@@ -51,10 +51,10 @@ const OrganizationVisualization: React.FC<OrganizationVisualizationProps> = ({
           if (!category) return null;
 
           return (
-            <div key={key} className="bg-white rounded-lg shadow-md p-5 border border-gray-100 hover:shadow-lg transition-shadow">
+            <div key={key} className="bg-white rounded-lg shadow-md p-5 border border-slate-200 hover:shadow-lg transition-shadow">
               <div className="flex justify-between items-center mb-3">
                 <h3 className="font-semibold text-gray-800 text-base">{category.title}</h3>
-                <span className="px-2.5 py-0.5 bg-blue-100 text-blue-950 border border-blue-400 font-bold font-bold text-xs rounded-full">
+                <span className="px-2.5 py-0.5 bg-blue-100 text-blue-950 border border-blue-400 font-bold font-bold text-xs rounded-full font-black">
                   {category.count} items
                 </span>
               </div>
@@ -64,13 +64,13 @@ const OrganizationVisualization: React.FC<OrganizationVisualizationProps> = ({
                   {category.items.slice(0, 3).map((item) => (
                     <li key={item.id} className="flex justify-between items-center border-b border-gray-50 pb-1.5">
                       <span className="truncate max-w-[200px] font-medium text-gray-700">{item.title}</span>
-                      {item.details && <span className="text-xs text-gray-400">{item.details}</span>}
-                      {item.date && <span className="text-xs text-gray-400">{item.date}</span>}
+                      {item.details && <span className="text-xs text-slate-700">{item.details}</span>}
+                      {item.date && <span className="text-xs text-slate-700">{item.date}</span>}
                     </li>
                   ))}
                 </ul>
               ) : (
-                <p className="text-xs text-gray-400 italic">No items found in this section</p>
+                <p className="text-xs text-slate-700 italic">No items found in this section</p>
               )}
             </div>
           );

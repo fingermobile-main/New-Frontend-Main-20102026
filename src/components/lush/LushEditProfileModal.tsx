@@ -105,7 +105,7 @@ export const LushEditProfileModal: React.FC<LushEditProfileModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
       <div className="bg-white rounded-3xl w-full max-w-xl shadow-2xl border border-emerald-100/90 overflow-hidden flex flex-col max-h-[92vh]">
         {/* Header */}
-        <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gradient-to-r from-emerald-50/50 via-white to-teal-50/50">
+        <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-gradient-to-r from-emerald-50/50 via-white to-teal-50/50">
           <div className="flex items-center gap-2.5">
             <div className="p-2 bg-emerald-100/70 text-emerald-800 rounded-xl">
               <SparklesIcon className="w-5 h-5 text-emerald-700" />
@@ -121,7 +121,7 @@ export const LushEditProfileModal: React.FC<LushEditProfileModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-700 transition"
+            className="p-1.5 rounded-full hover:bg-gray-100 text-slate-700 hover:text-gray-700 transition"
           >
             <XMarkIcon className="w-5 h-5" />
           </button>
@@ -238,7 +238,7 @@ export const LushEditProfileModal: React.FC<LushEditProfileModalProps> = ({
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
-                className="w-full bg-white text-gray-900 border border-gray-300 rounded-xl px-3 py-2 text-xs focus:border-emerald-600 focus:ring-1 focus:ring-emerald-500 focus:outline-hidden transition"
+                className="w-full bg-white text-slate-900 border border-gray-300 rounded-xl px-3 py-2 text-xs focus:border-emerald-600 focus:ring-1 focus:ring-emerald-500 focus:outline-hidden transition font-bold border-slate-300 placeholder:text-slate-400"
                 placeholder="e.g. Zainab Bello"
               />
             </div>
@@ -253,7 +253,7 @@ export const LushEditProfileModal: React.FC<LushEditProfileModalProps> = ({
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 required
-                className="w-full bg-white text-gray-900 border border-gray-300 rounded-xl px-3 py-2 text-xs focus:border-emerald-600 focus:ring-1 focus:ring-emerald-500 focus:outline-hidden transition"
+                className="w-full bg-white text-slate-900 border border-gray-300 rounded-xl px-3 py-2 text-xs focus:border-emerald-600 focus:ring-1 focus:ring-emerald-500 focus:outline-hidden transition font-bold border-slate-300 placeholder:text-slate-400"
                 placeholder="e.g. Victoria Island, Lagos"
               />
             </div>
@@ -269,7 +269,7 @@ export const LushEditProfileModal: React.FC<LushEditProfileModalProps> = ({
               value={headline}
               onChange={(e) => setHeadline(e.target.value)}
               required
-              className="w-full bg-white text-gray-900 border border-gray-300 rounded-xl px-3 py-2 text-xs focus:border-emerald-600 focus:ring-1 focus:ring-emerald-500 focus:outline-hidden transition"
+              className="w-full bg-white text-slate-900 border border-gray-300 rounded-xl px-3 py-2 text-xs focus:border-emerald-600 focus:ring-1 focus:ring-emerald-500 focus:outline-hidden transition font-bold border-slate-300 placeholder:text-slate-400"
               placeholder="e.g. Contemporary Artist & Gallery Curator"
             />
           </div>
@@ -280,7 +280,7 @@ export const LushEditProfileModal: React.FC<LushEditProfileModalProps> = ({
               <label className="block font-bold text-gray-800">
                 Bio & Lifestyle Statement
               </label>
-              <span className="text-[10px] text-gray-400">
+              <span className="text-[10px] text-slate-700">
                 {bio.length} / 300
               </span>
             </div>
@@ -288,7 +288,7 @@ export const LushEditProfileModal: React.FC<LushEditProfileModalProps> = ({
               value={bio}
               onChange={(e) => setBio(e.target.value.slice(0, 300))}
               rows={3}
-              className="w-full bg-white text-gray-900 border border-gray-300 rounded-xl p-3 text-xs focus:border-emerald-600 focus:ring-1 focus:ring-emerald-500 focus:outline-hidden transition resize-none"
+              className="w-full bg-white text-slate-900 border border-gray-300 rounded-xl p-3 text-xs focus:border-emerald-600 focus:ring-1 focus:ring-emerald-500 focus:outline-hidden transition resize-none font-bold border-slate-300 placeholder:text-slate-400"
               placeholder="Tell other high-value members about your passions, lifestyle, and what brings you joy..."
             />
           </div>
@@ -320,7 +320,7 @@ export const LushEditProfileModal: React.FC<LushEditProfileModalProps> = ({
           </div>
 
           {/* Footer Buttons */}
-          <div className="pt-3 border-t border-gray-100 flex items-center justify-end gap-3">
+          <div className="pt-3 border-t border-slate-200 flex items-center justify-end gap-3">
             <button
               type="button"
               onClick={onClose}

@@ -451,7 +451,7 @@ const GuardianProtectionPage: React.FC = () => {
 
             {/* 9 Guardian Modules Grid */}
             <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-300 dark:border-gray-800 shadow-md">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-gray-100 dark:border-gray-800 gap-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-slate-200 dark:border-gray-800 gap-4">
                 <div>
                   <h2 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
                     <ShieldCheck className="w-6 h-6 text-red-600" />
@@ -461,7 +461,7 @@ const GuardianProtectionPage: React.FC = () => {
                     Comprehensive continuous surveillance across client runtimes, gateway proxies, and database tiers.
                   </p>
                 </div>
-                <span className="text-xs font-bold px-3 py-1.5 bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950/60 dark:text-emerald-300 rounded-full w-fit">
+                <span className="text-xs font-bold px-3 py-1.5 bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950/60 dark:text-emerald-300 rounded-full w-fit font-black">
                   9 / 9 Subsystems Online
                 </span>
               </div>
@@ -470,14 +470,14 @@ const GuardianProtectionPage: React.FC = () => {
                 {Object.entries(guardianStatus.modules).map(([key, module]) => (
                   <div
                     key={key}
-                    className="p-5 rounded-2xl border border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-slate-800/40 hover:border-red-500/40 transition-all flex flex-col justify-between"
+                    className="p-5 rounded-2xl border border-slate-200 dark:border-gray-800 bg-gray-50/50 dark:bg-slate-800/40 hover:border-red-500/40 transition-all flex flex-col justify-between"
                   >
                     <div>
                       <div className="flex items-start justify-between gap-2 mb-3">
                         <div className="font-bold text-gray-900 dark:text-white text-base">
                           {key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
                         </div>
-                        <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 whitespace-nowrap">
+                        <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 dark:bg-emerald-900/40 text-emerald-950 dark:text-emerald-300 whitespace-nowrap border text-emerald-950 border-emerald-400 font-black">
                           {module.status}
                         </span>
                       </div>
@@ -486,7 +486,7 @@ const GuardianProtectionPage: React.FC = () => {
                       </p>
                     </div>
 
-                    <div className="mt-4 pt-3 border-t border-gray-200/60 dark:border-gray-700/60 flex items-center justify-between text-[11px] text-gray-400">
+                    <div className="mt-4 pt-3 border-t border-slate-300 dark:border-gray-700/60 flex items-center justify-between text-[11px] text-slate-700">
                       <span>Latency: {module.latencyMs || 12}ms</span>
                       <span>Verified: {module.verifiedAt || 'Live'}</span>
                     </div>
@@ -513,7 +513,7 @@ const GuardianProtectionPage: React.FC = () => {
 
                 <div className="space-y-3">
                   {guardianStatus.stercesConfig.authorizedIndividuals.map((person, idx) => (
-                    <div key={idx} className="p-3.5 bg-gray-50 dark:bg-slate-800 rounded-xl border border-gray-100 dark:border-gray-700/60">
+                    <div key={idx} className="p-3.5 bg-gray-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-gray-700/60">
                       <div className="font-bold text-sm text-gray-900 dark:text-white">{person.name}</div>
                       <div className="text-xs text-red-600 dark:text-red-400 font-medium">{person.role || 'Executive Signatory'}</div>
                       <div className="text-xs text-gray-500 mt-1 font-mono">Tel: {person.phone}</div>
@@ -521,7 +521,7 @@ const GuardianProtectionPage: React.FC = () => {
                   ))}
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-gray-100 dark:border-gray-800">
+                <div className="mt-6 pt-4 border-t border-slate-200 dark:border-gray-800">
                   <div className="text-xs font-bold text-gray-700 dark:text-gray-300 mb-2">Authorized Dispatch Channels:</div>
                   <ul className="text-xs text-gray-500 space-y-1 font-mono">
                     {guardianStatus.stercesConfig.authorizedEmails.map((em, i) => (
@@ -534,7 +534,7 @@ const GuardianProtectionPage: React.FC = () => {
 
             {/* Right Column: 5-Step Interactive Protocol */}
             <div className="lg:col-span-8 bg-white dark:bg-slate-900 rounded-3xl p-6 md:p-8 border border-slate-300 dark:border-gray-800 shadow-md">
-              <div className="flex items-center justify-between pb-6 border-b border-gray-100 dark:border-gray-800 mb-6">
+              <div className="flex items-center justify-between pb-6 border-b border-slate-200 dark:border-gray-800 mb-6">
                 <div>
                   <h3 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
                     <Key className="w-6 h-6 text-red-600" />
@@ -576,7 +576,7 @@ const GuardianProtectionPage: React.FC = () => {
                       type="email"
                       value={emailInput}
                       onChange={e => setEmailInput(e.target.value)}
-                      className="w-full bg-gray-50 dark:bg-slate-800 border border-slate-300 dark:border-gray-700 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-red-500 focus:outline-none"
+                      className="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-gray-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:ring-2 focus:ring-red-500 focus:outline-none font-bold placeholder:text-slate-400"
                     />
                   </div>
                   <button
@@ -606,7 +606,7 @@ const GuardianProtectionPage: React.FC = () => {
                       value={firstPinInput}
                       onChange={e => setFirstPinInput(e.target.value)}
                       placeholder="e.g. 849201"
-                      className="w-full bg-gray-50 dark:bg-slate-800 border border-slate-300 dark:border-gray-700 rounded-xl px-4 py-3 text-xl font-mono tracking-widest text-center text-gray-900 dark:text-white focus:ring-2 focus:ring-red-500 focus:outline-none"
+                      className="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-gray-700 rounded-xl px-4 py-3 text-xl font-mono tracking-widest text-center text-slate-900 dark:text-white focus:ring-2 focus:ring-red-500 focus:outline-none font-bold placeholder:text-slate-400"
                     />
                   </div>
                   <button
@@ -635,7 +635,7 @@ const GuardianProtectionPage: React.FC = () => {
                         value={backupPin1}
                         onChange={e => setBackupPin1(e.target.value)}
                         placeholder="••••••"
-                        className="w-full bg-gray-50 dark:bg-slate-800 border border-slate-300 dark:border-gray-700 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-red-500 focus:outline-none"
+                        className="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-gray-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:ring-2 focus:ring-red-500 focus:outline-none font-bold placeholder:text-slate-400"
                       />
                     </div>
                     <div>
@@ -647,7 +647,7 @@ const GuardianProtectionPage: React.FC = () => {
                         value={backupPin2}
                         onChange={e => setBackupPin2(e.target.value)}
                         placeholder="••••••"
-                        className="w-full bg-gray-50 dark:bg-slate-800 border border-slate-300 dark:border-gray-700 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-red-500 focus:outline-none"
+                        className="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-gray-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:ring-2 focus:ring-red-500 focus:outline-none font-bold placeholder:text-slate-400"
                       />
                     </div>
                   </div>
@@ -728,7 +728,7 @@ const GuardianProtectionPage: React.FC = () => {
                       value={actionReason}
                       onChange={e => setActionReason(e.target.value)}
                       rows={2}
-                      className="w-full bg-gray-50 dark:bg-slate-800 border border-slate-300 dark:border-gray-700 rounded-xl px-4 py-2.5 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-red-500 focus:outline-none"
+                      className="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-gray-700 rounded-xl px-4 py-2.5 text-sm text-slate-900 dark:text-white focus:ring-2 focus:ring-red-500 focus:outline-none font-bold placeholder:text-slate-400"
                     />
                   </div>
 
@@ -773,7 +773,7 @@ const GuardianProtectionPage: React.FC = () => {
                 <select
                   value={selectedRuleCategory}
                   onChange={e => setSelectedRuleCategory(e.target.value)}
-                  className="bg-gray-50 dark:bg-slate-800 border border-slate-300 dark:border-gray-700 rounded-xl px-3 py-1.5 text-xs text-gray-900 dark:text-white"
+                  className="bg-white dark:bg-slate-800 border border-slate-300 dark:border-gray-700 rounded-xl px-3 py-1.5 text-xs text-slate-900 dark:text-white font-bold focus:ring-2 focus:ring-indigo-500"
                 >
                   <option value="all">All Categories</option>
                   <option value="aiThreatMonitor">AI Threat Monitor</option>
@@ -788,7 +788,7 @@ const GuardianProtectionPage: React.FC = () => {
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead>
-                  <tr className="border-b border-gray-200 dark:border-gray-800 text-gray-400 font-mono uppercase">
+                  <tr className="border-b border-slate-300 dark:border-gray-800 text-slate-700 font-mono uppercase">
                     <th className="pb-3">Rule Name</th>
                     <th className="pb-3">Category</th>
                     <th className="pb-3">Severity</th>
@@ -861,17 +861,17 @@ const GuardianProtectionPage: React.FC = () => {
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
                       <span className="font-bold text-gray-900 dark:text-white font-mono">{log.event_type}</span>
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase bg-blue-100 text-blue-950 border border-blue-400 font-bold dark:bg-blue-900/40 dark:text-blue-300">
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase bg-blue-100 text-blue-950 border border-blue-400 font-bold dark:bg-blue-900/40 dark:text-blue-300 font-black">
                         {log.action_taken}
                       </span>
                     </div>
                     <p className="text-gray-600 dark:text-gray-300">{log.event_description}</p>
-                    <div className="text-[11px] text-gray-400 font-mono">
+                    <div className="text-[11px] text-slate-700 font-mono">
                       Resource: {log.resource_affected} • IP: {log.source_ip}
                     </div>
                   </div>
 
-                  <div className="text-right sm:flex-shrink-0 text-[11px] text-gray-400 font-mono">
+                  <div className="text-right sm:flex-shrink-0 text-[11px] text-slate-700 font-mono">
                     {new Date(log.created_at || Date.now()).toLocaleTimeString()}
                   </div>
                 </div>

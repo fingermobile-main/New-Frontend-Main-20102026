@@ -76,7 +76,7 @@ const PostPublishingSettingsPage: React.FC = () => {
                           type="radio"
                           checked={settings.privacy === option.id}
                           onChange={() => updateSettings({ privacy: option.id as any })}
-                          className="h-4 w-4 text-blue-600 border-slate-300 focus:ring-blue-500"
+                          className="h-4 w-4 text-slate-900 border-slate-300 focus:ring-blue-500 font-bold border rounded bg-white focus:ring-2 placeholder:text-slate-400"
                         />
                         <label htmlFor={`privacy-${option.id}`} className="ml-3 block text-sm font-bold text-slate-800 cursor-pointer">
                           {option.label}
@@ -135,7 +135,7 @@ const PostPublishingSettingsPage: React.FC = () => {
                           type="radio"
                           checked={settings.comments === option.id}
                           onChange={() => updateSettings({ comments: option.id as any })}
-                          className="h-4 w-4 text-blue-600 border-slate-300 focus:ring-blue-500"
+                          className="h-4 w-4 text-slate-900 border-slate-300 focus:ring-blue-500 font-bold border rounded bg-white focus:ring-2 placeholder:text-slate-400"
                         />
                         <label htmlFor={`comment-${option.id}`} className="ml-3 block text-sm font-bold text-slate-800 cursor-pointer">
                           {option.label}
@@ -162,7 +162,7 @@ const PostPublishingSettingsPage: React.FC = () => {
                       onChange={(e) => updateSettings({
                         schedule: { ...settings.schedule, time: e.target.checked ? '12:00' : '' }
                       })}
-                      className="h-4 w-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500"
+                      className="h-4 w-4 text-slate-900 border-slate-300 rounded focus:ring-blue-500 font-bold border bg-white focus:ring-2 placeholder:text-slate-400"
                     />
                     <label htmlFor="schedule-enabled" className="ml-3 block text-sm font-bold text-slate-800 cursor-pointer">
                       Schedule Post Dispatch
@@ -179,7 +179,7 @@ const PostPublishingSettingsPage: React.FC = () => {
                           onChange={(e) => updateSettings({
                             schedule: { ...settings.schedule, time: e.target.value }
                           })}
-                          className="w-full px-3 py-2 text-sm font-bold text-slate-900 bg-white border border-slate-300 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500"
+                          className="w-full px-3 py-2 text-sm font-bold text-slate-900 bg-white border border-slate-300 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400"
                         />
                       </div>
                       <div>
@@ -191,7 +191,7 @@ const PostPublishingSettingsPage: React.FC = () => {
                             schedule: { ...settings.schedule, day: e.target.value }
                           })}
                           placeholder="e.g. Monday"
-                          className="w-full px-3 py-2 text-sm font-bold text-slate-900 bg-white border border-slate-300 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500"
+                          className="w-full px-3 py-2 text-sm font-bold text-slate-900 bg-white border border-slate-300 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400"
                         />
                       </div>
                     </div>
@@ -205,7 +205,7 @@ const PostPublishingSettingsPage: React.FC = () => {
                         type="checkbox"
                         checked={Boolean(settings.shareToMi)}
                         onChange={(e) => updateSettings({ shareToMi: e.target.checked })}
-                        className="h-4 w-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500"
+                        className="h-4 w-4 text-slate-900 border-slate-300 rounded focus:ring-blue-500 font-bold border bg-white focus:ring-2 placeholder:text-slate-400"
                       />
                       <label htmlFor="share-to-mi" className="ml-3 block text-sm font-bold text-slate-800 cursor-pointer">
                         Share to Mii©®™ (Disappearing Encounters)
@@ -228,7 +228,7 @@ const PostPublishingSettingsPage: React.FC = () => {
                       onChange={(e) => updateSettings({
                         monetization: { ...settings.monetization, enabled: e.target.checked }
                       })}
-                      className="h-4 w-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500"
+                      className="h-4 w-4 text-slate-900 border-slate-300 rounded focus:ring-blue-500 font-bold border bg-white focus:ring-2 placeholder:text-slate-400"
                     />
                     <label htmlFor="monetization-enabled" className="ml-3 block text-sm font-bold text-slate-800 cursor-pointer">
                       Earn From this UGC (Paylink / Pay-Per-View)
@@ -269,7 +269,7 @@ const PostPublishingSettingsPage: React.FC = () => {
                       onChange={(e) => updateSettings({
                         collaboration: { ...settings.collaboration, enabled: e.target.checked }
                       })}
-                      className="h-4 w-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500"
+                      className="h-4 w-4 text-slate-900 border-slate-300 rounded focus:ring-blue-500 font-bold border bg-white focus:ring-2 placeholder:text-slate-400"
                     />
                     <label htmlFor="collaboration-enabled" className="ml-3 block text-sm font-bold text-slate-800 cursor-pointer">
                       Invite Collaborator
@@ -284,7 +284,7 @@ const PostPublishingSettingsPage: React.FC = () => {
                       <div className="flex gap-2">
                         <input
                           type="text"
-                          className="block flex-1 px-3 py-2 text-sm font-bold text-slate-900 bg-white border border-slate-300 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500"
+                          className="block flex-1 px-3 py-2 text-sm font-bold text-slate-900 bg-white border border-slate-300 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400"
                           placeholder="@Name for Pin Share"
                         />
                         <button className="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-sm">
@@ -312,7 +312,7 @@ const PostPublishingSettingsPage: React.FC = () => {
                       onChange={(e) => updateSettings({
                         broadcast: { ...settings.broadcast, enabled: e.target.checked }
                       })}
-                      className="h-4 w-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500"
+                      className="h-4 w-4 text-slate-900 border-slate-300 rounded focus:ring-blue-500 font-bold border bg-white focus:ring-2 placeholder:text-slate-400"
                     />
                     <label htmlFor="broadcast-enabled" className="ml-3 block text-sm font-bold text-slate-800 cursor-pointer">
                       Enable Multi-Channel Broadcast
@@ -337,7 +337,7 @@ const PostPublishingSettingsPage: React.FC = () => {
                               onChange={() => updateSettings({
                                 broadcast: { ...settings.broadcast, audience: option.id as any }
                               })}
-                              className="h-4 w-4 text-blue-600 border-slate-300 focus:ring-blue-500"
+                              className="h-4 w-4 text-slate-900 border-slate-300 focus:ring-blue-500 font-bold border rounded bg-white focus:ring-2 placeholder:text-slate-400"
                             />
                             <label htmlFor={`broadcast-${option.id}`} className="ml-3 block text-sm font-bold text-slate-800 cursor-pointer">
                               {option.label}
@@ -363,7 +363,7 @@ const PostPublishingSettingsPage: React.FC = () => {
                       onChange={(e) => updateSettings({
                         boosting: { ...settings.boosting, enabled: e.target.checked }
                       })}
-                      className="h-4 w-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500"
+                      className="h-4 w-4 text-slate-900 border-slate-300 rounded focus:ring-blue-500 font-bold border bg-white focus:ring-2 placeholder:text-slate-400"
                     />
                     <label htmlFor="boost-enabled" className="ml-3 block text-sm font-bold text-slate-800 cursor-pointer">
                       Boost Post into Discovery Feed
@@ -394,7 +394,7 @@ const PostPublishingSettingsPage: React.FC = () => {
                           onChange={(e) => updateSettings({
                             boosting: { ...settings.boosting, amount: Number(e.target.value) }
                           })}
-                          className="w-full px-3 py-2 text-sm font-bold text-slate-900 bg-white border border-slate-300 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500"
+                          className="w-full px-3 py-2 text-sm font-bold text-slate-900 bg-white border border-slate-300 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400 font-mono"
                         />
                       </div>
                     </div>

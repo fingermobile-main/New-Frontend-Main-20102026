@@ -156,14 +156,14 @@ const HallmarkPage: React.FC = () => {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
           <div className="relative w-full md:max-w-md">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <SearchIcon className="h-5 w-5 text-gray-400" />
+              <SearchIcon className="h-5 w-5 text-slate-700" />
             </div>
             <input
               type="text"
               placeholder="Search achievements..."
-              className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
+              className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400" />
             <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
-              <MicrophoneIcon className="h-5 w-5 text-gray-400" />
+              <MicrophoneIcon className="h-5 w-5 text-slate-700" />
             </div>
           </div>
           <div className="flex items-center gap-4">

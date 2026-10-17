@@ -70,7 +70,7 @@ export const MemberPageAccessModal: React.FC<MemberPageAccessModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+            className="p-2 text-slate-700 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
           >
             <X className="w-5 h-5" />
           </button>
@@ -80,7 +80,7 @@ export const MemberPageAccessModal: React.FC<MemberPageAccessModalProps> = ({
         <div className="p-6 flex flex-col md:flex-row gap-6 overflow-y-auto flex-1">
           {/* Left: Pages List */}
           <div className="w-full md:w-5/12 space-y-1.5 border-r border-slate-100 dark:border-slate-800 pr-0 md:pr-4">
-            <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2">
+            <div className="text-[11px] font-bold uppercase tracking-wider text-slate-700 mb-2">
               Select Member Page:
             </div>
             {pages.map((p) => {

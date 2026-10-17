@@ -237,7 +237,7 @@ const CouponsPage: React.FC = () => {
                   value={promoCodeInput}
                   onChange={(e) => setPromoCodeInput(e.target.value.toUpperCase())}
                   placeholder="Enter promo code (e.g. FINGER2026, CREATOR50)..."
-                  className="w-full pl-10 pr-4 py-3 text-xs sm:text-sm rounded-xl bg-white border border-slate-300 text-slate-900 font-bold placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 shadow-2xs font-mono uppercase"
+                  className="w-full pl-10 pr-4 py-3 text-xs sm:text-sm rounded-xl bg-white border border-slate-300 text-slate-900 font-bold placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500 shadow-2xs font-mono uppercase"
                 />
               </div>
               <button
@@ -429,7 +429,7 @@ const CouponsPage: React.FC = () => {
                     value={newCode}
                     onChange={(e) => setNewCode(e.target.value.toUpperCase())}
                     placeholder="e.g. SUMMER25"
-                    className="w-full px-3.5 py-2.5 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 font-mono font-bold focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    className="w-full px-3.5 py-2.5 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 font-mono font-bold focus:outline-none focus:ring-2 focus:ring-orange-500 placeholder:text-slate-400"
                   />
                 </div>
 
@@ -460,7 +460,7 @@ const CouponsPage: React.FC = () => {
                   value={newTitle}
                   onChange={(e) => setNewTitle(e.target.value)}
                   placeholder="e.g. Flash 25% Off Store Merchandise"
-                  className="w-full px-3.5 py-2.5 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  className="w-full px-3.5 py-2.5 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-orange-500 placeholder:text-slate-400"
                 />
               </div>
 
@@ -473,7 +473,7 @@ const CouponsPage: React.FC = () => {
                   value={newDesc}
                   onChange={(e) => setNewDesc(e.target.value)}
                   placeholder="Applicable on all digital downloads and merchandise..."
-                  className="w-full px-3.5 py-2 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  className="w-full px-3.5 py-2 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-orange-500 placeholder:text-slate-400"
                 />
               </div>
 
@@ -500,7 +500,7 @@ const CouponsPage: React.FC = () => {
                     type="number"
                     value={newDiscountVal}
                     onChange={(e) => setNewDiscountVal(e.target.value)}
-                    className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-orange-500 placeholder:text-slate-400 font-mono"
                   />
                 </div>
 
@@ -512,7 +512,7 @@ const CouponsPage: React.FC = () => {
                     type="number"
                     value={newMinOrder}
                     onChange={(e) => setNewMinOrder(e.target.value)}
-                    className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-orange-500 placeholder:text-slate-400 font-mono"
                   />
                 </div>
               </div>

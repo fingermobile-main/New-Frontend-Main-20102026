@@ -229,7 +229,7 @@ const Navbar: React.FC = () => {
 
       {isMenuOpen && (
         <div className="md:hidden">
-          <div className="px-4 py-3 border-b border-gray-100 flex items-center space-x-2 bg-slate-50/80">
+          <div className="px-4 py-3 border-b border-slate-200 flex items-center space-x-2 bg-slate-50/80">
             <img
               src="/assets/branding/fingermobile/FRONT copy.webp"
               alt="FingerMobile Drawer"

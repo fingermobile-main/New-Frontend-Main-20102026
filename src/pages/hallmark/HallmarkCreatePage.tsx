@@ -73,34 +73,34 @@ const HallmarkCreatePage: React.FC = () => {
           <div>
             <h3 className="font-bold text-lg border-b pb-2 mb-4">1. Branding</h3>
             <label htmlFor="communityName" className="block text-sm font-medium">Community Name</label>
-            <input id="communityName" type="text" value={name} onChange={(e) => setName(e.target.value)} className="w-full mt-1 p-2 border rounded-md" required />
+            <input id="communityName" type="text" value={name} onChange={(e) => setName(e.target.value)} className="w-full mt-1 p-2 border rounded-md text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" required />
             <label htmlFor="customUrl" className="block text-sm font-medium mt-4">Custom URL (fingermobileprotocol.com/hallmark/...)</label>
-            <input id="customUrl" type="text" value={slug} onChange={(e) => setSlug(e.target.value)} className="w-full mt-1 p-2 border rounded-md" placeholder="e.g., janes-art-hub" />
+            <input id="customUrl" type="text" value={slug} onChange={(e) => setSlug(e.target.value)} className="w-full mt-1 p-2 border rounded-md text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" placeholder="e.g., janes-art-hub" />
             <label htmlFor="logoUrl" className="block text-sm font-medium mt-4">Logo URL</label>
-            <input id="logoUrl" type="text" value={logoUrl} onChange={(e) => setLogoUrl(e.target.value)} className="w-full mt-1 p-2 border rounded-md" placeholder="https://..." />
+            <input id="logoUrl" type="text" value={logoUrl} onChange={(e) => setLogoUrl(e.target.value)} className="w-full mt-1 p-2 border rounded-md text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" placeholder="https://..." />
           </div>
 
           <div>
             <h3 className="font-bold text-lg border-b pb-2 mb-4">2. Rules & Policies</h3>
             <label htmlFor="communityRules" className="block text-sm font-medium">Community Rules</label>
-            <textarea id="communityRules" value={rules} onChange={e => setRules(e.target.value)} rows={4} className="w-full mt-1 p-2 border rounded-md" placeholder="1. Be kind and respectful..." />
+            <textarea id="communityRules" value={rules} onChange={e => setRules(e.target.value)} rows={4} className="w-full mt-1 p-2 border rounded-md text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" placeholder="1. Be kind and respectful..." />
           </div>
           <div>
             <h3 className="font-bold text-lg border-b pb-2 mb-4">3. Membership & Permissions</h3>
             <label htmlFor="memberLimit" className="block text-sm font-medium">Member Limit ({memberLimit.toLocaleString()})</label>
-            <input id="memberLimit" type="range" min="100" max="5000000" step="100" value={memberLimit} onChange={e => setMemberLimit(parseInt(e.target.value))} className="w-full mt-1" aria-valuemin={100} aria-valuemax={5000000} />
+            <input id="memberLimit" type="range" min="100" max="5000000" step="100" value={memberLimit} onChange={e => setMemberLimit(parseInt(e.target.value))} className="w-full mt-1 text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" aria-valuemin={100} aria-valuemax={5000000} />
             <div className="flex gap-4 mt-4">
-              <label className="flex items-center"><input type="checkbox" checked={canPost} onChange={e => setCanPost(e.target.checked)} className="mr-2 h-4 w-4" /> Members can post</label>
-              <label className="flex items-center"><input type="checkbox" checked={canInvite} onChange={e => setCanInvite(e.target.checked)} className="mr-2 h-4 w-4" /> Members can invite</label>
+              <label className="flex items-center"><input type="checkbox" checked={canPost} onChange={e => setCanPost(e.target.checked)} className="mr-2 h-4 w-4 text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" /> Members can post</label>
+              <label className="flex items-center"><input type="checkbox" checked={canInvite} onChange={e => setCanInvite(e.target.checked)} className="mr-2 h-4 w-4 text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" /> Members can invite</label>
             </div>
           </div>
 
           <div>
             <h3 className="font-bold text-lg border-b pb-2 mb-4">4. Monetization & Duration</h3>
             <label htmlFor="joinFee" className="block text-sm font-medium">One-time Join Fee (FIC)</label>
-            <input id="joinFee" type="number" value={joinFee} onChange={e => setJoinFee(parseInt(e.target.value))} className="w-full mt-1 p-2 border rounded-md" placeholder="0 for free" />
+            <input id="joinFee" type="number" value={joinFee} onChange={e => setJoinFee(parseInt(e.target.value))} className="w-full mt-1 p-2 border rounded-md text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono" placeholder="0 for free" />
             <label htmlFor="duration" className="block text-sm font-medium mt-4">Duration</label>
-            <select id="duration" value={durationMonths} onChange={e => setDurationMonths(parseInt(e.target.value) as 1 | 2 | 3 | 4 | 5 | 6)} className="w-full mt-1 p-2 border rounded-md bg-white">
+            <select id="duration" value={durationMonths} onChange={e => setDurationMonths(parseInt(e.target.value) as 1 | 2 | 3 | 4 | 5 | 6)} className="w-full mt-1 p-2 border rounded-md bg-white text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500">
               {[1, 2, 3, 4, 5, 6].map(m => <option key={m} value={m}>{m} Month{m > 1 ? 's' : ''}</option>)}
             </select>
           </div>

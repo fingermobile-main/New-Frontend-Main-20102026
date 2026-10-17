@@ -129,7 +129,7 @@ const CommunityGroupFeatures: React.FC = () => {
                 value={groupName}
                 onChange={(e) => setGroupName(e.target.value)}
                 placeholder="Enter group name"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               />
             </div>
 
@@ -141,7 +141,7 @@ const CommunityGroupFeatures: React.FC = () => {
                 onChange={(e) => setGroupDescription(e.target.value)}
                 placeholder="Describe your group..."
                 rows={4}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               />
             </div>
           </div>
@@ -224,7 +224,7 @@ const CommunityGroupFeatures: React.FC = () => {
                   value={eventTitle}
                   onChange={(e) => setEventTitle(e.target.value)}
                   placeholder="Event name"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                 />
               </div>
 
@@ -235,7 +235,7 @@ const CommunityGroupFeatures: React.FC = () => {
                   type="date"
                   value={eventDate}
                   onChange={(e) => setEventDate(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                 />
               </div>
 
@@ -246,7 +246,7 @@ const CommunityGroupFeatures: React.FC = () => {
                   type="time"
                   value={eventTime}
                   onChange={(e) => setEventTime(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                 />
               </div>
 
@@ -258,7 +258,7 @@ const CommunityGroupFeatures: React.FC = () => {
                   value={eventLocation}
                   onChange={(e) => setEventLocation(e.target.value)}
                   placeholder="Where is the event?"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                 />
               </div>
 
@@ -270,7 +270,7 @@ const CommunityGroupFeatures: React.FC = () => {
                   value={eventMaxCapacity}
                   onChange={(e) => setEventMaxCapacity(e.target.value ? Number(e.target.value) : '')}
                   placeholder="Leave blank for unlimited"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400 font-mono"
                 />
               </div>
             </div>
@@ -283,7 +283,7 @@ const CommunityGroupFeatures: React.FC = () => {
                 onChange={(e) => setEventDescription(e.target.value)}
                 placeholder="Event details..."
                 rows={3}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               />
             </div>
 
@@ -336,7 +336,7 @@ const CommunityGroupFeatures: React.FC = () => {
                 value={fileName}
                 onChange={(e) => setFileName(e.target.value)}
                 placeholder="Document.pdf"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               />
             </div>
 
@@ -348,7 +348,7 @@ const CommunityGroupFeatures: React.FC = () => {
                 value={fileSize}
                 onChange={(e) => setFileSize(e.target.value)}
                 placeholder="e.g., 150MB"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               />
             </div>
 
@@ -360,7 +360,7 @@ const CommunityGroupFeatures: React.FC = () => {
                 value={uploadedBy}
                 onChange={(e) => setUploadedBy(e.target.value)}
                 placeholder="Uploader name"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               />
             </div>
 
@@ -371,7 +371,7 @@ const CommunityGroupFeatures: React.FC = () => {
                 type="date"
                 value={uploadDate}
                 onChange={(e) => setUploadDate(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               />
             </div>
           </div>
@@ -414,7 +414,7 @@ const CommunityGroupFeatures: React.FC = () => {
                 id="historyVisibility"
                 checked={historyVisibility}
                 onChange={handleToggleHistoryVisibility}
-                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded mt-1"
+                className="h-4 w-4 text-slate-900 focus:ring-indigo-500 border-gray-300 rounded mt-1 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
               />
               <div className="ml-3">
                 <label htmlFor="historyVisibility" className="block text-sm font-medium text-gray-700">
@@ -432,7 +432,7 @@ const CommunityGroupFeatures: React.FC = () => {
                 id="voiceChat"
                 checked={voiceChatEnabled}
                 onChange={handleToggleVoiceChat}
-                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded mt-1"
+                className="h-4 w-4 text-slate-900 focus:ring-indigo-500 border-gray-300 rounded mt-1 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
               />
               <div className="ml-3">
                 <label htmlFor="voiceChat" className="block text-sm font-medium text-gray-700">
@@ -450,7 +450,7 @@ const CommunityGroupFeatures: React.FC = () => {
                 id="largeFileSharing"
                 checked={largeFileSharing}
                 onChange={handleToggleLargeFileSharing}
-                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded mt-1"
+                className="h-4 w-4 text-slate-900 focus:ring-indigo-500 border-gray-300 rounded mt-1 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
               />
               <div className="ml-3">
                 <label htmlFor="largeFileSharing" className="block text-sm font-medium text-gray-700">
@@ -468,7 +468,7 @@ const CommunityGroupFeatures: React.FC = () => {
                 id="autoInvitations"
                 checked={autoInvitations}
                 onChange={handleToggleAutoInvitations}
-                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded mt-1"
+                className="h-4 w-4 text-slate-900 focus:ring-indigo-500 border-gray-300 rounded mt-1 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
               />
               <div className="ml-3">
                 <label htmlFor="autoInvitations" className="block text-sm font-medium text-gray-700">

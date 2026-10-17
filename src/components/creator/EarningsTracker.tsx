@@ -196,7 +196,7 @@ const EarningsTracker: React.FC<EarningsTrackerProps> = ({
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-gray-200">
+              <tr className="border-b border-slate-300">
                 <th className="text-left py-2 px-3 text-sm font-medium text-gray-700">Date</th>
                 <th className="text-left py-2 px-3 text-sm font-medium text-gray-700">Amount</th>
                 <th className="text-left py-2 px-3 text-sm font-medium text-gray-700">Method</th>
@@ -205,7 +205,7 @@ const EarningsTracker: React.FC<EarningsTrackerProps> = ({
             </thead>
             <tbody>
               {earnings.payoutHistory.map((payout: any) => (
-                <tr key={payout.id} className="border-b border-gray-100">
+                <tr key={payout.id} className="border-b border-slate-200">
                   <td className="py-3 px-3 text-sm">
                     {new Date(payout.date).toLocaleDateString()}
                   </td>

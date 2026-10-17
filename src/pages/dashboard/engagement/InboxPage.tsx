@@ -221,7 +221,7 @@ const InboxPage: React.FC = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search conversations..."
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
             />
           </div>
           <div className="flex-1 overflow-y-auto">
@@ -234,7 +234,7 @@ const InboxPage: React.FC = () => {
                 <button
                   key={contact.id}
                   onClick={() => selectContact(contact)}
-                  className={`w-full text-left flex items-center gap-3 p-3.5 border-b border-gray-100 transition-colors ${
+                  className={`w-full text-left flex items-center gap-3 p-3.5 border-b border-slate-200 transition-colors ${
                     selectedContact?.id === contact.id ? 'bg-blue-50/80 border-l-4 border-l-blue-600' : 'hover:bg-gray-100/60'
                   }`}
                 >
@@ -242,14 +242,14 @@ const InboxPage: React.FC = () => {
                     staticUrl={contact.avatarUrl}
                     animatedUrl={contact.animatedAvatarUrl}
                     altText={contact.name}
-                    className="w-10 h-10 rounded-full border border-gray-200"
+                    className="w-10 h-10 rounded-full border border-slate-300"
                   />
                   <div className="flex-1 min-w-0">
                     <div className="flex justify-between items-baseline mb-0.5">
                       <p className="font-semibold text-sm text-gray-900 truncate">
                         {contact.name}
                       </p>
-                      <span className="text-[10px] text-gray-400">
+                      <span className="text-[10px] text-slate-700">
                         {contact.lastMessageTime || ''}
                       </span>
                     </div>
@@ -265,7 +265,7 @@ const InboxPage: React.FC = () => {
                 </button>
               ))
             ) : (
-              <div className="p-8 text-center text-gray-400 text-sm">
+              <div className="p-8 text-center text-slate-700 text-sm">
                 No matching conversations found.
               </div>
             )}
@@ -282,13 +282,13 @@ const InboxPage: React.FC = () => {
                     staticUrl={selectedContact.avatarUrl}
                     animatedUrl={selectedContact.animatedAvatarUrl}
                     altText={selectedContact.name}
-                    className="w-10 h-10 rounded-full border border-gray-200"
+                    className="w-10 h-10 rounded-full border border-slate-300"
                   />
                   <div>
                     <h2 className="font-bold text-gray-900 sm:text-base lg:text-lg">
                       {selectedContact.name}
                     </h2>
-                    <p className="text-xs text-gray-400">
+                    <p className="text-xs text-slate-700">
                       Member ID: {selectedContact.id} • Live Connection Active
                     </p>
                   </div>
@@ -305,7 +305,7 @@ const InboxPage: React.FC = () => {
                     <ChatBubble key={msg.id} message={msg} />
                   ))
                 ) : (
-                  <div className="h-full flex flex-col items-center justify-center text-gray-400 text-sm">
+                  <div className="h-full flex flex-col items-center justify-center text-slate-700 text-sm">
                     <p>No messages exchanged with {selectedContact.name} yet.</p>
                     <p className="text-xs mt-1">Send a reply below to start the conversation.</p>
                   </div>
@@ -320,7 +320,7 @@ const InboxPage: React.FC = () => {
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
                     placeholder="Type your reply..."
-                    className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                    className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                     disabled={sending}
                   />
                   <button
@@ -334,7 +334,7 @@ const InboxPage: React.FC = () => {
               </div>
             </>
           ) : (
-            <div className="flex-1 flex items-center justify-center text-gray-400 text-sm">
+            <div className="flex-1 flex items-center justify-center text-slate-700 text-sm">
               Select a conversation to view messages.
             </div>
           )}
@@ -347,7 +347,7 @@ const InboxPage: React.FC = () => {
           <div className="bg-white rounded-xl shadow-xl max-w-md w-full p-6">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-bold text-gray-900">Start Member Message</h3>
-              <button onClick={() => setShowNewModal(false)} className="text-gray-400 hover:text-gray-600 text-xl font-bold">×</button>
+              <button onClick={() => setShowNewModal(false)} className="text-slate-700 hover:text-gray-600 text-xl font-bold">×</button>
             </div>
             <form onSubmit={handleStartNewChat} className="space-y-4">
               <div>
@@ -358,7 +358,7 @@ const InboxPage: React.FC = () => {
                   value={newRecipientId}
                   onChange={(e) => setNewRecipientId(e.target.value)}
                   placeholder="Enter member ID (e.g. 1, 4, 5)..."
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                 />
               </div>
               <div>
@@ -369,7 +369,7 @@ const InboxPage: React.FC = () => {
                   value={newRecipientMessage}
                   onChange={(e) => setNewRecipientMessage(e.target.value)}
                   placeholder="Type message content..."
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                 />
               </div>
               <div className="flex justify-end gap-2 pt-2">

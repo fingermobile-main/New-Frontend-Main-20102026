@@ -37,7 +37,7 @@ const AICourseBuilder: React.FC<AICourseBuilderProps> = ({ onBuild }) => {
             type="text"
             value={topic}
             onChange={(e) => setTopic(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
             placeholder="E.g., Web Development Fundamentals"
           />
         </div>
@@ -47,7 +47,7 @@ const AICourseBuilder: React.FC<AICourseBuilderProps> = ({ onBuild }) => {
           <select
             value={level}
             onChange={(e) => setLevel(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-slate-900 font-bold border-slate-300 bg-white"
           >
             <option value="beginner">Beginner</option>
             <option value="intermediate">Intermediate</option>
@@ -60,7 +60,7 @@ const AICourseBuilder: React.FC<AICourseBuilderProps> = ({ onBuild }) => {
           <select
             value={duration}
             onChange={(e) => setDuration(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-slate-900 font-bold border-slate-300 bg-white"
           >
             <option value="2 weeks">2 Weeks</option>
             <option value="4 weeks">4 Weeks</option>

@@ -812,7 +812,7 @@ export const SubscriptionsPage: React.FC = () => {
                     }`}
                   >
                     Annual
-                    <span className="px-1.5 py-0.2 rounded-full text-[9px] font-mono font-extrabold bg-emerald-100 text-emerald-950 border border-emerald-300">
+                    <span className="px-1.5 py-0.2 rounded-full text-[9px] font-mono font-extrabold bg-emerald-100 text-emerald-950 border border-emerald-400 border-emerald-400 font-black">
                       -20%
                     </span>
                   </button>
@@ -842,7 +842,7 @@ export const SubscriptionsPage: React.FC = () => {
                       {/* Top Badges & Edit Button */}
                       <div>
                         <div className="flex justify-between items-start mb-3">
-                          <span className="px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase bg-amber-100 text-amber-950 border border-amber-300 shadow-xs">
+                          <span className="px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase bg-amber-100 text-amber-950 border border-amber-400 shadow-xs border-amber-400 font-black">
                             {card.badge}
                           </span>
 
@@ -957,7 +957,7 @@ export const SubscriptionsPage: React.FC = () => {
                     value={matrixSearchQuery}
                     onChange={(e) => setMatrixSearchQuery(e.target.value)}
                     placeholder="Search screen, route, or tier..."
-                    className="w-full pl-9 pr-4 py-2 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 font-bold placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full pl-9 pr-4 py-2 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 font-bold placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
               </div>
@@ -998,7 +998,7 @@ export const SubscriptionsPage: React.FC = () => {
                           {item.quotaBenefits}
                         </td>
                         <td className="p-4 whitespace-nowrap">
-                          <span className="px-2.5 py-1 rounded-full text-[10px] font-black bg-amber-100 text-amber-950 border border-amber-300 shadow-xs">
+                          <span className="px-2.5 py-1 rounded-full text-[10px] font-black bg-amber-100 text-amber-950 border border-amber-400 shadow-xs border-amber-400">
                             {item.gatedStatus}
                           </span>
                         </td>
@@ -1045,7 +1045,7 @@ export const SubscriptionsPage: React.FC = () => {
                         value={ficTargetUser}
                         onChange={(e) => setFicTargetUser(e.target.value)}
                         placeholder="@username or 0x..."
-                        className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
+                        className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono placeholder:text-slate-400"
                       />
                     </div>
 
@@ -1057,7 +1057,7 @@ export const SubscriptionsPage: React.FC = () => {
                           value={ficAllocationAmount}
                           onChange={(e) => setFicAllocationAmount(e.target.value)}
                           placeholder="250"
-                          className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
+                          className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono placeholder:text-slate-400"
                         />
                       </div>
 
@@ -1076,7 +1076,7 @@ export const SubscriptionsPage: React.FC = () => {
                         value={ficAllocationReason}
                         onChange={(e) => setFicAllocationReason(e.target.value)}
                         placeholder="e.g. Creator Incentive Pool Monthly Allocation"
-                        className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400"
                       />
                     </div>
 
@@ -1304,7 +1304,7 @@ export const SubscriptionsPage: React.FC = () => {
                       required
                       value={editForm.name}
                       onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
-                      className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400"
                     />
                   </div>
 
@@ -1331,7 +1331,7 @@ export const SubscriptionsPage: React.FC = () => {
                         type="text"
                         value={editForm.badge}
                         onChange={(e) => setEditForm({ ...editForm, badge: e.target.value })}
-                        className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400"
                       />
                     </div>
                   </div>
@@ -1347,7 +1347,7 @@ export const SubscriptionsPage: React.FC = () => {
                           const fic = Number(e.target.value);
                           setEditForm({ ...editForm, monthlyFIC: fic, monthlyNaira: fic * 100 });
                         }}
-                        className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 font-bold font-mono focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 font-bold font-mono focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400"
                       />
                     </div>
 
@@ -1358,7 +1358,7 @@ export const SubscriptionsPage: React.FC = () => {
                         min="0"
                         value={editForm.monthlyNaira}
                         onChange={(e) => setEditForm({ ...editForm, monthlyNaira: Number(e.target.value) })}
-                        className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-emerald-800 font-mono font-bold focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 font-mono font-bold focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400"
                       />
                     </div>
                   </div>
@@ -1370,7 +1370,7 @@ export const SubscriptionsPage: React.FC = () => {
                       value={editForm.route}
                       onChange={(e) => setEditForm({ ...editForm, route: e.target.value })}
                       placeholder="/dancia4tv"
-                      className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-blue-700 font-mono font-bold focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 font-mono font-bold focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400"
                     />
                   </div>
 
@@ -1380,7 +1380,7 @@ export const SubscriptionsPage: React.FC = () => {
                       rows={2}
                       value={editForm.description}
                       onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
-                      className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 font-bold placeholder:text-slate-400"
                     />
                   </div>
 
@@ -1398,7 +1398,7 @@ export const SubscriptionsPage: React.FC = () => {
                               updatedFeatures[i] = e.target.value;
                               setEditForm({ ...editForm, features: updatedFeatures });
                             }}
-                            className="flex-1 bg-transparent border-none text-slate-900 font-bold focus:outline-none text-xs"
+                            className="flex-1 bg-transparent border-none text-slate-900 font-bold focus:outline-none text-xs border border-slate-300 rounded focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                           />
                           <button
                             type="button"
@@ -1420,7 +1420,7 @@ export const SubscriptionsPage: React.FC = () => {
                         value={newFeatureText}
                         onChange={(e) => setNewFeatureText(e.target.value)}
                         placeholder="Add new perk (e.g. 4K Stem Downloads)..."
-                        className="flex-1 px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 font-bold text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="flex-1 px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 font-bold text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400"
                       />
                       <button
                         type="button"
@@ -1444,7 +1444,7 @@ export const SubscriptionsPage: React.FC = () => {
                       id="isPopular"
                       checked={!!editForm.isPopular}
                       onChange={(e) => setEditForm({ ...editForm, isPopular: e.target.checked })}
-                      className="rounded border-slate-300 text-orange-600 focus:ring-0 w-4 h-4"
+                      className="rounded border-slate-300 text-slate-900 focus:ring-0 w-4 h-4 font-bold border bg-white placeholder:text-slate-400"
                     />
                     <label htmlFor="isPopular" className="text-xs text-slate-900 font-bold cursor-pointer">
                       Mark as "Recommended / Popular" Tier

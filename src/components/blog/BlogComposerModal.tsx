@@ -204,7 +204,7 @@ export const BlogComposerModal: React.FC<BlogComposerModalProps> = ({
               <button
                 type="button"
                 onClick={onClose}
-                className="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800"
+                className="p-2 text-slate-700 hover:text-slate-600 dark:hover:text-slate-200 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -246,7 +246,7 @@ export const BlogComposerModal: React.FC<BlogComposerModalProps> = ({
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="e.g., The Future of Sovereign Decentralized Protocols..."
-                  className="w-full px-4 py-2.5 text-sm font-semibold border border-slate-300 dark:border-slate-700 rounded-xl dark:bg-slate-800 dark:text-white focus:ring-2 focus:ring-orange-500 outline-none"
+                  className="w-full px-4 py-2.5 text-sm font-semibold border border-slate-300 dark:border-slate-700 rounded-xl dark:bg-slate-800 dark:text-white focus:ring-2 focus:ring-orange-500 outline-none text-slate-900 font-bold bg-white placeholder:text-slate-400"
                 />
               </div>
 
@@ -257,7 +257,7 @@ export const BlogComposerModal: React.FC<BlogComposerModalProps> = ({
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="w-full px-3 py-2.5 text-xs font-medium border border-slate-300 dark:border-slate-700 rounded-xl dark:bg-slate-800 dark:text-white"
+                  className="w-full px-3 py-2.5 text-xs font-medium border border-slate-300 dark:border-slate-700 rounded-xl dark:bg-slate-800 dark:text-white text-slate-900 font-bold bg-white focus:ring-2 focus:ring-indigo-500"
                 >
                   <option value="Technology">Technology</option>
                   <option value="Creative Arts & Culture">Creative Arts & Culture</option>
@@ -278,7 +278,7 @@ export const BlogComposerModal: React.FC<BlogComposerModalProps> = ({
                 value={excerpt}
                 onChange={(e) => setExcerpt(e.target.value)}
                 placeholder="A compelling 1-2 sentence preview for search indexers and timelines..."
-                className="w-full px-4 py-2 text-xs border border-slate-300 dark:border-slate-700 rounded-xl dark:bg-slate-800 dark:text-white"
+                className="w-full px-4 py-2 text-xs border border-slate-300 dark:border-slate-700 rounded-xl dark:bg-slate-800 dark:text-white text-slate-900 font-bold bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
               />
             </div>
 

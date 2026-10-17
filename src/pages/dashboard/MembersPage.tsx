@@ -111,7 +111,7 @@ const MembersPage: React.FC = () => {
       </div>
 
       <div className="bg-white shadow rounded-lg">
-        <div className="px-4 py-5 sm:px-6 border-b border-gray-200">
+        <div className="px-4 py-5 sm:px-6 border-b border-slate-300">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between">
             <h3 className="text-lg leading-6 font-medium text-gray-900">
               Member Management
@@ -123,11 +123,11 @@ const MembersPage: React.FC = () => {
                   placeholder="Search members..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder:text-slate-500 focus:outline-none focus:placeholder:text-slate-500 focus:ring-1 focus:ring-brand-blue focus:border-brand-blue sm:text-sm"
+                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder:text-slate-400 focus:outline-none focus:placeholder:text-slate-400 focus:ring-1 focus:ring-brand-blue focus:border-brand-blue sm:text-sm text-slate-900 font-bold border-slate-300"
                 />
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <svg
-                    className="h-5 w-5 text-gray-400"
+                    className="h-5 w-5 text-slate-500"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -236,7 +236,7 @@ const MembersPage: React.FC = () => {
           </table>
         </div>
 
-        <div className="px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+        <div className="px-4 py-3 flex items-center justify-between border-t border-slate-300 sm:px-6">
           <div className="flex-1 flex justify-between sm:hidden">
             <button className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
               Previous
@@ -301,7 +301,7 @@ const MembersPage: React.FC = () => {
 
       {showAddModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-gray-100">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200">
             <h3 className="text-lg font-bold text-gray-900 mb-4">Add Protocol Member</h3>
             <form onSubmit={handleAddMember} className="space-y-4">
               <div>
@@ -312,7 +312,7 @@ const MembersPage: React.FC = () => {
                   value={newEmail}
                   onChange={(e) => setNewEmail(e.target.value)}
                   placeholder="member@example.com"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-600"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-600 text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
               <div>
@@ -320,7 +320,7 @@ const MembersPage: React.FC = () => {
                 <select
                   value={newRole}
                   onChange={(e) => setNewRole(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-600"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-600 text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500"
                 >
                   <option value="user">User</option>
                   <option value="creator">Creator</option>

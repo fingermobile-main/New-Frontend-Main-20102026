@@ -104,7 +104,7 @@ const CreateGroupPage: React.FC = () => {
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full mt-1 p-2.5 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                className="w-full mt-1 p-2.5 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                 placeholder="e.g. Web Developers United"
                 required
               />
@@ -119,7 +119,7 @@ const CreateGroupPage: React.FC = () => {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 rows={3}
-                className="w-full mt-1 p-2.5 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                className="w-full mt-1 p-2.5 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                 placeholder="What is this group about?"
                 required
               />
@@ -141,7 +141,7 @@ const CreateGroupPage: React.FC = () => {
                 value={rules}
                 onChange={(e) => setRules(e.target.value)}
                 rows={4}
-                className="w-full mt-1 p-2.5 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                className="w-full mt-1 p-2.5 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                 placeholder="1. Be kind and respectful&#10;2. No spam or self-promotion..."
               />
             </div>
@@ -152,7 +152,7 @@ const CreateGroupPage: React.FC = () => {
                   type="checkbox"
                   checked={canPost}
                   onChange={(e) => setCanPost(e.target.checked)}
-                  className="mr-2 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  className="mr-2 h-4 w-4 rounded border-gray-300 text-slate-900 focus:ring-blue-500 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                 />
                 Members can post
               </label>
@@ -162,7 +162,7 @@ const CreateGroupPage: React.FC = () => {
                   type="checkbox"
                   checked={canInvite}
                   onChange={(e) => setCanInvite(e.target.checked)}
-                  className="mr-2 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  className="mr-2 h-4 w-4 rounded border-gray-300 text-slate-900 focus:ring-blue-500 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                 />
                 Members can invite
               </label>
