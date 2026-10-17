@@ -84,7 +84,7 @@ interface LushForumFeedProps {
     _content: string,
     _lapidaire?: string,
     _mediaUrl?: string
-  ) => void;
+  ) => Promise<void>;
   onOpenChat?: (_memberId: string, _memberName?: string) => void;
   onBookmarkPost?: (_postId: string) => void;
   onSharePost?: (_post: LushPostItem) => void;
@@ -119,6 +119,7 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
     Record<string, boolean>
   >({});
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [isSubmittingPost, setIsSubmittingPost] = useState(false);
   const [localBookmarks, setLocalBookmarks] = useState<Record<string, boolean>>(
     {}
   );
@@ -174,18 +175,25 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
     showToast('🎥 Luxury celebration demo video attached!');
   };
 
-  const handlePostSubmit = (e: React.FormEvent) => {
+  const handlePostSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newPostText.trim() && !attachedMedia) return;
-    onCreatePost(
-      newPostText.trim(),
-      selectedLapidaire || undefined,
-      attachedMedia || undefined
-    );
-    setNewPostText('');
-    setSelectedLapidaire(null);
-    setAttachedMedia(null);
-    showToast('✨ Post published to Lush-Pressies community!');
+    if ((!newPostText.trim() && !attachedMedia) || isSubmittingPost) return;
+    setIsSubmittingPost(true);
+    try {
+      await onCreatePost(
+        newPostText.trim(),
+        selectedLapidaire || undefined,
+        attachedMedia || undefined
+      );
+      setNewPostText('');
+      setSelectedLapidaire(null);
+      setAttachedMedia(null);
+      showToast('✨ Post published to Lush-Pressies community!');
+    } catch (error) {
+      showToast(error instanceof Error ? error.message : 'Unable to publish this post.');
+    } finally {
+      setIsSubmittingPost(false);
+    }
   };
 
   const handleToggleComments = (postId: string) => {
@@ -389,7 +397,7 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
                     onChange={(e) => setNewPostText(e.target.value)}
                     placeholder="Share a thoughtful thought, answer a Lapidaire question, or post a date idea..."
                     rows={3}
-                    className="w-full bg-white text-slate-900 placeholder:text-slate-400 border border-gray-300 rounded-xl p-3 text-sm focus:border-emerald-600 focus:ring-2 focus:ring-emerald-400/30 focus:outline-hidden transition resize-none shadow-xs font-bold border-slate-300"
+                    className="w-full bg-white text-slate-900 placeholder:text-slate-400 border border-slate-300 rounded-xl p-3 text-sm focus:border-emerald-600 focus:ring-2 focus:ring-emerald-400/30 focus:outline-hidden transition resize-none shadow-xs font-bold"
                   />
 
                   {/* Attached Media Preview (Photo or Video) */}
@@ -474,7 +482,7 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
                     className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1 transition ${
                       attachedMedia
                         ? 'text-emerald-800 bg-emerald-100 border border-emerald-300'
-                        : 'text-gray-600 hover:text-emerald-700 hover:bg-emerald-50'
+                        : 'text-slate-700 hover:text-emerald-700 hover:bg-emerald-50'
                     }`}
                     title="Attach Media (up to 50MB)"
                   >
@@ -504,7 +512,7 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
 
                 <button
                   type="submit"
-                  disabled={!newPostText.trim() && !attachedMedia}
+                  disabled={isSubmittingPost || (!newPostText.trim() && !attachedMedia)}
                   className="px-5 py-2 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 disabled:opacity-50 disabled:cursor-not-allowed shadow-xs transition flex items-center gap-1.5"
                 >
                   <PaperAirplaneIcon className="w-4 h-4" />
@@ -516,6 +524,11 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
 
           {/* 3. Forum Post Cards List */}
           <div className="space-y-4">
+            {posts.length === 0 && (
+              <p className="rounded-xl border border-slate-300 bg-white p-6 text-center font-semibold text-slate-700">
+                No LushPressies posts are available yet.
+              </p>
+            )}
             {posts.map((post) => {
               const isPostBookmarked =
                 localBookmarks[post.id] !== undefined

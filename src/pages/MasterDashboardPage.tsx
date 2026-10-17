@@ -51,7 +51,6 @@ import {
 } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { DashboardService } from '../services/dashboardService';
-import ForumsManagement from '../components/dashboard/ForumsManagement';
 import ConnectorArtifactConsole from '../components/dashboard/ConnectorArtifactConsole';
 import userProfileSyncService, { ComprehensiveUserProfile } from '../services/UserProfileSyncService';
 import {
@@ -82,6 +81,7 @@ import CorporateGovernanceConsole from '../components/dashboard/CorporateGoverna
 import MasterWidgetConsole from '../components/dashboard/MasterWidgetConsole';
 import MasterBeatwaveNGConsole from '../components/dashboard/MasterBeatwaveNGConsole';
 import MasterDancia4TvConsole from '../components/dashboard/MasterDancia4TvConsole';
+import PlatformDomainManagementConsole from '../components/dashboard/PlatformDomainManagementConsole';
 import { guardianSearchIndexer, SearchBenchmarkResult } from '../services/GuardianSearchIndexingService';
 import ScreenCatalogManagementConsole from '../components/dashboard/ScreenCatalogManagementConsole';
 
@@ -2401,13 +2401,14 @@ const MasterDashboardPage: React.FC = () => {
               { id: 'media-discovery', label: 'Media & Discovery', badge: '10' },
               { id: 'beatwaveng-console', label: 'BeatwaveNG Audio Console', badge: 'Live Sync' },
               { id: 'dancia4tv-console', label: 'Dancia-4Tv Video Console', badge: 'Live Sync' },
+              { id: 'platform-domains-console', label: 'Community & Creator Data', badge: '13 Domains' },
               { id: 'commerce-growth', label: 'Commerce & Growth', badge: '7' },
               { id: 'creation-config', label: 'Creation & Config', badge: '9' },
               { id: 'governance-ops', label: 'Platform Governance', badge: '15' },
               { id: 'gaps-assessment', label: 'Page Matrix & Gaps', badge: '210' },
               { id: 'sections', label: 'Sections Catalog' },
               { id: 'screen-catalog', label: 'Screen Catalog Management' },
-              { id: 'forums', label: 'Forums Console' },
+              { id: 'forums', label: 'Forum Data Console' },
               { id: 'connectors', label: 'Connectors' },
               { id: 'monitoring', label: 'SOC Monitoring' },
               { id: 'alerts', label: 'Alerts' },
@@ -2648,6 +2649,12 @@ const MasterDashboardPage: React.FC = () => {
               </div>
             )}
 
+            {activeTab === 'platform-domains-console' && (
+              <div className="space-y-6">
+                <PlatformDomainManagementConsole />
+              </div>
+            )}
+
             {/* Dedicated Financial Management & Treasury Console Tab */}
             {activeTab === 'financials' && (
               <div className="space-y-6">
@@ -2832,7 +2839,7 @@ const MasterDashboardPage: React.FC = () => {
             {/* Forums Management */}
             {activeTab === 'forums' && (
               <div className="space-y-6">
-                <ForumsManagement />
+                <PlatformDomainManagementConsole />
               </div>
             )}
 

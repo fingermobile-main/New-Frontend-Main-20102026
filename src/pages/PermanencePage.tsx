@@ -51,99 +51,36 @@ const PermanencePage: React.FC = () => {
   });
 
   useEffect(() => {
+    let mounted = true;
     const fetchData = async () => {
+      setLoading(true);
       try {
-        const mockChallenges: Challenge[] = [
-          {
-            id: '1',
-            title: 'Balloon Keep-Up Challenge',
-            description:
-              'Keep a balloon in the air for as long as possible without using your hands',
-            category: 'Physical & Dexterity',
-            mechanics: ['Agon', 'Ilinx'],
-            creatorId: 'member1',
-            creatorName: 'JohnDoe',
-            stakeAmount: 50,
-            participants: 12,
-            views: 1200,
-            shares: 24,
-            likes: 45,
-            status: 'active',
-            createdAt: '2025-11-15',
-            duration: '3 months'
-          },
-          {
-            id: '2',
-            title: 'Virtual Escape Room',
-            description:
-              'Solve puzzles to escape the virtual room in the shortest time',
-            category: 'Mental & Logic',
-            mechanics: ['Agon'],
-            creatorId: 'member2',
-            creatorName: 'JaneSmith',
-            stakeAmount: 100,
-            participants: 8,
-            views: 800,
-            shares: 15,
-            likes: 32,
-            status: 'viral',
-            createdAt: '2025-12-01',
-            duration: '3 months'
-          },
-          {
-            id: '3',
-            title: 'Emoji Conversation',
-            description: 'Convey a message using only emojis',
-            category: 'Creative & Improvisation',
-            mechanics: ['Mimicry'],
-            creatorId: 'member3',
-            creatorName: 'CreativeMember',
-            stakeAmount: 25,
-            participants: 5,
-            views: 450,
-            shares: 8,
-            likes: 19,
-            status: 'active',
-            createdAt: '2025-12-10',
-            duration: '3 months'
-          }
-        ];
-
-        const mockStreams: Stream[] = [
-          {
-            id: 's1',
-            title: 'Gaming Session - Minecraft',
-            creatorId: 'streamer1',
-            creatorName: 'GameMaster',
-            category: 'Games',
-            viewerCount: 42,
-            duration: 5,
-            isLive: true,
-            startedAt: '2025-12-26T07:25:00Z'
-          },
-          {
-            id: 's2',
-            title: 'Live Picnic with Friends',
-            creatorId: 'member5',
-            creatorName: 'SocialButterfly',
-            category: 'Picnics',
-            viewerCount: 18,
-            duration: 3,
-            isLive: true,
-            startedAt: '2025-12-26T07:20:00Z'
-          }
-        ];
-
         const [chRes, stRes] = await Promise.allSettled([
           apiService.get('/permanence/challenges'),
           apiService.get('/permanence/streams')
         ]);
 
-        const challengesData = chRes.status === 'fulfilled' ? (chRes.value?.data || (Array.isArray(chRes.value) ? chRes.value : [])) : [];
-        const streamsData = stRes.status === 'fulfilled' ? (stRes.value?.data || (Array.isArray(stRes.value) ? stRes.value : [])) : [];
+        if (!mounted) return;
+        const getRows = (result: PromiseSettledResult<any>, label: string) => {
+          if (result.status === 'rejected') {
+            logger.error(`Failed to load Permanence ${label}:`, result.reason);
+            showToast(`Failed to load Permanence ${label}.`, 'error');
+            return [];
+          }
+          const response = result.value;
+          const rows = response?.data?.data ?? response?.data ?? response;
+          if (!Array.isArray(rows)) {
+            const error = new Error(`Permanence ${label} response was not a list.`);
+            logger.error(error.message);
+            showToast(error.message, 'error');
+            return [];
+          }
+          return rows;
+        };
+        const challengesData = getRows(chRes, 'challenges');
+        const streamsData = getRows(stRes, 'streams');
 
-        if (Array.isArray(challengesData) && challengesData.length > 0) {
-          setChallenges(challengesData.map((c: any) => ({
+        setChallenges(challengesData.map((c: any) => ({
             id: String(c.id),
             title: c.title || 'Challenge',
             description: c.description,
@@ -156,16 +93,12 @@ const PermanencePage: React.FC = () => {
             views: Number(c.views || 0),
             shares: Number(c.shares || 0),
             likes: Number(c.likes || 0),
-            status: c.status || 'active',
+            status: c.status === 'completed' || c.status === 'viral' ? c.status : 'active',
             createdAt: c.created_at || c.createdAt || new Date().toISOString().split('T')[0],
             duration: c.duration || '3 months'
           })));
-        } else {
-          setChallenges(mockChallenges);
-        }
 
-        if (Array.isArray(streamsData) && streamsData.length > 0) {
-          setStreams(streamsData.map((s: any) => ({
+        setStreams(streamsData.map((s: any) => ({
             id: String(s.id),
             title: s.title || 'Stream',
             creatorId: String(s.creator_id || s.creatorId || 'streamer1'),
@@ -173,22 +106,21 @@ const PermanencePage: React.FC = () => {
             category: s.category || 'Games',
             viewerCount: Number(s.viewer_count || s.viewerCount || 0),
             duration: Number(s.duration || 0),
-            isLive: Boolean(s.is_live ?? s.isLive ?? true),
+            isLive: Boolean(s.is_live ?? s.isLive ?? false),
             startedAt: s.started_at || s.startedAt || new Date().toISOString()
           })));
-        } else {
-          setStreams(mockStreams);
-        }
-
-        setLoading(false);
       } catch (error) {
         logger.error('Error in fetchData:', error);
-        showToast('Failed to load data', 'error');
-        setLoading(false);
+        if (mounted) showToast('Failed to load Permanence data.', 'error');
+      } finally {
+        if (mounted) setLoading(false);
       }
     };
 
-    fetchData();
+    void fetchData();
+    return () => {
+      mounted = false;
+    };
   }, [showToast]);
 
   const handleCreateChallenge = async (e: React.FormEvent) => {
@@ -208,9 +140,10 @@ const PermanencePage: React.FC = () => {
         status: 'active'
       });
 
-      const created = res?.data || res;
+      const created = res?.data?.data || res?.data || res;
+      if (!created?.id) throw new Error('The Permanence API did not return the created challenge.');
       const challenge: Challenge = {
-        id: String(created?.id || `new-${Date.now()}`),
+        id: String(created.id),
         title: created?.title || newChallenge.title,
         description: created?.description || newChallenge.description,
         category: created?.category || newChallenge.category,
@@ -266,7 +199,7 @@ const PermanencePage: React.FC = () => {
         <h2 className="text-xl font-bold mb-4">Create a New Challenge</h2>
         <form onSubmit={handleCreateChallenge} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-slate-700 mb-1">
               Challenge Title
             </label>
             <input
@@ -274,13 +207,13 @@ const PermanencePage: React.FC = () => {
               value={newChallenge.title}
               onChange={(e) => setNewChallenge({ ...newChallenge, title: e.target.value })
               }
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
+              className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold bg-white placeholder:text-slate-400"
               placeholder="Enter challenge title"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-slate-700 mb-1">
               Description
             </label>
             <textarea
@@ -291,7 +224,7 @@ const PermanencePage: React.FC = () => {
                   description: e.target.value
                 })
               }
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
+              className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold bg-white placeholder:text-slate-400"
               placeholder="Describe your challenge"
               rows={3}
             />
@@ -299,7 +232,7 @@ const PermanencePage: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-slate-700 mb-1">
                 Category
               </label>
               <select
@@ -307,7 +240,7 @@ const PermanencePage: React.FC = () => {
                 onChange={(e) =>
                   setNewChallenge({ ...newChallenge, category: e.target.value })
                 }
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white"
+                className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold bg-white"
               >
                 {categories.map((cat) => (
                   <option key={cat} value={cat}>
@@ -318,7 +251,7 @@ const PermanencePage: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-slate-700 mb-1">
                 Stake Amount (Gifts)
               </label>
               <input
@@ -330,7 +263,7 @@ const PermanencePage: React.FC = () => {
                     stakeAmount: Number(e.target.value)
                   })
                 }
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400 font-mono"
+                className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold bg-white placeholder:text-slate-400 font-mono"
                 min="0"
                 placeholder="0"
               />
@@ -349,6 +282,11 @@ const PermanencePage: React.FC = () => {
       <div>
         <h2 className="text-2xl font-bold mb-4">Available Challenges</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {!loading && challenges.length === 0 && (
+            <p className="col-span-full rounded-lg border border-slate-300 bg-white p-6 text-center font-semibold text-slate-700">
+              No active challenges are available.
+            </p>
+          )}
           {challenges.map((challenge) => (
             <div
               key={challenge.id}
@@ -368,7 +306,7 @@ const PermanencePage: React.FC = () => {
                   </span>
                 </div>
 
-                <p className="text-gray-600 mt-2 text-sm">
+                <p className="text-slate-700 mt-2 text-sm">
                   {challenge.description}
                 </p>
 
@@ -381,13 +319,13 @@ const PermanencePage: React.FC = () => {
 
                 <div className="mt-4 flex justify-between text-sm">
                   <div>
-                    <p className="text-gray-600">
+                    <p className="text-slate-700">
                       Stake:{' '}
                       <span className="font-semibold">
                         {challenge.stakeAmount} Gifts
                       </span>
                     </p>
-                    <p className="text-gray-600">
+                    <p className="text-slate-700">
                       Participants:{' '}
                       <span className="font-semibold">
                         {challenge.participants}
@@ -396,11 +334,11 @@ const PermanencePage: React.FC = () => {
                   </div>
 
                   <div className="text-right">
-                    <p className="text-gray-600">
+                    <p className="text-slate-700">
                       Views:{' '}
                       <span className="font-semibold">{challenge.views}</span>
                     </p>
-                    <p className="text-gray-600">
+                    <p className="text-slate-700">
                       Likes:{' '}
                       <span className="font-semibold">{challenge.likes}</span>
                     </p>
@@ -494,6 +432,11 @@ const PermanencePage: React.FC = () => {
       <div className="bg-white p-6 rounded-lg shadow-md">
         <h2 className="text-2xl font-bold mb-4">Viral Challenges</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {!loading && !challenges.some((challenge) => challenge.status === 'viral') && (
+            <p className="col-span-full rounded-lg border border-slate-300 bg-white p-6 text-center font-semibold text-slate-700">
+              No viral challenges are available.
+            </p>
+          )}
           {challenges
             .filter((c) => c.status === 'viral')
             .map((challenge) => (
@@ -509,7 +452,7 @@ const PermanencePage: React.FC = () => {
                     </span>
                   </div>
 
-                  <p className="text-gray-600 mt-2 text-sm">
+                  <p className="text-slate-700 mt-2 text-sm">
                     {challenge.description}
                   </p>
 
@@ -522,13 +465,13 @@ const PermanencePage: React.FC = () => {
 
                   <div className="mt-4 flex justify-between text-sm">
                     <div>
-                      <p className="text-gray-600">
+                      <p className="text-slate-700">
                         Stake:{' '}
                         <span className="font-semibold">
                           {challenge.stakeAmount} Gifts
                         </span>
                       </p>
-                      <p className="text-gray-600">
+                      <p className="text-slate-700">
                         Participants:{' '}
                         <span className="font-semibold">
                           {challenge.participants}
@@ -537,13 +480,13 @@ const PermanencePage: React.FC = () => {
                     </div>
 
                     <div className="text-right">
-                      <p className="text-gray-600">
+                      <p className="text-slate-700">
                         Ends in:{' '}
                         <span className="font-semibold">
                           {challenge.duration}
                         </span>
                       </p>
-                      <p className="text-gray-600">
+                      <p className="text-slate-700">
                         Likes:{' '}
                         <span className="font-semibold">{challenge.likes}</span>
                       </p>
@@ -571,6 +514,11 @@ const PermanencePage: React.FC = () => {
       <div className="bg-white p-6 rounded-lg shadow-md">
         <h2 className="text-2xl font-bold mb-4">Live Streams</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {!loading && streams.length === 0 && (
+            <p className="col-span-full rounded-lg border border-slate-300 bg-white p-6 text-center font-semibold text-slate-700">
+              No streams are currently available.
+            </p>
+          )}
           {streams.map((stream) => (
             <div
               key={stream.id}
@@ -596,13 +544,13 @@ const PermanencePage: React.FC = () => {
 
                 <div className="mt-4 flex justify-between text-sm">
                   <div>
-                    <p className="text-gray-600">
+                    <p className="text-slate-700">
                       Viewers:{' '}
                       <span className="font-semibold">
                         {stream.viewerCount}
                       </span>
                     </p>
-                    <p className="text-gray-600">
+                    <p className="text-slate-700">
                       Duration:{' '}
                       <span className="font-semibold">
                         {stream.duration} min
@@ -611,7 +559,7 @@ const PermanencePage: React.FC = () => {
                   </div>
 
                   <div className="text-right">
-                    <p className="text-gray-600">
+                    <p className="text-slate-700">
                       Started:{' '}
                       <span className="font-semibold">
                         {new Date(stream.startedAt).toLocaleTimeString([], {
@@ -680,14 +628,14 @@ const PermanencePage: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Permanence</h1>
-        <p className="text-gray-600">
+        <h1 className="text-3xl font-bold text-slate-900 mb-2">Permanence</h1>
+        <p className="text-slate-700">
           Visible to the Communities (Forum, Mii, Gems, Hallmarks, Groups,
           Blogs, Trends) and Ads area
         </p>
       </div>
 
-      <div className="border-b border-gray-200 mb-6">
+      <div className="border-b border-slate-300 mb-6">
         <nav className="-mb-px flex space-x-8 overflow-x-auto">
           {[
             { id: 'challenges', name: 'General Challenges' },
@@ -702,7 +650,7 @@ const PermanencePage: React.FC = () => {
               className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ${
                 activeTab === tab.id
                   ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
               }`}
             >
               {tab.name}

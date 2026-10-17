@@ -7,6 +7,7 @@ import PostCard, {
   AiAssistData,
   AiAssistResponse
 } from '../components/PostCard';
+import { ApiService } from '../services/apiService';
 import { MagnifyingGlassIcon, FireIcon, GiftIcon, LinkIcon, UserCircleIcon } from '../icons';
 import type { Post } from '../types';
 
@@ -32,7 +33,7 @@ const TabNavigation: React.FC<TabNavigationProps> = React.memo(({ activeTab, set
           className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
             activeTab === tab.id
               ? 'bg-white text-blue-600 shadow-sm'
-              : 'text-slate-700 hover:text-gray-700'
+              : 'text-slate-700 hover:text-slate-700'
           }`}
           onClick={() => setActiveTab(tab.id)}
         >
@@ -52,9 +53,10 @@ interface DiscoveryActionsPanelProps {
   // eslint-disable-next-line no-unused-vars
   onOpenPaylinkModal: (postId: string) => void;
   ficBalance: number;
+  postId?: string;
 }
 
-const DiscoveryActionsPanel: React.FC<DiscoveryActionsPanelProps> = React.memo(({ onOpenGiftModal, onOpenPaylinkModal, ficBalance }) => {
+const DiscoveryActionsPanel: React.FC<DiscoveryActionsPanelProps> = React.memo(({ onOpenGiftModal, onOpenPaylinkModal, ficBalance, postId }) => {
   return (
     <div className="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl p-6 text-white mb-6">
       <h3 className="text-lg font-bold mb-2">Engage with Content</h3>
@@ -63,14 +65,16 @@ const DiscoveryActionsPanel: React.FC<DiscoveryActionsPanelProps> = React.memo((
       </p>
       <div className="flex gap-3">
         <button
-          onClick={() => onOpenGiftModal('sample-post-id')}
+          onClick={() => postId && onOpenGiftModal(postId)}
+          disabled={!postId}
           className="flex-1 flex items-center justify-center gap-2 py-2 bg-white text-blue-600 rounded-lg text-sm font-medium"
         >
           <GiftIcon className="w-4 h-4" />
           Send Gift
         </button>
         <button
-          onClick={() => onOpenPaylinkModal('sample-post-id')}
+          onClick={() => postId && onOpenPaylinkModal(postId)}
+          disabled={!postId}
           className="flex-1 flex items-center justify-center gap-2 py-2 bg-blue-700 text-white rounded-lg text-sm font-medium"
         >
           <LinkIcon className="w-4 h-4" />
@@ -118,12 +122,12 @@ interface BalancePanelProps {
 const BalancePanel: React.FC<BalancePanelProps> = React.memo(({ ficBalance }) => {
   return (
     <div className="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-2xl p-6 border border-purple-100">
-      <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
+      <h2 className="text-lg font-bold text-slate-900 mb-4 flex items-center">
         <UserCircleIcon className="h-5 w-5 text-purple-600 mr-2" />
         Your FIC Balance
       </h2>
       <div className="flex items-center justify-between">
-        <span className="text-2xl font-bold text-gray-900">{ficBalance.toFixed(2)} FIC</span>
+        <span className="text-2xl font-bold text-slate-900">{ficBalance.toFixed(2)} FIC</span>
         <button className="text-sm bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-3 py-1.5 rounded-lg hover:from-purple-700 hover:to-indigo-700">
           Add Funds
         </button>
@@ -143,6 +147,7 @@ const DiscoverPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState('discover');
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState('');
   const [showGiftModal, setShowGiftModal] = useState(false);
   const [showPaylinkModal, setShowPaylinkModal] = useState(false);
   // eslint-disable-next-line no-unused-vars
@@ -194,37 +199,54 @@ const DiscoverPage: React.FC = () => {
     return { success: true, message: 'AI assist completed' };
   }, [showToast]);
 
-  // Mock data initialization
   useEffect(() => {
-    // Create mock posts without updatedAt if it doesn't exist in Post type
-    const mockPosts: Post[] = Array.from({ length: 10 }, (_, i) => ({
-      id: `post-${Date.now()}-${i}`,
-      authorId: `author-${i}`,
-      title: `Post ${i + 1}`,
-      content: `This is sample post content ${i + 1}.`,
-      body: `This is sample post content ${i + 1}.`,
-      excerpt: `This is sample post content ${i + 1}.`,
-      type: 'text',
-      media: [],
-      mediaUrl: '',
-      tags: ['sample', 'test'],
-      category: 'general',
-      status: 'published',
-      visibility: 'public',
-      isReported: false,
-      reportReasons: [],
-      reportedBy: [],
-      timestamp: new Date().toISOString(),
-      likes: Math.floor(Math.random() * 100),
-      comments: Math.floor(Math.random() * 50),
-      shares: Math.floor(Math.random() * 30),
-      createdAt: new Date().toISOString(),
-      // Remove updatedAt if it doesn't exist in Post type
-    }));
-
-    setPosts(mockPosts);
-    setLoading(false);
-  }, []);
+    let mounted = true;
+    const loadPosts = async () => {
+      setLoading(true);
+      setLoadError('');
+      try {
+        const response: any = await ApiService.get('/discover/content?limit=50');
+        const rawPosts = response?.data?.data ?? response?.data ?? (Array.isArray(response) ? response : null);
+        if (!Array.isArray(rawPosts)) throw new Error('The discovery API returned an invalid content list.');
+        if (!mounted) return;
+        setPosts(rawPosts.map((post: any) => ({
+          id: String(post.id),
+          authorId: String(post.author_id || ''),
+          title: post.title || 'Untitled',
+          content: post.content || post.body || '',
+          body: post.body || post.content || '',
+          excerpt: post.excerpt || post.content || '',
+          type: post.content_type || 'text',
+          media: Array.isArray(post.media_urls) ? post.media_urls : [],
+          mediaUrl: post.media_url || '',
+          tags: Array.isArray(post.tags) ? post.tags : [],
+          category: post.category || 'general',
+          status: post.status || 'published',
+          visibility: 'public',
+          isReported: false,
+          reportReasons: [],
+          reportedBy: [],
+          timestamp: post.created_at || new Date().toISOString(),
+          likes: Number(post.likes_count) || 0,
+          comments: Number(post.comments_count) || 0,
+          shares: Number(post.shares_count) || 0,
+          createdAt: post.created_at || new Date().toISOString(),
+        })));
+      } catch (error) {
+        if (!mounted) return;
+        setPosts([]);
+        const message = error instanceof Error ? error.message : 'Unable to load discovery content.';
+        setLoadError(message);
+        showToast(message, 'error');
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    };
+    void loadPosts();
+    return () => {
+      mounted = false;
+    };
+  }, [showToast]);
 
   if (loading) {
     return (
@@ -238,9 +260,10 @@ const DiscoverPage: React.FC = () => {
     <MainLayout pageTitle="Discover">
       <div className="p-4 sm:p-6 lg:p-8">
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-900">Discover</h1>
-          <p className="text-gray-600">Explore trending content and connect with creators</p>
+          <h1 className="text-2xl font-bold text-slate-900">Discover</h1>
+          <p className="text-slate-700">Explore trending content and connect with creators</p>
         </div>
+        {loadError && <p role="alert" className="mb-4 rounded-lg border border-red-400 bg-red-100 px-4 py-3 font-bold text-red-950">{loadError}</p>}
 
         <TabNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
 
@@ -249,19 +272,19 @@ const DiscoverPage: React.FC = () => {
           <div className="hidden lg:block lg:col-span-3 space-y-6">
             <div className="sticky top-20 space-y-6">
               <div className="bg-white p-6 rounded-2xl shadow-md border border-slate-200">
-                <h3 className="font-bold text-gray-900 mb-4 flex items-center">
+                <h3 className="font-bold text-slate-900 mb-4 flex items-center">
                   <MagnifyingGlassIcon className="w-5 h-5 text-blue-600 mr-2" />
                   Explore
                 </h3>
                 <ul className="space-y-3">
-                  <li><button onClick={() => setActiveTab('trending')} className={`w-full text-left font-medium ${activeTab === 'trending' ? 'text-blue-600 hover:underline' : 'text-gray-600 hover:text-blue-600'}`}>Trending Content</button></li>
-                  <li><button onClick={() => setActiveTab('latest')} className={`w-full text-left font-medium ${activeTab === 'latest' ? 'text-blue-600 hover:underline' : 'text-gray-600 hover:text-blue-600'}`}>Latest Posts</button></li>
-                  <li><button onClick={() => setActiveTab('following')} className={`w-full text-left font-medium ${activeTab === 'following' ? 'text-blue-600 hover:underline' : 'text-gray-600 hover:text-blue-600'}`}>Following</button></li>
+                  <li><button onClick={() => setActiveTab('trending')} className={`w-full text-left font-medium ${activeTab === 'trending' ? 'text-blue-600 hover:underline' : 'text-slate-700 hover:text-blue-600'}`}>Trending Content</button></li>
+                  <li><button onClick={() => setActiveTab('latest')} className={`w-full text-left font-medium ${activeTab === 'latest' ? 'text-blue-600 hover:underline' : 'text-slate-700 hover:text-blue-600'}`}>Latest Posts</button></li>
+                  <li><button onClick={() => setActiveTab('following')} className={`w-full text-left font-medium ${activeTab === 'following' ? 'text-blue-600 hover:underline' : 'text-slate-700 hover:text-blue-600'}`}>Following</button></li>
                 </ul>
               </div>
 
               <div className="bg-white p-6 rounded-2xl shadow-md border border-slate-200">
-                <h3 className="font-bold text-gray-900 mb-4 flex items-center">
+                <h3 className="font-bold text-slate-900 mb-4 flex items-center">
                   <FireIcon className="w-5 h-5 text-red-500 mr-2" />
                   Popular Topics
                 </h3>
@@ -279,6 +302,7 @@ const DiscoverPage: React.FC = () => {
           {/* Main Content */}
           <div className="lg:col-span-6">
             <div className="space-y-6">
+              {!posts.length && !loadError && <p className="rounded-lg border border-slate-300 bg-white p-6 text-center font-semibold text-slate-700">No published discovery content is available yet.</p>}
               {posts.map((post) => (
                 <PostCard
                   key={post.id}
@@ -302,6 +326,7 @@ const DiscoverPage: React.FC = () => {
               onOpenGiftModal={onOpenGiftModal}
               onOpenPaylinkModal={onOpenPaylinkModal}
               ficBalance={ficBalance}
+              postId={posts[0]?.id}
             />
             <BalancePanel ficBalance={ficBalance} />
             <DiscoveryTipsPanel />
@@ -313,7 +338,7 @@ const DiscoverPage: React.FC = () => {
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
             <div className="bg-white rounded-xl p-6 max-w-md w-full">
               <h3 className="text-xl font-semibold mb-4">Send Gift</h3>
-              <p className="text-gray-600 mb-4">Send a gift to the creator of this post</p>
+              <p className="text-slate-700 mb-4">Send a gift to the creator of this post</p>
               <div className="space-y-4">
                 <input
                   type="text"
@@ -347,7 +372,7 @@ const DiscoverPage: React.FC = () => {
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
             <div className="bg-white rounded-xl p-6 max-w-md w-full">
               <h3 className="text-xl font-semibold mb-4">Create Paylink</h3>
-              <p className="text-gray-600 mb-4">Create a paylink for this post</p>
+              <p className="text-slate-700 mb-4">Create a paylink for this post</p>
               <div className="space-y-4">
                 <input
                   type="text"

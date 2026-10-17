@@ -51,7 +51,7 @@ import {
   ChevronDown,
   ChevronRight
 } from 'lucide-react';
-import { CURATED_PHOTOCREDITS_ITEMS, CuratedMediaItem } from '../data/curatedPhotoCredits';
+import type { CuratedMediaItem } from '../data/curatedPhotoCredits';
 import { FingerMobileVideoPlayerModal } from '../components/modals/FingerMobileVideoPlayerModal';
 import { FingerMobileShareModal } from '../components/modals/FingerMobileShareModal';
 import { PhotoCreditsCommentsModal } from '../components/modals/PhotoCreditsCommentsModal';
@@ -206,8 +206,9 @@ const PhotoCreditsPage: React.FC = () => {
 
   // Navigation & Filter State
   const [activeTab, setActiveTab] = useState<TabMode>('gallery');
-  const [photos, setPhotos] = useState<PhotoCreditItem[]>(CURATED_PHOTOCREDITS_ITEMS as any);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [photos, setPhotos] = useState<PhotoCreditItem[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [loadError, setLoadError] = useState('');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedCohortFilter, setSelectedCohortFilter] = useState<string>('all');
@@ -299,7 +300,7 @@ const PhotoCreditsPage: React.FC = () => {
   const [uploadForm, setUploadForm] = useState({
     title: '',
     description: '',
-    imageUrl: 'https://images.unsplash.com/photo-1518791841217-8f162f1e1131?auto=format&fit=crop&w=1600&q=85',
+    imageUrl: '',
     category: 'Architecture',
     location: 'Lagos, Nigeria',
     price_credits: 30,
@@ -325,15 +326,18 @@ const PhotoCreditsPage: React.FC = () => {
     return () => clearInterval(timer);
   }, []);
 
-  // Fetch Photos from Backend API (with curated fallback)
+  // Fetch the catalog from the database-backed API.
   const fetchPhotos = useCallback(async () => {
     try {
       setLoading(true);
+      setLoadError('');
       const res: any = await ApiService.get('/photocredits');
-      const rawList = res?.data || (Array.isArray(res) ? res : []);
-
-      if (rawList && rawList.length > 0) {
-        const normalized: PhotoCreditItem[] = rawList.map((item: any, idx: number) => {
+      const rawList = res?.data?.data ?? res?.data ?? (Array.isArray(res) ? res : null);
+      if (!Array.isArray(rawList)) throw new Error('The PhotoCredits API returned an invalid photo list.');
+      const normalized: PhotoCreditItem[] = rawList.map((item: any) => {
+          if (item.id == null && item.photo_id == null) {
+            throw new Error('The PhotoCredits API returned a photo without an identifier.');
+          }
           let parsedPoll = item.poll_data;
           if (typeof parsedPoll === 'string') {
             try {
@@ -343,56 +347,49 @@ const PhotoCreditsPage: React.FC = () => {
             }
           }
 
-          let imgUrl = item.image_url || item.imageUrl || 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?w=1600&auto=format&fit=crop&q=85';
+          let imgUrl = item.image_url || item.imageUrl || '';
           if (imgUrl.startsWith('/uploads')) {
             imgUrl = `http://localhost:3001${imgUrl}`;
           }
 
           return {
-            id: String(item.id || item.photo_id || `pc-${idx}`),
-            photo_id: item.photo_id || `ph-${idx}`,
-            title: item.title || 'Untitled Masterpiece',
+            id: String(item.id ?? item.photo_id),
+            photo_id: item.photo_id || String(item.id),
+            title: item.title || 'Untitled',
             description: item.description || '',
             imageUrl: imgUrl,
             thumbnailUrl: item.thumbnail_url || item.thumbnailUrl || imgUrl,
             videoUrl: item.video_url || item.videoUrl,
             media_type: item.media_type || (item.video_url ? 'video' : 'image'),
             cohort: item.cohort,
-            photographer: item.photographer_name || item.photographer || 'FingerMobile Creator',
-            photographer_id: String(item.uploader_id || item.photographer_id || '1'),
-            location: item.location || 'Global',
+            photographer: item.photographer_name || item.photographer || 'Unknown creator',
+            photographer_id: item.uploader_id || item.photographer_id ? String(item.uploader_id || item.photographer_id) : undefined,
+            location: item.location || '',
             category: item.category || 'General',
             tags: Array.isArray(item.tags) ? item.tags : [],
-            likes: Number(item.likes || item.credits_count || 42),
+            likes: Number(item.likes ?? item.likes_count ?? 0),
             dislikes: Number(item.dislikes || 0),
-            downloads: Number(item.downloads || Math.floor((item.credits_count || 10) * 0.4)),
-            shares: Number(item.shares || 12),
-            rating: Number(item.rating || 4.9),
-            price_credits: Number(item.price || item.price_credits || 25),
+            downloads: Number(item.downloads || 0),
+            shares: Number(item.shares || 0),
+            rating: Number(item.rating || 0),
+            price_credits: Number(item.price ?? item.price_credits ?? 0),
             license_type: item.license_type || 'Royalty-Free Standard',
             camera_info: typeof item.camera_info === 'object' && item.camera_info !== null
               ? item.camera_info
-              : { camera: 'Pro Camera Body', lens: 'Prime Lens', iso: 100, shutter: '1/250s', aperture: 'f/2.8' },
+              : undefined,
             poll_data: parsedPoll
           };
         });
-
-        // Merge with curated items to ensure all 20 assets (15 photos + 5 videos) remain present
-        const existingIds = new Set(normalized.map((n) => n.id));
-        const combined = [
-          ...normalized,
-          ...CURATED_PHOTOCREDITS_ITEMS.filter((c) => !existingIds.has(c.id))
-        ];
-        setPhotos(combined as any);
-      } else {
-        setPhotos(CURATED_PHOTOCREDITS_ITEMS as any);
-      }
-    } catch {
-      setPhotos(CURATED_PHOTOCREDITS_ITEMS as any);
+      setPhotos(normalized);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Unable to load PhotoCredits assets.';
+      setPhotos([]);
+      setLoadError(message);
+      showToast(message, 'error');
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [showToast]);
 
   useEffect(() => {
     fetchPhotos();
@@ -1497,8 +1494,12 @@ const PhotoCreditsPage: React.FC = () => {
             ) : filteredPhotos.length === 0 ? (
               <div className="p-12 text-center rounded-2xl bg-slate-900/60 border border-slate-800">
                 <Camera className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-                <h3 className="text-lg font-bold text-white">No media assets match current query</h3>
-                <p className="text-xs text-slate-300 mt-1">Try resetting demographic cohort, glitz level, or keywords.</p>
+                <h3 role={loadError ? 'alert' : undefined} className="text-lg font-bold text-white">
+                  {loadError || (photos.length ? 'No media assets match the current query.' : 'No PhotoCredits assets are available yet.')}
+                </h3>
+                <p className="text-xs text-slate-300 mt-1">
+                  {loadError ? 'The catalog could not be synchronized from the server.' : 'Try resetting filters or add assets to the database-backed catalog.'}
+                </p>
                 <button
                   onClick={() => {
                     setSearchQuery('');

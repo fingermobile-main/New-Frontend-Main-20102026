@@ -51,89 +51,68 @@ const DEFAULT_PROFILE: LushUserProfile = {
   isRadiating: true,
 };
 
-const INITIAL_POSTS: LushPostItem[] = [
-  {
-    id: 'post_01',
+const INITIAL_POSTS: LushPostItem[] = [];
+
+interface LushApiPost {
+  id?: string | number;
+  author_id?: string | number;
+  author_username?: string;
+  author_name?: string;
+  author_avatar?: string;
+  content?: string;
+  created_at?: string;
+  timestamp?: string;
+  likesCount?: number;
+  likes_count?: number;
+  commentsCount?: number;
+  comments_count?: number;
+  giftsCount?: number;
+  gifts_count?: number;
+  isLiked?: boolean;
+  is_liked?: boolean;
+  isBookmarked?: boolean;
+  is_bookmarked?: boolean;
+  lapidaireQuestion?: string;
+  lapidaire_question?: string;
+  lapidaireCategory?: string;
+  lapidaire_category?: string;
+  mediaUrl?: string;
+  media_url?: string;
+  mediaType?: 'image' | 'video';
+  media_type?: 'image' | 'video';
+  comments?: LushPostItem['comments'];
+}
+
+const mapLushPost = (
+  post: LushApiPost,
+  fallbackAuthor?: LushPostItem['author']
+): LushPostItem | null => {
+  if (post.id == null) return null;
+  const username = post.author_username || fallbackAuthor?.username || 'member';
+  return {
+    id: String(post.id),
     author: {
-      id: 'usr_02',
-      name: 'Nia Adebayo',
-      username: 'nia_music',
-      avatar:
-        'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300',
-      verificationLevel: 4,
-      intentTag: 'Thoughtful Interactions',
+      id: String(post.author_id ?? fallbackAuthor?.id ?? ''),
+      name: post.author_name || fallbackAuthor?.name || username,
+      username,
+      avatar: post.author_avatar || fallbackAuthor?.avatar || '',
+      verificationLevel: fallbackAuthor?.verificationLevel || 0,
+      intentTag: fallbackAuthor?.intentTag || '',
     },
-    content:
-      'Nothing beats listening to neo-soul while designing brand identities on a quiet Sunday morning. What\'s one song that instantly transports you to your happiest memory?',
-    timestamp: '25m ago',
-    likesCount: 38,
-    commentsCount: 6,
-    giftsCount: 2,
-    isLiked: false,
-    isBookmarked: false,
-    lapidaireQuestion:
-      'What type of music do you like, and what\'s the last concert you went to?',
-    lapidaireCategory: 'Music & Memories',
-    comments: [
-      {
-        id: 'c_01',
-        authorName: 'David Kalu',
-        authorAvatar:
-          'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150',
-        text: 'Definitely Sade - Cherish the Day. Immediate calm and good vibes!',
-        timestamp: '18m ago',
-      },
-    ],
-  },
-  {
-    id: 'post_02',
-    author: {
-      id: 'usr_03',
-      name: 'Tariq Al-Mansoor',
-      username: 'tariq_lux',
-      avatar:
-        'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300',
-      verificationLevel: 5,
-      intentTag: 'Long-term Partnership',
-    },
-    content:
-      'Surprise gift exchange unlocked! Just sent over the Chinchilla Weighted Luxury Throw from the Lush Plushies store to my match in celebration of our 2-week communication milestone.',
-    timestamp: '1h ago',
-    likesCount: 84,
-    commentsCount: 14,
-    giftsCount: 7,
-    isLiked: true,
-    isBookmarked: true,
-    giftAttachment: {
-      name: 'Chinchilla-Style Weighted Luxury Throw',
-      imageUrl:
-        'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=300',
-      price: 240,
-    },
-  },
-  {
-    id: 'post_03',
-    author: {
-      id: 'usr_04',
-      name: 'Zainab Bello',
-      username: 'zainab_art',
-      avatar:
-        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300',
-      verificationLevel: 5,
-      intentTag: 'Unique Social Experience',
-    },
-    content:
-      'Answering today\'s deep values prompt from the 30 Lush Questions: Success isn\'t about status symbols, it\'s about emotional peace and building a life you don\'t need a vacation from.',
-    timestamp: '3h ago',
-    likesCount: 112,
-    commentsCount: 22,
-    giftsCount: 4,
-    isLiked: false,
-    isBookmarked: false,
-    lapidaireQuestion: 'How do you define success in life?',
-    lapidaireCategory: 'Deep Values & Life Goals',
-  },
-];
+    content: post.content || '',
+    timestamp: post.created_at || post.timestamp || '',
+    likesCount: Number(post.likesCount ?? post.likes_count ?? 0),
+    commentsCount: Number(post.commentsCount ?? post.comments_count ?? 0),
+    giftsCount: Number(post.giftsCount ?? post.gifts_count ?? 0),
+    isLiked: Boolean(post.isLiked ?? post.is_liked),
+    isBookmarked: Boolean(post.isBookmarked ?? post.is_bookmarked),
+    lapidaireQuestion: post.lapidaireQuestion || post.lapidaire_question,
+    lapidaireCategory: post.lapidaireCategory || post.lapidaire_category,
+    mediaUrl: post.mediaUrl || post.media_url,
+    mediaType: post.mediaType || post.media_type,
+    comments: post.comments || [],
+  };
+};
 
 const INITIAL_MATCHES: ActiveMatchItem[] = [
   {
@@ -248,51 +227,77 @@ export const LushPressiesPage: React.FC = () => {
   useEffect(() => {
     let isMounted = true;
     const loadLushData = async () => {
-      try {
-        const [postsRes, profileRes, quotaRes] = await Promise.allSettled([
-          apiService.get('/lushpressies/posts'),
-          apiService.get('/lushpressies/profile'),
-          apiService.get('/lushpressies/pins/quota'),
-        ]);
+      const [postsRes, profileRes, quotaRes] = await Promise.allSettled([
+        apiService.get('/lushpressies/posts'),
+        apiService.get('/lushpressies/profile'),
+        apiService.get('/lushpressies/pins/quota'),
+      ]);
 
-        if (!isMounted) return;
-
-        if (
-          postsRes.status === 'fulfilled' &&
-          Array.isArray(postsRes.value?.data)
-        ) {
-          if (postsRes.value.data.length > 0) {
-            setFeedPosts(postsRes.value.data);
+      if (!isMounted) return;
+      const failures: string[] = [];
+      if (postsRes.status === 'fulfilled') {
+        const response = postsRes.value;
+        const rows = response?.data?.data ?? response?.data ?? response;
+        if (Array.isArray(rows)) {
+          const posts = rows.map((post: LushApiPost) => mapLushPost(post));
+          const validPosts = posts.filter((post): post is LushPostItem => post !== null);
+          if (validPosts.length !== rows.length) {
+            setFeedPosts([]);
+            failures.push('posts contained records without identifiers');
+          } else {
+            setFeedPosts(validPosts);
           }
+        } else {
+          setFeedPosts([]);
+          failures.push('posts returned an invalid list');
         }
-
-        if (profileRes.status === 'fulfilled' && profileRes.value?.data) {
-          setUserProfile((prev) => {
-            const merged = { ...prev, ...profileRes.value.data };
-            try {
-              localStorage.setItem('lush_user_profile', JSON.stringify(merged));
-            } catch (err) {
-              // Local storage unavailable
-            }
-            return merged;
-          });
-        }
-
-        if (quotaRes.status === 'fulfilled' && quotaRes.value?.data) {
-          const q = quotaRes.value.data;
-          setPinQuota({
-            totalAllocated: q.total_allocated ?? 50,
-            generationsUsed: q.generations_used ?? 0,
-            generationsRemaining: q.generations_remaining ?? 50,
-            isUnlimited: Boolean(q.is_unlimited),
-          });
-        }
-      } catch {
-        // Fallback to mock dataset on API error
+      } else {
+        setFeedPosts([]);
+        failures.push('posts could not be loaded');
       }
+
+      if (profileRes.status === 'fulfilled') {
+        const response = profileRes.value;
+        const profile = response?.data?.data ?? response?.data;
+        if (profile && typeof profile === 'object') {
+          setUserProfile((prev) => ({ ...prev, ...profile }));
+          try {
+            localStorage.setItem('lush_user_profile', JSON.stringify(profile));
+          } catch {
+            failures.push('profile could not be cached locally');
+          }
+        } else {
+          failures.push('profile returned an invalid response');
+        }
+      } else if (profileRes.status === 'rejected') {
+        failures.push('profile could not be loaded');
+      }
+
+      if (quotaRes.status === 'fulfilled') {
+        const response = quotaRes.value;
+        const quota = response?.data?.data ?? response?.data;
+        if (quota && typeof quota === 'object') {
+          setPinQuota({
+            totalAllocated: quota.total_allocated ?? 50,
+            generationsUsed: quota.generations_used ?? 0,
+            generationsRemaining: quota.generations_remaining ?? 50,
+            isUnlimited: Boolean(quota.is_unlimited),
+          });
+        } else {
+          failures.push('PIN quota returned an invalid response');
+        }
+      } else if (quotaRes.status === 'rejected') {
+        failures.push('PIN quota could not be loaded');
+      }
+
+      if (failures.length) showToast(`LushPressies: ${failures.join('; ')}.`);
     };
 
-    loadLushData();
+    void loadLushData().catch((error: unknown) => {
+      if (!isMounted) return;
+      setFeedPosts([]);
+      showToast(error instanceof Error ? error.message : 'Unable to load LushPressies data.');
+    });
     return () => {
       isMounted = false;
     };
@@ -443,36 +448,31 @@ export const LushPressiesPage: React.FC = () => {
     );
   };
 
-  const handleCreatePost = (
+  const handleCreatePost = async (
     content: string,
     lapidaire?: string,
     mediaUrl?: string
-  ) => {
-    const newPost: LushPostItem = {
-      id: `post_${Date.now()}`,
-      author: {
-        id: userProfile.id,
-        name: userProfile.name,
-        username: userProfile.username,
-        avatar: userProfile.avatar,
-        verificationLevel: userProfile.verificationLevel,
-        intentTag: userProfile.matchingIntent,
-      },
+  ): Promise<void> => {
+    const response = await apiService.post('/lushpressies/posts', {
       content,
-      timestamp: 'Just now',
-      likesCount: 0,
-      commentsCount: 0,
-      giftsCount: 0,
-      isLiked: false,
-      isBookmarked: false,
-      lapidaireQuestion: lapidaire,
-      lapidaireCategory: lapidaire ? '30 Dating Questions' : undefined,
+      category: lapidaire ? 'lapidaire' : 'general',
       mediaUrl,
-      comments: [],
-    };
-
+      tags: [],
+    });
+    const createdPost = response?.data?.data ?? response?.data ?? response;
+    const post = mapLushPost(createdPost, {
+      id: String(createdPost?.author_id ?? ''),
+      name: 'LushPressies Member',
+      username: 'member',
+      avatar: '',
+      verificationLevel: 0,
+      intentTag: '',
+    });
+    if (!post) throw new Error('The LushPressies API did not return the created post.');
+    post.lapidaireQuestion = lapidaire;
+    post.lapidaireCategory = lapidaire ? '30 Dating Questions' : undefined;
+    setFeedPosts((prev) => [post, ...prev]);
     voiceLineServiceInstance.playCommentaryVoiceLine('lushpressies');
-    setFeedPosts((prev) => [newPost, ...prev]);
   };
 
   const handleBookmarkPost = (postId: string) => {
