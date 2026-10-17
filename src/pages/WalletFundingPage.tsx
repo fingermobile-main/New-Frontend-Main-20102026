@@ -182,7 +182,7 @@ const WalletFundingPage: React.FC = () => {
                         value={amount}
                         onChange={(e) => setAmount(e.target.value)}
                         placeholder="Enter amount to fund"
-                        className="w-full px-4 py-3 pl-12 border border-slate-300 rounded-xl bg-white text-slate-900 font-bold shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400"
+                        className="w-full px-4 py-3 pl-12 border border-slate-300 rounded-xl bg-white text-slate-900 font-bold shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400 font-mono"
                         required
                       />
                       <div className="absolute left-3.5 top-1/2 transform -translate-y-1/2">
@@ -290,7 +290,7 @@ const WalletFundingPage: React.FC = () => {
               </h2>
               <div className="flex items-center justify-between">
                 <span className="text-2xl font-mono font-black text-slate-900">{ficBalance.toFixed(2)} FIC</span>
-                <span className="text-xs font-bold bg-emerald-100 text-emerald-950 px-2.5 py-1 rounded-full border border-emerald-400">
+                <span className="text-xs font-bold bg-emerald-100 text-emerald-950 px-2.5 py-1 rounded-full border border-emerald-400 font-black">
                   Active
                 </span>
               </div>
@@ -378,7 +378,7 @@ const WalletFundingPage: React.FC = () => {
                   type="number"
                   value={giftAmount}
                   onChange={(e) => setGiftAmount(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-white border border-slate-300 text-slate-900 font-bold rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 placeholder:text-slate-400"
+                  className="w-full px-4 py-2.5 bg-white border border-slate-300 text-slate-900 font-bold rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 placeholder:text-slate-400 font-mono"
                   placeholder="Enter amount"
                   min="0"
                 />
@@ -423,7 +423,7 @@ const WalletFundingPage: React.FC = () => {
                   type="number"
                   value={paylinkAmount}
                   onChange={(e) => setPaylinkAmount(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-white border border-slate-300 text-slate-900 font-bold rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400"
+                  className="w-full px-4 py-2.5 bg-white border border-slate-300 text-slate-900 font-bold rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400 font-mono"
                   placeholder="Enter amount"
                   min="0"
                   step="0.01"

@@ -111,7 +111,9 @@ const ChangePasswordPage: React.FC = () => {
                   value={currentPassword}
                   onChange={(e) => setCurrentPassword(e.target.value)}
                   placeholder="Enter current password"
-                  className={[(errors.currentPassword ? 'border-red-500' : ''), "text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"].filter(Boolean).join(" ")}
+                  className={`text-slate-900 font-bold border rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 ${
+                    errors.currentPassword ? 'border-red-500' : 'border-slate-300'
+                  }`}
                 />
                 <button
                   type="button"
@@ -135,7 +137,9 @@ const ChangePasswordPage: React.FC = () => {
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   placeholder="Enter new password"
-                  className={[(errors.newPassword ? 'border-red-500' : ''), "text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"].filter(Boolean).join(" ")}
+                  className={`text-slate-900 font-bold border rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 ${
+                    errors.newPassword ? 'border-red-500' : 'border-slate-300'
+                  }`}
                 />
                 <button
                   type="button"
@@ -159,7 +163,9 @@ const ChangePasswordPage: React.FC = () => {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="Confirm new password"
-                  className={[(errors.confirmPassword ? 'border-red-500' : ''), "text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"].filter(Boolean).join(" ")}
+                  className={`text-slate-900 font-bold border rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 ${
+                    errors.confirmPassword ? 'border-red-500' : 'border-slate-300'
+                  }`}
                 />
                 <button
                   type="button"

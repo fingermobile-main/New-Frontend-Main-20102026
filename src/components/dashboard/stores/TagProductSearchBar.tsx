@@ -110,7 +110,7 @@ export const TagProductSearchBar: React.FC<TagProductSearchBarProps> = ({
               setIsOpenDropdown(true);
             }}
             onFocus={() => setIsOpenDropdown(true)}
-            className="w-full px-3 py-2.5 text-xs bg-transparent focus:outline-none text-slate-900 dark:text-white font-bold border border-slate-300 rounded focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
+            className="w-full px-3 py-2.5 text-xs bg-white dark:bg-slate-900 focus:outline-none text-slate-900 dark:text-white font-bold border border-slate-300 rounded focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
           />
 
           {loading && (

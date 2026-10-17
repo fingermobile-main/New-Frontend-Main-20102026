@@ -201,7 +201,7 @@ const PayoutsPage: React.FC = () => {
                 type="number"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                className="w-full px-3 py-2 border border-slate-300 bg-white text-slate-900 font-bold rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-blue placeholder:text-slate-400"
+                className="w-full px-3 py-2 border border-slate-300 bg-white text-slate-900 font-bold rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-blue placeholder:text-slate-400 font-mono"
                 placeholder="e.g. 500"
                 required
               />

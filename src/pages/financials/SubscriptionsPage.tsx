@@ -1398,7 +1398,7 @@ export const SubscriptionsPage: React.FC = () => {
                               updatedFeatures[i] = e.target.value;
                               setEditForm({ ...editForm, features: updatedFeatures });
                             }}
-                            className="flex-1 bg-transparent border-none text-slate-900 font-bold focus:outline-none text-xs border border-slate-300 rounded focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
+                            className="flex-1 bg-white text-slate-900 font-bold focus:outline-none text-xs border border-slate-300 rounded focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                           />
                           <button
                             type="button"

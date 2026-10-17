@@ -22,7 +22,7 @@ interface ProfileData {
 
 // Shared input class — explicitly sets dark text so it stays visible on light/white backgrounds
 const inputClass =
-  'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-gray-900 placeholder:text-slate-500';
+  'w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-slate-900 font-bold placeholder:text-slate-400';
 
 const ProfileEnhancement: React.FC = () => {
   const [profile, setProfile] = useState<ProfileData>({
@@ -116,17 +116,17 @@ const ProfileEnhancement: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md text-gray-900">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">Profile Enhancement</h2>
+    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md text-slate-800">
+      <h2 className="text-2xl font-bold text-slate-900 mb-6">Profile Enhancement</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Left Column */}
         <div className="space-y-6">
           <div className="bg-gray-50 p-4 rounded-lg">
-            <h3 className="text-lg font-semibold text-gray-700 mb-3">Basic Info</h3>
+            <h3 className="text-lg font-semibold text-slate-900 mb-3">Basic Info</h3>
 
             <div className="mb-4">
-              <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="username" className="block text-sm font-medium text-slate-800 mb-1">
                 Username (3-30 characters)
               </label>
               <input
@@ -136,14 +136,14 @@ const ProfileEnhancement: React.FC = () => {
                 value={profile.username}
                 onChange={handleInputChange}
                 placeholder="Enter your username"
-                className={[(inputClass), "text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"].filter(Boolean).join(" ")}
+                className={inputClass}
                 maxLength={30}
                 minLength={3}
               />
             </div>
 
             <div className="mb-4">
-              <label htmlFor="bio" className="block text-sm font-medium text-gray-700 mb-1">Bio</label>
+              <label htmlFor="bio" className="block text-sm font-medium text-slate-800 mb-1">Bio</label>
               <textarea
                 id="bio"
                 name="bio"
@@ -151,12 +151,12 @@ const ProfileEnhancement: React.FC = () => {
                 onChange={handleInputChange}
                 placeholder="Tell us about yourself..."
                 rows={4}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-slate-900 placeholder:text-slate-400 font-bold border-slate-300"
+                className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-slate-900 font-bold placeholder:text-slate-400"
               />
             </div>
 
             <div className="mb-4">
-              <label htmlFor="profilePicture" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="profilePicture" className="block text-sm font-medium text-slate-800 mb-1">
                 Profile Picture URL
               </label>
               <input
@@ -166,12 +166,12 @@ const ProfileEnhancement: React.FC = () => {
                 value={profile.profilePicture}
                 onChange={handleInputChange}
                 placeholder="https://example.com/profile.jpg"
-                className={[(inputClass), "text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"].filter(Boolean).join(" ")}
+                className={inputClass}
               />
             </div>
 
             <div className="mb-4">
-              <label htmlFor="profileVideo" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="profileVideo" className="block text-sm font-medium text-slate-800 mb-1">
                 Profile Video URL (3-5s)
               </label>
               <input
@@ -181,7 +181,7 @@ const ProfileEnhancement: React.FC = () => {
                 value={profile.profileVideo || ''}
                 onChange={(e) => setProfile(prev => ({ ...prev, profileVideo: e.target.value || null }))}
                 placeholder="https://example.com/video.mp4"
-                className={[(inputClass), "text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"].filter(Boolean).join(" ")}
+                className={inputClass}
               />
             </div>
 
@@ -191,9 +191,9 @@ const ProfileEnhancement: React.FC = () => {
                 id="aiGenerated"
                 checked={profile.aiGenerated}
                 onChange={handleToggleAiGenerated}
-                className="h-4 w-4 text-slate-900 focus:ring-indigo-500 border-gray-300 rounded font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
+                className="h-4 w-4 text-slate-900 focus:ring-2 focus:ring-indigo-500 border border-slate-300 rounded bg-white"
               />
-              <label htmlFor="aiGenerated" className="text-sm font-medium text-gray-700">
+              <label htmlFor="aiGenerated" className="text-sm font-medium text-slate-800">
                 AI Generated Avatar
               </label>
 
@@ -202,20 +202,20 @@ const ProfileEnhancement: React.FC = () => {
                 id="professional"
                 checked={profile.isProfessional}
                 onChange={handleToggleProfessional}
-                className="h-4 w-4 text-slate-900 focus:ring-indigo-500 border-gray-300 rounded font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
+                className="h-4 w-4 text-slate-900 focus:ring-2 focus:ring-indigo-500 border border-slate-300 rounded bg-white"
               />
-              <label htmlFor="professional" className="text-sm font-medium text-gray-700">
+              <label htmlFor="professional" className="text-sm font-medium text-slate-800">
                 Professional Mode
               </label>
             </div>
           </div>
 
           <div className="bg-gray-50 p-4 rounded-lg">
-            <h3 className="text-lg font-semibold text-gray-700 mb-3">Cover Images/GIFs (3 images)</h3>
+            <h3 className="text-lg font-semibold text-slate-900 mb-3">Cover Images/GIFs (3 images)</h3>
 
             {profile.coverImages.map((img, index) => (
               <div key={index} className="mb-3">
-                <label htmlFor={`coverImage-${index}`} className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor={`coverImage-${index}`} className="block text-sm font-medium text-slate-800 mb-1">
                   Cover Image {index + 1}
                 </label>
                 <input
@@ -224,7 +224,7 @@ const ProfileEnhancement: React.FC = () => {
                   value={img}
                   onChange={(e) => handleCoverImageChange(index, e.target.value)}
                   placeholder={`https://example.com/cover-${index + 1}.jpg`}
-                  className={[(inputClass), "text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"].filter(Boolean).join(" ")}
+                  className={inputClass}
                 />
               </div>
             ))}
@@ -234,7 +234,7 @@ const ProfileEnhancement: React.FC = () => {
         {/* Right Column */}
         <div className="space-y-6">
           <div className="bg-gray-50 p-4 rounded-lg">
-            <h3 className="text-lg font-semibold text-gray-700 mb-3">Skills (up to 25)</h3>
+            <h3 className="text-lg font-semibold text-slate-900 mb-3">Skills (up to 25)</h3>
 
             <div className="flex space-x-2 mb-4">
               <input
@@ -242,7 +242,7 @@ const ProfileEnhancement: React.FC = () => {
                 value={currentSkill.name}
                 onChange={(e) => setCurrentSkill({...currentSkill, name: e.target.value})}
                 placeholder="Add a skill"
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-slate-900 placeholder:text-slate-400 font-bold border-slate-300"
+                className="flex-1 px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-slate-900 font-bold placeholder:text-slate-400"
                 onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleAddSkill(); } }}
               />
               <select
@@ -251,7 +251,7 @@ const ProfileEnhancement: React.FC = () => {
                 className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-slate-900 font-bold border-slate-300"
               >
                 {[1, 2, 3, 4, 5].map(level => (
-                  <option key={level} value={level} className="text-gray-900 bg-white">{level}</option>
+                  <option key={level} value={level} className="text-slate-900 bg-white">{level}</option>
                 ))}
               </select>
               <button
@@ -266,7 +266,7 @@ const ProfileEnhancement: React.FC = () => {
               {profile.skills.map(skill => (
                 <div key={skill.id} className="flex items-center justify-between bg-white p-2 rounded border border-slate-300">
                   <div>
-                    <span className="font-medium text-gray-900">{skill.name}</span>
+                    <span className="font-medium text-slate-800">{skill.name}</span>
                     <div className="flex mt-1">
                       {[...Array(5)].map((_, i) => (
                         <span
@@ -297,7 +297,7 @@ const ProfileEnhancement: React.FC = () => {
           </div>
 
           <div className="bg-gray-50 p-4 rounded-lg">
-            <h3 className="text-lg font-semibold text-gray-700 mb-3">Links</h3>
+            <h3 className="text-lg font-semibold text-slate-900 mb-3">Links</h3>
 
             <div className="flex space-x-2 mb-4">
               <input
@@ -305,7 +305,7 @@ const ProfileEnhancement: React.FC = () => {
                 value={newLink}
                 onChange={(e) => setNewLink(e.target.value)}
                 placeholder="https://example.com"
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-slate-900 placeholder:text-slate-400 font-bold border-slate-300"
+                className="flex-1 px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-slate-900 font-bold placeholder:text-slate-400"
                 onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleAddLink(); } }}
               />
               <button

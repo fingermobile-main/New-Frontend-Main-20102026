@@ -361,7 +361,7 @@ export const LushEncoreView: React.FC<LushEncoreViewProps> = ({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by name, characteristics, location or intent..."
-              className="w-full bg-[#F5F9F6] text-gray-900 placeholder:text-slate-500 border border-emerald-100 rounded-xl pl-9 pr-3 py-2 text-xs focus:ring-1 focus:ring-emerald-500 focus:border-emerald-600 outline-hidden transition"
+              className="w-full bg-white text-slate-900 font-bold placeholder:text-slate-400 border border-slate-300 rounded-xl pl-9 pr-3 py-2 text-xs focus:ring-2 focus:ring-indigo-500 outline-hidden transition"
             />
           </div>
 

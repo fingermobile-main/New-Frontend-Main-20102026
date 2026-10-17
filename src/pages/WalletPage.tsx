@@ -510,10 +510,10 @@ const WalletPage: React.FC = () => {
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-white p-6 rounded-3xl border border-slate-200/80 shadow-xs">
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-100 text-amber-900 border border-amber-300">
+                <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-100 text-amber-950 border border-amber-400 text-amber-950 border-amber-400 font-black">
                   Alternative Bank Treasury Rail Connected
                 </span>
-                <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300">
+                <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 text-emerald-950 border-emerald-400 font-black">
                   CBN Licensed & Supervised
                 </span>
               </div>
@@ -578,9 +578,9 @@ const WalletPage: React.FC = () => {
               {/* Bank Account Details Grid */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 font-mono text-xs">
                 <div className="p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xs">
-                  <span className="text-slate-400 font-sans block text-[11px]">Designated Apex Bank</span>
-                  <p className="text-lg font-bold text-white mt-1">Alternative Bank</p>
-                  <p className="text-[11px] text-slate-400 font-sans mt-0.5">CBN Licensed & Supervised Institution</p>
+                  <span className="text-slate-700 font-sans block text-[11px]">Designated Apex Bank</span>
+                  <p className="text-lg font-bold text-slate-700 mt-1">Alternative Bank</p>
+                  <p className="text-[11px] text-slate-700 font-sans mt-0.5">CBN Licensed & Supervised Institution</p>
                 </div>
 
                 <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-400/30 backdrop-blur-xs relative group">
@@ -599,9 +599,9 @@ const WalletPage: React.FC = () => {
                 </div>
 
                 <div className="p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xs">
-                  <span className="text-slate-400 font-sans block text-[11px]">Account Name</span>
-                  <p className="text-sm font-bold text-white mt-1 break-words">FingerMobile Protocol Communication</p>
-                  <p className="text-[11px] text-slate-400 font-sans mt-0.5">Official Corporate Settlement Account</p>
+                  <span className="text-slate-700 font-sans block text-[11px]">Account Name</span>
+                  <p className="text-sm font-bold text-slate-700 mt-1 break-words">FingerMobile Protocol Communication</p>
+                  <p className="text-[11px] text-slate-700 font-sans mt-0.5">Official Corporate Settlement Account</p>
                 </div>
               </div>
 
@@ -619,25 +619,25 @@ const WalletPage: React.FC = () => {
                   <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
                     <span className="text-amber-400 font-bold font-mono">STEP 1</span>
                     <p className="text-slate-200 font-semibold mt-0.5">Pay to Alternative Bank</p>
-                    <p className="text-[10px] text-slate-400">Transfer into dedicated rail 0514108422</p>
+                    <p className="text-[10px] text-slate-700">Transfer into dedicated rail 0514108422</p>
                   </div>
 
                   <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
                     <span className="text-amber-400 font-bold font-mono">STEP 2</span>
                     <p className="text-slate-200 font-semibold mt-0.5">Submit Proof</p>
-                    <p className="text-[10px] text-slate-400">Enter bank transaction ref / teller number</p>
+                    <p className="text-[10px] text-slate-700">Enter bank transaction ref / teller number</p>
                   </div>
 
                   <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
                     <span className="text-amber-400 font-bold font-mono">STEP 3</span>
                     <p className="text-slate-200 font-semibold mt-0.5">Treasury Staff Confirms</p>
-                    <p className="text-[10px] text-slate-400">Account Staff 1 to 7 confirms at Accounts</p>
+                    <p className="text-[10px] text-slate-700">Account Staff 1 to 7 confirms at Accounts</p>
                   </div>
 
                   <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
                     <span className="text-amber-400 font-bold font-mono">STEP 4</span>
                     <p className="text-slate-200 font-semibold mt-0.5">CFO Final Approval</p>
-                    <p className="text-[10px] text-slate-400">Mrs. Mbah Eunice Emonena authorizes release</p>
+                    <p className="text-[10px] text-slate-700">Mrs. Mbah Eunice Emonena authorizes release</p>
                   </div>
 
                   <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-400/30">
@@ -823,7 +823,7 @@ const WalletPage: React.FC = () => {
                 <CardContent className="p-0">
                   {treasuryRequests.length === 0 ? (
                     <div className="text-center py-12 px-4">
-                      <FileText className="w-12 h-12 text-slate-400 mx-auto mb-3" />
+                      <FileText className="w-12 h-12 text-slate-700 mx-auto mb-3" />
                       <p className="text-base font-bold text-slate-900">No Treasury Funding Requests Found</p>
                       <p className="text-xs text-slate-700 font-medium mt-1 max-w-sm mx-auto leading-relaxed">
                         Make a transfer to Alternative Bank (0514108422) and submit your transaction reference to fund your wallet.
@@ -877,7 +877,7 @@ const WalletPage: React.FC = () => {
                               <td className="py-4 px-4">
                                 {req.status === 'PENDING_CONFIRMATION' && (
                                   <div>
-                                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-100 text-amber-950 border border-amber-400">
+                                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-100 text-amber-950 border border-amber-400 font-black">
                                       <Clock className="w-3 h-3 text-amber-700 animate-spin" />
                                       Pending Treasury Staff (Staff 1-7)
                                     </span>
@@ -887,7 +887,7 @@ const WalletPage: React.FC = () => {
 
                                 {req.status === 'CONFIRMED_BY_TREASURY' && (
                                   <div>
-                                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-blue-100 text-blue-950 border border-blue-400">
+                                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-blue-100 text-blue-950 border border-blue-400 font-black">
                                       <CheckCircle2 className="w-3 h-3 text-blue-700" />
                                       Confirmed by {req.treasuryStaffName || 'Staff Accountant'}
                                     </span>
@@ -899,7 +899,7 @@ const WalletPage: React.FC = () => {
 
                                 {req.status === 'APPROVED_AND_FUNDED' && (
                                   <div>
-                                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-950 border border-emerald-400">
+                                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 font-black">
                                       <ShieldCheck className="w-3 h-3 text-emerald-700" />
                                       CFO Approved & Wallet Funded
                                     </span>
@@ -971,7 +971,7 @@ const WalletPage: React.FC = () => {
                       <span className="text-xs font-bold text-slate-800 uppercase tracking-wider">
                         1. Treasury Staff Confirmation
                       </span>
-                      <span className="text-[10px] font-mono bg-blue-100 text-blue-950 border border-blue-400 font-bold px-2 py-0.5 rounded-full font-bold">
+                      <span className="text-[10px] font-mono bg-blue-100 text-blue-950 border border-blue-400 font-bold px-2 py-0.5 rounded-full font-bold font-black">
                         Staff 1 to 7
                       </span>
                     </div>
@@ -984,7 +984,7 @@ const WalletPage: React.FC = () => {
                       <select
                         value={selectedStaffCode}
                         onChange={(e) => setSelectedStaffCode(e.target.value)}
-                        className="w-full text-xs p-2.5 bg-white border border-slate-300 rounded-xl font-medium focus:ring-2 focus:ring-indigo-500"
+                        className="w-full text-xs p-2.5 bg-white border border-slate-300 rounded-xl font-medium focus:ring-2 focus:ring-indigo-500 text-slate-900 font-bold"
                       >
                         <option value="staff_accountant_1">Staff Accountant (Account Staff 1)</option>
                         <option value="staff_accountant_2">Staff Accountant (Account Staff 2)</option>
@@ -1001,7 +1001,7 @@ const WalletPage: React.FC = () => {
                           id="autoApproveCheck"
                           checked={autoApproveFlag}
                           onChange={(e) => setAutoApproveFlag(e.target.checked)}
-                          className="rounded text-indigo-600 focus:ring-indigo-500"
+                          className="rounded text-slate-900 focus:ring-indigo-500 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                         />
                         <label htmlFor="autoApproveCheck" className="text-xs text-slate-600 select-none">
                           Auto-Approve flag (Audit tracked)
@@ -1028,7 +1028,7 @@ const WalletPage: React.FC = () => {
                             ))}
                         </div>
                       ) : (
-                        <p className="text-xs text-slate-400 italic">No pending requests awaiting Treasury Staff confirmation.</p>
+                        <p className="text-xs text-slate-700 italic">No pending requests awaiting Treasury Staff confirmation.</p>
                       )}
                     </div>
                   </div>
@@ -1039,7 +1039,7 @@ const WalletPage: React.FC = () => {
                       <span className="text-xs font-bold text-amber-950 uppercase tracking-wider">
                         2. Executive CFO Final Approval
                       </span>
-                      <span className="text-[10px] font-mono bg-amber-200 text-amber-950 px-2 py-0.5 rounded-full font-bold">
+                      <span className="text-[10px] font-mono bg-amber-200 text-amber-950 px-2 py-0.5 rounded-full font-bold border border-amber-400 font-black">
                         Root Hardcoded
                       </span>
                     </div>
@@ -1446,7 +1446,7 @@ const WalletPage: React.FC = () => {
                   <Award className="w-5 h-5 text-amber-600" />
                   <span className="font-bold text-sm text-slate-900">{PLATFORM_OWNERSHIP.coFounder.name}</span>
                 </div>
-                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-200 text-amber-950">
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-200 text-amber-950 border border-amber-400 font-black">
                   Root Master Seal Hardcoded
                 </span>
               </div>
@@ -1479,7 +1479,7 @@ const WalletPage: React.FC = () => {
                         <div key={role.roleCode} className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-xs space-y-1">
                           <div className="flex items-center justify-between">
                             <span className="font-bold text-slate-900">{role.roleName}</span>
-                            <span className="font-mono text-[10px] text-slate-400">{role.roleCode}</span>
+                            <span className="font-mono text-[10px] text-slate-700">{role.roleCode}</span>
                           </div>
                           <p className="text-[11px] text-slate-600">{role.responsibilities}</p>
                           <div className="flex gap-2 pt-1">
@@ -1532,7 +1532,7 @@ const WalletPage: React.FC = () => {
                   value={actionAmount}
                   onChange={(e) => setActionAmount(e.target.value)}
                   placeholder="e.g. 50"
-                  className="w-full px-3.5 py-2.5 bg-white border border-slate-300 text-slate-900 font-bold rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-xs placeholder:text-slate-400"
+                  className="w-full px-3.5 py-2.5 bg-white border border-slate-300 text-slate-900 font-bold rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-xs placeholder:text-slate-400 font-mono"
                   required
                 />
               </div>

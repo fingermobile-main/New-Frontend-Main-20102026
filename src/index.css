@@ -72,239 +72,40 @@
 }
 
 @layer utilities {
-  /* Enforce readable muted colors in light mode regardless of container nesting */
-  html:not(.dark):not(.black-theme) {
-    /* 1. Descriptions, Captions & Notes: Minimum 7.2:1 AAA contrast */
-    .text-gray-400,
-    .text-slate-400,
-    .text-zinc-400,
-    .text-neutral-400 {
-      color: #334155 !important; /* text-slate-700 (>7:1 AAA contrast) */
-    }
+  :is([class*="bg-slate-950"], [class*="bg-slate-900"], [class*="bg-black"], [class*="bg-slate-850"], [class*="bg-slate-800"], [class*="bg-gray-950"], [class*="bg-gray-900"], [class*="bg-zinc-950"], [class*="bg-zinc-900"]):not([class*="fixed"]):not([class*="inset-0"]):not(.bg-white):not([class*="bg-white"]):not(.bg-slate-50):not([class*="bg-slate-50"]) :is(
+    .text-gray-400, .text-slate-400, .text-zinc-400, .text-neutral-400, .text-muted-foreground
+  ):not([class*="dark:text-"]) {
+    color: #cbd5e1;
+  }
 
-    /* Paragraphs, labels, descriptions with 500 shade */
+  :is([class*="bg-slate-950"], [class*="bg-slate-900"], [class*="bg-black"], [class*="bg-slate-850"], [class*="bg-slate-800"], [class*="bg-gray-950"], [class*="bg-gray-900"], [class*="bg-zinc-950"], [class*="bg-zinc-900"]):not([class*="fixed"]):not([class*="inset-0"]):not(.bg-white):not([class*="bg-white"]):not(.bg-slate-50):not([class*="bg-slate-50"]) :is(
     p.text-gray-500, p.text-slate-500, p.text-zinc-500, p.text-neutral-500,
     span.text-gray-500, span.text-slate-500, span.text-zinc-500, span.text-neutral-500,
     div.text-gray-500, div.text-slate-500, div.text-zinc-500, div.text-neutral-500,
-    label.text-gray-500, label.text-slate-500, label.text-zinc-500, label.text-neutral-500 {
-      color: #334155 !important; /* text-slate-700 (>7:1 AAA contrast) */
-    }
-
-    /* Primary Titles: Remap blanket text-black to text-slate-900 (15.9:1 AAA) */
-    h1.text-black, h2.text-black, h3.text-black, h4.text-black, h5.text-black, h6.text-black {
-      color: #0f172a !important; /* text-slate-900 */
-    }
-
-    /* Subtitles, labels, and small descriptions */
-    .text-muted-foreground {
-      color: #334155 !important; /* text-slate-700 (>7:1 AAA contrast) */
-    }
-
-    /* CRITICAL DARK CONTAINER OVERRIDE:
-       Prevent dark surfaces, DAWs, and dark player cards
-       (e.g. BeatwaveNG, Dancia-4Tv, dark video/audio player bars)
-       from being forced into unreadable dark slate (#334155).
-       NOTE: We strictly exclude modal overlay backdrops ([class*="fixed"][class*="inset-0"])
-       and white/light cards (.bg-white, .bg-slate-50) so light modals never inherit white text! */
-    :is([class*="bg-slate-950"], [class*="bg-slate-900"], [class*="bg-black"], [class*="bg-slate-850"], [class*="bg-slate-800"], [class*="bg-gray-950"], [class*="bg-gray-900"], [class*="bg-zinc-950"], [class*="bg-zinc-900"]):not([class*="fixed"]):not([class*="inset-0"]):not(.bg-white):not([class*="bg-white"]):not(.bg-slate-50) :is(
-      .text-gray-400,
-      .text-slate-400,
-      .text-zinc-400,
-      .text-neutral-400,
-      .text-muted-foreground
-    ) {
-      color: #cbd5e1 !important; /* text-slate-300 (>9:1 AAA contrast on dark) */
-    }
-
-    :is([class*="bg-slate-950"], [class*="bg-slate-900"], [class*="bg-black"], [class*="bg-slate-850"], [class*="bg-slate-800"], [class*="bg-gray-950"], [class*="bg-gray-900"], [class*="bg-zinc-950"], [class*="bg-zinc-900"]):not([class*="fixed"]):not([class*="inset-0"]):not(.bg-white):not([class*="bg-white"]):not(.bg-slate-50) :is(
-      p.text-gray-500, p.text-slate-500, p.text-zinc-500, p.text-neutral-500,
-      span.text-gray-500, span.text-slate-500, span.text-zinc-500, span.text-neutral-500,
-      div.text-gray-500, div.text-slate-500, div.text-zinc-500, div.text-neutral-500,
-      label.text-gray-500, label.text-slate-500, label.text-zinc-500, label.text-neutral-500
-    ) {
-      color: #e2e8f0 !important; /* text-slate-200 (>11:1 AAA contrast on dark) */
-    }
-
-    :is([class*="bg-slate-950"], [class*="bg-slate-900"], [class*="bg-black"], [class*="bg-slate-850"], [class*="bg-slate-800"], [class*="bg-gray-950"], [class*="bg-gray-900"], [class*="bg-zinc-950"], [class*="bg-zinc-900"]):not([class*="fixed"]):not([class*="inset-0"]):not(.bg-white):not([class*="bg-white"]):not(.bg-slate-50) :is(
-      .text-slate-300, .text-gray-300
-    ) {
-      color: #f8fafc !important; /* text-slate-50 (15:1 AAA contrast on dark) */
-    }
-
-    /* RECOVERY SHIELD FOR LIGHT CARDS:
-       Any white/light card (.bg-white, .bg-slate-50) - including modals inside dark overlay backdrops -
-       must ALWAYS enforce dark, readable text according to the WCAG AAA hierarchy! */
-    :is(.bg-white, .bg-slate-50, [class*="bg-white"], [class*="bg-slate-50"]) :is(h1, h2, h3, h4, h5, h6):not([class*="text-emerald"]):not([class*="text-blue"]):not([class*="text-amber"]):not([class*="text-purple"]):not([class*="text-red"]):not([class*="text-white"]):not([class*="text-indigo"]) {
-      color: #0f172a !important; /* text-slate-900 (15.9:1 AAA contrast) */
-      font-weight: 800;
-    }
-
-    :is(.bg-white, .bg-slate-50, [class*="bg-white"], [class*="bg-slate-50"]) label {
-      color: #1e293b !important; /* text-slate-800 (8.8:1 AAA contrast) */
-      font-weight: 700;
-    }
-
-    :is(.bg-white, .bg-slate-50, [class*="bg-white"], [class*="bg-slate-50"]) :is(
-      .text-gray-400, .text-slate-400, .text-zinc-400, .text-neutral-400,
-      .text-gray-500, .text-slate-500, .text-zinc-500, .text-neutral-500,
-      .text-muted-foreground
-    ) {
-      color: #334155 !important; /* text-slate-700 (>7:1 AAA contrast) */
-    }
-
-    /* Badges on light tints (*-100): Deep 950 text shades with visible borders */
-    .bg-emerald-100 {
-      color: #022c22 !important;
-      border-color: #34d399 !important;
-      font-weight: 800 !important;
-    }
-    .bg-green-100 {
-      color: #052e16 !important;
-      border-color: #4ade80 !important;
-      font-weight: 800 !important;
-    }
-    .bg-amber-100, .bg-yellow-100 {
-      color: #451a03 !important;
-      border-color: #fbbf24 !important;
-      font-weight: 800 !important;
-    }
-    .bg-blue-100 {
-      color: #172554 !important;
-      border-color: #60a5fa !important;
-      font-weight: 800 !important;
-    }
-    .bg-purple-100 {
-      color: #3b0764 !important;
-      border-color: #c084fc !important;
-      font-weight: 800 !important;
-    }
-    .bg-red-100 {
-      color: #450a0a !important;
-      border-color: #f87171 !important;
-      font-weight: 800 !important;
-    }
-    .bg-slate-100 {
-      color: #0f172a !important;
-      border-color: #94a3b8 !important;
-      font-weight: 800 !important;
-    }
-
-    /* Tables: Core cells & headers */
-    table th {
-      color: #334155 !important; /* text-slate-700 */
-      font-weight: 700 !important;
-    }
-    table td {
-      color: #1e293b; /* text-slate-800 (8.8:1 AAA contrast) */
-    }
+    label.text-gray-500, label.text-slate-500, label.text-zinc-500, label.text-neutral-500
+  ):not([class*="dark:text-"]) {
+    color: #e2e8f0;
   }
 
-  /* ======================================================== */
-  /* GLOBAL CSS SHIELD: FORM CONTROLS & MODALS APP-WIDE       */
-  /* ======================================================== */
-
-  /* 1. Automatic Form Control Contrast Safeguard:
-     Light Mode (html:not(.dark)): All input, textarea, and select elements default
-     to #0f172a !important (text-slate-900, 15.9:1 AAA contrast) with font-weight: 700;,
-     preventing unstyled or inherited faint/white text from disappearing inside white boxes. */
-  html:not(.dark):not(.black-theme) input:not([type="checkbox"]):not([type="radio"]):not([type="color"]):not([type="submit"]):not([type="button"]):not([type="range"]):not([type="file"]):not([class*="text-white"]):not([class*="text-slate-100"]):not([class*="text-slate-200"]),
-  html:not(.dark):not(.black-theme) textarea:not([class*="text-white"]):not([class*="text-slate-100"]):not([class*="text-slate-200"]),
-  html:not(.dark):not(.black-theme) select:not([class*="text-white"]):not([class*="text-slate-100"]):not([class*="text-slate-200"]),
-  html:not(.dark):not(.black-theme) .bg-white input:not([type="checkbox"]):not([type="radio"]):not([type="color"]):not([type="submit"]):not([type="button"]):not([type="range"]):not([type="file"]),
-  html:not(.dark):not(.black-theme) .bg-white textarea,
-  html:not(.dark):not(.black-theme) .bg-white select,
-  :is(.bg-white, .bg-slate-50, [class*="bg-white"], [class*="bg-slate-50"]) input:not([type="checkbox"]):not([type="radio"]):not([type="color"]):not([type="submit"]):not([type="button"]):not([type="range"]):not([type="file"]):not([class*="text-white"]):not([class*="text-slate-100"]):not([class*="text-slate-200"]),
-  :is(.bg-white, .bg-slate-50, [class*="bg-white"], [class*="bg-slate-50"]) textarea:not([class*="text-white"]):not([class*="text-slate-100"]):not([class*="text-slate-200"]),
-  :is(.bg-white, .bg-slate-50, [class*="bg-white"], [class*="bg-slate-50"]) select:not([class*="text-white"]):not([class*="text-slate-100"]):not([class*="text-slate-200"]) {
-    color: #0f172a !important; /* text-slate-900 (15.9:1 AAA contrast) */
-    font-weight: 700;
+  :is([class*="bg-slate-950"], [class*="bg-slate-900"], [class*="bg-black"], [class*="bg-slate-850"], [class*="bg-slate-800"], [class*="bg-gray-950"], [class*="bg-gray-900"], [class*="bg-zinc-950"], [class*="bg-zinc-900"]):not([class*="fixed"]):not([class*="inset-0"]):not(.bg-white):not([class*="bg-white"]):not(.bg-slate-50):not([class*="bg-slate-50"]) :is(.text-slate-300, .text-gray-300):not([class*="dark:text-"]) {
+    color: #f8fafc;
   }
 
-  /* 2. Placeholder Defense: All light canvas inputs enforce #64748b !important (text-slate-500, 4.6:1 AA contrast). */
-  html:not(.dark):not(.black-theme) input:not([class*="placeholder-slate-200"]):not([class*="placeholder-slate-300"]):not([class*="placeholder-white"])::placeholder,
-  html:not(.dark):not(.black-theme) textarea:not([class*="placeholder-slate-200"]):not([class*="placeholder-slate-300"]):not([class*="placeholder-white"])::placeholder,
-  html:not(.dark):not(.black-theme) .bg-white input::placeholder,
-  html:not(.dark):not(.black-theme) .bg-white textarea::placeholder,
-  :is(.bg-white, .bg-slate-50, [class*="bg-white"], [class*="bg-slate-50"]) input::placeholder,
-  :is(.bg-white, .bg-slate-50, [class*="bg-white"], [class*="bg-slate-50"]) textarea::placeholder {
-    color: #64748b !important; /* text-slate-500 (4.6:1 AA contrast) */
-    font-weight: 500;
+  :is([class*="bg-slate-950"], [class*="bg-slate-900"], [class*="bg-black"], [class*="bg-slate-850"], [class*="bg-slate-800"], [class*="bg-gray-950"], [class*="bg-gray-900"], [class*="bg-zinc-950"], [class*="bg-zinc-900"]):not([class*="fixed"]):not([class*="inset-0"]):not(.bg-white):not([class*="bg-white"]):not(.bg-slate-50):not([class*="bg-slate-50"]) input:not([type="checkbox"]):not([type="radio"]):not([type="color"]):not([type="submit"]):not([type="button"]):not([type="range"]):not([type="file"]):not([class*="text-slate-900"]):not([class*="text-black"]):not([class*="dark:text-"]),
+  :is([class*="bg-slate-950"], [class*="bg-slate-900"], [class*="bg-black"], [class*="bg-slate-850"], [class*="bg-slate-800"], [class*="bg-gray-950"], [class*="bg-gray-900"], [class*="bg-zinc-950"], [class*="bg-zinc-900"]):not([class*="fixed"]):not([class*="inset-0"]):not(.bg-white):not([class*="bg-white"]):not(.bg-slate-50):not([class*="bg-slate-50"]) textarea:not([class*="text-slate-900"]):not([class*="text-black"]):not([class*="dark:text-"]),
+  :is([class*="bg-slate-950"], [class*="bg-slate-900"], [class*="bg-black"], [class*="bg-slate-850"], [class*="bg-slate-800"], [class*="bg-gray-950"], [class*="bg-gray-900"], [class*="bg-zinc-950"], [class*="bg-zinc-900"]):not([class*="fixed"]):not([class*="inset-0"]):not(.bg-white):not([class*="bg-white"]):not(.bg-slate-50):not([class*="bg-slate-50"]) select:not([class*="text-slate-900"]):not([class*="text-black"]):not([class*="dark:text-"]) {
+    color: #f8fafc;
   }
 
-  /* 3. Dark Mode (html.dark) & Dark Surfaces (e.g. BeatwaveNG, dark player bars, dark modals):
-     Added explicit #f8fafc !important (text-slate-50) text contrast rules and #94a3b8 placeholder rules,
-     eliminating dark-grey-on-dark-slate unreadable text. */
-  html.dark input:not([type="checkbox"]):not([type="radio"]):not([type="color"]):not([type="submit"]):not([type="button"]):not([type="range"]):not([type="file"]):not([class*="text-slate-900"]):not([class*="text-black"]),
-  html.dark textarea:not([class*="text-slate-900"]):not([class*="text-black"]),
-  html.dark select:not([class*="text-slate-900"]):not([class*="text-black"]),
-  html.black-theme input:not([type="checkbox"]):not([type="radio"]):not([type="color"]):not([type="submit"]):not([type="button"]):not([type="range"]):not([type="file"]):not([class*="text-slate-900"]):not([class*="text-black"]),
-  html.black-theme textarea:not([class*="text-slate-900"]):not([class*="text-black"]),
-  html.black-theme select:not([class*="text-slate-900"]):not([class*="text-black"]),
-  :is([class*="bg-slate-950"], [class*="bg-slate-900"], [class*="bg-black"], [class*="bg-slate-850"], [class*="bg-slate-800"], [class*="bg-gray-950"], [class*="bg-gray-900"], [class*="bg-zinc-950"], [class*="bg-zinc-900"]) input:not([type="checkbox"]):not([type="radio"]):not([type="color"]):not([type="submit"]):not([type="button"]):not([type="range"]):not([type="file"]):not([class*="text-slate-900"]):not([class*="text-black"]),
-  :is([class*="bg-slate-950"], [class*="bg-slate-900"], [class*="bg-black"], [class*="bg-slate-850"], [class*="bg-slate-800"], [class*="bg-gray-950"], [class*="bg-gray-900"], [class*="bg-zinc-950"], [class*="bg-zinc-900"]) textarea:not([class*="text-slate-900"]):not([class*="text-black"]),
-  :is([class*="bg-slate-950"], [class*="bg-slate-900"], [class*="bg-black"], [class*="bg-slate-850"], [class*="bg-slate-800"], [class*="bg-gray-950"], [class*="bg-gray-900"], [class*="bg-zinc-950"], [class*="bg-zinc-900"]) select:not([class*="text-slate-900"]):not([class*="text-black"]) {
-    color: #f8fafc !important; /* text-slate-50 high contrast on dark surfaces */
-  }
-
-  html.dark input::placeholder,
-  html.dark textarea::placeholder,
-  html.black-theme input::placeholder,
-  html.black-theme textarea::placeholder,
-  :is([class*="bg-slate-950"], [class*="bg-slate-900"], [class*="bg-black"], [class*="bg-slate-850"], [class*="bg-slate-800"], [class*="bg-gray-950"], [class*="bg-gray-900"], [class*="bg-zinc-950"], [class*="bg-zinc-900"]) input::placeholder,
-  :is([class*="bg-slate-950"], [class*="bg-slate-900"], [class*="bg-black"], [class*="bg-slate-850"], [class*="bg-slate-800"], [class*="bg-gray-950"], [class*="bg-gray-900"], [class*="bg-zinc-950"], [class*="bg-zinc-900"]) textarea::placeholder {
-    color: #94a3b8 !important; /* text-slate-400 placeholder on dark surfaces */
-  }
-
-  /* 4. Modals & Dialog Containers Universal Shield */
-  /* On white/light modals: Enforce sharp slate-900 headings, slate-800 labels, and slate-700 descriptions */
-  :is([role="dialog"], dialog, [class*="fixed"][class*="inset-0"], .modal) :is(.bg-white, .bg-slate-50, [class*="bg-white"], [class*="bg-slate-50"]) :is(h1, h2, h3, h4, h5, h6):not([class*="text-white"]):not([class*="text-emerald"]):not([class*="text-blue"]):not([class*="text-amber"]):not([class*="text-purple"]):not([class*="text-red"]) {
-    color: #0f172a !important; /* text-slate-900 (15.9:1 AAA contrast) */
-    font-weight: 800;
-  }
-
-  :is([role="dialog"], dialog, [class*="fixed"][class*="inset-0"], .modal) :is(.bg-white, .bg-slate-50, [class*="bg-white"], [class*="bg-slate-50"]) label {
-    color: #1e293b !important; /* text-slate-800 (8.8:1 AAA contrast) */
-    font-weight: 700;
-  }
-
-  :is([role="dialog"], dialog, [class*="fixed"][class*="inset-0"], .modal) :is(.bg-white, .bg-slate-50, [class*="bg-white"], [class*="bg-slate-50"]) :is(p, span, div, small):is(.text-gray-400, .text-slate-400, .text-zinc-400, .text-neutral-400, .text-gray-500, .text-slate-500, .text-muted-foreground) {
-    color: #334155 !important; /* text-slate-700 (>7:1 AAA contrast) */
-  }
-
-  :is([role="dialog"], dialog, [class*="fixed"][class*="inset-0"], .modal) :is(.bg-white, .bg-slate-50, [class*="bg-white"], [class*="bg-slate-50"]) input:not([type="checkbox"]):not([type="radio"]):not([type="color"]):not([type="submit"]):not([type="button"]):not([type="range"]):not([type="file"]):not([class*="text-white"]):not([class*="text-slate-100"]),
-  :is([role="dialog"], dialog, [class*="fixed"][class*="inset-0"], .modal) :is(.bg-white, .bg-slate-50, [class*="bg-white"], [class*="bg-slate-50"]) textarea:not([class*="text-white"]):not([class*="text-slate-100"]),
-  :is([role="dialog"], dialog, [class*="fixed"][class*="inset-0"], .modal) :is(.bg-white, .bg-slate-50, [class*="bg-white"], [class*="bg-slate-50"]) select:not([class*="text-white"]):not([class*="text-slate-100"]) {
-    color: #0f172a !important; /* text-slate-900 (15.9:1 AAA contrast) */
-    font-weight: 700;
-    border-color: #cbd5e1;
-    background-color: #ffffff;
-  }
-
-  /* Dark Modals & Dialogs (dark card surfaces inside overlays or modal dialogs): */
-  :is([role="dialog"], dialog, [class*="fixed"][class*="inset-0"], .modal) :is([class*="bg-slate-950"], [class*="bg-slate-900"], [class*="bg-black"], [class*="bg-slate-850"], [class*="bg-slate-800"], [class*="bg-gray-950"], [class*="bg-gray-900"], [class*="bg-zinc-950"], [class*="bg-zinc-900"]):not([class*="fixed"]):not([class*="inset-0"]):not(.bg-white):not([class*="bg-white"]):not(.bg-slate-50):not([class*="bg-slate-50"]) :is(h1, h2, h3, h4, h5, h6) {
-    color: #f8fafc !important; /* text-slate-50 (15:1 AAA contrast on dark) */
-    font-weight: 800;
-  }
-
-  :is([role="dialog"], dialog, [class*="fixed"][class*="inset-0"], .modal) :is([class*="bg-slate-950"], [class*="bg-slate-900"], [class*="bg-black"], [class*="bg-slate-850"], [class*="bg-slate-800"], [class*="bg-gray-950"], [class*="bg-gray-900"], [class*="bg-zinc-950"], [class*="bg-zinc-900"]):not([class*="fixed"]):not([class*="inset-0"]):not(.bg-white):not([class*="bg-white"]):not(.bg-slate-50):not([class*="bg-slate-50"]) label {
-    color: #e2e8f0 !important; /* text-slate-200 (>11:1 AAA contrast on dark) */
-    font-weight: 700;
-  }
-
-  :is([role="dialog"], dialog, [class*="fixed"][class*="inset-0"], .modal) :is([class*="bg-slate-950"], [class*="bg-slate-900"], [class*="bg-black"], [class*="bg-slate-850"], [class*="bg-slate-800"], [class*="bg-gray-950"], [class*="bg-gray-900"], [class*="bg-zinc-950"], [class*="bg-zinc-900"]):not([class*="fixed"]):not([class*="inset-0"]):not(.bg-white):not([class*="bg-white"]):not(.bg-slate-50):not([class*="bg-slate-50"]) :is(p, span, div, small):is(.text-gray-400, .text-slate-400, .text-zinc-400, .text-neutral-400, .text-gray-500, .text-slate-500, .text-muted-foreground) {
-    color: #cbd5e1 !important; /* text-slate-300 (>9:1 AAA contrast on dark) */
-  }
-
-  :is([role="dialog"], dialog, [class*="fixed"][class*="inset-0"], .modal) :is([class*="bg-slate-950"], [class*="bg-slate-900"], [class*="bg-black"], [class*="bg-slate-850"], [class*="bg-slate-800"], [class*="bg-gray-950"], [class*="bg-gray-900"], [class*="bg-zinc-950"], [class*="bg-zinc-900"]):not([class*="fixed"]):not([class*="inset-0"]):not(.bg-white):not([class*="bg-white"]):not(.bg-slate-50):not([class*="bg-slate-50"]) input:not([type="checkbox"]):not([type="radio"]):not([type="color"]):not([type="submit"]):not([type="button"]):not([type="range"]):not([type="file"]):not([class*="text-slate-900"]):not([class*="text-black"]),
-  :is([role="dialog"], dialog, [class*="fixed"][class*="inset-0"], .modal) :is([class*="bg-slate-950"], [class*="bg-slate-900"], [class*="bg-black"], [class*="bg-slate-850"], [class*="bg-slate-800"], [class*="bg-gray-950"], [class*="bg-gray-900"], [class*="bg-zinc-950"], [class*="bg-zinc-900"]):not([class*="fixed"]):not([class*="inset-0"]):not(.bg-white):not([class*="bg-white"]):not(.bg-slate-50):not([class*="bg-slate-50"]) textarea:not([class*="text-slate-900"]):not([class*="text-black"]),
-  :is([role="dialog"], dialog, [class*="fixed"][class*="inset-0"], .modal) :is([class*="bg-slate-950"], [class*="bg-slate-900"], [class*="bg-black"], [class*="bg-slate-850"], [class*="bg-slate-800"], [class*="bg-gray-950"], [class*="bg-gray-900"], [class*="bg-zinc-950"], [class*="bg-zinc-900"]):not([class*="fixed"]):not([class*="inset-0"]):not(.bg-white):not([class*="bg-white"]):not(.bg-slate-50):not([class*="bg-slate-50"]) select:not([class*="text-slate-900"]):not([class*="text-black"]) {
-    color: #f8fafc !important; /* text-slate-50 high contrast on dark surfaces */
+  :is([class*="bg-slate-950"], [class*="bg-slate-900"], [class*="bg-black"], [class*="bg-slate-850"], [class*="bg-slate-800"], [class*="bg-gray-950"], [class*="bg-gray-900"], [class*="bg-zinc-950"], [class*="bg-zinc-900"]):not([class*="fixed"]):not([class*="inset-0"]):not(.bg-white):not([class*="bg-white"]):not(.bg-slate-50):not([class*="bg-slate-50"]) input:not([class*="dark:placeholder:"])::placeholder,
+  :is([class*="bg-slate-950"], [class*="bg-slate-900"], [class*="bg-black"], [class*="bg-slate-850"], [class*="bg-slate-800"], [class*="bg-gray-950"], [class*="bg-gray-900"], [class*="bg-zinc-950"], [class*="bg-zinc-900"]):not([class*="fixed"]):not([class*="inset-0"]):not(.bg-white):not([class*="bg-white"]):not(.bg-slate-50):not([class*="bg-slate-50"]) textarea:not([class*="dark:placeholder:"])::placeholder {
+    color: #94a3b8;
   }
 }
 
 /* Ensure crystalline white background is applied to body by default */
 body {
-  background-color: hsl(var(--background)) !important; /* Uses the crystalline white CSS variable */
+  background-color: hsl(var(--background)); /* Uses the crystalline white CSS variable */
   color: hsl(var(--foreground));
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',

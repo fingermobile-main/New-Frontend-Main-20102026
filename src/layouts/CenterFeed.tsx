@@ -96,7 +96,7 @@ export default function CenterFeed() {
           <div className="w-10 h-10 rounded-full bg-indigo-500 flex-shrink-0" />
           <div className="flex-1">
             <textarea
-              className="w-full bg-transparent border-none text-lg resize-none outline-none placeholder:text-slate-400 mt-2 text-slate-900 font-bold border border-slate-300 rounded focus:ring-2 focus:ring-indigo-500"
+              className="w-full bg-white text-lg resize-none outline-none placeholder:text-slate-400 mt-2 text-slate-900 font-bold border border-slate-300 rounded focus:ring-2 focus:ring-indigo-500"
               placeholder="What's happening in the community?"
               rows={2}
             />

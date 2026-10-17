@@ -262,7 +262,7 @@ const WalletAndPayPage: React.FC = () => {
                     type="number"
                     value={giftAmount}
                     onChange={(e) => setGiftAmount(e.target.value)}
-                    className="w-full px-4 py-2.5 bg-white border border-slate-300 text-slate-900 font-bold rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 placeholder:text-slate-400"
+                    className="w-full px-4 py-2.5 bg-white border border-slate-300 text-slate-900 font-bold rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 placeholder:text-slate-400 font-mono"
                     placeholder="Enter amount"
                     min="0"
                     step="0.01"
@@ -306,7 +306,7 @@ const WalletAndPayPage: React.FC = () => {
                     type="number"
                     value={paylinkAmount}
                     onChange={(e) => setPaylinkAmount(e.target.value)}
-                    className="w-full px-4 py-2.5 bg-white border border-slate-300 text-slate-900 font-bold rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400"
+                    className="w-full px-4 py-2.5 bg-white border border-slate-300 text-slate-900 font-bold rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400 font-mono"
                     placeholder="Enter amount"
                     min="0"
                     step="0.01"

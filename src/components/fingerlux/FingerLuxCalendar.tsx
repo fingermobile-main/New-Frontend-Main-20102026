@@ -153,7 +153,7 @@ export const FingerLuxCalendar: React.FC<FingerLuxCalendarProps> = ({
               type="date"
               value={currentDateStr}
               onChange={(e) => setCurrentDateStr(e.target.value)}
-              className="bg-transparent focus:outline-none cursor-pointer text-slate-900 font-bold border border-slate-300 rounded focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
+              className="bg-white focus:outline-none cursor-pointer text-slate-900 font-bold border border-slate-300 rounded focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
             />
           </div>
 

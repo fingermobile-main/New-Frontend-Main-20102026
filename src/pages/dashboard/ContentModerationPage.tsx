@@ -115,14 +115,14 @@ const ContentModerationPage: React.FC = () => {
       <div className="mb-8">
         <div className="flex justify-between items-start">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Content Moderation</h1>
-            <p className="text-gray-600 mt-2">Review and moderate reported content</p>
+            <h1 className="text-3xl font-bold text-slate-900">Content Moderation</h1>
+            <p className="text-slate-700 mt-2">Review and moderate reported content</p>
           </div>
           <div className="flex items-center gap-3">
             <button
               onClick={loadData}
               disabled={loading}
-              className="flex items-center gap-2 px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+              className="flex items-center gap-2 px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium text-slate-800 hover:bg-slate-50 disabled:opacity-50"
             >
               <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin text-blue-600' : ''}`} />
               Refresh
@@ -133,9 +133,9 @@ const ContentModerationPage: React.FC = () => {
                 placeholder="Search by content or ID..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="pl-10 pr-4 py-2 bg-white text-slate-900 font-bold border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
               />
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400 absolute left-3 top-2.5" viewBox="0 0 20 20" fill="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-slate-500 absolute left-3 top-2.5" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
               </svg>
             </div>
@@ -147,42 +147,42 @@ const ContentModerationPage: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex items-center justify-between">
-            <div className="p-3 rounded-lg bg-yellow-100">
-              <Clock className="w-6 h-6 text-yellow-600" />
+            <div className="p-3 rounded-lg bg-amber-100 border border-amber-400">
+              <Clock className="w-6 h-6 text-amber-950" />
             </div>
-            <span className="text-2xl font-bold text-gray-900">{pendingItems.length}</span>
+            <span className="text-2xl font-bold text-slate-800">{pendingItems.length}</span>
           </div>
-          <p className="text-sm text-gray-600 mt-2">Pending Review</p>
+          <p className="text-sm text-slate-700 mt-2">Pending Review</p>
         </div>
 
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex items-center justify-between">
-            <div className="p-3 rounded-lg bg-green-100">
-              <CheckCircle className="w-6 h-6 text-green-600" />
+            <div className="p-3 rounded-lg bg-emerald-100 border border-emerald-400">
+              <CheckCircle className="w-6 h-6 text-emerald-950" />
             </div>
-            <span className="text-2xl font-bold text-gray-900">{approvedCount}</span>
+            <span className="text-2xl font-bold text-slate-800">{approvedCount}</span>
           </div>
-          <p className="text-sm text-gray-600 mt-2">Approved</p>
+          <p className="text-sm text-slate-700 mt-2">Approved</p>
         </div>
 
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex items-center justify-between">
-            <div className="p-3 rounded-lg bg-red-100">
-              <XCircle className="w-6 h-6 text-red-600" />
+            <div className="p-3 rounded-lg bg-red-100 border border-red-400">
+              <XCircle className="w-6 h-6 text-red-950" />
             </div>
-            <span className="text-2xl font-bold text-gray-900">{rejectedCount}</span>
+            <span className="text-2xl font-bold text-slate-800">{rejectedCount}</span>
           </div>
-          <p className="text-sm text-gray-600 mt-2">Rejected</p>
+          <p className="text-sm text-slate-700 mt-2">Rejected</p>
         </div>
 
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex items-center justify-between">
-            <div className="p-3 rounded-lg bg-blue-100">
-              <Eye className="w-6 h-6 text-blue-600" />
+            <div className="p-3 rounded-lg bg-blue-100 border border-blue-400">
+              <Eye className="w-6 h-6 text-blue-950" />
             </div>
-            <span className="text-2xl font-bold text-gray-900">{moderationQueue.length}</span>
+            <span className="text-2xl font-bold text-slate-800">{moderationQueue.length}</span>
           </div>
-          <p className="text-sm text-gray-600 mt-2">Total Reports</p>
+          <p className="text-sm text-slate-700 mt-2">Total Reports</p>
         </div>
       </div>
 
@@ -191,7 +191,7 @@ const ContentModerationPage: React.FC = () => {
         <div className="lg:col-span-1">
           <div className="bg-white rounded-lg shadow">
             <div className="p-6 border-b border-slate-300">
-              <h2 className="text-xl font-semibold text-gray-900">Moderation Queue</h2>
+              <h2 className="text-xl font-semibold text-slate-900">Moderation Queue</h2>
             </div>
 
             <div className="p-4 border-b border-slate-300">
@@ -221,7 +221,7 @@ const ContentModerationPage: React.FC = () => {
 
             <div className="divide-y divide-gray-200 max-h-[600px] overflow-y-auto">
               {filteredItems.length === 0 ? (
-                <div className="p-8 text-center text-gray-500">
+                <div className="p-8 text-center text-slate-700">
                   <Shield className="w-12 h-12 mx-auto mb-3 text-slate-500" />
                   <p className="text-sm">No items match your search</p>
                 </div>
@@ -240,30 +240,30 @@ const ContentModerationPage: React.FC = () => {
                       <div className="flex items-center gap-2">
                         <span className={`px-2 py-1 text-xs font-medium rounded ${
                           item.type === 'post'
-                            ? 'bg-purple-100 text-purple-950 border border-purple-400 font-bold'
+                            ? 'bg-purple-100 text-purple-950 border border-purple-400 font-black'
                             : item.type === 'comment'
-                              ? 'bg-blue-100 text-blue-950 border border-blue-400 font-bold'
-                              : 'bg-orange-100 text-orange-800'
+                              ? 'bg-blue-100 text-blue-950 border border-blue-400 font-black'
+                              : 'bg-amber-100 text-amber-950 border border-amber-400 font-black'
                         }`}>
                           {item.type.charAt(0).toUpperCase() + item.type.slice(1)}
                         </span>
                         <span className={`text-xs px-2 py-1 rounded-full ${
                           item.status === 'pending'
-                            ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
+                            ? 'bg-amber-100 text-amber-950 border border-amber-400 font-black'
                             : item.status === 'approved'
-                              ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
-                              : 'bg-red-100 text-red-950 border border-red-400 font-bold'
+                              ? 'bg-emerald-100 text-emerald-950 border border-emerald-400 font-black'
+                              : 'bg-red-100 text-red-950 border border-red-400 font-black'
                         }`}>
                           {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
                         </span>
                       </div>
-                      <span className="text-xs text-gray-500">
+                      <span className="text-xs text-slate-700">
                         {new Date(item.timestamp).toLocaleDateString()}
                       </span>
                     </div>
-                    <p className="text-gray-900 my-2 truncate">{item.content}</p>
+                    <p className="text-slate-800 my-2 truncate">{item.content}</p>
                     <div className="flex justify-between items-center">
-                      <p className="text-sm text-gray-600">Reporter: {item.reportedBy}</p>
+                      <p className="text-sm text-slate-700">Reporter: {item.reportedBy}</p>
                       <button
                         onClick={() => setSelectedItem(item)}
                         className="text-blue-600 hover:text-blue-800 text-sm font-medium"
@@ -288,13 +288,13 @@ const ContentModerationPage: React.FC = () => {
             >
               <div className="p-6 border-b border-slate-300">
                 <div className="flex justify-between items-center">
-                  <h2 className="text-xl font-semibold text-gray-900">Report Details</h2>
+                  <h2 className="text-xl font-semibold text-slate-900">Report Details</h2>
                   <span className={`text-sm px-3 py-1 rounded-full ${
                     selectedItem.status === 'pending'
-                      ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
+                      ? 'bg-amber-100 text-amber-950 border border-amber-400 font-black'
                       : selectedItem.status === 'approved'
-                        ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
-                        : 'bg-red-100 text-red-950 border border-red-400 font-bold'
+                        ? 'bg-emerald-100 text-emerald-950 border border-emerald-400 font-black'
+                        : 'bg-red-100 text-red-950 border border-red-400 font-black'
                   }`}>
                     {selectedItem.status.charAt(0).toUpperCase() + selectedItem.status.slice(1)}
                   </span>
@@ -304,40 +304,40 @@ const ContentModerationPage: React.FC = () => {
               <div className="p-6 space-y-6">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <p className="text-sm text-gray-500">Report ID</p>
-                    <p className="text-gray-900 font-medium">{selectedItem.id}</p>
+                    <p className="text-sm text-slate-700">Report ID</p>
+                    <p className="text-slate-800 font-medium">{selectedItem.id}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500">Type</p>
-                    <p className="text-gray-900 font-medium capitalize">{selectedItem.type}</p>
+                    <p className="text-sm text-slate-700">Type</p>
+                    <p className="text-slate-800 font-medium capitalize">{selectedItem.type}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500">Status</p>
-                    <p className="text-gray-900 font-medium capitalize">{selectedItem.status}</p>
+                    <p className="text-sm text-slate-700">Status</p>
+                    <p className="text-slate-800 font-medium capitalize">{selectedItem.status}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500">Reported By</p>
-                    <p className="text-gray-900 font-medium">{selectedItem.reportedBy}</p>
+                    <p className="text-sm text-slate-700">Reported By</p>
+                    <p className="text-slate-800 font-medium">{selectedItem.reportedBy}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500">Date Reported</p>
-                    <p className="text-gray-900 font-medium">
+                    <p className="text-sm text-slate-700">Date Reported</p>
+                    <p className="text-slate-800 font-medium">
                       {new Date(selectedItem.timestamp).toLocaleString()}
                     </p>
                   </div>
                 </div>
 
                 <div>
-                  <p className="text-sm text-gray-500 mb-2">Reported Content</p>
-                  <div className="bg-gray-50 p-4 rounded-lg border border-slate-300">
-                    <p className="text-gray-900">{selectedItem.content}</p>
+                  <p className="text-sm text-slate-700 mb-2">Reported Content</p>
+                  <div className="bg-slate-50 p-4 rounded-lg border border-slate-300">
+                    <p className="text-slate-800">{selectedItem.content}</p>
                   </div>
                 </div>
 
                 <div>
-                  <p className="text-sm text-gray-500 mb-2">Reason for Report</p>
-                  <div className="bg-gray-50 p-4 rounded-lg border border-slate-300">
-                    <p className="text-gray-900">{selectedItem.reason}</p>
+                  <p className="text-sm text-slate-700 mb-2">Reason for Report</p>
+                  <div className="bg-slate-50 p-4 rounded-lg border border-slate-300">
+                    <p className="text-slate-800">{selectedItem.reason}</p>
                   </div>
                 </div>
 
@@ -345,10 +345,10 @@ const ContentModerationPage: React.FC = () => {
                   <button
                     onClick={() => handleApprove(selectedItem.id)}
                     disabled={selectedItem.status !== 'pending' || processingId === selectedItem.id}
-                    className={`flex-1 py-2 px-4 rounded-md text-white font-medium flex items-center justify-center gap-2
+                    className={`flex-1 py-2 px-4 rounded-md font-medium flex items-center justify-center gap-2
                       ${selectedItem.status === 'pending'
-              ? 'bg-green-600 hover:bg-green-700'
-              : 'bg-green-300 cursor-not-allowed'
+              ? 'bg-emerald-700 hover:bg-emerald-800 text-white'
+              : 'bg-emerald-100 text-emerald-950 border border-emerald-400 font-black cursor-not-allowed'
             }`}
                   >
                     {processingId === selectedItem.id ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
@@ -357,10 +357,10 @@ const ContentModerationPage: React.FC = () => {
                   <button
                     onClick={() => handleReject(selectedItem.id)}
                     disabled={selectedItem.status !== 'pending' || processingId === selectedItem.id}
-                    className={`flex-1 py-2 px-4 rounded-md text-white font-medium flex items-center justify-center gap-2
+                    className={`flex-1 py-2 px-4 rounded-md font-medium flex items-center justify-center gap-2
                       ${selectedItem.status === 'pending'
-              ? 'bg-red-600 hover:bg-red-700'
-              : 'bg-red-300 cursor-not-allowed'
+              ? 'bg-red-700 hover:bg-red-800 text-white'
+              : 'bg-red-100 text-red-950 border border-red-400 font-black cursor-not-allowed'
             }`}
                   >
                     {processingId === selectedItem.id ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
@@ -373,8 +373,8 @@ const ContentModerationPage: React.FC = () => {
             <div className="bg-white rounded-lg shadow h-full flex items-center justify-center p-12">
               <div className="text-center">
                 <Shield className="w-16 h-16 mx-auto mb-4 text-slate-700" />
-                <h3 className="text-lg font-medium text-gray-700 mb-1">No content selected</h3>
-                <p className="text-gray-500">Select an item from the queue to view details</p>
+                <h3 className="text-lg font-medium text-slate-900 mb-1">No content selected</h3>
+                <p className="text-slate-700">Select an item from the queue to view details</p>
               </div>
             </div>
           )}

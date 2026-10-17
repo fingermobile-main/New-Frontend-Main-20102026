@@ -165,7 +165,7 @@ const FinanceDashboardPage: React.FC = () => {
                 onClick={() => navigate('/dashboard/payouts')}
                 className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-blue-400 rounded-xl hover:bg-blue-50 transition-all text-center group bg-white cursor-pointer"
               >
-                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform border border-blue-300">
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform border border-blue-400 text-blue-950 border-blue-400 font-black">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-6 w-6 text-blue-700"
@@ -191,7 +191,7 @@ const FinanceDashboardPage: React.FC = () => {
                 onClick={() => navigate('/monetization/dashboard')}
                 className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-emerald-400 rounded-xl hover:bg-emerald-50 transition-all text-center group bg-white cursor-pointer"
               >
-                <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform border border-emerald-300">
+                <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform border border-emerald-400 text-emerald-950 border-emerald-400 font-black">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-6 w-6 text-emerald-700"
@@ -217,7 +217,7 @@ const FinanceDashboardPage: React.FC = () => {
                 onClick={() => navigate('/financials/subscriptions')}
                 className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-purple-400 rounded-xl hover:bg-purple-50 transition-all text-center group bg-white cursor-pointer"
               >
-                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform border border-purple-300">
+                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform border border-purple-400 text-purple-950 border-purple-400 font-black">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-6 w-6 text-purple-700"

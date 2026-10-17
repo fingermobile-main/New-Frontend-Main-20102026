@@ -90,7 +90,7 @@ const TopHeaderNavigation: React.FC = () => {
                   <input
                     type="text"
                     placeholder="Search for people, communities, jobs..."
-                    className="bg-transparent border-none focus:outline-none placeholder-white placeholder-opacity-70 w-full text-sm text-slate-900 font-bold border border-slate-300 rounded focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" />
+                    className="bg-white focus:outline-none w-full text-sm text-slate-900 font-bold border border-slate-300 rounded focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" />
                 </div>
               </div>
             </div>

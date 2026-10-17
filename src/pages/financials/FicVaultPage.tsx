@@ -221,7 +221,7 @@ const FicVaultPage: React.FC = () => {
             <div className="absolute top-0 right-0 w-24 h-24 bg-purple-500/5 rounded-full -mr-8 -mt-8 pointer-events-none" />
             <div>
               <div className="flex items-center justify-between mb-3">
-                <span className="text-[11px] font-bold font-mono px-2 py-0.5 rounded-full bg-purple-100 dark:bg-purple-950 text-purple-900 dark:text-purple-300 border border-purple-300 dark:border-purple-800 flex items-center gap-1">
+                <span className="text-[11px] font-bold font-mono px-2 py-0.5 rounded-full bg-purple-100 dark:bg-purple-950 text-purple-950 dark:text-purple-300 border border-purple-400 dark:border-purple-800 flex items-center gap-1 text-purple-950 border-purple-400 font-black">
                   <Lock className="w-2.5 h-2.5" />
                   <span>Sleeper Pool (1-Yr)</span>
                 </span>
@@ -246,7 +246,7 @@ const FicVaultPage: React.FC = () => {
             <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 rounded-full -mr-8 -mt-8 pointer-events-none" />
             <div>
               <div className="flex items-center justify-between mb-3">
-                <span className="text-[11px] font-bold font-mono px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-900 dark:text-blue-300 border border-blue-300 dark:border-blue-800">
+                <span className="text-[11px] font-bold font-mono px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-950 dark:text-blue-300 border border-blue-400 dark:border-blue-800 text-blue-950 border-blue-400 font-black">
                   45% Liquid
                 </span>
                 <Coins className="w-5 h-5 text-blue-600 dark:text-blue-400" />
@@ -269,7 +269,7 @@ const FicVaultPage: React.FC = () => {
             <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full -mr-8 -mt-8 pointer-events-none" />
             <div>
               <div className="flex items-center justify-between mb-3">
-                <span className="text-[11px] font-bold font-mono px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-900 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
+                <span className="text-[11px] font-bold font-mono px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-950 dark:text-emerald-300 border border-emerald-400 dark:border-emerald-800 text-emerald-950 border-emerald-400 font-black">
                   25% Store Credit
                 </span>
                 <ShoppingBag className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
@@ -292,7 +292,7 @@ const FicVaultPage: React.FC = () => {
             <div className="absolute top-0 right-0 w-24 h-24 bg-amber-500/5 rounded-full -mr-8 -mt-8 pointer-events-none" />
             <div>
               <div className="flex items-center justify-between mb-3">
-                <span className="text-[11px] font-bold font-mono px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-950 dark:text-amber-300 border border-amber-300 dark:border-amber-800">
+                <span className="text-[11px] font-bold font-mono px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-950 dark:text-amber-300 border border-amber-400 dark:border-amber-800 border-amber-400 font-black">
                   Forex Valuation
                 </span>
                 <Globe className="w-5 h-5 text-amber-600 dark:text-amber-400" />
@@ -485,7 +485,7 @@ const FicVaultPage: React.FC = () => {
                   onChange={(e) => setStakeAmount(e.target.value)}
                   placeholder="e.g. 1000"
                   max={wallet?.ficBalance}
-                  className="w-full px-3 py-2 text-xs bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl font-bold font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 outline-none"
+                  className="w-full px-3 py-2 text-xs bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl font-bold font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 outline-none placeholder:text-slate-400"
                   required
                 />
               </div>
@@ -548,7 +548,7 @@ const FicVaultPage: React.FC = () => {
                   value={depositAmount}
                   onChange={(e) => setDepositAmount(e.target.value)}
                   placeholder="e.g. 500"
-                  className="w-full px-3 py-2 text-xs bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl font-bold font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
+                  className="w-full px-3 py-2 text-xs bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl font-bold font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none placeholder:text-slate-400"
                   required
                 />
               </div>

@@ -687,7 +687,7 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
                           value={commentText}
                           onChange={(e) => setCommentText(e.target.value)}
                           placeholder="Add a comment or design critique..."
-                          className="flex-1 pl-4 pr-24 py-2 bg-transparent text-xs font-bold text-slate-900 placeholder:text-slate-400 focus:outline-none border border-slate-300 rounded focus:ring-2 focus:ring-indigo-500"
+                          className="flex-1 pl-4 pr-24 py-2 bg-white text-xs font-bold text-slate-900 placeholder:text-slate-400 focus:outline-none border border-slate-300 rounded focus:ring-2 focus:ring-indigo-500"
                         />
 
                         {/* Input Accessories */}

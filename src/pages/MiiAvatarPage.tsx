@@ -177,8 +177,8 @@ const MiiAvatarPage: React.FC = () => {
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100 p-4 md:p-8">
       <div className="max-w-6xl mx-auto">
         <div className="mb-8 text-center">
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">Mii Avatar Studio</h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <h1 className="text-4xl font-bold text-slate-900 mb-2">Mii Avatar Studio</h1>
+          <p className="text-lg text-slate-700 max-w-2xl mx-auto">
             Create and customize your unique digital avatar
           </p>
         </div>
@@ -198,7 +198,7 @@ const MiiAvatarPage: React.FC = () => {
 
           <TabsContent value="avatars" className="space-y-6">
             <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-bold text-gray-800">Your Avatars</h2>
+              <h2 className="text-2xl font-bold text-slate-900">Your Avatars</h2>
               <Button onClick={handleCreateAvatar} className="bg-indigo-600 hover:bg-indigo-700 text-white flex items-center">
                 <SparklesIcon className="w-4 h-4 mr-2" />
                 Create New Avatar
@@ -210,8 +210,8 @@ const MiiAvatarPage: React.FC = () => {
                 <div className="mx-auto h-24 w-24 flex items-center justify-center rounded-full bg-indigo-100">
                   <UserIcon className="h-12 w-12 text-indigo-600" />
                 </div>
-                <h3 className="mt-4 text-lg font-medium text-gray-900">No avatars yet</h3>
-                <p className="mt-1 text-gray-500">Get started by creating your first Mii avatar.</p>
+                <h3 className="mt-4 text-lg font-medium text-slate-900">No avatars yet</h3>
+                <p className="mt-1 text-slate-700">Get started by creating your first Mii avatar.</p>
                 <div className="mt-6">
                   <Button onClick={handleCreateAvatar} className="bg-indigo-600 hover:bg-indigo-700 text-white">
                     Create Avatar
@@ -233,17 +233,17 @@ const MiiAvatarPage: React.FC = () => {
                   >
                     <CardHeader className="pb-3">
                       <div className="flex justify-between items-start">
-                        <CardTitle className="text-xl text-gray-800">{avatar.name}</CardTitle>
+                        <CardTitle className="text-xl text-slate-800">{avatar.name}</CardTitle>
                         {avatar.isActive && (
-                          <Badge className="bg-gradient-to-r from-green-400 to-blue-500 text-white text-xs px-2 py-1">
+                          <Badge className="bg-emerald-700 text-white font-extrabold text-xs px-2 py-1">
                             Active
                           </Badge>
                         )}
                       </div>
-                      <CardDescription className="text-gray-600">Created {new Date(avatar.createdAt).toLocaleDateString()}</CardDescription>
+                      <CardDescription className="text-slate-700">Created {new Date(avatar.createdAt).toLocaleDateString()}</CardDescription>
                     </CardHeader>
                     <CardContent className="pb-3">
-                      <div className="flex items-center text-sm text-gray-500 mb-2">
+                      <div className="flex items-center text-sm text-slate-700 mb-2">
                         <PaletteIcon className="w-4 h-4 mr-1" />
                         <span>Base: {avatar.baseTemplate || 'Default'}</span>
                       </div>
@@ -270,7 +270,7 @@ const MiiAvatarPage: React.FC = () => {
           </TabsContent>
 
           <TabsContent value="templates" className="space-y-6">
-            <h2 className="text-2xl font-bold text-gray-800">Avatar Templates</h2>
+            <h2 className="text-2xl font-bold text-slate-900">Avatar Templates</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {templates.map((template) => (
@@ -283,21 +283,21 @@ const MiiAvatarPage: React.FC = () => {
                 >
                   <CardHeader className="pb-3">
                     <div className="flex justify-between items-start">
-                      <CardTitle className="text-xl text-gray-800">{template.name}</CardTitle>
+                      <CardTitle className="text-xl text-slate-800">{template.name}</CardTitle>
                       {template.isAvailable && (
-                        <Badge className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs px-2 py-1">
+                        <Badge className="bg-amber-100 text-amber-950 border border-amber-400 font-black text-xs px-2 py-1">
                           Available
                         </Badge>
                       )}
                     </div>
-                    <CardDescription className="text-gray-600">{template.description}</CardDescription>
+                    <CardDescription className="text-slate-700">{template.description}</CardDescription>
                   </CardHeader>
                   <CardContent className="pb-3">
-                    <div className="flex items-center text-sm text-gray-500 mb-2">
+                    <div className="flex items-center text-sm text-slate-700 mb-2">
                       <HomeModernIcon className="w-4 h-4 mr-1" />
                       <span>Category: {template.category}</span>
                     </div>
-                    <div className="flex items-center text-sm text-gray-500">
+                    <div className="flex items-center text-sm text-slate-700">
                       <StarIcon className="w-4 h-4 mr-1" />
                       <span>Popularity: {template.popularity}</span>
                     </div>
@@ -323,9 +323,9 @@ const MiiAvatarPage: React.FC = () => {
 
           <TabsContent value="customization" className="space-y-6">
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-gray-800">Customize Avatar</h2>
+              <h2 className="text-2xl font-bold text-slate-900">Customize Avatar</h2>
               {items.length > 0 && (
-                <Badge className="bg-indigo-100 text-indigo-700 text-xs font-semibold px-2.5 py-1">
+                <Badge className="bg-indigo-100 text-indigo-950 border border-indigo-400 font-black text-xs px-2.5 py-1">
                   {items.length} Wardrobe Items In Studio
                 </Badge>
               )}
@@ -368,7 +368,7 @@ const MiiAvatarPage: React.FC = () => {
                       <div className="space-y-6">
                         {/* Basic Info */}
                         <div>
-                          <h3 className="text-lg font-medium text-gray-800 mb-3">Basic Information</h3>
+                          <h3 className="text-lg font-medium text-slate-900 mb-3">Basic Information</h3>
                           <div className="space-y-3">
                             <div>
                               <Label htmlFor="avatar-name">Avatar Name</Label>
@@ -386,7 +386,7 @@ const MiiAvatarPage: React.FC = () => {
 
                         {/* Face Features */}
                         <div>
-                          <h3 className="text-lg font-medium text-gray-800 mb-3">Face Features</h3>
+                          <h3 className="text-lg font-medium text-slate-900 mb-3">Face Features</h3>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                               <Label>Face Shape</Label>
@@ -502,7 +502,7 @@ const MiiAvatarPage: React.FC = () => {
 
                         {/* Colors */}
                         <div>
-                          <h3 className="text-lg font-medium text-gray-800 mb-3">Colors</h3>
+                          <h3 className="text-lg font-medium text-slate-900 mb-3">Colors</h3>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                               <Label>Skin Tone</Label>
@@ -513,7 +513,7 @@ const MiiAvatarPage: React.FC = () => {
                                 value={[currentCustomization.skinTone || 3]}
                                 onValueChange={(value) => handleCustomizationChange('skinTone', value[0])}
                               />
-                              <div className="flex justify-between text-xs text-gray-500 mt-1">
+                              <div className="flex justify-between text-xs text-slate-700 mt-1">
                                 <span>Light</span>
                                 <span>Medium</span>
                                 <span>Dark</span>
@@ -582,7 +582,7 @@ const MiiAvatarPage: React.FC = () => {
 
                         {/* Accessories */}
                         <div>
-                          <h3 className="text-lg font-medium text-gray-800 mb-3">Accessories</h3>
+                          <h3 className="text-lg font-medium text-slate-900 mb-3">Accessories</h3>
                           <div className="space-y-3">
                             <div className="flex items-center justify-between">
                               <Label htmlFor="glasses-toggle">Wear Glasses</Label>

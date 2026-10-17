@@ -510,7 +510,7 @@ const EditPostPage: React.FC = () => {
                 value={originalContent}
                 onChange={(e) => setOriginalContent(e.target.value)}
                 placeholder="Type or paste post content here..."
-                className="w-full h-64 sm:h-80 p-3 text-sm text-slate-900 bg-transparent border focus:ring-0 resize-none font-sans leading-relaxed font-bold border-slate-300 rounded placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-500"
+                className="w-full h-64 sm:h-80 p-3 text-sm text-slate-900 bg-white border focus:ring-0 resize-none font-sans leading-relaxed font-bold border-slate-300 rounded placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-500"
               />
             </div>
 
@@ -574,7 +574,7 @@ const EditPostPage: React.FC = () => {
                 <textarea
                   value={editedContent}
                   onChange={(e) => setEditedContent(e.target.value)}
-                  className="w-full h-64 sm:h-80 p-3 text-sm text-slate-900 bg-transparent border focus:ring-0 resize-none font-sans leading-relaxed font-bold border-slate-300 rounded placeholder:text-slate-400"
+                  className="w-full h-64 sm:h-80 p-3 text-sm text-slate-900 bg-white border focus:ring-0 resize-none font-sans leading-relaxed font-bold border-slate-300 rounded placeholder:text-slate-400"
                 />
               ) : (
                 <div className="h-64 sm:h-80 flex flex-col items-center justify-center text-center p-6 text-slate-700">
