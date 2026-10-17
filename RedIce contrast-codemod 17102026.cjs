@@ -23,12 +23,10 @@ const excluded = new Set([
   path.normalize('FingerMobile Protocol/apps/frontend-main/src/pages/MiiAvatarPage.tsx'),
   path.normalize('FingerMobile Protocol/apps/frontend-main/src/pages/dashboard/ContentModerationPage.tsx'),
 ]);
-const badges = {
-  emerald: ['text-emerald-950', 'border-emerald-400'],
-  blue: ['text-blue-950', 'border-blue-400'],
-  amber: ['text-amber-950', 'border-amber-400'],
-  purple: ['text-purple-950', 'border-purple-400'],
-};
+const badgeColors = new Set([
+  'slate', 'gray', 'zinc', 'red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald',
+  'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose',
+]);
 const applyChanges = process.argv.includes('--apply');
 const counts = { files: 0, tokens: 0, forms: 0, badges: 0, skippedDirty: 0 };
 
@@ -61,7 +59,9 @@ function stringFragments(node, sourceFile, result = []) {
     result.push({ start: node.getStart(sourceFile) + 1, end: node.end - 1 });
     return result;
   }
-  node.forEachChild(child => stringFragments(child, sourceFile, result));
+  node.forEachChild(child => {
+    stringFragments(child, sourceFile, result);
+  });
   return result;
 }
 
@@ -90,6 +90,7 @@ function backgroundKind(text) {
     if (variants.length || !utility.startsWith('bg-')) continue;
     if (/^bg-gradient-/.test(utility)) return 'unknown';
     if (/^bg-opacity-/.test(utility) || utility === 'bg-transparent' || utility === 'bg-none') continue;
+    if (/\/(?!100$)\d+$/.test(utility)) return 'unknown';
 
     const color = utility.replace(/\/\d+$/, '');
     let current = null;
@@ -135,9 +136,9 @@ function rewriteUtility(token, tag, form, badgeColor, track = true, activePill =
   if (activePill && colorToken(cleanUtility)) {
     replacement = 'text-white';
   } else if (badgeColor) {
-    if (colorToken(cleanUtility)) replacement = badges[badgeColor][0];
+    if (colorToken(cleanUtility)) replacement = `text-${badgeColor}-950`;
     else if (/^border-[a-z]+-(?:50|100|200|300|400|500|600|700|800|900|950)$/.test(cleanUtility)) {
-      replacement = badges[badgeColor][1];
+      replacement = `border-${badgeColor}-400`;
     }
   } else if (form && colorToken(cleanUtility)) {
     replacement = prefix.includes('placeholder:') ? 'text-slate-400' : 'text-slate-900';
@@ -155,8 +156,8 @@ function rewriteUtility(token, tag, form, badgeColor, track = true, activePill =
 
   if (form && (cleanUtility === 'bg-white' || /^bg-[a-z]+-(?:50|100|200|300|400|500|600|700|800|900|950)$/.test(cleanUtility))) replacement = 'bg-white';
   if (form && /^border-gray-(?:100|200)$/.test(cleanUtility)) replacement = 'border-slate-300';
-  else if (/^border-gray-100$/.test(cleanUtility)) replacement = 'border-slate-200';
-  else if (/^border-gray-200$/.test(cleanUtility)) replacement = 'border-slate-300';
+  else if (!badgeColor && /^border-gray-100$/.test(cleanUtility)) replacement = 'border-slate-200';
+  else if (!badgeColor && /^border-gray-200$/.test(cleanUtility)) replacement = 'border-slate-300';
 
   if (form && /^border-0$/.test(cleanUtility)) replacement = 'border';
   if (form && /^rounded-none$/.test(cleanUtility)) replacement = 'rounded';
@@ -183,6 +184,45 @@ function inputType(element, sourceFile) {
   return '';
 }
 
+function standardFormClasses(tag, numeric) {
+  const classes = [
+    'text-slate-900',
+    'font-bold',
+    'border',
+    'border-slate-300',
+    'rounded',
+    'bg-white',
+    'focus:ring-2',
+    'focus:ring-indigo-500',
+  ];
+  if (tag !== 'select') classes.push('placeholder:text-slate-400');
+  if (numeric) classes.push('font-mono');
+  return classes;
+}
+
+function generatedClassWrapper(expression, standardStrings, sourceFile) {
+  const unparenthesize = node => {
+    while (ts.isParenthesizedExpression(node)) node = node.expression;
+    return node;
+  };
+  let current = unparenthesize(expression);
+  let found = false;
+  while (ts.isCallExpression(current) && ts.isPropertyAccessExpression(current.expression) &&
+    current.expression.name.getText(sourceFile) === 'join' && current.arguments.length === 1 &&
+    ts.isStringLiteral(current.arguments[0]) && current.arguments[0].text === ' ') {
+    const filterCall = current.expression.expression;
+    if (!ts.isCallExpression(filterCall) || !ts.isPropertyAccessExpression(filterCall.expression) ||
+      filterCall.expression.name.getText(sourceFile) !== 'filter' || filterCall.arguments.length !== 1 ||
+      filterCall.arguments[0].getText(sourceFile) !== 'Boolean') break;
+    const array = filterCall.expression.expression;
+    if (!ts.isArrayLiteralExpression(array) || array.elements.length !== 2 ||
+      !ts.isStringLiteral(array.elements[1]) || !standardStrings.has(array.elements[1].text)) break;
+    current = unparenthesize(array.elements[0]);
+    found = true;
+  }
+  return { expression: current, found };
+}
+
 function appendClassAttributeEdits(element, attribute, extra, sourceFile, edits) {
   if (!extra.length) return;
   const unique = [...new Set(extra)];
@@ -192,10 +232,25 @@ function appendClassAttributeEdits(element, attribute, extra, sourceFile, edits)
     return;
   }
   const initializer = attribute.initializer;
+  if (initializer && ts.isJsxExpression(initializer) && initializer.expression) {
+    const expression = initializer.expression;
+    if (!ts.isStringLiteralLike(expression) && !ts.isTemplateExpression(expression)) {
+      edits.push({
+        start: expression.getStart(sourceFile),
+        end: expression.end,
+        text: `[(${expression.getText(sourceFile)}), "${unique.join(' ')}"].filter(Boolean).join(" ")`,
+      });
+      return;
+    }
+  }
   const fragments = initializer ? stringFragments(initializer, sourceFile) : [];
   if (fragments.length) {
     const last = fragments[fragments.length - 1];
-    edits.push({ start: last.end, end: last.end, text: `${sourceFile.text.slice(last.start, last.end).trim() ? ' ' : ''}${unique.join(' ')}` });
+    const existing = edits.find(edit => edit.start === last.start && edit.end === last.end);
+    const current = existing?.text ?? sourceFile.text.slice(last.start, last.end);
+    const updated = `${current}${current.trim() ? ' ' : ''}${unique.join(' ')}`;
+    if (existing) existing.text = updated;
+    else edits.push({ start: last.start, end: last.end, text: updated });
     return;
   }
   if (initializer && ts.isJsxExpression(initializer) && initializer.expression) {
@@ -236,69 +291,157 @@ function transformFile(file) {
     const context = nearestBackground(node, ancestors, sourceFile);
     if (context === 'light') {
       const fragments = attribute?.initializer ? stringFragments(attribute.initializer, sourceFile) : [];
-      const transformedFragments = fragments.map(fragment => {
+      const isForm = ['input', 'select', 'textarea'].includes(tag);
+      const numeric = tag === 'input' && inputType(node, sourceFile).includes('number');
+      const initializerExpression = attribute?.initializer && ts.isJsxExpression(attribute.initializer)
+        ? attribute.initializer.expression
+        : undefined;
+      const standardStrings = new Set([
+        standardFormClasses(tag, false).join(' '),
+        standardFormClasses(tag, true).join(' '),
+      ]);
+      const wrapper = isForm && initializerExpression
+        ? generatedClassWrapper(initializerExpression, standardStrings, sourceFile)
+        : { expression: initializerExpression, found: false };
+      const transformedFragments = wrapper.found ? [] : fragments.map(fragment => {
         const raw = original.slice(fragment.start, fragment.end);
         return raw.replace(/\S+/g, token => rewriteUtility(token, tag, ['input', 'select', 'textarea'].includes(tag), null, false, isActivePill));
       });
-      const ownTokens = transformedFragments.join(' ').split(/\s+/);
+      const fragmentUpdates = [];
+      const ownTokens = (wrapper.found ? before : transformedFragments.join(' ')).split(/\s+/);
       const badgeBg = ownTokens.find(token =>
         !baseToken(token).variants.length &&
-        /^bg-(emerald|blue|amber|purple)-(?:50|100|200)$/.test(baseToken(token).utility.replace(/\/\d+$/, ''))
+        /^bg-([a-z]+)-(?:50|100|200)$/.test(baseToken(token).utility.replace(/\/\d+$/, '')) &&
+        badgeColors.has(baseToken(token).utility.replace(/\/\d+$/, '').match(/^bg-([a-z]+)-/)[1])
       );
       const badgeColor = ownTokens.some(token => baseToken(token).utility.startsWith('rounded-full')) && badgeBg
-        ? baseToken(badgeBg).utility.match(/^bg-(emerald|blue|amber|purple)-/)[1]
+        ? baseToken(badgeBg).utility.match(/^bg-([a-z]+)-/)[1]
         : null;
-      const isForm = ['input', 'select', 'textarea'].includes(tag);
       for (let index = 0; index < fragments.length; index++) {
+        if (wrapper.found) break;
         const fragment = fragments[index];
         const raw = original.slice(fragment.start, fragment.end);
-        const changed = raw.replace(/\S+/g, token => rewriteUtility(token, tag, isForm, badgeColor, true, isActivePill));
-        if (changed !== raw) edits.push({ start: fragment.start, end: fragment.end, text: changed });
+        const rewritten = raw.replace(/\S+/g, token => rewriteUtility(token, tag, isForm, badgeColor, true, isActivePill));
+        const seen = new Set();
+        const changed = rewritten.replace(/\S+/g, token => {
+          if (seen.has(token)) return '';
+          seen.add(token);
+          return token;
+        });
+        if (changed !== raw) fragmentUpdates.push({ start: fragment.start, end: fragment.end, text: changed });
         transformedFragments[index] = changed;
       }
 
+      const effectiveTokens = wrapper.found
+        ? ownTokens.filter(Boolean)
+        : transformedFragments.join(' ').split(/\s+/).filter(Boolean);
       const extra = [];
       if (isForm) {
-        const has = utility => ownTokens.some(token => baseToken(token).variants.length === 0 && baseToken(token).utility === utility);
+        const has = utility => effectiveTokens.some(token => baseToken(token).variants.length === 0 && baseToken(token).utility === utility);
         if (!has('text-slate-900')) extra.push('text-slate-900');
         if (!has('font-bold')) extra.push('font-bold');
         if (!has('border')) extra.push('border');
         if (!has('border-slate-300')) extra.push('border-slate-300');
-        if (!ownTokens.some(token => baseToken(token).utility.startsWith('rounded'))) extra.push('rounded');
-        if (!ownTokens.some(token => baseToken(token).variants.length === 0 && baseToken(token).utility.startsWith('bg-'))) extra.push('bg-white');
-        if (!ownTokens.some(token => baseToken(token).variants.includes('focus') && /^focus:ring-(?:0|1|2|4|8)$/.test(token))) extra.push('focus:ring-2');
-        if (!ownTokens.some(token => baseToken(token).variants.includes('focus') && /^focus:ring-(?!offset)/.test(token))) extra.push('focus:ring-indigo-500');
-        if (tag !== 'select' && !ownTokens.some(token =>
+        if (!effectiveTokens.some(token => baseToken(token).utility.startsWith('rounded'))) extra.push('rounded');
+        if (!effectiveTokens.some(token => baseToken(token).variants.length === 0 && baseToken(token).utility.startsWith('bg-'))) extra.push('bg-white');
+        if (!effectiveTokens.some(token =>
+          baseToken(token).variants.includes('focus') && baseToken(token).utility === 'ring-2'
+        )) extra.push('focus:ring-2');
+        if (!effectiveTokens.some(token =>
+          baseToken(token).variants.includes('focus') &&
+          /^ring-(?!offset|(?:0|1|2|4|8)$)/.test(baseToken(token).utility)
+        )) extra.push('focus:ring-indigo-500');
+        if (tag !== 'select' && !effectiveTokens.some(token =>
           baseToken(token).variants.includes('placeholder') && baseToken(token).utility === 'text-slate-400'
         )) extra.push('placeholder:text-slate-400');
-        if (tag === 'input' && inputType(node, sourceFile).includes('number') && !has('font-mono')) extra.push('font-mono');
-        if (extra.length) counts.forms++;
+        if (numeric && !effectiveTokens.some(token => baseToken(token).utility === 'font-mono')) extra.push('font-mono');
+        if (extra.length) {
+          counts.forms++;
+          if (process.argv.includes('--details')) console.log(`${file}:${node.getStart(sourceFile)} <${tag}> ${extra.join(' ')}`);
+        }
       }
       if (badgeColor) {
-        const badgeClasses = badges[badgeColor];
-        if (!ownTokens.some(token => baseToken(token).variants.length === 0 && baseToken(token).utility === 'border')) extra.push('border');
-        for (const badgeClass of badgeClasses) {
-          if (!ownTokens.some(token => baseToken(token).variants.length === 0 && baseToken(token).utility === badgeClass)) extra.push(badgeClass);
-        }
-        if (!ownTokens.some(token => baseToken(token).variants.length === 0 && baseToken(token).utility === 'font-black')) extra.push('font-black');
+        if (!effectiveTokens.some(token => baseToken(token).variants.length === 0 && baseToken(token).utility === 'border')) extra.push('border');
+        if (!effectiveTokens.some(token => baseToken(token).variants.length === 0 && baseToken(token).utility === `text-${badgeColor}-950`)) extra.push(`text-${badgeColor}-950`);
+        if (!effectiveTokens.some(token => baseToken(token).variants.length === 0 && baseToken(token).utility === `border-${badgeColor}-400`)) extra.push(`border-${badgeColor}-400`);
+        if (!effectiveTokens.some(token => baseToken(token).variants.length === 0 && baseToken(token).utility === 'font-black')) extra.push('font-black');
         if (extra.length) counts.badges++;
       }
       if (isActivePill) {
-        if (!ownTokens.some(token => baseToken(token).variants.length === 0 && baseToken(token).utility === 'text-white')) extra.push('text-white');
-        if (!ownTokens.some(token => baseToken(token).variants.length === 0 && baseToken(token).utility === 'font-extrabold')) extra.push('font-extrabold');
+        if (!effectiveTokens.some(token => baseToken(token).variants.length === 0 && baseToken(token).utility === 'text-white')) extra.push('text-white');
+        if (!effectiveTokens.some(token => baseToken(token).variants.length === 0 && baseToken(token).utility === 'font-extrabold')) extra.push('font-extrabold');
       }
-      appendClassAttributeEdits(node, attribute, extra, sourceFile, edits);
+      const dynamicExpression = initializerExpression &&
+        !ts.isStringLiteralLike(initializerExpression) &&
+        !ts.isTemplateExpression(initializerExpression);
+      if (wrapper.found && initializerExpression) {
+        const standard = [...standardFormClasses(tag, numeric), ...extra].join(' ');
+        const normalized = `[(${wrapper.expression.getText(sourceFile)}), "${standard}"].filter(Boolean).join(" ")`;
+        if (normalized !== initializerExpression.getText(sourceFile)) {
+          edits.push({ start: initializerExpression.getStart(sourceFile), end: initializerExpression.end, text: normalized });
+        }
+      } else if (dynamicExpression && extra.length) {
+        let expressionText = initializerExpression.getText(sourceFile);
+        const expressionStart = initializerExpression.getStart(sourceFile);
+        const updates = fragmentUpdates
+          .filter(update => update.start >= expressionStart && update.end <= initializerExpression.end)
+          .sort((a, b) => b.start - a.start);
+        for (const update of updates) {
+          const start = update.start - expressionStart;
+          const end = update.end - expressionStart;
+          expressionText = expressionText.slice(0, start) + update.text + expressionText.slice(end);
+        }
+        edits.push({
+          start: expressionStart,
+          end: initializerExpression.end,
+          text: `[(${expressionText}), "${extra.join(' ')}"].filter(Boolean).join(" ")`,
+        });
+      } else {
+        edits.push(...fragmentUpdates);
+        appendClassAttributeEdits(node, attribute, extra, sourceFile, edits);
+      }
     } else if (isActivePill) {
       const fragments = attribute?.initializer ? stringFragments(attribute.initializer, sourceFile) : [];
+      const fragmentUpdates = [];
       for (const fragment of fragments) {
         const raw = original.slice(fragment.start, fragment.end);
-        const changed = raw.replace(/\S+/g, token => rewriteUtility(token, tag, false, null, true, true));
-        if (changed !== raw) edits.push({ start: fragment.start, end: fragment.end, text: changed });
+        const rewritten = raw.replace(/\S+/g, token => rewriteUtility(token, tag, false, null, true, true));
+        const seen = new Set();
+        const changed = rewritten.replace(/\S+/g, token => {
+          if (seen.has(token)) return '';
+          seen.add(token);
+          return token;
+        });
+        if (changed !== raw) fragmentUpdates.push({ start: fragment.start, end: fragment.end, text: changed });
       }
       const extra = [];
       if (!rawTokens.some(token => baseToken(token).variants.length === 0 && baseToken(token).utility === 'text-white')) extra.push('text-white');
       if (!rawTokens.some(token => baseToken(token).variants.length === 0 && baseToken(token).utility === 'font-extrabold')) extra.push('font-extrabold');
-      appendClassAttributeEdits(node, attribute, extra, sourceFile, edits);
+      const initializerExpression = attribute?.initializer && ts.isJsxExpression(attribute.initializer)
+        ? attribute.initializer.expression
+        : undefined;
+      const dynamicExpression = initializerExpression &&
+        !ts.isStringLiteralLike(initializerExpression) &&
+        !ts.isTemplateExpression(initializerExpression);
+      if (dynamicExpression && extra.length) {
+        let expressionText = initializerExpression.getText(sourceFile);
+        const expressionStart = initializerExpression.getStart(sourceFile);
+        for (const update of fragmentUpdates
+          .filter(item => item.start >= expressionStart && item.end <= initializerExpression.end)
+          .sort((a, b) => b.start - a.start)) {
+          const start = update.start - expressionStart;
+          const end = update.end - expressionStart;
+          expressionText = expressionText.slice(0, start) + update.text + expressionText.slice(end);
+        }
+        edits.push({
+          start: expressionStart,
+          end: initializerExpression.end,
+          text: `[(${expressionText}), "${extra.join(' ')}"].filter(Boolean).join(" ")`,
+        });
+      } else {
+        edits.push(...fragmentUpdates);
+        appendClassAttributeEdits(node, attribute, extra, sourceFile, edits);
+      }
     }
 
     if (ts.isJsxElement(node)) {
