@@ -76,8 +76,8 @@ const UgcAnalyticsPage: React.FC = () => {
   const analytics = MOCK_ANALYTICS;
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-6">UGC Analytics</h1>
+    <div className="space-y-6">
+      <h1 className="text-3xl font-black mb-6 text-slate-900">UGC Analytics</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <StatCardUgc
           title="Total Communities"
@@ -93,28 +93,28 @@ const UgcAnalyticsPage: React.FC = () => {
         />
       </div>
 
-      <div className="space-y-8">
+      <div className="space-y-6">
         {analytics.communities.map((community: AnalyticsCommunity) => (
           <div
             key={community.id}
-            className="bg-white p-6 rounded-xl shadow-sm border"
+            className="bg-white p-6 rounded-2xl shadow-xs border border-slate-300"
           >
             <div className="flex justify-between items-start">
               <div>
-                <h2 className="text-xl font-bold">{community.name}</h2>
-                <p className="text-sm font-semibold text-brand-blue">
+                <h2 className="text-xl font-black text-slate-900">{community.name}</h2>
+                <span className="inline-block mt-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-950 border border-blue-400">
                   {community.type}
-                </p>
+                </span>
               </div>
               <div className="text-right">
-                <p className="text-2xl font-bold">
+                <p className="text-2xl font-black text-slate-900">
                   {community.engagementRate}%
                 </p>
-                <p className="text-xs text-slate-700">Engagement Rate</p>
+                <p className="text-xs font-bold text-slate-700 uppercase tracking-wider mt-0.5">Engagement Rate</p>
               </div>
             </div>
-            <div className="mt-4">
-              <h3 className="font-semibold mb-2">Member Growth</h3>
+            <div className="mt-5">
+              <h3 className="font-bold text-slate-900 mb-2">Member Growth</h3>
               <BarChart data={community.memberGrowth} />
             </div>
           </div>

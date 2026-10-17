@@ -40,8 +40,8 @@ const SalesAnalyticsPage: React.FC = () => {
   };
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-6">Sales Analytics</h1>
+    <div className="space-y-6">
+      <h1 className="text-3xl font-black mb-6 text-slate-900">Sales Analytics</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <StatCard
           title="Total Revenue"
@@ -58,18 +58,18 @@ const SalesAnalyticsPage: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-        <div className="lg:col-span-3 bg-white p-6 rounded-xl shadow-md">
-          <h2 className="text-xl font-bold mb-4">Monthly Revenue</h2>
+        <div className="lg:col-span-3 bg-white p-6 rounded-2xl shadow-xs border border-slate-300">
+          <h2 className="text-xl font-black mb-4 text-slate-900">Monthly Revenue</h2>
           <BarChart data={monthlyRevenue} />
         </div>
-        <div className="lg:col-span-2 bg-white p-6 rounded-xl shadow-md">
-          <h2 className="text-xl font-bold mb-4">Top Selling Products</h2>
+        <div className="lg:col-span-2 bg-white p-6 rounded-2xl shadow-xs border border-slate-300">
+          <h2 className="text-xl font-black mb-4 text-slate-900">Top Selling Products</h2>
           <div className="space-y-3">
             {topProducts.map((product: any) => (
-              <div key={product.id} className="bg-white p-4 rounded-lg shadow">
-                <h3 className="font-semibold">{product.name}</h3>
+              <div key={product.id} className="bg-white p-4 rounded-xl border border-slate-300 shadow-xs">
+                <h3 className="font-bold text-slate-900">{product.name}</h3>
                 {/* Remove sales and unitsSold if they don't exist on Product type */}
-                <p>Price: ${product.price?.toFixed(2)}</p>
+                <p className="text-sm font-semibold text-slate-700 mt-1">Price: ${product.price?.toFixed(2)}</p>
               </div>
             ))}
           </div>

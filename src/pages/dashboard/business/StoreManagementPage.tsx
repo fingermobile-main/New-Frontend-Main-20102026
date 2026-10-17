@@ -157,12 +157,12 @@ const StoreManagementPage: React.FC = () => {
     value: string | number;
     icon: string;
   }> = ({ title, value, icon }) => (
-    <div className="bg-white p-6 rounded-xl shadow-md border border-slate-200">
+    <div className="bg-white p-6 rounded-2xl shadow-xs border border-slate-300">
       <div className="flex items-center gap-4">
         <div className="text-3xl">{icon}</div>
         <div>
-          <p className="text-sm text-slate-700">{title}</p>
-          <p className="text-2xl font-bold">{value}</p>
+          <p className="text-xs font-bold uppercase tracking-wider text-slate-700">{title}</p>
+          <p className="text-2xl font-black text-slate-900 mt-1">{value}</p>
         </div>
       </div>
     </div>
@@ -170,7 +170,7 @@ const StoreManagementPage: React.FC = () => {
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6 text-gray-900">eCommerce Store Management</h1>
+      <h1 className="text-3xl font-black mb-6 text-slate-900">eCommerce Store Management</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <StatCard
@@ -183,9 +183,9 @@ const StoreManagementPage: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 bg-white p-6 rounded-xl shadow-md border border-slate-200">
+        <div className="lg:col-span-2 bg-white p-6 rounded-2xl shadow-xs border border-slate-300">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold text-gray-900">Manage Products</h2>
+            <h2 className="text-xl font-black text-slate-900">Manage Products</h2>
             <button
               onClick={() => handleOpenEditor()}
               className="px-4 py-2 text-sm font-semibold bg-blue-600 text-white rounded-full hover:bg-blue-700 transition"

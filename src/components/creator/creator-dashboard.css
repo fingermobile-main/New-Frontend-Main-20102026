@@ -12,17 +12,17 @@
 .dashboard-header h1 {
   font-size: 2rem;
   margin-bottom: 10px;
-  color: #333;
+  color: #0f172a;
 }
 
 .dashboard-header p {
-  color: #666;
+  color: #334155;
   margin-bottom: 30px;
 }
 
 .dashboard-tabs {
   display: flex;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #cbd5e1;
   margin-bottom: 30px;
 }
 
@@ -32,13 +32,13 @@
   border: none;
   cursor: pointer;
   font-size: 1rem;
-  color: #666;
+  color: #334155;
   border-bottom: 3px solid transparent;
   transition: all 0.2s;
 }
 
 .tab:hover {
-  color: #333;
+  color: #0f172a;
   background-color: #f5f5f5;
 }
 
@@ -64,7 +64,7 @@
 
 .scheduler-header h2 {
   margin-top: 0;
-  color: #333;
+  color: #0f172a;
 }
 
 .scheduler-actions {
@@ -73,7 +73,7 @@
 
 .scheduled-content h3 {
   margin: 0 0 20px 0;
-  color: #333;
+  color: #0f172a;
 }
 
 .schedule-list {
@@ -87,20 +87,20 @@
   justify-content: space-between;
   align-items: center;
   padding: 15px;
-  border: 1px solid #eee;
+  border: 1px solid #e2e8f0;
   border-radius: 8px;
   background: #fafafa;
 }
 
 .schedule-info h4 {
   margin: 0 0 5px 0;
-  color: #333;
+  color: #0f172a;
 }
 
 .schedule-info p {
   margin: 0;
   font-size: 0.9rem;
-  color: #666;
+  color: #334155;
 }
 
 /* Earnings Tracker Styles */
@@ -120,7 +120,7 @@
 
 .tracker-header h2 {
   margin: 0;
-  color: #333;
+  color: #0f172a;
 }
 
 .time-range-selector {
@@ -130,7 +130,7 @@
 
 .time-range-btn {
   padding: 8px 16px;
-  border: 1px solid #ddd;
+  border: 1px solid #cbd5e1;
   background: white;
   cursor: pointer;
   border-radius: 4px;
@@ -164,19 +164,19 @@
 .summary-card h3 {
   margin: 0 0 10px 0;
   font-size: 1rem;
-  color: #666;
+  color: #334155;
 }
 
 .summary-value {
   font-size: 1.5rem;
   font-weight: 600;
   margin: 0;
-  color: #333;
+  color: #0f172a;
 }
 
 .chart-section h3 {
   margin: 0 0 20px 0;
-  color: #333;
+  color: #0f172a;
 }
 
 .chart-container {
@@ -212,12 +212,12 @@
 .bar-label {
   margin-top: 10px;
   font-size: 0.8rem;
-  color: #666;
+  color: #334155;
 }
 
 .earnings-history h3 {
   margin: 0 0 20px 0;
-  color: #333;
+  color: #0f172a;
 }
 
 .earnings-list {
@@ -231,20 +231,20 @@
   justify-content: space-between;
   align-items: center;
   padding: 15px;
-  border: 1px solid #eee;
+  border: 1px solid #e2e8f0;
   border-radius: 8px;
   background: #fafafa;
 }
 
 .earning-info h4 {
   margin: 0 0 5px 0;
-  color: #333;
+  color: #0f172a;
 }
 
 .earning-info p {
   margin: 0;
   font-size: 0.9rem;
-  color: #666;
+  color: #334155;
 }
 
 .earning-details {
@@ -280,17 +280,17 @@
 
 .analytics-header h2 {
   margin-top: 0;
-  color: #333;
+  color: #0f172a;
 }
 
 .analytics-header p {
-  color: #666;
+  color: #334155;
   margin-bottom: 30px;
 }
 
 .analytics-tabs {
   display: flex;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #cbd5e1;
   margin-bottom: 30px;
 }
 
@@ -304,7 +304,7 @@
 .geography-view h3,
 .engagement-view h3 {
   margin: 0 0 20px 0;
-  color: #333;
+  color: #0f172a;
 }
 
 .demographic-bar,
@@ -321,7 +321,7 @@
 .age-group,
 .country {
   font-weight: 500;
-  color: #333;
+  color: #0f172a;
 }
 
 .percentage {
@@ -345,7 +345,7 @@
 
 .count {
   font-size: 0.9rem;
-  color: #666;
+  color: #334155;
 }
 
 .engagement-charts {
@@ -363,7 +363,7 @@
 .chart-container h4 {
   margin: 0 0 20px 0;
   text-align: center;
-  color: #333;
+  color: #0f172a;
 }
 
 .line-chart {
@@ -395,7 +395,7 @@
   transform: translateX(-50%);
   font-size: 0.8rem;
   font-weight: 500;
-  color: #333;
+  color: #0f172a;
 }
 
 /* Content Studio Link Styles */
@@ -409,7 +409,7 @@
 
 .studio-link-header h2 {
   margin-top: 0;
-  color: #333;
+  color: #0f172a;
 }
 
 .studio-preview {
@@ -436,11 +436,11 @@
 
 .feature h3 {
   margin: 0 0 10px 0;
-  color: #333;
+  color: #0f172a;
 }
 
 .feature p {
-  color: #666;
+  color: #334155;
   margin: 0;
 }
 
@@ -548,12 +548,12 @@
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .modal-header h3 {
   margin: 0;
-  color: #333;
+  color: #0f172a;
 }
 
 .close-button {
@@ -561,11 +561,11 @@
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
-  color: #999;
+  color: #475569;
 }
 
 .close-button:hover {
-  color: #333;
+  color: #0f172a;
 }
 
 .modal-body {
@@ -593,7 +593,7 @@
 .form-group select {
   width: 100%;
   padding: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid #cbd5e1;
   border-radius: 4px;
   font-size: 1rem;
 }
@@ -603,13 +603,13 @@
   justify-content: flex-end;
   gap: 10px;
   padding: 20px;
-  border-top: 1px solid #eee;
+  border-top: 1px solid #e2e8f0;
 }
 
 .empty-state {
   text-align: center;
   padding: 40px 20px;
-  color: #666;
+  color: #334155;
 }
 
 .empty-state p {

@@ -26,8 +26,8 @@ const StatCard: React.FC<StatCardProps> = ({
           </span>
         )}
       </div>
-      <p className="text-sm text-gray-600">{title}</p>
-      <p className="text-2xl font-bold text-gray-900 mt-1">{value}</p>
+      <p className="text-xs font-bold uppercase tracking-wider text-slate-700">{title}</p>
+      <p className="text-2xl font-black text-slate-900 mt-1">{value}</p>
     </div>
   );
 };

@@ -44,35 +44,35 @@ const DashboardOverviewPage: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="bg-white p-6 rounded-xl shadow-md">
-          <h2 className="text-xl font-bold mb-4">Recent Activity</h2>
+        <div className="bg-white p-6 rounded-2xl shadow-xs border border-slate-300">
+          <h2 className="text-xl font-black text-slate-900 mb-4">Recent Activity</h2>
           <div className="space-y-4">
             {data.recentActivity.map((post) => (
-              <div key={post.id} className="text-sm">
+              <div key={post.id} className="text-sm border-b border-slate-200 pb-3 last:border-b-0 last:pb-0">
                 <p>
-                  <span className="font-semibold">{post.author.name}</span>{' '}
-                  created a new post: "{post.title || 'Untitled Post'}"
+                  <span className="font-bold text-slate-900">{post.author.name}</span>{' '}
+                  <span className="text-slate-800 font-medium">created a new post: "{post.title || 'Untitled Post'}"</span>
                 </p>
-                <p className="text-xs text-slate-700">
+                <p className="text-xs text-slate-600 font-semibold mt-1">
                   {new Date(post.timestamp || Date.now()).toLocaleString()}
                 </p>
               </div>
             ))}
           </div>
         </div>
-        <div className="bg-white p-6 rounded-xl shadow-md">
-          <h2 className="text-xl font-bold mb-4">New Members</h2>
+        <div className="bg-white p-6 rounded-2xl shadow-xs border border-slate-300">
+          <h2 className="text-xl font-black text-slate-900 mb-4">New Members</h2>
           <div className="space-y-4">
             {data.newMembers.map((member) => (
-              <div key={member.id} className="flex items-center gap-3">
+              <div key={member.id} className="flex items-center gap-3 border-b border-slate-200 pb-3 last:border-b-0 last:pb-0">
                 <img
                   src={member.avatarUrl}
                   alt={member.name}
-                  className="w-10 h-10 rounded-full"
+                  className="w-10 h-10 rounded-full border border-slate-300 object-cover"
                 />
                 <div>
-                  <p className="font-semibold">{member.name}</p>
-                  <p className="text-sm text-slate-700">@{member.membername}</p>
+                  <p className="font-bold text-slate-900">{member.name}</p>
+                  <p className="text-sm font-semibold text-slate-700">@{member.membername}</p>
                 </div>
               </div>
             ))}

@@ -21,33 +21,49 @@ const CreatorDashboardPage: React.FC = () => {
   >('scheduler');
 
   return (
-    <div className="creator-dashboard-page">
-      <div className="dashboard-header">
-        <h1>Creator Dashboard</h1>
-        <p>Manage your content, track earnings, and analyze your audience</p>
+    <div className="creator-dashboard-page min-h-screen py-6 px-4 sm:px-6 lg:px-8">
+      <div className="dashboard-header mb-8">
+        <h1 className="text-3xl font-black text-slate-900 tracking-tight">Creator Dashboard</h1>
+        <p className="text-sm font-semibold text-slate-700 mt-1.5">Manage your content, track earnings, and analyze your audience</p>
       </div>
 
-      <div className="dashboard-tabs">
+      <div className="dashboard-tabs flex border-b border-slate-300 mb-8 space-x-3">
         <button
-          className={`tab ${activeTab === 'scheduler' ? 'active' : ''}`}
+          className={`tab px-4 py-2.5 rounded-t-xl font-bold text-sm transition-all cursor-pointer ${
+            activeTab === 'scheduler'
+              ? 'active border-b-2 border-blue-600 text-blue-700 bg-white shadow-xs'
+              : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
+          }`}
           onClick={() => setActiveTab('scheduler')}
         >
           Content Scheduler
         </button>
         <button
-          className={`tab ${activeTab === 'earnings' ? 'active' : ''}`}
+          className={`tab px-4 py-2.5 rounded-t-xl font-bold text-sm transition-all cursor-pointer ${
+            activeTab === 'earnings'
+              ? 'active border-b-2 border-blue-600 text-blue-700 bg-white shadow-xs'
+              : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
+          }`}
           onClick={() => setActiveTab('earnings')}
         >
           Earnings Tracker
         </button>
         <button
-          className={`tab ${activeTab === 'analytics' ? 'active' : ''}`}
+          className={`tab px-4 py-2.5 rounded-t-xl font-bold text-sm transition-all cursor-pointer ${
+            activeTab === 'analytics'
+              ? 'active border-b-2 border-blue-600 text-blue-700 bg-white shadow-xs'
+              : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
+          }`}
           onClick={() => setActiveTab('analytics')}
         >
           Audience Analytics
         </button>
         <button
-          className={`tab ${activeTab === 'studio' ? 'active' : ''}`}
+          className={`tab px-4 py-2.5 rounded-t-xl font-bold text-sm transition-all cursor-pointer ${
+            activeTab === 'studio'
+              ? 'active border-b-2 border-blue-600 text-blue-700 bg-white shadow-xs'
+              : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
+          }`}
           onClick={() => setActiveTab('studio')}
         >
           Content Studio

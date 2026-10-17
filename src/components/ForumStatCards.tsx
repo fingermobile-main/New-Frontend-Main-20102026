@@ -14,19 +14,19 @@ interface StatCardProps {
 }
 
 const StatCard: React.FC<StatCardProps> = ({ title, value, subtitle, icon, trend }) => (
-  <div className="bg-white/60 backdrop-blur-sm rounded-xl p-4 border border-slate-200 hover:border-brand-blue/30 shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] transition-all group">
+  <div className="bg-white rounded-xl p-4 border border-slate-300 hover:border-blue-500 shadow-xs transition-all group">
     <div className="flex items-center justify-between mb-3">
-      <div className="text-slate-700 bg-gray-50 p-2 rounded-lg group-hover:bg-blue-50 group-hover:text-brand-blue transition-colors">{icon}</div>
+      <div className="text-slate-700 bg-slate-50 p-2 rounded-lg border border-slate-200 group-hover:bg-blue-50 group-hover:text-blue-700 transition-colors">{icon}</div>
       {trend && (
-        <div className={`text-xs font-bold px-2.5 py-1 rounded-full ${trend.isPositive ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100'}`}>
+        <div className={`text-xs font-bold px-2.5 py-1 rounded-full border ${trend.isPositive ? 'text-emerald-950 bg-emerald-100 border-emerald-400' : 'text-red-950 bg-red-100 border-red-400'}`}>
           {trend.isPositive ? '+' : '-'}{Math.abs(trend.value)}%
         </div>
       )}
     </div>
     <div className="space-y-1">
-      <h4 className="text-2xl font-extrabold text-gray-900 tracking-tight">{value}</h4>
-      <p className="text-sm font-semibold text-gray-700">{title}</p>
-      {subtitle && <p className="text-xs text-slate-700 font-medium">{subtitle}</p>}
+      <h4 className="text-2xl font-black text-slate-900 tracking-tight">{value}</h4>
+      <p className="text-sm font-bold text-slate-800">{title}</p>
+      {subtitle && <p className="text-xs text-slate-600 font-semibold">{subtitle}</p>}
     </div>
   </div>
 );

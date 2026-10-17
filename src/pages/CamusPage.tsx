@@ -164,15 +164,15 @@ const CamusPage: React.FC = () => {
     };
 
     return (
-      <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-sm flex items-center gap-4 border border-slate-200 dark:border-gray-800">
-        <div className="bg-blue-100 dark:bg-blue-950 p-3 rounded-2xl">
+      <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-xs flex items-center gap-4 border border-slate-300 dark:border-gray-800">
+        <div className="bg-blue-100 dark:bg-blue-950 p-3 rounded-2xl border border-blue-300 dark:border-blue-800">
           {icons[stat.icon] || (
             <BookOpenIcon className="w-8 h-8 text-blue-600 dark:text-blue-400" />
           )}
         </div>
         <div>
-          <p className="text-2xl font-black text-gray-900 dark:text-white">{stat.value}</p>
-          <p className="text-xs font-semibold text-slate-700 uppercase tracking-wider">{stat.label}</p>
+          <p className="text-2xl font-black text-slate-900 dark:text-white">{stat.value}</p>
+          <p className="text-xs font-bold text-slate-700 uppercase tracking-wider">{stat.label}</p>
         </div>
       </div>
     );
