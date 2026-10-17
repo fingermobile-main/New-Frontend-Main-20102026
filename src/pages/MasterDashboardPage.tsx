@@ -83,6 +83,7 @@ import MasterWidgetConsole from '../components/dashboard/MasterWidgetConsole';
 import MasterBeatwaveNGConsole from '../components/dashboard/MasterBeatwaveNGConsole';
 import MasterDancia4TvConsole from '../components/dashboard/MasterDancia4TvConsole';
 import { guardianSearchIndexer, SearchBenchmarkResult } from '../services/GuardianSearchIndexingService';
+import ScreenCatalogManagementConsole from '../components/dashboard/ScreenCatalogManagementConsole';
 
 interface Section {
   id: string;
@@ -2405,6 +2406,7 @@ const MasterDashboardPage: React.FC = () => {
               { id: 'governance-ops', label: 'Platform Governance', badge: '15' },
               { id: 'gaps-assessment', label: 'Page Matrix & Gaps', badge: '210' },
               { id: 'sections', label: 'Sections Catalog' },
+              { id: 'screen-catalog', label: 'Screen Catalog Management' },
               { id: 'forums', label: 'Forums Console' },
               { id: 'connectors', label: 'Connectors' },
               { id: 'monitoring', label: 'SOC Monitoring' },
@@ -2735,6 +2737,9 @@ const MasterDashboardPage: React.FC = () => {
 
             {/* Sections Management Tab */}
             {activeTab === 'sections' && renderSectionManagement()}
+
+            {/* Persistent Screen Catalog Management */}
+            {activeTab === 'screen-catalog' && <ScreenCatalogManagementConsole />}
 
             {/* Modules Tab */}
             {activeTab === 'modules' && (

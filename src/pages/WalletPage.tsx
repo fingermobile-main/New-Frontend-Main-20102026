@@ -35,7 +35,13 @@ import {
   CreditCard,
   ArrowUpRight,
   Coins,
-  Award
+  Award,
+  Zap,
+  Globe,
+  QrCode,
+  ShieldAlert,
+  Smartphone,
+  Sparkles
 } from 'lucide-react';
 import { useToast } from '../hooks/use-toast';
 import {
@@ -57,6 +63,71 @@ interface WalletTransaction {
   status?: string;
 }
 
+export type PaymentChannelType =
+  | 'alternative_bank_transfer'
+  | 'interswitch'
+  | 'debit_card'
+  | 'paypal'
+  | 'ussd_qr';
+
+export interface PaymentChannelOption {
+  id: PaymentChannelType;
+  title: string;
+  badge: string;
+  description: string;
+  currency: 'NGN' | 'USD';
+  feeNote: string;
+  destinationAccount: string;
+}
+
+export const PAYMENT_CHANNELS_LIST: PaymentChannelOption[] = [
+  {
+    id: 'alternative_bank_transfer',
+    title: 'Alternative Bank Transfer',
+    badge: 'NIP / Instant Transfer',
+    description: 'Direct manual bank transfer straight to Alternative Bank 0514108422',
+    currency: 'NGN',
+    feeNote: 'Zero gateway surcharge',
+    destinationAccount: '0514108422'
+  },
+  {
+    id: 'interswitch',
+    title: 'Interswitch WebPAY',
+    badge: 'Interswitch / Quickteller',
+    description: 'Instant switch payment directly settling to Alternative Bank 0514108422',
+    currency: 'NGN',
+    feeNote: 'Direct Interswitch rail',
+    destinationAccount: '0514108422'
+  },
+  {
+    id: 'debit_card',
+    title: 'Debit Card (Mastercard / Visa / Verve)',
+    badge: 'Cards',
+    description: 'Direct Alternative Bank card acquiring portal (Mastercard, Visa, Verve)',
+    currency: 'NGN',
+    feeNote: '3D Secure 2.0 protected',
+    destinationAccount: '0514108422'
+  },
+  {
+    id: 'paypal',
+    title: 'PayPal International',
+    badge: 'Global USD',
+    description: 'Global checkout via PayPal credited directly into Alternative Bank foreign rail in USD',
+    currency: 'USD',
+    feeNote: 'Global fiat corridor',
+    destinationAccount: '0514108422'
+  },
+  {
+    id: 'ussd_qr',
+    title: 'USSD / Bank QR Code',
+    badge: 'Mobile Quick Pay',
+    description: 'Instant USSD *999*0514108422*AMOUNT# or scan Alternative Bank Dynamic QR',
+    currency: 'NGN',
+    feeNote: 'Mobile / Offline friendly',
+    destinationAccount: '0514108422'
+  }
+];
+
 export interface TreasuryFundingRequestItem {
   id: number;
   requestReference: string;
@@ -66,6 +137,8 @@ export interface TreasuryFundingRequestItem {
   userWalletAddress: string;
   amountFIC: number;
   amountNGN: number;
+  amountUSD?: number;
+  currency?: string;
   ratePerFIC: number;
   rateType: 'standard' | 'treasury_seed';
   destinationBankName: string;
@@ -75,8 +148,10 @@ export interface TreasuryFundingRequestItem {
   depositorBank: string;
   bankTxReference: string;
   paymentMethod: string;
+  paymentChannel?: PaymentChannelType | string;
+  gatewayReference?: string;
   proofNotes?: string;
-  status: 'PENDING_CONFIRMATION' | 'CONFIRMED_BY_TREASURY' | 'APPROVED_AND_FUNDED' | 'REJECTED';
+  status: 'PENDING_CONFIRMATION' | 'CONFIRMED_BY_TREASURY' | 'CONFIRMED_BY_TREASURY_PENDING_CFO' | 'APPROVED_AND_FUNDED' | 'REJECTED';
   treasuryStaffId?: string;
   treasuryStaffName?: string;
   treasuryStaffRole?: string;
@@ -153,7 +228,8 @@ const WalletPage: React.FC = () => {
   const [showReceiveModal, setShowReceiveModal] = useState(false);
   const [showRolesModal, setShowRolesModal] = useState(false);
 
-  // Fund Wallet Form Fields
+  // Fund Wallet Form Fields & Multi-Channel Rails
+  const [selectedChannel, setSelectedChannel] = useState<PaymentChannelType>('alternative_bank_transfer');
   const [fundRateType, setFundRateType] = useState<'treasury_seed' | 'standard'>('treasury_seed');
   const [fundAmountFic, setFundAmountFic] = useState('500');
   const [fundAmountNgn, setFundAmountNgn] = useState('32500');
@@ -162,6 +238,31 @@ const WalletPage: React.FC = () => {
   const [bankTxRef, setBankTxRef] = useState('');
   const [receiptEmail, setReceiptEmail] = useState('member@fingermobileprotocol.com');
   const [proofNotes, setProofNotes] = useState('Alternative Bank Sovereign Rail Direct Transfer');
+
+  // Channel specific inputs
+  const [cardholderName, setCardholderName] = useState('John Doe');
+  const [cardNumber, setCardNumber] = useState('5399 4120 8831 9904');
+  const [cardExpiry, setCardExpiry] = useState('12/28');
+  const [cardCvv, setCardCvv] = useState('842');
+  const [interswitchPhone, setInterswitchPhone] = useState('08031234567');
+  const [paypalEmail, setPaypalEmail] = useState('member@fingermobileprotocol.com');
+
+  // Post-payment CFO validation confirmation receipt state
+  const [paymentConfirmationData, setPaymentConfirmationData] = useState<{
+    reference: string;
+    id: number;
+    channel: string;
+    channelName: string;
+    amountFIC: number;
+    amountNGN: number;
+    amountUSD: number;
+    timestamp: string;
+    depositorName: string;
+    destinationBank: string;
+    destinationAccount: string;
+    gatewayReference: string;
+    isApproved?: boolean;
+  } | null>(null);
 
   // Generic Action Modal Fields
   const [actionAmount, setActionAmount] = useState('');
@@ -284,6 +385,7 @@ const WalletPage: React.FC = () => {
   };
 
   // Submit Treasury Funding Request (Alternative Bank Rail)
+  // Submit Treasury Funding Request across multiple payment channels
   const handleSubmitTreasuryFunding = async (e: React.FormEvent) => {
     e.preventDefault();
     const fic = parseFloat(fundAmountFic);
@@ -300,30 +402,75 @@ const WalletPage: React.FC = () => {
 
     try {
       setIsSubmitting(true);
+      const usdAmount = parseFloat((fic * (fundRateType === 'treasury_seed' ? 0.05 : 0.50)).toFixed(2));
+
+      // Resolve channel specific details
+      let txReference = bankTxRef.trim();
+      let finalDepositorName = depositorName.trim() || 'Valued Member';
+      let finalDepositorBank = depositorBank.trim() || 'Alternative Bank';
+      let paymentMethodLabel = 'Alternative Bank Dedicated Sovereign Treasury Rail (0514108422)';
+
+      if (selectedChannel === 'interswitch') {
+        txReference = txReference || `ISW/${Date.now()}/${Math.floor(1000 + Math.random() * 9000)}`;
+        finalDepositorBank = 'Interswitch WebPAY Rail';
+        paymentMethodLabel = 'Interswitch WebPAY (Direct to Alternative Bank 0514108422)';
+      } else if (selectedChannel === 'debit_card') {
+        txReference = txReference || `CARD-ALT/${Date.now()}/${Math.floor(1000 + Math.random() * 9000)}`;
+        finalDepositorName = cardholderName.trim() || finalDepositorName;
+        finalDepositorBank = 'Debit Card (Mastercard / Visa / Verve)';
+        paymentMethodLabel = 'Debit Card (Direct to Alternative Bank 0514108422)';
+      } else if (selectedChannel === 'paypal') {
+        txReference = txReference || `PAYPAL-TX-${Date.now().toString(36).toUpperCase()}`;
+        finalDepositorName = paypalEmail.trim() || finalDepositorName;
+        finalDepositorBank = 'PayPal International USD';
+        paymentMethodLabel = 'PayPal International (Direct to Alternative Bank 0514108422)';
+      } else if (selectedChannel === 'ussd_qr') {
+        txReference = txReference || `USSD/${Date.now()}/${Math.floor(1000 + Math.random() * 9000)}`;
+        paymentMethodLabel = 'USSD / Bank QR Direct (Alternative Bank 0514108422)';
+      }
+
       const payload = {
         amountFIC: fic,
         amountNGN: ngn,
+        amountUSD: usdAmount,
+        currency: selectedChannel === 'paypal' ? 'USD' : 'NGN',
         ratePerFIC: effectiveRate,
         rateType: fundRateType,
         destinationBankName: DEDICATED_TREASURY_RAIL.bankName,
         destinationAccountNumber: DEDICATED_TREASURY_RAIL.accountNumber,
         destinationAccountName: DEDICATED_TREASURY_RAIL.accountName,
-        depositorName: depositorName.trim() || 'Valued Member',
-        depositorBank: depositorBank.trim() || 'Alternative Bank',
-        bankTxReference: bankTxRef.trim() || `ALT/${Date.now()}/${Math.floor(1000 + Math.random() * 9000)}`,
+        depositorName: finalDepositorName,
+        depositorBank: finalDepositorBank,
+        bankTxReference: txReference,
+        gatewayReference: txReference,
+        paymentChannel: selectedChannel,
+        paymentMethod: paymentMethodLabel,
         userEmail: receiptEmail.trim() || 'member@fingermobileprotocol.com',
         userWalletAddress: walletAddress || '0xDEF...987',
-        paymentMethod: 'Alternative Bank Dedicated Sovereign Treasury Rail',
         proofNotes: proofNotes.trim()
       };
 
       const res = await apiService.post('/api/treasury/fund-request', payload);
       if (res?.success) {
         toast({
-          title: 'Funding Request Submitted Successfully',
-          description: `Reference: ${res.data.requestReference}. Awaiting Treasury Staff (Account Staff 1-7) confirmation.`
+          title: 'Payment Confirmation Received — Awaiting CFO Validation',
+          description: `Reference: ${res.data.requestReference}. Funds queued for Alternative Bank settlement. FIC balance will credit once CFO Mrs. Mbah Eunice Emonena validates.`
         });
-        setShowFundModal(false);
+        setPaymentConfirmationData({
+          reference: res.data.requestReference,
+          id: res.data.id,
+          channel: selectedChannel,
+          channelName: PAYMENT_CHANNELS_LIST.find((c) => c.id === selectedChannel)?.title || 'Alternative Bank Rail',
+          amountFIC: fic,
+          amountNGN: ngn,
+          amountUSD: usdAmount,
+          timestamp: new Date().toISOString(),
+          depositorName: finalDepositorName,
+          destinationBank: DEDICATED_TREASURY_RAIL.bankName,
+          destinationAccount: DEDICATED_TREASURY_RAIL.accountNumber,
+          gatewayReference: txReference,
+          isApproved: false
+        });
         setBankTxRef('');
         fetchTreasuryData();
       } else {
@@ -380,14 +527,17 @@ const WalletPage: React.FC = () => {
     try {
       setIsSubmitting(true);
       const res = await apiService.post(`/api/treasury/requests/${requestId}/cfo-approve`, {
-        cfoNotes: 'Verified against Alternative Bank 0514108422 Rail. Release authorized from Wallet 004.'
+        cfoNotes: 'Verified against Alternative Bank 0514108422 statement and payment gateway confirmation. Release authorized from Central FIC Wallet 004.'
       });
 
       if (res?.success) {
         toast({
-          title: 'CFO Final Approval Executed & Wallet Funded!',
-          description: `Mrs. Mbah Eunice Emonena approved release. ${res.data.amountFIC} FIC credited to member wallet from ${res.data.deductedFromVault || 'Wallet 004'}.`
+          title: 'CFO Final Approval Executed & Wallet Credited!',
+          description: `Mrs. Mbah Eunice Emonena validated payment. ${res.data.amountFIC} FIC credited to your wallet from ${res.data.deductedFromVault || 'Wallet 004'}.`
         });
+        if (paymentConfirmationData && paymentConfirmationData.id === requestId) {
+          setPaymentConfirmationData((prev) => (prev ? { ...prev, isApproved: true } : null));
+        }
         fetchTreasuryData();
         fetchWalletData();
       }
@@ -563,28 +713,80 @@ const WalletPage: React.FC = () => {
                     <span className="text-[11px] font-mono uppercase tracking-widest text-amber-300 font-bold block">
                       Dedicated Sovereign Protocol Treasury Rail
                     </span>
-                    <h2 className="text-2xl font-black text-white">Alternative Bank Protocol Funding</h2>
+                    <h2 className="text-2xl font-black text-white">Alternative Bank Protocol Funding (Direct & Multi-Channel)</h2>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                   <span className="px-3 py-1 rounded-full text-xs font-mono bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 flex items-center gap-1.5">
                     <ShieldCheck className="w-3.5 h-3.5" />
                     CBN Licensed & Supervised Institution
                   </span>
+                  <span className="px-3 py-1 rounded-full text-xs font-mono bg-indigo-500/20 text-indigo-200 border border-indigo-400/30 flex items-center gap-1.5">
+                    <Zap className="w-3.5 h-3.5 text-amber-400" />
+                    Alternative Bank Direct Rail
+                  </span>
+                </div>
+              </div>
+
+              {/* Supported Payment Channels Bar */}
+              <div className="p-3.5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xs">
+                <span className="text-[11px] uppercase font-bold tracking-wider text-amber-300 block mb-2">
+                  Direct Payment Rails into Alternative Bank (0514108422):
+                </span>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 text-xs">
+                  <div className="p-2 rounded-xl bg-black/40 border border-white/10 flex items-center gap-2">
+                    <Building2 className="w-4 h-4 text-amber-400 shrink-0" />
+                    <div>
+                      <p className="font-bold text-white text-[11px]">Bank Transfer</p>
+                      <p className="text-[10px] text-slate-300">NIP / Instant</p>
+                    </div>
+                  </div>
+
+                  <div className="p-2 rounded-xl bg-black/40 border border-white/10 flex items-center gap-2">
+                    <Zap className="w-4 h-4 text-indigo-400 shrink-0" />
+                    <div>
+                      <p className="font-bold text-white text-[11px]">Interswitch</p>
+                      <p className="text-[10px] text-slate-300">WebPAY Direct</p>
+                    </div>
+                  </div>
+
+                  <div className="p-2 rounded-xl bg-black/40 border border-white/10 flex items-center gap-2">
+                    <CreditCard className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <div>
+                      <p className="font-bold text-white text-[11px]">Debit Cards</p>
+                      <p className="text-[10px] text-slate-300">Mastercard/Visa</p>
+                    </div>
+                  </div>
+
+                  <div className="p-2 rounded-xl bg-black/40 border border-white/10 flex items-center gap-2">
+                    <Globe className="w-4 h-4 text-sky-400 shrink-0" />
+                    <div>
+                      <p className="font-bold text-white text-[11px]">PayPal USD</p>
+                      <p className="text-[10px] text-slate-300">Global Corridor</p>
+                    </div>
+                  </div>
+
+                  <div className="p-2 rounded-xl bg-black/40 border border-white/10 flex items-center gap-2">
+                    <QrCode className="w-4 h-4 text-purple-400 shrink-0" />
+                    <div>
+                      <p className="font-bold text-white text-[11px]">USSD & QR</p>
+                      <p className="text-[10px] text-slate-300">*999*0514108422#</p>
+                    </div>
+                  </div>
                 </div>
               </div>
 
               {/* Bank Account Details Grid */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 font-mono text-xs">
                 <div className="p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xs">
-                  <span className="text-slate-700 font-sans block text-[11px]">Designated Apex Bank</span>
-                  <p className="text-lg font-bold text-slate-700 mt-1">Alternative Bank</p>
-                  <p className="text-[11px] text-slate-700 font-sans mt-0.5">CBN Licensed & Supervised Institution</p>
+                  <span className="text-slate-300 font-sans block text-[11px]">Designated Apex Bank</span>
+                  <p className="text-lg font-bold text-white mt-1">Alternative Bank</p>
+                  <p className="text-[11px] text-slate-300 font-sans mt-0.5">CBN Licensed & Supervised Institution</p>
                 </div>
 
                 <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-400/30 backdrop-blur-xs relative group">
-                  <span className="text-amber-300 font-sans block text-[11px] font-semibold">Treasury Account Number</span>
+                  <span className="text-amber-300 font-sans block text-[11px] font-semibold">Treasury Settlement Account</span>
                   <div className="flex items-center justify-between mt-1">
                     <p className="text-2xl font-black text-amber-300 tracking-wider">0514108422</p>
                     <button
@@ -595,20 +797,20 @@ const WalletPage: React.FC = () => {
                       {copiedAccount ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
                     </button>
                   </div>
-                  <p className="text-[10px] text-amber-200/80 font-sans mt-0.5">Dedicated Sovereign Protocol Treasury Rail</p>
+                  <p className="text-[10px] text-amber-200/90 font-sans mt-0.5">Direct Settlement Destination for All Channels</p>
                 </div>
 
                 <div className="p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xs">
-                  <span className="text-slate-700 font-sans block text-[11px]">Account Name</span>
-                  <p className="text-sm font-bold text-slate-700 mt-1 break-words">FingerMobile Protocol Communication</p>
-                  <p className="text-[11px] text-slate-700 font-sans mt-0.5">Official Corporate Settlement Account</p>
+                  <span className="text-slate-300 font-sans block text-[11px]">Account Name</span>
+                  <p className="text-sm font-bold text-white mt-1 break-words">FingerMobile Protocol Communication</p>
+                  <p className="text-[11px] text-slate-300 font-sans mt-0.5">Official Corporate Settlement Account</p>
                 </div>
               </div>
 
               {/* End-to-End Procedure Flow Visualizer */}
               <div className="p-4 rounded-2xl bg-black/40 border border-white/10 space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                  <span className="text-xs font-bold text-slate-200 uppercase tracking-wider flex items-center gap-1.5">
                     <Layers className="w-4 h-4 text-amber-400" />
                     End-to-End Treasury Funding & Disbursement Architecture
                   </span>
@@ -618,32 +820,32 @@ const WalletPage: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2 text-[11px]">
                   <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
                     <span className="text-amber-400 font-bold font-mono">STEP 1</span>
-                    <p className="text-slate-200 font-semibold mt-0.5">Pay to Alternative Bank</p>
-                    <p className="text-[10px] text-slate-700">Transfer into dedicated rail 0514108422</p>
+                    <p className="text-slate-200 font-semibold mt-0.5">Pay via Any Rail</p>
+                    <p className="text-[10px] text-slate-300">Interswitch, Cards, Transfer or PayPal to 0514108422</p>
                   </div>
 
                   <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
                     <span className="text-amber-400 font-bold font-mono">STEP 2</span>
-                    <p className="text-slate-200 font-semibold mt-0.5">Submit Proof</p>
-                    <p className="text-[10px] text-slate-700">Enter bank transaction ref / teller number</p>
+                    <p className="text-slate-200 font-semibold mt-0.5">Confirmation Queued</p>
+                    <p className="text-[10px] text-slate-300">Gateway reference logged into Treasury Pipeline</p>
                   </div>
 
                   <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
                     <span className="text-amber-400 font-bold font-mono">STEP 3</span>
                     <p className="text-slate-200 font-semibold mt-0.5">Treasury Staff Confirms</p>
-                    <p className="text-[10px] text-slate-700">Account Staff 1 to 7 confirms at Accounts</p>
+                    <p className="text-[10px] text-slate-300">Account Staff 1 to 7 confirms deposit at Accounts</p>
                   </div>
 
-                  <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
-                    <span className="text-amber-400 font-bold font-mono">STEP 4</span>
-                    <p className="text-slate-200 font-semibold mt-0.5">CFO Final Approval</p>
-                    <p className="text-[10px] text-slate-700">Mrs. Mbah Eunice Emonena authorizes release</p>
+                  <div className="p-2.5 rounded-xl bg-amber-500/15 border border-amber-400/40">
+                    <span className="text-amber-300 font-bold font-mono">STEP 4 (MANDATORY)</span>
+                    <p className="text-amber-200 font-semibold mt-0.5">CFO Validates</p>
+                    <p className="text-[10px] text-amber-300">Mrs. Mbah Eunice Emonena authorizes wallet release</p>
                   </div>
 
                   <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-400/30">
                     <span className="text-emerald-400 font-bold font-mono">STEP 5</span>
-                    <p className="text-emerald-200 font-semibold mt-0.5">Deduct 004 & Fund</p>
-                    <p className="text-[10px] text-emerald-300">Wallet 004 depleted, PDF receipt sent</p>
+                    <p className="text-emerald-200 font-semibold mt-0.5">FIC Wallet Credited</p>
+                    <p className="text-[10px] text-emerald-300">Wallet 004 depleted, wallet credited, PDF sent</p>
                   </div>
                 </div>
               </div>
@@ -652,17 +854,20 @@ const WalletPage: React.FC = () => {
               <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
                 <div className="flex items-center gap-3">
                   <Button
-                    onClick={() => setShowFundModal(true)}
-                    className="bg-amber-400 hover:bg-amber-500 text-slate-950 font-black text-sm px-6 py-2.5 rounded-2xl shadow-lg transition-transform active:scale-95 flex items-center gap-2"
+                    onClick={() => {
+                      setPaymentConfirmationData(null);
+                      setShowFundModal(true);
+                    }}
+                    className="bg-amber-400 hover:bg-amber-500 text-slate-950 font-black text-sm px-6 py-2.5 rounded-2xl shadow-lg transition-transform active:scale-95 flex items-center gap-2 cursor-pointer"
                   >
                     <PlusIcon className="w-5 h-5" />
-                    Fund Wallet via Alternative Bank Rail
+                    Fund Wallet (Cards / Interswitch / Bank / PayPal)
                   </Button>
 
                   <Button
                     variant="outline"
                     onClick={() => setShowReceiveModal(true)}
-                    className="border-white/20 hover:bg-white/10 text-white font-bold text-xs rounded-2xl flex items-center gap-1.5"
+                    className="border-white/20 hover:bg-white/10 text-white font-bold text-xs rounded-2xl flex items-center gap-1.5 cursor-pointer"
                   >
                     <QrCodeIcon className="w-4 h-4 text-indigo-300" />
                     My Wallet Address & QR
@@ -854,24 +1059,54 @@ const WalletPage: React.FC = () => {
                             <tr key={req.id} className="hover:bg-slate-50 transition-colors">
                               <td className="py-4 px-4 font-mono">
                                 <span className="font-bold text-indigo-700 block">{req.requestReference}</span>
-                                <span className="text-[10px] text-slate-700 font-semibold">
+                                <span className="text-[10px] text-slate-700 font-semibold block">
                                   {new Date(req.createdAt).toLocaleDateString()} {new Date(req.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                 </span>
+                                {req.paymentChannel === 'interswitch' && (
+                                  <span className="inline-block mt-1 px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-100 text-indigo-950 border border-indigo-400">
+                                    Interswitch WebPAY
+                                  </span>
+                                )}
+                                {req.paymentChannel === 'debit_card' && (
+                                  <span className="inline-block mt-1 px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-950 border border-blue-400">
+                                    Debit Card
+                                  </span>
+                                )}
+                                {req.paymentChannel === 'paypal' && (
+                                  <span className="inline-block mt-1 px-2 py-0.5 rounded text-[10px] font-bold bg-sky-100 text-sky-950 border border-sky-400">
+                                    PayPal USD
+                                  </span>
+                                )}
+                                {req.paymentChannel === 'ussd_qr' && (
+                                  <span className="inline-block mt-1 px-2 py-0.5 rounded text-[10px] font-bold bg-purple-100 text-purple-950 border border-purple-400">
+                                    USSD / QR
+                                  </span>
+                                )}
+                                {(!req.paymentChannel || req.paymentChannel === 'alternative_bank_transfer') && (
+                                  <span className="inline-block mt-1 px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-950 border border-amber-400">
+                                    Alternative Bank Transfer
+                                  </span>
+                                )}
                               </td>
 
                               <td className="py-4 px-4">
                                 <span className="font-bold text-slate-900 block text-sm">
                                   {req.amountFIC.toLocaleString()} FIC
                                 </span>
-                                <span className="text-[11px] text-slate-700 font-mono font-semibold">
+                                <span className="text-[11px] text-slate-800 font-mono font-semibold block">
                                   ₦{req.amountNGN.toLocaleString()} (Rate: ₦{req.ratePerFIC}/FIC)
                                 </span>
+                                {req.amountUSD ? (
+                                  <span className="text-[10px] text-slate-600 font-mono block">
+                                    ≈ ${req.amountUSD.toLocaleString()} USD
+                                  </span>
+                                ) : null}
                               </td>
 
                               <td className="py-4 px-4 font-mono text-slate-800">
                                 <span className="font-bold block text-slate-900">{req.depositorName}</span>
                                 <span className="text-[11px] text-slate-700 block font-semibold">{req.depositorBank}</span>
-                                <span className="text-[10px] text-slate-600 font-medium">{req.bankTxReference}</span>
+                                <span className="text-[10px] text-slate-600 font-medium break-all">{req.bankTxReference}</span>
                               </td>
 
                               <td className="py-4 px-4">
@@ -879,19 +1114,21 @@ const WalletPage: React.FC = () => {
                                   <div>
                                     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-100 text-amber-950 border border-amber-400 font-black">
                                       <Clock className="w-3 h-3 text-amber-700 animate-spin" />
-                                      Pending Treasury Staff (Staff 1-7)
+                                      Payment Captured — Pending CFO Validation
                                     </span>
-                                    <p className="text-[10px] text-slate-700 font-medium mt-1">Awaiting confirmation at Accounts</p>
+                                    <p className="text-[10px] text-slate-700 font-semibold mt-1">
+                                      Waiting for CFO Mrs. Mbah Eunice Emonena sign-off to credit wallet
+                                    </p>
                                   </div>
                                 )}
 
-                                {req.status === 'CONFIRMED_BY_TREASURY' && (
+                                {(req.status === 'CONFIRMED_BY_TREASURY' || req.status === 'CONFIRMED_BY_TREASURY_PENDING_CFO') && (
                                   <div>
                                     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-blue-100 text-blue-950 border border-blue-400 font-black">
                                       <CheckCircle2 className="w-3 h-3 text-blue-700" />
                                       Confirmed by {req.treasuryStaffName || 'Staff Accountant'}
                                     </span>
-                                    <p className="text-[10px] text-amber-800 font-bold mt-1">
+                                    <p className="text-[10px] text-amber-900 font-bold mt-1">
                                       Awaiting CFO Mrs. Mbah Eunice Emonena final sign-off
                                     </p>
                                   </div>
@@ -901,7 +1138,7 @@ const WalletPage: React.FC = () => {
                                   <div>
                                     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 font-black">
                                       <ShieldCheck className="w-3 h-3 text-emerald-700" />
-                                      CFO Approved & Wallet Funded
+                                      CFO Approved & Wallet Credited
                                     </span>
                                     <p className="text-[10px] text-slate-700 font-semibold mt-1">
                                       Authorized by {req.cfoName || 'Mrs. Mbah Eunice Emonena (CFO)'}
@@ -916,7 +1153,7 @@ const WalletPage: React.FC = () => {
                                     {req.deductedFromVault.includes('004') ? 'Wallet 004 Treasury & Seed' : req.deductedFromVault}
                                   </span>
                                 ) : (
-                                  <span className="text-slate-700 italic font-semibold">Waterfall 004 Queue</span>
+                                  <span className="text-slate-700 italic font-semibold">Wallet 004 Queue</span>
                                 )}
                               </td>
 
@@ -931,7 +1168,19 @@ const WalletPage: React.FC = () => {
                                     PDF Receipt
                                   </Button>
                                 ) : (
-                                  <span className="text-[11px] text-slate-700 font-mono font-bold block">In Processing Pipeline</span>
+                                  <div className="flex flex-col items-end gap-1">
+                                    <span className="text-[10px] text-amber-800 font-bold font-mono">Held in Queue</span>
+                                    <Button
+                                      size="sm"
+                                      disabled={isSubmitting}
+                                      onClick={() => handleCfoFinalApproval(req.id)}
+                                      className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-[11px] py-1 px-2.5 rounded-lg shadow-xs cursor-pointer flex items-center gap-1"
+                                      title="Simulate / Execute live CFO Validation to credit member wallet"
+                                    >
+                                      <ShieldCheck className="w-3 h-3 text-slate-950" />
+                                      CFO Validate
+                                    </Button>
+                                  </div>
                                 )}
                               </td>
                             </tr>
@@ -1055,25 +1304,26 @@ const WalletPage: React.FC = () => {
                     </div>
 
                     <div className="pt-2">
-                      {treasuryRequests.filter((r) => r.status === 'CONFIRMED_BY_TREASURY').length > 0 ? (
+                      {treasuryRequests.filter((r) => r.status !== 'APPROVED_AND_FUNDED').length > 0 ? (
                         <div className="space-y-2">
                           {treasuryRequests
-                            .filter((r) => r.status === 'CONFIRMED_BY_TREASURY')
-                            .slice(0, 2)
-                            .map((confirmedReq) => (
+                            .filter((r) => r.status !== 'APPROVED_AND_FUNDED')
+                            .slice(0, 3)
+                            .map((pendingReq) => (
                               <Button
-                                key={confirmedReq.id}
+                                key={pendingReq.id}
                                 size="sm"
                                 disabled={isSubmitting}
-                                onClick={() => handleCfoFinalApproval(confirmedReq.id)}
-                                className="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs shadow-md"
+                                onClick={() => handleCfoFinalApproval(pendingReq.id)}
+                                className="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs shadow-md cursor-pointer flex items-center justify-between px-3"
                               >
-                                CFO Approve #{confirmedReq.requestReference} (Deduct Wallet 004 & Release)
+                                <span>CFO Validate #{pendingReq.requestReference}</span>
+                                <span className="font-mono">{pendingReq.amountFIC.toLocaleString()} FIC</span>
                               </Button>
                             ))}
                         </div>
                       ) : (
-                        <p className="text-xs text-slate-400 italic">No confirmed requests awaiting CFO authorization.</p>
+                        <p className="text-xs text-slate-500 italic">All treasury requests are CFO validated and funded.</p>
                       )}
                     </div>
                   </div>
@@ -1214,206 +1464,553 @@ const WalletPage: React.FC = () => {
       {/* ========================================================================= */}
       {showFundModal && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl space-y-6 my-8 animate-in fade-in">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+          <div className="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl space-y-6 my-8 animate-in fade-in max-h-[92vh] overflow-y-auto border border-slate-300">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between border-b border-slate-200 pb-4">
               <div>
-                <span className="text-[11px] font-mono font-bold text-amber-600 uppercase tracking-widest block">
+                <span className="text-[11px] font-mono font-bold text-amber-700 uppercase tracking-widest block">
                   Official Dedicated Treasury Rail
                 </span>
-                <h3 className="text-xl font-black text-slate-900">Fund Wallet via Alternative Bank</h3>
+                <h3 className="text-xl font-black text-slate-900">
+                  Fund Wallet via Alternative Bank (0514108422)
+                </h3>
+                <p className="text-xs text-slate-700 font-medium mt-0.5">
+                  Direct Bank Transfer, Interswitch WebPAY, Debit Cards, and PayPal
+                </p>
               </div>
               <button
-                onClick={() => setShowFundModal(false)}
-                className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-sm"
+                onClick={() => {
+                  setShowFundModal(false);
+                  setPaymentConfirmationData(null);
+                }}
+                className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center font-bold text-sm cursor-pointer"
               >
                 ✕
               </button>
             </div>
 
-            {/* Bank details quick card */}
-            <div className="p-4 rounded-2xl bg-gradient-to-r from-slate-900 to-indigo-950 text-white font-mono text-xs space-y-3">
-              <div className="flex justify-between items-center text-amber-400">
-                <span className="font-bold">Alternative Bank</span>
-                <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
-                  CBN Supervised
-                </span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-slate-400 font-sans">Account Number:</span>
-                <div className="flex items-center gap-2">
-                  <span className="text-xl font-bold text-amber-300">0514108422</span>
-                  <button
-                    onClick={copyAccountNumber}
-                    className="p-1 bg-white/10 hover:bg-white/20 rounded text-amber-300"
-                    title="Copy Account Number"
-                  >
-                    <Copy className="w-3.5 h-3.5" />
-                  </button>
+            {/* SCREEN 1: POST-PAYMENT CFO VALIDATION CONFIRMATION */}
+            {paymentConfirmationData ? (
+              <div className="space-y-5 animate-in fade-in">
+                {/* Status Header Badge */}
+                <div className={`p-4 rounded-2xl border ${
+                  paymentConfirmationData.isApproved
+                    ? 'bg-emerald-50 border-emerald-500 text-emerald-950'
+                    : 'bg-amber-50 border-amber-500 text-amber-950'
+                } flex items-start gap-3`}>
+                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
+                    paymentConfirmationData.isApproved ? 'bg-emerald-500 text-white' : 'bg-amber-500 text-slate-950'
+                  }`}>
+                    {paymentConfirmationData.isApproved ? (
+                      <CheckCircle2 className="w-6 h-6" />
+                    ) : (
+                      <Clock className="w-6 h-6 animate-spin" />
+                    )}
+                  </div>
+                  <div>
+                    <span className="text-[10px] uppercase font-mono font-bold tracking-wider px-2 py-0.5 rounded-full bg-white/80 border border-slate-300 inline-block mb-1">
+                      {paymentConfirmationData.isApproved ? 'Status: Approved & Funded' : 'Status: Payment Confirmed — Awaiting CFO Validation'}
+                    </span>
+                    <h4 className="text-lg font-black text-slate-900">
+                      {paymentConfirmationData.isApproved
+                        ? 'CFO Validation Complete & Wallet Credited!'
+                        : 'Payment Confirmed — Queued for CFO Validation'}
+                    </h4>
+                    <p className="text-xs text-slate-800 font-medium mt-0.5">
+                      Destination Rail: Alternative Bank (Account: 0514108422)
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <div className="flex justify-between items-center text-[11px]">
-                <span className="text-slate-400 font-sans">Account Name:</span>
-                <span className="font-semibold text-white">FingerMobile Protocol Communication</span>
-              </div>
-            </div>
 
-            {/* Funding Form */}
-            <form onSubmit={handleSubmitTreasuryFunding} className="space-y-4 text-xs">
-              {/* Rate Tier Selector */}
-              <div>
-                <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-2">Pricing Tier & Vault Allocation</label>
-                <div className="grid grid-cols-2 gap-3">
-                  <button
+                {/* MANDATORY FIDUCIARY LAW CALLOUT */}
+                <div className="p-4 rounded-2xl bg-amber-50 border-2 border-amber-500 space-y-2">
+                  <div className="flex items-center gap-2 text-amber-950 font-black text-xs uppercase tracking-wider">
+                    <ShieldAlert className="w-4 h-4 text-amber-700" />
+                    Mandatory Protocol Governance Rule
+                  </div>
+                  <p className="text-xs text-slate-900 font-bold leading-relaxed">
+                    Until payment confirmation is received and validated by Executive CFO Mrs. Mbah Eunice Emonena, the FIC credit value is held in the Treasury Pipeline and is NOT credited to your wallet balance.
+                  </p>
+                  <p className="text-[11px] text-slate-800 font-medium">
+                    Your consideration of ₦{paymentConfirmationData.amountNGN.toLocaleString()} ({paymentConfirmationData.amountUSD ? `$${paymentConfirmationData.amountUSD} USD` : ''}) has been captured and mapped directly to Alternative Bank (0514108422).
+                  </p>
+                </div>
+
+                {/* Transaction Receipt Card */}
+                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-300 space-y-3 font-mono text-xs">
+                  <div className="flex justify-between items-center border-b border-slate-200 pb-2">
+                    <span className="text-slate-700 font-sans font-semibold">Request Reference:</span>
+                    <span className="font-bold text-indigo-700 text-sm">{paymentConfirmationData.reference}</span>
+                  </div>
+                  <div className="flex justify-between items-center border-b border-slate-200 pb-2">
+                    <span className="text-slate-700 font-sans font-semibold">Payment Rail:</span>
+                    <span className="font-bold text-slate-900">{paymentConfirmationData.channelName}</span>
+                  </div>
+                  <div className="flex justify-between items-center border-b border-slate-200 pb-2">
+                    <span className="text-slate-700 font-sans font-semibold">Settlement Bank:</span>
+                    <span className="font-bold text-slate-900">Alternative Bank (Acc: 0514108422)</span>
+                  </div>
+                  <div className="flex justify-between items-center border-b border-slate-200 pb-2">
+                    <span className="text-slate-700 font-sans font-semibold">Gateway Reference:</span>
+                    <span className="font-bold text-slate-900 break-all">{paymentConfirmationData.gatewayReference}</span>
+                  </div>
+                  <div className="flex justify-between items-center border-b border-slate-200 pb-2">
+                    <span className="text-slate-700 font-sans font-semibold">Pending Consideration:</span>
+                    <span className="font-bold text-slate-900">₦{paymentConfirmationData.amountNGN.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between items-center pt-1">
+                    <span className="text-slate-700 font-sans font-bold">FIC Value to Credit:</span>
+                    <span className="text-base font-black text-emerald-700">{paymentConfirmationData.amountFIC.toLocaleString()} FIC</span>
+                  </div>
+                </div>
+
+                {/* Modal Action Buttons */}
+                <div className="space-y-2 pt-2">
+                  {!paymentConfirmationData.isApproved ? (
+                    <Button
+                      type="button"
+                      disabled={isSubmitting}
+                      onClick={() => handleCfoFinalApproval(paymentConfirmationData.id)}
+                      className="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-black py-3 rounded-2xl shadow-md cursor-pointer flex items-center justify-center gap-2 text-sm"
+                    >
+                      <ShieldCheck className="w-4 h-4 text-slate-950" />
+                      {isSubmitting ? 'Validating...' : 'Simulate Live CFO Validation & Credit Wallet Now'}
+                    </Button>
+                  ) : null}
+
+                  <Button
                     type="button"
-                    onClick={() => handleRateTypeChange('treasury_seed')}
-                    className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer ${
-                      fundRateType === 'treasury_seed'
-                        ? 'bg-amber-50 border-2 border-amber-500 shadow-sm ring-1 ring-amber-400'
-                        : 'bg-white border-slate-300 hover:bg-slate-50'
-                    }`}
+                    variant="outline"
+                    onClick={() => {
+                      setShowFundModal(false);
+                      setPaymentConfirmationData(null);
+                      fetchWalletData();
+                      fetchTreasuryData();
+                    }}
+                    className="w-full border-slate-300 text-slate-900 font-bold py-2.5 rounded-2xl hover:bg-slate-100 cursor-pointer"
                   >
-                    <span className="font-black text-amber-950 block">Wallet 004 Seed Tier</span>
-                    <span className="text-amber-900 font-mono font-bold text-xs mt-0.5 block">₦65.00 / FIC ($0.05)</span>
-                    <span className="text-[10px] text-slate-700 font-semibold block mt-1">Depleted 1st</span>
-                  </button>
+                    Close & View in Treasury Tracker
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              /* SCREEN 2: INITIAL PAYMENT SUBMISSION FORM */
+              <form onSubmit={handleSubmitTreasuryFunding} className="space-y-4 text-xs">
+                {/* Bank details quick card */}
+                <div className="p-4 rounded-2xl bg-gradient-to-r from-slate-900 to-indigo-950 text-white font-mono text-xs space-y-2.5">
+                  <div className="flex justify-between items-center text-amber-400">
+                    <span className="font-bold flex items-center gap-1.5">
+                      <Building2 className="w-4 h-4 text-amber-400" />
+                      Alternative Bank Direct Settlement
+                    </span>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
+                      CBN Supervised
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-300 font-sans">Treasury Account Number:</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xl font-bold text-amber-300">0514108422</span>
+                      <button
+                        type="button"
+                        onClick={copyAccountNumber}
+                        className="p-1 bg-white/10 hover:bg-white/20 rounded text-amber-300 cursor-pointer"
+                        title="Copy Account Number"
+                      >
+                        <Copy className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center text-[11px]">
+                    <span className="text-slate-300 font-sans">Corporate Beneficiary:</span>
+                    <span className="font-semibold text-white">FingerMobile Protocol Communication</span>
+                  </div>
+                </div>
 
-                  <button
+                {/* PAYMENT CHANNEL SELECTOR */}
+                <div>
+                  <label className="block text-xs font-bold text-slate-900 uppercase tracking-wider mb-2">
+                    Select Payment Rail to Alternative Bank (0514108422)
+                  </label>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                    {PAYMENT_CHANNELS_LIST.map((channel) => {
+                      const isSelected = selectedChannel === channel.id;
+                      return (
+                        <button
+                          key={channel.id}
+                          type="button"
+                          onClick={() => setSelectedChannel(channel.id)}
+                          className={`p-3 rounded-2xl border text-left transition-all cursor-pointer ${
+                            isSelected
+                              ? 'bg-amber-50 border-2 border-amber-500 shadow-sm ring-1 ring-amber-400'
+                              : 'bg-white border-slate-300 hover:bg-slate-50'
+                          }`}
+                        >
+                          <div className="flex items-center justify-between mb-1">
+                            <span className="font-black text-slate-900 text-xs block">{channel.title}</span>
+                            {channel.id === 'interswitch' && <Zap className="w-3.5 h-3.5 text-indigo-600" />}
+                            {channel.id === 'debit_card' && <CreditCard className="w-3.5 h-3.5 text-blue-600" />}
+                            {channel.id === 'paypal' && <Globe className="w-3.5 h-3.5 text-sky-600" />}
+                            {channel.id === 'ussd_qr' && <QrCode className="w-3.5 h-3.5 text-purple-600" />}
+                            {channel.id === 'alternative_bank_transfer' && <Building2 className="w-3.5 h-3.5 text-amber-600" />}
+                          </div>
+                          <span className="text-[10px] text-slate-700 font-semibold block">{channel.badge}</span>
+                          <span className="text-[10px] text-emerald-800 font-bold block mt-1">
+                            Settles to Acc 0514108422
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Rate Tier Selector */}
+                <div>
+                  <label className="block text-xs font-bold text-slate-900 uppercase tracking-wider mb-2">
+                    Pricing Tier & Vault Allocation
+                  </label>
+                  <div className="grid grid-cols-2 gap-3">
+                    <button
+                      type="button"
+                      onClick={() => handleRateTypeChange('treasury_seed')}
+                      className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer ${
+                        fundRateType === 'treasury_seed'
+                          ? 'bg-amber-50 border-2 border-amber-500 shadow-sm ring-1 ring-amber-400'
+                          : 'bg-white border-slate-300 hover:bg-slate-50'
+                      }`}
+                    >
+                      <span className="font-black text-amber-950 block">Wallet 004 Seed Tier</span>
+                      <span className="text-amber-950 font-mono font-bold text-xs mt-0.5 block">₦65.00 / FIC ($0.05)</span>
+                      <span className="text-[10px] text-slate-700 font-semibold block mt-1">Depleted 1st</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => handleRateTypeChange('standard')}
+                      className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer ${
+                        fundRateType === 'standard'
+                          ? 'bg-indigo-50 border-2 border-indigo-600 shadow-sm ring-1 ring-indigo-400'
+                          : 'bg-white border-slate-300 hover:bg-slate-50'
+                      }`}
+                    >
+                      <span className="font-black text-indigo-950 block">Standard Protocol Rate</span>
+                      <span className="text-indigo-950 font-mono font-bold text-xs mt-0.5 block">₦650.00 / FIC ($0.50)</span>
+                      <span className="text-[10px] text-slate-700 font-semibold block mt-1">Official Anchor</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Amount Inputs */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-bold text-slate-900 uppercase tracking-wider mb-1.5">Quantity in FIC</label>
+                    <input
+                      type="number"
+                      min="1"
+                      step="any"
+                      value={fundAmountFic}
+                      onChange={(e) => handleFicAmountChange(e.target.value)}
+                      placeholder="e.g. 500"
+                      className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl font-bold font-mono text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-xs placeholder:text-slate-400"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-900 uppercase tracking-wider mb-1.5">
+                      Amount to Pay ({selectedChannel === 'paypal' ? 'USD Equivalent' : 'NGN'})
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="number"
+                        min="1"
+                        step="any"
+                        value={fundAmountNgn}
+                        onChange={(e) => handleNgnAmountChange(e.target.value)}
+                        placeholder="e.g. 32500"
+                        className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl font-bold font-mono text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-xs placeholder:text-slate-400"
+                        required
+                      />
+                      {selectedChannel === 'paypal' && (
+                        <span className="absolute right-3 top-2.5 font-mono font-bold text-slate-700 text-xs">
+                          ≈ ${(parseFloat(fundAmountFic || '0') * (fundRateType === 'treasury_seed' ? 0.05 : 0.50)).toFixed(2)} USD
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* CHANNEL-SPECIFIC FIELDS */}
+                {selectedChannel === 'alternative_bank_transfer' && (
+                  <div className="space-y-3 p-3.5 rounded-2xl bg-slate-50 border border-slate-300">
+                    <span className="text-[11px] font-bold text-slate-900 uppercase tracking-wider block">
+                      Alternative Bank Direct Transfer Details
+                    </span>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-xs font-bold text-slate-900 mb-1">Depositor Full Name</label>
+                        <input
+                          type="text"
+                          value={depositorName}
+                          onChange={(e) => setDepositorName(e.target.value)}
+                          placeholder="Name on bank transfer receipt"
+                          className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 font-bold focus:ring-2 focus:ring-indigo-500"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-slate-900 mb-1">Sending Bank</label>
+                        <select
+                          value={depositorBank}
+                          onChange={(e) => setDepositorBank(e.target.value)}
+                          className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 font-bold focus:ring-2 focus:ring-indigo-500"
+                        >
+                          {NIGERIAN_BANKS.map((b) => (
+                            <option key={b} value={b}>{b}</option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-slate-900 mb-1">Bank Reference / NIP Session ID</label>
+                      <input
+                        type="text"
+                        value={bankTxRef}
+                        onChange={(e) => setBankTxRef(e.target.value)}
+                        placeholder="e.g. NIP/20261017/991823"
+                        className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 font-mono font-bold focus:ring-2 focus:ring-indigo-500"
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {selectedChannel === 'interswitch' && (
+                  <div className="space-y-3 p-3.5 rounded-2xl bg-indigo-50/60 border border-indigo-200">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-bold text-indigo-950 uppercase tracking-wider block flex items-center gap-1.5">
+                        <Zap className="w-3.5 h-3.5 text-indigo-600" />
+                        Interswitch WebPAY Gateway Details
+                      </span>
+                      <span className="text-[10px] font-mono text-indigo-900 font-bold">Alternative Bank 0514108422 Rail</span>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-xs font-bold text-slate-900 mb-1">Payer Full Name</label>
+                        <input
+                          type="text"
+                          value={depositorName}
+                          onChange={(e) => setDepositorName(e.target.value)}
+                          placeholder="Your full name"
+                          className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 font-bold focus:ring-2 focus:ring-indigo-500"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-slate-900 mb-1">Interswitch Phone (OTP)</label>
+                        <input
+                          type="text"
+                          value={interswitchPhone}
+                          onChange={(e) => setInterswitchPhone(e.target.value)}
+                          placeholder="08031234567"
+                          className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 font-mono font-bold focus:ring-2 focus:ring-indigo-500"
+                          required
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {selectedChannel === 'debit_card' && (
+                  <div className="space-y-3 p-3.5 rounded-2xl bg-blue-50/60 border border-blue-200">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-bold text-blue-950 uppercase tracking-wider block flex items-center gap-1.5">
+                        <CreditCard className="w-3.5 h-3.5 text-blue-600" />
+                        Debit Card (Mastercard / Visa / Verve)
+                      </span>
+                      <span className="text-[10px] font-mono text-blue-900 font-bold">Direct Alternative Bank Acquiring</span>
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-slate-900 mb-1">Cardholder Name</label>
+                      <input
+                        type="text"
+                        value={cardholderName}
+                        onChange={(e) => setCardholderName(e.target.value)}
+                        placeholder="John Doe"
+                        className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 font-bold focus:ring-2 focus:ring-blue-500"
+                        required
+                      />
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      <div className="sm:col-span-2">
+                        <label className="block text-xs font-bold text-slate-900 mb-1">Card Number</label>
+                        <input
+                          type="text"
+                          value={cardNumber}
+                          onChange={(e) => setCardNumber(e.target.value)}
+                          placeholder="5399 •••• •••• ••••"
+                          className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 font-mono font-bold focus:ring-2 focus:ring-blue-500"
+                          required
+                        />
+                      </div>
+                      <div className="grid grid-cols-2 gap-2">
+                        <div>
+                          <label className="block text-xs font-bold text-slate-900 mb-1">Exp (MM/YY)</label>
+                          <input
+                            type="text"
+                            value={cardExpiry}
+                            onChange={(e) => setCardExpiry(e.target.value)}
+                            placeholder="12/28"
+                            className="w-full px-2 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 font-mono font-bold focus:ring-2 focus:ring-blue-500 text-center"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold text-slate-900 mb-1">CVV</label>
+                          <input
+                            type="password"
+                            maxLength={3}
+                            value={cardCvv}
+                            onChange={(e) => setCardCvv(e.target.value)}
+                            placeholder="•••"
+                            className="w-full px-2 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 font-mono font-bold focus:ring-2 focus:ring-blue-500 text-center"
+                            required
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {selectedChannel === 'paypal' && (
+                  <div className="space-y-3 p-3.5 rounded-2xl bg-sky-50/60 border border-sky-200">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-bold text-sky-950 uppercase tracking-wider block flex items-center gap-1.5">
+                        <Globe className="w-3.5 h-3.5 text-sky-600" />
+                        PayPal International USD Settlement
+                      </span>
+                      <span className="text-[10px] font-mono text-sky-900 font-bold">Alternative Bank FX Corridor</span>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-xs font-bold text-slate-900 mb-1">PayPal Account Email</label>
+                        <input
+                          type="email"
+                          value={paypalEmail}
+                          onChange={(e) => setPaypalEmail(e.target.value)}
+                          placeholder="member@paypal.com"
+                          className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 font-mono font-bold focus:ring-2 focus:ring-sky-500"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-slate-900 mb-1">USD Settlement Consideration</label>
+                        <div className="p-2 bg-white border border-slate-300 rounded-xl text-slate-900 font-mono font-black text-sm">
+                          ${(parseFloat(fundAmountFic || '0') * (fundRateType === 'treasury_seed' ? 0.05 : 0.50)).toFixed(2)} USD
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {selectedChannel === 'ussd_qr' && (
+                  <div className="space-y-3 p-3.5 rounded-2xl bg-purple-50/60 border border-purple-200">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-bold text-purple-950 uppercase tracking-wider block flex items-center gap-1.5">
+                        <QrCode className="w-3.5 h-3.5 text-purple-600" />
+                        USSD & Alternative Bank Dynamic QR
+                      </span>
+                      <span className="text-[10px] font-mono text-purple-900 font-bold">Instant Mobile Dial</span>
+                    </div>
+                    <div className="p-3 bg-white rounded-xl border border-purple-300 flex items-center justify-between">
+                      <div>
+                        <span className="text-[10px] text-slate-700 font-semibold block">Dial on your phone:</span>
+                        <span className="text-base font-mono font-black text-purple-900">
+                          *999*0514108422*{fundAmountNgn}#
+                        </span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          navigator.clipboard.writeText(`*999*0514108422*${fundAmountNgn}#`);
+                          toast({ title: 'USSD String Copied' });
+                        }}
+                        className="p-1.5 bg-purple-100 hover:bg-purple-200 rounded-lg text-purple-900 cursor-pointer"
+                      >
+                        <Copy className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Recipient Email & Memo */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-bold text-slate-900 uppercase tracking-wider mb-1.5">
+                      Recipient Email (Official PDF Receipt)
+                    </label>
+                    <input
+                      type="email"
+                      value={receiptEmail}
+                      onChange={(e) => setReceiptEmail(e.target.value)}
+                      placeholder="Where official PDF receipt will be sent"
+                      className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 font-mono font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-xs placeholder:text-slate-400"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-900 uppercase tracking-wider mb-1.5">
+                      Notes / Deposit Memo
+                    </label>
+                    <input
+                      type="text"
+                      value={proofNotes}
+                      onChange={(e) => setProofNotes(e.target.value)}
+                      placeholder="e.g. Alternative Bank Sovereign Rail Direct Transfer"
+                      className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-xs placeholder:text-slate-400"
+                    />
+                  </div>
+                </div>
+
+                {/* CRITICAL MANDATORY CFO VALIDATION GOVERNANCE RULE CALLOUT */}
+                <div className="p-4 rounded-2xl bg-amber-50 border-2 border-amber-500 text-xs text-slate-900 space-y-1.5">
+                  <div className="flex items-center gap-2 font-black text-amber-950 uppercase tracking-wider">
+                    <ShieldAlert className="w-4 h-4 text-amber-700" />
+                    Mandatory Protocol Governance & CFO Validation Rule
+                  </div>
+                  <p className="font-bold leading-relaxed">
+                    Under FingerMobile Protocol sovereign financial rules, members can pay directly to Alternative Bank (0514108422) using Interswitch, Debit Cards, PayPal, USSD, or Bank Transfer.
+                  </p>
+                  <p className="text-slate-800 font-semibold leading-relaxed">
+                    However, until payment confirmation is received and validated by Executive CFO Mrs. Mbah Eunice Emonena, the FIC credit value is NOT released to your wallet. Once validated by the CFO, the FIC value is automatically credited from Central FIC Wallet 004 and your official PDF receipt is dispatched.
+                  </p>
+                </div>
+
+                {/* Submit & Cancel Buttons */}
+                <div className="flex gap-3 pt-3">
+                  <Button
                     type="button"
-                    onClick={() => handleRateTypeChange('standard')}
-                    className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer ${
-                      fundRateType === 'standard'
-                        ? 'bg-indigo-50 border-2 border-indigo-600 shadow-sm ring-1 ring-indigo-400'
-                        : 'bg-white border-slate-300 hover:bg-slate-50'
-                    }`}
+                    variant="outline"
+                    className="flex-1 rounded-2xl border-slate-300 text-slate-800 font-bold hover:bg-slate-50 cursor-pointer"
+                    onClick={() => {
+                      setShowFundModal(false);
+                      setPaymentConfirmationData(null);
+                    }}
                   >
-                    <span className="font-black text-indigo-950 block">Standard Protocol Rate</span>
-                    <span className="text-indigo-900 font-mono font-bold text-xs mt-0.5 block">₦650.00 / FIC ($0.50)</span>
-                    <span className="text-[10px] text-slate-700 font-semibold block mt-1">Official Anchor</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* Amount Inputs */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1.5">Quantity in FIC</label>
-                  <input
-                    type="number"
-                    min="1"
-                    step="any"
-                    value={fundAmountFic}
-                    onChange={(e) => handleFicAmountChange(e.target.value)}
-                    placeholder="e.g. 500"
-                    className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl font-bold font-mono text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-xs placeholder:text-slate-400"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1.5">Amount to Pay (NGN)</label>
-                  <input
-                    type="number"
-                    min="1"
-                    step="any"
-                    value={fundAmountNgn}
-                    onChange={(e) => handleNgnAmountChange(e.target.value)}
-                    placeholder="e.g. 32500"
-                    className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl font-bold font-mono text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-xs placeholder:text-slate-400"
-                    required
-                  />
-                </div>
-              </div>
-
-              {/* Depositor Info */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1.5">Depositor Full Name</label>
-                  <input
-                    type="text"
-                    value={depositorName}
-                    onChange={(e) => setDepositorName(e.target.value)}
-                    placeholder="As shown on your bank receipt"
-                    className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-xs placeholder:text-slate-400"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1.5">Depositor Bank</label>
-                  <select
-                    value={depositorBank}
-                    onChange={(e) => setDepositorBank(e.target.value)}
-                    className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 font-bold shadow-xs"
+                    Cancel
+                  </Button>
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-950 font-black rounded-2xl shadow-sm cursor-pointer py-2.5"
                   >
-                    {NIGERIAN_BANKS.map((b) => (
-                      <option key={b} value={b}>{b}</option>
-                    ))}
-                  </select>
+                    {isSubmitting
+                      ? 'Confirming with Gateway...'
+                      : `Pay via ${PAYMENT_CHANNELS_LIST.find((c) => c.id === selectedChannel)?.title || 'Alternative Bank'}`}
+                  </Button>
                 </div>
-              </div>
-
-              {/* Transaction Reference & Email */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1.5">Bank Reference / Teller No.</label>
-                  <input
-                    type="text"
-                    value={bankTxRef}
-                    onChange={(e) => setBankTxRef(e.target.value)}
-                    placeholder="e.g. ALT/20261014/99120"
-                    className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 font-mono font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-xs placeholder:text-slate-400"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1.5">Recipient Email (PDF Delivery)</label>
-                  <input
-                    type="email"
-                    value={receiptEmail}
-                    onChange={(e) => setReceiptEmail(e.target.value)}
-                    placeholder="Where receipt will be sent"
-                    className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 font-mono font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-xs placeholder:text-slate-400"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1.5">Notes / Deposit Memo</label>
-                <input
-                  type="text"
-                  value={proofNotes}
-                  onChange={(e) => setProofNotes(e.target.value)}
-                  placeholder="e.g. Alternative Bank Sovereign Rail Direct Transfer"
-                  className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-xs placeholder:text-slate-400"
-                />
-              </div>
-
-              <div className="p-3.5 rounded-2xl bg-slate-100 border border-slate-300 text-xs text-slate-700 font-medium leading-relaxed">
-                Payment will be confirmed at MasterDashboard Accounts by Treasury Staff (Staff 1-7),
-                finally approved by Executive CFO Mrs. Mbah Eunice Emonena, deducted from Wallet 004,
-                and an official PDF receipt will be dispatched to your email.
-              </div>
-
-              <div className="flex gap-3 pt-3">
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="flex-1 rounded-2xl border-slate-300 text-slate-800 font-bold hover:bg-slate-50 cursor-pointer"
-                  onClick={() => setShowFundModal(false)}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-950 font-black rounded-2xl shadow-sm cursor-pointer"
-                >
-                  {isSubmitting ? 'Registering...' : 'Submit Deposit Proof'}
-                </Button>
-              </div>
-            </form>
+              </form>
+            )}
           </div>
         </div>
       )}
