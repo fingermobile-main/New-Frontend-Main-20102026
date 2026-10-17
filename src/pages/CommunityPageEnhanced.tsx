@@ -204,7 +204,7 @@ const CommunityPageEnhanced: React.FC = () => {
                           <h3 className="font-bold sm:text-lg lg:text-xl">
                             {getAuthorName(post.author)}
                           </h3>
-                          <span className="text-gray-500 text-sm sm:text-base lg:text-lg ml-2">
+                          <span className="text-slate-700 text-sm sm:text-base lg:text-lg ml-2">
                             {post.timestamp || post.createdAt ? new Date(post.timestamp || post.createdAt).toLocaleDateString() : 'Unknown date'}
                           </span>
                         </div>
@@ -223,7 +223,7 @@ const CommunityPageEnhanced: React.FC = () => {
                             ))}
                           </div>
                         )}
-                        <div className="flex items-center mt-4 text-gray-500 sm:text-base lg:text-lg">
+                        <div className="flex items-center mt-4 text-slate-700 sm:text-base lg:text-lg">
                           <button className="flex items-center mr-4" aria-label="Button"><svg
                             xmlns="http://www.w3.org/2000/svg"
                             className="h-5 w-5 mr-1"
@@ -308,7 +308,7 @@ const CommunityPageEnhanced: React.FC = () => {
                           <h3 className="font-bold sm:text-lg lg:text-xl">
                             {group.name}
                           </h3>
-                          <p className="text-sm text-gray-500 sm:text-base lg:text-lg">
+                          <p className="text-sm text-slate-700 sm:text-base lg:text-lg">
                             {group.memberCount} members
                           </p>
                         </div>

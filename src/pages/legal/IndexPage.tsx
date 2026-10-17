@@ -166,12 +166,12 @@ const LegalIndexPage: React.FC = () => {
               <div>
                 <p className="font-semibold text-gray-900 text-sm">Data Protection Officer</p>
                 <p className="text-gray-600 text-sm mt-1">info@fingermobileprotocol.com</p>
-                <p className="text-xs text-gray-500 mt-0.5">NDPA 2023 Statutory Officer</p>
+                <p className="text-xs text-slate-700 mt-0.5">NDPA 2023 Statutory Officer</p>
               </div>
               <div>
                 <p className="font-semibold text-gray-900 text-sm">DMCA &amp; Legal Notice</p>
                 <p className="text-gray-600 text-sm mt-1">fingermobileprotocol@gmail.com</p>
-                <p className="text-xs text-gray-500 mt-0.5">Statutory 48h Response Desk</p>
+                <p className="text-xs text-slate-700 mt-0.5">Statutory 48h Response Desk</p>
               </div>
               <div>
                 <p className="font-semibold text-gray-900 text-sm">Registered Headquarters</p>

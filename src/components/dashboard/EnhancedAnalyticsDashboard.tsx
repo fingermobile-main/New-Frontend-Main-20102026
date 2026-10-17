@@ -115,13 +115,13 @@ const EnhancedAnalyticsDashboard: React.FC<EnhancedAnalyticsDashboardProps> = ({
                 </div>
                 <div className="text-right w-32">
                   <p className="text-sm font-semibold text-gray-900">{item.retention_rate}%</p>
-                  <p className="text-xs text-gray-500">{item.active_users} active</p>
+                  <p className="text-xs text-slate-700">{item.active_users} active</p>
                 </div>
               </div>
             ))}
           </div>
         ) : (
-          <p className="text-gray-500 text-center py-8">No retention data available</p>
+          <p className="text-slate-700 text-center py-8">No retention data available</p>
         )}
       </div>
 
@@ -133,12 +133,12 @@ const EnhancedAnalyticsDashboard: React.FC<EnhancedAnalyticsDashboardProps> = ({
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cohort</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Size</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Week 1</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Week 2</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Week 3</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Week 4</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Cohort</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Size</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Week 1</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Week 2</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Week 3</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Week 4</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -163,7 +163,7 @@ const EnhancedAnalyticsDashboard: React.FC<EnhancedAnalyticsDashboardProps> = ({
             </table>
           </div>
         ) : (
-          <p className="text-gray-500 text-center py-8">No cohort data available</p>
+          <p className="text-slate-700 text-center py-8">No cohort data available</p>
         )}
       </div>
 
@@ -177,25 +177,25 @@ const EnhancedAnalyticsDashboard: React.FC<EnhancedAnalyticsDashboardProps> = ({
               <p className="text-2xl font-bold text-red-600">
                 {dashboardData.churn.data[0].churned_count} users
               </p>
-              <p className="text-xs text-gray-500 mt-1">Last week</p>
+              <p className="text-xs text-slate-700 mt-1">Last week</p>
             </div>
             <div className="p-4 bg-orange-50 rounded-lg">
               <p className="text-sm text-gray-600 mb-1">Avg Inactivity</p>
               <p className="text-2xl font-bold text-orange-600">
                 {dashboardData.churn.data[0].avg_days_inactive} days
               </p>
-              <p className="text-xs text-gray-500 mt-1">Before churning</p>
+              <p className="text-xs text-slate-700 mt-1">Before churning</p>
             </div>
             <div className="p-4 bg-yellow-50 rounded-lg">
               <p className="text-sm text-gray-600 mb-1">Early Churn</p>
               <p className="text-2xl font-bold text-yellow-600">
                 {dashboardData.churn.data[0].early_churn} users
               </p>
-              <p className="text-xs text-gray-500 mt-1">&lt; 7 days after signup</p>
+              <p className="text-xs text-slate-700 mt-1">&lt; 7 days after signup</p>
             </div>
           </div>
         ) : (
-          <p className="text-gray-500 text-center py-8">No churn data available</p>
+          <p className="text-slate-700 text-center py-8">No churn data available</p>
         )}
       </div>
     </div>

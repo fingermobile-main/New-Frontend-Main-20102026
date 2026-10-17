@@ -185,7 +185,7 @@ const RegisterPage = () => {
             <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">
               FingerMobile<span className="text-[#ff6b00]">™</span>
             </h1>
-            <p className="text-sm font-semibold tracking-normal text-gray-500 dark:text-gray-400 mt-1">
+            <p className="text-sm font-semibold tracking-normal text-slate-700 dark:text-gray-400 mt-1">
               Create your Sovereign Account
             </p>
           </div>
@@ -350,9 +350,9 @@ const RegisterPage = () => {
                   className="absolute inset-y-0 right-0 pr-3 flex items-center"
                 >
                   {showPassword ? (
-                    <EyeOff className="h-5 w-5 text-slate-700 hover:text-gray-500" />
+                    <EyeOff className="h-5 w-5 text-slate-700 hover:text-slate-700" />
                   ) : (
-                    <Eye className="h-5 w-5 text-slate-700 hover:text-gray-500" />
+                    <Eye className="h-5 w-5 text-slate-700 hover:text-slate-700" />
                   )}
                 </button>
               </div>
@@ -391,9 +391,9 @@ const RegisterPage = () => {
                   className="absolute inset-y-0 right-0 pr-3 flex items-center"
                 >
                   {showConfirmPassword ? (
-                    <EyeOff className="h-5 w-5 text-slate-700 hover:text-gray-500" />
+                    <EyeOff className="h-5 w-5 text-slate-700 hover:text-slate-700" />
                   ) : (
-                    <Eye className="h-5 w-5 text-slate-700 hover:text-gray-500" />
+                    <Eye className="h-5 w-5 text-slate-700 hover:text-slate-700" />
                   )}
                 </button>
               </div>

@@ -69,7 +69,7 @@ export default function CensorshipSelector({ options, onChange }: CensorshipSele
           <div className="p-4">
 
             <div className="mb-4">
-              <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Content Warnings & Tags</h3>
+              <h3 className="text-xs font-semibold text-slate-900 uppercase tracking-wider mb-2">Content Warnings & Tags</h3>
               <div className="flex flex-wrap gap-2">
                 {AVAILABLE_TAGS.map(tag => (
                   <button
@@ -88,7 +88,7 @@ export default function CensorshipSelector({ options, onChange }: CensorshipSele
             </div>
 
             <div className="mb-4">
-              <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Visual Effect</h3>
+              <h3 className="text-xs font-semibold text-slate-900 uppercase tracking-wider mb-2">Visual Effect</h3>
               <div className="space-y-2">
                 {[
                   { value: 'NONE', label: 'No Effect' },
@@ -111,7 +111,7 @@ export default function CensorshipSelector({ options, onChange }: CensorshipSele
             </div>
 
             <div>
-              <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Interaction Rule</h3>
+              <h3 className="text-xs font-semibold text-slate-900 uppercase tracking-wider mb-2">Interaction Rule</h3>
               <div className="space-y-2">
                 {[
                   { value: 'NONE', label: 'Open / Unrestricted' },

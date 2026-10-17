@@ -87,7 +87,7 @@ const AICourseBuilder: React.FC<AICourseBuilderProps> = ({ onBuild }) => {
           )}
         </button>
 
-        <p className="text-xs text-gray-500 text-center">
+        <p className="text-xs text-slate-700 text-center">
           AI will generate a complete course structure with modules and lessons
         </p>
       </div>

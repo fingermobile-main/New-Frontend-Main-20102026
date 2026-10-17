@@ -65,7 +65,7 @@ const ProfileAnalyticsDashboard: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
           <div>
             <h2 className="text-xl font-bold text-gray-900">Profile Analytics</h2>
-            <p className="mt-1 text-sm text-gray-500">Track your engagement and performance metrics</p>
+            <p className="mt-1 text-sm text-slate-700">Track your engagement and performance metrics</p>
           </div>
           <div className="mt-4 sm:mt-0">
             <select
@@ -135,7 +135,7 @@ const ProfileAnalyticsDashboard: React.FC = () => {
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-medium text-gray-900">Engagement Over Time</h3>
-            <div className="flex items-center text-sm text-gray-500">
+            <div className="flex items-center text-sm text-slate-700">
               <div className="flex items-center mr-4">
                 <div className="w-3 h-3 bg-blue-500 rounded-full mr-1"></div>
                 <span>Profile Views</span>
@@ -162,7 +162,7 @@ const ProfileAnalyticsDashboard: React.FC = () => {
                       title={`Likes: ${day.likes}`}
                     ></div>
                   </div>
-                  <span className="text-xs text-gray-500 mt-2">{day.day}</span>
+                  <span className="text-xs text-slate-700 mt-2">{day.day}</span>
                 </div>
               ))}
             </div>
@@ -246,7 +246,7 @@ const ProfileAnalyticsDashboard: React.FC = () => {
                       title={`Matches: ${day.matches}`}
                     ></div>
                   </div>
-                  <span className="text-xs text-gray-500 mt-2">{day.day}</span>
+                  <span className="text-xs text-slate-700 mt-2">{day.day}</span>
                 </div>
               ))}
             </div>

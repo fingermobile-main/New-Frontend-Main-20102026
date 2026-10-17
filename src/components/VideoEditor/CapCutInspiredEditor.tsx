@@ -98,7 +98,7 @@ const CapCutInspiredEditor: React.FC<CapCutInspiredEditorProps> = ({
               defaultValue="1"
               className="w-full text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
             />
-            <div className="flex justify-between text-xs text-gray-500 mt-1">
+            <div className="flex justify-between text-xs text-slate-700 mt-1">
               <span>0.25x</span>
               <span>1x</span>
               <span>2x</span>

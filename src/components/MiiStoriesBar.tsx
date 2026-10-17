@@ -197,7 +197,7 @@ export const MiiStoriesBar: React.FC<MiiStoriesBarProps> = ({
 
             {/* ShowCase Activity Pill */}
             {activeStory.now_listening && (
-              <div className="bg-white/10 backdrop-blur-md rounded-xl p-2.5 text-white text-xs flex items-center justify-between mb-2">
+              <div className="bg-white/10 backdrop-blur-md rounded-xl p-2.5 text-slate-700 text-xs flex items-center justify-between mb-2">
                 <div className="flex items-center space-x-2 truncate">
                   <Music className="w-4 h-4 text-orange-400 flex-shrink-0 animate-bounce" />
                   <span className="truncate">Now Playing: <b>{activeStory.now_listening.title}</b> ({activeStory.now_listening.source})</span>

@@ -253,7 +253,7 @@ const MiiPage: React.FC = () => {
 
                 {/* Pulsating Ring Indicator Legend */}
                 <div className="bg-white dark:bg-gray-900 border border-slate-300 dark:border-gray-800 rounded-3xl p-6 shadow-sm space-y-3">
-                  <h4 className="font-bold text-xs uppercase tracking-wider text-gray-500">Contact Ring State</h4>
+                  <h4 className="font-bold text-xs uppercase tracking-wider text-slate-900">Contact Ring State</h4>
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-emerald-500 via-teal-400 to-indigo-500 p-0.5 animate-pulse">
                       <div className="w-full h-full bg-white dark:bg-gray-900 rounded-full flex items-center justify-center text-xs font-bold">
@@ -274,7 +274,7 @@ const MiiPage: React.FC = () => {
                   <div className="flex items-center justify-between mb-4">
                     <div>
                       <h3 className="font-bold text-lg text-gray-900 dark:text-white">Active Followers Feed</h3>
-                      <p className="text-xs text-gray-500">Visible for 48 hours to authorized followers only</p>
+                      <p className="text-xs text-slate-700">Visible for 48 hours to authorized followers only</p>
                     </div>
                     <button
                       onClick={() => setShowCreateModal(true)}
@@ -305,7 +305,7 @@ const MiiPage: React.FC = () => {
                             </span>
                           </div>
                           <h4 className="font-bold text-sm text-gray-900 dark:text-white">{story.title}</h4>
-                          <p className="text-xs text-gray-500 mt-1">{story.type} • by {story.author}</p>
+                          <p className="text-xs text-slate-700 mt-1">{story.type} • by {story.author}</p>
                         </div>
 
                         <div className="mt-4 pt-3 border-t border-slate-300 dark:border-gray-700 flex items-center justify-between">
@@ -320,7 +320,7 @@ const MiiPage: React.FC = () => {
                               setActiveTab('chats');
                               showToast(`Replying to ${story.author}'s story in chat`, 'info');
                             }}
-                            className="text-xs text-gray-500 hover:text-gray-900 dark:hover:text-white"
+                            className="text-xs text-slate-700 hover:text-gray-900 dark:hover:text-white"
                           >
                           Reply in Chat
                           </button>
@@ -343,7 +343,7 @@ const MiiPage: React.FC = () => {
                       <Lock className="w-5 h-5 text-emerald-600" />
                     Mobile Phone Contact Sync & 6–8 Digit PIN Exchange
                     </h3>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-slate-700">
                     Mandatory protocol: Mutual PIN verification required to unlock Mii Moments, ShowCase, and downloads.
                     </p>
                   </div>
@@ -377,7 +377,7 @@ const MiiPage: React.FC = () => {
                       <Folder className="w-5 h-5 text-blue-600" />
                     FingerOrbit™ Two-Folder Platform
                     </h3>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-slate-700">
                     Folder 1 (Video UGC) & Folder 2 (Image UGC) with Tokenized Downloads strictly requiring PIN exchange.
                     </p>
                   </div>
@@ -413,7 +413,7 @@ const MiiPage: React.FC = () => {
                       <ShoppingBag className="w-5 h-5 text-purple-600" />
                     Mii™ MiniStore: Strictly Two (2) Page Catalogue
                     </h3>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-slate-700">
                     Seamlessly purchase creator merchandise and digital assets using FIC (Finger Coin) or Gems (💎).
                     </p>
                   </div>

@@ -30,7 +30,7 @@ const EnhancedForum: React.FC<EnhancedForumProps> = ({ categoryId }) => {
         {threads.map((thread) => (
           <div key={thread.id} className="p-4 hover:bg-gray-50 transition-colors cursor-pointer">
             <h4 className="font-medium text-gray-900 mb-2 hover:text-blue-600 transition-colors">{thread.title}</h4>
-            <div className="flex items-center justify-between text-sm text-gray-500">
+            <div className="flex items-center justify-between text-sm text-slate-700">
               <div className="flex items-center gap-3">
                 <span className="font-medium text-gray-700">{thread.author}</span>
                 <span>{thread.created}</span>

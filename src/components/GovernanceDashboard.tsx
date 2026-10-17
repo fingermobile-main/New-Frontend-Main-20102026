@@ -72,8 +72,8 @@ const GovernanceDashboard: React.FC = () => {
           <div key={i} className="bg-white/5 border border-white/5 p-4 rounded-2xl flex items-center space-x-4">
             <div className={`p-2 bg-white/5 rounded-lg ${stat.color}`}>{stat.icon}</div>
             <div>
-              <p className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">{stat.label}</p>
-              <p className="text-lg font-black text-white">{stat.value}</p>
+              <p className="text-[10px] font-bold text-slate-700 uppercase tracking-wider">{stat.label}</p>
+              <p className="text-lg font-black text-slate-700">{stat.value}</p>
             </div>
           </div>
         ))}

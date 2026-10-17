@@ -82,7 +82,7 @@ const LiveChat: React.FC<LiveChatProps> = ({
         <div className="flex items-center gap-2">
           <span className="text-white text-xl">💬</span>
           <h3 className="font-semibold text-white">Live Chat</h3>
-          <span className="px-2 py-1 bg-white bg-opacity-20 rounded-full text-xs text-white">
+          <span className="px-2 py-1 bg-white bg-opacity-20 rounded-full text-xs text-slate-700">
             {messages.length} online
           </span>
         </div>
@@ -100,7 +100,7 @@ const LiveChat: React.FC<LiveChatProps> = ({
         {messages.map((msg) => (
           <div key={msg.id} className="flex gap-2 animate-fade-in">
             <div
-              className="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0"
+              className="w-8 h-8 rounded-full flex items-center justify-center text-slate-700 font-bold text-sm flex-shrink-0"
               style={{ backgroundColor: msg.color }}
             >
               {msg.user.charAt(0)}
@@ -110,7 +110,7 @@ const LiveChat: React.FC<LiveChatProps> = ({
                 <span className="font-semibold text-sm" style={{ color: msg.color }}>
                   {msg.user}
                 </span>
-                <span className="text-xs text-gray-500">{formatTime(msg.timestamp)}</span>
+                <span className="text-xs text-slate-700">{formatTime(msg.timestamp)}</span>
               </div>
               <p className="text-sm text-gray-900 break-words">{msg.text}</p>
             </div>

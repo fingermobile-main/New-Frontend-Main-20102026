@@ -46,7 +46,7 @@ const InviteCollaboratorsModal: React.FC<InviteCollaboratorsModalProps> = ({
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
               placeholder="Enter email addresses separated by commas..."
             />
-            <p className="text-xs text-gray-500 mt-1">Separate multiple emails with commas</p>
+            <p className="text-xs text-slate-700 mt-1">Separate multiple emails with commas</p>
           </div>
 
           <div>

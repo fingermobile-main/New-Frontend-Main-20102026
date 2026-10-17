@@ -141,7 +141,7 @@ export const SiteMemberAccessView: React.FC<SiteMemberAccessViewProps> = ({
       {/* Member Pages Access Banner (Screen 5 Requirement) */}
       <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 rounded-2xl p-6 text-white shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="space-y-1 max-w-xl">
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/20 text-white text-[10px] font-bold uppercase tracking-wider backdrop-blur-sm">
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/20 text-slate-700 text-[10px] font-bold uppercase tracking-wider backdrop-blur-sm">
             <Lock className="w-3 h-3" />
             <span>Private Content Architecture</span>
           </div>
@@ -338,7 +338,7 @@ export const SiteMemberAccessView: React.FC<SiteMemberAccessViewProps> = ({
                         onClick={() => {
                           alert(`Manually granting pass for ${page.title} (${page.path}) to current session member.`);
                         }}
-                        className="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-blue-600 hover:text-white rounded-lg text-[10px] font-bold transition"
+                        className="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-blue-600 hover:text-slate-700 rounded-lg text-[10px] font-bold transition"
                       >
                         Grant Pass
                       </button>

@@ -282,8 +282,8 @@ const StorefrontDetailPage: React.FC = () => {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
           <div className="absolute bottom-6 left-6 right-6">
-            <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">{storefront.name}</h1>
-            <p className="text-white/90 mt-2 max-w-2xl text-sm sm:text-base">{storefront.description}</p>
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">{storefront.name}</h1>
+            <p className="text-slate-700 mt-2 max-w-2xl text-sm sm:text-base">{storefront.description}</p>
           </div>
         </div>
 
@@ -308,16 +308,16 @@ const StorefrontDetailPage: React.FC = () => {
                     </span>
                   )}
                 </div>
-                <p className="text-sm text-gray-500">@{storefront.owner.membername}</p>
+                <p className="text-sm text-slate-700">@{storefront.owner.membername}</p>
 
                 <div className="flex mt-2 space-x-6 text-sm">
                   <div>
                     <span className="font-bold text-gray-900">{storefront.productCount}</span>
-                    <span className="text-gray-500 ml-1">Products</span>
+                    <span className="text-slate-700 ml-1">Products</span>
                   </div>
                   <div>
                     <span className="font-bold text-gray-900">{storefront.followerCount.toLocaleString()}</span>
-                    <span className="text-gray-500 ml-1">Followers</span>
+                    <span className="text-slate-700 ml-1">Followers</span>
                   </div>
                 </div>
               </div>
@@ -349,14 +349,14 @@ const StorefrontDetailPage: React.FC = () => {
           <div className="flex items-center gap-8">
             <div>
               <span className="text-lg font-bold text-gray-900">{storefront.productCount}</span>
-              <span className="text-gray-500 ml-1.5 text-sm">Catalog Items</span>
+              <span className="text-slate-700 ml-1.5 text-sm">Catalog Items</span>
             </div>
             <div className="flex items-center">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-amber-400" viewBox="0 0 20 20" fill="currentColor">
                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
               </svg>
               <span className="ml-1.5 font-bold text-gray-900 text-lg">{storefront.rating}</span>
-              <span className="text-gray-500 ml-1 text-sm">Merchant Score</span>
+              <span className="text-slate-700 ml-1 text-sm">Merchant Score</span>
             </div>
           </div>
 
@@ -395,7 +395,7 @@ const StorefrontDetailPage: React.FC = () => {
                   </div>
                   <div className="p-4">
                     <h4 className="font-bold text-gray-900 text-base">{product.name}</h4>
-                    <p className="text-xs text-gray-500 mt-1 capitalize">{product.category}</p>
+                    <p className="text-xs text-slate-700 mt-1 capitalize">{product.category}</p>
                   </div>
                 </div>
 
@@ -438,7 +438,7 @@ const StorefrontDetailPage: React.FC = () => {
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl">
             <h3 className="text-xl font-bold text-gray-900 mb-1">Send FIC Gift</h3>
-            <p className="text-sm text-gray-500 mb-4">Send FIC token gift to {storefront.name}</p>
+            <p className="text-sm text-slate-700 mb-4">Send FIC token gift to {storefront.name}</p>
             <div className="mb-4">
               <label className="block text-xs font-semibold text-gray-700 mb-1">Gift Amount (FIC)</label>
               <input
@@ -448,7 +448,7 @@ const StorefrontDetailPage: React.FC = () => {
                 onChange={(e) => setGiftAmount(e.target.value)}
                 className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-brand-blue text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400 font-mono"
               />
-              <p className="text-xs text-gray-500 mt-1">Available balance: {ficBalance.toFixed(2)} FIC</p>
+              <p className="text-xs text-slate-700 mt-1">Available balance: {ficBalance.toFixed(2)} FIC</p>
             </div>
             <div className="flex justify-end gap-2">
               <button
@@ -473,7 +473,7 @@ const StorefrontDetailPage: React.FC = () => {
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl">
             <h3 className="text-xl font-bold text-gray-900 mb-1">Generate Storefront Paylink</h3>
-            <p className="text-sm text-gray-500 mb-4">Create a sharable payment link for {storefront.name}</p>
+            <p className="text-sm text-slate-700 mb-4">Create a sharable payment link for {storefront.name}</p>
             <div className="mb-4">
               <label className="block text-xs font-semibold text-gray-700 mb-1">Target Amount (FIC)</label>
               <input

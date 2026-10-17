@@ -242,7 +242,7 @@ const ReadingListView: React.FC<ReadingListViewProps> = ({
                 </div>
 
                 {/* Metadata */}
-                <div className="flex items-center justify-between text-xs text-gray-500">
+                <div className="flex items-center justify-between text-xs text-slate-700">
                   <div>
                     Saved on {formatDate(item.created_at)}
                   </div>

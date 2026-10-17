@@ -189,7 +189,7 @@ const LmsPage: React.FC = () => {
               <p className="text-2xl font-bold text-gray-900">
                 {stats.totalCourses}
               </p>
-              <p className="text-sm text-gray-500">Total Courses</p>
+              <p className="text-sm text-slate-700">Total Courses</p>
             </div>
           </div>
         </div>
@@ -201,7 +201,7 @@ const LmsPage: React.FC = () => {
               <p className="text-2xl font-bold text-gray-900">
                 {stats.avgProgress.toFixed(0)}%
               </p>
-              <p className="text-sm text-gray-500">Avg Progress</p>
+              <p className="text-sm text-slate-700">Avg Progress</p>
             </div>
           </div>
         </div>
@@ -213,7 +213,7 @@ const LmsPage: React.FC = () => {
               <p className="text-2xl font-bold text-gray-900">
                 {stats.inProgress}
               </p>
-              <p className="text-sm text-gray-500">In Progress</p>
+              <p className="text-sm text-slate-700">In Progress</p>
             </div>
           </div>
         </div>
@@ -225,7 +225,7 @@ const LmsPage: React.FC = () => {
               <p className="text-2xl font-bold text-gray-900">
                 {incompleteAssignments.length}
               </p>
-              <p className="text-sm text-gray-500">Pending Assignments</p>
+              <p className="text-sm text-slate-700">Pending Assignments</p>
             </div>
           </div>
         </div>
@@ -287,7 +287,7 @@ const LmsPage: React.FC = () => {
                   <h3 className="font-bold text-lg text-gray-900 mb-1">
                     {course.title}
                   </h3>
-                  <p className="text-sm text-gray-500 mb-3">
+                  <p className="text-sm text-slate-700 mb-3">
                     by {course.instructor}
                   </p>
 
@@ -300,7 +300,7 @@ const LmsPage: React.FC = () => {
                         />
                       ))}
                     </div>
-                    <span className="text-sm text-gray-500 ml-1">
+                    <span className="text-sm text-slate-700 ml-1">
                       {course.rating}
                     </span>
                   </div>
@@ -318,7 +318,7 @@ const LmsPage: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="flex justify-between text-xs text-gray-500 mb-4">
+                  <div className="flex justify-between text-xs text-slate-700 mb-4">
                     <span>
                       <ClockIcon className="w-4 h-4 inline mr-1" />{' '}
                       {course.duration}
@@ -361,31 +361,31 @@ const LmsPage: React.FC = () => {
                 <tr>
                   <th
                     scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
                   >
                     Assignment
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
                   >
                     Course
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
                   >
                     Due Date
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
                   >
                     Status
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
                   >
                     Actions
                   </th>
@@ -400,11 +400,11 @@ const LmsPage: React.FC = () => {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-500">
+                      <div className="text-sm text-slate-700">
                         {assignment.course}
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                       {new Date(assignment.dueDate).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -470,7 +470,7 @@ const LmsPage: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="font-bold text-gray-900">{event.title}</h3>
-                    <p className="text-sm text-gray-500 mt-1">
+                    <p className="text-sm text-slate-700 mt-1">
                       {event.date} at {event.time}
                     </p>
                     <button
@@ -496,7 +496,7 @@ const LmsPage: React.FC = () => {
                     className="w-full bg-blue-500 rounded-t hover:bg-blue-600 transition-all"
                     style={{ height: `${course.progress}%` }}
                   ></div>
-                  <span className="text-xs mt-2 text-gray-500 truncate w-full text-center">
+                  <span className="text-xs mt-2 text-slate-700 truncate w-full text-center">
                     {course.title.substring(0, 10)}..
                   </span>
                 </div>

@@ -145,7 +145,7 @@ const AIAvatarGenerator: React.FC = () => {
                 </div>
               ) : (
                 <div className="flex items-center justify-center h-48 bg-gray-100 rounded-md border-2 border-dashed border-gray-300">
-                  <span className="text-gray-500">Image preview</span>
+                  <span className="text-slate-700">Image preview</span>
                 </div>
               )}
 

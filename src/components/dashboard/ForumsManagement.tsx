@@ -239,14 +239,14 @@ const ForumsManagement: React.FC = () => {
             href="/forum"
             target="_blank"
             rel="noreferrer"
-            className="px-3 py-2 text-xs font-bold rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/10 flex items-center gap-1.5 transition"
+            className="px-3 py-2 text-xs font-bold rounded-xl bg-white/10 hover:bg-white/20 text-slate-700 border border-white/10 flex items-center gap-1.5 transition"
           >
             <ArrowTopRightOnSquareIcon className="w-4 h-4" />
             Preview Live Feed
           </a>
           <button
             onClick={loadCategories}
-            className="p-2 text-xs font-bold rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/10 transition"
+            className="p-2 text-xs font-bold rounded-xl bg-white/10 hover:bg-white/20 text-slate-700 border border-white/10 transition"
             title="Reload from backend"
           >
             <ArrowPathIcon className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />

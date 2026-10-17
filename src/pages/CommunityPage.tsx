@@ -625,25 +625,25 @@ const CommunityPage: React.FC = () => {
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                       <tr>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Group
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Creator
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Members
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Posts
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Privacy
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Status
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Actions
                         </th>
                       </tr>
@@ -651,7 +651,7 @@ const CommunityPage: React.FC = () => {
                     <tbody className="bg-white divide-y divide-gray-200">
                       {currentItems.length === 0 ? (
                         <tr>
-                          <td colSpan={7} className="px-6 py-4 text-center text-gray-500">
+                          <td colSpan={7} className="px-6 py-4 text-center text-slate-800">
                             No community groups found
                           </td>
                         </tr>
@@ -660,18 +660,18 @@ const CommunityPage: React.FC = () => {
                           <tr key={group.id} className="hover:bg-gray-50">
                             <td className="px-6 py-4 whitespace-nowrap">
                               <div className="text-sm font-medium text-gray-900">{group.name}</div>
-                              <div className="text-sm text-gray-500 truncate max-w-xs">{group.description}</div>
+                              <div className="text-sm text-slate-700 truncate max-w-xs">{group.description}</div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
                               <div className="text-sm font-medium text-gray-900">{group.creatorName}</div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {group.memberCount.toLocaleString()}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {group.postCount.toLocaleString()}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               <div className="flex items-center">
                                 {getPrivacyIcon(group.privacy)}
                                 <span className="ml-1 capitalize">{group.privacy}</span>
@@ -748,25 +748,25 @@ const CommunityPage: React.FC = () => {
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                       <tr>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Thread
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Author
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Group
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Replies
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Views
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Last Reply
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Actions
                         </th>
                       </tr>
@@ -774,7 +774,7 @@ const CommunityPage: React.FC = () => {
                     <tbody className="bg-white divide-y divide-gray-200">
                       {currentItems.length === 0 ? (
                         <tr>
-                          <td colSpan={7} className="px-6 py-4 text-center text-gray-500">
+                          <td colSpan={7} className="px-6 py-4 text-center text-slate-800">
                             No forum threads found
                           </td>
                         </tr>
@@ -786,21 +786,21 @@ const CommunityPage: React.FC = () => {
                                 {thread.isPinned && <PinIcon className="h-4 w-4 text-yellow-500 mr-1" />}
                                 {thread.title}
                               </div>
-                              <div className="text-sm text-gray-500 truncate max-w-xs">{thread.content}</div>
+                              <div className="text-sm text-slate-700 truncate max-w-xs">{thread.content}</div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
                               <div className="text-sm font-medium text-gray-900">{thread.authorName}</div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {thread.groupName}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {thread.replyCount}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {thread.viewCount.toLocaleString()}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {new Date(thread.lastReplyAt).toLocaleDateString()}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -860,25 +860,25 @@ const CommunityPage: React.FC = () => {
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                       <tr>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           User
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Type
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Content
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Target
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Timestamp
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Status
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Actions
                         </th>
                       </tr>
@@ -886,7 +886,7 @@ const CommunityPage: React.FC = () => {
                     <tbody className="bg-white divide-y divide-gray-200">
                       {currentItems.length === 0 ? (
                         <tr>
-                          <td colSpan={7} className="px-6 py-4 text-center text-gray-500">
+                          <td colSpan={7} className="px-6 py-4 text-center text-slate-800">
                             No interactions found
                           </td>
                         </tr>
@@ -901,13 +901,13 @@ const CommunityPage: React.FC = () => {
                                 {interaction.type}
                               </span>
                             </td>
-                            <td className="px-6 py-4 text-sm text-gray-500 max-w-xs truncate">
+                            <td className="px-6 py-4 text-sm text-slate-800 max-w-xs truncate">
                               {interaction.content}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {interaction.targetType} #{interaction.targetId}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {new Date(interaction.timestamp).toLocaleString()}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
@@ -1033,7 +1033,7 @@ const CommunityPage: React.FC = () => {
                   <h3 className="text-lg font-medium text-gray-900 mb-4">Recent Reports</h3>
                   <div className="h-64 flex items-center justify-center">
                     <Flag className="h-16 w-16 text-slate-700" />
-                    <p className="ml-4 text-gray-500">Recent reports list would appear here</p>
+                    <p className="ml-4 text-slate-700">Recent reports list would appear here</p>
                   </div>
                 </div>
               </div>
@@ -1104,7 +1104,7 @@ const CommunityPage: React.FC = () => {
                   <h3 className="text-lg font-medium text-gray-900 mb-4">Community Insights</h3>
                   <div className="h-64 flex items-center justify-center">
                     <TrendingUp className="h-16 w-16 text-slate-700" />
-                    <p className="ml-4 text-gray-500">Community insights visualization would appear here</p>
+                    <p className="ml-4 text-slate-700">Community insights visualization would appear here</p>
                   </div>
                 </div>
               </div>
@@ -1195,7 +1195,7 @@ const CommunityPage: React.FC = () => {
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-medium text-gray-900">Create New Community Group</h3>
                 <button
-                  className="text-gray-500 hover:text-gray-700"
+                  className="text-slate-700 hover:text-gray-700"
                   onClick={() => setShowCreateModal(false)}
                 >
                   <XCircle className="h-6 w-6" />

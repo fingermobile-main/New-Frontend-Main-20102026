@@ -48,8 +48,8 @@ const StorefrontWidget: React.FC = () => {
             </svg>
           </div>
           <h4 className="font-bold text-base text-gray-900 dark:text-white">{store.name}</h4>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Latest items</p>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-3">Sales: {store.sales}</p>
+          <p className="text-sm text-slate-700 dark:text-gray-400">Latest items</p>
+          <p className="text-sm text-slate-700 dark:text-gray-400 mt-3">Sales: {store.sales}</p>
         </div>
       ) : null}
       <button

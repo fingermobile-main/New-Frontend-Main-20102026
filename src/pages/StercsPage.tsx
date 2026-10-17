@@ -845,28 +845,28 @@ const StercsPage: React.FC = () => {
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                       <tr>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Module
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Version
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Category
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Priority
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Status
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Environment
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Last Deployed
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Actions
                         </th>
                       </tr>
@@ -874,7 +874,7 @@ const StercsPage: React.FC = () => {
                     <tbody className="bg-white divide-y divide-gray-200">
                       {currentItems.length === 0 ? (
                         <tr>
-                          <td colSpan={8} className="px-6 py-4 text-center text-gray-500">
+                          <td colSpan={8} className="px-6 py-4 text-center text-slate-800">
                             No STERCS modules found
                           </td>
                         </tr>
@@ -883,9 +883,9 @@ const StercsPage: React.FC = () => {
                           <tr key={module.id} className="hover:bg-gray-50">
                             <td className="px-6 py-4">
                               <div className="text-sm font-medium text-gray-900">{module.name}</div>
-                              <div className="text-sm text-gray-500 max-w-xs truncate">{module.description}</div>
+                              <div className="text-sm text-slate-700 max-w-xs truncate">{module.description}</div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {module.version}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
@@ -908,7 +908,7 @@ const StercsPage: React.FC = () => {
                                 {module.environment}
                               </span>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {new Date(module.lastDeployed).toLocaleDateString()}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -952,25 +952,25 @@ const StercsPage: React.FC = () => {
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                       <tr>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Policy
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Module
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Type
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Priority
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Status
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Created
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Actions
                         </th>
                       </tr>
@@ -978,7 +978,7 @@ const StercsPage: React.FC = () => {
                     <tbody className="bg-white divide-y divide-gray-200">
                       {currentItems.length === 0 ? (
                         <tr>
-                          <td colSpan={7} className="px-6 py-4 text-center text-gray-500">
+                          <td colSpan={7} className="px-6 py-4 text-center text-slate-800">
                             No STERCS policies found
                           </td>
                         </tr>
@@ -987,9 +987,9 @@ const StercsPage: React.FC = () => {
                           <tr key={policy.id} className="hover:bg-gray-50">
                             <td className="px-6 py-4">
                               <div className="text-sm font-medium text-gray-900">{policy.name}</div>
-                              <div className="text-sm text-gray-500 max-w-xs truncate">{policy.description}</div>
+                              <div className="text-sm text-slate-700 max-w-xs truncate">{policy.description}</div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {policy.moduleName}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
@@ -1007,7 +1007,7 @@ const StercsPage: React.FC = () => {
                                 {policy.status}
                               </span>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {new Date(policy.createdAt).toLocaleDateString()}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -1044,28 +1044,28 @@ const StercsPage: React.FC = () => {
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                       <tr>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Control
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Policy
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           ID
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Framework
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Category
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Status
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Last Tested
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Actions
                         </th>
                       </tr>
@@ -1073,7 +1073,7 @@ const StercsPage: React.FC = () => {
                     <tbody className="bg-white divide-y divide-gray-200">
                       {currentItems.length === 0 ? (
                         <tr>
-                          <td colSpan={8} className="px-6 py-4 text-center text-gray-500">
+                          <td colSpan={8} className="px-6 py-4 text-center text-slate-800">
                             No STERCS controls found
                           </td>
                         </tr>
@@ -1082,12 +1082,12 @@ const StercsPage: React.FC = () => {
                           <tr key={control.id} className="hover:bg-gray-50">
                             <td className="px-6 py-4">
                               <div className="text-sm font-medium text-gray-900">{control.name}</div>
-                              <div className="text-sm text-gray-500 max-w-xs truncate">{control.description}</div>
+                              <div className="text-sm text-slate-700 max-w-xs truncate">{control.description}</div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {control.policyName}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {control.controlId}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
@@ -1105,7 +1105,7 @@ const StercsPage: React.FC = () => {
                                 {control.status}
                               </span>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {new Date(control.lastTested).toLocaleDateString()}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -1149,25 +1149,25 @@ const StercsPage: React.FC = () => {
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                       <tr>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Control
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Auditor
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Date
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Status
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Score
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Findings
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Actions
                         </th>
                       </tr>
@@ -1175,7 +1175,7 @@ const StercsPage: React.FC = () => {
                     <tbody className="bg-white divide-y divide-gray-200">
                       {currentItems.length === 0 ? (
                         <tr>
-                          <td colSpan={7} className="px-6 py-4 text-center text-gray-500">
+                          <td colSpan={7} className="px-6 py-4 text-center text-slate-800">
                             No STERCS audits found
                           </td>
                         </tr>
@@ -1185,10 +1185,10 @@ const StercsPage: React.FC = () => {
                             <td className="px-6 py-4 whitespace-nowrap">
                               <div className="text-sm font-medium text-gray-900">{audit.controlName}</div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {audit.auditorName}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {new Date(audit.date).toLocaleDateString()}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
@@ -1196,10 +1196,10 @@ const StercsPage: React.FC = () => {
                                 {audit.status}
                               </span>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {audit.score}%
                             </td>
-                            <td className="px-6 py-4 text-sm text-gray-500 max-w-xs truncate">
+                            <td className="px-6 py-4 text-sm text-slate-800 max-w-xs truncate">
                               {audit.findings}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -1352,7 +1352,7 @@ const StercsPage: React.FC = () => {
                     <h3 className="text-lg font-medium text-gray-900 mb-4">Module Deployment Status</h3>
                     <div className="h-64 flex items-center justify-center">
                       <BarChart3 className="h-16 w-16 text-slate-700" />
-                      <p className="ml-4 text-gray-500">Module deployment status visualization would appear here</p>
+                      <p className="ml-4 text-slate-700">Module deployment status visualization would appear here</p>
                     </div>
                   </div>
                 </div>
@@ -1361,7 +1361,7 @@ const StercsPage: React.FC = () => {
                   <h3 className="text-lg font-medium text-gray-900 mb-4">Recent Activities</h3>
                   <div className="h-64 flex items-center justify-center">
                     <Activity className="h-16 w-16 text-slate-700" />
-                    <p className="ml-4 text-gray-500">Recent STERCS activities timeline would appear here</p>
+                    <p className="ml-4 text-slate-700">Recent STERCS activities timeline would appear here</p>
                   </div>
                 </div>
               </div>
@@ -1452,7 +1452,7 @@ const StercsPage: React.FC = () => {
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-medium text-gray-900">Create New STERCS Module</h3>
                 <button
-                  className="text-gray-500 hover:text-gray-700"
+                  className="text-slate-700 hover:text-gray-700"
                   onClick={() => setShowCreateModal(false)}
                 >
                   <XCircle className="h-6 w-6" />
@@ -1645,7 +1645,7 @@ const StercsPage: React.FC = () => {
               {selectedInspectorItem.subTab === 'details' && (
                 <div className="space-y-3">
                   <div className="p-3 bg-gray-50 rounded-xl border border-slate-300">
-                    <div className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-1">Description</div>
+                    <div className="text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Description</div>
                     <div className="text-gray-800 leading-relaxed">
                       {selectedInspectorItem.data.description || selectedInspectorItem.data.findings || 'No description provided.'}
                     </div>
@@ -1669,7 +1669,7 @@ const StercsPage: React.FC = () => {
 
               {selectedInspectorItem.subTab === 'config' && (
                 <div>
-                  <div className="text-[11px] font-semibold text-gray-500 mb-2">Raw JSON Parameters</div>
+                  <div className="text-[11px] font-semibold text-slate-700 mb-2">Raw JSON Parameters</div>
                   <pre className="p-3.5 bg-slate-900 text-emerald-400 rounded-xl font-mono text-[11px] overflow-x-auto border border-slate-800">
                     {JSON.stringify(selectedInspectorItem.data.config || selectedInspectorItem.data, null, 2)}
                   </pre>
@@ -1678,7 +1678,7 @@ const StercsPage: React.FC = () => {
 
               {selectedInspectorItem.subTab === 'evidence' && (
                 <div className="space-y-2">
-                  <div className="text-[11px] font-semibold text-gray-500 mb-1">Cryptographic Evidence Trail</div>
+                  <div className="text-[11px] font-semibold text-slate-700 mb-1">Cryptographic Evidence Trail</div>
                   <div className="p-3 bg-blue-50 border border-blue-200 rounded-xl text-blue-900 space-y-1 font-mono text-[11px]">
                     <div>[SHA-256 Digest] e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</div>
                     <div>[Attestation] Zero-Knowledge Enclave Seal: VALID</div>

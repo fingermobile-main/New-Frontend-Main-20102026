@@ -247,7 +247,7 @@ const SeadsPage: React.FC = () => {
                     <span className="px-2.5 py-1 text-xs font-bold uppercase rounded-lg bg-emerald-50 text-emerald-700">
                       {proj.category}
                     </span>
-                    <span className="text-xs font-bold text-gray-500 flex items-center gap-1">
+                    <span className="text-xs font-bold text-slate-700 flex items-center gap-1">
                       <MapPinIcon className="w-3.5 h-3.5 text-emerald-600" />
                       {proj.location}
                     </span>
@@ -260,7 +260,7 @@ const SeadsPage: React.FC = () => {
                   <div className="mt-5 space-y-1.5">
                     <div className="flex justify-between text-xs font-bold">
                       <span className="text-emerald-700 font-black">{progress}% Funded</span>
-                      <span className="text-gray-500">{(proj.current_funding).toLocaleString()} / {(proj.target_funding).toLocaleString()} FIC</span>
+                      <span className="text-slate-700">{(proj.current_funding).toLocaleString()} / {(proj.target_funding).toLocaleString()} FIC</span>
                     </div>
                     <div className="w-full bg-gray-100 rounded-full h-2.5 overflow-hidden">
                       <div
@@ -270,7 +270,7 @@ const SeadsPage: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between text-xs text-gray-500">
+                  <div className="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between text-xs text-slate-700">
                     <span>Organizer: <strong className="text-gray-800">{proj.organizer_name}</strong></span>
                     <span>{proj.backers_count} Backers</span>
                   </div>

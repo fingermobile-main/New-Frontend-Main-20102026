@@ -70,7 +70,7 @@ export default function MainLayout({ children, pageTitle }: MainLayoutProps) {
                   {!showSearch ? (
                     <button
                       onClick={() => setShowSearch?.(true)}
-                      className="text-gray-500 hover:text-emerald-800 p-2 rounded-xl hover:bg-emerald-50 transition"
+                      className="text-slate-700 hover:text-emerald-800 p-2 rounded-xl hover:bg-emerald-50 transition"
                       title="Search"
                     >
                       <MagnifyingGlassIcon className="h-5 w-5" />
@@ -92,7 +92,7 @@ export default function MainLayout({ children, pageTitle }: MainLayoutProps) {
                 {/* Notifications */}
                 <button
                   type="button"
-                  className="p-2 text-gray-500 hover:text-emerald-800 rounded-xl hover:bg-emerald-50 relative transition"
+                  className="p-2 text-slate-700 hover:text-emerald-800 rounded-xl hover:bg-emerald-50 relative transition"
                   onClick={toggleNotifications}
                   title="Notifications"
                 >

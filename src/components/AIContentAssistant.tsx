@@ -89,7 +89,7 @@ const AIContentAssistant: React.FC<AIContentAssistantProps> = ({
           )}
         </button>
 
-        <div className="text-xs text-gray-500 text-center">
+        <div className="text-xs text-slate-700 text-center">
           Powered by AI • Costs 10 FIC per generation
         </div>
       </div>

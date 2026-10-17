@@ -609,7 +609,7 @@ const TrendsPage: React.FC = () => {
                         </span>
                         <button
                           onClick={() => handleShareTrend(trend)}
-                          className="p-2 border border-slate-300 rounded-lg text-gray-500 hover:text-red-500 hover:bg-red-50 transition-colors"
+                          className="p-2 border border-slate-300 rounded-lg text-slate-700 hover:text-red-500 hover:bg-red-50 transition-colors"
                           title="Share Topic"
                         >
                           <ShareIcon className="w-4 h-4" />
@@ -642,11 +642,11 @@ const TrendsPage: React.FC = () => {
                           <HeartIcon className={`w-4 h-4 ${isLiked ? 'fill-current text-red-500' : ''}`} />
                           {trend.metrics.likes.toLocaleString()}
                         </button>
-                        <div className="flex items-center gap-1 text-gray-500">
+                        <div className="flex items-center gap-1 text-slate-700">
                           <ChatBubbleLeftRightIcon className="w-4 h-4" />
                           {trend.metrics.comments.toLocaleString()}
                         </div>
-                        <div className="flex items-center gap-1 text-gray-500">
+                        <div className="flex items-center gap-1 text-slate-700">
                           <ShareIcon className="w-4 h-4" />
                           {trend.metrics.shares.toLocaleString()}
                         </div>
@@ -694,7 +694,7 @@ const TrendsPage: React.FC = () => {
                       />
                       <div>
                         <p className="font-bold text-gray-900">{creator.name}</p>
-                        <p className="text-[11px] text-slate-700">{creator.tag} • <span className="text-gray-500">{creator.niche}</span></p>
+                        <p className="text-[11px] text-slate-700">{creator.tag} • <span className="text-slate-700">{creator.niche}</span></p>
                       </div>
                     </div>
                     <span className="font-black text-emerald-600 text-xs">{creator.gain}</span>

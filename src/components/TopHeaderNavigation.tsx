@@ -144,7 +144,7 @@ const TopHeaderNavigation: React.FC = () => {
 
               {/* Avatar */}
               <div className="relative group">
-                <div className="w-10 h-10 rounded-full bg-white bg-opacity-20 flex items-center justify-center font-bold text-white cursor-pointer">
+                <div className="w-10 h-10 rounded-full bg-white bg-opacity-20 flex items-center justify-center font-bold text-slate-700 cursor-pointer">
                   // @ts-expect-error: auto-fixed by agent
                   {(member as any)?.name?.charAt(0) || 'U'}
                 </div>
@@ -209,7 +209,7 @@ const TopHeaderNavigation: React.FC = () => {
                 />
                 <span className="font-bold text-gray-900 text-lg">FingerMobile</span>
               </div>
-              <button onClick={() => setIsMobileMenuOpen(false)} className="text-gray-500 hover:text-gray-700">
+              <button onClick={() => setIsMobileMenuOpen(false)} className="text-slate-700 hover:text-gray-700">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>

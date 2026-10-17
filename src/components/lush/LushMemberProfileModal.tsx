@@ -97,7 +97,7 @@ export const LushMemberProfileModal: React.FC<LushMemberProfileModalProps> = ({
               <h2 className="text-xl font-bold text-gray-900">{member.name}</h2>
               <VerificationBadge level={5} size="medium" />
             </div>
-            <p className="text-xs text-gray-500 font-mono">@{member.name.toLowerCase().replace(/\s+/g, '_')}</p>
+            <p className="text-xs text-slate-700 font-mono">@{member.name.toLowerCase().replace(/\s+/g, '_')}</p>
             <p className="text-xs text-emerald-800 font-semibold mt-1 flex items-center gap-1">
               <MapPinIcon className="w-3.5 h-3.5 text-emerald-600" />
               Victoria Island, Lagos & Virtual

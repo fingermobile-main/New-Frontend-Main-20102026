@@ -113,19 +113,19 @@ const PromptsThreatDashboard: React.FC<PromptsThreatDashboardProps> = ({ userId 
       {stats && (
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow">
-            <div className="text-sm text-gray-500 dark:text-gray-400">Total Analyses</div>
+            <div className="text-sm text-slate-700 dark:text-gray-400">Total Analyses</div>
             <div className="text-2xl font-bold">{stats.totalAnalyses || 0}</div>
           </div>
           <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow">
-            <div className="text-sm text-gray-500 dark:text-gray-400">Threats Detected</div>
+            <div className="text-sm text-slate-700 dark:text-gray-400">Threats Detected</div>
             <div className="text-2xl font-bold text-red-600">{stats.threatsDetected || 0}</div>
           </div>
           <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow">
-            <div className="text-sm text-gray-500 dark:text-gray-400">Mitigations Applied</div>
+            <div className="text-sm text-slate-700 dark:text-gray-400">Mitigations Applied</div>
             <div className="text-2xl font-bold text-green-600">{stats.mitigationsApplied || 0}</div>
           </div>
           <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow">
-            <div className="text-sm text-gray-500 dark:text-gray-400">Detection Rate</div>
+            <div className="text-sm text-slate-700 dark:text-gray-400">Detection Rate</div>
             <div className="text-2xl font-bold text-blue-600">
               {stats.totalAnalyses > 0
                 ? Math.round((stats.threatsDetected / stats.totalAnalyses) * 100)
@@ -171,7 +171,7 @@ const PromptsThreatDashboard: React.FC<PromptsThreatDashboardProps> = ({ userId 
 
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-500 dark:text-gray-400">Risk Level:</span>
+              <span className="text-sm text-slate-700 dark:text-gray-400">Risk Level:</span>
               <span className={`text-lg ${getRiskLevelColor(lastAnalysis.risk_level)}`}>
                 {lastAnalysis.risk_level.toUpperCase()}
               </span>
@@ -193,7 +193,7 @@ const PromptsThreatDashboard: React.FC<PromptsThreatDashboardProps> = ({ userId 
 
                       {threat.countermeasures.length > 0 && (
                         <div>
-                          <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Countermeasures:</p>
+                          <p className="text-xs font-medium text-slate-700 dark:text-gray-400 mb-1">Countermeasures:</p>
                           <div className="flex flex-wrap gap-2">
                             {threat.countermeasures.map((countermeasure: string, idx: number) => (
                               <button
@@ -232,7 +232,7 @@ const PromptsThreatDashboard: React.FC<PromptsThreatDashboardProps> = ({ userId 
         <h3 className="text-lg font-semibold mb-4">Recent Threat Analysis History</h3>
 
         {threatHistory.length === 0 ? (
-          <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+          <div className="text-center py-8 text-slate-700 dark:text-gray-400">
             No threat analyses yet. Start by analyzing a prompt above.
           </div>
         ) : (
@@ -240,7 +240,7 @@ const PromptsThreatDashboard: React.FC<PromptsThreatDashboardProps> = ({ userId 
             {threatHistory.slice(0, 10).map((analysis) => (
               <div key={analysis.analysis_id} className="border border-slate-300 dark:border-gray-700 rounded-lg p-3">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-gray-500 dark:text-gray-400">
+                  <span className="text-sm text-slate-700 dark:text-gray-400">
                     {new Date(analysis.timestamp).toLocaleString()}
                   </span>
                   <span className={`text-sm ${getRiskLevelColor(analysis.risk_level)}`}>

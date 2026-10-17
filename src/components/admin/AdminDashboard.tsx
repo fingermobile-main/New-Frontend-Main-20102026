@@ -63,7 +63,7 @@ const AdminDashboard: React.FC = () => {
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         <div className="bg-white dark:bg-gray-800 p-5 rounded-xl border border-slate-300 dark:border-gray-700 shadow-sm">
-          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Total Platform Users</p>
+          <p className="text-sm font-medium text-slate-700 dark:text-gray-400">Total Platform Users</p>
           <p className="text-3xl font-bold text-gray-900 dark:text-white mt-1">
             {stats?.totalUsers?.toLocaleString() || '1,250'}
           </p>
@@ -71,7 +71,7 @@ const AdminDashboard: React.FC = () => {
         </div>
 
         <div className="bg-white dark:bg-gray-800 p-5 rounded-xl border border-slate-300 dark:border-gray-700 shadow-sm">
-          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Total Transactions</p>
+          <p className="text-sm font-medium text-slate-700 dark:text-gray-400">Total Transactions</p>
           <p className="text-3xl font-bold text-indigo-600 mt-1">
             {stats?.totalTransactions?.toLocaleString() || '3,420'}
           </p>
@@ -79,7 +79,7 @@ const AdminDashboard: React.FC = () => {
         </div>
 
         <div className="bg-white dark:bg-gray-800 p-5 rounded-xl border border-slate-300 dark:border-gray-700 shadow-sm">
-          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Pending Moderation</p>
+          <p className="text-sm font-medium text-slate-700 dark:text-gray-400">Pending Moderation</p>
           <p className="text-3xl font-bold text-amber-500 mt-1">
             {stats?.pendingModeration || 0}
           </p>
@@ -87,7 +87,7 @@ const AdminDashboard: React.FC = () => {
         </div>
 
         <div className="bg-white dark:bg-gray-800 p-5 rounded-xl border border-slate-300 dark:border-gray-700 shadow-sm">
-          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Active Franchises</p>
+          <p className="text-sm font-medium text-slate-700 dark:text-gray-400">Active Franchises</p>
           <p className="text-3xl font-bold text-purple-600 mt-1">
             {stats?.totalFranchises || 3}
           </p>

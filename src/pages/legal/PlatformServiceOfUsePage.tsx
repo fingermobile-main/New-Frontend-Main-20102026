@@ -395,7 +395,7 @@ const PlatformServiceOfUsePage: React.FC = () => {
             <div className="flex flex-wrap items-center gap-3 pt-2">
               <button
                 onClick={handlePrint}
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-sm font-semibold backdrop-blur-md transition border border-white/20"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-slate-700 text-sm font-semibold backdrop-blur-md transition border border-white/20"
               >
                 <Printer className="w-4 h-4" />
                 Print / Save PDF
@@ -403,7 +403,7 @@ const PlatformServiceOfUsePage: React.FC = () => {
               <a
                 href="/legal/FingerMobile_Platform_Service_of_Use.md"
                 download="FingerMobile_Platform_Service_of_Use.md"
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-sm font-semibold backdrop-blur-md transition border border-white/20"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-slate-700 text-sm font-semibold backdrop-blur-md transition border border-white/20"
               >
                 <Download className="w-4 h-4" />
                 Download Markdown (.md)

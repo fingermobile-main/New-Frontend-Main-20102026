@@ -30,7 +30,7 @@ const DatabaseIntegrationReport: React.FC<DatabaseIntegrationReportProps> = ({ r
           <DatabaseIcon className="w-8 h-8 text-blue-600" />
           <div>
             <h3 className="text-lg font-bold text-gray-900">Database Integration Report</h3>
-            <p className="text-sm text-gray-500">Last checked: {new Date(report.lastCheck).toLocaleString()}</p>
+            <p className="text-sm text-slate-700">Last checked: {new Date(report.lastCheck).toLocaleString()}</p>
           </div>
         </div>
 

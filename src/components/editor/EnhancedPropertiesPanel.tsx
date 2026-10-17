@@ -20,7 +20,7 @@ const EnhancedPropertiesPanel: React.FC<EnhancedPropertiesPanelProps> = ({
           <h2 className="text-lg font-semibold text-gray-800">Properties</h2>
         </div>
         <div className="flex-1 flex items-center justify-center p-4">
-          <div className="text-center text-gray-500">
+          <div className="text-center text-slate-700">
             <p className="text-sm">Select a component to edit</p>
           </div>
         </div>
@@ -99,7 +99,7 @@ const EnhancedPropertiesPanel: React.FC<EnhancedPropertiesPanelProps> = ({
 
         {activeTab === 'styles' && (
           <div className="space-y-4">
-            <p className="text-xs text-gray-500 text-center py-8">Style properties coming soon</p>
+            <p className="text-xs text-slate-700 text-center py-8">Style properties coming soon</p>
           </div>
         )}
 

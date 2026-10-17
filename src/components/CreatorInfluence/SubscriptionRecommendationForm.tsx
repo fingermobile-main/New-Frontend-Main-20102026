@@ -87,7 +87,7 @@ const SubscriptionRecommendationForm: React.FC<SubscriptionRecommendationFormPro
         <h3 className="text-lg leading-6 font-medium text-gray-900">
           Get Your Personalized Plan Recommendation
         </h3>
-        <p className="mt-1 max-w-2xl text-sm text-gray-500">
+        <p className="mt-1 max-w-2xl text-sm text-slate-700">
           Enter your metrics to receive a tailored subscription plan suggestion
         </p>
       </div>
@@ -124,7 +124,7 @@ const SubscriptionRecommendationForm: React.FC<SubscriptionRecommendationFormPro
                   min="0"
                 />
                 <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                  <span className="text-gray-500 sm:text-sm" id="followers-unit">
+                  <span className="text-slate-700 sm:text-sm" id="followers-unit">
                     followers
                   </span>
                 </div>
@@ -148,7 +148,7 @@ const SubscriptionRecommendationForm: React.FC<SubscriptionRecommendationFormPro
                   max="100"
                 />
                 <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                  <span className="text-gray-500 sm:text-sm" id="engagement-unit">
+                  <span className="text-slate-700 sm:text-sm" id="engagement-unit">
                     %
                   </span>
                 </div>
@@ -171,7 +171,7 @@ const SubscriptionRecommendationForm: React.FC<SubscriptionRecommendationFormPro
                   min="0"
                 />
                 <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                  <span className="text-gray-500 sm:text-sm" id="bandwidth-unit">
+                  <span className="text-slate-700 sm:text-sm" id="bandwidth-unit">
                     GB
                   </span>
                 </div>
@@ -193,7 +193,7 @@ const SubscriptionRecommendationForm: React.FC<SubscriptionRecommendationFormPro
                   min="0"
                 />
                 <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                  <span className="text-gray-500 sm:text-sm" id="earnings-unit">
+                  <span className="text-slate-700 sm:text-sm" id="earnings-unit">
                     ₦
                   </span>
                 </div>

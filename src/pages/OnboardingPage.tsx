@@ -747,7 +747,7 @@ const OnboardingPage: React.FC = () => {
                       <DevicePhoneMobileIcon className="h-5 w-5 text-green-500 mr-3" />
                       <div>
                         <div className="font-medium">Google Authenticator</div>
-                        <div className="text-xs text-gray-500">Most popular authenticator app</div>
+                        <div className="text-xs text-slate-700">Most popular authenticator app</div>
                       </div>
                     </div>
                     {tempData.twoFactorMethod === 'google_authenticator' && (
@@ -761,7 +761,7 @@ const OnboardingPage: React.FC = () => {
                       <DevicePhoneMobileIcon className="h-5 w-5 text-blue-500 mr-3" />
                       <div>
                         <div className="font-medium">Microsoft Authenticator</div>
-                        <div className="text-xs text-gray-500">Microsoft's authenticator solution</div>
+                        <div className="text-xs text-slate-700">Microsoft's authenticator solution</div>
                       </div>
                     </div>
                     {tempData.twoFactorMethod === 'microsoft_authenticator' && (
@@ -775,7 +775,7 @@ const OnboardingPage: React.FC = () => {
                       <DevicePhoneMobileIcon className="h-5 w-5 text-indigo-500 mr-3" />
                       <div>
                         <div className="font-medium">Duo Mobile</div>
-                        <div className="text-xs text-gray-500">Enterprise-grade authentication</div>
+                        <div className="text-xs text-slate-700">Enterprise-grade authentication</div>
                       </div>
                     </div>
                     {tempData.twoFactorMethod === 'duo_mobile' && (
@@ -797,7 +797,7 @@ const OnboardingPage: React.FC = () => {
                     <div className="mt-4 flex justify-center">
                       <div className="bg-white p-4 border-2 border-dashed border-gray-300 rounded-lg">
                         <div className="bg-gray-200 border-2 border-dashed rounded-xl w-48 h-48 flex items-center justify-center">
-                          <span className="text-gray-500">QR Code</span>
+                          <span className="text-slate-700">QR Code</span>
                         </div>
                       </div>
                     </div>
@@ -1350,7 +1350,7 @@ const OnboardingPage: React.FC = () => {
                       />
                       <label htmlFor="tier3" className="text-sm cursor-pointer">
                         <span className="font-medium text-gray-900 dark:text-slate-100 block">Tier 3 (Emerging/Micro)</span>
-                        <span className="text-gray-500 dark:text-slate-400 text-xs">Open self-registration capped by regional quota</span>
+                        <span className="text-slate-700 dark:text-slate-400 text-xs">Open self-registration capped by regional quota</span>
                       </label>
                     </div>
 
@@ -1366,7 +1366,7 @@ const OnboardingPage: React.FC = () => {
                       />
                       <label htmlFor="tier2" className="text-sm cursor-pointer">
                         <span className="font-medium text-gray-900 dark:text-slate-100 block">Tier 2 (Established / Pro)</span>
-                        <span className="text-gray-500 dark:text-slate-400 text-xs">Application-based with automated checks & portfolio validation</span>
+                        <span className="text-slate-700 dark:text-slate-400 text-xs">Application-based with automated checks & portfolio validation</span>
                       </label>
                     </div>
 
@@ -1382,7 +1382,7 @@ const OnboardingPage: React.FC = () => {
                       />
                       <label htmlFor="tier1" className="text-sm cursor-pointer">
                         <span className="font-medium text-gray-900 dark:text-slate-100 block">Tier 1 (Elite / Flagship)</span>
-                        <span className="text-gray-500 dark:text-slate-400 text-xs">Invite-only / SuperAdmin approval. Requires access token.</span>
+                        <span className="text-slate-700 dark:text-slate-400 text-xs">Invite-only / SuperAdmin approval. Requires access token.</span>
                       </label>
                     </div>
                   </div>

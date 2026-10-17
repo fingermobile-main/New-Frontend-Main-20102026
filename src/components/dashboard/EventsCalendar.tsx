@@ -16,7 +16,7 @@ const EventsCalendar: React.FC<EventsCalendarProps> = () => {
       </div>
       <div className="grid grid-cols-7 gap-2 text-center text-sm">
         {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-          <div key={day} className="font-medium text-gray-500 py-2">{day}</div>
+          <div key={day} className="font-medium text-slate-700 py-2">{day}</div>
         ))}
         {Array.from({ length: 35 }, (_, i) => (
           <div key={i} className={`py-2 rounded ${i === 15 ? 'bg-blue-500 text-white' : 'hover:bg-gray-50'}`}>

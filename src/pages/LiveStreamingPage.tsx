@@ -657,25 +657,25 @@ const LiveStreamingPage: React.FC = () => {
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                       <tr>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Stream
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Streamer
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Viewers
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Category
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Status
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Duration
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Actions
                         </th>
                       </tr>
@@ -683,7 +683,7 @@ const LiveStreamingPage: React.FC = () => {
                     <tbody className="bg-white divide-y divide-gray-200">
                       {currentItems.length === 0 ? (
                         <tr>
-                          <td colSpan={7} className="px-6 py-4 text-center text-gray-500">
+                          <td colSpan={7} className="px-6 py-4 text-center text-slate-800">
                             No streams found
                           </td>
                         </tr>
@@ -700,19 +700,19 @@ const LiveStreamingPage: React.FC = () => {
                                   />
                                 ) : (
                                   <div className="h-10 w-10 rounded-md bg-gray-200 flex items-center justify-center">
-                                    <Video className="h-5 w-5 text-gray-500" />
+                                    <Video className="h-5 w-5 text-slate-700" />
                                   </div>
                                 )}
                                 <div className="ml-4">
                                   <div className="text-sm font-medium text-gray-900">{stream.title}</div>
-                                  <div className="text-sm text-gray-500 truncate max-w-xs">{stream.description}</div>
+                                  <div className="text-sm text-slate-700 truncate max-w-xs">{stream.description}</div>
                                 </div>
                               </div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
                               <div className="text-sm font-medium text-gray-900">{stream.userName}</div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {stream.status === 'live' ? (
                                 <div className="flex items-center">
                                   <span className="text-red-600 font-bold">{stream.viewerCount}</span>
@@ -732,7 +732,7 @@ const LiveStreamingPage: React.FC = () => {
                                 {stream.status}
                               </span>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {stream.duration ? `${Math.floor(stream.duration / 60)}m` : '-'}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -811,22 +811,22 @@ const LiveStreamingPage: React.FC = () => {
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                       <tr>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Viewer
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Stream
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Join Time
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Watch Duration
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Location
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Actions
                         </th>
                       </tr>
@@ -834,7 +834,7 @@ const LiveStreamingPage: React.FC = () => {
                     <tbody className="bg-white divide-y divide-gray-200">
                       {currentItems.length === 0 ? (
                         <tr>
-                          <td colSpan={6} className="px-6 py-4 text-center text-gray-500">
+                          <td colSpan={6} className="px-6 py-4 text-center text-slate-800">
                             No viewers found
                           </td>
                         </tr>
@@ -843,18 +843,18 @@ const LiveStreamingPage: React.FC = () => {
                           <tr key={viewer.id} className="hover:bg-gray-50">
                             <td className="px-6 py-4 whitespace-nowrap">
                               <div className="text-sm font-medium text-gray-900">{viewer.userName}</div>
-                              <div className="text-sm text-gray-500">{viewer.ip}</div>
+                              <div className="text-sm text-slate-700">{viewer.ip}</div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               Stream #{viewer.streamId}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {new Date(viewer.joinedAt).toLocaleTimeString()}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {Math.floor(viewer.watchDuration / 60)}m
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               <div className="flex items-center">
                                 <MapPin className="h-4 w-4 mr-1" />
                                 {viewer.city}, {viewer.country}
@@ -905,22 +905,22 @@ const LiveStreamingPage: React.FC = () => {
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                       <tr>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           User
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Stream
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Type
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Content
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Time
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Actions
                         </th>
                       </tr>
@@ -928,7 +928,7 @@ const LiveStreamingPage: React.FC = () => {
                     <tbody className="bg-white divide-y divide-gray-200">
                       {currentItems.length === 0 ? (
                         <tr>
-                          <td colSpan={6} className="px-6 py-4 text-center text-gray-500">
+                          <td colSpan={6} className="px-6 py-4 text-center text-slate-800">
                             No interactions found
                           </td>
                         </tr>
@@ -938,7 +938,7 @@ const LiveStreamingPage: React.FC = () => {
                             <td className="px-6 py-4 whitespace-nowrap">
                               <div className="text-sm font-medium text-gray-900">{interaction.userName}</div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               Stream #{interaction.streamId}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
@@ -946,10 +946,10 @@ const LiveStreamingPage: React.FC = () => {
                                 {interaction.type}
                               </span>
                             </td>
-                            <td className="px-6 py-4 text-sm text-gray-500 max-w-xs truncate">
+                            <td className="px-6 py-4 text-sm text-slate-800 max-w-xs truncate">
                               {interaction.content || '-'}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {new Date(interaction.timestamp).toLocaleTimeString()}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -1076,7 +1076,7 @@ const LiveStreamingPage: React.FC = () => {
                   <h3 className="text-lg font-medium text-gray-900 mb-4">Weekly Trend</h3>
                   <div className="h-64 flex items-center justify-center">
                     <BarChart3 className="h-16 w-16 text-slate-700" />
-                    <p className="ml-4 text-gray-500">Weekly streaming trend visualization would appear here</p>
+                    <p className="ml-4 text-slate-700">Weekly streaming trend visualization would appear here</p>
                   </div>
                 </div>
               </div>
@@ -1256,7 +1256,7 @@ const LiveStreamingPage: React.FC = () => {
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-medium text-gray-900">Create New Stream</h3>
                 <button
-                  className="text-gray-500 hover:text-gray-700"
+                  className="text-slate-700 hover:text-gray-700"
                   onClick={() => setShowCreateModal(false)}
                 >
                   <XCircle className="h-6 w-6" />

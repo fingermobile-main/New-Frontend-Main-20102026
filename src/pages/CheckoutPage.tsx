@@ -149,7 +149,7 @@ const CheckoutPage: React.FC = () => {
                         <h3 className="text-sm font-medium text-gray-900">
                           {item.name}
                         </h3>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-slate-700">
                           Quantity: {item.quantity}
                         </p>
                       </div>
@@ -178,11 +178,11 @@ const CheckoutPage: React.FC = () => {
             <div className="border-t border-slate-300 p-6">
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <p className="text-gray-500">Subtotal</p>
+                  <p className="text-slate-700">Subtotal</p>
                   <p className="text-gray-900">${subtotal.toFixed(2)}</p>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <p className="text-gray-500">Tax (7.5%)</p>
+                  <p className="text-slate-700">Tax (7.5%)</p>
                   <p className="text-gray-900">${tax.toFixed(2)}</p>
                 </div>
                 <div className="flex justify-between text-lg font-bold pt-4">
@@ -215,7 +215,7 @@ const CheckoutPage: React.FC = () => {
             onClick={handleCheckout}
             disabled={isProcessing || !user || cart.length === 0 || !hasSufficientFunds}
             className={`
-                            w-full mt-6 py-3 px-4 rounded-lg text-white font-medium
+                            w-full mt-6 py-3 px-4 rounded-lg text-slate-700 font-medium
                             ${
     isProcessing || !user || cart.length === 0 || !hasSufficientFunds
       ? 'bg-gray-400 cursor-not-allowed'

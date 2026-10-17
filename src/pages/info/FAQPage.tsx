@@ -185,7 +185,7 @@ const FAQPage: React.FC = () => {
             </Link>
             <Link
               to="/contact-us"
-              className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white text-xs font-bold rounded-xl border border-white/20 transition-colors"
+              className="px-4 py-2 bg-white/10 hover:bg-white/20 text-slate-700 text-xs font-bold rounded-xl border border-white/20 transition-colors"
             >
               Contact Us
             </Link>

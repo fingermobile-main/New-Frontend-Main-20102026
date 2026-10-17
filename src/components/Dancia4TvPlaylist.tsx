@@ -22,8 +22,8 @@ const Dancia4TvPlaylist: React.FC = () => {
     <div className="bg-gray-900/50 rounded-3xl border border-white/5 overflow-hidden backdrop-blur-md">
       <div className="p-6 border-b border-white/5 flex justify-between items-center bg-white/5">
         <div>
-          <h3 className="text-lg font-bold text-white">Your Playlist</h3>
-          <p className="text-xs text-gray-500 font-medium uppercase tracking-tighter mt-0.5">5 Videos • 52 Minutes Total</p>
+          <h3 className="text-lg font-bold text-slate-900">Your Playlist</h3>
+          <p className="text-xs text-slate-700 font-medium uppercase tracking-tighter mt-0.5">5 Videos • 52 Minutes Total</p>
         </div>
         <button className="p-2 bg-blue-600 rounded-xl text-white hover:bg-blue-500 transition-colors shadow-lg shadow-blue-900/40">
           <Plus size={20} />

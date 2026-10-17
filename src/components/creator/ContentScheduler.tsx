@@ -148,7 +148,7 @@ const ContentScheduler: React.FC<ContentSchedulerProps> = ({ creatorId, onSchedu
             placeholder="Write your content here..."
             required
           />
-          <p className="text-xs text-gray-500 mt-1">{content.length} characters</p>
+          <p className="text-xs text-slate-700 mt-1">{content.length} characters</p>
         </div>
 
         {/* Schedule Date & Time */}

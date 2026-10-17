@@ -199,7 +199,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
       <div className="bg-gradient-to-r from-purple-700 via-indigo-600 to-blue-600 p-6 text-white flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="p-2.5 bg-white/20 backdrop-blur-md rounded-xl">
-            <SparklesIcon className="w-7 h-7 text-white" />
+            <SparklesIcon className="w-7 h-7 text-slate-700" />
           </div>
           <div>
             <h2 className="text-xl font-bold tracking-tight">Postcard &amp; Rich Media Studio</h2>
@@ -277,7 +277,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
                 <span className="text-sm font-bold text-gray-900">
                   AI-Generated Content Declaration
                 </span>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-slate-700">
                   Transparency compliance: Declare synthetic, modified, or generative media
                 </p>
               </div>
@@ -452,7 +452,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
               <button
                 type="button"
                 onClick={() => setActiveAttachmentDrawer(null)}
-                className="text-xs text-gray-500 hover:text-gray-800"
+                className="text-xs text-slate-700 hover:text-gray-800"
               >
                 Cancel
               </button>
@@ -901,7 +901,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
                   key={`${att.type}-${idx}`}
                   className="px-3 py-1.5 bg-gray-100 border border-slate-300 rounded-lg flex items-center gap-2 text-xs"
                 >
-                  <PaperClipIcon className="w-3.5 h-3.5 text-gray-500" />
+                  <PaperClipIcon className="w-3.5 h-3.5 text-slate-700" />
                   <span className="font-semibold text-gray-800 capitalize">
                     {att.type.replace('_', ' ')}
                   </span>
@@ -920,7 +920,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
 
         {/* Postcard Publish Bar */}
         <div className="pt-4 border-t border-slate-200 flex items-center justify-between">
-          <div className="text-xs text-gray-500">
+          <div className="text-xs text-slate-700">
             {isCaptionValid ? (
               <span className="text-green-600 font-medium flex items-center gap-1">
                 <CheckCircleIcon className="w-4 h-4" /> Ready to publish

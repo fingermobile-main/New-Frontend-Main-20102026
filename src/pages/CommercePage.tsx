@@ -26,7 +26,7 @@ const CommercePage: React.FC = () => {
           <div className="bg-white rounded-xl shadow p-6 border border-slate-200">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-500">Total Revenue</p>
+                <p className="text-sm font-medium text-slate-700">Total Revenue</p>
                 <p className="text-2xl font-bold mt-1">₦42.8M</p>
                 <p className="text-sm mt-1 text-green-500">
                   <TrendingUp className="h-4 w-4 inline mr-1" />
@@ -42,7 +42,7 @@ const CommercePage: React.FC = () => {
           <div className="bg-white rounded-xl shadow p-6 border border-slate-200">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-500">Orders</p>
+                <p className="text-sm font-medium text-slate-700">Orders</p>
                 <p className="text-2xl font-bold mt-1">1,242</p>
                 <p className="text-sm mt-1 text-green-500">
                   <TrendingUp className="h-4 w-4 inline mr-1" />
@@ -58,7 +58,7 @@ const CommercePage: React.FC = () => {
           <div className="bg-white rounded-xl shadow p-6 border border-slate-200">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-500">Conversion Rate</p>
+                <p className="text-sm font-medium text-slate-700">Conversion Rate</p>
                 <p className="text-2xl font-bold mt-1">4.2%</p>
                 <p className="text-sm mt-1 text-red-500">
                   <TrendingDown className="h-4 w-4 inline mr-1" />
@@ -74,7 +74,7 @@ const CommercePage: React.FC = () => {
           <div className="bg-white rounded-xl shadow p-6 border border-slate-200">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-500">Avg. Order Value</p>
+                <p className="text-sm font-medium text-slate-700">Avg. Order Value</p>
                 <p className="text-2xl font-bold mt-1">₦34,460</p>
                 <p className="text-sm mt-1 text-green-500">
                   <TrendingUp className="h-4 w-4 inline mr-1" />
@@ -100,7 +100,7 @@ const CommercePage: React.FC = () => {
                 />
                 <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-700" />
               </div>
-              <button className="p-2 text-slate-700 hover:text-gray-500 border border-gray-300 rounded-lg">
+              <button className="p-2 text-slate-700 hover:text-slate-700 border border-gray-300 rounded-lg">
                 <Filter className="h-4 w-4" />
               </button>
             </div>
@@ -110,12 +110,12 @@ const CommercePage: React.FC = () => {
             <table className="min-w-full divide-y divide-gray-200">
               <thead>
                 <tr>
-                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
-                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
-                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stock</th>
-                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Product</th>
+                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Category</th>
+                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Price</th>
+                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Stock</th>
+                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Status</th>
+                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -127,13 +127,13 @@ const CommercePage: React.FC = () => {
                       </div>
                       <div className="ml-4">
                         <div className="text-sm font-medium text-gray-900">Premium Widget</div>
-                        <div className="text-sm text-gray-500">SKU: PW-001</div>
+                        <div className="text-sm text-slate-700">SKU: PW-001</div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Electronics</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">₦15,000</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">42</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">Electronics</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">₦15,000</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">42</td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-950 border border-green-400 font-bold">
                       In Stock
@@ -154,13 +154,13 @@ const CommercePage: React.FC = () => {
                       </div>
                       <div className="ml-4">
                         <div className="text-sm font-medium text-gray-900">Standard Gadget</div>
-                        <div className="text-sm text-gray-500">SKU: SG-002</div>
+                        <div className="text-sm text-slate-700">SKU: SG-002</div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Gadgets</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">₦8,500</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">0</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">Gadgets</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">₦8,500</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">0</td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-950 border border-red-400 font-bold">
                       Out of Stock
@@ -181,13 +181,13 @@ const CommercePage: React.FC = () => {
                       </div>
                       <div className="ml-4">
                         <div className="text-sm font-medium text-gray-900">Advanced Device</div>
-                        <div className="text-sm text-gray-500">SKU: AD-003</div>
+                        <div className="text-sm text-slate-700">SKU: AD-003</div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Devices</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">₦22,000</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">18</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">Devices</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">₦22,000</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">18</td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-950 border border-green-400 font-bold">
                       In Stock

@@ -937,7 +937,7 @@ export const MasterWidgetConsole: React.FC = () => {
                       <td className="py-3 px-4">
                         <div className="flex items-center gap-2">
                           <div
-                            className="w-7 h-7 rounded-lg flex items-center justify-center text-white shrink-0 shadow-xs"
+                            className="w-7 h-7 rounded-lg flex items-center justify-center text-slate-700 shrink-0 shadow-xs"
                             style={{ backgroundColor: w.accentColor || '#059669' }}
                           >
                             <span className="font-mono text-xs font-black">

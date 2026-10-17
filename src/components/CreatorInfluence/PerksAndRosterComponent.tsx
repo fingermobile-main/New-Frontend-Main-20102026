@@ -185,7 +185,7 @@ const PerksAndRosterComponent: React.FC = () => {
       {/* MRR & Metrics Overview */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+          <p className="text-xs font-semibold text-slate-700 uppercase tracking-wider">
             Total Active VIPs
           </p>
           <p className="text-2xl font-black text-gray-900 mt-1">148 Subscribers</p>
@@ -193,7 +193,7 @@ const PerksAndRosterComponent: React.FC = () => {
         </div>
 
         <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+          <p className="text-xs font-semibold text-slate-700 uppercase tracking-wider">
             Monthly Recurring Revenue (MRR)
           </p>
           <p className="text-2xl font-black text-brand-blue mt-1">
@@ -203,19 +203,19 @@ const PerksAndRosterComponent: React.FC = () => {
         </div>
 
         <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+          <p className="text-xs font-semibold text-slate-700 uppercase tracking-wider">
             Retention Rate
           </p>
           <p className="text-2xl font-black text-gray-900 mt-1">94.8%</p>
-          <span className="text-xs text-gray-500">Churn rate &lt; 5.2%</span>
+          <span className="text-xs text-slate-700">Churn rate &lt; 5.2%</span>
         </div>
 
         <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+          <p className="text-xs font-semibold text-slate-700 uppercase tracking-wider">
             Average Member LTV
           </p>
           <p className="text-2xl font-black text-purple-600 mt-1">₦42,500</p>
-          <span className="text-xs text-gray-500">Across 3 VIP tiers</span>
+          <span className="text-xs text-slate-700">Across 3 VIP tiers</span>
         </div>
       </div>
 
@@ -226,7 +226,7 @@ const PerksAndRosterComponent: React.FC = () => {
             <h3 className="text-lg font-bold text-gray-900">
               Creator Tier Perks Management Studio
             </h3>
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-slate-700">
               Customize member badges and unlockable perks across Silver, Gold, and Diamond tiers
             </p>
           </div>
@@ -337,7 +337,7 @@ const PerksAndRosterComponent: React.FC = () => {
         <div className="p-6 border-b border-slate-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
             <h3 className="text-lg font-bold text-gray-900">VIP Subscriber Roster</h3>
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-slate-700">
               Live roster analytics and retention tracking for paying members
             </p>
           </div>
@@ -381,7 +381,7 @@ const PerksAndRosterComponent: React.FC = () => {
                   <td className="px-6 py-4">
                     <div>
                       <div className="font-bold text-gray-900">{sub.name}</div>
-                      <div className="text-gray-500 text-[11px]">{sub.handle}</div>
+                      <div className="text-slate-700 text-[11px]">{sub.handle}</div>
                     </div>
                   </td>
                   <td className="px-6 py-4">
@@ -400,7 +400,7 @@ const PerksAndRosterComponent: React.FC = () => {
                   <td className="px-6 py-4 font-mono font-bold text-gray-900">
                     ₦{sub.monthlyContribution.toLocaleString()}
                   </td>
-                  <td className="px-6 py-4 text-gray-500">{sub.joinedAt}</td>
+                  <td className="px-6 py-4 text-slate-800">{sub.joinedAt}</td>
                   <td className="px-6 py-4">
                     <span
                       className={`inline-flex items-center px-2 py-0.5 rounded-md font-medium text-[11px] ${

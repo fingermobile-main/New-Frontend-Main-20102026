@@ -175,7 +175,7 @@ const SubscriptionDashboard: React.FC<SubscriptionDashboardProps> = ({
                         style={{ width: `${Math.min(100, usage.usage_percentage)}%` }}
                       ></div>
                     </div>
-                    <div className="mt-2 text-right text-xs text-gray-500">
+                    <div className="mt-2 text-right text-xs text-slate-700">
                       {Math.round(usage.usage_percentage)}% of features utilized
                     </div>
                   </div>
@@ -268,16 +268,16 @@ const SubscriptionDashboard: React.FC<SubscriptionDashboardProps> = ({
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                   Date
                 </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                   Description
                 </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                   Amount
                 </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                   Status
                 </th>
               </tr>
@@ -286,13 +286,13 @@ const SubscriptionDashboard: React.FC<SubscriptionDashboardProps> = ({
               {billingHistory.length > 0 ? (
                 billingHistory.slice(0, 5).map((item, index) => (
                   <tr key={`item-${index}`}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                       {formatDate(item.date)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                       {item.description}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                       {formatCurrency(item.amount || 0)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -304,7 +304,7 @@ const SubscriptionDashboard: React.FC<SubscriptionDashboardProps> = ({
                 ))
               ) : (
                 <tr>
-                  <td colSpan={4} className="px-6 py-4 text-center text-sm text-gray-500">
+                  <td colSpan={4} className="px-6 py-4 text-center text-sm text-slate-800">
                     No billing history available
                   </td>
                 </tr>
@@ -337,7 +337,7 @@ const SubscriptionDashboard: React.FC<SubscriptionDashboardProps> = ({
                       Cancel Subscription
                     </h3>
                     <div className="mt-2">
-                      <p className="text-sm text-gray-500">
+                      <p className="text-sm text-slate-700">
                         Are you sure you want to cancel your subscription? Your access to premium features will end at the end of the current billing period.
                       </p>
 

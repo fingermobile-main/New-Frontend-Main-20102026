@@ -30,7 +30,7 @@ const StatsCard: React.FC<StatsCardProps> = React.memo(({ title, value, icon }) 
       </div>
       <div className="ml-4">
         <p className="text-2xl sm:text-3xl font-bold text-gray-900">{value}</p>
-        <p className="text-sm sm:text-base text-gray-500">{title}</p>
+        <p className="text-sm sm:text-base text-slate-700">{title}</p>
       </div>
     </div>
   </div>
@@ -319,7 +319,7 @@ const ELearningPage: React.FC = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center">
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900">Why Choose Our E-Learning Platform</h2>
-            <p className="mt-4 max-w-2xl mx-auto text-base sm:text-lg lg:text-xl text-gray-500">
+            <p className="mt-4 max-w-2xl mx-auto text-base sm:text-lg lg:text-xl text-slate-700">
               Designed to provide the best learning experience for modern learners
             </p>
           </div>
@@ -343,7 +343,7 @@ const ELearningPage: React.FC = () => {
           <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
             <div>
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900">Featured Courses</h2>
-              <p className="mt-2 max-w-2xl text-base sm:text-lg text-gray-500">
+              <p className="mt-2 max-w-2xl text-base sm:text-lg text-slate-700">
                 Hand-picked courses to advance your skills
               </p>
             </div>
@@ -371,7 +371,7 @@ const ELearningPage: React.FC = () => {
             <div className="text-center py-12">
               <BookOpenIcon className="mx-auto h-12 w-12 text-slate-700" />
               <h3 className="mt-2 text-lg font-medium text-gray-900">No courses found</h3>
-              <p className="mt-1 text-gray-500 text-base sm:text-lg">Try adjusting your search or filter criteria.</p>
+              <p className="mt-1 text-slate-700 text-base sm:text-lg">Try adjusting your search or filter criteria.</p>
             </div>
           ) : (
             <div className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
@@ -406,7 +406,7 @@ const ELearningPage: React.FC = () => {
         <div className="max-w-7xl mx-auto">
           <div>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900">Recommended Courses</h2>
-            <p className="mt-2 max-w-2xl text-base sm:text-lg text-gray-500">
+            <p className="mt-2 max-w-2xl text-base sm:text-lg text-slate-700">
               Based on your interests and learning history
             </p>
           </div>

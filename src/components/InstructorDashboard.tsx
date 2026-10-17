@@ -79,14 +79,14 @@ const InstructorDashboard: React.FC<InstructorDashboardProps> = ({ courses: prop
               <div className="flex items-center justify-between py-2 border-b border-slate-200">
                 <div>
                   <p className="text-sm font-medium text-gray-900">New enrollment in "Introduction to Web Development"</p>
-                  <p className="text-xs text-gray-500">2 hours ago</p>
+                  <p className="text-xs text-slate-700">2 hours ago</p>
                 </div>
                 <span className="text-sm text-green-600 font-medium">+1 student</span>
               </div>
               <div className="flex items-center justify-between py-2 border-b border-slate-200">
                 <div>
                   <p className="text-sm font-medium text-gray-900">Course review received</p>
-                  <p className="text-xs text-gray-500">5 hours ago</p>
+                  <p className="text-xs text-slate-700">5 hours ago</p>
                 </div>
                 <span className="text-sm text-yellow-600 font-medium">⭐ 5.0</span>
               </div>
@@ -108,7 +108,7 @@ const InstructorDashboard: React.FC<InstructorDashboardProps> = ({ courses: prop
                   <div className="flex-1">
                     <h3 className="text-lg font-medium text-gray-900">{course.title}</h3>
                     <p className="text-sm text-gray-600 mt-1">{course.description}</p>
-                    <div className="flex items-center gap-4 mt-3 text-sm text-gray-500">
+                    <div className="flex items-center gap-4 mt-3 text-sm text-slate-700">
                       <span>👥 {course.students} students</span>
                       <span>💰 {course.revenue.toLocaleString()} FIC</span>
                       <span>⭐ {course.rating}</span>

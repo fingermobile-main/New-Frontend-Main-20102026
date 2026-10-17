@@ -16,7 +16,7 @@ const HallmarkApprovalPage: React.FC = () => {
           <AnimatedAvatar staticUrl={application.applicant.avatarUrl} altText={application.applicant.name} className="w-12 h-12 rounded-full" />
           <div>
             <p className="font-bold">{application.requestedHallmark.name}</p>
-            <p className="text-sm text-gray-500">by {application.applicant.name} (@{application.applicant.membername})</p>
+            <p className="text-sm text-slate-700">by {application.applicant.name} (@{application.applicant.membername})</p>
           </div>
         </div>
         <div className="flex gap-2">
@@ -46,7 +46,7 @@ const HallmarkApprovalPage: React.FC = () => {
           ))}
         </div>
       ) : (
-        <div className="text-center text-gray-500 py-12 bg-white rounded-xl shadow-md">
+        <div className="text-center text-slate-700 py-12 bg-white rounded-xl shadow-md">
           <p className="font-semibold">The approval queue is empty.</p>
         </div>
       )}

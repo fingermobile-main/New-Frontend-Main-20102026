@@ -224,7 +224,7 @@ const BrandSizingInfo: React.FC<BrandSizingInfoProps> = ({ brandName }) => {
       {/* Empty State */}
       {!selectedSizing && brandSizings.length === 0 && (
         <div className="text-center py-12 bg-gray-50 rounded-lg">
-          <p className="text-gray-500">No brand sizing information available</p>
+          <p className="text-slate-700">No brand sizing information available</p>
         </div>
       )}
     </div>

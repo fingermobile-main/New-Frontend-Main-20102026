@@ -35,7 +35,7 @@ const TimeSeriesChart: React.FC<TimeSeriesChartProps> = ({
           />
         </svg>
       </div>
-      <div className="flex justify-between mt-2 text-xs text-gray-500">
+      <div className="flex justify-between mt-2 text-xs text-slate-700">
         {data.map((d, i) => (
           <span key={i}>{d.time}</span>
         ))}

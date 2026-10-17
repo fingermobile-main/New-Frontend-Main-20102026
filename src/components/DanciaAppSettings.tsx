@@ -91,7 +91,7 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         <main className="flex-grow flex flex-col min-w-0">
           <header className="p-8 border-b border-white/5 flex justify-between items-center bg-white/[0.02]">
             <h3 className="text-lg font-black text-white uppercase tracking-tight">{activeTab} Settings</h3>
-            <button onClick={onClose} className="p-2.5 bg-white/5 hover:bg-white/10 rounded-xl text-slate-700 hover:text-white transition-all">
+            <button onClick={onClose} className="p-2.5 bg-white/5 hover:bg-white/10 rounded-xl text-slate-700 hover:text-slate-700 transition-all">
               <X size={20} />
             </button>
           </header>
@@ -107,7 +107,7 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                       <div key={loc} className="flex items-center justify-between p-5 bg-white/5 border border-white/5 rounded-2xl hover:bg-white/[0.07] transition-all">
                         <div className="flex items-center space-x-4">
                           <Folder className="text-blue-500" size={20} />
-                          <span className="text-sm font-bold text-white">{loc}</span>
+                          <span className="text-sm font-bold text-slate-700">{loc}</span>
                         </div>
                         <input
                           id={`storage-${loc}`}
@@ -182,12 +182,12 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                         <div className="flex items-center space-x-4">
                           {h.icon}
                           <div>
-                            <span className="text-sm font-bold text-white block">{h.label}</span>
-                            <span className="text-xs text-gray-500">{h.desc}</span>
+                            <span className="text-sm font-bold text-slate-700 block">{h.label}</span>
+                            <span className="text-xs text-slate-700">{h.desc}</span>
                           </div>
                         </div>
                         <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors ${settings.hardwareUse === h.id ? 'border-blue-500 bg-blue-500' : 'border-white/10'}`}>
-                          {settings.hardwareUse === h.id && <Check size={14} className="text-white" />}
+                          {settings.hardwareUse === h.id && <Check size={14} className="text-slate-700" />}
                         </div>
                       </div>
                     ))}
@@ -351,7 +351,7 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                           {item.icon}
                         </div>
                         <div>
-                          <p className="text-sm font-bold text-white uppercase tracking-tight">{item.label}</p>
+                          <p className="text-sm font-bold text-slate-700 uppercase tracking-tight">{item.label}</p>
                           <p className="text-xs text-slate-700 mt-1">{item.desc}</p>
                         </div>
                       </div>
@@ -377,7 +377,7 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                       <div className="flex items-center space-x-4">
                         <Heart className="text-red-500" size={20} />
                         <div>
-                          <p className="text-sm font-bold text-white uppercase tracking-tight">Show Only Favorites</p>
+                          <p className="text-sm font-bold text-slate-700 uppercase tracking-tight">Show Only Favorites</p>
                           <p className="text-xs text-slate-700 mt-1">Display only bookmarked media</p>
                         </div>
                       </div>
@@ -389,7 +389,7 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                       <div className="flex items-center space-x-4">
                         <Video className="text-blue-500" size={20} />
                         <div>
-                          <p className="text-sm font-bold text-white uppercase tracking-tight">Group Videos</p>
+                          <p className="text-sm font-bold text-slate-700 uppercase tracking-tight">Group Videos</p>
                           <p className="text-xs text-slate-700 mt-1">Organize videos by categories</p>
                         </div>
                       </div>
@@ -401,7 +401,7 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                       <div className="flex items-center space-x-4">
                         <Music className="text-purple-500" size={20} />
                         <div>
-                          <p className="text-sm font-bold text-white uppercase tracking-tight">Group Audio</p>
+                          <p className="text-sm font-bold text-slate-700 uppercase tracking-tight">Group Audio</p>
                           <p className="text-xs text-slate-700 mt-1">Organize audio by album/artist</p>
                         </div>
                       </div>
@@ -441,7 +441,7 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                           <div className={idx === 0 ? 'text-blue-500' : 'text-gray-500'}>
                             {sort.icon}
                           </div>
-                          <span className="text-sm font-bold text-white uppercase tracking-tight">{sort.label}</span>
+                          <span className="text-sm font-bold text-slate-700 uppercase tracking-tight">{sort.label}</span>
                         </div>
                         {idx === 0 && <Check size={18} className="text-blue-500" />}
                       </button>
@@ -483,7 +483,7 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                       <div className="flex items-center space-x-4">
                         <CheckCircle className={settings.emailVerificationEnabled ? 'text-green-500' : 'text-gray-500'} size={20} />
                         <div>
-                          <p className="text-sm font-bold text-white">Email Verification</p>
+                          <p className="text-sm font-bold text-slate-700">Email Verification</p>
                           <p className="text-xs text-slate-700">Require email confirmation for sensitive actions</p>
                         </div>
                       </div>
@@ -495,7 +495,7 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                       <div className="flex items-center space-x-4">
                         <CheckCircle className={settings.phoneVerificationEnabled ? 'text-green-500' : 'text-gray-500'} size={20} />
                         <div>
-                          <p className="text-sm font-bold text-white">Phone Verification</p>
+                          <p className="text-sm font-bold text-slate-700">Phone Verification</p>
                           <p className="text-xs text-slate-700">Require phone confirmation for sensitive actions</p>
                         </div>
                       </div>
@@ -513,8 +513,8 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                   <div className="flex items-center space-x-4">
                     <Lock className="text-blue-500" size={24} />
                     <div className="text-left">
-                      <p className="text-md font-bold text-white uppercase tracking-tight">Parental Lock PIN</p>
-                      <p className="text-xs text-gray-500">{settings.appLockPin ? 'Change your security PIN' : 'Set your security PIN'}</p>
+                      <p className="text-md font-bold text-slate-700 uppercase tracking-tight">Parental Lock PIN</p>
+                      <p className="text-xs text-slate-700">{settings.appLockPin ? 'Change your security PIN' : 'Set your security PIN'}</p>
                     </div>
                   </div>
                   <span className="text-xs font-black text-blue-500 uppercase tracking-widest">{settings.appLockPin ? 'Update' : 'Set'} PIN</span>
@@ -522,7 +522,7 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
                 {showPinDialog && (
                   <div className="p-8 bg-white/5 border border-white/5 rounded-3xl space-y-6">
-                    <h4 className="text-sm font-black text-white uppercase tracking-tight">Set Parental PIN</h4>
+                    <h4 className="text-sm font-black text-slate-900 uppercase tracking-tight">Set Parental PIN</h4>
                     <label htmlFor="pinInput" className="sr-only">Enter PIN</label>
                     <input
                       id="pinInput"
@@ -552,7 +552,7 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                       </button>
                       <button
                         onClick={() => { setShowPinDialog(false); setPinInput(''); setPinConfirm(''); }}
-                        className="flex-1 py-4 bg-white/10 hover:bg-white/20 text-white font-bold rounded-2xl transition-all"
+                        className="flex-1 py-4 bg-white/10 hover:bg-white/20 text-slate-700 font-bold rounded-2xl transition-all"
                       >
                         Cancel
                       </button>

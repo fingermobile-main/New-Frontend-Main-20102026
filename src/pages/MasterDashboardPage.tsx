@@ -1205,7 +1205,7 @@ const MasterDashboardPage: React.FC = () => {
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-500">
+                <p className="text-sm font-medium text-slate-700">
                   {metric.name}
                 </p>
                 <p className="text-2xl font-bold mt-1">{metric.value}</p>
@@ -1267,7 +1267,7 @@ const MasterDashboardPage: React.FC = () => {
                 TREASURY
               </span>
             </div>
-            <h4 className="font-bold text-sm text-white group-hover:text-amber-300 transition-colors">
+            <h4 className="font-bold text-sm text-slate-900 group-hover:text-amber-300 transition-colors">
               FIC Minting & Reserves
             </h4>
             <p className="text-xs text-slate-700 mt-1 line-clamp-2">
@@ -1290,7 +1290,7 @@ const MasterDashboardPage: React.FC = () => {
                 CBN COMPLIANT
               </span>
             </div>
-            <h4 className="font-bold text-sm text-white group-hover:text-emerald-300 transition-colors">
+            <h4 className="font-bold text-sm text-slate-900 group-hover:text-emerald-300 transition-colors">
               FIAT Rules & Payout Rails
             </h4>
             <p className="text-xs text-slate-700 mt-1 line-clamp-2">
@@ -1313,7 +1313,7 @@ const MasterDashboardPage: React.FC = () => {
                 70/30 SPLIT
               </span>
             </div>
-            <h4 className="font-bold text-sm text-white group-hover:text-indigo-300 transition-colors">
+            <h4 className="font-bold text-sm text-slate-900 group-hover:text-indigo-300 transition-colors">
               Creator Monetization Engine
             </h4>
             <p className="text-xs text-slate-700 mt-1 line-clamp-2">
@@ -1336,7 +1336,7 @@ const MasterDashboardPage: React.FC = () => {
                 RBAC BRIDGE
               </span>
             </div>
-            <h4 className="font-bold text-sm text-white group-hover:text-cyan-300 transition-colors">
+            <h4 className="font-bold text-sm text-slate-900 group-hover:text-cyan-300 transition-colors">
               Subscription Access Bridge
             </h4>
             <p className="text-xs text-slate-700 mt-1 line-clamp-2">
@@ -1371,7 +1371,7 @@ const MasterDashboardPage: React.FC = () => {
               setActiveTab('governance-ops');
               setConsoleSearchTerm('');
             }}
-            className="px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-bold transition text-white border border-white/20 shrink-0 cursor-pointer"
+            className="px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-bold transition text-slate-700 border border-white/20 shrink-0 cursor-pointer"
           >
             All Governance Consoles &rarr;
           </button>
@@ -1390,7 +1390,7 @@ const MasterDashboardPage: React.FC = () => {
                 5 / 10 SEATS
               </span>
             </div>
-            <h4 className="font-bold text-sm text-white group-hover:text-indigo-300 transition-colors">
+            <h4 className="font-bold text-sm text-slate-900 group-hover:text-indigo-300 transition-colors">
               Roles & Permissions
             </h4>
             <p className="text-xs text-slate-700 mt-1 line-clamp-2">
@@ -1413,7 +1413,7 @@ const MasterDashboardPage: React.FC = () => {
                 10 GATED PAGES
               </span>
             </div>
-            <h4 className="font-bold text-sm text-white group-hover:text-amber-300 transition-colors">
+            <h4 className="font-bold text-sm text-slate-900 group-hover:text-amber-300 transition-colors">
               Site Member Access
             </h4>
             <p className="text-xs text-slate-700 mt-1 line-clamp-2">
@@ -1436,7 +1436,7 @@ const MasterDashboardPage: React.FC = () => {
                 STUDIO ACTIVE
               </span>
             </div>
-            <h4 className="font-bold text-sm text-white group-hover:text-rose-300 transition-colors">
+            <h4 className="font-bold text-sm text-slate-900 group-hover:text-rose-300 transition-colors">
               Member Badges Studio
             </h4>
             <p className="text-xs text-slate-700 mt-1 line-clamp-2">
@@ -1459,7 +1459,7 @@ const MasterDashboardPage: React.FC = () => {
                 12 MODULES
               </span>
             </div>
-            <h4 className="font-bold text-sm text-white group-hover:text-cyan-300 transition-colors">
+            <h4 className="font-bold text-sm text-slate-900 group-hover:text-cyan-300 transition-colors">
               Settings Hub
             </h4>
             <p className="text-xs text-slate-700 mt-1 line-clamp-2">
@@ -1501,22 +1501,22 @@ const MasterDashboardPage: React.FC = () => {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
           <div className="bg-white/5 border border-white/10 rounded-xl p-3">
             <span className="text-[10px] uppercase font-bold text-emerald-300">Google PSI</span>
-            <div className="text-lg font-black text-white mt-0.5">100 / 98</div>
+            <div className="text-lg font-black text-slate-700 mt-0.5">100 / 98</div>
             <span className="text-[10px] text-emerald-400">Desktop / Mobile</span>
           </div>
           <div className="bg-white/5 border border-white/10 rounded-xl p-3">
             <span className="text-[10px] uppercase font-bold text-emerald-300">LCP &amp; INP</span>
-            <div className="text-lg font-black text-white mt-0.5">1.1s / 48ms</div>
+            <div className="text-lg font-black text-slate-700 mt-0.5">1.1s / 48ms</div>
             <span className="text-[10px] text-emerald-400">Optimal CWV</span>
           </div>
           <div className="bg-white/5 border border-white/10 rounded-xl p-3">
             <span className="text-[10px] uppercase font-bold text-emerald-300">Search Engine Index</span>
-            <div className="text-lg font-black text-white mt-0.5">385 Pages</div>
+            <div className="text-lg font-black text-slate-700 mt-0.5">385 Pages</div>
             <span className="text-[10px] text-emerald-400">100% Crawl Ready</span>
           </div>
           <div className="bg-white/5 border border-white/10 rounded-xl p-3">
             <span className="text-[10px] uppercase font-bold text-emerald-300">B-Tree Seek Latency</span>
-            <div className="text-lg font-black text-white mt-0.5">&lt; 1.5ms</div>
+            <div className="text-lg font-black text-slate-700 mt-0.5">&lt; 1.5ms</div>
             <span className="text-[10px] text-emerald-400">Zero Full Scans</span>
           </div>
         </div>
@@ -1570,7 +1570,7 @@ const MasterDashboardPage: React.FC = () => {
                   <h4 className="font-semibold text-sm text-gray-900 truncate">
                     {section.title}
                   </h4>
-                  <p className="text-xs text-gray-500 truncate">
+                  <p className="text-xs text-slate-700 truncate">
                     {section.description}
                   </p>
                 </div>
@@ -1589,7 +1589,7 @@ const MasterDashboardPage: React.FC = () => {
                 >
                   {section.status}
                 </span>
-                <span className="text-xs font-medium text-gray-500">
+                <span className="text-xs font-medium text-slate-700">
                   {section.healthScore}%
                 </span>
               </div>
@@ -1611,7 +1611,7 @@ const MasterDashboardPage: React.FC = () => {
               >
                 <div>
                   <p className="font-medium text-sm">{component.name}</p>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-xs text-slate-700">
                     Response: {component.responseTime}ms
                   </p>
                 </div>
@@ -1681,7 +1681,7 @@ const MasterDashboardPage: React.FC = () => {
                   <p className="text-sm font-medium text-gray-900">
                     {alert.title}
                   </p>
-                  <p className="text-sm text-gray-500">{alert.description}</p>
+                  <p className="text-sm text-slate-700">{alert.description}</p>
                   <div className="flex items-center mt-1 text-xs text-slate-700">
                     <span>{alert.timestamp}</span>
                     <span className="mx-2">•</span>
@@ -1713,16 +1713,16 @@ const MasterDashboardPage: React.FC = () => {
           <table className="min-w-full divide-y divide-gray-200">
             <thead>
               <tr>
-                <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                   Member
                 </th>
-                <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                   Action
                 </th>
-                <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                   Time
                 </th>
-                <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                   Location
                 </th>
               </tr>
@@ -1733,13 +1733,13 @@ const MasterDashboardPage: React.FC = () => {
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                     {activity.member}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                     {activity.action}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                     {activity.timestamp}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                     {activity.location}
                   </td>
                 </tr>
@@ -1850,7 +1850,7 @@ const MasterDashboardPage: React.FC = () => {
                         {section.title}
                       </div>
                       <div
-                        className="text-xs text-gray-500 truncate"
+                        className="text-xs text-slate-700 truncate"
                         title={section.description}
                       >
                         {section.description}
@@ -1895,12 +1895,12 @@ const MasterDashboardPage: React.FC = () => {
                     </span>
                   </div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800 font-mono">
                   {section.responseTime > 0
                     ? `${section.responseTime}ms`
                     : 'N/A'}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-xs text-gray-500">
+                <td className="px-6 py-4 whitespace-nowrap text-xs text-slate-800">
                   {new Date(section.lastUpdated).toLocaleString()}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-right space-x-2">
@@ -1954,7 +1954,7 @@ const MasterDashboardPage: React.FC = () => {
                     <span className="text-sm font-medium text-gray-700">
                       {component.name}
                     </span>
-                    <span className="text-sm text-gray-500">
+                    <span className="text-sm text-slate-700">
                       {component.responseTime}ms
                     </span>
                   </div>
@@ -2018,7 +2018,7 @@ const MasterDashboardPage: React.FC = () => {
                 )}
                 %
               </div>
-              <div className="text-sm text-gray-500 mt-1">
+              <div className="text-sm text-slate-700 mt-1">
                 Average Health Score
               </div>
               <div className="mt-3 w-32 h-32 mx-auto relative">
@@ -2076,19 +2076,19 @@ const MasterDashboardPage: React.FC = () => {
           <table className="min-w-full divide-y divide-gray-200">
             <thead>
               <tr>
-                <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                   Component
                 </th>
-                <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                   Status
                 </th>
-                <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                   Health Score
                 </th>
-                <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                   Response Time
                 </th>
-                <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                   Last Updated
                 </th>
               </tr>
@@ -2128,15 +2128,15 @@ const MasterDashboardPage: React.FC = () => {
                           style={{ width: `${component.healthScore}%` }}
                         ></div>
                       </div>
-                      <span className="text-sm text-gray-500">
+                      <span className="text-sm text-slate-700">
                         {component.healthScore}%
                       </span>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                     {component.responseTime}ms
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                     {new Date(component.lastUpdated).toLocaleString()}
                   </td>
                 </tr>
@@ -2218,7 +2218,7 @@ const MasterDashboardPage: React.FC = () => {
                     <p className="text-sm font-medium text-gray-900 truncate">
                       {alert.title}
                     </p>
-                    <p className="text-xs text-gray-500 break-words mt-0.5">
+                    <p className="text-xs text-slate-700 break-words mt-0.5">
                       {alert.description}
                     </p>
                     <div className="flex items-center mt-1 text-xs text-slate-700">
@@ -2278,7 +2278,7 @@ const MasterDashboardPage: React.FC = () => {
                   <p className="text-sm font-medium text-gray-900 truncate">
                     {activity.member}
                   </p>
-                  <p className="text-xs text-gray-500 break-words mt-0.5">
+                  <p className="text-xs text-slate-700 break-words mt-0.5">
                     {activity.action}
                   </p>
                   <div className="flex items-center mt-1 text-xs text-slate-700">
@@ -2341,7 +2341,7 @@ const MasterDashboardPage: React.FC = () => {
               </button>
               <button
                 onClick={() => setIsNotificationsModalOpen(true)}
-                className="p-2 text-gray-500 hover:text-blue-600 hover:bg-gray-100 rounded-lg relative transition"
+                className="p-2 text-slate-700 hover:text-blue-600 hover:bg-gray-100 rounded-lg relative transition"
                 title="View Notifications"
               >
                 <Bell className="h-5 w-5" />
@@ -2354,7 +2354,7 @@ const MasterDashboardPage: React.FC = () => {
               </button>
               <button
                 onClick={() => setIsMessagesModalOpen(true)}
-                className="p-2 text-gray-500 hover:text-blue-600 hover:bg-gray-100 rounded-lg relative transition"
+                className="p-2 text-slate-700 hover:text-blue-600 hover:bg-gray-100 rounded-lg relative transition"
                 title="View System Messages"
               >
                 <Mail className="h-5 w-5" />
@@ -2372,7 +2372,7 @@ const MasterDashboardPage: React.FC = () => {
                 />
                 <div className="hidden sm:block text-left text-xs leading-tight">
                   <div className="font-bold text-gray-900 dark:text-white truncate max-w-[120px]">{syncedProfile.name}</div>
-                  <div className="text-[10px] text-gray-500 font-mono">@{syncedProfile.username}</div>
+                  <div className="text-[10px] text-slate-700 font-mono">@{syncedProfile.username}</div>
                 </div>
               </div>
             </div>
@@ -2516,7 +2516,7 @@ const MasterDashboardPage: React.FC = () => {
                                       {section.title}
                                     </h5>
                                     <p
-                                      className="text-[11px] text-gray-500 truncate"
+                                      className="text-[11px] text-slate-700 truncate"
                                       title={section.description}
                                     >
                                       {section.description}
@@ -2603,7 +2603,7 @@ const MasterDashboardPage: React.FC = () => {
                       >
                         {section.description}
                       </p>
-                      <div className="pt-3 border-t border-slate-200 flex items-center justify-between text-xs text-gray-500">
+                      <div className="pt-3 border-t border-slate-200 flex items-center justify-between text-xs text-slate-700">
                         <span className="font-mono text-blue-600 truncate max-w-[150px]">
                           {section.route}
                         </span>
@@ -2744,7 +2744,7 @@ const MasterDashboardPage: React.FC = () => {
                     <h2 className="text-xl font-semibold text-gray-900">
                       All Modules & Service Consoles
                     </h2>
-                    <p className="text-xs text-gray-500 mt-0.5">
+                    <p className="text-xs text-slate-700 mt-0.5">
                       Explore and launch all {sections.length} core platform
                       services.
                     </p>
@@ -2793,7 +2793,7 @@ const MasterDashboardPage: React.FC = () => {
                             {section.title}
                           </h4>
                           <p
-                            className="text-xs text-gray-500 truncate"
+                            className="text-xs text-slate-700 truncate"
                             title={section.description}
                           >
                             {section.description}
@@ -2813,7 +2813,7 @@ const MasterDashboardPage: React.FC = () => {
                           >
                             {section.status}
                           </span>
-                          <span className="text-[11px] text-gray-500 font-semibold mt-1">
+                          <span className="text-[11px] text-slate-700 font-semibold mt-1">
                             {section.healthScore}%
                           </span>
                         </div>
@@ -2856,7 +2856,7 @@ const MasterDashboardPage: React.FC = () => {
                 <h3 className="font-bold text-gray-900 text-base">
                   System Notifications
                 </h3>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-slate-700">
                   Active alerts requiring administrator attention
                 </p>
               </div>
@@ -2869,7 +2869,7 @@ const MasterDashboardPage: React.FC = () => {
             </div>
             <div className="p-6 max-h-[60vh] overflow-y-auto space-y-3">
               {alerts.length === 0 ? (
-                <p className="text-sm text-gray-500 text-center py-6">
+                <p className="text-sm text-slate-700 text-center py-6">
                   No pending notifications.
                 </p>
               ) : (
@@ -2921,7 +2921,7 @@ const MasterDashboardPage: React.FC = () => {
                 <h3 className="font-bold text-gray-900 text-base">
                   Protocol In-Box
                 </h3>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-slate-700">
                   Direct system dispatches and gateway events
                 </p>
               </div>
@@ -2952,7 +2952,7 @@ const MasterDashboardPage: React.FC = () => {
                   <span className="text-xs font-bold text-gray-900">
                     Guardian Enclave Subsystem
                   </span>
-                  <span className="text-[10px] text-gray-500 font-mono">
+                  <span className="text-[10px] text-slate-700 font-mono">
                     15m ago
                   </span>
                 </div>
@@ -2983,7 +2983,7 @@ const MasterDashboardPage: React.FC = () => {
                 <h3 className="font-bold text-gray-900 text-base">
                   Edit Section: {selectedSectionForEdit.title}
                 </h3>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-slate-700">
                   Configure route, description, and status
                 </p>
               </div>
@@ -3091,7 +3091,7 @@ const MasterDashboardPage: React.FC = () => {
                 <h3 className="font-bold text-gray-900 text-base">
                   Add New Platform Section
                 </h3>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-slate-700">
                   Register a new module to the Master Dashboard
                 </p>
               </div>

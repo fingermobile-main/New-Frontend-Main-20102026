@@ -47,9 +47,9 @@ const SupportDashboardPage: React.FC = () => {
         <div className="flex justify-between items-center">
           <div>
             <h3 className="font-bold">{selectedTicket?.subject}</h3>
-            <p className="text-xs text-gray-500">From: {selectedTicket?.member?.name || 'Unknown'}</p>
+            <p className="text-xs text-slate-700">From: {selectedTicket?.member?.name || 'Unknown'}</p>
           </div>
-          <button onClick={() => setSelectedTicket(null)} className="text-gray-500 hover:text-gray-800">&times;</button>
+          <button onClick={() => setSelectedTicket(null)} className="text-slate-700 hover:text-gray-800">&times;</button>
         </div>
       </div>
       <div className="flex-1 p-4 space-y-3 overflow-y-auto flex flex-col">
@@ -104,7 +104,7 @@ const SupportDashboardPage: React.FC = () => {
           {selectedTicket ? (
             <TicketDetailView />
           ) : (
-            <div className="bg-white p-12 rounded-xl shadow-md text-center text-gray-500 h-full flex items-center justify-center">
+            <div className="bg-white p-12 rounded-xl shadow-md text-center text-slate-700 h-full flex items-center justify-center">
               <p>Select a ticket to view details and respond.</p>
             </div>
           )}

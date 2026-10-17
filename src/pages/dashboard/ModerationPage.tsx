@@ -89,7 +89,7 @@ const ModerationPage: React.FC = () => {
                     {' for '}
                     <span className="font-semibold text-red-600">{item.reason}</span>
                   </p>
-                  <p className="text-xs text-gray-500 mt-1">Priority: {item.priority.toUpperCase()}</p>
+                  <p className="text-xs text-slate-700 mt-1">Priority: {item.priority.toUpperCase()}</p>
                 </div>
                 <p className="text-xs text-slate-700">
                   {new Date(item.created_at).toLocaleString()}
@@ -122,10 +122,10 @@ const ModerationPage: React.FC = () => {
           ))}
         </div>
       ) : (
-        <div className="text-center text-gray-500 py-16 bg-white rounded-xl border border-slate-300 shadow-sm">
+        <div className="text-center text-slate-700 py-16 bg-white rounded-xl border border-slate-300 shadow-sm">
           <CheckCircle2 className="w-12 h-12 text-green-500 mx-auto mb-3" />
           <p className="text-lg font-semibold text-gray-800">The moderation queue is clear!</p>
-          <p className="text-sm text-gray-500 mt-1">No content is currently flagged or awaiting review.</p>
+          <p className="text-sm text-slate-700 mt-1">No content is currently flagged or awaiting review.</p>
         </div>
       )}
     </div>

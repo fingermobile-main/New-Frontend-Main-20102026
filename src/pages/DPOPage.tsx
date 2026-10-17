@@ -90,7 +90,7 @@ const DPOPage: React.FC = () => {
               </div>
               <p className="text-slate-700">Nigeria (NDPA 2023) • EU (GDPR) • Global</p>
               <div className="text-[11px] text-slate-700 pt-1 border-t border-white/10">
-                Official Contact: <span className="text-white font-mono">dpo@fingermobileprotocol.com</span>
+                Official Contact: <span className="text-slate-700 font-mono">dpo@fingermobileprotocol.com</span>
               </div>
             </div>
           </div>
@@ -170,7 +170,7 @@ const DPOPage: React.FC = () => {
                 <h2 className="text-xl font-bold text-gray-900 dark:text-white">
                   Statutory Data Protection Framework
                 </h2>
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                <p className="text-xs text-slate-700 dark:text-gray-400 mt-1">
                   Enforcing the 6 core tenets of sovereign data privacy under the Nigeria Data Protection Act (NDPA 2023) and General Data Protection Regulation (GDPR)
                 </p>
               </div>
@@ -237,7 +237,7 @@ const DPOPage: React.FC = () => {
               <h2 className="text-xl font-bold text-gray-900 dark:text-white">
                 Submit a Data Subject Access Request (SAR)
               </h2>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              <p className="text-xs text-slate-700 dark:text-gray-400 mt-1">
                 Exercise your statutory rights under NDPA 2023 and GDPR Articles 15-22. Our DPO office acknowledges requests within 48 business hours.
               </p>
             </div>
@@ -363,7 +363,7 @@ const DPOPage: React.FC = () => {
               <h2 className="text-xl font-bold text-gray-900 dark:text-white">
                 Cryptographic Consent & Audit Verification
               </h2>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              <p className="text-xs text-slate-700 dark:text-gray-400 mt-1">
                 Zero-knowledge proof-of-consent logs and real-time security auditing
               </p>
             </div>

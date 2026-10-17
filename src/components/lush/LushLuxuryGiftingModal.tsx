@@ -184,7 +184,7 @@ export const LushLuxuryGiftingModal: React.FC<LushLuxuryGiftingModalProps> = ({
                   Subscription VIP Unlocked
                 </span>
               </div>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-slate-700">
                 To Encore Member <strong className="text-gray-900">{member.name}</strong> · Rated ⭐ {member.rating.toFixed(1)}/5.0
               </p>
             </div>
@@ -308,7 +308,7 @@ export const LushLuxuryGiftingModal: React.FC<LushLuxuryGiftingModalProps> = ({
                         <h4 className="text-xs font-bold text-gray-900 line-clamp-1">
                           {gift.title}
                         </h4>
-                        <p className="text-[11px] text-gray-500 line-clamp-2 mt-0.5 leading-snug">
+                        <p className="text-[11px] text-slate-700 line-clamp-2 mt-0.5 leading-snug">
                           {gift.tagline}
                         </p>
                       </div>
@@ -358,11 +358,11 @@ export const LushLuxuryGiftingModal: React.FC<LushLuxuryGiftingModalProps> = ({
 
                 <div className="p-2.5 bg-white border border-emerald-100 rounded-xl space-y-1 text-[11px] text-gray-600">
                   <div className="flex justify-between">
-                    <span className="text-gray-500">Tier / Rarity:</span>
+                    <span className="text-slate-700">Tier / Rarity:</span>
                     <strong className="text-gray-900">{selectedItem.rarity}</strong>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-500">Delivery Method:</span>
+                    <span className="text-slate-700">Delivery Method:</span>
                     <strong className="text-gray-900">{selectedItem.deliveryMethod}</strong>
                   </div>
                 </div>

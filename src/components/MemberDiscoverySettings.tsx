@@ -44,7 +44,7 @@ const MemberDiscoverySettings: React.FC<MemberDiscoverySettingsProps> = ({
             </div>
             <div>
               <p className="font-medium text-gray-900">Profile Visibility</p>
-              <p className="text-sm text-gray-500">Allow others to view your profile</p>
+              <p className="text-sm text-slate-700">Allow others to view your profile</p>
             </div>
           </div>
           <label className="relative inline-flex items-center cursor-pointer">
@@ -69,7 +69,7 @@ const MemberDiscoverySettings: React.FC<MemberDiscoverySettingsProps> = ({
             </div>
             <div>
               <p className="font-medium text-gray-900">Show in Search</p>
-              <p className="text-sm text-gray-500">Appear in member search results</p>
+              <p className="text-sm text-slate-700">Appear in member search results</p>
             </div>
           </div>
           <label className="relative inline-flex items-center cursor-pointer">
@@ -94,7 +94,7 @@ const MemberDiscoverySettings: React.FC<MemberDiscoverySettingsProps> = ({
             </div>
             <div>
               <p className="font-medium text-gray-900">Direct Messages</p>
-              <p className="text-sm text-gray-500">Allow members to message you</p>
+              <p className="text-sm text-slate-700">Allow members to message you</p>
             </div>
           </div>
           <label className="relative inline-flex items-center cursor-pointer">
@@ -119,7 +119,7 @@ const MemberDiscoverySettings: React.FC<MemberDiscoverySettingsProps> = ({
             </div>
             <div>
               <p className="font-medium text-gray-900">Activity Status</p>
-              <p className="text-sm text-gray-500">Show when you're online</p>
+              <p className="text-sm text-slate-700">Show when you're online</p>
             </div>
           </div>
           <label className="relative inline-flex items-center cursor-pointer">

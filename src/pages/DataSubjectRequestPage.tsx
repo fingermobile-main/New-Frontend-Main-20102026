@@ -154,7 +154,7 @@ const DataSubjectRequestPage: React.FC = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`px-6 py-2 rounded-md font-medium text-white ${
+                className={`px-6 py-2 rounded-md font-medium text-slate-700 ${
                   isSubmitting
                     ? 'bg-gray-400 cursor-not-allowed'
                     : 'bg-blue-600 hover:bg-blue-700'

@@ -6,7 +6,7 @@ interface EnhancedRenderedComponentProps {
 
 const EnhancedRenderedComponent: React.FC<EnhancedRenderedComponentProps> = ({ component }) => {
   if (!component) {
-    return <div className="p-4 bg-gray-50 rounded-lg text-center text-gray-500">No component to render</div>;
+    return <div className="p-4 bg-gray-50 rounded-lg text-center text-slate-700">No component to render</div>;
   }
 
   return (

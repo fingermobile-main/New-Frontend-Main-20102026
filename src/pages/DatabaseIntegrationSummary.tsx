@@ -41,7 +41,7 @@ const DatabaseIntegrationSummary: React.FC = () => {
               </div>
               <div className="ml-4">
                 <h3 className="text-2xl font-bold text-gray-900">{connectedComponents}/{totalComponents}</h3>
-                <p className="text-gray-500">Components Connected</p>
+                <p className="text-slate-700">Components Connected</p>
               </div>
             </div>
           </div>
@@ -55,7 +55,7 @@ const DatabaseIntegrationSummary: React.FC = () => {
               </div>
               <div className="ml-4">
                 <h3 className="text-2xl font-bold text-gray-900">{totalEndpoints}</h3>
-                <p className="text-gray-500">Total Endpoints</p>
+                <p className="text-slate-700">Total Endpoints</p>
               </div>
             </div>
           </div>
@@ -69,7 +69,7 @@ const DatabaseIntegrationSummary: React.FC = () => {
               </div>
               <div className="ml-4">
                 <h3 className="text-2xl font-bold text-gray-900">100%</h3>
-                <p className="text-gray-500">Integration Coverage</p>
+                <p className="text-slate-700">Integration Coverage</p>
               </div>
             </div>
           </div>

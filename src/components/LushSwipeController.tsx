@@ -224,7 +224,7 @@ const LushSwipeController: React.FC<SwipeControllerProps> = ({
             />
           ) : (
             <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-              <div className="text-gray-500">No image</div>
+              <div className="text-slate-700">No image</div>
             </div>
           )}
 
@@ -268,13 +268,13 @@ const LushSwipeController: React.FC<SwipeControllerProps> = ({
           </div>
 
           {currentProfile.zodiacSign && (
-            <div className="text-xs text-gray-500 mb-1">
+            <div className="text-xs text-slate-700 mb-1">
               <span className="font-medium">Zodiac:</span> {currentProfile.zodiacSign}
             </div>
           )}
 
           {currentProfile.loveLanguage && (
-            <div className="text-xs text-gray-500">
+            <div className="text-xs text-slate-700">
               <span className="font-medium">Love Language:</span> {currentProfile.loveLanguage}
             </div>
           )}

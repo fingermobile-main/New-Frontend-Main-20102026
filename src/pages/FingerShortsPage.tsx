@@ -217,7 +217,7 @@ const FingerShortsPage: React.FC = () => {
                 <div key={idx} className="p-4 rounded-2xl border border-slate-300 dark:border-gray-800 bg-gray-50 dark:bg-gray-800 flex items-center justify-between">
                   <div>
                     <h5 className="font-bold text-sm text-gray-900 dark:text-white">{sound.title}</h5>
-                    <p className="text-xs text-gray-500">{sound.artist} • {sound.duration}</p>
+                    <p className="text-xs text-slate-700">{sound.artist} • {sound.duration}</p>
                     <span className="text-[10px] text-indigo-600 dark:text-indigo-400 font-semibold">{sound.uses}</span>
                   </div>
                   <button

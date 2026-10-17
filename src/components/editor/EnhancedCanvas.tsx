@@ -27,7 +27,7 @@ const EnhancedCanvas: React.FC<EnhancedCanvasProps> = ({
 
           <div className="grid grid-cols-1 gap-4">
             <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-400 transition-colors cursor-pointer">
-              <p className="text-gray-500 mb-2">Drop components here to build your page</p>
+              <p className="text-slate-700 mb-2">Drop components here to build your page</p>
               <p className="text-sm text-slate-700">Support for drag-and-drop component placement</p>
             </div>
           </div>

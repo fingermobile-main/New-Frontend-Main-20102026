@@ -33,7 +33,7 @@ const MembersPage: React.FC = () => {
                 />
                 <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-700" />
               </div>
-              <button className="p-2 text-slate-700 hover:text-gray-500 border border-gray-300 rounded-lg">
+              <button className="p-2 text-slate-700 hover:text-slate-700 border border-gray-300 rounded-lg">
                 <Filter className="h-4 w-4" />
               </button>
             </div>
@@ -43,11 +43,11 @@ const MembersPage: React.FC = () => {
             <table className="min-w-full divide-y divide-gray-200">
               <thead>
                 <tr>
-                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Member</th>
-                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
-                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Join Date</th>
-                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Member</th>
+                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Role</th>
+                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Status</th>
+                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Join Date</th>
+                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -59,17 +59,17 @@ const MembersPage: React.FC = () => {
                       </div>
                       <div className="ml-4">
                         <div className="text-sm font-medium text-gray-900">Alex Johnson</div>
-                        <div className="text-sm text-gray-500">alex@example.com</div>
+                        <div className="text-sm text-slate-700">alex@example.com</div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Admin</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">Admin</td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-950 border border-green-400 font-bold">
                       Active
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2024-01-15</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">2024-01-15</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <button className="text-blue-600 hover:text-blue-900 mr-3">Edit</button>
                     <button className="text-gray-600 hover:text-gray-900">
@@ -85,17 +85,17 @@ const MembersPage: React.FC = () => {
                       </div>
                       <div className="ml-4">
                         <div className="text-sm font-medium text-gray-900">Maria Garcia</div>
-                        <div className="text-sm text-gray-500">maria@example.com</div>
+                        <div className="text-sm text-slate-700">maria@example.com</div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Moderator</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">Moderator</td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-950 border border-green-400 font-bold">
                       Active
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2024-02-20</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">2024-02-20</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <button className="text-blue-600 hover:text-blue-900 mr-3">Edit</button>
                     <button className="text-gray-600 hover:text-gray-900">
@@ -111,17 +111,17 @@ const MembersPage: React.FC = () => {
                       </div>
                       <div className="ml-4">
                         <div className="text-sm font-medium text-gray-900">David Chen</div>
-                        <div className="text-sm text-gray-500">david@example.com</div>
+                        <div className="text-sm text-slate-700">david@example.com</div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Member</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">Member</td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-amber-100 text-amber-950 border border-amber-400 font-bold font-black">
                       Pending
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2024-03-10</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">2024-03-10</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <button className="text-blue-600 hover:text-blue-900 mr-3">Edit</button>
                     <button className="text-gray-600 hover:text-gray-900">

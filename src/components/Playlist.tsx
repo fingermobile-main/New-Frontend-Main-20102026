@@ -35,7 +35,7 @@ const Playlist: React.FC<PlaylistProps> = ({
   if (items.length === 0) {
     return (
       <div className={`bg-white rounded-lg shadow-md p-8 text-center ${className}`}>
-        <p className="text-gray-500">No items in playlist</p>
+        <p className="text-slate-700">No items in playlist</p>
       </div>
     );
   }
@@ -69,7 +69,7 @@ const Playlist: React.FC<PlaylistProps> = ({
               )}
             </div>
             {item.duration && (
-              <span className="text-xs text-gray-500 ml-2">{item.duration}</span>
+              <span className="text-xs text-slate-700 ml-2">{item.duration}</span>
             )}
             <button className="ml-4 p-2 text-brand-blue hover:bg-blue-100 rounded-full">
               {currentIndex === index ? '⏸' : '▶️'}

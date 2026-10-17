@@ -317,7 +317,7 @@ const LoginPage = () => {
             <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">
               FingerMobile<span className="text-[#ff6b00]">™</span>
             </h1>
-            <p className="text-sm font-semibold tracking-wide uppercase text-gray-500 dark:text-gray-400 mt-1">
+            <p className="text-sm font-semibold tracking-wide uppercase text-slate-700 dark:text-gray-400 mt-1">
               Protocol Sign In
             </p>
           </div>
@@ -466,9 +466,9 @@ const LoginPage = () => {
                   className="absolute inset-y-0 right-0 pr-3 flex items-center"
                 >
                   {showPassword ? (
-                    <EyeOff className="h-5 w-5 text-slate-700 hover:text-gray-500" />
+                    <EyeOff className="h-5 w-5 text-slate-700 hover:text-slate-700" />
                   ) : (
-                    <Eye className="h-5 w-5 text-slate-700 hover:text-gray-500" />
+                    <Eye className="h-5 w-5 text-slate-700 hover:text-slate-700" />
                   )}
                 </button>
               </div>
@@ -504,7 +504,7 @@ const LoginPage = () => {
                 <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-slate-700">
+                <span className="px-2 bg-white dark:bg-gray-800 text-slate-700 dark:text-slate-700">
                   Or continue with
                 </span>
               </div>
@@ -516,7 +516,7 @@ const LoginPage = () => {
                 disabled={isLoading}
                 className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm bg-white dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <Fingerprint className="h-5 w-5 text-gray-500 dark:text-gray-400 mr-2" />
+                <Fingerprint className="h-5 w-5 text-slate-700 dark:text-gray-400 mr-2" />
                 Biometric
               </button>
 
@@ -525,7 +525,7 @@ const LoginPage = () => {
                 disabled={isLoading}
                 className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm bg-white dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <Phone className="h-5 w-5 text-gray-500 dark:text-gray-400 mr-2" />
+                <Phone className="h-5 w-5 text-slate-700 dark:text-gray-400 mr-2" />
                 Phone Verification
               </button>
             </div>

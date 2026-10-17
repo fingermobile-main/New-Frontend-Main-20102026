@@ -192,7 +192,7 @@ const AdvancedGiftingEngine: React.FC = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="p-3 bg-white/20 backdrop-blur-md rounded-xl">
-              <GiftIcon className="w-7 h-7 text-white" />
+              <GiftIcon className="w-7 h-7 text-slate-700" />
             </div>
             <div>
               <h2 className="text-xl font-bold">Interactive Gifting Console</h2>
@@ -239,7 +239,7 @@ const AdvancedGiftingEngine: React.FC = () => {
                         <CheckCircleIcon className="w-4 h-4 text-blue-500 inline flex-shrink-0" />
                       )}
                     </p>
-                    <p className="text-xs text-gray-500 truncate">@{recipient.username}</p>
+                    <p className="text-xs text-slate-700 truncate">@{recipient.username}</p>
                   </div>
                 </button>
               );
@@ -296,7 +296,7 @@ const AdvancedGiftingEngine: React.FC = () => {
               />
               <span className="absolute right-3 top-2.5 text-xs font-bold text-slate-700">FIC</span>
             </div>
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-slate-700 mt-1">
               Wallet Balance: <span className="font-semibold text-gray-900">{ficBalance.toFixed(2)} FIC</span>
             </p>
           </div>

@@ -518,7 +518,7 @@ const ProtocolCommunication: React.FC<ProtocolCommunicationProps> = ({
             </div>
           ))}
           {messages.length === 0 && (
-            <div className="text-center py-8 text-gray-500">
+            <div className="text-center py-8 text-slate-700">
               <p>No messages yet. Connect to the protocol to start communicating.</p>
             </div>
           )}
@@ -552,7 +552,7 @@ const ProtocolCommunication: React.FC<ProtocolCommunicationProps> = ({
           </button>
         </div>
 
-        <div className="mt-2 flex items-center justify-between text-xs text-gray-500">
+        <div className="mt-2 flex items-center justify-between text-xs text-slate-700">
           <div className="flex items-center">
             {encryptionEnabled && (
               <span className="flex items-center mr-3">

@@ -24,7 +24,7 @@ const StercsPoliciesPage: React.FC = () => {
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-semibold">Governance Policies</h2>
             <div className="flex space-x-3">
-              <button className="p-2 text-slate-700 hover:text-gray-500 border border-gray-300 rounded-lg">
+              <button className="p-2 text-slate-700 hover:text-slate-700 border border-gray-300 rounded-lg">
                 <Settings className="h-4 w-4" />
               </button>
             </div>
@@ -34,12 +34,12 @@ const StercsPoliciesPage: React.FC = () => {
             <table className="min-w-full divide-y divide-gray-200">
               <thead>
                 <tr>
-                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Policy</th>
-                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Compliance Level</th>
-                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Updated</th>
-                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Policy</th>
+                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Category</th>
+                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Status</th>
+                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Compliance Level</th>
+                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Last Updated</th>
+                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -51,20 +51,20 @@ const StercsPoliciesPage: React.FC = () => {
                       </div>
                       <div className="ml-4">
                         <div className="text-sm font-medium text-gray-900">Content Moderation Policy</div>
-                        <div className="text-sm text-gray-500">Guidelines for moderating user-generated content</div>
+                        <div className="text-sm text-slate-700">Guidelines for moderating user-generated content</div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Content</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">Content</td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-950 border border-green-400 font-bold">
                       Active
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                     <span className="text-red-500">Strict</span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2024-10-08</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">2024-10-08</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <button className="text-blue-600 hover:text-blue-900 mr-3">Edit</button>
                     <button className="text-gray-600 hover:text-gray-900">
@@ -80,20 +80,20 @@ const StercsPoliciesPage: React.FC = () => {
                       </div>
                       <div className="ml-4">
                         <div className="text-sm font-medium text-gray-900">AI Decision Transparency</div>
-                        <div className="text-sm text-gray-500">Requirements for transparency in AI-driven decisions</div>
+                        <div className="text-sm text-slate-700">Requirements for transparency in AI-driven decisions</div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">AI Ethics</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">AI Ethics</td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-950 border border-green-400 font-bold">
                       Active
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                     <span className="text-yellow-500">Moderate</span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2024-10-05</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">2024-10-05</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <button className="text-blue-600 hover:text-blue-900 mr-3">Edit</button>
                     <button className="text-gray-600 hover:text-gray-900">
@@ -109,20 +109,20 @@ const StercsPoliciesPage: React.FC = () => {
                       </div>
                       <div className="ml-4">
                         <div className="text-sm font-medium text-gray-900">Data Privacy Protection</div>
-                        <div className="text-sm text-gray-500">Standards for protecting user data and privacy</div>
+                        <div className="text-sm text-slate-700">Standards for protecting user data and privacy</div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Privacy</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">Privacy</td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-950 border border-amber-400 font-bold font-black">
                       Review
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                     <span className="text-red-500">Strict</span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2024-09-28</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">2024-09-28</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <button className="text-blue-600 hover:text-blue-900 mr-3">Edit</button>
                     <button className="text-gray-600 hover:text-gray-900">
@@ -138,20 +138,20 @@ const StercsPoliciesPage: React.FC = () => {
                       </div>
                       <div className="ml-4">
                         <div className="text-sm font-medium text-gray-900">Community Guidelines</div>
-                        <div className="text-sm text-gray-500">Rules and expectations for community behavior</div>
+                        <div className="text-sm text-slate-700">Rules and expectations for community behavior</div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Community</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">Community</td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-950 border border-green-400 font-bold">
                       Active
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                     <span className="text-yellow-500">Moderate</span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2024-09-20</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">2024-09-20</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <button className="text-blue-600 hover:text-blue-900 mr-3">Edit</button>
                     <button className="text-gray-600 hover:text-gray-900">
@@ -167,20 +167,20 @@ const StercsPoliciesPage: React.FC = () => {
                       </div>
                       <div className="ml-4">
                         <div className="text-sm font-medium text-gray-900">Accessibility Standards</div>
-                        <div className="text-sm text-gray-500">Requirements for platform accessibility</div>
+                        <div className="text-sm text-slate-700">Requirements for platform accessibility</div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Compliance</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">Compliance</td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-950 border border-blue-400 font-bold font-black">
                       Draft
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                     <span className="text-red-500">Strict</span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2024-10-01</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">2024-10-01</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <button className="text-blue-600 hover:text-blue-900 mr-3">Edit</button>
                     <button className="text-gray-600 hover:text-gray-900">

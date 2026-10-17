@@ -219,7 +219,7 @@ const CustomerManagement: React.FC = () => {
         </div>
 
         <div className="flex items-center">
-          <FiFilter className="mr-2 text-gray-500" />
+          <FiFilter className="mr-2 text-slate-700" />
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
@@ -237,13 +237,13 @@ const CustomerManagement: React.FC = () => {
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-100">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contact</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Join Date</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Spent</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Customer</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Contact</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Location</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Join Date</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Status</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Total Spent</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Actions</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
@@ -256,20 +256,20 @@ const CustomerManagement: React.FC = () => {
                     </div>
                     <div className="ml-4">
                       <div className="text-sm font-medium text-gray-900">{customer.name}</div>
-                      <div className="text-sm text-gray-500">{customer.email}</div>
+                      <div className="text-sm text-slate-700">{customer.email}</div>
                     </div>
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm text-gray-900">{customer.phone}</div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                   <div className="flex items-center">
                     <FiMapPin className="mr-1 text-slate-700" />
                     {customer.location}
                   </div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                   <div className="flex items-center">
                     <FiCalendar className="mr-1 text-slate-700" />
                     {customer.joinDate}
@@ -307,7 +307,7 @@ const CustomerManagement: React.FC = () => {
 
       {filteredCustomers.length === 0 ? (
         <div className="text-center py-12">
-          <p className="text-gray-500">No customers found for the selected filters</p>
+          <p className="text-slate-700">No customers found for the selected filters</p>
         </div>
       ) : (
         <div className="mt-6 flex flex-col sm:flex-row justify-between items-center">

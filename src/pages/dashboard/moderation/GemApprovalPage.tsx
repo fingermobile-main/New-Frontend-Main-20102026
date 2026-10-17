@@ -106,7 +106,7 @@ const GemApprovalPage: React.FC = () => {
                     💎 {sub.gemAmount} Gems
                   </span>
                 </div>
-                <p className="text-sm text-gray-500 mt-0.5">
+                <p className="text-sm text-slate-700 mt-0.5">
                   Requested for <strong className="text-gray-700">{sub.userName}</strong> (@{sub.userHandle}) &middot; {sub.submittedAt}
                 </p>
                 <p className="text-sm text-gray-600 mt-2 bg-gray-50 p-2.5 rounded-lg border border-slate-200">
@@ -135,9 +135,9 @@ const GemApprovalPage: React.FC = () => {
           ))}
         </div>
       ) : (
-        <div className="text-center text-gray-500 py-12 bg-white rounded-xl shadow-md border">
+        <div className="text-center text-slate-700 py-12 bg-white rounded-xl shadow-md border">
           <p className="font-semibold text-gray-700">The approval queue is empty.</p>
-          <p className="text-sm text-gray-500 mt-1">All gem reward submissions have been processed.</p>
+          <p className="text-sm text-slate-700 mt-1">All gem reward submissions have been processed.</p>
         </div>
       )}
     </div>

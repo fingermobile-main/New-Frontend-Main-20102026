@@ -74,7 +74,7 @@ export const LushCallModal: React.FC<LushCallModalProps> = ({
             {participantName.charAt(0).toUpperCase()}
           </div>
           <h3 className="text-xl font-bold text-gray-900">{participantName}</h3>
-          <p className="text-gray-500 mt-1">
+          <p className="text-slate-700 mt-1">
             {activeCall.status === 'incoming' && 'Incoming call'}
             {activeCall.status === 'outgoing' && 'Calling...'}
             {activeCall.status === 'active' && formatTime(callDuration)}

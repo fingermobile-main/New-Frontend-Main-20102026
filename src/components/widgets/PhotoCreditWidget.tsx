@@ -49,8 +49,8 @@ const PhotoCreditWidget: React.FC = () => {
             </svg>
           </div>
           <h4 className="font-bold text-base text-gray-900 dark:text-white">Photo Credits</h4>
-          <p className="text-sm text-gray-500 dark:text-gray-400">{credit.photographer}</p>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-3">Available: {credit.available}</p>
+          <p className="text-sm text-slate-700 dark:text-gray-400">{credit.photographer}</p>
+          <p className="text-sm text-slate-700 dark:text-gray-400 mt-3">Available: {credit.available}</p>
         </div>
       ) : null}
 

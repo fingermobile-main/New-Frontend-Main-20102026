@@ -22,7 +22,7 @@ const SecurityEvents: React.FC<SecurityEventsProps> = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-medium text-gray-900">{event.type}</p>
-                <p className="text-xs text-gray-500 mt-1">{event.time}</p>
+                <p className="text-xs text-slate-700 mt-1">{event.time}</p>
               </div>
               <span className={`px-2 py-1 text-xs font-medium rounded ${
                 event.status === 'blocked' ? 'bg-red-100 text-red-950 border border-red-400 font-bold' : 'bg-green-100 text-green-950 border border-green-400 font-bold'

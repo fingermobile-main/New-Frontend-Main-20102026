@@ -161,7 +161,7 @@ const StoreManagementPage: React.FC = () => {
       <div className="flex items-center gap-4">
         <div className="text-3xl">{icon}</div>
         <div>
-          <p className="text-sm text-gray-500">{title}</p>
+          <p className="text-sm text-slate-700">{title}</p>
           <p className="text-2xl font-bold">{value}</p>
         </div>
       </div>
@@ -204,7 +204,7 @@ const StoreManagementPage: React.FC = () => {
             <div className="overflow-x-auto">
               <table className="w-full text-left">
                 <thead>
-                  <tr className="border-b text-gray-500">
+                  <tr className="border-b text-slate-700">
                     <th className="p-2 text-sm font-semibold">Product</th>
                     <th className="p-2 text-sm font-semibold">Price (FIC)</th>
                     <th className="p-2 text-sm font-semibold">Stock</th>
@@ -227,14 +227,14 @@ const StoreManagementPage: React.FC = () => {
                       <td className="p-2 text-right">
                         <button
                           onClick={() => handleOpenEditor(product)}
-                          className="p-2 text-gray-500 hover:text-blue-600 transition"
+                          className="p-2 text-slate-700 hover:text-blue-600 transition"
                           title="Edit Product"
                         >
                           <PencilIcon className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => handleDelete(product.id)}
-                          className="p-2 text-gray-500 hover:text-red-600 transition"
+                          className="p-2 text-slate-700 hover:text-red-600 transition"
                           title="Delete Product"
                         >
                           <TrashIcon className="w-4 h-4" />
@@ -260,7 +260,7 @@ const StoreManagementPage: React.FC = () => {
             ) : (
               <table className="w-full text-left">
                 <thead>
-                  <tr className="border-b text-gray-500">
+                  <tr className="border-b text-slate-700">
                     <th className="p-2 text-xs font-semibold">ID</th>
                     <th className="p-2 text-xs font-semibold">Product</th>
                     <th className="p-2 text-xs font-semibold">Total</th>

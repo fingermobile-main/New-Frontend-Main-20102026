@@ -59,7 +59,7 @@ const TrendingTopicsWidget: React.FC = () => {
                 {topic.hashtag}
               </span>
               <div className="flex items-center space-x-3">
-                <span className="text-xs text-gray-500 dark:text-gray-400">
+                <span className="text-xs text-slate-700 dark:text-gray-400">
                   {formatPosts(topic.posts)} posts
                 </span>
                 <button

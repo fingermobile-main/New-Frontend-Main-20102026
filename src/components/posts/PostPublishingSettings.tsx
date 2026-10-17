@@ -147,7 +147,7 @@ const PostPublishingSettings = () => {
             <div className="flex items-center justify-between">
               <span className="flex-grow flex flex-col">
                 <span className="text-sm font-medium text-gray-900">Share to Mii©®™</span>
-                <span className="text-sm text-gray-500">Automatically cross-post to Mii platform</span>
+                <span className="text-sm text-slate-700">Automatically cross-post to Mii platform</span>
               </span>
               <button
                 onClick={() => updateSettings({ shareToMi: !settings.shareToMi })}
@@ -170,7 +170,7 @@ const PostPublishingSettings = () => {
             <div className="flex items-center justify-between">
               <span className="flex-grow flex flex-col">
                 <span className="text-sm font-medium text-gray-900">Enable Monetization</span>
-                <span className="text-sm text-gray-500">Earn from your content through subscriptions or tips</span>
+                <span className="text-sm text-slate-700">Earn from your content through subscriptions or tips</span>
               </span>
               <button
                 onClick={handleToggleMonetization}
@@ -210,7 +210,7 @@ const PostPublishingSettings = () => {
             <div className="flex items-center justify-between">
               <span className="flex-grow flex flex-col">
                 <span className="text-sm font-medium text-gray-900">Broadcast Mode</span>
-                <span className="text-sm text-gray-500">Push notification to all eligible members</span>
+                <span className="text-sm text-slate-700">Push notification to all eligible members</span>
               </span>
               <button
                 onClick={() => updateSettings({
@@ -231,7 +231,7 @@ const PostPublishingSettings = () => {
             <div className="flex items-center justify-between">
               <span className="flex-grow flex flex-col">
                 <span className="text-sm font-medium text-gray-900">Invite Collaborators</span>
-                <span className="text-sm text-gray-500">Tag other creators for co-authored posts</span>
+                <span className="text-sm text-slate-700">Tag other creators for co-authored posts</span>
               </span>
               <button
                 onClick={() => updateSettings({
@@ -257,7 +257,7 @@ const PostPublishingSettings = () => {
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Target Geographic Locations
               </label>
-              <p className="text-xs text-gray-500 mb-3">
+              <p className="text-xs text-slate-700 mb-3">
                 Include only members located in selected nations or regions.
               </p>
               <div className="flex flex-wrap gap-2">
@@ -361,7 +361,7 @@ const PostPublishingSettings = () => {
               <span className="text-sm font-medium text-gray-900 block mb-1">
                 Custom Geofence Heatmap Perimeter
               </span>
-              <p className="text-xs text-gray-500 mb-2">
+              <p className="text-xs text-slate-700 mb-2">
                 Restricts viewability strictly to members inside your active GPS polygon or regional cluster.
               </p>
               <div className="flex items-center gap-2">

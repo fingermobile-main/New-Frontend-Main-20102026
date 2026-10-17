@@ -448,11 +448,11 @@ const CreatorDashboard: React.FC = () => {
                 <div key={item} className="bg-white dark:bg-gray-800 rounded-xl border border-slate-300 dark:border-gray-700 overflow-hidden">
                   <div className="h-40 bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
                     {item % 3 === 1 ? (
-                      <PhotoIcon className="w-10 h-10 text-gray-500" />
+                      <PhotoIcon className="w-10 h-10 text-slate-700" />
                     ) : item % 3 === 2 ? (
-                      <VideoCameraIcon className="w-10 h-10 text-gray-500" />
+                      <VideoCameraIcon className="w-10 h-10 text-slate-700" />
                     ) : (
-                      <DocumentTextIcon className="w-10 h-10 text-gray-500" />
+                      <DocumentTextIcon className="w-10 h-10 text-slate-700" />
                     )}
                   </div>
                   <div className="p-4">
@@ -654,7 +654,7 @@ const CreatorDashboard: React.FC = () => {
               <h4 className="font-bold mb-6">Geographic Reach</h4>
               <div className="h-64 bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center">
                 <div className="text-center">
-                  <MapPinIcon className="w-12 h-12 text-gray-500 mx-auto mb-2" />
+                  <MapPinIcon className="w-12 h-12 text-slate-700 mx-auto mb-2" />
                   <p className="text-gray-600 dark:text-gray-400">Interactive world map visualization</p>
                 </div>
               </div>
@@ -796,7 +796,7 @@ const CreatorDashboard: React.FC = () => {
                 <h4 className="font-bold mb-4">Calendar View</h4>
                 <div className="h-96 bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center">
                   <div className="text-center">
-                    <CalendarDaysIcon className="w-12 h-12 text-gray-500 mx-auto mb-2" />
+                    <CalendarDaysIcon className="w-12 h-12 text-slate-700 mx-auto mb-2" />
                     <p className="text-gray-600 dark:text-gray-400">Interactive calendar with scheduled content</p>
                   </div>
                 </div>

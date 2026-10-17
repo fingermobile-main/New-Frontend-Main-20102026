@@ -332,7 +332,7 @@ const PortfolioPage: React.FC = () => {
                     {creatorProfile.bio}
                   </p>
 
-                  <div className="flex items-center gap-4 mt-3 text-xs text-gray-500 flex-wrap">
+                  <div className="flex items-center gap-4 mt-3 text-xs text-slate-700 flex-wrap">
                     <span className="flex items-center gap-1 font-medium">
                       <MapPinIcon className="w-3.5 h-3.5 text-slate-700" />
                       {creatorProfile.location}
@@ -522,7 +522,7 @@ const PortfolioPage: React.FC = () => {
                         <HeartIcon className="w-4 h-4 fill-current" />
                       </button>
 
-                      <div className="absolute bottom-3 left-3 right-3 text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="absolute bottom-3 left-3 right-3 text-slate-700 opacity-0 group-hover:opacity-100 transition-opacity">
                         <p className="text-xs font-black truncate">{ph.camera}</p>
                         <p className="text-[10px] text-gray-200 font-mono">{ph.exif}</p>
                       </div>
@@ -565,7 +565,7 @@ const PortfolioPage: React.FC = () => {
 
                       <div>
                         <h4 className="font-black text-gray-900 text-base">{au.title}</h4>
-                        <div className="flex items-center gap-3 text-xs text-gray-500 mt-0.5">
+                        <div className="flex items-center gap-3 text-xs text-slate-700 mt-0.5">
                           <span className="font-bold text-indigo-600">{au.genre}</span>
                           <span>·</span>
                           <span>{au.bpm} BPM</span>

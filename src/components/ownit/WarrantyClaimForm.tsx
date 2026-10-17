@@ -150,7 +150,7 @@ const WarrantyClaimForm: React.FC<WarrantyClaimFormProps> = ({
           </label>
           <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-blue-500 transition-colors cursor-pointer">
             <p className="text-sm text-gray-600">Click to upload photos</p>
-            <p className="text-xs text-gray-500 mt-1">Max 5 photos, 5MB each</p>
+            <p className="text-xs text-slate-700 mt-1">Max 5 photos, 5MB each</p>
           </div>
         </div>
 

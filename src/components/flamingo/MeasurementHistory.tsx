@@ -156,7 +156,7 @@ const MeasurementHistory: React.FC<MeasurementHistoryProps> = ({ userId }) => {
       {/* History Timeline */}
       {measurements.length === 0 ? (
         <div className="text-center py-12 bg-gray-50 rounded-lg">
-          <p className="text-gray-500">No measurement history yet</p>
+          <p className="text-slate-700">No measurement history yet</p>
           <button className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">
             Take First Measurement
           </button>
@@ -191,7 +191,7 @@ const MeasurementHistory: React.FC<MeasurementHistoryProps> = ({ userId }) => {
                       <span className={`text-sm font-medium ${parseFloat(change.diff) > 0 ? 'text-red-600' : 'text-green-600'}`}>
                         {parseFloat(change.diff) > 0 ? '↑' : '↓'} {Math.abs(parseFloat(change.diff))}
                       </span>
-                      <p className="text-xs text-gray-500 mt-1">from previous</p>
+                      <p className="text-xs text-slate-700 mt-1">from previous</p>
                     </div>
                   )}
                 </div>

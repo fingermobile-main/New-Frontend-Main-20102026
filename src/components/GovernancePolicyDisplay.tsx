@@ -203,13 +203,13 @@ const GovernancePolicyDisplay: React.FC<GovernancePolicyDisplayProps> = ({
                 <div className="flex-1">
                   <div className="flex items-center space-x-3 mb-3">
                     {getStatusIcon(policy.status)}
-                    <h3 className="text-base font-black text-white uppercase tracking-tight">{policy.title}</h3>
+                    <h3 className="text-base font-black text-slate-900 uppercase tracking-tight">{policy.title}</h3>
                   </div>
                   <p className="text-sm text-slate-700 leading-relaxed mb-4">{policy.description}</p>
 
                   <div className="flex items-center space-x-6 text-xs">
                     <div className="flex items-center space-x-2">
-                      <Clock size={14} className="text-gray-500" />
+                      <Clock size={14} className="text-slate-700" />
                       <span className="text-slate-700">Updated {policy.lastUpdated.toLocaleDateString()}</span>
                     </div>
                     <div className="flex items-center space-x-2">
@@ -241,7 +241,7 @@ const GovernancePolicyDisplay: React.FC<GovernancePolicyDisplayProps> = ({
                   )}
                   <ChevronRight
                     size={20}
-                    className={`text-gray-500 transition-transform ${expandedPolicy === policy.id ? 'rotate-90' : ''}`}
+                    className={`text-slate-700 transition-transform ${expandedPolicy === policy.id ? 'rotate-90' : ''}`}
                   />
                 </div>
               </div>
@@ -252,29 +252,29 @@ const GovernancePolicyDisplay: React.FC<GovernancePolicyDisplayProps> = ({
               <div className="border-t border-white/5 bg-black/20 p-6 space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="p-5 bg-white/5 rounded-2xl">
-                    <h4 className="text-xs font-black text-gray-500 uppercase tracking-widest mb-3">Policy Details</h4>
+                    <h4 className="text-xs font-black text-slate-900 uppercase tracking-widest mb-3">Policy Details</h4>
                     <div className="space-y-3 text-sm">
                       <div className="flex justify-between">
                         <span className="text-slate-700">Category:</span>
-                        <span className="text-white font-bold capitalize">{policy.category}</span>
+                        <span className="text-slate-700 font-bold capitalize">{policy.category}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-slate-700">Status:</span>
-                        <span className="text-white font-bold capitalize">{policy.status}</span>
+                        <span className="text-slate-700 font-bold capitalize">{policy.status}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-slate-700">Effective Date:</span>
-                        <span className="text-white font-bold">{policy.effectiveDate.toLocaleDateString()}</span>
+                        <span className="text-slate-700 font-bold">{policy.effectiveDate.toLocaleDateString()}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-slate-700">Enforcement:</span>
-                        <span className="text-white font-bold capitalize">{policy.enforcementLevel}</span>
+                        <span className="text-slate-700 font-bold capitalize">{policy.enforcementLevel}</span>
                       </div>
                     </div>
                   </div>
 
                   <div className="p-5 bg-white/5 rounded-2xl">
-                    <h4 className="text-xs font-black text-gray-500 uppercase tracking-widest mb-3">Enforcement & Monitoring</h4>
+                    <h4 className="text-xs font-black text-slate-900 uppercase tracking-widest mb-3">Enforcement & Monitoring</h4>
                     <div className="space-y-3 text-sm">
                       <div className="flex items-center justify-between">
                         <span className="text-slate-700">AI Monitoring:</span>
@@ -320,7 +320,7 @@ const GovernancePolicyDisplay: React.FC<GovernancePolicyDisplayProps> = ({
       {/* Recent Decisions */}
       {recentDecisions.length > 0 && (
         <div className="bg-white/5 border border-white/10 rounded-3xl p-8">
-          <h3 className="text-lg font-black text-white uppercase tracking-tight mb-6 flex items-center space-x-3">
+          <h3 className="text-lg font-black text-slate-900 uppercase tracking-tight mb-6 flex items-center space-x-3">
             <Gavel size={20} className="text-blue-500" />
             <span>Recent Governance Decisions</span>
           </h3>

@@ -98,7 +98,7 @@ export const BlogCommentModal: React.FC<CommentModalProps> = ({
           </form>
 
           <div className="border-t border-slate-200 dark:border-gray-800 pt-4 space-y-3">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-gray-500">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900">
               Community Responses ({commentsList.length})
             </h4>
             {commentsList.map((c) => (
@@ -177,7 +177,7 @@ export const BlogSendGiftModal: React.FC<SendGiftModalProps> = ({
 
         <div className="p-6 space-y-5">
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-800 mb-2">
               Select Gift Tier
             </label>
             <div className="grid grid-cols-2 gap-3">
@@ -206,7 +206,7 @@ export const BlogSendGiftModal: React.FC<SendGiftModalProps> = ({
           </div>
 
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-800 mb-1">
               Personal Appreciation Memo
             </label>
             <input
@@ -219,7 +219,7 @@ export const BlogSendGiftModal: React.FC<SendGiftModalProps> = ({
           </div>
 
           <div className="p-3 bg-gray-50 dark:bg-gray-800/80 rounded-xl flex items-center justify-between text-xs">
-            <span className="text-gray-500">Your FIC Balance:</span>
+            <span className="text-slate-700">Your FIC Balance:</span>
             <span className="font-bold text-gray-900 dark:text-white">{userFicBalance} FIC</span>
           </div>
 
@@ -293,7 +293,7 @@ export const BlogPaylinkModal: React.FC<PaylinkModalProps> = ({
         <div className="p-6 space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-800 mb-1">
                 Amount
               </label>
               <input
@@ -304,7 +304,7 @@ export const BlogPaylinkModal: React.FC<PaylinkModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-800 mb-1">
                 Currency
               </label>
               <select
@@ -330,7 +330,7 @@ export const BlogPaylinkModal: React.FC<PaylinkModalProps> = ({
           ) : (
             <div className="space-y-3 pt-2">
               <div className="p-3 bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-800 rounded-xl text-xs">
-                <span className="block text-gray-500 text-[10px] uppercase font-bold">Your Shareable Paylink:</span>
+                <span className="block text-slate-700 text-[10px] uppercase font-bold">Your Shareable Paylink:</span>
                 <p className="font-mono text-purple-700 dark:text-purple-300 break-all select-all font-semibold mt-1">
                   {generatedLink}
                 </p>
@@ -400,21 +400,21 @@ export const BlogTokenizeModal: React.FC<TokenizeModalProps> = ({
             <>
               <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-xl text-xs space-y-2 border border-slate-200 dark:border-gray-700">
                 <div className="flex justify-between">
-                  <span className="text-gray-500">Asset:</span>
+                  <span className="text-slate-700">Asset:</span>
                   <span className="font-bold text-gray-900 dark:text-white truncate max-w-[200px]">{postTitle}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-500">Smart Standard:</span>
+                  <span className="text-slate-700">Smart Standard:</span>
                   <span className="font-mono text-indigo-600 dark:text-indigo-400">ERC-721 / HallMarks</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-500">Network:</span>
+                  <span className="text-slate-700">Network:</span>
                   <span className="font-semibold text-gray-900 dark:text-white">FingerMobile Sovereign L2</span>
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-800 mb-1">
                   Creator Secondary Royalty Split (%)
                 </label>
                 <input
@@ -445,7 +445,7 @@ export const BlogTokenizeModal: React.FC<TokenizeModalProps> = ({
                 ✓
               </div>
               <h4 className="font-bold text-gray-900 dark:text-white text-base">Token Minted Successfully!</h4>
-              <p className="text-xs text-gray-500 max-w-xs mx-auto">
+              <p className="text-xs text-slate-700 max-w-xs mx-auto">
                 Your editorial asset has been registered as a Sovereign Proof-of-Achievement Hallmarks token.
               </p>
               <button

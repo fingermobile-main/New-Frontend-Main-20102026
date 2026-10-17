@@ -108,7 +108,7 @@ const RecommendationCard: React.FC<RecommendationCardProps> = ({
       )}
 
       {/* Metadata */}
-      <div className="flex items-center gap-4 text-xs text-gray-500 mb-4">
+      <div className="flex items-center gap-4 text-xs text-slate-700 mb-4">
         <div>
           <span className="font-medium">Based on:</span> {recommendation.based_on_measurements ? 'Your Measurements' : 'Community Data'}
         </div>

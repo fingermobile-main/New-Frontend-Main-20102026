@@ -93,7 +93,7 @@ const AIPlaylistGenerator: React.FC<AIPlaylistGeneratorProps> = ({ onGenerate })
           )}
         </button>
 
-        <p className="text-xs text-gray-500 text-center">
+        <p className="text-xs text-slate-700 text-center">
           AI will curate the perfect playlist based on your preferences
         </p>
       </div>

@@ -378,7 +378,7 @@ const FingerWarsPage: React.FC = () => {
                   </div>
 
                   <div className="mt-6 pt-4 border-t border-slate-200 flex items-center justify-between gap-4">
-                    <span className="text-xs text-gray-500 font-medium">Smart contract escrow verified</span>
+                    <span className="text-xs text-slate-700 font-medium">Smart contract escrow verified</span>
                     <button
                       onClick={() => handleJoinTournament(t)}
                       className="px-6 py-2.5 bg-yellow-500 hover:bg-yellow-400 text-gray-950 font-black text-xs rounded-xl shadow-md transition-all"
@@ -476,9 +476,9 @@ const FingerWarsPage: React.FC = () => {
                     <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
                     <span className="font-bold text-sm text-gray-900">{m.player1}</span>
                     <span className="text-xs text-slate-700 font-black">VS</span>
-                    <span className="text-xs text-gray-500">{m.player2}</span>
+                    <span className="text-xs text-slate-700">{m.player2}</span>
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">Lobby Wager: <strong className="text-yellow-700">{m.wager} FIC</strong></p>
+                  <p className="text-xs text-slate-700 mt-1">Lobby Wager: <strong className="text-yellow-700">{m.wager} FIC</strong></p>
                 </div>
                 <button
                   onClick={() => handleJoinLobbyMatch(m)}
@@ -496,7 +496,7 @@ const FingerWarsPage: React.FC = () => {
           <div className="bg-white rounded-2xl border border-slate-300 shadow-sm overflow-hidden">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider border-b border-slate-200">
+                <tr className="bg-gray-50 text-slate-700 text-xs uppercase tracking-wider border-b border-slate-200">
                   <th className="py-3 px-5">Rank</th>
                   <th className="py-3 px-5">Player Handle</th>
                   <th className="py-3 px-5">Tier</th>

@@ -701,28 +701,28 @@ const CompliancePage: React.FC = () => {
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                       <tr>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Requirement
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Regulation
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Category
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Priority
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Status
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Deadline
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Assigned To
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Actions
                         </th>
                       </tr>
@@ -730,7 +730,7 @@ const CompliancePage: React.FC = () => {
                     <tbody className="bg-white divide-y divide-gray-200">
                       {currentItems.length === 0 ? (
                         <tr>
-                          <td colSpan={8} className="px-6 py-4 text-center text-gray-500">
+                          <td colSpan={8} className="px-6 py-4 text-center text-slate-800">
                             No compliance requirements found
                           </td>
                         </tr>
@@ -739,9 +739,9 @@ const CompliancePage: React.FC = () => {
                           <tr key={requirement.id} className="hover:bg-gray-50">
                             <td className="px-6 py-4">
                               <div className="text-sm font-medium text-gray-900">{requirement.name}</div>
-                              <div className="text-sm text-gray-500 max-w-xs truncate">{requirement.description}</div>
+                              <div className="text-sm text-slate-700 max-w-xs truncate">{requirement.description}</div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {requirement.regulation}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
@@ -759,10 +759,10 @@ const CompliancePage: React.FC = () => {
                                 {requirement.complianceStatus.replace('_', ' ')}
                               </span>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {requirement.deadline ? new Date(requirement.deadline).toLocaleDateString() : '-'}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {requirement.assignedToName}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -816,25 +816,25 @@ const CompliancePage: React.FC = () => {
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                       <tr>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Requirement
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Auditor
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Date
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Status
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Score
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Findings
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Actions
                         </th>
                       </tr>
@@ -842,7 +842,7 @@ const CompliancePage: React.FC = () => {
                     <tbody className="bg-white divide-y divide-gray-200">
                       {currentItems.length === 0 ? (
                         <tr>
-                          <td colSpan={7} className="px-6 py-4 text-center text-gray-500">
+                          <td colSpan={7} className="px-6 py-4 text-center text-slate-800">
                             No compliance audits found
                           </td>
                         </tr>
@@ -852,10 +852,10 @@ const CompliancePage: React.FC = () => {
                             <td className="px-6 py-4 whitespace-nowrap">
                               <div className="text-sm font-medium text-gray-900">{audit.requirementName}</div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {audit.auditorName}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {new Date(audit.date).toLocaleDateString()}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
@@ -866,10 +866,10 @@ const CompliancePage: React.FC = () => {
                                 </span>
                               </div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {audit.score}%
                             </td>
-                            <td className="px-6 py-4 text-sm text-gray-500 max-w-xs truncate">
+                            <td className="px-6 py-4 text-sm text-slate-800 max-w-xs truncate">
                               {audit.findings}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -923,25 +923,25 @@ const CompliancePage: React.FC = () => {
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                       <tr>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Report
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Type
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Period
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Status
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Due Date
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Submitted
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Actions
                         </th>
                       </tr>
@@ -949,7 +949,7 @@ const CompliancePage: React.FC = () => {
                     <tbody className="bg-white divide-y divide-gray-200">
                       {currentItems.length === 0 ? (
                         <tr>
-                          <td colSpan={7} className="px-6 py-4 text-center text-gray-500">
+                          <td colSpan={7} className="px-6 py-4 text-center text-slate-800">
                             No compliance reports found
                           </td>
                         </tr>
@@ -958,14 +958,14 @@ const CompliancePage: React.FC = () => {
                           <tr key={report.id} className="hover:bg-gray-50">
                             <td className="px-6 py-4">
                               <div className="text-sm font-medium text-gray-900">{report.title}</div>
-                              <div className="text-sm text-gray-500 max-w-xs truncate">{report.description}</div>
+                              <div className="text-sm text-slate-700 max-w-xs truncate">{report.description}</div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
                               <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${report.type === 'regulatory' ? 'bg-blue-100 text-blue-950 border border-blue-400 font-bold' : report.type === 'internal' ? 'bg-green-100 text-green-950 border border-green-400 font-bold' : 'bg-purple-100 text-purple-950 border border-purple-400 font-bold'}`}>
                                 {report.type}
                               </span>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {report.period}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
@@ -973,10 +973,10 @@ const CompliancePage: React.FC = () => {
                                 {report.status}
                               </span>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {new Date(report.dueDate).toLocaleDateString()}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {report.submittedAt ? new Date(report.submittedAt).toLocaleDateString() : '-'}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -1137,7 +1137,7 @@ const CompliancePage: React.FC = () => {
                         <div key={index} className="flex justify-between items-center p-3 border rounded-lg">
                           <div>
                             <p className="font-medium">{item.name}</p>
-                            <p className="text-sm text-gray-500">Due: {new Date(item.deadline).toLocaleDateString()}</p>
+                            <p className="text-sm text-slate-700">Due: {new Date(item.deadline).toLocaleDateString()}</p>
                           </div>
                           <span className={`px-2 py-1 text-xs font-semibold rounded-full ${item.priority === 'critical' ? 'bg-red-100 text-red-950 border border-red-400 font-bold' : item.priority === 'high' ? 'bg-orange-100 text-orange-800' : 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'}`}>
                             {item.priority}
@@ -1190,7 +1190,7 @@ const CompliancePage: React.FC = () => {
                   <h3 className="text-lg font-medium text-gray-900 mb-4">Jurisdiction Coverage</h3>
                   <div className="h-64 flex items-center justify-center">
                     <BarChart3 className="h-16 w-16 text-slate-700" />
-                    <p className="ml-4 text-gray-500">Jurisdiction coverage visualization would appear here</p>
+                    <p className="ml-4 text-slate-700">Jurisdiction coverage visualization would appear here</p>
                   </div>
                 </div>
               </div>
@@ -1273,7 +1273,7 @@ const CompliancePage: React.FC = () => {
                         <label htmlFor="gdpr-framework" className="block text-sm font-medium text-gray-700">
                           GDPR (General Data Protection Regulation)
                         </label>
-                        <p className="text-sm text-gray-500">European Union data protection regulation</p>
+                        <p className="text-sm text-slate-700">European Union data protection regulation</p>
                       </div>
                     </div>
                     <div className="flex items-center">
@@ -1287,7 +1287,7 @@ const CompliancePage: React.FC = () => {
                         <label htmlFor="ccpa-framework" className="block text-sm font-medium text-gray-700">
                           CCPA (California Consumer Privacy Act)
                         </label>
-                        <p className="text-sm text-gray-500">California consumer privacy regulation</p>
+                        <p className="text-sm text-slate-700">California consumer privacy regulation</p>
                       </div>
                     </div>
                     <div className="flex items-center">
@@ -1301,7 +1301,7 @@ const CompliancePage: React.FC = () => {
                         <label htmlFor="sox-framework" className="block text-sm font-medium text-gray-700">
                           SOX (Sarbanes-Oxley Act)
                         </label>
-                        <p className="text-sm text-gray-500">Financial reporting and corporate accountability</p>
+                        <p className="text-sm text-slate-700">Financial reporting and corporate accountability</p>
                       </div>
                     </div>
                   </div>
@@ -1394,7 +1394,7 @@ const CompliancePage: React.FC = () => {
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-medium text-gray-900">Create New Compliance Requirement</h3>
                 <button 
-                  className="text-gray-500 hover:text-gray-700"
+                  className="text-slate-700 hover:text-gray-700"
                   onClick={() => setShowCreateModal(false)}
                 >
                   <XCircle className="h-6 w-6" />

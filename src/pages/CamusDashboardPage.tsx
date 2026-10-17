@@ -197,11 +197,11 @@ const CamusDashboardPage: React.FC = () => {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-800 p-8 rounded-3xl text-white shadow-xl">
           <div className="flex items-center gap-4">
             <div className="p-3 bg-white/20 backdrop-blur-md rounded-2xl shadow-inner">
-              <AcademicCapIcon className="h-10 w-10 text-white" />
+              <AcademicCapIcon className="h-10 w-10 text-slate-700" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full bg-white/20 text-white font-bold">
+                <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full bg-white/20 text-slate-700 font-bold">
                   Active Scholar
                 </span>
                 <span className="text-xs text-blue-200">ID: CAMUS-{member?.id || '8492'}</span>
@@ -305,7 +305,7 @@ const CamusDashboardPage: React.FC = () => {
                       <h2 className="text-lg font-black text-gray-900 dark:text-white">
                         Courses In Progress
                       </h2>
-                      <p className="text-xs text-gray-500">Pick up right where you left off</p>
+                      <p className="text-xs text-slate-700">Pick up right where you left off</p>
                     </div>
                     <button
                       onClick={() => setActiveTab('courses')}
@@ -338,7 +338,7 @@ const CamusDashboardPage: React.FC = () => {
                             />
                           </div>
 
-                          <div className="flex items-center justify-between pt-1 text-xs text-gray-500">
+                          <div className="flex items-center justify-between pt-1 text-xs text-slate-700">
                             <span>
                               {course.completedLessonsCount} of {course.totalLessons} lessons completed
                             </span>
@@ -359,7 +359,7 @@ const CamusDashboardPage: React.FC = () => {
                     <div className="text-center py-12">
                       <BookOpenIcon className="w-10 h-10 text-slate-500 mx-auto mb-2" />
                       <h4 className="font-bold text-sm text-gray-900 dark:text-white">No courses in progress</h4>
-                      <p className="text-xs text-gray-500 mt-1">Enroll in your first course to begin learning.</p>
+                      <p className="text-xs text-slate-700 mt-1">Enroll in your first course to begin learning.</p>
                       <button
                         onClick={() => navigate('/camus')}
                         className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-xl text-xs font-bold"
@@ -380,7 +380,7 @@ const CamusDashboardPage: React.FC = () => {
                     <h2 className="text-xl font-black text-gray-900 dark:text-white">
                       All Enrolled Courses ({enrolledCourses.length})
                     </h2>
-                    <p className="text-xs text-gray-500">Your registered coursework and syllabus tracking</p>
+                    <p className="text-xs text-slate-700">Your registered coursework and syllabus tracking</p>
                   </div>
                   <button
                     onClick={() => navigate('/camus')}
@@ -418,7 +418,7 @@ const CamusDashboardPage: React.FC = () => {
                       </div>
 
                       <div className="flex items-center justify-between text-xs pt-1 border-t border-slate-300 dark:border-gray-700">
-                        <span className="text-gray-500">
+                        <span className="text-slate-700">
                           {course.completedLessonsCount}/{course.totalLessons} Lessons
                         </span>
                         <button
@@ -443,7 +443,7 @@ const CamusDashboardPage: React.FC = () => {
                     <Award className="w-6 h-6 text-amber-500" />
                     Verified Cryptographic Certificates
                   </h2>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-xs text-slate-700">
                     Blockchain and WORM ledger verified graduation certificates
                   </p>
                 </div>
@@ -468,7 +468,7 @@ const CamusDashboardPage: React.FC = () => {
                         <h3 className="font-bold text-base text-gray-900 dark:text-white mt-1">
                           {cert.title}
                         </h3>
-                        <p className="text-xs text-gray-500">Final Score: {cert.grade} (Verified Distinction)</p>
+                        <p className="text-xs text-slate-700">Final Score: {cert.grade} (Verified Distinction)</p>
                       </div>
 
                       <div className="flex items-center gap-2">
@@ -538,7 +538,7 @@ const CamusDashboardPage: React.FC = () => {
                   ].map((c) => (
                     <div key={c.id} className="p-4 rounded-2xl border border-slate-300 dark:border-gray-800 space-y-2">
                       <h4 className="font-bold text-sm text-gray-900 dark:text-white">{c.title}</h4>
-                      <p className="text-xs text-gray-500">{c.description}</p>
+                      <p className="text-xs text-slate-700">{c.description}</p>
                       <div className="flex items-center justify-between pt-2">
                         <span className="font-bold text-sm text-gray-900 dark:text-white">${c.price}.00</span>
                         <button
@@ -601,7 +601,7 @@ const CamusDashboardPage: React.FC = () => {
                     <h3 className="font-bold text-sm text-gray-900 dark:text-white mt-1">
                       WebRTC Live Studio Session with Instructor John Smith
                     </h3>
-                    <p className="text-xs text-gray-500">Interactive code reviews and student Q&amp;A</p>
+                    <p className="text-xs text-slate-700">Interactive code reviews and student Q&amp;A</p>
                   </div>
                   <button
                     onClick={() => navigate('/live-streaming')}

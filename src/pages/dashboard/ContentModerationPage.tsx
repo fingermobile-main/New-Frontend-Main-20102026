@@ -195,7 +195,7 @@ const ContentModerationPage: React.FC = () => {
             </div>
 
             <div className="p-4 border-b border-slate-300">
-              <Select className="text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500"
+              <Select
                 value={selectedItem?.id || 'all'}
                 onValueChange={(value) => {
                   if (value === 'all') {
@@ -205,7 +205,7 @@ const ContentModerationPage: React.FC = () => {
                   }
                 }}
               >
-                <SelectTrigger>
+                <SelectTrigger className="text-slate-900 font-bold border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500">
                   <SelectValue placeholder="Select an item" />
                 </SelectTrigger>
                 <SelectContent>

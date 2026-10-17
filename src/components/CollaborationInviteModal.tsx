@@ -267,7 +267,7 @@ const CollaborationInviteModal: React.FC<CollaborationInviteModalProps> = ({
                   maxLength={500}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 resize-none text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                 />
-                <p className="text-xs text-gray-500 mt-1">{message.length}/500 characters</p>
+                <p className="text-xs text-slate-700 mt-1">{message.length}/500 characters</p>
               </div>
             )}
 

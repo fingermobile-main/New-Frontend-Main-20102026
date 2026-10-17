@@ -117,13 +117,13 @@ const EarningsTracker: React.FC<EarningsTrackerProps> = ({
         <div className="bg-white border border-slate-300 rounded-lg p-4">
           <p className="text-sm text-gray-600 mb-1">Last Month</p>
           <p className="text-3xl font-bold text-purple-600">{formatCurrency(earnings.previousMonth)}</p>
-          <p className="text-xs text-gray-500 mt-2">Completed</p>
+          <p className="text-xs text-slate-700 mt-2">Completed</p>
         </div>
 
         <div className="bg-white border border-slate-300 rounded-lg p-4">
           <p className="text-sm text-gray-600 mb-1">Next Payout</p>
           <p className="text-3xl font-bold text-orange-600">{formatCurrency(earnings.nextPayout.estimatedAmount)}</p>
-          <p className="text-xs text-gray-500 mt-2">
+          <p className="text-xs text-slate-700 mt-2">
             {new Date(earnings.nextPayout.estimatedDate).toLocaleDateString()}
           </p>
         </div>
@@ -178,7 +178,7 @@ const EarningsTracker: React.FC<EarningsTrackerProps> = ({
                   <span className="text-2xl">{icons[txn.type]}</span>
                   <div>
                     <p className="font-medium text-gray-900">{txn.description}</p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-slate-700">
                       {new Date(txn.date).toLocaleDateString()}
                     </p>
                   </div>

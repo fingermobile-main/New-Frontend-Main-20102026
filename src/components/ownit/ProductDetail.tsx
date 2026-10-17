@@ -209,7 +209,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onClose }) => 
 
         {activeTab === 'history' && (
           <div className="text-center py-8">
-            <p className="text-gray-500">No history available yet</p>
+            <p className="text-slate-700">No history available yet</p>
           </div>
         )}
       </div>

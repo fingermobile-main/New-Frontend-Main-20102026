@@ -1782,7 +1782,7 @@ export const ForumPage: React.FC = () => {
                         <span>🔥</span>
                         <span>All Feeds & Topics</span>
                       </span>
-                      {selectedCategoryId === 'all' && <CheckIcon className="w-4 h-4 text-white" />}
+                      {selectedCategoryId === 'all' && <CheckIcon className="w-4 h-4 text-slate-700" />}
                     </button>
 
                     {apiCategories.map((cat) => {
@@ -1805,7 +1805,7 @@ export const ForumPage: React.FC = () => {
                             <span>{cat.icon}</span>
                             <span className="truncate">{cat.name}</span>
                           </span>
-                          {isSelected && <CheckIcon className="w-4 h-4 text-white shrink-0 ml-1.5" />}
+                          {isSelected && <CheckIcon className="w-4 h-4 text-slate-700 shrink-0 ml-1.5" />}
                         </button>
                       );
                     })}
@@ -3761,7 +3761,7 @@ export const ForumPage: React.FC = () => {
               </div>
               <button
                 onClick={() => setSelectedLightboxImage(null)}
-                className="p-1 rounded-full bg-white/10 hover:bg-white/20 text-white transition cursor-pointer"
+                className="p-1 rounded-full bg-white/10 hover:bg-white/20 text-slate-700 transition cursor-pointer"
               >
                 <XMarkIcon className="w-5 h-5" />
               </button>
@@ -3780,7 +3780,7 @@ export const ForumPage: React.FC = () => {
                   href={selectedLightboxImage.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="px-3 py-1 bg-white/10 hover:bg-white/20 text-white rounded-lg text-xs font-semibold flex items-center gap-1"
+                  className="px-3 py-1 bg-white/10 hover:bg-white/20 text-slate-700 rounded-lg text-xs font-semibold flex items-center gap-1"
                 >
                   <ArrowTopRightOnSquareIcon className="w-3.5 h-3.5" />
                   Open Full Res

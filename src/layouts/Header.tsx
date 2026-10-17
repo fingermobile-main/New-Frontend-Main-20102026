@@ -65,7 +65,7 @@ const Header: React.FC<HeaderProps> = ({
       <div className="flex items-center">
         <button
           type="button"
-          className="p-1 text-slate-700 rounded-full hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="p-1 text-slate-700 rounded-full hover:text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
         >
           <span className="sr-only">View notifications</span>
           <BellIcon className="w-6 h-6" aria-hidden="true" />

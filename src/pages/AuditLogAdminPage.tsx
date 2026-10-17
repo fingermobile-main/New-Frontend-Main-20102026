@@ -218,7 +218,7 @@ const AuditLogAdminPage: React.FC = () => {
         {/* Filters */}
         <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
           <div className="flex items-center space-x-2 mb-4">
-            <FunnelIcon className="h-5 w-5 text-gray-500" />
+            <FunnelIcon className="h-5 w-5 text-slate-700" />
             <h3 className="text-lg font-semibold text-gray-900">Advanced Filters</h3>
           </div>
 
@@ -293,22 +293,22 @@ const AuditLogAdminPage: React.FC = () => {
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                       Timestamp
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                       User
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                       Action
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                       Resource
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                       IP Address
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                       Details
                     </th>
                   </tr>
@@ -336,10 +336,10 @@ const AuditLogAdminPage: React.FC = () => {
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                         <div>
                           <span className="font-medium">{log.resourceType}</span>
-                          <span className="text-gray-500 ml-2">#{log.resourceId}</span>
+                          <span className="text-slate-700 ml-2">#{log.resourceId}</span>
                         </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800 font-mono">
                         {log.ipAddress}
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-700">

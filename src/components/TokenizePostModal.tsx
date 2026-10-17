@@ -55,7 +55,7 @@ const TokenizePostModal: React.FC<TokenizePostModalProps> = ({
             <h3 className="text-xl font-bold">Tokenize Post</h3>
             <button
               onClick={onClose}
-              className="text-gray-500 hover:text-gray-700"
+              className="text-slate-700 hover:text-gray-700"
             >
               <XIcon className="h-6 w-6" />
             </button>
@@ -111,7 +111,7 @@ const TokenizePostModal: React.FC<TokenizePostModalProps> = ({
                 max="50"
                 required
               />
-              <p className="mt-1 text-sm text-gray-500">Percentage of future sales you'll earn</p>
+              <p className="mt-1 text-sm text-slate-700">Percentage of future sales you'll earn</p>
             </div>
 
             <div className="mb-6 p-4 bg-yellow-50 rounded-md">

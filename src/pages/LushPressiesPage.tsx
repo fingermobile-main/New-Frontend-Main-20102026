@@ -705,7 +705,7 @@ export const LushPressiesPage: React.FC = () => {
               </div>
               <button
                 onClick={() => setShowCatalogModal(false)}
-                className="p-1.5 rounded-full hover:bg-gray-100 text-gray-500 transition"
+                className="p-1.5 rounded-full hover:bg-gray-100 text-slate-700 transition"
               >
                 <XMarkIcon className="w-6 h-6" />
               </button>
@@ -808,7 +808,7 @@ export const LushPressiesPage: React.FC = () => {
               </div>
               <button
                 onClick={() => setShowGamificationModal(false)}
-                className="p-1.5 rounded-full hover:bg-gray-100 text-gray-500 transition"
+                className="p-1.5 rounded-full hover:bg-gray-100 text-slate-700 transition"
               >
                 <XMarkIcon className="w-6 h-6" />
               </button>
@@ -831,7 +831,7 @@ export const LushPressiesPage: React.FC = () => {
               </div>
               <button
                 onClick={() => setShowHeatmapModal(false)}
-                className="p-1.5 rounded-full hover:bg-gray-100 text-gray-500 transition"
+                className="p-1.5 rounded-full hover:bg-gray-100 text-slate-700 transition"
               >
                 <XMarkIcon className="w-6 h-6" />
               </button>
@@ -854,7 +854,7 @@ export const LushPressiesPage: React.FC = () => {
               </div>
               <button
                 onClick={() => setShowCommitModal(false)}
-                className="p-1.5 rounded-full hover:bg-gray-100 text-gray-500 transition"
+                className="p-1.5 rounded-full hover:bg-gray-100 text-slate-700 transition"
               >
                 <XMarkIcon className="w-6 h-6" />
               </button>
@@ -935,7 +935,7 @@ export const LushPressiesPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => navigate('/messages')}
-                  className="px-2.5 py-1 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-semibold transition"
+                  className="px-2.5 py-1 rounded-xl bg-white/10 hover:bg-white/20 text-slate-700 text-xs font-semibold transition"
                   title="Expand to Full Messages Page"
                 >
                   Full Screen

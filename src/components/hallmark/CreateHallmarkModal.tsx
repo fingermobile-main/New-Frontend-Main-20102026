@@ -379,7 +379,7 @@ const CreateHallmarkModal: React.FC<CreateHallmarkModalProps> = ({
                           ))}
                         </ul>
                       </div>
-                      <div className="mt-4 pt-3 border-t border-slate-200 dark:border-gray-700/60 text-[10px] text-gray-500">
+                      <div className="mt-4 pt-3 border-t border-slate-200 dark:border-gray-700/60 text-[10px] text-slate-700">
                         {item.guarantorsNeeded > 0 && `• Requires ${item.guarantorsNeeded} Guarantor(s)\n`}
                         {item.managersNeeded > 0 && `• Requires ${item.managersNeeded} Manager(s)\n`}
                         {item.moderatorsNeeded > 0 && `• Requires ${item.moderatorsNeeded} Moderator(s)`}
@@ -613,10 +613,10 @@ const CreateHallmarkModal: React.FC<CreateHallmarkModalProps> = ({
               <div className="space-y-3 bg-gray-50 dark:bg-gray-800 p-4 rounded-xl text-xs text-gray-700 dark:text-gray-300">
                 <p className="font-bold text-gray-900 dark:text-white">Review Before Submitting:</p>
                 <div className="grid grid-cols-2 gap-2 text-[11px]">
-                  <div><span className="text-gray-500">HallMarks Page:</span> <strong>{pageName}</strong></div>
-                  <div><span className="text-gray-500">Category:</span> <strong>{category}</strong></div>
-                  <div><span className="text-gray-500">Audience Scale:</span> <strong>{tierConfig.capacity}</strong></div>
-                  <div><span className="text-gray-500">Means of ID:</span> <strong>{idType} ({idNumber})</strong></div>
+                  <div><span className="text-slate-700">HallMarks Page:</span> <strong>{pageName}</strong></div>
+                  <div><span className="text-slate-700">Category:</span> <strong>{category}</strong></div>
+                  <div><span className="text-slate-700">Audience Scale:</span> <strong>{tierConfig.capacity}</strong></div>
+                  <div><span className="text-slate-700">Means of ID:</span> <strong>{idType} ({idNumber})</strong></div>
                 </div>
               </div>
 
@@ -658,15 +658,15 @@ const CreateHallmarkModal: React.FC<CreateHallmarkModalProps> = ({
               
               <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-xl max-w-sm mx-auto text-xs space-y-1.5 border border-slate-300 dark:border-gray-700">
                 <div className="flex justify-between">
-                  <span className="text-gray-500">Reference Token:</span>
+                  <span className="text-slate-700">Reference Token:</span>
                   <span className="font-mono font-bold text-[#ff6b00]">{referenceId}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-500">Standard Review:</span>
+                  <span className="text-slate-700">Standard Review:</span>
                   <span className="font-semibold text-gray-800 dark:text-gray-200">3–4 Weeks</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-500">Review Request:</span>
+                  <span className="text-slate-700">Review Request:</span>
                   <span className="font-semibold text-gray-800 dark:text-gray-200">Available after 15 days</span>
                 </div>
               </div>
@@ -710,7 +710,7 @@ const CreateHallmarkModal: React.FC<CreateHallmarkModalProps> = ({
               <button
                 type="button"
                 onClick={onClose}
-                className="px-4 py-2 rounded-xl text-xs font-medium text-gray-500 hover:text-gray-700 transition"
+                className="px-4 py-2 rounded-xl text-xs font-medium text-slate-700 hover:text-gray-700 transition"
               >
                 Cancel
               </button>

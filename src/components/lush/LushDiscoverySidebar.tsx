@@ -250,7 +250,7 @@ export const LushDiscoverySidebar: React.FC<LushDiscoverySidebarProps> = ({
         )}
 
         {matches.length === 0 ? (
-          <div className="text-center py-4 text-xs text-gray-500 italic">
+          <div className="text-center py-4 text-xs text-slate-700 italic">
             Swipe right on matches to start conversations!
           </div>
         ) : (
@@ -314,7 +314,7 @@ export const LushDiscoverySidebar: React.FC<LushDiscoverySidebarProps> = ({
                           </span>
                         )}
                       </div>
-                      <p className="text-[11px] text-gray-500 truncate mt-0.5">
+                      <p className="text-[11px] text-slate-700 truncate mt-0.5">
                         {match.pinExchanged
                           ? match.lastMessage
                           : 'Exchange PIN to unlock full profile & direct messaging'}

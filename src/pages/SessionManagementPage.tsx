@@ -82,7 +82,7 @@ const SessionManagementPage: React.FC = () => {
             Loading active sessions...
           </div>
         ) : sessions.length === 0 ? (
-          <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-8 text-center text-gray-500">
+          <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-8 text-center text-slate-700">
             No active sessions found.
           </div>
         ) : (
@@ -107,7 +107,7 @@ const SessionManagementPage: React.FC = () => {
                         </span>
                       )}
                     </div>
-                    <div className="text-xs text-gray-500 mt-1 flex flex-wrap gap-x-4 gap-y-1">
+                    <div className="text-xs text-slate-700 mt-1 flex flex-wrap gap-x-4 gap-y-1">
                       <span>IP: <strong className="text-gray-700">{session.ipAddress}</strong></span>
                       <span>
                         Last active:{' '}

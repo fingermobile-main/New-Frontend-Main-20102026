@@ -356,7 +356,7 @@ const AdminControlDashboard: React.FC = () => {
                   <h3 className="text-lg leading-6 font-medium text-gray-900">
                     Available Actions
                   </h3>
-                  <p className="mt-1 text-sm text-gray-500">
+                  <p className="mt-1 text-sm text-slate-700">
                     Perform administrative actions with proper authorization
                   </p>
                 </div>
@@ -368,7 +368,7 @@ const AdminControlDashboard: React.FC = () => {
                           <h4 className="text-lg font-medium text-gray-900">
                             {action.actionWord}
                           </h4>
-                          <p className="text-sm text-gray-500 mt-1">
+                          <p className="text-sm text-slate-700 mt-1">
                             {action.description}
                           </p>
                           <div className="mt-2 flex flex-wrap gap-2">
@@ -406,7 +406,7 @@ const AdminControlDashboard: React.FC = () => {
                         <div className="mt-4 pt-4 border-t border-slate-300">
                           <div className="flex justify-between items-center">
                             <div>
-                              <p className="text-sm text-gray-500">
+                              <p className="text-sm text-slate-700">
                                 Execute this action?
                               </p>
                               {countdown !== null && (
@@ -459,7 +459,7 @@ const AdminControlDashboard: React.FC = () => {
                               <p className="text-sm font-medium text-gray-900">
                                 {member.name}
                               </p>
-                              <p className="text-sm text-gray-500">
+                              <p className="text-sm text-slate-700">
                                 {member.role} • Last login:{' '}
                                 {member.lastLogin.toLocaleDateString()}
                               </p>
@@ -515,7 +515,7 @@ const AdminControlDashboard: React.FC = () => {
                   <h3 className="text-lg leading-6 font-medium text-gray-900">
                     Audit Logs
                   </h3>
-                  <p className="mt-1 text-sm text-gray-500">
+                  <p className="mt-1 text-sm text-slate-700">
                     Track all administrative actions performed
                   </p>
                 </div>
@@ -536,12 +536,12 @@ const AdminControlDashboard: React.FC = () => {
                           >
                             {log.status}
                           </span>
-                          <span className="text-xs text-gray-500">
+                          <span className="text-xs text-slate-700">
                             {new Date(log.timestamp).toLocaleString()}
                           </span>
                         </div>
                       </div>
-                      <div className="mt-2 flex items-center text-sm text-gray-500">
+                      <div className="mt-2 flex items-center text-sm text-slate-700">
                         <span>Performed by: {log.memberId}</span>
                         <span className="mx-2">•</span>
                         <span>IP: {log.ipAddress}</span>
@@ -617,7 +617,7 @@ const AdminControlDashboard: React.FC = () => {
                 </h3>
                 <button
                   onClick={() => setShowAddMemberModal(false)}
-                  className="text-gray-500 hover:text-gray-700"
+                  className="text-slate-700 hover:text-gray-700"
                 >
                   <XCircleIcon className="h-6 w-6" />
                 </button>
@@ -686,7 +686,7 @@ const AdminControlDashboard: React.FC = () => {
                 </h3>
                 <button
                   onClick={() => setShowEditMemberModal(false)}
-                  className="text-gray-500 hover:text-gray-700"
+                  className="text-slate-700 hover:text-gray-700"
                 >
                   <XCircleIcon className="h-6 w-6" />
                 </button>

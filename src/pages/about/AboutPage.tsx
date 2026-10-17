@@ -302,7 +302,7 @@ const AboutPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setActiveTab('founder')}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold text-sm transition-all"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-slate-700 font-semibold text-sm transition-all"
               >
                 Read Founder Dossier
                 <ChevronRight className="w-4 h-4" />

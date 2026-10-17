@@ -328,22 +328,22 @@ const CacheManagementPage: React.FC = () => {
                     <table className="min-w-full divide-y divide-gray-200">
                       <thead className="bg-gray-50">
                         <tr>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                             Key
                           </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                             Type
                           </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                             TTL
                           </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                             Size
                           </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                             Last Accessed
                           </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                             Actions
                           </th>
                         </tr>
@@ -372,7 +372,7 @@ const CacheManagementPage: React.FC = () => {
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                               {cacheKey.size}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {new Date(cacheKey.lastAccessed).toLocaleTimeString()}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm">
@@ -400,14 +400,14 @@ const CacheManagementPage: React.FC = () => {
                   <div className="bg-white rounded-xl shadow-lg p-6">
                     <h4 className="font-medium text-gray-900 mb-4">Hit/Miss Ratio Over Time</h4>
                     <div className="h-64 flex items-center justify-center bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
-                      <p className="text-gray-500">Chart visualization would be here</p>
+                      <p className="text-slate-700">Chart visualization would be here</p>
                     </div>
                   </div>
 
                   <div className="bg-white rounded-xl shadow-lg p-6">
                     <h4 className="font-medium text-gray-900 mb-4">Memory Usage Trend</h4>
                     <div className="h-64 flex items-center justify-center bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
-                      <p className="text-gray-500">Chart visualization would be here</p>
+                      <p className="text-slate-700">Chart visualization would be here</p>
                     </div>
                   </div>
                 </div>

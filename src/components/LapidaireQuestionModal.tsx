@@ -173,7 +173,7 @@ export const LapidaireQuestionModal: React.FC<LapidaireQuestionModalProps> = ({
 
         {/* Progress Bar */}
         <div>
-          <div className="flex justify-between text-[11px] text-gray-500 mb-1.5 font-medium">
+          <div className="flex justify-between text-[11px] text-slate-700 mb-1.5 font-medium">
             <span>
               Question {currentIndex + 1} of {questions.length}
             </span>

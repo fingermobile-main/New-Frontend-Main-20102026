@@ -336,7 +336,7 @@ const MasterEcommerceConsole: React.FC = () => {
               href="/marketplace"
               target="_blank"
               rel="noreferrer"
-              className="px-3.5 py-2 text-xs font-bold rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/10 flex items-center gap-1.5 transition"
+              className="px-3.5 py-2 text-xs font-bold rounded-xl bg-white/10 hover:bg-white/20 text-slate-700 border border-white/10 flex items-center gap-1.5 transition"
             >
               <ExternalLink className="w-3.5 h-3.5" />
               Live Marketplace
@@ -345,14 +345,14 @@ const MasterEcommerceConsole: React.FC = () => {
               href="/storefronts"
               target="_blank"
               rel="noreferrer"
-              className="px-3.5 py-2 text-xs font-bold rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/10 flex items-center gap-1.5 transition"
+              className="px-3.5 py-2 text-xs font-bold rounded-xl bg-white/10 hover:bg-white/20 text-slate-700 border border-white/10 flex items-center gap-1.5 transition"
             >
               <Store className="w-3.5 h-3.5" />
               Live Storefronts
             </a>
             <button
               onClick={() => showToast('Refreshed inventory and order synchronization')}
-              className="p-2 text-xs font-bold rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/10 transition"
+              className="p-2 text-xs font-bold rounded-xl bg-white/10 hover:bg-white/20 text-slate-700 border border-white/10 transition"
             >
               <span title="Sync catalog">
                 <RefreshCw className="w-3.5 h-3.5" />

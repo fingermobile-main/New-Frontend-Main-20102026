@@ -149,7 +149,7 @@ const ProductDetailPage: React.FC = () => {
                 </>
               ) : (
                 <div className="col-span-2 flex items-center justify-center h-64 bg-gray-100 dark:bg-gray-700 rounded-lg">
-                  <span className="text-gray-500">No images available</span>
+                  <span className="text-slate-700">No images available</span>
                 </div>
               )}
             </div>
@@ -164,7 +164,7 @@ const ProductDetailPage: React.FC = () => {
                 />
               ) : (
                 <div className="flex items-center justify-center h-80 bg-gray-100 dark:bg-gray-700 rounded-lg">
-                  <span className="text-gray-500">No image available</span>
+                  <span className="text-slate-700">No image available</span>
                 </div>
               )}
             </div>
@@ -278,7 +278,7 @@ const ProductDetailPage: React.FC = () => {
               ))}
             </div>
           ) : (
-            <p className="text-gray-500 dark:text-gray-400">No reviews yet.</p>
+            <p className="text-slate-700 dark:text-gray-400">No reviews yet.</p>
           )}
         </div>
 
@@ -293,13 +293,13 @@ const ProductDetailPage: React.FC = () => {
                   <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
                     <p className="font-medium text-gray-900 dark:text-white">{qa.question}</p>
                     <p className="text-gray-700 dark:text-gray-300 mt-1">{qa.answer}</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">{qa.createdAt}</p>
+                    <p className="text-xs text-slate-700 dark:text-gray-400 mt-2">{qa.createdAt}</p>
                   </div>
                 </div>
               ))}
             </div>
           ) : (
-            <p className="text-gray-500 dark:text-gray-400">No questions yet. Ask the first one!</p>
+            <p className="text-slate-700 dark:text-gray-400">No questions yet. Ask the first one!</p>
           )}
         </div>
       </div>

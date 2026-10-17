@@ -217,21 +217,21 @@ const RateLimitConfigPage: React.FC = () => {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
                       <div>
-                        <p className="text-xs text-gray-500 mb-1">Endpoint Pattern</p>
+                        <p className="text-xs text-slate-700 mb-1">Endpoint Pattern</p>
                         <code className="text-sm font-mono bg-gray-100 px-2 py-1 rounded block">
                           {config.endpointPattern}
                         </code>
                       </div>
                       <div>
-                        <p className="text-xs text-gray-500 mb-1">Max Requests</p>
+                        <p className="text-xs text-slate-700 mb-1">Max Requests</p>
                         <p className="text-sm font-medium text-gray-900">{config.maxRequests}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-gray-500 mb-1">Time Window</p>
+                        <p className="text-xs text-slate-700 mb-1">Time Window</p>
                         <p className="text-sm font-medium text-gray-900">{formatWindowMs(config.windowMs)}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-gray-500 mb-1">Scope</p>
+                        <p className="text-xs text-slate-700 mb-1">Scope</p>
                         <p className="text-sm font-medium text-gray-900">
                           {config.userRole && <span className="inline-flex items-center"><UserCircleIcon className="h-4 w-4 mr-1" />{config.userRole}</span>}
                           {config.userId && <span className="inline-flex items-center"><UserCircleIcon className="h-4 w-4 mr-1" />User #{config.userId}</span>}
@@ -241,7 +241,7 @@ const RateLimitConfigPage: React.FC = () => {
                       </div>
                     </div>
 
-                    <div className="mt-3 text-xs text-gray-500">
+                    <div className="mt-3 text-xs text-slate-700">
                       Created: {new Date(config.createdAt).toLocaleDateString()}
                     </div>
                   </div>
@@ -309,7 +309,7 @@ const RateLimitConfigPage: React.FC = () => {
                     placeholder="e.g., /api/users/* or /api/payments/process"
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
                   />
-                  <p className="text-xs text-gray-500 mt-1">Use * as wildcard. Example: /api/* matches all API routes</p>
+                  <p className="text-xs text-slate-700 mt-1">Use * as wildcard. Example: /api/* matches all API routes</p>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">

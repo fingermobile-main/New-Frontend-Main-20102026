@@ -829,28 +829,28 @@ const GuardianAiPage: React.FC = () => {
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                       <tr>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           System
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Version
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Category
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Priority
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Status
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Confidence
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Last Trained
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Actions
                         </th>
                       </tr>
@@ -858,7 +858,7 @@ const GuardianAiPage: React.FC = () => {
                     <tbody className="bg-white divide-y divide-gray-200">
                       {currentItems.length === 0 ? (
                         <tr>
-                          <td colSpan={8} className="px-6 py-4 text-center text-gray-500">
+                          <td colSpan={8} className="px-6 py-4 text-center text-slate-800">
                             No Guardian AI systems found
                           </td>
                         </tr>
@@ -867,9 +867,9 @@ const GuardianAiPage: React.FC = () => {
                           <tr key={system.id} className="hover:bg-gray-50">
                             <td className="px-6 py-4">
                               <div className="text-sm font-medium text-gray-900">{system.name}</div>
-                              <div className="text-sm text-gray-500 max-w-xs truncate">{system.description}</div>
+                              <div className="text-sm text-slate-700 max-w-xs truncate">{system.description}</div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {system.version}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
@@ -887,10 +887,10 @@ const GuardianAiPage: React.FC = () => {
                                 {system.status}
                               </span>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {(system.confidenceThreshold * 100).toFixed(0)}%
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {new Date(system.lastTrained).toLocaleDateString()}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -950,28 +950,28 @@ const GuardianAiPage: React.FC = () => {
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                       <tr>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Event
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           System
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Type
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Severity
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Confidence
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Status
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Timestamp
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Actions
                         </th>
                       </tr>
@@ -979,7 +979,7 @@ const GuardianAiPage: React.FC = () => {
                     <tbody className="bg-white divide-y divide-gray-200">
                       {currentItems.length === 0 ? (
                         <tr>
-                          <td colSpan={8} className="px-6 py-4 text-center text-gray-500">
+                          <td colSpan={8} className="px-6 py-4 text-center text-slate-800">
                             No Guardian AI events found
                           </td>
                         </tr>
@@ -988,9 +988,9 @@ const GuardianAiPage: React.FC = () => {
                           <tr key={event.id} className="hover:bg-gray-50">
                             <td className="px-6 py-4">
                               <div className="text-sm font-medium text-gray-900">{event.description}</div>
-                              <div className="text-sm text-gray-500 max-w-xs truncate">Triggered by: {event.triggeredBy}</div>
+                              <div className="text-sm text-slate-700 max-w-xs truncate">Triggered by: {event.triggeredBy}</div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {event.systemName}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
@@ -1003,7 +1003,7 @@ const GuardianAiPage: React.FC = () => {
                                 {event.severity}
                               </span>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {(event.confidence * 100).toFixed(0)}%
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
@@ -1011,7 +1011,7 @@ const GuardianAiPage: React.FC = () => {
                                 {event.status}
                               </span>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {new Date(event.timestamp).toLocaleString()}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -1065,25 +1065,25 @@ const GuardianAiPage: React.FC = () => {
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                       <tr>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Action
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Event
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Executed By
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Outcome
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Details
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Timestamp
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Actions
                         </th>
                       </tr>
@@ -1091,7 +1091,7 @@ const GuardianAiPage: React.FC = () => {
                     <tbody className="bg-white divide-y divide-gray-200">
                       {currentItems.length === 0 ? (
                         <tr>
-                          <td colSpan={7} className="px-6 py-4 text-center text-gray-500">
+                          <td colSpan={7} className="px-6 py-4 text-center text-slate-800">
                             No Guardian AI responses found
                           </td>
                         </tr>
@@ -1103,10 +1103,10 @@ const GuardianAiPage: React.FC = () => {
                                 {response.action}
                               </span>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               Event #{response.eventId}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {response.executedByName}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
@@ -1114,10 +1114,10 @@ const GuardianAiPage: React.FC = () => {
                                 {response.outcome}
                               </span>
                             </td>
-                            <td className="px-6 py-4 text-sm text-gray-500 max-w-xs truncate">
+                            <td className="px-6 py-4 text-sm text-slate-800 max-w-xs truncate">
                               {response.details}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {new Date(response.triggeredAt).toLocaleString()}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -1165,25 +1165,25 @@ const GuardianAiPage: React.FC = () => {
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                       <tr>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Report
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Type
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Period
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Status
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Due Date
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Submitted
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Actions
                         </th>
                       </tr>
@@ -1191,7 +1191,7 @@ const GuardianAiPage: React.FC = () => {
                     <tbody className="bg-white divide-y divide-gray-200">
                       {currentItems.length === 0 ? (
                         <tr>
-                          <td colSpan={7} className="px-6 py-4 text-center text-gray-500">
+                          <td colSpan={7} className="px-6 py-4 text-center text-slate-800">
                             No Guardian AI reports found
                           </td>
                         </tr>
@@ -1200,14 +1200,14 @@ const GuardianAiPage: React.FC = () => {
                           <tr key={report.id} className="hover:bg-gray-50">
                             <td className="px-6 py-4">
                               <div className="text-sm font-medium text-gray-900">{report.title}</div>
-                              <div className="text-sm text-gray-500 max-w-xs truncate">{report.description}</div>
+                              <div className="text-sm text-slate-700 max-w-xs truncate">{report.description}</div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
                               <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${report.type === 'daily' ? 'bg-blue-100 text-blue-950 border border-blue-400 font-bold' : report.type === 'weekly' ? 'bg-green-100 text-green-950 border border-green-400 font-bold' : report.type === 'monthly' ? 'bg-purple-100 text-purple-950 border border-purple-400 font-bold' : 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'}`}>
                                 {report.type}
                               </span>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {report.period}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
@@ -1215,10 +1215,10 @@ const GuardianAiPage: React.FC = () => {
                                 {report.status}
                               </span>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {new Date(report.dueDate).toLocaleDateString()}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               {report.submittedAt ? new Date(report.submittedAt).toLocaleDateString() : '-'}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -1379,7 +1379,7 @@ const GuardianAiPage: React.FC = () => {
                         <div key={index} className="flex justify-between items-center p-3 border rounded-lg">
                           <div>
                             <p className="font-medium">{event.name}</p>
-                            <p className="text-sm text-gray-500">{event.system} • {event.timestamp}</p>
+                            <p className="text-sm text-slate-700">{event.system} • {event.timestamp}</p>
                           </div>
                           <span className={`px-2 py-1 text-xs font-semibold rounded-full ${event.severity === 'critical' ? 'bg-red-100 text-red-950 border border-red-400 font-bold' : event.severity === 'high' ? 'bg-orange-100 text-orange-800' : 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'}`}>
                             {event.severity}
@@ -1393,7 +1393,7 @@ const GuardianAiPage: React.FC = () => {
                     <h3 className="text-lg font-medium text-gray-900 mb-4">System Performance</h3>
                     <div className="h-64 flex items-center justify-center">
                       <BarChart3 className="h-16 w-16 text-slate-700" />
-                      <p className="ml-4 text-gray-500">System performance visualization would appear here</p>
+                      <p className="ml-4 text-slate-700">System performance visualization would appear here</p>
                     </div>
                   </div>
                 </div>
@@ -1402,7 +1402,7 @@ const GuardianAiPage: React.FC = () => {
                   <h3 className="text-lg font-medium text-gray-900 mb-4">Protection Coverage</h3>
                   <div className="h-64 flex items-center justify-center">
                     <ShieldCheck className="h-16 w-16 text-slate-700" />
-                    <p className="ml-4 text-gray-500">Protection coverage visualization would appear here</p>
+                    <p className="ml-4 text-slate-700">Protection coverage visualization would appear here</p>
                   </div>
                 </div>
               </div>
@@ -1493,7 +1493,7 @@ const GuardianAiPage: React.FC = () => {
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-medium text-gray-900">Create New Guardian AI System</h3>
                 <button 
-                  className="text-gray-500 hover:text-gray-700"
+                  className="text-slate-700 hover:text-gray-700"
                   onClick={() => setShowCreateModal(false)}
                 >
                   <XCircle className="h-6 w-6" />

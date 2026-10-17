@@ -411,7 +411,7 @@ const GuardianProtectionPage: React.FC = () => {
             {/* Top Quick Status Metric Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-300 dark:border-gray-800 shadow-sm">
-                <div className="flex items-center justify-between text-gray-500 text-xs font-bold uppercase">
+                <div className="flex items-center justify-between text-slate-700 text-xs font-bold uppercase">
                   <span>Cryptographic Lock</span>
                   <Lock className="w-4 h-4 text-emerald-500" />
                 </div>
@@ -422,25 +422,25 @@ const GuardianProtectionPage: React.FC = () => {
               </div>
 
               <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-300 dark:border-gray-800 shadow-sm">
-                <div className="flex items-center justify-between text-gray-500 text-xs font-bold uppercase">
+                <div className="flex items-center justify-between text-slate-700 text-xs font-bold uppercase">
                   <span>Detection Latency</span>
                   <Zap className="w-4 h-4 text-amber-500" />
                 </div>
                 <div className="mt-2 text-2xl font-black text-gray-900 dark:text-white">12.4 ms</div>
-                <div className="text-xs text-gray-500 mt-1">Real-time heuristics pipeline</div>
+                <div className="text-xs text-slate-700 mt-1">Real-time heuristics pipeline</div>
               </div>
 
               <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-300 dark:border-gray-800 shadow-sm">
-                <div className="flex items-center justify-between text-gray-500 text-xs font-bold uppercase">
+                <div className="flex items-center justify-between text-slate-700 text-xs font-bold uppercase">
                   <span>Kill Switch State</span>
                   <Radio className="w-4 h-4 text-blue-500" />
                 </div>
                 <div className="mt-2 text-2xl font-black text-emerald-600 dark:text-emerald-400">STANDBY</div>
-                <div className="text-xs text-gray-500 mt-1">Requires tripartite co-signature</div>
+                <div className="text-xs text-slate-700 mt-1">Requires tripartite co-signature</div>
               </div>
 
               <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-300 dark:border-gray-800 shadow-sm">
-                <div className="flex items-center justify-between text-gray-500 text-xs font-bold uppercase">
+                <div className="flex items-center justify-between text-slate-700 text-xs font-bold uppercase">
                   <span>Sentinel Version</span>
                   <Terminal className="w-4 h-4 text-purple-500" />
                 </div>
@@ -457,7 +457,7 @@ const GuardianProtectionPage: React.FC = () => {
                     <ShieldCheck className="w-6 h-6 text-red-600" />
                     9 Core Security Modules
                   </h2>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                  <p className="text-sm text-slate-700 dark:text-gray-400">
                     Comprehensive continuous surveillance across client runtimes, gateway proxies, and database tiers.
                   </p>
                 </div>
@@ -507,7 +507,7 @@ const GuardianProtectionPage: React.FC = () => {
                   <Users className="w-5 h-5 text-red-600" />
                   Authorized Personnel Registry
                 </h3>
-                <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">
+                <p className="text-xs text-slate-700 dark:text-gray-400 mb-4">
                   Execution of platform freezes, emergency isolation, or reboots mandates sovereign tripartite co-signing:
                 </p>
 
@@ -516,14 +516,14 @@ const GuardianProtectionPage: React.FC = () => {
                     <div key={idx} className="p-3.5 bg-gray-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-gray-700/60">
                       <div className="font-bold text-sm text-gray-900 dark:text-white">{person.name}</div>
                       <div className="text-xs text-red-600 dark:text-red-400 font-medium">{person.role || 'Executive Signatory'}</div>
-                      <div className="text-xs text-gray-500 mt-1 font-mono">Tel: {person.phone}</div>
+                      <div className="text-xs text-slate-700 mt-1 font-mono">Tel: {person.phone}</div>
                     </div>
                   ))}
                 </div>
 
                 <div className="mt-6 pt-4 border-t border-slate-200 dark:border-gray-800">
                   <div className="text-xs font-bold text-gray-700 dark:text-gray-300 mb-2">Authorized Dispatch Channels:</div>
-                  <ul className="text-xs text-gray-500 space-y-1 font-mono">
+                  <ul className="text-xs text-slate-700 space-y-1 font-mono">
                     {guardianStatus.stercesConfig.authorizedEmails.map((em, i) => (
                       <li key={i} className="truncate">• {em}</li>
                     ))}
@@ -540,7 +540,7 @@ const GuardianProtectionPage: React.FC = () => {
                     <Key className="w-6 h-6 text-red-600" />
                     Tripartite Sovereign Protocol
                   </h3>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-xs text-slate-700">
                     Step {authStep} of 5 — Cryptographic authorization sequence
                   </p>
                 </div>
@@ -671,7 +671,7 @@ const GuardianProtectionPage: React.FC = () => {
                     <h4 className="text-lg font-bold text-gray-900 dark:text-white">
                       MFA & Sovereign Biometric Verification
                     </h4>
-                    <p className="text-xs text-gray-500 max-w-md mx-auto mt-1">
+                    <p className="text-xs text-slate-700 max-w-md mx-auto mt-1">
                       Initiating hardware challenge to +2348088855752 and preparing facial recognition vector handshake.
                     </p>
                   </div>
@@ -714,7 +714,7 @@ const GuardianProtectionPage: React.FC = () => {
                           }`}
                         >
                           <div className="text-sm font-bold">{act.label}</div>
-                          <div className="text-[11px] mt-1 text-gray-500">{act.desc}</div>
+                          <div className="text-[11px] mt-1 text-slate-700">{act.desc}</div>
                         </button>
                       ))}
                     </div>
@@ -763,13 +763,13 @@ const GuardianProtectionPage: React.FC = () => {
                   <Shield className="w-5 h-5 text-red-600" />
                   Sentinel Security Rules Matrix
                 </h3>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-slate-700">
                   Continuous rule definitions stored in Postgres <code>guardian_rules</code> with active threshold triggers.
                 </p>
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="text-xs font-bold text-gray-500">Filter:</span>
+                <span className="text-xs font-bold text-slate-700">Filter:</span>
                 <select
                   value={selectedRuleCategory}
                   onChange={e => setSelectedRuleCategory(e.target.value)}
@@ -802,7 +802,7 @@ const GuardianProtectionPage: React.FC = () => {
                     <tr key={rule.id} className="hover:bg-gray-50/50 dark:hover:bg-slate-800/30 transition">
                       <td className="py-3 font-bold text-gray-900 dark:text-white">
                         {rule.name}
-                        <div className="text-[11px] font-normal text-gray-500 mt-0.5">{rule.description}</div>
+                        <div className="text-[11px] font-normal text-slate-700 mt-0.5">{rule.description}</div>
                       </td>
                       <td className="py-3 font-mono text-gray-600 dark:text-gray-300">{rule.category}</td>
                       <td className="py-3">
@@ -817,7 +817,7 @@ const GuardianProtectionPage: React.FC = () => {
                         </span>
                       </td>
                       <td className="py-3 font-mono text-gray-600 dark:text-gray-300">{rule.action}</td>
-                      <td className="py-3 font-mono text-gray-500">{rule.threshold_value}</td>
+                      <td className="py-3 font-mono text-slate-800">{rule.threshold_value}</td>
                       <td className="py-3">
                         <span className="inline-flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-bold">
                           <CheckCircle2 className="w-3.5 h-3.5" /> Active
@@ -840,7 +840,7 @@ const GuardianProtectionPage: React.FC = () => {
                   <FileText className="w-5 h-5 text-red-600" />
                   AES-256 Cryptographic Audit Ledger
                 </h3>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-slate-700">
                   Tamper-evident system activity logged from Postgres <code>guardian_logs</code>.
                 </p>
               </div>

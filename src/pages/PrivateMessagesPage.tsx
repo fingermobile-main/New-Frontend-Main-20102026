@@ -190,7 +190,7 @@ const PrivateMessagesPage: React.FC = () => {
             <div className="hidden lg:block lg:col-span-3">
               <div className="sticky top-20 bg-white p-6 rounded-xl shadow-sm border border-slate-200">
                 <h3 className="font-bold text-gray-900 mb-2">Private Encryption</h3>
-                <p className="text-xs text-gray-500 mb-4">Direct peer-to-peer secure messaging channels verified on protocol.</p>
+                <p className="text-xs text-slate-700 mb-4">Direct peer-to-peer secure messaging channels verified on protocol.</p>
                 <div className="p-3 bg-blue-50/60 rounded-lg text-xs text-blue-800 border border-blue-100">
                   <p className="font-semibold mb-1">Security Status: Active</p>
                   <p>All private messages are validated with cryptographic session tokens.</p>
@@ -206,7 +206,7 @@ const PrivateMessagesPage: React.FC = () => {
                     <div className="flex justify-between items-center">
                       <div>
                         <h1 className="text-2xl font-bold text-gray-900">Private Messages</h1>
-                        <p className="mt-1 text-sm text-gray-500">
+                        <p className="mt-1 text-sm text-slate-700">
                           Encrypted conversations with enhanced privacy controls
                         </p>
                       </div>
@@ -225,7 +225,7 @@ const PrivateMessagesPage: React.FC = () => {
                     {/* Conversations sidebar */}
                     <div className="md:w-1/3 border-r border-slate-300 flex flex-col">
                       <div className="p-4 border-b border-slate-300 bg-gray-50">
-                        <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                        <span className="text-xs font-semibold text-slate-700 uppercase tracking-wider">
                           Channels ({conversations.length})
                         </span>
                       </div>
@@ -267,7 +267,7 @@ const PrivateMessagesPage: React.FC = () => {
                                     </span>
                                   </div>
                                   <div className="flex items-center justify-between mt-1">
-                                    <p className="text-xs text-gray-500 truncate">
+                                    <p className="text-xs text-slate-700 truncate">
                                       {conversation.lastMessage}
                                     </p>
                                     <span className={`text-[10px] px-2 py-0.5 rounded-full ${getPrivacyColor(conversation.privacyLevel)}`}>

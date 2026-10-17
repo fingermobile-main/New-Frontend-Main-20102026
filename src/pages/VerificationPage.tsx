@@ -97,7 +97,7 @@ const VerificationPage: React.FC = () => {
 
                 <div className="space-y-4">
                   <div>
-                    <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Choose Method</h3>
+                    <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wider mb-3">Choose Method</h3>
                     <div className="flex space-x-3">
                       <button
                         onClick={() => setVerificationMethod('phone')}
@@ -125,7 +125,7 @@ const VerificationPage: React.FC = () => {
                   </div>
 
                   <div className="mt-6">
-                    <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">
+                    <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wider mb-3">
                       {verificationMethod === 'phone' ? 'Phone Number' : 'Email Address'}
                     </h3>
                     <div className="relative">
@@ -177,7 +177,7 @@ const VerificationPage: React.FC = () => {
                         </div>
                         <div>
                           <h3 className="font-medium text-gray-900">Enter Code</h3>
-                          <p className="text-sm text-gray-500">
+                          <p className="text-sm text-slate-700">
                             We've sent a 6-digit code to your {verificationMethod}
                           </p>
                         </div>

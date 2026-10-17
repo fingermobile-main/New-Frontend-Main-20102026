@@ -76,7 +76,7 @@ export const MemberTributProjectsModal: React.FC<MemberTributProjectsModalProps>
         <div className="relative bg-gradient-to-r from-slate-900 via-purple-950 to-slate-900 p-6 sm:p-8 text-white">
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition"
+            className="absolute top-4 right-4 p-2 rounded-full bg-white/10 hover:bg-white/20 text-slate-700 transition"
             title="Close"
           >
             <XMarkIcon className="w-5 h-5" />

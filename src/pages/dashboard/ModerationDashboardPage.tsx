@@ -109,7 +109,7 @@ const ModerationDashboardPage: React.FC = () => {
               key={index}
               className="bg-white rounded-xl shadow-sm border border-slate-300 p-6"
             >
-              <p className="text-sm font-medium text-gray-500">{stat.name}</p>
+              <p className="text-sm font-medium text-slate-700">{stat.name}</p>
               <div className="mt-2 flex items-baseline">
                 <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
                 <p className="ml-2 text-sm font-medium text-green-500">
@@ -203,7 +203,7 @@ const ModerationDashboardPage: React.FC = () => {
                     <div className="p-8 text-center bg-gray-50 rounded-lg border border-dashed border-gray-300">
                       <CheckCircle2 className="w-10 h-10 text-green-500 mx-auto mb-2" />
                       <p className="text-gray-700 font-medium">No pending moderation items</p>
-                      <p className="text-sm text-gray-500">The moderation queue is clear for the selected category.</p>
+                      <p className="text-sm text-slate-700">The moderation queue is clear for the selected category.</p>
                     </div>
                   ) : (
                     pendingContent.map((item) => (
@@ -224,11 +224,11 @@ const ModerationDashboardPage: React.FC = () => {
                             >
                               {(item.priority || 'normal').toUpperCase()} Priority
                             </span>
-                            <span className="ml-2 text-sm text-gray-500 uppercase font-semibold">
+                            <span className="ml-2 text-sm text-slate-700 uppercase font-semibold">
                               {item.content_type}
                             </span>
                           </div>
-                          <span className="text-sm text-gray-500">
+                          <span className="text-sm text-slate-700">
                             {new Date(item.created_at).toLocaleString()}
                           </span>
                         </div>
@@ -290,31 +290,31 @@ const ModerationDashboardPage: React.FC = () => {
                       <tr>
                         <th
                           scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
                         >
                           Member
                         </th>
                         <th
                           scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
                         >
                           Reports
                         </th>
                         <th
                           scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
                         >
                           Status
                         </th>
                         <th
                           scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
                         >
                           Last Activity
                         </th>
                         <th
                           scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
                         >
                           Actions
                         </th>
@@ -327,11 +327,11 @@ const ModerationDashboardPage: React.FC = () => {
                             <div className="text-sm font-medium text-gray-900">
                               {member.name}
                             </div>
-                            <div className="text-sm text-gray-500">
+                            <div className="text-sm text-slate-700">
                               {member.membername}
                             </div>
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                             {member.reports}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
@@ -346,7 +346,7 @@ const ModerationDashboardPage: React.FC = () => {
                                 member.status.slice(1)}
                             </span>
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                             {member.lastActivity}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -397,7 +397,7 @@ const ModerationDashboardPage: React.FC = () => {
                     <h3 className="mt-2 text-sm font-medium text-gray-900">
                       No user reports logged
                     </h3>
-                    <p className="mt-1 text-sm text-gray-500">
+                    <p className="mt-1 text-sm text-slate-700">
                       All user reports have been resolved.
                     </p>
                   </div>
@@ -406,11 +406,11 @@ const ModerationDashboardPage: React.FC = () => {
                     <table className="min-w-full divide-y divide-gray-200">
                       <thead className="bg-gray-50">
                         <tr>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Report ID</th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Target</th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Reason</th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Report ID</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Target</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Reason</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Status</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Date</th>
                         </tr>
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
@@ -428,7 +428,7 @@ const ModerationDashboardPage: React.FC = () => {
                                 {r.status}
                               </span>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-xs text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-xs text-slate-800">
                               {new Date(r.created_at).toLocaleDateString()}
                             </td>
                           </tr>
@@ -457,7 +457,7 @@ const ModerationDashboardPage: React.FC = () => {
                           <p className="text-sm font-medium text-gray-900">
                             AI Content Filtering
                           </p>
-                          <p className="text-sm text-gray-500">
+                          <p className="text-sm text-slate-700">
                             Automatically flag potentially inappropriate content
                           </p>
                         </div>
@@ -478,7 +478,7 @@ const ModerationDashboardPage: React.FC = () => {
                           <p className="text-sm font-medium text-gray-900">
                             Keyword Filtering
                           </p>
-                          <p className="text-sm text-gray-500">
+                          <p className="text-sm text-slate-700">
                             Block content containing specific keywords
                           </p>
                         </div>
@@ -506,7 +506,7 @@ const ModerationDashboardPage: React.FC = () => {
                           <p className="text-sm font-medium text-gray-900">
                             Email Notifications
                           </p>
-                          <p className="text-sm text-gray-500">
+                          <p className="text-sm text-slate-700">
                             Receive email alerts for urgent moderation requests
                           </p>
                         </div>

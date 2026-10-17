@@ -323,7 +323,7 @@ const GameOnPage: React.FC = () => {
                   </div>
 
                   <div className="p-6 pt-0 border-t border-slate-200 flex items-center justify-between">
-                    <span className="text-xs text-gray-500 flex items-center gap-1">
+                    <span className="text-xs text-slate-700 flex items-center gap-1">
                       <UserGroupIcon className="w-4 h-4 text-slate-500" />
                       Max {event.max_participants}
                     </span>
@@ -353,7 +353,7 @@ const GameOnPage: React.FC = () => {
                     <span className={`w-2.5 h-2.5 rounded-full ${
                       m.status === 'live' ? 'bg-red-500 animate-pulse' : 'bg-amber-400'
                     }`} />
-                    <span className="text-xs font-black uppercase tracking-wider text-gray-500">
+                    <span className="text-xs font-black uppercase tracking-wider text-slate-700">
                       {m.status} • {m.scheduled_at}
                     </span>
                   </div>
@@ -396,7 +396,7 @@ const GameOnPage: React.FC = () => {
           <div className="bg-white rounded-3xl border border-slate-300 shadow-sm overflow-hidden">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider border-b border-slate-200">
+                <tr className="bg-gray-50 text-slate-700 text-xs uppercase tracking-wider border-b border-slate-200">
                   <th className="py-3.5 px-6">Rank</th>
                   <th className="py-3.5 px-6">Player Handle</th>
                   <th className="py-3.5 px-6">Wins</th>

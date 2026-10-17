@@ -171,7 +171,7 @@ const EditProfile: React.FC = () => {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <span className="text-4xl font-bold text-gray-500">
+                  <span className="text-4xl font-bold text-slate-700">
                     {formData.name.charAt(0)}
                   </span>
                 )}
@@ -196,7 +196,7 @@ const EditProfile: React.FC = () => {
               />
             </div>
             {isUploading && (
-              <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">Uploading...</p>
+              <p className="mt-2 text-sm text-slate-700 dark:text-gray-400">Uploading...</p>
             )}
           </div>
 

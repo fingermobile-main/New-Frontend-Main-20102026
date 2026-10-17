@@ -72,7 +72,7 @@ const DashboardOverviewPage: React.FC = () => {
                 />
                 <div>
                   <p className="font-semibold">{member.name}</p>
-                  <p className="text-sm text-gray-500">@{member.membername}</p>
+                  <p className="text-sm text-slate-700">@{member.membername}</p>
                 </div>
               </div>
             ))}

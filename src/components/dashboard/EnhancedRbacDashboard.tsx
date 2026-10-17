@@ -22,7 +22,7 @@ const EnhancedRbacDashboard: React.FC<EnhancedRbacDashboardProps> = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-medium text-gray-900">{role.name}</p>
-                <p className="text-sm text-gray-500">{role.permissions}</p>
+                <p className="text-sm text-slate-700">{role.permissions}</p>
               </div>
               <span className="px-3 py-1 bg-blue-100 text-blue-950 border border-blue-400 font-bold rounded-full text-sm font-medium font-black">{role.members} members</span>
             </div>

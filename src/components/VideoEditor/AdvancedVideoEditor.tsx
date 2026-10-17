@@ -42,7 +42,7 @@ const AdvancedVideoEditor: React.FC<AdvancedVideoEditorProps> = ({
               onChange={(e) => setTrimStart(Number(e.target.value))}
               className="w-full text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
             />
-            <p className="text-xs text-gray-500 mt-1">{trimStart}%</p>
+            <p className="text-xs text-slate-700 mt-1">{trimStart}%</p>
           </div>
 
           <div>
@@ -55,7 +55,7 @@ const AdvancedVideoEditor: React.FC<AdvancedVideoEditorProps> = ({
               onChange={(e) => setTrimEnd(Number(e.target.value))}
               className="w-full text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
             />
-            <p className="text-xs text-gray-500 mt-1">{trimEnd}%</p>
+            <p className="text-xs text-slate-700 mt-1">{trimEnd}%</p>
           </div>
         </div>
 

@@ -263,7 +263,7 @@ const ProductManager: React.FC<ProductManagerProps> = ({ storeId }) => {
       {/* Products List */}
       {filteredProducts.length === 0 ? (
         <div className="text-center py-12 bg-gray-50 rounded-lg">
-          <p className="text-gray-500">No products found</p>
+          <p className="text-slate-700">No products found</p>
         </div>
       ) : (
         <div className="grid gap-4">
@@ -292,7 +292,7 @@ const ProductManager: React.FC<ProductManagerProps> = ({ storeId }) => {
                     {formatCurrency(product.price)}
                   </p>
                   {product.compare_at_price && (
-                    <p className="text-sm text-gray-500 line-through">
+                    <p className="text-sm text-slate-700 line-through">
                       {formatCurrency(product.compare_at_price)}
                     </p>
                   )}

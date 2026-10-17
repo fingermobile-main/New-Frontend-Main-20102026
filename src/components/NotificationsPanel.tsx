@@ -65,7 +65,7 @@ const NotificationsPanel: React.FC<NotificationsPanelProps> = ({
           <div className="divide-y divide-gray-200">
             {notifications.length === 0 ? (
               <div className="p-8 text-center">
-                <p className="text-gray-500">No notifications yet</p>
+                <p className="text-slate-700">No notifications yet</p>
               </div>
             ) : (
               notifications.map((notification) => (
@@ -83,7 +83,7 @@ const NotificationsPanel: React.FC<NotificationsPanelProps> = ({
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-gray-900">{notification.title}</p>
                       <p className="text-xs text-gray-600 mt-1">{notification.message}</p>
-                      <p className="text-xs text-gray-500 mt-1">{notification.timestamp}</p>
+                      <p className="text-xs text-slate-700 mt-1">{notification.timestamp}</p>
                     </div>
                     {!notification.isRead && (
                       <span className="h-2 w-2 bg-brand-blue rounded-full flex-shrink-0 mt-2"></span>

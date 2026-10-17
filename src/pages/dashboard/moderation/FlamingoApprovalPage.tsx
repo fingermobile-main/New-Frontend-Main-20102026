@@ -92,7 +92,7 @@ const FlamingoApprovalPage: React.FC = () => {
           ))}
         </div>
       ) : (
-        <div className="text-center text-gray-500 py-16 bg-white dark:bg-gray-800 rounded-xl border border-dashed border-gray-300 dark:border-gray-700">
+        <div className="text-center text-slate-700 py-16 bg-white dark:bg-gray-800 rounded-xl border border-dashed border-gray-300 dark:border-gray-700">
           <p className="font-semibold text-gray-800 dark:text-gray-200">The Flamingo approval queue is clean</p>
           <p className="text-sm text-slate-700 mt-1">No pending luxury outfits or sizing charts awaiting review.</p>
         </div>

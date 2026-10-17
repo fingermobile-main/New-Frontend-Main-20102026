@@ -99,7 +99,7 @@ const SocialLinksPanel: React.FC = () => {
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-xl font-bold text-gray-900">Social Links</h2>
-            <p className="mt-1 text-sm text-gray-500">Connect your social media accounts</p>
+            <p className="mt-1 text-sm text-slate-700">Connect your social media accounts</p>
           </div>
           <button
             onClick={() => setShowAddForm(true)}
@@ -249,7 +249,7 @@ const SocialLinksPanel: React.FC = () => {
                       >
                         {link.url}
                       </a>
-                      <p className="text-xs text-gray-500 mt-1">Added {link.createdAt}</p>
+                      <p className="text-xs text-slate-700 mt-1">Added {link.createdAt}</p>
                     </div>
                   </div>
                   <div className="flex space-x-2">
@@ -277,7 +277,7 @@ const SocialLinksPanel: React.FC = () => {
                 <LinkIcon className="h-6 w-6 text-slate-700" />
               </div>
               <h3 className="mt-2 text-sm font-medium text-gray-900">No social links</h3>
-              <p className="mt-1 text-sm text-gray-500">
+              <p className="mt-1 text-sm text-slate-700">
                 Get discovered on your other social platforms.
               </p>
               <div className="mt-6">
@@ -295,7 +295,7 @@ const SocialLinksPanel: React.FC = () => {
 
         <div className="mt-6 pt-4 border-t border-slate-300">
           <h3 className="text-sm font-medium text-gray-900 mb-2">Verification Tips</h3>
-          <ul className="text-sm text-gray-500 space-y-1">
+          <ul className="text-sm text-slate-700 space-y-1">
             <li className="flex items-start">
               <span className="text-green-500 mr-2">•</span>
               Add a link to your Lush Pressies profile on your social media bio

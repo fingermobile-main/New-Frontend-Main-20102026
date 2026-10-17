@@ -85,7 +85,7 @@ const DisplaySettings: React.FC<DisplaySettingsProps> = ({
 
       {/* Sort Select */}
       <div className="flex items-center space-x-2 bg-white/5 px-3 py-1 rounded-xl group hover:bg-white/10 transition-all cursor-pointer">
-        <SortAsc size={14} className="text-gray-500" />
+        <SortAsc size={14} className="text-slate-700" />
         <select
           value={sortCriteria}
           onChange={(e) => onSortChange?.(e.target.value as SortCriteria)}

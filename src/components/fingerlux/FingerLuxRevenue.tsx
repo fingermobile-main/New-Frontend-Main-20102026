@@ -32,7 +32,7 @@ export const FingerLuxRevenue: React.FC<FingerLuxRevenueProps> = ({
         <div className="flex items-center gap-3 bg-white/10 px-4 py-2.5 rounded-2xl border border-white/10 shrink-0">
           <span className="text-2xl">📈</span>
           <div>
-            <div className="text-xs font-black text-white">Recurring Revenue Active</div>
+            <div className="text-xs font-black text-slate-700">Recurring Revenue Active</div>
             <div className="text-[10px] text-emerald-400 font-semibold">+34% vs Standard Bookings</div>
           </div>
         </div>

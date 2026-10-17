@@ -81,7 +81,7 @@ export default function CategorySelector({ selectedCategoryId, onChange }: Categ
       {isOpen && (
         <div className="origin-top-left absolute left-0 mt-2 w-72 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50 max-h-80 overflow-y-auto">
           <div className="py-1">
-            <div className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-b border-slate-200">
+            <div className="px-3 py-2 text-xs font-semibold text-slate-700 uppercase tracking-wider border-b border-slate-200">
               Select Category
             </div>
             {FORUM_CATEGORIES.map((category) => {
@@ -110,7 +110,7 @@ export default function CategorySelector({ selectedCategoryId, onChange }: Categ
                     )}
                   </div>
                   {category.description && (
-                    <div className="text-xs mt-1 line-clamp-2 w-full pr-4 text-gray-500">
+                    <div className="text-xs mt-1 line-clamp-2 w-full pr-4 text-slate-700">
                       {category.description}
                     </div>
                   )}

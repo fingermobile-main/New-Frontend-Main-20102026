@@ -166,7 +166,7 @@ const TagCloud: React.FC<TagCloudProps> = ({
               }`}
             >
               <div className="flex items-center gap-3">
-                <span className="text-sm font-medium text-gray-500 w-6">#{index + 1}</span>
+                <span className="text-sm font-medium text-slate-700 w-6">#{index + 1}</span>
                 <span className="font-medium">{tag.name}</span>
               </div>
               <span className="text-xs text-gray-600 bg-gray-100 px-2 py-1 rounded-full">

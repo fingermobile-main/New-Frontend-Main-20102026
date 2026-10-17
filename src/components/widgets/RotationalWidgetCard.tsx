@@ -80,10 +80,10 @@ export const RotationalWidgetCard: React.FC<RotationalWidgetCardProps> = ({ widg
       {/* Main Info */}
       <div className="flex items-start gap-2.5 mb-2.5">
         <div
-          className="w-9 h-9 rounded-xl flex items-center justify-center text-white shadow-xs shrink-0"
+          className="w-9 h-9 rounded-xl flex items-center justify-center text-slate-700 shadow-xs shrink-0"
           style={{ backgroundColor: widget.accentColor || '#059669' }}
         >
-          <IconComponent className="w-5 h-5 text-white" />
+          <IconComponent className="w-5 h-5 text-slate-700" />
         </div>
         <div>
           <h4 className="text-sm font-black text-slate-900 leading-tight">
@@ -104,7 +104,7 @@ export const RotationalWidgetCard: React.FC<RotationalWidgetCardProps> = ({ widg
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent" />
-          <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between text-white text-[10px]">
+          <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between text-slate-700 text-[10px]">
             <span className="font-bold flex items-center gap-1">
               <Sparkles className="w-3 h-3 text-amber-300" />
               {widget.category}
@@ -128,7 +128,7 @@ export const RotationalWidgetCard: React.FC<RotationalWidgetCardProps> = ({ widg
         style={{
           background: `linear-gradient(135deg, ${widget.accentColor || '#059669'}, #0f172a)`,
         }}
-        className="w-full py-2.5 px-3 rounded-xl text-white font-black text-xs shadow-md transition-all flex items-center justify-center gap-2 group-hover:scale-[1.01]"
+        className="w-full py-2.5 px-3 rounded-xl text-slate-700 font-black text-xs shadow-md transition-all flex items-center justify-center gap-2 group-hover:scale-[1.01]"
       >
         <span>{widget.ctaText || 'Explore Now'}</span>
         <ArrowRight className="w-3.5 h-3.5" />

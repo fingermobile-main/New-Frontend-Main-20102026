@@ -54,7 +54,7 @@ const RequestPayoutModal: React.FC<RequestPayoutModalProps> = ({
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400 font-mono"
               placeholder="Enter amount"
             />
-            <p className="text-xs text-gray-500 mt-1">Minimum: 100 FIC</p>
+            <p className="text-xs text-slate-700 mt-1">Minimum: 100 FIC</p>
           </div>
 
           <div>

@@ -640,14 +640,14 @@ export const ContentModeratorDashboardPage: React.FC = () => {
                   </button>
                   <button
                     onClick={() => navigate('/members-console')}
-                    className="w-full py-2.5 px-4 text-xs font-bold bg-white/10 hover:bg-white/20 text-white rounded-xl transition flex items-center justify-between"
+                    className="w-full py-2.5 px-4 text-xs font-bold bg-white/10 hover:bg-white/20 text-slate-700 rounded-xl transition flex items-center justify-between"
                   >
                     <span>Members Sovereign RBAC Console</span>
                     <ArrowUpRight className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => navigate('/master-dashboard')}
-                    className="w-full py-2.5 px-4 text-xs font-bold bg-white/10 hover:bg-white/20 text-white rounded-xl transition flex items-center justify-between"
+                    className="w-full py-2.5 px-4 text-xs font-bold bg-white/10 hover:bg-white/20 text-slate-700 rounded-xl transition flex items-center justify-between"
                   >
                     <span>Master Dashboard</span>
                     <ArrowUpRight className="w-4 h-4" />

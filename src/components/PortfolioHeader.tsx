@@ -24,7 +24,7 @@ const PortfolioHeader: React.FC<PortfolioHeaderProps> = ({
         />
         <div className="flex-1">
           <h1 className="text-2xl font-bold text-gray-900">{member.name}</h1>
-          <p className="text-sm text-gray-500">@{member.membername}</p>
+          <p className="text-sm text-slate-700">@{member.membername}</p>
           <p className="mt-2 text-gray-600">{member.bio}</p>
           <div className="mt-4 flex items-center space-x-4">
             <span className="text-sm font-medium text-gray-700">{ficBalance} FIC</span>

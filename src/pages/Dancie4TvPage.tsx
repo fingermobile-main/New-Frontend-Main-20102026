@@ -65,7 +65,7 @@ const Dancie4TvPage: React.FC = () => {
           <div className="bg-white p-4 rounded-lg shadow">
             <h2 className="text-xl font-semibold mb-4">Discovery</h2>
             {discoveryLoading ? (
-              <p className="text-gray-500">Loading discovery content...</p>
+              <p className="text-slate-700">Loading discovery content...</p>
             ) : discoveryError ? (
               <p className="text-red-500">{discoveryError}</p>
             ) : (
@@ -74,7 +74,7 @@ const Dancie4TvPage: React.FC = () => {
                   <div key={item.id} className="border-b pb-2">
                     <h3 className="font-medium text-gray-800">{item.title}</h3>
                     {item.creatorName && (
-                      <p className="text-sm text-gray-500">By {item.creatorName}</p>
+                      <p className="text-sm text-slate-700">By {item.creatorName}</p>
                     )}
                   </div>
                 ))}
@@ -86,7 +86,7 @@ const Dancie4TvPage: React.FC = () => {
           <div className="bg-white p-4 rounded-lg shadow">
             <h2 className="text-xl font-semibold mb-4">Your Feed</h2>
             {feedLoading ? (
-              <p className="text-gray-500">Loading your feed...</p>
+              <p className="text-slate-700">Loading your feed...</p>
             ) : feedError ? (
               <p className="text-red-500">{feedError}</p>
             ) : (
@@ -94,7 +94,7 @@ const Dancie4TvPage: React.FC = () => {
                 {feedVideos.map((video) => (
                   <div key={video.id} className="border-b pb-2">
                     <h3 className="font-medium text-gray-800">{video.title}</h3>
-                    <p className="text-sm text-gray-500">By {video.creatorName}</p>
+                    <p className="text-sm text-slate-700">By {video.creatorName}</p>
                   </div>
                 ))}
               </div>
@@ -105,7 +105,7 @@ const Dancie4TvPage: React.FC = () => {
           <div className="bg-white p-4 rounded-lg shadow">
             <h2 className="text-xl font-semibold mb-4">Updates</h2>
             {updatesLoading ? (
-              <p className="text-gray-500">Loading updates...</p>
+              <p className="text-slate-700">Loading updates...</p>
             ) : updatesError ? (
               <p className="text-red-500">{updatesError}</p>
             ) : (
@@ -113,7 +113,7 @@ const Dancie4TvPage: React.FC = () => {
                 {updates.map((update) => (
                   <div key={update.id} className="border-b pb-2">
                     <h3 className="font-medium text-gray-800">{update.message}</h3>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-slate-700">
                       {new Date(update.timestamp).toLocaleDateString()}
                     </p>
                   </div>

@@ -256,7 +256,7 @@ export const MiiStoriesBar: React.FC<MiiStoriesBarProps> = ({
               <button
                 type="button"
                 onClick={() => setSelectedMii(null)}
-                className="p-1 rounded-full bg-white/10 hover:bg-white/20 text-white"
+                className="p-1 rounded-full bg-white/10 hover:bg-white/20 text-slate-700"
               >
                 <XMarkIcon className="w-5 h-5" />
               </button>

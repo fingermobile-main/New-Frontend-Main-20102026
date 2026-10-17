@@ -118,7 +118,7 @@ const OrderTracker: React.FC<OrderTrackerProps> = ({ userId }) => {
       {/* Orders List */}
       {filteredOrders.length === 0 ? (
         <div className="text-center py-12 bg-gray-50 rounded-lg">
-          <p className="text-gray-500">No orders found</p>
+          <p className="text-slate-700">No orders found</p>
         </div>
       ) : (
         <div className="space-y-3">
@@ -159,7 +159,7 @@ const OrderTracker: React.FC<OrderTrackerProps> = ({ userId }) => {
                       </div>
                     ))}
                     {order.items.length > 2 && (
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-slate-700">
                         +{order.items.length - 2} more items
                       </p>
                     )}

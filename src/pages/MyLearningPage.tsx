@@ -114,7 +114,7 @@ const MyLearningPage: React.FC = () => {
                 </div>
                 <div className="ml-4">
                   <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
-                  <p className="text-sm text-gray-500">{stat.title}</p>
+                  <p className="text-sm text-slate-700">{stat.title}</p>
                 </div>
               </div>
             </div>
@@ -133,7 +133,7 @@ const MyLearningPage: React.FC = () => {
               style={{ width: `${overallProgress}%` }}
             ></div>
           </div>
-          <p className="mt-3 text-xs text-gray-500">
+          <p className="mt-3 text-xs text-slate-700">
             Keep up the great work! Your progress is backed by real PostgreSQL activity logs.
           </p>
         </div>
@@ -151,7 +151,7 @@ const MyLearningPage: React.FC = () => {
           </div>
 
           {loading ? (
-            <div className="p-12 text-center text-gray-500">
+            <div className="p-12 text-center text-slate-700">
               Loading enrolled courses from database...
             </div>
           ) : courses.length > 0 ? (
@@ -172,16 +172,16 @@ const MyLearningPage: React.FC = () => {
                         <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-950 border border-blue-400 font-bold font-black">
                           {course.category}
                         </span>
-                        <span className="text-xs font-medium text-gray-500">
+                        <span className="text-xs font-medium text-slate-700">
                           {course.level}
                         </span>
                       </div>
                       <h3 className="font-bold text-lg text-gray-900 mt-2">{course.title}</h3>
-                      <p className="text-sm text-gray-500 mt-1">Instructor: {course.instructor_name}</p>
+                      <p className="text-sm text-slate-700 mt-1">Instructor: {course.instructor_name}</p>
                     </div>
 
                     <div className="mt-4">
-                      <div className="flex justify-between items-center text-xs text-gray-500 mb-1">
+                      <div className="flex justify-between items-center text-xs text-slate-700 mb-1">
                         <span>Progress</span>
                         <span>{Math.round(course.progress)}%</span>
                       </div>
@@ -209,7 +209,7 @@ const MyLearningPage: React.FC = () => {
             <div className="text-center py-12">
               <BookOpenIcon className="mx-auto h-12 w-12 text-slate-700" />
               <h3 className="mt-2 text-lg font-medium text-gray-900">No active course enrollments</h3>
-              <p className="mt-1 text-sm text-gray-500">Explore our catalog and start learning today.</p>
+              <p className="mt-1 text-sm text-slate-700">Explore our catalog and start learning today.</p>
               <div className="mt-6">
                 <button
                   onClick={() => navigate('/camus')}

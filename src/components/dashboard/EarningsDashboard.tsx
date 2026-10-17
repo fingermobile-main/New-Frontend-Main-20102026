@@ -151,16 +151,16 @@ const EarningsDashboard: React.FC = () => {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-100">
                 <tr>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Date</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Description</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Amount</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Type</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {earningsData.recentTransactions.map((txn: any) => (
                   <tr key={txn.id}>
-                    <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">{txn.date}</td>
+                    <td className="px-4 py-3 whitespace-nowrap text-sm text-slate-800">{txn.date}</td>
                     <td className="px-4 py-3 text-sm font-medium text-gray-900">{txn.description}</td>
                     <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900 font-semibold">${txn.amount.toFixed(2)}</td>
                     <td className="px-4 py-3 whitespace-nowrap">
@@ -182,7 +182,7 @@ const EarningsDashboard: React.FC = () => {
       <div className="bg-white border border-slate-300 rounded-xl p-5">
         <h3 className="text-lg font-semibold text-gray-800 mb-4">Earnings Projection</h3>
         <div className="h-64 flex items-center justify-center bg-gray-50 rounded-lg border border-dashed border-gray-300">
-          <p className="text-gray-500">Earnings chart visualization would appear here</p>
+          <p className="text-slate-700">Earnings chart visualization would appear here</p>
         </div>
       </div>
     </div>

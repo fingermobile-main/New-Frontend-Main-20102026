@@ -253,7 +253,7 @@ const InboxPage: React.FC = () => {
                         {contact.lastMessageTime || ''}
                       </span>
                     </div>
-                    <p className="text-xs text-gray-500 truncate">
+                    <p className="text-xs text-slate-700 truncate">
                       {contact.lastMessage || 'Conversation thread'}
                     </p>
                   </div>

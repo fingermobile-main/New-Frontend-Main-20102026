@@ -22,7 +22,7 @@ const ThreeColumnLayout: React.FC<ColumnLayoutProps> = ({
 
       {/* Center Feed - 55% */}
       <main className="center-column w-[55%] p-4 overflow-y-auto">
-        {centerColumn || <div className="text-center text-gray-500 mt-8">No center content</div>}
+        {centerColumn || <div className="text-center text-slate-700 mt-8">No center content</div>}
       </main>
 
       {/* Right Sidebar - 25% */}

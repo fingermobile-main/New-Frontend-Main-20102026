@@ -187,7 +187,7 @@ export const CreatePubliciteeShortsModal: React.FC<CreatePubliciteeShortsModalPr
         <div className="p-6 border-b border-slate-200 dark:border-gray-800 flex items-center justify-between">
           <div>
             <h2 className="text-xl font-bold text-gray-900 dark:text-white">Create New Post</h2>
-            <p className="text-xs text-gray-500 dark:text-gray-400">Choose between Publicitee (Reels) or FingerShorts (Stories)</p>
+            <p className="text-xs text-slate-700 dark:text-gray-400">Choose between Publicitee (Reels) or FingerShorts (Stories)</p>
           </div>
           <button
             onClick={onClose}
@@ -213,7 +213,7 @@ export const CreatePubliciteeShortsModal: React.FC<CreatePubliciteeShortsModalPr
               <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-orange-200 dark:bg-orange-900/60 text-orange-900 dark:text-orange-200">$3.00/mo</span>
             </div>
             <span className="font-bold text-sm">Publicitee (Reels)</span>
-            <span className="text-[11px] text-gray-500 dark:text-gray-400 mt-1">Short Films, Vlogs, Skits • 168h (7d) TTL • 1 Video Card only • Up to 1.5GB / 1h 55m</span>
+            <span className="text-[11px] text-slate-700 dark:text-gray-400 mt-1">Short Films, Vlogs, Skits • 168h (7d) TTL • 1 Video Card only • Up to 1.5GB / 1h 55m</span>
           </button>
 
           <button
@@ -230,7 +230,7 @@ export const CreatePubliciteeShortsModal: React.FC<CreatePubliciteeShortsModalPr
               <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300">Free $0.00</span>
             </div>
             <span className="font-bold text-sm">FingerShorts (Stories)</span>
-            <span className="text-[11px] text-gray-500 dark:text-gray-400 mt-1">Disappearing Stories • 48h (2d) TTL • Up to 20 Media Cards • Max 20MB & 60s per Card</span>
+            <span className="text-[11px] text-slate-700 dark:text-gray-400 mt-1">Disappearing Stories • 48h (2d) TTL • Up to 20 Media Cards • Max 20MB & 60s per Card</span>
           </button>
         </div>
 
@@ -452,7 +452,7 @@ export const CreatePubliciteeShortsModal: React.FC<CreatePubliciteeShortsModalPr
             <button
               type="submit"
               disabled={isSubmitting}
-              className={`w-full py-3 rounded-xl font-bold text-white shadow-md transition-all ${
+              className={`w-full py-3 rounded-xl font-bold text-slate-700 shadow-md transition-all ${
                 selectedType === 'publicitee'
                   ? 'bg-orange-600 hover:bg-orange-700 shadow-orange-500/20'
                   : 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 shadow-purple-500/20'

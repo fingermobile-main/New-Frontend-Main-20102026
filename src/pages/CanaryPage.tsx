@@ -480,7 +480,7 @@ const CanaryPage: React.FC = () => {
                       <p className="font-medium text-gray-900 text-sm">
                         {service.name}
                       </p>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-slate-700">
                         Last checked: 5 minutes ago
                       </p>
                     </div>

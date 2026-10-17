@@ -138,11 +138,11 @@ export const LushProfileSidebar: React.FC<LushProfileSidebarProps> = ({
             <VerificationBadge level={user.verificationLevel} size="small" />
           </div>
 
-          <p className="text-xs text-gray-500 font-mono">@{user.username}</p>
+          <p className="text-xs text-slate-700 font-mono">@{user.username}</p>
           <p className="text-xs text-emerald-800 font-medium mt-1">
             {user.headline}
           </p>
-          <p className="text-[11px] text-gray-500 mt-0.5">{user.location}</p>
+          <p className="text-[11px] text-slate-700 mt-0.5">{user.location}</p>
 
           {/* Edit Profile Action Button */}
           {onOpenEditProfile && (
@@ -201,7 +201,7 @@ export const LushProfileSidebar: React.FC<LushProfileSidebarProps> = ({
 
           {/* Matching Intent Tag */}
           <div className="mt-3 pt-3 border-t border-slate-200 flex items-center justify-between text-xs text-gray-600">
-            <span className="text-gray-500">Matching Intent:</span>
+            <span className="text-slate-700">Matching Intent:</span>
             <span className="font-semibold text-emerald-950 bg-emerald-50/70 px-2.5 py-0.5 rounded-full border border-emerald-400 text-emerald-950 border-emerald-400 font-black">
               {user.matchingIntent}
             </span>
@@ -223,7 +223,7 @@ export const LushProfileSidebar: React.FC<LushProfileSidebarProps> = ({
 
         {/* XP Bar */}
         <div>
-          <div className="flex justify-between text-[11px] text-gray-500 mb-1">
+          <div className="flex justify-between text-[11px] text-slate-700 mb-1">
             <span>XP Progress</span>
             <span>
               {user.xpCurrent} / {user.xpMax} XP
@@ -254,7 +254,7 @@ export const LushProfileSidebar: React.FC<LushProfileSidebarProps> = ({
               <FireIcon className="w-4 h-4" />
               {user.streakDays} Days
             </div>
-            <div className="text-[10px] text-gray-500 uppercase tracking-wider mt-0.5 font-medium">
+            <div className="text-[10px] text-slate-700 uppercase tracking-wider mt-0.5 font-medium">
               Streak
             </div>
           </div>

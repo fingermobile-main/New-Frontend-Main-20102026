@@ -71,17 +71,17 @@ const SystemStatusPage: React.FC = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-slate-300 dark:border-gray-700 shadow-sm">
-          <p className="text-sm text-gray-500 dark:text-gray-400">Overall Status</p>
+          <p className="text-sm text-slate-700 dark:text-gray-400">Overall Status</p>
           <p className="text-2xl font-bold text-green-600 mt-1">
             {nodes.some(n => n.status === 'offline') ? 'System Degradation' : 'All Systems Operational'}
           </p>
         </div>
         <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-slate-300 dark:border-gray-700 shadow-sm">
-          <p className="text-sm text-gray-500 dark:text-gray-400">Total Monitored Nodes</p>
+          <p className="text-sm text-slate-700 dark:text-gray-400">Total Monitored Nodes</p>
           <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1">{nodes.length}</p>
         </div>
         <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-slate-300 dark:border-gray-700 shadow-sm">
-          <p className="text-sm text-gray-500 dark:text-gray-400">Average Node Latency</p>
+          <p className="text-sm text-slate-700 dark:text-gray-400">Average Node Latency</p>
           <p className="text-2xl font-bold text-indigo-600 mt-1">
             {nodes.length > 0 ? Math.round(nodes.reduce((acc, curr) => acc + curr.latency_ms, 0) / nodes.length) : 12} ms
           </p>
@@ -103,7 +103,7 @@ const SystemStatusPage: React.FC = () => {
                 <span className={`px-2.5 py-0.5 text-xs font-semibold rounded-full ${getStatusColor(node.status)}`}>
                   {node.status}
                 </span>
-                <span className="text-xs font-mono text-gray-500">{node.latency_ms}ms</span>
+                <span className="text-xs font-mono text-slate-700">{node.latency_ms}ms</span>
                 <p className="text-xs text-slate-700 hidden sm:block">
                   Checked: {node.last_check_at ? new Date(node.last_check_at).toLocaleTimeString() : 'now'}
                 </p>

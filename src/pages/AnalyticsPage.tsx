@@ -347,14 +347,14 @@ const AnalyticsPage: React.FC = () => {
                     <h3 className="text-lg font-medium text-gray-900 mb-4">Platform Growth</h3>
                     <div className="h-64 flex items-center justify-center">
                       <LineChart className="h-16 w-16 text-slate-700" />
-                      <p className="ml-4 text-gray-500">Growth chart visualization would appear here</p>
+                      <p className="ml-4 text-slate-700">Growth chart visualization would appear here</p>
                     </div>
                   </div>
                   <div className="bg-white rounded-xl shadow p-6">
                     <h3 className="text-lg font-medium text-gray-900 mb-4">User Acquisition Sources</h3>
                     <div className="h-64 flex items-center justify-center">
                       <PieChart className="h-16 w-16 text-slate-700" />
-                      <p className="ml-4 text-gray-500">User acquisition pie chart would appear here</p>
+                      <p className="ml-4 text-slate-700">User acquisition pie chart would appear here</p>
                     </div>
                   </div>
                 </div>
@@ -366,16 +366,16 @@ const AnalyticsPage: React.FC = () => {
                     <table className="min-w-full divide-y divide-gray-200">
                       <thead className="bg-gray-50">
                         <tr>
-                          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                             User
                           </th>
-                          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                             Action
                           </th>
-                          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                             Time
                           </th>
-                          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                             IP Address
                           </th>
                         </tr>
@@ -386,12 +386,12 @@ const AnalyticsPage: React.FC = () => {
                             <div className="text-sm font-medium text-gray-900">John Doe</div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm text-gray-500">Created new post</div>
+                            <div className="text-sm text-slate-700">Created new post</div>
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                             10 mins ago
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                             192.168.1.1
                           </td>
                         </tr>
@@ -400,12 +400,12 @@ const AnalyticsPage: React.FC = () => {
                             <div className="text-sm font-medium text-gray-900">Jane Smith</div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm text-gray-500">Purchased premium</div>
+                            <div className="text-sm text-slate-700">Purchased premium</div>
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                             25 mins ago
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                             192.168.1.2
                           </td>
                         </tr>
@@ -414,12 +414,12 @@ const AnalyticsPage: React.FC = () => {
                             <div className="text-sm font-medium text-gray-900">Bob Johnson</div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm text-gray-500">Updated profile</div>
+                            <div className="text-sm text-slate-700">Updated profile</div>
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                             1 hour ago
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                             192.168.1.3
                           </td>
                         </tr>
@@ -562,16 +562,16 @@ const AnalyticsPage: React.FC = () => {
                       <table className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-gray-50">
                           <tr>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                               Category
                             </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                               Count
                             </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                               Views
                             </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                               Engagement
                             </th>
                           </tr>
@@ -582,13 +582,13 @@ const AnalyticsPage: React.FC = () => {
                               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                 {cat.category}
                               </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                                 {cat.count.toLocaleString()}
                               </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                                 {cat.views.toLocaleString()}
                               </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                                 {cat.engagement}
                               </td>
                             </tr>
@@ -605,11 +605,11 @@ const AnalyticsPage: React.FC = () => {
                         <div key={content.id} className="flex items-center justify-between p-3 border rounded-lg">
                           <div>
                             <p className="font-medium">{content.title}</p>
-                            <p className="text-sm text-gray-500">{content.views.toLocaleString()} views</p>
+                            <p className="text-sm text-slate-700">{content.views.toLocaleString()} views</p>
                           </div>
                           <div className="text-right">
                             <p className="font-medium">{content.engagement} engagement</p>
-                            <p className="text-sm text-gray-500">#{index + 1}</p>
+                            <p className="text-sm text-slate-700">#{index + 1}</p>
                           </div>
                         </div>
                       ))}
@@ -621,7 +621,7 @@ const AnalyticsPage: React.FC = () => {
                   <h3 className="text-lg font-medium text-gray-900 mb-4">Content Views Trend</h3>
                   <div className="h-64 flex items-center justify-center">
                     <LineChart className="h-16 w-16 text-slate-700" />
-                    <p className="ml-4 text-gray-500">Content views trend chart would appear here</p>
+                    <p className="ml-4 text-slate-700">Content views trend chart would appear here</p>
                   </div>
                 </div>
               </div>
@@ -688,13 +688,13 @@ const AnalyticsPage: React.FC = () => {
                       <table className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-gray-50">
                           <tr>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                               Product
                             </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                               Amount
                             </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                               Units Sold
                             </th>
                           </tr>
@@ -705,10 +705,10 @@ const AnalyticsPage: React.FC = () => {
                               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                 {product.product}
                               </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                                 ${product.amount.toLocaleString()}
                               </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                                 {product.units.toLocaleString()}
                               </td>
                             </tr>
@@ -723,7 +723,7 @@ const AnalyticsPage: React.FC = () => {
                   <h3 className="text-lg font-medium text-gray-900 mb-4">Revenue Trend</h3>
                   <div className="h-64 flex items-center justify-center">
                     <LineChart className="h-16 w-16 text-slate-700" />
-                    <p className="ml-4 text-gray-500">Revenue trend chart would appear here</p>
+                    <p className="ml-4 text-slate-700">Revenue trend chart would appear here</p>
                   </div>
                 </div>
               </div>
@@ -736,7 +736,7 @@ const AnalyticsPage: React.FC = () => {
                   <h3 className="text-lg font-medium text-gray-900 mb-4">Historical Analytics Data</h3>
                   <div className="h-96 flex items-center justify-center">
                     <LineChart className="h-16 w-16 text-slate-700" />
-                    <p className="ml-4 text-gray-500">Historical data visualization would appear here</p>
+                    <p className="ml-4 text-slate-700">Historical data visualization would appear here</p>
                   </div>
                 </div>
 

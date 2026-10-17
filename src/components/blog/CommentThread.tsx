@@ -96,12 +96,12 @@ const CommentThread: React.FC<CommentThreadProps> = ({ postId, currentUserId }) 
                 <p className="font-medium text-gray-900 text-sm">
                   {comment.author_name || 'Anonymous'}
                 </p>
-                <p className="text-xs text-gray-500">{formatDate(comment.created_at || comment.createdAt)}</p>
+                <p className="text-xs text-slate-700">{formatDate(comment.created_at || comment.createdAt)}</p>
               </div>
             </div>
 
             {comment.is_edited && (
-              <span className="text-xs text-gray-500 italic">edited</span>
+              <span className="text-xs text-slate-700 italic">edited</span>
             )}
           </div>
 
@@ -230,7 +230,7 @@ const CommentThread: React.FC<CommentThreadProps> = ({ postId, currentUserId }) 
       {/* Comments List */}
       {comments.length === 0 ? (
         <div className="text-center py-8 bg-gray-50 rounded-lg">
-          <p className="text-gray-500">No comments yet. Be the first to comment!</p>
+          <p className="text-slate-700">No comments yet. Be the first to comment!</p>
         </div>
       ) : (
         <div className="space-y-2">

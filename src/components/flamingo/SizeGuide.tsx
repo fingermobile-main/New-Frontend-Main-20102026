@@ -94,7 +94,7 @@ const SizeGuide: React.FC<SizeGuideProps> = ({ brandName, categoryId }) => {
       {/* Size Charts */}
       {sizeCharts.length === 0 ? (
         <div className="text-center py-12 bg-gray-50 rounded-lg">
-          <p className="text-gray-500">No size charts available</p>
+          <p className="text-slate-700">No size charts available</p>
         </div>
       ) : (
         <div className="space-y-6">
@@ -124,7 +124,7 @@ const SizeGuide: React.FC<SizeGuideProps> = ({ brandName, categoryId }) => {
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                       <tr>
-                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-4 py-2 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                           Size
                         </th>
                         {(() => {
@@ -135,7 +135,7 @@ const SizeGuide: React.FC<SizeGuideProps> = ({ brandName, categoryId }) => {
                           return Object.keys(firstSizeData).map((key) => (
                             <th
                               key={key}
-                              className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                              className="px-4 py-2 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
                             >
                               {key.replace('_', ' ').toUpperCase()}
                             </th>
@@ -161,7 +161,7 @@ const SizeGuide: React.FC<SizeGuideProps> = ({ brandName, categoryId }) => {
                   </table>
                 </div>
               ) : (
-                <p className="text-sm text-gray-500 italic">No size data available</p>
+                <p className="text-sm text-slate-700 italic">No size data available</p>
               )}
 
               {/* Source Info */}

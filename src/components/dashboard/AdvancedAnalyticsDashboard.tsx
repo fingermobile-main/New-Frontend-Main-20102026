@@ -13,13 +13,13 @@ const AdvancedAnalyticsDashboard: React.FC<AdvancedAnalyticsDashboardProps> = ({
           <ChartBarIcon className="w-8 h-8 text-blue-500 mb-3" />
           <h3 className="text-lg font-bold text-gray-900 mb-2">User Growth</h3>
           <p className="text-3xl font-bold text-blue-600">+24%</p>
-          <p className="text-sm text-gray-500 mt-1">vs last month</p>
+          <p className="text-sm text-slate-700 mt-1">vs last month</p>
         </div>
         <div className="bg-white rounded-lg shadow-sm border border-slate-300 p-6">
           <ArrowTrendingUpIcon className="w-8 h-8 text-green-500 mb-3" />
           <h3 className="text-lg font-bold text-gray-900 mb-2">Revenue</h3>
           <p className="text-3xl font-bold text-green-600">45.2K FIC</p>
-          <p className="text-sm text-gray-500 mt-1">This quarter</p>
+          <p className="text-sm text-slate-700 mt-1">This quarter</p>
         </div>
         <div className="bg-white rounded-lg shadow-sm border border-slate-300 p-6">
           <svg className="w-8 h-8 text-purple-500 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -27,7 +27,7 @@ const AdvancedAnalyticsDashboard: React.FC<AdvancedAnalyticsDashboardProps> = ({
           </svg>
           <h3 className="text-lg font-bold text-gray-900 mb-2">Engagement</h3>
           <p className="text-3xl font-bold text-purple-600">87%</p>
-          <p className="text-sm text-gray-500 mt-1">Active users</p>
+          <p className="text-sm text-slate-700 mt-1">Active users</p>
         </div>
       </div>
       <div className="bg-white rounded-lg shadow-sm border border-slate-300 p-6">

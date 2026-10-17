@@ -175,7 +175,7 @@ export const PostContentControls: React.FC<PostContentControlsProps> = ({
               <EyeIcon className="w-4 h-4" />
               <span>
                 {totalActive} active restriction{totalActive !== 1 ? 's' : ''}
-                <span className="text-gray-500 ml-1">
+                <span className="text-slate-700 ml-1">
                   {privacyCount > 0 && ` · ${privacyCount} access`}
                   {censorCount > 0 && ` · ${censorCount} presentation`}
                 </span>

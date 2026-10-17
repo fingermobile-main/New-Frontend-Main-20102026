@@ -108,7 +108,7 @@ const HallmarkCreatePage: React.FC = () => {
           <button type="submit" disabled={isLoading} className="w-full py-3 font-semibold bg-brand-blue text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400">
             {isLoading ? 'Submitting for Review...' : 'Submit for Review'}
           </button>
-          <p className="text-xs text-center text-gray-500">Your Hallmark will be reviewed by an admin before it goes live.</p>
+          <p className="text-xs text-center text-slate-700">Your Hallmark will be reviewed by an admin before it goes live.</p>
         </form>
       </div>
     </div>

@@ -24,7 +24,7 @@ const StercsModulesPage: React.FC = () => {
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-semibold">Module Management</h2>
             <div className="flex space-x-3">
-              <button className="p-2 text-slate-700 hover:text-gray-500 border border-gray-300 rounded-lg">
+              <button className="p-2 text-slate-700 hover:text-slate-700 border border-gray-300 rounded-lg">
                 <Settings className="h-4 w-4" />
               </button>
             </div>
@@ -38,20 +38,20 @@ const StercsModulesPage: React.FC = () => {
                 </div>
                 <div className="ml-3">
                   <h4 className="font-medium text-sm">STERCS Core</h4>
-                  <p className="text-xs text-gray-500">Core governance and control framework</p>
+                  <p className="text-xs text-slate-700">Core governance and control framework</p>
                 </div>
               </div>
               <div className="mt-3 flex justify-between items-center">
                 <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-950 border border-green-400 font-bold">
                   Online
                 </span>
-                <span className="text-xs text-gray-500">v1.5.7</span>
+                <span className="text-xs text-slate-700">v1.5.7</span>
               </div>
               <div className="mt-3">
                 <div className="w-full bg-gray-200 rounded-full h-1.5">
                   <div className="bg-green-500 h-1.5 rounded-full" style={{ width: '95%' }}></div>
                 </div>
-                <div className="text-right text-xs text-gray-500 mt-1">95% health</div>
+                <div className="text-right text-xs text-slate-700 mt-1">95% health</div>
               </div>
               <div className="mt-3 flex justify-between">
                 <button className="text-blue-600 hover:text-blue-900 text-sm">Configure</button>
@@ -68,20 +68,20 @@ const StercsModulesPage: React.FC = () => {
                 </div>
                 <div className="ml-3">
                   <h4 className="font-medium text-sm">Guardian AI</h4>
-                  <p className="text-xs text-gray-500">AI protection and threat detection</p>
+                  <p className="text-xs text-slate-700">AI protection and threat detection</p>
                 </div>
               </div>
               <div className="mt-3 flex justify-between items-center">
                 <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-950 border border-green-400 font-bold">
                   Online
                 </span>
-                <span className="text-xs text-gray-500">v3.0.2</span>
+                <span className="text-xs text-slate-700">v3.0.2</span>
               </div>
               <div className="mt-3">
                 <div className="w-full bg-gray-200 rounded-full h-1.5">
                   <div className="bg-green-500 h-1.5 rounded-full" style={{ width: '99%' }}></div>
                 </div>
-                <div className="text-right text-xs text-gray-500 mt-1">99% health</div>
+                <div className="text-right text-xs text-slate-700 mt-1">99% health</div>
               </div>
               <div className="mt-3 flex justify-between">
                 <button className="text-blue-600 hover:text-blue-900 text-sm">Configure</button>
@@ -98,20 +98,20 @@ const StercsModulesPage: React.FC = () => {
                 </div>
                 <div className="ml-3">
                   <h4 className="font-medium text-sm">STERCS Curation</h4>
-                  <p className="text-xs text-gray-500">Content curation and quality assurance</p>
+                  <p className="text-xs text-slate-700">Content curation and quality assurance</p>
                 </div>
               </div>
               <div className="mt-3 flex justify-between items-center">
                 <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-950 border border-green-400 font-bold">
                   Online
                 </span>
-                <span className="text-xs text-gray-500">v1.2.1</span>
+                <span className="text-xs text-slate-700">v1.2.1</span>
               </div>
               <div className="mt-3">
                 <div className="w-full bg-gray-200 rounded-full h-1.5">
                   <div className="bg-green-500 h-1.5 rounded-full" style={{ width: '92%' }}></div>
                 </div>
-                <div className="text-right text-xs text-gray-500 mt-1">92% health</div>
+                <div className="text-right text-xs text-slate-700 mt-1">92% health</div>
               </div>
               <div className="mt-3 flex justify-between">
                 <button className="text-blue-600 hover:text-blue-900 text-sm">Configure</button>
@@ -128,20 +128,20 @@ const StercsModulesPage: React.FC = () => {
                 </div>
                 <div className="ml-3">
                   <h4 className="font-medium text-sm">STERCS Editor</h4>
-                  <p className="text-xs text-gray-500">Content editing and publishing tools</p>
+                  <p className="text-xs text-slate-700">Content editing and publishing tools</p>
                 </div>
               </div>
               <div className="mt-3 flex justify-between items-center">
                 <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-950 border border-amber-400 font-bold font-black">
                   Maintenance
                 </span>
-                <span className="text-xs text-gray-500">v0.9.8</span>
+                <span className="text-xs text-slate-700">v0.9.8</span>
               </div>
               <div className="mt-3">
                 <div className="w-full bg-gray-200 rounded-full h-1.5">
                   <div className="bg-yellow-500 h-1.5 rounded-full" style={{ width: '0%' }}></div>
                 </div>
-                <div className="text-right text-xs text-gray-500 mt-1">0% health</div>
+                <div className="text-right text-xs text-slate-700 mt-1">0% health</div>
               </div>
               <div className="mt-3 flex justify-between">
                 <button className="text-blue-600 hover:text-blue-900 text-sm">View Details</button>
@@ -158,20 +158,20 @@ const StercsModulesPage: React.FC = () => {
                 </div>
                 <div className="ml-3">
                   <h4 className="font-medium text-sm">STERCS Video Editor</h4>
-                  <p className="text-xs text-gray-500">Advanced video editing capabilities</p>
+                  <p className="text-xs text-slate-700">Advanced video editing capabilities</p>
                 </div>
               </div>
               <div className="mt-3 flex justify-between items-center">
                 <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-950 border border-green-400 font-bold">
                   Online
                 </span>
-                <span className="text-xs text-gray-500">v1.3.2</span>
+                <span className="text-xs text-slate-700">v1.3.2</span>
               </div>
               <div className="mt-3">
                 <div className="w-full bg-gray-200 rounded-full h-1.5">
                   <div className="bg-green-500 h-1.5 rounded-full" style={{ width: '89%' }}></div>
                 </div>
-                <div className="text-right text-xs text-gray-500 mt-1">89% health</div>
+                <div className="text-right text-xs text-slate-700 mt-1">89% health</div>
               </div>
               <div className="mt-3 flex justify-between">
                 <button className="text-blue-600 hover:text-blue-900 text-sm">Configure</button>
@@ -188,20 +188,20 @@ const StercsModulesPage: React.FC = () => {
                 </div>
                 <div className="ml-3">
                   <h4 className="font-medium text-sm">STERCS Translation</h4>
-                  <p className="text-xs text-gray-500">AI-powered content translation</p>
+                  <p className="text-xs text-slate-700">AI-powered content translation</p>
                 </div>
               </div>
               <div className="mt-3 flex justify-between items-center">
                 <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-950 border border-green-400 font-bold">
                   Online
                 </span>
-                <span className="text-xs text-gray-500">v1.4.0</span>
+                <span className="text-xs text-slate-700">v1.4.0</span>
               </div>
               <div className="mt-3">
                 <div className="w-full bg-gray-200 rounded-full h-1.5">
                   <div className="bg-green-500 h-1.5 rounded-full" style={{ width: '91%' }}></div>
                 </div>
-                <div className="text-right text-xs text-gray-500 mt-1">91% health</div>
+                <div className="text-right text-xs text-slate-700 mt-1">91% health</div>
               </div>
               <div className="mt-3 flex justify-between">
                 <button className="text-blue-600 hover:text-blue-900 text-sm">Configure</button>

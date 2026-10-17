@@ -115,7 +115,7 @@ export const CreateMiiStatusModal: React.FC<CreateMiiStatusModalProps> = ({ isOp
               <div className="flex space-x-2 overflow-x-auto py-2">
                 {cards.map((card, idx) => (
                   <div key={idx} className="relative w-20 h-20 flex-shrink-0 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center">
-                    <span className="text-[10px] text-gray-500 truncate px-2">{card.file.name}</span>
+                    <span className="text-[10px] text-slate-700 truncate px-2">{card.file.name}</span>
                     <button type="button" onClick={() => removeCard(idx)} className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full p-0.5">
                       <X className="w-3 h-3" />
                     </button>

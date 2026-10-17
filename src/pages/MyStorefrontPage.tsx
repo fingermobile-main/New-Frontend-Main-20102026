@@ -87,7 +87,7 @@ const MyStorefrontPage: React.FC = () => {
         {/* Storefront Header */}
         {isLoading ? (
           <div className="bg-white rounded-xl shadow-sm border border-slate-300 overflow-hidden mb-8 h-64 flex items-center justify-center">
-            <p className="text-gray-500">Loading storefront data...</p>
+            <p className="text-slate-700">Loading storefront data...</p>
           </div>
         ) : error ? (
           <div className="bg-white rounded-xl shadow-sm border border-slate-300 overflow-hidden mb-8 h-64 flex items-center justify-center">
@@ -169,7 +169,7 @@ const MyStorefrontPage: React.FC = () => {
                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-950 border border-blue-400 font-bold font-black">
                       {storefrontData.category || 'General'}
                     </span>
-                    <span className="ml-2 text-sm text-gray-500">
+                    <span className="ml-2 text-sm text-slate-700">
                       {storefrontData.followers || '1,240'} followers
                     </span>
                   </div>
@@ -301,7 +301,7 @@ const MyStorefrontPage: React.FC = () => {
             {/* Renewal Pricing Schedule */}
             <div className="bg-white rounded-2xl p-6 border border-slate-300 shadow-sm">
               <h3 className="text-lg font-bold text-gray-900 mb-1">Storefront Renewal Schedule</h3>
-              <p className="text-xs text-gray-500 mb-6">Select your preferred subscription renewal cadence for uninterrupted hosting.</p>
+              <p className="text-xs text-slate-700 mb-6">Select your preferred subscription renewal cadence for uninterrupted hosting.</p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {[
@@ -327,7 +327,7 @@ const MyStorefrontPage: React.FC = () => {
                         </span>
                       </div>
                       <p className="text-2xl font-black text-gray-900">{plan.price}</p>
-                      <p className="text-xs text-gray-500">{plan.period}</p>
+                      <p className="text-xs text-slate-700">{plan.period}</p>
                     </div>
                     <button
                       type="button"
@@ -367,13 +367,13 @@ const MyStorefrontPage: React.FC = () => {
           <div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
               <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
-                <p className="text-sm font-medium text-gray-500">Total Sales</p>
+                <p className="text-sm font-medium text-slate-700">Total Sales</p>
                 <p className="text-2xl font-bold text-gray-900 mt-1">
                   {analytics.totalSales || 10}
                 </p>
               </div>
               <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
-                <p className="text-sm font-medium text-gray-500">
+                <p className="text-sm font-medium text-slate-700">
                   Gross Revenue
                 </p>
                 <p className="text-2xl font-bold text-gray-900 mt-1">
@@ -408,7 +408,7 @@ const MyStorefrontPage: React.FC = () => {
                         <p className="text-sm font-medium text-gray-900 truncate">
                           {product.name}
                         </p>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-slate-700">
                           {product.sales} sales
                         </p>
                       </div>
@@ -430,33 +430,33 @@ const MyStorefrontPage: React.FC = () => {
                       <p className="text-sm font-medium text-gray-900">
                         Taylor Swift
                       </p>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-sm text-slate-700">
                         Summer Vibes Beat Pack
                       </p>
                     </div>
-                    <div className="text-sm text-gray-500">2 hours ago</div>
+                    <div className="text-sm text-slate-700">2 hours ago</div>
                   </div>
                   <div className="flex items-center">
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-gray-900">
                         DJ Pulse
                       </p>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-sm text-slate-700">
                         Hip Hop Starter Kit
                       </p>
                     </div>
-                    <div className="text-sm text-gray-500">5 hours ago</div>
+                    <div className="text-sm text-slate-700">5 hours ago</div>
                   </div>
                   <div className="flex items-center">
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-gray-900">
                         Music Producer Pro
                       </p>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-sm text-slate-700">
                         Music Production Course
                       </p>
                     </div>
-                    <div className="text-sm text-gray-500">1 day ago</div>
+                    <div className="text-sm text-slate-700">1 day ago</div>
                   </div>
                 </div>
               </div>
@@ -492,43 +492,43 @@ const MyStorefrontPage: React.FC = () => {
                   <tr>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
                     >
                       Product
                     </th>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
                     >
                       Category
                     </th>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
                     >
                       Price
                     </th>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
                     >
                       Sales
                     </th>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
                     >
                       Revenue
                     </th>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
                     >
                       Status
                     </th>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
                     >
                       Actions
                     </th>
@@ -541,7 +541,7 @@ const MyStorefrontPage: React.FC = () => {
                         <div className="text-sm font-medium text-gray-900">
                           {product.name}
                         </div>
-                        <div className="text-sm text-gray-500">
+                        <div className="text-sm text-slate-700">
                           {product.description}
                         </div>
                       </td>
@@ -559,7 +559,7 @@ const MyStorefrontPage: React.FC = () => {
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                         {product.price?.toFixed(2)} FIC
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                         {product.sales}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
@@ -610,7 +610,7 @@ const MyStorefrontPage: React.FC = () => {
                   Sales Overview
                 </h3>
                 <div className="h-64 flex items-center justify-center bg-gray-50 rounded-lg">
-                  <p className="text-gray-500">Sales chart visualization</p>
+                  <p className="text-slate-700">Sales chart visualization</p>
                 </div>
               </div>
 
@@ -619,7 +619,7 @@ const MyStorefrontPage: React.FC = () => {
                   Traffic Sources
                 </h3>
                 <div className="h-64 flex items-center justify-center bg-gray-50 rounded-lg">
-                  <p className="text-gray-500">Traffic sources chart</p>
+                  <p className="text-slate-700">Traffic sources chart</p>
                 </div>
               </div>
 
@@ -628,7 +628,7 @@ const MyStorefrontPage: React.FC = () => {
                   Customer Demographics
                 </h3>
                 <div className="h-64 flex items-center justify-center bg-gray-50 rounded-lg">
-                  <p className="text-gray-500">Demographics chart</p>
+                  <p className="text-slate-700">Demographics chart</p>
                 </div>
               </div>
             </div>
@@ -639,7 +639,7 @@ const MyStorefrontPage: React.FC = () => {
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <div className="border border-slate-300 rounded-lg p-4">
-                  <p className="text-sm font-medium text-gray-500">
+                  <p className="text-sm font-medium text-slate-700">
                     Conversion Rate
                   </p>
                   <p className="text-2xl font-bold text-gray-900 mt-1">
@@ -650,7 +650,7 @@ const MyStorefrontPage: React.FC = () => {
                   </p>
                 </div>
                 <div className="border border-slate-300 rounded-lg p-4">
-                  <p className="text-sm font-medium text-gray-500">
+                  <p className="text-sm font-medium text-slate-700">
                     Avg. Order Value
                   </p>
                   <p className="text-2xl font-bold text-gray-900 mt-1">
@@ -661,7 +661,7 @@ const MyStorefrontPage: React.FC = () => {
                   </p>
                 </div>
                 <div className="border border-slate-300 rounded-lg p-4">
-                  <p className="text-sm font-medium text-gray-500">
+                  <p className="text-sm font-medium text-slate-700">
                     Customer Retention
                   </p>
                   <p className="text-2xl font-bold text-gray-900 mt-1">68%</p>
@@ -670,7 +670,7 @@ const MyStorefrontPage: React.FC = () => {
                   </p>
                 </div>
                 <div className="border border-slate-300 rounded-lg p-4">
-                  <p className="text-sm font-medium text-gray-500">
+                  <p className="text-sm font-medium text-slate-700">
                     Page Views
                   </p>
                   <p className="text-2xl font-bold text-gray-900 mt-1">
@@ -696,37 +696,37 @@ const MyStorefrontPage: React.FC = () => {
                   <tr>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
                     >
                       Order
                     </th>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
                     >
                       Customer
                     </th>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
                     >
                       Items
                     </th>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
                     >
                       Amount
                     </th>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
                     >
                       Date
                     </th>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
                     >
                       Status
                     </th>
@@ -743,7 +743,7 @@ const MyStorefrontPage: React.FC = () => {
                       <div className="text-sm font-medium text-gray-900">
                         Taylor Swift
                       </div>
-                      <div className="text-sm text-gray-500">
+                      <div className="text-sm text-slate-700">
                         taylor@example.com
                       </div>
                     </td>
@@ -753,7 +753,7 @@ const MyStorefrontPage: React.FC = () => {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       49.99 FIC
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                       Jun 15, 2023
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -772,7 +772,7 @@ const MyStorefrontPage: React.FC = () => {
                       <div className="text-sm font-medium text-gray-900">
                         DJ Pulse
                       </div>
-                      <div className="text-sm text-gray-500">
+                      <div className="text-sm text-slate-700">
                         dj@example.com
                       </div>
                     </td>
@@ -782,7 +782,7 @@ const MyStorefrontPage: React.FC = () => {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       29.99 FIC
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                       Jun 14, 2023
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -801,7 +801,7 @@ const MyStorefrontPage: React.FC = () => {
                       <div className="text-sm font-medium text-gray-900">
                         Music Producer Pro
                       </div>
-                      <div className="text-sm text-gray-500">
+                      <div className="text-sm text-slate-700">
                         producer@example.com
                       </div>
                     </td>
@@ -811,7 +811,7 @@ const MyStorefrontPage: React.FC = () => {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       99.99 FIC
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                       Jun 12, 2023
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -882,7 +882,7 @@ const MyStorefrontPage: React.FC = () => {
                     </label>
                     <div className="space-y-3">
                       <div>
-                        <label className="block text-xs text-gray-500">
+                        <label className="block text-xs text-slate-800">
                           Website
                         </label>
                         <input
@@ -891,7 +891,7 @@ const MyStorefrontPage: React.FC = () => {
                           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400" />
                       </div>
                       <div>
-                        <label className="block text-xs text-gray-500">
+                        <label className="block text-xs text-slate-800">
                           Twitter
                         </label>
                         <input
@@ -900,7 +900,7 @@ const MyStorefrontPage: React.FC = () => {
                           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400" />
                       </div>
                       <div>
-                        <label className="block text-xs text-gray-500">
+                        <label className="block text-xs text-slate-800">
                           Instagram
                         </label>
                         <input
@@ -951,7 +951,7 @@ const MyStorefrontPage: React.FC = () => {
                           </label>
                           <p className="pl-1">or drag and drop</p>
                         </div>
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-slate-700">
                           PNG, JPG, GIF up to 10MB
                         </p>
                       </div>
@@ -991,7 +991,7 @@ const MyStorefrontPage: React.FC = () => {
           <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
             <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative border border-slate-200">
               <h3 className="text-lg font-black text-gray-900 mb-1">Upgrade Storefront Quota</h3>
-              <p className="text-xs text-gray-500 mb-4">Expand your digital asset hosting on FingerMobile Protocol</p>
+              <p className="text-xs text-slate-700 mb-4">Expand your digital asset hosting on FingerMobile Protocol</p>
 
               <div className="space-y-3 mb-6">
                 <div
@@ -1004,7 +1004,7 @@ const MyStorefrontPage: React.FC = () => {
                     <span className="font-bold text-sm text-gray-900">Individual Store Tier</span>
                     <span className="text-xs font-black text-blue-600">$5 Setup</span>
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">600MB storage quota • Standard bandwidth</p>
+                  <p className="text-xs text-slate-700 mt-1">600MB storage quota • Standard bandwidth</p>
                 </div>
 
                 <div
@@ -1017,7 +1017,7 @@ const MyStorefrontPage: React.FC = () => {
                     <span className="font-bold text-sm text-gray-900">Business Store Tier</span>
                     <span className="text-xs font-black text-blue-600">$20 Setup</span>
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">1500MB storage quota • Priority media CDN • Custom domain</p>
+                  <p className="text-xs text-slate-700 mt-1">1500MB storage quota • Priority media CDN • Custom domain</p>
                 </div>
               </div>
 

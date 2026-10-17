@@ -88,10 +88,10 @@ const SecuritySetupPage = () => {
           <div className="space-y-4">
             <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
               <div className="flex items-center">
-                <Smartphone className="h-6 w-6 text-gray-500 dark:text-gray-400 mr-3" />
+                <Smartphone className="h-6 w-6 text-slate-700 dark:text-gray-400 mr-3" />
                 <div>
                   <h3 className="font-medium text-gray-900 dark:text-white">Biometric Unlock</h3>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Use fingerprint or face ID to sign in</p>
+                  <p className="text-sm text-slate-700 dark:text-gray-400">Use fingerprint or face ID to sign in</p>
                 </div>
               </div>
               <button
@@ -136,7 +136,7 @@ const SecuritySetupPage = () => {
           <div className="flex items-center justify-between p-4 bg-indigo-50 dark:bg-indigo-950/40 rounded-xl border border-indigo-200 dark:border-indigo-800">
             <div>
               <h3 className="font-semibold text-gray-900 dark:text-white text-sm">Enable Two-Factor Authentication</h3>
-              <p className="text-xs text-gray-500 dark:text-gray-400">Require an extra security code during login</p>
+              <p className="text-xs text-slate-700 dark:text-gray-400">Require an extra security code during login</p>
             </div>
             <button
               type="button"
@@ -163,7 +163,7 @@ const SecuritySetupPage = () => {
                 </div>
                 <div>
                   <h3 className="font-medium text-gray-900 dark:text-white">Text Message (SMS)</h3>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Receive codes via SMS</p>
+                  <p className="text-sm text-slate-700 dark:text-gray-400">Receive codes via SMS</p>
                 </div>
               </div>
               <button
@@ -175,7 +175,7 @@ const SecuritySetupPage = () => {
                 }`}
               >
                 {twoFactorMethod === 'sms' && (
-                  <CheckCircle className="h-3 w-3 text-white" />
+                  <CheckCircle className="h-3 w-3 text-slate-700" />
                 )}
               </button>
             </div>
@@ -189,7 +189,7 @@ const SecuritySetupPage = () => {
                 </div>
                 <div>
                   <h3 className="font-medium text-gray-900 dark:text-white">Authenticator App</h3>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Use Google Authenticator or similar</p>
+                  <p className="text-sm text-slate-700 dark:text-gray-400">Use Google Authenticator or similar</p>
                 </div>
               </div>
               <button
@@ -201,7 +201,7 @@ const SecuritySetupPage = () => {
                 }`}
               >
                 {twoFactorMethod === 'app' && (
-                  <CheckCircle className="h-3 w-3 text-white" />
+                  <CheckCircle className="h-3 w-3 text-slate-700" />
                 )}
               </button>
             </div>
@@ -234,7 +234,7 @@ const SecuritySetupPage = () => {
           <div className="space-y-4">
             <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
               <h3 className="font-medium text-gray-900 dark:text-white mb-2">Backup Codes</h3>
-              <p className="text-gray-500 dark:text-gray-400 text-sm mb-4">
+              <p className="text-slate-700 dark:text-gray-400 text-sm mb-4">
                   Save these backup codes in a safe place. You can use them if you lose access to your authentication methods.
               </p>
 

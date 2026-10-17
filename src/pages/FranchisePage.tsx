@@ -397,7 +397,7 @@ const FranchisePage: React.FC = () => {
                       </div>
 
                       <h3 className="font-black text-gray-900 text-lg leading-snug">{f.name}</h3>
-                      <p className="text-xs font-mono text-gray-500 mt-1">License: {f.operatingLicenseNo}</p>
+                      <p className="text-xs font-mono text-slate-700 mt-1">License: {f.operatingLicenseNo}</p>
 
                       <div className="mt-4 p-3 bg-slate-50 rounded-xl border border-slate-100 space-y-1.5 text-xs">
                         <div className="flex items-center gap-2 text-gray-600">
@@ -511,12 +511,12 @@ const FranchisePage: React.FC = () => {
                     <h3 className="text-xl font-black text-gray-900">{tier.name}</h3>
                     <div className="mt-4 mb-6">
                       <span className="text-4xl font-black text-purple-700">{tier.share}</span>
-                      <span className="text-xs text-gray-500 block mt-1">Platform Net Revenue Share</span>
+                      <span className="text-xs text-slate-700 block mt-1">Platform Net Revenue Share</span>
                     </div>
 
                     <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 mb-6 text-xs space-y-1">
-                      <p className="text-gray-500">Security Deposit: <strong className="text-gray-900">{tier.deposit}</strong></p>
-                      <p className="text-gray-500">Hardware Allocation: <strong className="text-gray-900">{tier.terminals}</strong></p>
+                      <p className="text-slate-700">Security Deposit: <strong className="text-gray-900">{tier.deposit}</strong></p>
+                      <p className="text-slate-700">Hardware Allocation: <strong className="text-gray-900">{tier.terminals}</strong></p>
                     </div>
 
                     <div className="space-y-3">
@@ -553,7 +553,7 @@ const FranchisePage: React.FC = () => {
               <div className="p-5 border-b border-slate-200 flex justify-between items-center">
                 <div>
                   <h3 className="font-black text-gray-900 text-base">Smart Payouts Settlement Ledger</h3>
-                  <p className="text-xs text-gray-500">Automated blockchain smart settlements executed for licensed nodes</p>
+                  <p className="text-xs text-slate-700">Automated blockchain smart settlements executed for licensed nodes</p>
                 </div>
                 <button
                   onClick={() => showToast('Ledger synced with Sovereign Contract Node', 'success')}
@@ -567,7 +567,7 @@ const FranchisePage: React.FC = () => {
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse text-xs">
                   <thead>
-                    <tr className="bg-gray-50 text-gray-500 uppercase tracking-wider border-b border-slate-200">
+                    <tr className="bg-gray-50 text-slate-700 uppercase tracking-wider border-b border-slate-200">
                       <th className="py-3 px-5">Franchise Node</th>
                       <th className="py-3 px-5">Territory</th>
                       <th className="py-3 px-5">License Number</th>
@@ -582,7 +582,7 @@ const FranchisePage: React.FC = () => {
                       <tr key={f.id} className="hover:bg-purple-50/30 transition-colors">
                         <td className="py-4 px-5 font-bold text-gray-900">{f.name}</td>
                         <td className="py-4 px-5 text-gray-600">{f.city}, {f.region}</td>
-                        <td className="py-4 px-5 font-mono text-gray-500">{f.operatingLicenseNo}</td>
+                        <td className="py-4 px-5 font-mono text-slate-800">{f.operatingLicenseNo}</td>
                         <td className="py-4 px-5 font-semibold text-gray-800">{f.grossVolumeFic.toLocaleString()} FIC</td>
                         <td className="py-4 px-5 font-bold text-purple-700">{f.revenueSharePercentage}%</td>
                         <td className="py-4 px-5 font-black text-emerald-700">{f.netPayoutFic.toLocaleString()} FIC</td>
@@ -604,7 +604,7 @@ const FranchisePage: React.FC = () => {
             <div className="max-w-2xl mx-auto bg-white rounded-3xl border border-slate-300 shadow-xl p-6 sm:p-8">
               <div className="mb-6 pb-4 border-b border-slate-200">
                 <h3 className="text-xl font-black text-gray-900">Franchise Territory Application</h3>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-slate-700 mt-1">
                   Submit your corporate entity credentials for sovereign node validation and hardware deployment.
                 </p>
               </div>
@@ -615,7 +615,7 @@ const FranchisePage: React.FC = () => {
                     <CheckCircleIcon className="w-10 h-10" />
                   </div>
                   <h4 className="text-xl font-black text-gray-900">Application Submitted!</h4>
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="text-xs text-slate-700 mt-1">
                     Your franchise application for <strong>{appSuccessData.entityName}</strong> has been logged.
                   </p>
                   <div className="my-6 p-4 bg-slate-900 rounded-2xl text-left font-mono text-xs text-emerald-400 space-y-1">
@@ -785,19 +785,19 @@ const FranchisePage: React.FC = () => {
               <div className="mt-5 space-y-4">
                 <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100 space-y-2 text-xs">
                   <div className="flex justify-between">
-                    <span className="text-gray-500">Operating License:</span>
+                    <span className="text-slate-700">Operating License:</span>
                     <span className="font-mono font-bold text-gray-900">{inspectingFranchise.operatingLicenseNo}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-500">Territory / City:</span>
+                    <span className="text-slate-700">Territory / City:</span>
                     <span className="font-bold text-gray-900">{inspectingFranchise.city}, {inspectingFranchise.region}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-500">Physical Address:</span>
+                    <span className="text-slate-700">Physical Address:</span>
                     <span className="font-semibold text-gray-800 text-right max-w-xs">{inspectingFranchise.address}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-500">Founded:</span>
+                    <span className="text-slate-700">Founded:</span>
                     <span className="font-bold text-gray-900">{inspectingFranchise.foundedYear}</span>
                   </div>
                 </div>

@@ -22,7 +22,7 @@ const PlatformTaskManager: React.FC<PlatformTaskManagerProps> = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-medium text-gray-900">{task.title}</p>
-                <p className="text-xs text-gray-500 mt-1 capitalize">{task.status.replace('-', ' ')}</p>
+                <p className="text-xs text-slate-700 mt-1 capitalize">{task.status.replace('-', ' ')}</p>
               </div>
               <span className={`px-2 py-1 rounded text-xs font-medium ${
                 task.priority === 'critical' ? 'bg-red-100 text-red-950 border border-red-400 font-bold' :

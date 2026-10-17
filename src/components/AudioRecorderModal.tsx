@@ -142,7 +142,7 @@ const AudioRecorderModal: React.FC<AudioRecorderModalProps> = ({
             </h2>
             <button
               onClick={onClose}
-              className="text-gray-500 hover:text-gray-700 rounded-full p-2 transition-colors"
+              className="text-slate-700 hover:text-gray-700 rounded-full p-2 transition-colors"
             >
               ✕
             </button>
@@ -186,7 +186,7 @@ const AudioRecorderModal: React.FC<AudioRecorderModalProps> = ({
                           style={{ width: `${getProgressPercentage()}%` }}
                         />
                       </div>
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs text-slate-700 mt-1">
                         {Math.round(getProgressPercentage())}% of {formatTime(maxDuration)}
                       </p>
                     </div>

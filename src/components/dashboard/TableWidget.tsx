@@ -20,9 +20,9 @@ const TableWidget: React.FC<TableWidgetProps> = () => {
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
-              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Value</th>
-              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-slate-800 uppercase">Name</th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-slate-800 uppercase">Value</th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-slate-800 uppercase">Status</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">

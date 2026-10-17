@@ -367,7 +367,7 @@ const EditPostPage: React.FC = () => {
               <Zap className="w-5 h-5 text-amber-400" />
               <div>
                 <div className="text-xs text-slate-700 font-medium">FIC Balance</div>
-                <div className="text-lg font-extrabold text-white">{balance.toLocaleString()} FIC</div>
+                <div className="text-lg font-extrabold text-slate-700">{balance.toLocaleString()} FIC</div>
               </div>
               <div className="ml-2 text-[11px] font-semibold text-blue-200 bg-blue-600/40 px-2 py-0.5 rounded">
                 3 FIC / Edit

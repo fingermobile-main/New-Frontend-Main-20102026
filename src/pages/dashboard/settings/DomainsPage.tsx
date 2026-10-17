@@ -71,14 +71,14 @@ const DomainsPage: React.FC = () => {
           <div className="flex justify-between items-center bg-gray-50 p-4 rounded-lg">
             <div>
               <p className="font-semibold text-gray-900">{primaryDomain.domain}</p>
-              <p className="text-xs text-gray-500 font-mono mt-0.5">SSL: {primaryDomain.ssl_status}</p>
+              <p className="text-xs text-slate-700 font-mono mt-0.5">SSL: {primaryDomain.ssl_status}</p>
             </div>
             <span className="text-sm text-green-600 font-semibold bg-green-50 px-3 py-1 rounded-full border border-green-200">
               Primary Active
             </span>
           </div>
         ) : (
-          <p className="text-gray-500">No primary domain configured.</p>
+          <p className="text-slate-700">No primary domain configured.</p>
         )}
       </div>
 
@@ -86,13 +86,13 @@ const DomainsPage: React.FC = () => {
         <h2 className="text-xl font-bold mb-4">Custom Domains</h2>
         <div className="space-y-3 mb-6">
           {customDomains.length === 0 ? (
-            <p className="text-sm text-gray-500">No custom domains added yet.</p>
+            <p className="text-sm text-slate-700">No custom domains added yet.</p>
           ) : (
             customDomains.map((d) => (
               <div key={d.id} className="flex justify-between items-center bg-gray-50 p-4 rounded-lg">
                 <div>
                   <p className="font-semibold text-gray-900">{d.domain}</p>
-                  <p className="text-xs text-gray-500 font-mono mt-0.5">SSL: {d.ssl_status}</p>
+                  <p className="text-xs text-slate-700 font-mono mt-0.5">SSL: {d.ssl_status}</p>
                 </div>
                 <div className="flex items-center gap-3">
                   <span className={`text-sm font-semibold px-2.5 py-0.5 rounded-full ${

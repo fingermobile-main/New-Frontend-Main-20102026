@@ -8,7 +8,7 @@ const PremiumContentAdWidget: React.FC = () => {
 
       <div className="relative z-10">
         <div className="flex items-center gap-2 mb-3">
-          <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-gray-100 text-gray-500 uppercase tracking-wider">
+          <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-gray-100 text-slate-700 uppercase tracking-wider">
             Ad
           </span>
           <span className="text-xs font-medium text-brand-blue">Sponsored</span>

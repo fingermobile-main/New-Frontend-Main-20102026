@@ -70,7 +70,7 @@ const AiPlaylistPage: React.FC = () => {
             placeholder="e.g., A playlist for a rainy day..."
           />
           <div className="mt-4">
-            <p className="text-xs text-gray-500 mb-2">Or try an example:</p>
+            <p className="text-xs text-slate-700 mb-2">Or try an example:</p>
             <div className="flex flex-wrap gap-2">
               {examplePrompts.map(p => (
                 <button

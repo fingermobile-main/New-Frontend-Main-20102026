@@ -157,7 +157,7 @@ const AnalyticsChart: React.FC<AnalyticsChartProps> = ({
 
         {data.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-gray-500">No data available for this period</p>
+            <p className="text-slate-700">No data available for this period</p>
           </div>
         ) : (
           <div className="space-y-2">
@@ -181,7 +181,7 @@ const AnalyticsChart: React.FC<AnalyticsChartProps> = ({
                       }`}
                       style={{ width: `${percentage}%` }}
                     />
-                    <div className="absolute left-2 top-1/2 transform -translate-y-1/2 text-white text-xs font-semibold">
+                    <div className="absolute left-2 top-1/2 transform -translate-y-1/2 text-slate-700 text-xs font-semibold">
                       {formatMetricValue(value)}
                     </div>
                   </div>

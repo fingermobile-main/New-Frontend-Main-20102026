@@ -110,7 +110,7 @@ const NotificationsPage: React.FC = () => {
           <div className="border-b border-slate-300 px-6 py-4 flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Notifications</h1>
-              <p className="mt-1 text-sm text-gray-500">
+              <p className="mt-1 text-sm text-slate-700">
                 {unreadCount} unread {unreadCount === 1 ? 'notification' : 'notifications'}
               </p>
             </div>
@@ -139,7 +139,7 @@ const NotificationsPage: React.FC = () => {
               <div className="p-12 text-center">
                 <BellIcon className="mx-auto h-12 w-12 text-slate-700" />
                 <h3 className="mt-2 text-sm font-medium text-gray-900">No notifications</h3>
-                <p className="mt-1 text-sm text-gray-500">Check back later for updates.</p>
+                <p className="mt-1 text-sm text-slate-700">Check back later for updates.</p>
               </div>
             ) : (
               notifications.map((notification) => (
@@ -165,7 +165,7 @@ const NotificationsPage: React.FC = () => {
                       <p className="text-sm font-medium text-gray-900">
                         {notification.title}
                       </p>
-                      <p className="mt-0.5 text-sm text-gray-500">
+                      <p className="mt-0.5 text-sm text-slate-700">
                         {notification.message}
                       </p>
                       <p className="mt-1 text-xs text-slate-700">
@@ -176,14 +176,14 @@ const NotificationsPage: React.FC = () => {
                       {!notification.isRead && (
                         <button
                           onClick={() => markAsRead(notification.id)}
-                          className="inline-flex items-center p-1 text-sm font-medium text-gray-500 hover:text-gray-700"
+                          className="inline-flex items-center p-1 text-sm font-medium text-slate-700 hover:text-gray-700"
                         >
                           <CheckIcon className="h-4 w-4" />
                         </button>
                       )}
                       <button
                         onClick={() => deleteNotification(notification.id)}
-                        className="inline-flex items-center p-1 text-sm font-medium text-gray-500 hover:text-red-700"
+                        className="inline-flex items-center p-1 text-sm font-medium text-slate-700 hover:text-red-700"
                       >
                         <TrashIcon className="h-4 w-4" />
                       </button>

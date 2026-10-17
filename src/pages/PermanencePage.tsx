@@ -372,7 +372,7 @@ const PermanencePage: React.FC = () => {
                   {challenge.description}
                 </p>
 
-                <div className="mt-3 flex items-center text-sm text-gray-500">
+                <div className="mt-3 flex items-center text-sm text-slate-700">
                   <span className="bg-gray-100 px-2 py-1 rounded mr-2">
                     {challenge.category}
                   </span>
@@ -431,13 +431,13 @@ const PermanencePage: React.FC = () => {
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                   Game
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                   Completion Rate
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                   Popularity
                 </th>
               </tr>
@@ -513,7 +513,7 @@ const PermanencePage: React.FC = () => {
                     {challenge.description}
                   </p>
 
-                  <div className="mt-3 flex items-center text-sm text-gray-500">
+                  <div className="mt-3 flex items-center text-sm text-slate-700">
                     <span className="bg-gray-100 px-2 py-1 rounded mr-2">
                       {challenge.category}
                     </span>
@@ -587,7 +587,7 @@ const PermanencePage: React.FC = () => {
                   )}
                 </div>
 
-                <div className="mt-3 flex items-center text-sm text-gray-500">
+                <div className="mt-3 flex items-center text-sm text-slate-700">
                   <span className="bg-gray-100 px-2 py-1 rounded mr-2">
                     {stream.category}
                   </span>

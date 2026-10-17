@@ -125,7 +125,7 @@ const AdminDashboardPage: React.FC = () => {
               key={index}
               className="bg-white rounded-xl shadow-sm border border-slate-300 p-6"
             >
-              <p className="text-sm font-medium text-gray-500">{stat.title}</p>
+              <p className="text-sm font-medium text-slate-700">{stat.title}</p>
               <div className="mt-2 flex items-baseline">
                 <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
                 <p className="ml-2 text-sm font-medium text-green-500">
@@ -202,11 +202,11 @@ const AdminDashboardPage: React.FC = () => {
                             <p className="text-sm font-medium text-gray-900">
                               {activity.member}
                             </p>
-                            <p className="text-sm text-gray-500">
+                            <p className="text-sm text-slate-700">
                               {activity.action}
                             </p>
                           </div>
-                          <p className="text-sm text-gray-500">
+                          <p className="text-sm text-slate-700">
                             {activity.time}
                           </p>
                         </div>
@@ -275,31 +275,31 @@ const AdminDashboardPage: React.FC = () => {
                       <tr>
                         <th
                           scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
                         >
                           Member
                         </th>
                         <th
                           scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
                         >
                           Role
                         </th>
                         <th
                           scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
                         >
                           Status
                         </th>
                         <th
                           scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
                         >
                           Last Active
                         </th>
                         <th
                           scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
                         >
                           Actions
                         </th>
@@ -320,7 +320,7 @@ const AdminDashboardPage: React.FC = () => {
                               <div className="text-sm font-medium text-gray-900">
                                 Alex Johnson
                               </div>
-                              <div className="text-sm text-gray-500">
+                              <div className="text-sm text-slate-700">
                                 alex@example.com
                               </div>
                             </div>
@@ -334,7 +334,7 @@ const AdminDashboardPage: React.FC = () => {
                             Active
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                           2 hours ago
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -377,31 +377,31 @@ const AdminDashboardPage: React.FC = () => {
                       <tr>
                         <th
                           scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
                         >
                           Member
                         </th>
                         <th
                           scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
                         >
                           Role
                         </th>
                         <th
                           scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
                         >
                           Status
                         </th>
                         <th
                           scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
                         >
                           Last Active
                         </th>
                         <th
                           scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
                         >
                           Actions
                         </th>
@@ -422,7 +422,7 @@ const AdminDashboardPage: React.FC = () => {
                               <div className="text-sm font-medium text-gray-900">
                                 Alex Johnson
                               </div>
-                              <div className="text-sm text-gray-500">
+                              <div className="text-sm text-slate-700">
                                 alex@example.com
                               </div>
                             </div>
@@ -436,7 +436,7 @@ const AdminDashboardPage: React.FC = () => {
                             Active
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                           2 hours ago
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -484,7 +484,7 @@ const AdminDashboardPage: React.FC = () => {
                           <h4 className="font-medium text-gray-900">
                             {role.name}
                           </h4>
-                          <p className="text-sm text-gray-500 mt-1">
+                          <p className="text-sm text-slate-700 mt-1">
                             {role.members} members
                           </p>
                         </div>
@@ -525,12 +525,12 @@ const AdminDashboardPage: React.FC = () => {
                             <p className="text-sm font-medium text-gray-900">
                               Alex Johnson
                             </p>
-                            <p className="text-sm text-gray-500">
+                            <p className="text-sm text-slate-700">
                               Created new post in Forum category
                             </p>
                           </div>
                           <div>
-                            <p className="text-sm text-gray-500">2 min ago</p>
+                            <p className="text-sm text-slate-700">2 min ago</p>
                           </div>
                         </div>
                       </li>

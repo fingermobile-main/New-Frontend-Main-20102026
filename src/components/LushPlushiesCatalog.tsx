@@ -730,7 +730,7 @@ const LushPlushiesCatalog: React.FC<LushPlushiesCatalogProps> = ({ onGiftSelect,
                 />
               ) : (
                 <div className="w-full h-48 bg-gray-200 flex items-center justify-center">
-                  <div className="text-gray-500">Gift Image</div>
+                  <div className="text-slate-700">Gift Image</div>
                 </div>
               )}
               <div className="absolute top-2 right-2 bg-white rounded-full px-2 py-1 text-xs font-medium">
@@ -740,7 +740,7 @@ const LushPlushiesCatalog: React.FC<LushPlushiesCatalogProps> = ({ onGiftSelect,
 
             <div className="p-4">
               <h3 className="font-bold text-gray-900 mb-1">{product.product_name}</h3>
-              <p className="text-sm text-gray-500 mb-2">{product.product_category}</p>
+              <p className="text-sm text-slate-700 mb-2">{product.product_category}</p>
 
               <p className="text-sm text-gray-600 mb-3 line-clamp-2">
                 {product.product_description}

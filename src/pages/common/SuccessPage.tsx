@@ -57,7 +57,7 @@ const SuccessPage: React.FC = () => {
           <span>✓</span>
           <span>Onboarding Completed Successfully</span>
         </div>
-        <p className="text-gray-500 dark:text-gray-400 text-sm animate-pulse">
+        <p className="text-slate-700 dark:text-gray-400 text-sm animate-pulse">
           Calibrating P2P services & preparing login experience...
         </p>
       </div>

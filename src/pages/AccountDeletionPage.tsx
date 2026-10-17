@@ -204,7 +204,7 @@ const AccountDeletionPage: React.FC = () => {
                       <button
                         type="submit"
                         disabled={isSubmitting}
-                        className={`px-6 py-3 rounded-lg font-medium text-white text-base ${
+                        className={`px-6 py-3 rounded-lg font-medium text-slate-700 text-base ${
                           isSubmitting
                             ? 'bg-gray-400 cursor-not-allowed'
                             : 'bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700'
@@ -237,7 +237,7 @@ const AccountDeletionPage: React.FC = () => {
                   <h3 className="mt-6 text-lg font-medium text-gray-900">
                     Account Deletion Request Submitted
                   </h3>
-                  <p className="mt-4 text-base text-gray-500">
+                  <p className="mt-4 text-base text-slate-700">
                     Your account deletion request has been received. We will process
                     your request within 30 days. You will receive a confirmation
                     email once your account has been permanently deleted.

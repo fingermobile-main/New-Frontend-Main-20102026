@@ -59,7 +59,7 @@ const Canvas: React.FC<CanvasProps> = ({
                   <span className="text-sm font-medium text-gray-700 capitalize">
                     {component.type}
                   </span>
-                  <span className="text-xs text-gray-500">#{index + 1}</span>
+                  <span className="text-xs text-slate-700">#{index + 1}</span>
                 </div>
                 <div className="text-sm text-gray-600">
                   Component: {component.type}

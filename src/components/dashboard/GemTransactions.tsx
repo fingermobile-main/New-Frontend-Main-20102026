@@ -19,7 +19,7 @@ const GemTransactions: React.FC = () => {
           <div key={tx.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
             <div>
               <p className="font-medium text-gray-900">{tx.type}</p>
-              <p className="text-xs text-gray-500">{new Date(tx.date).toLocaleDateString()}</p>
+              <p className="text-xs text-slate-700">{new Date(tx.date).toLocaleDateString()}</p>
             </div>
             <span className={`font-bold ${tx.type === 'Purchase' ? 'text-red-600' : 'text-green-600'}`}>
               {tx.type === 'Purchase' ? '-' : '+'}{tx.amount} Gems

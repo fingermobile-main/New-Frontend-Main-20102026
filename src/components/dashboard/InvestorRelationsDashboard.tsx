@@ -222,7 +222,7 @@ STATUS: AUDITED & SEC REGISTERED`;
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider border-b border-slate-200">
+                <tr className="bg-gray-50 text-slate-700 text-xs uppercase tracking-wider border-b border-slate-200">
                   <th className="py-3 px-5">Report Title</th>
                   <th className="py-3 px-5">Filing Type</th>
                   <th className="py-3 px-5">Period</th>
@@ -255,7 +255,7 @@ STATUS: AUDITED & SEC REGISTERED`;
                     <td className="py-4 px-5 text-right">
                       <button
                         onClick={() => handleDownloadFiling(r)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 hover:bg-emerald-600 hover:text-white text-gray-700 text-xs font-bold rounded-lg transition-colors shadow-sm"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 hover:bg-emerald-600 hover:text-slate-700 text-gray-700 text-xs font-bold rounded-lg transition-colors shadow-sm"
                       >
                         <ArrowDownTrayIcon className="w-3.5 h-3.5" />
                         Download
@@ -279,7 +279,7 @@ STATUS: AUDITED & SEC REGISTERED`;
                   </div>
                   <div>
                     <h4 className="font-bold text-gray-900 text-sm">{gov.title}</h4>
-                    <p className="text-xs text-gray-500 mt-0.5">Category: {gov.policy_category} • Version: {gov.version} • Effective: {gov.effective_date}</p>
+                    <p className="text-xs text-slate-700 mt-0.5">Category: {gov.policy_category} • Version: {gov.version} • Effective: {gov.effective_date}</p>
                   </div>
                 </div>
                 <button

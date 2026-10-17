@@ -186,13 +186,13 @@ const NyscPage: React.FC = () => {
                   {event.date}
                 </span>
               </div>
-              <div className="flex items-center text-sm text-gray-500 mt-2">
+              <div className="flex items-center text-sm text-slate-700 mt-2">
                 <LocationMarkerIcon className="w-4 h-4 mr-1" />
                 <span>{event.location}</span>
               </div>
               <p className="text-gray-600 mt-2">{event.description}</p>
               <div className="flex justify-between items-center mt-3">
-                <div className="flex space-x-4 text-sm text-gray-500">
+                <div className="flex space-x-4 text-sm text-slate-700">
                   <span>{event.participants} participants</span>
                   <span>by {event.organizer}</span>
                 </div>
@@ -238,9 +238,9 @@ const NyscPage: React.FC = () => {
               <p className="text-gray-600 text-sm mt-1">
                 Started by {discussion.author} • {discussion.timeAgo}
               </p>
-              <p className="text-gray-500 mt-2">{discussion.content}</p>
+              <p className="text-slate-700 mt-2">{discussion.content}</p>
               <div className="flex justify-between items-center mt-3">
-                <div className="flex space-x-4 text-sm text-gray-500">
+                <div className="flex space-x-4 text-sm text-slate-700">
                   <span>{discussion.replies} replies</span>
                   <span>{discussion.views} views</span>
                 </div>

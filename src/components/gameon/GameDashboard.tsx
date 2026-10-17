@@ -161,7 +161,7 @@ const GameDashboard: React.FC<GameDashboardProps> = ({
                           style={{ width: `${achievement.progress}%` }}
                         ></div>
                       </div>
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs text-slate-700 mt-1">
                         {achievement.progress}% complete
                       </p>
                     </div>
@@ -208,14 +208,14 @@ const GameDashboard: React.FC<GameDashboardProps> = ({
                 </div>
               </div>
               <div className="text-right">
-                <p className="text-sm text-gray-500">{formatDate(game.playedAt)}</p>
+                <p className="text-sm text-slate-700">{formatDate(game.playedAt)}</p>
               </div>
             </div>
           ))}
         </div>
 
         {recentGames.length === 0 && (
-          <div className="text-center py-8 text-gray-500">
+          <div className="text-center py-8 text-slate-700">
             <p>No recent games. Start playing to see your history!</p>
           </div>
         )}

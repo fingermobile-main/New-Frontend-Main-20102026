@@ -259,7 +259,7 @@ const CanaryAdsPage: React.FC = () => {
             <span className="text-2xl font-black text-blue-600 mt-1 block">
               {marketingStats?.activeCampaigns || (campaigns.length > 0 ? campaigns.length : 4)}
             </span>
-            <span className="text-xs text-gray-500 mt-1 block">Across 8 placements</span>
+            <span className="text-xs text-slate-700 mt-1 block">Across 8 placements</span>
           </div>
 
           <div className="bg-white rounded-2xl p-5 border border-slate-300 shadow-sm">
@@ -267,7 +267,7 @@ const CanaryAdsPage: React.FC = () => {
             <span className="text-2xl font-black text-amber-600 mt-1 block">
               {(marketingStats?.totalSpend || 1560).toLocaleString()} FIC
             </span>
-            <span className="text-xs text-gray-500 mt-1 block">Auto-settled via smart contract</span>
+            <span className="text-xs text-slate-700 mt-1 block">Auto-settled via smart contract</span>
           </div>
         </div>
 
@@ -302,7 +302,7 @@ const CanaryAdsPage: React.FC = () => {
                 <div className="flex justify-between items-center mb-6">
                   <div>
                     <h2 className="text-xl font-black text-gray-900">Launch New Campaign</h2>
-                    <p className="text-xs text-gray-500 mt-0.5">Configure objectives, creative destinations, and delivery schedule</p>
+                    <p className="text-xs text-slate-700 mt-0.5">Configure objectives, creative destinations, and delivery schedule</p>
                   </div>
                   <span className="px-3 py-1 bg-yellow-50 text-yellow-800 border border-yellow-200 text-xs font-black rounded-full">
                     Canary Express
@@ -414,7 +414,7 @@ const CanaryAdsPage: React.FC = () => {
 
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <span className="text-[11px] text-gray-500 block mb-1">Daily Spend (FIC)</span>
+                        <span className="text-[11px] text-slate-700 block mb-1">Daily Spend (FIC)</span>
                         <input
                           type="range"
                           min="10"
@@ -426,7 +426,7 @@ const CanaryAdsPage: React.FC = () => {
                         />
                       </div>
                       <div>
-                        <span className="text-[11px] text-gray-500 block mb-1">Duration (Days)</span>
+                        <span className="text-[11px] text-slate-700 block mb-1">Duration (Days)</span>
                         <input
                           type="range"
                           min="1"
@@ -494,7 +494,7 @@ const CanaryAdsPage: React.FC = () => {
                                 Running
                               </span>
                             </div>
-                            <p className="text-xs text-gray-500 mt-0.5">
+                            <p className="text-xs text-slate-700 mt-0.5">
                               {ad.placement} • {ad.impressions?.toLocaleString()} views • {ad.clicks?.toLocaleString()} clicks
                             </p>
                           </div>
@@ -583,13 +583,13 @@ const CanaryAdsPage: React.FC = () => {
                     </div>
                     <h3 className="text-base font-black text-gray-900 mb-1">{p.name}</h3>
                     <p className="text-xs text-gray-600 leading-relaxed mb-4">{p.description}</p>
-                    <div className="bg-gray-50 p-3 rounded-xl border border-slate-200 text-[11px] text-gray-500 space-y-1 mb-4">
+                    <div className="bg-gray-50 p-3 rounded-xl border border-slate-200 text-[11px] text-slate-700 space-y-1 mb-4">
                       <p className="font-semibold text-gray-700">{p.specs}</p>
                     </div>
                   </div>
 
                   <div className="pt-3 border-t border-slate-200 flex items-center justify-between text-xs">
-                    <span className="font-bold text-gray-500">Rate Card:</span>
+                    <span className="font-bold text-slate-700">Rate Card:</span>
                     <span className="font-black text-yellow-600">{p.pricing}</span>
                   </div>
                 </div>
@@ -605,7 +605,7 @@ const CanaryAdsPage: React.FC = () => {
               <div className="flex items-center justify-between mb-6">
                 <div>
                   <h3 className="text-lg font-black text-gray-900">Cross-Placement Yield & Performance</h3>
-                  <p className="text-xs text-gray-500">Live impression telemetry aggregated across all 8 native ad corridors</p>
+                  <p className="text-xs text-slate-700">Live impression telemetry aggregated across all 8 native ad corridors</p>
                 </div>
                 <span className="text-xs font-black text-emerald-950 bg-emerald-50 px-3 py-1 rounded-full border text-emerald-950 border-emerald-400">
                   Verified Clean Traffic
@@ -640,7 +640,7 @@ const CanaryAdsPage: React.FC = () => {
           <div className="max-w-3xl mx-auto bg-white rounded-3xl p-6 sm:p-8 border border-slate-300 shadow-sm space-y-6">
             <div>
               <h3 className="text-xl font-black text-gray-900">Advertiser Verification & Policy</h3>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-slate-700 mt-1">
                 To guarantee user safety, all Canary Advertisers agree to the platform mandatory content principles.
               </p>
             </div>

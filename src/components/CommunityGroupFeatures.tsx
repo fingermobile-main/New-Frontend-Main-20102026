@@ -153,16 +153,16 @@ const CommunityGroupFeatures: React.FC = () => {
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-100">
                   <tr>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                       Name
                     </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                       Role
                     </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                       Status
                     </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                       Action
                     </th>
                   </tr>
@@ -173,7 +173,7 @@ const CommunityGroupFeatures: React.FC = () => {
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                         {member.name}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                         <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                           member.role === 'admin' ? 'bg-purple-100 text-purple-950 border border-purple-400 font-bold' :
                             member.role === 'moderator' ? 'bg-blue-100 text-blue-950 border border-blue-400 font-bold' :
@@ -182,14 +182,14 @@ const CommunityGroupFeatures: React.FC = () => {
                           {member.role.charAt(0).toUpperCase() + member.role.slice(1)}
                         </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                         <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                           member.online ? 'bg-green-100 text-green-950 border border-green-400 font-bold' : 'bg-gray-100 text-gray-800'
                         }`}>
                           {member.online ? 'Online' : 'Offline'}
                         </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                         <button
                           onClick={() => toggleMemberOnlineStatus(member.id)}
                           className={`text-xs px-2 py-1 rounded ${
@@ -311,7 +311,7 @@ const CommunityGroupFeatures: React.FC = () => {
                     <p className="text-sm text-gray-600">{event.date} at {event.time}</p>
                     <p className="text-sm text-gray-600">{event.location}</p>
                     <div className="flex justify-between mt-2">
-                      <span className="text-xs text-gray-500">
+                      <span className="text-xs text-slate-700">
                         RSVPs: {event.rsvpCount}{event.maxCapacity ? `/${event.maxCapacity}` : ''}
                       </span>
                     </div>
@@ -390,7 +390,7 @@ const CommunityGroupFeatures: React.FC = () => {
                 <div key={file.id} className="flex items-center justify-between bg-white p-2 rounded border">
                   <div>
                     <span className="font-medium">{file.name}</span>
-                    <p className="text-xs text-gray-500">{file.size} • Uploaded by {file.uploadedBy}</p>
+                    <p className="text-xs text-slate-700">{file.size} • Uploaded by {file.uploadedBy}</p>
                   </div>
                   <button
                     onClick={() => handleRemoveFile(file.id)}
@@ -420,7 +420,7 @@ const CommunityGroupFeatures: React.FC = () => {
                 <label htmlFor="historyVisibility" className="block text-sm font-medium text-gray-700">
                   History Visibility (Admin Toggle)
                 </label>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-slate-700 mt-1">
                   Allow new members to see previous chat history
                 </p>
               </div>
@@ -438,7 +438,7 @@ const CommunityGroupFeatures: React.FC = () => {
                 <label htmlFor="voiceChat" className="block text-sm font-medium text-gray-700">
                   Voice Chats (up to 15 people)
                 </label>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-slate-700 mt-1">
                   Low-friction audio hangouts for group discussions
                 </p>
               </div>
@@ -456,7 +456,7 @@ const CommunityGroupFeatures: React.FC = () => {
                 <label htmlFor="largeFileSharing" className="block text-sm font-medium text-gray-700">
                   Large File Sharing (up to 200MB)
                 </label>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-slate-700 mt-1">
                   Share large assets without bloating the platform
                 </p>
               </div>
@@ -474,7 +474,7 @@ const CommunityGroupFeatures: React.FC = () => {
                 <label htmlFor="autoInvitations" className="block text-sm font-medium text-gray-700">
                   Auto-Invitations (Engagement-Based)
                 </label>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-slate-700 mt-1">
                   Invite highly engaged followers automatically
                 </p>
               </div>

@@ -418,7 +418,7 @@ const EventsPage: React.FC = () => {
                 <div className="bg-white rounded-3xl p-12 text-center border border-slate-300 shadow-sm">
                   <CalendarIcon className="w-12 h-12 text-slate-700 mx-auto mb-3" />
                   <h3 className="text-base font-bold text-gray-800">No events found</h3>
-                  <p className="text-xs text-gray-500 mt-1">Try resetting the search filters or view all categories.</p>
+                  <p className="text-xs text-slate-700 mt-1">Try resetting the search filters or view all categories.</p>
                   <button
                     onClick={() => {
                       setSearchTerm('');
@@ -500,12 +500,12 @@ const EventsPage: React.FC = () => {
                             {event.description}
                           </p>
 
-                          <div className="mt-3 flex items-center gap-2 text-xs text-gray-500">
+                          <div className="mt-3 flex items-center gap-2 text-xs text-slate-700">
                             <MapPinIcon className="w-3.5 h-3.5 text-slate-700 flex-shrink-0" />
                             <span className="truncate">{event.location}</span>
                           </div>
 
-                          <div className="mt-3 flex items-center justify-between text-xs text-gray-500 pt-3 border-t border-slate-200">
+                          <div className="mt-3 flex items-center justify-between text-xs text-slate-700 pt-3 border-t border-slate-200">
                             <div className="flex items-center gap-2">
                               <img
                                 src={event.organizer.avatarUrl}
@@ -671,9 +671,9 @@ const EventsPage: React.FC = () => {
 
               <div className="mt-5 space-y-4">
                 <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100 text-xs space-y-1.5">
-                  <p className="text-gray-500">Date: <strong>{ticketCheckoutEvent.timeString}</strong></p>
-                  <p className="text-gray-500">Venue: <strong>{ticketCheckoutEvent.location}</strong></p>
-                  <p className="text-gray-500">Organizer: <strong>{ticketCheckoutEvent.organizer.name}</strong></p>
+                  <p className="text-slate-700">Date: <strong>{ticketCheckoutEvent.timeString}</strong></p>
+                  <p className="text-slate-700">Venue: <strong>{ticketCheckoutEvent.location}</strong></p>
+                  <p className="text-slate-700">Organizer: <strong>{ticketCheckoutEvent.organizer.name}</strong></p>
                 </div>
 
                 <div className="p-4 bg-blue-50/70 rounded-2xl border border-blue-100 flex justify-between items-center text-sm">
@@ -683,7 +683,7 @@ const EventsPage: React.FC = () => {
                   </span>
                 </div>
 
-                <div className="flex justify-between text-xs text-gray-500 px-1">
+                <div className="flex justify-between text-xs text-slate-700 px-1">
                   <span>Your FIC Balance:</span>
                   <span className="font-bold text-gray-900">{ficBalance.toFixed(2)} FIC</span>
                 </div>
@@ -850,21 +850,21 @@ const EventsPage: React.FC = () => {
 
                 <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100 space-y-2 text-xs">
                   <div className="flex justify-between">
-                    <span className="text-gray-500">Date & Time:</span>
+                    <span className="text-slate-700">Date & Time:</span>
                     <span className="font-bold text-gray-900">{selectedEventForDetails.timeString}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-500">Venue:</span>
+                    <span className="text-slate-700">Venue:</span>
                     <span className="font-bold text-gray-900">{selectedEventForDetails.location}</span>
                   </div>
                   {selectedEventForDetails.streamPlatform && (
                     <div className="flex justify-between">
-                      <span className="text-gray-500">Livestream:</span>
+                      <span className="text-slate-700">Livestream:</span>
                       <span className="font-bold text-purple-700">{selectedEventForDetails.streamPlatform}</span>
                     </div>
                   )}
                   <div className="flex justify-between">
-                    <span className="text-gray-500">Capacity / Registered:</span>
+                    <span className="text-slate-700">Capacity / Registered:</span>
                     <span className="font-bold text-gray-900">
                       {selectedEventForDetails.attendeesCount} / {selectedEventForDetails.capacity} Attendees
                     </span>
@@ -904,7 +904,7 @@ const EventsPage: React.FC = () => {
               <div className="flex justify-between items-start pb-4 border-b border-slate-200">
                 <div>
                   <h3 className="text-xl font-black text-gray-900">Host Community Event</h3>
-                  <p className="text-xs text-gray-500 mt-0.5">Publish your conference, live stage or virtual meetup</p>
+                  <p className="text-xs text-slate-700 mt-0.5">Publish your conference, live stage or virtual meetup</p>
                 </div>
                 <button onClick={() => setIsHostModalOpen(false)} className="text-slate-700 hover:text-gray-600">
                   <XMarkIcon className="w-5 h-5" />

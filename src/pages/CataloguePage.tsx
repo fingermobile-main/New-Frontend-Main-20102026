@@ -364,7 +364,7 @@ const CataloguePage: React.FC = () => {
               </div>
 
               <div className="flex items-center gap-3 w-full md:w-auto justify-end">
-                <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Sort by:</span>
+                <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">Sort by:</span>
                 <select
                   value={sortBy}
                   onChange={(e: any) => setSortBy(e.target.value)}
@@ -433,7 +433,7 @@ const CataloguePage: React.FC = () => {
               <SparklesIcon className="w-5 h-5 text-indigo-600" />
               Available Creations ({filteredAssets.length})
             </h2>
-            <span className="text-xs text-gray-500 font-semibold">
+            <span className="text-xs text-slate-700 font-semibold">
               80% Creator Revenue Share Standard Guarantee
             </span>
           </div>
@@ -442,7 +442,7 @@ const CataloguePage: React.FC = () => {
             <div className="bg-white rounded-2xl p-12 text-center border border-slate-300 shadow-sm">
               <CatalogueIcon className="w-12 h-12 text-slate-700 mx-auto mb-3" />
               <h3 className="text-base font-bold text-gray-800">No assets match your search</h3>
-              <p className="text-xs text-gray-500 mt-1">Try resetting the category filter or searching for another keyword.</p>
+              <p className="text-xs text-slate-700 mt-1">Try resetting the category filter or searching for another keyword.</p>
               <button
                 onClick={() => {
                   setSearchTerm('');
@@ -531,7 +531,7 @@ const CataloguePage: React.FC = () => {
                         <h3 className="font-bold text-gray-900 text-base leading-snug line-clamp-1 group-hover:text-indigo-600 transition-colors">
                           {asset.title}
                         </h3>
-                        <p className="text-xs text-gray-500 mt-1.5 line-clamp-2">
+                        <p className="text-xs text-slate-700 mt-1.5 line-clamp-2">
                           {asset.description}
                         </p>
 
@@ -651,7 +651,7 @@ const CataloguePage: React.FC = () => {
                           <CheckCircleIcon className="w-4 h-4 text-blue-600" />
                         )}
                       </h5>
-                      <p className="text-xs text-gray-500">@{selectedAsset.creator.handle}</p>
+                      <p className="text-xs text-slate-700">@{selectedAsset.creator.handle}</p>
                     </div>
                   </div>
                   <span className="px-3 py-1 bg-white text-indigo-700 rounded-xl text-xs font-bold shadow-sm border border-indigo-200">
@@ -664,7 +664,7 @@ const CataloguePage: React.FC = () => {
                   <div>
                     <span className="text-xs text-slate-700 block font-semibold">Total License Fee</span>
                     <span className="text-2xl font-black text-gray-900">{selectedAsset.priceFic} FIC</span>
-                    <span className="text-xs text-gray-500 ml-2">(₦{selectedAsset.priceNgn.toLocaleString()})</span>
+                    <span className="text-xs text-slate-700 ml-2">(₦{selectedAsset.priceNgn.toLocaleString()})</span>
                   </div>
 
                   <div className="flex gap-3">
@@ -711,7 +711,7 @@ const CataloguePage: React.FC = () => {
 
               <div className="mt-5 space-y-4">
                 <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                  <p className="text-xs text-gray-500 uppercase font-bold">Selected Item</p>
+                  <p className="text-xs text-slate-700 uppercase font-bold">Selected Item</p>
                   <p className="text-base font-black text-gray-900 mt-0.5">{purchasingAsset.title}</p>
                   <p className="text-xs text-indigo-600 font-semibold mt-1">
                     License Scope: {purchasingAsset.licenseType} (Single Organization)
@@ -775,7 +775,7 @@ const CataloguePage: React.FC = () => {
               </div>
 
               <h3 className="text-xl font-black text-gray-900">License Certified!</h3>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-slate-700 mt-1">
                 Your cryptographic rights for &quot;{purchaseSuccessLicense.assetTitle}&quot; have been minted.
               </p>
 

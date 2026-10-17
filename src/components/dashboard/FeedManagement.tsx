@@ -440,7 +440,7 @@ const FeedManagement: React.FC = () => {
                   </div>
                 ))
               ) : (
-                <div className="text-center py-8 text-gray-500">
+                <div className="text-center py-8 text-slate-700">
                   <p>No muted accounts yet</p>
                   <p className="text-sm mt-2">Accounts you mute will appear here</p>
                 </div>

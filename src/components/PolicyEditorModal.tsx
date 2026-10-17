@@ -31,7 +31,7 @@ const PolicyEditorModal: React.FC<PolicyEditorModalProps> = ({
         <div className="flex items-center justify-between p-6 border-b border-slate-300">
           <div>
             <h2 className="text-xl font-bold text-gray-900">Edit {policyType}</h2>
-            <p className="text-sm text-gray-500">Policy Editor</p>
+            <p className="text-sm text-slate-700">Policy Editor</p>
           </div>
           <button onClick={onClose} className="text-slate-700 hover:text-gray-600">
             <XMarkIcon className="w-6 h-6" />

@@ -109,7 +109,7 @@ const PremiumPages: React.FC = () => {
             <p className="text-gray-600 mt-2">{tier.description}</p>
             <div className="mt-4">
               <span className="text-2xl font-bold text-blue-600">${tier.price}</span>
-              <span className="text-gray-500">/year</span>
+              <span className="text-slate-700">/year</span>
             </div>
             <ul className="mt-4 space-y-2">
               {tier.features.map((feature, idx) => (
@@ -152,7 +152,7 @@ const PremiumPages: React.FC = () => {
             <button
               onClick={handleSubscribe}
               disabled={isProcessing}
-              className={`px-6 py-3 rounded-md text-white font-medium ${
+              className={`px-6 py-3 rounded-md text-slate-700 font-medium ${
                 isProcessing
                   ? 'bg-gray-400 cursor-not-allowed'
                   : 'bg-blue-600 hover:bg-blue-700'

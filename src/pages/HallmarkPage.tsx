@@ -246,13 +246,13 @@ const HallmarkPage: React.FC = () => {
                         }`}>
                           {achievement.level}
                         </span>
-                        <span className="text-sm text-gray-500 ml-2">Earned {achievement.earnedDate}</span>
+                        <span className="text-sm text-slate-700 ml-2">Earned {achievement.earnedDate}</span>
                       </div>
                       <p className="text-gray-600 text-sm mt-2">{achievement.description}</p>
                     </div>
                   </div>
                   <div className="mt-4">
-                    <div className="text-xs text-gray-500 mb-1">Progress</div>
+                    <div className="text-xs text-slate-700 mb-1">Progress</div>
                     <div className="w-full bg-gray-200 rounded-full h-2">
                       <div
                         className="bg-green-500 h-2 rounded-full"
@@ -260,7 +260,7 @@ const HallmarkPage: React.FC = () => {
                       ></div>
                     </div>
                   </div>
-                  <div className="mt-4 text-xs text-gray-500">
+                  <div className="mt-4 text-xs text-slate-700">
                     <strong>Criteria:</strong> {achievement.criteria}
                   </div>
                 </div>
@@ -335,7 +335,7 @@ const HallmarkPage: React.FC = () => {
       <FixedAdBanner adSlot="hallmark-bottom-right" />
 
       {/* Footer */}
-      <footer className="hidden md:block text-center py-4 text-xs text-gray-500 border-t bg-white">
+      <footer className="hidden md:block text-center py-4 text-xs text-slate-700 border-t bg-white">
         <p>©2031 FingerMobile Protocol. All rights reserved.</p>
         <nav className="space-x-2 mt-1">
           <a href="#" className="hover:underline">About</a>

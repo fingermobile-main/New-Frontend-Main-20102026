@@ -30,7 +30,7 @@ const MemberLayout: React.FC<MemberLayoutProps> = ({ children, title, subtitle, 
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-indigo-500 selection:text-white">
+    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-indigo-500 selection:text-slate-700">
       {/* Desktop Sidebar */}
       <aside className="hidden md:flex flex-col w-64 fixed inset-y-0 bg-white/70 backdrop-blur-xl border-r border-slate-200/50 shadow-sm z-40">
         <div className="p-6 flex items-center gap-3">

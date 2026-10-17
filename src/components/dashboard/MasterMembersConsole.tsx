@@ -830,14 +830,14 @@ const MasterMembersConsole: React.FC = () => {
             </button>
             <button
               onClick={handleExportCsv}
-              className="px-3.5 py-2 text-xs font-bold rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/10 flex items-center gap-1.5 transition"
+              className="px-3.5 py-2 text-xs font-bold rounded-xl bg-white/10 hover:bg-white/20 text-slate-700 border border-white/10 flex items-center gap-1.5 transition"
             >
               <Download className="w-3.5 h-3.5" />
               Export Roster
             </button>
             <button
               onClick={() => showToast('Refreshed member database and session security cache')}
-              className="p-2 text-xs font-bold rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/10 transition"
+              className="p-2 text-xs font-bold rounded-xl bg-white/10 hover:bg-white/20 text-slate-700 border border-white/10 transition"
             >
               <span title="Refresh member directory">
                 <RefreshCw className="w-3.5 h-3.5" />

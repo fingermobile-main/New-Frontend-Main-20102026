@@ -149,7 +149,7 @@ const ProtocolNotificationDemo: React.FC = () => {
       <div className="mt-6">
         <div className="flex justify-between items-center mb-2">
           <h3 className="text-lg font-medium text-gray-800">Activity Log</h3>
-          <span className="text-sm text-gray-500">{logs.length} entries</span>
+          <span className="text-sm text-slate-700">{logs.length} entries</span>
         </div>
 
         <div className="bg-gray-50 rounded-md border border-slate-300 h-64 overflow-y-auto p-4 font-mono text-sm">
@@ -162,7 +162,7 @@ const ProtocolNotificationDemo: React.FC = () => {
               ))}
             </ul>
           ) : (
-            <p className="text-gray-500 italic">No activity yet. Perform actions to see logs here.</p>
+            <p className="text-slate-700 italic">No activity yet. Perform actions to see logs here.</p>
           )}
         </div>
       </div>

@@ -195,7 +195,7 @@ const CourseDetailPage: React.FC = () => {
                         style={{ width: `${progress}%` }}
                       ></div>
                     </div>
-                    <p className="text-xs sm:text-sm lg:text-base text-center text-gray-500">
+                    <p className="text-xs sm:text-sm lg:text-base text-center text-slate-700">
                       {completedLessonsCount} / {totalLessons} lessons completed
                     </p>
                   </div>
@@ -253,7 +253,7 @@ const CourseDetailPage: React.FC = () => {
                 ))}
               </div>
             ) : (
-              <p className="text-gray-500 text-center py-4">No curriculum available.</p>
+              <p className="text-slate-700 text-center py-4">No curriculum available.</p>
             )}
           </div>
         )}
@@ -267,7 +267,7 @@ const CourseDetailPage: React.FC = () => {
         {activeTab === 'reviews' && (
           <div className="bg-white rounded-lg shadow-sm p-6">
             <h2 className="text-xl font-bold mb-4">Reviews</h2>
-            <p className="text-gray-500 text-center">Reviews coming soon.</p>
+            <p className="text-slate-700 text-center">Reviews coming soon.</p>
           </div>
         )}
       </div>

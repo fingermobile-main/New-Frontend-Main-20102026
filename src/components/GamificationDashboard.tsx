@@ -285,7 +285,7 @@ const GamificationDashboard: React.FC = () => {
                         )}
                       </div>
                       {achievement.dateCompleted && (
-                        <p className="text-xs text-gray-500 mt-2">
+                        <p className="text-xs text-slate-700 mt-2">
                           Completed: {achievement.dateCompleted}
                         </p>
                       )}
@@ -330,7 +330,7 @@ const GamificationDashboard: React.FC = () => {
                           {entry.rank}
                         </div>
                       </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-slate-800">
                         <div className="flex items-center">
                           <img
                             className="h-8 w-8 rounded-full"
@@ -342,12 +342,12 @@ const GamificationDashboard: React.FC = () => {
                           </div>
                         </div>
                       </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-slate-800">
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-950 border border-purple-400 font-bold font-black">
                           {entry.level}
                         </span>
                       </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-slate-800">
                         {entry.score.toLocaleString()}
                       </td>
                     </tr>

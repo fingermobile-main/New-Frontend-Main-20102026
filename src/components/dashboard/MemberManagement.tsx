@@ -21,7 +21,7 @@ const MemberManagement: React.FC<MemberManagementProps> = () => {
           <div key={member.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
             <div>
               <p className="font-medium text-gray-900">{member.name}</p>
-              <p className="text-xs text-gray-500">Joined {new Date(member.joined).toLocaleDateString()}</p>
+              <p className="text-xs text-slate-700">Joined {new Date(member.joined).toLocaleDateString()}</p>
             </div>
             <span className={`px-3 py-1 rounded-full text-xs font-medium ${
               member.status === 'active' ? 'bg-green-100 text-green-950 border border-green-400 font-bold' : 'bg-gray-100 text-gray-800'

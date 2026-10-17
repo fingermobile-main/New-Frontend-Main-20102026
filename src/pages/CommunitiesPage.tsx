@@ -98,7 +98,7 @@ const CommunitiesPage: React.FC = () => {
                 <h3 className="font-semibold text-lg text-gray-900">{community.name}</h3>
                 <p className="text-gray-600 mt-2 line-clamp-3">{community.description}</p>
                 <div className="mt-4 pt-4 border-t border-slate-200 flex justify-between items-center">
-                  <span className="text-sm text-gray-500">
+                  <span className="text-sm text-slate-700">
                     {community.memberCount ? `${community.memberCount.toLocaleString()} members` : 'New Community'}
                   </span>
                   <button

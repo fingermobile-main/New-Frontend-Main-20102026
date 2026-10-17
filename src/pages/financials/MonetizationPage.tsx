@@ -10,7 +10,7 @@ const MonetizationPage: React.FC = () => {
       <header className="mb-8 flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">MonetizationPage</h1>
-          <p className="text-gray-500 mt-2">This module is currently under development.</p>
+          <p className="text-slate-700 mt-2">This module is currently under development.</p>
         </div>
         <button
           onClick={() => navigate(-1)}

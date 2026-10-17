@@ -178,7 +178,7 @@ export const LushEditProfileModal: React.FC<LushEditProfileModalProps> = ({
 
             {/* Quick Avatar selector */}
             <div className="space-y-1.5">
-              <span className="text-[11px] text-gray-500 font-medium">
+              <span className="text-[11px] text-slate-700 font-medium">
                 Choose preset luxury avatar:
               </span>
               <div className="flex gap-2 items-center overflow-x-auto pb-1">
@@ -205,7 +205,7 @@ export const LushEditProfileModal: React.FC<LushEditProfileModalProps> = ({
 
             {/* Quick Cover Banner selector */}
             <div className="space-y-1.5">
-              <span className="text-[11px] text-gray-500 font-medium">
+              <span className="text-[11px] text-slate-700 font-medium">
                 Choose preset cover banner:
               </span>
               <div className="grid grid-cols-4 gap-2">

@@ -75,7 +75,7 @@ const OfficialVerificationPage: React.FC = () => {
                   <div className="flex items-center justify-between">
                     <div>
                       <h3 className="font-semibold text-gray-900">Enterprise / Company</h3>
-                      <p className="text-sm text-gray-500">For registered businesses and corporations.</p>
+                      <p className="text-sm text-slate-700">For registered businesses and corporations.</p>
                     </div>
                     <CheckCircleIcon className="h-6 w-6 text-indigo-600" />
                   </div>
@@ -117,19 +117,19 @@ const OfficialVerificationPage: React.FC = () => {
               <div className="space-y-6">
                 <div>
                   <h3 className="text-sm font-medium text-gray-900 mb-2">1. Business Registration / Certificate of Incorporation</h3>
-                  <p className="text-xs text-gray-500 mb-2">Upload your local Certificate of Incorporation or Business License. Must include certified translation if not in English.</p>
+                  <p className="text-xs text-slate-700 mb-2">Upload your local Certificate of Incorporation or Business License. Must include certified translation if not in English.</p>
                   <input type="file" onChange={(e) => handleDocUpload(e, 'businessRegistration')} className="block w-full text-sm text-slate-900 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border file:text-sm file:font-semibold file:bg-white file:text-slate-900 hover:file:bg-white font-bold border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" />
                 </div>
 
                 <div>
                   <h3 className="text-sm font-medium text-gray-900 mb-2">2. Trademark Certificate</h3>
-                  <p className="text-xs text-gray-500 mb-2">Upload your brand's trademark registration certificate to secure exclusive rights.</p>
+                  <p className="text-xs text-slate-700 mb-2">Upload your brand's trademark registration certificate to secure exclusive rights.</p>
                   <input type="file" onChange={(e) => handleDocUpload(e, 'trademarkCertificate')} className="block w-full text-sm text-slate-900 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border file:text-sm file:font-semibold file:bg-white file:text-slate-900 hover:file:bg-white font-bold border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" />
                 </div>
 
                 <div>
                   <h3 className="text-sm font-medium text-gray-900 mb-2">3. Legal Representative Identification</h3>
-                  <p className="text-xs text-gray-500 mb-2">Provide the passport or local ID of the company's legal representative or authorized manager.</p>
+                  <p className="text-xs text-slate-700 mb-2">Provide the passport or local ID of the company's legal representative or authorized manager.</p>
                   <input type="file" onChange={(e) => handleDocUpload(e, 'legalRepId')} className="block w-full text-sm text-slate-900 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border file:text-sm file:font-semibold file:bg-white file:text-slate-900 hover:file:bg-white font-bold border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" />
                 </div>
               </div>
@@ -158,7 +158,7 @@ const OfficialVerificationPage: React.FC = () => {
               <div className="bg-gray-50 p-4 rounded-lg mb-6">
                 <h3 className="font-semibold text-gray-900">Platform Auditing Fee</h3>
                 <p className="text-gray-600 text-sm mt-1">A mandatory, non-refundable annual fee for maintaining corporate status.</p>
-                <div className="mt-4 text-3xl font-bold text-gray-900">$105.00 <span className="text-base font-normal text-gray-500">USD</span></div>
+                <div className="mt-4 text-3xl font-bold text-gray-900">$105.00 <span className="text-base font-normal text-slate-700">USD</span></div>
               </div>
 
               <div className="border border-slate-300 rounded-lg p-4 mb-6">

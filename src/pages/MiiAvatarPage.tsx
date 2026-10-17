@@ -390,11 +390,11 @@ const MiiAvatarPage: React.FC = () => {
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                               <Label>Face Shape</Label>
-                              <Select className="text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500"
+                              <Select
                                 value={currentCustomization.faceShape || 'round'}
                                 onValueChange={(value) => handleCustomizationChange('faceShape', value)}
                               >
-                                <SelectTrigger>
+                                <SelectTrigger className="text-slate-900 font-bold border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500">
                                   <SelectValue placeholder="Select shape" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -408,11 +408,11 @@ const MiiAvatarPage: React.FC = () => {
 
                             <div>
                               <Label>Eyebrow Style</Label>
-                              <Select className="text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500"
+                              <Select
                                 value={currentCustomization.eyebrowStyle || 'normal'}
                                 onValueChange={(value) => handleCustomizationChange('eyebrowStyle', value)}
                               >
-                                <SelectTrigger>
+                                <SelectTrigger className="text-slate-900 font-bold border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500">
                                   <SelectValue placeholder="Select style" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -426,11 +426,11 @@ const MiiAvatarPage: React.FC = () => {
 
                             <div>
                               <Label>Eye Shape</Label>
-                              <Select className="text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500"
+                              <Select
                                 value={currentCustomization.eyeShape || 'round'}
                                 onValueChange={(value) => handleCustomizationChange('eyeShape', value)}
                               >
-                                <SelectTrigger>
+                                <SelectTrigger className="text-slate-900 font-bold border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500">
                                   <SelectValue placeholder="Select shape" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -444,11 +444,11 @@ const MiiAvatarPage: React.FC = () => {
 
                             <div>
                               <Label>Nose Style</Label>
-                              <Select className="text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500"
+                              <Select
                                 value={currentCustomization.noseStyle || 'standard'}
                                 onValueChange={(value) => handleCustomizationChange('noseStyle', value)}
                               >
-                                <SelectTrigger>
+                                <SelectTrigger className="text-slate-900 font-bold border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500">
                                   <SelectValue placeholder="Select style" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -462,11 +462,11 @@ const MiiAvatarPage: React.FC = () => {
 
                             <div>
                               <Label>Mouth Style</Label>
-                              <Select className="text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500"
+                              <Select
                                 value={currentCustomization.mouthStyle || 'smile'}
                                 onValueChange={(value) => handleCustomizationChange('mouthStyle', value)}
                               >
-                                <SelectTrigger>
+                                <SelectTrigger className="text-slate-900 font-bold border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500">
                                   <SelectValue placeholder="Select style" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -480,11 +480,11 @@ const MiiAvatarPage: React.FC = () => {
 
                             <div>
                               <Label>Facial Hair</Label>
-                              <Select className="text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500"
+                              <Select
                                 value={currentCustomization.facialHair || 'none'}
                                 onValueChange={(value) => handleCustomizationChange('facialHair', value)}
                               >
-                                <SelectTrigger>
+                                <SelectTrigger className="text-slate-900 font-bold border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500">
                                   <SelectValue placeholder="Select style" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -522,11 +522,11 @@ const MiiAvatarPage: React.FC = () => {
 
                             <div>
                               <Label>Hair Color</Label>
-                              <Select className="text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500"
+                              <Select
                                 value={currentCustomization.hairColor || 'black'}
                                 onValueChange={(value) => handleCustomizationChange('hairColor', value)}
                               >
-                                <SelectTrigger>
+                                <SelectTrigger className="text-slate-900 font-bold border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500">
                                   <SelectValue placeholder="Select color" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -541,11 +541,11 @@ const MiiAvatarPage: React.FC = () => {
 
                             <div>
                               <Label>Eye Color</Label>
-                              <Select className="text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500"
+                              <Select
                                 value={currentCustomization.eyeColor || 'brown'}
                                 onValueChange={(value) => handleCustomizationChange('eyeColor', value)}
                               >
-                                <SelectTrigger>
+                                <SelectTrigger className="text-slate-900 font-bold border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500">
                                   <SelectValue placeholder="Select color" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -559,11 +559,11 @@ const MiiAvatarPage: React.FC = () => {
 
                             <div>
                               <Label>Clothing Color</Label>
-                              <Select className="text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500"
+                              <Select
                                 value={currentCustomization.clothingColor || 'blue'}
                                 onValueChange={(value) => handleCustomizationChange('clothingColor', value)}
                               >
-                                <SelectTrigger>
+                                <SelectTrigger className="text-slate-900 font-bold border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500">
                                   <SelectValue placeholder="Select color" />
                                 </SelectTrigger>
                                 <SelectContent>

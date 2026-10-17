@@ -31,7 +31,7 @@ const SplashPage: React.FC = () => {
       </div>
       <div className="animate-pulse flex flex-col items-center">
         <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mb-4"></div>
-        <p className="text-gray-500 text-sm">Loading security services (Guardian, Sentinel)...</p>
+        <p className="text-slate-700 text-sm">Loading security services (Guardian, Sentinel)...</p>
       </div>
     </div>
   );

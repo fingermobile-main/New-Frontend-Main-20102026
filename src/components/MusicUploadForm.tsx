@@ -56,7 +56,7 @@ const MusicUploadForm: React.FC<MusicUploadFormProps> = ({ onUpload }) => {
             <p className="text-sm text-gray-600">
               {file ? file.name : 'Click to upload or drag and drop'}
             </p>
-            <p className="text-xs text-gray-500 mt-1">MP3, WAV, FLAC up to 50MB</p>
+            <p className="text-xs text-slate-700 mt-1">MP3, WAV, FLAC up to 50MB</p>
           </label>
         </div>
 

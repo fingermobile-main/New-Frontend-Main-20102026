@@ -248,7 +248,7 @@ export const MiiPinExchangeModal: React.FC<PinExchangeModalProps> = ({
                     className="w-full pl-9 pr-3 py-2 text-sm bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl tracking-widest font-mono focus:ring-2 focus:ring-emerald-500 outline-none text-slate-900 dark:text-white font-bold border-slate-300 placeholder:text-slate-400"
                   />
                 </div>
-                <span className="text-[10px] text-gray-500 mt-1 block">PIN must be numbers only (6 to 8 digits).</span>
+                <span className="text-[10px] text-slate-700 mt-1 block">PIN must be numbers only (6 to 8 digits).</span>
               </div>
 
               <button
@@ -263,7 +263,7 @@ export const MiiPinExchangeModal: React.FC<PinExchangeModalProps> = ({
 
           {activeTab === 'synced' && (
             <div className="space-y-3">
-              <div className="flex items-center justify-between text-xs text-gray-500 mb-2">
+              <div className="flex items-center justify-between text-xs text-slate-700 mb-2">
                 <span>Verified Peers with active access</span>
                 <span className="font-bold text-red-600 flex items-center gap-1">
                   <AlertTriangle className="w-3.5 h-3.5" /> Instant Vanish Enabled
@@ -295,7 +295,7 @@ export const MiiPinExchangeModal: React.FC<PinExchangeModalProps> = ({
                       <button
                         onClick={() => handleInstantVanish(contact.id)}
                         title="Instantly sever all presence and access"
-                        className="px-2.5 py-1.5 rounded-lg bg-red-50 dark:bg-red-950/60 border border-red-200 dark:border-red-900 text-red-600 hover:bg-red-600 hover:text-white transition-colors text-xs font-bold flex items-center gap-1"
+                        className="px-2.5 py-1.5 rounded-lg bg-red-50 dark:bg-red-950/60 border border-red-200 dark:border-red-900 text-red-600 hover:bg-red-600 hover:text-slate-700 transition-colors text-xs font-bold flex items-center gap-1"
                       >
                         <UserX className="w-3.5 h-3.5" />
                         Instant Vanish
@@ -478,7 +478,7 @@ export const MiiFingerOrbitModal: React.FC<FingerOrbitModalProps> = ({
                       </span>
                     )}
                   </h4>
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="text-xs text-slate-700 mt-1">
                     Size: {item.size} {(item as any).duration ? `• Duration: ${(item as any).duration}` : ''}
                   </p>
                 </div>

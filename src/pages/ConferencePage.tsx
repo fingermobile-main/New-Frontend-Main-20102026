@@ -23,7 +23,7 @@ const ConferencePage: React.FC = () => {
                 <VideoCameraIcon className="w-8 h-8" />
               </div>
               <h2 className="text-2xl font-black text-gray-900 mb-2">FingerMobile Video Meeting</h2>
-              <p className="text-xs text-gray-500 mb-6">Enter a room code or start an instant WebRTC conference call</p>
+              <p className="text-xs text-slate-700 mb-6">Enter a room code or start an instant WebRTC conference call</p>
 
               <div className="space-y-3">
                 <input

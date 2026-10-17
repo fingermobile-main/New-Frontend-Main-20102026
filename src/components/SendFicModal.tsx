@@ -88,10 +88,10 @@ const SendFicModal: React.FC<SendFicModalProps> = ({ onClose, onSend }) => {
                   step="any"
                 />
                 <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
-                  <span className="text-gray-500">FIC</span>
+                  <span className="text-slate-700">FIC</span>
                 </div>
               </div>
-              <p className="mt-1 text-sm text-gray-500">Available: {balance} FIC</p>
+              <p className="mt-1 text-sm text-slate-700">Available: {balance} FIC</p>
             </div>
 
             <div className="mb-4">

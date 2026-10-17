@@ -144,11 +144,11 @@ const GroupDetailPage = () => {
       <div className="flex justify-center gap-4 mt-4">
         <div>
           <div className="font-semibold">{group.members.length}</div>
-          <div className="text-sm text-gray-500">Members</div>
+          <div className="text-sm text-slate-700">Members</div>
         </div>
         <div>
           <div className="font-semibold">{group.posts.length}</div>
-          <div className="text-sm text-gray-500">Posts</div>
+          <div className="text-sm text-slate-700">Posts</div>
         </div>
       </div>
       {!isMember && !isOwner && (
@@ -234,11 +234,11 @@ const GroupDetailPage = () => {
               />
             ))
           ) : (
-            <div className="text-center text-gray-500 py-16 bg-white rounded-xl shadow-sm border">
+            <div className="text-center text-slate-700 py-16 bg-white rounded-xl shadow-sm border">
               <p className="font-semibold text-gray-600">
                 This Group is empty.
               </p>
-              <p className="text-sm text-gray-500 mt-1">
+              <p className="text-sm text-slate-700 mt-1">
                 The owner has not featured any posts yet.
               </p>
             </div>

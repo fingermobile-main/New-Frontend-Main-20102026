@@ -205,7 +205,7 @@ const SubscriptionManager = () => {
                       ? plan.monthlyPrice
                       : plan.yearlyPrice}{' '}
                     FIC
-                    <span className="text-sm font-normal text-gray-500">
+                    <span className="text-sm font-normal text-slate-700">
                       /{selectedDuration === 'monthly' ? 'month' : 'year'}
                     </span>
                   </p>

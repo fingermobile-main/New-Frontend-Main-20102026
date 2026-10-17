@@ -102,7 +102,7 @@ const PayoutHistory: React.FC = () => {
 
       <div className="mb-6 flex flex-wrap gap-4">
         <div className="flex items-center">
-          <FiFilter className="mr-2 text-gray-500" />
+          <FiFilter className="mr-2 text-slate-700" />
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
@@ -116,7 +116,7 @@ const PayoutHistory: React.FC = () => {
         </div>
 
         <div className="flex items-center">
-          <FiCalendar className="mr-2 text-gray-500" />
+          <FiCalendar className="mr-2 text-slate-700" />
           <input
             type="month"
             value={filterDate}
@@ -130,21 +130,21 @@ const PayoutHistory: React.FC = () => {
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-100">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Reference</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Method</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Date</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Reference</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Description</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Method</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Amount</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">Status</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {filteredPayouts.map((payout) => (
               <tr key={payout.id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{payout.date}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">{payout.date}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{payout.reference}</td>
-                <td className="px-6 py-4 text-sm text-gray-500">{payout.description}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{payout.method}</td>
+                <td className="px-6 py-4 text-sm text-slate-800">{payout.description}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">{payout.method}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">${payout.amount.toFixed(2)}</td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full 
@@ -163,7 +163,7 @@ const PayoutHistory: React.FC = () => {
 
       {filteredPayouts.length === 0 && (
         <div className="text-center py-12">
-          <p className="text-gray-500">No payout history found for the selected filters</p>
+          <p className="text-slate-700">No payout history found for the selected filters</p>
         </div>
       )}
 

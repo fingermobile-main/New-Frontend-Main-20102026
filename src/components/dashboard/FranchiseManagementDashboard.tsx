@@ -261,7 +261,7 @@ const FranchiseManagementDashboard: React.FC<FranchiseManagementDashboardProps> 
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider border-b border-slate-200">
+                <tr className="bg-gray-50 text-slate-700 text-xs uppercase tracking-wider border-b border-slate-200">
                   <th className="py-3 px-5">Franchise Name</th>
                   <th className="py-3 px-5">License #</th>
                   <th className="py-3 px-5">Tier</th>
@@ -301,7 +301,7 @@ const FranchiseManagementDashboard: React.FC<FranchiseManagementDashboardProps> 
                 ))}
                 {filteredFranchises.length === 0 && (
                   <tr>
-                    <td colSpan={6} className="py-10 text-center text-gray-500">
+                    <td colSpan={6} className="py-10 text-center text-slate-800">
                       No franchises found matching your search.
                     </td>
                   </tr>
@@ -316,7 +316,7 @@ const FranchiseManagementDashboard: React.FC<FranchiseManagementDashboardProps> 
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider border-b border-slate-200">
+                <tr className="bg-gray-50 text-slate-700 text-xs uppercase tracking-wider border-b border-slate-200">
                   <th className="py-3 px-5">Franchise</th>
                   <th className="py-3 px-5">Gross Revenue</th>
                   <th className="py-3 px-5">Share Rate</th>

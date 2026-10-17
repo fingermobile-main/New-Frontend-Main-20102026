@@ -116,11 +116,11 @@ const SiteMenusPage: React.FC = () => {
       </div>
 
       {loading ? (
-        <div className="bg-white p-8 rounded-xl shadow-sm text-center text-gray-500">
+        <div className="bg-white p-8 rounded-xl shadow-sm text-center text-slate-700">
           Loading site menus from protocol database...
         </div>
       ) : menus.length === 0 ? (
-        <div className="bg-white p-8 rounded-xl shadow-sm text-center text-gray-500">
+        <div className="bg-white p-8 rounded-xl shadow-sm text-center text-slate-700">
           No menus configured yet.
         </div>
       ) : (
@@ -131,7 +131,7 @@ const SiteMenusPage: React.FC = () => {
                 <div className="flex justify-between items-start mb-3">
                   <div>
                     <h3 className="font-bold text-gray-900 text-lg">{menu.title}</h3>
-                    <p className="text-xs text-gray-500 font-mono">Location: {menu.location}</p>
+                    <p className="text-xs text-slate-700 font-mono">Location: {menu.location}</p>
                   </div>
                   <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase ${
                     menu.is_active ? 'bg-green-100 text-green-950 border border-green-400 font-bold' : 'bg-gray-100 text-gray-600'

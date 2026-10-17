@@ -136,7 +136,7 @@ const ProfileEnhancement: React.FC = () => {
                 value={profile.username}
                 onChange={handleInputChange}
                 placeholder="Enter your username"
-                className={[(inputClass), "text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"].filter(Boolean).join(" ")}
+                className={[([(inputClass), "text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"].filter(Boolean).join(" ")), "text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"].filter(Boolean).join(" ")}
                 maxLength={30}
                 minLength={3}
               />
@@ -166,7 +166,7 @@ const ProfileEnhancement: React.FC = () => {
                 value={profile.profilePicture}
                 onChange={handleInputChange}
                 placeholder="https://example.com/profile.jpg"
-                className={[(inputClass), "text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"].filter(Boolean).join(" ")}
+                className={[([(inputClass), "text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"].filter(Boolean).join(" ")), "text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"].filter(Boolean).join(" ")}
               />
             </div>
 
@@ -181,7 +181,7 @@ const ProfileEnhancement: React.FC = () => {
                 value={profile.profileVideo || ''}
                 onChange={(e) => setProfile(prev => ({ ...prev, profileVideo: e.target.value || null }))}
                 placeholder="https://example.com/video.mp4"
-                className={[(inputClass), "text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"].filter(Boolean).join(" ")}
+                className={[([(inputClass), "text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"].filter(Boolean).join(" ")), "text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"].filter(Boolean).join(" ")}
               />
             </div>
 
@@ -224,7 +224,7 @@ const ProfileEnhancement: React.FC = () => {
                   value={img}
                   onChange={(e) => handleCoverImageChange(index, e.target.value)}
                   placeholder={`https://example.com/cover-${index + 1}.jpg`}
-                  className={[(inputClass), "text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"].filter(Boolean).join(" ")}
+                  className={[([(inputClass), "text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"].filter(Boolean).join(" ")), "text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"].filter(Boolean).join(" ")}
                 />
               </div>
             ))}
@@ -291,7 +291,7 @@ const ProfileEnhancement: React.FC = () => {
             {profile.skills.length === 0 && (
               <p className="text-sm text-slate-700 mt-2">No skills added yet. Type a skill and click Add.</p>
             )}
-            <p className="text-sm text-gray-500 mt-2">
+            <p className="text-sm text-slate-700 mt-2">
               {profile.skills.length}/25 skills added
             </p>
           </div>

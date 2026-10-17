@@ -251,7 +251,7 @@ const RestockForm: React.FC<RestockFormProps> = ({
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400 font-mono"
             placeholder="0.00"
           />
-          <p className="text-xs text-gray-500 mt-1">Leave blank to keep current cost</p>
+          <p className="text-xs text-slate-700 mt-1">Leave blank to keep current cost</p>
         </div>
 
         {/* Warehouse Location */}

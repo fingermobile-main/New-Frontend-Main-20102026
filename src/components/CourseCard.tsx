@@ -123,7 +123,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
             <span className="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-black/40 backdrop-blur-md border border-white/20 text-white">
               {courseCategory}
             </span>
-            <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-white/20 backdrop-blur-md text-white flex items-center gap-1">
+            <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-white/20 backdrop-blur-md text-slate-700 flex items-center gap-1">
               <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
               {courseRating}
             </span>
@@ -147,7 +147,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
           <CardTitle className="text-lg font-bold text-gray-900 dark:text-white line-clamp-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
             {courseTitle}
           </CardTitle>
-          <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-2 mt-1">
+          <p className="text-xs text-slate-700 dark:text-gray-400 line-clamp-2 mt-1">
             {courseDesc}
           </p>
         </CardHeader>
@@ -164,7 +164,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
               </span>
             </div>
 
-            <div className="flex items-center gap-1 text-gray-500 dark:text-gray-400 text-[11px]">
+            <div className="flex items-center gap-1 text-slate-700 dark:text-gray-400 text-[11px]">
               <Users className="w-3.5 h-3.5" />
               <span>{studentCount.toLocaleString()} learners</span>
             </div>

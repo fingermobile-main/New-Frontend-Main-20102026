@@ -80,7 +80,7 @@ contract Fiat2IFCBridge is Ownable {
             <div>
               <h1 className="text-3xl font-bold text-gray-900">INFINITE COIN™©® (IFO / FIC) — WHITE PAPER</h1>
               <p className="text-gray-600">Version 1.0 (IP Version) — July 9, 2025</p>
-              <p className="text-xs text-gray-500">Registered Intellectual Property — FingerMobile Protocol Communication™©®</p>
+              <p className="text-xs text-slate-700">Registered Intellectual Property — FingerMobile Protocol Communication™©®</p>
             </div>
           </div>
 

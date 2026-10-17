@@ -101,7 +101,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ adminId }) => {
           </div>
           <p className="text-sm text-gray-600 mb-1">Total Users</p>
           <p className="text-3xl font-bold text-gray-900">{stats.users.total.toLocaleString()}</p>
-          <p className="text-xs text-gray-500 mt-2">{stats.users.active.toLocaleString()} active</p>
+          <p className="text-xs text-slate-700 mt-2">{stats.users.active.toLocaleString()} active</p>
         </div>
 
         {/* Content Posts */}
@@ -114,7 +114,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ adminId }) => {
           </div>
           <p className="text-sm text-gray-600 mb-1">Total Posts</p>
           <p className="text-3xl font-bold text-gray-900">{stats.content.totalPosts.toLocaleString()}</p>
-          <p className="text-xs text-gray-500 mt-2">{stats.content.postsToday} today</p>
+          <p className="text-xs text-slate-700 mt-2">{stats.content.postsToday} today</p>
         </div>
 
         {/* Revenue */}
@@ -142,7 +142,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ adminId }) => {
           </div>
           <p className="text-sm text-gray-600 mb-1">System Status</p>
           <p className="text-3xl font-bold text-gray-900">{stats.system.activeSessions}</p>
-          <p className="text-xs text-gray-500 mt-2">Active sessions</p>
+          <p className="text-xs text-slate-700 mt-2">Active sessions</p>
         </div>
       </div>
 

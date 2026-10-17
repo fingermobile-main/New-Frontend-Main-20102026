@@ -712,7 +712,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
       <div className="p-4 rounded-xl bg-white border border-slate-300 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="px-2.5 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider bg-emerald-700 text-white">
+            <span className="px-2.5 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider bg-emerald-700 text-white font-extrabold">
               SOVEREIGN FINANCIAL ECOSYSTEM
             </span>
             <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 border border-emerald-400 text-emerald-950 text-[11px] font-black">

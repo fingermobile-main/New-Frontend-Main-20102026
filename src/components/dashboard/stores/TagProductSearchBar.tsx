@@ -182,7 +182,7 @@ export const TagProductSearchBar: React.FC<TagProductSearchBarProps> = ({
                 >
                   <div className="flex items-center gap-3">
                     <div
-                      className="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-white text-[11px] shadow-sm flex-shrink-0"
+                      className="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-slate-700 text-[11px] shadow-sm flex-shrink-0"
                       style={{ backgroundColor: product.storeBadgeColor }}
                     >
                       {product.store.charAt(0)}

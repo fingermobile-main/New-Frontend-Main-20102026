@@ -465,7 +465,7 @@ const PostCard: React.FC<PostCardProps> = ({
       {/* Tagged Products Commerce Strip */}
       {Array.isArray((post as any).tagged_products) && (post as any).tagged_products.length > 0 && (
         <div className="mt-4 pt-3 border-t border-slate-200 dark:border-gray-800">
-          <div className="flex items-center gap-1.5 text-xs font-bold text-gray-500 mb-2">
+          <div className="flex items-center gap-1.5 text-xs font-bold text-slate-700 mb-2">
             <span>🛍️ Tagged Products ({ (post as any).tagged_products.length })</span>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -492,7 +492,7 @@ const PostCard: React.FC<PostCardProps> = ({
           <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white text-xs font-bold shadow-sm">
             {(post.author?.name || 'U').charAt(0).toUpperCase()}
           </div>
-          <div className="text-xs text-gray-500">
+          <div className="text-xs text-slate-700">
             <span className="font-bold text-gray-800 dark:text-gray-200">{post.author?.name || 'Unknown Member'}</span>
             <span className="mx-1.5">&middot;</span>
             {post.createdAt ? new Date(post.createdAt).toLocaleDateString() : 'Active Protocol'}
@@ -676,7 +676,7 @@ const PostCard: React.FC<PostCardProps> = ({
             <button
               type="button"
               onClick={() => setLightboxItem(null)}
-              className="absolute -top-12 right-0 px-3 py-1.5 text-white/90 hover:text-white rounded-full bg-white/10 hover:bg-white/20 text-xs font-bold transition flex items-center gap-1"
+              className="absolute -top-12 right-0 px-3 py-1.5 text-slate-700 hover:text-slate-700 rounded-full bg-white/10 hover:bg-white/20 text-xs font-bold transition flex items-center gap-1"
             >
               ✕ Close
             </button>

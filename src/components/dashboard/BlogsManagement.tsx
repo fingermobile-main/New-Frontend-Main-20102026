@@ -29,7 +29,7 @@ const BlogsManagement: React.FC<BlogsManagementProps> = ({ userId }) => {
             <div className="flex items-center justify-between">
               <div>
                 <h4 className="font-medium text-gray-900">{blog.title}</h4>
-                <p className="text-sm text-gray-500 mt-1">{blog.views} views • {new Date(blog.created).toLocaleDateString()}</p>
+                <p className="text-sm text-slate-700 mt-1">{blog.views} views • {new Date(blog.created).toLocaleDateString()}</p>
               </div>
               <span className={`px-3 py-1 rounded-full text-xs font-medium ${
                 blog.status === 'published' ? 'bg-green-100 text-green-950 border border-green-400 font-bold' : 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'

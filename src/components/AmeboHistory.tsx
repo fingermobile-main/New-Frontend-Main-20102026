@@ -50,7 +50,7 @@ const AmeboHistory: React.FC<AmeboHistoryProps> = ({ userId, limit = 10 }) => {
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-gray-900">{item.action}</p>
-                <p className="text-xs text-gray-500 mt-1">{formatTimeAgo(item.timestamp)}</p>
+                <p className="text-xs text-slate-700 mt-1">{formatTimeAgo(item.timestamp)}</p>
               </div>
             </div>
           </div>
@@ -58,7 +58,7 @@ const AmeboHistory: React.FC<AmeboHistoryProps> = ({ userId, limit = 10 }) => {
       </div>
 
       {history.length === 0 && (
-        <div className="p-8 text-center text-gray-500">
+        <div className="p-8 text-center text-slate-700">
           <ClockIcon className="w-12 h-12 mx-auto mb-3 text-slate-700" />
           <p>No activity yet</p>
         </div>

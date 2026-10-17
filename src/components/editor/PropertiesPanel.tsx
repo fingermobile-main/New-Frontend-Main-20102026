@@ -10,7 +10,7 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ component, onUpdate }
   if (!component) {
     return (
       <div className="w-80 bg-white border-l border-slate-300 p-4 overflow-y-auto">
-        <div className="text-center py-10 text-gray-500">
+        <div className="text-center py-10 text-slate-700">
           <p className="text-lg mb-2">No component selected</p>
           <p className="text-sm">Click on a component to edit its properties</p>
         </div>

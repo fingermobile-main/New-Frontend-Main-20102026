@@ -28,7 +28,7 @@ const CreatorTools: React.FC<CreatorToolsProps> = ({ userId }) => {
           >
             <div className="text-3xl mb-2">{tool.icon}</div>
             <h4 className="font-medium text-gray-900 group-hover:text-blue-600 transition-colors">{tool.name}</h4>
-            <p className="text-xs text-gray-500 mt-1">{tool.description}</p>
+            <p className="text-xs text-slate-700 mt-1">{tool.description}</p>
           </button>
         ))}
       </div>

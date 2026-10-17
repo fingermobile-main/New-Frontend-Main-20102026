@@ -20,7 +20,7 @@ const PlatformRouteWrapper: React.FC = () => {
             <div className="hidden lg:block lg:col-span-3">
               <div className="sticky top-20 bg-white p-6 rounded-xl shadow-sm border border-slate-200">
                 <h3 className="font-bold text-gray-900 mb-4">{title}</h3>
-                <p className="text-sm text-gray-500 mb-4">Explore {title.toLowerCase()} and discover more.</p>
+                <p className="text-sm text-slate-700 mb-4">Explore {title.toLowerCase()} and discover more.</p>
 
                 <div className="space-y-2 mt-4">
                   <div className="h-8 bg-gray-50 rounded w-full"></div>

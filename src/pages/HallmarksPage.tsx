@@ -542,7 +542,7 @@ const HallmarksPage: React.FC = () => {
                   {createdCount} / {maxAllowed} Pages Active
                 </span>
               </div>
-              <p className="text-xs text-gray-500 mt-1 max-w-xl">
+              <p className="text-xs text-slate-700 mt-1 max-w-xl">
                 One user profile can create a maximum of <strong>two (2) HallMarks pages</strong>. A slot is restored when an existing page is deleted by creator/author/SuperAdmin, suspended (1–7 days), or frozen (6 hrs).
               </p>
             </div>
@@ -597,7 +597,7 @@ const HallmarksPage: React.FC = () => {
               </div>
               <Button
                 onClick={handleOpenAuditModal}
-                className="bg-white/10 hover:bg-white/20 text-white text-xs font-bold border border-white/20 backdrop-blur-sm"
+                className="bg-white/10 hover:bg-white/20 text-slate-700 text-xs font-bold border border-white/20 backdrop-blur-sm"
               >
                 <span>📜</span> View PIN Audit Ledger
               </Button>
@@ -608,13 +608,13 @@ const HallmarksPage: React.FC = () => {
         {/* Tabs */}
         <Tabs defaultValue="communities" className="w-full">
           <TabsList className="grid w-full grid-cols-3 bg-white shadow-sm rounded-xl p-1 mb-6 border border-slate-300">
-            <TabsTrigger value="communities" className="data-[state=active]:bg-[#ff6b00] data-[state=active]:text-white rounded-lg py-2 font-bold text-xs">
+            <TabsTrigger value="communities" className="data-[state=active]:bg-[#ff6b00] data-[state=active]:text-slate-700 rounded-lg py-2 font-bold text-xs">
               Communities ({allCommunities.length})
             </TabsTrigger>
-            <TabsTrigger value="hallmarks" className="data-[state=active]:bg-[#ff6b00] data-[state=active]:text-white rounded-lg py-2 font-bold text-xs">
+            <TabsTrigger value="hallmarks" className="data-[state=active]:bg-[#ff6b00] data-[state=active]:text-slate-700 rounded-lg py-2 font-bold text-xs">
               My Accolades ({myHallmarks.length})
             </TabsTrigger>
-            <TabsTrigger value="discover" className="data-[state=active]:bg-[#ff6b00] data-[state=active]:text-white rounded-lg py-2 font-bold text-xs">
+            <TabsTrigger value="discover" className="data-[state=active]:bg-[#ff6b00] data-[state=active]:text-slate-700 rounded-lg py-2 font-bold text-xs">
               Discover & Governance
             </TabsTrigger>
           </TabsList>
@@ -689,7 +689,7 @@ const HallmarksPage: React.FC = () => {
                       )}
                     </CardHeader>
 
-                    <CardContent className="pb-3 text-xs text-gray-500 space-y-1.5">
+                    <CardContent className="pb-3 text-xs text-slate-700 space-y-1.5">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center">
                           <UsersIcon className="w-3.5 h-3.5 mr-1 text-slate-700" />
@@ -868,7 +868,7 @@ const HallmarksPage: React.FC = () => {
               <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
                 <span>🏅</span> Hallmark Commendations & Discourse
               </h3>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-slate-700">
                 Congratulate peers on milestone unlocks and share community hallmark accolades.
               </p>
             </div>
@@ -931,7 +931,7 @@ const HallmarksPage: React.FC = () => {
                 <span className="text-2xl">⚠️</span>
                 <div>
                   <h3 className="text-lg font-extrabold text-gray-900">HallMarks™ Capacity Limit (2/2)</h3>
-                  <p className="text-xs text-gray-500">Maximum allocation reached for this profile</p>
+                  <p className="text-xs text-slate-700">Maximum allocation reached for this profile</p>
                 </div>
               </div>
               <button
@@ -964,7 +964,7 @@ const HallmarksPage: React.FC = () => {
                     <div key={page.id} className="p-3 bg-gray-50 rounded-xl border border-slate-300 flex items-center justify-between">
                       <div>
                         <div className="text-xs font-bold text-gray-900">{page.name}</div>
-                        <div className="text-[10px] text-gray-500">Status: <span className="font-semibold text-emerald-600">{page.status}</span></div>
+                        <div className="text-[10px] text-slate-700">Status: <span className="font-semibold text-emerald-600">{page.status}</span></div>
                       </div>
                       <button
                         onClick={() => {
@@ -978,7 +978,7 @@ const HallmarksPage: React.FC = () => {
                     </div>
                   ))
                 ) : (
-                  <div className="p-3 bg-gray-50 rounded-xl border text-xs text-gray-500 text-center">
+                  <div className="p-3 bg-gray-50 rounded-xl border text-xs text-slate-700 text-center">
                     No individual ownership pages found in active state.
                   </div>
                 )}
@@ -1006,7 +1006,7 @@ const HallmarksPage: React.FC = () => {
                 <span className="text-xl">📜</span>
                 <div>
                   <h3 className="text-lg font-extrabold text-gray-900">Moderation 50-PIN Audit Ledger</h3>
-                  <p className="text-xs text-gray-500">Transparent ledger of all moderation PIN executions</p>
+                  <p className="text-xs text-slate-700">Transparent ledger of all moderation PIN executions</p>
                 </div>
               </div>
               <button
@@ -1023,7 +1023,7 @@ const HallmarksPage: React.FC = () => {
                   <div className="animate-spin rounded-full h-7 w-7 border-b-2 border-[#ff6b00]"></div>
                 </div>
               ) : auditLogs.length === 0 ? (
-                <div className="p-8 text-center text-xs text-gray-500">
+                <div className="p-8 text-center text-xs text-slate-700">
                   No moderation actions logged in the current 6-month cycle. Full 50 PINs intact.
                 </div>
               ) : (
@@ -1057,7 +1057,7 @@ const HallmarksPage: React.FC = () => {
             </div>
 
             <div className="flex justify-between items-center pt-3 border-t border-slate-200">
-              <span className="text-xs text-gray-500 font-medium">
+              <span className="text-xs text-slate-700 font-medium">
                 Remaining Balance: <strong>{remainingPins} / 50 PINs</strong>
               </span>
               <Button
@@ -1086,7 +1086,7 @@ const HallmarksPage: React.FC = () => {
                      modModal.type === 'suspend' ? 'Enact Community Suspension (1–7 Days)' :
                      'Enact 6-Hour Member Freeze'}
                   </h3>
-                  <p className="text-xs text-gray-500">Target: {modModal.community?.name}</p>
+                  <p className="text-xs text-slate-700">Target: {modModal.community?.name}</p>
                 </div>
               </div>
               <button
@@ -1160,7 +1160,7 @@ const HallmarksPage: React.FC = () => {
               </Button>
               <Button
                 type="submit"
-                className={`text-xs font-bold text-white ${
+                className={`text-xs font-bold text-slate-700 ${
                   modModal.type === 'warn' ? 'bg-amber-600 hover:bg-amber-700' :
                   modModal.type === 'suspend' ? 'bg-rose-600 hover:bg-rose-700' :
                   'bg-blue-600 hover:bg-blue-700'

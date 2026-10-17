@@ -62,7 +62,7 @@ const HeatmapView: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
           <div>
             <h2 className="text-xl font-bold text-gray-900">Activity Heatmap</h2>
-            <p className="mt-1 text-sm text-gray-500">Visualize your engagement patterns</p>
+            <p className="mt-1 text-sm text-slate-700">Visualize your engagement patterns</p>
           </div>
           <div className="mt-4 sm:mt-0 flex space-x-2">
             <select
@@ -80,7 +80,7 @@ const HeatmapView: React.FC = () => {
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-medium text-gray-900">Engagement Patterns</h3>
-            <div className="flex items-center text-sm text-gray-500">
+            <div className="flex items-center text-sm text-slate-700">
               <div className="flex items-center mr-4">
                 <div className="w-3 h-3 bg-green-200 rounded mr-1"></div>
                 <span>Low</span>
@@ -102,7 +102,7 @@ const HeatmapView: React.FC = () => {
               {/* Hour labels */}
               <div className="flex ml-12">
                 {hours.map(hour => (
-                  <div key={hour} className="w-8 h-8 flex items-center justify-center text-xs text-gray-500">
+                  <div key={hour} className="w-8 h-8 flex items-center justify-center text-xs text-slate-700">
                     {hour % 4 === 0 ? hour : ''}
                   </div>
                 ))}
@@ -111,7 +111,7 @@ const HeatmapView: React.FC = () => {
               {/* Days and activity blocks */}
               {Object.entries(groupedByDay).slice(0, 14).map(([day, dayData]) => (
                 <div key={day} className="flex items-center mt-1">
-                  <div className="w-12 text-xs text-gray-500 text-right pr-2">
+                  <div className="w-12 text-xs text-slate-700 text-right pr-2">
                     Day {parseInt(day) + 1}
                   </div>
                   <div className="flex">

@@ -118,7 +118,7 @@ const MonitoringDashboardPage: React.FC = () => {
           <div>
             <p className="text-sm font-medium text-gray-600 mb-1">{title}</p>
             <p className="text-3xl font-bold text-gray-900">
-              {value}{unit && <span className="text-lg text-gray-500 ml-1">{unit}</span>}
+              {value}{unit && <span className="text-lg text-slate-700 ml-1">{unit}</span>}
             </p>
           </div>
           <div className={`p-3 rounded-lg ${color}`}>
@@ -241,7 +241,7 @@ const MonitoringDashboardPage: React.FC = () => {
               <div className="bg-white rounded-xl shadow-lg p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Resource Usage Over Time</h3>
                 <div className="h-64 flex items-center justify-center bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
-                  <p className="text-gray-500">Chart visualization would be here</p>
+                  <p className="text-slate-700">Chart visualization would be here</p>
                 </div>
               </div>
 
@@ -249,7 +249,7 @@ const MonitoringDashboardPage: React.FC = () => {
               <div className="bg-white rounded-xl shadow-lg p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Request Rate & Error Rate</h3>
                 <div className="h-64 flex items-center justify-center bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
-                  <p className="text-gray-500">Chart visualization would be here</p>
+                  <p className="text-slate-700">Chart visualization would be here</p>
                 </div>
               </div>
             </div>

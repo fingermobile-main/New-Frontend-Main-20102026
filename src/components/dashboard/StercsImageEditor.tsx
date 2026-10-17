@@ -15,7 +15,7 @@ const StercsImageEditor: React.FC<StercsImageEditorProps> = () => {
           Upload Image
         </button>
         <div className="p-4 bg-gray-50 rounded-lg text-center">
-          <p className="text-sm text-gray-500">Image preview area</p>
+          <p className="text-sm text-slate-700">Image preview area</p>
         </div>
       </div>
     </div>

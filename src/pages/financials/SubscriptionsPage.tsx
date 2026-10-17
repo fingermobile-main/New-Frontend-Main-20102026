@@ -849,7 +849,7 @@ export const SubscriptionsPage: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => openEditorModal(card)}
-                            className="p-1.5 rounded-lg bg-slate-100 hover:bg-orange-600 hover:text-white text-slate-700 transition-all cursor-pointer shadow-xs border border-slate-300"
+                            className="p-1.5 rounded-lg bg-slate-100 hover:bg-orange-600 hover:text-slate-700 text-slate-700 transition-all cursor-pointer shadow-xs border border-slate-300"
                             title="Edit Subscription Card Details"
                           >
                             <Edit3 className="w-3.5 h-3.5" />

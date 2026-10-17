@@ -109,7 +109,7 @@ const MyPages: React.FC = () => {
                         <p className="font-semibold text-gray-800">
                           {page.name}
                         </p>
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-slate-700">
                           Last updated:{' '}
                           {new Date(page.lastEdited).toLocaleString()}
                         </p>
@@ -119,7 +119,7 @@ const MyPages: React.FC = () => {
                           href={`/p/${page.id}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="p-2 text-gray-500 hover:bg-gray-100 rounded-full"
+                          className="p-2 text-slate-700 hover:bg-gray-100 rounded-full"
                           title="View Live Page"
                         >
                           <EyeIcon className="w-5 h-5" />
@@ -146,7 +146,7 @@ const MyPages: React.FC = () => {
             </div>
           ) : (
             <div className="text-center py-12 bg-white rounded-xl border border-dashed border-gray-300">
-              <p className="text-gray-500 mb-4">
+              <p className="text-slate-700 mb-4">
                 You haven't published any pages yet.
               </p>
               <button

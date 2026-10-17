@@ -22,7 +22,7 @@ const CommunityStandardsNudityPage: React.FC = () => {
             non-consensual or underage material, we default to removing sexual imagery unless a clear, permitted exception
             applies.
           </p>
-          <p className="text-xs text-gray-500 mt-3">
+          <p className="text-xs text-slate-700 mt-3">
             Effective Date: October 14, 2026 &nbsp;·&nbsp; Policy Version: v1.0.0 &nbsp;·&nbsp; Governing Authority: FingerMobile Protocol (GraceLink Ltd.)
           </p>
         </div>
@@ -231,7 +231,7 @@ const CommunityStandardsNudityPage: React.FC = () => {
             <p className="text-xs text-gray-700 leading-relaxed">
               Once a report is submitted, our moderation systems review the content. If it violates our Community Standards, it will be removed.
             </p>
-            <p className="text-xs text-gray-500 mt-2 italic">
+            <p className="text-xs text-slate-700 mt-2 italic">
               <strong>Note:</strong> If you personally wish to avoid specific content without reporting it, you can also unfollow, block, or unfriend the account.
             </p>
           </div>
@@ -257,7 +257,7 @@ const CommunityStandardsNudityPage: React.FC = () => {
 
         {/* Footer */}
         <div className="mt-8 pt-6 border-t border-slate-300 text-center">
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-slate-700">
             This policy is part of the FingerMobile Protocol™ Legal Trust Center. For policy inquiries, contact{' '}
             <a href="mailto:info@fingermobileprotocol.com" className="text-blue-600 underline hover:text-blue-800">
               info@fingermobileprotocol.com

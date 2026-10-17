@@ -71,7 +71,7 @@ const ContentCalendarPage: React.FC = () => {
           </button>
         </div>
 
-        <div className="grid grid-cols-7 gap-1 text-center text-sm font-semibold text-gray-500 mb-2 sm:text-base">
+        <div className="grid grid-cols-7 gap-1 text-center text-sm font-semibold text-slate-700 mb-2 sm:text-base">
           {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
             <div key={day}>{day}</div>
           ))}

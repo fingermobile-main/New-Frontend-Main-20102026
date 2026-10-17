@@ -66,7 +66,7 @@ const MusicSearch: React.FC<MusicSearchProps> = ({ onSearch, onSelect }) => {
                 className="w-full p-3 text-left border border-slate-300 rounded-lg hover:bg-gray-50 transition-colors"
               >
                 <p className="font-medium text-gray-900">{track.title}</p>
-                <p className="text-sm text-gray-500">{track.artist} • {track.duration}</p>
+                <p className="text-sm text-slate-700">{track.artist} • {track.duration}</p>
               </button>
             ))}
           </div>

@@ -122,7 +122,7 @@ const PubliciteePage: React.FC = () => {
               ) : (
                 <div>
                   <div className="text-xs font-semibold text-rose-100">Creator Upload Access</div>
-                  <div className="text-2xl font-black text-white">$3.00 <span className="text-xs font-medium text-rose-200">/ month</span></div>
+                  <div className="text-2xl font-black text-slate-700">$3.00 <span className="text-xs font-medium text-rose-200">/ month</span></div>
                   <div className="flex flex-col gap-2 mt-2">
                     <button
                       onClick={handleSubscribe}
@@ -134,7 +134,7 @@ const PubliciteePage: React.FC = () => {
                     </button>
                     <button
                       onClick={() => setIsCreating(true)}
-                      className="text-xs text-white/90 hover:underline font-semibold"
+                      className="text-xs text-slate-700 hover:underline font-semibold"
                     >
                       Or Upload with existing token
                     </button>

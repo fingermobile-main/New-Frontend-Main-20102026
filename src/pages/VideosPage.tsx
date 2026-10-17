@@ -305,25 +305,25 @@ const VideosPage: React.FC = () => {
                       <span className="ml-2 text-sm font-medium text-gray-700">{video.creator.name}</span>
                     </div>
 
-                    <div className="flex justify-between text-sm text-gray-500 mb-4">
+                    <div className="flex justify-between text-sm text-slate-700 mb-4">
                       <span>{video.views.toLocaleString()} views</span>
                       <span>{video.uploadDate}</span>
                     </div>
 
                     <div className="flex justify-between items-center">
                       <div className="flex items-center space-x-4">
-                        <button className="flex items-center text-gray-500 hover:text-red-500">
+                        <button className="flex items-center text-slate-700 hover:text-red-500">
                           <HeartIcon className="w-5 h-5 mr-1" />
                           <span>{video.likes}</span>
                         </button>
-                        <button className="text-gray-500 hover:text-blue-500">
+                        <button className="text-slate-700 hover:text-blue-500">
                           <ShareIcon className="w-5 h-5" />
                         </button>
-                        <button className="text-gray-500 hover:text-yellow-500">
+                        <button className="text-slate-700 hover:text-yellow-500">
                           <BookmarkIcon className="w-5 h-5" />
                         </button>
                       </div>
-                      <button className="text-gray-500 hover:text-gray-700">
+                      <button className="text-slate-700 hover:text-gray-700">
                         <DotsHorizontalIcon className="w-5 h-5" />
                       </button>
                     </div>
@@ -402,7 +402,7 @@ const VideosPage: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-xl p-6 max-w-md w-full">
             <h3 className="text-xl font-semibold mb-2">Send Gift to Creator</h3>
-            <p className="text-sm text-gray-500 mb-4">
+            <p className="text-sm text-slate-700 mb-4">
               Video: {selectedVideo?.title}
             </p>
             <p className="text-gray-600 mb-4">
@@ -450,7 +450,7 @@ const VideosPage: React.FC = () => {
             <h3 className="text-xl font-semibold mb-2">
               Create Paylink for Video
             </h3>
-            <p className="text-sm text-gray-500 mb-4">
+            <p className="text-sm text-slate-700 mb-4">
               Video: {selectedVideo?.title}
             </p>
             <p className="text-gray-600 mb-4">

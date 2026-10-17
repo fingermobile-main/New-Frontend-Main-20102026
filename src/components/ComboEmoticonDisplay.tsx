@@ -361,7 +361,7 @@ const ComboEmoticonDisplay: React.FC = () => {
       </div>
 
       {filteredEmojis.length === 0 && (
-        <div className="text-center py-8 text-gray-500">
+        <div className="text-center py-8 text-slate-700">
           No emojis found in this category
         </div>
       )}

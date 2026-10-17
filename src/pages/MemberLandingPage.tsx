@@ -125,7 +125,7 @@ const MemberLandingPage: React.FC = () => {
               >
                 <h3 className="font-semibold text-base sm:text-lg mb-1">{category.name}</h3>
                 <p className="text-xs sm:text-sm text-gray-600 mb-2">{category.description}</p>
-                <div className="flex justify-between text-xs sm:text-sm text-gray-500">
+                <div className="flex justify-between text-xs sm:text-sm text-slate-700">
                   <span>{category.postCount} posts</span>
                   <span>Rank: {category.rank}</span>
                 </div>

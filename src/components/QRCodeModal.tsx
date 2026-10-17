@@ -63,7 +63,7 @@ const QRCodeModal: React.FC<QRCodeModalProps> = ({
             <h2 className="text-xl font-bold text-gray-900">{title}</h2>
             <button
               onClick={onClose}
-              className="text-gray-500 hover:text-gray-700 rounded-full p-2 transition-colors"
+              className="text-slate-700 hover:text-gray-700 rounded-full p-2 transition-colors"
             >
               ✕
             </button>

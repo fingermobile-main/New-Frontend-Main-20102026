@@ -26,7 +26,7 @@ const DataTable = <T extends Record<string, unknown>>({
               <th
                 key={String(column.key)}
                 scope="col"
-                className="py-3 px-4 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+                className="py-3 px-4 text-left text-xs font-medium text-slate-800 dark:text-gray-300 uppercase tracking-wider"
               >
                 {column.title}
               </th>

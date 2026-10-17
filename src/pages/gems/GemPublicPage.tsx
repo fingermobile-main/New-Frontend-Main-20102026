@@ -67,7 +67,7 @@ const GemPublicPage: React.FC = () => {
     <div className="bg-white border-b p-6 text-center">
       <img src={gem.logoUrl || ''} alt={gem.name || 'Gem'} className="w-24 h-24 rounded-full border-4 border-white mx-auto mb-2 bg-white object-cover"  />
       <h1 className="text-3xl font-bold">{gem.name || 'Unnamed Gem'}</h1>
-      <p className="text-sm text-gray-500">Created by @{typeof gem.owner === 'string' ? 'unknown' : gem.owner?.membername || 'unknown'}</p>
+      <p className="text-sm text-slate-700">Created by @{typeof gem.owner === 'string' ? 'unknown' : gem.owner?.membername || 'unknown'}</p>
     </div>
   );
 

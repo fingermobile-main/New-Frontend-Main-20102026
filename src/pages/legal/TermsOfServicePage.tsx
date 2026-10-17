@@ -157,7 +157,7 @@ const TermsOfServicePage = () => {
             </div>
           </Section>
 
-          <div className="mt-8 pt-6 border-t border-gray-300 text-sm text-gray-500">
+          <div className="mt-8 pt-6 border-t border-gray-300 text-sm text-slate-700">
             <p>Last Updated: December 20, 2025</p>
           </div>
         </div>

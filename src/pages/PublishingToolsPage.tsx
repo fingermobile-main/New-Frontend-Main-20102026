@@ -69,7 +69,7 @@ const PublishingToolsPage: React.FC = () => {
                 <div key={post.id} className="border border-slate-300 rounded-lg p-4">
                   <h3 className="font-semibold">{post.title || 'Untitled Post'}</h3>
                   <div className="flex justify-between mt-2">
-                    <span className="text-gray-500 text-sm">
+                    <span className="text-slate-700 text-sm">
                       {new Date(post.timestamp || Date.now()).toLocaleDateString()}
                     </span>
                     <div className="flex space-x-3">
@@ -86,7 +86,7 @@ const PublishingToolsPage: React.FC = () => {
             </div>
           ) : (
             <div className="text-center py-8">
-              <p className="text-gray-500">No posts yet. Create your first post to get started!</p>
+              <p className="text-slate-700">No posts yet. Create your first post to get started!</p>
             </div>
           )}
         </div>

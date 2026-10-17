@@ -110,7 +110,7 @@ const UgcAnalyticsPage: React.FC = () => {
                 <p className="text-2xl font-bold">
                   {community.engagementRate}%
                 </p>
-                <p className="text-xs text-gray-500">Engagement Rate</p>
+                <p className="text-xs text-slate-700">Engagement Rate</p>
               </div>
             </div>
             <div className="mt-4">

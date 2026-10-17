@@ -42,7 +42,7 @@ const CourseEnrollment: React.FC<CourseEnrollmentProps> = ({
 
       <div className="mb-4">
         <p className="text-3xl font-bold text-blue-600">{price.toLocaleString()} FIC</p>
-        <p className="text-sm text-gray-500 mt-1">One-time payment • Lifetime access</p>
+        <p className="text-sm text-slate-700 mt-1">One-time payment • Lifetime access</p>
       </div>
 
       <div className="space-y-3 mb-6">

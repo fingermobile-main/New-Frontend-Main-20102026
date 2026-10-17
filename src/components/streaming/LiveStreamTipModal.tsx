@@ -83,13 +83,13 @@ const LiveStreamTipModal: React.FC<LiveStreamTipModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="absolute top-4 right-4 p-1.5 rounded-full bg-white/20 hover:bg-white/30 text-white"
+            className="absolute top-4 right-4 p-1.5 rounded-full bg-white/20 hover:bg-white/30 text-slate-700"
           >
             <XMarkIcon className="w-5 h-5" />
           </button>
           <div className="flex items-center gap-3">
             <div className="p-3 bg-white/20 backdrop-blur-md rounded-2xl">
-              <GiftIcon className="w-7 h-7 text-white" />
+              <GiftIcon className="w-7 h-7 text-slate-700" />
             </div>
             <div>
               <h3 className="font-bold text-lg">Send Live Stream Tip</h3>

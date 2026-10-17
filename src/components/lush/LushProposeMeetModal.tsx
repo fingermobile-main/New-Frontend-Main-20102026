@@ -179,7 +179,7 @@ export const LushProposeMeetModal: React.FC<LushProposeMeetModalProps> = ({
                   FingerLux™ Protocol
                 </span>
               </div>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-slate-700">
                 To Encore Member <strong className="text-gray-900">{member.name}</strong> (@{member.username}) · Rating: ⭐ {member.rating.toFixed(1)}/5.0
               </p>
             </div>
@@ -248,7 +248,7 @@ export const LushProposeMeetModal: React.FC<LushProposeMeetModalProps> = ({
                             {opt.suggestedEscrow} FIC
                           </span>
                         </div>
-                        <p className="text-[11px] text-gray-500 mt-0.5 line-clamp-2 leading-tight">
+                        <p className="text-[11px] text-slate-700 mt-0.5 line-clamp-2 leading-tight">
                           {opt.tagline}
                         </p>
                       </div>
@@ -356,7 +356,7 @@ export const LushProposeMeetModal: React.FC<LushProposeMeetModalProps> = ({
 
             {/* Actions */}
             <div className="flex items-center justify-between pt-3 border-t border-slate-200">
-              <div className="text-xs text-gray-500">
+              <div className="text-xs text-slate-700">
                 Escrow Deposit: <strong className="text-emerald-800">{currentOption.suggestedEscrow} FIC</strong> (Refundable if declined)
               </div>
               <div className="flex items-center gap-2">

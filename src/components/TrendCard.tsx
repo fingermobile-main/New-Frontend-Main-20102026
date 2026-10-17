@@ -26,29 +26,29 @@ const TrendCard: React.FC<TrendCardProps> = ({ trend, rank, onClick }) => {
 
   return (
     <Card
-      className="hover:shadow-md transition-shadow cursor-pointer"
+      className="hover:shadow-md transition-shadow cursor-pointer border border-slate-300 bg-white"
       onClick={() => onClick?.(trend.id)}
     >
       <CardContent className="p-4">
         <div className="flex items-center gap-3">
-          <div className="text-2xl font-bold text-muted-foreground/30 min-w-[40px]">
+          <div className="text-2xl font-black text-slate-400 min-w-[40px]">
             #{rank}
           </div>
           <div className="flex-1 min-w-0">
-            <h3 className="font-semibold truncate">{trend.title}</h3>
-            <div className="flex items-center gap-3 mt-1 text-sm text-muted-foreground">
-              <Badge variant="outline" className="text-xs">
+            <h3 className="font-bold text-slate-900 truncate">{trend.title}</h3>
+            <div className="flex items-center gap-3 mt-1 text-sm text-slate-700 font-medium">
+              <Badge variant="outline" className="text-xs font-bold border-slate-300 text-slate-800 bg-slate-50">
                 {trend.category}
               </Badge>
-              <div className="flex items-center gap-1">
-                <Eye className="h-3 w-3" />
-                {formatNumber(trend.views)}
+              <div className="flex items-center gap-1 text-slate-700">
+                <Eye className="h-3.5 w-3.5 text-slate-500" />
+                <span>{formatNumber(trend.views)}</span>
               </div>
             </div>
           </div>
-          <div className="flex items-center gap-1 text-orange-500">
-            <Flame className="h-4 w-4" />
-            <span className="text-sm font-semibold">{trend.热度}%</span>
+          <div className="flex items-center gap-1 text-amber-600 font-bold">
+            <Flame className="h-4 w-4 text-amber-500" />
+            <span className="text-sm font-black">{trend.热度}%</span>
           </div>
         </div>
       </CardContent>

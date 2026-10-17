@@ -130,7 +130,7 @@ const BusinessPageFeatures: React.FC = () => {
                   <label htmlFor="visitorTracking" className="block text-sm font-medium text-gray-700">
                     Visitor Tracking
                   </label>
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="text-xs text-slate-700 mt-1">
                     See who visited your page with privacy-compliant tracking
                   </p>
                 </div>
@@ -148,7 +148,7 @@ const BusinessPageFeatures: React.FC = () => {
                   <label htmlFor="aiWritingAssistance" className="block text-sm font-medium text-gray-700">
                     AI Writing Assistance
                   </label>
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="text-xs text-slate-700 mt-1">
                     Get AI-powered help for headlines, descriptions, and content optimization
                   </p>
                 </div>
@@ -166,7 +166,7 @@ const BusinessPageFeatures: React.FC = () => {
                   <label htmlFor="autoInviteFollowers" className="block text-sm font-medium text-gray-700">
                     Auto-Invite Engaged Followers
                   </label>
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="text-xs text-slate-700 mt-1">
                     Automatically invite highly engaged followers to join your page
                   </p>
                 </div>
@@ -239,7 +239,7 @@ const BusinessPageFeatures: React.FC = () => {
                   <div key={card.id} className="flex items-center justify-between bg-white p-2 rounded border">
                     <div>
                       <span className="font-medium">{card.type.toUpperCase()}:</span>
-                      <p className="text-xs text-gray-500 truncate max-w-[70%]">{card.caption || 'No caption'}</p>
+                      <p className="text-xs text-slate-700 truncate max-w-[70%]">{card.caption || 'No caption'}</p>
                     </div>
                     <button
                       onClick={() => handleRemoveMediaCard(card.id)}
@@ -313,7 +313,7 @@ const BusinessPageFeatures: React.FC = () => {
                         ×
                       </button>
                     </div>
-                    <p className="text-xs text-gray-500">{item.description}</p>
+                    <p className="text-xs text-slate-700">{item.description}</p>
                     <p className="text-xs font-semibold text-indigo-600">{item.price}</p>
                   </div>
                 ))}

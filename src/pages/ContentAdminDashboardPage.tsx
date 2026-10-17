@@ -158,7 +158,7 @@ const ContentAdminDashboardPage: React.FC = () => {
               <CogIcon className="w-10 h-10 text-rose-400 mb-4" />
               <h3 className="font-black text-xl mb-2">Admin Settings</h3>
               <p className="text-slate-400 text-sm font-medium mb-6">Manage platform configurations, user roles, and global policies.</p>
-              <button className="w-full py-3 bg-white/10 hover:bg-white/20 text-white font-bold rounded-xl border border-white/20 transition-colors backdrop-blur-md">
+              <button className="w-full py-3 bg-white/10 hover:bg-white/20 text-slate-700 font-bold rounded-xl border border-white/20 transition-colors backdrop-blur-md">
                  Open Settings
               </button>
             </div>

@@ -60,7 +60,7 @@ const FontSelectionModal: React.FC<FontSelectionModalProps> = ({
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-lg font-medium text-gray-900">{font.name}</p>
-                    <p className="text-sm text-gray-500">{font.category}</p>
+                    <p className="text-sm text-slate-700">{font.category}</p>
                   </div>
                   <span className="text-2xl text-slate-700">Aa</span>
                 </div>

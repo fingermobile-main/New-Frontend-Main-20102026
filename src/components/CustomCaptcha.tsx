@@ -90,7 +90,7 @@ export const CustomCaptcha: React.FC<CustomCaptchaProps> = ({ onSuccess }) => {
             </div>
           </div>
           
-          <div className="text-xs text-center text-gray-500 bg-gray-50 p-2 rounded">
+          <div className="text-xs text-center text-slate-700 bg-gray-50 p-2 rounded">
             Match both numbers exactly to continue.
           </div>
         </div>

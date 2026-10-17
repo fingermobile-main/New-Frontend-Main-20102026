@@ -140,7 +140,7 @@ const PrometheusMetricsPage: React.FC = () => {
         {/* Query Builder */}
         <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
           <div className="flex items-center space-x-4 mb-4">
-            <FunnelIcon className="h-5 w-5 text-gray-500" />
+            <FunnelIcon className="h-5 w-5 text-slate-700" />
             <h3 className="text-lg font-semibold text-gray-900">Query Builder</h3>
           </div>
 
@@ -227,16 +227,16 @@ const PrometheusMetricsPage: React.FC = () => {
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                       Metric Name
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                       Value
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                       Labels
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
                       Timestamp
                     </th>
                   </tr>
@@ -266,7 +266,7 @@ const PrometheusMetricsPage: React.FC = () => {
                           <span className="text-slate-700">-</span>
                         )}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                         <div className="flex items-center">
                           <ClockIcon className="h-4 w-4 mr-1" />
                           {new Date(metric.timestamp).toLocaleTimeString()}
@@ -284,7 +284,7 @@ const PrometheusMetricsPage: React.FC = () => {
             <div className="h-96 flex items-center justify-center bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
               <div className="text-center">
                 <MagnifyingGlassIcon className="h-16 w-16 text-slate-700 mx-auto mb-4" />
-                <p className="text-gray-500">Graph visualization would be rendered here</p>
+                <p className="text-slate-700">Graph visualization would be rendered here</p>
                 <p className="text-sm text-slate-700 mt-2">Integrate with Chart.js or D3.js for time-series charts</p>
               </div>
             </div>

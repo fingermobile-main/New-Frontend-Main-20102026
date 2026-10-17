@@ -36,8 +36,8 @@ const VideoRecommendations: React.FC<VideoRecommendationsProps> = ({ userId, lim
                 <h4 className="text-sm font-medium text-gray-900 line-clamp-2 group-hover:text-blue-600 transition-colors">
                   {video.title}
                 </h4>
-                <p className="text-xs text-gray-500 mt-1">{video.creator}</p>
-                <div className="flex items-center gap-2 mt-1 text-xs text-gray-500">
+                <p className="text-xs text-slate-700 mt-1">{video.creator}</p>
+                <div className="flex items-center gap-2 mt-1 text-xs text-slate-700">
                   <span>{video.views} views</span>
                   <span>•</span>
                   <span>{video.duration}</span>

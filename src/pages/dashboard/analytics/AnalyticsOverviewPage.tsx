@@ -112,7 +112,7 @@ const AnalyticsOverviewPage: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div className="bg-white p-6 rounded-xl shadow-sm">
           <div className="flex items-center gap-3 mb-2">
-            <EyeIcon className="w-6 h-6 text-gray-500" />
+            <EyeIcon className="w-6 h-6 text-slate-700" />
             <h3 className="font-bold text-lg">Total Views</h3>
           </div>
           <p className="text-4xl font-bold">1.2M</p>
@@ -122,7 +122,7 @@ const AnalyticsOverviewPage: React.FC = () => {
         </div>
         <div className="bg-white p-6 rounded-xl shadow-sm">
           <div className="flex items-center gap-3 mb-2">
-            <MembersIcon className="w-6 h-6 text-gray-500" />
+            <MembersIcon className="w-6 h-6 text-slate-700" />
             <h3 className="font-bold text-lg">Followers Gained</h3>
           </div>
           <p className="text-4xl font-bold">5,832</p>
@@ -132,7 +132,7 @@ const AnalyticsOverviewPage: React.FC = () => {
         </div>
         <div className="bg-white p-6 rounded-xl shadow-sm">
           <div className="flex items-center gap-3 mb-2">
-            <ChartBarIcon className="w-6 h-6 text-gray-500" />
+            <ChartBarIcon className="w-6 h-6 text-slate-700" />
             <h3 className="font-bold text-lg">Engagement Rate</h3>
           </div>
           <p className="text-4xl font-bold">4.7%</p>

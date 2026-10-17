@@ -338,7 +338,7 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
             <h2 className="text-xl font-black text-gray-900 mt-2">
               Discover Deck · Real-Time Connections
             </h2>
-            <p className="text-xs text-gray-500 max-w-md mx-auto">
+            <p className="text-xs text-slate-700 max-w-md mx-auto">
               Drag cards with touch or mouse, or use arrow keys:{' '}
               <strong>← Pass</strong>, <strong>↑ Super Like</strong>,{' '}
               <strong>→ Like</strong>, <strong>↺ Rewind</strong>.
@@ -485,7 +485,7 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
                   <button
                     type="button"
                     onClick={handleAttachDemoPhoto}
-                    className="p-1.5 rounded-lg text-gray-500 hover:text-teal-700 hover:bg-teal-50 transition text-[11px] hidden md:inline"
+                    className="p-1.5 rounded-lg text-slate-700 hover:text-teal-700 hover:bg-teal-50 transition text-[11px] hidden md:inline"
                     title="Attach Sample Luxury Photo"
                   >
                     Sample Photo
@@ -494,7 +494,7 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
                   <button
                     type="button"
                     onClick={handleAttachDemoVideo}
-                    className="p-1.5 rounded-lg text-gray-500 hover:text-teal-700 hover:bg-teal-50 transition text-[11px] hidden md:inline flex items-center gap-1"
+                    className="p-1.5 rounded-lg text-slate-700 hover:text-teal-700 hover:bg-teal-50 transition text-[11px] hidden md:inline flex items-center gap-1"
                     title="Attach Sample Luxury Celebration Video"
                   >
                     <VideoCameraIcon className="w-3.5 h-3.5 text-teal-600" />
@@ -545,7 +545,7 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
                             size="small"
                           />
                         </div>
-                        <div className="flex items-center gap-2 text-xs text-gray-500 mt-0.5">
+                        <div className="flex items-center gap-2 text-xs text-slate-700 mt-0.5">
                           <span className="font-mono">
                             @{post.author.username}
                           </span>

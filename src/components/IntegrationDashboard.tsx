@@ -80,7 +80,7 @@ const IntegrationDashboard: React.FC<IntegrationDashboardProps> = ({ integration
                 <div key={integration.id} className="flex items-center justify-between p-4 border border-slate-300 rounded-lg">
                   <div>
                     <h4 className="font-medium text-gray-900">{integration.name}</h4>
-                    <p className="text-sm text-gray-500">Last sync: {integration.lastSync}</p>
+                    <p className="text-sm text-slate-700">Last sync: {integration.lastSync}</p>
                   </div>
                   <span className={`px-3 py-1 rounded-full text-xs font-medium ${
                     integration.status === 'connected' ? 'bg-green-100 text-green-950 border border-green-400 font-bold' :
@@ -95,14 +95,14 @@ const IntegrationDashboard: React.FC<IntegrationDashboardProps> = ({ integration
           )}
 
           {activeTab === 'connections' && (
-            <div className="text-center py-12 text-gray-500">
+            <div className="text-center py-12 text-slate-700">
               <DatabaseIcon className="w-16 h-16 mx-auto mb-4 text-slate-700" />
               <p>Connection management interface coming soon</p>
             </div>
           )}
 
           {activeTab === 'logs' && (
-            <div className="text-center py-12 text-gray-500">
+            <div className="text-center py-12 text-slate-700">
               <ChartBarIcon className="w-16 h-16 mx-auto mb-4 text-slate-700" />
               <p>Integration logs viewer coming soon</p>
             </div>

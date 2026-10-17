@@ -175,7 +175,7 @@ export const LushChatPanel: React.FC<LushChatPanelProps> = ({
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => selectConversation('')}
-                  className="lg:hidden p-1 text-gray-500 hover:text-emerald-700"
+                  className="lg:hidden p-1 text-slate-700 hover:text-emerald-700"
                 >
                   ←
                 </button>
@@ -191,7 +191,7 @@ export const LushChatPanel: React.FC<LushChatPanelProps> = ({
                       PIN Verified
                     </span>
                   </h4>
-                  <p className="text-[10px] text-gray-500">
+                  <p className="text-[10px] text-slate-700">
                     {typingUsers[activeConversation.id] ? (
                       <span className="text-emerald-600 font-medium italic animate-pulse">Typing...</span>
                     ) : (
@@ -219,7 +219,7 @@ export const LushChatPanel: React.FC<LushChatPanelProps> = ({
                     <Sparkles className="w-6 h-6" />
                   </div>
                   <p className="text-xs font-bold text-gray-800">Start the conversation</p>
-                  <p className="text-[11px] text-gray-500 max-w-xs mx-auto">
+                  <p className="text-[11px] text-slate-700 max-w-xs mx-auto">
                     You matched and verified PIN exchange! Send a friendlylapidaire or a compliment.
                   </p>
                 </div>
@@ -279,7 +279,7 @@ export const LushChatPanel: React.FC<LushChatPanelProps> = ({
                 <button
                   type="button"
                   onClick={() => setShowMediaModal(false)}
-                  className="text-xs text-gray-500 hover:text-gray-700"
+                  className="text-xs text-slate-700 hover:text-gray-700"
                 >
                   Cancel
                 </button>
@@ -291,7 +291,7 @@ export const LushChatPanel: React.FC<LushChatPanelProps> = ({
               <button
                 type="button"
                 onClick={() => setShowMediaModal(!showMediaModal)}
-                className={`p-2 rounded-xl text-gray-500 hover:bg-emerald-50 transition-colors ${
+                className={`p-2 rounded-xl text-slate-700 hover:bg-emerald-50 transition-colors ${
                   showMediaModal || mediaUrlInput ? 'text-emerald-600 bg-emerald-100' : ''
                 }`}
                 title="Attach image/media"
@@ -323,7 +323,7 @@ export const LushChatPanel: React.FC<LushChatPanelProps> = ({
             </div>
             <div>
               <h4 className="text-sm font-bold text-gray-800">Select a Conversation</h4>
-              <p className="text-xs text-gray-500 mt-1 max-w-sm">
+              <p className="text-xs text-slate-700 mt-1 max-w-sm">
                 Choose a matched connection from the left list to send messages, exchangelapidaires, or send gifts.
               </p>
             </div>

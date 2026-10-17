@@ -255,7 +255,7 @@ export const LushPinPackagesModal: React.FC<LushPinPackagesModalProps> = ({
                         <span className="text-xl font-black text-gray-900">
                           {pkg.priceFic} FIC
                         </span>
-                        <span className="text-[11px] text-gray-500">
+                        <span className="text-[11px] text-slate-700">
                           (~${pkg.priceUsd})
                         </span>
                       </div>
@@ -274,7 +274,7 @@ export const LushPinPackagesModal: React.FC<LushPinPackagesModalProps> = ({
                     </div>
 
                     <div className="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
-                      <span className="text-[11px] font-bold text-gray-500">
+                      <span className="text-[11px] font-bold text-slate-700">
                         {isSelected ? 'Selected' : 'Click to select'}
                       </span>
                       <span
@@ -297,7 +297,7 @@ export const LushPinPackagesModal: React.FC<LushPinPackagesModalProps> = ({
           <div className="p-4 rounded-2xl bg-gray-50 border border-slate-300 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
               <span className="font-bold text-gray-800 block">Payment Method</span>
-              <p className="text-[11px] text-gray-500">
+              <p className="text-[11px] text-slate-700">
                 Available FIC Wallet Balance: <strong>{userFicBalance} FIC</strong>
               </p>
             </div>

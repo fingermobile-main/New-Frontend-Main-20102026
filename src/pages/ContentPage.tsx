@@ -83,7 +83,7 @@ const ContentPage: React.FC = () => {
                 />
                 <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-700" />
               </div>
-              <button className="p-2 text-slate-700 hover:text-gray-500 border border-gray-300 rounded-lg">
+              <button className="p-2 text-slate-700 hover:text-slate-700 border border-gray-300 rounded-lg">
                 <Filter className="h-4 w-4" />
               </button>
             </div>
@@ -98,7 +98,7 @@ const ContentPage: React.FC = () => {
                   <div className="flex justify-between items-start">
                     <div>
                       <h3 className="font-medium text-gray-900">{item.title}</h3>
-                      <p className="text-sm text-gray-500 mt-1">{item.type} • {new Date(item.createdAt).toLocaleDateString()}</p>
+                      <p className="text-sm text-slate-700 mt-1">{item.type} • {new Date(item.createdAt).toLocaleDateString()}</p>
                     </div>
                     <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
                       item.status === 'Approved' ? 'bg-green-100 text-green-950 border border-green-400 font-bold' :
@@ -108,7 +108,7 @@ const ContentPage: React.FC = () => {
                       {item.status}
                     </span>
                   </div>
-                  <div className="mt-3 flex items-center text-sm text-gray-500">
+                  <div className="mt-3 flex items-center text-sm text-slate-700">
                     <div className="flex items-center mr-4">
                       <Eye className="h-4 w-4 mr-1" />
                       <span>{(item.views / 1000).toFixed(1)}K</span>

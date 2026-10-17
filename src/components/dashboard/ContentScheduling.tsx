@@ -24,7 +24,7 @@ const ContentScheduling: React.FC<ContentSchedulingProps> = ({ userId }) => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-medium text-gray-900">{item.title}</p>
-                <p className="text-sm text-gray-500 mt-1">{new Date(item.date).toLocaleString()}</p>
+                <p className="text-sm text-slate-700 mt-1">{new Date(item.date).toLocaleString()}</p>
               </div>
               <span className="px-2 py-1 bg-blue-100 text-blue-950 border border-blue-400 font-bold rounded text-xs font-medium">{item.platform}</span>
             </div>

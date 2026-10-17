@@ -459,7 +459,7 @@ export const LushEncoreView: React.FC<LushEncoreViewProps> = ({
         <div className="bg-white rounded-3xl border border-emerald-100 p-12 text-center space-y-3">
           <div className="text-5xl">👑</div>
           <h3 className="text-lg font-bold text-gray-900">No Encore Members matched this filter</h3>
-          <p className="text-xs text-gray-500 max-w-md mx-auto">
+          <p className="text-xs text-slate-700 max-w-md mx-auto">
             Try adjusting your rating threshold or availability filter to discover more verified 3–5 star members.
           </p>
           <button
@@ -521,12 +521,12 @@ export const LushEncoreView: React.FC<LushEncoreViewProps> = ({
                         </div>
                       </div>
 
-                      <p className="text-[11px] text-gray-500 font-mono">@{member.username}</p>
+                      <p className="text-[11px] text-slate-700 font-mono">@{member.username}</p>
                       <p className="text-[11px] text-emerald-800 font-semibold line-clamp-1 mt-0.5">
                         {member.headline}
                       </p>
 
-                      <div className="flex items-center gap-1 text-[11px] text-gray-500 mt-0.5">
+                      <div className="flex items-center gap-1 text-[11px] text-slate-700 mt-0.5">
                         <MapPinIcon className="w-3 h-3 text-emerald-600 flex-shrink-0" />
                         <span className="truncate">{member.location}</span>
                       </div>

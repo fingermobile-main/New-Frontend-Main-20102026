@@ -99,7 +99,7 @@ const Dancia4TvHeader: React.FC<Dancia4TvHeaderProps> = ({
           {onOpenGenres && (
             <button
               onClick={onOpenGenres}
-              className="text-xs font-bold px-2.5 py-1 rounded bg-white/10 border border-white/20 text-slate-100 hover:text-white hover:bg-white/20 transition-colors uppercase tracking-wider"
+              className="text-xs font-bold px-2.5 py-1 rounded bg-white/10 border border-white/20 text-slate-100 hover:text-slate-700 hover:bg-white/20 transition-colors uppercase tracking-wider"
             >
               Genres
             </button>

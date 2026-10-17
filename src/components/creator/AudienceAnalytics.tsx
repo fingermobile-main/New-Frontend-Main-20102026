@@ -98,19 +98,19 @@ const AudienceAnalytics: React.FC<AudienceAnalyticsProps> = ({
         <div className="bg-white border border-slate-300 rounded-lg p-4">
           <p className="text-sm text-gray-600 mb-1">Engagement Rate</p>
           <p className="text-3xl font-bold text-blue-600">{analytics.engagement.engagementRate}%</p>
-          <p className="text-sm text-gray-500 mt-2">Avg. across all posts</p>
+          <p className="text-sm text-slate-700 mt-2">Avg. across all posts</p>
         </div>
 
         <div className="bg-white border border-slate-300 rounded-lg p-4">
           <p className="text-sm text-gray-600 mb-1">Avg. Likes</p>
           <p className="text-3xl font-bold text-purple-600">{analytics.engagement.averageLikes}</p>
-          <p className="text-sm text-gray-500 mt-2">Per post</p>
+          <p className="text-sm text-slate-700 mt-2">Per post</p>
         </div>
 
         <div className="bg-white border border-slate-300 rounded-lg p-4">
           <p className="text-sm text-gray-600 mb-1">Avg. Comments</p>
           <p className="text-3xl font-bold text-orange-600">{analytics.engagement.averageComments}</p>
-          <p className="text-sm text-gray-500 mt-2">Per post</p>
+          <p className="text-sm text-slate-700 mt-2">Per post</p>
         </div>
       </div>
 
@@ -169,7 +169,7 @@ const AudienceAnalytics: React.FC<AudienceAnalyticsProps> = ({
           {analytics.demographics.topCountries.map((item: any, idx: number) => (
             <div key={idx} className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <span className="text-sm font-medium text-gray-500 w-6">#{idx + 1}</span>
+                <span className="text-sm font-medium text-slate-700 w-6">#{idx + 1}</span>
                 <span className="text-gray-900">{item.country}</span>
               </div>
               <div className="flex items-center gap-3">

@@ -89,13 +89,13 @@ const ContentManagementPage: React.FC = () => {
       {activeTab === 'cms' ? (
         <div className="bg-white rounded-xl shadow-sm border border-slate-300 divide-y divide-gray-200">
           {loadingCms ? (
-            <div className="p-8 text-center text-gray-500">Loading CMS Pages...</div>
+            <div className="p-8 text-center text-slate-700">Loading CMS Pages...</div>
           ) : cmsPages.length > 0 ? (
             cmsPages.map((page: any) => (
               <div key={page.id || page.slug} className="p-4 flex items-center justify-between hover:bg-gray-50">
                 <div>
                   <h3 className="font-semibold text-gray-900">{page.title || page.slug}</h3>
-                  <p className="text-sm text-gray-500">/{page.slug} &bull; Status: {page.status || 'published'}</p>
+                  <p className="text-sm text-slate-700">/{page.slug} &bull; Status: {page.status || 'published'}</p>
                 </div>
                 <div className="flex gap-2">
                   <span className="px-2.5 py-1 text-xs font-medium rounded-full bg-green-100 text-green-950 border border-green-400 font-bold">Active</span>
@@ -103,7 +103,7 @@ const ContentManagementPage: React.FC = () => {
               </div>
             ))
           ) : (
-            <div className="p-8 text-center text-gray-500">No CMS pages found.</div>
+            <div className="p-8 text-center text-slate-700">No CMS pages found.</div>
           )}
         </div>
       ) : (
@@ -144,7 +144,7 @@ const ContentManagementPage: React.FC = () => {
               </div>
             ))
           ) : (
-            <div className="text-center text-gray-500 py-12 bg-white rounded-xl shadow-sm">
+            <div className="text-center text-slate-700 py-12 bg-white rounded-xl shadow-sm">
               <p className="font-semibold">
                 You haven&apos;t created any posts yet.
               </p>

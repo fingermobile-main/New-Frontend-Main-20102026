@@ -117,7 +117,7 @@ const JobsPage: React.FC = () => {
         <div className="bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-800 rounded-2xl p-8 text-white mb-8 shadow-lg">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div>
-              <span className="text-xs uppercase tracking-wider font-semibold px-3 py-1 rounded-full bg-white/20 text-white mb-3 inline-block">
+              <span className="text-xs uppercase tracking-wider font-semibold px-3 py-1 rounded-full bg-white/20 text-slate-700 mb-3 inline-block">
                 FingerMobile Careers & Opportunities
               </span>
               <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">
@@ -161,7 +161,7 @@ const JobsPage: React.FC = () => {
           <div className="flex flex-wrap items-center justify-between gap-4 pt-3 border-t border-slate-200">
             {/* Category tabs */}
             <div className="flex flex-wrap gap-2">
-              <span className="text-sm font-semibold text-gray-500 self-center mr-2">Category:</span>
+              <span className="text-sm font-semibold text-slate-700 self-center mr-2">Category:</span>
               {categories.map((cat) => (
                 <button
                   key={cat}
@@ -179,7 +179,7 @@ const JobsPage: React.FC = () => {
 
             {/* Type tabs */}
             <div className="flex flex-wrap gap-2">
-              <span className="text-sm font-semibold text-gray-500 self-center mr-2">Type:</span>
+              <span className="text-sm font-semibold text-slate-700 self-center mr-2">Type:</span>
               {jobTypes.map((t) => (
                 <button
                   key={t}
@@ -199,7 +199,7 @@ const JobsPage: React.FC = () => {
 
         {/* Listings */}
         {loading ? (
-          <div className="p-12 text-center text-gray-500 bg-white rounded-xl border border-slate-300">
+          <div className="p-12 text-center text-slate-700 bg-white rounded-xl border border-slate-300">
             Loading opportunities from PostgreSQL database...
           </div>
         ) : jobs.length > 0 ? (
@@ -225,7 +225,7 @@ const JobsPage: React.FC = () => {
                   <h3 className="text-xl font-bold text-gray-900">{job.title}</h3>
                   <div className="flex items-center text-sm text-gray-600 mt-1 gap-4">
                     <span className="font-semibold text-gray-800">{job.company}</span>
-                    <span className="flex items-center text-gray-500">
+                    <span className="flex items-center text-slate-700">
                       <LocationMarkerIcon className="w-4 h-4 mr-1 text-slate-500" />
                       {job.location}
                     </span>
@@ -266,7 +266,7 @@ const JobsPage: React.FC = () => {
           <div className="text-center py-16 bg-white rounded-xl border border-slate-300">
             <BriefcaseIcon className="mx-auto h-12 w-12 text-slate-700" />
             <h3 className="mt-2 text-lg font-bold text-gray-900">No job vacancies match your criteria</h3>
-            <p className="mt-1 text-sm text-gray-500">Try adjusting your search terms or filters.</p>
+            <p className="mt-1 text-sm text-slate-700">Try adjusting your search terms or filters.</p>
           </div>
         )}
 

@@ -95,7 +95,7 @@ const GrafanaEmbedPage: React.FC = () => {
               </div>
 
               <div className="flex items-center space-x-2">
-                <Cog6ToothIcon className="h-5 w-5 text-gray-500" />
+                <Cog6ToothIcon className="h-5 w-5 text-slate-700" />
                 <span className="text-sm text-gray-600">
                   Refresh: {autoRefresh > 0 ? `${autoRefresh}s` : 'Manual'}
                 </span>

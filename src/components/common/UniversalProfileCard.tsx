@@ -364,7 +364,7 @@ export const UniversalProfileCard: React.FC<UniversalProfileCardProps> = ({
             <VerificationBadge level={customUser?.verificationLevel ?? 3} size="small" />
           </div>
 
-          <p className="text-[11px] text-gray-500 dark:text-gray-400 font-mono">@{profileData.username}</p>
+          <p className="text-[11px] text-slate-700 dark:text-gray-400 font-mono">@{profileData.username}</p>
           <p className="text-xs text-emerald-800 dark:text-emerald-400 font-semibold mt-1 line-clamp-1">
             {profileData.headline}
           </p>
@@ -470,7 +470,7 @@ export const UniversalProfileCard: React.FC<UniversalProfileCardProps> = ({
 
         {/* Level XP Progress Bar */}
         <div>
-          <div className="flex justify-between text-[10px] text-gray-500 dark:text-gray-400 mb-1 font-mono">
+          <div className="flex justify-between text-[10px] text-slate-700 dark:text-gray-400 mb-1 font-mono">
             <span>XP: {xpCurrent} / {xpMax}</span>
             <span className="font-bold text-emerald-700 dark:text-emerald-400">{xpPercent}%</span>
           </div>
@@ -556,7 +556,7 @@ export const UniversalProfileCard: React.FC<UniversalProfileCardProps> = ({
               <button
                 type="button"
                 onClick={() => setIsEditModalOpen(false)}
-                className="p-1.5 rounded-full bg-white/20 hover:bg-white/30 text-white transition"
+                className="p-1.5 rounded-full bg-white/20 hover:bg-white/30 text-slate-700 transition"
               >
                 <XMarkIcon className="w-5 h-5" />
               </button>

@@ -209,7 +209,7 @@ const dashboard = await sdk.getDashboardData('monthly');`}</pre>
                     <span className="text-2xl mr-2">{category.icon}</span>
                     <h3 className="font-semibold text-gray-900">{category.name}</h3>
                   </div>
-                  <span className="text-sm text-gray-500">{category.count} endpoints</span>
+                  <span className="text-sm text-slate-700">{category.count} endpoints</span>
                 </div>
               </div>
             ))}

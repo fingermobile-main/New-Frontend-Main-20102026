@@ -171,7 +171,7 @@ const CreateGroupPage: React.FC = () => {
 
           {/* Actions Section */}
           <div className="border-t pt-4 space-y-3">
-            <p className="text-sm font-semibold text-center text-gray-500">
+            <p className="text-sm font-semibold text-center text-slate-700">
               Member Limit: 500 (Fixed)
             </p>
 

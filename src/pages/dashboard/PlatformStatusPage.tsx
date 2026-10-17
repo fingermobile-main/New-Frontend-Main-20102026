@@ -78,19 +78,19 @@ const PlatformStatusPage: React.FC = () => {
 
             <div className="grid grid-cols-2 gap-4 mt-4 pt-4 border-t border-slate-200 dark:border-gray-700/50 text-sm">
               <div>
-                <span className="text-xs text-gray-500 block">Latency</span>
+                <span className="text-xs text-slate-700 block">Latency</span>
                 <span className="font-semibold text-gray-800 dark:text-gray-200">{node.latency_ms} ms</span>
               </div>
               <div>
-                <span className="text-xs text-gray-500 block">Uptime</span>
+                <span className="text-xs text-slate-700 block">Uptime</span>
                 <span className="font-semibold text-green-600 dark:text-green-400">{node.uptime_pct}%</span>
               </div>
               <div>
-                <span className="text-xs text-gray-500 block">Version</span>
+                <span className="text-xs text-slate-700 block">Version</span>
                 <span className="font-mono text-xs text-gray-700 dark:text-gray-300">{node.version}</span>
               </div>
               <div>
-                <span className="text-xs text-gray-500 block">Last Check</span>
+                <span className="text-xs text-slate-700 block">Last Check</span>
                 <span className="text-xs text-gray-700 dark:text-gray-300">{node.last_check_at ? new Date(node.last_check_at).toLocaleTimeString() : 'Just now'}</span>
               </div>
             </div>

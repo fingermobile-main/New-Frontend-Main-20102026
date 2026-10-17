@@ -300,7 +300,7 @@ const BlogTemplatesPage: React.FC = () => {
                 </div>
 
                 {/* Schema Indicator */}
-                <div className="text-[11px] text-gray-500 font-mono flex items-center justify-between pt-1">
+                <div className="text-[11px] text-slate-700 font-mono flex items-center justify-between pt-1">
                   <span>Schema: {tmpl.schemaType}</span>
                   <span>{tmpl.estimatedReadMin} min read</span>
                 </div>

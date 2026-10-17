@@ -85,7 +85,7 @@ export const GiftsShopPage: React.FC = () => {
                   Escrow Protected
                 </span>
               </div>
-              <p className="text-xs text-gray-500 mt-0.5">
+              <p className="text-xs text-slate-700 mt-0.5">
                 Luxury plushies, bespoke gifts & sovereign virtual sparks
               </p>
             </div>
@@ -138,7 +138,7 @@ export const GiftsShopPage: React.FC = () => {
             <div className="flex items-center gap-2">
               <button
                 onClick={() => navigate(`/messages?matchId=${matchId}`)}
-                className="px-3 py-1.5 rounded-xl bg-white/15 hover:bg-white/25 text-white text-xs font-semibold transition"
+                className="px-3 py-1.5 rounded-xl bg-white/15 hover:bg-white/25 text-slate-700 text-xs font-semibold transition"
               >
                 Chat with Match
               </button>
@@ -228,7 +228,7 @@ export const GiftsShopPage: React.FC = () => {
                     selectedProduct.product_price}{' '}
                   FIC
                 </p>
-                <p className="text-[11px] text-gray-500 mt-0.5">
+                <p className="text-[11px] text-slate-700 mt-0.5">
                   Collection: {selectedProduct.product_subcategory || 'Lush Vault'}
                 </p>
               </div>

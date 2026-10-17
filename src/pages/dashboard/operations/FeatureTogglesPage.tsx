@@ -107,7 +107,7 @@ const FeatureTogglesPage: React.FC = () => {
             <div className="flex justify-between items-center pb-4 border-b">
               <div>
                 <h2 className="text-lg font-bold flex items-center gap-2"><PuzzlePieceIcon className="w-5 h-5" /> Tropical Fruit Gifts</h2>
-                <p className="text-sm text-gray-500">Enable time-sensitive tropical fruit gifts (3pm - 12am daily).</p>
+                <p className="text-sm text-slate-700">Enable time-sensitive tropical fruit gifts (3pm - 12am daily).</p>
               </div>
               <label htmlFor="tropical-toggle" className="flex items-center cursor-pointer">
                 <div className="relative">
@@ -126,7 +126,7 @@ const FeatureTogglesPage: React.FC = () => {
 
             <div className={`mt-4 transition-opacity ${tropicalGiftsToggle.enabled ? 'opacity-100' : 'opacity-50 pointer-events-none'}`}>
               <h3 className="font-semibold text-gray-700">Special Days Override</h3>
-              <p className="text-xs text-gray-500 mb-3">On these dates, tropical gifts will be available for 24 hours.</p>
+              <p className="text-xs text-slate-700 mb-3">On these dates, tropical gifts will be available for 24 hours.</p>
               <form onSubmit={handleAddSpecialDay} className="flex gap-2 mb-3">
                 <input
                   type="date"

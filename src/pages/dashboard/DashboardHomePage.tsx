@@ -192,9 +192,9 @@ const DashboardHomePage: React.FC = () => {
             <div className="text-center">
               <p className="text-3xl font-bold text-gray-900">
                 {balance.toLocaleString()}{' '}
-                <span className="text-lg text-gray-500">FIC</span>
+                <span className="text-lg text-slate-700">FIC</span>
               </p>
-              <p className="text-gray-500 mt-2">
+              <p className="text-slate-700 mt-2">
                 ≈ $
                 {(balance * 0.1).toLocaleString(undefined, {
                   minimumFractionDigits: 2,

@@ -13,7 +13,7 @@ const OrganizationVisualization: React.FC<OrganizationVisualizationProps> = ({
   if (!organizedData) {
     return (
       <div className="bg-white rounded-lg shadow-md p-8 text-center">
-        <p className="text-gray-500 mb-4">No organized data available. Click below to start AI organization.</p>
+        <p className="text-slate-700 mb-4">No organized data available. Click below to start AI organization.</p>
         {onReorganize && (
           <button
             onClick={onReorganize}

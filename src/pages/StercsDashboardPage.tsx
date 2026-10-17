@@ -1461,7 +1461,7 @@ const StercsDashboardPage: React.FC = () => {
                     <p className="text-[11px] text-rose-900 font-medium mt-0.5">Isolates public traffic to readonly view while autonomous security probes execute.</p>
                     <button
                       onClick={handleTriggerQuarantine}
-                      className={`mt-2 px-3 py-1 text-white text-xs font-semibold rounded shadow-2xs transition ${
+                      className={`mt-2 px-3 py-1 text-slate-700 text-xs font-semibold rounded shadow-2xs transition ${
                         isQuarantineStandby ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-rose-600 hover:bg-rose-700'
                       }`}
                     >
@@ -1493,7 +1493,7 @@ const StercsDashboardPage: React.FC = () => {
                     <p className="text-[11px] text-indigo-900 font-medium mt-0.5">Simulates automated circuit trip during severe traffic surges to protect database persistence.</p>
                     <button
                       onClick={handleToggleCircuitBreaker}
-                      className={`mt-2 px-3 py-1 text-white text-xs font-semibold rounded shadow-2xs transition ${
+                      className={`mt-2 px-3 py-1 text-slate-700 text-xs font-semibold rounded shadow-2xs transition ${
                         circuitBreakerTripped ? 'bg-amber-600 hover:bg-amber-700' : 'bg-indigo-600 hover:bg-indigo-700'
                       }`}
                     >

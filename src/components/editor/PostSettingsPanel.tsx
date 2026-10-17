@@ -77,7 +77,7 @@ export const PostSettingsPanel: React.FC<PostSettingsPanelProps> = ({
             className="text-orange-500 hover:text-orange-600 transition"
           >
             {settings.isDefaultPreference ? (
-              <CheckSquare className="w-4 h-4 fill-orange-500 text-white" />
+              <CheckSquare className="w-4 h-4 fill-orange-500 text-slate-700" />
             ) : (
               <Square className="w-4 h-4" />
             )}

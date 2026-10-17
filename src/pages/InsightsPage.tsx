@@ -238,7 +238,7 @@ Month-Over-Month Velocity,${stats?.trend_month_over_month || '+18.2%'},Last 30 D
           </div>
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider border-b border-slate-200">
+              <tr className="bg-gray-50 text-slate-700 text-xs uppercase tracking-wider border-b border-slate-200">
                 <th className="py-3 px-5">Community</th>
                 <th className="py-3 px-5">Category</th>
                 <th className="py-3 px-5">Members</th>

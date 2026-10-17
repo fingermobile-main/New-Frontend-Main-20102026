@@ -182,14 +182,14 @@ const ProductList: React.FC<ProductListProps> = ({
               <p className="text-sm text-gray-600 mb-2 line-clamp-2">{product.description}</p>
 
               {product.seller_name && (
-                <p className="text-xs text-gray-500 mb-2">by {product.seller_name}</p>
+                <p className="text-xs text-slate-700 mb-2">by {product.seller_name}</p>
               )}
 
               {product.avg_rating !== undefined && (
                 <div className="mb-3">
                   {renderStars(product.avg_rating)}
                   {product.review_count !== undefined && (
-                    <span className="text-xs text-gray-500 ml-2">({product.review_count} reviews)</span>
+                    <span className="text-xs text-slate-700 ml-2">({product.review_count} reviews)</span>
                   )}
                 </div>
               )}

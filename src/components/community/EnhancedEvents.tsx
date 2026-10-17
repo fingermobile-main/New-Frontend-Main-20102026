@@ -51,7 +51,7 @@ const EnhancedEvents: React.FC<EnhancedEventsProps> = ({ userId }) => {
             <div className="flex items-start justify-between">
               <div className="flex-1">
                 <h4 className="font-medium text-gray-900">{event.title}</h4>
-                <div className="flex items-center gap-3 mt-2 text-sm text-gray-500">
+                <div className="flex items-center gap-3 mt-2 text-sm text-slate-700">
                   <span className="flex items-center gap-1">
                     <CalendarIcon className="w-4 h-4" />
                     {new Date(event.date).toLocaleDateString()}
@@ -61,7 +61,7 @@ const EnhancedEvents: React.FC<EnhancedEventsProps> = ({ userId }) => {
                     {event.attendees} attending
                   </span>
                 </div>
-                <p className="text-xs text-gray-500 mt-1">{event.location}</p>
+                <p className="text-xs text-slate-700 mt-1">{event.location}</p>
               </div>
               <span className="px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-950 border border-purple-400 font-bold capitalize font-black">
                 {event.type}
@@ -72,7 +72,7 @@ const EnhancedEvents: React.FC<EnhancedEventsProps> = ({ userId }) => {
       </div>
 
       {filteredEvents.length === 0 && (
-        <div className="p-8 text-center text-gray-500">
+        <div className="p-8 text-center text-slate-700">
           <CalendarIcon className="w-12 h-12 mx-auto mb-3 text-slate-700" />
           <p>No events found</p>
         </div>

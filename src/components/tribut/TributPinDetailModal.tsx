@@ -187,7 +187,7 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
       >
         <button
           onClick={onClose}
-          className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold transition"
+          className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 text-slate-700 font-bold transition"
         >
           <ChevronLeftIcon className="w-4 h-4" />
           <span>Back to Feed</span>
@@ -805,7 +805,7 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
                   style={{ backgroundColor: color }}
                   title={`Color: ${color}`}
                 >
-                  <span className="text-[10px] font-bold text-white drop-shadow-md">
+                  <span className="text-[10px] font-bold text-slate-700 drop-shadow-md">
                     {color}
                   </span>
                 </button>

@@ -153,7 +153,7 @@ const CreatorsCenterPage: React.FC = () => {
                       }} />
                     </label>
                   </div>
-                  <p className="text-xs text-gray-500">PNG, JPG up to 10MB</p>
+                  <p className="text-xs text-slate-700">PNG, JPG up to 10MB</p>
                 </div>
               </div>
 

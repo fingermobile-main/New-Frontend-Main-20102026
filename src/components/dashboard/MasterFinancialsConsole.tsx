@@ -801,7 +801,7 @@ export const MasterFinancialsConsole: React.FC = () => {
             </button>
             <button
               onClick={() => handleSubTabChange('inspectorate')}
-              className="px-4 py-2.5 text-xs font-bold bg-white/10 hover:bg-white/20 text-white rounded-xl border border-white/20 transition-all flex items-center gap-2"
+              className="px-4 py-2.5 text-xs font-bold bg-white/10 hover:bg-white/20 text-slate-700 rounded-xl border border-white/20 transition-all flex items-center gap-2"
             >
               <Award className="w-4 h-4 text-amber-400" />
               <span>Mint Inspectorate Charter</span>
@@ -994,7 +994,7 @@ export const MasterFinancialsConsole: React.FC = () => {
                 </button>
                 <button
                   onClick={() => handleSubTabChange('member-purchase')}
-                  className="w-full py-2.5 px-3 bg-white/10 hover:bg-white/20 text-white text-xs font-bold rounded-xl transition flex items-center justify-center gap-2"
+                  className="w-full py-2.5 px-3 bg-white/10 hover:bg-white/20 text-slate-700 text-xs font-bold rounded-xl transition flex items-center justify-center gap-2"
                 >
                   <CreditCard className="w-3.5 h-3.5" />
                   <span>Inspect Alternative Bank Purchases</span>
@@ -1096,7 +1096,7 @@ export const MasterFinancialsConsole: React.FC = () => {
                   </button>
                   <a
                     href="/legal/whitepaper"
-                    className="px-3.5 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-semibold border border-white/20 transition-all flex items-center gap-1.5"
+                    className="px-3.5 py-2 bg-white/10 hover:bg-white/20 text-slate-700 rounded-xl text-xs font-semibold border border-white/20 transition-all flex items-center gap-1.5"
                   >
                     <FileText className="w-3.5 h-3.5 text-amber-400" />
                     <span>White Paper</span>
@@ -1770,7 +1770,7 @@ export const MasterFinancialsConsole: React.FC = () => {
               {purchaseSuccessReceipt && (
                 <button
                   onClick={() => downloadFicReceiptPdf(purchaseSuccessReceipt)}
-                  className="w-full py-2.5 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-2"
+                  className="w-full py-2.5 bg-white/10 hover:bg-white/20 text-slate-700 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2"
                 >
                   <Download className="w-3.5 h-3.5" />
                   <span>Re-Download PDF Receipt</span>

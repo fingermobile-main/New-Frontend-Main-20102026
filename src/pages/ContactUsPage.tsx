@@ -185,7 +185,7 @@ const ContactUsPage: React.FC = () => {
                           <p className="text-sm sm:text-base font-medium text-gray-900">
                             Mbah Redice Obinna
                           </p>
-                          <p className="text-xs sm:text-sm text-gray-500">
+                          <p className="text-xs sm:text-sm text-slate-700">
                             Chief Executive Officer and Chief Technical Officer,
                             Head of Internal Affairs
                           </p>
@@ -197,7 +197,7 @@ const ContactUsPage: React.FC = () => {
                           <p className="text-sm sm:text-base font-medium text-gray-900">
                             Mrs Eunice Emonena Mbah
                           </p>
-                          <p className="text-xs sm:text-sm text-gray-500">
+                          <p className="text-xs sm:text-sm text-slate-700">
                             Group Company Secretary
                           </p>
                         </div>
@@ -391,7 +391,7 @@ const ContactUsPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="mt-8 text-center text-xs sm:text-sm text-gray-500">
+          <div className="mt-8 text-center text-xs sm:text-sm text-slate-700">
             <p>
               Copyright© FingerMobile Protocol 2007 - 2025®™©. All rights
               reserved.

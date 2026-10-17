@@ -132,7 +132,7 @@ const ForumManagementPage: React.FC = () => {
             >
               <div>
                 <h3 className="font-bold">{category.name}</h3>
-                <p className="text-sm text-gray-500">{category.description}</p>
+                <p className="text-sm text-slate-700">{category.description}</p>
               </div>
               <div className="flex gap-2">
                 <button
