@@ -1,0 +1,4 @@
+@echo off 
+setlocal EnableDelayedExpansion 
+ 
+REM SuperVi Development Environment Setup Script 
