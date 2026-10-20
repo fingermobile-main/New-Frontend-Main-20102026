@@ -28,9 +28,11 @@ export const CouncilDignitariesChamberPage: React.FC = () => {
   const [ranks, setRanks] = useState<DistinguishedRank[]>([]);
   const [dignitaries, setDignitaries] = useState<DistinguishedDignitary[]>([]);
   const [loading, setLoading] = useState(true);
+  const [userVotes, setUserVotes] = useState<Record<string, 'YES' | 'NO'>>({});
+  const [voteToast, setVoteToast] = useState<string | null>(null);
 
-  // Mock Active Proposals in Council Chamber
-  const [proposals] = useState([
+  // Active Proposals in Council Chamber
+  const [proposals, setProposals] = useState([
     {
       id: 'PROP-2026-09',
       title: 'Allocation of 250,000 FIC to Decentralized Camus Academic Research Grant',
@@ -52,6 +54,25 @@ export const CouncilDignitariesChamberPage: React.FC = () => {
       status: 'Quorum Reached'
     }
   ]);
+
+  const handleVote = (propId: string, choice: 'YES' | 'NO') => {
+    if (userVotes[propId]) return;
+
+    setUserVotes(prev => ({ ...prev, [propId]: choice }));
+    setProposals(prev => prev.map(p => {
+      if (p.id === propId) {
+        return {
+          ...p,
+          yesVotes: choice === 'YES' ? p.yesVotes + 1 : p.yesVotes,
+          noVotes: choice === 'NO' ? p.noVotes + 1 : p.noVotes
+        };
+      }
+      return p;
+    }));
+
+    setVoteToast(`Weighted Parliamentary Ballot recorded: ${choice} on ${propId}`);
+    setTimeout(() => setVoteToast(null), 4000);
+  };
 
   useEffect(() => {
     document.title = 'Council of Dignitaries Chamber | FingerMobile Protocol';
@@ -86,6 +107,17 @@ export const CouncilDignitariesChamberPage: React.FC = () => {
             Distinguished Protocol Parliament
           </span>
         </nav>
+
+        {/* Vote Feedback Alert */}
+        {voteToast && (
+          <div className="p-4 rounded-xl bg-emerald-100 border border-emerald-400 text-emerald-950 font-bold shadow-xs flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <CheckCircle className="w-5 h-5 text-emerald-800" />
+              <span>{voteToast}</span>
+            </div>
+            <button onClick={() => setVoteToast(null)} className="text-emerald-900 font-black">✕</button>
+          </div>
+        )}
 
         {/* Ownership Banner */}
         <PlatformOwnershipCard />
@@ -164,18 +196,26 @@ export const CouncilDignitariesChamberPage: React.FC = () => {
                   </div>
 
                   <div className="flex items-center gap-2 shrink-0">
-                    <button
-                      onClick={() => alert(`Casting Weighted Council Vote: YES on ${prop.id}`)}
-                      className="px-3.5 py-1.5 text-xs font-black rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white transition flex items-center gap-1 shadow-2xs"
-                    >
-                      Vote YES ({prop.yesVotes})
-                    </button>
-                    <button
-                      onClick={() => alert(`Casting Weighted Council Vote: NO on ${prop.id}`)}
-                      className="px-3.5 py-1.5 text-xs font-black rounded-lg bg-rose-600 hover:bg-rose-700 text-white transition flex items-center gap-1 shadow-2xs"
-                    >
-                      Vote NO ({prop.noVotes})
-                    </button>
+                    {userVotes[prop.id] ? (
+                      <span className="px-3 py-1.5 rounded-lg text-xs font-black bg-blue-100 text-blue-950 border border-blue-400">
+                        Voted {userVotes[prop.id]} (Ballot Cast)
+                      </span>
+                    ) : (
+                      <>
+                        <button
+                          onClick={() => handleVote(prop.id, 'YES')}
+                          className="px-3.5 py-1.5 text-xs font-black rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white transition flex items-center gap-1 shadow-xs cursor-pointer"
+                        >
+                          Vote YES ({prop.yesVotes})
+                        </button>
+                        <button
+                          onClick={() => handleVote(prop.id, 'NO')}
+                          className="px-3.5 py-1.5 text-xs font-black rounded-lg bg-rose-600 hover:bg-rose-700 text-white transition flex items-center gap-1 shadow-xs cursor-pointer"
+                        >
+                          Vote NO ({prop.noVotes})
+                        </button>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
