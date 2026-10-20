@@ -46,14 +46,13 @@ const modifiedFiles = new Set();
 let isShuttingDown = false;
 let watchers = [];
 
-
 /**
  * Safely execute git commands using execFileSync (prevents shell injection)
  */
-function runGit(args) {
+function runGit(args, cwd = __dirname) {
   try {
     const output = execFileSync('git', args, {
-      cwd: __dirname,
+      cwd,
       encoding: 'utf-8',
       stdio: ['pipe', 'pipe', 'pipe'],
       maxBuffer: 10 * 1024 * 1024 // 10MB buffer
@@ -67,11 +66,32 @@ function runGit(args) {
   }
 }
 
+/**
+ * Resolves the enclosing git repository root for a given file or directory
+ */
+function getGitRepoRoot(targetPath) {
+  let curr = fs.existsSync(targetPath) && fs.statSync(targetPath).isDirectory()
+    ? targetPath
+    : path.dirname(path.resolve(targetPath));
+
+  while (curr && curr !== path.dirname(curr)) {
+    if (fs.existsSync(path.join(curr, '.git'))) {
+      return curr;
+    }
+    curr = path.dirname(curr);
+  }
+  return __dirname;
+}
 
 /**
  * Validates if a file should be included in auto-commit
  */
 function isValidFile(filePath) {
+  // Check ignore patterns
+  for (const pattern of IGNORE_PATTERNS) {
+    if (pattern.test(filePath)) return false;
+  }
+
   // Check file size
   try {
     const stats = fs.statSync(filePath);
@@ -117,32 +137,68 @@ function containsSensitiveInfo(filePath) {
 }
 
 /**
- * Ensures the Git remote repository URL matches the target repository
+ * Ensures the Git remote repository URL matches the target repository for a given directory
  */
-function ensureGitRemote() {
-  const remoteResult = runGit(['remote', 'get-url', 'origin']);
+function ensureGitRemote(repoRoot = __dirname) {
+  const remoteResult = runGit(['remote', 'get-url', 'origin'], repoRoot);
 
   if (!remoteResult.success) {
-    console.log(`🔗 Setting git remote 'origin' to ${REPO_URL}...`);
-    runGit(['remote', 'add', 'origin', REPO_URL]);
+    console.log(`🔗 Setting git remote 'origin' to ${REPO_URL} in ${repoRoot}...`);
+    runGit(['remote', 'add', 'origin', REPO_URL], repoRoot);
   } else if (remoteResult.output !== REPO_URL) {
-    console.log(`🔄 Updating git remote 'origin' URL to ${REPO_URL}...`);
-    runGit(['remote', 'set-url', 'origin', REPO_URL]);
+    console.log(`🔄 Updating git remote 'origin' URL to ${REPO_URL} in ${repoRoot}...`);
+    runGit(['remote', 'set-url', 'origin', REPO_URL], repoRoot);
   }
 }
 
 /**
- * Gets the current active Git branch
+ * Gets the current active Git branch for a given directory
  */
-function getCurrentBranch() {
-  const result = runGit(['rev-parse', '--abbrev-ref', 'HEAD']);
+function getCurrentBranch(repoRoot = __dirname) {
+  const result = runGit(['rev-parse', '--abbrev-ref', 'HEAD'], repoRoot);
   return result.success ? result.output : 'main';
 }
 
 /**
- * Stage, commit, and push tracked files
+ * Collects any uncommitted changed files from git status across watch directories
+ */
+function scanPendingChanges() {
+  const found = [];
+  const checkedRoots = new Set();
+
+  for (const watchDir of WATCH_DIRS) {
+    if (!fs.existsSync(watchDir)) continue;
+    const repoRoot = getGitRepoRoot(watchDir);
+    if (checkedRoots.has(repoRoot)) continue;
+    checkedRoots.add(repoRoot);
+
+    const status = runGit(['status', '--porcelain'], repoRoot);
+    if (status.success && status.output) {
+      const lines = status.output.split('\n');
+      for (const line of lines) {
+        const filePart = line.substring(3).trim();
+        if (!filePart) continue;
+        const fullPath = path.resolve(repoRoot, filePart);
+        if (fs.existsSync(fullPath) && isValidFile(fullPath) && !containsSensitiveInfo(fullPath)) {
+          found.push(fullPath);
+        }
+      }
+    }
+  }
+
+  return found;
+}
+
+/**
+ * Stage, commit, and push tracked files grouped by repository
  */
 function createBatchCommit() {
+  // If no files actively queued, check git status for pending modifications
+  if (modifiedFiles.size === 0) {
+    const pending = scanPendingChanges();
+    for (const f of pending) modifiedFiles.add(f);
+  }
+
   if (modifiedFiles.size === 0) return { success: true, committed: false };
 
   // Filter valid files
@@ -155,53 +211,65 @@ function createBatchCommit() {
     return { success: true, committed: false };
   }
 
+  // Group files by repo root
+  const filesByRepo = new Map();
+  for (const file of validFiles) {
+    const repoRoot = getGitRepoRoot(file);
+    if (!filesByRepo.has(repoRoot)) {
+      filesByRepo.set(repoRoot, []);
+    }
+    filesByRepo.get(repoRoot).push(file);
+  }
+
+  let totalCommitted = 0;
   const timestamp = new Date().toISOString().replace('T', ' ').substring(0, 19);
-  const commitMessage = `auto: Source code changes - ${validFiles.length} file(s) modified at ${timestamp}`;
 
-  console.log(`\n📝 Creating batch commit...`);
-  console.log(`   Files: ${validFiles.length}`);
-  console.log(`   Message: "${commitMessage}"`);
+  for (const [repoRoot, files] of filesByRepo.entries()) {
+    ensureGitRemote(repoRoot);
+    const commitMessage = `auto: Source code changes - ${files.length} file(s) modified at ${timestamp}`;
 
-  // Stage files
-  const relativePaths = validFiles.map(f => path.relative(__dirname, f));
-  const stageResult = runGit(['add', ...relativePaths]);
+    console.log(`\n📝 Creating batch commit in: ${repoRoot}...`);
+    console.log(`   Files: ${files.length}`);
+    console.log(`   Message: "${commitMessage}"`);
 
-  if (!stageResult.success) {
-    console.error(`   ✗ Failed to stage files: ${stageResult.error}`);
-    return { success: false, committed: false };
+    const relativePaths = files.map(f => path.relative(repoRoot, f));
+    const stageResult = runGit(['add', ...relativePaths], repoRoot);
+
+    if (!stageResult.success) {
+      console.error(`   ✗ Failed to stage files in ${repoRoot}: ${stageResult.error}`);
+      continue;
+    }
+
+    const statusResult = runGit(['status', '--porcelain'], repoRoot);
+    if (!statusResult.success || !statusResult.output) {
+      console.log(`   ℹ No staged changes detected in ${repoRoot}.`);
+      continue;
+    }
+
+    const commitResult = runGit(['commit', '-m', commitMessage], repoRoot);
+    if (!commitResult.success) {
+      console.error(`   ✗ Commit failed in ${repoRoot}: ${commitResult.error}`);
+      continue;
+    }
+
+    console.log(`   ✓ Commit successful\n   ${commitResult.output}`);
+    totalCommitted++;
+
+    const currentBranch = getCurrentBranch(repoRoot);
+    console.log(`🚀 Pushing changes to origin/${currentBranch} from ${repoRoot}...`);
+    const pushResult = runGit(['push', 'origin', currentBranch], repoRoot);
+
+    if (pushResult.success) {
+      console.log(`   ✓ Successfully pushed to GitHub (${REPO_URL})\n`);
+    } else {
+      console.error(`   ⚠️ Commit created, but push failed: ${pushResult.error}\n`);
+    }
   }
 
-  // Check if git detected actual index changes
-  const statusResult = runGit(['status', '--porcelain']);
-  if (!statusResult.success || !statusResult.output) {
-    console.log('   ℹ No staged changes detected by Git.');
-    modifiedFiles.clear();
-    return { success: true, committed: false };
-  }
-
-  // Commit
-  const commitResult = runGit(['commit', '-m', commitMessage]);
-  if (!commitResult.success) {
-    console.error(`   ✗ Commit failed: ${commitResult.error}`);
-    return { success: false, committed: false };
-  }
-
-  console.log(`   ✓ Commit successful\n   ${commitResult.output}`);
   modifiedFiles.clear();
   lastCommitTime = Date.now();
 
-  // Push to remote repository
-  const currentBranch = getCurrentBranch();
-  console.log(`🚀 Pushing changes to origin/${currentBranch}...`);
-  const pushResult = runGit(['push', 'origin', currentBranch]);
-
-  if (pushResult.success) {
-    console.log(`   ✓ Successfully pushed to GitHub\n`);
-  } else {
-    console.error(`   ⚠️ Commit created, but push failed: ${pushResult.error}\n`);
-  }
-
-  return { success: true, committed: true };
+  return { success: true, committed: totalCommitted > 0 };
 }
 
 /**
@@ -220,8 +288,6 @@ function displayStatus() {
   console.log(`   Last commit: ${timeSinceLastCommit}s ago`);
   console.log(`   Next auto-commit in: ${nextCommitIn}s\n`);
 }
-
-
 
 /**
  * Handle File System Watcher Events
@@ -290,8 +356,12 @@ console.log(`   Watched Directories: ${WATCH_DIRS.length}`);
 console.log(`   Extensions: ${Array.from(FILE_EXTENSIONS).join(', ')}`);
 console.log(`   Commit Interval: ${COMMIT_INTERVAL_MS / 1000 / 60} minutes\n`);
 
-// Ensure Git remote is configured correctly
-ensureGitRemote();
+// Ensure Git remote is configured correctly across watch roots
+for (const dir of WATCH_DIRS) {
+  if (fs.existsSync(dir)) {
+    ensureGitRemote(getGitRepoRoot(dir));
+  }
+}
 
 // Start event listening
 setupWatchers();
@@ -316,13 +386,13 @@ process.on('exit', () => {
 console.log('✅ Auto-commit watcher initialized successfully!\n');
 
 // Handle immediate run flags
-if (RUN_NOW) {
-  console.log('⏩ --now flag detected: attempting immediate commit...');
+if (RUN_NOW || RUN_ONCE) {
+  console.log('⏩ Immediate commit requested...');
   const result = createBatchCommit();
   if (!result.success) {
     console.error('Immediate commit failed.');
   } else if (!result.committed) {
-    console.log('No changes detected for immediate commit.');
+    console.log('No pending changes detected for commit.');
   }
 }
 
