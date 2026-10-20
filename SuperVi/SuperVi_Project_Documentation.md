@@ -1,1 +1,0 @@
-# SuperVi Project Architecture 
