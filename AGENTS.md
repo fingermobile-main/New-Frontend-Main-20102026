@@ -37,7 +37,7 @@ Reference component: [EnterpriseFinancialEcosystemConsole.tsx](file:///Users/use
 Detailed rule: [.agents/rules/text-contrast-hierarchy.md](file:///Users/user/Documents/FingerMobile%20Protocol%20Communication/.agents/rules/text-contrast-hierarchy.md)
 
 
-Screen/Page Builds:
+Screen/Page Builds: Summarize recent activity on my assigned Linear issues. Highlight decisions, blockers, changed priorities, and anything waiting for your input then you decide the next action to take., or i ask for clarification or suggestion,.
 
 A modern website serves as the digital foundation for your brand, acting as your company’s 24/7 salesperson and its most valuable marketing asset. In an era of high digital expectations, a site must be strategically planned to turn visitors into paying customers. Our article will help you build a structured website design checklist, from strategic architecture to conversion optimization. It’s time to make sure your online presence is fast, secure, and optimized to guide visitors toward taking action.
 

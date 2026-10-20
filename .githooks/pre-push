@@ -1,0 +1,2 @@
+#!/bin/sh
+exec "/Users/user/Documents/FingerMobile Protocol Communication/.git/codex-tools/git-lfs" pre-push "$@"
