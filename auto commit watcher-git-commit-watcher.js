@@ -13,7 +13,7 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 
 // --- Configuration ---
-const REPO_URL = 'https://github.com/fingermobile-main/FingerMobile-Protocol-Frontend-Main.git';
+const REPO_URL = 'https://github.com/fingermobile-main/New-Frontend-Main-20102026.git';
 const WATCH_DIRS = [
   path.join(__dirname, 'FingerMobile Protocol', 'apps', 'frontend-main'),
   path.join(__dirname, 'FingerMobile Protocol', 'apps', 'backend'),
