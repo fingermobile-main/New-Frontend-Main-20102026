@@ -15,9 +15,9 @@ const { execFileSync } = require('child_process');
 // --- Configuration ---
 const REPO_URL = 'https://github.com/fingermobile-main/New-Frontend-Main-20102026.git';
 const WATCH_DIRS = [
-  path.join(__dirname, 'FingerMobile Protocol', 'apps', 'frontend-main'),
-  path.join(__dirname, 'FingerMobile Protocol', 'apps', 'backend'),
-  path.join(__dirname, 'FingerMobile Business and Monetization Suite')
+  path.resolve(__dirname, 'FingerMobile Protocol', 'apps', 'frontend-main'),
+  path.resolve(__dirname, 'FingerMobile Protocol', 'apps', 'backend'),
+  path.resolve(__dirname, 'FingerMobile Business and Monetization Suite')
 ];
 const COMMIT_INTERVAL_MS = 15 * 60 * 1000; // 15 minutes
 const STATUS_INTERVAL_MS = 30 * 1000;      // 30 seconds
@@ -57,7 +57,7 @@ function runGit(args, cwd = __dirname) {
       stdio: ['pipe', 'pipe', 'pipe'],
       maxBuffer: 10 * 1024 * 1024 // 10MB buffer
     });
-    return { success: true, output: output.trim() };
+    return { success: true, output };
   } catch (error) {
     return { 
       success: false, 
@@ -70,9 +70,10 @@ function runGit(args, cwd = __dirname) {
  * Resolves the enclosing git repository root for a given file or directory
  */
 function getGitRepoRoot(targetPath) {
-  let curr = fs.existsSync(targetPath) && fs.statSync(targetPath).isDirectory()
-    ? targetPath
-    : path.dirname(path.resolve(targetPath));
+  let curr = path.resolve(targetPath);
+  if (fs.existsSync(curr) && !fs.statSync(curr).isDirectory()) {
+    curr = path.dirname(curr);
+  }
 
   while (curr && curr !== path.dirname(curr)) {
     if (fs.existsSync(path.join(curr, '.git'))) {
@@ -80,7 +81,7 @@ function getGitRepoRoot(targetPath) {
     }
     curr = path.dirname(curr);
   }
-  return __dirname;
+  return path.resolve(__dirname);
 }
 
 /**
@@ -145,7 +146,7 @@ function ensureGitRemote(repoRoot = __dirname) {
   if (!remoteResult.success) {
     console.log(`🔗 Setting git remote 'origin' to ${REPO_URL} in ${repoRoot}...`);
     runGit(['remote', 'add', 'origin', REPO_URL], repoRoot);
-  } else if (remoteResult.output !== REPO_URL) {
+  } else if (remoteResult.output.trim() !== REPO_URL) {
     console.log(`🔄 Updating git remote 'origin' URL to ${REPO_URL} in ${repoRoot}...`);
     runGit(['remote', 'set-url', 'origin', REPO_URL], repoRoot);
   }
@@ -156,7 +157,33 @@ function ensureGitRemote(repoRoot = __dirname) {
  */
 function getCurrentBranch(repoRoot = __dirname) {
   const result = runGit(['rev-parse', '--abbrev-ref', 'HEAD'], repoRoot);
-  return result.success ? result.output : 'main';
+  return result.success ? result.output.trim() : 'main';
+}
+
+/**
+ * Parses git status --porcelain output into list of file paths
+ */
+function parsePorcelainStatus(output) {
+  const lines = output.split('\n');
+  const files = [];
+  for (let line of lines) {
+    if (!line.trim()) continue;
+    let filePart = '';
+    const match = line.match(/^([ MARCUD?]{1,2})\s+(.*)$/);
+    if (match) {
+      filePart = match[2].trim();
+    } else {
+      filePart = line.substring(3).trim();
+    }
+    if (filePart.startsWith('"') && filePart.endsWith('"')) {
+      filePart = filePart.slice(1, -1);
+    }
+    if (filePart.includes(' -> ')) {
+      filePart = filePart.split(' -> ')[1].trim();
+    }
+    if (filePart) files.push(filePart);
+  }
+  return files;
 }
 
 /**
@@ -174,10 +201,8 @@ function scanPendingChanges() {
 
     const status = runGit(['status', '--porcelain'], repoRoot);
     if (status.success && status.output) {
-      const lines = status.output.split('\n');
-      for (const line of lines) {
-        const filePart = line.substring(3).trim();
-        if (!filePart) continue;
+      const parsedFiles = parsePorcelainStatus(status.output);
+      for (const filePart of parsedFiles) {
         const fullPath = path.resolve(repoRoot, filePart);
         if (fs.existsSync(fullPath) && isValidFile(fullPath) && !containsSensitiveInfo(fullPath)) {
           found.push(fullPath);
@@ -241,7 +266,7 @@ function createBatchCommit() {
     }
 
     const statusResult = runGit(['status', '--porcelain'], repoRoot);
-    if (!statusResult.success || !statusResult.output) {
+    if (!statusResult.success || !statusResult.output || !statusResult.output.trim()) {
       console.log(`   ℹ No staged changes detected in ${repoRoot}.`);
       continue;
     }
@@ -252,7 +277,7 @@ function createBatchCommit() {
       continue;
     }
 
-    console.log(`   ✓ Commit successful\n   ${commitResult.output}`);
+    console.log(`   ✓ Commit successful\n   ${commitResult.output.trim()}`);
     totalCommitted++;
 
     const currentBranch = getCurrentBranch(repoRoot);
