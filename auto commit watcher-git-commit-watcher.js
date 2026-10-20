@@ -15,7 +15,7 @@ const { execFileSync } = require('child_process');
 // --- Configuration ---
 const REPO_URL = 'https://github.com/fingermobile-main/FingerMobile-Protocol-Frontend-Main.git';
 const WATCH_DIRS = [
-  path.join(__dirname, 'FingerMobile Github 27072026', 'FingerMobile-Protocol-Frontend-Main'),
+  path.join(__dirname, 'FingerMobile Protocol', 'apps', 'frontend-main'),
   path.join(__dirname, 'FingerMobile Protocol', 'apps', 'backend'),
   path.join(__dirname, 'FingerMobile Business and Monetization Suite')
 ];

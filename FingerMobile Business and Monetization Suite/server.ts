@@ -2,15 +2,15 @@ import express from 'express';
 import { router } from './business-suite-controller.js';
 
 const app = express();
-const PORT = 3003;
+const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3003;
 
 app.use(express.json());
 
 // Mount the business suite routes
 app.use(router);
 
-// Add a basic health check endpoint
-app.get('/health', (_req, res) => {
+// Add health check endpoints
+app.get(['/health', '/api/health'], (_req, res) => {
   res.json({ status: 'OK', message: 'Business Suite Controller is running' });
 });
 

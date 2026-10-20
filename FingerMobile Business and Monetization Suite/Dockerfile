@@ -23,33 +23,32 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install production dependencies only
-RUN npm ci --only=production --legacy-peer-deps && npm cache clean --force
+# Install dependencies
+RUN npm ci --legacy-peer-deps && npm cache clean --force
 
-# Copy built files from builder
+# Copy built files from builder and source code
 COPY --from=builder /app/dist ./dist
+COPY . .
 
-# Create logs directory
-RUN mkdir -p logs
-
-# Create data directory for SQLite
-RUN mkdir -p data
+# Create logs and data directories
+RUN mkdir -p logs data
 
 # Expose port
-EXPOSE 3001
+EXPOSE 3003
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-  CMD wget --no-verbose --tries=1 --spider http://localhost:3001/api/health || exit 1
+  CMD wget --no-verbose --tries=1 --spider http://127.0.0.1:3003/health || exit 1
 
 # Set environment to production
 ENV NODE_ENV=production
 
 # Run as non-root user for security
 RUN addgroup -g 1001 -S appgroup && \
-    adduser -S appuser -u 1001 -G appgroup
+    adduser -S appuser -u 1001 -G appgroup && \
+    chown -R appuser:appgroup /app
 
 USER appuser
 
 # Start the application
-CMD ["node", "dist/server.js"]
+CMD ["npx", "tsx", "server.ts"]
