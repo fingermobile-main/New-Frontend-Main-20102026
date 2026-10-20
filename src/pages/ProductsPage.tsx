@@ -73,7 +73,7 @@ const ProductsPage: React.FC = () => {
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Our Products</h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-2">
+        <p className="text-slate-700 dark:text-slate-300 font-medium mt-2">
           Discover our wide range of products tailored just for you
         </p>
       </div>
@@ -129,7 +129,7 @@ const ProductsPage: React.FC = () => {
         </div>
       ) : (
         <div className="text-center py-12">
-          <p className="text-gray-500 dark:text-gray-400">No products found matching your criteria</p>
+          <p className="text-slate-700 dark:text-slate-300 font-medium">No products found matching your criteria</p>
         </div>
       )}
     </div>

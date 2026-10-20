@@ -96,7 +96,7 @@ const NotificationsPage: React.FC = () => {
     case 'like':
       return <HeartIcon className="h-5 w-5 text-pink-500" />;
     default:
-      return <BellIcon className="h-5 w-5 text-gray-500" />;
+      return <BellIcon className="h-5 w-5 text-slate-600" />;
     }
   };
 

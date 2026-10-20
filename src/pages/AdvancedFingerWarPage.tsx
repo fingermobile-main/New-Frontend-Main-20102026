@@ -279,7 +279,7 @@ const AdvancedFingerWarPage: React.FC = () => {
               {/* Combat Telemetry HUD */}
               <div className="grid grid-cols-3 gap-4 max-w-lg mx-auto w-full">
                 <div className="p-3 rounded-2xl bg-slate-50 border border-slate-300">
-                  <span className="block text-[10px] font-bold text-slate-500 uppercase">Arena Score</span>
+                  <span className="block text-[10px] font-bold text-slate-300 uppercase">Arena Score</span>
                   <span className="text-2xl font-black text-slate-900">{battleScore}</span>
                 </div>
                 <div className="p-3 rounded-2xl bg-orange-50 border border-orange-300">
@@ -287,7 +287,7 @@ const AdvancedFingerWarPage: React.FC = () => {
                   <span className="text-2xl font-black text-orange-600">{comboMultiplier.toFixed(1)}x</span>
                 </div>
                 <div className="p-3 rounded-2xl bg-slate-50 border border-slate-300">
-                  <span className="block text-[10px] font-bold text-slate-500 uppercase">Time Remaining</span>
+                  <span className="block text-[10px] font-bold text-slate-300 uppercase">Time Remaining</span>
                   <span className={`text-2xl font-black ${battleTimer <= 5 && inBattle ? 'text-rose-600 animate-pulse' : 'text-slate-900'}`}>
                     {battleTimer}s
                   </span>
@@ -314,7 +314,7 @@ const AdvancedFingerWarPage: React.FC = () => {
                   >
                     <Play className="w-12 h-12 mb-2 text-orange-500" />
                     <span>Enter Combat</span>
-                    <span className="text-xs text-slate-400 font-bold mt-1">15s Blitz Round</span>
+                    <span className="text-xs text-slate-300 font-bold mt-1">15s Blitz Round</span>
                   </button>
                 )}
               </div>
@@ -408,19 +408,19 @@ const AdvancedFingerWarPage: React.FC = () => {
 
                   <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-300 space-y-2 text-xs">
                     <div className="flex justify-between">
-                      <span className="font-bold text-slate-500">Prize Pool:</span>
+                      <span className="font-bold text-slate-300">Prize Pool:</span>
                       <strong className="text-slate-900">{t.prizePool}</strong>
                     </div>
                     <div className="flex justify-between">
-                      <span className="font-bold text-slate-500">Entry Fee:</span>
+                      <span className="font-bold text-slate-300">Entry Fee:</span>
                       <strong className="text-slate-900">{t.entryFee}</strong>
                     </div>
                     <div className="flex justify-between">
-                      <span className="font-bold text-slate-500">Starts:</span>
+                      <span className="font-bold text-slate-300">Starts:</span>
                       <strong className="text-orange-600">{t.startsIn}</strong>
                     </div>
                     <div className="flex justify-between">
-                      <span className="font-bold text-slate-500">Bracket:</span>
+                      <span className="font-bold text-slate-300">Bracket:</span>
                       <strong className="text-slate-900">{t.participants} / {t.maxParticipants}</strong>
                     </div>
                   </div>
@@ -542,7 +542,7 @@ const AdvancedFingerWarPage: React.FC = () => {
                     </span>
 
                     {q.claimed ? (
-                      <span className="text-xs font-bold text-slate-500">Claimed ✓</span>
+                      <span className="text-xs font-bold text-slate-300">Claimed ✓</span>
                     ) : (
                       <button
                         type="button"
@@ -551,7 +551,7 @@ const AdvancedFingerWarPage: React.FC = () => {
                         className={`px-3 py-1.5 rounded-xl text-xs font-black uppercase ${
                           isComplete
                             ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
-                            : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed'
+                            : 'bg-slate-800 text-slate-500 border border-slate-700 cursor-not-allowed'
                         }`}
                       >
                         Claim FIC

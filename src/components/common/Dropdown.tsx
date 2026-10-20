@@ -46,7 +46,7 @@ const Dropdown: React.FC<DropdownProps> = ({
         <span className={selectedOption ? 'text-gray-900' : 'text-slate-700'}>
           {selectedOption?.label || placeholder}
         </span>
-        <ChevronDownIcon className="w-5 h-5 text-slate-500" />
+        <ChevronDownIcon className="w-5 h-5 text-slate-600" />
       </button>
 
       {isOpen && (

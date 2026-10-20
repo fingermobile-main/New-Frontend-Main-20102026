@@ -149,7 +149,7 @@ const StercsVideoEditor: React.FC = () => {
           </div>
           <div>
             <h3 className="text-lg font-bold">STERCS Multi-Track Video Timeline Editor</h3>
-            <p className="text-xs text-slate-400">Non-linear video workstation with GPU accelerated web compilation</p>
+            <p className="text-xs text-slate-300 font-medium">Non-linear video workstation with GPU accelerated web compilation</p>
           </div>
         </div>
 
@@ -258,7 +258,7 @@ const StercsVideoEditor: React.FC = () => {
               <CheckCircleIcon className="w-4 h-4 mr-1.5 text-red-400" />
               Sovereign Media Protocol
             </p>
-            <p className="text-slate-400 text-[11px]">
+            <p className="text-slate-300 font-medium text-[11px]">
               Direct timeline serialization saved to PostgreSQL `stercs_projects` with full canvas state.
             </p>
           </div>
@@ -268,7 +268,7 @@ const StercsVideoEditor: React.FC = () => {
       {/* Multi-Track Timeline Rack */}
       <div className="bg-slate-950 rounded-3xl p-6 border border-slate-800 shadow-inner space-y-4">
         {/* Timeline Header Ruler */}
-        <div className="flex items-center justify-between text-xs text-slate-400 pb-2 border-b border-slate-800 font-mono">
+        <div className="flex items-center justify-between text-xs text-slate-300 font-medium pb-2 border-b border-slate-800 font-mono">
           <span>00:00.0</span>
           <span>00:07.5</span>
           <span>00:15.0</span>
@@ -290,7 +290,7 @@ const StercsVideoEditor: React.FC = () => {
 
           {/* Track 1: Video Track */}
           <div className="flex items-center space-x-3">
-            <span className="w-20 text-xs font-bold text-slate-400 flex items-center">
+            <span className="w-20 text-xs font-bold text-slate-200 flex items-center">
               <VideoCameraIcon className="w-3.5 h-3.5 mr-1 text-blue-400" /> Video
             </span>
             <div className="flex-1 h-12 bg-slate-900 rounded-xl relative overflow-hidden border border-slate-800">
@@ -311,7 +311,7 @@ const StercsVideoEditor: React.FC = () => {
 
           {/* Track 2: Audio Track */}
           <div className="flex items-center space-x-3">
-            <span className="w-20 text-xs font-bold text-slate-400 flex items-center">
+            <span className="w-20 text-xs font-bold text-slate-200 flex items-center">
               <MusicalNoteIcon className="w-3.5 h-3.5 mr-1 text-emerald-400" /> Audio
             </span>
             <div className="flex-1 h-12 bg-slate-900 rounded-xl relative overflow-hidden border border-slate-800">
@@ -332,7 +332,7 @@ const StercsVideoEditor: React.FC = () => {
 
           {/* Track 3: Graphics & Overlays */}
           <div className="flex items-center space-x-3">
-            <span className="w-20 text-xs font-bold text-slate-400 flex items-center">
+            <span className="w-20 text-xs font-bold text-slate-200 flex items-center">
               <PhotoIcon className="w-3.5 h-3.5 mr-1 text-amber-400" /> Overlay
             </span>
             <div className="flex-1 h-12 bg-slate-900 rounded-xl relative overflow-hidden border border-slate-800">

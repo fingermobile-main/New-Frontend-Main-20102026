@@ -25,7 +25,7 @@ const ContentCommunityDashboardPage: React.FC = () => {
             </div>
             <div>
               <h1 className="text-3xl font-black text-slate-900 tracking-tight">Community Insights</h1>
-              <p className="text-slate-500 font-medium mt-1">Monitor engagement, top contributors, and trending discussions.</p>
+              <p className="text-slate-700 font-medium mt-1">Monitor engagement, top contributors, and trending discussions.</p>
             </div>
           </div>
 
@@ -53,8 +53,8 @@ const ContentCommunityDashboardPage: React.FC = () => {
               </div>
               <div>
                 <p className="text-3xl font-black text-slate-900">{stat.value}</p>
-                <p className="text-slate-500 font-medium text-sm mt-1">{stat.label}</p>
-                <p className={`text-xs font-bold mt-2 ${stat.color === 'emerald' ? 'text-emerald-500' : 'text-slate-400'}`}>{stat.change}</p>
+                <p className="text-slate-700 font-medium text-sm mt-1">{stat.label}</p>
+                <p className={`text-xs font-bold mt-2 ${stat.color === 'emerald' ? 'text-emerald-500' : 'text-slate-600 font-medium'}`}>{stat.change}</p>
               </div>
             </div>
           ))}
@@ -80,7 +80,7 @@ const ContentCommunityDashboardPage: React.FC = () => {
               ].map((topic, i) => (
                 <div key={i} className="p-4 bg-slate-50/50 rounded-2xl border border-slate-100 hover:bg-slate-50 transition-colors cursor-pointer group">
                   <h3 className="font-bold text-slate-900 group-hover:text-fuchsia-600 transition-colors mb-2">{topic.title}</h3>
-                  <div className="flex items-center gap-4 text-xs font-medium text-slate-500">
+                  <div className="flex items-center gap-4 text-xs font-medium text-slate-700">
                     <span className="bg-white px-2 py-1 rounded-md border border-slate-200">{topic.community}</span>
                     <span className="flex items-center gap-1"><ChatBubbleLeftRightIcon className="w-3.5 h-3.5" /> {topic.replies}</span>
                     <span className="flex items-center gap-1"><HeartIcon className="w-3.5 h-3.5" /> {topic.likes}</span>
@@ -127,12 +127,12 @@ const ContentCommunityDashboardPage: React.FC = () => {
                         {user.name}
                         <StarIcon className="w-3.5 h-3.5 text-amber-400" />
                       </p>
-                      <p className="text-xs text-slate-500 font-medium">{user.handle}</p>
+                      <p className="text-xs text-slate-700 font-medium">{user.handle}</p>
                     </div>
                   </div>
                   <div className="text-right">
                     <p className="font-black text-slate-900">{user.rep}</p>
-                    <p className="text-xs text-slate-500 font-medium">Reputation</p>
+                    <p className="text-xs text-slate-700 font-medium">Reputation</p>
                   </div>
                 </div>
               ))}

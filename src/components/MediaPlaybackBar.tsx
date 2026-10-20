@@ -65,8 +65,8 @@ const MediaPlaybackBar: React.FC<MediaPlaybackBarProps> = ({
 
   if (!currentMedia) {
     return (
-      <Card className="w-full">
-        <CardContent className="p-4 text-center text-muted-foreground">
+      <Card className="w-full border-slate-200">
+        <CardContent className="p-4 text-center text-slate-700 font-medium">
           <p>No media selected</p>
         </CardContent>
       </Card>
@@ -74,19 +74,19 @@ const MediaPlaybackBar: React.FC<MediaPlaybackBarProps> = ({
   }
 
   return (
-    <Card className="w-full sticky bottom-0">
+    <Card className="w-full sticky bottom-0 border-slate-200">
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-sm flex items-center gap-2">
+          <CardTitle className="text-sm flex items-center gap-2 text-slate-900 font-bold">
             {getMediaIcon(currentMedia.type)}
             <span className="truncate">{currentMedia.filename}</span>
           </CardTitle>
-          <Badge variant="secondary">{formatSize(currentMedia.size)}</Badge>
+          <Badge variant="secondary" className="bg-slate-100 text-slate-800 border border-slate-300 font-semibold">{formatSize(currentMedia.size)}</Badge>
         </div>
       </CardHeader>
       <CardContent className="space-y-3">
         {/* Preview */}
-        <div className="aspect-video bg-muted rounded-lg overflow-hidden">
+        <div className="aspect-video bg-slate-100 border border-slate-200 rounded-lg overflow-hidden">
           {currentMedia.type === 'image' && (
             <img src={currentMedia.url} alt={currentMedia.filename} className="w-full h-full object-contain"  />
           )}
@@ -95,12 +95,12 @@ const MediaPlaybackBar: React.FC<MediaPlaybackBarProps> = ({
           )}
           {currentMedia.type === 'audio' && (
             <div className="w-full h-full flex items-center justify-center">
-              <Music className="h-16 w-16 text-muted-foreground opacity-20" />
+              <Music className="h-16 w-16 text-slate-500 opacity-40" />
             </div>
           )}
           {currentMedia.type === 'document' && (
             <div className="w-full h-full flex items-center justify-center">
-              <FileText className="h-16 w-16 text-muted-foreground opacity-20" />
+              <FileText className="h-16 w-16 text-slate-500 opacity-40" />
             </div>
           )}
         </div>
@@ -116,7 +116,7 @@ const MediaPlaybackBar: React.FC<MediaPlaybackBarProps> = ({
               onChange={(e) => onSeek?.(parseInt(e.target.value))}
               className="w-full"
             />
-            <div className="flex justify-between text-xs text-muted-foreground">
+            <div className="flex justify-between text-xs text-slate-700 font-semibold">
               <span>{formatTime(progress)}</span>
               <span>{formatTime(duration)}</span>
             </div>

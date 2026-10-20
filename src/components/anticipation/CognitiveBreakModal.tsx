@@ -68,7 +68,7 @@ export const CognitiveBreakModal: React.FC<CognitiveBreakModalProps> = ({
             className={`w-full py-3 rounded-2xl text-xs font-black transition-all ${
               secondsRemaining === 0
                 ? 'bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 hover:brightness-110 shadow-lg'
-                : 'bg-slate-800 text-slate-400 hover:text-white'
+                : 'bg-slate-800 text-slate-300 font-semibold hover:text-white'
             }`}
           >
             {secondsRemaining === 0 ? 'Resume Browsing →' : 'Dismiss Mindful Moment'}

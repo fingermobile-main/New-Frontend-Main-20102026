@@ -127,9 +127,9 @@ export const CanaryAdPlacementWidget: React.FC<CanaryAdPlacementWidgetProps> = (
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <span className="text-xs font-black text-amber-500 uppercase tracking-wider">Canary™ Carousel</span>
-            <span className="text-xs text-slate-400">• {ad.company_name}</span>
+            <span className="text-xs text-slate-300 font-medium">• {ad.company_name}</span>
           </div>
-          <span className="text-[10px] text-slate-400 font-mono">
+          <span className="text-[10px] text-slate-300 font-medium font-mono">
             {activeCardIndex + 1} / {cards.length} Cards
           </span>
         </div>
@@ -202,7 +202,7 @@ export const CanaryAdPlacementWidget: React.FC<CanaryAdPlacementWidgetProps> = (
       <div className="flex items-center justify-between gap-3">
         <div className="flex-1">
           <h4 className="text-sm font-extrabold text-white truncate">{ad.headline}</h4>
-          {ad.description && <p className="text-xs text-slate-400 truncate">{ad.description}</p>}
+          {ad.description && <p className="text-xs text-slate-300 font-medium truncate">{ad.description}</p>}
         </div>
 
         <a

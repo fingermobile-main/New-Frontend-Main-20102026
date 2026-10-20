@@ -160,10 +160,10 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
                 className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
                   active
                     ? 'bg-white text-slate-900 shadow-sm'
-                    : 'bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white'
+                    : 'bg-white/5 text-slate-200 hover:bg-white/10 hover:text-white'
                 }`}
               >
-                <Icon className={`w-3.5 h-3.5 ${active ? 'text-orange-500' : 'text-slate-400'}`} />
+                <Icon className={`w-3.5 h-3.5 ${active ? 'text-orange-500' : 'text-slate-300'}`} />
                 <span>{tab.label}</span>
               </button>
             );
@@ -183,7 +183,7 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
                   ALL PASSING (GOOD)
                 </span>
               </h2>
-              <span className="text-xs text-slate-500">Google Search Ranking Baseline</span>
+              <span className="text-xs text-slate-700 dark:text-slate-300 font-medium">Google Search Ranking Baseline</span>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
@@ -197,7 +197,7 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
               ].map(({ key, metric, target, desc }) => (
                 <div
                   key={key}
-                  className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200 dark:border-slate-800 shadow-xs flex flex-col justify-between"
+                  className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-300 dark:border-slate-800 shadow-xs flex flex-col justify-between"
                 >
                   <div>
                     <div className="flex items-center justify-between mb-1">
@@ -214,7 +214,7 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
                       {metric.label}
                     </div>
                   </div>
-                  <div className="mt-3 pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-[10px] text-slate-500">
+                  <div className="mt-3 pt-2 border-t border-slate-300 dark:border-slate-800 flex items-center justify-between text-[10px] text-slate-700 dark:text-slate-300 font-medium">
                     <span>Target: {target}</span>
                     <span className="text-slate-700 truncate ml-1">{desc}</span>
                   </div>
@@ -224,7 +224,7 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
           </div>
 
           {/* Autonomous Healing Pipeline Visualization */}
-          <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-300 dark:border-slate-800 shadow-sm">
             <h3 className="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider mb-4 flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-amber-500" />
               <span>Autonomous 12-Hour Self-Healing Pipeline Mechanics</span>
@@ -257,14 +257,14 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
                   status: 'Daily Sync'
                 }
               ].map((p) => (
-                <div key={p.step} className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/60 flex flex-col justify-between">
+                <div key={p.step} className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-300 dark:border-slate-700/60 flex flex-col justify-between">
                   <div>
                     <span className="text-xs font-mono font-black text-amber-500">{p.step}</span>
                     <h4 className="text-xs font-bold text-slate-900 dark:text-white mt-1">{p.title}</h4>
-                    <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1.5 leading-relaxed">{p.desc}</p>
+                    <p className="text-[11px] text-slate-700 dark:text-slate-300 font-medium mt-1.5 leading-relaxed">{p.desc}</p>
                   </div>
-                  <div className="mt-4 pt-2 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between text-[10px]">
-                    <span className="font-semibold text-slate-600 dark:text-slate-400">Status</span>
+                  <div className="mt-4 pt-2 border-t border-slate-300 dark:border-slate-700 flex items-center justify-between text-[10px]">
+                    <span className="font-semibold text-slate-700 dark:text-slate-300">Status</span>
                     <span className="font-mono font-bold text-emerald-600 dark:text-emerald-400">{p.status}</span>
                   </div>
                 </div>
@@ -273,20 +273,20 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
           </div>
 
           {/* Audit History Log */}
-          <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-300 dark:border-slate-800 shadow-sm">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-2">
                 <Activity className="w-4 h-4 text-indigo-500" />
                 <span>Autonomous Execution Log (WORM Audited)</span>
               </h3>
-              <span className="text-xs text-slate-500">Last 10 Executions</span>
+              <span className="text-xs text-slate-700 dark:text-slate-300 font-medium">Last 10 Executions</span>
             </div>
 
             <div className="space-y-3">
               {auditHistory.map((run) => (
                 <div
                   key={run.id}
-                  className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-750 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+                  className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-300 dark:border-slate-750 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
                 >
                   <div className="space-y-1.5">
                     <div className="flex items-center gap-2">
@@ -307,7 +307,7 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
 
                   <div className="flex items-center gap-3 shrink-0 self-end sm:self-center">
                     <div className="text-right">
-                      <div className="text-xs font-bold text-slate-500">Health Score</div>
+                      <div className="text-xs font-bold text-slate-700 dark:text-slate-300 font-medium">Health Score</div>
                       <div className="text-lg font-black text-emerald-600 dark:text-emerald-400 font-mono">
                         {run.overallScore}%
                       </div>
@@ -328,7 +328,7 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {/* Google PageSpeed Insights Card */}
-            <div className="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+            <div className="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-300 dark:border-slate-800 shadow-sm flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between mb-3">
                   <div className="w-10 h-10 rounded-2xl bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 flex items-center justify-center font-black text-sm">
@@ -339,26 +339,26 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
                   </span>
                 </div>
                 <h3 className="text-sm font-bold text-slate-900 dark:text-white">Google PageSpeed Insights</h3>
-                <p className="text-xs text-slate-500 mt-1">Mobile &amp; desktop performance score used directly for Google Search rankings.</p>
+                <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mt-1">Mobile &amp; desktop performance score used directly for Google Search rankings.</p>
                 <div className="mt-4 grid grid-cols-2 gap-2 text-center">
-                  <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                  <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700">
                     <div className="text-xl font-black text-emerald-600 dark:text-emerald-400 font-mono">98</div>
                     <div className="text-[10px] text-slate-700 font-semibold mt-0.5">Mobile Score</div>
                   </div>
-                  <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                  <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700">
                     <div className="text-xl font-black text-emerald-600 dark:text-emerald-400 font-mono">100</div>
                     <div className="text-[10px] text-slate-700 font-semibold mt-0.5">Desktop Score</div>
                   </div>
                 </div>
               </div>
-              <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] text-slate-500 flex items-center justify-between">
+              <div className="mt-4 pt-3 border-t border-slate-300 dark:border-slate-800 text-[11px] text-slate-700 dark:text-slate-300 font-medium flex items-center justify-between">
                 <span>Field Data Verified</span>
                 <span className="font-mono text-emerald-600 font-bold">Good</span>
               </div>
             </div>
 
             {/* GTmetrix Card */}
-            <div className="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+            <div className="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-300 dark:border-slate-800 shadow-sm flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between mb-3">
                   <div className="w-10 h-10 rounded-2xl bg-amber-50 dark:bg-amber-950 text-amber-600 dark:text-amber-400 flex items-center justify-center font-black text-sm">
@@ -369,26 +369,26 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
                   </span>
                 </div>
                 <h3 className="text-sm font-bold text-slate-900 dark:text-white">GTmetrix Diagnostic</h3>
-                <p className="text-xs text-slate-500 mt-1">Granular action-oriented results with automated testing alerts.</p>
+                <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mt-1">Granular action-oriented results with automated testing alerts.</p>
                 <div className="mt-4 grid grid-cols-2 gap-2 text-center">
-                  <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                  <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700">
                     <div className="text-xl font-black text-emerald-600 dark:text-emerald-400 font-mono">99%</div>
                     <div className="text-[10px] text-slate-700 font-semibold mt-0.5">Performance</div>
                   </div>
-                  <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                  <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700">
                     <div className="text-xl font-black text-emerald-600 dark:text-emerald-400 font-mono">98%</div>
                     <div className="text-[10px] text-slate-700 font-semibold mt-0.5">Structure</div>
                   </div>
                 </div>
               </div>
-              <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] text-slate-500 flex items-center justify-between">
+              <div className="mt-4 pt-3 border-t border-slate-300 dark:border-slate-800 text-[11px] text-slate-700 dark:text-slate-300 font-medium flex items-center justify-between">
                 <span>Fully Loaded Time</span>
                 <span className="font-mono text-emerald-600 font-bold">1.2s</span>
               </div>
             </div>
 
             {/* Pingdom Speed Test Card */}
-            <div className="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+            <div className="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-300 dark:border-slate-800 shadow-sm flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between mb-3">
                   <div className="w-10 h-10 rounded-2xl bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-black text-sm">
@@ -399,26 +399,26 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
                   </span>
                 </div>
                 <h3 className="text-sm font-bold text-slate-900 dark:text-white">Pingdom Speed Test</h3>
-                <p className="text-xs text-slate-500 mt-1">Identifies how asset types (fonts, scripts, images) affect page speed.</p>
+                <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mt-1">Identifies how asset types (fonts, scripts, images) affect page speed.</p>
                 <div className="mt-4 grid grid-cols-2 gap-2 text-center">
-                  <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                  <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700">
                     <div className="text-xl font-black text-emerald-600 dark:text-emerald-400 font-mono">1.1 MB</div>
                     <div className="text-[10px] text-slate-700 font-semibold mt-0.5">Page Size</div>
                   </div>
-                  <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                  <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700">
                     <div className="text-xl font-black text-emerald-600 dark:text-emerald-400 font-mono">28</div>
                     <div className="text-[10px] text-slate-700 font-semibold mt-0.5">Requests</div>
                   </div>
                 </div>
               </div>
-              <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] text-slate-500 flex items-center justify-between">
+              <div className="mt-4 pt-3 border-t border-slate-300 dark:border-slate-800 text-[11px] text-slate-700 dark:text-slate-300 font-medium flex items-center justify-between">
                 <span>Faster than</span>
                 <span className="font-mono text-emerald-600 font-bold">96% of tested sites</span>
               </div>
             </div>
 
             {/* WebPageTest Card */}
-            <div className="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+            <div className="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-300 dark:border-slate-800 shadow-sm flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between mb-3">
                   <div className="w-10 h-10 rounded-2xl bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-black text-sm">
@@ -429,19 +429,19 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
                   </span>
                 </div>
                 <h3 className="text-sm font-bold text-slate-900 dark:text-white">WebPageTest Global Matrix</h3>
-                <p className="text-xs text-slate-500 mt-1">Multi-location global latency simulations across mobile networks.</p>
+                <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mt-1">Multi-location global latency simulations across mobile networks.</p>
                 <div className="mt-4 grid grid-cols-2 gap-2 text-center">
-                  <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                  <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700">
                     <div className="text-xl font-black text-emerald-600 dark:text-emerald-400 font-mono">18 ms</div>
                     <div className="text-[10px] text-slate-700 font-semibold mt-0.5">Lagos TTFB</div>
                   </div>
-                  <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                  <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700">
                     <div className="text-xl font-black text-emerald-600 dark:text-emerald-400 font-mono">24 ms</div>
                     <div className="text-[10px] text-slate-700 font-semibold mt-0.5">London TTFB</div>
                   </div>
                 </div>
               </div>
-              <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] text-slate-500 flex items-center justify-between">
+              <div className="mt-4 pt-3 border-t border-slate-300 dark:border-slate-800 text-[11px] text-slate-700 dark:text-slate-300 font-medium flex items-center justify-between">
                 <span>Security Headers</span>
                 <span className="font-mono text-emerald-600 font-bold">A+ (HSTS/CSP)</span>
               </div>
@@ -449,7 +449,7 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
           </div>
 
           {/* WebPageTest Global Regional Latency Simulation Table */}
-          <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-300 dark:border-slate-800 shadow-sm">
             <h3 className="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider mb-4 flex items-center gap-2">
               <Globe className="w-4 h-4 text-cyan-500" />
               <span>Catchpoint WebPageTest Regional Response Benchmarks</span>
@@ -458,7 +458,7 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead>
-                  <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-700 font-mono uppercase text-[10px]">
+                  <tr className="border-b border-slate-300 dark:border-slate-800 text-slate-700 font-mono uppercase text-[10px]">
                     <th className="py-2.5 px-3">Location &amp; Node</th>
                     <th className="py-2.5 px-3">Backbone Provider</th>
                     <th className="py-2.5 px-3">TTFB (First Byte)</th>
@@ -471,7 +471,7 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
                   {benchmarks.map((b) => (
                     <tr key={b.location} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/30">
                       <td className="py-3 px-3 font-bold text-slate-900 dark:text-white">{b.location}</td>
-                      <td className="py-3 px-3 text-slate-500">{b.provider}</td>
+                      <td className="py-3 px-3 text-slate-700 dark:text-slate-300 font-medium">{b.provider}</td>
                       <td className="py-3 px-3 font-mono font-bold text-emerald-600 dark:text-emerald-400">{b.ttfbMs} ms</td>
                       <td className="py-3 px-3 font-mono text-slate-700 dark:text-slate-300">{b.renderMs} ms</td>
                       <td className="py-3 px-3 font-mono text-slate-700 dark:text-slate-300">{b.speedIndexMs} ms</td>
@@ -494,8 +494,8 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
         <div className="space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Chrome DevTools Performance & Network Diagnostics Panel */}
-            <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+            <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-300 dark:border-slate-800 shadow-sm space-y-4">
+              <div className="flex items-center justify-between pb-3 border-b border-slate-300 dark:border-slate-800">
                 <div className="flex items-center gap-2.5">
                   <div className="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-600 flex items-center justify-center font-bold text-xs">
                     CDT
@@ -511,7 +511,7 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
               </div>
 
               <div className="space-y-3">
-                <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+                <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-300 dark:border-slate-700">
                   <div className="flex items-center justify-between text-xs font-bold mb-1">
                     <span className="text-slate-700 dark:text-slate-300">Main Thread CPU Activity</span>
                     <span className="font-mono text-emerald-600">18ms TBT (Idle: 94%)</span>
@@ -519,25 +519,25 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
                   <div className="w-full h-2 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden border text-slate-950 border-slate-400 font-black">
                     <div className="h-full bg-emerald-500 rounded-full" style={{ width: '6%' }}></div>
                   </div>
-                  <p className="text-[10px] text-slate-500 mt-1.5">No long tasks exceeding 50ms detected during hydration.</p>
+                  <p className="text-[10px] text-slate-700 dark:text-slate-300 font-medium mt-1.5">No long tasks exceeding 50ms detected during hydration.</p>
                 </div>
 
-                <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+                <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-300 dark:border-slate-700">
                   <div className="flex items-center justify-between text-xs font-bold mb-1">
                     <span className="text-slate-700 dark:text-slate-300">Network Multiplexing &amp; HTTP/3 Streams</span>
                     <span className="font-mono text-blue-600">0 HOL Blocking</span>
                   </div>
-                  <div className="text-[11px] text-slate-500 leading-relaxed mt-1">
+                  <div className="text-[11px] text-slate-700 dark:text-slate-300 font-medium leading-relaxed mt-1">
                     Static JS/CSS chunks parallelized over single QUIC connection. Early Hints (103) preloads font assets.
                   </div>
                 </div>
 
-                <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+                <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-300 dark:border-slate-700">
                   <div className="flex items-center justify-between text-xs font-bold mb-1">
                     <span className="text-slate-700 dark:text-slate-300">Layout Shift Cluster Tracing</span>
                     <span className="font-mono text-emerald-600">Score: 0.005 (Target &lt; 0.1)</span>
                   </div>
-                  <div className="text-[11px] text-slate-500 leading-relaxed mt-1">
+                  <div className="text-[11px] text-slate-700 dark:text-slate-300 font-medium leading-relaxed mt-1">
                     Image and iframe aspect-ratio attributes explicitly declared. Zero unstable shifts during rendering.
                   </div>
                 </div>
@@ -545,8 +545,8 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
             </div>
 
             {/* Google Search Console Health & Indexing Panel */}
-            <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+            <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-300 dark:border-slate-800 shadow-sm space-y-4">
+              <div className="flex items-center justify-between pb-3 border-b border-slate-300 dark:border-slate-800">
                 <div className="flex items-center gap-2.5">
                   <div className="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-600 flex items-center justify-center font-bold text-xs">
                     GSC
@@ -562,21 +562,21 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
               </div>
 
               <div className="grid grid-cols-2 gap-3 text-center">
-                <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700">
                   <div className="text-xl font-black text-blue-600 dark:text-blue-400 font-mono">
                     {gscMetrics.totalIndexedPages}
                   </div>
-                  <div className="text-[10px] text-slate-500 font-bold mt-0.5">Valid Indexed Pages</div>
+                  <div className="text-[10px] text-slate-700 dark:text-slate-300 font-medium font-bold mt-0.5">Valid Indexed Pages</div>
                 </div>
-                <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700">
                   <div className="text-xl font-black text-emerald-600 dark:text-emerald-400 font-mono">
                     {gscMetrics.crawlRequestsDaily.toLocaleString()}
                   </div>
-                  <div className="text-[10px] text-slate-500 font-bold mt-0.5">Daily Crawl Requests</div>
+                  <div className="text-[10px] text-slate-700 dark:text-slate-300 font-medium font-bold mt-0.5">Daily Crawl Requests</div>
                 </div>
               </div>
 
-              <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 space-y-2">
+              <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-300 dark:border-slate-700 space-y-2">
                 <div className="text-xs font-bold text-slate-700 dark:text-slate-300">Top Organic Google Rankings</div>
                 <div className="space-y-1.5">
                   {gscMetrics.topOrganicKeywords.map((k) => (
@@ -600,13 +600,13 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* WP Rocket Minification & Caching */}
-            <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between space-y-4">
+            <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-300 dark:border-slate-800 shadow-sm flex flex-col justify-between space-y-4">
               <div>
                 <div className="w-10 h-10 rounded-2xl bg-rose-50 dark:bg-rose-950 text-rose-600 dark:text-rose-400 flex items-center justify-center font-bold text-xs mb-3">
                   <FileCode className="w-5 h-5" />
                 </div>
                 <h3 className="text-sm font-bold text-slate-900 dark:text-white">Code Minification &amp; Cache (WP Rocket Engine)</h3>
-                <p className="text-xs text-slate-500 mt-1">
+                <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mt-1">
                   Automatically minifies HTML, CSS, and JavaScript chunks while managing aggressive in-memory caching.
                 </p>
 
@@ -632,13 +632,13 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
             </div>
 
             {/* TinyPNG / Squoosh Image Engine */}
-            <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between space-y-4">
+            <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-300 dark:border-slate-800 shadow-sm flex flex-col justify-between space-y-4">
               <div>
                 <div className="w-10 h-10 rounded-2xl bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-xs mb-3">
                   <Zap className="w-5 h-5" />
                 </div>
                 <h3 className="text-sm font-bold text-slate-900 dark:text-white">Image Compression (TinyPNG / Squoosh)</h3>
-                <p className="text-xs text-slate-500 mt-1">
+                <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mt-1">
                   Transcodes PNG/JPEG assets into lightweight WebP and AVIF standards without loss of visual clarity.
                 </p>
 
@@ -664,13 +664,13 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
             </div>
 
             {/* Cloudflare Edge CDN & TTFB */}
-            <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between space-y-4">
+            <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-300 dark:border-slate-800 shadow-sm flex flex-col justify-between space-y-4">
               <div>
                 <div className="w-10 h-10 rounded-2xl bg-orange-50 dark:bg-orange-950 text-orange-600 dark:text-orange-400 flex items-center justify-center font-bold text-xs mb-3">
                   <Globe className="w-5 h-5" />
                 </div>
                 <h3 className="text-sm font-bold text-slate-900 dark:text-white">Edge CDN &amp; TTFB (Cloudflare Network)</h3>
-                <p className="text-xs text-slate-500 mt-1">
+                <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mt-1">
                   Hosts static site assets across global edge servers close to users, drastically lowering TTFB.
                 </p>
 
@@ -703,41 +703,41 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
         <div className="space-y-6">
           {/* Indexing Architecture Overview */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200 dark:border-slate-800 shadow-xs">
+            <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-300 dark:border-slate-800 shadow-xs">
               <span className="text-[10px] uppercase font-bold text-slate-700">Total Indexed Items</span>
               <div className="text-2xl font-black text-slate-900 dark:text-white font-mono mt-0.5">
                 {indexStats.totalIndexedEntities}
               </div>
-              <p className="text-[11px] text-slate-500 mt-1">Cross-platform entities cataloged in memory</p>
+              <p className="text-[11px] text-slate-700 dark:text-slate-300 font-medium mt-1">Cross-platform entities cataloged in memory</p>
             </div>
 
-            <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200 dark:border-slate-800 shadow-xs">
+            <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-300 dark:border-slate-800 shadow-xs">
               <span className="text-[10px] uppercase font-bold text-slate-700">Database Tables Indexed</span>
               <div className="text-2xl font-black text-blue-600 dark:text-blue-400 font-mono mt-0.5">
                 {indexStats.databaseTablesIndexed}
               </div>
-              <p className="text-[11px] text-slate-500 mt-1">B-Tree indexed PostgreSQL tables</p>
+              <p className="text-[11px] text-slate-700 dark:text-slate-300 font-medium mt-1">B-Tree indexed PostgreSQL tables</p>
             </div>
 
-            <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200 dark:border-slate-800 shadow-xs">
+            <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-300 dark:border-slate-800 shadow-xs">
               <span className="text-[10px] uppercase font-bold text-slate-700">Master &amp; Stercs Consoles</span>
               <div className="text-2xl font-black text-amber-600 dark:text-amber-400 font-mono mt-0.5">
                 {indexStats.masterConsolesIndexed + indexStats.stercsModulesIndexed}
               </div>
-              <p className="text-[11px] text-slate-500 mt-1">Consoles &amp; AI creation pipelines</p>
+              <p className="text-[11px] text-slate-700 dark:text-slate-300 font-medium mt-1">Consoles &amp; AI creation pipelines</p>
             </div>
 
-            <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200 dark:border-slate-800 shadow-xs">
+            <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-300 dark:border-slate-800 shadow-xs">
               <span className="text-[10px] uppercase font-bold text-slate-700">Seek Execution Latency</span>
               <div className="text-2xl font-black text-emerald-600 dark:text-emerald-400 font-mono mt-0.5">
                 &lt; 1.5 ms
               </div>
-              <p className="text-[11px] text-slate-500 mt-1">Zero sequential table scans (O(1) / O(log N))</p>
+              <p className="text-[11px] text-slate-700 dark:text-slate-300 font-medium mt-1">Zero sequential table scans (O(1) / O(log N))</p>
             </div>
           </div>
 
           {/* Interactive Indexing Search Bench Box */}
-          <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-300 dark:border-slate-800 shadow-sm space-y-4">
             <div>
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-2">
                 <h3 className="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-2">
@@ -767,20 +767,20 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
                   ))}
                 </div>
               </div>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-700 dark:text-slate-300 font-medium">
                 Type any query to test instant indexed retrieval without sequential table scans.
               </p>
             </div>
 
             {/* Input Search Box */}
             <div className="relative">
-              <Search className="w-5 h-5 text-slate-500 absolute left-4 top-1/2 -translate-y-1/2" />
+              <Search className="w-5 h-5 text-slate-600 dark:text-slate-300 absolute left-4 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search across Database tables, MasterDashboard consoles, Stercs modules, or routes (e.g. 'auth', 'fic', 'render', 'orders')..."
-                className="w-full pl-12 pr-4 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-xs sm:text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-hidden focus:ring-2 focus:ring-indigo-500 shadow-inner font-bold border-slate-300"
+                className="w-full pl-12 pr-4 py-3 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-2xl text-xs sm:text-sm text-slate-900 dark:text-white placeholder:text-slate-700 dark:text-slate-300 font-medium focus:outline-hidden focus:ring-2 focus:ring-indigo-500 shadow-inner font-bold"
               />
             </div>
 
@@ -809,7 +809,7 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
               {searchBenchmark.results.map((entity) => (
                 <div
                   key={entity.id}
-                  className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 hover:border-indigo-400/60 transition-all flex flex-col justify-between"
+                  className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-300 dark:border-slate-700 hover:border-indigo-400/60 transition-all flex flex-col justify-between"
                 >
                   <div>
                     <div className="flex items-center justify-between mb-1.5">
@@ -833,12 +833,12 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
                     </div>
 
                     <h4 className="text-sm font-bold text-slate-900 dark:text-white">{entity.title}</h4>
-                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">{entity.description}</p>
+                    <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mt-1 line-clamp-2">{entity.description}</p>
 
                     {entity.schemaDetails && (
-                      <div className="mt-2.5 pt-2 border-t border-slate-200/60 dark:border-slate-700/60 text-[10px] font-mono space-y-0.5 text-slate-500">
+                      <div className="mt-2.5 pt-2 border-t border-slate-300 dark:border-slate-700/60 text-[10px] font-mono space-y-0.5 text-slate-700 dark:text-slate-300 font-medium">
                         <div>Table: <span className="font-semibold text-slate-700 dark:text-slate-300">{entity.schemaDetails.tableName}</span> ({entity.schemaDetails.estimatedRows?.toLocaleString()} rows)</div>
-                        <div>Cluster: <span className="text-slate-600 dark:text-slate-400">{entity.schemaDetails.databaseCluster}</span></div>
+                        <div>Cluster: <span className="text-slate-700 dark:text-slate-300 font-medium">{entity.schemaDetails.databaseCluster}</span></div>
                         <div>Indexed: <span className="text-indigo-600 dark:text-indigo-400">{entity.schemaDetails.indexedColumns?.join(', ')}</span></div>
                       </div>
                     )}

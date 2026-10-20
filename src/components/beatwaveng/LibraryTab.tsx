@@ -154,7 +154,7 @@ export const LibraryTab: React.FC = () => {
           className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
             activeSection === 'playlists'
               ? 'bg-emerald-600 text-white shadow-md'
-              : 'text-slate-400 hover:text-white hover:bg-slate-900'
+              : 'text-slate-300 hover:text-white hover:bg-slate-900 font-medium'
           }`}
         >
           My Playlists ({userPlaylists.length})
@@ -165,7 +165,7 @@ export const LibraryTab: React.FC = () => {
           className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
             activeSection === 'liked'
               ? 'bg-emerald-600 text-white shadow-md'
-              : 'text-slate-400 hover:text-white hover:bg-slate-900'
+              : 'text-slate-300 hover:text-white hover:bg-slate-900 font-medium'
           }`}
         >
           Liked Tracks ({likedTracks.length})
@@ -216,10 +216,10 @@ export const LibraryTab: React.FC = () => {
                 <h3 className="text-base font-black text-white group-hover:text-emerald-300 transition-colors">
                   {pl.title}
                 </h3>
-                <p className="text-xs text-slate-400 mt-1 line-clamp-2">
+                <p className="text-xs text-slate-300 font-medium mt-1 line-clamp-2">
                   {pl.description}
                 </p>
-                <div className="flex items-center justify-between text-xs text-slate-400 pt-3 mt-3 border-t border-slate-800/80 font-medium">
+                <div className="flex items-center justify-between text-xs text-slate-300 pt-3 mt-3 border-t border-slate-800/80 font-medium">
                   <span>{pl.trackCount} Tracks</span>
                   <button className="text-emerald-400 hover:underline flex items-center gap-1 font-bold">
                     <Share2 size={12} />
@@ -262,7 +262,7 @@ export const LibraryTab: React.FC = () => {
 
                   <div className="min-w-0">
                     <div className="text-sm font-bold text-white truncate">{track.title}</div>
-                    <div className="text-xs text-slate-400 truncate">{track.artist}</div>
+                    <div className="text-xs text-slate-300 font-medium truncate">{track.artist}</div>
                   </div>
                 </div>
 
@@ -270,7 +270,7 @@ export const LibraryTab: React.FC = () => {
                   <span className="px-2.5 py-1 rounded-full bg-slate-950 text-emerald-400 text-xs font-mono font-bold border border-slate-800">
                     {track.genre}
                   </span>
-                  <span className="text-xs font-mono text-slate-400">
+                  <span className="text-xs font-mono text-slate-300 font-medium">
                     {formatTime(track.duration)}
                   </span>
                   <button
@@ -343,7 +343,7 @@ export const LibraryTab: React.FC = () => {
               <Sparkles size={18} />
               AI-Assisted Playlist Curation
             </div>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-slate-300 font-medium">
               Prompt our sovereign music recommendation engine with any mood, tempo, or scene, and it will build a structured playlist.
             </p>
 

@@ -99,21 +99,21 @@ export const BeatwaveCreatorDashboard: React.FC = () => {
         {/* Live Pulse Bar */}
         <div className="mt-6 pt-4 border-t border-slate-800 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
           <div className="p-3 rounded-2xl bg-slate-900/60 border border-slate-800">
-            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Stream Status</p>
+            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-300">Stream Status</p>
             <p className={`text-sm font-black mt-1 ${isStreaming ? 'text-emerald-400' : 'text-slate-500'}`}>
               {isStreaming ? `Active (${streamSeconds}s)` : 'Idle'}
             </p>
           </div>
           <div className="p-3 rounded-2xl bg-slate-900/60 border border-slate-800">
-            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">PoP Pulses</p>
+            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-300">PoP Pulses</p>
             <p className="text-sm font-black text-amber-400 mt-1 font-mono">{pulseCount}</p>
           </div>
           <div className="p-3 rounded-2xl bg-slate-900/60 border border-slate-800">
-            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Minted Gems</p>
+            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-300">Minted Gems</p>
             <p className="text-sm font-black text-amber-400 mt-1 font-mono">💎 {currentGems.toFixed(1)}</p>
           </div>
           <div className="p-3 rounded-2xl bg-slate-900/60 border border-slate-800">
-            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Pulse Velocity</p>
+            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-300">Pulse Velocity</p>
             <p className="text-sm font-black text-indigo-400 mt-1">0.1 Gems / 30s</p>
           </div>
         </div>
@@ -126,7 +126,7 @@ export const BeatwaveCreatorDashboard: React.FC = () => {
             <h3 className="text-lg font-black text-white flex items-center gap-2">
               <span>⚖️</span> 2026 Nigeria Tax Act & Statutory Shield
             </h3>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-slate-300">
               Automated statutory deductions with 0% CIT threshold protection and transparent withholding escrow.
             </p>
           </div>
@@ -138,31 +138,31 @@ export const BeatwaveCreatorDashboard: React.FC = () => {
         {/* 3 Metric Badges */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="p-4 rounded-2xl bg-slate-800/60 border border-slate-700/60">
-            <p className="text-xs text-slate-400 font-bold">Cybersecurity Levy (Statutory)</p>
+            <p className="text-xs text-slate-300 font-bold">Cybersecurity Levy (Statutory)</p>
             <p className="text-xl font-black text-amber-400 mt-1">
-              0.005% <span className="text-xs font-normal text-slate-400">(Cybercrimes Act 2024)</span>
+              0.005% <span className="text-xs font-normal text-slate-300">(Cybercrimes Act 2024)</span>
             </p>
-            <p className="text-[11px] text-slate-400 mt-2">
+            <p className="text-[11px] text-slate-300 mt-2">
               Deducted into national cybersecurity escrow automatically.
             </p>
           </div>
 
           <div className="p-4 rounded-2xl bg-slate-800/60 border border-slate-700/60">
-            <p className="text-xs text-slate-400 font-bold">Corporate Income Tax (CIT)</p>
+            <p className="text-xs text-slate-300 font-bold">Corporate Income Tax (CIT)</p>
             <p className="text-xl font-black text-emerald-400 mt-1">
-              0.0% <span className="text-xs font-normal text-slate-400">(&lt; ₦50M turnover)</span>
+              0.0% <span className="text-xs font-normal text-slate-300">(&lt; ₦50M turnover)</span>
             </p>
-            <p className="text-[11px] text-slate-400 mt-2">
+            <p className="text-[11px] text-slate-300 mt-2">
               Micro/Small business creator exemption fully applied.
             </p>
           </div>
 
           <div className="p-4 rounded-2xl bg-slate-800/60 border border-slate-700/60">
-            <p className="text-xs text-slate-400 font-bold">Personal Relief Exemption</p>
+            <p className="text-xs text-slate-300 font-bold">Personal Relief Exemption</p>
             <p className="text-xl font-black text-indigo-400 mt-1">
-              ₦800,000 <span className="text-xs font-normal text-slate-400">Tax-Free Allowance</span>
+              ₦800,000 <span className="text-xs font-normal text-slate-300">Tax-Free Allowance</span>
             </p>
-            <p className="text-[11px] text-slate-400 mt-2">
+            <p className="text-[11px] text-slate-300 mt-2">
               Earnings up to ₦800,000 exempt from personal income tax.
             </p>
           </div>

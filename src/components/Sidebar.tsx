@@ -1,5 +1,6 @@
 import React from 'react';
 import { DrawerMenuContainer } from './layout/DrawerMenu/DrawerMenuContainer';
+import { useAuth } from '../contexts/AuthContext';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -7,6 +8,12 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
+  const { isOnboarded } = useAuth();
+
+  if (!isOnboarded) {
+    return null;
+  }
+
   return (
     <>
       {/* Mobile view slide-over drawer */}

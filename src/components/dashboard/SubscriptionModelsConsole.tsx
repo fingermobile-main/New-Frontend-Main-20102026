@@ -623,7 +623,7 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
               Platform Pages Requiring or Offering Subscriptions ({SUBSCRIPTION_PAGES_DIRECTORY.length})
             </h3>
           </div>
-          <span className="text-[11px] text-slate-400">Click any page to test its live frontend</span>
+          <span className="text-[11px] text-slate-300 font-medium">Click any page to test its live frontend</span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -637,14 +637,14 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
                 <span className="text-xs font-bold text-sky-400 group-hover:text-sky-300 flex items-center gap-1">
                   {page.name}
                 </span>
-                <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">
+                <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 font-medium">
                   {page.route}
                 </span>
               </div>
-              <p className="text-[11px] text-slate-400 leading-snug line-clamp-2 mb-2">
+              <p className="text-[11px] text-slate-300 leading-snug line-clamp-2 mb-2 font-medium">
                 {page.description}
               </p>
-              <div className="flex items-center justify-between text-[10px] text-slate-500 pt-1 border-t border-slate-900">
+              <div className="flex items-center justify-between text-[10px] text-slate-300 pt-1 border-t border-slate-900 font-medium">
                 <span className="font-mono">{page.component}</span>
                 <span className="text-sky-400 font-semibold flex items-center gap-0.5 group-hover:translate-x-0.5 transition-transform">
                   Visit <ArrowRight className="w-2.5 h-2.5" />
@@ -671,7 +671,7 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 ${
                 activeCategory === cat.id
                   ? 'bg-blue-600 text-white shadow-md'
-                  : 'bg-slate-800/80 text-slate-400 hover:text-white hover:bg-slate-800'
+                  : 'bg-slate-800/80 text-slate-200 hover:text-white hover:bg-slate-800'
               }`}
             >
               <span>{cat.label}</span>
@@ -686,7 +686,7 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
             className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition-colors flex items-center gap-1.5 ${
               onlyFreeTiers
                 ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
-                : 'bg-slate-800 text-slate-400 border-slate-700 hover:text-slate-200'
+                : 'bg-slate-800 text-slate-300 border-slate-700 hover:text-white'
             }`}
           >
             <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
@@ -694,7 +694,7 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
           </button>
 
           <div className="relative">
-            <Search className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-3.5 h-3.5 text-slate-600 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               placeholder="Search tiers or perks..."
@@ -874,7 +874,7 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
                     {/* Duplicate Single Card */}
                     <button
                       onClick={() => handleDuplicateSingle(model)}
-                      className="p-1 rounded-lg text-slate-400 hover:text-emerald-400 hover:bg-slate-800 transition-colors"
+                      className="p-1 rounded-lg text-slate-300 hover:text-emerald-400 hover:bg-slate-800 transition-colors"
                       title="Duplicate this subscription card"
                     >
                       <Files className="w-3.5 h-3.5" />
@@ -884,14 +884,14 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
                         setEditingModel({ ...model });
                         setIsCreatingNew(false);
                       }}
-                      className="p-1 rounded-lg text-slate-400 hover:text-sky-400 hover:bg-slate-800 transition-colors"
+                      className="p-1 rounded-lg text-slate-300 hover:text-sky-400 hover:bg-slate-800 transition-colors"
                       title="Edit Model"
                     >
                       <Edit3 className="w-3.5 h-3.5" />
                     </button>
                     <button
                       onClick={() => handleDeleteModel(model.id)}
-                      className="p-1 rounded-lg text-slate-500 hover:text-red-400 hover:bg-slate-800 transition-colors"
+                      className="p-1 rounded-lg text-slate-200 hover:text-red-400 hover:bg-slate-800 transition-colors"
                       title="Delete Model"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
@@ -903,7 +903,7 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
                 <h3 className="text-lg font-black text-white tracking-tight mb-1">
                   {model.name}
                 </h3>
-                <p className="text-xs text-slate-400 leading-relaxed mb-3">
+                <p className="text-xs text-slate-300 leading-relaxed mb-3 font-medium">
                   {model.description}
                 </p>
 
@@ -915,14 +915,14 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
                         {model.monthlyFIC === 0 ? 'FREE' : `${model.monthlyFIC} FIC`}
                       </span>
                       {model.monthlyFIC > 0 && (
-                        <span className="text-xs text-slate-400 ml-1">/{model.billingCycle}</span>
+                        <span className="text-xs text-slate-300 font-semibold ml-1">/{model.billingCycle}</span>
                       )}
                     </div>
                     <div className="text-right">
                       <span className="text-xs font-mono font-bold text-amber-400 block">
                         {model.monthlyNaira === 0 ? '₦0' : `₦${model.monthlyNaira.toLocaleString()}`}
                       </span>
-                      <span className="text-[10px] text-slate-500 font-mono">
+                      <span className="text-[10px] text-slate-300 font-mono font-medium">
                         {model.freeTrialDays > 0 ? `${model.freeTrialDays}-Day Free Trial` : 'No Trial'}
                       </span>
                     </div>
@@ -931,11 +931,11 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
 
                 {/* Features List */}
                 <div className="space-y-1.5 mb-5">
-                  <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-2">
+                  <span className="text-[11px] font-bold text-slate-200 uppercase tracking-wider block mb-2">
                     Included Capabilities ({model.features.length}):
                   </span>
                   {model.features.map((feat, idx) => (
-                    <div key={idx} className="flex items-start gap-2 text-xs text-slate-300">
+                    <div key={idx} className="flex items-start gap-2 text-xs text-slate-200 font-medium">
                       <Check className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0 mt-0.5" />
                       <span className="leading-tight">{feat}</span>
                     </div>
@@ -945,7 +945,7 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
 
               {/* Action Buttons */}
               <div className="pt-3 border-t border-slate-800/80 space-y-2">
-                <div className="flex items-center justify-between text-[11px] text-slate-500 mb-1">
+                <div className="flex items-center justify-between text-[11px] text-slate-300 font-medium mb-1">
                   <span>Target: {model.targetPage}</span>
                   <button
                     onClick={() => navigate(model.pageRoute)}
@@ -1005,7 +1005,7 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
               </h3>
               <button
                 onClick={() => setEditingModel(null)}
-                className="text-slate-400 hover:text-white text-sm"
+                className="text-slate-300 hover:text-white text-sm"
               >
                 ✕
               </button>
@@ -1014,7 +1014,7 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
             <form onSubmit={handleSaveEdit} className="space-y-4 text-xs">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-400 mb-1 font-semibold">Tier Name</label>
+                  <label className="block text-slate-200 mb-1 font-bold">Tier Name</label>
                   <input
                     type="text"
                     required
@@ -1025,7 +1025,7 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
                 </div>
 
                 <div>
-                  <label className="block text-slate-400 mb-1 font-semibold">Badge Label</label>
+                  <label className="block text-slate-200 mb-1 font-bold">Badge Label</label>
                   <input
                     type="text"
                     required
@@ -1037,7 +1037,7 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
               </div>
 
               <div>
-                <label className="block text-slate-400 mb-1 font-semibold">Description</label>
+                <label className="block text-slate-200 mb-1 font-bold">Description</label>
                 <textarea
                   rows={2}
                   required
@@ -1049,7 +1049,7 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 <div>
-                  <label className="block text-slate-400 mb-1 font-semibold">Monthly FIC</label>
+                  <label className="block text-slate-200 mb-1 font-bold">Monthly FIC</label>
                   <input
                     type="number"
                     min="0"
@@ -1068,7 +1068,7 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
                 </div>
 
                 <div>
-                  <label className="block text-slate-400 mb-1 font-semibold">Naira (₦)</label>
+                  <label className="block text-slate-200 mb-1 font-bold">Naira (₦)</label>
                   <input
                     type="number"
                     min="0"
@@ -1082,7 +1082,7 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
                 </div>
 
                 <div>
-                  <label className="block text-slate-400 mb-1 font-semibold">Free Trial (Days)</label>
+                  <label className="block text-slate-200 mb-1 font-bold">Free Trial (Days)</label>
                   <input
                     type="number"
                     min="0"
@@ -1096,7 +1096,7 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
                 </div>
 
                 <div>
-                  <label className="block text-slate-400 mb-1 font-semibold">Category</label>
+                  <label className="block text-slate-200 mb-1 font-bold">Category</label>
                   <select
                     value={editingModel.category}
                     onChange={(e) =>
@@ -1115,7 +1115,7 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
               <div className="p-3 rounded-xl bg-slate-950/70 border border-slate-800 flex items-center justify-between">
                 <div>
                   <span className="font-bold text-white block">Free Tier Model</span>
-                  <span className="text-[11px] text-slate-400">
+                  <span className="text-[11px] text-slate-300 font-medium">
                     Designate this model as a 100% Free Tier for testing and community explorer tier.
                   </span>
                 </div>
@@ -1135,7 +1135,7 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
               </div>
 
               <div>
-                <label className="block text-slate-400 mb-1 font-semibold">
+                <label className="block text-slate-200 mb-1 font-bold">
                   Features (One feature per line)
                 </label>
                 <textarea
@@ -1155,7 +1155,7 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
                 <button
                   type="button"
                   onClick={() => setEditingModel(null)}
-                  className="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold"
+                  className="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold"
                 >
                   Cancel
                 </button>

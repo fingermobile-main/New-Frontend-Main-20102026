@@ -60,7 +60,7 @@ export const AIContextualAssistant: React.FC<AIContextualAssistantProps> = ({
                 Score: {analysis.overallScore}/100 • {analysis.viralityPotential}
               </span>
             </div>
-            <p className="text-[11px] text-slate-500 dark:text-slate-400">
+            <p className="text-[11px] text-slate-700 dark:text-slate-300 font-medium">
               Evaluates multi-tier audience resonance, hook strength & timing beyond raw shared graph.
             </p>
           </div>
@@ -129,25 +129,25 @@ export const AIContextualAssistant: React.FC<AIContextualAssistantProps> = ({
           {/* Factor Meters */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px]">
             <div className="bg-white/80 dark:bg-slate-900/80 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800">
-              <span className="text-slate-500 block">Hook Strength</span>
+              <span className="text-slate-600 dark:text-slate-300 block font-medium">Hook Strength</span>
               <span className="font-bold text-slate-800 dark:text-slate-100 text-xs">
                 {analysis.factors.hookStrength}%
               </span>
             </div>
             <div className="bg-white/80 dark:bg-slate-900/80 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800">
-              <span className="text-slate-500 block">Multimedia Richness</span>
+              <span className="text-slate-600 dark:text-slate-300 block font-medium">Multimedia Richness</span>
               <span className="font-bold text-slate-800 dark:text-slate-100 text-xs">
                 {analysis.factors.multimediaRichness}%
               </span>
             </div>
             <div className="bg-white/80 dark:bg-slate-900/80 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800">
-              <span className="text-slate-500 block">Readability Index</span>
+              <span className="text-slate-600 dark:text-slate-300 block font-medium">Readability Index</span>
               <span className="font-bold text-slate-800 dark:text-slate-100 text-xs">
                 {analysis.readabilityScore}/100 ({analysis.estimatedReadingTimeMinutes}m read)
               </span>
             </div>
             <div className="bg-white/80 dark:bg-slate-900/80 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800">
-              <span className="text-slate-500 block">Safety & Compliance</span>
+              <span className="text-slate-600 dark:text-slate-300 block font-medium">Safety & Compliance</span>
               <span className="font-bold text-emerald-600 dark:text-emerald-400 text-xs flex items-center gap-1">
                 <ShieldCheck className="w-3.5 h-3.5" /> 100% Passed
               </span>
@@ -160,7 +160,7 @@ export const AIContextualAssistant: React.FC<AIContextualAssistantProps> = ({
               Contextual Growth Suggestions:
             </span>
             {analysis.actionableSuggestions.map((sug, i) => (
-              <div key={i} className="flex items-start gap-1.5 text-slate-600 dark:text-slate-400">
+              <div key={i} className="flex items-start gap-1.5 text-slate-700 dark:text-slate-300 font-medium">
                 <CheckCircle2 className="w-3.5 h-3.5 text-orange-500 flex-shrink-0 mt-0.5" />
                 <span>{sug}</span>
               </div>

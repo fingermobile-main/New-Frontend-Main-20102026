@@ -125,11 +125,11 @@ export const DPODashboardPage: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="p-6 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl flex items-center justify-between">
             <div>
-              <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Compliance Health Gauge</p>
+              <p className="text-xs font-bold text-slate-300 uppercase tracking-wider">Compliance Health Gauge</p>
               <h3 className="text-3xl font-black text-emerald-400 mt-2">
                 {report?.complianceHealthScore || '99.4%'}
               </h3>
-              <p className="text-[11px] text-slate-400 mt-1">NDPA 2023 & Cybercrimes 2024</p>
+              <p className="text-[11px] text-slate-300 font-medium mt-1">NDPA 2023 & Cybercrimes 2024</p>
             </div>
             <div className="w-16 h-16 rounded-full border-4 border-emerald-500/30 border-t-emerald-400 flex items-center justify-center font-black text-xs">
               ✓ PASS
@@ -138,20 +138,20 @@ export const DPODashboardPage: React.FC = () => {
 
           <div className="p-6 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl flex items-center justify-between">
             <div>
-              <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">72h NDPC Regulatory Clock</p>
+              <p className="text-xs font-bold text-slate-300 uppercase tracking-wider">72h NDPC Regulatory Clock</p>
               <h3 className="text-3xl font-black text-amber-400 mt-2 font-mono">71:42:18</h3>
-              <p className="text-[11px] text-slate-400 mt-1">Zero Open Breach Incidents</p>
+              <p className="text-[11px] text-slate-300 font-medium mt-1">Zero Open Breach Incidents</p>
             </div>
             <div className="text-3xl animate-pulse">⏱️</div>
           </div>
 
           <div className="p-6 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl flex items-center justify-between">
             <div>
-              <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Dead Man&apos;s Switch</p>
+              <p className="text-xs font-bold text-slate-300 uppercase tracking-wider">Dead Man&apos;s Switch</p>
               <h3 className="text-3xl font-black text-rose-400 mt-2 font-mono">
                 {report?.deadMansSwitchStatus || 'ARMED'}
               </h3>
-              <p className="text-[11px] text-slate-400 mt-1">Encrypted Emergency Purge Hook</p>
+              <p className="text-[11px] text-slate-300 font-medium mt-1">Encrypted Emergency Purge Hook</p>
             </div>
             <div className="text-3xl">🔒</div>
           </div>
@@ -179,7 +179,7 @@ export const DPODashboardPage: React.FC = () => {
                   {circuitBreakerOpen ? 'Circuit Breaker OPEN' : 'Normal Operation'}
                 </span>
               </div>
-              <p className="text-xs text-slate-400 mt-1">
+              <p className="text-xs text-slate-300 font-medium mt-1">
                 Isolate compromised engagement subsystems without shutting down Tier 1 Core authentication and ledger.
               </p>
             </div>
@@ -200,7 +200,7 @@ export const DPODashboardPage: React.FC = () => {
                   <option value="tier3_engagement_kill">Tier 3: Engagement Instant Kill (Viral feeds, live chat)</option>
                   <option value="tier2_social_readonly">Tier 2: Social Read-Only (Disables writes & media uploads)</option>
                 </select>
-                <p className="text-[10px] text-slate-500 mt-1">Tier 1 Core is immutable and un-killable by design.</p>
+                <p className="text-[10px] text-slate-300 font-medium mt-1">Tier 1 Core is immutable and un-killable by design.</p>
               </div>
 
               <div>
@@ -233,7 +233,7 @@ export const DPODashboardPage: React.FC = () => {
 
                 <div className="mt-4 space-y-2">
                   <div className="flex justify-between text-xs">
-                    <span className="text-slate-400">Recovery Percentage:</span>
+                    <span className="text-slate-300 font-medium">Recovery Percentage:</span>
                     <span className="font-mono font-black text-emerald-400">{recoveryPercent}%</span>
                   </div>
                   <input
@@ -245,7 +245,7 @@ export const DPODashboardPage: React.FC = () => {
                     onChange={(e) => setRecoveryPercent(Number(e.target.value))}
                     className="w-full accent-emerald-500 cursor-pointer"
                   />
-                  <div className="flex justify-between text-[10px] text-slate-500 font-mono">
+                  <div className="flex justify-between text-[10px] text-slate-300 font-medium font-mono">
                     <span>Alpha: 5%</span>
                     <span>Canary: 25%</span>
                     <span>Full: 100%</span>
@@ -270,7 +270,7 @@ export const DPODashboardPage: React.FC = () => {
             <h3 className="text-base font-black text-white flex items-center gap-2">
               <span>📋</span> Official Regulatory CAR Audit Package
             </h3>
-            <p className="text-xs text-slate-400 mt-1 max-w-xl">
+            <p className="text-xs text-slate-300 font-medium mt-1 max-w-xl">
               Export comprehensive compliance audit records, DSAR resolution logs, and WORM-signed killswitch actions formatted for NDPC and statutory regulatory submissions.
             </p>
           </div>

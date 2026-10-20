@@ -21,6 +21,17 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) 
     return <Navigate to="/login" replace />;
   }
 
+  // Redirect to onboarding if not onboarded
+  const isOnboarded = Boolean(
+    user &&
+    (user.onboardingComplete || (user as any).onboarding_completed) &&
+    (localStorage.getItem('onboardingComplete') === 'true' || localStorage.getItem('hasCompletedOnboarding') === 'true')
+  );
+
+  if (!isOnboarded) {
+    return <Navigate to="/onboarding" replace />;
+  }
+
   // Rest of the component implementation...
   return (
     <div className={`flex h-screen ${darkMode ? 'dark bg-gray-900' : 'bg-gray-50'}`}>

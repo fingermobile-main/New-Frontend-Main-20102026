@@ -231,7 +231,7 @@ const CouponsPage: React.FC = () => {
           <div className="mt-6 pt-6 border-t border-slate-200">
             <form onSubmit={handleRedeemCode} className="max-w-2xl flex flex-col sm:flex-row gap-3">
               <div className="relative flex-1">
-                <Tag className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                <Tag className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-600" />
                 <input
                   type="text"
                   value={promoCodeInput}
@@ -335,7 +335,7 @@ const CouponsPage: React.FC = () => {
                 <div className="space-y-3 pt-3 border-t border-slate-200">
                   <div className="p-3 rounded-2xl bg-slate-50 border border-slate-300 flex items-center justify-between">
                     <div>
-                      <span className="block text-[10px] font-bold text-slate-500 uppercase">Promo Code</span>
+                      <span className="block text-[10px] font-bold text-slate-700 uppercase">Promo Code</span>
                       <strong className="text-sm font-mono font-black text-slate-900 tracking-wider">
                         {coupon.code}
                       </strong>

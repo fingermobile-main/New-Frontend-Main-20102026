@@ -260,7 +260,7 @@ const MiiPage: React.FC = () => {
                       Mii
                       </div>
                     </div>
-                    <div className="text-xs text-gray-600 dark:text-gray-400">
+                    <div className="text-xs text-slate-700 dark:text-slate-300 font-medium">
                       <span className="font-bold text-gray-900 dark:text-white block">Pulsating Ring Active</span>
                     Signals active 48h Mii Disappearing Moments available.
                     </div>
@@ -450,7 +450,7 @@ const MiiPage: React.FC = () => {
                       }`}
                     >
                       <p>{m.text}</p>
-                      <span className={`text-[10px] mt-1 block text-right ${m.sender === 'me' ? 'text-emerald-100' : 'text-gray-400'}`}>
+                      <span className={`text-[10px] mt-1 block text-right ${m.sender === 'me' ? 'text-emerald-100' : 'text-slate-600 font-medium'}`}>
                         {m.timestamp}
                       </span>
                     </div>

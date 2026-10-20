@@ -1,73 +1,152 @@
-// SuperViAPIService - A service for 3D visualization and character rendering
-// This service handles 3D character models animations, and rendering using Three.js
+// ============================================================================
+// SuperVi API & 3D Visualization Service
+// Connects frontend runner to backend APIs with reliable offline/fallback data
+// ============================================================================
 
-// Import Three.js libraries with proper type definitions
+import axios from 'axios';
 import * as THREE from 'three';
+import { SuperViCharacter, SuperViAchievement, SuperViLeaderboardRecord, SuperViDailyChallenge } from '../types/supervi';
 
-// We need to dynamically import these ESM modules
-let GLTFLoaderClass: any;
-let OrbitControlsClass: any;
+const API_BASE = process.env.REACT_APP_API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
 
-// Initialize loaders asynchronously
-async function initializeLoaders() {
-  if (!GLTFLoaderClass) {
-    // @ts-ignore
-    const gltfModule = await import('three/addons/loaders/GLTFLoader.js');
-    GLTFLoaderClass = gltfModule.GLTFLoader;
+// Fallback seed for The Six SuperVi Heroes
+const SEED_CHARACTERS: SuperViCharacter[] = [
+  {
+    id: 'zara_zephyr',
+    name: 'Zara the Zephyr',
+    identity_label: 'Black Hausa Female Superhero',
+    description: 'Protective, brave guardian spirit who levitates above flames and descends in a fiery streak.',
+    character_class: 'Guardian of Heritage',
+    origin_city: 'Abuja, Lagos, Kano (Nigeria)',
+    suit_style: 'Skin-tight red spandex with gold light trimmings, opals, knee-length flowing hijab',
+    orb_color: '#EF4444',
+    orb_symbols: 'Fiery glowing red Orb with Egyptian hieroglyphs floating around it',
+    avatar_url: '/images/characters/zara.png',
+    abilities: {
+      passive: ['Levitates above flames', 'Fiery streak'],
+      active: ['Fire-based attack'],
+      orb_ability: {
+        name: 'Fire Dash',
+        description: 'Creates a fiery path burning obstacles'
+      }
+    },
+    unlock_method: 'Starting Character',
+    is_unlocked: true
+  },
+  {
+    id: 'tenko_gen',
+    name: 'Tenko-Gen',
+    identity_label: 'Brown-skinned Fulani Female Superhero',
+    description: 'Strategic, observant scout and messenger who sees dangers from afar.',
+    character_class: 'Wisdom Keeper',
+    origin_city: 'Abuja, Lagos, Kano (Nigeria)',
+    suit_style: 'Blue urban African spandex with gold trimmings, long braided hair with hijab',
+    orb_color: '#3B82F6',
+    orb_symbols: 'Blue glowing Orb with ancient Egyptian protective glyphs',
+    avatar_url: '/images/characters/tenko.png',
+    abilities: {
+      passive: ['Enhanced vision for pathfinding', 'Navigates high hurdles'],
+      active: ['Foresight trajectory'],
+      orb_ability: {
+        name: 'Neck Extension',
+        description: 'Reaches high platforms and airborne bonus fruits'
+      }
+    },
+    unlock_method: 'Complete story missions',
+    is_unlocked: false
+  },
+  {
+    id: 'king_guardian',
+    name: 'King the Guardian',
+    identity_label: 'Black Yoruba Male Superhero',
+    description: 'Protector of the innocent. Smashes through obstacles with unmatched physical force.',
+    character_class: 'Unity Champion',
+    origin_city: 'Abuja, Lagos, Kano (Nigeria)',
+    suit_style: 'Green urban African spandex with gold trimmings, long dreadlocks, green beads',
+    orb_color: '#10B981',
+    orb_symbols: 'Green glowing Orb with Egyptian warrior glyphs',
+    avatar_url: '/images/characters/king.png',
+    abilities: {
+      passive: ['Smashes through walls and barriers', 'Extra durability'],
+      active: ['Rescue trapped civilians'],
+      orb_ability: {
+        name: 'Wall Break',
+        description: 'Destroys barriers and trains to create clear paths'
+      }
+    },
+    unlock_method: 'Starting Character',
+    is_unlocked: true
+  },
+  {
+    id: 'phantom_shadow',
+    name: 'Phantom Shadow',
+    identity_label: 'Ibo Female Superhero',
+    description: 'Mysterious spirit guide who moves between dimensions to protect the realm.',
+    character_class: 'Future Visionary',
+    origin_city: 'Abuja, Lagos, Kano (Nigeria)',
+    suit_style: 'Orange urban African spandex, orange and green beads on waist and arms',
+    orb_color: '#F97316',
+    orb_symbols: 'Orange glowing Orb with spinning Egyptian phase glyphs',
+    avatar_url: '/images/characters/phantom.png',
+    abilities: {
+      passive: ['Phases through solid obstacles', 'Invisibility burst'],
+      active: ['Clears smoke and fog'],
+      orb_ability: {
+        name: 'Phase Shift',
+        description: 'Passes harmlessly through oncoming trains and falling trees'
+      }
+    },
+    unlock_method: 'Achieve 10,000+ score',
+    is_unlocked: false
+  },
+  {
+    id: 'bola_brave',
+    name: 'Bola the Brave',
+    identity_label: 'Ibo Female Superhero',
+    description: 'Fearless, caring protector who carries the vulnerable with lightning speed.',
+    character_class: 'Bridge Builder',
+    origin_city: 'Abuja, Lagos, Kano (Nigeria)',
+    suit_style: 'White urban African spandex with gold trimmings, white and red beads',
+    orb_color: '#F8FAFC',
+    orb_symbols: 'White glowing Orb with Egyptian symbols spinning violently',
+    avatar_url: '/images/characters/bola.png',
+    abilities: {
+      passive: ['Lightning speed movement', 'Protective aura'],
+      active: ['High-speed dash'],
+      orb_ability: {
+        name: 'Lightning Dash',
+        description: 'Ultra-fast dash that auto-vacuums nearby fruits'
+      }
+    },
+    unlock_method: 'Collect 5,000 FIC tokens',
+    is_unlocked: false
+  },
+  {
+    id: 'neoma_healer',
+    name: 'Neoma the Healer',
+    identity_label: 'Light-skin Ibo Female Superhero',
+    description: 'Nurturing, wise healer with ancient herbal lore and protective barrier mastery.',
+    character_class: 'Innovation Pioneer',
+    origin_city: 'Abuja, Lagos, Kano (Nigeria)',
+    suit_style: 'Leafy green fruity colored spandex, long braids, rotating leafy beads',
+    orb_color: '#84CC16',
+    orb_symbols: 'Multi-color glowing Orb with Egyptian symbols gently pulsing',
+    avatar_url: '/images/characters/neoma.png',
+    abilities: {
+      passive: ['Regenerates extra lives', 'Absorbs stun effects'],
+      active: ['Barrier creation'],
+      orb_ability: {
+        name: 'Protective Bubbles',
+        description: 'Creates fruity shields absorbing fatal impacts'
+      }
+    },
+    unlock_method: 'Complete 7 Daily Challenges',
+    is_unlocked: false
   }
-  if (!OrbitControlsClass) {
-    // @ts-ignore
-    const orbitModule = await import('three/addons/controls/OrbitControls.js');
-    OrbitControlsClass = orbitModule.OrbitControls;
-  }
-}
-
-// Define the AnimatedGroup type as extending the basic Object3D type conceptually
-interface AnimatedGroup extends THREE.Object3D {
-  mixer?: THREE.AnimationMixer;
-}
-
-// Define the VoiceLine interface to match the expected structure
-interface VoiceLine {
-  id: string; text: string;
-  category: string; audioUrl: string;
-}
-
-interface CharacterModel {
-  id: string; name: string;
-  modelUrl: string; position: THREE.Vector3;
-  rotation: THREE.Euler;
-  scale: THREE.Vector3;
-  animations?: unknown;
-}
-
-interface SuperVi3DRendererOptions {
-  containerId: string;
-  width?: number;
-  height?: number;
-  enableControls?: boolean;
-  enableShadows?: boolean;
-  backgroundColor?: number;
-}
+];
 
 class SuperViApiService {
   private static instance: SuperViApiService;
-  private scene?: THREE.Scene;
-  private camera?: THREE.PerspectiveCamera;
-  private renderer?: THREE.WebGLRenderer;
-  private container?: HTMLElement;
-  private clock?: THREE.Clock;
-  private controls?: any; // OrbitControls type
-  private loader?: any; // GLTFLoader type
-  private characterModels: Map<string, AnimatedGroup> = new Map();
-  private animationMixers: THREE.AnimationMixer[] = [];
-  private options?: Required<SuperVi3DRendererOptions>;
-  private animationFrameId?: number;
-
-  private constructor() {
-    // Private constructor to prevent direct instantiation
-    // Loader will be initialized when needed
-  }
 
   public static getInstance(): SuperViApiService {
     if (!SuperViApiService.instance) {
@@ -76,539 +155,217 @@ class SuperViApiService {
     return SuperViApiService.instance;
   }
 
-  // Initialize the 3D renderer
-  public async initialize3DRenderer(
-    options: SuperVi3DRendererOptions,
-  ): Promise<void> {
-    await initializeLoaders();
-
-    this.options = {width: window.innerWidth,
-      height: window.innerHeight,
-      enableControls: false, enableShadows: true,
-      backgroundColor: 0x1e1e2e,
-      ...options
-    };
-    this.clock = new THREE.Clock();
-    this.loader = new GLTFLoaderClass();
-    this.init3DRenderer();
-  }
-
-  private init3DRenderer(): void {
-    if (!this.options) {
-      throw new Error('Options not initialized');
-    }
-
-    // Get container element
-    const container = document.getElementById(
-      this.options.containerId,
-    );
-    if (!container) {
-      throw new Error(
-        `Container with id ${this.options.containerId} not found`,
-      );
-    }
-    this.container = container;
-
-    // Create scene
-    this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(this.options.backgroundColor);
-    this.scene.fog = new THREE.Fog(0x1e1e2e, 10, 100);
-
-    // Create camera
-    this.camera = new THREE.PerspectiveCamera(
-      75,
-      this.options.width / this.options.height,
-      0.1,
-      1000,
-    );
-    this.camera.position.set(0, 1, 5);
-
-    // Create renderer
-    this.renderer = new THREE.WebGLRenderer({antialias: true });
-    this.renderer.setSize(this.options.width, this.options.height);
-    this.renderer.shadowMap.enabled = this.options.enableShadows;
-    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    this.renderer.setPixelRatio(window.devicePixelRatio);
-
-    // Add to container
-    if (this.container) {
-      this.container.appendChild(this.renderer.domElement);
-    }
-
-    // Add lighting
-    this.setupLighting();
-
-    // Add controls if enabled
-    if (this.options.enableControls && this.camera && this.renderer && OrbitControlsClass) {
-      this.controls = new OrbitControlsClass(this.camera, this.renderer.domElement);
-      if (this.controls) {
-        this.controls.enableDamping = true;
-        this.controls.dampingFactor = 0.05;
+  /**
+   * Fetch all 6 characters from backend or fallback to seeded data
+   */
+  async getCharacters(): Promise<SuperViCharacter[]> {
+    try {
+      const res = await axios.get(`${API_BASE}/supervi/characters`, { timeout: 3000 });
+      if (res.data?.success && Array.isArray(res.data.data) && res.data.data.length > 0) {
+        return res.data.data;
       }
+    } catch (_) {
+      // Graceful fallback to seeded characters
     }
-
-    // Handle window resize
-    window.addEventListener('resize', this.onWindowResize.bind(this));
-
-    // Start animation loop
-    this.animate();
+    return SEED_CHARACTERS;
   }
 
-  private setupLighting(): void {
-    if (!this.scene) return;
-
-    // Ambient light
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-    this.scene.add(ambientLight);
-
-    // Directional light
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-    directionalLight.position.set(5, 10, 7);
-    directionalLight.castShadow = true;
-    this.scene.add(directionalLight);
-
-    // Hemisphere light for more natural lighting
-    const hemisphereLight = new THREE.HemisphereLight(0xffffbb, 0x080820, 0.5);
-    this.scene.add(hemisphereLight);
-  }
-
-  private onWindowResize(): void {
-    if (!this.container || !this.camera || !this.renderer) return;
-
-    this.camera.aspect =
-      this.container.clientWidth / this.container.clientHeight;
-    this.camera.updateProjectionMatrix();
-    this.renderer.setSize(
-      this.container.clientWidth,
-      this.container.clientHeight,
-    );
-  }
-
-  public async loadCharacterModel(
-    character: CharacterModel,
-  ): Promise<AnimatedGroup> {
-    if (!this.loader) {
-      throw new Error('Loader not initialized');
+  /**
+   * Start a new game session on backend
+   */
+  async startSession(userId: string, gameMode = 'classic', characterId = 'zara_zephyr'): Promise<{ id: string }> {
+    try {
+      const res = await axios.post(`${API_BASE}/supervi/sessions/start`, {
+        userId,
+        gameMode,
+        characterId
+      }, { timeout: 3000 });
+      if (res.data?.success && res.data.data?.id) {
+        return { id: res.data.data.id };
+      }
+    } catch (_) {
+      // Offline fallback session id
     }
+    return { id: `local_session_${Date.now()}` };
+  }
 
-    return new Promise((resolve, reject) => {
-      this.loader!.load(
-        character.modelUrl,
-        (
-          gltf: any) => {
-          if (!this.scene) {
-            reject(new Error('Scene not initialized'));
-            return;
-          }
+  /**
+   * End session and get FIC tokens & stats
+   */
+  async endSession(
+    sessionId: string,
+    stats: {
+      finalScore: number;
+      levelReached: number;
+      durationSeconds: number;
+      comboCount: number;
+      achievementsUnlocked?: string[];
+      powerupsUsed?: string[];
+    }
+  ): Promise<{ ficTokensEarned: number }> {
+    try {
+      const res = await axios.post(`${API_BASE}/supervi/sessions/${sessionId}/end`, stats, { timeout: 3000 });
+      if (res.data?.success && res.data.data?.rewards) {
+        return { ficTokensEarned: res.data.data.rewards.ficTokensEarned };
+      }
+    } catch (_) {
+      // Local fallback calculation
+    }
+    const earnedFic = Math.floor(stats.finalScore / 500) + (stats.comboCount * 2);
+    return { ficTokensEarned: earnedFic };
+  }
 
-          const model = gltf.scene;
-
-          // Check if model has the required properties before copying
-          if (model && 'position' in model && character.position) {
-            model.position.copy(character.position);
-          }
-          if (model && 'rotation' in model && character.rotation) {
-            model.rotation.copy(character.rotation);
-          }
-          if (model && 'scale' in model && character.scale) {
-            model.scale.copy(character.scale);
-          }
-
-          model.name = character.id;
-
-          // Enable shadows
-          model.traverse((
-            child: any) => {
-            if (child.isMesh) {
-              child.castShadow = true;
-              child.receiveShadow = true;
-            }
-          });
-
-          // Add animations if available
-          if (gltf.animations && gltf.animations.length > 0) {
-            const mixer = new THREE.AnimationMixer(model);
-            // Store mixer directly on the model for easy access
-            (model as AnimatedGroup).mixer = mixer;
-            this.animationMixers.push(mixer);
-
-            // Play the first animation by default or handle specific default animation
-            const defaultClip = gltf.animations[0];
-            if (defaultClip) {
-              const action = mixer.clipAction(defaultClip);
-              action.play();
-            }
-          }
-
-          this.scene.add(model);
-          this.characterModels.set(character.id, model as AnimatedGroup);
-          resolve(model as AnimatedGroup);
+  /**
+   * Submit high score to global leaderboard (supports object or positional arguments)
+   */
+  async submitScore(
+    scoreOrData:
+      | string
+      | {
+          score: number;
+          distance?: number;
+          coins_collected?: number;
+          character_id?: string;
+          highest_combo?: number;
+          leaderboard_id?: string;
+          username?: string;
+          level?: number;
         },
-        undefined,
-        (
-          error: any) => {
-          reject(error instanceof Error ? error : new Error(String(error)));
-        },
-      );
-    });
-  }
-
-  public getCharacterModel(
-    characterId: string): AnimatedGroup | undefined {
-    return this.characterModels.get(characterId);
-  }
-
-  public removeCharacterModel(
-    characterId: string): void {
-    const model = this.characterModels.get(characterId);
-    if (model && this.scene) {
-      this.scene.remove(model);
-      this.characterModels.delete(characterId);
-    }
-  }
-
-  public updateCharacterPosition(
-    characterId: string, position: THREE.Vector3,
-  ): void {
-    const model = this.characterModels.get(characterId) as any;
-    if (model && model.position) {
-      model.position.copy(position);
-    }
-  }
-
-  public updateCharacterRotation(
-    characterId: string, rotation: THREE.Euler,
-  ): void {
-    const model = this.characterModels.get(characterId) as any;
-    if (model && model.rotation) {
-      model.rotation.copy(rotation);
-    }
-  }
-
-  public playCharacterAnimation(
-    characterId: string, animationName: string,
-  ): void {
-    const model = this.characterModels.get(characterId);
-    if (model && model.mixer) {
-      const mixer = model.mixer;
-      // Get animations from the model's userData or other storage
-      const animations: any[] = (model as any).userData?.animations || [];
-
-      const clip = animations.find((
-        anim: any) => anim.name === animationName);
-
-      if (clip) {
-        mixer.stopAllAction(); // Stop all current actions
-        const action = mixer.clipAction(clip);
-        action.play();
-        // Removed console.log to comply with no-console rule
+    score?: number,
+    level?: number,
+    characterId?: string,
+    username = 'Runner'
+  ): Promise<boolean> {
+    try {
+      if (typeof scoreOrData === 'object' && scoreOrData !== null) {
+        const payload = scoreOrData;
+        const targetLeaderboard = payload.leaderboard_id || 'global_classic';
+        const res = await axios.post(`${API_BASE}/supervi-leaderboards/${targetLeaderboard}/submit-score`, {
+          score: payload.score,
+          level: payload.level || 1,
+          characterId: payload.character_id || 'zara_zephyr',
+          username: payload.username || 'Runner',
+          distance: payload.distance,
+          coins_collected: payload.coins_collected,
+          highest_combo: payload.highest_combo
+        }, { timeout: 3000 });
+        return !!res.data?.success;
       } else {
-        // Removed console.warn to comply with no-console rule
+        const leaderboardId = scoreOrData;
+        const res = await axios.post(`${API_BASE}/supervi-leaderboards/${leaderboardId}/submit-score`, {
+          score,
+          level,
+          characterId,
+          username
+        }, { timeout: 3000 });
+        return !!res.data?.success;
       }
-    } else {
-      // Removed console.warn to comply with no-console rule
+    } catch (_) {
+      return false;
     }
   }
 
-  public setCharacterVisibility(
-    characterId: string, visible: boolean): void {
-    const model = this.characterModels.get(characterId);
-    if (model && 'visible' in model) {
-      model.visible = visible;
-    }
+  /**
+   * Fetch leaderboard rankings with normalized SuperViLeaderboardEntry
+   */
+  async getLeaderboard(leaderboardId = 'global_classic', limit = 20): Promise<import('../types/supervi').SuperViLeaderboardEntry[]> {
+    const records = await this.getRankings(leaderboardId, limit);
+    return records.map((r) => ({
+      rank: r.rank,
+      player_name: r.username,
+      avatar_url: r.avatar_url,
+      score: r.score,
+      level: r.level,
+      distance: (r as any).distance || Math.floor(r.score * 0.8),
+      highest_combo: (r as any).highest_combo || 14,
+      character_name: r.character_id,
+      character_id: r.character_id
+    }));
   }
 
-  private animate(): void {
-    if (!this.clock) return;
-
-    this.animationFrameId = requestAnimationFrame(this.animate.bind(this));
-
-    const delta = this.clock.getDelta();
-
-    // Update animation mixers
-    this.animationMixers.forEach((
-      mixer: THREE.AnimationMixer) => {
-      mixer.update(delta);
-    });
-
-    // Update controls
-    if (this.controls) {
-      this.controls.update();
-    }
-
-    // Render scene
-    if (this.renderer && this.camera && this.scene) {
-      this.renderer.render(this.scene, this.camera);
-    }
-  }
-
-  public getScene(): THREE.Scene | undefined {
-    return this.scene;
-  }
-
-  public getCamera(): THREE.PerspectiveCamera | undefined {
-    return this.camera;
-  }
-
-  public getRenderer(): THREE.WebGLRenderer | undefined {
-    return this.renderer;
-  }
-
-  public dispose(): void {
-    // Cancel animation frame
-    if (this.animationFrameId) {
-      cancelAnimationFrame(this.animationFrameId);
-    }
-
-    // Dispose of resources
-    this.animationMixers.forEach((
-      mixer: THREE.AnimationMixer) => mixer.stopAllAction());
-    this.animationMixers = [];
-
-    // Dispose of renderer
-    if (this.renderer) {
-      this.renderer.dispose();
-    }
-
-    // Remove from DOM
-    if (this.container && this.renderer?.domElement) {
-      if (this.container.contains(this.renderer.domElement)) {
-        this.container.removeChild(this.renderer.domElement);
+  /**
+   * Synthesize Speech for voice lines with Web Speech API
+   */
+  async synthesizeSpeech(text: string, settings?: any): Promise<string> {
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      try {
+        const utterance = new SpeechSynthesisUtterance(text);
+        if (settings?.pitch) utterance.pitch = settings.pitch;
+        utterance.rate = 1.05;
+        window.speechSynthesis.speak(utterance);
+      } catch (_) {
+        // Fallback
       }
     }
-
-    // Remove event listeners
-    window.removeEventListener('resize', this.onWindowResize.bind(this));
+    return '';
   }
 
-  // Add methods for SuperVi API interactions here
-  // For, example:
-  async getSuperViData(): Promise<unknown> {
-    // Implement API call
-    return {};
-  }
-
-  async createGameSession(
-    memberId: string,
-    gameMode = 'classic',
-  ): Promise<unknown> {
-    // Simulate API call to create a new game session
-    // Removed console.log to comply with no-console rule
-    return {sessionId: `session_${Date.now()}`,
-      memberId,
-      gameMode,
-      sessionStart: new Date(),
-      isActive: true
-    };
-  }
-
-  async updateGameSession(
-    sessionId: string, updates: unknown): Promise<unknown> {
-    // Simulate API call to update an existing game session
-    // Removed console.log to comply with no-console rule
-    return {success: true,
-      sessionId,
-      updates };
-  }
-
-  async endGameSession(
-    sessionId: string, finalScore: number,
-    levelReached: number,
-  ): Promise<unknown> {
-    // Simulate API call to end a game session and record final stats
-    // Removed console.log to comply with no-console rule
-    return {success: true,
-      sessionId,
-      finalScore,
-      levelReached };
-  }
-
-  async getCharacterById(
-    characterId: string): Promise<unknown> {
-    // Simulate API call to get character details
-    return {id: characterId, name: 'SuperVi Hero',
-      description: 'A powerful hero with special abilities',
-      characterClass: 'Guardian of Heritage',
-      originCity: 'Lagos',
-      abilities: {
-        specialPower: 'Energy Shield' },
-      avatarUrl: '/images/character.png'
-    };
-  }
-
-  async getmemberCharacters(
-    _memberId: string): Promise<unknown[]> {
-    // Simulate API call to get all characters owned by a member
+  /**
+   * Fetch leaderboard rankings
+   */
+  async getRankings(leaderboardId = 'global_classic', limit = 20): Promise<SuperViLeaderboardRecord[]> {
+    try {
+      const res = await axios.get(`${API_BASE}/supervi-leaderboards/${leaderboardId}/rankings?limit=${limit}`, { timeout: 3000 });
+      if (res.data?.success && Array.isArray(res.data.data)) {
+        return res.data.data;
+      }
+    } catch (_) {
+      // Fallback sample rankings
+    }
     return [
-      {id: 'char_1',
-        name: 'Guardian of Heritage',
-        level: 5, experiencePoints: 1200,
-        equipped: true
-      },
-      {id: 'char_2',
-        name: 'Bridge Builder',
-        level: 3, experiencePoints: 650,
-        equipped: false
+      { id: '1', leaderboard_id: leaderboardId, user_id: 'u1', username: 'KanoSpeedster', score: 28450, level: 8, rank: 1, character_id: 'zara_zephyr', created_at: new Date().toISOString() },
+      { id: '2', leaderboard_id: leaderboardId, user_id: 'u2', username: 'LagosThunder', score: 21300, level: 6, rank: 2, character_id: 'king_guardian', created_at: new Date().toISOString() },
+      { id: '3', leaderboard_id: leaderboardId, user_id: 'u3', username: 'AbujaGlider', score: 17820, level: 5, rank: 3, character_id: 'bola_brave', created_at: new Date().toISOString() },
+      { id: '4', leaderboard_id: leaderboardId, user_id: 'u4', username: 'NileRunner', score: 14600, level: 4, rank: 4, character_id: 'tenko_gen', created_at: new Date().toISOString() },
+      { id: '5', leaderboard_id: leaderboardId, user_id: 'u5', username: 'SavannahHero', score: 11950, level: 3, rank: 5, character_id: 'neoma_healer', created_at: new Date().toISOString() }
+    ];
+  }
+
+  /**
+   * Fetch achievements
+   */
+  async getAchievements(): Promise<SuperViAchievement[]> {
+    try {
+      const res = await axios.get(`${API_BASE}/supervi-achievements`, { timeout: 3000 });
+      if (res.data?.success && Array.isArray(res.data.data)) {
+        return res.data.data.map((item: any) => ({
+          id: item.id,
+          name: item.name,
+          description: item.description,
+          icon: item.icon || '🏆',
+          category: item.category || 'general',
+          points: item.points || 10,
+          unlocked: !!item.is_unlocked
+        }));
       }
-    ];
-  }
-
-  async getAchievements(): Promise<unknown[]> {
-    // Simulate API call to get all available achievements
-    return [
-      {id: 'ach_1',
-        name: 'First Combo',
-        description: 'Perform your first combo',
-        category: 'combo_small',
-        points: 10
-      },
-      {id: 'ach_2',
-        name: 'Master Stunner',
-        description: 'Stun opponents 10 times',
-        category: 'stun',
-        points: 50
-      }
-    ];
-  }
-
-  async getmemberAchievements(
-    _memberId: string): Promise<unknown[]> {
-    // Simulate API call to get achievements unlocked by a member
-    return [
-      {id: 'ach_1',
-        name: 'First Combo',
-        unlockedAt: new Date(),
-        isUnlocked: true
-      }
-    ];
-  }
-
-  async getLeaderboard(gameMode = 'classic', _region = 'global'): Promise<unknown[]> {
-    // Simulate API call to get leaderboard data
-    // Removed console.log to comply with no-console rule
-    return [
-      {memberId: 'member1',
-        membername: 'Player1',
-        score: 15000, rank: 1 },
-      {memberId: 'member2',
-        membername: 'Player2',
-        score: 12500, rank: 2 },
-      {memberId: 'member3',
-        membername: 'Player3',
-        score: 10200, rank: 3 },
-      {memberId: 'member4',
-        membername: 'Player4',
-        score: 9800, rank: 4 },
-      {memberId: 'member5',
-        membername: 'Player5',
-        score: 8750, rank: 5 }
-    ];
-  }
-
-  async getmemberInventory(
-    _memberId: string): Promise<unknown[]> {
-    // Simulate API call to get member's inventory
-    return [
-      {itemId: 'pow_1',
-        itemType: 'powerup',
-        quantity: 3 },
-      {itemId: 'coin_100',
-        itemType: 'currency',
-        quantity: 1250 }
-    ];
-  }
-
-  async getmemberChallengeProgress(
-    memberId: string, challengeId: string): Promise<unknown> {
-    // Simulate API call to get member's progress on a specific challenge
-    return {
-      memberId,
-      challengeId,
-      currentProgress: 3, isCompleted: false
-    };
-  }
-
-  async createMultiplayerRoom(
-    hostmemberId: string, gameMode: string, maxPlayers = 4): Promise<unknown> {
-    // Simulate API call to create a multiplayer game room
-    return {roomId: `room_${Date.now()}`,
-      roomCode: Math.random().toString(36).substring(2, 8).toUpperCase(),
-      hostmemberId,
-      gameMode,
-      maxPlayers,
-      currentPlayers: 1, status: 'waiting'
-    };
-  }
-
-  async joinMultiplayerRoom(
-    roomCode: string, _memberId: string): Promise<unknown> {
-    // Simulate API call to join a multiplayer game room
-    return {success: true, roomId: `room_${Date.now()}`,
-      roomCode,
-      memberId: _memberId, status: 'joined'
-    };
-  }
-
-  async getVoiceLines(category?: string): Promise<VoiceLine[]> {
-    // Simulate API call to get voice lines
-    const allVoiceLines: VoiceLine[] = [
-      {id: 'vl_1',
-        text: 'SuperVi!',
-        category: 'supervi',
-        audioUrl: '/audio/supervi.mp3'
-      },
-      {id: 'vl_2',
-        text: 'Small combo!',
-        category: 'combo_small',
-        audioUrl: '/audio/small_combo.mp3'
-      },
-      {id: 'vl_3',
-        text: 'Great combo!',
-        category: 'combo_large',
-        audioUrl: '/audio/great_combo.mp3'
-      },
-      {id: 'vl_4',
-        text: 'Colossal combo!',
-        category: 'combo_colossal',
-        audioUrl: '/audio/colossal_combo.mp3'
-      },
-      {id: 'vl_5',
-        text: 'Stun activated!',
-        category: 'stun',
-        audioUrl: '/audio/stun.mp3'
-      }
-    ];
-
-    if (category) {
-      return allVoiceLines.filter((vl) => vl.category === category);
+    } catch (_) {
+      // Fallback
     }
-    return allVoiceLines;
+    return [
+      { id: 'ach_combo_small', name: 'Small Combo', description: 'Trigger your first 3x move chain combo', icon: '⚡', category: 'combo_small', points: 15, unlocked: true },
+      { id: 'ach_combo_great', name: 'Great Combo Master', description: 'Achieve a 7x move chain without damage', icon: '🔥', category: 'combo_large', points: 50, unlocked: false },
+      { id: 'ach_combo_colossal', name: 'Colossal Strike', description: 'Perform a legendary 15x colossal combo', icon: '💥', category: 'combo_colossal', points: 100, unlocked: false },
+      { id: 'ach_stun_master', name: 'Stun Recovery', description: 'Successfully break free from 5 obstacle stuns', icon: '🛡️', category: 'stun', points: 40, unlocked: false }
+    ];
   }
 
-  async getGameAnalytics(
-    memberId: string): Promise<unknown> {
-    // Simulate API call to get member's game analytics
-    return {
-      memberId,
-      totalGamesPlayed: 25, totalScore: 45600,
-      highestScore: 8500, averageScore: 1824,
-      totalPlayTime: 7200, // in seconds, achievementsUnlocked: 12
-    };
+  /**
+   * Fetch daily challenges
+   */
+  async getDailyChallenges(): Promise<SuperViDailyChallenge[]> {
+    try {
+      const res = await axios.get(`${API_BASE}/supervi/challenges/daily`, { timeout: 3000 });
+      if (res.data?.success && Array.isArray(res.data.data)) {
+        return res.data.data;
+      }
+    } catch (_) {
+      // Fallback
+    }
+    return [
+      { id: 'daily_lion_spell', title: 'Spell the Beast: L-I-O-N', description: 'Collect pulsating letters L, I, O, N during runs', animal_target: 'LION', challenge_type: 'collect_letters', target_value: 4, reward_currency: 300, reward_xp: 500 },
+      { id: 'daily_distance', title: 'Daily 3,000m Sprint', description: 'Accumulate 3,000 meters in any single day', animal_target: 'NONE', challenge_type: 'distance', target_value: 3000, reward_currency: 200, reward_xp: 400 }
+    ];
   }
-
-  // Synthesize speech from text
-  async synthesizeSpeech(
-    text: string, options?: { voiceId?: string; pitch?: number }): Promise<string> {
-    // For now return a mock audio URL
-    // In production this would integrate with a TTS service like Google Cloud TTS, AWS Polly, etc.
-    const voiceId = options?.voiceId || 'default';
-    const pitch = options?.pitch || 1.0;
-
-    // Mock implementation - return a placeholder audio file
-    // In real implementation this would call a TTS API and return the audio URL
-    return `/audio/synthesized_${voiceId}_${pitch}.mp3`;
-  }
-
 }
 
 export default SuperViApiService.getInstance();

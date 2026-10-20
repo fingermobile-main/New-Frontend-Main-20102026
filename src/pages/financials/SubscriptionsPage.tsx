@@ -951,7 +951,7 @@ export const SubscriptionsPage: React.FC = () => {
                 </div>
 
                 <div className="relative w-full sm:w-72">
-                  <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+                  <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-600" />
                   <input
                     type="text"
                     value={matrixSearchQuery}
@@ -1264,7 +1264,7 @@ export const SubscriptionsPage: React.FC = () => {
                 </div>
               ) : (
                 <div className="py-20 text-center bg-white rounded-3xl border border-slate-300 space-y-3 p-8 shadow-sm">
-                  <Crown className="w-12 h-12 text-slate-500 mx-auto" />
+                  <Crown className="w-12 h-12 text-slate-600 mx-auto" />
                   <h3 className="text-lg font-extrabold text-slate-900">No Active Creator Passes</h3>
                   <p className="text-xs font-medium text-slate-700 max-w-sm mx-auto leading-relaxed">
                     Subscribe to your favorite music producers and streamers on Storefronts or BeatwaveNG to access exclusive stems and private livestreams.
@@ -1281,7 +1281,7 @@ export const SubscriptionsPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={closeEditorModal}
-                  className="absolute top-5 right-5 p-2 text-slate-500 hover:text-slate-900 rounded-xl hover:bg-slate-100 transition cursor-pointer"
+                  className="absolute top-5 right-5 p-2 text-slate-600 hover:text-slate-900 rounded-xl hover:bg-slate-100 transition cursor-pointer"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -1489,7 +1489,7 @@ export const SubscriptionsPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setSelectedPlanForUpgrade(null)}
-                  className="absolute top-4 right-4 p-2 text-slate-500 hover:text-slate-900 rounded-xl hover:bg-slate-100 cursor-pointer"
+                  className="absolute top-4 right-4 p-2 text-slate-600 hover:text-slate-900 rounded-xl hover:bg-slate-100 cursor-pointer"
                 >
                   <X className="w-5 h-5" />
                 </button>

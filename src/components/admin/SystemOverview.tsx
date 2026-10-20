@@ -65,7 +65,7 @@ const SystemOverview: React.FC<SystemOverviewProps> = ({
             <Activity className="h-6 w-6" />
             System Overview
           </h2>
-          <p className="text-muted-foreground mt-1">
+          <p className="text-slate-700 font-medium mt-1">
             Real-time system health monitoring
           </p>
         </div>
@@ -83,7 +83,7 @@ const SystemOverview: React.FC<SystemOverviewProps> = ({
           >
             <CardHeader className="pb-2">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
+                <CardTitle className="text-sm font-semibold text-slate-800">
                   {metric.label}
                 </CardTitle>
                 <Badge className={getStatusColor(metric.status)}>
@@ -94,7 +94,7 @@ const SystemOverview: React.FC<SystemOverviewProps> = ({
             <CardContent>
               <div className="flex items-end justify-between">
                 <div className="text-3xl font-bold">{metric.value}</div>
-                <div className="text-lg text-muted-foreground">
+                <div className="text-lg text-slate-700">
                   {getTrendIcon(metric.trend)}
                 </div>
               </div>

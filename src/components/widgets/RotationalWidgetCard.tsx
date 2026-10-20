@@ -72,7 +72,7 @@ export const RotationalWidgetCard: React.FC<RotationalWidgetCardProps> = ({ widg
           {widget.badgeText || widget.category}
         </span>
         <span className="flex items-center gap-1 text-[10px] font-mono font-bold text-slate-600">
-          <Clock className="w-2.5 h-2.5 text-slate-500" />
+          <Clock className="w-2.5 h-2.5 text-slate-600" />
           2H ROTATION
         </span>
       </div>

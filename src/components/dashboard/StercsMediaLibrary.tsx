@@ -145,7 +145,7 @@ const StercsMediaLibrary: React.FC = () => {
           </div>
           <div>
             <h3 className="text-lg font-bold">STERCS Cloud Media Library</h3>
-            <p className="text-xs text-slate-400">Decentralized Digital Asset Management (DAM)</p>
+            <p className="text-xs text-slate-300 font-medium">Decentralized Digital Asset Management (DAM)</p>
           </div>
         </div>
 
@@ -159,7 +159,7 @@ const StercsMediaLibrary: React.FC = () => {
                 className={`px-3 py-1.5 rounded-xl font-bold capitalize transition-all ${
                   activeFilter === filter
                     ? 'bg-blue-600 text-white shadow'
-                    : 'text-slate-400 hover:text-white'
+                    : 'text-slate-300 font-medium hover:text-white'
                 }`}
               >
                 {filter}
@@ -180,7 +180,7 @@ const StercsMediaLibrary: React.FC = () => {
       {/* Media Grid */}
       <div className="flex-1 min-h-[360px]">
         {filteredAssets.length === 0 ? (
-          <div className="h-64 flex flex-col items-center justify-center text-slate-500">
+          <div className="h-64 flex flex-col items-center justify-center text-slate-300 font-medium">
             <FolderIcon className="w-12 h-12 mb-2 stroke-1" />
             <p className="text-sm font-semibold">No assets found in this category.</p>
           </div>
@@ -242,7 +242,7 @@ const StercsMediaLibrary: React.FC = () => {
                 {/* Details */}
                 <div className="min-w-0">
                   <p className="text-xs font-semibold text-slate-200 truncate">{asset.name}</p>
-                  <div className="flex items-center justify-between text-[10px] text-slate-400 mt-1">
+                  <div className="flex items-center justify-between text-[10px] text-slate-300 font-medium mt-1">
                     <span className="capitalize">{asset.asset_type}</span>
                     <span>{formatBytes(asset.size_bytes)}</span>
                   </div>
@@ -259,7 +259,7 @@ const StercsMediaLibrary: React.FC = () => {
           <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-lg w-full shadow-2xl relative">
             <button
               onClick={() => setSelectedAsset(null)}
-              className="absolute top-4 right-4 p-2 text-slate-400 hover:text-white rounded-full bg-slate-800"
+              className="absolute top-4 right-4 p-2 text-slate-300 hover:text-white rounded-full bg-slate-800"
             >
               <XMarkIcon className="w-5 h-5" />
             </button>
@@ -287,18 +287,18 @@ const StercsMediaLibrary: React.FC = () => {
               )}
             </div>
 
-            <div className="grid grid-cols-2 gap-2 text-xs text-slate-400 bg-slate-800/50 p-3 rounded-xl mb-4">
+            <div className="grid grid-cols-2 gap-2 text-xs text-slate-300 font-medium bg-slate-800/50 p-3 rounded-xl mb-4">
               <div>
-                <span className="text-slate-500">Asset Type:</span> <span className="text-slate-200 capitalize">{selectedAsset.asset_type}</span>
+                <span className="text-slate-300 font-medium">Asset Type:</span> <span className="text-slate-200 capitalize">{selectedAsset.asset_type}</span>
               </div>
               <div>
-                <span className="text-slate-500">Format:</span> <span className="text-slate-200">{selectedAsset.format || 'Standard'}</span>
+                <span className="text-slate-300 font-medium">Format:</span> <span className="text-slate-200">{selectedAsset.format || 'Standard'}</span>
               </div>
               <div>
-                <span className="text-slate-500">File Size:</span> <span className="text-slate-200">{formatBytes(selectedAsset.size_bytes)}</span>
+                <span className="text-slate-300 font-medium">File Size:</span> <span className="text-slate-200">{formatBytes(selectedAsset.size_bytes)}</span>
               </div>
               <div>
-                <span className="text-slate-500">Storage:</span> <span className="text-emerald-400">PostgreSQL Synced</span>
+                <span className="text-slate-300 font-medium">Storage:</span> <span className="text-emerald-400">PostgreSQL Synced</span>
               </div>
             </div>
 
@@ -325,7 +325,7 @@ const StercsMediaLibrary: React.FC = () => {
         <div className="fixed inset-0 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 z-50">
           <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-md w-full shadow-2xl">
             <h4 className="text-lg font-bold text-white mb-2">Upload Asset to STERCS DAM</h4>
-            <p className="text-xs text-slate-400 mb-4">Add high-resolution media to your creative studio workspace.</p>
+            <p className="text-xs text-slate-300 font-medium mb-4">Add high-resolution media to your creative studio workspace.</p>
             <form onSubmit={handleUploadAsset} className="space-y-4">
               <div>
                 <label className="block text-xs font-semibold text-slate-300 mb-1">Asset Name</label>

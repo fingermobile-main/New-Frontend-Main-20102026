@@ -78,7 +78,7 @@ const AlertDialogTitle: React.FC<AlertDialogTitleProps> = ({ children, className
 
 const AlertDialogDescription: React.FC<AlertDialogDescriptionProps> = ({ children, className = '' }) => {
   return (
-    <DialogDescription className={`text-sm text-muted-foreground ${className}`}>
+    <DialogDescription className={`text-sm text-slate-700 dark:text-slate-300 font-medium ${className}`}>
       {children}
     </DialogDescription>
   );

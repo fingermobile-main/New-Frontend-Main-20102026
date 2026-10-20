@@ -101,7 +101,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
           FingerMobile<span className="text-orange-500">™</span>
         </h1>
         {/* Subtitle: Protocol */}
-        <p className="text-xs font-bold text-gray-500 tracking-widest uppercase mb-4 text-center">
+        <p className="text-xs font-bold text-slate-700 font-medium tracking-widest uppercase mb-4 text-center">
           Protocol
         </p>
 

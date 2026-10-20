@@ -208,17 +208,17 @@ export const AlbumsTab: React.FC = () => {
           <h2 className="text-2xl font-black text-white flex items-center gap-2.5">
             <Disc className="w-6 h-6 text-emerald-400" />
             <span>Albums Catalog</span>
-            <span className="text-xs font-mono px-2.5 py-0.5 rounded-full bg-slate-900 border border-slate-800 text-slate-400">
+            <span className="text-xs font-mono px-2.5 py-0.5 rounded-full bg-slate-900 border border-slate-800 text-slate-300 font-semibold">
               {albums.length} Sovereign Albums
             </span>
           </h2>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-slate-300 font-medium mt-1">
             Complete full-length LPs, deluxe recordings, and remastered studio master tapes.
           </p>
         </div>
 
         <div className="relative w-full sm:w-80">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-600" />
           <input
             type="text"
             placeholder="Search albums by title or artist..."
@@ -263,13 +263,13 @@ export const AlbumsTab: React.FC = () => {
               <h3 className="text-sm font-bold text-white truncate group-hover:text-emerald-400 transition">
                 {album.title}
               </h3>
-              <p className="text-xs text-slate-400 truncate mt-0.5">
+              <p className="text-xs text-slate-300 font-medium truncate mt-0.5">
                 {album.artist}
               </p>
             </div>
 
             {/* Bottom Meta */}
-            <div className="pt-3 mt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-400">
+            <div className="pt-3 mt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-300 font-medium">
               <span>{album.year} • {album.trackCount} Tracks</span>
               <button
                 onClick={() => setSelectedAlbum(album)}
@@ -293,7 +293,7 @@ export const AlbumsTab: React.FC = () => {
           >
             <button
               onClick={() => setSelectedAlbum(null)}
-              className="absolute top-4 right-4 p-2 rounded-full bg-slate-800 text-slate-400 hover:text-white transition"
+              className="absolute top-4 right-4 p-2 rounded-full bg-slate-800 text-slate-300 hover:text-white transition"
             >
               <X className="w-5 h-5" />
             </button>
@@ -311,7 +311,7 @@ export const AlbumsTab: React.FC = () => {
                 </span>
                 <h3 className="text-xl sm:text-2xl font-black text-white">{selectedAlbum.title}</h3>
                 <p className="text-sm font-semibold text-emerald-400">{selectedAlbum.artist}</p>
-                <div className="text-xs text-slate-400 flex items-center justify-center sm:justify-start gap-2">
+                <div className="text-xs text-slate-300 font-medium flex items-center justify-center sm:justify-start gap-2">
                   <span>{selectedAlbum.year}</span>
                   <span>•</span>
                   <span>{selectedAlbum.genre}</span>
@@ -332,7 +332,7 @@ export const AlbumsTab: React.FC = () => {
 
             {/* Tracklist Table */}
             <div>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-300 mb-3">
                 Album Tracklist
               </h4>
               <div className="divide-y divide-slate-800/80 rounded-2xl bg-slate-950 border border-slate-800 overflow-hidden">
@@ -355,7 +355,7 @@ export const AlbumsTab: React.FC = () => {
                         {track.title}
                       </span>
                     </div>
-                    <span className="font-mono text-xs text-slate-400">
+                    <span className="font-mono text-xs text-slate-300 font-medium">
                       {formatTime(track.duration)}
                     </span>
                   </div>

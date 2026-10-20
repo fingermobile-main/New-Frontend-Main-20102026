@@ -11,7 +11,7 @@ const MapWidget: React.FC<MapWidgetProps> = () => {
         <h3 className="text-lg font-bold text-gray-900">Location Map</h3>
       </div>
       <div className="h-64 bg-gradient-to-br from-blue-100 to-green-100 rounded-lg flex items-center justify-center">
-        <p className="text-gray-500">Interactive map visualization</p>
+        <p className="text-slate-700 font-medium">Interactive map visualization</p>
       </div>
     </div>
   );

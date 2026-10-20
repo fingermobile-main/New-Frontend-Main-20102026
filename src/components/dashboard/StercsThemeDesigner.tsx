@@ -136,7 +136,7 @@ const StercsThemeDesigner: React.FC = () => {
           </div>
           <div>
             <h3 className="text-lg font-bold">STERCS Theme & Visual Studio</h3>
-            <p className="text-xs text-slate-400">Design sovereign branding, shaders & component palettes</p>
+            <p className="text-xs text-slate-300 font-medium">Design sovereign branding, shaders & component palettes</p>
           </div>
         </div>
 
@@ -191,7 +191,7 @@ const StercsThemeDesigner: React.FC = () => {
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-[11px] font-semibold text-slate-400 mb-1">Primary Color</label>
+                <label className="block text-[11px] font-semibold text-slate-300 mb-1">Primary Color</label>
                 <div className="flex items-center space-x-2">
                   <input
                     type="color"
@@ -204,7 +204,7 @@ const StercsThemeDesigner: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-[11px] font-semibold text-slate-400 mb-1">Secondary Color</label>
+                <label className="block text-[11px] font-semibold text-slate-300 mb-1">Secondary Color</label>
                 <div className="flex items-center space-x-2">
                   <input
                     type="color"
@@ -217,7 +217,7 @@ const StercsThemeDesigner: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-[11px] font-semibold text-slate-400 mb-1">Accent Glow</label>
+                <label className="block text-[11px] font-semibold text-slate-300 mb-1">Accent Glow</label>
                 <div className="flex items-center space-x-2">
                   <input
                     type="color"
@@ -230,7 +230,7 @@ const StercsThemeDesigner: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-[11px] font-semibold text-slate-400 mb-1">Background Base</label>
+                <label className="block text-[11px] font-semibold text-slate-300 mb-1">Background Base</label>
                 <div className="flex items-center space-x-2">
                   <input
                     type="color"
@@ -244,7 +244,7 @@ const StercsThemeDesigner: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-[11px] font-semibold text-slate-400 mb-1">Font Family</label>
+              <label className="block text-[11px] font-semibold text-slate-300 mb-1">Font Family</label>
               <select
                 value={fontFamily}
                 onChange={(e) => setFontFamily(e.target.value)}
@@ -285,7 +285,7 @@ const StercsThemeDesigner: React.FC = () => {
                   </div>
                   <div>
                     <h5 className="font-bold text-white text-base">{themeName}</h5>
-                    <p className="text-xs text-slate-400">FingerMobile Creative Broadcast Node</p>
+                    <p className="text-xs text-slate-300 font-medium">FingerMobile Creative Broadcast Node</p>
                   </div>
                 </div>
 
@@ -331,7 +331,7 @@ const StercsThemeDesigner: React.FC = () => {
 
               {/* Sample Timeline Track */}
               <div className="p-4 rounded-2xl bg-black/40 border border-white/10 space-y-2">
-                <div className="flex justify-between text-xs text-slate-400">
+                <div className="flex justify-between text-xs text-slate-300 font-medium">
                   <span>Track 01: Video Layer (Ultra HD)</span>
                   <span style={{ color: primaryColor }}>00:14.200 / 01:00.000</span>
                 </div>
@@ -348,7 +348,7 @@ const StercsThemeDesigner: React.FC = () => {
               </div>
             </div>
 
-            <div className="text-[11px] text-slate-400 flex items-center justify-between pt-4 border-t border-white/10">
+            <div className="text-[11px] text-slate-300 font-medium flex items-center justify-between pt-4 border-t border-white/10">
               <span>Status: Synchronized with PostgreSQL `stercs_themes` table</span>
               <span className="flex items-center text-emerald-400">
                 <CheckCircleIcon className="w-4 h-4 mr-1" /> Ready for Video Compilation

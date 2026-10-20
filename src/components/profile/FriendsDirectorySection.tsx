@@ -378,7 +378,7 @@ export const FriendsDirectorySection: React.FC<FriendsDirectorySectionProps> = (
 
             {/* Search Input */}
             <div className="relative">
-              <Search className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
+              <Search className="w-4 h-4 text-slate-600 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 value={searchQuery}
@@ -439,7 +439,7 @@ export const FriendsDirectorySection: React.FC<FriendsDirectorySectionProps> = (
 
           {filteredFriends.length === 0 && (
             <div className="py-12 text-center rounded-2xl border border-dashed border-slate-300 bg-slate-50">
-              <Users className="w-8 h-8 text-slate-500 mx-auto mb-2" />
+              <Users className="w-8 h-8 text-slate-600 mx-auto mb-2" />
               <p className="text-xs font-bold text-slate-800">No connections matching "{searchQuery}"</p>
               <p className="text-[11px] text-slate-600 mt-0.5">Try searching with a different name or sovereign handle.</p>
             </div>
@@ -497,7 +497,7 @@ export const FriendsDirectorySection: React.FC<FriendsDirectorySectionProps> = (
                         <span className="text-sky-800 font-bold">{req.mutual_count} mutual friends</span>
                         <span>•</span>
                         <span className="flex items-center gap-0.5">
-                          <Clock className="w-3 h-3 text-slate-500" />
+                          <Clock className="w-3 h-3 text-slate-600" />
                           {req.created_at}
                         </span>
                       </div>
@@ -662,8 +662,8 @@ export const FriendsDirectorySection: React.FC<FriendsDirectorySectionProps> = (
                       <span className="text-xs font-black">{visitor.frequency_count}x</span>
                       <span className="text-[10px] font-bold text-sky-800">views</span>
                     </div>
-                    <span className="text-[10px] text-slate-500 font-mono flex items-center gap-1">
-                      <Clock className="w-3 h-3 text-slate-500" />
+                    <span className="text-[10px] text-slate-600 font-mono flex items-center gap-1">
+                      <Clock className="w-3 h-3 text-slate-600" />
                       {visitor.last_viewed_at}
                     </span>
                   </div>
@@ -673,7 +673,7 @@ export const FriendsDirectorySection: React.FC<FriendsDirectorySectionProps> = (
 
             {visibleVisitors.length === 0 && (
               <div className="py-10 text-center rounded-2xl border border-dashed border-slate-300 bg-slate-50">
-                <Eye className="w-8 h-8 text-slate-500 mx-auto mb-2" />
+                <Eye className="w-8 h-8 text-slate-600 mx-auto mb-2" />
                 <p className="text-xs font-bold text-slate-800">No profile views recorded under this privacy tier</p>
                 <p className="text-[11px] text-slate-600 mt-0.5">
                   When verified connections visit your wall, their 7-day visit frequencies appear here.

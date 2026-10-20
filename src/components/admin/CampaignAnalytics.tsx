@@ -49,7 +49,7 @@ const CampaignAnalytics: React.FC<CampaignAnalyticsProps> = ({
           <BarChart className="h-6 w-6" aria-hidden="true" />
           Campaign Analytics
         </h2>
-        <p className="text-muted-foreground mt-1">
+        <p className="text-slate-700 font-medium mt-1">
           Performance metrics and insights
         </p>
       </div>
@@ -69,7 +69,7 @@ const CampaignAnalytics: React.FC<CampaignAnalyticsProps> = ({
               onKeyDown={(e) => handleKeyDown(e, metric.name)}
             >
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
+                <CardTitle className="text-sm font-semibold text-slate-800">
                   {metric.name}
                 </CardTitle>
               </CardHeader>
@@ -87,7 +87,7 @@ const CampaignAnalytics: React.FC<CampaignAnalyticsProps> = ({
                     <TrendingUp className={`h-3 w-3 mr-1 transition-transform ${!isPositive ? 'rotate-180' : ''}`} />
                     {Math.abs(metric.change)}%
                   </Badge>
-                  <span className="text-xs text-muted-foreground">{metric.period}</span>
+                  <span className="text-xs text-slate-600 font-medium">{metric.period}</span>
                 </div>
               </CardContent>
             </Card>
@@ -107,15 +107,15 @@ const CampaignAnalytics: React.FC<CampaignAnalyticsProps> = ({
                 <div className="font-medium">{item.channel}</div>
                 <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-sm">
                   <div>
-                    <p className="text-xs text-muted-foreground">Impressions</p>
+                    <p className="text-xs text-slate-700 font-medium">Impressions</p>
                     <p className="font-semibold">{item.impressions}</p>
                   </div>
                   <div>
-                    <p className="text-xs text-muted-foreground">CTR</p>
+                    <p className="text-xs text-slate-700 font-medium">CTR</p>
                     <p className="font-semibold">{item.ctr}</p>
                   </div>
                   <div>
-                    <p className="text-xs text-muted-foreground">Revenue</p>
+                    <p className="text-xs text-slate-700 font-medium">Revenue</p>
                     <p className="font-semibold text-green-600 dark:text-green-400">{item.revenue}</p>
                   </div>
                 </div>

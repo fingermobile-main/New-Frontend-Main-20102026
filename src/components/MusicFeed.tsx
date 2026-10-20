@@ -64,21 +64,21 @@ const MusicFeed: React.FC<MusicFeedProps> = ({
   return (
     <div className="w-full space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold flex items-center gap-2">
-          <Music className="h-6 w-6" />
+        <h2 className="text-2xl font-bold flex items-center gap-2 text-slate-900">
+          <Music className="h-6 w-6 text-slate-800" />
           Music Feed
         </h2>
-        <Button variant="ghost" size="sm">
+        <Button variant="ghost" size="sm" className="text-slate-800 font-semibold hover:text-slate-900">
           View All
         </Button>
       </div>
 
       <div className="space-y-3">
         {tracks.map((track) => (
-          <Card key={track.id} className="hover:shadow-md transition-shadow">
+          <Card key={track.id} className="border-slate-200 hover:shadow-md transition-shadow">
             <CardContent className="p-4">
               <div className="flex items-center gap-4">
-                <div className="relative h-16 w-16 flex-shrink-0 bg-muted rounded-lg overflow-hidden">
+                <div className="relative h-16 w-16 flex-shrink-0 bg-slate-100 border border-slate-200 rounded-lg overflow-hidden">
                   {track.coverArt ? (
                     <img
                       src={track.coverArt}
@@ -87,7 +87,7 @@ const MusicFeed: React.FC<MusicFeedProps> = ({
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
-                      <Music className="h-8 w-8 text-muted-foreground" />
+                      <Music className="h-8 w-8 text-slate-500" />
                     </div>
                   )}
                   <Button
@@ -100,27 +100,27 @@ const MusicFeed: React.FC<MusicFeedProps> = ({
                 </div>
 
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-semibold truncate">{track.title}</h3>
-                  <p className="text-sm text-muted-foreground truncate">{track.artist}</p>
+                  <h3 className="font-semibold text-slate-900 truncate">{track.title}</h3>
+                  <p className="text-sm text-slate-700 font-medium truncate">{track.artist}</p>
                   {track.album && (
-                    <p className="text-xs text-muted-foreground truncate">{track.album}</p>
+                    <p className="text-xs text-slate-600 truncate">{track.album}</p>
                   )}
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <span className="text-sm text-muted-foreground">{track.duration}</span>
+                  <span className="text-sm text-slate-700 font-medium">{track.duration}</span>
                   <Button
                     variant="ghost"
                     size="icon"
                     onClick={() => onLikeTrack?.(track.id)}
-                    className={track.isLiked ? 'text-red-500' : ''}
+                    className={track.isLiked ? 'text-red-500' : 'text-slate-700'}
                   >
                     <Heart className={`h-5 w-5 ${track.isLiked ? 'fill-current' : ''}`} />
                   </Button>
-                  <Button variant="ghost" size="icon" onClick={() => onShareTrack?.(track.id)}>
+                  <Button variant="ghost" size="icon" onClick={() => onShareTrack?.(track.id)} className="text-slate-700">
                     <Share2 className="h-5 w-5" />
                   </Button>
-                  <Button variant="ghost" size="icon">
+                  <Button variant="ghost" size="icon" className="text-slate-700">
                     <MoreHorizontal className="h-5 w-5" />
                   </Button>
                 </div>

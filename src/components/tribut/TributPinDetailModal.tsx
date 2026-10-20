@@ -198,7 +198,7 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
             <SparklesIcon className="w-3.5 h-3.5" />
             <span>Swipe Left or Up for Next Photo/Video</span>
           </span>
-          <span className="text-slate-500">•</span>
+          <span className="text-slate-600 font-bold">•</span>
           <span>{currentIndex + 1} of {allPins.length}</span>
         </div>
 
@@ -355,7 +355,7 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
 
               {showBoardDropdown && (
                 <div className="absolute right-0 mt-2 w-64 rounded-2xl bg-white border border-slate-300 shadow-xl p-2 z-30 text-xs space-y-1">
-                  <div className="text-[10px] font-black uppercase text-slate-500 px-3 py-1">Save to Board:</div>
+                  <div className="text-[10px] font-black uppercase text-slate-700 px-3 py-1">Save to Board:</div>
                   {userBoards.map((b) => (
                     <button
                       key={b.id}
@@ -366,7 +366,7 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
                       className="w-full px-3 py-2 rounded-xl text-left font-bold text-slate-800 hover:bg-purple-50 hover:text-purple-950 flex items-center justify-between"
                     >
                       <span className="truncate">{b.name}</span>
-                      <span className="text-[10px] text-slate-500">{b.pinCount} pins</span>
+                      <span className="text-[10px] text-slate-700 font-medium">{b.pinCount} pins</span>
                     </button>
                   ))}
                 </div>
@@ -463,7 +463,7 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
             </div>
 
             {/* Swipe Navigation Hints Bar at Bottom of Media */}
-            <div className="w-full mt-3 flex items-center justify-between text-[11px] text-slate-400 font-semibold px-2">
+            <div className="w-full mt-3 flex items-center justify-between text-[11px] text-slate-300 font-semibold px-2">
               <span className="flex items-center gap-1 text-slate-300">
                 <span>← Previous</span>
               </span>
@@ -654,7 +654,7 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
                             <div className="flex-1 bg-slate-50 rounded-2xl p-3 border border-slate-200 space-y-1">
                               <div className="flex items-center justify-between">
                                 <span className="font-bold text-slate-900">{comm.authorName}</span>
-                                <span className="text-[10px] text-slate-500">{comm.createdAt}</span>
+                                <span className="text-[10px] text-slate-700 font-medium">{comm.createdAt}</span>
                               </div>
                               <p className="text-slate-800 text-xs leading-relaxed font-normal">
                                 {comm.content}
@@ -723,7 +723,7 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
                             className={`px-3 py-1.5 rounded-full text-xs font-bold transition ${
                               commentText.trim()
                                 ? 'bg-purple-600 hover:bg-purple-500 text-white'
-                                : 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                                : 'bg-slate-200 text-slate-500 font-bold cursor-not-allowed'
                             }`}
                           >
                             Post

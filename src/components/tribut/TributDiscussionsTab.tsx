@@ -200,7 +200,7 @@ export const TributDiscussionsTab: React.FC<TributDiscussionsTabProps> = ({
                       Board: {linkedPin.boardName}
                     </span>
                   </div>
-                  <ChevronRightIcon className="w-4 h-4 text-slate-500" />
+                  <ChevronRightIcon className="w-4 h-4 text-slate-600" />
                 </div>
               )}
 

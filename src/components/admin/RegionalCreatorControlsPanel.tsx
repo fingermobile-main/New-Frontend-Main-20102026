@@ -87,14 +87,14 @@ export const RegionalCreatorControlsPanel: React.FC = () => {
               Regional Creator Restriction Architecture
             </h2>
           </div>
-          <p className="text-xs text-gray-400 mt-1">
+          <p className="text-xs text-gray-300 font-medium mt-1">
             Dual-toggle SuperAdmin controls: Hard capacity caps, admission workflows, and race-safe quotas.
           </p>
         </div>
 
         <div className="flex items-center space-x-3">
           <div className="flex items-center space-x-2 bg-gray-800 px-3 py-1.5 rounded-lg border border-gray-700">
-            <GlobeIcon className="w-4 h-4 text-slate-500" />
+            <GlobeIcon className="w-4 h-4 text-slate-600" />
             <select
               value={selectedCountry}
               onChange={(e) => setSelectedCountry(e.target.value)}
@@ -133,7 +133,7 @@ export const RegionalCreatorControlsPanel: React.FC = () => {
       <div className="mt-5 overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="border-b border-gray-800 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+            <tr className="border-b border-gray-800 text-xs font-semibold text-gray-300 uppercase tracking-wider">
               <th className="py-3 px-4">Tier</th>
               <th className="py-3 px-4">Capacity / Active</th>
               <th className="py-3 px-4">Toggle 1: Registration Mode</th>

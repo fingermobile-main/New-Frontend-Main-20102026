@@ -86,14 +86,14 @@ const ProfileEnhancement: React.FC = () => {
           </div>
           <div>
             <h1 className="text-2xl font-bold text-gray-900">Profile Enhancement</h1>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-slate-700 font-medium">
               Showcase verified credentials, skills, portfolio links, and cryptographic endorsements.
             </p>
           </div>
         </div>
 
         {isLoading ? (
-          <div className="text-center py-12 text-gray-500 text-sm">
+          <div className="text-center py-12 text-slate-700 font-medium text-sm">
             Loading profile information...
           </div>
         ) : (

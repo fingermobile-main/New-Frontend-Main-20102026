@@ -8,8 +8,14 @@ interface GroupPreview {
   unread: number;
 }
 
+const DEFAULT_GROUPS: GroupPreview[] = [
+  { id: '1', name: 'Good Group', unread: 3 },
+  { id: '2', name: 'E-course Group', unread: 0 },
+  { id: '3', name: 'Tech Enthusiasts', unread: 12 }
+];
+
 const GroupsWidget: React.FC = () => {
-  const [groups, setGroups] = useState<GroupPreview[]>([]);
+  const [groups, setGroups] = useState<GroupPreview[]>(DEFAULT_GROUPS);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -17,13 +23,19 @@ const GroupsWidget: React.FC = () => {
     const fetchGroups = async () => {
       try {
         const response = await axios.get('/api/groups/sidebar');
-        setGroups(response.data);
+        const list = Array.isArray(response?.data)
+          ? response.data
+          : Array.isArray(response?.data?.data)
+            ? response.data.data
+            : null;
+
+        if (list && list.length > 0) {
+          setGroups(list);
+        } else {
+          setGroups(DEFAULT_GROUPS);
+        }
       } catch (e) {
-        setGroups([
-          { id: '1', name: 'Good Group', unread: 3 },
-          { id: '2', name: 'E-course Group', unread: 0 },
-          { id: '3', name: 'Tech Enthusiasts', unread: 12 }
-        ]);
+        setGroups(DEFAULT_GROUPS);
       } finally {
         setLoading(false);
       }
@@ -32,8 +44,8 @@ const GroupsWidget: React.FC = () => {
   }, []);
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
-      <h3 className="font-semibold text-lg mb-4 text-gray-900 dark:text-white">Groups</h3>
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 border border-slate-300 dark:border-slate-700">
+      <h3 className="font-semibold text-lg mb-4 text-slate-900 dark:text-white">Groups</h3>
       <div className="space-y-4">
         {loading ? (
           <div className="animate-pulse space-y-3">
@@ -47,7 +59,7 @@ const GroupsWidget: React.FC = () => {
             ))}
           </div>
         ) : (
-          groups.map((group) => (
+          (Array.isArray(groups) ? groups : DEFAULT_GROUPS).map((group) => (
             <button
               key={group.id}
               type="button"
@@ -55,8 +67,8 @@ const GroupsWidget: React.FC = () => {
               className="flex items-center justify-between py-2 w-full text-left group cursor-pointer hover:bg-orange-50 dark:hover:bg-gray-700 rounded-lg px-1.5 transition"
             >
               <div>
-                <div className="font-bold text-base text-gray-900 dark:text-white group-hover:text-orange-500 transition-colors">{group.name}</div>
-                <div className="text-sm text-orange-500 font-medium">View feed →</div>
+                <div className="font-bold text-base text-slate-900 dark:text-white group-hover:text-orange-600 transition-colors">{group.name}</div>
+                <div className="text-sm text-orange-600 font-semibold">View feed →</div>
               </div>
               {group.unread > 0 && (
                 <span className="bg-gradient-to-r from-red-500 to-red-600 text-white text-xs rounded-full h-6 w-6 flex items-center justify-center font-bold shadow">

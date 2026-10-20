@@ -69,7 +69,7 @@ const DashboardNavigation: React.FC<DashboardNavigationProps> = ({
         </div>
         <button
           onClick={toggleSidebar}
-          className="lg:hidden text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
+          className="lg:hidden text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
           aria-label="Close sidebar"
         >
           <XMarkIcon className="h-6 w-6" />
@@ -94,7 +94,7 @@ const DashboardNavigation: React.FC<DashboardNavigationProps> = ({
               className={`${
                 isActive
                   ? 'bg-gray-800 text-white'
-                  : 'text-gray-300 hover:bg-gray-800 hover:text-white'
+                  : 'text-gray-200 hover:bg-gray-800 hover:text-white'
               } group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500`}
             >
               <Icon className="mr-3 h-5 w-5 flex-shrink-0" aria-hidden="true" />
@@ -114,12 +114,12 @@ const DashboardNavigation: React.FC<DashboardNavigationProps> = ({
         <div className="flex items-center">
           <div className="flex-shrink-0">
             <div className="h-10 w-10 rounded-full bg-gray-700 flex items-center justify-center">
-              <UserIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
+              <UserIcon className="h-5 w-5 text-gray-200" aria-hidden="true" />
             </div>
           </div>
           <div className="ml-3 truncate">
             <p className="text-sm font-medium text-white truncate">John Doe</p>
-            <p className="text-xs font-medium text-gray-400 truncate">Admin</p>
+            <p className="text-xs font-semibold text-gray-300 truncate">Admin</p>
           </div>
         </div>
       </div>

@@ -62,7 +62,7 @@ const AdvancedFingerWar: React.FC<AdvancedFingerWarProps> = ({
         <CardContent className="space-y-6">
           {gameState === 'lobby' && (
             <div className="text-center space-y-4">
-              <div className="flex justify-center gap-4 text-sm text-muted-foreground">
+              <div className="flex justify-center gap-4 text-sm text-slate-700 font-semibold">
                 <div className="flex items-center gap-1">
                   <Users className="h-4 w-4" />
                   <span>{players.length} players</span>
@@ -115,7 +115,7 @@ const AdvancedFingerWar: React.FC<AdvancedFingerWarProps> = ({
               <Trophy className="h-16 w-16 mx-auto text-yellow-500" />
               <div>
                 <h3 className="text-2xl font-bold">Game Over!</h3>
-                <p className="text-muted-foreground">Your final score: {score}</p>
+                <p className="text-slate-700 font-medium">Your final score: {score}</p>
               </div>
               <Button onClick={() => setGameState('lobby')} size="lg">
                 Play Again

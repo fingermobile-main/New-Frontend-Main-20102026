@@ -192,7 +192,7 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
                 </span>
               </div>
 
-              <p className="text-slate-400 text-[11px] truncate mt-0.5">
+              <p className="text-slate-300 text-[11px] truncate mt-0.5">
                 {currentTrack.artist}
               </p>
 
@@ -200,7 +200,7 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
                 <button
                   onClick={() => likeTrack(currentTrack.id)}
                   className={`p-1 rounded-md transition-colors ${
-                    currentTrack.isLiked ? 'text-red-500' : 'text-slate-400 hover:text-white'
+                    currentTrack.isLiked ? 'text-red-500' : 'text-slate-300 hover:text-white'
                   }`}
                   title="Favorite"
                 >
@@ -209,7 +209,7 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
 
                 <button
                   onClick={() => setShowAmeboModal(true)}
-                  className="p-1 rounded-md text-slate-400 hover:text-emerald-300 transition-colors text-[10px] flex items-center gap-0.5"
+                  className="p-1 rounded-md text-slate-300 hover:text-emerald-300 transition-colors text-[10px] flex items-center gap-0.5"
                   title="Track Information (Amebo)"
                 >
                   <Info size={13} />
@@ -227,7 +227,7 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
               <button
                 onClick={toggleShuffle}
                 className={`p-2 rounded-lg transition-colors ${
-                  isShuffle ? 'text-emerald-400 bg-emerald-500/20' : 'text-slate-400 hover:text-white'
+                  isShuffle ? 'text-emerald-400 bg-emerald-500/20' : 'text-slate-300 hover:text-white'
                 }`}
                 title="Shuffle"
               >
@@ -246,7 +246,7 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
               {/* Jump -10s */}
               <button
                 onClick={() => jumpTime(-10)}
-                className="p-1.5 text-slate-400 hover:text-white transition-colors text-xs font-mono"
+                className="p-1.5 text-slate-300 hover:text-white transition-colors text-xs font-mono"
                 title="Rewind 10 seconds"
               >
                 <Rewind size={16} />
@@ -268,7 +268,7 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
               {/* Jump +10s */}
               <button
                 onClick={() => jumpTime(10)}
-                className="p-1.5 text-slate-400 hover:text-white transition-colors text-xs font-mono"
+                className="p-1.5 text-slate-300 hover:text-white transition-colors text-xs font-mono"
                 title="Fast forward 10 seconds"
               >
                 <FastForward size={16} />
@@ -287,7 +287,7 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
               <button
                 onClick={cycleRepeatMode}
                 className={`p-2 rounded-lg transition-colors relative ${
-                  repeatMode !== 'none' ? 'text-emerald-400 bg-emerald-500/20' : 'text-slate-400 hover:text-white'
+                  repeatMode !== 'none' ? 'text-emerald-400 bg-emerald-500/20' : 'text-slate-300 hover:text-white'
                 }`}
                 title={`Repeat: ${repeatMode}`}
               >
@@ -301,7 +301,7 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
             </div>
 
             {/* Time Indicator */}
-            <div className="flex items-center gap-2 text-[11px] text-slate-400 font-mono mt-1">
+            <div className="flex items-center gap-2 text-[11px] text-slate-300 font-mono mt-1">
               <span>{formatTime(playbackTime)}</span>
               <span>/</span>
               <span>{formatTime(currentDuration)}</span>
@@ -403,7 +403,7 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
             <div className="flex items-center gap-1.5 ml-1">
               <button
                 onClick={toggleMute}
-                className="p-1.5 text-slate-400 hover:text-white transition-colors"
+                className="p-1.5 text-slate-300 hover:text-white transition-colors"
                 title={volume === 0 ? 'Unmute' : 'Mute'}
               >
                 {volume === 0 ? <VolumeX size={18} /> : <Volume2 size={18} />}
@@ -446,13 +446,13 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
                       Web Audio API Engine
                     </span>
                   </h3>
-                  <p className="text-xs text-slate-400">Precision hardware-grade acoustic tuning for BeatwaveNG</p>
+                  <p className="text-xs text-slate-300">Precision hardware-grade acoustic tuning for BeatwaveNG</p>
                 </div>
               </div>
 
               <button
                 onClick={() => setShowEqModal(false)}
-                className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+                className="p-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 transition-colors"
               >
                 <X size={20} />
               </button>
@@ -460,7 +460,7 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
 
             {/* EQ Presets Bar */}
             <div>
-              <span className="text-xs font-semibold text-slate-400 block mb-2">Preset Profiles:</span>
+              <span className="text-xs font-semibold text-slate-300 block mb-2">Preset Profiles:</span>
               <div className="flex flex-wrap gap-2">
                 {Object.keys(EQ_PRESETS).map((pName) => (
                   <button
@@ -504,7 +504,7 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
                         />
                       </div>
 
-                      <span className="text-[10px] font-mono text-slate-400 font-bold">
+                      <span className="text-[10px] font-mono text-slate-300 font-bold">
                         {label}Hz
                       </span>
                     </div>
@@ -513,7 +513,7 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
               </div>
             </div>
 
-            <div className="flex items-center justify-between text-xs text-slate-400 pt-2 border-t border-slate-800">
+            <div className="flex items-center justify-between text-xs text-slate-300 pt-2 border-t border-slate-800">
               <button
                 onClick={() => applyEqPreset('Flat')}
                 className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 transition-colors flex items-center gap-1.5"
@@ -548,7 +548,7 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
             </div>
             <button
               onClick={() => setShowLyricsDrawer(false)}
-              className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-900 transition-colors"
+              className="p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors"
             >
               <X size={18} />
             </button>
@@ -604,11 +604,11 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
             <div className="flex items-center gap-2">
               <ListMusic className="text-emerald-400" size={20} />
               <h3 className="font-black text-white text-base">Up Next Queue</h3>
-              <span className="text-xs text-slate-400">({queue.length} tracks)</span>
+              <span className="text-xs text-slate-300">({queue.length} tracks)</span>
             </div>
             <button
               onClick={() => setShowQueueDrawer(false)}
-              className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-900 transition-colors"
+              className="p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors"
             >
               <X size={18} />
             </button>
@@ -635,9 +635,9 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
                   />
                   <div className="min-w-0 flex-1">
                     <h5 className="font-bold text-xs truncate">{track.title}</h5>
-                    <p className="text-[11px] text-slate-400 truncate">{track.artist}</p>
+                    <p className="text-[11px] text-slate-300 truncate">{track.artist}</p>
                   </div>
-                  <span className="text-[10px] font-mono text-slate-400">{formatTime(track.duration)}</span>
+                  <span className="text-[10px] font-mono text-slate-300">{formatTime(track.duration)}</span>
                 </div>
               );
             })}
@@ -658,7 +658,7 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
               </div>
               <button
                 onClick={() => setShowSleepTimerModal(false)}
-                className="text-slate-400 hover:text-white text-lg font-bold"
+                className="text-slate-300 hover:text-white text-lg font-bold"
               >
                 ✕
               </button>
@@ -715,7 +715,7 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
               </div>
               <button
                 onClick={() => setShowAmeboModal(false)}
-                className="text-slate-400 hover:text-white text-lg font-bold"
+                className="text-slate-300 hover:text-white text-lg font-bold"
               >
                 ✕
               </button>
@@ -723,31 +723,31 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
 
             <div className="space-y-3 font-mono text-xs">
               <div className="flex justify-between p-2.5 bg-slate-950 rounded-xl">
-                <span className="text-slate-400">Master Title:</span>
+                <span className="text-slate-300 font-medium">Master Title:</span>
                 <span className="text-white font-bold">{currentTrack.title}</span>
               </div>
               <div className="flex justify-between p-2.5 bg-slate-950 rounded-xl">
-                <span className="text-slate-400">Primary Artist:</span>
+                <span className="text-slate-300 font-medium">Primary Artist:</span>
                 <span className="text-white font-bold">{currentTrack.artist}</span>
               </div>
               <div className="flex justify-between p-2.5 bg-slate-950 rounded-xl">
-                <span className="text-slate-400">Platform Tier:</span>
+                <span className="text-slate-300 font-medium">Platform Tier:</span>
                 <span className="text-emerald-400 font-bold">{currentTrack.tier || 'SoundOcean Sovereign'}</span>
               </div>
               <div className="flex justify-between p-2.5 bg-slate-950 rounded-xl">
-                <span className="text-slate-400">Encoding / Bitrate:</span>
+                <span className="text-slate-300 font-medium">Encoding / Bitrate:</span>
                 <span className="text-emerald-300 font-bold">{currentTrack.bitrate || '1411 kbps FLAC Lossless 24-bit/192kHz'}</span>
               </div>
               <div className="flex justify-between p-2.5 bg-slate-950 rounded-xl">
-                <span className="text-slate-400">Genre:</span>
+                <span className="text-slate-300 font-medium">Genre:</span>
                 <span className="text-white font-bold">{currentTrack.genre || 'Afrobeats'}</span>
               </div>
               <div className="flex justify-between p-2.5 bg-slate-950 rounded-xl">
-                <span className="text-slate-400">Release Year:</span>
+                <span className="text-slate-300 font-medium">Release Year:</span>
                 <span className="text-white font-bold">{currentTrack.year || 2026}</span>
               </div>
               <div className="flex justify-between p-2.5 bg-slate-950 rounded-xl">
-                <span className="text-slate-400">Total Stream Plays:</span>
+                <span className="text-slate-300 font-medium">Total Stream Plays:</span>
                 <span className="text-amber-400 font-bold">{(currentTrack.plays || 142000).toLocaleString()} streams</span>
               </div>
             </div>

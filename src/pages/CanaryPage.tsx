@@ -412,7 +412,7 @@ const CanaryPage: React.FC = () => {
                       ${
                   activeTab === tab
                     ? 'border-yellow-500 text-yellow-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300'
                   }
                     `}
                   >

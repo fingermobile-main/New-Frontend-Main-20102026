@@ -244,7 +244,7 @@ export const PlaylistsTab: React.FC<PlaylistsTabProps> = ({
             <ListMusic className="w-6 h-6 text-emerald-400" />
             <span>{subTab === 'my-playlists' ? 'My Playlists' : 'All Ecosystem Playlists'}</span>
           </h2>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-slate-300 mt-1">
             {subTab === 'my-playlists'
               ? 'Manage personal sovereign playlists, AI-prompted mixes, and private vaults.'
               : 'Browse public editorial charts, Colabo+ shared playlists, and sovereign canons.'}
@@ -260,7 +260,7 @@ export const PlaylistsTab: React.FC<PlaylistsTabProps> = ({
               className={`px-3 py-1.5 rounded-xl text-xs font-bold transition ${
                 subTab === 'my-playlists'
                   ? 'bg-emerald-600 text-white shadow-md'
-                  : 'text-slate-400 hover:text-white'
+                  : 'text-slate-300 hover:text-white'
               }`}
             >
               My Playlists
@@ -270,7 +270,7 @@ export const PlaylistsTab: React.FC<PlaylistsTabProps> = ({
               className={`px-3 py-1.5 rounded-xl text-xs font-bold transition ${
                 subTab === 'all-playlists'
                   ? 'bg-emerald-600 text-white shadow-md'
-                  : 'text-slate-400 hover:text-white'
+                  : 'text-slate-300 hover:text-white'
               }`}
             >
               All Playlists ({SEED_ALL_PLAYLISTS.length})
@@ -330,12 +330,12 @@ export const PlaylistsTab: React.FC<PlaylistsTabProps> = ({
                 </div>
 
                 <h3 className="text-sm font-bold text-white truncate">{pl.title}</h3>
-                <p className="text-xs text-slate-400 line-clamp-2 mt-1 leading-relaxed">
+                <p className="text-xs text-slate-300 line-clamp-2 mt-1 leading-relaxed">
                   {pl.description}
                 </p>
               </div>
 
-              <div className="pt-3 mt-3 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-400">
+              <div className="pt-3 mt-3 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-300">
                 <span>{pl.trackCount} Tracks</span>
                 <button
                   onClick={() => setSelectedPlaylistModal(pl)}
@@ -386,12 +386,12 @@ export const PlaylistsTab: React.FC<PlaylistsTabProps> = ({
                 <div className="text-[11px] text-emerald-400 font-medium mt-0.5">
                   By {pl.curator}
                 </div>
-                <p className="text-xs text-slate-400 line-clamp-2 mt-1 leading-relaxed">
+                <p className="text-xs text-slate-300 line-clamp-2 mt-1 leading-relaxed">
                   {pl.description}
                 </p>
               </div>
 
-              <div className="pt-3 mt-3 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-400">
+              <div className="pt-3 mt-3 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-300">
                 <span>{pl.trackCount} Tracks</span>
                 <button
                   onClick={() => setSelectedPlaylistModal(pl)}
@@ -416,7 +416,7 @@ export const PlaylistsTab: React.FC<PlaylistsTabProps> = ({
           >
             <button
               onClick={() => setSelectedPlaylistModal(null)}
-              className="absolute top-4 right-4 p-2 rounded-full bg-slate-800 text-slate-400 hover:text-white transition"
+              className="absolute top-4 right-4 p-2 rounded-full bg-slate-800 text-slate-300 hover:text-white transition"
             >
               <X className="w-5 h-5" />
             </button>
@@ -429,7 +429,7 @@ export const PlaylistsTab: React.FC<PlaylistsTabProps> = ({
               />
               <div className="min-w-0 flex-1">
                 <h3 className="text-base font-bold text-white truncate">{selectedPlaylistModal.title}</h3>
-                <p className="text-xs text-slate-400 line-clamp-2">{selectedPlaylistModal.description}</p>
+                <p className="text-xs text-slate-300 line-clamp-2">{selectedPlaylistModal.description}</p>
               </div>
             </div>
 
@@ -444,7 +444,7 @@ export const PlaylistsTab: React.FC<PlaylistsTabProps> = ({
             </div>
 
             <div className="space-y-2">
-              <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">
+              <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-300 mb-1">
                 Playlist Tracks ({selectedPlaylistModal.tracks?.length || 0})
               </h4>
               {selectedPlaylistModal.tracks && selectedPlaylistModal.tracks.length > 0 ? (
@@ -455,9 +455,9 @@ export const PlaylistsTab: React.FC<PlaylistsTabProps> = ({
                   >
                     <div>
                       <div className="text-xs font-bold text-white">{t.title}</div>
-                      <div className="text-[10px] text-slate-400">{t.artist || 'Curated'}</div>
+                      <div className="text-[10px] text-slate-300">{t.artist || 'Curated'}</div>
                     </div>
-                    <span className="font-mono text-xs text-slate-400">
+                    <span className="font-mono text-xs text-slate-300">
                       {formatTime(t.duration)}
                     </span>
                   </div>
@@ -503,7 +503,7 @@ export const PlaylistsTab: React.FC<PlaylistsTabProps> = ({
                 <button
                   type="button"
                   onClick={() => setShowCreateModal(false)}
-                  className="py-2 px-4 rounded-xl text-xs font-semibold bg-slate-800 text-slate-400 hover:text-white"
+                  className="py-2 px-4 rounded-xl text-xs font-semibold bg-slate-800 text-slate-300 hover:text-white"
                 >
                   Cancel
                 </button>
@@ -527,7 +527,7 @@ export const PlaylistsTab: React.FC<PlaylistsTabProps> = ({
               <Sparkles className="w-4 h-4 text-amber-400" />
               <span>AI Sovereign Playlist Curate</span>
             </h3>
-            <p className="text-xs text-slate-400 mb-4">
+            <p className="text-xs text-slate-300 mb-4">
               Describe the atmosphere, tempo, acoustic instruments, or cultural festival.
             </p>
             <form onSubmit={handleAiCurateSubmit} className="space-y-4">
@@ -544,7 +544,7 @@ export const PlaylistsTab: React.FC<PlaylistsTabProps> = ({
                 <button
                   type="button"
                   onClick={() => setShowAiModal(false)}
-                  className="py-2 px-4 rounded-xl text-xs font-semibold bg-slate-800 text-slate-400 hover:text-white"
+                  className="py-2 px-4 rounded-xl text-xs font-semibold bg-slate-800 text-slate-300 hover:text-white"
                 >
                   Cancel
                 </button>

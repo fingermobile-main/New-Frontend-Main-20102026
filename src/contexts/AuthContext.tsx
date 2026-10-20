@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User } from '../types/user';
 import UserService from '../services/UserService';
+import userProfileSyncService from '../services/UserProfileSyncService';
 
 interface AuthContextType {
   user: User | null;
@@ -9,9 +10,11 @@ interface AuthContextType {
   loading: boolean;
   isLoading: boolean;
   error: string | null;
+  isOnboarded: boolean;
   state: {
     user: User | null;
     isAuthenticated: boolean;
+    isOnboarded: boolean;
     loading: boolean;
     error: string | null;
   };
@@ -27,6 +30,14 @@ interface AuthContextType {
   refreshToken: () => Promise<boolean>;
   clearAuthData: () => void;
 }
+
+export const checkIsOnboarded = (user: User | null): boolean => {
+  if (!user) return false;
+  const isComplete = Boolean(user.onboardingComplete || (user as any).onboarding_completed);
+  const hasLocalFlag = typeof window !== 'undefined' && 
+    (localStorage.getItem('onboardingComplete') === 'true' || localStorage.getItem('hasCompletedOnboarding') === 'true');
+  return isComplete && hasLocalFlag;
+};
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -91,12 +102,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   const clearAuthData = () => {
-    // Remove tokens from localStorage
+    // Remove tokens and authentication keys from localStorage
     localStorage.removeItem('accessToken');
     localStorage.removeItem('fingermobile_token');
     localStorage.removeItem('token');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('user');
+    localStorage.removeItem('onboardingComplete');
+    localStorage.removeItem('hasCompletedOnboarding');
+    localStorage.removeItem('fmp_member_profile');
+    localStorage.removeItem('fmp_comprehensive_profile');
+    try {
+      userProfileSyncService.clearProfile();
+    } catch (_e) {
+      // Ignore cleanup error
+    }
     setUser(null);
   };
 
@@ -215,6 +235,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
+  const isOnboarded = checkIsOnboarded(user);
+
   const value = {
     user,
     member: user,
@@ -222,9 +244,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     loading,
     isLoading: loading,
     error,
+    isOnboarded,
     state: {
       user,
       isAuthenticated: !!user,
+      isOnboarded,
       loading,
       error
     },

@@ -21,7 +21,7 @@ const MarketingDashboard: React.FC = () => {
   }, []);
 
   return (
-    <div className="bg-white/90 backdrop-blur-xl rounded-3xl shadow-sm border border-slate-200/80 p-6 md:p-8">
+    <div className="bg-white/90 backdrop-blur-xl rounded-3xl shadow-sm border border-slate-300/80 p-6 md:p-8">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600">
@@ -29,7 +29,7 @@ const MarketingDashboard: React.FC = () => {
           </div>
           <div>
             <h3 className="text-xl font-black text-slate-900">Marketing & Campaign Performance</h3>
-            <p className="text-xs text-slate-500 font-medium">Real-time aggregate platform delivery & conversion telemetry</p>
+            <p className="text-xs text-slate-700 font-medium font-medium">Real-time aggregate platform delivery & conversion telemetry</p>
           </div>
         </div>
         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-100 text-emerald-950 border border-emerald-400  font-black">

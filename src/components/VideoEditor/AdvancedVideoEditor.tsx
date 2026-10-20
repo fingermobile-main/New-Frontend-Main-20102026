@@ -27,7 +27,7 @@ const AdvancedVideoEditor: React.FC<AdvancedVideoEditorProps> = ({
           {videoUrl ? (
             <video src={videoUrl} controls className="max-w-full max-h-full" />
           ) : (
-            <p className="text-gray-400">No video loaded</p>
+            <p className="text-slate-300 font-medium">No video loaded</p>
           )}
         </div>
 

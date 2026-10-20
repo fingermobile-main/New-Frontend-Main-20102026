@@ -29,12 +29,12 @@ const AdBanner: React.FC<AdBannerProps> = ({
   };
 
   return (
-    <div className={`relative w-full bg-gradient-to-r from-blue-50 to-purple-50 border rounded-lg overflow-hidden ${sizeClasses[variant]}`}>
+    <div className={`relative w-full bg-gradient-to-r from-blue-50 to-purple-50 border border-slate-200 rounded-lg overflow-hidden ${sizeClasses[variant]}`}>
       {onClose && (
         <Button
           variant="ghost"
           size="icon"
-          className="absolute top-2 right-2 h-6 w-6"
+          className="absolute top-2 right-2 h-6 w-6 text-slate-700 hover:text-slate-900"
           onClick={onClose}
         >
           <X className="h-4 w-4" />
@@ -52,11 +52,11 @@ const AdBanner: React.FC<AdBannerProps> = ({
           </div>
         )}
         <div className="flex-1 min-w-0">
-          <h3 className={`font-semibold truncate ${variant === 'small' ? 'text-sm' : 'text-base'}`}>
+          <h3 className={`font-semibold text-slate-900 truncate ${variant === 'small' ? 'text-sm' : 'text-base'}`}>
             {title}
           </h3>
           {variant !== 'small' && (
-            <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
+            <p className="text-sm text-slate-700 font-medium line-clamp-2 mt-1">
               {description}
             </p>
           )}

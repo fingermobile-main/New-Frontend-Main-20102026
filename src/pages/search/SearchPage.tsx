@@ -53,7 +53,7 @@ const SearchPage: React.FC = () => {
     <div className="max-w-4xl mx-auto p-4">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Search</h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-2">
+        <p className="text-slate-700 dark:text-slate-300 font-medium mt-2">
           Find people, topics, and content
         </p>
       </div>
@@ -68,7 +68,7 @@ const SearchPage: React.FC = () => {
             className="w-full px-4 py-3 pl-12 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-slate-900 dark:text-white font-bold border-slate-300 placeholder:text-slate-400"
           />
           <svg
-            className="absolute left-4 top-3.5 h-5 w-5 text-gray-400"
+            className="absolute left-4 top-3.5 h-5 w-5 text-slate-600"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -85,25 +85,25 @@ const SearchPage: React.FC = () => {
 
       <div className="flex border-b border-gray-200 dark:border-gray-700 mb-6">
         <button
-          className={`py-3 px-6 font-medium text-sm ${activeTab === 'all' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'}`}
+          className={`py-3 px-6 font-semibold text-sm ${activeTab === 'all' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'}`}
           onClick={() => setActiveTab('all')}
         >
           All Results
         </button>
         <button
-          className={`py-3 px-6 font-medium text-sm ${activeTab === 'members' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'}`}
+          className={`py-3 px-6 font-semibold text-sm ${activeTab === 'members' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'}`}
           onClick={() => setActiveTab('members')}
         >
           People
         </button>
         <button
-          className={`py-3 px-6 font-medium text-sm ${activeTab === 'topics' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'}`}
+          className={`py-3 px-6 font-semibold text-sm ${activeTab === 'topics' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'}`}
           onClick={() => setActiveTab('topics')}
         >
           Topics
         </button>
         <button
-          className={`py-3 px-6 font-medium text-sm ${activeTab === 'hashtags' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'}`}
+          className={`py-3 px-6 font-semibold text-sm ${activeTab === 'hashtags' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'}`}
           onClick={() => setActiveTab('hashtags')}
         >
           Hashtags
@@ -129,7 +129,7 @@ const SearchPage: React.FC = () => {
                     />
                     <div className="ml-4">
                       <h3 className="font-semibold text-gray-900 dark:text-white">{member.name}</h3>
-                      <p className="text-gray-600 dark:text-gray-400">@{member.membername || member.handle}</p>
+                      <p className="text-slate-700 dark:text-slate-300 font-medium">@{member.membername || member.handle}</p>
                     </div>
                   </a>
                 ))}
@@ -145,10 +145,10 @@ const SearchPage: React.FC = () => {
                   <a
                     key={topic.id}
                     href={`/topics/${topic.id}`}
-                    className="p-3 bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-md transition-shadow"
+                    className="p-3 bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-md transition-shadow border border-slate-200 dark:border-gray-700"
                   >
                     <h3 className="font-semibold text-gray-900 dark:text-white">{topic.name || topic.title}</h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{topic.postsCount} posts</p>
+                    <p className="text-sm text-slate-700 dark:text-slate-300 font-medium mt-1">{topic.postsCount} posts</p>
                   </a>
                 ))}
               </div>
@@ -183,7 +183,7 @@ const SearchPage: React.FC = () => {
                 <a
                   key={member.id}
                   href={`/profile/${member.id}`}
-                  className="flex items-center p-3 bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-md transition-shadow"
+                  className="flex items-center p-3 bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-md transition-shadow border border-slate-200 dark:border-gray-700"
                 >
                   <img
                     src={member.avatarUrl || member.avatar}
@@ -192,13 +192,13 @@ const SearchPage: React.FC = () => {
                   />
                   <div className="ml-4">
                     <h3 className="font-semibold text-gray-900 dark:text-white">{member.name}</h3>
-                    <p className="text-gray-600 dark:text-gray-400">@{member.membername || member.handle}</p>
+                    <p className="text-slate-700 dark:text-slate-300 font-medium">@{member.membername || member.handle}</p>
                   </div>
                 </a>
               ))
             ) : (
               <div className="text-center py-8">
-                <p className="text-gray-500 dark:text-gray-400">No members found</p>
+                <p className="text-slate-700 dark:text-slate-300 font-medium">No members found</p>
               </div>
             )}
           </div>
@@ -214,15 +214,15 @@ const SearchPage: React.FC = () => {
                 <a
                   key={topic.id}
                   href={`/topics/${topic.id}`}
-                  className="p-3 bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-md transition-shadow"
+                  className="p-3 bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-md transition-shadow border border-slate-200 dark:border-gray-700"
                 >
                   <h3 className="font-semibold text-gray-900 dark:text-white">{topic.name || topic.title}</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{topic.postsCount} posts</p>
+                  <p className="text-sm text-slate-700 dark:text-slate-300 font-medium mt-1">{topic.postsCount} posts</p>
                 </a>
               ))
             ) : (
               <div className="text-center py-8">
-                <p className="text-gray-500 dark:text-gray-400">No topics found</p>
+                <p className="text-slate-700 dark:text-slate-300 font-medium">No topics found</p>
               </div>
             )}
           </div>
@@ -245,7 +245,7 @@ const SearchPage: React.FC = () => {
               ))
             ) : (
               <div className="text-center py-8">
-                <p className="text-gray-500 dark:text-gray-400">No hashtags found</p>
+                <p className="text-slate-700 dark:text-slate-300 font-medium">No hashtags found</p>
               </div>
             )}
           </div>

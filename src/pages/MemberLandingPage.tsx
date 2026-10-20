@@ -13,7 +13,7 @@ const MemberLandingPage: React.FC = () => {
   if (loading) {
     return (
       <MainLayout>
-        <div className="p-4 sm:p-6 lg:p-8 text-center text-gray-500">
+        <div className="p-4 sm:p-6 lg:p-8 text-center text-slate-700 font-medium">
           Loading member dashboard...
         </div>
       </MainLayout>
@@ -33,7 +33,7 @@ const MemberLandingPage: React.FC = () => {
   if (!data) {
     return (
       <MainLayout>
-        <div className="p-4 sm:p-6 lg:p-8 text-center text-gray-500">
+        <div className="p-4 sm:p-6 lg:p-8 text-center text-slate-700 font-medium">
           No member dashboard data available.
         </div>
       </MainLayout>

@@ -355,7 +355,7 @@ const AboutPage: React.FC = () => {
                       : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
                   }`}
                 >
-                  <TabIcon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-slate-500'}`} />
+                  <TabIcon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-slate-700 font-bold'}`} />
                   {tab.label}
                 </button>
               );
@@ -885,7 +885,7 @@ const AboutPage: React.FC = () => {
                   {/* Direct Contact Channels */}
                   <div className="space-y-3">
                     <div>
-                      <p className="text-xs font-bold uppercase text-slate-500">Corporate Emails</p>
+                      <p className="text-xs font-bold uppercase text-slate-700 font-bold">Corporate Emails</p>
                       <a href="mailto:info@fingermobileprotocol.com" className="text-sm font-bold text-blue-700 hover:underline block">
                         info@fingermobileprotocol.com
                       </a>
@@ -895,13 +895,13 @@ const AboutPage: React.FC = () => {
                     </div>
 
                     <div>
-                      <p className="text-xs font-bold uppercase text-slate-500">Executive Telephone</p>
+                      <p className="text-xs font-bold uppercase text-slate-700 font-bold">Executive Telephone</p>
                       <p className="text-sm font-bold text-slate-800">+234 818 222 7289</p>
                       <p className="text-sm font-bold text-slate-800">+234 808 885 5752</p>
                     </div>
 
                     <div>
-                      <p className="text-xs font-bold uppercase text-slate-500">Official Web Domains</p>
+                      <p className="text-xs font-bold uppercase text-slate-700 font-bold">Official Web Domains</p>
                       <a href="https://fingermobileprotocol.com" target="_blank" rel="noopener noreferrer" className="text-sm font-bold text-blue-700 hover:underline block">
                         https://fingermobileprotocol.com
                       </a>
@@ -911,7 +911,7 @@ const AboutPage: React.FC = () => {
                     </div>
 
                     <div>
-                      <p className="text-xs font-bold uppercase text-slate-500">Founder LinkedIn</p>
+                      <p className="text-xs font-bold uppercase text-slate-700 font-bold">Founder LinkedIn</p>
                       <a
                         href="https://www.linkedin.com/in/obinnambah100/?isSelfProfile=true"
                         target="_blank"

@@ -77,11 +77,11 @@ const RedeemGiftCardModal: React.FC<RedeemGiftCardModalProps> = ({
     }}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Gift className="h-5 w-5 text-purple-500" />
+          <DialogTitle className="flex items-center gap-2 text-slate-900 font-bold">
+            <Gift className="h-5 w-5 text-purple-600" />
             Redeem Gift Card
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="text-slate-700">
             Enter your gift card code to add funds to your account
           </DialogDescription>
         </DialogHeader>
@@ -89,20 +89,20 @@ const RedeemGiftCardModal: React.FC<RedeemGiftCardModalProps> = ({
         {redeemStatus === 'idle' && (
           <div className="space-y-4 mt-4">
             <div className="space-y-2">
-              <Label htmlFor="gift-code">Gift Card Code</Label>
+              <Label htmlFor="gift-code" className="text-slate-900 font-semibold">Gift Card Code</Label>
               <div className="relative">
-                <QrCode className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <QrCode className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
                 <Input
                   id="gift-code"
                   value={code}
                   onChange={(e) => setCode(e.target.value.toUpperCase())}
                   onKeyPress={handleKeyPress}
                   placeholder="XXXX-XXXX-XXXX-XXXX"
-                  className="pl-10 uppercase tracking-wider font-mono"
+                  className="pl-10 uppercase tracking-wider font-mono text-slate-900 font-bold border-slate-300"
                   maxLength={19}
                 />
               </div>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-slate-700 font-medium">
                 Enter the 16-digit code from your gift card
               </p>
             </div>
@@ -170,7 +170,7 @@ const RedeemGiftCardModal: React.FC<RedeemGiftCardModalProps> = ({
 
         {redeemStatus === 'idle' && (
           <DialogFooter>
-            <p className="text-xs text-muted-foreground text-center w-full">
+            <p className="text-xs text-slate-700 font-medium text-center w-full">
               Gift cards can be purchased from authorized retailers or received as gifts
             </p>
           </DialogFooter>

@@ -777,7 +777,7 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
                           ))}
                         </div>
                       ) : (
-                        <p className="text-xs text-gray-500 italic text-center py-1">
+                        <p className="text-xs text-slate-700 font-medium italic text-center py-1">
                           No comments yet. Start the thoughtful conversation!
                         </p>
                       )}
@@ -835,7 +835,7 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
                               className={`absolute right-2.5 p-0.5 rounded transition ${
                                 showCommentEmojis[post.id]
                                   ? 'text-emerald-700 font-bold'
-                                  : 'text-gray-400 hover:text-emerald-700'
+                                  : 'text-slate-600 hover:text-emerald-700'
                               }`}
                               title="Attach Smileys & Emojis"
                             >

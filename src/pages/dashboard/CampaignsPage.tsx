@@ -67,7 +67,7 @@ const DashboardCampaignsPage: React.FC = () => {
       <div className="lg:col-span-1">
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 sticky top-24">
           <h2 className="text-xl font-bold text-slate-900 mb-1">Create New Campaign</h2>
-          <p className="text-xs text-slate-500 mb-4">Launch an incentive or rewards campaign for the FingerMobile network.</p>
+          <p className="text-xs text-slate-700 font-medium mb-4">Launch an incentive or rewards campaign for the FingerMobile network.</p>
 
           <form onSubmit={handleCreateCampaign} className="space-y-4">
             <div>
@@ -125,7 +125,7 @@ const DashboardCampaignsPage: React.FC = () => {
         <div className="flex justify-between items-center">
           <div>
             <h1 className="text-2xl font-bold text-slate-900">Campaign Management</h1>
-            <p className="text-xs text-slate-500 mt-0.5">Active and historical promotional campaigns</p>
+            <p className="text-xs text-slate-700 font-medium mt-0.5">Active and historical promotional campaigns</p>
           </div>
           <button
             onClick={() => fetchCampaigns()}
@@ -140,9 +140,9 @@ const DashboardCampaignsPage: React.FC = () => {
             <LoadingSpinner />
           </div>
         ) : campaigns.length === 0 ? (
-          <div className="bg-white p-8 rounded-2xl border border-slate-200 text-center text-slate-500">
-            <p className="font-semibold text-base">No campaigns found</p>
-            <p className="text-sm mt-1">Use the form on the left to launch your first promotional campaign.</p>
+          <div className="bg-white p-8 rounded-2xl border border-slate-200 text-center text-slate-700">
+            <p className="font-semibold text-base text-slate-900">No campaigns found</p>
+            <p className="text-sm mt-1 text-slate-700 font-medium">Use the form on the left to launch your first promotional campaign.</p>
           </div>
         ) : (
           <div className="space-y-4">

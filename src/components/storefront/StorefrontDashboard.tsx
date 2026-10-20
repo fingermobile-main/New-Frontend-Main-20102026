@@ -131,54 +131,54 @@ const StorefrontDashboard: React.FC = () => {
       {/* Header */}
       <div>
         <h1 className="text-3xl font-bold">Storefront Dashboard</h1>
-        <p className="text-muted-foreground">Monitor your store performance and inventory</p>
+        <p className="text-slate-700 font-medium">Monitor your store performance and inventory</p>
       </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-semibold text-slate-800">Total Revenue</CardTitle>
+            <DollarSign className="h-4 w-4 text-slate-500" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">${analytics?.total_revenue.toLocaleString() || 0}</div>
-            <p className="text-xs text-muted-foreground">Today's sales</p>
+            <p className="text-xs text-slate-700 font-medium">Today's sales</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Orders</CardTitle>
-            <ShoppingCart className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-semibold text-slate-800">Orders</CardTitle>
+            <ShoppingCart className="h-4 w-4 text-slate-500" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{analytics?.orders_count || 0}</div>
-            <p className="text-xs text-muted-foreground">Today's orders</p>
+            <p className="text-xs text-slate-700 font-medium">Today's orders</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Visitors</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-semibold text-slate-800">Visitors</CardTitle>
+            <Users className="h-4 w-4 text-slate-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{analytics?.unique_visitors || 0}</div>
-            <p className="text-xs text-muted-foreground">Unique visitors</p>
+            <p className="text-xs text-slate-700 font-medium">Unique visitors</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Conversion Rate</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-semibold text-slate-800">Conversion Rate</CardTitle>
+            <TrendingUp className="h-4 w-4 text-slate-500" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
               {analytics ? `${(analytics.conversion_rate * 100).toFixed(2)}%` : '0%'}
             </div>
-            <p className="text-xs text-muted-foreground">Visitor to buyer</p>
+            <p className="text-xs text-slate-700 font-medium">Visitor to buyer</p>
           </CardContent>
         </Card>
       </div>
@@ -217,10 +217,10 @@ const StorefrontDashboard: React.FC = () => {
                       <Badge variant="default">Verified</Badge>
                     )}
                   </div>
-                  <p className="text-sm text-muted-foreground mt-1">
+                  <p className="text-sm text-slate-700 font-medium mt-1">
                     {storefront.description}
                   </p>
-                  <div className="flex gap-2 mt-2 text-xs text-muted-foreground">
+                  <div className="flex gap-2 mt-2 text-xs text-slate-600 font-medium">
                     <span>{storefront.currency}</span>
                     <span>•</span>
                     <span>{storefront.timezone}</span>
@@ -244,19 +244,19 @@ const StorefrontDashboard: React.FC = () => {
         <CardContent>
           <div className="grid grid-cols-2 gap-6">
             <div>
-              <p className="text-sm text-muted-foreground mb-1">Page Views</p>
+              <p className="text-sm text-slate-700 font-medium mb-1">Page Views</p>
               <p className="text-2xl font-bold">{analytics?.page_views || 0}</p>
             </div>
             <div>
-              <p className="text-sm text-muted-foreground mb-1">Add to Cart</p>
+              <p className="text-sm text-slate-700 font-medium mb-1">Add to Cart</p>
               <p className="text-2xl font-bold">{analytics?.add_to_cart_count || 0}</p>
             </div>
             <div>
-              <p className="text-sm text-muted-foreground mb-1">Avg Order Value</p>
+              <p className="text-sm text-slate-700 font-medium mb-1">Avg Order Value</p>
               <p className="text-2xl font-bold">${analytics?.average_order_value.toFixed(2) || '0.00'}</p>
             </div>
             <div>
-              <p className="text-sm text-muted-foreground mb-1">Cart Abandonment</p>
+              <p className="text-sm text-slate-700 font-medium mb-1">Cart Abandonment</p>
               <p className="text-2xl font-bold">
                 {analytics ? `${(analytics.cart_abandonment_rate * 100).toFixed(1)}%` : '0%'}
               </p>

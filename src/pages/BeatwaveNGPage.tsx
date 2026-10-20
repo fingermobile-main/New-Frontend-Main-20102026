@@ -215,15 +215,15 @@ const BeatwaveNGPage: React.FC = () => {
         <div className="space-y-6">
           {/* Brand Header */}
           <div className="flex items-center gap-3 px-2">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-400 flex items-center justify-center text-black shadow-lg shadow-emerald-500/30">
-              <Waves className="w-6 h-6 text-black" />
+            <div className="w-10 h-10 rounded-2xl bg-slate-900 border border-emerald-500/40 p-1 flex items-center justify-center shadow-lg shadow-emerald-500/20 overflow-hidden shrink-0">
+              <img src="/assets/logos/beatwaveng_logo.png" alt="BeatwaveNG" className="w-full h-full object-contain" />
             </div>
             <div>
               <h1 className="text-xl font-black tracking-tight text-white flex items-center gap-1.5">
                 <span>Beatwave</span>
                 <span className="text-emerald-400 font-bold">NG</span>
               </h1>
-              <p className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+              <p className="text-[10px] uppercase font-bold text-slate-300 font-medium tracking-wider">
                 Apple Music • LushPressies
               </p>
             </div>
@@ -231,13 +231,13 @@ const BeatwaveNGPage: React.FC = () => {
 
           {/* Quick Search Bar */}
           <div className="relative">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-slate-300 font-medium absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               placeholder="Search library & 70+ genres..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-slate-900 border border-slate-800 rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-emerald-500 font-medium"
+              className="w-full bg-slate-900 border border-slate-800 rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder:text-slate-300 font-medium focus:outline-none focus:ring-1 focus:ring-emerald-500 font-medium"
             />
           </div>
 
@@ -245,7 +245,7 @@ const BeatwaveNGPage: React.FC = () => {
           <div className="space-y-4 text-xs font-semibold overflow-y-auto max-h-[calc(100vh-240px)] pr-1">
             {/* Section 1: Discover */}
             <div>
-              <span className="text-[10px] uppercase font-black text-slate-400 tracking-wider block px-2 mb-1.5">
+              <span className="text-[10px] uppercase font-black text-slate-300 font-medium tracking-wider block px-2 mb-1.5">
                 Discover
               </span>
               <nav className="space-y-1">
@@ -374,7 +374,7 @@ const BeatwaveNGPage: React.FC = () => {
 
             {/* Section 2: Colabo+ & VirDrive */}
             <div>
-              <span className="text-[10px] uppercase font-black text-slate-400 tracking-wider block px-2 mb-1.5">
+              <span className="text-[10px] uppercase font-black text-slate-300 font-medium tracking-wider block px-2 mb-1.5">
                 Colabo & VirDrive
               </span>
               <nav className="space-y-1">
@@ -406,7 +406,7 @@ const BeatwaveNGPage: React.FC = () => {
 
             {/* Section 3: AudioNovels, Podcasts & Vlogs */}
             <div>
-              <span className="text-[10px] uppercase font-black text-slate-400 tracking-wider block px-2 mb-1.5">
+              <span className="text-[10px] uppercase font-black text-slate-300 font-medium tracking-wider block px-2 mb-1.5">
                 Creative Cards & Vlogs
               </span>
               <nav className="space-y-1">
@@ -450,7 +450,7 @@ const BeatwaveNGPage: React.FC = () => {
 
             {/* Section 4: Platform Tiers & Aggregator */}
             <div>
-              <span className="text-[10px] uppercase font-black text-slate-400 tracking-wider block px-2 mb-1.5">
+              <span className="text-[10px] uppercase font-black text-slate-300 font-medium tracking-wider block px-2 mb-1.5">
                 Tiers & Aggregator
               </span>
               <nav className="space-y-1">
@@ -494,7 +494,7 @@ const BeatwaveNGPage: React.FC = () => {
 
             {/* Section 5: Library & Crew */}
             <div>
-              <span className="text-[10px] uppercase font-black text-slate-400 tracking-wider block px-2 mb-1.5">
+              <span className="text-[10px] uppercase font-black text-slate-300 font-medium tracking-wider block px-2 mb-1.5">
                 Library & Crew
               </span>
               <nav className="space-y-1">
@@ -530,7 +530,7 @@ const BeatwaveNGPage: React.FC = () => {
                       : 'text-slate-300 hover:text-white hover:bg-slate-900/60 font-medium'
                   }`}
                 >
-                  <Clock className="w-4 h-4 text-slate-400" />
+                  <Clock className="w-4 h-4 text-slate-300 font-medium" />
                   Recently Played
                 </button>
               </nav>
@@ -601,7 +601,7 @@ const BeatwaveNGPage: React.FC = () => {
                 {activeTab === 'mysub' && 'MySub Shared Family & Crew Plan'}
                 {activeTab === 'history' && 'Listening History & Amebo'}
               </h2>
-              <p className="text-xs text-slate-400 mt-0.5">
+              <p className="text-xs text-slate-300 font-medium mt-0.5">
                 Youth-driven, artist-first streaming protocol with lossless audio and creator sovereignty
               </p>
             </div>
@@ -698,7 +698,7 @@ const BeatwaveNGPage: React.FC = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="text-xl font-black text-white">Daily Flow Mixes</h3>
-                  <p className="text-xs text-slate-400">Personalized algorithmic playlists tailored to your current frequency</p>
+                  <p className="text-xs text-slate-300 font-medium">Personalized algorithmic playlists tailored to your current frequency</p>
                 </div>
                 <span className="text-xs text-emerald-400 font-semibold cursor-pointer hover:underline">
                   See All Mixes
@@ -728,7 +728,7 @@ const BeatwaveNGPage: React.FC = () => {
                     <h4 className="font-bold text-sm text-white truncate group-hover:text-emerald-300 transition-colors">
                       {mix.title}
                     </h4>
-                    <p className="text-xs text-slate-400 mt-0.5 truncate">{mix.desc}</p>
+                    <p className="text-xs text-slate-300 font-medium mt-0.5 truncate">{mix.desc}</p>
                   </div>
                 ))}
               </div>
@@ -739,7 +739,7 @@ const BeatwaveNGPage: React.FC = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="text-xl font-black text-white">Latest Master Catalog Recordings</h3>
-                  <p className="text-xs text-slate-400">Stream in sovereign Lossless 24-bit audio</p>
+                  <p className="text-xs text-slate-300 font-medium">Stream in sovereign Lossless 24-bit audio</p>
                 </div>
               </div>
 
@@ -782,9 +782,9 @@ const BeatwaveNGPage: React.FC = () => {
                     <h4 className="font-bold text-xs sm:text-sm text-white truncate group-hover:text-emerald-300 transition-colors">
                       {track.title}
                     </h4>
-                    <p className="text-[11px] text-slate-400 truncate mt-0.5">{track.artist}</p>
+                    <p className="text-[11px] text-slate-300 font-medium truncate mt-0.5">{track.artist}</p>
 
-                    <div className="mt-2 pt-2 border-t border-slate-800/60 flex items-center justify-between text-[10px] text-slate-400 font-mono">
+                    <div className="mt-2 pt-2 border-t border-slate-800/60 flex items-center justify-between text-[10px] text-slate-300 font-medium font-mono">
                       <span>{track.genre}</span>
                       <span>{formatTime(track.duration)}</span>
                     </div>
@@ -810,7 +810,7 @@ const BeatwaveNGPage: React.FC = () => {
                   </div>
                   <h3 className="text-2xl font-black text-white">BeatwaveNG Official Nigerian Top 100</h3>
                 </div>
-                <span className="text-xs text-slate-400">Updated Hourly</span>
+                <span className="text-xs text-slate-300 font-medium">Updated Hourly</span>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -830,9 +830,9 @@ const BeatwaveNGPage: React.FC = () => {
                     />
                     <div className="flex-1 min-w-0">
                       <h4 className="font-bold text-sm text-white truncate">{track.title}</h4>
-                      <p className="text-xs text-slate-400 truncate">{track.artist}</p>
+                      <p className="text-xs text-slate-300 font-medium truncate">{track.artist}</p>
                     </div>
-                    <div className="text-right font-mono text-xs text-slate-400">
+                    <div className="text-right font-mono text-xs text-slate-300 font-medium">
                       <div>{(track.plays || 12000).toLocaleString()} streams</div>
                       <span className="text-[10px] text-emerald-400 font-bold">{track.genre}</span>
                     </div>
@@ -886,12 +886,12 @@ const BeatwaveNGPage: React.FC = () => {
                     </div>
 
                     <h4 className="font-black text-lg text-white">{st.name}</h4>
-                    <p className="text-xs text-slate-400 mt-1 leading-relaxed line-clamp-2">
+                    <p className="text-xs text-slate-300 font-medium mt-1 leading-relaxed line-clamp-2">
                       {st.description}
                     </p>
 
                     <div className="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between">
-                      <div className="text-[11px] font-mono text-slate-400">
+                      <div className="text-[11px] font-mono text-slate-300 font-medium">
                         <span>Curated by: </span>
                         <strong className="text-white">{st.dj}</strong>
                       </div>
@@ -987,7 +987,7 @@ const BeatwaveNGPage: React.FC = () => {
                     <img src={track.coverArt} alt={track.title} className="w-14 h-14 rounded-xl object-cover" />
                     <div className="flex-1 min-w-0">
                       <h5 className="font-bold text-sm text-white truncate">{track.title}</h5>
-                      <p className="text-xs text-slate-400 truncate">{track.artist}</p>
+                      <p className="text-xs text-slate-300 font-medium truncate">{track.artist}</p>
                       <span className="text-[10px] text-emerald-400 font-mono mt-1 block">
                         {track.bitrate}
                       </span>
@@ -1032,7 +1032,7 @@ const BeatwaveNGPage: React.FC = () => {
 
             {/* 70+ Genres Filter Cloud */}
             <div className="space-y-2">
-              <div className="flex items-center justify-between text-xs text-slate-400">
+              <div className="flex items-center justify-between text-xs text-slate-300 font-medium">
                 <span className="font-bold uppercase tracking-wider text-emerald-400">Select From 70+ Genres:</span>
                 <span>Active: <strong className="text-white">{selectedAggregatorGenre}</strong></span>
               </div>
@@ -1045,7 +1045,7 @@ const BeatwaveNGPage: React.FC = () => {
                     className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
                       selectedAggregatorGenre === g
                         ? 'bg-gradient-to-r from-emerald-600 to-teal-500 text-white font-bold shadow-md shadow-emerald-600/30'
-                        : 'bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:border-slate-700'
+                        : 'bg-slate-900 border border-slate-800 text-slate-300 font-medium hover:text-white hover:border-slate-700'
                     }`}
                   >
                     {g}
@@ -1061,13 +1061,13 @@ const BeatwaveNGPage: React.FC = () => {
                   <Flame className="w-4 h-4 text-orange-400" />
                   Public Stream Results for "{selectedAggregatorGenre}"
                 </h4>
-                <span className="text-xs text-slate-400">{aggregatedTracks.length} recordings pulled</span>
+                <span className="text-xs text-slate-300 font-medium">{aggregatedTracks.length} recordings pulled</span>
               </div>
 
               {isSearchingAggregator ? (
                 <div className="py-16 text-center">
                   <LoadingSpinner />
-                  <p className="text-xs text-slate-400 mt-2 font-mono">Aggregating public streams across open music nodes...</p>
+                  <p className="text-xs text-slate-300 font-medium mt-2 font-mono">Aggregating public streams across open music nodes...</p>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -1080,7 +1080,7 @@ const BeatwaveNGPage: React.FC = () => {
                         <img src={item.coverArt} alt={item.title} className="w-16 h-16 rounded-xl object-cover" />
                         <div className="min-w-0 flex-1">
                           <h5 className="font-bold text-sm text-white truncate">{item.title}</h5>
-                          <p className="text-xs text-slate-400 truncate mt-0.5">{item.artist}</p>
+                          <p className="text-xs text-slate-300 font-medium truncate mt-0.5">{item.artist}</p>
                           <span className="text-[10px] text-amber-400 font-mono block mt-1">
                             Source: {item.publicSource || 'Open Music Archive'}
                           </span>
@@ -1193,9 +1193,9 @@ const BeatwaveNGPage: React.FC = () => {
                   <img src={t.coverArt} alt={t.title} className="w-12 h-12 rounded-xl object-cover" />
                   <div className="flex-1 min-w-0">
                     <h5 className="font-bold text-xs sm:text-sm text-white truncate">{t.title}</h5>
-                    <p className="text-[11px] text-slate-400 truncate">{t.artist}</p>
+                    <p className="text-[11px] text-slate-300 font-medium truncate">{t.artist}</p>
                   </div>
-                  <span className="text-xs font-mono text-slate-400">{formatTime(t.duration)}</span>
+                  <span className="text-xs font-mono text-slate-300 font-medium">{formatTime(t.duration)}</span>
                 </div>
               ))}
             </div>
@@ -1221,7 +1221,7 @@ const BeatwaveNGPage: React.FC = () => {
               </div>
               <button
                 onClick={() => setShowUploadModal(false)}
-                className="text-slate-400 hover:text-white text-lg font-bold"
+                className="text-slate-300 font-medium hover:text-white text-lg font-bold"
               >
                 ✕
               </button>
@@ -1237,11 +1237,11 @@ const BeatwaveNGPage: React.FC = () => {
                     className={`cursor-pointer p-3 rounded-2xl border text-xs transition-all ${
                       uploadTier === 'SoundRiver'
                         ? 'bg-sky-950/60 border-sky-400 text-white'
-                        : 'bg-slate-950 border-slate-800 text-slate-400'
+                        : 'bg-slate-950 border-slate-800 text-slate-300 font-medium'
                     }`}
                   >
                     <div className="font-bold text-sky-400">🌊 SoundRiver</div>
-                    <div className="text-[11px] text-slate-400 mt-1">Free open creator tier (unlimited music & podcasts)</div>
+                    <div className="text-[11px] text-slate-300 font-medium mt-1">Free open creator tier (unlimited music & podcasts)</div>
                   </div>
 
                   <div
@@ -1249,11 +1249,11 @@ const BeatwaveNGPage: React.FC = () => {
                     className={`cursor-pointer p-3 rounded-2xl border text-xs transition-all ${
                       uploadTier === 'SoundOcean'
                         ? 'bg-emerald-950/60 border-emerald-400 text-white'
-                        : 'bg-slate-950 border-slate-800 text-slate-400'
+                        : 'bg-slate-950 border-slate-800 text-slate-300 font-medium'
                     }`}
                   >
                     <div className="font-bold text-emerald-400">💎 SoundOcean</div>
-                    <div className="text-[11px] text-slate-400 mt-1">Lossless masters with 80% FIC direct creator royalties</div>
+                    <div className="text-[11px] text-slate-300 font-medium mt-1">Lossless masters with 80% FIC direct creator royalties</div>
                   </div>
                 </div>
               </div>

@@ -103,9 +103,9 @@ export const PodcastsTab: React.FC = () => {
 
         <div className="flex flex-col sm:flex-row items-center gap-4 shrink-0">
           <div className="p-3.5 rounded-2xl bg-slate-950/80 border border-slate-800 text-center">
-            <div className="text-xs text-slate-400 font-bold uppercase tracking-wider">Slot Allocation</div>
+            <div className="text-xs text-slate-300 font-bold uppercase tracking-wider">Slot Allocation</div>
             <div className="text-xl font-black text-teal-400 mt-0.5">
-              {podcasts.length} <span className="text-xs text-slate-400">/ 50 Cards</span>
+              {podcasts.length} <span className="text-xs text-slate-300 font-medium">/ 50 Cards</span>
             </div>
           </div>
 
@@ -163,7 +163,7 @@ export const PodcastsTab: React.FC = () => {
               <div className="p-5 space-y-3 flex-1 flex flex-col justify-between">
                 <div>
                   <h3 className="text-base font-black text-white line-clamp-1">{pod.title}</h3>
-                  <div className="flex items-center gap-2 text-xs text-slate-400 mt-0.5">
+                  <div className="flex items-center gap-2 text-xs text-slate-300 font-medium mt-0.5">
                     <span>Host: <strong className="text-slate-200">{pod.host}</strong></span>
                     {pod.guest && <span>• Guest: {pod.guest}</span>}
                   </div>
@@ -179,7 +179,7 @@ export const PodcastsTab: React.FC = () => {
                       <Clock size={12} />
                       {pod.daysRemaining} Days Left (Cloud TTL)
                     </span>
-                    <span className="text-slate-400 font-mono">
+                    <span className="text-slate-300 font-medium font-mono">
                       {pod.isDownloaded ? 'Downloaded' : 'Cloud Cache'}
                     </span>
                   </div>
@@ -222,7 +222,7 @@ export const PodcastsTab: React.FC = () => {
               </div>
               <button
                 onClick={() => setShowCreateModal(false)}
-                className="text-slate-400 hover:text-white font-bold"
+                className="text-slate-300 hover:text-white font-bold"
               >
                 ✕
               </button>

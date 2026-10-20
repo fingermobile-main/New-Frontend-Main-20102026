@@ -46,7 +46,7 @@ const AdminLoginPage: React.FC = () => {
             <ShieldCheck className="h-8 w-8 text-indigo-400" />
           </div>
           <h2 className="text-2xl font-bold text-white tracking-tight">Admin Gateway</h2>
-          <p className="text-xs text-slate-400 mt-1 uppercase tracking-wider font-semibold">
+          <p className="text-xs text-slate-300 mt-1 uppercase tracking-wider font-semibold">
             FingerMobile Protocol Control Plane
           </p>
         </div>
@@ -67,7 +67,7 @@ const AdminLoginPage: React.FC = () => {
               Administrator Email
             </label>
             <div className="relative">
-              <Mail className="w-4 h-4 text-slate-500 absolute left-3.5 top-3" />
+              <Mail className="w-4 h-4 text-slate-300 absolute left-3.5 top-3" />
               <input
                 type="email"
                 id="email"
@@ -88,7 +88,7 @@ const AdminLoginPage: React.FC = () => {
               Master Password
             </label>
             <div className="relative">
-              <Lock className="w-4 h-4 text-slate-500 absolute left-3.5 top-3" />
+              <Lock className="w-4 h-4 text-slate-300 absolute left-3.5 top-3" />
               <input
                 type="password"
                 id="password"

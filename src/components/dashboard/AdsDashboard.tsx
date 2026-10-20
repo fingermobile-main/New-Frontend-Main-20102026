@@ -59,7 +59,7 @@ const AdsDashboard: React.FC = () => {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-6 border-b border-gray-700">
         <div>
           <h2 className="text-2xl font-bold">Ads Dashboard</h2>
-          <p className="text-gray-400 mt-1">
+          <p className="text-gray-300 font-medium mt-1">
             Track and manage your advertising campaigns
           </p>
         </div>
@@ -79,19 +79,19 @@ const AdsDashboard: React.FC = () => {
       {/* Tabs */}
       <div className="flex border-b border-gray-700 px-6">
         <button
-          className={`py-4 px-6 text-sm font-medium border-b-2 transition-colors ${activeTab === 'overview' ? 'border-blue-500 text-white' : 'border-transparent text-gray-400 hover:text-gray-200'}`}
+          className={`py-4 px-6 text-sm font-medium border-b-2 transition-colors ${activeTab === 'overview' ? 'border-blue-500 text-white' : 'border-transparent text-gray-300 hover:text-white'}`}
           onClick={() => setActiveTab('overview')}
         >
           Overview
         </button>
         <button
-          className={`py-4 px-6 text-sm font-medium border-b-2 transition-colors ${activeTab === 'performance' ? 'border-blue-500 text-white' : 'border-transparent text-gray-400 hover:text-gray-200'}`}
+          className={`py-4 px-6 text-sm font-medium border-b-2 transition-colors ${activeTab === 'performance' ? 'border-blue-500 text-white' : 'border-transparent text-gray-300 hover:text-white'}`}
           onClick={() => setActiveTab('performance')}
         >
           Performance
         </button>
         <button
-          className={`py-4 px-6 text-sm font-medium border-b-2 transition-colors ${activeTab === 'audience' ? 'border-blue-500 text-white' : 'border-transparent text-gray-400 hover:text-gray-200'}`}
+          className={`py-4 px-6 text-sm font-medium border-b-2 transition-colors ${activeTab === 'audience' ? 'border-blue-500 text-white' : 'border-transparent text-gray-300 hover:text-white'}`}
           onClick={() => setActiveTab('audience')}
         >
           Audience
@@ -129,7 +129,7 @@ const AdsDashboard: React.FC = () => {
                     {metric.change}%
                   </span>
                 </div>
-                <h3 className="text-gray-400 text-sm font-medium">
+                <h3 className="text-gray-200 text-sm font-semibold">
                   {metric.label}
                 </h3>
                 <p className="text-2xl font-bold mt-1">{metric.value}</p>
@@ -149,7 +149,7 @@ const AdsDashboard: React.FC = () => {
                 >
                   <div>
                     <p className="font-medium">{metric.name}</p>
-                    <p className="text-sm text-gray-400">{metric.status}</p>
+                    <p className="text-sm text-gray-300 font-medium">{metric.status}</p>
                   </div>
                   <div className="text-right">
                     <p className="font-bold">{metric.value}</p>

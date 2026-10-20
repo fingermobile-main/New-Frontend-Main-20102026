@@ -372,9 +372,9 @@ export const AudioNovelsTab: React.FC = () => {
 
         <div className="flex flex-col sm:flex-row items-center gap-4 shrink-0">
           <div className="p-3.5 rounded-2xl bg-slate-950/80 border border-slate-800 text-center">
-            <div className="text-xs text-slate-400 font-bold uppercase tracking-wider">Slot Allocation</div>
+            <div className="text-xs text-slate-300 font-bold uppercase tracking-wider">Slot Allocation</div>
             <div className="text-xl font-black text-amber-400 mt-0.5">
-              {audioNovels.length} <span className="text-xs text-slate-400">/ 50 Cards</span>
+              {audioNovels.length} <span className="text-xs text-slate-300">/ 50 Cards</span>
             </div>
           </div>
 
@@ -474,9 +474,9 @@ export const AudioNovelsTab: React.FC = () => {
                 <div>
                   <div className="flex items-center justify-between">
                     <h3 className="text-base font-black text-white line-clamp-1">{novel.title}</h3>
-                    <span className="text-[11px] font-mono text-slate-400">{novel.durationMinutes} mins</span>
+                    <span className="text-[11px] font-mono text-slate-300">{novel.durationMinutes} mins</span>
                   </div>
-                  <div className="flex items-center gap-2 text-xs text-slate-400 mt-0.5">
+                  <div className="flex items-center gap-2 text-xs text-slate-300 mt-0.5">
                     <span>By {novel.author}</span>
                     <span>•</span>
                     <span className="text-amber-300 font-semibold">{novel.narratorVoice}</span>
@@ -486,7 +486,7 @@ export const AudioNovelsTab: React.FC = () => {
                   </p>
 
                   {novel.sourceFileName && (
-                    <div className="mt-2 text-[11px] text-slate-400 flex items-center gap-1 font-mono">
+                    <div className="mt-2 text-[11px] text-slate-300 flex items-center gap-1 font-mono">
                       <FileText size={11} className="text-sky-400" />
                       <span className="truncate">{novel.sourceFileName}</span>
                       {novel.sourceFileSizeMb && <span>({novel.sourceFileSizeMb} MB)</span>}
@@ -509,7 +509,7 @@ export const AudioNovelsTab: React.FC = () => {
                       <Clock size={12} />
                       {novel.daysRemaining} Days Left ({novel.ttlDays}-Day Temporal TTL)
                     </span>
-                    <span className="text-slate-400 font-mono">
+                    <span className="text-slate-300 font-mono">
                       {novel.isDownloaded ? 'Vault Saved' : 'Temporal Cache'}
                     </span>
                   </div>
@@ -552,13 +552,13 @@ export const AudioNovelsTab: React.FC = () => {
                   <BookOpen size={18} />
                   Create Sovereign AudioNovel Studio
                 </div>
-                <p className="text-xs text-slate-400 mt-0.5">
+                <p className="text-xs text-slate-300 mt-0.5">
                   AI Voice Modeling, Manuscript File Ingest, Audio Stems &amp; Live Studio Recording
                 </p>
               </div>
               <button
                 onClick={() => setShowCreateModal(false)}
-                className="text-slate-400 hover:text-white font-bold text-lg"
+                className="text-slate-300 hover:text-white font-bold text-lg"
               >
                 ✕
               </button>
@@ -572,7 +572,7 @@ export const AudioNovelsTab: React.FC = () => {
                 className={`py-2 px-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
                   creationSource === 'ai_prompt'
                     ? 'bg-amber-500 text-black shadow-md shadow-amber-500/30'
-                    : 'text-slate-400 hover:text-white'
+                    : 'text-slate-300 hover:text-white'
                 }`}
               >
                 <Sparkles size={14} />
@@ -584,7 +584,7 @@ export const AudioNovelsTab: React.FC = () => {
                 className={`py-2 px-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
                   creationSource === 'text_upload'
                     ? 'bg-sky-500 text-black shadow-md shadow-sky-500/30'
-                    : 'text-slate-400 hover:text-white'
+                    : 'text-slate-300 hover:text-white'
                 }`}
               >
                 <FileText size={14} />
@@ -596,7 +596,7 @@ export const AudioNovelsTab: React.FC = () => {
                 className={`py-2 px-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
                   creationSource === 'audio_upload'
                     ? 'bg-teal-500 text-black shadow-md shadow-teal-500/30'
-                    : 'text-slate-400 hover:text-white'
+                    : 'text-slate-300 hover:text-white'
                 }`}
               >
                 <Upload size={14} />
@@ -608,7 +608,7 @@ export const AudioNovelsTab: React.FC = () => {
                 className={`py-2 px-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
                   creationSource === 'live_recording'
                     ? 'bg-rose-500 text-white shadow-md shadow-rose-500/30'
-                    : 'text-slate-400 hover:text-white'
+                    : 'text-slate-300 hover:text-white'
                 }`}
               >
                 <Mic size={14} />
@@ -686,7 +686,7 @@ export const AudioNovelsTab: React.FC = () => {
                       <div className="w-full space-y-2">
                         <div className="flex items-center justify-between text-xs text-emerald-400 font-bold">
                           <span>✓ Live Audio Recording Ready</span>
-                          <span className="font-mono text-slate-400">Duration: {formatRecordTime(recordingSeconds)}</span>
+                          <span className="font-mono text-slate-300">Duration: {formatRecordTime(recordingSeconds)}</span>
                         </div>
                         <audio controls src={recordedAudioUrl} className="w-full h-8" />
                         <div className="flex justify-end gap-2">
@@ -712,7 +712,7 @@ export const AudioNovelsTab: React.FC = () => {
                       {creationSource === 'text_upload' ? <FileText size={14} className="text-sky-400" /> : <Music size={14} className="text-teal-400" />}
                       {creationSource === 'text_upload' ? 'Upload Novel Manuscript File' : 'Upload Audio Narration / Music Stem'}
                     </span>
-                    <span className="text-[11px] font-mono text-slate-400">
+                    <span className="text-[11px] font-mono text-slate-300">
                       {creationSource === 'text_upload' ? '.TXT, .PDF, .DOCX, .MD' : '.MP3, .WAV, .FLAC, .M4A, .FMBW'}
                     </span>
                   </div>
@@ -733,14 +733,14 @@ export const AudioNovelsTab: React.FC = () => {
                         </div>
                         <div>
                           <div className="text-xs font-bold text-white truncate max-w-xs">{uploadedFile.name}</div>
-                          <div className="text-[10px] text-slate-400 font-mono">{uploadedFile.sizeMb} MB • {uploadedFile.type}</div>
+                          <div className="text-[10px] text-slate-300 font-mono">{uploadedFile.sizeMb} MB • {uploadedFile.type}</div>
                         </div>
                       </div>
 
                       <button
                         type="button"
                         onClick={() => setUploadedFile(null)}
-                        className="p-1.5 rounded-lg bg-slate-800 hover:bg-rose-900/50 text-slate-400 hover:text-rose-300"
+                        className="p-1.5 rounded-lg bg-slate-800 hover:bg-rose-900/50 text-slate-300 hover:text-rose-300"
                         title="Remove file"
                       >
                         <Trash2 size={14} />
@@ -757,7 +757,7 @@ export const AudioNovelsTab: React.FC = () => {
                       <div className="text-xs font-bold text-slate-200">
                         Click or Drop file here to ingest into AudioNovel
                       </div>
-                      <div className="text-[11px] text-slate-400">
+                      <div className="text-[11px] text-slate-300">
                         {creationSource === 'text_upload'
                           ? 'Automatic text parsing and chapter breakdown'
                           : 'Lossless audio ingestion with instant waveform verification'}
@@ -842,7 +842,7 @@ export const AudioNovelsTab: React.FC = () => {
                         className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all ${
                           isSelected
                             ? 'bg-amber-500 text-black shadow-xs shadow-amber-500/40'
-                            : 'bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white border border-slate-800'
+                            : 'bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800'
                         }`}
                       >
                         {isSelected ? '✓ ' : ''}{g}
@@ -871,7 +871,7 @@ export const AudioNovelsTab: React.FC = () => {
                         className={`py-1.5 px-2 rounded-xl text-center text-xs font-bold border transition-all ${
                           temporalTtlDays === opt.days
                             ? 'bg-amber-500/20 border-amber-500 text-amber-300 font-black'
-                            : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-white'
+                            : 'bg-slate-900 border-slate-800 text-slate-300 hover:text-white'
                         }`}
                       >
                         <div>{opt.label}</div>
@@ -895,7 +895,7 @@ export const AudioNovelsTab: React.FC = () => {
                     onChange={(e) => setDurationMinutes(parseInt(e.target.value))}
                     className="w-full accent-amber-500 mt-2"
                   />
-                  <div className="text-[10px] text-slate-400 mt-1">
+                  <div className="text-[10px] text-slate-300 mt-1">
                     Chapters: {Math.ceil(durationMinutes / 7)} parts • 320 kbps Voice Master
                   </div>
                 </div>

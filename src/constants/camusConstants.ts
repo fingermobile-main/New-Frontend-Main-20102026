@@ -153,30 +153,12 @@ export const CAMUS_STATS: CamusStat[] = [
 
 // Categories
 export const CAMUS_COURSE_CATEGORIES = [
-  {name: 'Technology',
-    icon: '💻',
-    courseCount: 42
-  },
-  {name: 'Business',
-    icon: '💼',
-    courseCount: 36
-  },
-  {name: 'Design',
-    icon: '🎨',
-    courseCount: 28
-  },
-  {name: 'Marketing',
-    icon: '📈',
-    courseCount: 31
-  },
-  {name: 'Personal Development',
-    icon: '🌱',
-    courseCount: 25
-  },
-  {name: 'Health & Fitness',
-    icon: '💪',
-    courseCount: 18
-  }
+  { name: 'Arts & Humanities', icon: '🎨', courseCount: 48 },
+  { name: 'Social Sciences', icon: '🏛️', courseCount: 52 },
+  { name: 'Technology & Computing', icon: '💻', courseCount: 64 },
+  { name: 'Business Administration', icon: '💼', courseCount: 45 },
+  { name: 'Interdisciplinary Studies', icon: '🌐', courseCount: 30 },
+  { name: 'Graduate Research & Grants', icon: '🔬', courseCount: 22 }
 ];
 
 // Notification Types
@@ -185,7 +167,9 @@ export const CAMUS_NOTIFICATION_TYPES = [
   'assignment_due',
   'grade_update',
   'system_alert',
-  'community_update'
+  'community_update',
+  'lesson_plan_approval',
+  'bundle_purchase'
 ];
 
 // Quiz Status
@@ -205,103 +189,276 @@ export const CAMUS_ENROLLMENT_STATUS = [
   'pending'
 ];
 
-// Sample Courses Data
+// Sample Courses Data - School of Arts & Social Sciences and Technology & Business
 export const CAMUS_COURSES: CourseCardProps[] = [
-  {id: '1',
+  {
+    id: '1',
     title: 'Complete Web Development Bootcamp',
     instructor: {
       name: 'John Smith',
-      avatarUrl: '/avatars/john.jpg' },
+      avatarUrl: '/avatars/john.jpg'
+    },
     duration: '12 weeks',
     level: 'Beginner',
     rating: 4.8,
     students: 1245,
     price: 199,
     imageUrl: '/images/web-dev-course.jpg',
-    description:
-      'Learn HTML, CSS, JavaScript, React, Node.js, and more to become a full-stack developer.',
-    category: 'Technology',
-    modules: [{lessons: [] }]
+    description: 'Learn HTML, CSS, JavaScript, React, Node.js, and more to become a full-stack developer.',
+    category: 'Technology & Computing',
+    modules: [{ lessons: [] }]
   },
-  {id: '2',
-    title: 'Digital Marketing Masterclass',
+  {
+    id: '2',
+    title: 'Comparative Literature & Cultural Narrative Analysis (BA)',
     instructor: {
-      name: 'Emily Johnson',
-      avatarUrl: '/avatars/emily.jpg' },
+      name: 'Dr. Clara Achebe',
+      avatarUrl: '/avatars/clara.jpg'
+    },
+    duration: '14 weeks',
+    level: 'Intermediate',
+    rating: 4.9,
+    students: 840,
+    price: 180,
+    imageUrl: '/images/literature-course.jpg',
+    description: 'Explore world literatures, postcolonial discourse, and critical storytelling across modern civil societies.',
+    category: 'Arts & Humanities',
+    modules: [{ lessons: [] }]
+  },
+  {
+    id: '3',
+    title: 'Sovereign Macroeconomics & Development Finance (MSc)',
+    instructor: {
+      name: 'Prof. Adeyemi Olatunji',
+      avatarUrl: '/avatars/adeyemi.jpg'
+    },
+    duration: '16 weeks',
+    level: 'Advanced',
+    rating: 4.9,
+    students: 620,
+    price: 250,
+    imageUrl: '/images/economics-course.jpg',
+    description: 'Fiscal decentralization, trade policy, and monetary economics for emerging continental markets.',
+    category: 'Social Sciences',
+    modules: [{ lessons: [] }]
+  },
+  {
+    id: '4',
+    title: 'Constitutional Law, Civil Liberties & Digital Governance (BA)',
+    instructor: {
+      name: 'Dr. Evelyn Sterling',
+      avatarUrl: '/avatars/evelyn.jpg'
+    },
+    duration: '12 weeks',
+    level: 'Intermediate',
+    rating: 4.8,
+    students: 915,
+    price: 195,
+    imageUrl: '/images/law-course.jpg',
+    description: 'Separation of powers, human rights charters, and digital governance in decentralized societies.',
+    category: 'Social Sciences',
+    modules: [{ lessons: [] }]
+  },
+  {
+    id: '5',
+    title: 'Sociology of Digital Networks & Behavioral Psychology',
+    instructor: {
+      name: 'Dr. Marcus Vance',
+      avatarUrl: '/avatars/marcus.jpg'
+    },
+    duration: '10 weeks',
+    level: 'Beginner',
+    rating: 4.7,
+    students: 1120,
+    price: 160,
+    imageUrl: '/images/sociology-course.jpg',
+    description: 'Examine social cohesion, algorithmic behavior, and collective social dynamics in networked institutions.',
+    category: 'Social Sciences',
+    modules: [{ lessons: [] }]
+  },
+  {
+    id: '6',
+    title: 'World History, Archaeology & Indigenous Heritage',
+    instructor: {
+      name: 'Prof. Amina Bello',
+      avatarUrl: '/avatars/amina.jpg'
+    },
+    duration: '12 weeks',
+    level: 'Beginner',
+    rating: 4.8,
+    students: 730,
+    price: 150,
+    imageUrl: '/images/history-course.jpg',
+    description: 'Historical archives, cultural heritage preservation, and archeological documentation methods.',
+    category: 'Arts & Humanities',
+    modules: [{ lessons: [] }]
+  },
+  {
+    id: '7',
+    title: 'Musicology, Acoustics & Digital Soundscapes',
+    instructor: {
+      name: 'Maitland Ross',
+      avatarUrl: '/avatars/maitland.jpg'
+    },
     duration: '8 weeks',
     level: 'Intermediate',
-    rating: 4.7,
-    students: 987,
-    price: 149,
-    imageUrl: '/images/marketing-course.jpg',
-    description:
-      'Master SEO, social media marketing, email campaigns, and analytics.',
-    category: 'Marketing',
-    modules: [{lessons: [] }]
-  },
-  {id: '3',
-    title: 'UI/UX Design Fundamentals',
-    instructor: {
-      name: 'Michael Chen',
-      avatarUrl: '/avatars/michael.jpg' },
-    duration: '6 weeks',
-    level: 'Beginner',
     rating: 4.9,
-    students: 856,
-    price: 129,
-    imageUrl: '/images/design-course.jpg',
-    description:
-      'Learn design principles, prototyping, and member research techniques.',
-    category: 'Design',
-    modules: [{lessons: [] }]
+    students: 540,
+    price: 175,
+    imageUrl: '/images/music-course.jpg',
+    description: 'Harmony, acoustic signal processing, and indigenous musical traditions in modern sonic media.',
+    category: 'Arts & Humanities',
+    modules: [{ lessons: [] }]
   },
-  {id: '4',
-    title: 'Data Science Essentials',
+  {
+    id: '8',
+    title: 'Human Geography & Environmental Urban Systems (Ph.D. Prep)',
     instructor: {
-      name: 'Sarah Williams',
-      avatarUrl: '/avatars/sarah.jpg' },
-    duration: '10 weeks',
-    level: 'Intermediate',
-    rating: 4.6,
-    students: 723,
-    price: 249,
-    imageUrl: '/images/data-science-course.jpg',
-    description:
-      'Python, statistics, machine learning, and data visualization fundamentals.',
-    category: 'Technology',
-    modules: [{lessons: [] }]
+      name: 'Dr. Tariq Al-Mansoor',
+      avatarUrl: '/avatars/tariq.jpg'
+    },
+    duration: '16 weeks',
+    level: 'Advanced',
+    rating: 4.8,
+    students: 480,
+    price: 290,
+    imageUrl: '/images/geography-course.jpg',
+    description: 'Spatial geospatial modeling, urbanization trajectories, and ecological resource stewardship.',
+    category: 'Social Sciences',
+    modules: [{ lessons: [] }]
   },
-  {id: '5',
-    title: 'Leadership & Management',
+  {
+    id: '9',
+    title: 'Executive Leadership & Strategic Administration',
     instructor: {
       name: 'Robert Davis',
-      avatarUrl: '/avatars/robert.jpg' },
-    duration: '7 weeks',
+      avatarUrl: '/avatars/robert.jpg'
+    },
+    duration: '8 weeks',
     level: 'Advanced',
-    rating: 4.5,
-    students: 642,
-    price: 179,
-    imageUrl: '/images/leadership-course.jpg',
-    description:
-      'Develop leadership skills, team management, and strategic thinking.',
-    category: 'Business',
-    modules: [{lessons: [] }]
-  },
-  {id: '6',
-    title: 'Financial Planning & Investment',
-    instructor: {
-      name: 'Jennifer Lee',
-      avatarUrl: '/avatars/jennifer.jpg' },
-    duration: '9 weeks',
-    level: 'Intermediate',
     rating: 4.7,
-    students: 531,
-    price: 159,
-    imageUrl: '/images/finance-course.jpg',
-    description:
-      'Personal finance, investment strategies, and retirement planning.',
-    category: 'Business',
-    modules: [{lessons: [] }]
+    students: 890,
+    price: 220,
+    imageUrl: '/images/leadership-course.jpg',
+    description: 'Strategic planning, organizational agility, and cross-border team administrative governance.',
+    category: 'Business Administration',
+    modules: [{ lessons: [] }]
+  }
+];
+
+// Course Bundles (Tutor LMS feature: Bundle multiple courses as single packaged degree path)
+export interface CamusCourseBundle {
+  id: string;
+  title: string;
+  faculty: string;
+  courseCount: number;
+  totalHours: number;
+  regularPrice: number;
+  bundlePrice: number;
+  savingsPercentage: number;
+  description: string;
+  coursesIncluded: string[];
+  level: string;
+}
+
+export const CAMUS_COURSE_BUNDLES: CamusCourseBundle[] = [
+  {
+    id: 'bundle-arts-soc-01',
+    title: 'School of Arts & Social Sciences: Core Humanities Foundation',
+    faculty: 'School of Arts & Social Sciences',
+    courseCount: 3,
+    totalHours: 140,
+    regularPrice: 525,
+    bundlePrice: 380,
+    savingsPercentage: 28,
+    description: 'Comprehensive interdisciplinary package combining Comparative Literature, Constitutional Law, and Sociology.',
+    coursesIncluded: ['2', '4', '5'],
+    level: 'Bachelor of Arts (BA) Foundation'
+  },
+  {
+    id: 'bundle-soc-econ-02',
+    title: 'Sovereign Governance, Development Economics & Geopolitics Suite',
+    faculty: 'School of Arts & Social Sciences',
+    courseCount: 3,
+    totalHours: 160,
+    regularPrice: 735,
+    bundlePrice: 520,
+    savingsPercentage: 29,
+    description: 'Mastery pathway across Sovereign Macroeconomics, Digital Constitutionalism, and Human Geography.',
+    coursesIncluded: ['3', '4', '8'],
+    level: 'Master of Science (MSc) & Executive Track'
+  },
+  {
+    id: 'bundle-tech-biz-03',
+    title: 'Decentralized Technology & Enterprise Administration Diploma',
+    faculty: 'School of Technology & Business Administration',
+    courseCount: 2,
+    totalHours: 120,
+    regularPrice: 419,
+    bundlePrice: 310,
+    savingsPercentage: 26,
+    description: 'Full stack digital engineering combined with high-performance organizational leadership.',
+    coursesIncluded: ['1', '9'],
+    level: 'Professional Postgraduate Diploma'
+  }
+];
+
+// Subscription Plans (Tutor LMS feature: Built-in Subscriptions)
+export interface CamusSubscriptionPlan {
+  id: string;
+  name: string;
+  tier: 'scholar_monthly' | 'scholar_annual' | 'institutional_lifetime';
+  priceFic: number;
+  billingPeriod: string;
+  features: string[];
+  badge?: string;
+}
+
+export const CAMUS_SUBSCRIPTION_PLANS: CamusSubscriptionPlan[] = [
+  {
+    id: 'sub-plan-monthly',
+    name: 'Scholar Pass (Monthly)',
+    tier: 'scholar_monthly',
+    priceFic: 45,
+    billingPeriod: 'per month',
+    features: [
+      'Unlimited access to School of Arts & Social Sciences microlessons',
+      'Interactive AI Studio Lesson Assistant',
+      'WebRTC Live Stream Lecture access',
+      'Peer-reviewed assignment submissions',
+      'Digital verifiable course completion badges'
+    ]
+  },
+  {
+    id: 'sub-plan-annual',
+    name: 'Academic Scholar Fellowship (Annual)',
+    tier: 'scholar_annual',
+    priceFic: 390,
+    billingPeriod: 'per year',
+    badge: 'Most Popular',
+    features: [
+      'All Monthly Scholar Pass benefits',
+      'Blockchain verified cryptographic graduation diplomas',
+      'Priority access to Faculty Research Grants & Symposia',
+      '1-on-1 Office Hours with Validated University Lecturers',
+      'Full access to all Course Bundles & OER Repositories',
+      '20% FIC rebate on all specialized certifications'
+    ]
+  },
+  {
+    id: 'sub-plan-institutional',
+    name: 'Institutional College & Faculty License',
+    tier: 'institutional_lifetime',
+    priceFic: 1850,
+    billingPeriod: 'annual corporate',
+    badge: 'Enterprise & ODL',
+    features: [
+      'Multi-instructor collaboration & Co-authoring console',
+      'Advanced Lesson Plan Builder with Bloom’s Taxonomy export',
+      'Dedicated campus LMS sub-domain & custom grading scales',
+      'Tutor LMS REST API & SCORM / xAPI export pipelines',
+      'Full marketplace commission share & payout automation'
+    ]
   }
 ];
 

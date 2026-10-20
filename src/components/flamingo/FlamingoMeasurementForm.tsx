@@ -53,7 +53,7 @@ const FlamingoMeasurementForm: React.FC<FlamingoMeasurementFormProps> = ({ userI
     <Card>
       <CardHeader>
         <CardTitle>Body Measurements</CardTitle>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-slate-700 font-medium">
           Enter your measurements for personalized size recommendations
         </p>
       </CardHeader>

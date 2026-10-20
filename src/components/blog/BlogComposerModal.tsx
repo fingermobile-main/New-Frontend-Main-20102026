@@ -182,7 +182,7 @@ export const BlogComposerModal: React.FC<BlogComposerModalProps> = ({
                 <h3 className="font-extrabold text-slate-900 dark:text-white text-base sm:text-lg">
                   Create Blog & UGC Article
                 </h3>
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-slate-700 font-medium">
                   Rich text formatting, multi-modal asset studio & AI distribution algorithm
                 </p>
               </div>

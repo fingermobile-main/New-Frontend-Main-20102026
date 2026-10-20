@@ -1,0 +1,20 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.fingermobile.protocol.app",
+      "sha256_cert_fingerprints": [
+        "14:6D:E9:CD:07:4B:43:A1:D3:8D:91:04:80:A2:65:E2:29:52:40:50:48:64:12:65:AE:29:F8:C9:9D:11:49:5A",
+        "E4:87:69:B3:26:4A:2A:9C:15:2B:64:99:98:A2:37:E1:92:DF:D3:C0:59:7A:B1:68:5D:87:9C:83:B3:77:E5:60"
+      ]
+    }
+  },
+  {
+    "relation": ["delegate_permission/common.get_login_creds"],
+    "target": {
+      "namespace": "web",
+      "site": "https://fingermobileprotocol.app"
+    }
+  }
+]

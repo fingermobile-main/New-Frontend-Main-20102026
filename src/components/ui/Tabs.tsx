@@ -65,7 +65,7 @@ const Tabs: React.FC<TabsProps> = ({ children, defaultValue, value, onValueChang
               className={`py-2 px-4 font-medium text-sm border-b-2 -mb-px ${
                 isActive
                   ? 'border-primary text-primary'
-                  : 'border-transparent text-muted-foreground hover:text-foreground'
+                  : 'border-transparent text-slate-700 dark:text-slate-300 font-semibold hover:text-foreground'
               }`}
               onClick={() => handleTabChange(triggerElement.props.value)}
             >

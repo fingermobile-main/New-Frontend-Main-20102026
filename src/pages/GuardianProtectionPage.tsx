@@ -374,7 +374,7 @@ const GuardianProtectionPage: React.FC = () => {
               <div className="bg-red-500/10 border border-red-500/30 rounded-xl px-4 py-2.5 flex items-center gap-3">
                 <div className="w-3 h-3 rounded-full bg-emerald-400 animate-ping" />
                 <div>
-                  <div className="text-[10px] text-gray-400 uppercase font-mono tracking-wider">Status</div>
+                  <div className="text-[10px] text-slate-300 font-medium uppercase font-mono tracking-wider">Status</div>
                   <div className="text-xs font-bold text-emerald-400">DEFENSE LEVEL 1 ACTIVE</div>
                 </div>
               </div>
@@ -396,7 +396,7 @@ const GuardianProtectionPage: React.FC = () => {
               className={`flex items-center gap-2 px-5 py-3 rounded-xl font-bold text-sm transition-all whitespace-nowrap ${
                 activeTab === tab.id
                   ? 'bg-red-600 text-white shadow-lg shadow-red-900/30'
-                  : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'
+                  : 'text-slate-700 dark:text-slate-300 font-medium hover:bg-gray-100 dark:hover:bg-gray-800'
               }`}
             >
               {tab.icon}
@@ -457,7 +457,7 @@ const GuardianProtectionPage: React.FC = () => {
                     <ShieldCheck className="w-6 h-6 text-red-600" />
                     9 Core Security Modules
                   </h2>
-                  <p className="text-sm text-slate-700 dark:text-gray-400">
+                  <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">
                     Comprehensive continuous surveillance across client runtimes, gateway proxies, and database tiers.
                   </p>
                 </div>
@@ -507,7 +507,7 @@ const GuardianProtectionPage: React.FC = () => {
                   <Users className="w-5 h-5 text-red-600" />
                   Authorized Personnel Registry
                 </h3>
-                <p className="text-xs text-slate-700 dark:text-gray-400 mb-4">
+                <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mb-4">
                   Execution of platform freezes, emergency isolation, or reboots mandates sovereign tripartite co-signing:
                 </p>
 
@@ -553,7 +553,7 @@ const GuardianProtectionPage: React.FC = () => {
                           ? 'bg-red-600 text-white'
                           : authStep > step
                             ? 'bg-emerald-600 text-white'
-                            : 'bg-gray-100 dark:bg-gray-800 text-gray-400'
+                            : 'bg-gray-100 dark:bg-gray-800 text-slate-400'
                       }`}
                     >
                       {authStep > step ? <Check className="w-3.5 h-3.5" /> : step}
@@ -710,7 +710,7 @@ const GuardianProtectionPage: React.FC = () => {
                           className={`p-3.5 rounded-xl border text-left transition ${
                             selectedAction === act.id
                               ? 'border-red-600 bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-300 font-bold'
-                              : 'border-slate-300 dark:border-gray-800 hover:border-gray-300 text-gray-600 dark:text-gray-400'
+                              : 'border-slate-300 dark:border-gray-800 hover:border-gray-300 text-slate-700 dark:text-slate-300 font-medium'
                           }`}
                         >
                           <div className="text-sm font-bold">{act.label}</div>

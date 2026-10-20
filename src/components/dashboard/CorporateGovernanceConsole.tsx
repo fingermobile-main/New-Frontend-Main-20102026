@@ -490,14 +490,14 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
             <div className="text-white font-semibold flex items-center gap-1.5 mt-0.5">
               <span>👑 {PLATFORM_OWNERSHIP.founder.name}</span>
             </div>
-            <div className="text-[10px] text-slate-400">Master Control • {PLATFORM_OWNERSHIP.founder.signinEmail}</div>
+            <div className="text-[10px] text-slate-300 font-medium">Master Control • {PLATFORM_OWNERSHIP.founder.signinEmail}</div>
           </div>
           <div className="bg-slate-900/60 p-2.5 rounded-lg border border-purple-800/40">
             <div className="text-[10px] uppercase font-bold text-purple-400">Co-Founder & Chief Financial Officer (CFO)</div>
             <div className="text-white font-semibold flex items-center gap-1.5 mt-0.5">
               <span>⭐ {PLATFORM_OWNERSHIP.coFounder.name}</span>
             </div>
-            <div className="text-[10px] text-slate-400">Admin-1 • Hardcoded to Root • Master & Stercs Dashboard</div>
+            <div className="text-[10px] text-slate-300 font-medium">Admin-1 • Hardcoded to Root • Master & Stercs Dashboard</div>
           </div>
           <div className="bg-slate-900/60 p-2.5 rounded-lg border border-amber-800/40">
             <div className="text-[10px] uppercase font-bold text-amber-400">Dedicated Sovereign Treasury Rail</div>
@@ -505,7 +505,7 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
               <span>🏛️ {DEDICATED_TREASURY_RAIL.bankName}</span>
               <span className="font-mono text-amber-300 font-bold">0514108422</span>
             </div>
-            <div className="text-[10px] text-slate-400">{DEDICATED_TREASURY_RAIL.licenseStatus}</div>
+            <div className="text-[10px] text-slate-300 font-medium">{DEDICATED_TREASURY_RAIL.licenseStatus}</div>
           </div>
         </div>
       </div>
@@ -530,13 +530,13 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
                 className={`py-2 px-3 rounded-lg font-semibold flex items-center gap-2 whitespace-nowrap transition-all ${
                   isActive
                     ? 'bg-indigo-600 text-white shadow-sm'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                    : 'text-slate-300 hover:text-white hover:bg-slate-800/60 font-medium'
                 }`}
               >
                 <Icon className="w-3.5 h-3.5" />
                 <span>{tab.label}</span>
                 <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-mono ${
-                  isActive ? 'bg-indigo-800 text-indigo-200' : 'bg-slate-800 text-slate-400'
+                  isActive ? 'bg-indigo-800 text-indigo-200' : 'bg-slate-800 text-slate-300 font-medium'
                 }`}>
                   {tab.count}
                 </span>
@@ -556,7 +556,7 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
             {/* Filters & Search */}
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-slate-950/60 p-4 rounded-lg border border-slate-800">
               <div className="relative w-full sm:w-80">
-                <Search className="w-4 h-4 text-slate-500 absolute left-3 top-2.5" />
+                <Search className="w-4 h-4 text-slate-600 absolute left-3 top-2.5" />
                 <input
                   type="text"
                   placeholder="Search executive roles, officer, keyword..."
@@ -567,7 +567,7 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
               </div>
 
               <div className="flex items-center gap-3 w-full sm:w-auto">
-                <label className="text-xs text-slate-400 font-medium">Department:</label>
+                <label className="text-xs text-slate-200 font-bold">Department:</label>
                 <select
                   value={departmentFilter}
                   onChange={(e) => setDepartmentFilter(e.target.value)}
@@ -626,7 +626,7 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
                               {role.status}
                             </span>
                           </div>
-                          <div className="text-xs text-slate-400 mt-0.5">
+                          <div className="text-xs text-slate-300 font-medium mt-0.5">
                             {role.department} • Designated Lead: <span className="text-indigo-300 font-semibold">{role.designatedOfficer}</span>
                             {role.assignedMemberName && (
                               <span className="text-emerald-400 font-semibold ml-2">
@@ -638,7 +638,7 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
                       </div>
 
                       <div className="flex items-center gap-3">
-                        <span className="text-xs text-slate-400 font-mono">
+                        <span className="text-xs text-slate-300 font-medium font-mono">
                           {role.subOffices.length} Sub-Units
                         </span>
                         {isExpanded ? (
@@ -661,7 +661,7 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
                             <p className="text-slate-300 leading-relaxed">{role.primaryMandate}</p>
 
                             <div className="mt-3">
-                              <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">
+                              <div className="text-[10px] font-bold uppercase tracking-wider text-slate-300 mb-1">
                                 Core Responsibilities
                               </div>
                               <ul className="list-disc list-inside space-y-1 text-slate-300">
@@ -678,15 +678,15 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
                             </div>
                             <div className="bg-slate-950/60 p-3 rounded-lg border border-slate-800 space-y-2">
                               <div>
-                                <span className="font-semibold text-slate-400">Administrative Supervisor (Solid Line —):</span>
+                                <span className="font-bold text-slate-200">Administrative Supervisor (Solid Line —):</span>
                                 <div className="text-white font-medium">{role.reportingLines.administrativeSupervisor}</div>
                               </div>
                               <div>
-                                <span className="font-semibold text-slate-400">Board Oversight (Dotted Line ---):</span>
+                                <span className="font-bold text-slate-200">Board Oversight (Dotted Line ---):</span>
                                 <div className="text-amber-300 font-medium">{role.reportingLines.governanceBoardOversight}</div>
                               </div>
                               <div>
-                                <span className="font-semibold text-slate-400">Statutory Supervisory Focus:</span>
+                                <span className="font-bold text-slate-200">Statutory Supervisory Focus:</span>
                                 <div className="text-slate-300">{role.reportingLines.statutoryFocus}</div>
                               </div>
                             </div>
@@ -746,15 +746,15 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
 
                                   <div className="space-y-1.5 pt-2 border-t border-slate-800/80 text-[10px]">
                                     <div>
-                                      <span className="font-semibold text-slate-400">Human Talent:</span>{' '}
+                                      <span className="font-bold text-slate-200">Human Talent:</span>{' '}
                                       <span className="text-slate-200">{sub.resources.humanTalent}</span>
                                     </div>
                                     <div>
-                                      <span className="font-semibold text-slate-400">Tech Tools:</span>{' '}
+                                      <span className="font-bold text-slate-200">Tech Tools:</span>{' '}
                                       <span className="text-indigo-300">{sub.resources.techTools}</span>
                                     </div>
                                     <div>
-                                      <span className="font-semibold text-slate-400">Capital Allocation:</span>{' '}
+                                      <span className="font-bold text-slate-200">Capital Allocation:</span>{' '}
                                       <span className="text-amber-300 font-mono">{sub.resources.capitalBudget}</span>
                                     </div>
                                   </div>
@@ -802,7 +802,7 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-[11px] font-semibold text-slate-400 mb-1">
+                  <label className="block text-[11px] font-bold text-slate-200 mb-1">
                     Select Operational Action
                   </label>
                   <select
@@ -819,7 +819,7 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-semibold text-slate-400 mb-1">
+                  <label className="block text-[11px] font-bold text-slate-200 mb-1">
                     Transaction Consideration ($ USD)
                   </label>
                   <input
@@ -829,7 +829,7 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
                     className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white font-mono focus:outline-none focus:border-indigo-500"
                     placeholder="Enter amount..."
                   />
-                  <div className="text-[10px] text-slate-400 mt-1">
+                  <div className="text-[10px] text-slate-300 font-medium mt-1">
                     Approx. ₦{(simDoaAmountUsd * 1300).toLocaleString()} NGN (at benchmark rate)
                   </div>
                 </div>
@@ -848,7 +848,7 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
             <div className="bg-slate-950 rounded-xl border border-slate-800 overflow-hidden shadow-xl">
               <div className="p-4 border-b border-slate-800 flex items-center justify-between">
                 <h3 className="font-bold text-sm text-white">Delegated Authority Schedule (Non-Cumulative)</h3>
-                <span className="text-xs text-slate-400">19 Discrete Authority Domains</span>
+                <span className="text-xs text-slate-300 font-medium">19 Discrete Authority Domains</span>
               </div>
 
               <div className="overflow-x-auto">
@@ -866,7 +866,7 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
                   <tbody className="divide-y divide-slate-800/60 bg-slate-950 text-slate-300">
                     {TECHNICAL_DOA_MATRIX.map((row) => (
                       <tr key={row.id} className="hover:bg-slate-900/40 transition-colors">
-                        <td className="px-4 py-2.5 font-semibold text-slate-400 whitespace-nowrap">{row.domain}</td>
+                        <td className="px-4 py-2.5 font-bold text-slate-200 whitespace-nowrap">{row.domain}</td>
                         <td className="px-4 py-2.5 font-bold text-white">{row.operationalAction}</td>
                         <td className="px-4 py-2.5 font-mono text-slate-300">{row.tier4UnitLead}</td>
                         <td className="px-4 py-2.5 font-mono text-slate-300">{row.tier3EDGroupHead}</td>
@@ -889,17 +889,17 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
             <div className="bg-slate-950/70 p-4 rounded-xl border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
               <div>
                 <h3 className="font-bold text-sm text-white">Cross-Functional RACI Governance Matrix</h3>
-                <p className="text-xs text-slate-400">
+                <p className="text-xs text-slate-300 font-medium">
                   <span className="font-bold text-emerald-400">R:</span> Responsible (executes) •{' '}
                   <span className="font-bold text-amber-400">A:</span> Accountable (final veto/approval) •{' '}
                   <span className="font-bold text-blue-400">C:</span> Consulted •{' '}
-                  <span className="font-bold text-slate-400">I:</span> Informed
+                  <span className="font-bold text-slate-200">I:</span> Informed
                 </p>
               </div>
 
               {/* Role filter */}
               <div className="flex items-center gap-2">
-                <span className="text-xs text-slate-400 font-medium">Highlight Role:</span>
+                <span className="text-xs text-slate-200 font-bold">Highlight Role:</span>
                 <select
                   value={raciHighlightedRole}
                   onChange={(e) => setRaciHighlightedRole(e.target.value)}
@@ -941,7 +941,7 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
                       <tr key={row.activityId} className="hover:bg-slate-900/40 transition-colors">
                         <td className="px-4 py-3 font-semibold text-white sticky left-0 bg-slate-950 z-10 whitespace-nowrap">
                           {row.activityName}
-                          <div className="text-[10px] text-slate-500 font-normal">{row.domainLabel}</div>
+                          <div className="text-[10px] text-slate-300 font-medium">{row.domainLabel}</div>
                         </td>
                         {RACI_ROLES_LEGEND.map((l) => {
                           const val = row.assignments[l.code] || '-';
@@ -1007,11 +1007,11 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
 
                   <div className="space-y-2 pt-3 border-t border-slate-800/80 text-xs">
                     <div>
-                      <span className="font-semibold text-slate-400">Enforcement Protocol:</span>
+                      <span className="font-bold text-slate-200">Enforcement Protocol:</span>
                       <p className="text-slate-300 text-[11px] mt-0.5">{sod.enforcementProtocol}</p>
                     </div>
                     <div>
-                      <span className="font-semibold text-slate-400">Involved Portfolios:</span>
+                      <span className="font-bold text-slate-200">Involved Portfolios:</span>
                       <div className="flex flex-wrap gap-1.5 mt-1">
                         {sod.involvedRoles.map((r, idx) => (
                           <span
@@ -1053,13 +1053,13 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
             {/* Quick Assignment Card */}
             <div className="bg-slate-950/70 p-5 rounded-xl border border-slate-800">
               <h3 className="font-bold text-sm text-white mb-1">Assign Onboarded Member to Corporate Portfolio</h3>
-              <p className="text-xs text-slate-400 mb-4">
+              <p className="text-xs text-slate-300 font-medium mb-4">
                 Select an onboarded member, assign an Executive Leadership Role or Sub-Office, and issue an official appointment credential.
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 mb-1">Select Onboarded Member</label>
+                  <label className="block text-xs font-bold text-slate-200 mb-1">Select Onboarded Member</label>
                   <select
                     value={selectedMemberId}
                     onChange={(e) => setSelectedMemberId(e.target.value)}
@@ -1075,7 +1075,7 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 mb-1">Corporate Portfolio / Role</label>
+                  <label className="block text-xs font-bold text-slate-200 mb-1">Corporate Portfolio / Role</label>
                   <select
                     value={selectedRoleForAssignment?.id || ''}
                     onChange={(e) => {
@@ -1095,7 +1095,7 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 mb-1">Sub-Office / Functional Unit</label>
+                  <label className="block text-xs font-bold text-slate-200 mb-1">Sub-Office / Functional Unit</label>
                   <select
                     value={selectedSubOfficeId}
                     onChange={(e) => setSelectedSubOfficeId(e.target.value)}
@@ -1140,7 +1140,7 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
             <div className="bg-slate-950 rounded-xl border border-slate-800 overflow-hidden shadow-xl">
               <div className="p-4 border-b border-slate-800 flex items-center justify-between">
                 <h3 className="font-bold text-sm text-white">Active Members & Corporate Portfolio Assignments</h3>
-                <span className="text-xs text-slate-400">{membersList.length} Members Registered</span>
+                <span className="text-xs text-slate-300 font-medium">{membersList.length} Members Registered</span>
               </div>
 
               <div className="overflow-x-auto">
@@ -1160,15 +1160,15 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
                       <tr key={m.id} className="hover:bg-slate-900/40 transition-colors">
                         <td className="px-4 py-3 font-semibold text-white">
                           {m.name}
-                          <div className="text-[10px] text-slate-400 font-mono">@{m.username}</div>
+                          <div className="text-[10px] text-slate-300 font-mono">@{m.username}</div>
                         </td>
-                        <td className="px-4 py-3 font-mono text-slate-400">{m.email}</td>
+                        <td className="px-4 py-3 font-mono text-slate-300">{m.email}</td>
                         <td className="px-4 py-3">
                           <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
                             m.role === 'SuperAdmin' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' :
                             m.role === 'Admin' ? 'bg-purple-500/20 text-purple-300 border border-purple-500/40' :
                             m.role === 'Manager' ? 'bg-blue-500/20 text-blue-300 border border-blue-500/40' :
-                            'bg-slate-800 text-slate-400'
+                            'bg-slate-800 text-slate-300 font-medium'
                           }`}>
                             {m.role}
                           </span>
@@ -1179,10 +1179,10 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
                               Role {m.corporateRoleNumber}: {m.corporateRoleTitle}
                             </span>
                           ) : (
-                            <span className="text-slate-500 italic text-[11px]">Unassigned (Standard User)</span>
+                            <span className="text-slate-300 font-medium italic text-[11px]">Unassigned (Standard User)</span>
                           )}
                         </td>
-                        <td className="px-4 py-3 font-mono text-slate-400">
+                        <td className="px-4 py-3 font-mono text-slate-300">
                           {m.clearanceTier || 'Tier 4'}
                         </td>
                         <td className="px-4 py-3 text-right">
@@ -1246,7 +1246,7 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
                 <h1 className="text-2xl font-black text-white">
                   FingerMobile Protocol Corporate Governance Manual
                 </h1>
-                <div className="text-xs text-slate-400">
+                <div className="text-xs text-slate-300 font-medium">
                   Version 1.0 • Formulated October 2026 • Federal Republic of Nigeria & Global Sovereign Network
                 </div>
               </div>
@@ -1287,7 +1287,7 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
                       <div className="font-bold text-white text-xs mb-1">
                         Role {r.roleNumber} [{r.raciCode}]: {r.title}
                       </div>
-                      <div className="text-slate-400 text-[11px] mb-1.5">
+                      <div className="text-slate-300 font-medium text-[11px] mb-1.5">
                         Officer: {r.designatedOfficer} • Department: {r.department} • Clearance: {r.clearanceLevel}
                       </div>
                       <p className="text-slate-300 text-[11px] mb-2">{r.primaryMandate}</p>
@@ -1318,12 +1318,12 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
               <div className="pt-6 border-t border-slate-800 grid grid-cols-2 gap-6 text-xs text-center">
                 <div className="border-t border-slate-700 pt-2">
                   <div className="font-bold text-white">{PLATFORM_OWNERSHIP.founder.name}</div>
-                  <div className="text-slate-400 text-[11px]">Founder & Owner — SuperAdmin & Master Control</div>
+                  <div className="text-slate-300 font-medium text-[11px]">Founder & Owner — SuperAdmin & Master Control</div>
                   <div className="text-indigo-400 text-[10px] font-mono mt-0.5">ROOT MASTER SEAL VALIDATED</div>
                 </div>
                 <div className="border-t border-slate-700 pt-2">
                   <div className="font-bold text-white">{PLATFORM_OWNERSHIP.coFounder.name}</div>
-                  <div className="text-slate-400 text-[11px]">Co-Founder — Admin-1 & Chief Financial Officer (CFO)</div>
+                  <div className="text-slate-300 font-medium text-[11px]">Co-Founder — Admin-1 & Chief Financial Officer (CFO)</div>
                   <div className="text-purple-400 text-[10px] font-mono mt-0.5">TREASURY AUTHORITY VALIDATED</div>
                 </div>
               </div>
@@ -1345,7 +1345,7 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
 
             <div className="space-y-3 text-xs">
               <div>
-                <label className="block text-slate-400 font-semibold mb-1">Role Title</label>
+                <label className="block text-slate-200 font-bold mb-1">Role Title</label>
                 <input
                   type="text"
                   value={formRoleTitle}
@@ -1355,7 +1355,7 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
               </div>
 
               <div>
-                <label className="block text-slate-400 font-semibold mb-1">Department</label>
+                <label className="block text-slate-200 font-bold mb-1">Department</label>
                 <input
                   type="text"
                   value={formDepartment}
@@ -1365,7 +1365,7 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
               </div>
 
               <div>
-                <label className="block text-slate-400 font-semibold mb-1">Designated Officer</label>
+                <label className="block text-slate-200 font-bold mb-1">Designated Officer</label>
                 <input
                   type="text"
                   value={formDesignatedOfficer}
@@ -1375,7 +1375,7 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
               </div>
 
               <div>
-                <label className="block text-slate-400 font-semibold mb-1">Clearance Level</label>
+                <label className="block text-slate-200 font-bold mb-1">Clearance Level</label>
                 <select
                   value={formClearanceLevel}
                   onChange={(e) => setFormClearanceLevel(e.target.value as any)}
@@ -1389,7 +1389,7 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
               </div>
 
               <div>
-                <label className="block text-slate-400 font-semibold mb-1">Primary Mandate</label>
+                <label className="block text-slate-200 font-bold mb-1">Primary Mandate</label>
                 <textarea
                   rows={2}
                   value={formMandate}
@@ -1399,7 +1399,7 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
               </div>
 
               <div>
-                <label className="block text-slate-400 font-semibold mb-1">Core Responsibilities (one per line)</label>
+                <label className="block text-slate-200 font-bold mb-1">Core Responsibilities (one per line)</label>
                 <textarea
                   rows={3}
                   value={formResponsibilities}
@@ -1440,7 +1440,7 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
 
             <div className="space-y-3 text-xs">
               <div>
-                <label className="block text-slate-400 font-semibold mb-1">Role Title</label>
+                <label className="block text-slate-200 font-bold mb-1">Role Title</label>
                 <input
                   type="text"
                   placeholder="e.g. Group Head, Artificial Intelligence & Automation"
@@ -1451,7 +1451,7 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
               </div>
 
               <div>
-                <label className="block text-slate-400 font-semibold mb-1">Department</label>
+                <label className="block text-slate-200 font-bold mb-1">Department</label>
                 <input
                   type="text"
                   placeholder="e.g. Sentient AI Labs"
@@ -1462,7 +1462,7 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
               </div>
 
               <div>
-                <label className="block text-slate-400 font-semibold mb-1">Designated Officer</label>
+                <label className="block text-slate-200 font-bold mb-1">Designated Officer</label>
                 <input
                   type="text"
                   placeholder="e.g. Dr. Jane Doe"
@@ -1473,7 +1473,7 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
               </div>
 
               <div>
-                <label className="block text-slate-400 font-semibold mb-1">Clearance Level</label>
+                <label className="block text-slate-200 font-bold mb-1">Clearance Level</label>
                 <select
                   value={formClearanceLevel}
                   onChange={(e) => setFormClearanceLevel(e.target.value as any)}
@@ -1487,7 +1487,7 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
               </div>
 
               <div>
-                <label className="block text-slate-400 font-semibold mb-1">Primary Mandate</label>
+                <label className="block text-slate-200 font-bold mb-1">Primary Mandate</label>
                 <textarea
                   rows={2}
                   placeholder="State the core organizational mission..."
@@ -1498,7 +1498,7 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
               </div>
 
               <div>
-                <label className="block text-slate-400 font-semibold mb-1">Core Responsibilities (one per line)</label>
+                <label className="block text-slate-200 font-bold mb-1">Core Responsibilities (one per line)</label>
                 <textarea
                   rows={3}
                   placeholder="Enter key operational responsibilities..."
@@ -1540,7 +1540,7 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
 
             <div className="space-y-3 text-xs">
               <div>
-                <label className="block text-slate-400 font-semibold mb-1">Unit Name</label>
+                <label className="block text-slate-200 font-bold mb-1">Unit Name</label>
                 <input
                   type="text"
                   placeholder="e.g. Synthetic Identity Recovery Unit"
@@ -1551,7 +1551,7 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
               </div>
 
               <div>
-                <label className="block text-slate-400 font-semibold mb-1">Unit Type</label>
+                <label className="block text-slate-200 font-bold mb-1">Unit Type</label>
                 <select
                   value={formSubUnitType}
                   onChange={(e) => setFormSubUnitType(e.target.value as any)}
@@ -1567,7 +1567,7 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
               </div>
 
               <div>
-                <label className="block text-slate-400 font-semibold mb-1">Roles & Responsibilities</label>
+                <label className="block text-slate-200 font-bold mb-1">Roles & Responsibilities</label>
                 <textarea
                   rows={2}
                   placeholder="Specific duties and daily workflow..."
@@ -1578,7 +1578,7 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
               </div>
 
               <div>
-                <label className="block text-slate-400 font-semibold mb-1">Human Talent Allocation</label>
+                <label className="block text-slate-200 font-bold mb-1">Human Talent Allocation</label>
                 <input
                   type="text"
                   placeholder="e.g. Fraud detection specialists, data analysts"
@@ -1589,7 +1589,7 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
               </div>
 
               <div>
-                <label className="block text-slate-400 font-semibold mb-1">Technological Tools</label>
+                <label className="block text-slate-200 font-bold mb-1">Technological Tools</label>
                 <input
                   type="text"
                   placeholder="e.g. GRC software, biometric matchers"
@@ -1600,7 +1600,7 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
               </div>
 
               <div>
-                <label className="block text-slate-400 font-semibold mb-1">Capital Budget / Operating Reserve</label>
+                <label className="block text-slate-200 font-bold mb-1">Capital Budget / Operating Reserve</label>
                 <input
                   type="text"
                   placeholder="e.g. $100,000 investigative reserve"
@@ -1642,7 +1642,7 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
 
             <div className="space-y-3 text-xs">
               <div>
-                <label className="block text-slate-400 font-semibold mb-1">Select Onboarded Member</label>
+                <label className="block text-slate-200 font-bold mb-1">Select Onboarded Member</label>
                 <select
                   value={selectedMemberId}
                   onChange={(e) => setSelectedMemberId(e.target.value)}
@@ -1658,7 +1658,7 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
               </div>
 
               <div>
-                <label className="block text-slate-400 font-semibold mb-1">Sub-Office / Unit Assignment (Optional)</label>
+                <label className="block text-slate-200 font-bold mb-1">Sub-Office / Unit Assignment (Optional)</label>
                 <select
                   value={selectedSubOfficeId}
                   onChange={(e) => setSelectedSubOfficeId(e.target.value)}
@@ -1674,7 +1674,7 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
               </div>
 
               <div>
-                <label className="block text-slate-400 font-semibold mb-1">Authorizing Root Executive</label>
+                <label className="block text-slate-200 font-bold mb-1">Authorizing Root Executive</label>
                 <select
                   value={assignedByAdmin}
                   onChange={(e) => setAssignedByAdmin(e.target.value)}

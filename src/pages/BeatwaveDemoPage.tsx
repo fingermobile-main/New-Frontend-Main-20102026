@@ -192,7 +192,7 @@ const BeatwaveDemoPage: React.FC = () => {
             </div>
             <div>
               <h1 className="text-lg font-bold tracking-tight">Beatwave Studio Console</h1>
-              <p className="text-xs text-slate-400">High-Resolution Audio Engine • PostgreSQL Active</p>
+              <p className="text-xs text-slate-300 font-medium">High-Resolution Audio Engine • PostgreSQL Active</p>
             </div>
           </div>
         </div>
@@ -246,7 +246,7 @@ const BeatwaveDemoPage: React.FC = () => {
             {/* Track Info */}
             <div className="mb-4">
               <h2 className="text-xl font-bold truncate">{currentTrack?.title || 'Select a Track'}</h2>
-              <p className="text-sm text-slate-400 truncate">{currentTrack?.artist_name || currentTrack?.artist || 'Unknown Artist'}</p>
+              <p className="text-sm text-slate-300 font-medium truncate">{currentTrack?.artist_name || currentTrack?.artist || 'Unknown Artist'}</p>
               <div className="mt-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-cyan-950 text-cyan-400 border border-cyan-800">
                 {currentTrack?.genre || 'Beatwave'}
               </div>
@@ -262,7 +262,7 @@ const BeatwaveDemoPage: React.FC = () => {
                   }}
                 />
               </div>
-              <div className="flex justify-between text-xs text-slate-500 font-mono">
+              <div className="flex justify-between text-xs text-slate-300 font-medium font-mono">
                 <span>{formatSec(playbackSec)}</span>
                 <span>{formatSec((currentTrack?.duration_seconds as number) || 200)}</span>
               </div>
@@ -275,7 +275,7 @@ const BeatwaveDemoPage: React.FC = () => {
                   const idx = tracks.findIndex((t) => t.id === currentTrack?.id);
                   if (idx > 0) handlePlayTrack(tracks[idx - 1]);
                 }}
-                className="p-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-full transition-colors"
+                className="p-3 text-slate-300 hover:text-white hover:bg-slate-800 rounded-full transition-colors"
               >
                 <SkipBack className="w-6 h-6" />
               </button>
@@ -292,14 +292,14 @@ const BeatwaveDemoPage: React.FC = () => {
                   const idx = tracks.findIndex((t) => t.id === currentTrack?.id);
                   if (idx >= 0 && idx < tracks.length - 1) handlePlayTrack(tracks[idx + 1]);
                 }}
-                className="p-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-full transition-colors"
+                className="p-3 text-slate-300 hover:text-white hover:bg-slate-800 rounded-full transition-colors"
               >
                 <SkipForward className="w-6 h-6" />
               </button>
             </div>
 
             {/* Volume */}
-            <div className="flex items-center space-x-3 text-slate-400">
+            <div className="flex items-center space-x-3 text-slate-300 font-medium">
               <Volume2 className="w-4 h-4 flex-shrink-0" />
               <input
                 type="range"
@@ -325,7 +325,7 @@ const BeatwaveDemoPage: React.FC = () => {
                 className={`px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
                   selectedGenre === g
                     ? 'bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/20'
-                    : 'bg-slate-900 text-slate-400 border border-slate-800 hover:bg-slate-800'
+                    : 'bg-slate-900 text-slate-300 font-medium border border-slate-800 hover:bg-slate-800'
                 }`}
               >
                 {g}
@@ -340,7 +340,7 @@ const BeatwaveDemoPage: React.FC = () => {
                 <Music className="w-5 h-5 text-cyan-400" />
                 <h3 className="font-bold text-lg">Catalog Tracks</h3>
               </div>
-              <span className="text-xs text-slate-500">{filteredTracks.length} tracks available</span>
+              <span className="text-xs text-slate-300 font-medium">{filteredTracks.length} tracks available</span>
             </div>
 
             <div className="space-y-2">
@@ -355,7 +355,7 @@ const BeatwaveDemoPage: React.FC = () => {
                   }`}
                 >
                   <div className="flex items-center space-x-3 min-w-0">
-                    <span className="text-xs text-slate-500 font-mono w-4">{i + 1}</span>
+                    <span className="text-xs text-slate-300 font-medium font-mono w-4">{i + 1}</span>
                     <div className="w-10 h-10 rounded-xl bg-slate-800 overflow-hidden flex-shrink-0">
                       <img
                         src={track.cover_url || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=200'}
@@ -367,16 +367,16 @@ const BeatwaveDemoPage: React.FC = () => {
                       <p className={`font-semibold text-sm truncate ${currentTrack?.id === track.id ? 'text-cyan-400' : 'text-white'}`}>
                         {track.title}
                       </p>
-                      <p className="text-xs text-slate-400 truncate">{track.artist_name || track.artist || 'Beatwave Artist'}</p>
+                      <p className="text-xs text-slate-300 font-medium truncate">{track.artist_name || track.artist || 'Beatwave Artist'}</p>
                     </div>
                   </div>
 
                   <div className="flex items-center space-x-4">
-                    <span className="text-xs text-slate-500 hidden sm:inline">{track.genre}</span>
-                    <span className="text-xs text-slate-400 font-mono">
+                    <span className="text-xs text-slate-300 font-medium hidden sm:inline">{track.genre}</span>
+                    <span className="text-xs text-slate-300 font-medium font-mono">
                       {formatSec(typeof track.duration_seconds === 'number' ? track.duration_seconds : 180)}
                     </span>
-                    <button className="p-2 text-slate-400 hover:text-white rounded-lg">
+                    <button className="p-2 text-slate-300 hover:text-white rounded-lg">
                       {currentTrack?.id === track.id && isPlaying ? (
                         <Pause className="w-4 h-4 text-cyan-400" />
                       ) : (
@@ -416,7 +416,7 @@ const BeatwaveDemoPage: React.FC = () => {
                   </div>
                   <div className="min-w-0">
                     <h4 className="font-bold text-sm text-white truncate">{pl.title || pl.name}</h4>
-                    <p className="text-xs text-slate-400 line-clamp-1 mt-0.5">{pl.description}</p>
+                    <p className="text-xs text-slate-300 font-medium line-clamp-1 mt-0.5">{pl.description}</p>
                     <span className="text-[11px] text-cyan-400 font-semibold mt-1 inline-block">
                       {pl.track_count || 12} tracks
                     </span>
@@ -433,7 +433,7 @@ const BeatwaveDemoPage: React.FC = () => {
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50">
           <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-md w-full shadow-2xl">
             <h3 className="text-xl font-bold text-white mb-2">Create New Playlist</h3>
-            <p className="text-xs text-slate-400 mb-4">Save to your decentralized Beatwave cloud storage.</p>
+            <p className="text-xs text-slate-300 font-medium mb-4">Save to your decentralized Beatwave cloud storage.</p>
             <form onSubmit={handleCreatePlaylist} className="space-y-4">
               <div>
                 <label className="block text-xs font-semibold text-slate-300 mb-1">Playlist Name</label>

@@ -132,7 +132,7 @@ export const PostSettingsPanel: React.FC<PostSettingsPanelProps> = ({
 
         {/* a. Gender Selection */}
         <div>
-          <span className="block text-[11px] font-semibold text-slate-600 dark:text-slate-400 mb-1.5">
+          <span className="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
             a. Gender Demographics:
           </span>
           <div className="flex gap-2">
@@ -148,7 +148,7 @@ export const PostSettingsPanel: React.FC<PostSettingsPanelProps> = ({
                 className={`px-3 py-1.5 rounded-lg border font-medium transition ${
                   settings.audienceGender === g.id
                     ? 'border-indigo-500 bg-indigo-500 text-white shadow-sm'
-                    : 'border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300'
+                    : 'border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300'
                 }`}
               >
                 {g.label}
@@ -159,7 +159,7 @@ export const PostSettingsPanel: React.FC<PostSettingsPanelProps> = ({
 
         {/* b. Age Bracket Selection */}
         <div>
-          <span className="block text-[11px] font-semibold text-slate-600 dark:text-slate-400 mb-1.5">
+          <span className="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
             b. Age Bracket Cohort:
           </span>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -239,7 +239,7 @@ export const PostSettingsPanel: React.FC<PostSettingsPanelProps> = ({
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-3 bg-white dark:bg-slate-900 rounded-xl border border-amber-300 dark:border-amber-800/50">
             {/* a. Time */}
             <div>
-              <span className="block text-[10px] font-bold uppercase text-slate-500 mb-1 flex items-center gap-1">
+              <span className="block text-[10px] font-bold uppercase text-slate-700 font-bold mb-1 flex items-center gap-1">
                 <Clock className="w-3 h-3" /> a. Time:
               </span>
               <input
@@ -253,7 +253,7 @@ export const PostSettingsPanel: React.FC<PostSettingsPanelProps> = ({
 
             {/* b. Day */}
             <div>
-              <span className="block text-[10px] font-bold uppercase text-slate-500 mb-1">
+              <span className="block text-[10px] font-bold uppercase text-slate-700 font-bold mb-1">
                 b. Day:
               </span>
               <select
@@ -269,7 +269,7 @@ export const PostSettingsPanel: React.FC<PostSettingsPanelProps> = ({
 
             {/* c. Month */}
             <div>
-              <span className="block text-[10px] font-bold uppercase text-slate-500 mb-1">
+              <span className="block text-[10px] font-bold uppercase text-slate-700 font-bold mb-1">
                 c. Month:
               </span>
               <select

@@ -81,34 +81,34 @@ const PermanencePage: React.FC = () => {
         const streamsData = getRows(stRes, 'streams');
 
         setChallenges(challengesData.map((c: any) => ({
-            id: String(c.id),
-            title: c.title || 'Challenge',
-            description: c.description,
-            category: c.category || 'Physical & Dexterity',
-            mechanics: Array.isArray(c.mechanics) ? c.mechanics : ['Agon'],
-            creatorId: String(c.creator_id || c.creatorId || 'member1'),
-            creatorName: c.creator_name || c.creatorName || 'Member',
-            stakeAmount: Number(c.stake_amount || c.stakeAmount || 0),
-            participants: Number(c.participant_count || c.participants || 0),
-            views: Number(c.views || 0),
-            shares: Number(c.shares || 0),
-            likes: Number(c.likes || 0),
-            status: c.status === 'completed' || c.status === 'viral' ? c.status : 'active',
-            createdAt: c.created_at || c.createdAt || new Date().toISOString().split('T')[0],
-            duration: c.duration || '3 months'
-          })));
+          id: String(c.id),
+          title: c.title || 'Challenge',
+          description: c.description,
+          category: c.category || 'Physical & Dexterity',
+          mechanics: Array.isArray(c.mechanics) ? c.mechanics : ['Agon'],
+          creatorId: String(c.creator_id || c.creatorId || 'member1'),
+          creatorName: c.creator_name || c.creatorName || 'Member',
+          stakeAmount: Number(c.stake_amount || c.stakeAmount || 0),
+          participants: Number(c.participant_count || c.participants || 0),
+          views: Number(c.views || 0),
+          shares: Number(c.shares || 0),
+          likes: Number(c.likes || 0),
+          status: c.status === 'completed' || c.status === 'viral' ? c.status : 'active',
+          createdAt: c.created_at || c.createdAt || new Date().toISOString().split('T')[0],
+          duration: c.duration || '3 months'
+        })));
 
         setStreams(streamsData.map((s: any) => ({
-            id: String(s.id),
-            title: s.title || 'Stream',
-            creatorId: String(s.creator_id || s.creatorId || 'streamer1'),
-            creatorName: s.creator_name || s.creatorName || 'Streamer',
-            category: s.category || 'Games',
-            viewerCount: Number(s.viewer_count || s.viewerCount || 0),
-            duration: Number(s.duration || 0),
-            isLive: Boolean(s.is_live ?? s.isLive ?? false),
-            startedAt: s.started_at || s.startedAt || new Date().toISOString()
-          })));
+          id: String(s.id),
+          title: s.title || 'Stream',
+          creatorId: String(s.creator_id || s.creatorId || 'streamer1'),
+          creatorName: s.creator_name || s.creatorName || 'Streamer',
+          category: s.category || 'Games',
+          viewerCount: Number(s.viewer_count || s.viewerCount || 0),
+          duration: Number(s.duration || 0),
+          isLive: Boolean(s.is_live ?? s.isLive ?? false),
+          startedAt: s.started_at || s.startedAt || new Date().toISOString()
+        })));
       } catch (error) {
         logger.error('Error in fetchData:', error);
         if (mounted) showToast('Failed to load Permanence data.', 'error');
@@ -650,7 +650,7 @@ const PermanencePage: React.FC = () => {
               className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ${
                 activeTab === tab.id
                   ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
+                  : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300'
               }`}
             >
               {tab.name}

@@ -126,7 +126,7 @@ export const SystemHealthGaugeCard: React.FC<{
             {averageHealth}
             <span className="text-lg font-normal text-emerald-400">%</span>
           </span>
-          <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 -mt-1">
+          <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-300 -mt-1">
             Aggregate Index
           </span>
         </div>
@@ -135,7 +135,7 @@ export const SystemHealthGaugeCard: React.FC<{
       {/* Metric Breakdown Grid */}
       <div className="grid grid-cols-3 gap-2 pt-3 border-t border-slate-800/80 text-center z-10">
         <div className="p-2 rounded-xl bg-slate-800/50">
-          <div className="text-[10px] text-slate-400 uppercase font-semibold">Total Consoles</div>
+          <div className="text-[10px] text-slate-300 uppercase font-semibold">Total Consoles</div>
           <div className="text-sm font-black font-mono text-white mt-0.5">{totalConsoles}</div>
         </div>
         <div className="p-2 rounded-xl bg-emerald-950/40 border border-emerald-900/50">
@@ -202,7 +202,7 @@ export const RealtimeTelemetrySparklineCard: React.FC<{
               type="button"
               onClick={() => setActiveTier(tier)}
               className={`px-2.5 py-1 rounded-lg text-xs font-mono font-bold transition ${
-                activeTier === tier ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-400 hover:text-white'
+                activeTier === tier ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-300 font-medium hover:text-white'
               }`}
             >
               {tier.toUpperCase()}
@@ -217,7 +217,7 @@ export const RealtimeTelemetrySparklineCard: React.FC<{
           {values[values.length - 1]}
           <span className="text-sm font-normal text-blue-400 ml-1">ms</span>
         </span>
-        <span className="text-xs text-slate-400 font-mono">
+        <span className="text-xs text-slate-300 font-medium font-mono">
           ({activeTier.toUpperCase()} Target: &lt;{activeTier === 'p99' ? '150' : activeTier === 'p95' ? '80' : '40'}ms)
         </span>
       </div>
@@ -258,7 +258,7 @@ export const RealtimeTelemetrySparklineCard: React.FC<{
         </svg>
 
         {/* Time Labels */}
-        <div className="flex justify-between text-[10px] font-mono text-slate-400 px-2 mt-1">
+        <div className="flex justify-between text-[10px] font-mono text-slate-300 font-medium px-2 mt-1">
           {latencyData.labels.map((lbl, idx) => (
             <span key={idx}>{lbl}</span>
           ))}
@@ -342,7 +342,7 @@ export const WormAuditTimelineCard: React.FC<{
             <ShieldCheck className="w-4 h-4 text-emerald-400 flex-shrink-0" />
             <div>
               <div className="font-bold">{verificationResult.chainIntegrity || 'Healthy Cryptographic Chain'}</div>
-              <div className="text-[10px] text-slate-400 font-mono">
+              <div className="text-[10px] text-slate-300 font-medium font-mono">
                 {verificationResult.checkedRecords} blocks inspected &bull; Zero tampered records detected
               </div>
             </div>
@@ -371,8 +371,8 @@ export const WormAuditTimelineCard: React.FC<{
                     {blk.entity}
                   </span>
                 </div>
-                <div className="text-[10px] text-slate-400 truncate mt-0.5">
-                  Actor: <span className="text-slate-300 font-semibold">{blk.actor}</span>
+                <div className="text-[10px] text-slate-300 font-medium truncate mt-0.5">
+                  Actor: <span className="text-slate-200 font-semibold">{blk.actor}</span>
                 </div>
               </div>
             </div>
@@ -389,7 +389,7 @@ export const WormAuditTimelineCard: React.FC<{
         ))}
       </div>
 
-      <div className="text-[10px] text-slate-400 font-mono flex items-center justify-between pt-2 border-t border-slate-800/80">
+      <div className="text-[10px] text-slate-300 font-medium font-mono flex items-center justify-between pt-2 border-t border-slate-800/80">
         <span>WORM Architecture: ON UPDATE/DELETE DO INSTEAD NOTHING</span>
         <span className="text-purple-400 font-bold">AAL2 Step-Up Active</span>
       </div>
@@ -431,13 +431,13 @@ export const KillswitchPanicCard: React.FC<{
         </span>
       </div>
 
-      <p className="text-xs text-slate-400 leading-relaxed mb-3">
+      <p className="text-xs text-slate-300 font-medium leading-relaxed mb-3">
         Instantly invalidates all cryptographic access and refresh token families. Forces immediate re-authentication across targeted perimeter with zero token reuse.
       </p>
 
       {/* Scope Selector */}
       <div className="space-y-2 mb-4">
-        <label className="text-[10px] uppercase font-bold text-slate-400 tracking-wider block">
+        <label className="text-[10px] uppercase font-bold text-slate-300 tracking-wider block">
           Target Execution Scope:
         </label>
         <div className="grid grid-cols-2 gap-2">
@@ -454,7 +454,7 @@ export const KillswitchPanicCard: React.FC<{
               className={`p-2 rounded-xl text-xs font-semibold text-left transition border ${
                 selectedScope === scope.id
                   ? 'bg-rose-950/80 border-rose-600 text-rose-200'
-                  : 'bg-slate-800/60 border-slate-700/60 text-slate-400 hover:text-white'
+                  : 'bg-slate-800/60 border-slate-700/60 text-slate-300 font-medium hover:text-white'
               }`}
             >
               {scope.label}
@@ -520,7 +520,7 @@ export const ConsoleCard: React.FC<{
   return (
     <div
       onClick={() => onSelect(item)}
-      className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 hover:border-blue-500/80 hover:shadow-xl transition-all duration-200 cursor-pointer flex flex-col justify-between group"
+      className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-3xl p-5 hover:border-blue-500/80 hover:shadow-xl transition-all duration-200 cursor-pointer flex flex-col justify-between group"
     >
       <div>
         {/* Top Header: Badge, Group, Health Indicator */}
@@ -538,8 +538,8 @@ export const ConsoleCard: React.FC<{
             className={`px-2 py-0.5 rounded-full text-[11px] font-mono font-bold border flex items-center gap-1 ${
               isDegraded
                 ? 'bg-amber-100 text-amber-950 border-amber-400 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-800'
-                : 'bg-emerald-100 text-amber-950 border-amber-400 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800'
-            }font-black`}
+                : 'bg-emerald-100 text-emerald-950 border-emerald-400 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800'
+            } font-black`}
           >
             <span className={`w-1.5 h-1.5 rounded-full ${isDegraded ? 'bg-amber-500 animate-pulse' : 'bg-emerald-500'}`} />
             <span>{item.healthScore}%</span>
@@ -572,8 +572,8 @@ export const ConsoleCard: React.FC<{
       </div>
 
       {/* Footer Details & Quick Action */}
-      <div className="pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs">
-        <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400">
+      <div className="pt-3 border-t border-slate-300 dark:border-slate-800/80 flex items-center justify-between text-xs">
+        <span className="text-[11px] font-mono text-slate-700 dark:text-slate-300 font-medium">
           {item.responseTime}ms avg &bull; {item.activeIncidents} incident{item.activeIncidents === 1 ? '' : 's'}
         </span>
 
@@ -607,9 +607,9 @@ export const ConsoleDetailModal: React.FC<{
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-150">
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl p-6 text-slate-900 dark:text-white space-y-5">
+      <div className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl p-6 text-slate-900 dark:text-white space-y-5">
         {/* Modal Header */}
-        <div className="flex items-start justify-between pb-4 border-b border-slate-100 dark:border-slate-800">
+        <div className="flex items-start justify-between pb-4 border-b border-slate-300 dark:border-slate-800">
           <div>
             <span className="text-xs font-mono uppercase text-blue-600 dark:text-blue-400 font-bold tracking-wider">
               {item.groupName} &bull; Console #{item.id}
@@ -617,16 +617,16 @@ export const ConsoleDetailModal: React.FC<{
             <h2 className="text-2xl font-black tracking-tight mt-0.5 flex items-center gap-2">
               <span>{item.name}</span>
               <span
-                className={`px-2.5 py-0.5 rounded-full text-xs font-mono font-bold ${
+                className={`px-2.5 py-0.5 rounded-full text-xs font-mono font-bold border ${
                   item.status === 'degraded'
-                    ? 'bg-amber-100 text-amber-950 dark:bg-amber-950 dark:text-amber-300'
-                    : 'bg-emerald-100 text-amber-950 dark:bg-emerald-950 dark:text-emerald-300'
-                }border border-amber-400 font-black`}
+                    ? 'bg-amber-100 text-amber-950 border-amber-400 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-800'
+                    : 'bg-emerald-100 text-emerald-950 border-emerald-400 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800'
+                } font-black`}
               >
                 {item.healthScore}% {item.status.toUpperCase()}
               </span>
             </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{item.purpose}</p>
+            <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mt-1">{item.purpose}</p>
           </div>
 
           <button
@@ -673,19 +673,19 @@ export const ConsoleDetailModal: React.FC<{
 
         {/* Telemetry Metrics Strip */}
         <div className="grid grid-cols-3 gap-3 text-center">
-          <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+          <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-300 dark:border-slate-700">
             <div className="text-[10px] text-slate-700 font-semibold uppercase">Latency Index</div>
             <div className="text-base font-black font-mono text-slate-900 dark:text-white mt-0.5">
               {item.responseTime} ms
             </div>
           </div>
-          <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+          <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-300 dark:border-slate-700">
             <div className="text-[10px] text-slate-700 font-semibold uppercase">Active Incidents</div>
             <div className="text-base font-black font-mono text-slate-900 dark:text-white mt-0.5">
               {item.activeIncidents}
             </div>
           </div>
-          <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+          <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-300 dark:border-slate-700">
             <div className="text-[10px] text-slate-700 font-semibold uppercase">Assigned Route</div>
             <div className="text-base font-black font-mono text-blue-600 dark:text-blue-400 truncate mt-0.5">
               {item.route}
@@ -694,7 +694,7 @@ export const ConsoleDetailModal: React.FC<{
         </div>
 
         {/* Actions Footer */}
-        <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-end gap-2">
+        <div className="pt-3 border-t border-slate-300 dark:border-slate-800 flex items-center justify-end gap-2">
           <button
             type="button"
             onClick={onClose}

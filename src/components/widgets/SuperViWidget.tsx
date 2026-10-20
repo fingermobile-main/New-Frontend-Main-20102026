@@ -2,8 +2,6 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   ShieldCheck,
-  Activity,
-  Cpu,
   ArrowRight,
   CheckCircle2,
   Lock,
@@ -43,8 +41,12 @@ export const SuperViWidget: React.FC<SuperViWidgetProps> = ({ widget }) => {
 
       {/* Main Info */}
       <div className="flex items-start gap-2.5 mb-2.5">
-        <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-sky-600 via-blue-600 to-cyan-600 flex items-center justify-center text-white shadow-xs shrink-0">
-          <Cpu className="w-5 h-5 text-sky-100" />
+        <div className="w-9 h-9 rounded-xl bg-slate-950 border border-sky-300 p-0.5 flex items-center justify-center shadow-xs shrink-0 overflow-hidden">
+          <img
+            src="/assets/logos/supervi_logo.png"
+            alt="SuperVi"
+            className="w-full h-full object-contain"
+          />
         </div>
         <div>
           <h4 className="text-sm font-black text-slate-900 leading-tight">
@@ -63,7 +65,7 @@ export const SuperViWidget: React.FC<SuperViWidgetProps> = ({ widget }) => {
             <Radio className="w-2.5 h-2.5 animate-ping" />
             Consensus Relays
           </span>
-          <span className="text-slate-400">1,248 Nodes Online</span>
+          <span className="text-slate-300 font-medium">1,248 Nodes Online</span>
         </div>
         <div className="flex items-center justify-between text-[11px]">
           <span className="text-slate-300 font-sans">Heartbeat Latency:</span>

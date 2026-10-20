@@ -196,7 +196,7 @@ export const MediaIntelligencePage: React.FC = () => {
             <div className="flex items-center gap-3 mb-2">
               <button
                 onClick={() => navigate('/master-dashboard')}
-                className="flex items-center gap-1 text-xs text-zinc-400 hover:text-emerald-400 transition"
+                className="flex items-center gap-1 text-xs text-zinc-300 font-medium hover:text-emerald-400 transition"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
                 Back to Master Dashboard
@@ -217,7 +217,7 @@ export const MediaIntelligencePage: React.FC = () => {
                     Health 96% • Online
                   </span>
                 </h1>
-                <p className="text-sm text-zinc-400">
+                <p className="text-sm text-zinc-300 font-medium">
                   Multimodal AI Ingestion Pipeline, Speech-to-Text, OCR, and Safety Governance
                 </p>
               </div>
@@ -249,48 +249,48 @@ export const MediaIntelligencePage: React.FC = () => {
         {/* Telemetry Metric Cards */}
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mt-6">
           <div className="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800/80 backdrop-blur">
-            <div className="flex items-center justify-between text-zinc-400 text-xs mb-1">
+            <div className="flex items-center justify-between text-zinc-300 font-medium text-xs mb-1">
               <span>Operational Health</span>
               <Activity className="w-4 h-4 text-emerald-400" />
             </div>
             <div className="text-2xl font-bold text-emerald-400">96.0%</div>
-            <div className="text-[11px] text-zinc-500 mt-1">Target ≥95.0% • Nominal</div>
+            <div className="text-[11px] text-zinc-300 font-medium mt-1">Target ≥95.0% • Nominal</div>
           </div>
 
           <div className="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800/80 backdrop-blur">
-            <div className="flex items-center justify-between text-zinc-400 text-xs mb-1">
+            <div className="flex items-center justify-between text-zinc-300 font-medium text-xs mb-1">
               <span>p95 Latency</span>
               <Zap className="w-4 h-4 text-amber-400" />
             </div>
             <div className="text-2xl font-bold text-white">142 ms</div>
-            <div className="text-[11px] text-zinc-500 mt-1">p99: 188 ms • Fast Gating</div>
+            <div className="text-[11px] text-zinc-300 font-medium mt-1">p99: 188 ms • Fast Gating</div>
           </div>
 
           <div className="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800/80 backdrop-blur">
-            <div className="flex items-center justify-between text-zinc-400 text-xs mb-1">
+            <div className="flex items-center justify-between text-zinc-300 font-medium text-xs mb-1">
               <span>Throughput</span>
               <Layers className="w-4 h-4 text-cyan-400" />
             </div>
             <div className="text-2xl font-bold text-white">1,480/m</div>
-            <div className="text-[11px] text-zinc-500 mt-1">Peak: 2,120 assets/min</div>
+            <div className="text-[11px] text-zinc-300 font-medium mt-1">Peak: 2,120 assets/min</div>
           </div>
 
           <div className="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800/80 backdrop-blur">
-            <div className="flex items-center justify-between text-zinc-400 text-xs mb-1">
+            <div className="flex items-center justify-between text-zinc-300 font-medium text-xs mb-1">
               <span>Avg Token Cost</span>
               <Cpu className="w-4 h-4 text-purple-400" />
             </div>
             <div className="text-2xl font-bold text-white">$0.0023</div>
-            <div className="text-[11px] text-zinc-500 mt-1">Daily Cap: $150.00 ($34.12 used)</div>
+            <div className="text-[11px] text-zinc-300 font-medium mt-1">Daily Cap: $150.00 ($34.12 used)</div>
           </div>
 
           <div className="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800/80 backdrop-blur">
-            <div className="flex items-center justify-between text-zinc-400 text-xs mb-1">
+            <div className="flex items-center justify-between text-zinc-300 font-medium text-xs mb-1">
               <span>Safety Accuracy</span>
               <ShieldCheck className="w-4 h-4 text-emerald-400" />
             </div>
             <div className="text-2xl font-bold text-emerald-400">99.82%</div>
-            <div className="text-[11px] text-zinc-500 mt-1">False Positives: 0.18%</div>
+            <div className="text-[11px] text-zinc-300 font-medium mt-1">False Positives: 0.18%</div>
           </div>
         </div>
 
@@ -301,7 +301,7 @@ export const MediaIntelligencePage: React.FC = () => {
             className={`pb-3 px-4 text-sm font-medium border-b-2 transition ${
               activeTab === 'pipeline'
                 ? 'border-emerald-500 text-emerald-400'
-                : 'border-transparent text-zinc-400 hover:text-zinc-200'
+                : 'border-transparent text-zinc-300 font-medium hover:text-zinc-200'
             }`}
           >
             Live Ingestion Pipeline ({items.length})
@@ -311,7 +311,7 @@ export const MediaIntelligencePage: React.FC = () => {
             className={`pb-3 px-4 text-sm font-medium border-b-2 transition ${
               activeTab === 'routing'
                 ? 'border-emerald-500 text-emerald-400'
-                : 'border-transparent text-zinc-400 hover:text-zinc-200'
+                : 'border-transparent text-zinc-300 font-medium hover:text-zinc-200'
             }`}
           >
             Model Routing & Safety Thresholds
@@ -321,7 +321,7 @@ export const MediaIntelligencePage: React.FC = () => {
             className={`pb-3 px-4 text-sm font-medium border-b-2 transition ${
               activeTab === 'workers'
                 ? 'border-emerald-500 text-emerald-400'
-                : 'border-transparent text-zinc-400 hover:text-zinc-200'
+                : 'border-transparent text-zinc-300 font-medium hover:text-zinc-200'
             }`}
           >
             GPU Worker Queue & Backpressure
@@ -331,7 +331,7 @@ export const MediaIntelligencePage: React.FC = () => {
             className={`pb-3 px-4 text-sm font-medium border-b-2 transition ${
               activeTab === 'reviews'
                 ? 'border-emerald-500 text-emerald-400'
-                : 'border-transparent text-zinc-400 hover:text-zinc-200'
+                : 'border-transparent text-zinc-300 font-medium hover:text-zinc-200'
             }`}
           >
             Human Review Backlog ({items.filter((i) => i.stage === 'flagged').length})
@@ -343,7 +343,7 @@ export const MediaIntelligencePage: React.FC = () => {
           <div className="mt-6 space-y-4">
             <div className="flex flex-col md:flex-row gap-4 items-center justify-between bg-zinc-900/40 p-3 rounded-lg border border-zinc-800">
               <div className="flex items-center gap-2 w-full md:w-96 bg-zinc-900 px-3 py-2 rounded-lg border border-zinc-800">
-                <Search className="w-4 h-4 text-slate-500" />
+                <Search className="w-4 h-4 text-slate-600" />
                 <input
                   type="text"
                   placeholder="Search assets, transcription, OCR text..."
@@ -354,7 +354,7 @@ export const MediaIntelligencePage: React.FC = () => {
               </div>
 
               <div className="flex items-center gap-3 w-full md:w-auto">
-                <div className="flex items-center gap-1 text-xs text-zinc-400">
+                <div className="flex items-center gap-1 text-xs text-zinc-300 font-medium">
                   <Filter className="w-3.5 h-3.5" />
                   <span>Type:</span>
                 </div>
@@ -376,7 +376,7 @@ export const MediaIntelligencePage: React.FC = () => {
             <div className="border border-zinc-800 rounded-xl overflow-hidden bg-zinc-900/20">
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
-                  <thead className="bg-zinc-900/80 text-zinc-400 uppercase tracking-wider text-[11px] border-b border-zinc-800">
+                  <thead className="bg-zinc-900/80 text-zinc-300 font-medium uppercase tracking-wider text-[11px] border-b border-zinc-800">
                     <tr>
                       <th className="py-3 px-4">Asset ID / Name</th>
                       <th className="py-3 px-4">Type</th>
@@ -399,11 +399,11 @@ export const MediaIntelligencePage: React.FC = () => {
                             {item.type === 'text' && <FileText className="w-4 h-4 text-amber-400" />}
                             <div>
                               <div className="font-semibold text-zinc-200">{item.name}</div>
-                              <div className="text-[10px] text-zinc-500">{item.id} • {item.timestamp}</div>
+                              <div className="text-[10px] text-zinc-300 font-medium">{item.id} • {item.timestamp}</div>
                             </div>
                           </div>
                         </td>
-                        <td className="py-3 px-4 uppercase text-zinc-400 font-mono text-[11px]">
+                        <td className="py-3 px-4 uppercase text-zinc-300 font-medium font-mono text-[11px]">
                           {item.type}
                         </td>
                         <td className="py-3 px-4 text-zinc-300 font-mono text-[11px]">
@@ -454,7 +454,7 @@ export const MediaIntelligencePage: React.FC = () => {
                           <div className="flex items-center justify-end gap-2">
                             <button
                               onClick={() => setSelectedItem(item)}
-                              className="p-1.5 text-zinc-400 hover:text-white bg-zinc-800/80 hover:bg-zinc-700 rounded transition"
+                              className="p-1.5 text-zinc-300 font-medium hover:text-white bg-zinc-800/80 hover:bg-zinc-700 rounded transition"
                               title="Inspect AI extraction payload"
                             >
                               <Eye className="w-3.5 h-3.5" />
@@ -553,7 +553,7 @@ export const MediaIntelligencePage: React.FC = () => {
                     onChange={(e) => setSafetyThreshold(Number(e.target.value))}
                     className="w-full accent-emerald-500 bg-zinc-800 rounded-lg h-2"
                   />
-                  <p className="text-[11px] text-zinc-500 mt-1">
+                  <p className="text-[11px] text-zinc-300 font-medium mt-1">
                     Assets scoring below this score are automatically quarantined to Human Review.
                   </p>
                 </div>
@@ -607,30 +607,30 @@ export const MediaIntelligencePage: React.FC = () => {
           <div className="mt-6 space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800">
-                <div className="flex items-center gap-2 text-zinc-400 text-xs mb-2">
+                <div className="flex items-center gap-2 text-zinc-300 font-medium text-xs mb-2">
                   <Server className="w-4 h-4 text-emerald-400" />
                   <span>GPU Worker Fleet</span>
                 </div>
                 <div className="text-xl font-bold text-white">4 Online / 4 Total</div>
-                <div className="text-xs text-zinc-500 mt-1">2x NVIDIA A10G • 2x T4 Tensor Cores</div>
+                <div className="text-xs text-zinc-300 font-medium mt-1">2x NVIDIA A10G • 2x T4 Tensor Cores</div>
               </div>
 
               <div className="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800">
-                <div className="flex items-center gap-2 text-zinc-400 text-xs mb-2">
+                <div className="flex items-center gap-2 text-zinc-300 font-medium text-xs mb-2">
                   <Layers className="w-4 h-4 text-cyan-400" />
                   <span>Queue Backpressure</span>
                 </div>
                 <div className="text-xl font-bold text-white">14 Jobs in Buffer</div>
-                <div className="text-xs text-zinc-500 mt-1">Avg Wait Time: 1.2s • Nominal Backpressure</div>
+                <div className="text-xs text-zinc-300 font-medium mt-1">Avg Wait Time: 1.2s • Nominal Backpressure</div>
               </div>
 
               <div className="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800">
-                <div className="flex items-center gap-2 text-zinc-400 text-xs mb-2">
+                <div className="flex items-center gap-2 text-zinc-300 font-medium text-xs mb-2">
                   <Zap className="w-4 h-4 text-purple-400" />
                   <span>Failover Status</span>
                 </div>
                 <div className="text-xl font-bold text-emerald-400">0 Dispatches to Fallback</div>
-                <div className="text-xs text-zinc-500 mt-1">Primary model uptime: 99.98%</div>
+                <div className="text-xs text-zinc-300 font-medium mt-1">Primary model uptime: 99.98%</div>
               </div>
             </div>
 
@@ -640,7 +640,7 @@ export const MediaIntelligencePage: React.FC = () => {
               </h3>
               <div className="space-y-4">
                 <div>
-                  <div className="flex justify-between text-xs text-zinc-400 mb-1">
+                  <div className="flex justify-between text-xs text-zinc-300 font-medium mb-1">
                     <span>worker-gpu-01 (Transcoding & Whisper v3)</span>
                     <span className="text-emerald-400">72% Load • 58°C</span>
                   </div>
@@ -650,7 +650,7 @@ export const MediaIntelligencePage: React.FC = () => {
                 </div>
 
                 <div>
-                  <div className="flex justify-between text-xs text-zinc-400 mb-1">
+                  <div className="flex justify-between text-xs text-zinc-300 font-medium mb-1">
                     <span>worker-gpu-02 (Gemini Flash Multimodal Ingest)</span>
                     <span className="text-emerald-400">45% Load • 52°C</span>
                   </div>
@@ -660,7 +660,7 @@ export const MediaIntelligencePage: React.FC = () => {
                 </div>
 
                 <div>
-                  <div className="flex justify-between text-xs text-zinc-400 mb-1">
+                  <div className="flex justify-between text-xs text-zinc-300 font-medium mb-1">
                     <span>worker-gpu-03 (Vision OCR & Bounding Box)</span>
                     <span className="text-emerald-400">38% Load • 49°C</span>
                   </div>
@@ -670,7 +670,7 @@ export const MediaIntelligencePage: React.FC = () => {
                 </div>
 
                 <div>
-                  <div className="flex justify-between text-xs text-zinc-400 mb-1">
+                  <div className="flex justify-between text-xs text-zinc-300 font-medium mb-1">
                     <span>worker-gpu-04 (Asynchronous Safety Gating)</span>
                     <span className="text-emerald-400">22% Load • 46°C</span>
                   </div>
@@ -690,7 +690,7 @@ export const MediaIntelligencePage: React.FC = () => {
               <div className="p-12 text-center border border-zinc-800 rounded-xl bg-zinc-900/30">
                 <CheckCircle2 className="w-10 h-10 text-emerald-400 mx-auto mb-3" />
                 <h3 className="text-base font-semibold text-white">Review Backlog Clear</h3>
-                <p className="text-xs text-zinc-400 mt-1">All ingested media have passed automated AI safety gates.</p>
+                <p className="text-xs text-zinc-300 font-medium mt-1">All ingested media have passed automated AI safety gates.</p>
               </div>
             ) : (
               items
@@ -706,14 +706,14 @@ export const MediaIntelligencePage: React.FC = () => {
                         <span className="text-xs font-semibold text-rose-400 uppercase">
                           Quarantined for Review
                         </span>
-                        <span className="text-xs text-zinc-500">• {item.id}</span>
+                        <span className="text-xs text-zinc-300 font-medium">• {item.id}</span>
                       </div>
                       <h4 className="text-sm font-bold text-white">{item.name}</h4>
                       <p className="text-xs text-zinc-300 mt-1">
                         Safety Score: <span className="text-rose-400 font-mono">{item.safetyScore}%</span> (Threshold: {safetyThreshold}%) • Confidence: {item.confidence}%
                       </p>
                       {item.metadata.transcription && (
-                        <div className="text-xs text-zinc-400 bg-zinc-950/60 p-2.5 rounded mt-2 border border-zinc-800">
+                        <div className="text-xs text-zinc-300 font-medium bg-zinc-950/60 p-2.5 rounded mt-2 border border-zinc-800">
                           "{item.metadata.transcription}"
                         </div>
                       )}
@@ -752,7 +752,7 @@ export const MediaIntelligencePage: React.FC = () => {
                 </div>
                 <button
                   onClick={() => setSelectedItem(null)}
-                  className="text-zinc-400 hover:text-white text-sm"
+                  className="text-zinc-300 font-medium hover:text-white text-sm"
                 >
                   ✕
                 </button>
@@ -760,28 +760,28 @@ export const MediaIntelligencePage: React.FC = () => {
 
               <div className="space-y-4 text-xs">
                 <div>
-                  <span className="text-zinc-500 font-medium">Source File:</span>
+                  <span className="text-zinc-300 font-medium font-medium">Source File:</span>
                   <div className="text-zinc-200 font-semibold">{selectedItem.name}</div>
                 </div>
 
                 <div className="grid grid-cols-3 gap-3 bg-zinc-950 p-3 rounded-lg border border-zinc-800">
                   <div>
-                    <span className="text-zinc-500">Pipeline:</span>
+                    <span className="text-zinc-300 font-medium">Pipeline:</span>
                     <div className="text-zinc-200 font-mono">{selectedItem.model}</div>
                   </div>
                   <div>
-                    <span className="text-zinc-500">Latency:</span>
+                    <span className="text-zinc-300 font-medium">Latency:</span>
                     <div className="text-zinc-200 font-mono">{selectedItem.latencyMs} ms</div>
                   </div>
                   <div>
-                    <span className="text-zinc-500">Token Cost:</span>
+                    <span className="text-zinc-300 font-medium">Token Cost:</span>
                     <div className="text-zinc-200 font-mono">${selectedItem.cost.toFixed(4)}</div>
                   </div>
                 </div>
 
                 {selectedItem.metadata.transcription && (
                   <div>
-                    <span className="text-zinc-400 font-medium block mb-1">Whisper v3 Transcription:</span>
+                    <span className="text-zinc-300 font-medium font-medium block mb-1">Whisper v3 Transcription:</span>
                     <div className="p-3 bg-zinc-950 rounded-lg border border-zinc-800 text-zinc-300 font-mono">
                       {selectedItem.metadata.transcription}
                     </div>
@@ -790,7 +790,7 @@ export const MediaIntelligencePage: React.FC = () => {
 
                 {selectedItem.metadata.ocrText && (
                   <div>
-                    <span className="text-zinc-400 font-medium block mb-1">OCR Extracted Text:</span>
+                    <span className="text-zinc-300 font-medium font-medium block mb-1">OCR Extracted Text:</span>
                     <div className="p-3 bg-zinc-950 rounded-lg border border-zinc-800 text-zinc-300 font-mono">
                       {selectedItem.metadata.ocrText}
                     </div>
@@ -799,7 +799,7 @@ export const MediaIntelligencePage: React.FC = () => {
 
                 {selectedItem.metadata.labels && (
                   <div>
-                    <span className="text-zinc-400 font-medium block mb-1.5">Classified Semantic Labels:</span>
+                    <span className="text-zinc-300 font-medium font-medium block mb-1.5">Classified Semantic Labels:</span>
                     <div className="flex flex-wrap gap-1.5">
                       {selectedItem.metadata.labels.map((lbl, idx) => (
                         <span

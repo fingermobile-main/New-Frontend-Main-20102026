@@ -305,49 +305,49 @@ export const MasterWidgetConsole: React.FC = () => {
         {/* Real-Time KPIs Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 pt-6">
           <div className="p-3 rounded-2xl bg-slate-800/80 border border-slate-700">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Total Widgets</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-200">Total Widgets</span>
             <div className="text-xl font-black font-mono text-white mt-1">{widgets.length}</div>
-            <span className="text-[10px] text-emerald-400 mt-0.5 block">{permanentCount} Perm • {rotationalCount} Rotational</span>
+            <span className="text-[10px] text-emerald-400 font-semibold mt-0.5 block">{permanentCount} Perm • {rotationalCount} Rotational</span>
           </div>
 
           <div className="p-3 rounded-2xl bg-slate-800/80 border border-slate-700">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">2H Countdown</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-200">2H Countdown</span>
             <div className="text-xl font-black font-mono text-amber-400 mt-1">
               {formatCountdown(rotationState.remainingSeconds)}
             </div>
-            <span className="text-[10px] text-slate-300 mt-0.5 block">Cycle #{rotationState.currentStep}</span>
+            <span className="text-[10px] text-slate-300 font-medium mt-0.5 block">Cycle #{rotationState.currentStep}</span>
           </div>
 
           <div className="p-3 rounded-2xl bg-slate-800/80 border border-slate-700">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Impressions</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-200">Impressions</span>
             <div className="text-xl font-black font-mono text-white mt-1">
               {totalImpressions.toLocaleString()}
             </div>
-            <span className="text-[10px] text-emerald-400 mt-0.5 block">+18.4% this week</span>
+            <span className="text-[10px] text-emerald-400 font-semibold mt-0.5 block">+18.4% this week</span>
           </div>
 
           <div className="p-3 rounded-2xl bg-slate-800/80 border border-slate-700">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Total Clicks</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-200">Total Clicks</span>
             <div className="text-xl font-black font-mono text-white mt-1">
               {totalClicks.toLocaleString()}
             </div>
-            <span className="text-[10px] text-emerald-400 mt-0.5 block">CTR: {platformCtr}%</span>
+            <span className="text-[10px] text-emerald-400 font-semibold mt-0.5 block">CTR: {platformCtr}%</span>
           </div>
 
           <div className="p-3 rounded-2xl bg-slate-800/80 border border-slate-700">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Conversions</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-200">Conversions</span>
             <div className="text-xl font-black font-mono text-white mt-1">
               {totalConversions.toLocaleString()}
             </div>
-            <span className="text-[10px] text-slate-300 mt-0.5 block">Action completions</span>
+            <span className="text-[10px] text-slate-300 font-medium mt-0.5 block">Action completions</span>
           </div>
 
           <div className="p-3 rounded-2xl bg-slate-800/80 border border-slate-700">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Rotation Pool</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-200">Rotation Pool</span>
             <div className="text-xl font-black font-mono text-sky-400 mt-1">
               {rotationState.poolSize} Active
             </div>
-            <span className="text-[10px] text-slate-300 mt-0.5 block">3 per 2h window</span>
+            <span className="text-[10px] text-slate-300 font-medium mt-0.5 block">3 per 2h window</span>
           </div>
         </div>
       </div>
@@ -374,7 +374,7 @@ export const MasterWidgetConsole: React.FC = () => {
                   : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100 border border-transparent'
               }`}
             >
-              <Icon className={`w-4 h-4 ${isActive ? 'text-emerald-400' : 'text-slate-500'}`} />
+              <Icon className={`w-4 h-4 ${isActive ? 'text-emerald-400' : 'text-slate-600'}`} />
               <span>{tab.label}</span>
             </button>
           );
@@ -493,7 +493,7 @@ export const MasterWidgetConsole: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Form Editor Column */}
           <div className="lg:col-span-7 bg-white rounded-3xl border border-slate-300 p-6 shadow-sm space-y-6">
-            <div className="flex items-center justify-between pb-4 border-b border-slate-200">
+            <div className="flex items-center justify-between pb-4 border-b border-slate-300">
               <div>
                 <span className="px-2 py-0.5 rounded-full text-[10px] font-black uppercase bg-emerald-100 text-emerald-950 border border-emerald-400">
                   Edge Type Visual Studio
@@ -559,7 +559,7 @@ export const MasterWidgetConsole: React.FC = () => {
                       })
                     }
                     placeholder="e.g. Loansqr Widget, FingerLux, etc."
-                    className="w-full text-xs font-bold text-slate-900 px-3 py-2.5 rounded-xl border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 placeholder:text-slate-400"
+                    className="w-full text-xs font-bold text-slate-900 px-3 py-2.5 rounded-xl border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 placeholder:text-slate-600"
                   />
                 </div>
 
@@ -572,7 +572,7 @@ export const MasterWidgetConsole: React.FC = () => {
                     value={creatorForm.slug}
                     onChange={(e) => setCreatorForm({ ...creatorForm, slug: e.target.value })}
                     placeholder="e.g. loansqr, fingerlux"
-                    className="w-full text-xs font-mono text-slate-900 px-3 py-2.5 rounded-xl border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 font-bold placeholder:text-slate-400"
+                    className="w-full text-xs font-mono text-slate-900 px-3 py-2.5 rounded-xl border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 font-bold placeholder:text-slate-600"
                   />
                 </div>
               </div>
@@ -589,7 +589,7 @@ export const MasterWidgetConsole: React.FC = () => {
                     value={creatorForm.title}
                     onChange={(e) => setCreatorForm({ ...creatorForm, title: e.target.value })}
                     placeholder="e.g. Loansqr™ Instant Nano-Liquidity"
-                    className="w-full text-xs font-bold text-slate-900 px-3 py-2.5 rounded-xl border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 placeholder:text-slate-400"
+                    className="w-full text-xs font-bold text-slate-900 px-3 py-2.5 rounded-xl border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 placeholder:text-slate-600"
                   />
                 </div>
 
@@ -602,7 +602,7 @@ export const MasterWidgetConsole: React.FC = () => {
                     value={creatorForm.subtitle}
                     onChange={(e) => setCreatorForm({ ...creatorForm, subtitle: e.target.value })}
                     placeholder="e.g. Collateralized Micro-Loans"
-                    className="w-full text-xs text-slate-900 px-3 py-2.5 rounded-xl border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 font-bold placeholder:text-slate-400"
+                    className="w-full text-xs text-slate-900 px-3 py-2.5 rounded-xl border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 font-bold placeholder:text-slate-600"
                   />
                 </div>
               </div>
@@ -617,12 +617,12 @@ export const MasterWidgetConsole: React.FC = () => {
                   value={creatorForm.description}
                   onChange={(e) => setCreatorForm({ ...creatorForm, description: e.target.value })}
                   placeholder="Comprehensive description of the service, product, or tool..."
-                  className="w-full text-xs text-slate-900 p-3 rounded-xl border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 font-bold placeholder:text-slate-400"
+                  className="w-full text-xs text-slate-900 p-3 rounded-xl border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 font-bold placeholder:text-slate-600"
                 />
               </div>
 
               {/* Placement & Rotation Rules */}
-              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-300 space-y-3">
                 <h4 className="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
                   <Clock className="w-4 h-4 text-emerald-700" />
                   Placement & 2-Hour Auto-Rotation Policy
@@ -661,7 +661,7 @@ export const MasterWidgetConsole: React.FC = () => {
                       onChange={(e) =>
                         setCreatorForm({ ...creatorForm, rotationIntervalMinutes: Number(e.target.value) })
                       }
-                      className="w-full text-xs font-mono font-bold text-slate-900 px-3 py-2 rounded-xl border border-slate-300 bg-white disabled:bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
+                      className="w-full text-xs font-mono font-bold text-slate-900 px-3 py-2 rounded-xl border border-slate-300 bg-white disabled:bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-600"
                     />
                     <span className="text-[10px] text-slate-700">120 minutes = 2 hours automatic swap</span>
                   </div>
@@ -669,7 +669,7 @@ export const MasterWidgetConsole: React.FC = () => {
               </div>
 
               {/* Rich Media Assets: Image & Video URLs */}
-              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-300 space-y-3">
                 <h4 className="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
                   <Video className="w-4 h-4 text-sky-700" />
                   Media Engine (Images & Videos)
@@ -685,7 +685,7 @@ export const MasterWidgetConsole: React.FC = () => {
                       value={creatorForm.primaryImageUrl}
                       onChange={(e) => setCreatorForm({ ...creatorForm, primaryImageUrl: e.target.value })}
                       placeholder="https://..."
-                      className="w-full text-xs text-slate-900 px-3 py-2 rounded-xl border border-slate-300 bg-white font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
+                      className="w-full text-xs text-slate-900 px-3 py-2 rounded-xl border border-slate-300 bg-white font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-600"
                     />
                   </div>
 
@@ -698,7 +698,7 @@ export const MasterWidgetConsole: React.FC = () => {
                       value={creatorForm.primaryVideoUrl}
                       onChange={(e) => setCreatorForm({ ...creatorForm, primaryVideoUrl: e.target.value })}
                       placeholder="https://commondatastorage.googleapis.com/...mp4"
-                      className="w-full text-xs text-slate-900 px-3 py-2 rounded-xl border border-slate-300 bg-white font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
+                      className="w-full text-xs text-slate-900 px-3 py-2 rounded-xl border border-slate-300 bg-white font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-600"
                     />
                   </div>
                 </div>
@@ -716,7 +716,7 @@ export const MasterWidgetConsole: React.FC = () => {
                     value={creatorForm.actionUrl}
                     onChange={(e) => setCreatorForm({ ...creatorForm, actionUrl: e.target.value })}
                     placeholder="/loansqr or https://..."
-                    className="w-full text-xs font-mono text-slate-900 px-3 py-2.5 rounded-xl border border-slate-300 bg-white font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
+                    className="w-full text-xs font-mono text-slate-900 px-3 py-2.5 rounded-xl border border-slate-300 bg-white font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-600"
                   />
                 </div>
 
@@ -729,7 +729,7 @@ export const MasterWidgetConsole: React.FC = () => {
                     value={creatorForm.ctaText}
                     onChange={(e) => setCreatorForm({ ...creatorForm, ctaText: e.target.value })}
                     placeholder="e.g. Calculate Loan, Explore Now"
-                    className="w-full text-xs font-bold text-slate-900 px-3 py-2.5 rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
+                    className="w-full text-xs font-bold text-slate-900 px-3 py-2.5 rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-600"
                   />
                 </div>
               </div>
@@ -745,7 +745,7 @@ export const MasterWidgetConsole: React.FC = () => {
                     value={creatorForm.badgeText}
                     onChange={(e) => setCreatorForm({ ...creatorForm, badgeText: e.target.value })}
                     placeholder="e.g. VIP SUITE, INSTANT 60S"
-                    className="w-full text-xs font-bold text-slate-900 px-3 py-2 rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
+                    className="w-full text-xs font-bold text-slate-900 px-3 py-2 rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-600"
                   />
                 </div>
 
@@ -758,13 +758,13 @@ export const MasterWidgetConsole: React.FC = () => {
                       type="color"
                       value={creatorForm.accentColor || '#059669'}
                       onChange={(e) => setCreatorForm({ ...creatorForm, accentColor: e.target.value })}
-                      className="w-9 h-9 p-0.5 rounded-xl border border-slate-300 cursor-pointer text-slate-900 font-bold bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
+                      className="w-9 h-9 p-0.5 rounded-xl border border-slate-300 cursor-pointer text-slate-900 font-bold bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-600"
                     />
                     <input
                       type="text"
                       value={creatorForm.accentColor}
                       onChange={(e) => setCreatorForm({ ...creatorForm, accentColor: e.target.value })}
-                      className="w-full text-xs font-mono font-bold text-slate-900 px-3 py-2 rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
+                      className="w-full text-xs font-mono font-bold text-slate-900 px-3 py-2 rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-600"
                     />
                   </div>
                 </div>
@@ -778,13 +778,13 @@ export const MasterWidgetConsole: React.FC = () => {
                     value={creatorForm.category}
                     onChange={(e) => setCreatorForm({ ...creatorForm, category: e.target.value })}
                     placeholder="Fintech, Luxury, Advertising"
-                    className="w-full text-xs font-bold text-slate-900 px-3 py-2 rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
+                    className="w-full text-xs font-bold text-slate-900 px-3 py-2 rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-600"
                   />
                 </div>
               </div>
 
               {/* Submit Buttons */}
-              <div className="pt-4 flex items-center justify-end gap-3 border-t border-slate-200">
+              <div className="pt-4 flex items-center justify-end gap-3 border-t border-slate-300">
                 <button
                   type="button"
                   onClick={() => setActiveSubTab('matrix')}
@@ -844,7 +844,7 @@ export const MasterWidgetConsole: React.FC = () => {
                 previewDevice === 'desktop' ? 'w-full max-w-sm' : 'w-[290px]'
               }`}
             >
-              <div className="text-[10px] font-mono text-slate-500 mb-2 flex items-center justify-between pb-1 border-b border-slate-300">
+              <div className="text-[10px] font-mono text-slate-600 mb-2 flex items-center justify-between pb-1 border-b border-slate-300">
                 <span>RIGHT COLUMN RAIL</span>
                 <span>{creatorForm.isPermanent ? 'PINNED (PERMANENT)' : '2H ROTATIONAL'}</span>
               </div>
@@ -864,7 +864,7 @@ export const MasterWidgetConsole: React.FC = () => {
       {/* ======================================================================= */}
       {activeSubTab === 'table' && (
         <div className="bg-white rounded-3xl border border-slate-300 p-6 shadow-sm space-y-4">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-200">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-300">
             <div>
               <h3 className="text-base font-black text-slate-900">
                 Widgets Database Table Records ({filteredWidgets.length})
@@ -877,13 +877,13 @@ export const MasterWidgetConsole: React.FC = () => {
             {/* Filter and Search Bar */}
             <div className="flex flex-wrap items-center gap-2">
               <div className="relative">
-                <Search className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-3" />
+                <Search className="w-3.5 h-3.5 text-slate-600 absolute left-3 top-3" />
                 <input
                   type="text"
                   placeholder="Search by name, title, category..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-8 pr-3 py-1.5 rounded-xl border border-slate-300 text-xs font-bold text-slate-900 bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500 placeholder:text-slate-400 focus:ring-2"
+                  className="pl-8 pr-3 py-1.5 rounded-xl border border-slate-300 text-xs font-bold text-slate-900 bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500 placeholder:text-slate-600 focus:ring-2"
                 />
               </div>
 
@@ -982,11 +982,11 @@ export const MasterWidgetConsole: React.FC = () => {
                       <td className="py-3 px-4">
                         <div className="flex items-center gap-2 text-[11px] text-slate-700">
                           <span className="flex items-center gap-0.5">
-                            <ImageIcon className="w-3 h-3 text-slate-500" />
+                            <ImageIcon className="w-3 h-3 text-slate-600" />
                             {w.images?.length || (w.primaryImageUrl ? 1 : 0)}
                           </span>
                           <span className="flex items-center gap-0.5">
-                            <Video className="w-3 h-3 text-slate-500" />
+                            <Video className="w-3 h-3 text-slate-600" />
                             {w.videos?.length || (w.primaryVideoUrl ? 1 : 0)}
                           </span>
                         </div>
@@ -1142,7 +1142,7 @@ export const MasterWidgetConsole: React.FC = () => {
               ].map((log, i) => (
                 <div
                   key={i}
-                  className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-1.5"
+                  className="p-3.5 rounded-2xl bg-slate-50 border border-slate-300 space-y-1.5"
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
@@ -1153,7 +1153,7 @@ export const MasterWidgetConsole: React.FC = () => {
                       {[...Array(log.rating)].map((_, idx) => (
                         <Star key={idx} className="w-3 h-3 fill-amber-500" />
                       ))}
-                      <span className="text-[10px] text-slate-500 ml-1">{log.time}</span>
+                      <span className="text-[10px] text-slate-700 font-medium ml-1">{log.time}</span>
                     </div>
                   </div>
                   <p className="text-xs text-slate-700 leading-relaxed font-medium">

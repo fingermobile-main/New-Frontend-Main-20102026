@@ -103,14 +103,18 @@ const CheckoutPage: React.FC = () => {
     setIsProcessing(true);
 
     try {
-      await apiService.post('/api/storefront/orders', {
+      const orderResponse = await apiService.post<{ success: boolean }>('/api/storefront/orders', {
         items: cart.map(c => ({ id: c.id, name: c.name || c.product?.name, price: c.price, quantity: c.quantity })),
-        total: totalUSD,
-        paymentRail: 'fic'
-      }).catch(() => {});
+        total: totalFIC,
+        currency: 'FIC',
+        payment_method: 'FIC'
+      });
+      if (!orderResponse.success) {
+        throw new Error('Order was not persisted');
+      }
 
       await placeOrder();
-      showToast('Order placed successfully', 'success');
+      showToast('Order recorded. Payment confirmation is pending.', 'success');
       navigate('/orders');
     } catch (error) {
       showToast('Failed to place order', 'error');

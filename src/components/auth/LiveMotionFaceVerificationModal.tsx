@@ -146,7 +146,7 @@ export const LiveMotionFaceVerificationModal: React.FC<Props> = ({
                   OPEN-SOURCE SDK
                 </span>
               </div>
-              <p className="text-xs text-slate-400 font-mono">
+              <p className="text-xs text-slate-300 font-medium font-mono">
                 3DiVi Face SDK • FacePlugin Liveness • OpenFace 68 Landmarks
               </p>
             </div>
@@ -154,7 +154,7 @@ export const LiveMotionFaceVerificationModal: React.FC<Props> = ({
 
           <button
             onClick={onClose}
-            className="p-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white border border-slate-800 transition-colors"
+            className="p-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
@@ -171,7 +171,7 @@ export const LiveMotionFaceVerificationModal: React.FC<Props> = ({
                   NIN: {nin}
                 </span>
               </div>
-              <p className="text-[11px] text-slate-400">
+              <p className="text-[11px] text-slate-300 font-medium">
                 Target Authority: {targetIdentity === 'FOUNDER' ? 'Founder & Owner (Root Master Control)' : 'Co-Founder (Admin-1 Master Control)'}
               </p>
             </div>
@@ -217,8 +217,8 @@ export const LiveMotionFaceVerificationModal: React.FC<Props> = ({
 
               {/* Center Icon */}
               {step === 'INITIAL' && (
-                <div className="text-center text-slate-400 p-2">
-                  <Camera className="w-8 h-8 mx-auto mb-1 text-slate-500 animate-pulse" />
+                <div className="text-center text-slate-300 font-medium p-2">
+                  <Camera className="w-8 h-8 mx-auto mb-1 text-slate-600 animate-pulse" />
                   <span className="text-[10px] font-mono">ALIGN FACE IN HUD</span>
                 </div>
               )}
@@ -252,7 +252,7 @@ export const LiveMotionFaceVerificationModal: React.FC<Props> = ({
 
         {/* Progress Bar */}
         <div className="mt-4">
-          <div className="flex items-center justify-between text-xs font-mono text-slate-400 mb-1.5">
+          <div className="flex items-center justify-between text-xs font-mono text-slate-300 font-medium mb-1.5">
             <span className="flex items-center gap-1.5">
               <Cpu className="w-3.5 h-3.5 text-cyan-400" />
               Neural Anti-Spoofing & Motion Vectors
@@ -269,7 +269,7 @@ export const LiveMotionFaceVerificationModal: React.FC<Props> = ({
 
         {/* Action Controls & Verification Details */}
         <div className="mt-5 flex items-center justify-between gap-3">
-          <div className="text-xs text-slate-400">
+          <div className="text-xs text-slate-300 font-medium">
             {step === 'SUCCESS' && result ? (
               <span className="text-emerald-400 font-bold flex items-center gap-1">
                 <ShieldCheck className="w-4 h-4" />
@@ -299,7 +299,7 @@ export const LiveMotionFaceVerificationModal: React.FC<Props> = ({
             ) : (
               <button
                 disabled
-                className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-800 text-slate-400 text-xs font-semibold cursor-not-allowed"
+                className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-800 text-slate-300 text-xs font-semibold cursor-not-allowed"
               >
                 <RefreshCw className="w-3.5 h-3.5 animate-spin text-cyan-400" />
                 <span>Scanning Face...</span>

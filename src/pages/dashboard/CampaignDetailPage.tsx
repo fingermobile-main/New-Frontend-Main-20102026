@@ -56,7 +56,7 @@ const DashboardCampaignDetailPage: React.FC = () => {
               style={{ height: `${Math.max((item.value / maxValue) * 100, 6)}%` }}
               title={`${item.value.toLocaleString()}`}
             />
-            <span className="text-xs font-semibold text-slate-500 mt-2">{item.day}</span>
+            <span className="text-xs font-bold text-slate-700 mt-2">{item.day}</span>
           </div>
         ))}
       </div>
@@ -74,7 +74,7 @@ const DashboardCampaignDetailPage: React.FC = () => {
   if (!analytics) {
     return (
       <div className="p-8 text-center">
-        <p className="text-slate-500 font-medium">Could not load campaign details.</p>
+        <p className="text-slate-700 font-medium">Could not load campaign details.</p>
         <NavLink
           to="/dashboard/campaigns"
           className="text-sm font-semibold text-blue-600 hover:underline mt-4 inline-block"
@@ -99,14 +99,14 @@ const DashboardCampaignDetailPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">{campaignTitle}</h1>
-          <p className="text-xs font-mono text-slate-400">ID: {effectiveId}</p>
+          <p className="text-xs font-mono text-slate-600 font-medium">ID: {effectiveId}</p>
         </div>
         <span
           className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${
             analytics.campaign?.status === 'active'
               ? 'bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold'
               : 'bg-amber-100 text-emerald-950 border border-emerald-400 font-bold'
-          }font-black`}
+          } font-black`}
         >
           {analytics.campaign?.status || 'Active'}
         </span>
@@ -114,21 +114,21 @@ const DashboardCampaignDetailPage: React.FC = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-          <h3 className="font-bold text-sm text-slate-500 uppercase tracking-wider">Total Reach</h3>
+          <h3 className="font-bold text-sm text-slate-700 uppercase tracking-wider">Total Reach</h3>
           <p className="text-3xl font-black text-slate-900 mt-2">
             {(analytics.reach?.total || 0).toLocaleString()}
           </p>
           <p className="text-xs text-emerald-600 font-semibold mt-1">Verified Member Impressions</p>
         </div>
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-          <h3 className="font-bold text-sm text-slate-500 uppercase tracking-wider">Total Engagement</h3>
+          <h3 className="font-bold text-sm text-slate-700 uppercase tracking-wider">Total Engagement</h3>
           <p className="text-3xl font-black text-slate-900 mt-2">
             {(analytics.engagement?.total || 0).toLocaleString()}
           </p>
           <p className="text-xs text-blue-600 font-semibold mt-1">Direct Clicks & Actions</p>
         </div>
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-          <h3 className="font-bold text-sm text-slate-500 uppercase tracking-wider">Total Spend</h3>
+          <h3 className="font-bold text-sm text-slate-700 uppercase tracking-wider">Total Spend</h3>
           <p className="text-3xl font-black text-slate-900 mt-2">
             {(analytics.spend?.total || 0).toLocaleString()} FIC
           </p>

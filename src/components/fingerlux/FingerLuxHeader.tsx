@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  FingerLuxIcon,
   CalendarIcon,
   ClockIcon,
   UsersIcon,
@@ -21,13 +20,17 @@ export type FingerLuxTab =
 
 interface FingerLuxHeaderProps {
   activeTab: FingerLuxTab;
+  // eslint-disable-next-line no-unused-vars
   onTabChange: (tab: FingerLuxTab) => void;
   selectedCurrency: string;
+  // eslint-disable-next-line no-unused-vars
   onCurrencyChange: (currency: string) => void;
   selectedLocationId: string;
+  // eslint-disable-next-line no-unused-vars
   onLocationChange: (locId: string) => void;
   locations: LocationSite[];
   ficBalance: number;
+  // eslint-disable-next-line no-unused-vars
   formatPrice: (amountInFic: number) => string;
   totalBookingsCount: number;
   todayAppointmentsCount: number;
@@ -79,10 +82,14 @@ export const FingerLuxHeader: React.FC<FingerLuxHeaderProps> = ({
       {/* Top Identity Banner */}
       <div className="flex flex-col xl:flex-row xl:items-center justify-between pb-6 border-b border-slate-200 gap-4">
         <div className="flex items-center">
-          <div className="bg-gradient-to-tr from-indigo-700 via-indigo-900 to-slate-950 p-3.5 rounded-2xl shadow-lg border border-indigo-700/50 relative group">
-            <FingerLuxIcon className="h-9 w-9 text-amber-400 group-hover:scale-110 transition-transform duration-300" />
-            <div className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-emerald-400 border-2 border-slate-900 rounded-full animate-ping"></div>
-            <div className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-emerald-400 border-2 border-slate-900 rounded-full"></div>
+          <div className="w-16 h-16 rounded-2xl bg-slate-950 border border-indigo-700/50 p-1.5 shadow-lg relative group overflow-hidden flex items-center justify-center shrink-0">
+            <img
+              src="/assets/logos/fingerlux_icon.png"
+              alt="FingerLux"
+              className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+            />
+            <div className="absolute top-1 right-1 w-3 h-3 bg-emerald-400 border-2 border-slate-900 rounded-full animate-ping"></div>
+            <div className="absolute top-1 right-1 w-3 h-3 bg-emerald-400 border-2 border-slate-900 rounded-full"></div>
           </div>
           <div className="ml-4">
             <div className="flex items-center gap-2.5 flex-wrap">

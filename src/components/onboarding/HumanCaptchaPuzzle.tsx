@@ -35,7 +35,7 @@ export const HumanCaptchaPuzzle: React.FC<HumanCaptchaPuzzleProps> = ({ onVerifi
           <ShieldCheck className="w-5 h-5 text-indigo-400" />
           <span className="text-sm font-semibold text-white">Security Verification</span>
         </div>
-        <span className="text-xs text-slate-400">Prove you're human</span>
+        <span className="text-xs text-slate-300 font-medium">Prove you're human</span>
       </div>
 
       {/* Puzzle Viewport Simulation */}

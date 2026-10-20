@@ -43,17 +43,17 @@ const BeatwavePlayer: React.FC<BeatwavePlayerProps> = ({
 
   if (!track) {
     return (
-      <Card className="w-full max-w-md mx-auto">
+      <Card className="w-full max-w-md mx-auto border-slate-200">
         <CardContent className="p-6 text-center">
-          <Music className="h-16 w-16 mx-auto mb-4 text-muted-foreground opacity-20" />
-          <p className="text-muted-foreground">No track selected</p>
+          <Music className="h-16 w-16 mx-auto mb-4 text-slate-500 opacity-30" />
+          <p className="text-slate-700 font-medium">No track selected</p>
         </CardContent>
       </Card>
     );
   }
 
   return (
-    <Card className="w-full max-w-md mx-auto">
+    <Card className="w-full max-w-md mx-auto border-slate-200">
       <CardContent className="p-6 space-y-4">
         {/* Track Info */}
         <div className="flex items-start gap-4">
@@ -65,8 +65,8 @@ const BeatwavePlayer: React.FC<BeatwavePlayerProps> = ({
             )}
           </div>
           <div className="flex-1 min-w-0">
-            <h3 className="font-bold text-lg truncate">{track.title}</h3>
-            <p className="text-muted-foreground truncate">{track.artist}</p>
+            <h3 className="font-bold text-lg text-slate-900 truncate">{track.title}</h3>
+            <p className="text-slate-700 font-medium truncate">{track.artist}</p>
             {track.album && (
               <Badge variant="secondary" className="mt-2">
                 {track.album}
@@ -83,7 +83,7 @@ const BeatwavePlayer: React.FC<BeatwavePlayerProps> = ({
             step={1}
             onValueChange={(value: number[]) => onSeek?.(value[0])}
           />
-          <div className="flex justify-between text-xs text-muted-foreground">
+          <div className="flex justify-between text-xs text-slate-700 font-medium">
             <span>{formatTime(progress)}</span>
             <span>{formatTime(track.duration)}</span>
           </div>
@@ -112,7 +112,7 @@ const BeatwavePlayer: React.FC<BeatwavePlayerProps> = ({
 
         {/* Volume */}
         <div className="flex items-center gap-2">
-          <Volume2 className="h-4 w-4 text-muted-foreground" />
+          <Volume2 className="h-4 w-4 text-slate-500" />
           <Slider
             value={[volume]}
             max={100}

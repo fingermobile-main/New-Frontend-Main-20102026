@@ -21,17 +21,16 @@ type OnboardingAction =
   | { type: 'RESET_ONBOARDING' };
 
 const defaultSteps: OnboardingStep[] = [
-  { id: 'welcome', title: 'Welcome to FingerMobile', description: 'Get set up with your account', required: true },
-  { id: 'terms-permissions', title: 'Terms & Permissions', description: 'Review agreements', required: true },
-  { id: 'registration', title: 'Registration', description: 'Account credentials', required: true },
+  { id: 'welcome', title: 'Welcome to FingerMobile', description: 'Get set up with your sovereign account', required: true },
+  { id: 'terms-permissions', title: 'Legal & Privacy Policy Acceptance', description: 'Review agreements, privacy policy & CSAE safety', required: true },
+  { id: 'account-type-selection', title: 'Account Type Selection', description: 'Choose Personal (Free), Creator (Membership), or Business', required: true },
+  { id: 'content-creator-verification', title: 'Content Creator Verification', description: 'Verify creator tier and identity', required: false },
+  { id: 'business-verification', title: 'Business Verification', description: 'Verify business credentials', required: false },
   { id: 'two-factor-setup', title: 'Two-Factor Authentication Setup', description: 'Secure your account with 2FA', required: true },
-  { id: 'verification-captcha', title: 'Verification & Captcha', description: 'Verify phone and captcha', required: true },
-  { id: 'demographics-interests', title: 'Demographics & Interests', description: 'Personalize your feed', required: true },
-  { id: 'profile-customization', title: 'Profile Customization', description: 'Set up your profile', required: true },
-  { id: 'p2p-algorithm-calibration', title: 'P2P Algorithm Calibration', description: 'Configure preferences', required: true },
-  { id: 'account-type-selection', title: 'Account Type Selection', description: 'Select personal, creator or business', required: true },
-  { id: 'content-creator-verification', title: 'Content Creator Verification', description: 'Verify identity as creator', required: true },
-  { id: 'business-verification', title: 'Business Verification', description: 'Verify business credentials', required: true },
+  { id: 'verification-captcha', title: 'Verification & Captcha', description: 'Verify information and prove you are human', required: true },
+  { id: 'demographics-interests', title: 'Demographics & Interests', description: 'Personalize your feed and categories', required: true },
+  { id: 'profile-customization', title: 'Profile Customization', description: 'Set up your display name and avatar', required: true },
+  { id: 'p2p-algorithm-calibration', title: 'P2P Algorithm Calibration', description: 'Configure sovereign matching preferences', required: true },
   { id: 'ces-formula-education', title: 'CES Formula Education', description: 'Platform scoring system', required: true },
   { id: 'completion', title: 'Complete', description: 'Ready to explore', required: false }
 ];
@@ -123,27 +122,21 @@ const onboardingReducer = (state: OnboardingState, action: OnboardingAction): On
     // Determine the next step based on account type
     let nextStepId: string;
     switch (state.progress.currentStep) {
+      case 'terms-permissions':
+        nextStepId = 'account-type-selection';
+        break;
       case 'account-type-selection':
-        // If user selected 'creator', go to creator verification
         if (state.progress.accountType === 'creator') {
           nextStepId = 'content-creator-verification';
-        } 
-        // If user selected 'business', go to business verification
-        else if (state.progress.accountType === 'business') {
+        } else if (state.progress.accountType === 'business') {
           nextStepId = 'business-verification';
-        }
-        // If user selected 'personal' or no account type, skip to CES formula education
-        else {
-          nextStepId = 'ces-formula-education';
+        } else {
+          nextStepId = 'two-factor-setup';
         }
         break;
       case 'content-creator-verification':
-        // After creator verification, go to CES formula education
-        nextStepId = 'ces-formula-education';
-        break;
       case 'business-verification':
-        // After business verification, go to CES formula education
-        nextStepId = 'ces-formula-education';
+        nextStepId = 'two-factor-setup';
         break;
       default:
         // For all other steps, go to the next sequential step
@@ -163,12 +156,49 @@ const onboardingReducer = (state: OnboardingState, action: OnboardingAction): On
     };
   }
   case 'PREVIOUS_STEP': {
-    const prevIndex = Math.max(state.currentStepIndex - 1, 0);
-    const prevStepId = state.steps[prevIndex]?.id || 'welcome';
+    if (!state.progress) {
+      const prevIndex = Math.max(state.currentStepIndex - 1, 0);
+      return {
+        ...state,
+        currentStepIndex: prevIndex,
+        progress: null
+      };
+    }
+    
+    let prevStepId: string;
+    switch (state.progress.currentStep) {
+      case 'terms-permissions':
+        prevStepId = 'welcome';
+        break;
+      case 'account-type-selection':
+        prevStepId = 'terms-permissions';
+        break;
+      case 'content-creator-verification':
+      case 'business-verification':
+        prevStepId = 'account-type-selection';
+        break;
+      case 'two-factor-setup':
+        if (state.progress.accountType === 'creator') {
+          prevStepId = 'content-creator-verification';
+        } else if (state.progress.accountType === 'business') {
+          prevStepId = 'business-verification';
+        } else {
+          prevStepId = 'account-type-selection';
+        }
+        break;
+      default: {
+        const currentIndex = state.steps.findIndex(step => step.id === state.progress!.currentStep);
+        const prevIndex = Math.max(currentIndex - 1, 0);
+        prevStepId = state.steps[prevIndex]?.id || 'welcome';
+        break;
+      }
+    }
+
+    const prevStepIndex = state.steps.findIndex(step => step.id === prevStepId);
     return {
       ...state,
-      currentStepIndex: prevIndex,
-      progress: state.progress ? { ...state.progress, currentStep: prevStepId } : null
+      currentStepIndex: prevStepIndex >= 0 ? prevStepIndex : 0,
+      progress: { ...state.progress, currentStep: prevStepId }
     };
   }
   case 'RESET_ONBOARDING':

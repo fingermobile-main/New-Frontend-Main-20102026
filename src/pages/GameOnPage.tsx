@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
 import { ApiService } from '../services/apiService';
 import MainLayout from '../components/layout/MainLayout';
@@ -50,6 +51,7 @@ export interface GameLeaderboardEntry {
 }
 
 const GameOnPage: React.FC = () => {
+  const navigate = useNavigate();
   const { ficBalance, showToast } = useAppContext();
   const [matches, setMatches] = useState<GameMatch[]>([]);
   const [events, setEvents] = useState<GameEvent[]>([]);
@@ -224,6 +226,32 @@ const GameOnPage: React.FC = () => {
           </div>
         </div>
 
+        {/* SuperVi: Orbs of Glory - Rise of the Six Premier Spotlight Banner */}
+        <div className="mb-8 bg-gradient-to-r from-amber-500 via-orange-600 to-red-600 rounded-3xl p-6 sm:p-8 text-white shadow-xl border border-amber-300/60 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
+          <div className="space-y-2 relative z-10 text-left">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/20 backdrop-blur rounded-full text-xs font-black tracking-widest uppercase border border-white/30">
+              <SparklesIcon className="w-3.5 h-3.5" />
+              <span>Flagship 3D–5D Runner</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
+              SuperVi: Orbs of Glory – Rise of the Six
+            </h2>
+            <p className="text-orange-100 text-xs sm:text-sm max-w-xl">
+              Sprint through 16 global cyber cities, command the six cultural guardians, unleash spinning Egyptian glyph orbs, and compete for 50,000 FIC protocol prizes.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3 relative z-10 shrink-0">
+            <button
+              onClick={() => navigate('/games/supervi')}
+              className="px-6 py-3.5 bg-white text-slate-900 font-black rounded-2xl shadow-xl hover:bg-orange-50 active:scale-95 transition-all text-sm uppercase tracking-wider flex items-center gap-2 border border-white/50"
+            >
+              <PlayIcon className="w-5 h-5 text-orange-600 fill-current" />
+              <span>Launch 3D Runner</span>
+            </button>
+          </div>
+        </div>
+
         {/* Tab Navigation */}
         <div className="flex gap-2 border-b border-gray-200 pb-4 mb-8 overflow-x-auto no-scrollbar">
           <button
@@ -324,7 +352,7 @@ const GameOnPage: React.FC = () => {
 
                   <div className="p-6 pt-0 border-t border-slate-200 flex items-center justify-between">
                     <span className="text-xs text-slate-700 flex items-center gap-1">
-                      <UserGroupIcon className="w-4 h-4 text-slate-500" />
+                      <UserGroupIcon className="w-4 h-4 text-slate-600" />
                       Max {event.max_participants}
                     </span>
                     <button

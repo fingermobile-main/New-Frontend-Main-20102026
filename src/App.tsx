@@ -3,6 +3,7 @@ import { RouterProvider } from 'react-router-dom';
 import { router } from './app/AppRoutes';
 import { GlobalProviders } from './components/GlobalProviders';
 import UniversalSearchModal from './components/common/UniversalSearchModal';
+import { VoiceLineReactionOverlay } from './components/shared/VoiceLineReactionOverlay';
 
 function App() {
   const [isSearchOpen, setIsSearchOpen] = React.useState(false);
@@ -28,6 +29,7 @@ function App() {
   return (
     <GlobalProviders>
       <div className="App relative min-h-screen">
+        <VoiceLineReactionOverlay />
         <UniversalSearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
         <button
           type="button"

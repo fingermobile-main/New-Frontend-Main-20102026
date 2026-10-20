@@ -29,7 +29,7 @@ const AgenticAiModal: React.FC<AgenticAiModalProps> = ({ isOpen = false, onClose
           <input
             type="text"
             placeholder="Ask me anything..."
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400" />
+            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-slate-900 font-bold bg-white placeholder:text-slate-500" />
           <button className="w-full px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
             Send
           </button>

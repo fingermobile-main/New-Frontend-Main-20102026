@@ -328,7 +328,7 @@ const ProgramsPage: React.FC = () => {
                 <div>
                   <div className="flex items-baseline justify-between mb-1.5">
                     <span className="text-3xl font-black text-white">{TOTAL_CITIZENS_ENROLLED.toLocaleString()}</span>
-                    <span className="text-xs text-slate-400 font-medium">/ {NATIONAL_TARGET_CITIZENS.toLocaleString()} Citizens</span>
+                    <span className="text-xs text-slate-300 font-bold">/ {NATIONAL_TARGET_CITIZENS.toLocaleString()} Citizens</span>
                   </div>
                   <div className="w-full bg-slate-700 h-3 rounded-full overflow-hidden">
                     <div
@@ -340,11 +340,11 @@ const ProgramsPage: React.FC = () => {
 
                 <div className="grid grid-cols-2 gap-3 pt-2 text-xs border-t border-slate-700/80">
                   <div>
-                    <span className="block text-slate-400 font-medium">State Cohorts</span>
+                    <span className="block text-slate-300 font-bold">State Cohorts</span>
                     <strong className="text-white text-sm font-bold">37 of 37 States</strong>
                   </div>
                   <div>
-                    <span className="block text-slate-400 font-medium">Tuition Subsidy</span>
+                    <span className="block text-slate-300 font-bold">Tuition Subsidy</span>
                     <strong className="text-emerald-400 text-sm font-bold">Fellowships Active</strong>
                   </div>
                 </div>
@@ -445,7 +445,7 @@ const ProgramsPage: React.FC = () => {
               <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
                 {/* Search */}
                 <div className="relative flex-1 max-w-md">
-                  <MagnifyingGlassIcon className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" />
+                  <MagnifyingGlassIcon className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-600" />
                   <input
                     type="text"
                     value={courseSearch}
@@ -564,7 +564,7 @@ const ProgramsPage: React.FC = () => {
                               Quarterly Subscription Rate
                             </span>
                             <span className="text-base font-black text-slate-900">
-                              ₦{course.quarterlySubscriptionNgn.toLocaleString()} <span className="text-xs text-slate-500 font-normal">/ Quarter</span>
+                              ₦{course.quarterlySubscriptionNgn.toLocaleString()} <span className="text-xs text-slate-700 font-semibold">/ Quarter</span>
                             </span>
                           </div>
                           <span className="text-xs font-bold text-indigo-950 bg-indigo-100 px-2.5 py-1 rounded-md border border-indigo-300">
@@ -739,19 +739,19 @@ const ProgramsPage: React.FC = () => {
                     <div className="space-y-3 pt-3 border-t border-slate-100 text-xs">
                       <div className="grid grid-cols-2 gap-2 text-slate-700">
                         <div>
-                          <span className="block text-slate-500 font-medium">Duration:</span>
+                          <span className="block text-slate-700 font-bold">Duration:</span>
                           <strong className="text-slate-900 font-bold">{asm.durationMinutes} Minutes</strong>
                         </div>
                         <div>
-                          <span className="block text-slate-500 font-medium">Passing Marks:</span>
+                          <span className="block text-slate-700 font-bold">Passing Marks:</span>
                           <strong className="text-slate-900 font-bold">{asm.passingMarks} / {asm.totalMarks}</strong>
                         </div>
                         <div>
-                          <span className="block text-slate-500 font-medium">Questions:</span>
+                          <span className="block text-slate-700 font-bold">Questions:</span>
                           <strong className="text-slate-900 font-bold">{asm.questions.length} Items</strong>
                         </div>
                         <div>
-                          <span className="block text-slate-500 font-medium">Due Date:</span>
+                          <span className="block text-slate-700 font-bold">Due Date:</span>
                           <strong className="text-slate-900 font-bold">{asm.dueDate}</strong>
                         </div>
                       </div>
@@ -794,7 +794,7 @@ const ProgramsPage: React.FC = () => {
                   </div>
                   <div>
                     <span className="text-xs font-bold text-slate-600 uppercase">Cumulative GPA</span>
-                    <h3 className="text-2xl font-black text-slate-900">3.92 <span className="text-xs text-slate-500 font-normal">/ 4.0</span></h3>
+                    <h3 className="text-2xl font-black text-slate-900">3.92 <span className="text-xs text-slate-700 font-semibold">/ 4.0</span></h3>
                     <span className="text-[11px] font-bold text-emerald-700">First Class Honors (A+)</span>
                   </div>
                 </div>
@@ -882,7 +882,7 @@ const ProgramsPage: React.FC = () => {
                         <tr key={row.id} className="hover:bg-slate-50 transition">
                           <td className="py-4 px-4 font-bold text-slate-900">
                             <div>{row.studentName}</div>
-                            <div className="text-[11px] text-slate-500 font-mono">{row.studentId}</div>
+                            <div className="text-[11px] text-slate-700 font-mono font-medium">{row.studentId}</div>
                           </td>
                           <td className="py-4 px-4 font-semibold text-slate-800">{row.studentState}</td>
                           <td className="py-4 px-4 max-w-xs">
@@ -939,7 +939,7 @@ const ProgramsPage: React.FC = () => {
                       <div className="text-lg font-black text-slate-900">{g.letter}</div>
                       <div className="text-xs font-bold text-indigo-800">{g.min}% - {g.max}%</div>
                       <div className="text-[11px] text-slate-600 font-semibold">{g.gpa.toFixed(1)} Points</div>
-                      <div className="text-[10px] text-slate-500 leading-tight">{g.description}</div>
+                      <div className="text-[10px] text-slate-700 leading-tight font-medium">{g.description}</div>
                     </div>
                   ))}
                 </div>
@@ -968,7 +968,7 @@ const ProgramsPage: React.FC = () => {
                   <div className="text-xs text-teal-300 font-bold uppercase">Quarterly Grants Disbursed</div>
                   <div className="text-3xl font-black text-white">₦702,000,000</div>
                   <div className="text-xs text-emerald-400 font-bold">4,680 Citizens Subsidized</div>
-                  <div className="text-[11px] text-slate-400">1,250,000 FIC Backing Pool</div>
+                  <div className="text-[11px] text-slate-300 font-medium">1,250,000 FIC Backing Pool</div>
                 </div>
               </div>
 
@@ -1005,7 +1005,7 @@ const ProgramsPage: React.FC = () => {
                           <td className="py-3.5 px-4 font-bold text-slate-900 max-w-xs truncate">{inv.courseTitle}</td>
                           <td className="py-3.5 px-4 font-semibold text-indigo-800">{inv.billingQuarter}</td>
                           <td className="py-3.5 px-4 font-semibold text-slate-900">
-                            ₦{inv.amountNgn.toLocaleString()} <span className="text-slate-500 font-normal">({inv.amountFic} FIC)</span>
+                            ₦{inv.amountNgn.toLocaleString()} <span className="text-slate-700 font-semibold">({inv.amountFic} FIC)</span>
                           </td>
                           <td className="py-3.5 px-4 text-center">
                             <span className="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-black text-xs">
@@ -1060,7 +1060,7 @@ const ProgramsPage: React.FC = () => {
                   <div className="border border-slate-200 rounded-xl p-4 bg-slate-50 space-y-2">
                     <span className="text-xs font-bold text-indigo-700 uppercase">Executive Tier Tracks</span>
                     <h5 className="text-lg font-black text-slate-900">AI & Deep Learning Systems</h5>
-                    <div className="text-2xl font-black text-slate-900">₦120,000 <span className="text-xs font-normal text-slate-500">/ Quarter (200 FIC)</span></div>
+                    <div className="text-2xl font-black text-slate-900">₦120,000 <span className="text-xs font-semibold text-slate-700">/ Quarter (200 FIC)</span></div>
                     <p className="text-xs text-slate-600">Includes dedicated cloud GPU sandbox, private vector database instances, and automated agent orchestration pipelines.</p>
                     <div className="pt-2 text-xs font-extrabold text-emerald-800">100% Fellowship Grants Available</div>
                   </div>
@@ -1068,7 +1068,7 @@ const ProgramsPage: React.FC = () => {
                   <div className="border border-slate-200 rounded-xl p-4 bg-slate-50 space-y-2">
                     <span className="text-xs font-bold text-indigo-700 uppercase">Professional Tier Tracks</span>
                     <h5 className="text-lg font-black text-slate-900">Cloud DevOps & CyberSecurity</h5>
-                    <div className="text-2xl font-black text-slate-900">₦95,000 - ₦100,000 <span className="text-xs font-normal text-slate-500">/ Quarter</span></div>
+                    <div className="text-2xl font-black text-slate-900">₦95,000 - ₦100,000 <span className="text-xs font-semibold text-slate-700">/ Quarter</span></div>
                     <p className="text-xs text-slate-600">Includes bare-metal cluster instances, WireGuard VPN tunnels, and smart contract audit sandboxes.</p>
                     <div className="pt-2 text-xs font-extrabold text-emerald-800">100% Fellowship Grants Available</div>
                   </div>
@@ -1076,7 +1076,7 @@ const ProgramsPage: React.FC = () => {
                   <div className="border border-slate-200 rounded-xl p-4 bg-slate-50 space-y-2">
                     <span className="text-xs font-bold text-indigo-700 uppercase">Creator & Venture Tiers</span>
                     <h5 className="text-lg font-black text-slate-900">4K Media, Growth & Product</h5>
-                    <div className="text-2xl font-black text-slate-900">₦60,000 - ₦80,000 <span className="text-xs font-normal text-slate-500">/ Quarter</span></div>
+                    <div className="text-2xl font-black text-slate-900">₦60,000 - ₦80,000 <span className="text-xs font-semibold text-slate-700">/ Quarter</span></div>
                     <p className="text-xs text-slate-600">Includes DaVinci Resolve grading presets, BeatwaveNG royalty splits, and PRD venture incubator access.</p>
                     <div className="pt-2 text-xs font-extrabold text-indigo-800">100% Fellowship Grants Available</div>
                   </div>
@@ -1175,7 +1175,7 @@ const ProgramsPage: React.FC = () => {
                           {ev.startDate} {ev.endDate !== ev.startDate && `to ${ev.endDate}`}
                         </div>
                         <div className="flex items-center gap-1.5 text-slate-600">
-                          <ClockIcon className="w-4 h-4 text-slate-500" />
+                          <ClockIcon className="w-4 h-4 text-slate-600" />
                           {ev.timeSlot}
                         </div>
                         <div className="text-slate-600">
@@ -1332,7 +1332,7 @@ const ProgramsPage: React.FC = () => {
                   <div className="flex justify-between items-baseline">
                     <span className="text-xs text-slate-600 font-medium">Quarterly Subscription Tuition:</span>
                     <strong className="text-xl font-black text-slate-900">
-                      ₦{selectedCourseForSubscription.quarterlySubscriptionNgn.toLocaleString()} <span className="text-xs text-slate-500 font-normal">/ Qtr</span>
+                      ₦{selectedCourseForSubscription.quarterlySubscriptionNgn.toLocaleString()} <span className="text-xs text-slate-700 font-semibold">/ Qtr</span>
                     </strong>
                   </div>
 
@@ -1479,7 +1479,7 @@ const ProgramsPage: React.FC = () => {
                                 <PlayIcon className="w-4 h-4 text-indigo-600" />
                                 <div>
                                   <span className="font-bold text-slate-900">{les.title}</span>
-                                  <div className="text-[11px] text-slate-500">{les.description}</div>
+                                  <div className="text-[11px] text-slate-700 font-medium">{les.description}</div>
                                 </div>
                               </div>
                               <span className="text-[11px] font-bold text-slate-600 bg-slate-100 px-2 py-0.5 rounded">
@@ -1528,7 +1528,7 @@ const ProgramsPage: React.FC = () => {
 
                   <div className="flex items-center gap-4">
                     <div className="text-right">
-                      <div className="text-xs text-slate-400">Time Remaining</div>
+                      <div className="text-xs text-slate-300 font-bold">Time Remaining</div>
                       <div className="text-base font-black text-amber-400 font-mono">
                         {Math.floor(examTimerSeconds / 60)}:
                         {String(examTimerSeconds % 60).padStart(2, '0')}
@@ -1537,7 +1537,7 @@ const ProgramsPage: React.FC = () => {
 
                     <button
                       onClick={() => setActiveTakingAssessment(null)}
-                      className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition"
+                      className="p-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 transition"
                     >
                       <XMarkIcon className="w-6 h-6" />
                     </button>
@@ -1685,7 +1685,7 @@ const ProgramsPage: React.FC = () => {
                                 <div className="border-2 border-dashed border-slate-300 rounded-2xl p-8 text-center space-y-2 bg-slate-50 hover:bg-slate-100 transition cursor-pointer">
                                   <DocumentTextIcon className="w-8 h-8 text-indigo-600 mx-auto" />
                                   <div className="text-sm font-bold text-slate-900">Drag & drop lab notebook or click to browse</div>
-                                  <div className="text-xs text-slate-500">Supports .ipynb, .py, .pdf, .zip up to 50MB</div>
+                                  <div className="text-xs text-slate-700 font-medium">Supports .ipynb, .py, .pdf, .zip up to 50MB</div>
                                 </div>
                                 <div className="text-xs text-emerald-800 font-bold bg-emerald-50 p-2.5 rounded-lg border border-emerald-200 flex items-center gap-1.5">
                                   <CheckCircleIcon className="w-4 h-4 text-emerald-600" />
@@ -1702,7 +1702,7 @@ const ProgramsPage: React.FC = () => {
                                     🎙️
                                   </div>
                                   <div className="text-sm font-bold text-slate-900">Oral Technical Defense Recording</div>
-                                  <div className="text-xs text-slate-500">Recorded: 00:54 / 01:00 Seconds</div>
+                                  <div className="text-xs text-slate-700 font-medium">Recorded: 00:54 / 01:00 Seconds</div>
                                   <div className="h-2 w-48 bg-slate-200 rounded-full mx-auto overflow-hidden border text-slate-950 border-slate-400 font-black">
                                     <div className="h-full bg-rose-500 w-3/4 rounded-full" />
                                   </div>
@@ -1760,12 +1760,12 @@ const ProgramsPage: React.FC = () => {
                     <AcademicCapIcon className="w-7 h-7 text-emerald-400" />
                     <div>
                       <h3 className="text-lg font-black text-white">Official Sovereign Digital Academic Transcript</h3>
-                      <p className="text-xs text-slate-400">Federal Republic of Nigeria • Decentralized E-Learning Directorate</p>
+                      <p className="text-xs text-slate-300 font-medium">Federal Republic of Nigeria • Decentralized E-Learning Directorate</p>
                     </div>
                   </div>
                   <button
                     onClick={() => setShowTranscriptModal(false)}
-                    className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition"
+                    className="p-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 transition"
                   >
                     <XMarkIcon className="w-6 h-6" />
                   </button>
@@ -1789,19 +1789,19 @@ const ProgramsPage: React.FC = () => {
                   {/* Student Credentials */}
                   <div className="grid grid-cols-2 gap-4 text-xs bg-slate-50 p-4 rounded-xl border border-slate-200">
                     <div>
-                      <span className="block text-slate-500">Student Name:</span>
+                      <span className="block text-slate-700 font-bold">Student Name:</span>
                       <strong className="text-slate-900 text-sm font-bold">{transcriptData.fullName}</strong>
                     </div>
                     <div>
-                      <span className="block text-slate-500">Matriculation Number:</span>
+                      <span className="block text-slate-700 font-bold">Matriculation Number:</span>
                       <strong className="text-slate-900 text-sm font-bold font-mono">{transcriptData.matricNumber}</strong>
                     </div>
                     <div>
-                      <span className="block text-slate-500">State of Origin:</span>
+                      <span className="block text-slate-700 font-bold">State of Origin:</span>
                       <strong className="text-slate-900 font-bold">{transcriptData.stateOfOrigin}</strong>
                     </div>
                     <div>
-                      <span className="block text-slate-500">Cohort / Academic Session:</span>
+                      <span className="block text-slate-700 font-bold">Cohort / Academic Session:</span>
                       <strong className="text-slate-900 font-bold">{transcriptData.cohort}</strong>
                     </div>
                   </div>

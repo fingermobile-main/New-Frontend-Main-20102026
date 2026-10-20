@@ -49,11 +49,11 @@ const ImageSearchModal: React.FC<ImageSearchModalProps> = ({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl max-h-[80vh] overflow-hidden flex flex-col">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Image className="h-5 w-5" />
+          <DialogTitle className="flex items-center gap-2 text-slate-900 font-bold">
+            <Image className="h-5 w-5 text-slate-700" />
             Search Images
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="text-slate-700">
             Find and select images for your content
           </DialogDescription>
         </DialogHeader>
@@ -64,7 +64,7 @@ const ImageSearchModal: React.FC<ImageSearchModalProps> = ({
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyPress={handleKeyPress}
-            className="flex-1"
+            className="flex-1 text-slate-900 font-medium border-slate-300"
           />
           <Button onClick={handleSearch} disabled={isLoading}>
             <Search className="h-4 w-4 mr-2" />
@@ -78,7 +78,7 @@ const ImageSearchModal: React.FC<ImageSearchModalProps> = ({
               {Array.from({ length: 9 }).map((_, i) => (
                 <div
                   key={i}
-                  className="aspect-square bg-muted animate-pulse rounded-lg"
+                  className="aspect-square bg-slate-100 border border-slate-200 animate-pulse rounded-lg"
                 />
               ))}
             </div>
@@ -87,7 +87,7 @@ const ImageSearchModal: React.FC<ImageSearchModalProps> = ({
               {images.map((imageUrl, index) => (
                 <div
                   key={index}
-                  className="relative aspect-square group cursor-pointer overflow-hidden rounded-lg border hover:border-primary transition-colors"
+                  className="relative aspect-square group cursor-pointer overflow-hidden rounded-lg border border-slate-200 hover:border-primary transition-colors"
                   onClick={() => {
                     onImageSelect?.(imageUrl);
                     onClose();
@@ -106,9 +106,9 @@ const ImageSearchModal: React.FC<ImageSearchModalProps> = ({
               ))}
             </div>
           ) : (
-            <div className="text-center py-12 text-muted-foreground">
-              <Image className="h-16 w-16 mx-auto mb-4 opacity-20" />
-              <p>Search for images to get started</p>
+            <div className="text-center py-12 text-slate-700">
+              <Image className="h-16 w-16 mx-auto mb-4 text-slate-500 opacity-40" />
+              <p className="text-slate-700 font-medium">Search for images to get started</p>
             </div>
           )}
         </div>

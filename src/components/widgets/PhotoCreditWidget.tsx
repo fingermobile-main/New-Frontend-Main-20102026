@@ -8,8 +8,14 @@ interface PhotoCredit {
   available: number;
 }
 
+const DEFAULT_PHOTO_CREDIT: PhotoCredit = {
+  id: '1',
+  photographer: '@photographer',
+  available: 50
+};
+
 const PhotoCreditWidget: React.FC = () => {
-  const [credit, setCredit] = useState<PhotoCredit | null>(null);
+  const [credit, setCredit] = useState<PhotoCredit | null>(DEFAULT_PHOTO_CREDIT);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -17,13 +23,14 @@ const PhotoCreditWidget: React.FC = () => {
     const fetchCredit = async () => {
       try {
         const response = await axios.get('/api/photocredits/suggested');
-        setCredit(response.data);
+        const data = response?.data?.data || response?.data;
+        if (data && typeof data === 'object' && ('id' in data || 'photographer' in data)) {
+          setCredit(data);
+        } else {
+          setCredit(DEFAULT_PHOTO_CREDIT);
+        }
       } catch (e) {
-        setCredit({
-          id: '1',
-          photographer: '@photographer',
-          available: 50
-        });
+        setCredit(DEFAULT_PHOTO_CREDIT);
       } finally {
         setLoading(false);
       }
@@ -32,7 +39,7 @@ const PhotoCreditWidget: React.FC = () => {
   }, []);
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 border border-slate-200 dark:border-slate-700">
       <h3 className="font-semibold text-lg mb-4 text-gray-900 dark:text-white">Suggested Photocredit</h3>
       {loading ? (
         <div className="animate-pulse space-y-4">
@@ -42,15 +49,16 @@ const PhotoCreditWidget: React.FC = () => {
         </div>
       ) : credit ? (
         <div className="bg-gray-100 dark:bg-gray-700 rounded-xl p-4 mb-4">
-          <div className="bg-gradient-to-br from-indigo-400 to-blue-500 h-20 rounded-lg mb-4 flex items-center justify-center">
-            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
-            </svg>
+          <div className="bg-slate-900 h-20 rounded-lg mb-4 flex items-center justify-center p-2 border border-slate-700/60 overflow-hidden shadow-inner">
+            <img
+              src="/assets/logos/photocredits_icon.png"
+              alt="PhotoCredits"
+              className="h-16 w-16 object-contain"
+            />
           </div>
           <h4 className="font-bold text-base text-gray-900 dark:text-white">Photo Credits</h4>
-          <p className="text-sm text-slate-700 dark:text-gray-400">{credit.photographer}</p>
-          <p className="text-sm text-slate-700 dark:text-gray-400 mt-3">Available: {credit.available}</p>
+          <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">{credit.photographer}</p>
+          <p className="text-sm text-slate-700 dark:text-slate-300 mt-3 font-medium">Available: <span className="font-bold text-slate-900 dark:text-white">{credit.available}</span></p>
         </div>
       ) : null}
 

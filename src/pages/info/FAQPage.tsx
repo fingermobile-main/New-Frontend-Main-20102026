@@ -89,14 +89,14 @@ const FAQPage: React.FC = () => {
           <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight sm:text-4xl">
             Frequently Asked Questions
           </h1>
-          <p className="mt-2 text-base text-slate-600 dark:text-slate-400 max-w-xl mx-auto">
+          <p className="mt-2 text-base text-slate-700 dark:text-slate-300 font-medium max-w-xl mx-auto">
             Everything you need to know about the FingerMobile platform, FIC economy, cryptographic enclaves, and compliance.
           </p>
 
           {/* Search Bar */}
           <div className="mt-6 max-w-xl mx-auto relative">
             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-              <MagnifyingGlassIcon className="h-5 w-5 text-slate-400" />
+              <MagnifyingGlassIcon className="h-5 w-5 text-slate-600" />
             </div>
             <input
               type="text"
@@ -148,7 +148,7 @@ const FAQPage: React.FC = () => {
                       </span>
                     </div>
                     <ChevronDownIcon
-                      className={`w-5 h-5 text-slate-500 shrink-0 transition-transform duration-200 ${
+                      className={`w-5 h-5 text-slate-600 shrink-0 transition-transform duration-200 ${
                         isOpen ? 'rotate-180 text-blue-600' : ''
                       }`}
                     />
@@ -163,7 +163,7 @@ const FAQPage: React.FC = () => {
             })
           ) : (
             <div className="text-center py-10 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700">
-              <p className="text-slate-500 text-sm">No answers found matching "{search}".</p>
+              <p className="text-slate-700 font-medium text-sm">No answers found matching "{search}".</p>
             </div>
           )}
         </div>

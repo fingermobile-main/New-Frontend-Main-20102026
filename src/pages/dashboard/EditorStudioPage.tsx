@@ -28,7 +28,7 @@ const EditorStudioPage: React.FC = () => {
         </div>
       </div>
 
-      <footer className="bg-gray-800 text-gray-400 text-xs p-2 text-center">
+      <footer className="bg-gray-800 text-slate-300 font-medium text-xs p-2 text-center border-t border-gray-700">
         FingerMobile Protocol Editor Studio v1.0 | Guardian AI Assistant Enabled
       </footer>
     </div>

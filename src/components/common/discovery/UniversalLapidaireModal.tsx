@@ -99,14 +99,14 @@ export const UniversalLapidaireModal: React.FC<UniversalLapidaireModalProps> = (
                   AI Resonance
                 </span>
               </h3>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-300 font-medium">
                 Answer {questions.length} core lifestyle &amp; taste questions to sharpen P2P member matching.
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-full bg-slate-800 text-slate-400 hover:text-white transition"
+            className="p-1.5 rounded-full bg-slate-800 text-slate-300 hover:text-white transition"
             aria-label="Close modal"
           >
             <X className="w-5 h-5" />
@@ -118,7 +118,7 @@ export const UniversalLapidaireModal: React.FC<UniversalLapidaireModalProps> = (
             {/* Progress Bar & Stage Indicator */}
             <div>
               <div className="flex justify-between items-center text-xs font-semibold mb-2">
-                <span className="text-slate-400">
+                <span className="text-slate-300 font-medium">
                   Question <span className="text-white font-bold">{currentIndex + 1}</span> of {questions.length}
                 </span>
                 <span className={`text-${accentColor}-400 font-mono text-[11px] font-bold`}>
@@ -136,7 +136,7 @@ export const UniversalLapidaireModal: React.FC<UniversalLapidaireModalProps> = (
             {/* Question Card */}
             <div className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-300">
                   Category: {currentQ.category}
                 </span>
                 <span className="text-[11px] font-semibold text-emerald-400 flex items-center gap-1">
@@ -183,7 +183,7 @@ export const UniversalLapidaireModal: React.FC<UniversalLapidaireModalProps> = (
               <button
                 disabled={currentIndex === 0}
                 onClick={() => setCurrentIndex((prev) => Math.max(0, prev - 1))}
-                className="text-xs font-semibold text-slate-400 hover:text-white disabled:opacity-30 disabled:pointer-events-none transition"
+                className="text-xs font-semibold text-slate-300 hover:text-white disabled:opacity-30 disabled:pointer-events-none transition"
               >
                 ← Previous Question
               </button>

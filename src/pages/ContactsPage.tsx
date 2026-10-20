@@ -156,7 +156,7 @@ export const ContactsPage: React.FC = () => {
             <div className="flex items-center gap-3 mb-2">
               <button
                 onClick={() => navigate('/master-dashboard')}
-                className="flex items-center gap-1 text-xs text-zinc-400 hover:text-emerald-400 transition"
+                className="flex items-center gap-1 text-xs text-zinc-300 font-medium hover:text-emerald-400 transition"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
                 Back to Master Dashboard
@@ -177,7 +177,7 @@ export const ContactsPage: React.FC = () => {
                     Health 78% • Degraded
                   </span>
                 </h1>
-                <p className="text-sm text-zinc-400">
+                <p className="text-sm text-zinc-300 font-medium">
                   Member Relationship States, Mutual PIN Verification, Message Queues & Abuse Prevention
                 </p>
               </div>
@@ -230,48 +230,48 @@ export const ContactsPage: React.FC = () => {
         {/* Telemetry Metric Cards */}
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mt-6">
           <div className="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800/80 backdrop-blur">
-            <div className="flex items-center justify-between text-zinc-400 text-xs mb-1">
+            <div className="flex items-center justify-between text-zinc-300 font-medium text-xs mb-1">
               <span>Section Health</span>
               <Activity className="w-4 h-4 text-amber-400" />
             </div>
             <div className="text-2xl font-bold text-amber-400">78.0%</div>
-            <div className="text-[11px] text-zinc-500 mt-1">Degraded • Queue lag</div>
+            <div className="text-[11px] text-zinc-300 font-medium mt-1">Degraded • Queue lag</div>
           </div>
 
           <div className="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800/80 backdrop-blur">
-            <div className="flex items-center justify-between text-zinc-400 text-xs mb-1">
+            <div className="flex items-center justify-between text-zinc-300 font-medium text-xs mb-1">
               <span>p95 Delivery Latency</span>
               <Clock className="w-4 h-4 text-amber-400" />
             </div>
             <div className="text-2xl font-bold text-amber-300">418 ms</div>
-            <div className="text-[11px] text-zinc-500 mt-1">Target &lt;150ms</div>
+            <div className="text-[11px] text-zinc-300 font-medium mt-1">Target &lt;150ms</div>
           </div>
 
           <div className="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800/80 backdrop-blur">
-            <div className="flex items-center justify-between text-zinc-400 text-xs mb-1">
+            <div className="flex items-center justify-between text-zinc-300 font-medium text-xs mb-1">
               <span>Queue Backlog</span>
               <Layers className="w-4 h-4 text-rose-400" />
             </div>
             <div className="text-2xl font-bold text-white">{queueBacklog.toLocaleString()}</div>
-            <div className="text-[11px] text-zinc-500 mt-1">Stalled consumer buffer</div>
+            <div className="text-[11px] text-zinc-300 font-medium mt-1">Stalled consumer buffer</div>
           </div>
 
           <div className="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800/80 backdrop-blur">
-            <div className="flex items-center justify-between text-zinc-400 text-xs mb-1">
+            <div className="flex items-center justify-between text-zinc-300 font-medium text-xs mb-1">
               <span>Sync Failure Rate</span>
               <Zap className="w-4 h-4 text-amber-400" />
             </div>
             <div className="text-2xl font-bold text-white">2.2%</div>
-            <div className="text-[11px] text-zinc-500 mt-1">Retry threshold: 3 attempts</div>
+            <div className="text-[11px] text-zinc-300 font-medium mt-1">Retry threshold: 3 attempts</div>
           </div>
 
           <div className="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800/80 backdrop-blur">
-            <div className="flex items-center justify-between text-zinc-400 text-xs mb-1">
+            <div className="flex items-center justify-between text-zinc-300 font-medium text-xs mb-1">
               <span>Mutual PIN Verified</span>
               <KeyRound className="w-4 h-4 text-emerald-400" />
             </div>
             <div className="text-2xl font-bold text-emerald-400">89.4%</div>
-            <div className="text-[11px] text-zinc-500 mt-1">Ed25519 Handshake active</div>
+            <div className="text-[11px] text-zinc-300 font-medium mt-1">Ed25519 Handshake active</div>
           </div>
         </div>
 
@@ -282,7 +282,7 @@ export const ContactsPage: React.FC = () => {
             className={`pb-3 px-4 text-sm font-medium border-b-2 transition ${
               activeTab === 'directory'
                 ? 'border-amber-500 text-amber-400'
-                : 'border-transparent text-zinc-400 hover:text-zinc-200'
+                : 'border-transparent text-zinc-300 font-medium hover:text-zinc-200'
             }`}
           >
             Contacts Directory ({contacts.length})
@@ -292,7 +292,7 @@ export const ContactsPage: React.FC = () => {
             className={`pb-3 px-4 text-sm font-medium border-b-2 transition ${
               activeTab === 'queue'
                 ? 'border-amber-500 text-amber-400'
-                : 'border-transparent text-zinc-400 hover:text-zinc-200'
+                : 'border-transparent text-zinc-300 font-medium hover:text-zinc-200'
             }`}
           >
             Message Queue & Consumer Status
@@ -302,7 +302,7 @@ export const ContactsPage: React.FC = () => {
             className={`pb-3 px-4 text-sm font-medium border-b-2 transition ${
               activeTab === 'abuse'
                 ? 'border-amber-500 text-amber-400'
-                : 'border-transparent text-zinc-400 hover:text-zinc-200'
+                : 'border-transparent text-zinc-300 font-medium hover:text-zinc-200'
             }`}
           >
             Block & Abuse Manager ({contacts.filter((c) => c.relationship === 'blocked').length})
@@ -312,7 +312,7 @@ export const ContactsPage: React.FC = () => {
             className={`pb-3 px-4 text-sm font-medium border-b-2 transition ${
               activeTab === 'export'
                 ? 'border-amber-500 text-amber-400'
-                : 'border-transparent text-zinc-400 hover:text-zinc-200'
+                : 'border-transparent text-zinc-300 font-medium hover:text-zinc-200'
             }`}
           >
             Compliance & Data Export (GDPR)
@@ -324,7 +324,7 @@ export const ContactsPage: React.FC = () => {
           <div className="mt-6 space-y-4">
             <div className="flex flex-col md:flex-row gap-4 items-center justify-between bg-zinc-900/40 p-3 rounded-lg border border-zinc-800">
               <div className="flex items-center gap-2 w-full md:w-96 bg-zinc-900 px-3 py-2 rounded-lg border border-zinc-800">
-                <Search className="w-4 h-4 text-slate-500" />
+                <Search className="w-4 h-4 text-zinc-300" />
                 <input
                   type="text"
                   placeholder="Search member, username, ID, email..."
@@ -335,7 +335,7 @@ export const ContactsPage: React.FC = () => {
               </div>
 
               <div className="flex items-center gap-3 w-full md:w-auto">
-                <div className="flex items-center gap-1 text-xs text-zinc-400">
+                <div className="flex items-center gap-1 text-xs text-zinc-300 font-medium">
                   <Filter className="w-3.5 h-3.5" />
                   <span>State:</span>
                 </div>
@@ -357,7 +357,7 @@ export const ContactsPage: React.FC = () => {
             <div className="border border-zinc-800 rounded-xl overflow-hidden bg-zinc-900/20">
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
-                  <thead className="bg-zinc-900/80 text-zinc-400 uppercase tracking-wider text-[11px] border-b border-zinc-800">
+                  <thead className="bg-zinc-900/80 text-zinc-300 font-medium uppercase tracking-wider text-[11px] border-b border-zinc-800">
                     <tr>
                       <th className="py-3 px-4">Initiating Member</th>
                       <th className="py-3 px-4">Connected Member</th>
@@ -378,7 +378,7 @@ export const ContactsPage: React.FC = () => {
                             </div>
                             <div>
                               <div className="font-semibold text-zinc-200">@{c.sourceUser.username}</div>
-                              <div className="text-[10px] text-zinc-500">{c.sourceUser.id}</div>
+                              <div className="text-[10px] text-zinc-300 font-medium">{c.sourceUser.id}</div>
                             </div>
                           </div>
                         </td>
@@ -389,7 +389,7 @@ export const ContactsPage: React.FC = () => {
                             </div>
                             <div>
                               <div className="font-semibold text-zinc-200">@{c.targetUser.username}</div>
-                              <div className="text-[10px] text-zinc-500">{c.targetUser.id}</div>
+                              <div className="text-[10px] text-zinc-300 font-medium">{c.targetUser.id}</div>
                             </div>
                           </div>
                         </td>
@@ -410,7 +410,7 @@ export const ContactsPage: React.FC = () => {
                             </span>
                           )}
                           {c.relationship === 'opted_out' && (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] bg-zinc-500/10 text-zinc-400 border border-zinc-500/20 font-medium">
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] bg-zinc-500/10 text-zinc-300 font-medium border border-zinc-500/20 font-medium">
                               <Lock className="w-3 h-3" /> Opted Out
                             </span>
                           )}
@@ -422,7 +422,7 @@ export const ContactsPage: React.FC = () => {
                             </span>
                           )}
                           {c.mutualPinStatus === 'unverified' && (
-                            <span className="text-zinc-500">Unverified</span>
+                            <span className="text-zinc-300 font-medium">Unverified</span>
                           )}
                           {c.mutualPinStatus === 'reset_requested' && (
                             <span className="text-amber-400 animate-pulse">Reset Requested</span>
@@ -431,7 +431,7 @@ export const ContactsPage: React.FC = () => {
                         <td className="py-3 px-4 font-mono text-zinc-300">
                           {c.messageCount.toLocaleString()}
                         </td>
-                        <td className="py-3 px-4 font-mono text-zinc-400 text-[10px]">
+                        <td className="py-3 px-4 font-mono text-zinc-300 font-medium text-[10px]">
                           {c.encryptionKeyVersion}
                         </td>
                         <td className="py-3 px-4 text-right">
@@ -473,7 +473,7 @@ export const ContactsPage: React.FC = () => {
                     <Layers className="w-5 h-5 text-amber-400" />
                     Kafka / RabbitMQ Message Pipeline
                   </h3>
-                  <p className="text-xs text-zinc-400 mt-1">
+                  <p className="text-xs text-zinc-300 font-medium mt-1">
                     Contact sync exchanges, message deliveries, and handshake event routing
                   </p>
                 </div>
@@ -488,19 +488,19 @@ export const ContactsPage: React.FC = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-zinc-800">
                 <div className="bg-zinc-950 p-4 rounded-lg border border-zinc-800">
-                  <span className="text-xs text-zinc-500">Queue Name:</span>
+                  <span className="text-xs text-zinc-300 font-medium">Queue Name:</span>
                   <div className="text-sm font-mono text-zinc-200 mt-1">fingermobile.contacts.events</div>
                   <div className="text-xs text-amber-400 mt-1">Backlog: {queueBacklog} messages</div>
                 </div>
                 <div className="bg-zinc-950 p-4 rounded-lg border border-zinc-800">
-                  <span className="text-xs text-zinc-500">Active Consumer Threads:</span>
+                  <span className="text-xs text-zinc-300 font-medium">Active Consumer Threads:</span>
                   <div className="text-sm font-mono text-emerald-400 mt-1">8 / 12 workers healthy</div>
-                  <div className="text-xs text-zinc-500 mt-1">Auto-scaling triggered</div>
+                  <div className="text-xs text-zinc-300 font-medium mt-1">Auto-scaling triggered</div>
                 </div>
                 <div className="bg-zinc-950 p-4 rounded-lg border border-zinc-800">
-                  <span className="text-xs text-zinc-500">Dead Letter Queue (DLQ):</span>
+                  <span className="text-xs text-zinc-300 font-medium">Dead Letter Queue (DLQ):</span>
                   <div className="text-sm font-mono text-zinc-200 mt-1">18 quarantined items</div>
-                  <div className="text-xs text-zinc-500 mt-1">Auto-retry scheduled in 5m</div>
+                  <div className="text-xs text-zinc-300 font-medium mt-1">Auto-retry scheduled in 5m</div>
                 </div>
               </div>
             </div>
@@ -512,7 +512,7 @@ export const ContactsPage: React.FC = () => {
           <div className="mt-6 space-y-4">
             <div className="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800">
               <h3 className="text-sm font-bold text-white mb-2">Automated Abuse Gating Policy</h3>
-              <p className="text-xs text-zinc-400">
+              <p className="text-xs text-zinc-300 font-medium">
                 Accounts generating more than 50 contact requests/minute are automatically throttled.
                 Harassment reports trigger automated mutual PIN revocation.
               </p>
@@ -531,7 +531,7 @@ export const ContactsPage: React.FC = () => {
                       <div className="text-sm font-bold text-white">
                         @{c.sourceUser.username} blocked @{c.targetUser.username}
                       </div>
-                      <div className="text-xs text-zinc-400">
+                      <div className="text-xs text-zinc-300 font-medium">
                         Record ID: {c.id} • Reason: Suspicious unsolicited contact spam
                       </div>
                     </div>
@@ -555,7 +555,7 @@ export const ContactsPage: React.FC = () => {
               <FileSpreadsheet className="w-5 h-5" />
               <h3 className="text-base font-bold text-white">GDPR & Regulatory Contact Export</h3>
             </div>
-            <p className="text-xs text-zinc-400">
+            <p className="text-xs text-zinc-300 font-medium">
               Export comprehensive relationship graphs, mutual handshake records, and communication timestamps
               for audit compliance.
             </p>

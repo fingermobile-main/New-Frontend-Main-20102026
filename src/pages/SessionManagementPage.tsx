@@ -51,7 +51,7 @@ const SessionManagementPage: React.FC = () => {
         <div className="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-gray-200 mb-8 gap-4">
           <div>
             <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Active Sessions</h1>
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="text-sm text-slate-700 font-medium mt-1">
               Review and manage logged-in devices authorized to access your FingerMobile account.
             </p>
           </div>
@@ -78,7 +78,7 @@ const SessionManagementPage: React.FC = () => {
         )}
 
         {loading ? (
-          <div className="flex items-center justify-center h-48 text-gray-500 text-sm">
+          <div className="flex items-center justify-center h-48 text-slate-700 font-medium text-sm">
             Loading active sessions...
           </div>
         ) : sessions.length === 0 ? (

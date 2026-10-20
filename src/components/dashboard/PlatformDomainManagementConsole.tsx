@@ -17,6 +17,8 @@ interface DomainEntity {
   label: string;
   count: number;
   fields: DomainField[];
+  readOnly: boolean;
+  supportsLifecycle: boolean;
   supportsAutomation: boolean;
 }
 
@@ -37,6 +39,28 @@ interface AuditEntry {
 }
 
 const inputClassName = 'w-full rounded-md border border-slate-300 bg-white px-3 py-2 font-bold text-slate-900 focus:ring-2 focus:ring-indigo-500';
+export const COMMERCE_DOMAIN_KEYS = ['marketplace', 'storefront', 'flamingo', 'ownit'];
+export const PLATFORM_OPERATIONS_DOMAIN_KEYS = [
+  'branding',
+  'gameon',
+  'fingerwars',
+  'supervi',
+  'canary',
+  'loansqr',
+  'camus',
+  'elearning',
+  'franchise',
+  'livestreaming',
+  'downloads',
+  'stercs_editor',
+  'wallets',
+];
+
+interface PlatformDomainManagementConsoleProps {
+  domainKeys?: readonly string[];
+  title?: string;
+  description?: string;
+}
 
 const getErrorMessage = (error: unknown) => {
   if (axios.isAxiosError(error)) {
@@ -91,7 +115,11 @@ const serializeField = (field: DomainField, value: string): unknown => {
   return value;
 };
 
-const PlatformDomainManagementConsole: React.FC = () => {
+const PlatformDomainManagementConsole: React.FC<PlatformDomainManagementConsoleProps> = ({
+  domainKeys,
+  title = 'Community, Creator & Discovery Domains',
+  description = 'Manage persisted records, moderation lifecycle, expiry automation, and audit history for platform pages.',
+}) => {
   const [domains, setDomains] = useState<Domain[]>([]);
   const [activeDomainKey, setActiveDomainKey] = useState('');
   const [activeEntityKey, setActiveEntityKey] = useState('');
@@ -128,16 +156,24 @@ const PlatformDomainManagementConsole: React.FC = () => {
     setErrorMessage('');
     try {
       const response = await api.get('/master-dashboard/domains');
-      const nextDomains: Domain[] = response.data.data || [];
+      const configuredDomains: Domain[] = response.data.data || [];
+      const nextDomains = domainKeys
+        ? configuredDomains.filter(domain => domainKeys.includes(domain.key))
+        : configuredDomains;
       setDomains(nextDomains);
-      setActiveDomainKey(current => current || nextDomains[0]?.key || '');
-      setActiveEntityKey(current => current || nextDomains[0]?.entities[0]?.key || '');
+      setActiveDomainKey(current => nextDomains.some(domain => domain.key === current) ? current : nextDomains[0]?.key || '');
+      setActiveEntityKey(nextDomains.some(domain => domain.key === activeDomainKey && domain.entities.some(entity => entity.key === activeEntityKey))
+        ? activeEntityKey
+        : nextDomains[0]?.entities[0]?.key || '');
+      if (nextDomains.length === 0) {
+        setErrorMessage('No database management resources are configured for this console.');
+      }
     } catch (error) {
       setErrorMessage(`Unable to load domain configuration: ${getErrorMessage(error)}`);
     } finally {
       setLoadingDefinitions(false);
     }
-  }, []);
+  }, [activeDomainKey, activeEntityKey, domainKeys]);
 
   const loadRecords = useCallback(async () => {
     if (!activeDomain || !activeEntity) return;
@@ -292,7 +328,7 @@ const PlatformDomainManagementConsole: React.FC = () => {
     for (const key of ['title', 'name', 'trend_name', 'file_name', 'original_name', 'handle']) {
       if (record[key]) return String(record[key]);
     }
-    return `${activeEntity?.label || 'Record'} ${String(record.id)}`;
+    return `${activeEntity?.label || 'Record'}${record.id === null || record.id === undefined ? '' : ` ${String(record.id)}`}`;
   };
 
   const visibleFields = (record: RecordData) => Object.entries(record)
@@ -307,8 +343,8 @@ const PlatformDomainManagementConsole: React.FC = () => {
     <section className="space-y-6">
       <header className="rounded-xl border border-slate-300 bg-white p-6">
         <p className="text-sm font-black uppercase tracking-wide text-indigo-800">PostgreSQL-backed administration</p>
-        <h2 className="mt-1 text-2xl font-black text-slate-900">Community, Creator & Discovery Domains</h2>
-        <p className="mt-2 text-slate-700">Manage persisted records, moderation lifecycle, expiry automation, and audit history for the requested platform pages.</p>
+        <h2 className="mt-1 text-2xl font-black text-slate-900">{title}</h2>
+        <p className="mt-2 text-slate-700">{description}</p>
       </header>
 
       {errorMessage && <div role="alert" className="rounded-lg border border-red-400 bg-red-100 px-4 py-3 font-bold text-red-950">{errorMessage}</div>}
@@ -410,7 +446,7 @@ const PlatformDomainManagementConsole: React.FC = () => {
                   />
                 </label>
                 <span className="text-sm font-bold text-slate-700">{totalCount} database records</span>
-                <button type="button" onClick={openCreate} className="rounded-md bg-emerald-700 px-4 py-2 font-extrabold text-white hover:bg-emerald-800">Create record</button>
+                {!activeEntity.readOnly && <button type="button" onClick={openCreate} className="rounded-md bg-emerald-700 px-4 py-2 font-extrabold text-white hover:bg-emerald-800">Create record</button>}
               </div>
 
               {loadingRecords ? (
@@ -419,45 +455,50 @@ const PlatformDomainManagementConsole: React.FC = () => {
                 <div className="mt-5 rounded-lg border border-slate-300 bg-slate-50 p-6 text-center text-slate-700">No records match this catalog and filter.</div>
               ) : (
                 <div className="mt-5 space-y-4">
-                  {records.map(record => {
+                  {records.map((record, index) => {
                     const status = (['active', 'suspended', 'frozen', 'archived'].includes(String(record.management_status)) ? record.management_status : 'active') as LifecycleStatus;
-                    const recordId = String(record.id);
+                    const recordId = record.id === null || record.id === undefined ? null : String(record.id);
+                    const recordKey = recordId || `${activeEntity.key}-${index}`;
                     return (
-                      <article key={recordId} className="rounded-lg border border-slate-300 bg-white p-4">
+                      <article key={recordKey} className="rounded-lg border border-slate-300 bg-white p-4">
                         <div className="flex flex-wrap items-start justify-between gap-3">
                           <div className="min-w-0">
                             <div className="flex flex-wrap items-center gap-2">
                               <h4 className="break-all font-extrabold text-slate-900">{titleForRecord(record)}</h4>
                               <span className={statusClassName(status)}>{status}</span>
                             </div>
-                            <p className="mt-1 break-all text-xs font-bold text-slate-600">Record ID: {recordId}</p>
+                            <p className="mt-1 break-all text-xs font-bold text-slate-600">
+                              {recordId ? `Record ID: ${recordId}` : 'Record identifier hidden'}
+                            </p>
                           </div>
                           <div className="flex flex-wrap gap-2">
-                            <button type="button" onClick={() => openEdit(record)} className="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-bold text-slate-800 hover:bg-slate-100">Edit</button>
-                            <button type="button" onClick={() => void loadAudit(record)} className="rounded-md border border-indigo-400 bg-indigo-100 px-3 py-1.5 text-sm font-bold text-indigo-950">Audit</button>
-                            {status !== 'active' && <button type="button" onClick={() => void transitionRecord(record, 'active')} className="rounded-md border border-emerald-400 bg-emerald-100 px-3 py-1.5 text-sm font-bold text-emerald-950">Restore</button>}
-                            {status === 'active' && <button type="button" onClick={() => void transitionRecord(record, 'suspended')} className="rounded-md border border-amber-400 bg-amber-100 px-3 py-1.5 text-sm font-bold text-amber-950">Suspend</button>}
-                            {status === 'active' && <button type="button" onClick={() => void transitionRecord(record, 'frozen')} className="rounded-md border border-blue-400 bg-blue-100 px-3 py-1.5 text-sm font-bold text-blue-950">Freeze</button>}
-                            {status !== 'archived' && <button type="button" onClick={() => void transitionRecord(record, 'archived')} className="rounded-md border border-red-400 bg-red-100 px-3 py-1.5 text-sm font-bold text-red-950">Archive</button>}
+                            {!activeEntity.readOnly && <button type="button" onClick={() => openEdit(record)} className="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-bold text-slate-800 hover:bg-slate-100">Edit</button>}
+                            {recordId && <button type="button" onClick={() => void loadAudit(record)} className="rounded-md border border-indigo-400 bg-indigo-100 px-3 py-1.5 text-sm font-bold text-indigo-950">Audit</button>}
+                            {activeEntity.supportsLifecycle && status !== 'active' && <button type="button" onClick={() => void transitionRecord(record, 'active')} className="rounded-md border border-emerald-400 bg-emerald-100 px-3 py-1.5 text-sm font-bold text-emerald-950">Restore</button>}
+                            {activeEntity.supportsLifecycle && status === 'active' && <button type="button" onClick={() => void transitionRecord(record, 'suspended')} className="rounded-md border border-amber-400 bg-amber-100 px-3 py-1.5 text-sm font-bold text-amber-950">Suspend</button>}
+                            {activeEntity.supportsLifecycle && status === 'active' && <button type="button" onClick={() => void transitionRecord(record, 'frozen')} className="rounded-md border border-blue-400 bg-blue-100 px-3 py-1.5 text-sm font-bold text-blue-950">Freeze</button>}
+                            {activeEntity.supportsLifecycle && status !== 'archived' && <button type="button" onClick={() => void transitionRecord(record, 'archived')} className="rounded-md border border-red-400 bg-red-100 px-3 py-1.5 text-sm font-bold text-red-950">Archive</button>}
                           </div>
                         </div>
                         <dl className="mt-4 grid grid-cols-1 gap-x-6 gap-y-2 sm:grid-cols-2">
-                          {visibleFields(record).map(([key, value]) => (
-                            <div key={key} className="min-w-0">
-                              <dt className="text-xs font-black uppercase tracking-wide text-slate-600">{key.replace(/_/g, ' ')}</dt>
-                              <dd className="break-all text-sm font-semibold text-slate-800">{formatValue(value)}</dd>
-                            </div>
-                          ))}
-                          <div>
-                            <dt className="text-xs font-black uppercase tracking-wide text-slate-600">Created</dt>
-                            <dd className="text-sm font-semibold text-slate-800">{formatDate(record.created_at)}</dd>
-                          </div>
-                          {record.expires_at && (
-                            <div>
-                              <dt className="text-xs font-black uppercase tracking-wide text-slate-600">Expires</dt>
-                              <dd className="text-sm font-semibold text-slate-800">{formatDate(record.expires_at)}</dd>
-                            </div>
-                          )}
+                          {[
+                            ...visibleFields(record).map(([key, value]) => (
+                              <div key={key} className="min-w-0">
+                                <dt className="text-xs font-black uppercase tracking-wide text-slate-600">{key.replace(/_/g, ' ')}</dt>
+                                <dd className="break-all text-sm font-semibold text-slate-800">{formatValue(value)}</dd>
+                              </div>
+                            )),
+                            <div key="created">
+                              <dt className="text-xs font-black uppercase tracking-wide text-slate-600">Created</dt>
+                              <dd className="text-sm font-semibold text-slate-800">{formatDate(record.created_at)}</dd>
+                            </div>,
+                            record.expires_at ? (
+                              <div key="expires">
+                                <dt className="text-xs font-black uppercase tracking-wide text-slate-600">Expires</dt>
+                                <dd className="text-sm font-semibold text-slate-800">{formatDate(record.expires_at)}</dd>
+                              </div>
+                            ) : null
+                          ]}
                         </dl>
                         {auditRecordId === recordId && (
                           <div className="mt-4 rounded-md border border-slate-300 bg-slate-50 p-4">

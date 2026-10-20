@@ -21,7 +21,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({
       <div className="flex flex-col md:flex-row md:items-center md:justify-between">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">{title}</h1>
-          {description && <p className="mt-2 text-sm text-gray-500">{description}</p>}
+          {description && <p className="mt-2 text-sm text-slate-700 font-medium">{description}</p>}
         </div>
         {actionText && onAction && (
           <div className="mt-4 md:mt-0">

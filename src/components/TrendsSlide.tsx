@@ -81,43 +81,43 @@ const TrendsSlide: React.FC<TrendsSlideProps> = ({
   return (
     <div className="w-full space-y-4">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-2xl font-bold flex items-center gap-2">
+        <h2 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
           <Flame className="h-6 w-6 text-orange-500" />
           Trending Now
         </h2>
-        <Badge variant="secondary">Top 5</Badge>
+        <Badge variant="secondary" className="border-slate-300 text-slate-800">Top 5</Badge>
       </div>
 
       <div className="space-y-3">
         {trends.map((trend, index) => (
           <Card
             key={trend.id}
-            className="hover:shadow-md transition-shadow cursor-pointer"
+            className="hover:shadow-md transition-shadow cursor-pointer border-slate-200"
             onClick={() => onTrendClick?.(trend.id)}
           >
             <CardContent className="p-4">
               <div className="flex items-start gap-4">
-                <div className="text-3xl font-bold text-muted-foreground/30 min-w-[40px]">
+                <div className="text-3xl font-extrabold text-slate-500 min-w-[40px]">
                   #{index + 1}
                 </div>
                 <div className="flex-1 space-y-2">
                   <div className="flex items-start justify-between gap-2">
-                    <h3 className="font-semibold text-lg line-clamp-2">
+                    <h3 className="font-semibold text-lg line-clamp-2 text-slate-900">
                       {trend.title}
                     </h3>
-                    <Badge variant="outline">{trend.category}</Badge>
+                    <Badge variant="outline" className="border-slate-300 text-slate-700 font-medium">{trend.category}</Badge>
                   </div>
-                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                  <div className="flex items-center gap-4 text-sm text-slate-700 font-medium">
                     <div className="flex items-center gap-1">
-                      <Eye className="h-4 w-4" />
+                      <Eye className="h-4 w-4 text-slate-600" />
                       {formatNumber(trend.views)}
                     </div>
                     <div className="flex items-center gap-1">
-                      <Share2 className="h-4 w-4" />
+                      <Share2 className="h-4 w-4 text-slate-500" />
                       {formatNumber(trend.shares)}
                     </div>
                     <div className="flex items-center gap-1">
-                      <TrendingUp className="h-4 w-4" />
+                      <TrendingUp className="h-4 w-4 text-emerald-600" />
                       {trend.热度}%
                     </div>
                   </div>
@@ -128,7 +128,7 @@ const TrendsSlide: React.FC<TrendsSlideProps> = ({
         ))}
       </div>
 
-      <Button variant="outline" className="w-full mt-4">
+      <Button variant="outline" className="w-full mt-4 border-slate-300 text-slate-800 hover:bg-slate-50">
         View All Trends
       </Button>
     </div>

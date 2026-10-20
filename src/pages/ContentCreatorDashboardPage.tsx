@@ -26,7 +26,7 @@ const ContentCreatorDashboardPage: React.FC = () => {
             </div>
             <div>
               <h1 className="text-3xl font-black text-slate-900 tracking-tight">Creator Studio</h1>
-              <p className="text-slate-500 font-medium mt-1">Manage your content, track performance, and grow your audience.</p>
+              <p className="text-slate-700 font-medium mt-1">Manage your content, track performance, and grow your audience.</p>
             </div>
           </div>
 
@@ -60,7 +60,7 @@ const ContentCreatorDashboardPage: React.FC = () => {
               </div>
               <div>
                 <p className="text-3xl font-black text-slate-900">{stat.value}</p>
-                <p className="text-slate-500 font-medium text-sm mt-1">{stat.label}</p>
+                <p className="text-slate-700 font-medium text-sm mt-1">{stat.label}</p>
               </div>
             </div>
           ))}
@@ -93,15 +93,15 @@ const ContentCreatorDashboardPage: React.FC = () => {
                       </div>
                       <div>
                         <h3 className="font-bold text-slate-900 group-hover:text-emerald-600 transition-colors line-clamp-1">{content.title}</h3>
-                        <p className="text-xs text-slate-500 font-medium mt-1">{content.date}</p>
+                        <p className="text-xs text-slate-700 font-medium mt-1">{content.date}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-4 sm:gap-6 text-sm font-medium text-slate-600 pl-14 sm:pl-0">
                       <div className="flex items-center gap-1.5">
-                        <EyeIcon className="w-4 h-4 text-slate-500" /> {content.views}
+                        <EyeIcon className="w-4 h-4 text-slate-600" /> {content.views}
                       </div>
                       <div className="flex items-center gap-1.5">
-                        <HeartIcon className="w-4 h-4 text-slate-500" /> {content.likes}
+                        <HeartIcon className="w-4 h-4 text-slate-600" /> {content.likes}
                       </div>
                       <button className="p-2 text-slate-700 hover:text-emerald-600 transition-colors">
                         <ChartBarIcon className="w-5 h-5" />

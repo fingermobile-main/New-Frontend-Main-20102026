@@ -96,7 +96,7 @@ export const TagProductSearchBar: React.FC<TagProductSearchBarProps> = ({
 
       {/* Mini Search Bar (Crawler across MarketPlace, OwnIt, Flamingo, Storefront, FingerLux) */}
       <div className="relative">
-        <div className="flex items-center bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden focus-within:ring-2 focus-within:ring-blue-500">
+        <div className="flex items-center bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden focus-within:ring-2 focus-within:ring-blue-500">
           <div className="pl-3.5 text-slate-700">
             <Search className="w-4 h-4" />
           </div>
@@ -110,7 +110,7 @@ export const TagProductSearchBar: React.FC<TagProductSearchBarProps> = ({
               setIsOpenDropdown(true);
             }}
             onFocus={() => setIsOpenDropdown(true)}
-            className="w-full px-3 py-2.5 text-xs bg-white dark:bg-slate-900 focus:outline-none text-slate-900 dark:text-white font-bold border border-slate-300 rounded focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
+            className="w-full px-3 py-2.5 text-xs bg-white dark:bg-slate-900 focus:outline-none text-slate-900 dark:text-white font-bold border border-slate-300 rounded focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-500"
           />
 
           {loading && (
@@ -122,7 +122,7 @@ export const TagProductSearchBar: React.FC<TagProductSearchBarProps> = ({
 
         {/* Store Highlight Badges */}
         <div className="flex items-center gap-1.5 mt-2 overflow-x-auto pb-1">
-          <span className="text-[11px] font-bold text-slate-400 whitespace-nowrap mr-1">
+          <span className="text-[11px] font-bold text-slate-800 dark:text-slate-200 whitespace-nowrap mr-1">
             Stores:
           </span>
           {supportedStores.map((st) => {
@@ -137,8 +137,8 @@ export const TagProductSearchBar: React.FC<TagProductSearchBarProps> = ({
                   isSelected
                     ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
                     : isHighlighted
-                    ? 'bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700 hover:border-blue-400'
-                    : 'bg-slate-50/50 text-slate-400 border-transparent opacity-50'
+                    ? 'bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border-slate-300 dark:border-slate-700 hover:border-blue-400'
+                    : 'bg-slate-100 dark:bg-slate-800/60 text-slate-700 dark:text-slate-300 font-medium border-slate-300 dark:border-slate-700 hover:border-slate-400'
                 }`}
               >
                 <span>{st.name}</span>
@@ -150,7 +150,7 @@ export const TagProductSearchBar: React.FC<TagProductSearchBarProps> = ({
         {/* Search Results Dropdown */}
         {isOpenDropdown && results.length > 0 && (
           <div
-            className="absolute left-0 right-0 top-full mt-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl p-2 z-30 max-h-72 overflow-y-auto space-y-1 animate-in fade-in"
+            className="absolute left-0 right-0 top-full mt-2 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-2xl shadow-2xl p-2 z-30 max-h-72 overflow-y-auto space-y-1 animate-in fade-in"
             onMouseLeave={() => setIsOpenDropdown(false)}
           >
             <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-700 flex items-center justify-between">

@@ -64,7 +64,7 @@ export const LegalDocumentBanner: React.FC<LegalDocumentBannerProps> = ({
                 NDPA 2023 / GDPR
               </span>
             </div>
-            <div className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-3">
+            <div className="text-xs text-slate-700 dark:text-slate-300 font-medium flex items-center gap-3">
               <span className="flex items-center gap-1">
                 <ClockIcon className="w-3.5 h-3.5" /> Effective: {effectiveDate}
               </span>

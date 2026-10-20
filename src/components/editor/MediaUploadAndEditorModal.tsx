@@ -149,7 +149,7 @@ export const MediaUploadAndEditorModal: React.FC<MediaUploadAndEditorModalProps>
               <h3 className="font-bold text-slate-900 dark:text-white text-base sm:text-lg">
                 Studio Media Editor & Uploader
               </h3>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-700 font-medium">
                 Enhance, style, and attach UGC photo, video, or audio before publishing
               </p>
             </div>
@@ -171,7 +171,7 @@ export const MediaUploadAndEditorModal: React.FC<MediaUploadAndEditorModalProps>
             className={`flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-t-xl transition-all border-b-2 ${
               activeMediaType === 'photo'
                 ? 'border-orange-500 text-orange-600 dark:text-orange-400 bg-white dark:bg-slate-900 shadow-sm'
-                : 'border-transparent text-slate-500 hover:text-slate-900'
+                : 'border-transparent text-slate-600 hover:text-slate-900'
             }`}
           >
             <Image className="w-4 h-4" />
@@ -183,7 +183,7 @@ export const MediaUploadAndEditorModal: React.FC<MediaUploadAndEditorModalProps>
             className={`flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-t-xl transition-all border-b-2 ${
               activeMediaType === 'video'
                 ? 'border-orange-500 text-orange-600 dark:text-orange-400 bg-white dark:bg-slate-900 shadow-sm'
-                : 'border-transparent text-slate-500 hover:text-slate-900'
+                : 'border-transparent text-slate-600 hover:text-slate-900'
             }`}
           >
             <Video className="w-4 h-4" />
@@ -195,7 +195,7 @@ export const MediaUploadAndEditorModal: React.FC<MediaUploadAndEditorModalProps>
             className={`flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-t-xl transition-all border-b-2 ${
               activeMediaType === 'audio'
                 ? 'border-orange-500 text-orange-600 dark:text-orange-400 bg-white dark:bg-slate-900 shadow-sm'
-                : 'border-transparent text-slate-500 hover:text-slate-900'
+                : 'border-transparent text-slate-600 hover:text-slate-900'
             }`}
           >
             <Music className="w-4 h-4" />
@@ -221,7 +221,7 @@ export const MediaUploadAndEditorModal: React.FC<MediaUploadAndEditorModalProps>
               <p className="font-semibold text-slate-800 dark:text-white text-sm mb-1">
                 Upload from device or enter URL
               </p>
-              <p className="text-xs text-slate-500 mb-4">
+              <p className="text-xs text-slate-700 font-medium mb-4">
                 Supports {activeMediaType === 'photo' ? 'PNG, JPG, WebP, GIF' : (activeMediaType === 'video' ? 'MP4, MOV, WebM' : 'MP3, WAV, M4A')} up to 100MB
               </p>
               <div className="flex flex-wrap items-center justify-center gap-3 w-full max-w-md">
@@ -281,7 +281,7 @@ export const MediaUploadAndEditorModal: React.FC<MediaUploadAndEditorModalProps>
                       </div>
                       <div>
                         <p className="font-bold text-white text-sm">{caption || 'Audio Track'}</p>
-                        <p className="text-xs text-slate-400">Voice clip preview</p>
+                        <p className="text-xs text-slate-300 font-medium">Voice clip preview</p>
                       </div>
                     </div>
                     {/* Simulated Waveform Bars */}
@@ -381,7 +381,7 @@ export const MediaUploadAndEditorModal: React.FC<MediaUploadAndEditorModalProps>
                     <div>
                       <div className="flex justify-between mb-1">
                         <span className="font-semibold text-slate-700 dark:text-slate-300">Brightness</span>
-                        <span className="text-slate-500">{brightness}%</span>
+                        <span className="text-slate-700 font-bold">{brightness}%</span>
                       </div>
                       <input
                         type="range"
@@ -395,7 +395,7 @@ export const MediaUploadAndEditorModal: React.FC<MediaUploadAndEditorModalProps>
                     <div>
                       <div className="flex justify-between mb-1">
                         <span className="font-semibold text-slate-700 dark:text-slate-300">Contrast</span>
-                        <span className="text-slate-500">{contrast}%</span>
+                        <span className="text-slate-700 font-bold">{contrast}%</span>
                       </div>
                       <input
                         type="range"
@@ -409,7 +409,7 @@ export const MediaUploadAndEditorModal: React.FC<MediaUploadAndEditorModalProps>
                     <div>
                       <div className="flex justify-between mb-1">
                         <span className="font-semibold text-slate-700 dark:text-slate-300">Saturation</span>
-                        <span className="text-slate-500">{saturation}%</span>
+                        <span className="text-slate-700 font-bold">{saturation}%</span>
                       </div>
                       <input
                         type="range"
@@ -423,7 +423,7 @@ export const MediaUploadAndEditorModal: React.FC<MediaUploadAndEditorModalProps>
                     <div>
                       <div className="flex justify-between mb-1">
                         <span className="font-semibold text-slate-700 dark:text-slate-300">Soft Blur</span>
-                        <span className="text-slate-500">{blur}px</span>
+                        <span className="text-slate-700 font-bold">{blur}px</span>
                       </div>
                       <input
                         type="range"

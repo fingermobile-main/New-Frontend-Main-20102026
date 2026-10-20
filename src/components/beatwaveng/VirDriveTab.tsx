@@ -95,7 +95,7 @@ export const VirDriveTab: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="text-base font-black text-white">{drive.name}</h3>
-                    <div className="flex items-center gap-2 text-xs text-slate-400 mt-0.5">
+                    <div className="flex items-center gap-2 text-xs text-slate-300 font-medium mt-0.5">
                       <span>Owner: #{drive.ownerPin}</span>
                       <span>•</span>
                       <span>{drive.totalSizeMb} MB</span>
@@ -114,7 +114,7 @@ export const VirDriveTab: React.FC = () => {
                   )}
                   <button
                     onClick={() => deleteVirDrive(drive.id)}
-                    className="p-2 rounded-xl bg-slate-800 hover:bg-red-900/50 text-slate-400 hover:text-red-300 transition-colors"
+                    className="p-2 rounded-xl bg-slate-800 hover:bg-red-900/50 text-slate-300 hover:text-red-300 transition-colors"
                     title="Delete VirDrive"
                   >
                     <Trash2 size={14} />
@@ -129,7 +129,7 @@ export const VirDriveTab: React.FC = () => {
                     <Clock size={13} />
                     {drive.daysRemaining} of {drive.durationDays} Days Remaining
                   </span>
-                  <span className="text-[11px] font-mono text-slate-400">
+                  <span className="text-[11px] font-mono text-slate-300 font-medium">
                     {drive.durationDays}-Day Temporal TTL
                   </span>
                 </div>
@@ -146,7 +146,7 @@ export const VirDriveTab: React.FC = () => {
 
               {/* Files in Folder */}
               <div className="space-y-2 pt-1">
-                <span className="text-[10px] uppercase font-bold text-slate-400 block">
+                <span className="text-[10px] uppercase font-bold text-slate-300 block">
                   Contents ({drive.files.length} Master Files)
                 </span>
 
@@ -159,7 +159,7 @@ export const VirDriveTab: React.FC = () => {
                       <FileAudio size={16} className="text-sky-400 shrink-0" />
                       <div className="min-w-0">
                         <div className="font-bold text-white truncate">{file.title}</div>
-                        <div className="text-[11px] text-slate-400 truncate">
+                        <div className="text-[11px] text-slate-300 font-medium truncate">
                           {file.artist} • {file.duration} • {file.sizeMb} MB
                         </div>
                       </div>
@@ -185,7 +185,7 @@ export const VirDriveTab: React.FC = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
           <div className="bg-slate-900 border border-sky-500/40 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4">
             <h3 className="text-base font-bold text-white">Create Temporal VirDrive Folder</h3>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-slate-300 font-medium">
               Select temporal lifespan (3 or 7 days). Files automatically expire once TTL elapses.
             </p>
 
@@ -210,11 +210,11 @@ export const VirDriveTab: React.FC = () => {
                     className={`p-3 rounded-2xl border cursor-pointer text-center transition-all ${
                       durationDays === 3
                         ? 'bg-sky-950/60 border-sky-400 text-white font-bold'
-                        : 'bg-slate-950 border-slate-800 text-slate-400'
+                        : 'bg-slate-950 border-slate-800 text-slate-300 font-medium'
                     }`}
                   >
                     <div className="text-sm font-black text-sky-400">3 Days</div>
-                    <div className="text-[10px] text-slate-400 mt-0.5">Quick Collaboration</div>
+                    <div className="text-[10px] text-slate-300 font-medium mt-0.5">Quick Collaboration</div>
                   </div>
 
                   <div
@@ -222,11 +222,11 @@ export const VirDriveTab: React.FC = () => {
                     className={`p-3 rounded-2xl border cursor-pointer text-center transition-all ${
                       durationDays === 7
                         ? 'bg-sky-950/60 border-sky-400 text-white font-bold'
-                        : 'bg-slate-950 border-slate-800 text-slate-400'
+                        : 'bg-slate-950 border-slate-800 text-slate-300 font-medium'
                     }`}
                   >
                     <div className="text-sm font-black text-indigo-400">7 Days</div>
-                    <div className="text-[10px] text-slate-400 mt-0.5">Extended Studio Pass</div>
+                    <div className="text-[10px] text-slate-300 font-medium mt-0.5">Extended Studio Pass</div>
                   </div>
                 </div>
               </div>

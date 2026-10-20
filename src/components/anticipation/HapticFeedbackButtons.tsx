@@ -159,7 +159,7 @@ export const HapticFeedbackButtons: React.FC<HapticFeedbackButtonsProps> = ({
         className={`flex items-center gap-1 px-2.5 py-1.5 rounded-full text-xs font-bold transition-all ${
           userVote === 'dislike'
             ? 'bg-slate-700 text-slate-200 border border-slate-600'
-            : 'bg-slate-800/60 text-slate-400 hover:bg-slate-700/60 hover:text-slate-200 border border-transparent'
+            : 'bg-slate-800/60 text-slate-300 font-bold hover:bg-slate-700/60 hover:text-white border border-transparent'
         }`}
         title="Dislike / Critical Feedback"
       >

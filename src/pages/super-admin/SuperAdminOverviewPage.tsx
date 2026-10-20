@@ -84,7 +84,7 @@ AI Sentinel | FingerMobileTM STERCS System
       </div>
       <div>
         <p className="font-semibold text-white">{item.module}</p>
-        <p className="text-xs text-gray-400">{item.description}</p>
+        <p className="text-xs text-slate-300 font-medium">{item.description}</p>
       </div>
       <span className="ml-auto text-sm font-bold text-green-400">{item.status}</span>
     </div>
@@ -195,8 +195,8 @@ AI Sentinel | FingerMobileTM STERCS System
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div>
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold text-gray-300">System Status</h2>
-              <div className="text-sm text-gray-400">
+              <h2 className="text-xl font-bold text-gray-200">System Status</h2>
+              <div className="text-sm text-slate-300 font-medium">
                 <span className="inline-flex items-center gap-1 mr-3">
                   <span className="w-2 h-2 bg-green-500 rounded-full"></span>
                                     Enterprise
@@ -215,15 +215,15 @@ AI Sentinel | FingerMobileTM STERCS System
           </div>
           <div>
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold text-gray-300">Active Alerts ({guardianAlerts.length})</h2>
-              <div className="text-sm text-gray-400">
+              <h2 className="text-xl font-bold text-gray-200">Active Alerts ({guardianAlerts.length})</h2>
+              <div className="text-sm text-slate-300 font-medium">
                 <span className="inline-flex items-center gap-1 mr-3">
                   <span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
-                                    Warning
+                  Warning
                 </span>
                 <span className="inline-flex items-center gap-1">
                   <span className="w-2 h-2 bg-red-500 rounded-full"></span>
-                                    Critical
+                  Critical
                 </span>
               </div>
             </div>
@@ -233,7 +233,7 @@ AI Sentinel | FingerMobileTM STERCS System
                   <AlertCard key={index} alert={alert} />
                 ))
               ) : (
-                <p className="text-gray-400 text-center py-8 bg-gray-800 rounded-lg">All systems normal. No active alerts.</p>
+                <p className="text-slate-300 font-medium text-center py-8 bg-gray-800 rounded-lg">All systems normal. No active alerts.</p>
               )}
             </div>
           </div>

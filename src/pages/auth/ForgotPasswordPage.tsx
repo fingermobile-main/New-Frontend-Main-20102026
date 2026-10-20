@@ -76,13 +76,13 @@ const ForgotPasswordPage = () => {
         transition={{ duration: 0.5 }}
         className="w-full max-w-md"
       >
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 border border-slate-200 dark:border-gray-700">
           <div className="text-center mb-8">
             <div className="mx-auto w-16 h-16 bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex items-center justify-center mb-4 border text-indigo-950 border-indigo-400 font-black">
               <Mail className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
             </div>
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Reset Password</h1>
-            <p className="text-slate-700 dark:text-gray-400 mt-2">
+            <p className="text-slate-700 dark:text-slate-300 font-medium mt-2">
               Enter your email or phone number to receive reset instructions
             </p>
           </div>

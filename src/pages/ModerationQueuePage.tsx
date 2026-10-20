@@ -224,7 +224,7 @@ const ModerationQueuePage: React.FC = () => {
             ) : (
               <Card>
                 <CardContent className="flex items-center justify-center h-64">
-                  <p className="text-gray-500">Select an item to review</p>
+                  <p className="text-slate-700 font-medium">Select an item to review</p>
                 </CardContent>
               </Card>
             )}

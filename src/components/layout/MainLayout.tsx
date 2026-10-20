@@ -15,7 +15,7 @@ interface MainLayoutProps {
 }
 
 export default function MainLayout({ children, pageTitle }: MainLayoutProps) {
-  const { member } = useAuth();
+  const { member, isOnboarded } = useAuth();
   const {
     unreadNotifications,
     toggleNotifications,
@@ -26,7 +26,9 @@ export default function MainLayout({ children, pageTitle }: MainLayoutProps) {
   } = useAppContext();
 
   const handleOpenBurgerMenu = () => {
-    window.dispatchEvent(new CustomEvent('toggle-drawer-menu'));
+    if (isOnboarded) {
+      window.dispatchEvent(new CustomEvent('toggle-drawer-menu'));
+    }
   };
 
   return (
@@ -47,15 +49,17 @@ export default function MainLayout({ children, pageTitle }: MainLayoutProps) {
           <div className="px-4 sm:px-6 lg:px-8 py-3">
             <div className="flex items-center justify-between gap-4">
               <div className="flex items-center gap-3 min-w-0">
-                <button
-                  type="button"
-                  className="inline-flex items-center justify-center rounded-xl p-2 text-[#ff6b00] hover:text-[#e05e00] hover:bg-orange-50 focus:outline-none border border-orange-200/80 transition cursor-pointer"
-                  onClick={handleOpenBurgerMenu}
-                  aria-label="Open Platform Navigation Menu"
-                  title="Platform Mega Menu (385 Pages)"
-                >
-                  <Bars3Icon className="h-6 w-6 text-[#ff6b00]" />
-                </button>
+                {isOnboarded && (
+                  <button
+                    type="button"
+                    className="inline-flex items-center justify-center rounded-xl p-2 text-[#ff6b00] hover:text-[#e05e00] hover:bg-orange-50 focus:outline-none border border-orange-200/80 transition cursor-pointer"
+                    onClick={handleOpenBurgerMenu}
+                    aria-label="Open Platform Navigation Menu"
+                    title="Platform Mega Menu (385 Pages)"
+                  >
+                    <Bars3Icon className="h-6 w-6 text-[#ff6b00]" />
+                  </button>
+                )}
 
                 <div className="truncate">
                   <h1 className="text-lg sm:text-xl font-bold text-slate-900 truncate">
@@ -84,7 +88,7 @@ export default function MainLayout({ children, pageTitle }: MainLayoutProps) {
                         onBlur={() => setShowSearch?.(false)}
                         autoFocus
                       />
-                      <MagnifyingGlassIcon className="absolute left-2.5 top-2 h-4 w-4 text-slate-500" />
+                      <MagnifyingGlassIcon className="absolute left-2.5 top-2 h-4 w-4 text-slate-600" />
                     </div>
                   )}
                 </div>

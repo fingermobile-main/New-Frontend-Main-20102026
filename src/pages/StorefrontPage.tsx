@@ -9,19 +9,10 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import MainLayout from '../components/layout/MainLayout';
-import { useAuth } from '../contexts/AuthContext';
 import apiService from '../services/apiService';
-import { Product } from '../types';
 import {
-  StorefrontIcon,
   SearchIcon,
-  FilterIcon,
-  CartIcon,
-  ChartBarIcon,
-  CubeIcon,
-  CurrencyDollarIcon,
-  PlusIcon,
-  XMarkIcon
+  PlusIcon
 } from '../icons';
 import {
   Store,
@@ -29,25 +20,19 @@ import {
   Bot,
   Package,
   Layers,
-  Tag,
   AlertTriangle,
   CheckCircle2,
-  BarChart2,
   Percent,
   TrendingUp,
   Clock,
   ShieldCheck,
   Send,
-  ThumbsUp,
-  ThumbsDown,
   ArrowRight,
   HardDrive,
   Pencil,
   Trash2,
-  Download,
-  SlidersHorizontal
+  Download
 } from 'lucide-react';
-import SocialEmbedModal from '../components/commerce/SocialEmbedModal';
 
 export interface StorefrontItem {
   id: string;
@@ -84,6 +69,7 @@ export interface StorefrontProductItem {
   size?: string;
   sizes_available?: string[];
   stock: number;
+  inventory_id?: string;
   quantity?: number;
   reorder_point?: number;
   sales_count?: number;
@@ -105,9 +91,24 @@ export interface StorefrontOrder {
   quantity: number;
   totalPrice: number;
   currency: string;
-  status: 'pending' | 'processing' | 'shipped' | 'delivered';
+  status: string;
   trackingCode?: string;
   date: string;
+}
+
+interface StorefrontOrderRecord {
+  id: string | number;
+  product_name?: string | null;
+  customer_name?: string | null;
+  buyer_name?: string | null;
+  items?: Array<{ quantity?: number | string }>;
+  total?: number | string | null;
+  total_price?: number | string | null;
+  currency?: string | null;
+  status?: string | null;
+  tracking_number?: string | null;
+  tracking_code?: string | null;
+  created_at?: string | null;
 }
 
 const SUBSCRIPTION_TIERS = [
@@ -154,8 +155,7 @@ const SUBSCRIPTION_TIERS = [
 ];
 
 const StorefrontPage: React.FC = () => {
-  const { showToast, ficBalance } = useAppContext();
-  const { member: user } = useAuth();
+  const { showToast } = useAppContext();
 
   // Navigation tab
   const [activeTab, setActiveTab] = useState<'browse-mall' | 'my-dashboard' | 'catalog' | 'inventory' | 'orders' | 'promotions' | 'storage-quotas'>('browse-mall');
@@ -167,19 +167,17 @@ const StorefrontPage: React.FC = () => {
 
   // Search & Filter
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedGoodsType, setSelectedGoodsType] = useState<'all' | 'physical' | 'digital' | 'service'>('all');
 
   // Mini Merchant State
   const [currentTier, setCurrentTier] = useState<string>('growth');
-  const [usedStorageMB, setUsedStorageMB] = useState<number>(3420); // 3.42 GB
+  const [usedStorageMB] = useState<number>(3420);
   const [totalStorageMB, setTotalStorageMB] = useState<number>(25600); // 25 GB
   const [showProductModal, setShowProductModal] = useState<boolean>(false);
   const [showRestockModal, setShowRestockModal] = useState<boolean>(false);
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
   const [editingProduct, setEditingProduct] = useState<StorefrontProductItem | null>(null);
   const [selectedProduct, setSelectedProduct] = useState<StorefrontProductItem | null>(null);
-  const [embedModalProduct, setEmbedModalProduct] = useState<any | null>(null);
   const [inventorySearch, setInventorySearch] = useState<string>('');
   const [inventoryFilter, setInventoryFilter] = useState<'all' | 'low-stock' | 'physical' | 'digital' | 'service'>('all');
 
@@ -199,30 +197,7 @@ const StorefrontPage: React.FC = () => {
   });
 
   // Orders State
-  const [orders, setOrders] = useState<StorefrontOrder[]>([
-    {
-      id: 'SF-ORD-101',
-      productName: 'Acoustic Wave Guitar Masterclass Bundle',
-      buyerName: 'Amara Nwosu',
-      quantity: 1,
-      totalPrice: 35,
-      currency: 'FIC',
-      status: 'delivered',
-      trackingCode: 'DIGITAL-VAULT-ACCESS-KEY',
-      date: '2026-10-06'
-    },
-    {
-      id: 'SF-ORD-102',
-      productName: 'Limited Handcrafted Leather Producer Bag',
-      buyerName: 'David Chen',
-      quantity: 1,
-      totalPrice: 160,
-      currency: 'FIC',
-      status: 'shipped',
-      trackingCode: 'DHL-EXPRESS-92841029',
-      date: '2026-10-07'
-    }
-  ]);
+  const [orders, setOrders] = useState<StorefrontOrder[]>([]);
 
   // AI Storefront Copilot state
   const [showAiCopilot, setShowAiCopilot] = useState<boolean>(false);
@@ -238,136 +213,38 @@ const StorefrontPage: React.FC = () => {
   const loadData = useCallback(async () => {
     setLoading(true);
     try {
-      const [storesRes, prodsRes] = await Promise.all([
-        apiService.get('/api/storefront/stores').catch(() => ({ storefronts: [] })),
-        apiService.get('/api/storefront/products').catch(() => ({ products: [] }))
+      const [storesRes, prodsRes, ordersRes] = await Promise.all([
+        apiService.get<{ storefronts?: StorefrontItem[]; stores?: StorefrontItem[]; data?: StorefrontItem[] | { storefronts?: StorefrontItem[] } }>('/api/storefront/stores'),
+        apiService.get<{ products?: StorefrontProductItem[]; data?: StorefrontProductItem[] | { products?: StorefrontProductItem[] } }>('/api/storefront/products'),
+        apiService.get<{ orders?: StorefrontOrderRecord[]; data?: StorefrontOrderRecord[] }>('/api/storefront/orders')
       ]);
 
-      const loadedStores = storesRes.storefronts || storesRes.data?.storefronts || (Array.isArray(storesRes.data) ? storesRes.data : []);
-      const loadedProducts = prodsRes.products || prodsRes.data?.products || (Array.isArray(prodsRes.data) ? prodsRes.data : []);
+      const nestedStores = Array.isArray(storesRes.data) ? storesRes.data : storesRes.data?.storefronts || [];
+      const nestedProducts = Array.isArray(prodsRes.data) ? prodsRes.data : prodsRes.data?.products || [];
+      const stores = storesRes.storefronts || storesRes.stores || nestedStores;
+      const productRows = prodsRes.products || nestedProducts;
+      const orderRows = ordersRes.orders || (Array.isArray(ordersRes.data) ? ordersRes.data : []);
+      const loadedStores = Array.isArray(stores) ? stores : [];
+      const loadedProducts = Array.isArray(productRows) ? productRows : [];
 
-      if (loadedStores.length > 0) {
-        setStorefronts(loadedStores);
-      } else {
-        setStorefronts([
-          {
-            id: 'a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d',
-            name: 'Alex Johnson Music & Audio Studio',
-            slug: 'alex-johnson-music',
-            description: 'Original beats, custom stems, sound kits, and 1-on-1 mixing sessions by certified FingerMobile producers.',
-            tagline: 'Premium Audio Stems & Studio Gear',
-            business_type: 'Music Studio',
-            cover_image_url: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=1200&q=80',
-            logo_url: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=256&q=80',
-            rating: 4.92,
-            follower_count: 2450,
-            product_count: 8,
-            subscription_tier: 'pro',
-            storage_quota_mb: 102400,
-            used_storage_mb: 4850,
-            product_quota: 500,
-            is_verified: true
-          },
-          {
-            id: 'b2c3d4e5-f6a7-5b6c-9d0e-1f2a3b4c5d6e',
-            name: 'Kora & Loom Artisan Leathercraft',
-            slug: 'kora-loom-crafts',
-            description: 'Bespoke hand-stitched leather bags, camera straps, and minimalist wallets crafted from vegetable-tanned hides.',
-            tagline: 'Handmade Sustainable Goods',
-            business_type: 'Boutique Crafts',
-            cover_image_url: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=1200&q=80',
-            logo_url: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=256&q=80',
-            rating: 4.88,
-            follower_count: 1820,
-            product_count: 14,
-            subscription_tier: 'growth',
-            storage_quota_mb: 25600,
-            used_storage_mb: 3200,
-            product_quota: 100,
-            is_verified: true
-          }
-        ]);
-      }
-
-      if (loadedProducts.length > 0) {
-        setProducts(loadedProducts);
-      } else {
-        setProducts([
-          {
-            id: 'prod-01',
-            name: 'Acoustic Wave Guitar Masterclass Bundle',
-            description: 'Exclusive 12-hour video tutorial course, tabs, and stems for FingerMobile producers.',
-            price: 45.0,
-            discount_price: 35.0,
-            currency: 'FIC',
-            category: 'Services & Education',
-            goods_type: 'service',
-            sku: 'STR-BUNDLE-01',
-            size: 'Digital Download',
-            stock: 999,
-            quantity: 999,
-            reorder_point: 10,
-            sales_count: 64,
-            image_url: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=600&q=80',
-            likes: 48,
-            dislikes: 1,
-            poll_data: {
-              question: 'Which instrument bundle should we record next?',
-              options: [
-                { id: 1, text: 'African Talking Drum & Percussion', votes: 42 },
-                { id: 2, text: 'Neo-Soul Electric Piano Stems', votes: 31 }
-              ]
-            }
-          },
-          {
-            id: 'prod-02',
-            name: 'Limited Handcrafted Leather Producer Bag',
-            description: 'Crafted from vegetable-tanned full-grain leather, fits 16-inch laptop and audio interface.',
-            price: 180.0,
-            discount_price: 160.0,
-            currency: 'FIC',
-            category: 'Goods & Merchandise',
-            goods_type: 'physical',
-            sku: 'STR-BAG-LT-02',
-            size: 'Medium 16"',
-            sizes_available: ['Compact 14"', 'Medium 16"', 'Touring 18"'],
-            stock: 12,
-            quantity: 12,
-            reorder_point: 3,
-            sales_count: 18,
-            image_url: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=600&q=80',
-            likes: 32,
-            dislikes: 0,
-            poll_data: {
-              question: 'Vote on our next leather dye colorway:',
-              options: [
-                { id: 1, text: 'Obsidian Black', votes: 24 },
-                { id: 2, text: 'Vintage Saddle Tan', votes: 19 }
-              ]
-            }
-          },
-          {
-            id: 'prod-03',
-            name: '1-on-1 Audio Mixing & Mastering Session',
-            description: 'Direct 2-hour remote session with certified sound engineer via Dancia-4Tv private channel.',
-            price: 120.0,
-            currency: 'FIC',
-            category: 'Services',
-            goods_type: 'service',
-            sku: 'STR-SRV-MIX-03',
-            size: '2 Hours Session',
-            stock: 50,
-            quantity: 50,
-            reorder_point: 5,
-            sales_count: 27,
-            image_url: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=600&q=80',
-            likes: 59,
-            dislikes: 2
-          }
-        ]);
-      }
+      setStorefronts(loadedStores);
+      setProducts(loadedProducts);
+      setOrders(Array.isArray(orderRows) ? orderRows.map(order => ({
+        id: String(order.id),
+        productName: String(order.product_name || 'Storefront order'),
+        buyerName: String(order.customer_name || order.buyer_name || 'Customer'),
+        quantity: Array.isArray(order.items) ? order.items.reduce((quantity, item) => quantity + Number(item.quantity || 0), 0) : 1,
+        totalPrice: Number(order.total || order.total_price || 0),
+        currency: String(order.currency || 'FIC'),
+        status: String(order.status || 'pending').toLowerCase(),
+        trackingCode: String(order.tracking_number || order.tracking_code || ''),
+        date: order.created_at ? new Date(order.created_at).toISOString().slice(0, 10) : ''
+      })) : []);
     } catch {
-      showToast('Loaded storefront data from protocol cache', 'info');
+      setStorefronts([]);
+      setProducts([]);
+      setOrders([]);
+      showToast('Unable to load storefront data. Please try again.', 'error');
     } finally {
       setLoading(false);
     }
@@ -415,41 +292,76 @@ const StorefrontPage: React.FC = () => {
   // Handle Add Product
   const handleCreateProduct = async (e: React.FormEvent) => {
     e.preventDefault();
-    const newProd: StorefrontProductItem = {
-      id: `prod-${Date.now()}`,
-      name: newProductForm.name,
-      description: newProductForm.description,
-      category: newProductForm.category,
-      goods_type: newProductForm.goods_type,
-      sku: newProductForm.sku || `SKU-${Math.floor(1000 + Math.random() * 9000)}`,
-      size: newProductForm.size,
-      stock: newProductForm.stock,
-      quantity: newProductForm.stock,
-      price: newProductForm.price,
-      discount_price: newProductForm.discount_price,
-      currency: 'FIC',
-      reorder_point: newProductForm.reorder_point,
-      sales_count: 0,
-      image_url: newProductForm.image_url,
-      likes: 0,
-      dislikes: 0
-    };
-
-    setProducts(prev => [newProd, ...prev]);
-    setShowProductModal(false);
-    showToast(`Added "${newProd.name}" to your Storefront!`, 'success');
+    const storefrontId = storefronts[0]?.id;
+    if (!storefrontId) {
+      showToast('Create a storefront before adding products.', 'error');
+      return;
+    }
+    try {
+      await apiService.post('/api/storefront/products', {
+        store_id: storefrontId,
+        name: newProductForm.name,
+        description: newProductForm.description,
+        short_description: newProductForm.description,
+        price: newProductForm.price,
+        compare_at_price: newProductForm.discount_price,
+        category: newProductForm.category,
+        sku: newProductForm.sku,
+        images: newProductForm.image_url ? [newProductForm.image_url] : [],
+        stock: newProductForm.stock,
+        reorder_point: newProductForm.reorder_point,
+        goods_type: newProductForm.goods_type
+      });
+      await loadData();
+      setShowProductModal(false);
+      showToast(`Added "${newProductForm.name}" to your Storefront.`, 'success');
+    } catch {
+      showToast('Unable to create the product. Please try again.', 'error');
+    }
   };
 
   // Quick stock adjustment (+/-)
-  const handleQuickAdjustStock = (productId: string, delta: number) => {
-    setProducts(prev => prev.map(p => {
-      if (p.id === productId) {
-        const newStock = Math.max(0, p.stock + delta);
-        return { ...p, stock: newStock, quantity: newStock };
-      }
-      return p;
-    }));
-    showToast(`Stock adjusted (${delta > 0 ? '+' : ''}${delta})`, 'info');
+  const handleQuickAdjustStock = async (productId: string, delta: number) => {
+    const product = products.find(item => item.id === productId);
+    if (!product?.inventory_id) {
+      showToast('Inventory record is unavailable for this product.', 'error');
+      return;
+    }
+    try {
+      await apiService.post(`/api/storefront/inventory/${product.inventory_id}/adjust`, {
+        delta,
+        reason: 'Merchant quick stock adjustment'
+      });
+      await loadData();
+      showToast(`Stock adjusted (${delta > 0 ? '+' : ''}${delta})`, 'success');
+    } catch {
+      showToast('Unable to adjust stock. Please try again.', 'error');
+    }
+  };
+
+  const handleRestockInventory = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!selectedProduct?.inventory_id) {
+      showToast('Inventory record is unavailable for this product.', 'error');
+      return;
+    }
+    const formData = new FormData(event.currentTarget);
+    const quantity = Number(formData.get('addQty'));
+    if (!Number.isInteger(quantity) || quantity < 1) {
+      showToast('Enter a whole number of units to restock.', 'error');
+      return;
+    }
+    try {
+      await apiService.post(`/api/storefront/inventory/${selectedProduct.inventory_id}/adjust`, {
+        delta: quantity,
+        reason: 'Merchant product restock'
+      });
+      await loadData();
+      showToast(`Restocked +${quantity} units for ${selectedProduct.name}.`, 'success');
+      setShowRestockModal(false);
+    } catch {
+      showToast('Unable to restock this product. Please try again.', 'error');
+    }
   };
 
   // Open Edit Product Modal
@@ -459,19 +371,32 @@ const StorefrontPage: React.FC = () => {
   };
 
   // Save Product Updates
-  const handleUpdateProduct = (e: React.FormEvent) => {
+  const handleUpdateProduct = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingProduct) return;
-    setProducts(prev => prev.map(p => p.id === editingProduct.id ? editingProduct : p));
-    setShowEditModal(false);
-    showToast(`Updated "${editingProduct.name}" successfully!`, 'success');
+    try {
+      await apiService.put(`/api/storefront/products/${editingProduct.id}`, {
+        name: editingProduct.name,
+        description: editingProduct.description,
+        price: editingProduct.price,
+        category: editingProduct.category,
+        status: 'active'
+      });
+      await loadData();
+      setShowEditModal(false);
+      showToast(`Updated "${editingProduct.name}" successfully.`, 'success');
+    } catch {
+      showToast('Unable to update the product. Please try again.', 'error');
+    }
   };
 
   // Delete Product Listing
   const handleDeleteProduct = (productId: string, productName: string) => {
     if (window.confirm(`Are you sure you want to remove "${productName}" from your store?`)) {
-      setProducts(prev => prev.filter(p => p.id !== productId));
-      showToast(`Removed "${productName}" from storefront inventory`, 'info');
+      apiService.delete(`/api/storefront/products/${productId}`)
+        .then(() => loadData())
+        .then(() => showToast(`Removed "${productName}" from storefront inventory.`, 'info'))
+        .catch(() => showToast('Unable to delete the product. Please try again.', 'error'));
     }
   };
 
@@ -548,7 +473,7 @@ const StorefrontPage: React.FC = () => {
             <div className="p-4 rounded-2xl bg-slate-950/80 border border-blue-500/30 flex flex-col sm:flex-row items-center gap-5 shrink-0">
               <div>
                 <div className="flex justify-between items-center text-xs mb-1 gap-4">
-                  <span className="text-slate-400 font-semibold flex items-center gap-1">
+                  <span className="text-slate-300 font-medium font-semibold flex items-center gap-1">
                     <HardDrive className="w-3.5 h-3.5 text-blue-400" /> Storage Quota:
                   </span>
                   <span className="font-mono text-blue-300 font-bold">
@@ -561,7 +486,7 @@ const StorefrontPage: React.FC = () => {
                     style={{ width: `${(usedStorageMB / totalStorageMB) * 100}%` }}
                   />
                 </div>
-                <span className="text-[10px] text-slate-500 mt-1 block">Tier: <strong className="text-slate-300 uppercase">{currentTier}</strong> (3.5% fee)</span>
+                <span className="text-[10px] text-slate-300 font-medium mt-1 block">Tier: <strong className="text-slate-300 uppercase">{currentTier}</strong> (3.5% fee)</span>
               </div>
 
               <button
@@ -579,13 +504,13 @@ const StorefrontPage: React.FC = () => {
           <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 mb-8 shadow-lg">
             <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
               <div className="relative w-full md:w-1/2">
-                <SearchIcon className="absolute left-4 top-3.5 w-5 h-5 text-slate-500" />
+                <SearchIcon className="absolute left-4 top-3.5 w-5 h-5 text-slate-300 font-medium" />
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search stores, merchant products, goods, services, or SKU..."
-                  className="w-full pl-12 pr-4 py-2.5 bg-slate-900 border border-slate-700/80 rounded-xl text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-blue-500"
+                  className="w-full pl-12 pr-4 py-2.5 bg-slate-900 border border-slate-700/80 rounded-xl text-sm text-slate-100 placeholder:text-slate-300 font-medium focus:outline-none focus:border-blue-500"
                 />
               </div>
 
@@ -603,7 +528,7 @@ const StorefrontPage: React.FC = () => {
                     className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
                       selectedGoodsType === type.id
                         ? 'bg-blue-600 text-white shadow-sm'
-                        : 'bg-slate-900 text-slate-400 hover:bg-slate-800 hover:text-white'
+                        : 'bg-slate-900 text-slate-300 font-medium hover:bg-slate-800 hover:text-white'
                     }`}
                   >
                     {type.label}
@@ -633,7 +558,7 @@ const StorefrontPage: React.FC = () => {
                   className={`px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm whitespace-nowrap transition-all flex items-center gap-2 ${
                     isActive
                       ? 'bg-blue-600/20 text-blue-400 border border-blue-500/40 shadow-sm'
-                      : 'text-slate-400 hover:text-white hover:bg-slate-800/60 border border-transparent'
+                      : 'text-slate-300 font-medium hover:text-white hover:bg-slate-800/60 border border-transparent'
                   }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -686,13 +611,13 @@ const StorefrontPage: React.FC = () => {
                         {store.tagline && (
                           <p className="text-xs font-semibold text-blue-400 mb-2">{store.tagline}</p>
                         )}
-                        <p className="text-xs text-slate-400 line-clamp-2 leading-relaxed">
+                        <p className="text-xs text-slate-300 font-medium line-clamp-2 leading-relaxed">
                           {store.description}
                         </p>
                       </div>
 
                       <div className="pt-4 border-t border-slate-800 flex items-center justify-between">
-                        <div className="text-xs text-slate-400">
+                        <div className="text-xs text-slate-300 font-medium">
                           <span>{store.product_count || 12} Products</span> • <span>{store.follower_count || 1500} Followers</span>
                         </div>
                         <button
@@ -716,7 +641,7 @@ const StorefrontPage: React.FC = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div className="p-5 rounded-2xl bg-slate-950 border border-slate-800">
                   <div className="flex justify-between items-start mb-2">
-                    <span className="text-xs font-bold text-slate-400 uppercase">Gross Sales</span>
+                    <span className="text-xs font-bold text-slate-300 font-medium uppercase">Gross Sales</span>
                     <TrendingUp className="w-4 h-4 text-emerald-400" />
                   </div>
                   <h3 className="text-2xl font-black text-white">4,820 FIC</h3>
@@ -725,16 +650,16 @@ const StorefrontPage: React.FC = () => {
 
                 <div className="p-5 rounded-2xl bg-slate-950 border border-slate-800">
                   <div className="flex justify-between items-start mb-2">
-                    <span className="text-xs font-bold text-slate-400 uppercase">Net Creator Payout</span>
+                    <span className="text-xs font-bold text-slate-300 font-medium uppercase">Net Creator Payout</span>
                     <ShieldCheck className="w-4 h-4 text-blue-400" />
                   </div>
                   <h3 className="text-2xl font-black text-blue-400">4,675.4 FIC</h3>
-                  <span className="text-[11px] text-slate-400 mt-1 block">97% Retained (3% Protocol Fee)</span>
+                  <span className="text-[11px] text-slate-300 font-medium mt-1 block">97% Retained (3% Protocol Fee)</span>
                 </div>
 
                 <div className="p-5 rounded-2xl bg-slate-950 border border-slate-800">
                   <div className="flex justify-between items-start mb-2">
-                    <span className="text-xs font-bold text-slate-400 uppercase">Active Products</span>
+                    <span className="text-xs font-bold text-slate-300 font-medium uppercase">Active Products</span>
                     <Package className="w-4 h-4 text-purple-400" />
                   </div>
                   <h3 className="text-2xl font-black text-white">{products.length} / 100</h3>
@@ -743,7 +668,7 @@ const StorefrontPage: React.FC = () => {
 
                 <div className="p-5 rounded-2xl bg-slate-950 border border-slate-800">
                   <div className="flex justify-between items-start mb-2">
-                    <span className="text-xs font-bold text-slate-400 uppercase">Storage Used</span>
+                    <span className="text-xs font-bold text-slate-300 font-medium uppercase">Storage Used</span>
                     <HardDrive className="w-4 h-4 text-cyan-400" />
                   </div>
                   <h3 className="text-2xl font-black text-white">{(usedStorageMB / 1024).toFixed(1)} GB</h3>
@@ -785,7 +710,7 @@ const StorefrontPage: React.FC = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-xl font-bold text-white">Merchant Product & Service Catalog</h2>
-                  <p className="text-xs text-slate-400">All showcase listings published by your store</p>
+                  <p className="text-xs text-slate-300 font-medium">All showcase listings published by your store</p>
                 </div>
                 <button
                   onClick={() => setShowProductModal(true)}
@@ -795,89 +720,93 @@ const StorefrontPage: React.FC = () => {
                 </button>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredProducts.map((p) => (
-                  <div key={p.id} className="rounded-2xl bg-slate-950 border border-slate-800 overflow-hidden flex flex-col justify-between">
-                    <div>
-                      <div className="h-44 bg-slate-900 relative">
-                        <img src={p.image_url} alt={p.name} className="w-full h-full object-cover" />
-                        <span className="absolute top-3 left-3 px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-slate-950/80 text-blue-300 border border-blue-500/20">
-                          {p.goods_type}
-                        </span>
-                        <span className="absolute top-3 right-3 px-2 py-0.5 rounded text-[10px] font-mono bg-slate-950/80 text-slate-300">
-                          {p.sku}
-                        </span>
-                      </div>
-                      <div className="p-5 space-y-3">
-                        <h3 className="font-bold text-white text-base">{p.name}</h3>
-                        <p className="text-xs text-slate-400 line-clamp-2">{p.description}</p>
-                        <div className="flex items-center justify-between text-xs">
-                          <span className="text-slate-500">Size / Variant: <strong className="text-slate-300">{p.size}</strong></span>
-                          <span className="text-slate-500">Stock: <strong className="text-emerald-400">{p.stock} units</strong></span>
-                        </div>
-
-                        {/* Interactive Poll if exists */}
-                        {p.poll_data && (
-                          <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 text-xs">
-                            <span className="font-semibold text-blue-300 block mb-1.5">{p.poll_data.question}</span>
-                            <div className="space-y-1.5">
-                              {p.poll_data.options.map((opt) => (
-                                <button
-                                  key={opt.id}
-                                  onClick={() => handleVotePoll(p.id, opt.id)}
-                                  className="w-full text-left p-1.5 rounded-lg bg-slate-950 hover:bg-blue-500/10 text-[11px] text-slate-300 flex justify-between border border-slate-800"
-                                >
-                                  <span>{opt.text}</span>
-                                  <span className="font-mono text-blue-400 font-bold">{opt.votes}</span>
-                                </button>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="p-5 pt-0 border-t border-slate-900 flex items-center justify-between">
+              {loading ? (
+                <p className="py-10 text-center text-slate-300">Loading storefront catalog...</p>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {filteredProducts.map((p) => (
+                    <div key={p.id} className="rounded-2xl bg-slate-950 border border-slate-800 overflow-hidden flex flex-col justify-between">
                       <div>
-                        {p.discount_price ? (
-                          <div className="flex items-baseline gap-2">
-                            <span className="text-lg font-black text-emerald-400">{p.discount_price} FIC</span>
-                            <span className="text-xs text-slate-500 line-through">{p.price} FIC</span>
+                        <div className="h-44 bg-slate-900 relative">
+                          <img src={p.image_url} alt={p.name} className="w-full h-full object-cover" />
+                          <span className="absolute top-3 left-3 px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-slate-950/80 text-blue-300 border border-blue-500/20">
+                            {p.goods_type}
+                          </span>
+                          <span className="absolute top-3 right-3 px-2 py-0.5 rounded text-[10px] font-mono bg-slate-950/80 text-slate-300">
+                            {p.sku}
+                          </span>
+                        </div>
+                        <div className="p-5 space-y-3">
+                          <h3 className="font-bold text-white text-base">{p.name}</h3>
+                          <p className="text-xs text-slate-300 font-medium line-clamp-2">{p.description}</p>
+                          <div className="flex items-center justify-between text-xs">
+                            <span className="text-slate-300 font-medium">Size / Variant: <strong className="text-slate-300">{p.size}</strong></span>
+                            <span className="text-slate-300 font-medium">Stock: <strong className="text-emerald-400">{p.stock} units</strong></span>
                           </div>
-                        ) : (
-                          <span className="text-lg font-black text-white">{p.price} FIC</span>
-                        )}
+
+                          {/* Interactive Poll if exists */}
+                          {p.poll_data && (
+                            <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 text-xs">
+                              <span className="font-semibold text-blue-300 block mb-1.5">{p.poll_data.question}</span>
+                              <div className="space-y-1.5">
+                                {p.poll_data.options.map((opt) => (
+                                  <button
+                                    key={opt.id}
+                                    onClick={() => handleVotePoll(p.id, opt.id)}
+                                    className="w-full text-left p-1.5 rounded-lg bg-slate-950 hover:bg-blue-500/10 text-[11px] text-slate-300 flex justify-between border border-slate-800"
+                                  >
+                                    <span>{opt.text}</span>
+                                    <span className="font-mono text-blue-400 font-bold">{opt.votes}</span>
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </div>
                       </div>
-                      <div className="flex items-center gap-1.5">
-                        <button
-                          onClick={() => {
-                            setSelectedProduct(p);
-                            setShowRestockModal(true);
-                          }}
-                          className="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-blue-300 text-xs font-semibold"
-                          title="Restock"
-                        >
+
+                      <div className="p-5 pt-0 border-t border-slate-900 flex items-center justify-between">
+                        <div>
+                          {p.discount_price ? (
+                            <div className="flex items-baseline gap-2">
+                              <span className="text-lg font-black text-emerald-400">{p.discount_price} FIC</span>
+                              <span className="text-xs text-slate-300 font-medium line-through">{p.price} FIC</span>
+                            </div>
+                          ) : (
+                            <span className="text-lg font-black text-white">{p.price} FIC</span>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <button
+                            onClick={() => {
+                              setSelectedProduct(p);
+                              setShowRestockModal(true);
+                            }}
+                            className="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-blue-300 text-xs font-semibold"
+                            title="Restock"
+                          >
                           Restock
-                        </button>
-                        <button
-                          onClick={() => handleOpenEditProduct(p)}
-                          className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition"
-                          title="Edit Details"
-                        >
-                          <Pencil className="w-3.5 h-3.5" />
-                        </button>
-                        <button
-                          onClick={() => handleDeleteProduct(p.id, p.name)}
-                          className="p-1.5 rounded-lg bg-slate-800 hover:bg-rose-900/60 text-slate-400 hover:text-rose-400 transition"
-                          title="Delete Listing"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
+                          </button>
+                          <button
+                            onClick={() => handleOpenEditProduct(p)}
+                            className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition"
+                            title="Edit Details"
+                          >
+                            <Pencil className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            onClick={() => handleDeleteProduct(p.id, p.name)}
+                            className="p-1.5 rounded-lg bg-slate-800 hover:bg-rose-900/60 text-slate-300 font-medium hover:text-rose-400 transition"
+                            title="Delete Listing"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
             </div>
           )}
 
@@ -887,26 +816,26 @@ const StorefrontPage: React.FC = () => {
               {/* Top Inventory Metrics Bar */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800">
-                  <span className="text-[11px] font-bold text-slate-400 uppercase block mb-1">Total SKUs</span>
+                  <span className="text-[11px] font-bold text-slate-300 font-medium uppercase block mb-1">Total SKUs</span>
                   <div className="text-xl font-black text-white">{products.length}</div>
-                  <span className="text-[10px] text-slate-500">Active catalog items</span>
+                  <span className="text-[10px] text-slate-300 font-medium">Active catalog items</span>
                 </div>
                 <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800">
-                  <span className="text-[11px] font-bold text-slate-400 uppercase block mb-1">Total Stock</span>
+                  <span className="text-[11px] font-bold text-slate-300 font-medium uppercase block mb-1">Total Stock</span>
                   <div className="text-xl font-black text-emerald-400">
                     {products.reduce((acc, p) => acc + (p.stock || 0), 0)}
                   </div>
                   <span className="text-[10px] text-emerald-500/80">Available units</span>
                 </div>
                 <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800">
-                  <span className="text-[11px] font-bold text-slate-400 uppercase block mb-1">Low Stock Alerts</span>
+                  <span className="text-[11px] font-bold text-slate-300 font-medium uppercase block mb-1">Low Stock Alerts</span>
                   <div className="text-xl font-black text-amber-400">
                     {products.filter(p => p.stock <= (p.reorder_point || 5) && p.stock > 0).length}
                   </div>
                   <span className="text-[10px] text-amber-500/80">At or below reorder threshold</span>
                 </div>
                 <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800">
-                  <span className="text-[11px] font-bold text-slate-400 uppercase block mb-1">Out of Stock</span>
+                  <span className="text-[11px] font-bold text-slate-300 font-medium uppercase block mb-1">Out of Stock</span>
                   <div className="text-xl font-black text-rose-400">
                     {products.filter(p => (p.stock || 0) === 0).length}
                   </div>
@@ -919,7 +848,7 @@ const StorefrontPage: React.FC = () => {
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                   <div>
                     <h3 className="text-lg font-bold text-white mb-1">Merchant Inventory Self-Management</h3>
-                    <p className="text-xs text-slate-400">
+                    <p className="text-xs text-slate-300 font-medium">
                       Real-time SKU tracking, quick stock adjustments, and automated reorder threshold alerts.
                     </p>
                   </div>
@@ -945,13 +874,13 @@ const StorefrontPage: React.FC = () => {
                 {/* Search & Filter Bar */}
                 <div className="flex flex-col sm:flex-row gap-3 pt-2">
                   <div className="relative flex-1">
-                    <SearchIcon className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
+                    <SearchIcon className="w-4 h-4 text-slate-300 font-medium absolute left-3 top-1/2 -translate-y-1/2" />
                     <input
                       type="text"
                       value={inventorySearch}
                       onChange={(e) => setInventorySearch(e.target.value)}
                       placeholder="Search by SKU, item name, or category..."
-                      className="w-full pl-9 pr-4 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-blue-500 transition"
+                      className="w-full pl-9 pr-4 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white placeholder:text-slate-300 font-medium focus:outline-none focus:border-blue-500 transition"
                     />
                   </div>
                   <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
@@ -962,7 +891,7 @@ const StorefrontPage: React.FC = () => {
                         className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition capitalize ${
                           inventoryFilter === filterKey
                             ? 'bg-blue-600 text-white shadow-xs'
-                            : 'bg-slate-900 text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800'
+                            : 'bg-slate-900 text-slate-300 font-medium hover:text-white hover:bg-slate-800 border border-slate-800'
                         }`}
                       >
                         {filterKey === 'all' ? 'All Items' : filterKey.replace('-', ' ')}
@@ -975,7 +904,7 @@ const StorefrontPage: React.FC = () => {
                 <div className="space-y-3">
                   {filteredInventoryProducts.length === 0 ? (
                     <div className="p-8 text-center bg-slate-900/50 rounded-2xl border border-slate-800/80">
-                      <p className="text-slate-400 text-xs">No inventory items match your current filter or search criteria.</p>
+                      <p className="text-slate-300 font-medium text-xs">No inventory items match your current filter or search criteria.</p>
                     </div>
                   ) : (
                     filteredInventoryProducts.map((p) => {
@@ -995,7 +924,7 @@ const StorefrontPage: React.FC = () => {
                             <div className="min-w-0">
                               <div className="flex items-center gap-2 mb-1 flex-wrap">
                                 <span className="font-mono text-xs font-bold text-slate-300">{p.sku}</span>
-                                <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-slate-800 text-slate-400 border border-slate-700">
+                                <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-slate-800 text-slate-300 font-medium border border-slate-700">
                                   {p.goods_type}
                                 </span>
                                 {isOut ? (
@@ -1013,10 +942,10 @@ const StorefrontPage: React.FC = () => {
                                 )}
                               </div>
                               <h4 className="text-sm font-bold text-white truncate">{p.name}</h4>
-                              <div className="flex items-center gap-3 text-xs text-slate-500 mt-1">
+                              <div className="flex items-center gap-3 text-xs text-slate-300 font-medium mt-1">
                                 <span>Price: <strong className="text-slate-300 font-mono">{p.price} FIC</strong></span>
-                                <span>Reorder threshold: <strong className="text-slate-400 font-mono">{p.reorder_point || 5} units</strong></span>
-                                <span>Sales: <strong className="text-slate-400 font-mono">{p.sales_count || 0}</strong></span>
+                                <span>Reorder threshold: <strong className="text-slate-300 font-medium font-mono">{p.reorder_point || 5} units</strong></span>
+                                <span>Sales: <strong className="text-slate-300 font-medium font-mono">{p.sales_count || 0}</strong></span>
                               </div>
                             </div>
                           </div>
@@ -1024,7 +953,7 @@ const StorefrontPage: React.FC = () => {
                           <div className="flex flex-wrap items-center gap-3 justify-between lg:justify-end border-t lg:border-t-0 pt-3 lg:pt-0 border-slate-800">
                             {/* Stock Indicator */}
                             <div className="text-right mr-2">
-                              <span className="text-[10px] text-slate-500 block uppercase font-bold">In Stock</span>
+                              <span className="text-[10px] text-slate-300 font-medium block uppercase font-bold">In Stock</span>
                               <span className={`text-base font-black font-mono ${isOut ? 'text-rose-400' : isLow ? 'text-amber-400' : 'text-emerald-400'}`}>
                                 {p.stock} units
                               </span>
@@ -1076,7 +1005,7 @@ const StorefrontPage: React.FC = () => {
                               </button>
                               <button
                                 onClick={() => handleDeleteProduct(p.id, p.name)}
-                                className="p-2 rounded-xl bg-slate-800 hover:bg-rose-900/60 text-slate-400 hover:text-rose-400 transition"
+                                className="p-2 rounded-xl bg-slate-800 hover:bg-rose-900/60 text-slate-300 font-medium hover:text-rose-400 transition"
                                 title="Delete Listing"
                               >
                                 <Trash2 className="w-3.5 h-3.5" />
@@ -1097,7 +1026,7 @@ const StorefrontPage: React.FC = () => {
             <div className="space-y-6">
               <div className="p-6 rounded-3xl bg-slate-950 border border-slate-800">
                 <h3 className="text-lg font-bold text-white mb-2">Customer Orders & Shipping Tracking</h3>
-                <p className="text-xs text-slate-400 mb-6">
+                <p className="text-xs text-slate-300 font-medium mb-6">
                   Manage shipments, dispatch tracking codes, and view escrow settlements.
                 </p>
 
@@ -1112,7 +1041,7 @@ const StorefrontPage: React.FC = () => {
                           </span>
                         </div>
                         <h4 className="text-sm font-bold text-white">{ord.productName} (x{ord.quantity})</h4>
-                        <span className="text-xs text-slate-400">Buyer: <strong>{ord.buyerName}</strong> • Tracking: <span className="font-mono text-slate-300">{ord.trackingCode}</span></span>
+                        <span className="text-xs text-slate-300 font-medium">Buyer: <strong>{ord.buyerName}</strong> • Tracking: <span className="font-mono text-slate-300">{ord.trackingCode}</span></span>
                       </div>
                       <div className="flex items-center gap-4">
                         <span className="text-lg font-black text-emerald-400">{ord.totalPrice} {ord.currency}</span>
@@ -1135,7 +1064,7 @@ const StorefrontPage: React.FC = () => {
             <div className="space-y-6">
               <div className="p-6 rounded-3xl bg-slate-950 border border-slate-800">
                 <h3 className="text-lg font-bold text-white mb-2">Storefront Promotions & Community Polls</h3>
-                <p className="text-xs text-slate-400 mb-6">
+                <p className="text-xs text-slate-300 font-medium mb-6">
                   Engage your customer base with limited-time discount codes and interactive product polls.
                 </p>
 
@@ -1144,7 +1073,7 @@ const StorefrontPage: React.FC = () => {
                     <span className="text-xs font-bold uppercase text-blue-400 block mb-2">Active Promo Code</span>
                     <div className="p-3 bg-slate-950 rounded-xl font-mono text-sm text-emerald-400 font-black border border-slate-800 flex justify-between items-center">
                       <span>FINGER-FALL-15</span>
-                      <span className="text-xs text-slate-400">15% Off (32 Uses)</span>
+                      <span className="text-xs text-slate-300 font-medium">15% Off (32 Uses)</span>
                     </div>
                   </div>
 
@@ -1172,7 +1101,7 @@ const StorefrontPage: React.FC = () => {
             <div className="space-y-8">
               <div className="p-6 rounded-3xl bg-slate-950 border border-blue-500/30">
                 <h3 className="text-xl font-bold text-white mb-2">Storefront Subscription Tiers & Storage Quotas</h3>
-                <p className="text-xs text-slate-400 mb-6">
+                <p className="text-xs text-slate-300 font-medium mb-6">
                   Choose a subscription tier with your required asset storage quota and product showcase limits.
                 </p>
 
@@ -1194,7 +1123,7 @@ const StorefrontPage: React.FC = () => {
                           </span>
                         </div>
                         <h4 className="text-2xl font-black text-white mb-1">
-                          ${tier.monthlyPrice} <span className="text-xs font-normal text-slate-400">/ mo</span>
+                          ${tier.monthlyPrice} <span className="text-xs font-normal text-slate-300 font-medium">/ mo</span>
                         </h4>
                         <span className="text-xs text-cyan-400 font-semibold block mb-4">
                           {(tier.storageMB / 1024).toFixed(0)} GB Cloud Storage • {tier.commissionBps} fee
@@ -1238,7 +1167,7 @@ const StorefrontPage: React.FC = () => {
             <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-4">
               <div className="flex justify-between items-center pb-2 border-b border-slate-800">
                 <h3 className="text-lg font-bold text-white">Add Product, Goods or Service</h3>
-                <button onClick={() => setShowProductModal(false)} className="text-slate-400 hover:text-white">✕</button>
+                <button onClick={() => setShowProductModal(false)} className="text-slate-300 font-medium hover:text-white">✕</button>
               </div>
 
               <form onSubmit={handleCreateProduct} className="space-y-3 text-xs">
@@ -1347,24 +1276,17 @@ const StorefrontPage: React.FC = () => {
             <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-sm w-full p-6 shadow-2xl space-y-4">
               <div className="flex justify-between items-center">
                 <h3 className="font-bold text-white text-base">Restock: {selectedProduct.name}</h3>
-                <button onClick={() => setShowRestockModal(false)} className="text-slate-400 hover:text-white">✕</button>
+                <button onClick={() => setShowRestockModal(false)} className="text-slate-300 font-medium hover:text-white">✕</button>
               </div>
 
               <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 text-xs">
-                <span className="text-slate-400">Current Stock: </span>
+                <span className="text-slate-300 font-medium">Current Stock: </span>
                 <strong className="text-emerald-400 font-mono text-sm">{selectedProduct.stock} units</strong>
               </div>
 
-              <form onSubmit={(e) => {
-                e.preventDefault();
-                const formData = new FormData(e.currentTarget);
-                const addQty = parseInt(formData.get('addQty') as string, 10);
-                setProducts(prev => prev.map(p => p.id === selectedProduct.id ? { ...p, stock: p.stock + addQty, quantity: p.stock + addQty } : p));
-                showToast(`Restocked +${addQty} units for ${selectedProduct.name}!`, 'success');
-                setShowRestockModal(false);
-              }} className="space-y-4">
+              <form onSubmit={handleRestockInventory} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 mb-1">Additional Units</label>
+                  <label className="block text-xs font-semibold text-slate-300 font-medium mb-1">Additional Units</label>
                   <input
                     type="number"
                     name="addQty"
@@ -1389,7 +1311,7 @@ const StorefrontPage: React.FC = () => {
             <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-4">
               <div className="flex justify-between items-center pb-2 border-b border-slate-800">
                 <h3 className="text-lg font-bold text-white">Edit Listing: {editingProduct.name}</h3>
-                <button onClick={() => setShowEditModal(false)} className="text-slate-400 hover:text-white">✕</button>
+                <button onClick={() => setShowEditModal(false)} className="text-slate-300 font-medium hover:text-white">✕</button>
               </div>
 
               <form onSubmit={handleUpdateProduct} className="space-y-3 text-xs">
@@ -1518,7 +1440,7 @@ const StorefrontPage: React.FC = () => {
                 <Bot className="w-5 h-5 text-cyan-400" />
                 <h3 className="font-bold text-white text-base">Storefront AI Copilot</h3>
               </div>
-              <button onClick={() => setShowAiCopilot(false)} className="text-slate-400 hover:text-white">✕</button>
+              <button onClick={() => setShowAiCopilot(false)} className="text-slate-300 font-medium hover:text-white">✕</button>
             </div>
 
             <div className="flex-1 overflow-y-auto py-4 space-y-3">

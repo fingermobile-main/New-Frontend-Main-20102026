@@ -551,7 +551,7 @@ const MyDownloadsPage: React.FC = () => {
                     setActivePlaybackId(null);
                     setIsPlayingAudio(false);
                   }}
-                  className="p-2 text-slate-500 hover:text-slate-900 rounded-xl hover:bg-slate-100"
+                  className="p-2 text-slate-600 hover:text-slate-900 rounded-xl hover:bg-slate-100"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -663,7 +663,7 @@ const MyDownloadsPage: React.FC = () => {
           </div>
 
           <div className="relative w-full md:w-80">
-            <Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-slate-600 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               placeholder="Search by title, lot ID, .fma, .fmv..."
@@ -677,7 +677,7 @@ const MyDownloadsPage: React.FC = () => {
         {/* 4. DOWNLOADED MEDIA ITEMS LIST */}
         {filteredItems.length === 0 ? (
           <div className="p-12 text-center bg-white rounded-3xl border border-slate-300 space-y-3">
-            <FolderDown className="w-12 h-12 text-slate-500 mx-auto" />
+            <FolderDown className="w-12 h-12 text-slate-600 mx-auto" />
             <h3 className="text-base font-bold text-slate-900">No Downloaded Items in this Category</h3>
             <p className="text-xs text-slate-700 max-w-sm mx-auto">
               Download sovereign audio (.fma) and video (.fmv) media stems from Tribut, BeatwaveNG, or Dancia-4Tv.
@@ -734,13 +734,13 @@ const MyDownloadsPage: React.FC = () => {
                           {item.sovereignFileName}
                         </span>
 
-                        <span className="text-[11px] font-mono font-bold text-slate-500">•</span>
+                        <span className="text-[11px] font-mono font-bold text-slate-600">•</span>
 
                         <span className="text-[11px] font-mono font-bold text-slate-700">
                           {item.fileSize}
                         </span>
 
-                        <span className="text-[11px] font-mono font-bold text-slate-500">•</span>
+                        <span className="text-[11px] font-mono font-bold text-slate-600">•</span>
 
                         {/* TTL Countdown Badge */}
                         {item.isExpired ? (
@@ -765,7 +765,7 @@ const MyDownloadsPage: React.FC = () => {
                         <span>•</span>
                         <span className="text-orange-600 font-bold">{item.rightsTier}</span>
                         <span>•</span>
-                        <span className="font-mono text-slate-500">{item.lotId}</span>
+                        <span className="font-mono text-slate-700 font-medium">{item.lotId}</span>
                       </div>
                     </div>
                   </div>
@@ -804,7 +804,7 @@ const MyDownloadsPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => handleDelete(item.id, item.title)}
-                      className="p-2 rounded-xl text-slate-400 hover:text-rose-600 hover:bg-rose-50 border border-slate-200 transition-colors"
+                      className="p-2 rounded-xl text-slate-600 hover:text-rose-600 hover:bg-rose-50 border border-slate-200 transition-colors"
                       title="Delete from Offline Vault"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -833,7 +833,7 @@ const MyDownloadsPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setShowStandAlonePlayerModal(false)}
-                  className="p-1 rounded-lg text-slate-500 hover:text-slate-900"
+                  className="p-1 rounded-lg text-slate-600 hover:text-slate-900"
                 >
                   <X className="w-5 h-5" />
                 </button>

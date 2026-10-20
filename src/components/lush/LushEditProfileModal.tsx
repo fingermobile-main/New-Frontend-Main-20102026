@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   XMarkIcon,
   CameraIcon,
@@ -61,6 +61,18 @@ export const LushEditProfileModal: React.FC<LushEditProfileModalProps> = ({
   );
   const [saving, setSaving] = useState(false);
 
+  useEffect(() => {
+    if (isOpen) {
+      setName(user.name);
+      setHeadline(user.headline);
+      setBio(user.bio || 'Curating luxury African contemporary art & exploring meaningful connections.');
+      setLocation(user.location);
+      setMatchingIntent(user.matchingIntent);
+      setAvatar(user.avatar);
+      setCoverImage(user.coverImage || PRESET_COVERS[0]);
+    }
+  }, [isOpen, user]);
+
   if (!isOpen) return null;
 
   const handleAvatarFile = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -114,7 +126,7 @@ export const LushEditProfileModal: React.FC<LushEditProfileModalProps> = ({
               <h2 className="text-base font-bold text-gray-900">
                 Edit Lush Pressies Profile
               </h2>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-slate-700 font-medium">
                 Update your VIP identity, bio, photos, and matching intent
               </p>
             </div>

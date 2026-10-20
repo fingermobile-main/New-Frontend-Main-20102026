@@ -386,7 +386,7 @@ export const LushLuxuryGiftingModal: React.FC<LushLuxuryGiftingModalProps> = ({
 
               <div className="pt-3 border-t border-emerald-200/60 mt-3 flex items-center justify-between">
                 <div>
-                  <span className="text-[10px] text-gray-500 uppercase">Total Escrow</span>
+                  <span className="text-[10px] text-slate-700 font-bold uppercase">Total Escrow</span>
                   <p className="text-sm font-black text-gray-900">{selectedItem.price} FIC</p>
                 </div>
                 <button

@@ -69,7 +69,7 @@ const TermsAndConditionsPage: React.FC = () => {
           </div>
 
           <div className="mt-8 pt-6 border-t border-slate-300 dark:border-gray-700">
-            <p className="text-gray-600 dark:text-gray-400 text-sm">
+            <p className="text-slate-700 dark:text-slate-300 font-medium text-sm">
               Last updated: {new Date().toLocaleDateString()}
             </p>
           </div>

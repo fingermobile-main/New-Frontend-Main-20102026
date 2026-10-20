@@ -115,7 +115,7 @@ const CommunitiesPage: React.FC = () => {
               </div>
             ))}
             {communities.length === 0 && (
-              <div className="col-span-full text-center py-12 text-gray-500">
+              <div className="col-span-full text-center py-12 text-slate-700 font-medium">
                 No communities found. Check back later!
               </div>
             )}

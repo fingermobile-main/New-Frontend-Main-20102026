@@ -78,7 +78,7 @@ export const ReportModal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit })
         <CloseBtn onClick={onClose} />
       </div>
       <div className="p-4 space-y-3 max-h-[60vh] overflow-y-auto">
-        <p className="text-sm text-gray-600 dark:text-gray-400">Select a reason for reporting:</p>
+        <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">Select a reason for reporting:</p>
         <div className="space-y-2">
           {REPORT_REASONS.map(r => (
             <button
@@ -143,7 +143,7 @@ export const EditPostModal: React.FC<EditPostModalProps> = ({ isOpen, onClose, o
           value={content}
           onChange={e => setContent(e.target.value)}
         />
-        <p className="text-[11px] text-gray-400 mt-1.5">
+        <p className="text-[11px] text-slate-700 dark:text-slate-300 font-medium mt-1.5">
           Edit history is tracked. Posts are subject to community guidelines.
         </p>
       </div>

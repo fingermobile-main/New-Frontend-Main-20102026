@@ -172,7 +172,7 @@ const ReportsPage: React.FC = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stats?.usersCount != null ? Number(stats.usersCount).toLocaleString() : '12,402'}</div>
-              <p className="text-xs text-muted-foreground">PostgreSQL platform users</p>
+              <p className="text-xs text-slate-700 dark:text-slate-300 font-medium">PostgreSQL platform users</p>
             </CardContent>
           </Card>
 
@@ -182,7 +182,7 @@ const ReportsPage: React.FC = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stats?.activeUsers != null ? Number(stats.activeUsers).toLocaleString() : '8,230'}</div>
-              <p className="text-xs text-muted-foreground">Verified & active</p>
+              <p className="text-xs text-slate-700 dark:text-slate-300 font-medium">Verified & active</p>
             </CardContent>
           </Card>
 
@@ -192,7 +192,7 @@ const ReportsPage: React.FC = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stats?.totalPosts != null ? Number(stats.totalPosts).toLocaleString() : '24,678'}</div>
-              <p className="text-xs text-muted-foreground">Live feed content items</p>
+              <p className="text-xs text-slate-700 dark:text-slate-300 font-medium">Live feed content items</p>
             </CardContent>
           </Card>
 
@@ -202,7 +202,7 @@ const ReportsPage: React.FC = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-amber-600">{stats?.moderation?.pending ?? 0}</div>
-              <p className="text-xs text-muted-foreground">{stats?.moderation?.highPriorityPending ?? 0} high priority pending</p>
+              <p className="text-xs text-slate-700 dark:text-slate-300 font-medium">{stats?.moderation?.highPriorityPending ?? 0} high priority pending</p>
             </CardContent>
           </Card>
         </div>
@@ -276,7 +276,7 @@ const ReportsPage: React.FC = () => {
                 <div className="flex items-center justify-between p-4 border rounded-lg">
                   <div>
                     <p className="font-medium">Monthly User Engagement Report</p>
-                    <p className="text-sm text-gray-500">Generated on May 15, 2023</p>
+                    <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">Generated on May 15, 2023</p>
                   </div>
                   <div className="flex space-x-2">
                     <Button size="sm" variant="outline">View</Button>
@@ -287,7 +287,7 @@ const ReportsPage: React.FC = () => {
                 <div className="flex items-center justify-between p-4 border rounded-lg">
                   <div>
                     <p className="font-medium">Q2 Financial Summary</p>
-                    <p className="text-sm text-gray-500">Generated on April 30, 2023</p>
+                    <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">Generated on April 30, 2023</p>
                   </div>
                   <div className="flex space-x-2">
                     <Button size="sm" variant="outline">View</Button>
@@ -298,7 +298,7 @@ const ReportsPage: React.FC = () => {
                 <div className="flex items-center justify-between p-4 border rounded-lg">
                   <div>
                     <p className="font-medium">Content Moderation Stats</p>
-                    <p className="text-sm text-gray-500">Generated on May 10, 2023</p>
+                    <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">Generated on May 10, 2023</p>
                   </div>
                   <div className="flex space-x-2">
                     <Button size="sm" variant="outline">View</Button>

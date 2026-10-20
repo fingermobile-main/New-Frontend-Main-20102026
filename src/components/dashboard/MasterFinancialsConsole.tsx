@@ -801,7 +801,7 @@ export const MasterFinancialsConsole: React.FC = () => {
             </button>
             <button
               onClick={() => handleSubTabChange('inspectorate')}
-              className="px-4 py-2.5 text-xs font-bold bg-white/10 hover:bg-white/20 text-slate-700 rounded-xl border border-white/20 transition-all flex items-center gap-2"
+              className="px-4 py-2.5 text-xs font-bold bg-white/10 hover:bg-white/20 text-white rounded-xl border border-white/20 transition-all flex items-center gap-2"
             >
               <Award className="w-4 h-4 text-amber-400" />
               <span>Mint Inspectorate Charter</span>
@@ -812,15 +812,15 @@ export const MasterFinancialsConsole: React.FC = () => {
         {/* Global Financial Metrics Bar */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 pt-6 border-t border-white/10">
           <div className="bg-black/40 rounded-xl p-3.5 border border-white/5">
-            <span className="text-[11px] text-slate-400 font-medium">Total Statutory Supply</span>
+            <span className="text-[11px] text-slate-200 font-bold">Total Statutory Supply</span>
             <div className="text-lg sm:text-xl font-mono font-extrabold text-amber-400 mt-0.5">
               {(totalMintedFIC / 1000000).toFixed(1)}M FIC
             </div>
-            <span className="text-[10px] text-slate-400 font-mono">₦{(totalMintedFIC * exchangeRateNaira / 1000000000).toFixed(2)}B Fixed Statutory Cap ($2.4M USD)</span>
+            <span className="text-[10px] text-slate-300 font-mono font-medium">₦{(totalMintedFIC * exchangeRateNaira / 1000000000).toFixed(2)}B Fixed Statutory Cap ($2.4M USD)</span>
           </div>
 
           <div className="bg-black/40 rounded-xl p-3.5 border border-white/5">
-            <span className="text-[11px] text-slate-400 font-medium">Coins in Circulation (CIC)</span>
+            <span className="text-[11px] text-slate-200 font-bold">Coins in Circulation (CIC)</span>
             <div className="text-lg sm:text-xl font-mono font-extrabold text-emerald-400 mt-0.5">
               {(circulatingFIC / 1000000).toFixed(2)}M FIC
             </div>
@@ -830,7 +830,7 @@ export const MasterFinancialsConsole: React.FC = () => {
           </div>
 
           <div className="bg-black/40 rounded-xl p-3.5 border border-white/5">
-            <span className="text-[11px] text-slate-400 font-medium">FIAT Parity & Launch Value</span>
+            <span className="text-[11px] text-slate-200 font-bold">FIAT Parity & Launch Value</span>
             <div className="text-lg sm:text-xl font-mono font-extrabold text-white mt-0.5">
               1 FIC = ₦{exchangeRateNaira.toFixed(2)}
             </div>
@@ -838,7 +838,7 @@ export const MasterFinancialsConsole: React.FC = () => {
           </div>
 
           <div className="bg-black/40 rounded-xl p-3.5 border border-white/5">
-            <span className="text-[11px] text-slate-400 font-medium">10% Burn Mechanism</span>
+            <span className="text-[11px] text-slate-200 font-bold">10% Burn Mechanism</span>
             <div className="text-lg sm:text-xl font-mono font-extrabold text-rose-400 mt-0.5 flex items-center gap-1.5">
               <Flame className="w-4 h-4 text-rose-500" />
               <span>{burnedFIC.toLocaleString()} FIC</span>
@@ -875,7 +875,7 @@ export const MasterFinancialsConsole: React.FC = () => {
                 className={`py-3 px-2 border-b-2 transition-all flex items-center gap-2 whitespace-nowrap ${
                   isActive
                     ? 'border-amber-500 text-amber-400 font-bold'
-                    : 'border-transparent text-zinc-400 hover:text-zinc-200'
+                    : 'border-transparent text-zinc-300 hover:text-white font-medium'
                 }`}
               >
                 <Icon className="w-4 h-4" />
@@ -903,7 +903,7 @@ export const MasterFinancialsConsole: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 shadow-sm">
               <div className="flex items-center justify-between mb-4">
-                <span className="text-xs font-bold text-zinc-400 uppercase tracking-wider">
+                <span className="text-xs font-bold text-zinc-200 uppercase tracking-wider">
                   Sovereign Escrow Vault
                 </span>
                 <span className="px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-300 text-[10px] font-bold">
@@ -913,23 +913,23 @@ export const MasterFinancialsConsole: React.FC = () => {
               <div className="text-2xl font-mono font-extrabold text-white">
                 ₦{(totalMintedFIC * exchangeRateNaira).toLocaleString()}.00
               </div>
-              <p className="text-xs text-zinc-400 mt-1">
+              <p className="text-xs text-zinc-300 mt-1 font-medium">
                 Backing 48,000,000 FIC collateralized across CBN Tier-1 partner banks and Alternative Bank (0514108422).
               </p>
               <div className="mt-4 pt-4 border-t border-zinc-800 space-y-2 text-xs">
                 <div className="flex justify-between">
-                  <span className="text-zinc-400">Liquidity Coverage Ratio</span>
+                  <span className="text-zinc-300 font-medium">Liquidity Coverage Ratio</span>
                   <span className="font-mono font-bold text-emerald-400">142.5%</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-zinc-400">Alternative Bank Balance</span>
+                  <span className="text-zinc-300 font-medium">Alternative Bank Balance</span>
                   <span className="font-mono font-bold text-amber-400">₦2,450,820,000.00</span>
                 </div>
               </div>
             </div>
 
             <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 shadow-sm">
-              <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-4">
+              <h3 className="text-xs font-bold text-zinc-200 uppercase tracking-wider mb-4">
                 Statutory Allocation Architecture (48M FIC)
               </h3>
               <div className="space-y-3 text-xs">
@@ -994,7 +994,7 @@ export const MasterFinancialsConsole: React.FC = () => {
                 </button>
                 <button
                   onClick={() => handleSubTabChange('member-purchase')}
-                  className="w-full py-2.5 px-3 bg-white/10 hover:bg-white/20 text-slate-700 text-xs font-bold rounded-xl transition flex items-center justify-center gap-2"
+                  className="w-full py-2.5 px-3 bg-white/10 hover:bg-white/20 text-white text-xs font-bold rounded-xl border border-white/20 transition flex items-center justify-center gap-2"
                 >
                   <CreditCard className="w-3.5 h-3.5" />
                   <span>Inspect Alternative Bank Purchases</span>
@@ -1050,15 +1050,15 @@ export const MasterFinancialsConsole: React.FC = () => {
             {/* Guardian AI Electronic Counter Status Banner */}
             <div className="flex flex-wrap items-center justify-between gap-3 p-4 bg-black/50 border border-amber-500/30 rounded-xl text-xs font-mono">
               <div className="flex items-center gap-2">
-                <span className="text-zinc-400">Electronic Blockchain Counter:</span>
+                <span className="text-zinc-200 font-bold">Electronic Blockchain Counter:</span>
                 <span className="text-amber-400 font-bold">{guardianCounterValue.toLocaleString()} FIC</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-zinc-400">Active Guardian Serial Stamp:</span>
+                <span className="text-zinc-200 font-bold">Active Guardian Serial Stamp:</span>
                 <span className="text-emerald-400 font-bold">{activeSerialNumber}</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-zinc-400">Guardian AI Apparatus:</span>
+                <span className="text-zinc-200 font-bold">Guardian AI Apparatus:</span>
                 <span className="text-purple-400 font-bold">
                   {guardianEnforcementActive ? 'ONLINE & SEALED' : 'DEGRADED'}
                 </span>
@@ -1096,7 +1096,7 @@ export const MasterFinancialsConsole: React.FC = () => {
                   </button>
                   <a
                     href="/legal/whitepaper"
-                    className="px-3.5 py-2 bg-white/10 hover:bg-white/20 text-slate-700 rounded-xl text-xs font-semibold border border-white/20 transition-all flex items-center gap-1.5"
+                    className="px-3.5 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-bold border border-white/20 transition-all flex items-center gap-1.5"
                   >
                     <FileText className="w-3.5 h-3.5 text-amber-400" />
                     <span>White Paper</span>
@@ -1106,22 +1106,22 @@ export const MasterFinancialsConsole: React.FC = () => {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
                 <div className="bg-black/50 p-3.5 rounded-xl border border-white/5">
-                  <span className="text-zinc-400 text-[11px] block">Certified Asset</span>
+                  <span className="text-zinc-200 text-[11px] block font-bold">Certified Asset</span>
                   <span className="font-bold text-white text-xs">{FIC_DIGITAL_NOTARIZATION_CERTIFICATE.documentTitle}</span>
                 </div>
                 <div className="bg-black/50 p-3.5 rounded-xl border border-white/5">
-                  <span className="text-zinc-400 text-[11px] block">Issued To (Exclusive Rights Holder)</span>
+                  <span className="text-zinc-200 text-[11px] block font-bold">Issued To (Exclusive Rights Holder)</span>
                   <span className="font-bold text-amber-400 text-xs">{FIC_DIGITAL_NOTARIZATION_CERTIFICATE.issuedTo}</span>
                 </div>
                 <div className="bg-black/50 p-3.5 rounded-xl border border-white/5">
-                  <span className="text-zinc-400 text-[11px] block">Reference & Fingerprint ID</span>
+                  <span className="text-zinc-200 text-[11px] block font-bold">Reference & Fingerprint ID</span>
                   <span className="font-mono font-bold text-emerald-400 text-xs block">{FIC_DIGITAL_NOTARIZATION_CERTIFICATE.referenceId}</span>
-                  <span className="font-mono text-zinc-400 text-[10px]">{FIC_DIGITAL_NOTARIZATION_CERTIFICATE.fingerprintId}</span>
+                  <span className="font-mono text-zinc-300 text-[10px] font-medium">{FIC_DIGITAL_NOTARIZATION_CERTIFICATE.fingerprintId}</span>
                 </div>
                 <div className="bg-black/50 p-3.5 rounded-xl border border-white/5">
-                  <span className="text-zinc-400 text-[11px] block">Notarization Timestamp (UTC)</span>
+                  <span className="text-zinc-200 text-[11px] block font-bold">Notarization Timestamp (UTC)</span>
                   <span className="font-mono text-amber-300 text-[11px] block">{FIC_DIGITAL_NOTARIZATION_CERTIFICATE.timestampUtc}</span>
-                  <span className="text-zinc-400 text-[10px]">Issued: {FIC_DIGITAL_NOTARIZATION_CERTIFICATE.dateIssued}</span>
+                  <span className="text-zinc-300 text-[10px] font-medium">Issued: {FIC_DIGITAL_NOTARIZATION_CERTIFICATE.dateIssued}</span>
                 </div>
               </div>
 
@@ -1129,7 +1129,7 @@ export const MasterFinancialsConsole: React.FC = () => {
               <div className="p-3.5 bg-black/80 rounded-xl border border-amber-500/30 flex flex-col md:flex-row md:items-center justify-between gap-2 text-xs">
                 <div className="flex items-center gap-2 overflow-hidden">
                   <Hash className="w-4 h-4 text-amber-400 shrink-0" />
-                  <span className="text-zinc-400 font-mono text-[11px] shrink-0">Document SHA256:</span>
+                  <span className="text-zinc-200 font-mono text-[11px] shrink-0 font-bold">Document SHA256:</span>
                   <code className="text-amber-300 font-mono text-[11px] break-all select-all">
                     {FIC_DIGITAL_NOTARIZATION_CERTIFICATE.documentSha256Hash}
                   </code>
@@ -1153,7 +1153,7 @@ export const MasterFinancialsConsole: React.FC = () => {
                 <Fingerprint className="w-5 h-5" />
                 <h4 className="font-bold text-sm text-white">1. Uniqueness</h4>
               </div>
-              <p className="text-xs text-zinc-400 leading-relaxed">
+              <p className="text-xs text-zinc-300 leading-relaxed font-medium">
                 Typographic GUARDIAN AI stamps unique serial numbers on each FIC for precision tracking across all
                 service transactions.
               </p>
@@ -1167,7 +1167,7 @@ export const MasterFinancialsConsole: React.FC = () => {
                 <Shield className="w-5 h-5" />
                 <h4 className="font-bold text-sm text-white">2. Anti-Counterfeiting</h4>
               </div>
-              <p className="text-xs text-zinc-400 leading-relaxed">
+              <p className="text-xs text-zinc-300 leading-relaxed font-medium">
                 Advanced security TOKEN, digital watermarks, and cryptographic holograms render counterfeiting impossible.
               </p>
               <div className="text-[11px] font-mono text-emerald-300 bg-black/40 p-2 rounded-lg border border-white/5">
@@ -1180,7 +1180,7 @@ export const MasterFinancialsConsole: React.FC = () => {
                 <Lock className="w-5 h-5" />
                 <h4 className="font-bold text-sm text-white">3. Tamper-Evident</h4>
               </div>
-              <p className="text-xs text-zinc-400 leading-relaxed">
+              <p className="text-xs text-zinc-300 leading-relaxed font-medium">
                 Special SHARED LEDGER data makes records break-proof and immutable if tampered with, guaranteeing integrity.
               </p>
               <div className="text-[11px] font-mono text-indigo-300 bg-black/40 p-2 rounded-lg border border-white/5">
@@ -1193,7 +1193,7 @@ export const MasterFinancialsConsole: React.FC = () => {
                 <Key className="w-5 h-5" />
                 <h4 className="font-bold text-sm text-white">4. Unique ID</h4>
               </div>
-              <p className="text-xs text-zinc-400 leading-relaxed">
+              <p className="text-xs text-zinc-300 leading-relaxed font-medium">
                 Every FIC has a unique identifier that can be verified in real time on the blockchain explorer.
               </p>
               <div className="text-[11px] font-mono text-purple-300 bg-black/40 p-2 rounded-lg border border-white/5">
@@ -1207,30 +1207,30 @@ export const MasterFinancialsConsole: React.FC = () => {
             <h3 className="text-sm font-bold text-white uppercase tracking-wider">
               Mint Inspectorate Quality Control & Pre-Printing Economic Factors
             </h3>
-            <p className="text-xs text-zinc-400">
+            <p className="text-xs text-zinc-300 font-medium">
               The Mint Inspectorate evaluates macroeconomic equilibrium metrics before any finished FingerMobile Infinite Coins are printed:
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs font-mono">
               <div className="p-3 bg-black/40 rounded-xl border border-zinc-800">
-                <span className="text-zinc-500 font-sans">1. Inflation Rate Factor</span>
+                <span className="text-zinc-200 font-bold font-sans">1. Inflation Rate Factor</span>
                 <div className="text-base font-bold text-amber-400 mt-1">18.4% Baseline</div>
-                <p className="text-[11px] text-zinc-400 font-sans mt-0.5">Checked against CBN & National Bureau indexes.</p>
+                <p className="text-[11px] text-zinc-300 font-sans mt-0.5 font-medium">Checked against CBN & National Bureau indexes.</p>
               </div>
               <div className="p-3 bg-black/40 rounded-xl border border-zinc-800">
-                <span className="text-zinc-500 font-sans">2. Gross Domestic Product (GDP)</span>
+                <span className="text-zinc-200 font-bold font-sans">2. Gross Domestic Product (GDP)</span>
                 <div className="text-base font-bold text-emerald-400 mt-1">3.4% Growth Trend</div>
-                <p className="text-[11px] text-zinc-400 font-sans mt-0.5">Ecosystem commerce velocity alignment.</p>
+                <p className="text-[11px] text-zinc-300 font-sans mt-0.5 font-medium">Ecosystem commerce velocity alignment.</p>
               </div>
               <div className="p-3 bg-black/40 rounded-xl border border-zinc-800">
-                <span className="text-zinc-500 font-sans">3. Buffer Stock Level</span>
+                <span className="text-zinc-200 font-bold font-sans">3. Buffer Stock Level</span>
                 <div className="text-base font-bold text-indigo-400 mt-1">5,000,000 FIC</div>
-                <p className="text-[11px] text-zinc-400 font-sans mt-0.5">Central Wallet 004 reserve cushion.</p>
+                <p className="text-[11px] text-zinc-300 font-sans mt-0.5 font-medium">Central Wallet 004 reserve cushion.</p>
               </div>
               <div className="p-3 bg-black/40 rounded-xl border border-zinc-800">
-                <span className="text-zinc-500 font-sans">4. Disposed / Burn Replacement</span>
+                <span className="text-zinc-200 font-bold font-sans">4. Disposed / Burn Replacement</span>
                 <div className="text-base font-bold text-rose-400 mt-1">428,500 FIC Burned</div>
-                <p className="text-[11px] text-zinc-400 font-sans mt-0.5">Replacement strictly limited to maintain scarcity.</p>
+                <p className="text-[11px] text-zinc-300 font-sans mt-0.5 font-medium">Replacement strictly limited to maintain scarcity.</p>
               </div>
             </div>
           </div>
@@ -1271,7 +1271,7 @@ export const MasterFinancialsConsole: React.FC = () => {
 
             <div className="overflow-x-auto border border-zinc-800 rounded-xl">
               <table className="w-full text-left text-xs">
-                <thead className="bg-black/60 text-zinc-400 font-semibold border-b border-zinc-800 text-[10px] uppercase">
+                <thead className="bg-black/60 text-zinc-200 font-bold border-b border-zinc-800 text-[10px] uppercase">
                   <tr>
                     <th className="p-3">Wallet & Custodian</th>
                     <th className="p-3">Allocated Amount</th>
@@ -1285,12 +1285,12 @@ export const MasterFinancialsConsole: React.FC = () => {
                     <tr key={item.id} className="hover:bg-zinc-800/40">
                       <td className="p-3 font-sans">
                         <div className="font-bold text-white">{item.walletName}</div>
-                        <div className="text-[10px] text-zinc-400">{item.custodianTitle}</div>
+                        <div className="text-[10px] text-zinc-300 font-medium">{item.custodianTitle}</div>
                         <div className="text-[10px] text-amber-400 font-mono mt-0.5">{item.walletAddress}</div>
                       </td>
                       <td className="p-3 font-bold text-amber-400 text-sm">
                         {item.amountFIC.toLocaleString()} FIC
-                        <div className="text-[10px] text-zinc-400 font-sans">
+                        <div className="text-[10px] text-zinc-300 font-sans font-medium">
                           ₦{(item.amountFIC * exchangeRateNaira).toLocaleString()} NGN
                         </div>
                       </td>
@@ -1332,13 +1332,13 @@ export const MasterFinancialsConsole: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="text-sm font-bold text-white">Execute FIC Allocation</h3>
-                  <p className="text-[11px] text-zinc-400">Commissioned under Mbah Israel Obinna exclusive charter.</p>
+                  <p className="text-[11px] text-zinc-300 font-medium">Commissioned under Mbah Israel Obinna exclusive charter.</p>
                 </div>
               </div>
 
               <form onSubmit={handleMintAllocate} className="space-y-4 text-xs">
                 <div>
-                  <label className="block font-semibold text-zinc-300 mb-1">
+                  <label className="block font-bold text-zinc-200 mb-1">
                     Recipient Address or Designated Wallet
                   </label>
                   <input
@@ -1352,7 +1352,7 @@ export const MasterFinancialsConsole: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-zinc-300 mb-1">
+                  <label className="block font-bold text-zinc-200 mb-1">
                     FIC Amount
                   </label>
                   <div className="relative">
@@ -1369,7 +1369,7 @@ export const MasterFinancialsConsole: React.FC = () => {
                     <span className="absolute right-3 top-2.5 font-bold font-mono text-amber-500">FIC</span>
                   </div>
                   {amountInput && !isNaN(parseFloat(amountInput)) && (
-                    <div className="text-[11px] text-zinc-400 font-mono mt-1">
+                    <div className="text-[11px] text-zinc-300 font-mono font-medium mt-1">
                       FIAT Parity: ₦{(parseFloat(amountInput) * exchangeRateNaira).toLocaleString()} NGN (~${(parseFloat(amountInput) * ficUSDValue).toFixed(2)} USD)
                     </div>
                   )}
@@ -1430,7 +1430,7 @@ export const MasterFinancialsConsole: React.FC = () => {
 
               <div className="overflow-x-auto max-h-96">
                 <table className="w-full text-left text-xs">
-                  <thead className="bg-black/60 text-zinc-400 font-semibold border-b border-zinc-800 text-[10px] uppercase">
+                  <thead className="bg-black/60 text-zinc-200 font-bold border-b border-zinc-800 text-[10px] uppercase">
                     <tr>
                       <th className="p-3">Recipient & Serial</th>
                       <th className="p-3">Amount</th>
@@ -1444,25 +1444,25 @@ export const MasterFinancialsConsole: React.FC = () => {
                       <tr key={tx.id} className="hover:bg-zinc-800/40">
                         <td className="p-3 font-sans">
                           <div className="font-bold text-white">{tx.recipientName}</div>
-                          <div className="text-[10px] text-zinc-400 font-mono">{tx.recipientAddress}</div>
+                          <div className="text-[10px] text-zinc-300 font-mono font-medium">{tx.recipientAddress}</div>
                           {tx.serialNumber && (
                             <div className="text-[10px] text-amber-400 font-mono mt-0.5">{tx.serialNumber}</div>
                           )}
                         </td>
                         <td className="p-3">
                           <span className="font-bold text-amber-400">+{tx.amountFIC.toLocaleString()} FIC</span>
-                          <div className="text-[10px] text-zinc-400">₦{tx.fiatEquivalentNaira.toLocaleString()}</div>
+                          <div className="text-[10px] text-zinc-300 font-medium">₦{tx.fiatEquivalentNaira.toLocaleString()}</div>
                         </td>
                         <td className="p-3 font-sans">
-                          <span className="px-2 py-0.5 rounded-full bg-zinc-800 text-zinc-300 text-[10px]">
+                          <span className="px-2 py-0.5 rounded-full bg-zinc-800 text-zinc-200 text-[10px] font-bold">
                             {tx.category}
                           </span>
                         </td>
                         <td className="p-3">
                           <div className="text-[10px] text-blue-400 font-bold">{tx.txHash}</div>
-                          <div className="text-[10px] text-zinc-400 font-sans line-clamp-1">{tx.authorizedBy}</div>
+                          <div className="text-[10px] text-zinc-300 font-sans line-clamp-1 font-medium">{tx.authorizedBy}</div>
                         </td>
-                        <td className="p-3 text-right text-zinc-400 text-[10px] font-sans">
+                        <td className="p-3 text-right text-zinc-300 text-[10px] font-sans font-medium">
                           {tx.timestamp}
                         </td>
                       </tr>
@@ -1522,7 +1522,7 @@ export const MasterFinancialsConsole: React.FC = () => {
 
             <div className="overflow-x-auto border border-zinc-800 rounded-xl">
               <table className="w-full text-left text-xs">
-                <thead className="bg-black/60 text-zinc-400 font-semibold border-b border-zinc-800 text-[10px] uppercase">
+                <thead className="bg-black/60 text-zinc-200 font-bold border-b border-zinc-800 text-[10px] uppercase">
                   <tr>
                     <th className="p-3">Tx Type</th>
                     <th className="p-3">Source &rarr; Destination</th>
@@ -1542,8 +1542,8 @@ export const MasterFinancialsConsole: React.FC = () => {
                       </td>
                       <td className="p-3 font-sans">
                         <div className="font-bold text-white">{entry.source}</div>
-                        <div className="text-[10px] text-zinc-400">&rarr; {entry.destination}</div>
-                        <div className="text-[10px] text-zinc-500 mt-0.5">{entry.notes}</div>
+                        <div className="text-[10px] text-zinc-300 font-medium">&rarr; {entry.destination}</div>
+                        <div className="text-[10px] text-zinc-300 mt-0.5 font-medium">{entry.notes}</div>
                       </td>
                       <td className="p-3 font-bold text-amber-400 text-sm">
                         {entry.amountFIC.toLocaleString()} FIC
@@ -1556,7 +1556,7 @@ export const MasterFinancialsConsole: React.FC = () => {
                           {entry.reconciliationStatus}
                         </span>
                       </td>
-                      <td className="p-3 text-right text-zinc-400 font-sans">
+                      <td className="p-3 text-right text-zinc-300 font-sans font-medium">
                         {entry.timestamp}
                       </td>
                     </tr>
@@ -1594,21 +1594,21 @@ export const MasterFinancialsConsole: React.FC = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-mono">
               <div className="p-4 rounded-xl bg-black/50 border border-zinc-800">
-                <span className="text-zinc-500 font-sans">Designated Bank:</span>
+                <span className="text-zinc-200 font-bold font-sans">Designated Bank:</span>
                 <div className="text-lg font-bold text-white mt-1">Alternative Bank</div>
-                <p className="text-[11px] text-zinc-400 font-sans mt-1">CBN Licensed & Supervised Institution</p>
+                <p className="text-[11px] text-zinc-300 font-sans mt-1 font-medium">CBN Licensed & Supervised Institution</p>
               </div>
 
               <div className="p-4 rounded-xl bg-black/50 border border-zinc-800">
-                <span className="text-zinc-500 font-sans">Account Number:</span>
+                <span className="text-zinc-200 font-bold font-sans">Account Number:</span>
                 <div className="text-lg font-bold text-amber-400 mt-1 select-all">0514108422</div>
-                <p className="text-[11px] text-zinc-400 font-sans mt-1">Dedicated Sovereign Protocol Treasury Rail</p>
+                <p className="text-[11px] text-zinc-300 font-sans mt-1 font-medium">Dedicated Sovereign Protocol Treasury Rail</p>
               </div>
 
               <div className="p-4 rounded-xl bg-black/50 border border-zinc-800">
-                <span className="text-zinc-500 font-sans">Account Name:</span>
+                <span className="text-zinc-200 font-bold font-sans">Account Name:</span>
                 <div className="text-lg font-bold text-white mt-1">FingerMobile Protocol Communication</div>
-                <p className="text-[11px] text-zinc-400 font-sans mt-1">Official Corporate Settlement Account</p>
+                <p className="text-[11px] text-zinc-300 font-sans mt-1 font-medium">Official Corporate Settlement Account</p>
               </div>
             </div>
 
@@ -1694,7 +1694,7 @@ export const MasterFinancialsConsole: React.FC = () => {
 
                 {purchaseFicAmount && !isNaN(parseFloat(purchaseFicAmount)) && (
                   <div className="p-3 bg-black/40 rounded-xl border border-zinc-800 text-xs font-mono space-y-1">
-                    <div className="flex justify-between text-zinc-400">
+                    <div className="flex justify-between text-zinc-300 font-medium">
                       <span>Total Considerations:</span>
                       <span className="font-bold text-amber-400">
                         ₦{(
@@ -1704,7 +1704,7 @@ export const MasterFinancialsConsole: React.FC = () => {
                         NGN
                       </span>
                     </div>
-                    <div className="flex justify-between text-zinc-400">
+                    <div className="flex justify-between text-zinc-300 font-medium">
                       <span>USD Equivalent:</span>
                       <span className="font-bold text-emerald-400">
                         ${(
@@ -1749,10 +1749,10 @@ export const MasterFinancialsConsole: React.FC = () => {
                     <div className="text-amber-300 font-bold">
                       Amount: {purchaseSuccessReceipt.amountFIC.toLocaleString()} FIC (₦{purchaseSuccessReceipt.totalNaira.toLocaleString()})
                     </div>
-                    <div className="text-zinc-400 text-[11px]">
+                    <div className="text-zinc-300 text-[11px] font-medium">
                       Bank: {purchaseSuccessReceipt.bankName} | Acc: {purchaseSuccessReceipt.accountNumber}
                     </div>
-                    <div className="text-zinc-500 text-[10px] break-all">
+                    <div className="text-zinc-300 text-[10px] break-all font-medium">
                       Hash: {purchaseSuccessReceipt.txHash}
                     </div>
                     <div className="text-emerald-400 text-[10px]">
@@ -1760,7 +1760,7 @@ export const MasterFinancialsConsole: React.FC = () => {
                     </div>
                   </div>
                 ) : (
-                  <div className="mt-8 text-center py-12 text-zinc-500 text-xs space-y-2">
+                  <div className="mt-8 text-center py-12 text-zinc-300 font-medium text-xs space-y-2">
                     <FileText className="w-10 h-10 mx-auto text-zinc-600 opacity-60" />
                     <p>No recent purchase rendered. Fill out form to generate an official PDF payment receipt.</p>
                   </div>
@@ -1770,7 +1770,7 @@ export const MasterFinancialsConsole: React.FC = () => {
               {purchaseSuccessReceipt && (
                 <button
                   onClick={() => downloadFicReceiptPdf(purchaseSuccessReceipt)}
-                  className="w-full py-2.5 bg-white/10 hover:bg-white/20 text-slate-700 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2"
+                  className="w-full py-2.5 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-bold border border-white/20 transition flex items-center justify-center gap-2"
                 >
                   <Download className="w-3.5 h-3.5" />
                   <span>Re-Download PDF Receipt</span>
@@ -1805,7 +1805,7 @@ export const MasterFinancialsConsole: React.FC = () => {
                 <h3 className="text-lg font-bold text-white mt-0.5">
                   Treasury Staff Payment Confirmation & Executive CFO Final Approval
                 </h3>
-                <p className="text-xs text-zinc-400 mt-1">
+                <p className="text-xs text-zinc-300 mt-1 font-medium">
                   Reconciliation for payments through Alternative Bank (0514108422). Staff confirms; CFO Mrs. Mbah Eunice Emonena authorizes deduction from Wallet 004.
                 </p>
               </div>
@@ -1855,7 +1855,7 @@ export const MasterFinancialsConsole: React.FC = () => {
                     <option value="staff_accountant_7">Account Staff 7 (Staff Accountant)</option>
                   </select>
 
-                  <div className="flex items-center gap-2 pt-1 text-xs text-zinc-400">
+                  <div className="flex items-center gap-2 pt-1 text-xs text-zinc-200 font-medium">
                     <input
                       type="checkbox"
                       id="consoleAutoApprove"
@@ -1880,8 +1880,8 @@ export const MasterFinancialsConsole: React.FC = () => {
                 </div>
                 <div className="text-xs font-mono space-y-1">
                   <div className="font-bold text-white">{PLATFORM_OWNERSHIP.coFounder.name}</div>
-                  <div className="text-zinc-400 text-[11px]">{PLATFORM_OWNERSHIP.coFounder.roleBadge}</div>
-                  <div className="text-[10px] text-zinc-500 pt-1 border-t border-zinc-800 space-y-0.5">
+                  <div className="text-zinc-300 text-[11px] font-medium">{PLATFORM_OWNERSHIP.coFounder.roleBadge}</div>
+                  <div className="text-[10px] text-zinc-300 pt-1 border-t border-zinc-800 space-y-0.5 font-medium">
                     {PLATFORM_OWNERSHIP.coFounder.rootMasterSeal?.map((seal, idx) => (
                       <div key={idx} className="text-amber-300/80">{seal}</div>
                     ))}
@@ -1893,20 +1893,20 @@ export const MasterFinancialsConsole: React.FC = () => {
             {/* Live Requests Table */}
             <div className="space-y-3">
               <div className="flex items-center justify-between text-xs">
-                <span className="font-bold text-zinc-300 uppercase tracking-wider">
+                <span className="font-bold text-zinc-200 uppercase tracking-wider">
                   Alternative Bank Treasury Deposit Queue ({liveTreasuryRequests.length})
                 </span>
-                <span className="text-zinc-500 font-mono text-[11px]">Auto-Refreshed via Sovereign Rail</span>
+                <span className="text-zinc-300 font-mono text-[11px] font-medium">Auto-Refreshed via Sovereign Rail</span>
               </div>
 
               {liveTreasuryRequests.length === 0 ? (
-                <div className="text-center py-8 text-zinc-500 text-xs">
+                <div className="text-center py-8 text-zinc-300 font-medium text-xs">
                   No treasury deposit requests currently queued.
                 </div>
               ) : (
                 <div className="overflow-x-auto border border-zinc-800 rounded-xl">
                   <table className="w-full text-left text-xs">
-                    <thead className="bg-black/60 text-zinc-400 font-mono uppercase text-[10px] border-b border-zinc-800">
+                    <thead className="bg-black/60 text-zinc-200 font-mono uppercase text-[10px] border-b border-zinc-800 font-bold">
                       <tr>
                         <th className="p-3">Reference</th>
                         <th className="p-3">Amount (FIC / NGN)</th>
@@ -1922,22 +1922,22 @@ export const MasterFinancialsConsole: React.FC = () => {
                         <tr key={req.id} className="hover:bg-zinc-800/40">
                           <td className="p-3">
                             <span className="font-bold text-amber-400 block">{req.requestReference}</span>
-                            <span className="text-[10px] text-zinc-500">
+                            <span className="text-[10px] text-zinc-300 font-medium">
                               {new Date(req.createdAt).toLocaleDateString()} {new Date(req.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                             </span>
                           </td>
 
                           <td className="p-3 font-sans">
                             <span className="font-bold text-white block text-sm">{req.amountFIC.toLocaleString()} FIC</span>
-                            <span className="text-[11px] text-zinc-400 font-mono">
+                            <span className="text-[11px] text-zinc-300 font-mono font-medium">
                               ₦{req.amountNGN.toLocaleString()} (Rate: ₦{req.ratePerFIC})
                             </span>
                           </td>
 
                           <td className="p-3 font-sans">
                             <div className="font-bold text-zinc-200">{req.depositorName}</div>
-                            <div className="text-[10px] text-zinc-400">{req.depositorBank}</div>
-                            <div className="text-[10px] text-zinc-500 font-mono">{req.bankTxReference}</div>
+                            <div className="text-[10px] text-zinc-300 font-medium">{req.depositorBank}</div>
+                            <div className="text-[10px] text-zinc-300 font-mono font-medium">{req.bankTxReference}</div>
                           </td>
 
                           <td className="p-3 font-sans">
@@ -1946,7 +1946,7 @@ export const MasterFinancialsConsole: React.FC = () => {
                                 <span className="px-2 py-0.5 rounded-full bg-blue-950 text-blue-300 text-[10px] font-bold border border-blue-800">
                                   ✓ Confirmed by {req.treasuryStaffName || 'Treasury Staff'}
                                 </span>
-                                <div className="text-[10px] text-zinc-500 mt-0.5 font-mono">
+                                <div className="text-[10px] text-zinc-300 mt-0.5 font-mono font-medium">
                                   {new Date(req.treasuryConfirmedAt).toLocaleTimeString()}
                                 </div>
                               </div>
@@ -1963,18 +1963,18 @@ export const MasterFinancialsConsole: React.FC = () => {
                                 <span className="px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-300 text-[10px] font-bold border border-emerald-800">
                                   ✓ Approved by {req.cfoName || 'Mrs. Mbah Eunice Emonena (CFO)'}
                                 </span>
-                                <div className="text-[10px] text-zinc-500 mt-0.5 font-mono">
+                                <div className="text-[10px] text-zinc-300 mt-0.5 font-mono font-medium">
                                   {new Date(req.cfoApprovedAt).toLocaleTimeString()}
                                 </div>
                               </div>
                             ) : (
-                              <span className="text-[11px] text-zinc-500 italic">
+                              <span className="text-[11px] text-zinc-300 italic font-medium">
                                 {req.treasuryConfirmedAt ? 'Ready for CFO Seal' : 'Pending Confirmation'}
                               </span>
                             )}
                           </td>
 
-                          <td className="p-3 font-mono text-[10px] text-zinc-400">
+                          <td className="p-3 font-mono text-[10px] text-zinc-300 font-medium">
                             {req.deductedFromVault ? (
                               <span className="text-purple-300 font-semibold">{req.deductedFromVault}</span>
                             ) : (
@@ -2053,7 +2053,7 @@ export const MasterFinancialsConsole: React.FC = () => {
                     <Layers className="w-4 h-4 text-purple-400" />
                     Sovereign Vault Waterfall Depletion Monitor
                   </h4>
-                  <p className="text-[11px] text-zinc-500 mt-0.5">
+                  <p className="text-[11px] text-zinc-300 mt-0.5 font-medium">
                     Depletion Order: Wallet 004 Treasury & Seed Sale &rarr; Wallet 003 &rarr; Wallet 002 &rarr; Wallet 001. Minting locked until exhausted and approved by SuperAdmin Founder.
                   </p>
                 </div>
@@ -2076,7 +2076,7 @@ export const MasterFinancialsConsole: React.FC = () => {
                           : 'bg-black/40 border-zinc-800 text-zinc-300'
                       }`}
                     >
-                      <div className="flex justify-between text-[10px] text-zinc-400 mb-1">
+                      <div className="flex justify-between text-[10px] text-zinc-300 mb-1 font-medium">
                         <span className="font-bold text-white">Vault {vault.vaultNumber}</span>
                         <span>Priority #{vault.priorityOrder}</span>
                       </div>
@@ -2092,7 +2092,7 @@ export const MasterFinancialsConsole: React.FC = () => {
                           style={{ width: `${Math.min(100, Math.max(0, pct))}%` }}
                         />
                       </div>
-                      <div className="flex justify-between text-[9px] text-zinc-500 mt-1">
+                      <div className="flex justify-between text-[9px] text-zinc-300 mt-1 font-medium">
                         <span>Depleted: {vault.depletedFIC}</span>
                         <span>{pct.toFixed(1)}% Left</span>
                       </div>
@@ -2133,7 +2133,7 @@ export const MasterFinancialsConsole: React.FC = () => {
                     </span>
                   </div>
                   <p className="text-amber-300 font-medium">{PLATFORM_OWNERSHIP.coFounder.roleBadge}</p>
-                  <div className="text-[10px] text-zinc-400 pt-1 space-y-0.5">
+                  <div className="text-[10px] text-zinc-300 pt-1 space-y-0.5 font-medium">
                     {PLATFORM_OWNERSHIP.coFounder.rootMasterSeal?.map((seal, i) => (
                       <div key={i} className="text-emerald-400 font-semibold">{seal}</div>
                     ))}
@@ -2159,9 +2159,9 @@ export const MasterFinancialsConsole: React.FC = () => {
                             <div key={r.roleCode} className="p-3 rounded-xl bg-black/40 border border-zinc-800 space-y-1">
                               <div className="flex justify-between font-bold text-zinc-200">
                                 <span>{r.roleName}</span>
-                                <span className="font-mono text-[10px] text-zinc-500">{r.roleCode}</span>
+                                <span className="font-mono text-[10px] text-zinc-300 font-medium">{r.roleCode}</span>
                               </div>
-                              <p className="text-[11px] text-zinc-400">{r.responsibilities}</p>
+                              <p className="text-[11px] text-zinc-300 font-medium">{r.responsibilities}</p>
                               <div className="flex gap-2 pt-1 text-[10px] font-bold">
                                 {r.canConfirmPayment && (
                                   <span className="text-blue-400">✓ Alternative Bank Confirmation</span>
@@ -2200,36 +2200,36 @@ export const MasterFinancialsConsole: React.FC = () => {
           {/* Core Economic Pegs Grid */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
-              <span className="text-[11px] text-zinc-400 font-medium">FIAT Base Anchor</span>
+              <span className="text-[11px] text-zinc-200 font-bold">FIAT Base Anchor</span>
               <div className="text-xl font-bold font-mono text-amber-400 mt-1">
                 1 FIC = ₦{exchangeRateNaira.toFixed(2)}
               </div>
-              <p className="text-[10px] text-zinc-400 mt-1">Baseline value anchor for digital & physical commerce.</p>
+              <p className="text-[10px] text-zinc-300 mt-1 font-medium">Baseline value anchor for digital & physical commerce.</p>
             </div>
 
             <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
-              <span className="text-[11px] text-zinc-400 font-medium">Launch / Base Unit Value</span>
+              <span className="text-[11px] text-zinc-200 font-bold">Launch / Base Unit Value</span>
               <div className="text-xl font-bold font-mono text-emerald-400 mt-1">
                 1 FIC = ${ficUSDValue.toFixed(2)} USD
               </div>
-              <p className="text-[10px] text-zinc-400 mt-1">Platform base unit value across all modules (1 USD = 20 FIC).</p>
+              <p className="text-[10px] text-zinc-300 mt-1 font-medium">Platform base unit value across all modules (1 USD = 20 FIC).</p>
             </div>
 
             <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
-              <span className="text-[11px] text-zinc-400 font-medium">Standard Unit of Value</span>
+              <span className="text-[11px] text-zinc-200 font-bold">Standard Unit of Value</span>
               <div className="text-xl font-bold font-mono text-indigo-300 mt-1">
                 1 FIC = 1 Standard Unit
               </div>
-              <p className="text-[10px] text-zinc-400 mt-1">Unified pricing denominator for products and services.</p>
+              <p className="text-[10px] text-zinc-300 mt-1 font-medium">Unified pricing denominator for products and services.</p>
             </div>
 
             <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
-              <span className="text-[11px] text-zinc-400 font-medium">Democratic Governance</span>
+              <span className="text-[11px] text-zinc-200 font-bold">Democratic Governance</span>
               <div className="text-xl font-bold font-mono text-purple-300 mt-1 flex items-center gap-1.5">
                 <Vote className="w-5 h-5 text-purple-400" />
                 <span>1 FIC = 1 Vote</span>
               </div>
-              <p className="text-[10px] text-zinc-400 mt-1">Anonymous to users, identity-verified on blockchain.</p>
+              <p className="text-[10px] text-zinc-300 mt-1 font-medium">Anonymous to users, identity-verified on blockchain.</p>
             </div>
           </div>
 
@@ -2255,7 +2255,7 @@ export const MasterFinancialsConsole: React.FC = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-xs font-mono">
               <div className="p-4 bg-black/40 rounded-xl border border-zinc-800 space-y-2">
-                <span className="text-zinc-400 font-sans">1. Daily Sales Velocity</span>
+                <span className="text-zinc-200 font-bold font-sans">1. Daily Sales Velocity</span>
                 <div className="text-lg font-bold text-white">{salesVelocityPercent}% of Inventory</div>
                 <input
                   type="range"
@@ -2265,13 +2265,13 @@ export const MasterFinancialsConsole: React.FC = () => {
                   onChange={(e) => setSalesVelocityPercent(parseInt(e.target.value))}
                   className="w-full accent-amber-500"
                 />
-                <span className="text-[10px] text-zinc-500 font-sans block">
+                <span className="text-[10px] text-zinc-300 font-sans block font-medium">
                   &gt;90%: +10% | &lt;50%: -10% | 70%: Maintain
                 </span>
               </div>
 
               <div className="p-4 bg-black/40 rounded-xl border border-zinc-800 space-y-2">
-                <span className="text-zinc-400 font-sans">2. User Satisfaction</span>
+                <span className="text-zinc-200 font-bold font-sans">2. User Satisfaction</span>
                 <div className="text-lg font-bold text-white">{userSatisfactionPercent}%</div>
                 <input
                   type="range"
@@ -2281,13 +2281,13 @@ export const MasterFinancialsConsole: React.FC = () => {
                   onChange={(e) => setUserSatisfactionPercent(parseInt(e.target.value))}
                   className="w-full accent-amber-500"
                 />
-                <span className="text-[10px] text-zinc-500 font-sans block">
+                <span className="text-[10px] text-zinc-300 font-sans block font-medium">
                   &gt;90%: +10% | &lt;70%: -10%
                 </span>
               </div>
 
               <div className="p-4 bg-black/40 rounded-xl border border-zinc-800 space-y-2">
-                <span className="text-zinc-400 font-sans">3. Competitor Pricing</span>
+                <span className="text-zinc-200 font-bold font-sans">3. Competitor Pricing</span>
                 <div className="text-lg font-bold text-white">{competitorPriceRatio}% of FIC</div>
                 <input
                   type="range"
@@ -2297,13 +2297,13 @@ export const MasterFinancialsConsole: React.FC = () => {
                   onChange={(e) => setCompetitorPriceRatio(parseInt(e.target.value))}
                   className="w-full accent-amber-500"
                 />
-                <span className="text-[10px] text-zinc-500 font-sans block">
+                <span className="text-[10px] text-zinc-300 font-sans block font-medium">
                   &lt;80%: +10% | &gt;120%: -10%
                 </span>
               </div>
 
               <div className="p-4 bg-black/40 rounded-xl border border-zinc-800 space-y-2">
-                <span className="text-zinc-400 font-sans">4. Liquidity Pool</span>
+                <span className="text-zinc-200 font-bold font-sans">4. Liquidity Pool</span>
                 <div className="text-lg font-bold text-white">{liquidityPoolSize.toLocaleString()} FIC</div>
                 <input
                   type="range"
@@ -2314,7 +2314,7 @@ export const MasterFinancialsConsole: React.FC = () => {
                   onChange={(e) => setLiquidityPoolSize(parseInt(e.target.value))}
                   className="w-full accent-amber-500"
                 />
-                <span className="text-[10px] text-zinc-500 font-sans block">
+                <span className="text-[10px] text-zinc-300 font-sans block font-medium">
                   &gt;100k: +10% | &lt;50k: -10%
                 </span>
               </div>
@@ -2326,7 +2326,7 @@ export const MasterFinancialsConsole: React.FC = () => {
               </div>
             )}
 
-            <div className="p-3 bg-zinc-800/60 rounded-xl text-xs text-zinc-400 space-y-1">
+            <div className="p-3 bg-zinc-800/60 rounded-xl text-xs text-zinc-200 space-y-1">
               <div><strong>Adjustment Schedule Constraints:</strong> Weekly adjustments executed strictly on Mondays at 00:00 (UTC).</div>
               <div>Maximum weekly swing: <strong>&plusmn;20% per week</strong>. Hard boundary floors: <strong>$0.10 minimum / $10.00 maximum per FIC</strong>.</div>
             </div>
@@ -2341,7 +2341,7 @@ export const MasterFinancialsConsole: React.FC = () => {
                   10% Mandatory Token Burn Engine
                 </h3>
               </div>
-              <p className="text-xs text-zinc-400">
+              <p className="text-xs text-zinc-300 font-medium">
                 Permanent deflationary burn automatically executed on every transaction:
               </p>
               <div className="space-y-2 text-xs font-mono">
@@ -2371,19 +2371,19 @@ export const MasterFinancialsConsole: React.FC = () => {
                   Statutory Distribution Splits
                 </h3>
               </div>
-              <p className="text-xs text-zinc-400">
+              <p className="text-xs text-zinc-300 font-medium">
                 Deterministic allocation splits for sales and ecosystem grants:
               </p>
               <div className="space-y-3 text-xs font-mono">
                 <div>
                   <div className="font-sans font-bold text-white mb-1">Commercial Sales Split:</div>
-                  <div className="text-[11px] text-zinc-400">
+                  <div className="text-[11px] text-zinc-300 font-medium">
                     60% Seller &bull; 20% Marketplace Fees &bull; 10% User Rewards &bull; 10% Platform Maintenance
                   </div>
                 </div>
                 <div>
                   <div className="font-sans font-bold text-white mb-1">Ecosystem Liquidity Split:</div>
-                  <div className="text-[11px] text-zinc-400">
+                  <div className="text-[11px] text-zinc-300 font-medium">
                     20% Creator Incentive &bull; 20% Node Royalty &bull; 20% Treasury Grant &bull; 20% System Comp &bull; 20% Market Liquidity
                   </div>
                 </div>
@@ -2402,7 +2402,7 @@ export const MasterFinancialsConsole: React.FC = () => {
             <h3 className="text-sm font-bold text-white mb-2 uppercase tracking-wider">
               Sovereign FIAT Currency Rules & Guardian AI Biometric Standards
             </h3>
-            <p className="text-xs text-zinc-400 leading-relaxed mb-4">
+            <p className="text-xs text-zinc-300 leading-relaxed mb-4 font-medium">
               Deterministic parity rules and mandatory live-motion biometric requirements for platform disbursements:
             </p>
 
@@ -2432,12 +2432,12 @@ export const MasterFinancialsConsole: React.FC = () => {
               </div>
             </div>
 
-            <h4 className="text-xs font-bold text-zinc-300 uppercase tracking-wider mb-2">
+            <h4 className="text-xs font-bold text-zinc-200 uppercase tracking-wider mb-2">
               Approved Bank & Settlement Rails
             </h4>
             <div className="overflow-x-auto border border-zinc-800 rounded-xl">
               <table className="w-full text-left text-xs">
-                <thead className="bg-black/60 text-zinc-400 font-semibold border-b border-zinc-800 text-[10px] uppercase">
+                <thead className="bg-black/60 text-zinc-200 font-bold border-b border-zinc-800 text-[10px] uppercase">
                   <tr>
                     <th className="p-3">Rail Provider</th>
                     <th className="p-3">Network Status</th>
@@ -2487,7 +2487,7 @@ export const MasterFinancialsConsole: React.FC = () => {
                 <h3 className="text-sm font-bold text-white">
                   Platform 20-Module Subscription Revenue Breakdown
                 </h3>
-                <p className="text-xs text-zinc-400 mt-0.5">
+                <p className="text-xs text-zinc-300 mt-0.5 font-medium">
                   Real-time recurring revenue metrics generated across all 20 audited platform paywall modules.
                 </p>
               </div>
@@ -2502,11 +2502,11 @@ export const MasterFinancialsConsole: React.FC = () => {
 
             <div className="p-4 rounded-xl bg-black/40 border border-zinc-800 flex flex-wrap items-center justify-between gap-4 mb-4 text-xs font-mono">
               <div>
-                <span className="text-zinc-400">Total Run-Rate MRR:</span>
+                <span className="text-zinc-200 font-bold">Total Run-Rate MRR:</span>
                 <span className="text-amber-400 font-bold ml-2">₦{(activeMRRNaira / 1000000).toFixed(2)}M NGN / mo</span>
               </div>
               <div>
-                <span className="text-zinc-400">Token Volume MRR:</span>
+                <span className="text-zinc-200 font-bold">Token Volume MRR:</span>
                 <span className="text-emerald-400 font-bold ml-2">{activeMRRFIC.toLocaleString()} FIC / mo</span>
               </div>
             </div>
@@ -2523,7 +2523,7 @@ export const MasterFinancialsConsole: React.FC = () => {
                 { module: 'Stercs 4K Render Farm', route: '/stercs', subscribers: 1480, ficMonthly: 26640, fiatMonthly: 18648000, growth: '+28%' },
               ].map((item, idx) => (
                 <div key={idx} className="p-4 rounded-xl border border-zinc-800 bg-black/40">
-                  <div className="flex items-center justify-between text-[11px] text-zinc-500 mb-1">
+                  <div className="flex items-center justify-between text-[11px] text-zinc-300 font-medium mb-1">
                     <span className="font-mono">{item.route}</span>
                     <span className="font-bold text-emerald-400">{item.growth}</span>
                   </div>
@@ -2531,7 +2531,7 @@ export const MasterFinancialsConsole: React.FC = () => {
                   <div className="text-base font-bold font-mono text-amber-400 mt-2">
                     ₦{item.fiatMonthly.toLocaleString()}
                   </div>
-                  <div className="text-[11px] text-zinc-400 font-mono">
+                  <div className="text-[11px] text-zinc-300 font-mono font-medium">
                     {item.ficMonthly.toLocaleString()} FIC / mo ({item.subscribers.toLocaleString()} members)
                   </div>
                 </div>
@@ -2552,7 +2552,7 @@ export const MasterFinancialsConsole: React.FC = () => {
                 <h3 className="text-sm font-bold text-white">
                   Subscription &lt;&ndash;&gt; Roles & Permissions &lt;&ndash;&gt; Member Access Gatekeeper
                 </h3>
-                <p className="text-xs text-zinc-400 mt-0.5">
+                <p className="text-xs text-zinc-300 mt-0.5 font-medium">
                   How active subscription passes automatically provision roles, grant granular privileges, and unlock platform screens.
                 </p>
               </div>
@@ -2582,7 +2582,7 @@ export const MasterFinancialsConsole: React.FC = () => {
 
             <div className="overflow-x-auto border border-zinc-800 rounded-xl">
               <table className="w-full text-left text-xs">
-                <thead className="bg-black/60 text-zinc-400 font-semibold border-b border-zinc-800 text-[10px] uppercase">
+                <thead className="bg-black/60 text-zinc-200 font-bold border-b border-zinc-800 text-[10px] uppercase">
                   <tr>
                     <th className="p-3">Subscription Tier</th>
                     <th className="p-3">Provisioned Role (`/settings/roles-permissions`)</th>
@@ -2610,7 +2610,7 @@ export const MasterFinancialsConsole: React.FC = () => {
                         </span>
                       </td>
                       <td className="p-3 font-mono text-amber-400 font-bold">{row.route}</td>
-                      <td className="p-3 text-zinc-300">{row.rule}</td>
+                      <td className="p-3 text-zinc-200 font-medium">{row.rule}</td>
                       <td className="p-3 text-right text-rose-400 font-semibold">{row.action}</td>
                     </tr>
                   ))}
@@ -2644,13 +2644,13 @@ export const MasterFinancialsConsole: React.FC = () => {
                   setIsMultiSigModalOpen(false);
                   setMultiSigActionMessage('');
                 }}
-                className="text-zinc-400 hover:text-white font-mono text-xs"
+                className="text-zinc-300 hover:text-white font-mono text-xs font-medium"
               >
                 [ESC / CLOSE]
               </button>
             </div>
 
-            <div className="text-xs text-zinc-300 leading-relaxed space-y-2">
+            <div className="text-xs text-zinc-300 leading-relaxed space-y-2 font-medium">
               <p>
                 <strong>FingerMobile Central FIC Wallet 004 (&quot;FIC Treasury Wallet&quot;):</strong> Managed by the
                 Board of Directors and authorized signatories. Requires a minimum of <strong>3 cryptographic signatures</strong>
@@ -2659,12 +2659,12 @@ export const MasterFinancialsConsole: React.FC = () => {
               <div className="p-3 bg-black/50 rounded-xl border border-zinc-800 space-y-1 font-mono text-[11px]">
                 <div className="text-amber-300">Allocated Seed Reserve: 5,000,000 FIC</div>
                 <div className="text-emerald-300">Seed Placement Rate: $0.05 per FIC</div>
-                <div className="text-zinc-400">Total Valuation Backing: $250,000 USD (₦325,000,000 NGN at ₦65/FIC)</div>
+                <div className="text-zinc-200 font-bold">Total Valuation Backing: $250,000 USD (₦325,000,000 NGN at ₦65/FIC)</div>
               </div>
             </div>
 
             <div className="space-y-2 text-xs">
-              <label className="block font-semibold text-zinc-300">Authorized Signatures Present (3 Required):</label>
+              <label className="block font-bold text-zinc-200">Authorized Signatures Present (3 Required):</label>
               {[
                 'Mbah Israel Obinna (Founder, Chairman Board of Directors)',
                 'Mrs. Mbah Eunice Emonena (Co-Founder, Vice Chairman)',
@@ -2688,14 +2688,14 @@ export const MasterFinancialsConsole: React.FC = () => {
                       }}
                       className="accent-amber-500 rounded"
                     />
-                    <span className={isSelected ? 'text-white font-medium' : 'text-zinc-500'}>{signer}</span>
+                    <span className={isSelected ? 'text-white font-bold' : 'text-zinc-300 font-medium'}>{signer}</span>
                   </label>
                 );
               })}
             </div>
 
             <div>
-              <label className="block font-semibold text-zinc-300 mb-1 text-xs">
+              <label className="block font-bold text-zinc-200 mb-1 text-xs">
                 Board Multi-Sig PIN
               </label>
               <input

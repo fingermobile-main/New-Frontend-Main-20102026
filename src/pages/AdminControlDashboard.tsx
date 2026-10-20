@@ -339,7 +339,7 @@ const AdminControlDashboard: React.FC = () => {
                     className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 ${
                       activeTab === tab.id
                         ? 'border-red-500 text-red-600'
-                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                        : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300'
                     }`}
                   >
                     {tab.icon}

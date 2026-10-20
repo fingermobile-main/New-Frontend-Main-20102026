@@ -69,7 +69,7 @@ const BlogPostCard: React.FC<BlogPostCardProps> = ({
         </h3>
 
         {/* Author & Date */}
-        <div className="flex items-center gap-2 text-sm text-muted-foreground mt-2">
+        <div className="flex items-center gap-2 text-sm text-slate-700 font-medium mt-2">
           <span>{post.author?.name || post.authorName || 'Anonymous'}</span>
           <span>•</span>
           <span>{formatDate(post.published_at || post.publishedAt || post.created_at || post.createdAt)}</span>
@@ -87,7 +87,7 @@ const BlogPostCard: React.FC<BlogPostCardProps> = ({
 
       <CardContent className="pb-2">
         {/* Excerpt */}
-        <p className="text-muted-foreground line-clamp-3">
+        <p className="text-slate-700 font-medium line-clamp-3">
           {compact ? truncateText(post.excerpt || post.content, 150) : (post.excerpt || truncateText(post.content, 300))}
         </p>
 
@@ -113,7 +113,7 @@ const BlogPostCard: React.FC<BlogPostCardProps> = ({
 
       <CardFooter className="flex items-center justify-between pt-2">
         {/* Engagement Stats */}
-        <div className="flex items-center gap-4 text-sm text-muted-foreground">
+        <div className="flex items-center gap-4 text-sm text-slate-800 font-semibold">
           <span className="flex items-center gap-1">
             <Eye className="h-4 w-4" />
             {(post.views_count || post.views || 0).toLocaleString()}

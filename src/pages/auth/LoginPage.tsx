@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Eye, EyeOff, User, Phone, Mail, Fingerprint, Sparkles } from 'lucide-react';
 import authService from '../../services/authService';
 import { useAuth } from '../../contexts/AuthContext';
+import { userProfileSyncService } from '../../services/UserProfileSyncService';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -85,19 +86,21 @@ const LoginPage = () => {
         localStorage.setItem('hasCompletedOnboarding', 'true');
         localStorage.setItem(`onboardingComplete_${fullUser.id}`, 'true');
 
+        const memberFullName = fullUser.name || `${fullUser.firstName || ''} ${fullUser.lastName || ''}`.trim() || fullUser.username;
+        userProfileSyncService.updateProfile({
+          name: memberFullName,
+          username: fullUser.username,
+          email: fullUser.email,
+          phone: fullUser.phone,
+          avatar: fullUser.avatar || fullUser.avatarUrl || '/assets/branding/mbah_israel_obinna.jpeg',
+        });
+
         if (setUser) {
           setUser(fullUser);
         }
 
-        if (
-          fullUser.role === 'SuperAdmin' ||
-          fullUser.email === 'fingermobileprotocol@gmail.com' ||
-          fullUser.username === 'israelobinna'
-        ) {
-          navigate('/master-dashboard');
-        } else {
-          navigate('/forum');
-        }
+        // Direct every Platform Member/User to ForumPage upon successful login
+        navigate('/forum');
       }
     } catch (error: any) {
       const trimmed = identifier.trim().toLowerCase();
@@ -115,7 +118,7 @@ const LoginPage = () => {
           designation: 'Founder & Owner | SuperAdmin & Master Control',
           onboardingComplete: true,
           onboarding_completed: true,
-          target: '/master-dashboard',
+          target: '/forum',
         },
         'eunicembah@gmail.com': {
           id: 'usr_cofounder_eunice',
@@ -130,7 +133,7 @@ const LoginPage = () => {
           designation: 'Co-Founder | Admin-1 & Master Control',
           onboardingComplete: true,
           onboarding_completed: true,
-          target: '/master-dashboard',
+          target: '/forum',
         },
         'admin@fingermobileprotocol.com': {
           id: 'usr_admin',
@@ -143,7 +146,7 @@ const LoginPage = () => {
           role: 'Admin',
           onboardingComplete: true,
           onboarding_completed: true,
-          target: '/master-dashboard',
+          target: '/forum',
         },
         'user@fingermobileprotocol.com': {
           id: 'usr_test',
@@ -317,7 +320,7 @@ const LoginPage = () => {
             <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">
               FingerMobile<span className="text-[#ff6b00]">™</span>
             </h1>
-            <p className="text-sm font-semibold tracking-wide uppercase text-slate-700 dark:text-gray-400 mt-1">
+            <p className="text-sm font-semibold tracking-wide uppercase text-slate-700 dark:text-slate-300 mt-1">
               Protocol Sign In
             </p>
           </div>
@@ -332,11 +335,11 @@ const LoginPage = () => {
             {/* Quick Test Accounts Pills */}
             <div className="p-3 bg-slate-50 dark:bg-slate-700/50 rounded-xl border border-slate-200 dark:border-slate-600">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-semibold text-slate-500 dark:text-slate-300 flex items-center gap-1">
+                <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-1">
                   <Sparkles className="w-3.5 h-3.5 text-amber-500" />
                   Platform Credentials & Demo Accounts
                 </span>
-                <span className="text-[11px] text-slate-700">1-click fill</span>
+                <span className="text-[11px] text-slate-700 dark:text-slate-300 font-medium">1-click fill</span>
               </div>
               <div className="grid grid-cols-2 gap-2 text-xs">
                 <button
@@ -351,7 +354,7 @@ const LoginPage = () => {
                     </span>
                     <span className="text-[10px] bg-orange-500/20 text-orange-800 dark:text-orange-300 px-1.5 py-0.5 rounded font-mono">Founder</span>
                   </div>
-                  <span className="text-slate-500 dark:text-slate-400 text-[11px] block mt-0.5">
+                  <span className="text-slate-700 dark:text-slate-300 text-[11px] font-medium block mt-0.5">
                     fingermobileprotocol@gmail.com • SuperAdmin Master Control
                   </span>
                 </button>
@@ -367,7 +370,7 @@ const LoginPage = () => {
                     </span>
                     <span className="text-[10px] bg-purple-500/20 text-purple-800 dark:text-purple-300 px-1.5 py-0.5 rounded font-mono">Co-Founder</span>
                   </div>
-                  <span className="text-slate-500 dark:text-slate-400 text-[11px] block mt-0.5">
+                  <span className="text-slate-700 dark:text-slate-300 text-[11px] font-medium block mt-0.5">
                     eunicembah@gmail.com • Admin-1 & Master Control
                   </span>
                 </button>
@@ -516,7 +519,7 @@ const LoginPage = () => {
                 disabled={isLoading}
                 className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm bg-white dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <Fingerprint className="h-5 w-5 text-slate-700 dark:text-gray-400 mr-2" />
+                <Fingerprint className="h-5 w-5 text-slate-700 dark:text-slate-300 mr-2" />
                 Biometric
               </button>
 
@@ -525,14 +528,14 @@ const LoginPage = () => {
                 disabled={isLoading}
                 className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm bg-white dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <Phone className="h-5 w-5 text-slate-700 dark:text-gray-400 mr-2" />
+                <Phone className="h-5 w-5 text-slate-700 dark:text-slate-300 mr-2" />
                 Phone Verification
               </button>
             </div>
           </div>
 
           <div className="mt-6 text-center">
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">
               Don't have an account?{' '}
               <button
                 onClick={handleSignUp}

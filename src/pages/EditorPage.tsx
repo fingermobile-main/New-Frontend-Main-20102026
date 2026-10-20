@@ -167,7 +167,7 @@ interface PropertiesPanelSidebarProps {
 const PropertiesPanelSidebar: React.FC<PropertiesPanelSidebarProps> = React.memo(({ selectedComponent, onUpdate }) => {
   if (!selectedComponent) {
     return (
-      <div className="text-center py-10 text-gray-500">
+      <div className="text-center py-10 text-slate-700 font-medium">
         <PencilIcon className="h-12 w-12 mx-auto text-gray-300" />
         <p>Select a component to edit its properties</p>
       </div>

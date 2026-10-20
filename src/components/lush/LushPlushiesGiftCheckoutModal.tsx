@@ -133,7 +133,7 @@ export const LushPlushiesGiftCheckoutModal: React.FC<LushPlushiesGiftCheckoutMod
                   FIC Vault Protected
                 </span>
               </h2>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
+              <p className="text-xs text-slate-700 dark:text-slate-300 font-medium">
                 Dispatched with sub-second finality via FingerMobile Protocol settlement
               </p>
             </div>
@@ -181,7 +181,7 @@ export const LushPlushiesGiftCheckoutModal: React.FC<LushPlushiesGiftCheckoutMod
                     <p className="text-[10px] text-slate-700">≈ ${(productPrice * 1.0).toFixed(2)} USD</p>
                   </div>
                 </div>
-                <p className="text-xs text-slate-700 dark:text-gray-400 mt-1 line-clamp-2">
+                <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mt-1 line-clamp-2">
                   {product.product_description}
                 </p>
               </div>
@@ -192,7 +192,7 @@ export const LushPlushiesGiftCheckoutModal: React.FC<LushPlushiesGiftCheckoutMod
                   Sovereign Escrow Guarantee
                 </span>
                 <span className="text-slate-700 dark:text-gray-600">•</span>
-                <span className="text-[11px] text-slate-700 dark:text-gray-400">
+                <span className="text-[11px] text-slate-700 dark:text-slate-300 font-medium">
                   {product.product_category}
                 </span>
               </div>
@@ -219,7 +219,7 @@ export const LushPlushiesGiftCheckoutModal: React.FC<LushPlushiesGiftCheckoutMod
                     {activeRecipient.name}
                     <CheckBadgeIcon className="w-4 h-4 text-emerald-500" />
                   </h4>
-                  <p className="text-xs text-slate-700 dark:text-gray-400">
+                  <p className="text-xs text-slate-700 dark:text-slate-300 font-medium">
                     @{activeRecipient.username || 'lush_member'} • Connected Member
                   </p>
                 </div>
@@ -280,7 +280,7 @@ export const LushPlushiesGiftCheckoutModal: React.FC<LushPlushiesGiftCheckoutMod
                   <h5 className="font-bold text-xs text-gray-900 dark:text-white">
                     Instant FIC Escrow Transfer
                   </h5>
-                  <p className="text-[11px] text-slate-700 dark:text-gray-400 mt-0.5">
+                  <p className="text-[11px] text-slate-700 dark:text-slate-300 font-medium mt-0.5">
                     Receiver gets 80% FIC value immediately; refundable if rejected.
                   </p>
                 </div>
@@ -302,7 +302,7 @@ export const LushPlushiesGiftCheckoutModal: React.FC<LushPlushiesGiftCheckoutMod
                   <h5 className="font-bold text-xs text-gray-900 dark:text-white">
                     White-Glove Courier Delivery
                   </h5>
-                  <p className="text-[11px] text-slate-700 dark:text-gray-400 mt-0.5">
+                  <p className="text-[11px] text-slate-700 dark:text-slate-300 font-medium mt-0.5">
                     Physical delivery via sealed encrypted address exchange.
                   </p>
                 </div>
@@ -318,7 +318,7 @@ export const LushPlushiesGiftCheckoutModal: React.FC<LushPlushiesGiftCheckoutMod
                 <h5 className="font-bold text-xs text-gray-900 dark:text-white">
                   Send as Anonymous Gift
                 </h5>
-                <p className="text-[11px] text-slate-700 dark:text-gray-400">
+                <p className="text-[11px] text-slate-700 dark:text-slate-300 font-medium">
                   Your identity is kept hidden until the recipient unlocks the gift.
                 </p>
               </div>
@@ -349,7 +349,7 @@ export const LushPlushiesGiftCheckoutModal: React.FC<LushPlushiesGiftCheckoutMod
               <span className="text-amber-300">Total Settlement:</span>
               <span className="text-[#DC582A]">{productPrice.toFixed(2)} FIC</span>
             </div>
-            <div className="flex justify-between text-[11px] text-slate-400">
+            <div className="flex justify-between text-[11px] text-slate-300 font-medium">
               <span>Remaining FIC Balance:</span>
               <span className={remainingBalance < 0 ? 'text-rose-400 font-bold' : 'text-slate-300'}>
                 {remainingBalance.toFixed(2)} FIC

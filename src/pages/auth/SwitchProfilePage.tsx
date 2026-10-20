@@ -99,7 +99,7 @@ const SwitchProfilePage: React.FC = () => {
         <div className="flex items-center justify-between mb-8">
           <button
             onClick={() => navigate(-1)}
-            className="flex items-center text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
+            className="flex items-center text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors"
           >
             <ArrowLeft className="w-4 h-4 mr-1.5" />
             Back
@@ -116,7 +116,7 @@ const SwitchProfilePage: React.FC = () => {
           <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white sm:text-4xl">
             Switch Identity Profile
           </h1>
-          <p className="mt-3 text-base text-slate-600 dark:text-slate-400">
+          <p className="mt-3 text-base text-slate-700 dark:text-slate-300 font-medium">
             Seamlessly toggle between your Personal, Creator, and Enterprise personas without signing out.
           </p>
         </div>
@@ -163,7 +163,7 @@ const SwitchProfilePage: React.FC = () => {
                   <h3 className="text-lg font-bold text-slate-900 dark:text-white">
                     {profile.name}
                   </h3>
-                  <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                  <p className="mt-1 text-xs text-slate-700 dark:text-slate-300 font-medium">
                     ID: {profile.id}
                   </p>
                 </div>
@@ -184,7 +184,7 @@ const SwitchProfilePage: React.FC = () => {
             <PlusCircle className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
           </div>
           <h3 className="text-sm font-semibold text-slate-900 dark:text-white">Need a specialized persona?</h3>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-md mx-auto">
+          <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mt-1 max-w-md mx-auto">
             You can create dedicated profiles for official brand representations, agency partnerships, or creator collectives.
           </p>
           <button

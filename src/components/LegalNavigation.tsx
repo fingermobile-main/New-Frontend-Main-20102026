@@ -19,16 +19,16 @@ const LegalNavigation: React.FC<LegalNavigationProps> = ({
   ];
 
   return (
-    <nav className="border-b bg-background">
+    <nav className="border-b border-slate-200 bg-white">
       <div className="flex items-center gap-1 px-4 overflow-x-auto">
         {pages.map((page) => (
           <button
             key={page.id}
             onClick={() => onPageChange?.(page.id)}
-            className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
+            className={`flex items-center gap-2 px-4 py-3 text-sm border-b-2 transition-colors whitespace-nowrap ${
               activePage === page.id
-                ? 'border-primary text-primary'
-                : 'border-transparent text-muted-foreground hover:text-foreground'
+                ? 'border-primary text-primary font-bold'
+                : 'border-transparent text-slate-700 hover:text-slate-900 font-medium'
             }`}
           >
             {page.icon}

@@ -1603,11 +1603,11 @@ const StercsPage: React.FC = () => {
                     {selectedInspectorItem.data.name || selectedInspectorItem.data.controlName || `Item #${selectedInspectorItem.data.id}`}
                   </h3>
                 </div>
-                <p className="text-xs text-gray-400 mt-1">Cryptographic verification digest & runtime attributes</p>
+                <p className="text-xs text-slate-300 font-medium mt-1">Cryptographic verification digest & runtime attributes</p>
               </div>
               <button
                 onClick={() => setSelectedInspectorItem(null)}
-                className="text-gray-400 hover:text-white p-1 rounded-lg"
+                className="text-slate-300 hover:text-white p-1 rounded-lg"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -1715,7 +1715,7 @@ const StercsPage: React.FC = () => {
           <span>{toastMessage}</span>
           <button
             onClick={() => setToastMessage(null)}
-            className="text-slate-400 hover:text-white ml-2"
+            className="text-slate-300 hover:text-white ml-2"
           >
             <X className="w-3.5 h-3.5" />
           </button>

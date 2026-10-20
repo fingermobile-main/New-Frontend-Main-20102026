@@ -199,7 +199,7 @@ export const LushPinGateModal: React.FC<LushPinGateModalProps> = ({
         </form>
 
         <div className="mt-4 text-center">
-          <p className="text-[11px] text-gray-500 flex items-center justify-center gap-1">
+          <p className="text-[11px] text-slate-700 font-medium flex items-center justify-center gap-1">
             <ShieldCheckIcon className="w-4 h-4 text-emerald-600" />
             End-to-End Encrypted | Sovereign Web3 Consent Engine
           </p>

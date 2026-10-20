@@ -15,7 +15,8 @@ import {
   Film,
   MapPin,
   Cpu,
-  Play
+  Play,
+  Download
 } from 'lucide-react';
 import type { PhotoCreditItem } from '../../pages/PhotoCreditsPage';
 
@@ -33,6 +34,8 @@ interface PhotoCreditMosaicItemProps {
   onInspectAi?: (item: PhotoCreditItem) => void;
   onPlayVideo?: (item: PhotoCreditItem) => void;
   onSelect?: (item: PhotoCreditItem) => void;
+  onOpenFullscreen?: (item: PhotoCreditItem) => void;
+  onLicense?: (item: PhotoCreditItem) => void;
 }
 /* eslint-enable no-unused-vars */
 
@@ -48,14 +51,24 @@ export const PhotoCreditMosaicItem: React.FC<PhotoCreditMosaicItemProps> = ({
   onToggleFavorite,
   onInspectAi,
   onPlayVideo,
-  onSelect
+  onSelect,
+  onOpenFullscreen,
+  onLicense
 }) => {
   const isVideo = item.media_type === 'video' || Boolean(item.videoUrl);
   const aiScore = item.aiScore ?? Math.min(99, Math.round(((item.rating || 4.9) / 5) * 100));
 
+  const handleClick = () => {
+    if (onOpenFullscreen) {
+      onOpenFullscreen(item);
+    } else if (onSelect) {
+      onSelect(item);
+    }
+  };
+
   return (
     <div
-      onClick={() => onSelect?.(item)}
+      onClick={handleClick}
       className="group relative rounded-2xl overflow-hidden bg-slate-950 border border-slate-300 dark:border-slate-800 shadow-md hover:shadow-2xl transition-all duration-300 cursor-pointer break-inside-avoid mb-4"
     >
       {/* Media Image */}
@@ -131,7 +144,7 @@ export const PhotoCreditMosaicItem: React.FC<PhotoCreditMosaicItemProps> = ({
           <span className="font-bold text-amber-300 shrink-0">🪙 {item.price_credits} FIC</span>
         </div>
 
-        {item.location && (
+        {typeof item.location === 'string' && item.location.trim().length > 0 && (
           <div className="text-[10px] text-slate-300 flex items-center gap-1 mt-0.5">
             <MapPin className="w-2.5 h-2.5 text-amber-400" />
             <span className="truncate">{item.location}</span>
@@ -187,17 +200,31 @@ export const PhotoCreditMosaicItem: React.FC<PhotoCreditMosaicItemProps> = ({
             </button>
           </div>
 
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onShare?.(item);
-            }}
-            className="px-2 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[11px] flex items-center gap-1 shadow-sm"
-            title="Share to FingerMobile Platform & Social Networks"
-          >
-            <Share2 className="w-3 h-3" />
-            <span>Share</span>
-          </button>
+          <div className="flex items-center gap-1.5">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onLicense?.(item);
+              }}
+              className="px-2 py-1 rounded-lg bg-gradient-to-r from-emerald-600 via-amber-600 to-amber-500 hover:from-emerald-500 hover:to-amber-400 text-white font-extrabold text-[10px] uppercase tracking-wider flex items-center gap-1 shadow-sm transition transform hover:scale-105"
+              title="Acquire License (80% Creator Royalty)"
+            >
+              <Download className="w-3 h-3" />
+              <span>License</span>
+            </button>
+
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onShare?.(item);
+              }}
+              className="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold text-[10px] flex items-center gap-1 shadow-sm"
+              title="Share to FingerMobile Platform & Social Networks"
+            >
+              <Share2 className="w-3 h-3" />
+              <span>Share</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>

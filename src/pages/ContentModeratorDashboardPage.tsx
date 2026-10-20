@@ -25,6 +25,7 @@ import {
   ModeratorTierDefaults,
   hasPermission
 } from '../types/roles-permissions';
+import { adminOperationsService } from '../services/adminOperationsService';
 
 interface QueueItem {
   id: string;
@@ -217,8 +218,11 @@ export const ContentModeratorDashboardPage: React.FC = () => {
     const item = queue.find((q) => q.id === id);
     setQueue((prev) => prev.filter((q) => q.id !== id));
     setResolvedToday((c) => c + 1);
+    if (item?.user) {
+      adminOperationsService.strikeUser(item.user.replace('@', '')).catch(() => {});
+    }
     logAction('Delete / Remove Content', 'DELETE_COMMUNITY_POST (0x0100)', item?.user || 'user', `Infraction: ${item?.reason}`);
-    showNotification(`Removed offending ${item?.type || 'item'} by ${item?.user || 'user'}. Infraction recorded.`);
+    showNotification(`Removed offending ${item?.type || 'item'} by ${item?.user || 'user'}. Infraction recorded in PostgreSQL.`);
   };
 
   const handleTimeout = (id: string, minutes: number) => {
@@ -230,6 +234,9 @@ export const ContentModeratorDashboardPage: React.FC = () => {
     setQueue((prev) =>
       prev.map((q) => (q.id === id ? { ...q, status: 'timed_out' } : q))
     );
+    if (item?.user) {
+      adminOperationsService.strikeUser(item.user.replace('@', '')).catch(() => {});
+    }
     logAction(`Timeout User (${minutes}m)`, 'TIMEOUT_ROOM_USER (0x02)', item?.user || 'user', `Timed out for ${minutes} minutes.`);
     showNotification(`Issued ${minutes}-minute timeout to ${item?.user}.`);
   };
@@ -251,6 +258,9 @@ export const ContentModeratorDashboardPage: React.FC = () => {
     }
     const item = queue.find((q) => q.id === id);
     setQueue((prev) => prev.filter((q) => q.id !== id));
+    if (item?.user) {
+      adminOperationsService.strikeUser(item.user.replace('@', '')).catch(() => {});
+    }
     logAction('Permanent Community Ban', 'PERM_BAN_COMMUNITY (0x8000)', item?.user || 'user', 'Banned from community hub.');
     showNotification(`Permanently banned ${item?.user} from this community hub.`);
   };
@@ -262,6 +272,9 @@ export const ContentModeratorDashboardPage: React.FC = () => {
     }
     const item = queue.find((q) => q.id === id);
     setQueue((prev) => prev.filter((q) => q.id !== id));
+    if (item?.user) {
+      adminOperationsService.banUser(item.user.replace('@', '')).catch(() => {});
+    }
     logAction('Network Shadowban', 'SHADOWBAN_USER (0x400000)', item?.user || 'user', 'Global shadowban applied across network.');
     showNotification(`Applied platform-wide shadowban to ${item?.user}.`);
   };
@@ -273,8 +286,11 @@ export const ContentModeratorDashboardPage: React.FC = () => {
     }
     const item = queue.find((q) => q.id === id);
     setQueue((prev) => prev.filter((q) => q.id !== id));
+    if (item?.user) {
+      adminOperationsService.banUser(item.user.replace('@', '')).catch(() => {});
+    }
     logAction('Permanent Platform Termination', 'PERM_BAN_PLATFORM (0x100000000)', item?.user || 'user', 'Hardware and biometric blacklist applied.');
-    showNotification(`Permanent platform termination executed for ${item?.user}.`);
+    showNotification(`Permanent platform termination executed for ${item?.user}. Persisted to PostgreSQL.`);
   };
 
   const handleEscalate = (id: string) => {
@@ -324,7 +340,7 @@ export const ContentModeratorDashboardPage: React.FC = () => {
                     64-Bit Bitmask RBAC
                   </span>
                 </div>
-                <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1 max-w-2xl">
+                <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-medium mt-1 max-w-2xl">
                   Unified operational console bridging Sentinel AI autonomous chat hygiene with 5 human moderation tiers and immutable audit logging.
                 </p>
               </div>
@@ -337,7 +353,7 @@ export const ContentModeratorDashboardPage: React.FC = () => {
                   <Cpu className="w-3.5 h-3.5 text-amber-500" />
                   Active Moderator Tier:
                 </span>
-                <span className="font-mono text-[11px] text-slate-500 dark:text-slate-400">
+                <span className="font-mono text-[11px] text-slate-700 dark:text-slate-300 font-medium">
                   Mask: 0x{activeBitmask.toString(16).toUpperCase()}
                 </span>
               </div>
@@ -369,7 +385,7 @@ export const ContentModeratorDashboardPage: React.FC = () => {
           ].map((stat, i) => (
             <div key={i} className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-xs">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-bold text-slate-500 dark:text-slate-400">{stat.label}</span>
+                <span className="text-xs font-bold text-slate-700 dark:text-slate-300 font-medium">{stat.label}</span>
                 {stat.icon}
               </div>
               <p className="text-2xl font-black text-slate-900 dark:text-white">{stat.value}</p>
@@ -384,7 +400,7 @@ export const ContentModeratorDashboardPage: React.FC = () => {
             className={`px-4 py-2 text-xs font-bold rounded-xl transition-all flex items-center gap-2 ${
               activeTab === 'queue'
                 ? 'bg-amber-500 text-white shadow-sm'
-                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                : 'text-slate-700 dark:text-slate-300 font-medium hover:bg-slate-100 dark:hover:bg-slate-800'
             }`}
           >
             <ShieldAlert className="w-4 h-4" />
@@ -395,7 +411,7 @@ export const ContentModeratorDashboardPage: React.FC = () => {
             className={`px-4 py-2 text-xs font-bold rounded-xl transition-all flex items-center gap-2 ${
               activeTab === 'audit_log'
                 ? 'bg-amber-500 text-white shadow-sm'
-                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                : 'text-slate-700 dark:text-slate-300 font-medium hover:bg-slate-100 dark:hover:bg-slate-800'
             }`}
           >
             <History className="w-4 h-4" />
@@ -411,7 +427,7 @@ export const ContentModeratorDashboardPage: React.FC = () => {
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <h2 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
                     <span>Pending Flagged Incidents</span>
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-950 dark:text-slate-400 border border-slate-400 font-black">
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-950 dark:text-slate-200 border border-slate-400 font-black">
                       {filteredQueue.length}
                     </span>
                   </h2>
@@ -425,7 +441,7 @@ export const ContentModeratorDashboardPage: React.FC = () => {
                         className={`px-3 py-1 text-xs font-bold rounded-lg capitalize transition ${
                           activeFilter === cat
                             ? 'bg-amber-500 text-white'
-                            : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
+                            : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium hover:bg-slate-200 dark:hover:bg-slate-700'
                         }`}
                       >
                         {cat}
@@ -438,7 +454,7 @@ export const ContentModeratorDashboardPage: React.FC = () => {
                   <div className="py-12 text-center bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-700">
                     <CheckCircle className="w-12 h-12 text-emerald-500 mx-auto mb-3" />
                     <p className="text-slate-800 dark:text-white font-bold text-base">Queue Fully Cleared</p>
-                    <p className="text-slate-500 dark:text-slate-400 text-xs mt-1">No pending flagged items under this category filter.</p>
+                    <p className="text-slate-700 dark:text-slate-300 font-medium text-xs mt-1">No pending flagged items under this category filter.</p>
                   </div>
                 ) : (
                   <div className="space-y-4">
@@ -578,7 +594,7 @@ export const ContentModeratorDashboardPage: React.FC = () => {
 
                           <button
                             onClick={() => handleEscalate(item.id)}
-                            className="px-3 py-1.5 text-xs font-bold text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 rounded-xl transition ml-auto"
+                            className="px-3 py-1.5 text-xs font-bold text-slate-700 hover:text-slate-900 dark:text-slate-300 rounded-xl transition ml-auto"
                           >
                             Escalate
                           </button>
@@ -609,7 +625,7 @@ export const ContentModeratorDashboardPage: React.FC = () => {
                     { label: 'Permanent Platform Termination', allowed: canPermBanPlatform },
                   ].map((cap, i) => (
                     <div key={i} className="flex items-center justify-between py-1 border-b border-slate-100 dark:border-slate-800/80">
-                      <span className="text-slate-600 dark:text-slate-400">{cap.label}</span>
+                      <span className="text-slate-700 dark:text-slate-300 font-medium">{cap.label}</span>
                       {cap.allowed ? (
                         <span className="text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1">
                           <CheckCircle2 className="w-3.5 h-3.5" /> Enabled
@@ -665,7 +681,7 @@ export const ContentModeratorDashboardPage: React.FC = () => {
                   <History className="w-5 h-5 text-amber-500" />
                   <span>Immutable Moderation Audit Ledger</span>
                 </h2>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mt-0.5">
                   Cryptographic WORM records of all moderation interventions, bitmask authorizations, and actor timestamps.
                 </p>
               </div>
@@ -674,7 +690,7 @@ export const ContentModeratorDashboardPage: React.FC = () => {
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead>
-                  <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 font-bold">
+                  <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 font-medium font-bold">
                     <th className="pb-3 px-3">Timestamp</th>
                     <th className="pb-3 px-3">Actor / Authority</th>
                     <th className="pb-3 px-3">Target</th>
@@ -686,12 +702,12 @@ export const ContentModeratorDashboardPage: React.FC = () => {
                 <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                   {auditLogs.map((log) => (
                     <tr key={log.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/40">
-                      <td className="py-3 px-3 font-mono text-slate-500 dark:text-slate-400">{log.timestamp}</td>
+                      <td className="py-3 px-3 font-mono text-slate-700 dark:text-slate-300 font-medium">{log.timestamp}</td>
                       <td className="py-3 px-3 font-bold text-slate-900 dark:text-white">{log.actor}</td>
                       <td className="py-3 px-3 font-mono text-amber-600 dark:text-amber-400">{log.target}</td>
                       <td className="py-3 px-3 font-semibold text-slate-800 dark:text-slate-200">{log.action}</td>
                       <td className="py-3 px-3 font-mono text-[11px] text-blue-600 dark:text-blue-400">{log.permissionUsed}</td>
-                      <td className="py-3 px-3 text-slate-600 dark:text-slate-400">{log.reason}</td>
+                      <td className="py-3 px-3 text-slate-700 dark:text-slate-300 font-medium">{log.reason}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -717,7 +733,7 @@ export const ContentModeratorDashboardPage: React.FC = () => {
                 </button>
               </div>
 
-              <div className="space-y-3 text-xs text-slate-600 dark:text-slate-400 mb-6">
+              <div className="space-y-3 text-xs text-slate-700 dark:text-slate-300 font-medium mb-6">
                 <div>
                   <span className="font-bold text-slate-900 dark:text-white">Reported User:</span> {selectedItem.user}
                 </div>

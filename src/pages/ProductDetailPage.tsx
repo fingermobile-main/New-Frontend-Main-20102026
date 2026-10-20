@@ -178,7 +178,7 @@ const ProductDetailPage: React.FC = () => {
                 {[...Array(5)].map((_, i) => (
                   <svg
                     key={i}
-                    className={`w-5 h-5 ${i < Math.floor(product.rating || 0) ? 'text-yellow-400' : 'text-slate-500'}`}
+                    className={`w-5 h-5 ${i < Math.floor(product.rating || 0) ? 'text-yellow-400' : 'text-slate-400'}`}
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -263,7 +263,7 @@ const ProductDetailPage: React.FC = () => {
                       {[...Array(5)].map((_, i) => (
                         <svg
                           key={i}
-                          className={`w-4 h-4 ${i < review.rating ? 'text-yellow-400' : 'text-slate-500'}`}
+                          className={`w-4 h-4 ${i < review.rating ? 'text-yellow-400' : 'text-slate-400'}`}
                           fill="currentColor"
                           viewBox="0 0 20 20"
                         >
@@ -278,7 +278,7 @@ const ProductDetailPage: React.FC = () => {
               ))}
             </div>
           ) : (
-            <p className="text-slate-700 dark:text-gray-400">No reviews yet.</p>
+            <p className="text-slate-700 dark:text-slate-300 font-medium">No reviews yet.</p>
           )}
         </div>
 
@@ -293,13 +293,13 @@ const ProductDetailPage: React.FC = () => {
                   <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
                     <p className="font-medium text-gray-900 dark:text-white">{qa.question}</p>
                     <p className="text-gray-700 dark:text-gray-300 mt-1">{qa.answer}</p>
-                    <p className="text-xs text-slate-700 dark:text-gray-400 mt-2">{qa.createdAt}</p>
+                    <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mt-2">{qa.createdAt}</p>
                   </div>
                 </div>
               ))}
             </div>
           ) : (
-            <p className="text-slate-700 dark:text-gray-400">No questions yet. Ask the first one!</p>
+            <p className="text-slate-700 dark:text-slate-300 font-medium">No questions yet. Ask the first one!</p>
           )}
         </div>
       </div>

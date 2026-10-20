@@ -787,7 +787,7 @@ const MasterMembersConsole: React.FC = () => {
   }, [simSelectedRole, simSelectedScreen, simSelectedAction]);
 
   return (
-    <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+    <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-300 dark:border-slate-800 overflow-hidden">
       {/* Toast Notification */}
       {toastMessage && (
         <div className="fixed top-6 right-6 z-50 bg-emerald-600 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-2 text-xs font-bold animate-in fade-in slide-in-from-top-4">
@@ -813,7 +813,7 @@ const MasterMembersConsole: React.FC = () => {
                     [FingerMobile™Protocol]
                   </span>
                 </div>
-                <p className="text-xs text-slate-700">
+                <p className="text-xs text-slate-300 font-medium">
                   Role Assignment, Page/Screen Permission Mapping, Session Enforcement, Least Privilege & Instant Access Revocation
                 </p>
               </div>
@@ -830,14 +830,14 @@ const MasterMembersConsole: React.FC = () => {
             </button>
             <button
               onClick={handleExportCsv}
-              className="px-3.5 py-2 text-xs font-bold rounded-xl bg-white/10 hover:bg-white/20 text-slate-700 border border-white/10 flex items-center gap-1.5 transition"
+              className="px-3.5 py-2 text-xs font-bold rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/20 flex items-center gap-1.5 transition"
             >
               <Download className="w-3.5 h-3.5" />
               Export Roster
             </button>
             <button
               onClick={() => showToast('Refreshed member database and session security cache')}
-              className="p-2 text-xs font-bold rounded-xl bg-white/10 hover:bg-white/20 text-slate-700 border border-white/10 transition"
+              className="p-2 text-xs font-bold rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/20 transition"
             >
               <span title="Refresh member directory">
                 <RefreshCw className="w-3.5 h-3.5" />
@@ -849,54 +849,54 @@ const MasterMembersConsole: React.FC = () => {
         {/* 5 Executive Key Metrics */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mt-6 pt-6 border-t border-slate-800">
           <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800/80">
-            <div className="flex items-center justify-between text-[11px] text-slate-400">
+            <div className="flex items-center justify-between text-[11px] text-slate-200 font-bold">
               <span>Total Platform Members</span>
               <Users className="w-3.5 h-3.5 text-blue-400" />
             </div>
             <div className="text-lg font-black text-white mt-1">{totalCount.toLocaleString()} Members</div>
-            <div className="text-[10px] text-emerald-400">{activeCount} Currently Active</div>
+            <div className="text-[10px] text-emerald-400 font-semibold">{activeCount} Currently Active</div>
           </div>
 
           <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800/80">
-            <div className="flex items-center justify-between text-[11px] text-slate-400">
+            <div className="flex items-center justify-between text-[11px] text-slate-200 font-bold">
               <span>Root Authorities</span>
               <Crown className="w-3.5 h-3.5 text-amber-400" />
             </div>
             <div className="text-lg font-black text-amber-400 mt-1">2 Root Accounts</div>
-            <div className="text-[10px] text-slate-400">Mbah Israel & Eunice</div>
+            <div className="text-[10px] text-slate-300 font-medium">Mbah Israel & Eunice</div>
           </div>
 
           <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800/80">
-            <div className="flex items-center justify-between text-[11px] text-slate-400">
+            <div className="flex items-center justify-between text-[11px] text-slate-200 font-bold">
               <span>Predefined Roles</span>
               <Key className="w-3.5 h-3.5 text-purple-400" />
             </div>
             <div className="text-lg font-black text-purple-400 mt-1">5 Tiers</div>
-            <div className="text-[10px] text-slate-400">SuperAdmin &rarr; Guest</div>
+            <div className="text-[10px] text-slate-300 font-medium">SuperAdmin &rarr; Guest</div>
           </div>
 
           <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800/80">
-            <div className="flex items-center justify-between text-[11px] text-slate-400">
+            <div className="flex items-center justify-between text-[11px] text-slate-200 font-bold">
               <span>Biometric KYC Status</span>
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
             </div>
             <div className="text-lg font-black text-emerald-400 mt-1">{biometricVerifiedCount} Verified</div>
-            <div className="text-[10px] text-slate-400">Live-Motion Face Auth</div>
+            <div className="text-[10px] text-slate-300 font-medium">Live-Motion Face Auth</div>
           </div>
 
           <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800/80">
-            <div className="flex items-center justify-between text-[11px] text-slate-400">
+            <div className="flex items-center justify-between text-[11px] text-slate-200 font-bold">
               <span>Member FIC Holdings</span>
               <Coins className="w-3.5 h-3.5 text-orange-400" />
             </div>
             <div className="text-lg font-black text-orange-400 mt-1">{totalFicInCirculation.toLocaleString()} FIC</div>
-            <div className="text-[10px] text-slate-400">₦{(totalFicInCirculation * 500).toLocaleString()}</div>
+            <div className="text-[10px] text-slate-300 font-medium">₦{(totalFicInCirculation * 500).toLocaleString()}</div>
           </div>
         </div>
       </div>
 
       {/* Sub-Navigation Tabs */}
-      <div className="flex border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 px-6 overflow-x-auto">
+      <div className="flex border-b border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 px-6 overflow-x-auto">
         {[
           { id: 'directory', label: `Member Directory (${filteredMembers.length})`, icon: Users },
           { id: 'roles', label: 'Predefined Roles & Root Access', icon: Key },
@@ -910,7 +910,7 @@ const MasterMembersConsole: React.FC = () => {
             className={`py-3.5 px-4 text-xs font-bold flex items-center gap-2 border-b-2 whitespace-nowrap transition ${
               activeTab === tab.id
                 ? 'border-orange-500 text-orange-600 dark:text-orange-400 bg-white dark:bg-slate-900'
-                : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
+                : 'border-transparent text-slate-700 hover:text-slate-900 dark:hover:text-slate-200'
             }`}
           >
             <tab.icon className="w-4 h-4" />
@@ -925,13 +925,13 @@ const MasterMembersConsole: React.FC = () => {
           {/* Search & Filter Controls */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="relative flex-1 max-w-md">
-              <Search className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
+              <Search className="w-4 h-4 text-slate-600 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 placeholder="Search by name, email, or username..."
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-3 py-2 text-xs border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-orange-500 font-bold border-slate-300 placeholder:text-slate-400"
+                className="w-full pl-9 pr-3 py-2 text-xs border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-orange-500 font-bold border-slate-300 placeholder:text-slate-500"
               />
             </div>
 
@@ -941,7 +941,7 @@ const MasterMembersConsole: React.FC = () => {
                 <select
                   value={roleFilter}
                   onChange={e => setRoleFilter(e.target.value)}
-                  className="text-xs py-2 px-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-200 font-medium font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500"
+                  className="text-xs py-2 px-3 border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-200 font-medium font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500"
                 >
                   <option value="all">All Roles</option>
                   <option value="SuperAdmin">SuperAdmin</option>
@@ -956,7 +956,7 @@ const MasterMembersConsole: React.FC = () => {
               <select
                 value={statusFilter}
                 onChange={e => setStatusFilter(e.target.value)}
-                className="text-xs py-2 px-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-200 font-medium font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500"
+                className="text-xs py-2 px-3 border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-200 font-medium font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500"
               >
                 <option value="all">All Statuses</option>
                 <option value="Active">Active</option>
@@ -967,9 +967,9 @@ const MasterMembersConsole: React.FC = () => {
           </div>
 
           {/* Members Table */}
-          <div className="overflow-x-auto border border-slate-200 dark:border-slate-800 rounded-2xl">
+          <div className="overflow-x-auto border border-slate-300 dark:border-slate-800 rounded-2xl">
             <table className="w-full text-left text-xs text-slate-600 dark:text-slate-300">
-              <thead className="bg-slate-50 dark:bg-slate-800/70 text-[11px] uppercase font-black tracking-wider text-slate-700 border-b border-slate-200 dark:border-slate-800">
+              <thead className="bg-slate-50 dark:bg-slate-800/70 text-[11px] uppercase font-black tracking-wider text-slate-700 border-b border-slate-300 dark:border-slate-800">
                 <tr>
                   <th className="py-3 px-4">Member Identity</th>
                   <th className="py-3 px-4">Predefined Role</th>
@@ -981,7 +981,7 @@ const MasterMembersConsole: React.FC = () => {
                   <th className="py-3 px-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+              <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
                 {filteredMembers.map(m => (
                   <tr key={m.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition">
                     <td className="py-3.5 px-4">
@@ -1024,13 +1024,13 @@ const MasterMembersConsole: React.FC = () => {
                             Role {m.corporateRoleNumber}: {m.corporateRoleTitle}
                           </span>
                           {m.assignedSubOffice && (
-                            <span className="text-[9px] text-slate-500 dark:text-slate-400 mt-0.5 truncate max-w-[200px]">
+                            <span className="text-[9px] text-slate-700 dark:text-slate-300 font-medium mt-0.5 truncate max-w-[200px]">
                               {m.assignedSubOffice}
                             </span>
                           )}
                         </div>
                       ) : (
-                        <span className="text-slate-700 dark:text-slate-500 italic text-[10px]">
+                        <span className="text-slate-700 dark:text-slate-300 italic text-[10px] font-medium">
                           Unassigned (Member)
                         </span>
                       )}
@@ -1039,8 +1039,8 @@ const MasterMembersConsole: React.FC = () => {
                       <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold ${
                         m.biometricVerified
                           ? 'bg-emerald-50 text-emerald-950 dark:bg-emerald-950 dark:text-emerald-300'
-                          : 'bg-slate-100 text-emerald-950 dark:bg-slate-800 dark:text-slate-400'
-                      }border border-emerald-400 font-black`}>
+                          : 'bg-slate-100 text-slate-900 dark:bg-slate-800 dark:text-slate-200'
+                      } border border-emerald-400 font-black`}>
                         {m.biometricVerified ? <CheckCircle className="w-3 h-3 text-emerald-500" /> : null}
                         {m.biometricVerified ? 'Live Verified' : 'Tier 1 Basic'}
                       </span>
@@ -1066,7 +1066,7 @@ const MasterMembersConsole: React.FC = () => {
                       <div className="flex items-center justify-end gap-1.5">
                         <button
                           onClick={() => openEditMemberModal(m)}
-                          className="p-1.5 text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950 rounded-lg transition"
+                          className="p-1.5 text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950 rounded-lg transition"
                           title="Update Member Account Details & Information"
                         >
                           <UserCheck className="w-3.5 h-3.5" />
@@ -1076,7 +1076,7 @@ const MasterMembersConsole: React.FC = () => {
                             setSelectedMember(m);
                             setIsEditRoleModalOpen(true);
                           }}
-                          className="p-1.5 text-slate-500 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950 rounded-lg transition"
+                          className="p-1.5 text-slate-600 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950 rounded-lg transition"
                           title="Swap Predefined Role"
                         >
                           <Edit3 className="w-3.5 h-3.5" />
@@ -1086,7 +1086,7 @@ const MasterMembersConsole: React.FC = () => {
                             setSelectedMember(m);
                             setIsGrantFicModalOpen(true);
                           }}
-                          className="p-1.5 text-slate-500 hover:text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-950 rounded-lg transition"
+                          className="p-1.5 text-slate-600 hover:text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-950 rounded-lg transition"
                           title="Grant FIC Tokens"
                         >
                           <Coins className="w-3.5 h-3.5" />
@@ -1096,7 +1096,7 @@ const MasterMembersConsole: React.FC = () => {
                           className={`p-1.5 rounded-lg transition ${
                             m.status === 'Frozen'
                               ? 'text-blue-600 hover:bg-blue-50'
-                              : 'text-slate-500 hover:text-amber-600 hover:bg-amber-50'
+                              : 'text-slate-600 hover:text-amber-600 hover:bg-amber-50'
                           }`}
                           title={m.status === 'Frozen' ? 'Unfreeze Account' : 'Freeze Account'}
                         >
@@ -1104,7 +1104,7 @@ const MasterMembersConsole: React.FC = () => {
                         </button>
                         <button
                           onClick={() => handleInstantOffboard(m)}
-                          className="p-1.5 text-slate-500 hover:text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-950 rounded-lg transition"
+                          className="p-1.5 text-slate-600 hover:text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-950 rounded-lg transition"
                           title="Instant Access Revocation / Offboard"
                         >
                           <UserX className="w-3.5 h-3.5" />
@@ -1115,7 +1115,7 @@ const MasterMembersConsole: React.FC = () => {
                           className={`p-1.5 rounded-lg transition ${
                             m.isRootSuperAdmin
                               ? 'text-slate-700 dark:text-slate-700 cursor-not-allowed'
-                              : 'text-slate-500 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950'
+                              : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950'
                           }`}
                           title={m.isRootSuperAdmin ? 'Root SuperAdmin Cannot Be Deleted' : 'Delete Member Account Details & Information'}
                         >
@@ -1150,7 +1150,7 @@ const MasterMembersConsole: React.FC = () => {
             {PREDEFINED_ROLES_SPEC.map(spec => (
               <div
                 key={spec.role}
-                className="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/60 space-y-3"
+                className="p-5 rounded-2xl border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900/60 space-y-3"
               >
                 <div className="flex items-center justify-between">
                   <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${spec.badgeColor}`}>
@@ -1173,9 +1173,9 @@ const MasterMembersConsole: React.FC = () => {
                 <h4 className="font-black text-sm text-slate-900 dark:text-white">{spec.title}</h4>
                 <p className="text-xs text-slate-600 dark:text-slate-300">{spec.description}</p>
 
-                <div className="pt-2 border-t border-slate-100 dark:border-slate-800">
+                <div className="pt-2 border-t border-slate-300 dark:border-slate-800">
                   <div className="text-[10px] font-bold uppercase tracking-wider text-slate-700">Granted Scope:</div>
-                  <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">{spec.accessScope}</div>
+                  <div className="text-[11px] text-slate-700 dark:text-slate-300 font-medium mt-0.5">{spec.accessScope}</div>
                 </div>
               </div>
             ))}
@@ -1200,9 +1200,9 @@ const MasterMembersConsole: React.FC = () => {
             </span>
           </div>
 
-          <div className="overflow-x-auto border border-slate-200 dark:border-slate-800 rounded-2xl">
+          <div className="overflow-x-auto border border-slate-300 dark:border-slate-800 rounded-2xl">
             <table className="w-full text-left text-xs text-slate-600 dark:text-slate-300">
-              <thead className="bg-slate-50 dark:bg-slate-800/70 text-[11px] uppercase font-black tracking-wider text-slate-700 border-b border-slate-200 dark:border-slate-800">
+              <thead className="bg-slate-50 dark:bg-slate-800/70 text-[11px] uppercase font-black tracking-wider text-slate-700 border-b border-slate-300 dark:border-slate-800">
                 <tr>
                   <th className="py-3 px-4">Screen / Service</th>
                   <th className="py-3 px-4 text-center">Guest (New Member)</th>
@@ -1212,7 +1212,7 @@ const MasterMembersConsole: React.FC = () => {
                   <th className="py-3 px-4 text-center">SuperAdmin</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+              <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
                 {PERMISSION_MATRIX.map(row => (
                   <tr key={row.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition">
                     <td className="py-3.5 px-4">
@@ -1282,7 +1282,7 @@ const MasterMembersConsole: React.FC = () => {
                 <h3 className="font-black text-slate-900 dark:text-white text-base">
                   Real-Time Session Access & Enforcement Inspector
                 </h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mt-0.5">
                   Simulate live member login sessions to evaluate access decisions against specific Pages, Screens, Services, and Actions.
                 </p>
               </div>
@@ -1296,7 +1296,7 @@ const MasterMembersConsole: React.FC = () => {
                 <select
                   value={simSelectedRole}
                   onChange={e => setSimSelectedRole(e.target.value as any)}
-                  className="w-full text-xs py-2.5 px-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500"
+                  className="w-full text-xs py-2.5 px-3 border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500"
                 >
                   <option value="Guest">Guest / Standard Member (Default)</option>
                   <option value="Editor">Editor (Publishing)</option>
@@ -1313,7 +1313,7 @@ const MasterMembersConsole: React.FC = () => {
                 <select
                   value={simSelectedScreen}
                   onChange={e => setSimSelectedScreen(e.target.value)}
-                  className="w-full text-xs py-2.5 px-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500"
+                  className="w-full text-xs py-2.5 px-3 border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500"
                 >
                   <option value="/master-dashboard">/master-dashboard (Master Console)</option>
                   <option value="/forum">/forum (Community Forum Feed)</option>
@@ -1333,7 +1333,7 @@ const MasterMembersConsole: React.FC = () => {
                 <select
                   value={simSelectedAction}
                   onChange={e => setSimSelectedAction(e.target.value)}
-                  className="w-full text-xs py-2.5 px-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500"
+                  className="w-full text-xs py-2.5 px-3 border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500"
                 >
                   <option value="READ">READ (View Page Content)</option>
                   <option value="WRITE_CREATE_UGC">WRITE_CREATE_UGC (Publish Post / Comment)</option>
@@ -1347,7 +1347,7 @@ const MasterMembersConsole: React.FC = () => {
           </div>
 
           {/* Real-time enforcement evaluation card */}
-          <div className="p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 space-y-4">
+          <div className="p-6 rounded-2xl border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900 space-y-4">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold uppercase tracking-wider text-slate-700">
                 Evaluation Output
@@ -1366,7 +1366,7 @@ const MasterMembersConsole: React.FC = () => {
               <span>{enforcementResult.statusText}</span>
             </div>
 
-            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800 text-xs space-y-2">
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-300 dark:border-slate-800 text-xs space-y-2">
               <div className="font-bold text-slate-900 dark:text-white">Policy Decision Rationale:</div>
               <p className="text-slate-600 dark:text-slate-300">{enforcementResult.reason}</p>
             </div>
@@ -1379,14 +1379,14 @@ const MasterMembersConsole: React.FC = () => {
         <div className="p-6 space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Onboarding Overview */}
-            <div className="p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 space-y-4">
+            <div className="p-6 rounded-2xl border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900 space-y-4">
               <div className="flex items-center gap-2">
                 <UserCheck className="w-5 h-5 text-emerald-500" />
                 <h4 className="font-black text-sm text-slate-900 dark:text-white">
                   Fast Member & Employee Onboarding
                 </h4>
               </div>
-              <p className="text-xs text-slate-600 dark:text-slate-400">
+              <p className="text-xs text-slate-700 dark:text-slate-300 font-medium">
                 Every new member joins under the default <strong>Guest</strong> tier (Read / Create Own UGC). Upgrading to Editor, Manager, or Creator Pro is executed with a single role swap, instantly provisioning the required screen permissions.
               </p>
               <button
@@ -1398,14 +1398,14 @@ const MasterMembersConsole: React.FC = () => {
             </div>
 
             {/* Instant Offboarding & Access Cut-Off */}
-            <div className="p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 space-y-4">
+            <div className="p-6 rounded-2xl border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900 space-y-4">
               <div className="flex items-center gap-2">
                 <UserX className="w-5 h-5 text-rose-500" />
                 <h4 className="font-black text-sm text-slate-900 dark:text-white">
                   Instant Access Revocation & Offboarding
                 </h4>
               </div>
-              <p className="text-xs text-slate-600 dark:text-slate-400">
+              <p className="text-xs text-slate-700 dark:text-slate-300 font-medium">
                 When an employee leaves or a creator contract ends, revoking their role cuts off access immediately across all sessions, preventing insider threats and eliminating data leak risks.
               </p>
               <div className="p-3 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900 rounded-xl text-xs text-rose-700 dark:text-rose-300">
@@ -1419,8 +1419,8 @@ const MasterMembersConsole: React.FC = () => {
       {/* Edit Role Modal */}
       {isEditRoleModalOpen && selectedMember && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4">
-          <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-lg w-full max-h-[90vh] flex flex-col border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden">
-            <div className="flex items-center justify-between p-5 border-b border-slate-200 dark:border-slate-800">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-lg w-full max-h-[90vh] flex flex-col border border-slate-300 dark:border-slate-800 shadow-2xl overflow-hidden">
+            <div className="flex items-center justify-between p-5 border-b border-slate-300 dark:border-slate-800">
               <div className="flex items-center gap-2.5">
                 <div className="p-2 rounded-xl bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/20">
                   <Key className="w-4 h-4" />
@@ -1429,7 +1429,7 @@ const MasterMembersConsole: React.FC = () => {
                   <h3 className="font-black text-sm text-slate-900 dark:text-white">
                     Swap Predefined Role
                   </h3>
-                  <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                  <p className="text-[11px] text-slate-700 dark:text-slate-300 font-medium">
                     Sovereign RBAC Governance & Screen Permission Assignment
                   </p>
                 </div>
@@ -1442,17 +1442,17 @@ const MasterMembersConsole: React.FC = () => {
               </button>
             </div>
 
-            <div className="p-3.5 mx-5 mt-4 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 flex items-center justify-between gap-3">
+            <div className="p-3.5 mx-5 mt-4 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-300 dark:border-slate-700/80 flex items-center justify-between gap-3">
               <div className="min-w-0">
                 <div className="text-xs font-black text-slate-900 dark:text-white truncate">
                   {selectedMember.name}
                 </div>
-                <div className="text-[11px] font-mono text-slate-500 dark:text-slate-400 truncate">
+                <div className="text-[11px] font-mono text-slate-700 dark:text-slate-300 font-medium truncate">
                   {selectedMember.email}
                 </div>
               </div>
               <div className="text-right shrink-0">
-                <div className="text-[10px] uppercase font-bold text-slate-700 dark:text-slate-400">Current Role</div>
+                <div className="text-[10px] uppercase font-bold text-slate-800 dark:text-slate-200">Current Role</div>
                 <span className={`inline-block mt-0.5 px-2 py-0.5 rounded text-[10px] font-extrabold ${
                   PREDEFINED_ROLES_SPEC.find(s => s.role === selectedMember.role)?.badgeColor || 'bg-slate-700 text-white'
                 }`}>
@@ -1464,7 +1464,7 @@ const MasterMembersConsole: React.FC = () => {
             <div className="p-5 overflow-y-auto space-y-2.5 flex-1 max-h-[55vh]">
               <label className="text-xs font-black tracking-wide text-slate-700 dark:text-slate-200 flex items-center justify-between">
                 <span>Select New Predefined Role:</span>
-                <span className="text-[10px] font-semibold text-slate-500">Instant Enforcement</span>
+                <span className="text-[10px] font-bold text-slate-700">Instant Enforcement</span>
               </label>
 
               <div className="grid grid-cols-1 gap-2.5">
@@ -1478,7 +1478,7 @@ const MasterMembersConsole: React.FC = () => {
                       className={`w-full p-3.5 text-left rounded-xl border transition-all flex items-start gap-3 group ${
                         isCurrent
                           ? 'bg-orange-500/10 dark:bg-orange-950/40 border-orange-500 dark:border-orange-500 ring-2 ring-orange-500/30 shadow-xs'
-                          : 'bg-white dark:bg-slate-800/90 border-slate-200 dark:border-slate-700 hover:border-orange-400 dark:hover:border-orange-500/70 hover:bg-orange-50/30 dark:hover:bg-slate-800'
+                          : 'bg-white dark:bg-slate-800/90 border-slate-300 dark:border-slate-700 hover:border-orange-400 dark:hover:border-orange-500/70 hover:bg-orange-50/30 dark:hover:bg-slate-800'
                       }`}
                     >
                       <div className="mt-0.5 shrink-0">
@@ -1513,7 +1513,7 @@ const MasterMembersConsole: React.FC = () => {
                           {spec.description}
                         </p>
 
-                        <div className="text-[10px] font-semibold text-slate-500 dark:text-slate-400 mt-1 flex items-center gap-1.5">
+                        <div className="text-[10px] font-semibold text-slate-700 dark:text-slate-300 mt-1 flex items-center gap-1.5">
                           <span className="font-bold text-slate-600 dark:text-slate-300">Scope:</span>
                           <span className="truncate">{spec.accessScope}</span>
                         </div>
@@ -1524,14 +1524,14 @@ const MasterMembersConsole: React.FC = () => {
               </div>
             </div>
 
-            <div className="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/60 rounded-b-2xl flex items-center justify-between">
-              <span className="text-[11px] text-slate-500 dark:text-slate-400">
+            <div className="p-4 border-t border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/60 rounded-b-2xl flex items-center justify-between">
+              <span className="text-[11px] text-slate-700 dark:text-slate-300 font-medium">
                 Click any role to apply immediately.
               </span>
               <button
                 type="button"
                 onClick={() => setIsEditRoleModalOpen(false)}
-                className="px-4 py-2 text-xs font-bold text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition"
+                className="px-4 py-2 text-xs font-bold text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition"
               >
                 Close
               </button>
@@ -1543,8 +1543,8 @@ const MasterMembersConsole: React.FC = () => {
       {/* Grant FIC Modal */}
       {isGrantFicModalOpen && selectedMember && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4">
-          <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-md w-full border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden">
-            <div className="flex items-center justify-between p-5 border-b border-slate-200 dark:border-slate-800">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-md w-full border border-slate-300 dark:border-slate-800 shadow-2xl overflow-hidden">
+            <div className="flex items-center justify-between p-5 border-b border-slate-300 dark:border-slate-800">
               <div className="flex items-center gap-2.5">
                 <div className="p-2 rounded-xl bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/20">
                   <Coins className="w-4 h-4" />
@@ -1553,7 +1553,7 @@ const MasterMembersConsole: React.FC = () => {
                   <h3 className="font-black text-sm text-slate-900 dark:text-white">
                     Grant FIC Treasury Tokens
                   </h3>
-                  <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                  <p className="text-[11px] text-slate-700 dark:text-slate-300 font-medium">
                     Direct Treasury Allotment (Dual-Currency Peg 1 FIC = ₦500 / $0.50)
                   </p>
                 </div>
@@ -1567,11 +1567,11 @@ const MasterMembersConsole: React.FC = () => {
             </div>
 
             <div className="p-5 space-y-4">
-              <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700">
+              <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-300 dark:border-slate-700">
                 <div className="text-xs font-black text-slate-900 dark:text-white">
                   Recipient: {selectedMember.name}
                 </div>
-                <div className="text-[11px] font-mono text-slate-500 dark:text-slate-400">
+                <div className="text-[11px] font-mono text-slate-700 dark:text-slate-300 font-medium">
                   {selectedMember.email} &bull; Current Balance: <span className="font-bold text-orange-500">{selectedMember.ficBalance.toLocaleString()} FIC</span>
                 </div>
               </div>
@@ -1585,18 +1585,18 @@ const MasterMembersConsole: React.FC = () => {
                   min="1"
                   value={ficGrantAmount}
                   onChange={e => setFicGrantAmount(parseInt(e.target.value) || 0)}
-                  className="w-full mt-1.5 px-3.5 py-2.5 text-xs border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-bold focus:ring-2 focus:ring-orange-500 focus:outline-hidden placeholder:text-slate-400 font-mono"
+                  className="w-full mt-1.5 px-3.5 py-2.5 text-xs border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-bold focus:ring-2 focus:ring-orange-500 focus:outline-hidden placeholder:text-slate-500 font-mono"
                 />
-                <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 font-mono">
+                <p className="text-[11px] text-slate-700 dark:text-slate-300 font-medium mt-1 font-mono">
                   Valuation: ₦{(ficGrantAmount * 500).toLocaleString()} &bull; ${(ficGrantAmount * 0.5).toLocaleString()} USD
                 </p>
               </div>
 
-              <div className="flex justify-end gap-2 pt-2 border-t border-slate-200 dark:border-slate-800">
+              <div className="flex justify-end gap-2 pt-2 border-t border-slate-300 dark:border-slate-800">
                 <button
                   type="button"
                   onClick={() => setIsGrantFicModalOpen(false)}
-                  className="px-4 py-2 text-xs font-bold text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition"
+                  className="px-4 py-2 text-xs font-bold text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition"
                 >
                   Cancel
                 </button>
@@ -1616,8 +1616,8 @@ const MasterMembersConsole: React.FC = () => {
       {/* Onboard Member Modal */}
       {isAddMemberModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4">
-          <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-md w-full border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden">
-            <div className="flex items-center justify-between p-5 border-b border-slate-200 dark:border-slate-800">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-md w-full border border-slate-300 dark:border-slate-800 shadow-2xl overflow-hidden">
+            <div className="flex items-center justify-between p-5 border-b border-slate-300 dark:border-slate-800">
               <div className="flex items-center gap-2.5">
                 <div className="p-2 rounded-xl bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/20">
                   <UserPlus className="w-4 h-4" />
@@ -1626,7 +1626,7 @@ const MasterMembersConsole: React.FC = () => {
                   <h3 className="font-black text-sm text-slate-900 dark:text-white">
                     Onboard New Member
                   </h3>
-                  <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                  <p className="text-[11px] text-slate-700 dark:text-slate-300 font-medium">
                     Add new user with predefined role and least-privilege policy
                   </p>
                 </div>
@@ -1648,7 +1648,7 @@ const MasterMembersConsole: React.FC = () => {
                   value={newMemberName}
                   onChange={e => setNewMemberName(e.target.value)}
                   placeholder="e.g. Samuel Adeyemi"
-                  className="w-full mt-1.5 px-3.5 py-2.5 text-xs border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-orange-500 focus:outline-hidden font-bold placeholder:text-slate-400"
+                  className="w-full mt-1.5 px-3.5 py-2.5 text-xs border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-orange-500 focus:outline-hidden font-bold placeholder:text-slate-500"
                 />
               </div>
 
@@ -1660,7 +1660,7 @@ const MasterMembersConsole: React.FC = () => {
                   value={newMemberEmail}
                   onChange={e => setNewMemberEmail(e.target.value)}
                   placeholder="e.g. samuel@example.com"
-                  className="w-full mt-1.5 px-3.5 py-2.5 text-xs border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-orange-500 focus:outline-hidden font-bold placeholder:text-slate-400"
+                  className="w-full mt-1.5 px-3.5 py-2.5 text-xs border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-orange-500 focus:outline-hidden font-bold placeholder:text-slate-500"
                 />
               </div>
 
@@ -1677,16 +1677,16 @@ const MasterMembersConsole: React.FC = () => {
                   <option className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white" value="Creator Pro">Creator Pro</option>
                   <option className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white" value="Admin">Administrator</option>
                 </select>
-                <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
+                <p className="text-[11px] text-slate-700 dark:text-slate-300 font-medium mt-1">
                   Default Guest role follows the Least Privilege Security Protocol.
                 </p>
               </div>
 
-              <div className="flex justify-end gap-2 pt-2 border-t border-slate-200 dark:border-slate-800">
+              <div className="flex justify-end gap-2 pt-2 border-t border-slate-300 dark:border-slate-800">
                 <button
                   type="button"
                   onClick={() => setIsAddMemberModalOpen(false)}
-                  className="px-4 py-2 text-xs font-bold text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition"
+                  className="px-4 py-2 text-xs font-bold text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition"
                 >
                   Cancel
                 </button>
@@ -1705,8 +1705,8 @@ const MasterMembersConsole: React.FC = () => {
       {/* UPDATE MEMBER ACCOUNT DETAILS & INFORMATION MODAL */}
       {isEditMemberModalOpen && selectedMember && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 overflow-y-auto">
-          <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-2xl w-full border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden my-8">
-            <div className="flex items-center justify-between p-5 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-2xl w-full border border-slate-300 dark:border-slate-800 shadow-2xl overflow-hidden my-8">
+            <div className="flex items-center justify-between p-5 border-b border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50">
               <div className="flex items-center gap-3">
                 <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
                   <UserCheck className="w-5 h-5" />
@@ -1720,7 +1720,7 @@ const MasterMembersConsole: React.FC = () => {
                       </span>
                     )}
                   </h3>
-                  <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                  <p className="text-[11px] text-slate-700 dark:text-slate-300 font-medium">
                     ID: {selectedMember.id} &bull; Joined: {selectedMember.joinedDate}
                   </p>
                 </div>
@@ -1742,7 +1742,7 @@ const MasterMembersConsole: React.FC = () => {
                     required
                     value={editName}
                     onChange={e => setEditName(e.target.value)}
-                    className="w-full mt-1.5 px-3.5 py-2 text-xs border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-emerald-500 focus:outline-hidden font-bold placeholder:text-slate-400"
+                    className="w-full mt-1.5 px-3.5 py-2 text-xs border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-emerald-500 focus:outline-hidden font-bold placeholder:text-slate-500"
                   />
                 </div>
 
@@ -1753,7 +1753,7 @@ const MasterMembersConsole: React.FC = () => {
                     required
                     value={editUsername}
                     onChange={e => setEditUsername(e.target.value)}
-                    className="w-full mt-1.5 px-3.5 py-2 text-xs border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500 focus:outline-hidden font-bold placeholder:text-slate-400"
+                    className="w-full mt-1.5 px-3.5 py-2 text-xs border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500 focus:outline-hidden font-bold placeholder:text-slate-500"
                   />
                 </div>
 
@@ -1764,7 +1764,7 @@ const MasterMembersConsole: React.FC = () => {
                     required
                     value={editEmail}
                     onChange={e => setEditEmail(e.target.value)}
-                    className="w-full mt-1.5 px-3.5 py-2 text-xs border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-emerald-500 focus:outline-hidden font-bold placeholder:text-slate-400"
+                    className="w-full mt-1.5 px-3.5 py-2 text-xs border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-emerald-500 focus:outline-hidden font-bold placeholder:text-slate-500"
                   />
                 </div>
 
@@ -1774,7 +1774,7 @@ const MasterMembersConsole: React.FC = () => {
                     type="text"
                     value={editPhone}
                     onChange={e => setEditPhone(e.target.value)}
-                    className="w-full mt-1.5 px-3.5 py-2 text-xs border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500 focus:outline-hidden font-bold placeholder:text-slate-400"
+                    className="w-full mt-1.5 px-3.5 py-2 text-xs border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500 focus:outline-hidden font-bold placeholder:text-slate-500"
                   />
                 </div>
 
@@ -1815,7 +1815,7 @@ const MasterMembersConsole: React.FC = () => {
                     type="text"
                     value={editDepartment}
                     onChange={e => setEditDepartment(e.target.value)}
-                    className="w-full mt-1.5 px-3.5 py-2 text-xs border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-emerald-500 focus:outline-hidden font-bold placeholder:text-slate-400"
+                    className="w-full mt-1.5 px-3.5 py-2 text-xs border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-emerald-500 focus:outline-hidden font-bold placeholder:text-slate-500"
                   />
                 </div>
 
@@ -1842,9 +1842,9 @@ const MasterMembersConsole: React.FC = () => {
                     min="0"
                     value={editStoreCreditBalance}
                     onChange={e => setEditStoreCreditBalance(parseFloat(e.target.value) || 0)}
-                    className="w-full mt-1.5 px-3.5 py-2 text-xs border border-emerald-300 dark:border-emerald-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-emerald-400 font-mono font-bold focus:ring-2 focus:ring-emerald-500 focus:outline-hidden border-slate-300 placeholder:text-slate-400"
+                    className="w-full mt-1.5 px-3.5 py-2 text-xs border border-emerald-300 dark:border-emerald-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-emerald-400 font-mono font-bold focus:ring-2 focus:ring-emerald-500 focus:outline-hidden border-slate-300 placeholder:text-slate-500"
                   />
-                  <p className="text-[10px] text-slate-500 mt-1">25% split from platform earnings algorithm</p>
+                  <p className="text-[10px] text-slate-700 font-medium mt-1">25% split from platform earnings algorithm</p>
                 </div>
 
                 <div>
@@ -1856,9 +1856,9 @@ const MasterMembersConsole: React.FC = () => {
                     min="0"
                     value={editFicBalance}
                     onChange={e => setEditFicBalance(parseInt(e.target.value) || 0)}
-                    className="w-full mt-1.5 px-3.5 py-2 text-xs border border-orange-300 dark:border-orange-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-orange-400 font-mono font-bold focus:ring-2 focus:ring-orange-500 focus:outline-hidden border-slate-300 placeholder:text-slate-400"
+                    className="w-full mt-1.5 px-3.5 py-2 text-xs border border-orange-300 dark:border-orange-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-orange-400 font-mono font-bold focus:ring-2 focus:ring-orange-500 focus:outline-hidden border-slate-300 placeholder:text-slate-500"
                   />
-                  <p className="text-[10px] text-slate-500 mt-1">Liquid FIC balance for on-chain/in-app transfer</p>
+                  <p className="text-[10px] text-slate-700 font-medium mt-1">Liquid FIC balance for on-chain/in-app transfer</p>
                 </div>
               </div>
 
@@ -1868,14 +1868,14 @@ const MasterMembersConsole: React.FC = () => {
                     type="checkbox"
                     checked={editBiometricVerified}
                     onChange={e => setEditBiometricVerified(e.target.checked)}
-                    className="w-4 h-4 rounded border-slate-300 text-slate-900 focus:ring-emerald-500 font-bold border bg-white focus:ring-2 placeholder:text-slate-400"
+                    className="w-4 h-4 rounded border-slate-300 text-slate-900 focus:ring-emerald-500 font-bold border bg-white focus:ring-2 placeholder:text-slate-500"
                   />
                   <span>Biometric Passkey Verified & Hardware Attested</span>
                 </label>
               </div>
 
               {/* Corporate Governance Executive Portfolio Assignment */}
-              <div className="pt-4 mt-2 border-t border-slate-200 dark:border-slate-800 space-y-3">
+              <div className="pt-4 mt-2 border-t border-slate-300 dark:border-slate-800 space-y-3">
                 <div className="p-3 bg-indigo-50/70 dark:bg-indigo-950/40 rounded-xl border border-indigo-200 dark:border-indigo-800 text-xs text-indigo-950 dark:text-indigo-200">
                   <div className="font-bold flex items-center gap-1.5 text-indigo-900 dark:text-indigo-100 mb-1">
                     <ShieldCheck className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
@@ -1971,11 +1971,11 @@ const MasterMembersConsole: React.FC = () => {
                 </div>
               </div>
 
-              <div className="flex justify-end gap-2 pt-4 border-t border-slate-200 dark:border-slate-800">
+              <div className="flex justify-end gap-2 pt-4 border-t border-slate-300 dark:border-slate-800">
                 <button
                   type="button"
                   onClick={() => setIsEditMemberModalOpen(false)}
-                  className="px-4 py-2 text-xs font-bold text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition"
+                  className="px-4 py-2 text-xs font-bold text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition"
                 >
                   Cancel
                 </button>
@@ -1996,7 +1996,7 @@ const MasterMembersConsole: React.FC = () => {
       {isDeleteMemberModalOpen && selectedMember && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4">
           <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-md w-full border border-rose-200 dark:border-rose-900 shadow-2xl overflow-hidden">
-            <div className="flex items-center justify-between p-5 border-b border-slate-200 dark:border-slate-800 bg-rose-50 dark:bg-rose-950/40">
+            <div className="flex items-center justify-between p-5 border-b border-slate-300 dark:border-slate-800 bg-rose-50 dark:bg-rose-950/40">
               <div className="flex items-center gap-2.5">
                 <div className="p-2 rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20">
                   <Trash2 className="w-5 h-5" />
@@ -2005,7 +2005,7 @@ const MasterMembersConsole: React.FC = () => {
                   <h3 className="font-black text-sm text-slate-900 dark:text-white">
                     Delete Member Account
                   </h3>
-                  <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                  <p className="text-[11px] text-slate-700 dark:text-slate-300 font-medium">
                     Permanent account removal & security revocation
                   </p>
                 </div>
@@ -2019,12 +2019,12 @@ const MasterMembersConsole: React.FC = () => {
             </div>
 
             <div className="p-6 space-y-4">
-              <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-xs space-y-1">
+              <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-300 dark:border-slate-700 text-xs space-y-1">
                 <div className="font-bold text-slate-900 dark:text-white">{selectedMember.name}</div>
-                <div className="text-slate-500 dark:text-slate-400 font-mono">
+                <div className="text-slate-700 dark:text-slate-300 font-medium font-mono">
                   @{selectedMember.username} &bull; {selectedMember.email}
                 </div>
-                <div className="text-[11px] text-slate-500">
+                <div className="text-[11px] text-slate-700 dark:text-slate-300 font-medium">
                   Store Credit: <span className="font-bold text-emerald-500">${(selectedMember.storeCreditBalance ?? 450).toFixed(2)}</span> &bull; FIC: <span className="font-bold text-orange-500">{selectedMember.ficBalance.toLocaleString()}</span>
                 </div>
               </div>
@@ -2043,7 +2043,7 @@ const MasterMembersConsole: React.FC = () => {
                     name="deleteMode"
                     checked={isPermanentDelete}
                     onChange={() => setIsPermanentDelete(true)}
-                    className="text-slate-900 focus:ring-rose-500 font-bold border border-slate-300 rounded bg-white focus:ring-2 placeholder:text-slate-400"
+                    className="text-slate-900 focus:ring-rose-500 font-bold border border-slate-300 rounded bg-white focus:ring-2 placeholder:text-slate-500"
                   />
                   <span>Permanent Purge (Delete from Database, Wallets & StoreCredit Ledgers)</span>
                 </label>
@@ -2053,14 +2053,14 @@ const MasterMembersConsole: React.FC = () => {
                     name="deleteMode"
                     checked={!isPermanentDelete}
                     onChange={() => setIsPermanentDelete(false)}
-                    className="text-slate-900 focus:ring-rose-500 font-bold border border-slate-300 rounded bg-white focus:ring-2 placeholder:text-slate-400"
+                    className="text-slate-900 focus:ring-rose-500 font-bold border border-slate-300 rounded bg-white focus:ring-2 placeholder:text-slate-500"
                   />
                   <span>Soft Deactivation (Suspend Account & Revoke Screen Access)</span>
                 </label>
               </div>
 
               <div>
-                <label className="text-[11px] font-bold text-slate-600 dark:text-slate-400 block mb-1">
+                <label className="text-[11px] font-bold text-slate-800 dark:text-slate-200 block mb-1">
                   Type <span className="text-rose-600 dark:text-rose-400 font-mono font-black">{selectedMember.username}</span> to confirm:
                 </label>
                 <input
@@ -2068,15 +2068,15 @@ const MasterMembersConsole: React.FC = () => {
                   value={deleteConfirmText}
                   onChange={e => setDeleteConfirmText(e.target.value)}
                   placeholder={selectedMember.username}
-                  className="w-full px-3 py-2 text-xs border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-rose-500 focus:outline-hidden font-bold placeholder:text-slate-400"
+                  className="w-full px-3 py-2 text-xs border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-rose-500 focus:outline-hidden font-bold placeholder:text-slate-500"
                 />
               </div>
 
-              <div className="flex justify-end gap-2 pt-4 border-t border-slate-200 dark:border-slate-800">
+              <div className="flex justify-end gap-2 pt-4 border-t border-slate-300 dark:border-slate-800">
                 <button
                   type="button"
                   onClick={() => setIsDeleteMemberModalOpen(false)}
-                  className="px-4 py-2 text-xs font-bold text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition"
+                  className="px-4 py-2 text-xs font-bold text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition"
                 >
                   Cancel
                 </button>

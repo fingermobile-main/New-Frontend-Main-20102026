@@ -2,11 +2,8 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Crown,
-  Gem,
   Sparkles,
   ArrowRight,
-  ShieldCheck,
-  Compass,
   CheckCircle2,
 } from 'lucide-react';
 import widgetService, { WidgetEntity } from '../../services/widgetService';
@@ -42,8 +39,12 @@ export const FingerLuxWidget: React.FC<FingerLuxWidgetProps> = ({ widget }) => {
 
       {/* Main Info */}
       <div className="flex items-start gap-2.5 mb-2.5">
-        <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-purple-700 via-indigo-600 to-fuchsia-600 flex items-center justify-center text-white shadow-xs shrink-0">
-          <Gem className="w-5 h-5 text-purple-200" />
+        <div className="w-9 h-9 rounded-xl bg-slate-950 border border-purple-300 p-0.5 flex items-center justify-center shadow-xs shrink-0 overflow-hidden">
+          <img
+            src="/assets/logos/fingerlux_icon.png"
+            alt="FingerLux"
+            className="w-full h-full object-contain"
+          />
         </div>
         <div>
           <h4 className="text-sm font-black text-slate-900 leading-tight">

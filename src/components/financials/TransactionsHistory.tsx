@@ -179,7 +179,7 @@ const TransactionsHistory: React.FC<TransactionsHistoryProps> = ({
           </div>
 
           <div className="border rounded-lg overflow-hidden">
-            <div className="bg-muted px-4 py-3 grid grid-cols-12 gap-4 text-sm font-medium text-muted-foreground">
+            <div className="bg-muted px-4 py-3 grid grid-cols-12 gap-4 text-sm font-semibold text-slate-800 dark:text-slate-200">
               <div className="col-span-1">Type</div>
               <div className="col-span-4">Description</div>
               <div className="col-span-2">Category</div>
@@ -212,7 +212,7 @@ const TransactionsHistory: React.FC<TransactionsHistoryProps> = ({
                     {transaction.type === 'deposit' ? '+' : '-'}$
                     {transaction.amount.toFixed(2)}
                   </div>
-                  <div className="col-span-2 text-sm text-muted-foreground">
+                  <div className="col-span-2 text-sm text-slate-700 dark:text-slate-300 font-medium">
                     {transaction.date}
                   </div>
                   <div className="col-span-1">
@@ -226,7 +226,7 @@ const TransactionsHistory: React.FC<TransactionsHistoryProps> = ({
           </div>
 
           {filteredTransactions.length === 0 && (
-            <div className="text-center py-12 text-muted-foreground">
+            <div className="text-center py-12 text-slate-700 dark:text-slate-300 font-medium">
               <Search className="h-12 w-12 mx-auto mb-4 opacity-20" />
               <p>No transactions found matching your criteria</p>
             </div>

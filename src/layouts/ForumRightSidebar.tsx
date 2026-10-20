@@ -73,7 +73,7 @@ const ForumRightSidebar: React.FC<ForumRightSidebarProps> = ({ isOpen, onClose }
       <div className="lg:hidden flex items-center justify-between p-4 border-b border-gray-700">
         <span className="text-lg font-semibold text-white">Sidebar</span>
         <button onClick={onClose} className="p-2 hover:bg-gray-700 rounded-lg">
-          <XIcon className="w-6 h-6 text-slate-500" />
+          <XIcon className="w-6 h-6 text-slate-600" />
         </button>
       </div>
 
@@ -99,7 +99,7 @@ const ForumRightSidebar: React.FC<ForumRightSidebarProps> = ({ isOpen, onClose }
         <div>
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
-              <BellIcon className="w-5 h-5 text-slate-500" />
+              <BellIcon className="w-5 h-5 text-slate-600" />
               <h3 className="text-sm font-semibold text-gray-300">Notifications</h3>
             </div>
             <Link to="/notifications" className="text-xs text-orange-500 hover:text-orange-400">
@@ -110,7 +110,7 @@ const ForumRightSidebar: React.FC<ForumRightSidebarProps> = ({ isOpen, onClose }
             {notifications.map((notif) => (
               <div key={notif.id} className="p-3 bg-gray-800/50 rounded-lg hover:bg-gray-800 transition-colors cursor-pointer">
                 <p className="text-sm text-gray-300">{notif.text}</p>
-                <span className="text-xs text-gray-500 mt-1 block">{notif.time}</span>
+                <span className="text-xs text-slate-700 font-medium mt-1 block">{notif.time}</span>
               </div>
             ))}
           </div>
@@ -125,7 +125,7 @@ const ForumRightSidebar: React.FC<ForumRightSidebarProps> = ({ isOpen, onClose }
             </div>
             <button
               onClick={() => setShowEarnings(!showEarnings)}
-              className="text-xs text-gray-400 hover:text-white"
+              className="text-xs text-gray-300 font-medium hover:text-white"
             >
               {showEarnings ? 'Hide' : 'Show'}
             </button>
@@ -134,15 +134,15 @@ const ForumRightSidebar: React.FC<ForumRightSidebarProps> = ({ isOpen, onClose }
           {showEarnings ? (
             <div className="space-y-2">
               <div className="flex justify-between items-center">
-                <span className="text-xs text-gray-400">Today</span>
+                <span className="text-xs text-gray-300 font-medium">Today</span>
                 <span className="text-sm font-semibold text-green-400">{earnings.today} {earnings.currency}</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-xs text-gray-400">This Week</span>
+                <span className="text-xs text-gray-300 font-medium">This Week</span>
                 <span className="text-sm font-semibold text-green-400">{earnings.thisWeek} {earnings.currency}</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-xs text-gray-400">This Month</span>
+                <span className="text-xs text-gray-300 font-medium">This Month</span>
                 <span className="text-sm font-semibold text-green-400">{earnings.thisMonth} {earnings.currency}</span>
               </div>
               <Link
@@ -153,7 +153,7 @@ const ForumRightSidebar: React.FC<ForumRightSidebarProps> = ({ isOpen, onClose }
               </Link>
             </div>
           ) : (
-            <div className="text-center py-4 text-gray-500 text-sm">
+            <div className="text-center py-4 text-slate-700 font-medium text-sm">
               ••••••••
             </div>
           )}
@@ -166,13 +166,13 @@ const ForumRightSidebar: React.FC<ForumRightSidebarProps> = ({ isOpen, onClose }
             className="flex items-center justify-between w-full mb-3"
           >
             <div className="flex items-center gap-2">
-              <CalendarIcon className="w-5 h-5 text-slate-500" />
+              <CalendarIcon className="w-5 h-5 text-slate-600" />
               <h3 className="text-sm font-semibold text-gray-300">Events</h3>
             </div>
             {showEvents ? (
-              <ChevronDownIcon className="w-4 h-4 text-slate-500" />
+              <ChevronDownIcon className="w-4 h-4 text-slate-600" />
             ) : (
-              <ChevronRightIcon className="w-4 h-4 text-slate-500" />
+              <ChevronRightIcon className="w-4 h-4 text-slate-600" />
             )}
           </button>
 
@@ -181,7 +181,7 @@ const ForumRightSidebar: React.FC<ForumRightSidebarProps> = ({ isOpen, onClose }
               {events.map((event) => (
                 <div key={event.id} className="p-3 bg-gray-800/50 rounded-lg hover:bg-gray-800 transition-colors cursor-pointer">
                   <h4 className="text-sm font-medium text-white mb-1">{event.title}</h4>
-                  <div className="flex items-center justify-between text-xs text-gray-400">
+                  <div className="flex items-center justify-between text-xs text-gray-300 font-medium">
                     <span>{event.date}</span>
                     <span>{event.attendees} attending</span>
                   </div>
@@ -203,7 +203,7 @@ const ForumRightSidebar: React.FC<ForumRightSidebarProps> = ({ isOpen, onClose }
             <MegaphoneIcon className="w-5 h-5 text-blue-400" />
             <h3 className="text-sm font-semibold text-gray-300">Ads Manager</h3>
           </div>
-          <p className="text-xs text-gray-400 mb-3">Create and manage your ad campaigns</p>
+          <p className="text-xs text-gray-300 font-medium mb-3">Create and manage your ad campaigns</p>
           <Link
             to="/ads-manager"
             className="block w-full px-4 py-2 bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 text-sm font-medium rounded-lg transition-colors text-center border border-blue-600/50"
@@ -214,7 +214,7 @@ const ForumRightSidebar: React.FC<ForumRightSidebarProps> = ({ isOpen, onClose }
 
         {/* Sponsored Content */}
         <div>
-          <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Sponsored</h3>
+          <h3 className="text-xs font-bold text-gray-300 uppercase tracking-wider mb-3">Sponsored</h3>
           <div className="space-y-3">
             {sponsoredAds.map((ad) => (
               <Link
@@ -225,8 +225,8 @@ const ForumRightSidebar: React.FC<ForumRightSidebarProps> = ({ isOpen, onClose }
                 <img src={ad.image} alt={ad.title} className="w-full h-32 object-cover"  />
                 <div className="p-3">
                   <h4 className="text-sm font-semibold text-white mb-1">{ad.title}</h4>
-                  <p className="text-xs text-gray-400 mb-2">{ad.description}</p>
-                  <span className="text-xs text-gray-500">Sponsored</span>
+                  <p className="text-xs text-gray-300 font-medium mb-2">{ad.description}</p>
+                  <span className="text-[10px] text-slate-700 font-bold uppercase">Sponsored</span>
                 </div>
               </Link>
             ))}
@@ -237,7 +237,7 @@ const ForumRightSidebar: React.FC<ForumRightSidebarProps> = ({ isOpen, onClose }
         <div>
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
-              <UserGroupIcon className="w-5 h-5 text-slate-500" />
+              <UserGroupIcon className="w-5 h-5 text-slate-600" />
               <h3 className="text-sm font-semibold text-gray-300">Online Friends</h3>
             </div>
             <span className="text-xs text-green-400">{onlineFriends.length} online</span>

@@ -80,10 +80,10 @@ export const CanaryAdsManagementPage: React.FC = () => {
               <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-rose-500/20 text-rose-400 border border-rose-500/40">
                 SuperAdmin RBC
               </span>
-              <span className="text-xs text-slate-400">Role-Based Control Ads Moderation & Scheduling</span>
+              <span className="text-xs text-slate-300 font-medium">Role-Based Control Ads Moderation & Scheduling</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-white mt-1">Canary™ Internal Ad Review Queue</h1>
-            <p className="text-xs text-slate-400 mt-1">
+            <p className="text-xs text-slate-300 font-medium mt-1">
               Inspect merchant media, verify community guidelines, AI policy scores, and schedule public ad releases.
             </p>
           </div>
@@ -104,12 +104,12 @@ export const CanaryAdsManagementPage: React.FC = () => {
 
         {/* WORKSPACE GRID */}
         {loading ? (
-          <div className="py-20 text-center text-slate-500 text-sm">Loading Canary Review Queue...</div>
+          <div className="py-20 text-center text-slate-300 font-medium text-sm">Loading Canary Review Queue...</div>
         ) : queue.length === 0 ? (
           <div className="py-20 text-center space-y-3">
             <span className="text-4xl">🎉</span>
             <h3 className="text-base font-bold text-white">All Ad Submissions Cleared!</h3>
-            <p className="text-xs text-slate-400">No campaigns currently pending SuperAdmin RBC review.</p>
+            <p className="text-xs text-slate-300 font-medium">No campaigns currently pending SuperAdmin RBC review.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-8">
@@ -126,13 +126,13 @@ export const CanaryAdsManagementPage: React.FC = () => {
                       : 'bg-slate-900/80 border-slate-800 hover:border-slate-700'
                   }`}
                 >
-                  <div className="flex items-center justify-between text-[10px] text-slate-400 mb-1">
+                  <div className="flex items-center justify-between text-[10px] text-slate-300 font-medium mb-1">
                     <span className="font-bold text-amber-400 uppercase tracking-wider">{item.placement.replace('_', ' ')}</span>
                     <span>{new Date(item.created_at).toLocaleDateString()}</span>
                   </div>
 
                   <h4 className="text-sm font-black text-white truncate">{item.headline}</h4>
-                  <p className="text-xs text-slate-400 truncate mt-0.5">{item.company_name} ({item.billing_email})</p>
+                  <p className="text-xs text-slate-300 font-medium truncate mt-0.5">{item.company_name} ({item.billing_email})</p>
 
                   <div className="mt-3 flex items-center justify-between">
                     <span className="text-[11px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 font-mono">
@@ -153,11 +153,11 @@ export const CanaryAdsManagementPage: React.FC = () => {
               <div className="lg:col-span-7 bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-md space-y-6">
                 <div>
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-mono text-slate-500 uppercase">Creative ID: {selectedCreative.id}</span>
+                    <span className="text-[10px] font-mono text-slate-700 font-bold uppercase">Creative ID: {selectedCreative.id}</span>
                     <span className="text-xs font-bold text-amber-400">{selectedCreative.placement.toUpperCase()}</span>
                   </div>
                   <h3 className="text-xl font-black text-white mt-1">{selectedCreative.headline}</h3>
-                  <p className="text-xs text-slate-400 mt-1">{selectedCreative.description}</p>
+                  <p className="text-xs text-slate-300 font-medium mt-1">{selectedCreative.description}</p>
                 </div>
 
                 {/* Media Inspector Preview */}
@@ -172,21 +172,21 @@ export const CanaryAdsManagementPage: React.FC = () => {
                 {/* Advertiser & Policy Audit Metadata */}
                 <div className="grid grid-cols-2 gap-4 text-xs bg-slate-800/60 p-4 rounded-2xl border border-slate-700">
                   <div>
-                    <span className="text-slate-400 block">Merchant:</span>
+                    <span className="text-slate-300 font-medium block">Merchant:</span>
                     <span className="font-bold text-white">{selectedCreative.company_name}</span>
                   </div>
                   <div>
-                    <span className="text-slate-400 block">Contact:</span>
+                    <span className="text-slate-300 font-medium block">Contact:</span>
                     <span className="font-bold text-white">{selectedCreative.billing_email}</span>
                   </div>
                   <div>
-                    <span className="text-slate-400 block">Destination URL:</span>
+                    <span className="text-slate-300 font-medium block">Destination URL:</span>
                     <a href={selectedCreative.destination_url} target="_blank" rel="noreferrer" className="text-amber-400 underline truncate block">
                       {selectedCreative.destination_url}
                     </a>
                   </div>
                   <div>
-                    <span className="text-slate-400 block">AI Policy Verdict:</span>
+                    <span className="text-slate-300 font-medium block">AI Policy Verdict:</span>
                     <span className={selectedCreative.ai_policy_passed ? 'text-emerald-400 font-bold' : 'text-rose-400 font-bold'}>
                       {selectedCreative.ai_policy_passed ? '✓ Guidelines Passed' : '✕ Violation Flagged'}
                     </span>

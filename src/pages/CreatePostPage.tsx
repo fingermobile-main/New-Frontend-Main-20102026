@@ -273,7 +273,7 @@ const CreatePostPage: React.FC = () => {
                   className={`flex-1 py-2.5 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 ${
                     postType === 'text'
                       ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-sm'
-                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
+                      : 'text-slate-600 dark:text-slate-300 hover:text-slate-900'
                   }`}
                 >
                   <DocumentTextIcon className="h-4 w-4" />
@@ -285,7 +285,7 @@ const CreatePostPage: React.FC = () => {
                   className={`flex-1 py-2.5 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 ${
                     postType === 'image'
                       ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-sm'
-                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
+                      : 'text-slate-600 dark:text-slate-300 hover:text-slate-900'
                   }`}
                 >
                   <PhotoIcon className="h-4 w-4" />
@@ -297,7 +297,7 @@ const CreatePostPage: React.FC = () => {
                   className={`flex-1 py-2.5 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 ${
                     postType === 'video'
                       ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-sm'
-                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
+                      : 'text-slate-600 dark:text-slate-300 hover:text-slate-900'
                   }`}
                 >
                   <VideoCameraIcon className="h-4 w-4" />
@@ -367,7 +367,7 @@ const CreatePostPage: React.FC = () => {
                   <h4 className="text-sm font-bold text-slate-800 dark:text-slate-200">
                     Click to browse or drop photos &amp; videos
                   </h4>
-                  <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
+                  <p className="text-xs text-slate-700 font-medium mt-1 max-w-sm mx-auto">
                     Select multiple files at once. Supports PNG, JPG, MP4, MOV, WebM with OpenCut client-side hardware rendering.
                   </p>
                 </div>
@@ -658,7 +658,7 @@ const CreatePostPage: React.FC = () => {
                 <h4 className="font-bold text-xs uppercase tracking-wider text-slate-900 dark:text-white mb-2">
                   Postcard Best Practices
                 </h4>
-                <ul className="text-xs text-slate-600 dark:text-slate-400 space-y-1.5">
+                <ul className="text-xs text-slate-700 dark:text-slate-300 font-medium space-y-1.5">
                   <li className="flex items-start gap-1.5">
                     <span className="text-emerald-500 font-bold">•</span>
                     Attach UHD photos &amp; apply Banuba filters

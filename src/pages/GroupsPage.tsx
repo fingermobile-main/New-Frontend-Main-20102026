@@ -9,6 +9,9 @@ import { useAppContext } from '../contexts/AppContext';
 import LoadingSpinner from '../components/LoadingSpinner';
 import groupsService, { Group, CreateGroupRequest } from '../services/groupsService';
 import UniversalProfileCard from '../components/common/UniversalProfileCard';
+import PlatformWidgetsAndAdsRail from '../components/widgets/PlatformWidgetsAndAdsRail';
+import ConnectWidget from '../components/widgets/ConnectWidget';
+import DiscoverWidget from '../components/widgets/DiscoverWidget';
 import {
   Users,
   Search,
@@ -107,6 +110,11 @@ const GroupsPage: React.FC = () => {
   const [moderationScan, setModerationScan] = useState<{ clean: boolean; flaggedWords: string[] } | null>(null);
   const [activePollVote, setActivePollVote] = useState<number | null>(null);
 
+  // Infinite Scroll Observer & Dynamic Generation State
+  const groupSentinelRef = React.useRef<HTMLDivElement>(null);
+  const [isFetchingMore, setIsFetchingMore] = useState(false);
+  const [pageIteration, setPageIteration] = useState(1);
+
   // Fetch Groups from Backend API
   const fetchGroups = useCallback(async () => {
     try {
@@ -126,6 +134,37 @@ const GroupsPage: React.FC = () => {
   useEffect(() => {
     fetchGroups();
   }, [fetchGroups]);
+
+  // Infinite Scroll Observer - No hard end, continuously streams micro-communities
+  useEffect(() => {
+    if (!groupSentinelRef.current) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !isFetchingMore && allGroups.length > 0) {
+          setIsFetchingMore(true);
+          setTimeout(() => {
+            setPageIteration((prev) => {
+              const next = prev + 1;
+              const generated: Group[] = allGroups.slice(0, 6).map((item, idx) => ({
+                ...item,
+                id: `gen-grp-${next}-${idx}-${Date.now()}`,
+                name: `${item.name} · Relay Salon #${next}.${idx + 1}`,
+                members: item.members + Math.floor(Math.random() * 85) + 12,
+                online: Math.floor(Math.random() * 40) + 5,
+                isJoined: false
+              }));
+              setAllGroups((current) => [...current, ...generated]);
+              return next;
+            });
+            setIsFetchingMore(false);
+          }, 450);
+        }
+      },
+      { rootMargin: '400px' }
+    );
+    observer.observe(groupSentinelRef.current);
+    return () => observer.disconnect();
+  }, [isFetchingMore, allGroups.length]);
 
   // Categories list derived from groups
   const categories = useMemo(() => {
@@ -270,7 +309,7 @@ const GroupsPage: React.FC = () => {
               </div>
               <div>
                 <h4 className="text-xs font-bold text-white">1. Shared Identity & Passion</h4>
-                <p className="text-[11px] text-slate-400 mt-0.5">Hyper-specific niche gathering without generic social clutter.</p>
+                <p className="text-[11px] text-slate-300 font-medium mt-0.5">Hyper-specific niche gathering without generic social clutter.</p>
               </div>
             </div>
 
@@ -280,7 +319,7 @@ const GroupsPage: React.FC = () => {
               </div>
               <div>
                 <h4 className="text-xs font-bold text-white">2. Crowdsourced Problem Solving</h4>
-                <p className="text-[11px] text-slate-400 mt-0.5">Living search engine where peers provide battle-tested answers.</p>
+                <p className="text-[11px] text-slate-300 font-medium mt-0.5">Living search engine where peers provide battle-tested answers.</p>
               </div>
             </div>
 
@@ -290,7 +329,7 @@ const GroupsPage: React.FC = () => {
               </div>
               <div>
                 <h4 className="text-xs font-bold text-white">3. Belonging & Support</h4>
-                <p className="text-[11px] text-slate-400 mt-0.5">Psychological safe havens understood by peers who truly get it.</p>
+                <p className="text-[11px] text-slate-300 font-medium mt-0.5">Psychological safe havens understood by peers who truly get it.</p>
               </div>
             </div>
           </div>
@@ -356,14 +395,33 @@ const GroupsPage: React.FC = () => {
 
       {/* Main Content Area */}
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
-          {/* Top Left ProfileCard Column */}
-          <div className="lg:col-span-1 space-y-4">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          {/* Left Column: Static & Sticky */}
+          <div className="lg:col-span-3 lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-5.5rem)] lg:overflow-y-auto space-y-4 scrollbar-none pr-1">
             <UniversalProfileCard />
+
+            {/* Quick Micro-Community Governance Card */}
+            <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 shadow-xl space-y-3">
+              <div className="flex items-center gap-2 text-xs font-bold text-white uppercase tracking-wider">
+                <Shield className="w-4 h-4 text-blue-400" />
+                <span>Living Room Standards</span>
+              </div>
+              <p className="text-[11px] text-slate-300 font-medium leading-relaxed">
+                Autonomous p2p salons with zero corporate surveillance. Powered by member-first moderation and cryptographic identity.
+              </p>
+              <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-300">
+                <span>Active Living Rooms</span>
+                <span className="font-bold text-blue-400">{allGroups.length}</span>
+              </div>
+            </div>
+
+            {/* Left Column Last 2 Widgets: Connect & Discover */}
+            <ConnectWidget pageContext="groups" />
+            <DiscoverWidget pageContext="groups" />
           </div>
 
-          {/* Main Content Tabs Column */}
-          <div className="lg:col-span-3 space-y-6">
+          {/* Center Column: Scrollable Infinite Stream */}
+          <div className="lg:col-span-6 space-y-6">
         {/* ======================================================== */}
         {/* TAB 1 & 2: DISCOVER & MY GROUPS */}
         {/* ======================================================== */}
@@ -385,7 +443,7 @@ const GroupsPage: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="font-bold text-white text-sm">Public Groups</h3>
-                    <p className="text-xs text-slate-400 mt-0.5">Open ecosystem discovery; posts show across the global feed</p>
+                    <p className="text-xs text-slate-300 font-medium mt-0.5">Open ecosystem discovery; posts show across the global feed</p>
                   </div>
                 </div>
               </div>
@@ -404,7 +462,7 @@ const GroupsPage: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="font-bold text-white text-sm">Private & Visible</h3>
-                    <p className="text-xs text-slate-400 mt-0.5">Discoverable in search; posts protected for members only</p>
+                    <p className="text-xs text-slate-300 font-medium mt-0.5">Discoverable in search; posts protected for members only</p>
                   </div>
                 </div>
               </div>
@@ -423,7 +481,7 @@ const GroupsPage: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="font-bold text-white text-sm">Private & Hidden ("Secret")</h3>
-                    <p className="text-xs text-slate-400 mt-0.5">Zero search visibility; exclusive private family/mastermind salons</p>
+                    <p className="text-xs text-slate-300 font-medium mt-0.5">Zero search visibility; exclusive private family/mastermind salons</p>
                   </div>
                 </div>
               </div>
@@ -432,13 +490,13 @@ const GroupsPage: React.FC = () => {
             {/* Filter and Search Bar */}
             <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 sm:p-5 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 shadow-xl">
               <div className="relative flex-1">
-                <Search className="w-5 h-5 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <Search className="w-5 h-5 text-slate-300 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
                   type="text"
                   placeholder="Search groups by name, topic, or category..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-11 pr-4 py-2.5 text-sm text-slate-200 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-11 pr-4 py-2.5 text-sm text-slate-200 placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
                 />
               </div>
 
@@ -472,18 +530,18 @@ const GroupsPage: React.FC = () => {
             {loading && (
               <div className="flex flex-col items-center justify-center py-20">
                 <LoadingSpinner />
-                <p className="mt-4 text-sm text-slate-400">Loading Digital Living Rooms from PostgreSQL...</p>
+                <p className="mt-4 text-sm text-slate-300 font-medium">Loading Digital Living Rooms from PostgreSQL...</p>
               </div>
             )}
 
             {/* Empty State */}
             {!loading && filteredGroups.length === 0 && (
               <div className="text-center py-16 px-4 bg-slate-900/40 border border-slate-800 rounded-2xl">
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-800 flex items-center justify-center text-slate-500">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-800 flex items-center justify-center text-slate-300">
                   <Users className="w-8 h-8" />
                 </div>
                 <h3 className="text-lg font-bold text-white">No Groups Found</h3>
-                <p className="text-sm text-slate-400 max-w-md mx-auto mt-1">
+                <p className="text-sm text-slate-300 font-medium max-w-md mx-auto mt-1">
                   {activeTab === 'my-groups'
                     ? 'You have not joined any groups yet. Browse the Discover tab to connect!'
                     : 'No groups matched your active search query.'}
@@ -501,7 +559,7 @@ const GroupsPage: React.FC = () => {
 
             {/* Groups Grid */}
             {!loading && filteredGroups.length > 0 && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 {filteredGroups.map((group) => {
                   return (
                     <div
@@ -556,8 +614,8 @@ const GroupsPage: React.FC = () => {
                             {group.name}
                           </h3>
 
-                          <div className="flex items-center gap-2 text-xs text-slate-400 mt-1">
-                            <Users className="w-3.5 h-3.5 text-slate-500" />
+                          <div className="flex items-center gap-2 text-xs text-slate-300 font-medium mt-1">
+                            <Users className="w-3.5 h-3.5 text-slate-300" />
                             <span>{group.members.toLocaleString()} members</span>
                           </div>
 
@@ -603,6 +661,16 @@ const GroupsPage: React.FC = () => {
                 })}
               </div>
             )}
+
+            {/* Continuous Infinite Stream Sentinel */}
+            <div ref={groupSentinelRef} className="h-12 flex items-center justify-center">
+              {isFetchingMore && (
+                <div className="flex items-center gap-2 text-xs text-blue-400 font-semibold py-4">
+                  <LoadingSpinner />
+                  <span>Streaming more Living Rooms & micro-communities...</span>
+                </div>
+              )}
+            </div>
           </div>
         )}
 
@@ -616,7 +684,7 @@ const GroupsPage: React.FC = () => {
                 <BookOpen className="w-5 h-5 text-sky-400" />
                 Featured Educational Modules & Guides
               </h3>
-              <p className="text-xs text-slate-400 mb-6">
+              <p className="text-xs text-slate-300 font-medium mb-6">
                 Step-by-step learning modules for community founders, moderators, and active participants.
               </p>
 
@@ -632,7 +700,7 @@ const GroupsPage: React.FC = () => {
                         <span>{guide.lessons} Lessons</span>
                       </div>
                       <h4 className="font-bold text-white text-sm mb-2">{guide.title}</h4>
-                      <p className="text-xs text-slate-400 leading-relaxed">{guide.description}</p>
+                      <p className="text-xs text-slate-300 font-medium leading-relaxed">{guide.description}</p>
                     </div>
 
                     <button
@@ -655,7 +723,7 @@ const GroupsPage: React.FC = () => {
                 </div>
                 <div>
                   <h4 className="font-bold text-white text-base">Facilitated Psychology: Interactive Community Poll</h4>
-                  <p className="text-xs text-slate-400">Prompting peer-to-peer engagement instead of brand broadcasts.</p>
+                  <p className="text-xs text-slate-300 font-medium">Prompting peer-to-peer engagement instead of brand broadcasts.</p>
                 </div>
               </div>
 
@@ -705,7 +773,7 @@ const GroupsPage: React.FC = () => {
                   <Shield className="w-4 h-4" />
                   <h4 className="text-xs font-bold text-white">1. Authenticity</h4>
                 </div>
-                <p className="text-[11px] text-slate-400 leading-relaxed">
+                <p className="text-[11px] text-slate-300 font-medium leading-relaxed">
                   Prevents fake identities, spam link drops, bot accounts, and artificial engagement inflation.
                 </p>
               </div>
@@ -715,7 +783,7 @@ const GroupsPage: React.FC = () => {
                   <CheckCircle2 className="w-4 h-4" />
                   <h4 className="text-xs font-bold text-white">2. Safety</h4>
                 </div>
-                <p className="text-[11px] text-slate-400 leading-relaxed">
+                <p className="text-[11px] text-slate-300 font-medium leading-relaxed">
                   Zero tolerance for real-world harm, predatory behaviors, intimidation, or harassment.
                 </p>
               </div>
@@ -725,7 +793,7 @@ const GroupsPage: React.FC = () => {
                   <Lock className="w-4 h-4" />
                   <h4 className="text-xs font-bold text-white">3. Privacy</h4>
                 </div>
-                <p className="text-[11px] text-slate-400 leading-relaxed">
+                <p className="text-[11px] text-slate-300 font-medium leading-relaxed">
                   Safeguards member data; strictly prohibits unauthorized sharing of personal records (doxxing).
                 </p>
               </div>
@@ -735,7 +803,7 @@ const GroupsPage: React.FC = () => {
                   <Sparkles className="w-4 h-4" />
                   <h4 className="text-xs font-bold text-white">4. Dignity</h4>
                 </div>
-                <p className="text-[11px] text-slate-400 leading-relaxed">
+                <p className="text-[11px] text-slate-300 font-medium leading-relaxed">
                   Preserves a shared environment free of hate speech, prejudice, or systemic degradation.
                 </p>
               </div>
@@ -750,7 +818,7 @@ const GroupsPage: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="font-bold text-white text-base">Admin Assist: Words Moderation Test</h3>
-                    <p className="text-xs text-slate-400">Tests incoming text against the platform words blacklist</p>
+                    <p className="text-xs text-slate-300 font-medium">Tests incoming text against the platform words blacklist</p>
                   </div>
                 </div>
 
@@ -759,7 +827,7 @@ const GroupsPage: React.FC = () => {
                   value={moderationText}
                   onChange={(e) => setModerationText(e.target.value)}
                   placeholder="Test phrases (e.g. 'earn money fast cash 100% free' or ordinary text)..."
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-200 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-200 placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
 
                 <button
@@ -814,7 +882,7 @@ const GroupsPage: React.FC = () => {
                     </div>
                     <div>
                       <h3 className="font-bold text-white text-base">Clear Governance: 10 Explicit Rules</h3>
-                      <p className="text-xs text-slate-400">Concrete bounds to remove spam and resolve disputes</p>
+                      <p className="text-xs text-slate-300 font-medium">Concrete bounds to remove spam and resolve disputes</p>
                     </div>
                   </div>
                 </div>
@@ -828,7 +896,7 @@ const GroupsPage: React.FC = () => {
                       <div className="font-bold text-blue-400">
                         {rule.id}. {rule.title}
                       </div>
-                      <p className="text-slate-400 text-[11px] leading-relaxed">{rule.description}</p>
+                      <p className="text-slate-300 font-medium text-[11px] leading-relaxed">{rule.description}</p>
                     </div>
                   ))}
                 </div>
@@ -836,6 +904,11 @@ const GroupsPage: React.FC = () => {
             </div>
           </div>
         )}
+          </div>
+
+          {/* Right Column: Static & Sticky Platform Rail */}
+          <div className="lg:col-span-3 lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-5.5rem)] lg:overflow-y-auto space-y-4 scrollbar-none pl-1">
+            <PlatformWidgetsAndAdsRail pageContext="groups" />
           </div>
         </div>
       </div>
@@ -853,7 +926,7 @@ const GroupsPage: React.FC = () => {
               </div>
               <button
                 onClick={() => setIsCreateModalOpen(false)}
-                className="text-slate-400 hover:text-white text-lg font-bold"
+                className="text-slate-300 font-medium hover:text-white text-lg font-bold"
               >
                 ✕
               </button>
@@ -923,7 +996,7 @@ const GroupsPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-400">
+              <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-300 font-medium">
                 <span className="font-semibold text-blue-400">Living Room Policy:</span> All new groups enforce the 4 principles (Authenticity, Safety, Privacy, Dignity) and 10 default community rules.
               </div>
 

@@ -33,7 +33,7 @@ const VideoEditor: React.FC<VideoEditorProps> = ({ videoUrl, onSave }) => {
           {videoUrl ? (
             <video src={videoUrl} controls className="w-full h-full object-contain" />
           ) : (
-            <div className="text-center text-muted-foreground">
+            <div className="text-center text-slate-700 dark:text-slate-300 font-medium">
               <Video className="h-16 w-16 mx-auto mb-4 opacity-20" />
               <p>No video loaded</p>
             </div>
@@ -58,7 +58,7 @@ const VideoEditor: React.FC<VideoEditorProps> = ({ videoUrl, onSave }) => {
 
         {/* Timeline Placeholder */}
         <div className="border rounded-lg p-4">
-          <div className="h-16 bg-muted/30 rounded flex items-center justify-center text-sm text-muted-foreground">
+          <div className="h-16 bg-muted/30 rounded flex items-center justify-center text-sm font-semibold text-slate-800 dark:text-slate-200">
             Timeline - Drag clips to edit
           </div>
         </div>

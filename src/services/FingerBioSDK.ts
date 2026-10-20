@@ -135,7 +135,7 @@ export class FingerBioSDK {
       });
 
       if (!res.ok && res.status === 404 && this.baseUrl === '/api/biometrics') {
-        res = await fetch('http://localhost:3001/api/biometrics/verify-1to1', {
+        res = await fetch('http://localhost:5001/api/biometrics/verify-1to1', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ username, image_base64: frame })
@@ -175,7 +175,7 @@ export class FingerBioSDK {
       });
 
       if (!res.ok && res.status === 404 && this.baseUrl === '/api/biometrics') {
-        res = await fetch('http://localhost:3001/api/biometrics/identify-1toN', {
+        res = await fetch('http://localhost:5001/api/biometrics/identify-1toN', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ image_base64: frame })
@@ -215,7 +215,7 @@ export class FingerBioSDK {
       });
 
       if (!res.ok && res.status === 404 && this.baseUrl === '/api/biometrics') {
-        res = await fetch('http://localhost:3001/api/biometrics/enroll', {
+        res = await fetch('http://localhost:5001/api/biometrics/enroll', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ username, image_base64: frame })

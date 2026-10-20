@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Smartphone, Heart, MessageCircle, Music, Clock, Sparkles, Layers, SplitSquareVertical, Gift } from 'lucide-react';
+import {
+  Smartphone, Heart, MessageCircle, Music, Clock, Sparkles, Layers,
+  SplitSquareVertical, Gift, ChevronLeft, ChevronRight, Play, Pause, X
+} from 'lucide-react';
 import SendFicModal from './SendFicModal';
 
 export interface FingerShortCard {
@@ -42,6 +45,10 @@ export const FingerShortsSection: React.FC<FingerShortsSectionProps> = ({
   const [activeSession, setActiveSession] = useState<FingerShortSession | null>(null);
   const [currentCardIndex, setCurrentCardIndex] = useState<number>(0);
   const [showTipModal, setShowTipModal] = useState(false);
+  const [p2pShuffleTimer, setP2pShuffleTimer] = useState(10);
+  const [isP2PAutoShuffling, setIsP2PAutoShuffling] = useState(true);
+  const [cardProgress, setCardProgress] = useState(0);
+  const [viewerPaused, setViewerPaused] = useState(false);
 
   useEffect(() => {
     fetchShorts();
@@ -52,7 +59,7 @@ export const FingerShortsSection: React.FC<FingerShortsSectionProps> = ({
       setLoading(true);
       const response = await fetch('/api/fingershorts/for-you?limit=10');
       const result = await response.json();
-      if (result.success && Array.isArray(result.data)) {
+      if (result.success && Array.isArray(result.data) && result.data.length > 0) {
         setSessions(result.data);
       } else {
         setSessions(fallbackShorts);
@@ -64,29 +71,91 @@ export const FingerShortsSection: React.FC<FingerShortsSectionProps> = ({
     }
   };
 
+  // 10-Second P2P Random UGC Shuffling Engine for Story Reel
+  useEffect(() => {
+    if (!isP2PAutoShuffling || sessions.length <= 1) return;
+
+    const timer = setInterval(() => {
+      setP2pShuffleTimer((prev) => (prev <= 1 ? 10 : prev - 1));
+    }, 1000);
+
+    const interval = setInterval(() => {
+      setSessions((prev) => {
+        if (prev.length <= 1) return prev;
+        const next = [...prev];
+        const shifted = next.shift();
+        if (shifted) next.push(shifted);
+        return next;
+      });
+    }, 10000);
+
+    return () => {
+      clearInterval(interval);
+      clearInterval(timer);
+    };
+  }, [isP2PAutoShuffling, sessions.length]);
+
+  // Fullscreen Multi-Card Story Viewer: 10s auto-progression sliding next card in from the right
+  useEffect(() => {
+    if (!activeSession || viewerPaused) return;
+
+    setCardProgress(0);
+    const progInterval = setInterval(() => {
+      setCardProgress((p) => {
+        if (p >= 100) {
+          nextCard();
+          return 0;
+        }
+        return p + 1;
+      });
+    }, 100);
+
+    return () => clearInterval(progInterval);
+  }, [activeSession, currentCardIndex, viewerPaused]);
+
+  // Keyboard navigation
+  useEffect(() => {
+    if (!activeSession) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowRight') nextCard();
+      else if (e.key === 'ArrowLeft') prevCard();
+      else if (e.key === 'Escape') setActiveSession(null);
+      else if (e.key === ' ') {
+        e.preventDefault();
+        setViewerPaused((p) => !p);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activeSession, currentCardIndex]);
+
   const handleOpenStory = (session: FingerShortSession) => {
     setActiveSession(session);
     setCurrentCardIndex(0);
+    setCardProgress(0);
   };
 
   const nextCard = () => {
     if (!activeSession) return;
     if (currentCardIndex < activeSession.cards.length - 1) {
-      setCurrentCardIndex(prev => prev + 1);
+      setCurrentCardIndex((prev) => prev + 1);
+      setCardProgress(0);
     } else {
+      // Loop or go to next session
       setActiveSession(null);
     }
   };
 
   const prevCard = () => {
     if (currentCardIndex > 0) {
-      setCurrentCardIndex(prev => prev - 1);
+      setCurrentCardIndex((prev) => prev - 1);
+      setCardProgress(0);
     }
   };
 
   return (
-    <div className={`bg-gradient-to-r from-purple-50/60 via-pink-50/40 to-blue-50/50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 border border-purple-200/70 dark:border-gray-700/80 rounded-2xl p-5 shadow-sm my-6 ${className}`}>
-      {/* Header with 48h TTL badge */}
+    <div className={`bg-gradient-to-r from-purple-50/70 via-pink-50/50 to-blue-50/60 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 border border-purple-200/80 dark:border-gray-700/80 rounded-2xl p-5 shadow-sm my-6 ${className}`}>
+      {/* Header with 48h TTL badge & 10s P2P Shuffle Indicator */}
       <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
         <div className="flex items-center space-x-3">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500 via-purple-600 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-purple-500/20">
@@ -95,15 +164,27 @@ export const FingerShortsSection: React.FC<FingerShortsSectionProps> = ({
           <div>
             <div className="flex items-center space-x-2">
               <h2 className="text-lg font-bold text-gray-900 dark:text-white tracking-tight">FingerShorts</h2>
-              <span className="text-[11px] font-semibold uppercase tracking-wider bg-purple-100 text-purple-950 border border-purple-400 font-bold dark:bg-purple-950/80 dark:text-purple-300 px-2 py-0.5 rounded-full   dark:border-purple-800 flex items-center gap-1 font-black">
-                <Clock className="w-3 h-3" /> 48h TTL (Stories)
+              <span className="text-[11px] font-black uppercase tracking-wider bg-purple-100 text-purple-950 border border-purple-400 px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                <Clock className="w-3 h-3" /> 48h TTL
+              </span>
+              <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 flex items-center gap-1 shadow-xs">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-ping" />
+                P2P Shuffle: {p2pShuffleTimer}s
               </span>
             </div>
-            <p className="text-xs text-gray-500 dark:text-gray-400">Ephemeral multi-card stories (Up to 20 media cards, Free $0.00)</p>
+            <p className="text-xs text-slate-800 dark:text-slate-300 font-medium">Ephemeral multi-card stories (Up to 20 media cards, Free $0.00)</p>
           </div>
         </div>
 
         <div className="flex items-center space-x-2">
+          <button
+            type="button"
+            onClick={() => setIsP2PAutoShuffling((v) => !v)}
+            className="text-xs font-bold px-2.5 py-1.5 rounded-lg bg-white dark:bg-gray-800 border border-slate-300 dark:border-gray-700 text-slate-800 dark:text-slate-200 hover:bg-slate-50 transition"
+            title="Toggle 10s P2P auto-shuffle"
+          >
+            {isP2PAutoShuffling ? 'Pause Shuffle' : 'Resume Shuffle'}
+          </button>
           {onOpenCreate && (
             <button
               onClick={onOpenCreate}
@@ -115,7 +196,7 @@ export const FingerShortsSection: React.FC<FingerShortsSectionProps> = ({
         </div>
       </div>
 
-      {/* Stories Scrollable Reel Row */}
+      {/* Stories Scrollable Reel Row - IMMEDIATELY RENDERS UPLOADED MEDIA */}
       {loading ? (
         <div className="flex space-x-3 overflow-x-auto pb-2">
           {[1, 2, 3, 4, 5].map((n) => (
@@ -123,39 +204,59 @@ export const FingerShortsSection: React.FC<FingerShortsSectionProps> = ({
           ))}
         </div>
       ) : sessions.length === 0 ? (
-        <div className="text-center py-6 text-gray-500 text-xs">No active FingerShorts stories right now.</div>
+        <div className="text-center py-6 text-gray-700 dark:text-gray-400 text-xs font-semibold">No active FingerShorts stories right now.</div>
       ) : (
         <div className="flex space-x-3.5 overflow-x-auto pb-2 no-scrollbar">
           {sessions.map((session) => {
             const firstCard = session.cards?.[0] || { media_url: '', media_type: 'image' };
+            const mediaSource = firstCard.thumbnail_url || firstCard.media_url || 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&auto=format&fit=crop&q=80';
+
             return (
               <div
                 key={session.session_id}
                 onClick={() => handleOpenStory(session)}
-                className="group relative w-28 sm:w-32 aspect-[9/16] rounded-xl overflow-hidden cursor-pointer flex-shrink-0 shadow-sm hover:shadow-md transition-all border-2 border-transparent hover:border-pink-500 bg-gray-900"
+                className="group relative w-28 sm:w-32 aspect-[9/16] rounded-xl overflow-hidden cursor-pointer flex-shrink-0 shadow-sm hover:shadow-lg transition-all border-2 border-transparent hover:border-pink-500 bg-gray-900 animate-in slide-in-from-right duration-300"
+                title={`Click to view ${session.author_name}'s story in full screen`}
               >
-                <img
-                  src={firstCard.thumbnail_url || firstCard.media_url || 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&auto=format&fit=crop&q=80'}
-                  alt={session.session_title || 'Story'}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
+                {/* Immediately Display Uploaded Media */}
+                {firstCard.media_type === 'video' ? (
+                  <div className="w-full h-full relative">
+                    <video
+                      src={firstCard.media_url}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      muted
+                      playsInline
+                    />
+                    <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+                      <div className="w-8 h-8 rounded-full bg-pink-600/80 flex items-center justify-center shadow">
+                        <Play className="w-4 h-4 text-white fill-white ml-0.5" />
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <img
+                    src={mediaSource}
+                    alt={session.session_title || 'Story'}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                )}
 
                 {/* Card Count Pill */}
-                <div className="absolute top-2 left-2 bg-black/60 backdrop-blur-md px-1.5 py-0.5 rounded-md text-[10px] font-bold text-white flex items-center gap-1 border border-white/20">
+                <div className="absolute top-2 left-2 bg-black/70 backdrop-blur-md px-1.5 py-0.5 rounded-md text-[10px] font-bold text-white flex items-center gap-1 border border-white/20">
                   <Layers className="w-2.5 h-2.5 text-pink-400" />
                   {session.card_count}/20
                 </div>
 
                 {/* 48h TTL Indicator */}
-                <div className="absolute top-2 right-2 bg-purple-900/80 backdrop-blur-md px-1.5 py-0.5 rounded text-[9px] font-mono text-purple-200">
+                <div className="absolute top-2 right-2 bg-purple-900/90 backdrop-blur-md px-1.5 py-0.5 rounded text-[9px] font-mono text-purple-200">
                   {Math.round(session.hours_remaining || 48)}h
                 </div>
 
                 {/* Bottom Author Tag */}
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-2 text-white">
-                  <p className="text-[11px] font-semibold truncate leading-tight">@{session.author_name || 'member'}</p>
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/95 via-black/50 to-transparent p-2 text-white">
+                  <p className="text-[11px] font-bold truncate leading-tight">@{session.author_name || 'member'}</p>
                   {firstCard.sound_title && (
-                    <p className="text-[9px] text-pink-300 truncate flex items-center gap-0.5 mt-0.5">
+                    <p className="text-[9px] text-pink-300 truncate flex items-center gap-0.5 mt-0.5 font-medium">
                       <Music className="w-2.5 h-2.5 flex-shrink-0" /> {firstCard.sound_title}
                     </p>
                   )}
@@ -166,18 +267,31 @@ export const FingerShortsSection: React.FC<FingerShortsSectionProps> = ({
         </div>
       )}
 
-      {/* Multi-Card Fullscreen Story Viewer Modal */}
+      {/* Multi-Card Cinematic Fullscreen Story Viewer (Slides in from the right) */}
       {activeSession && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-4">
-          <div className="relative w-full max-w-sm aspect-[9/16] bg-black rounded-3xl overflow-hidden shadow-2xl border border-gray-800 flex flex-col justify-between">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-xl p-2 sm:p-4 animate-in fade-in duration-200"
+          onClick={() => setActiveSession(null)}
+        >
+          {/* Active Card Container - Keyed by currentCardIndex so each slide enters smoothly from right */}
+          <div
+            key={`${activeSession.session_id}-${currentCardIndex}`}
+            className="relative w-full max-w-sm aspect-[9/16] bg-black rounded-3xl overflow-hidden shadow-2xl border border-gray-800 flex flex-col justify-between animate-in slide-in-from-right duration-300"
+            onClick={(e) => e.stopPropagation()}
+          >
             {/* Top Multi-Card Progress Bars */}
             <div className="absolute top-3 inset-x-3 z-30 flex space-x-1">
               {activeSession.cards.map((card, idx) => (
                 <div key={card.id || idx} className="h-1 flex-1 bg-white/30 rounded-full overflow-hidden">
                   <div
-                    className={`h-full bg-white transition-all duration-300 ${
-                      idx < currentCardIndex ? 'w-full' : idx === currentCardIndex ? 'w-full animate-pulse' : 'w-0'
+                    className={`h-full bg-white transition-all duration-100 ${
+                      idx < currentCardIndex
+                        ? 'w-full'
+                        : idx === currentCardIndex
+                        ? `w-[${cardProgress}%]`
+                        : 'w-0'
                     }`}
+                    style={idx === currentCardIndex ? { width: `${cardProgress}%` } : undefined}
                   />
                 </div>
               ))}
@@ -186,24 +300,47 @@ export const FingerShortsSection: React.FC<FingerShortsSectionProps> = ({
             {/* Header info */}
             <div className="absolute top-6 inset-x-3 z-30 flex items-center justify-between text-white text-xs">
               <div className="flex items-center space-x-2">
-                <div className="w-7 h-7 rounded-full bg-pink-500 overflow-hidden">
-                  <img src={activeSession.author_avatar || 'https://placehold.co/40x40/FF6B6B/FFFFFF?text=FM'} alt="" className="w-full h-full object-cover" />
+                <div className="w-8 h-8 rounded-full bg-pink-500 overflow-hidden border border-white/50">
+                  <img
+                    src={activeSession.author_avatar || 'https://placehold.co/40x40/FF6B6B/FFFFFF?text=FM'}
+                    alt=""
+                    className="w-full h-full object-cover"
+                  />
                 </div>
-                <span className="font-bold">@{activeSession.author_name || 'creator'}</span>
-                <span className="text-[10px] text-gray-300">Card {currentCardIndex + 1} of {activeSession.card_count}</span>
+                <div>
+                  <span className="font-bold text-white block">@{activeSession.author_name || 'creator'}</span>
+                  <span className="text-[10px] text-pink-300">
+                    Card {currentCardIndex + 1} of {activeSession.card_count} (10s slide)
+                  </span>
+                </div>
               </div>
-              <button onClick={() => setActiveSession(null)} className="w-7 h-7 rounded-full bg-black/50 flex items-center justify-center font-bold">
-                ✕
-              </button>
+
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => setViewerPaused((p) => !p)}
+                  className="w-7 h-7 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black/80 transition"
+                  title={viewerPaused ? 'Resume auto-advance' : 'Pause'}
+                >
+                  {viewerPaused ? <Play className="w-3.5 h-3.5 fill-white" /> : <Pause className="w-3.5 h-3.5 fill-white" />}
+                </button>
+                <button
+                  onClick={() => setActiveSession(null)}
+                  className="w-7 h-7 rounded-full bg-black/60 text-white flex items-center justify-center font-bold hover:bg-black/80 transition"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
             </div>
 
             {/* Current Card Media Display */}
-            <div className="relative w-full h-full flex items-center justify-center">
+            <div className="relative w-full h-full flex items-center justify-center bg-black">
               {activeSession.cards[currentCardIndex]?.media_type === 'video' ? (
                 <video
                   src={activeSession.cards[currentCardIndex].media_url}
                   autoPlay
-                  controls={false}
+                  controls
+                  playsInline
                   onEnded={nextCard}
                   className="w-full h-full object-cover"
                 />
@@ -215,16 +352,35 @@ export const FingerShortsSection: React.FC<FingerShortsSectionProps> = ({
                 />
               )}
 
+              {/* Explicit Slide Navigation Buttons */}
+              <button
+                type="button"
+                onClick={prevCard}
+                className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/60 hover:bg-black/80 text-white border border-white/20 backdrop-blur-md transition shadow-lg z-20"
+                title="Previous Card"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+
+              <button
+                type="button"
+                onClick={nextCard}
+                className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/60 hover:bg-black/80 text-white border border-white/20 backdrop-blur-md transition shadow-lg z-20"
+                title="Next Card (Slides in from right)"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+
               {/* Tap Left/Right Navigation zones */}
-              <div className="absolute inset-y-0 left-0 w-1/3 cursor-pointer z-10" onClick={prevCard} />
-              <div className="absolute inset-y-0 right-0 w-1/3 cursor-pointer z-10" onClick={nextCard} />
+              <div className="absolute inset-y-0 left-0 w-1/4 cursor-pointer z-10" onClick={prevCard} />
+              <div className="absolute inset-y-0 right-0 w-1/4 cursor-pointer z-10" onClick={nextCard} />
             </div>
 
             {/* Bottom Actions Overlay: Duet, Stitch, Sounds, Reply */}
             <div className="absolute bottom-4 inset-x-4 z-30 flex items-center justify-between text-white">
               <div className="flex items-center space-x-3 text-xs">
                 {activeSession.cards[currentCardIndex]?.sound_title && (
-                  <span className="flex items-center gap-1 bg-black/50 px-2 py-1 rounded-full text-[10px]">
+                  <span className="flex items-center gap-1 bg-black/60 px-2 py-1 rounded-full text-[10px] font-medium border border-white/20">
                     <Music className="w-3 h-3 text-pink-400" /> {activeSession.cards[currentCardIndex].sound_title}
                   </span>
                 )}
@@ -233,17 +389,17 @@ export const FingerShortsSection: React.FC<FingerShortsSectionProps> = ({
                 <button
                   title="Tip Creator"
                   onClick={() => setShowTipModal(true)}
-                  className="p-2 bg-black/60 rounded-full hover:bg-black/90"
+                  className="p-2 bg-black/60 rounded-full hover:bg-black/90 transition shadow"
                 >
                   <Gift className="w-4 h-4 text-emerald-400" />
                 </button>
-                <button title="Duet" className="p-2 bg-black/60 rounded-full hover:bg-black/90">
+                <button title="Duet" className="p-2 bg-black/60 rounded-full hover:bg-black/90 transition shadow">
                   <SplitSquareVertical className="w-4 h-4 text-purple-300" />
                 </button>
-                <button title="Like" className="p-2 bg-black/60 rounded-full hover:bg-black/90">
+                <button title="Like" className="p-2 bg-black/60 rounded-full hover:bg-black/90 transition shadow">
                   <Heart className="w-4 h-4 text-red-400" />
                 </button>
-                <button title="Comment" className="p-2 bg-black/60 rounded-full hover:bg-black/90">
+                <button title="Comment" className="p-2 bg-black/60 rounded-full hover:bg-black/90 transition shadow">
                   <MessageCircle className="w-4 h-4 text-blue-300" />
                 </button>
               </div>
@@ -270,6 +426,7 @@ const fallbackShorts: FingerShortSession[] = [
     session_id: 'fs1',
     author_id: '1',
     author_name: 'creative_maya',
+    author_avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150',
     session_title: 'Behind the Scenes Dance Studio',
     card_count: 3,
     expires_at: new Date(Date.now() + 45 * 3600 * 1000).toISOString(),
@@ -304,6 +461,7 @@ const fallbackShorts: FingerShortSession[] = [
     session_id: 'fs2',
     author_id: '2',
     author_name: 'tunde_chef',
+    author_avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150',
     session_title: 'Quick Suya Skewers Recipe',
     card_count: 2,
     expires_at: new Date(Date.now() + 38 * 3600 * 1000).toISOString(),

@@ -46,12 +46,12 @@ const FileManager: React.FC<FileManagerProps> = ({
   };
 
   return (
-    <Card className="w-full">
+    <Card className="w-full border-slate-200">
       <CardHeader>
         <div className="flex items-center justify-between">
-          <CardTitle>File Manager</CardTitle>
+          <CardTitle className="text-slate-900 font-bold">File Manager</CardTitle>
           <div className="flex gap-2">
-            <Button variant="outline" size="sm" onClick={onCreateFolder}>
+            <Button variant="outline" size="sm" onClick={onCreateFolder} className="border-slate-300 text-slate-800 font-semibold">
               New Folder
             </Button>
             <Button size="sm" onClick={onUpload}>
@@ -65,17 +65,17 @@ const FileManager: React.FC<FileManagerProps> = ({
           {items.map((item) => (
             <div
               key={item.id}
-              className="flex items-center gap-3 p-3 border rounded-lg hover:bg-muted/50 transition-colors cursor-pointer"
+              className="flex items-center gap-3 p-3 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer"
               onClick={() => onItemSelect?.(item.id)} role="button" tabIndex={0}
             >
               {getIcon(item.type)}
               <div className="flex-1 min-w-0">
-                <p className="font-medium truncate">{item.name}</p>
-                <p className="text-xs text-muted-foreground">
+                <p className="font-semibold text-slate-900 truncate">{item.name}</p>
+                <p className="text-xs text-slate-600 font-medium">
                   {item.size ? `${item.size} • ` : ''}Modified {item.modified}
                 </p>
               </div>
-              <Badge variant="secondary">{item.type}</Badge>
+              <Badge variant="secondary" className="bg-slate-100 text-slate-800 border border-slate-300 font-semibold">{item.type}</Badge>
             </div>
           ))}
         </div>

@@ -102,16 +102,16 @@ const SentientAIDashboard: React.FC<SentientAIDashboardProps> = ({ userId }) => 
 
       {/* Stats Overview */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow">
-          <div className="text-sm text-slate-700 dark:text-gray-400">Total Analyses</div>
+        <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow border border-slate-300 dark:border-gray-700">
+          <div className="text-sm text-slate-800 dark:text-slate-200 font-bold">Total Analyses</div>
           <div className="text-2xl font-bold">{stats.totalAnalyses}</div>
         </div>
-        <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow">
-          <div className="text-sm text-slate-700 dark:text-gray-400">Anomalies Detected</div>
+        <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow border border-slate-300 dark:border-gray-700">
+          <div className="text-sm text-slate-800 dark:text-slate-200 font-bold">Anomalies Detected</div>
           <div className="text-2xl font-bold text-orange-600">{stats.anomaliesDetected}</div>
         </div>
-        <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow">
-          <div className="text-sm text-slate-700 dark:text-gray-400">Avg Risk Level</div>
+        <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow border border-slate-300 dark:border-gray-700">
+          <div className="text-sm text-slate-800 dark:text-slate-200 font-bold">Avg Risk Level</div>
           <div className={`text-2xl ${getRiskLevelColor(stats.avgRiskLevel)}`}>
             {stats.avgRiskLevel.toUpperCase()}
           </div>
@@ -119,7 +119,7 @@ const SentientAIDashboard: React.FC<SentientAIDashboardProps> = ({ userId }) => 
       </div>
 
       {/* Behavioral Analysis Input */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow">
+      <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow border border-slate-300 dark:border-gray-700">
         <h3 className="text-lg font-semibold mb-4">Analyze Member Behavior</h3>
 
         <div className="space-y-4">
@@ -127,7 +127,7 @@ const SentientAIDashboard: React.FC<SentientAIDashboardProps> = ({ userId }) => 
             value={behaviorData}
             onChange={(e) => setBehaviorData(e.target.value)}
             placeholder='Enter behavior data as JSON array (e.g., [{"action": "login", "timestamp": "..."}])...'
-            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
+            className="w-full px-4 py-3 border border-slate-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white text-slate-900 font-bold bg-white placeholder:text-slate-500"
             rows={4}
           />
 
@@ -149,12 +149,12 @@ const SentientAIDashboard: React.FC<SentientAIDashboardProps> = ({ userId }) => 
 
       {/* Last Analysis Result */}
       {lastAnalysis && (
-        <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow">
+        <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow border border-slate-300 dark:border-gray-700">
           <h3 className="text-lg font-semibold mb-4">Latest Behavioral Analysis</h3>
 
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-slate-700 dark:text-gray-400">Risk Level:</span>
+              <span className="text-sm text-slate-800 dark:text-slate-200 font-bold">Risk Level:</span>
               <span className={`px-3 py-1 rounded-full text-sm font-medium ${getRiskLevelBadge(lastAnalysis.risk_level)}`}>
                 {lastAnalysis.risk_level.toUpperCase()}
               </span>
@@ -168,11 +168,11 @@ const SentientAIDashboard: React.FC<SentientAIDashboardProps> = ({ userId }) => 
                     <div key={idx} className="border border-slate-300 dark:border-gray-700 rounded-lg p-3">
                       <div className="flex items-center justify-between mb-2">
                         <span className="font-medium">{anomaly.type || 'Unknown'}</span>
-                        <span className="text-xs text-slate-700 dark:text-gray-400">
+                        <span className="text-xs text-slate-700 dark:text-slate-300 font-medium">
                           Score: {anomaly.score || 'N/A'}
                         </span>
                       </div>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                      <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">
                         {anomaly.description || 'No description available'}
                       </p>
                     </div>
@@ -184,7 +184,7 @@ const SentientAIDashboard: React.FC<SentientAIDashboardProps> = ({ userId }) => 
             {lastAnalysis.insights.length > 0 && (
               <div>
                 <h4 className="font-medium mb-2">AI Insights</h4>
-                <ul className="list-disc list-inside space-y-1 text-sm text-gray-600 dark:text-gray-400">
+                <ul className="list-disc list-inside space-y-1 text-sm text-slate-700 dark:text-slate-300 font-medium">
                   {lastAnalysis.insights.map((insight, idx) => (
                     <li key={idx}>{insight}</li>
                   ))}
@@ -195,7 +195,7 @@ const SentientAIDashboard: React.FC<SentientAIDashboardProps> = ({ userId }) => 
             {lastAnalysis.recommendations.length > 0 && (
               <div>
                 <h4 className="font-medium mb-2">Recommendations</h4>
-                <ul className="list-disc list-inside space-y-1 text-sm text-gray-600 dark:text-gray-400">
+                <ul className="list-disc list-inside space-y-1 text-sm text-slate-700 dark:text-slate-300 font-medium">
                   {lastAnalysis.recommendations.map((rec, idx) => (
                     <li key={idx}>{rec}</li>
                   ))}
@@ -207,11 +207,11 @@ const SentientAIDashboard: React.FC<SentientAIDashboardProps> = ({ userId }) => 
       )}
 
       {/* Anomaly Alerts */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow">
+      <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow border border-slate-300 dark:border-gray-700">
         <h3 className="text-lg font-semibold mb-4">Recent Anomaly Alerts</h3>
 
         {anomalies.length === 0 ? (
-          <div className="text-center py-8 text-slate-700 dark:text-gray-400">
+          <div className="text-center py-8 text-slate-700 dark:text-slate-300 font-medium">
             No anomalies detected. System operating normally.
           </div>
         ) : (
@@ -220,11 +220,11 @@ const SentientAIDashboard: React.FC<SentientAIDashboardProps> = ({ userId }) => 
               <div key={idx} className="border border-slate-300 dark:border-gray-700 rounded-lg p-3">
                 <div className="flex items-center justify-between mb-2">
                   <span className="font-medium">{anomaly.type || 'Unknown Anomaly'}</span>
-                  <span className="text-xs text-slate-700 dark:text-gray-400">
+                  <span className="text-xs text-slate-700 dark:text-slate-300 font-medium">
                     {new Date(anomaly.timestamp || Date.now()).toLocaleString()}
                   </span>
                 </div>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">
                   {anomaly.description || 'No details available'}
                 </p>
               </div>

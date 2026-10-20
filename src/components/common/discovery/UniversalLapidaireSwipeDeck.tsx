@@ -195,7 +195,7 @@ export const UniversalLapidaireSwipeDeck: React.FC<UniversalLapidaireSwipeDeckPr
           <h3 className="text-xl font-bold text-white mb-1">
             Deck Caught Up!
           </h3>
-          <p className="text-xs text-slate-400 max-w-xs mx-auto">
+          <p className="text-xs text-slate-300 font-medium max-w-xs mx-auto">
             You have explored all active shared interest profiles in this wave. Calibrate your Lapidaire profile to discover new sovereign circles.
           </p>
         </div>
@@ -233,7 +233,7 @@ export const UniversalLapidaireSwipeDeck: React.FC<UniversalLapidaireSwipeDeckPr
             <Flame className={`w-4 h-4 text-${accentColor}-400`} />
             <span>Lapidaire P2P Deck</span>
           </span>
-          <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700">
+          <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 font-medium border border-slate-700">
             {deck.length - swipedCount} Remaining
           </span>
         </div>
@@ -324,10 +324,10 @@ export const UniversalLapidaireSwipeDeck: React.FC<UniversalLapidaireSwipeDeckPr
                       {member.ninVerified && <ShieldCheck className="w-4 h-4 text-emerald-400" />}
                     </div>
                     <div className="flex items-center gap-2 text-[11px] text-slate-300">
-                      <span className="font-mono text-slate-400">{member.handle}</span>
+                      <span className="font-mono text-slate-300 font-medium">{member.handle}</span>
                       <span>•</span>
                       <span className="flex items-center gap-0.5">
-                        <MapPin className="w-3 h-3 text-slate-400" />
+                        <MapPin className="w-3 h-3 text-slate-300" />
                         <span>{member.location}</span>
                       </span>
                     </div>
@@ -345,7 +345,7 @@ export const UniversalLapidaireSwipeDeck: React.FC<UniversalLapidaireSwipeDeckPr
               {/* Shared Interests Grid & Details */}
               <div className="flex-1 py-3 overflow-hidden flex flex-col justify-between">
                 <div>
-                  <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5 flex items-center justify-between">
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-slate-300 mb-1.5 flex items-center justify-between">
                     <span>Shared Resonance Matrix:</span>
                     <span className="text-amber-400 font-mono">{member.sharedInterests.length} Mutual Matches</span>
                   </div>
@@ -368,7 +368,7 @@ export const UniversalLapidaireSwipeDeck: React.FC<UniversalLapidaireSwipeDeckPr
                 {/* Lapidaire Answer Spotlight */}
                 {member.lapidaireAnswers.length > 0 && (
                   <div className="mt-2.5 p-2.5 rounded-xl bg-slate-950/80 border border-slate-800/80">
-                    <div className="text-[10px] font-bold text-slate-400 flex items-center gap-1 mb-0.5">
+                    <div className="text-[10px] font-bold text-slate-300 flex items-center gap-1 mb-0.5">
                       <Sparkles className="w-3 h-3 text-amber-400" />
                       <span>Lapidaire Core Resonance:</span>
                     </div>
@@ -380,7 +380,7 @@ export const UniversalLapidaireSwipeDeck: React.FC<UniversalLapidaireSwipeDeckPr
               </div>
 
               {/* Bottom Card Footer Hint */}
-              <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-400">
+              <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-300 font-medium">
                 <span>← Swipe Left to Pass</span>
                 <span className="text-amber-400 font-bold">↑ Swipe Up Super-Like</span>
                 <span>Swipe Right to Connect →</span>

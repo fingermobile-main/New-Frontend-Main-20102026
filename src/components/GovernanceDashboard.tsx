@@ -51,7 +51,7 @@ const GovernanceDashboard: React.FC = () => {
             <BrainCircuit className="text-blue-500" size={24} />
             <h2 className="text-xl font-bold text-white tracking-tight">AI Governance Control</h2>
           </div>
-          <p className="text-sm text-gray-500 font-medium">Monitoring FingerMobile Protocol™ Compliance</p>
+          <p className="text-sm text-slate-300 font-medium">Monitoring FingerMobile Protocol™ Compliance</p>
         </div>
         <div className="flex items-center space-x-2 px-4 py-2 bg-green-500/10 border border-green-500/20 rounded-xl">
           <Activity size={16} className="text-green-500 animate-pulse" />
@@ -72,8 +72,8 @@ const GovernanceDashboard: React.FC = () => {
           <div key={i} className="bg-white/5 border border-white/5 p-4 rounded-2xl flex items-center space-x-4">
             <div className={`p-2 bg-white/5 rounded-lg ${stat.color}`}>{stat.icon}</div>
             <div>
-              <p className="text-[10px] font-bold text-slate-700 uppercase tracking-wider">{stat.label}</p>
-              <p className="text-lg font-black text-slate-700">{stat.value}</p>
+              <p className="text-[10px] font-bold text-slate-300 uppercase tracking-wider">{stat.label}</p>
+              <p className="text-lg font-black text-white">{stat.value}</p>
             </div>
           </div>
         ))}
@@ -83,12 +83,12 @@ const GovernanceDashboard: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Logs List */}
         <div className="lg:col-span-2 space-y-4">
-          <div className="flex items-center justify-between text-sm font-bold text-gray-400 uppercase tracking-widest pb-2 border-b border-white/5">
+          <div className="flex items-center justify-between text-sm font-bold text-slate-200 uppercase tracking-widest pb-2 border-b border-white/5">
             <div className="flex items-center space-x-2">
               <History size={16} />
               <span>Harmonizer Activity Logs</span>
             </div>
-            <span className="text-xs font-mono text-gray-500">Live PostgreSQL Stream</span>
+            <span className="text-xs font-mono text-slate-300">Live PostgreSQL Stream</span>
           </div>
           <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
             {logs.map((log) => (
@@ -103,11 +103,11 @@ const GovernanceDashboard: React.FC = () => {
                     <span className={`text-[10px] font-bold px-2 py-0.5 rounded border uppercase tracking-widest ${getSeverityStyle(log.severity)}`}>
                       {log.eventType}
                     </span>
-                    <span className="text-[10px] font-mono text-gray-600">
+                    <span className="text-[10px] font-mono text-slate-300">
                       {new Date(log.timestamp).toLocaleTimeString()}
                     </span>
                   </div>
-                  <p className="text-sm text-slate-700 mt-2 font-medium leading-relaxed">{log.description}</p>
+                  <p className="text-sm text-slate-200 mt-2 font-medium leading-relaxed">{log.description}</p>
                 </div>
               </div>
             ))}
@@ -121,7 +121,7 @@ const GovernanceDashboard: React.FC = () => {
               <FileLock className="text-blue-500" size={20} />
               <h3 className="text-sm font-bold text-white uppercase tracking-tight">Active Policies</h3>
             </div>
-            <p className="text-xs text-gray-400 leading-relaxed">
+            <p className="text-xs text-slate-300 font-medium leading-relaxed">
               {policies.length > 0
                 ? `${policies.map(p => p.name).join(', ')} currently enforced.`
                 : 'Automated AI Seekers are currently monitoring 100% of video tracks for intellectual property and safety compliance.'}

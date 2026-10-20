@@ -117,7 +117,7 @@ const SettingsPage: React.FC = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <Label htmlFor="email-notifications" className="font-normal">Email Notifications</Label>
-                    <p className="text-sm text-gray-500">Receive notifications via email</p>
+                    <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">Receive notifications via email</p>
                   </div>
                   <Switch
                     id="email-notifications"
@@ -129,7 +129,7 @@ const SettingsPage: React.FC = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <Label htmlFor="push-notifications" className="font-normal">Push Notifications</Label>
-                    <p className="text-sm text-gray-500">Receive push notifications on your devices</p>
+                    <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">Receive push notifications on your devices</p>
                   </div>
                   <Switch
                     id="push-notifications"
@@ -141,7 +141,7 @@ const SettingsPage: React.FC = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <Label htmlFor="sms-notifications" className="font-normal">SMS Notifications</Label>
-                    <p className="text-sm text-gray-500">Receive notifications via SMS</p>
+                    <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">Receive notifications via SMS</p>
                   </div>
                   <Switch
                     id="sms-notifications"
@@ -166,7 +166,7 @@ const SettingsPage: React.FC = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <Label htmlFor="profile-public" className="font-normal">Public Profile</Label>
-                    <p className="text-sm text-gray-500">Allow anyone to view your profile</p>
+                    <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">Allow anyone to view your profile</p>
                   </div>
                   <Switch
                     id="profile-public"
@@ -178,7 +178,7 @@ const SettingsPage: React.FC = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <Label htmlFor="show-email" className="font-normal">Show Email</Label>
-                    <p className="text-sm text-gray-500">Display your email on your profile</p>
+                    <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">Display your email on your profile</p>
                   </div>
                   <Switch
                     id="show-email"
@@ -190,7 +190,7 @@ const SettingsPage: React.FC = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <Label htmlFor="allow-messaging" className="font-normal">Allow Messaging</Label>
-                    <p className="text-sm text-gray-500">Allow other users to send you messages</p>
+                    <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">Allow other users to send you messages</p>
                   </div>
                   <Switch
                     id="allow-messaging"
@@ -244,7 +244,7 @@ const SettingsPage: React.FC = () => {
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="font-medium">Enable 2FA</p>
-                        <p className="text-sm text-gray-500">Add an extra layer of security to your account</p>
+                        <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">Add an extra layer of security to your account</p>
                       </div>
                       <Switch
                         id="two-factor"
@@ -264,7 +264,7 @@ const SettingsPage: React.FC = () => {
                       <div className="flex items-center justify-between p-3 border rounded-lg">
                         <div>
                           <p className="font-medium">Current Session</p>
-                          <p className="text-sm text-gray-500">This device</p>
+                          <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">This device</p>
                         </div>
                         <Badge variant="secondary">Active</Badge>
                       </div>
@@ -272,7 +272,7 @@ const SettingsPage: React.FC = () => {
                       <div className="flex items-center justify-between p-3 border rounded-lg">
                         <div>
                           <p className="font-medium">Chrome on Mac</p>
-                          <p className="text-sm text-gray-500">San Francisco, CA • 2 hours ago</p>
+                          <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">San Francisco, CA • 2 hours ago</p>
                         </div>
                         <Button variant="outline" size="sm">End Session</Button>
                       </div>
@@ -280,7 +280,7 @@ const SettingsPage: React.FC = () => {
                       <div className="flex items-center justify-between p-3 border rounded-lg">
                         <div>
                           <p className="font-medium">Firefox on Windows</p>
-                          <p className="text-sm text-gray-500">New York, NY • Yesterday</p>
+                          <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">New York, NY • Yesterday</p>
                         </div>
                         <Button variant="outline" size="sm">End Session</Button>
                       </div>

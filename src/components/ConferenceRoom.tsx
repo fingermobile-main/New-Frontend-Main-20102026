@@ -155,7 +155,7 @@ const ConferenceRoom: React.FC<ConferenceRoomProps> = ({
         <div className="flex items-center gap-3">
           <span className="w-3 h-3 rounded-full bg-green-500 animate-pulse"></span>
           <h2 className="text-white font-bold text-base">{roomName}</h2>
-          <span className="text-xs text-gray-400 font-mono bg-gray-800 px-2.5 py-1 rounded-lg">
+          <span className="text-xs text-slate-200 font-mono font-bold bg-gray-800 px-2.5 py-1 rounded-lg">
             {formatTime(duration)}
           </span>
         </div>
@@ -208,7 +208,7 @@ const ConferenceRoom: React.FC<ConferenceRoomProps> = ({
                   YOU
                 </div>
                 <p className="text-sm font-bold text-white">Camera is Off</p>
-                <p className="text-xs text-gray-500 mt-1">Tap camera toggle below to stream live video</p>
+                <p className="text-xs text-slate-700 font-medium mt-1">Tap camera toggle below to stream live video</p>
               </div>
             )}
             <div className="absolute bottom-3 left-3 px-3 py-1 bg-black/70 backdrop-blur-md rounded-lg text-xs font-bold text-white flex items-center gap-2">

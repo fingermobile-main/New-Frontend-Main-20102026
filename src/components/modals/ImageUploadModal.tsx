@@ -41,7 +41,7 @@ const ImageUploadModal: React.FC<ImageUploadModalProps> = ({
         </div>
         <div className="space-y-4">
           <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
-            <PhotoIcon className="w-12 h-12 text-slate-500 mx-auto mb-2" />
+            <PhotoIcon className="w-12 h-12 text-slate-600 mx-auto mb-2" />
             <p className="text-sm text-gray-600">Click to select or drag and drop</p>
             <input type="file" accept="image/*" onChange={handleFileSelect} className="hidden text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" id="imageInput" />
             <label htmlFor="imageInput" className="mt-2 inline-block px-4 py-2 bg-blue-600 text-white rounded-lg cursor-pointer hover:bg-blue-700">

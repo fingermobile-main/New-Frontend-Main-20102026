@@ -161,7 +161,7 @@ export const LushPinPackagesModal: React.FC<LushPinPackagesModalProps> = ({
               <h2 className="text-base font-bold text-gray-900">
                 6-Digit PIN Generation Packages & Quota
               </h2>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-slate-700 font-medium">
                 Signup quota includes 50 free PIN exchanges. Top up to connect without limits.
               </p>
             </div>

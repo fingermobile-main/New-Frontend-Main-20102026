@@ -28,7 +28,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, onHelpful, onReply }) =
       <Star
         key={i}
         className={`h-4 w-4 ${
-          i < rating ? 'text-yellow-500 fill-current' : 'text-muted-foreground'
+          i < rating ? 'text-yellow-500 fill-current' : 'text-slate-300'
         }`}
       />
     ));
@@ -40,7 +40,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, onHelpful, onReply }) =
   };
 
   return (
-    <Card>
+    <Card className="border-slate-200">
       <CardContent className="p-4">
         <div className="flex items-start gap-3">
           <Avatar>
@@ -50,26 +50,26 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, onHelpful, onReply }) =
           <div className="flex-1 min-w-0">
             <div className="flex items-center justify-between">
               <div>
-                <h4 className="font-semibold">{review.userName}</h4>
+                <h4 className="font-semibold text-slate-900">{review.userName}</h4>
                 <div className="flex items-center gap-2 mt-1">
                   <div className="flex">{renderStars(review.rating)}</div>
-                  <span className="text-xs text-muted-foreground">{formatDate(review.createdAt)}</span>
+                  <span className="text-xs text-slate-600 font-medium">{formatDate(review.createdAt)}</span>
                 </div>
               </div>
             </div>
 
             {review.title && (
-              <h5 className="font-medium mt-2">{review.title}</h5>
+              <h5 className="font-semibold text-slate-900 mt-2">{review.title}</h5>
             )}
 
-            <p className="text-sm mt-2 text-muted-foreground">{review.comment}</p>
+            <p className="text-sm mt-2 text-slate-700 leading-relaxed">{review.comment}</p>
 
             <div className="flex items-center gap-4 mt-3">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => onHelpful?.(review.id)}
-                className="text-xs"
+                className="text-xs text-slate-700 hover:text-slate-900 font-medium"
               >
                 <ThumbsUp className="h-3 w-3 mr-1" />
                 Helpful ({review.helpful})
@@ -78,7 +78,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, onHelpful, onReply }) =
                 variant="ghost"
                 size="sm"
                 onClick={() => onReply?.(review.id)}
-                className="text-xs"
+                className="text-xs text-slate-700 hover:text-slate-900 font-medium"
               >
                 <MessageSquare className="h-3 w-3 mr-1" />
                 Reply

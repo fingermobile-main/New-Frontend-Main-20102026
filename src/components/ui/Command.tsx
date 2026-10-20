@@ -65,7 +65,7 @@ const CommandInput: React.FC<CommandInputProps> = ({
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        className="mr-2 text-muted-foreground"
+        className="mr-2 text-slate-500"
       >
         <circle cx="11" cy="11" r="8"></circle>
         <path d="m21 21-4.3-4.3"></path>
@@ -127,7 +127,7 @@ const CommandGroup: React.FC<CommandGroupProps> = ({ children, heading, classNam
   return (
     <div className={`overflow-hidden p-1 ${className}`} role="group" aria-labelledby={heading}>
       {heading && (
-        <h2 className="px-2 py-1.5 text-xs font-medium text-muted-foreground">{heading}</h2>
+        <h2 className="px-2 py-1.5 text-xs font-semibold text-slate-700 dark:text-slate-300">{heading}</h2>
       )}
       {children}
     </div>

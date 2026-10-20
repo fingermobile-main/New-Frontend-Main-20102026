@@ -403,7 +403,7 @@ export const FingerMobileShareModal: React.FC<FingerMobileShareModalProps> = ({
                   <button
                     onClick={() => setEmbedFormat('markdown')}
                     className={`px-2 py-0.5 rounded transition-colors ${
-                      embedFormat === 'markdown' ? 'bg-emerald-600 text-white' : 'text-slate-400 hover:text-white'
+                      embedFormat === 'markdown' ? 'bg-emerald-600 text-white' : 'text-slate-300 font-medium hover:text-white'
                     }`}
                   >
                     Markdown
@@ -411,7 +411,7 @@ export const FingerMobileShareModal: React.FC<FingerMobileShareModalProps> = ({
                   <button
                     onClick={() => setEmbedFormat('html')}
                     className={`px-2 py-0.5 rounded transition-colors ${
-                      embedFormat === 'html' ? 'bg-emerald-600 text-white' : 'text-slate-400 hover:text-white'
+                      embedFormat === 'html' ? 'bg-emerald-600 text-white' : 'text-slate-300 font-medium hover:text-white'
                     }`}
                   >
                     HTML

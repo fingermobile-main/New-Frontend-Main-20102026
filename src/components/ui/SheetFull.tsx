@@ -139,7 +139,7 @@ const SheetTitle: React.FC<SheetTitleProps> = ({ children, className = '' }) => 
 const SheetDescription: React.FC<SheetDescriptionProps> = ({ children, className = '' }) => {
   return (
     <p
-      className={`text-sm text-muted-foreground ${className}`}
+      className={`text-sm text-slate-700 dark:text-slate-300 font-medium ${className}`}
       id="sheet-description"
     >
       {children}

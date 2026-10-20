@@ -293,7 +293,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
                   Qualified Sovereign Onboarded
                 </span>
               </div>
-              <p className="text-xs sm:text-sm text-slate-400 max-w-xl">
+              <p className="text-xs sm:text-sm text-slate-300 font-medium max-w-xl">
                 @{profile.username} • Protocol Identity Active • Sovereign Enclave verified across all 6 platform clusters.
               </p>
               <div className="flex items-center gap-3 pt-2 text-xs flex-wrap font-mono">
@@ -348,7 +348,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
 
           {/* Quick Onboarding Milestones */}
           <div className="bg-slate-900/90 border border-slate-800 p-4 rounded-2xl min-w-[260px] space-y-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-300 block">
               Onboarding Milestones
             </span>
             <div className="space-y-1.5 text-xs">
@@ -380,7 +380,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
             <CheckCircle className="w-4 h-4 text-emerald-400" />
             {toastMessage}
           </span>
-          <button onClick={() => setToastMessage(null)} className="text-slate-400 hover:text-white">
+          <button onClick={() => setToastMessage(null)} className="text-slate-300 hover:text-white">
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -401,7 +401,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
                     Authoritative Cluster 2 Engine
                   </span>
                 </h2>
-                <p className="text-xs text-slate-400">
+                <p className="text-xs text-slate-300 font-medium">
                   Automated 4-part cryptographic distribution across Liquid FIC, Store Credit, Sleeper Staking, and Platform Revenue.
                 </p>
               </div>
@@ -432,14 +432,14 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {/* Card 1: 45% Liquid FIC */}
           <div className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800/80 space-y-2">
-            <div className="flex items-center justify-between text-xs text-slate-400">
+            <div className="flex items-center justify-between text-xs text-slate-300 font-medium">
               <span className="font-bold text-orange-400">45% Liquid FIC</span>
               <Coins className="w-4 h-4 text-orange-400" />
             </div>
             <div className="text-xl font-black text-white">
               {profile.ficBalance ?? 1250} FIC
             </div>
-            <div className="text-[11px] text-slate-400">
+            <div className="text-[11px] text-slate-300 font-medium">
               Directly spendable or withdrawable. Retained by member immediately.
             </div>
             <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
@@ -450,14 +450,14 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
           {/* Card 2: 25% Store Credit */}
           <div className="p-4 rounded-2xl bg-slate-950/70 border border-emerald-500/30 space-y-2 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-20 h-20 bg-emerald-500/5 rounded-full blur-xl pointer-events-none" />
-            <div className="flex items-center justify-between text-xs text-slate-400">
+            <div className="flex items-center justify-between text-xs text-slate-300 font-medium">
               <span className="font-bold text-emerald-400">25% Store Credit</span>
               <CreditCard className="w-4 h-4 text-emerald-400" />
             </div>
             <div className="text-xl font-black text-emerald-400">
               ${(profile.storeCreditBalance ?? 450).toFixed(2)} USD
             </div>
-            <div className="text-[11px] text-slate-400">
+            <div className="text-[11px] text-slate-300 font-medium">
               Dedicated store credit for marketplace goods, sound stems, & gifts.
             </div>
             <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
@@ -467,14 +467,14 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
 
           {/* Card 3: 5% Sleeper Stake */}
           <div className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800/80 space-y-2">
-            <div className="flex items-center justify-between text-xs text-slate-400">
+            <div className="flex items-center justify-between text-xs text-slate-300 font-medium">
               <span className="font-bold text-sky-400">5% 1-Year Sleeper Stake</span>
               <TrendingUp className="w-4 h-4 text-sky-400" />
             </div>
             <div className="text-xl font-black text-white">
               $90.00 USD
             </div>
-            <div className="text-[11px] text-slate-400">
+            <div className="text-[11px] text-slate-300 font-medium">
               Compounding yield at 1.5% APY. Matures annually to sovereign vault.
             </div>
             <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
@@ -484,14 +484,14 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
 
           {/* Card 4: 25% Platform Revenue */}
           <div className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800/80 space-y-2">
-            <div className="flex items-center justify-between text-xs text-slate-400">
+            <div className="flex items-center justify-between text-xs text-slate-300 font-medium">
               <span className="font-bold text-purple-400">25% Platform Operations</span>
               <ShieldCheck className="w-4 h-4 text-purple-400" />
             </div>
             <div className="text-xl font-black text-white">
               Protocol Fund
             </div>
-            <div className="text-[11px] text-slate-400">
+            <div className="text-[11px] text-slate-300 font-medium">
               Subsidizes zero gas fees, node verification, and Guardian AI security.
             </div>
             <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
@@ -508,12 +508,12 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
                 <PieChart className="w-4 h-4 text-emerald-400" />
                 Live Earning Split Calculator & Simulator
               </h3>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-300 font-medium">
                 Simulate how any gross earning (e.g. content sale, royalty, or tip) is algorithmically split.
               </p>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-bold text-slate-400">Simulate Amount ($):</span>
+              <span className="text-xs font-bold text-slate-200">Simulate Amount ($):</span>
               <input
                 type="number"
                 min="10"
@@ -527,24 +527,24 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono">
             <div className="p-3 rounded-xl bg-slate-900/90 border border-orange-500/20">
-              <span className="text-[10px] text-slate-400 block font-sans">Liquid FIC (45%)</span>
+              <span className="text-[10px] text-slate-200 font-bold block font-sans">Liquid FIC (45%)</span>
               <span className="text-sm font-bold text-orange-400">${(splitSimInput * 0.45).toFixed(2)}</span>
-              <span className="text-[10px] text-slate-500 block">{(splitSimInput * 0.45 * 2).toFixed(0)} FIC Tokens</span>
+              <span className="text-[10px] text-slate-300 font-medium block">{(splitSimInput * 0.45 * 2).toFixed(0)} FIC Tokens</span>
             </div>
             <div className="p-3 rounded-xl bg-slate-900/90 border border-emerald-500/30">
-              <span className="text-[10px] text-slate-400 block font-sans">Store Credit (25%)</span>
+              <span className="text-[10px] text-slate-200 font-bold block font-sans">Store Credit (25%)</span>
               <span className="text-sm font-bold text-emerald-400">${(splitSimInput * 0.25).toFixed(2)}</span>
-              <span className="text-[10px] text-slate-500 block">Marketplace Ready</span>
+              <span className="text-[10px] text-slate-300 font-medium block">Marketplace Ready</span>
             </div>
             <div className="p-3 rounded-xl bg-slate-900/90 border border-sky-500/20">
-              <span className="text-[10px] text-slate-400 block font-sans">1-Yr Stake (5%)</span>
+              <span className="text-[10px] text-slate-200 font-bold block font-sans">1-Yr Stake (5%)</span>
               <span className="text-sm font-bold text-sky-400">${(splitSimInput * 0.05).toFixed(2)}</span>
-              <span className="text-[10px] text-slate-500 block">+1.5% APY Growth</span>
+              <span className="text-[10px] text-slate-300 font-medium block">+1.5% APY Growth</span>
             </div>
             <div className="p-3 rounded-xl bg-slate-900/90 border border-purple-500/20">
-              <span className="text-[10px] text-slate-400 block font-sans">Platform Revenue (25%)</span>
+              <span className="text-[10px] text-slate-200 font-bold block font-sans">Platform Revenue (25%)</span>
               <span className="text-sm font-bold text-purple-400">${(splitSimInput * 0.25).toFixed(2)}</span>
-              <span className="text-[10px] text-slate-500 block">Node Operations</span>
+              <span className="text-[10px] text-slate-300 font-medium block">Node Operations</span>
             </div>
           </div>
         </div>
@@ -552,17 +552,17 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
         {/* Store Credit Transactions History Table */}
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-200">
               Store Credit Ledger & Recent Activity
             </h3>
-            <span className="text-[11px] font-mono text-slate-500">
+            <span className="text-[11px] font-mono text-slate-300">
               Total Recorded Transactions: {transactions.length}
             </span>
           </div>
 
           <div className="overflow-x-auto border border-slate-800 rounded-2xl bg-slate-950/60">
             <table className="w-full text-left text-xs text-slate-300">
-              <thead className="bg-slate-950 text-[10px] uppercase font-bold text-slate-500 border-b border-slate-800">
+              <thead className="bg-slate-950 text-[10px] uppercase font-bold text-slate-300 border-b border-slate-800">
                 <tr>
                   <th className="py-2.5 px-4">Transaction / Purpose</th>
                   <th className="py-2.5 px-4">Type</th>
@@ -594,7 +594,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
                     }`}>
                       {tx.amount < 0 ? `-$${Math.abs(tx.amount).toFixed(2)}` : `+$${tx.amount.toFixed(2)}`}
                     </td>
-                    <td className="py-3 px-4 text-right text-slate-400">
+                    <td className="py-3 px-4 text-right text-slate-200 font-bold">
                       ${tx.balanceAfter.toFixed(2)}
                     </td>
                     <td className="py-3 px-4 text-center">
@@ -602,7 +602,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
                         {tx.status}
                       </span>
                     </td>
-                    <td className="py-3 px-4 text-right text-slate-500 text-[11px]">
+                    <td className="py-3 px-4 text-right text-slate-300 font-medium text-[11px]">
                       {tx.date}
                     </td>
                   </tr>
@@ -620,7 +620,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
             <Sparkles className="w-5 h-5 text-orange-500" />
             Role-Based Community (RBC) Dashboards
           </h2>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-slate-300 font-medium">
             Switch between qualified roles to see what each member tier sees and interacts with.
           </p>
         </div>
@@ -633,7 +633,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
             className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
               activeRole === 'member'
                 ? 'bg-gradient-to-r from-orange-600 to-amber-600 text-white shadow-lg shadow-orange-600/20'
-                : 'text-slate-400 hover:text-white'
+                : 'text-slate-300 font-medium hover:text-white'
             }`}
           >
             <Users className="w-3.5 h-3.5" />
@@ -645,7 +645,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
             className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
               activeRole === 'creator'
                 ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg shadow-purple-600/20'
-                : 'text-slate-400 hover:text-white'
+                : 'text-slate-300 font-medium hover:text-white'
             }`}
           >
             <Sparkles className="w-3.5 h-3.5" />
@@ -657,7 +657,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
             className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
               activeRole === 'merchant'
                 ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg shadow-emerald-600/20'
-                : 'text-slate-400 hover:text-white'
+                : 'text-slate-300 font-medium hover:text-white'
             }`}
           >
             <ShoppingBag className="w-3.5 h-3.5" />
@@ -669,7 +669,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
             className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
               activeRole === 'ambassador'
                 ? 'bg-gradient-to-r from-sky-600 to-blue-600 text-white shadow-lg shadow-sky-600/20'
-                : 'text-slate-400 hover:text-white'
+                : 'text-slate-300 font-medium hover:text-white'
             }`}
           >
             <Award className="w-3.5 h-3.5" />
@@ -686,7 +686,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
           {/* Top Metric Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-md">
-              <div className="flex items-center justify-between text-slate-400 text-xs mb-2">
+              <div className="flex items-center justify-between text-slate-300 font-bold text-xs mb-2">
                 <span>Gifts Sent & Received</span>
                 <Gift className="w-4 h-4 text-pink-400" />
               </div>
@@ -695,16 +695,16 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
             </div>
 
             <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-md">
-              <div className="flex items-center justify-between text-slate-400 text-xs mb-2">
+              <div className="flex items-center justify-between text-slate-300 font-bold text-xs mb-2">
                 <span>Hallmarks Joined</span>
                 <Award className="w-4 h-4 text-amber-400" />
               </div>
               <div className="text-2xl font-black text-white">4 Enclaves</div>
-              <span className="text-[11px] text-slate-400 font-medium">Max capacity 250,000 members</span>
+              <span className="text-[11px] text-slate-300 font-medium">Max capacity 250,000 members</span>
             </div>
 
             <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-md">
-              <div className="flex items-center justify-between text-slate-400 text-xs mb-2">
+              <div className="flex items-center justify-between text-slate-300 font-bold text-xs mb-2">
                 <span>Forum Discussions</span>
                 <MessageSquare className="w-4 h-4 text-blue-400" />
               </div>
@@ -713,7 +713,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
             </div>
 
             <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-md">
-              <div className="flex items-center justify-between text-slate-400 text-xs mb-2">
+              <div className="flex items-center justify-between text-slate-300 font-bold text-xs mb-2">
                 <span>Privacy & Presence</span>
                 <Lock className="w-4 h-4 text-emerald-400" />
               </div>
@@ -741,7 +741,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
                     <h4 className="text-sm font-bold text-white mt-1">
                       NexusGNN Embeddings: How Graph Neural Networks power sovereign content matching
                     </h4>
-                    <p className="text-xs text-slate-400 mt-1">
+                    <p className="text-xs text-slate-300 font-medium mt-1">
                       Started by @israel_protocol • 42 comments • 18 LushPressies gifted
                     </p>
                   </div>
@@ -758,7 +758,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
                     <h4 className="text-sm font-bold text-white mt-1">
                       Afro-Futurism Audio Stems & Sovereign Music Drop Session 04
                     </h4>
-                    <p className="text-xs text-slate-400 mt-1">
+                    <p className="text-xs text-slate-300 font-medium mt-1">
                       Started by @beatwave_creator • 92 listeners • 320 Gems tipped
                     </p>
                   </div>
@@ -781,7 +781,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
                     <Gift className="w-4 h-4 text-pink-400" />
                     Mint / Gift a LushPin
                   </span>
-                  <ArrowUpRight className="w-4 h-4 text-slate-500 group-hover:text-white" />
+                  <ArrowUpRight className="w-4 h-4 text-slate-600 group-hover:text-white" />
                 </Link>
 
                 <Link
@@ -792,7 +792,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
                     <MessageSquare className="w-4 h-4 text-amber-400" />
                     Start New Forum Discussion
                   </span>
-                  <ArrowUpRight className="w-4 h-4 text-slate-500 group-hover:text-white" />
+                  <ArrowUpRight className="w-4 h-4 text-slate-600 group-hover:text-white" />
                 </Link>
 
                 <Link
@@ -803,7 +803,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
                     <ShoppingBag className="w-4 h-4 text-emerald-400" />
                     Explore Marketplace Storefronts
                   </span>
-                  <ArrowUpRight className="w-4 h-4 text-slate-500 group-hover:text-white" />
+                  <ArrowUpRight className="w-4 h-4 text-slate-600 group-hover:text-white" />
                 </Link>
 
                 <Link
@@ -814,7 +814,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
                     <ShieldCheck className="w-4 h-4 text-sky-400" />
                     Manage Biometrics & Devices
                   </span>
-                  <ArrowUpRight className="w-4 h-4 text-slate-500 group-hover:text-white" />
+                  <ArrowUpRight className="w-4 h-4 text-slate-600 group-hover:text-white" />
                 </Link>
               </div>
             </div>
@@ -827,7 +827,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
         <div className="space-y-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-md">
-              <div className="flex items-center justify-between text-slate-400 text-xs mb-2">
+              <div className="flex items-center justify-between text-slate-300 font-bold text-xs mb-2">
                 <span>Total Impressions</span>
                 <Eye className="w-4 h-4 text-indigo-400" />
               </div>
@@ -836,7 +836,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
             </div>
 
             <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-md">
-              <div className="flex items-center justify-between text-slate-400 text-xs mb-2">
+              <div className="flex items-center justify-between text-slate-300 font-bold text-xs mb-2">
                 <span>Beatwave Royalties</span>
                 <Music className="w-4 h-4 text-purple-400" />
               </div>
@@ -845,16 +845,16 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
             </div>
 
             <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-md">
-              <div className="flex items-center justify-between text-slate-400 text-xs mb-2">
+              <div className="flex items-center justify-between text-slate-300 font-bold text-xs mb-2">
                 <span>Regional Tier</span>
                 <Award className="w-4 h-4 text-amber-400" />
               </div>
               <div className="text-2xl font-black text-white">Tier 2 Regional</div>
-              <span className="text-[11px] text-slate-400 font-medium">Next: Tier 1 Global (Uncapped)</span>
+              <span className="text-[11px] text-slate-300 font-medium">Next: Tier 1 Global (Uncapped)</span>
             </div>
 
             <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-md">
-              <div className="flex items-center justify-between text-slate-400 text-xs mb-2">
+              <div className="flex items-center justify-between text-slate-300 font-bold text-xs mb-2">
                 <span>Fan Engagement</span>
                 <TrendingUp className="w-4 h-4 text-emerald-400" />
               </div>
@@ -866,7 +866,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
           <div className="p-6 rounded-3xl bg-slate-900 border border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
             <div>
               <h3 className="text-base font-bold text-white">Creator Studio Tools</h3>
-              <p className="text-xs text-slate-400">Manage UGC videos, mint custom fan pins, and export royalty invoices.</p>
+              <p className="text-xs text-slate-300 font-medium">Manage UGC videos, mint custom fan pins, and export royalty invoices.</p>
             </div>
             <div className="flex items-center gap-2 flex-wrap">
               <Link to="/beatwave" className="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold transition-all flex items-center gap-1.5">
@@ -885,7 +885,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
         <div className="space-y-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-md">
-              <div className="flex items-center justify-between text-slate-400 text-xs mb-2">
+              <div className="flex items-center justify-between text-slate-300 font-bold text-xs mb-2">
                 <span>Gross Merchandise Value</span>
                 <ShoppingBag className="w-4 h-4 text-emerald-400" />
               </div>
@@ -894,16 +894,16 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
             </div>
 
             <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-md">
-              <div className="flex items-center justify-between text-slate-400 text-xs mb-2">
+              <div className="flex items-center justify-between text-slate-300 font-bold text-xs mb-2">
                 <span>Escrow Vault Balance</span>
                 <Wallet className="w-4 h-4 text-amber-400" />
               </div>
               <div className="text-2xl font-black text-white">$3,450.00</div>
-              <span className="text-[11px] text-slate-400 font-medium">Releasing in 48 hours</span>
+              <span className="text-[11px] text-slate-300 font-medium">Releasing in 48 hours</span>
             </div>
 
             <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-md">
-              <div className="flex items-center justify-between text-slate-400 text-xs mb-2">
+              <div className="flex items-center justify-between text-slate-300 font-bold text-xs mb-2">
                 <span>PayLinks Generated</span>
                 <FileText className="w-4 h-4 text-blue-400" />
               </div>
@@ -912,7 +912,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
             </div>
 
             <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-md">
-              <div className="flex items-center justify-between text-slate-400 text-xs mb-2">
+              <div className="flex items-center justify-between text-slate-300 font-bold text-xs mb-2">
                 <span>Dispute & Fraud Rate</span>
                 <ShieldCheck className="w-4 h-4 text-emerald-400" />
               </div>
@@ -924,7 +924,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
           <div className="p-6 rounded-3xl bg-slate-900 border border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
             <div>
               <h3 className="text-base font-bold text-white">Storefront Actions</h3>
-              <p className="text-xs text-slate-400">Publish products, generate instant PayLinks, and configure shipping zones.</p>
+              <p className="text-xs text-slate-300 font-medium">Publish products, generate instant PayLinks, and configure shipping zones.</p>
             </div>
             <Link to="/storefront" className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-all flex items-center gap-1.5">
               <PlusCircle className="w-4 h-4" /> Add New Product
@@ -938,7 +938,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
         <div className="space-y-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-md">
-              <div className="flex items-center justify-between text-slate-400 text-xs mb-2">
+              <div className="flex items-center justify-between text-slate-300 font-bold text-xs mb-2">
                 <span>Flagged Queue</span>
                 <FileText className="w-4 h-4 text-red-400" />
               </div>
@@ -947,7 +947,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
             </div>
 
             <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-md">
-              <div className="flex items-center justify-between text-slate-400 text-xs mb-2">
+              <div className="flex items-center justify-between text-slate-300 font-bold text-xs mb-2">
                 <span>Hallmark Enclave Health</span>
                 <Users className="w-4 h-4 text-blue-400" />
               </div>
@@ -956,7 +956,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
             </div>
 
             <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-md">
-              <div className="flex items-center justify-between text-slate-400 text-xs mb-2">
+              <div className="flex items-center justify-between text-slate-300 font-bold text-xs mb-2">
                 <span>CES Score Average</span>
                 <Award className="w-4 h-4 text-amber-400" />
               </div>
@@ -965,12 +965,12 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
             </div>
 
             <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-md">
-              <div className="flex items-center justify-between text-slate-400 text-xs mb-2">
+              <div className="flex items-center justify-between text-slate-300 font-bold text-xs mb-2">
                 <span>Audit Logs Signed</span>
                 <ShieldCheck className="w-4 h-4 text-emerald-400" />
               </div>
               <div className="text-2xl font-black text-white">1,420</div>
-              <span className="text-[11px] text-slate-400 font-medium">WORM cryptographic verification</span>
+              <span className="text-[11px] text-slate-300 font-medium">WORM cryptographic verification</span>
             </div>
           </div>
         </div>
@@ -987,14 +987,14 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
                 </div>
                 <div>
                   <h3 className="font-black text-sm text-white">Update Member Account Details</h3>
-                  <p className="text-[11px] text-slate-400">
+                  <p className="text-[11px] text-slate-300 font-medium">
                     Sovereign Identity Demographic & Protocol Information
                   </p>
                 </div>
               </div>
               <button
                 onClick={() => setIsUpdateDetailsOpen(false)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition"
+                className="p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -1003,7 +1003,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
             <form onSubmit={handleSaveProfile} className="p-6 space-y-4 max-h-[75vh] overflow-y-auto">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-bold text-slate-300">Full Name</label>
+                  <label className="text-xs font-bold text-slate-200">Full Name</label>
                   <input
                     type="text"
                     required
@@ -1014,7 +1014,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
                 </div>
 
                 <div>
-                  <label className="text-xs font-bold text-slate-300">Username</label>
+                  <label className="text-xs font-bold text-slate-200">Username</label>
                   <input
                     type="text"
                     required
@@ -1025,7 +1025,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
                 </div>
 
                 <div className="sm:col-span-2">
-                  <label className="text-xs font-bold text-slate-300">Headline / Bio</label>
+                  <label className="text-xs font-bold text-slate-200">Headline / Bio</label>
                   <input
                     type="text"
                     value={editHeadline}
@@ -1035,7 +1035,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
                 </div>
 
                 <div>
-                  <label className="text-xs font-bold text-slate-300">Email Address</label>
+                  <label className="text-xs font-bold text-slate-200">Email Address</label>
                   <input
                     type="email"
                     required
@@ -1046,7 +1046,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
                 </div>
 
                 <div>
-                  <label className="text-xs font-bold text-slate-300">Phone Number</label>
+                  <label className="text-xs font-bold text-slate-200">Phone Number</label>
                   <input
                     type="text"
                     value={editPhone}
@@ -1056,7 +1056,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
                 </div>
 
                 <div>
-                  <label className="text-xs font-bold text-slate-300">Location / Region</label>
+                  <label className="text-xs font-bold text-slate-200">Location / Region</label>
                   <input
                     type="text"
                     value={editLocation}
@@ -1066,7 +1066,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
                 </div>
 
                 <div>
-                  <label className="text-xs font-bold text-slate-300">Sovereign 6-Digit PIN</label>
+                  <label className="text-xs font-bold text-slate-200">Sovereign 6-Digit PIN</label>
                   <input
                     type="password"
                     maxLength={6}
@@ -1077,7 +1077,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
                 </div>
 
                 <div className="sm:col-span-2">
-                  <label className="text-xs font-bold text-slate-300">Avatar Image URL</label>
+                  <label className="text-xs font-bold text-slate-200">Avatar Image URL</label>
                   <input
                     type="url"
                     value={editAvatar}
@@ -1091,7 +1091,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
                 <button
                   type="button"
                   onClick={() => setIsUpdateDetailsOpen(false)}
-                  className="px-4 py-2 text-xs font-bold text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-xl transition"
+                  className="px-4 py-2 text-xs font-bold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-xl transition"
                 >
                   Cancel
                 </button>
@@ -1119,12 +1119,12 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
                 </div>
                 <div>
                   <h3 className="font-black text-sm text-white">Delete Member Account</h3>
-                  <p className="text-[11px] text-slate-400">Permanent account & data purge</p>
+                  <p className="text-[11px] text-slate-300 font-medium">Permanent account & data purge</p>
                 </div>
               </div>
               <button
                 onClick={() => setIsDeleteAccountOpen(false)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition"
+                className="p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -1153,8 +1153,8 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
                 <>
                   <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-xs space-y-1">
                     <div className="font-bold text-white">{profile.name}</div>
-                    <div className="text-slate-400 font-mono">@{profile.username} &bull; {profile.email}</div>
-                    <div className="text-slate-400 text-[11px]">
+                    <div className="text-slate-300 font-medium font-mono">@{profile.username} &bull; {profile.email}</div>
+                    <div className="text-slate-300 font-medium text-[11px]">
                       Store Credit: <span className="font-bold text-emerald-400">${(profile.storeCreditBalance ?? 450).toFixed(2)}</span>
                     </div>
                   </div>
@@ -1167,7 +1167,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
                   </div>
 
                   <div>
-                    <label className="text-[11px] font-bold text-slate-400 block mb-1">
+                    <label className="text-[11px] font-bold text-slate-300 block mb-1">
                       Type <span className="text-rose-400 font-mono font-black">{profile.username}</span> to confirm:
                     </label>
                     <input
@@ -1183,7 +1183,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
                     <button
                       type="button"
                       onClick={() => setIsDeleteAccountOpen(false)}
-                      className="px-4 py-2 text-xs font-bold text-slate-400 hover:text-white bg-slate-800 rounded-xl transition"
+                      className="px-4 py-2 text-xs font-bold text-slate-300 hover:text-white bg-slate-800 rounded-xl transition"
                     >
                       Cancel
                     </button>
@@ -1215,12 +1215,12 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
                 </div>
                 <div>
                   <h3 className="font-black text-sm text-white">Spend Store Credit</h3>
-                  <p className="text-[11px] text-slate-400">Marketplace & Storefront purchasing</p>
+                  <p className="text-[11px] text-slate-300 font-medium">Marketplace & Storefront purchasing</p>
                 </div>
               </div>
               <button
                 onClick={() => setIsSpendModalOpen(false)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition"
+                className="p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -1229,7 +1229,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
             <form onSubmit={handleExecuteSpend} className="p-6 space-y-4">
               <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-between">
                 <div>
-                  <span className="text-[10px] uppercase font-bold text-slate-400 block">Available Store Credit</span>
+                  <span className="text-[10px] uppercase font-bold text-slate-300 block">Available Store Credit</span>
                   <span className="text-xl font-black text-emerald-400 font-mono">
                     ${(profile.storeCreditBalance ?? 450).toFixed(2)} USD
                   </span>
@@ -1238,7 +1238,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
               </div>
 
               <div>
-                <label className="text-xs font-bold text-slate-300">Merchant / Storefront Name</label>
+                <label className="text-xs font-bold text-slate-200">Merchant / Storefront Name</label>
                 <input
                   type="text"
                   required
@@ -1250,7 +1250,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
               </div>
 
               <div>
-                <label className="text-xs font-bold text-slate-300">Item / Service Description</label>
+                <label className="text-xs font-bold text-slate-200">Item / Service Description</label>
                 <input
                   type="text"
                   required
@@ -1262,7 +1262,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
               </div>
 
               <div>
-                <label className="text-xs font-bold text-slate-300">Amount to Spend ($ USD)</label>
+                <label className="text-xs font-bold text-slate-200">Amount to Spend ($ USD)</label>
                 <div className="relative mt-1.5">
                   <span className="absolute left-3.5 top-2 text-xs font-bold text-emerald-400">$</span>
                   <input
@@ -1275,7 +1275,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
                     className="w-full pl-8 pr-3 py-2 text-xs bg-slate-950 border border-slate-800 rounded-xl text-emerald-400 font-mono font-bold focus:ring-2 focus:ring-emerald-500 focus:outline-hidden"
                   />
                 </div>
-                <div className="flex justify-between items-center text-[10px] text-slate-500 mt-1">
+                <div className="flex justify-between items-center text-[10px] text-slate-300 font-medium mt-1">
                   <span>Balance after spend: ${Math.max(0, (profile.storeCreditBalance ?? 450) - spendAmount).toFixed(2)}</span>
                   <button
                     type="button"
@@ -1291,7 +1291,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
                 <button
                   type="button"
                   onClick={() => setIsSpendModalOpen(false)}
-                  className="px-4 py-2 text-xs font-bold text-slate-400 hover:text-white bg-slate-800 rounded-xl transition"
+                  className="px-4 py-2 text-xs font-bold text-slate-300 hover:text-white bg-slate-800 rounded-xl transition"
                 >
                   Cancel
                 </button>

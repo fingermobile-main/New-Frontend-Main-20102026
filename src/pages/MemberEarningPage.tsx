@@ -249,7 +249,7 @@ const MemberEarningPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Creator Earnings Dashboard</h1>
-          <p className="text-xs text-gray-500 mt-1">Manage service offerings, track payouts, and monitor sales</p>
+          <p className="text-xs text-slate-700 font-medium mt-1">Manage service offerings, track payouts, and monitor sales</p>
         </div>
         <div className="flex gap-2">
           {(['dashboard', 'services', 'analytics', 'wallet'] as const).map(tab => (

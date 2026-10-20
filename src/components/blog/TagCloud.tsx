@@ -178,14 +178,14 @@ const TagCloud: React.FC<TagCloudProps> = ({
       </div>
 
       {/* Legend */}
-      <div className="flex items-center justify-center gap-6 text-xs text-gray-600">
+      <div className="flex items-center justify-center gap-6 text-xs text-slate-800 font-semibold">
         <div className="flex items-center gap-2">
           <span style={{ fontSize: '12px' }}>Small</span>
-          <span className="text-gray-400">= Less popular</span>
+          <span className="text-slate-700 font-medium">= Less popular</span>
         </div>
         <div className="flex items-center gap-2">
           <span style={{ fontSize: '24px', fontWeight: 600 }}>Large</span>
-          <span className="text-gray-400">= More popular</span>
+          <span className="text-slate-700 font-medium">= More popular</span>
         </div>
       </div>
     </div>

@@ -21,7 +21,7 @@ const CommunityHighlightsWidget: React.FC = () => {
                 <p className="text-sm font-medium text-gray-900 group-hover:text-brand-blue transition-colors">
                   {comm.name}
                 </p>
-                <p className="text-xs text-gray-500">{comm.members} members</p>
+                <p className="text-xs text-slate-700 font-medium">{comm.members} members</p>
               </div>
             </div>
             <button className="text-brand-blue hover:bg-blue-50 px-2 py-1 rounded-md text-xs font-medium transition-colors border border-transparent hover:border-blue-100">

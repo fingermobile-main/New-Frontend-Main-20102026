@@ -40,7 +40,7 @@ export const CreatorSpotAvailabilityCard: React.FC<CohortCardProps> = ({
         >
           {isWaitlist ? 'Priority Waiting List' : 'Direct Registration'}
         </span>
-        <span className="text-xs text-slate-400">
+        <span className="text-xs text-slate-300 font-medium">
           Closes: <strong className="text-slate-200">{closingDateStr}</strong>
         </span>
       </div>
@@ -58,7 +58,7 @@ export const CreatorSpotAvailabilityCard: React.FC<CohortCardProps> = ({
               <span className="text-2xl font-extrabold text-white">
                 {availableSeats.toLocaleString()}
               </span>
-              <span className="text-slate-400 text-sm"> / {totalSeats.toLocaleString()} seats left</span>
+              <span className="text-slate-300 font-medium text-sm"> / {totalSeats.toLocaleString()} seats left</span>
             </>
           )}
         </p>
@@ -82,7 +82,7 @@ export const CreatorSpotAvailabilityCard: React.FC<CohortCardProps> = ({
         className={`w-full py-2.5 px-4 rounded-lg font-medium text-sm transition-all cursor-pointer ${
           isWaitlist
             ? 'bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40'
-            : 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-600/30 disabled:bg-slate-700 disabled:text-slate-400 disabled:cursor-not-allowed'
+            : 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-600/30 disabled:bg-slate-700 disabled:text-slate-300 disabled:cursor-not-allowed'
         }`}
       >
         {isWaitlist ? 'Reserve Priority Waitlist Spot' : 'Claim Your Creator Seat'}

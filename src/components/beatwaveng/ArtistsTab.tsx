@@ -362,18 +362,18 @@ export const ArtistsTab: React.FC = () => {
           <h2 className="text-2xl font-black text-white flex items-center gap-2.5">
             <Mic2 className="w-6 h-6 text-emerald-400" />
             <span>Artists Catalog</span>
-            <span className="text-xs font-mono px-2.5 py-0.5 rounded-full bg-slate-900 border border-slate-800 text-slate-400">
+            <span className="text-xs font-mono px-2.5 py-0.5 rounded-full bg-slate-900 border border-slate-800 text-slate-300">
               {artists.length} Sovereign Artists
             </span>
           </h2>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-slate-300 mt-1">
             Explore verified sovereign African recording artists, live discographies, and lossless master recordings.
           </p>
         </div>
 
         {/* Search */}
         <div className="relative w-full sm:w-80">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-300" />
           <input
             type="text"
             placeholder="Search artists by name or genre..."
@@ -393,7 +393,7 @@ export const ArtistsTab: React.FC = () => {
             className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
               selectedGenre === g
                 ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/30'
-                : 'bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white border border-slate-800'
+                : 'bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800'
             }`}
           >
             {g}
@@ -443,7 +443,7 @@ export const ArtistsTab: React.FC = () => {
                     {artist.verified && <CheckCircle2 className="w-4 h-4 text-sky-400" />}
                     {artist.ninVerified && <ShieldCheck className="w-4 h-4 text-emerald-400" />}
                   </div>
-                  <span className="text-[10px] text-slate-400 font-mono">
+                  <span className="text-[10px] text-slate-300 font-mono">
                     {artist.handle}
                   </span>
                 </div>
@@ -455,13 +455,13 @@ export const ArtistsTab: React.FC = () => {
                 {/* Metrics */}
                 <div className="grid grid-cols-2 gap-2 p-2.5 rounded-xl bg-slate-950 border border-slate-800/80 mb-4 text-center">
                   <div>
-                    <span className="text-[10px] text-slate-400 block">Monthly Listeners</span>
+                    <span className="text-[10px] text-slate-300 font-semibold block">Monthly Listeners</span>
                     <span className="text-xs font-bold text-emerald-400 font-mono">
                       {(artist.monthlyListeners / 1000000).toFixed(1)}M
                     </span>
                   </div>
                   <div>
-                    <span className="text-[10px] text-slate-400 block">Followers</span>
+                    <span className="text-[10px] text-slate-300 font-semibold block">Followers</span>
                     <span className="text-xs font-bold text-white font-mono">
                       {(artist.followers / 1000000).toFixed(1)}M
                     </span>
@@ -481,7 +481,7 @@ export const ArtistsTab: React.FC = () => {
                         <div className="text-xs font-bold text-white truncate">
                           {artist.topTracks[0].title}
                         </div>
-                        <div className="text-[10px] text-slate-400 truncate">
+                        <div className="text-[10px] text-slate-300 truncate">
                           {artist.topTracks[0].album}
                         </div>
                       </div>
@@ -533,7 +533,7 @@ export const ArtistsTab: React.FC = () => {
           >
             <button
               onClick={() => setSelectedArtistModal(null)}
-              className="absolute top-4 right-4 p-2 rounded-full bg-slate-800 text-slate-400 hover:text-white transition"
+              className="absolute top-4 right-4 p-2 rounded-full bg-slate-800 text-slate-300 hover:text-white transition"
             >
               <X className="w-5 h-5" />
             </button>
@@ -550,13 +550,13 @@ export const ArtistsTab: React.FC = () => {
                   <h3 className="text-xl font-black text-white">{selectedArtistModal.name}</h3>
                   <CheckCircle2 className="w-5 h-5 text-sky-400" />
                 </div>
-                <div className="text-xs text-slate-400">{selectedArtistModal.genre}</div>
+                <div className="text-xs text-slate-300 font-medium">{selectedArtistModal.genre}</div>
               </div>
             </div>
 
             {/* Top Popular Tracks */}
             <div className="mb-6">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-200 mb-3 flex items-center gap-2">
                 <Disc className="w-4 h-4 text-emerald-400" />
                 <span>Top Popular Tracks</span>
               </h4>
@@ -570,11 +570,11 @@ export const ArtistsTab: React.FC = () => {
                       <img src={t.coverArt} alt={t.title} className="w-10 h-10 rounded-lg object-cover" />
                       <div>
                         <div className="text-xs font-bold text-white">{t.title}</div>
-                        <div className="text-[10px] text-slate-400">{t.album}</div>
+                        <div className="text-[10px] text-slate-300">{t.album}</div>
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
-                      <span className="text-[11px] font-mono text-slate-400">{formatTime(t.duration)}</span>
+                      <span className="text-[11px] font-mono text-slate-300">{formatTime(t.duration)}</span>
                       <button
                         onClick={() => handlePlayArtistTrack(t, selectedArtistModal)}
                         className="p-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition"
@@ -589,7 +589,7 @@ export const ArtistsTab: React.FC = () => {
 
             {/* Albums Catalog */}
             <div>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-200 mb-3 flex items-center gap-2">
                 <Disc className="w-4 h-4 text-amber-400" />
                 <span>Albums &amp; Master Discography</span>
               </h4>
@@ -598,7 +598,7 @@ export const ArtistsTab: React.FC = () => {
                   <div key={alb.id} className="p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-left">
                     <img src={alb.coverArt} alt={alb.title} className="w-full aspect-square rounded-lg object-cover mb-2" />
                     <div className="text-xs font-bold text-white truncate">{alb.title}</div>
-                    <div className="text-[10px] text-slate-400 flex items-center justify-between mt-1">
+                    <div className="text-[10px] text-slate-300 flex items-center justify-between mt-1">
                       <span>{alb.year}</span>
                       <span className="text-amber-400 font-mono">{alb.quality}</span>
                     </div>

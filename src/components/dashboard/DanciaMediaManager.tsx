@@ -129,7 +129,7 @@ const DanciaMediaManager: React.FC = () => {
             <Film size={26} />
           </div>
           <div>
-            <p className="text-xs text-gray-400 font-semibold uppercase tracking-wider">Catalog Titles</p>
+            <p className="text-xs text-slate-300 font-semibold uppercase tracking-wider">Catalog Titles</p>
             <p className="text-2xl font-black text-white mt-0.5">{videos.length}</p>
           </div>
         </div>
@@ -139,7 +139,7 @@ const DanciaMediaManager: React.FC = () => {
             <CheckCircle2 size={26} />
           </div>
           <div>
-            <p className="text-xs text-gray-400 font-semibold uppercase tracking-wider">Active Broadcast</p>
+            <p className="text-xs text-slate-300 font-semibold uppercase tracking-wider">Active Broadcast</p>
             <p className="text-2xl font-black text-emerald-400 mt-0.5">Live 24/7</p>
           </div>
         </div>
@@ -149,7 +149,7 @@ const DanciaMediaManager: React.FC = () => {
             <Eye size={26} />
           </div>
           <div>
-            <p className="text-xs text-gray-400 font-semibold uppercase tracking-wider">Estimated Views</p>
+            <p className="text-xs text-slate-300 font-semibold uppercase tracking-wider">Estimated Views</p>
             <p className="text-2xl font-black text-white mt-0.5">
               {videos.reduce((acc, v) => acc + (v.views || 1200), 0).toLocaleString()}
             </p>
@@ -161,7 +161,7 @@ const DanciaMediaManager: React.FC = () => {
             <Star size={26} />
           </div>
           <div>
-            <p className="text-xs text-gray-400 font-semibold uppercase tracking-wider">4K / HD Streams</p>
+            <p className="text-xs text-slate-300 font-semibold uppercase tracking-wider">4K / HD Streams</p>
             <p className="text-2xl font-black text-amber-400 mt-0.5">100% Ready</p>
           </div>
         </div>
@@ -317,10 +317,10 @@ const DanciaMediaManager: React.FC = () => {
             </div>
 
             {loading ? (
-              <div className="py-16 text-center text-gray-400">Loading catalog...</div>
+              <div className="py-16 text-center text-slate-300 font-medium">Loading catalog...</div>
             ) : videos.length === 0 ? (
-              <div className="py-16 text-center text-gray-400">
-                <AlertCircle className="mx-auto mb-2 text-gray-500" size={32} />
+              <div className="py-16 text-center text-slate-300 font-medium">
+                <AlertCircle className="mx-auto mb-2 text-slate-500" size={32} />
                 <p>No movies or videos currently published.</p>
               </div>
             ) : (
@@ -348,7 +348,7 @@ const DanciaMediaManager: React.FC = () => {
                           <h4 className="text-sm font-bold text-white truncate group-hover:text-blue-400 transition-colors">
                             {vid.title}
                           </h4>
-                          <div className="flex items-center gap-2 mt-1 text-[11px] text-gray-400">
+                          <div className="flex items-center gap-2 mt-1 text-[11px] text-slate-300 font-medium">
                             <span className="text-blue-400 font-semibold">{vid.genre}</span>
                             <span>•</span>
                             <span className="flex items-center gap-1">
@@ -392,12 +392,12 @@ const DanciaMediaManager: React.FC = () => {
           <div className="bg-gray-900 border border-white/10 rounded-2xl w-full max-w-2xl overflow-hidden shadow-2xl p-6 relative">
             <button
               onClick={() => setActivePreview(null)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-white text-lg font-bold"
+              className="absolute top-4 right-4 text-slate-300 hover:text-white text-lg font-bold"
             >
               ✕
             </button>
             <h3 className="text-lg font-bold text-white mb-2">{activePreview.title}</h3>
-            <p className="text-xs text-gray-400 mb-4">{activePreview.description || activePreview.genre}</p>
+            <p className="text-xs text-slate-300 font-medium mb-4">{activePreview.description || activePreview.genre}</p>
             <div className="aspect-video bg-black rounded-xl overflow-hidden flex items-center justify-center relative">
               <img
                 src={activePreview.thumbnailURL || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600'}

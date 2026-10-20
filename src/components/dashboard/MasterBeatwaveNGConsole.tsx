@@ -160,13 +160,68 @@ const BEATWAVE_ENTITIES: MediaEntityDefinition[] = [
   },
 ];
 
-export const MasterBeatwaveNGConsole: React.FC = () => (
-  <MediaCatalogManagementConsole
-    ecosystem="beatwave"
-    title="BeatwaveNG Ecosystem Management"
-    description="Manage persisted tracks, artists, albums, playlists, genres, AudioNovels, and podcasts with audited catalog and moderation controls."
-    entities={BEATWAVE_ENTITIES}
-  />
-);
+import SoundRiverMasterConsole from './SoundRiverMasterConsole';
+import SoundOceanMasterConsole from './SoundOceanMasterConsole';
+import { Waves, Diamond, Database, Disc } from 'lucide-react';
+
+export const MasterBeatwaveNGConsole: React.FC = () => {
+  const [activeTab, setActiveTab] = React.useState<'river' | 'ocean' | 'catalog'>('river');
+
+  return (
+    <div className="space-y-6">
+      {/* Ecosystem Tab Bar */}
+      <div className="bg-white border-b border-slate-300 p-4 rounded-2xl shadow-sm flex flex-wrap gap-3">
+        <button
+          onClick={() => setActiveTab('river')}
+          className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm transition-all border ${
+            activeTab === 'river'
+              ? 'bg-cyan-900 text-white border-cyan-900 shadow-md'
+              : 'bg-white text-slate-800 border-slate-300 hover:bg-slate-100'
+          }`}
+        >
+          <Waves className={`w-4 h-4 ${activeTab === 'river' ? 'text-cyan-300' : 'text-cyan-700'}`} />
+          🌊 SoundRiver Master Management
+        </button>
+
+        <button
+          onClick={() => setActiveTab('ocean')}
+          className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm transition-all border ${
+            activeTab === 'ocean'
+              ? 'bg-indigo-950 text-white border-indigo-950 shadow-md'
+              : 'bg-white text-slate-800 border-slate-300 hover:bg-slate-100'
+          }`}
+        >
+          <Diamond className={`w-4 h-4 ${activeTab === 'ocean' ? 'text-indigo-300' : 'text-indigo-700'}`} />
+          💎 SoundOcean Sovereign Vault
+        </button>
+
+        <button
+          onClick={() => setActiveTab('catalog')}
+          className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm transition-all border ${
+            activeTab === 'catalog'
+              ? 'bg-slate-900 text-white border-slate-900 shadow-md'
+              : 'bg-white text-slate-800 border-slate-300 hover:bg-slate-100'
+          }`}
+        >
+          <Database className={`w-4 h-4 ${activeTab === 'catalog' ? 'text-slate-300' : 'text-slate-700'}`} />
+          Standard Relational Catalog
+        </button>
+      </div>
+
+      {/* Tab Panels */}
+      {activeTab === 'river' && <SoundRiverMasterConsole />}
+      {activeTab === 'ocean' && <SoundOceanMasterConsole />}
+      {activeTab === 'catalog' && (
+        <MediaCatalogManagementConsole
+          ecosystem="beatwave"
+          title="BeatwaveNG Ecosystem Management"
+          description="Manage persisted tracks, artists, albums, playlists, genres, AudioNovels, and podcasts with audited catalog and moderation controls."
+          entities={BEATWAVE_ENTITIES}
+        />
+      )}
+    </div>
+  );
+};
 
 export default MasterBeatwaveNGConsole;
+

@@ -55,18 +55,18 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
     <div className="relative">
       {/* Selected Items Display */}
       <div
-        className="min-h-[40px] p-2 border rounded-lg cursor-pointer hover:border-primary transition-colors"
+        className="min-h-[40px] p-2 border border-slate-300 rounded-lg cursor-pointer bg-white hover:border-slate-400 transition-colors"
         onClick={() => setIsOpen(!isOpen)} role="button" tabIndex={0}
       >
         {selected.length === 0 ? (
-          <span className="text-muted-foreground">{placeholder}</span>
+          <span className="text-slate-600 font-medium">{placeholder}</span>
         ) : (
           <div className="flex flex-wrap gap-1">
             {selectedLabels.map((label, index) => (
               <Badge
                 key={index}
                 variant="secondary"
-                className="cursor-pointer hover:bg-destructive hover:text-destructive-foreground"
+                className="cursor-pointer bg-slate-100 text-slate-800 border border-slate-300 font-semibold hover:bg-destructive hover:text-white"
                 onClick={(e) => {
                   e.stopPropagation();
                   handleRemove(selected[index]);
@@ -82,16 +82,16 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
 
       {/* Dropdown */}
       {isOpen && (
-        <div className="absolute top-full left-0 right-0 mt-1 bg-background border rounded-lg shadow-lg z-50 max-h-60 overflow-auto">
+        <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-slate-200 rounded-lg shadow-lg z-50 max-h-60 overflow-auto">
           {/* Search */}
           {searchable && (
-            <div className="p-2 border-b">
+            <div className="p-2 border-b border-slate-200">
               <input
                 type="text"
                 placeholder="Search..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-2 py-1 border rounded text-sm"
+                className="w-full px-2 py-1 border border-slate-300 rounded text-sm text-slate-900 font-medium placeholder:text-slate-400 focus:outline-none"
                 onClick={(e) => e.stopPropagation()}
               />
             </div>
@@ -102,8 +102,8 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
             {filteredOptions.map((option) => (
               <div
                 key={option.value}
-                className={`flex items-center justify-between p-2 rounded cursor-pointer hover:bg-muted ${
-                  selected.includes(option.value) ? 'bg-muted' : ''
+                className={`flex items-center justify-between p-2 rounded cursor-pointer text-slate-900 font-medium hover:bg-slate-100 ${
+                  selected.includes(option.value) ? 'bg-slate-100 font-semibold text-slate-900' : ''
                 }`}
                 onClick={() => handleToggle(option.value)} role="button" tabIndex={0}
               >
@@ -114,14 +114,14 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
               </div>
             ))}
             {filteredOptions.length === 0 && (
-              <div className="text-center text-muted-foreground py-4">
+              <div className="text-center text-slate-600 font-medium py-4">
                 No options found
               </div>
             )}
           </div>
 
           {/* Actions */}
-          <div className="p-2 border-t flex justify-between">
+          <div className="p-2 border-t border-slate-200 flex justify-between">
             <Button
               variant="ghost"
               size="sm"
@@ -129,6 +129,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
                 onChange([]);
                 setIsOpen(false);
               }}
+              className="text-slate-700 hover:text-slate-900"
             >
               Clear All
             </Button>
@@ -144,7 +145,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
 
       {/* Selection Count */}
       {maxSelections && (
-        <div className="mt-1 text-xs text-muted-foreground">
+        <div className="mt-1 text-xs text-slate-700 font-medium">
           {selected.length}/{maxSelections} selected
         </div>
       )}

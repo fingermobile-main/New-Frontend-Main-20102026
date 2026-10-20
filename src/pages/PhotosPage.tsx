@@ -387,7 +387,7 @@ const PhotosPage: React.FC = () => {
         {/* 3. SEARCH & CONTROLS TOOLBAR */}
         <div className="bg-white p-4 rounded-2xl border border-slate-300 shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
           <div className="relative flex-1">
-            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-600" />
             <input
               type="text"
               value={searchQuery}
@@ -408,7 +408,7 @@ const PhotosPage: React.FC = () => {
 
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1.5">
-              <Filter className="w-3.5 h-3.5 text-slate-500" />
+              <Filter className="w-3.5 h-3.5 text-slate-600" />
               <label htmlFor="license-filter-select" className="text-xs font-bold text-slate-800">License:</label>
               <select
                 id="license-filter-select"
@@ -424,7 +424,7 @@ const PhotosPage: React.FC = () => {
             </div>
 
             <div className="flex items-center gap-1.5">
-              <SlidersHorizontal className="w-3.5 h-3.5 text-slate-500" />
+              <SlidersHorizontal className="w-3.5 h-3.5 text-slate-600" />
               <label htmlFor="sort-by-select" className="text-xs font-bold text-slate-800">Sort:</label>
               <select
                 id="sort-by-select"
@@ -445,7 +445,7 @@ const PhotosPage: React.FC = () => {
         {/* 4. PHOTO GALLERY GRID */}
         {filteredPhotos.length === 0 ? (
           <div className="p-12 text-center bg-white rounded-3xl border border-slate-300 space-y-3">
-            <Camera className="w-12 h-12 text-slate-500 mx-auto" />
+            <Camera className="w-12 h-12 text-slate-600 mx-auto" />
             <h3 className="text-base font-bold text-slate-900">No Visual Captures Found</h3>
             <p className="text-xs text-slate-700 max-w-sm mx-auto">
               No photographs matching &ldquo;{searchQuery}&rdquo; in this category. Try adjusting your query or category filter.
@@ -515,7 +515,7 @@ const PhotosPage: React.FC = () => {
                         </h2>
                       </div>
                       <div className="flex items-center gap-1.5 text-xs text-slate-700">
-                        <MapPin className="w-3 h-3 text-slate-500 shrink-0" />
+                        <MapPin className="w-3 h-3 text-slate-600 shrink-0" />
                         <span className="truncate">{photo.location}</span>
                       </div>
                     </div>
@@ -538,7 +538,7 @@ const PhotosPage: React.FC = () => {
                           {photo.likes}
                         </span>
                         <span className="flex items-center gap-0.5">
-                          <Eye className="w-3 h-3 text-slate-500" />
+                          <Eye className="w-3.5 h-3.5 text-slate-600" />
                           {photo.views}
                         </span>
                       </div>
@@ -576,7 +576,7 @@ const PhotosPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setSelectedPhoto(null)}
-                  className="p-2 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+                  className="p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -596,19 +596,19 @@ const PhotosPage: React.FC = () => {
                 {/* Technical EXIF & Camera Specs Bar */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-300">
                   <div>
-                    <span className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider">Camera Body</span>
+                    <span className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider">Camera Body</span>
                     <span className="text-xs font-black text-slate-900">{selectedPhoto.camera}</span>
                   </div>
                   <div>
-                    <span className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider">Lens Optics</span>
+                    <span className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider">Lens Optics</span>
                     <span className="text-xs font-black text-slate-900">{selectedPhoto.lens}</span>
                   </div>
                   <div>
-                    <span className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider">Exposure Telemetry</span>
+                    <span className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider">Exposure Telemetry</span>
                     <span className="text-xs font-black text-slate-900">{selectedPhoto.settings}</span>
                   </div>
                   <div>
-                    <span className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider">Full Master Dimensions</span>
+                    <span className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider">Full Master Dimensions</span>
                     <span className="text-xs font-black text-slate-900">{selectedPhoto.resolution}</span>
                   </div>
                 </div>
@@ -663,7 +663,7 @@ const PhotosPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setShowUploadModal(false)}
-                  className="p-1.5 rounded-xl text-slate-500 hover:text-slate-900"
+                  className="p-1.5 rounded-xl text-slate-600 hover:text-slate-900"
                 >
                   <X className="w-5 h-5" />
                 </button>

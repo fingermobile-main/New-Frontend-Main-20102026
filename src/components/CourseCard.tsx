@@ -147,7 +147,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
           <CardTitle className="text-lg font-bold text-gray-900 dark:text-white line-clamp-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
             {courseTitle}
           </CardTitle>
-          <p className="text-xs text-slate-700 dark:text-gray-400 line-clamp-2 mt-1">
+          <p className="text-xs text-slate-700 dark:text-slate-300 font-medium line-clamp-2 mt-1">
             {courseDesc}
           </p>
         </CardHeader>
@@ -164,7 +164,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
               </span>
             </div>
 
-            <div className="flex items-center gap-1 text-slate-700 dark:text-gray-400 text-[11px]">
+            <div className="flex items-center gap-1 text-slate-700 dark:text-slate-300 font-medium text-[11px]">
               <Users className="w-3.5 h-3.5" />
               <span>{studentCount.toLocaleString()} learners</span>
             </div>

@@ -53,7 +53,7 @@ const CreatePlaylistFolderModal: React.FC<CreatePlaylistFolderModalProps> = ({
           <div className="space-y-2">
             <Label htmlFor="folder-name">Folder Name *</Label>
             <div className="relative">
-              <ListMusic className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <ListMusic className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
               <Input
                 id="folder-name"
                 value={folderName}

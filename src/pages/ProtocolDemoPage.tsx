@@ -341,7 +341,7 @@ const ProtocolDemoPage: React.FC = () => {
                 </div>
               ))}
               {logs.length === 0 && (
-                <div className="text-gray-500 h-full flex items-center justify-center">
+                <div className="text-slate-700 font-medium h-full flex items-center justify-center">
                   No activity yet. Connect to the protocol service to begin.
                 </div>
               )}

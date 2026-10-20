@@ -213,7 +213,7 @@ export const MultiMediaGallery: React.FC<{
         {/* Counter Badge */}
         <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-black/80 backdrop-blur-md text-white text-[11px] font-mono font-bold flex items-center gap-1 shadow-md">
           <span>{activeIndex + 1}</span>
-          <span className="text-slate-400">/</span>
+          <span className="text-slate-600 font-bold">/</span>
           <span>{urls.length}</span>
         </div>
 
@@ -506,11 +506,11 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
               <div className="flex items-center gap-1.5">
                 <span className="font-black text-slate-900 dark:text-white text-xs">{post.authorName}</span>
                 {post.isVerified && <CheckCircleSolidIcon className="w-3.5 h-3.5 text-orange-600" />}
-                <span className="text-[11px] text-slate-500 font-mono">
+                <span className="text-[11px] text-slate-700 font-mono font-medium">
                   {post.authorHandle.startsWith('@') ? post.authorHandle : `@${post.authorHandle}`}
                 </span>
                 {post.privacy === 'private' && (
-                  <span title="Private Post" className="text-slate-500">
+                  <span title="Private Post" className="text-slate-600">
                     <LockClosedIcon className="w-3 h-3" />
                   </span>
                 )}
@@ -530,11 +530,13 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
                 {!hideCategory && post.categoryName && (
                   <>
                     <span>•</span>
-                    <span className="text-slate-600 dark:text-slate-400">{post.categoryName}</span>
+                    <span className="text-slate-700 dark:text-slate-300 font-medium">
+                      {post.categoryName.replace(/https?:\/\/[^\s]+/g, '').trim() || post.categoryName}
+                    </span>
                   </>
                 )}
                 <span>•</span>
-                <span className="text-slate-500">{post.createdAt}</span>
+                <span className="text-slate-700 font-medium">{post.createdAt}</span>
               </div>
             </div>
           </div>
@@ -544,7 +546,7 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
             <button
               type="button"
               onClick={() => setActiveMenuOpen(!activeMenuOpen)}
-              className="p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 border border-transparent hover:border-slate-300 transition"
+              className="p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium border border-transparent hover:border-slate-300 transition"
               title="Post options"
             >
               <EllipsisHorizontalIcon className="w-5 h-5" />
@@ -757,10 +759,10 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
                     {post.linkEmbed.description}
                   </p>
                 )}
-                <span className="text-[10px] text-slate-500 font-mono block mt-1">{post.linkEmbed.domain}</span>
+                <span className="text-[10px] text-slate-700 font-mono font-medium block mt-1">{post.linkEmbed.domain}</span>
               </div>
             </div>
-            <ArrowTopRightOnSquareIcon className="w-4 h-4 text-slate-500 group-hover:text-blue-700 transition flex-shrink-0" />
+            <ArrowTopRightOnSquareIcon className="w-4 h-4 text-slate-600 group-hover:text-blue-700 transition flex-shrink-0" />
           </a>
         )}
 
@@ -933,7 +935,7 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
         )}
 
         {/* Post Action Footer: Likes, Comments Toggle, Share, Bookmark */}
-        <div className="mt-4 pt-3.5 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
+        <div className="mt-4 pt-3.5 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs text-slate-700 dark:text-slate-300 font-medium">
           <div className="flex items-center gap-4">
             {/* Like Button */}
             <button
@@ -986,7 +988,7 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
               type="button"
               onClick={handleBookmarkClick}
               className={`p-1.5 rounded-xl border border-transparent hover:border-slate-300 transition ${
-                isBookmarked ? 'text-amber-600' : 'text-slate-500 hover:text-amber-600'
+                isBookmarked ? 'text-amber-600' : 'text-slate-600 hover:text-amber-600'
               }`}
               title="Bookmark post"
             >
@@ -1019,7 +1021,7 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
                         <span className="font-black text-slate-900 dark:text-white text-[11px]">
                           {comm.authorName}
                         </span>
-                        <span className="text-[10px] text-slate-500">{comm.createdAt}</span>
+                        <span className="text-[10px] text-slate-700 font-medium">{comm.createdAt}</span>
                       </div>
                       <p className="text-slate-700 dark:text-slate-300 mt-0.5 leading-relaxed font-normal">
                         {comm.text}
@@ -1065,7 +1067,7 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
               <button
                 type="button"
                 onClick={() => setLocalLightbox(null)}
-                className="p-1 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white transition"
+                className="p-1 rounded-lg hover:bg-slate-800 text-slate-300 hover:text-white transition"
               >
                 <XMarkIcon className="w-5 h-5" />
               </button>
@@ -1077,7 +1079,7 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
                 className="max-h-[65vh] w-auto object-contain rounded-xl"
               />
             </div>
-            <div className="p-3 bg-slate-950/80 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+            <div className="p-3 bg-slate-950/80 border-t border-slate-800 flex items-center justify-between text-xs text-slate-300 font-medium">
               <span>Author: {localLightbox.author}</span>
               <span className="font-mono text-[10px]">FingerMobile High-Fi UHD</span>
             </div>
@@ -1108,7 +1110,7 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
               <button
                 type="button"
                 onClick={() => setIsTipModalOpen(false)}
-                className="p-1.5 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                className="p-1.5 rounded-xl text-slate-600 hover:text-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
               >
                 <XMarkIcon className="w-5 h-5" />
               </button>
@@ -1180,7 +1182,7 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
             </div>
 
             {/* Balance & Info */}
-            <div className="flex items-center justify-between text-[11px] text-slate-700 dark:text-slate-400 px-1">
+            <div className="flex items-center justify-between text-[11px] text-slate-700 dark:text-slate-300 font-medium px-1">
               <span>Available Balance: <strong className="text-slate-900 dark:text-slate-100">3,420 FIC</strong></span>
               <span className="text-emerald-800 font-semibold flex items-center gap-1">✓ Instant On-Chain</span>
             </div>
@@ -1230,7 +1232,7 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
               <button
                 type="button"
                 onClick={() => setIsShareModalOpen(false)}
-                className="p-1.5 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                className="p-1.5 rounded-xl text-slate-600 hover:text-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
               >
                 <XMarkIcon className="w-5 h-5" />
               </button>
@@ -1272,7 +1274,7 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
                   <span className="text-lg">📱</span>
                   <div>
                     <h5 className="text-xs font-bold text-slate-900 dark:text-white">Repost to Wall</h5>
-                    <p className="text-[10px] text-slate-700 dark:text-slate-400">Share to your feed</p>
+                    <p className="text-[10px] text-slate-700 dark:text-slate-300 font-medium">Share to your feed</p>
                   </div>
                 </button>
 
@@ -1284,7 +1286,7 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
                   <span className="text-lg">💬</span>
                   <div>
                     <h5 className="text-xs font-bold text-slate-900 dark:text-white">WhatsApp</h5>
-                    <p className="text-[10px] text-slate-700 dark:text-slate-400">Send to chats</p>
+                    <p className="text-[10px] text-slate-700 dark:text-slate-300 font-medium">Send to chats</p>
                   </div>
                 </button>
 
@@ -1296,7 +1298,7 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
                   <span className="text-lg">𝕏</span>
                   <div>
                     <h5 className="text-xs font-bold text-slate-900 dark:text-white">X / Twitter</h5>
-                    <p className="text-[10px] text-slate-700 dark:text-slate-400">Broadcast tweet</p>
+                    <p className="text-[10px] text-slate-700 dark:text-slate-300 font-medium">Broadcast tweet</p>
                   </div>
                 </button>
 
@@ -1308,7 +1310,7 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
                   <span className="text-lg">✈️</span>
                   <div>
                     <h5 className="text-xs font-bold text-slate-900 dark:text-white">Telegram</h5>
-                    <p className="text-[10px] text-slate-700 dark:text-slate-400">Direct channel</p>
+                    <p className="text-[10px] text-slate-700 dark:text-slate-300 font-medium">Direct channel</p>
                   </div>
                 </button>
               </div>

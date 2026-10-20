@@ -104,13 +104,13 @@ export const GuardianConsentBridgeModal: React.FC<GuardianConsentBridgeModalProp
             <span className="text-xl">🛡️</span>
             <div>
               <h3 className="text-base font-black text-white">NDPA Age Verification & Child Protection</h3>
-              <p className="text-[11px] text-slate-400">Nigeria Data Protection Act (NDPA 2023 Section 31)</p>
+              <p className="text-[11px] text-slate-300 font-medium">Nigeria Data Protection Act (NDPA 2023 Section 31)</p>
             </div>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="text-slate-400 hover:text-white p-1 rounded-lg"
+            className="text-slate-300 hover:text-white p-1 rounded-lg"
           >
             <XIcon className="w-4 h-4" />
           </button>
@@ -136,7 +136,7 @@ export const GuardianConsentBridgeModal: React.FC<GuardianConsentBridgeModalProp
                 className="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:outline-none focus:border-amber-500"
                 required
               />
-              <p className="text-[11px] text-slate-500 mt-1">
+              <p className="text-[11px] text-slate-700 font-medium mt-1">
                 Your date of birth is processed locally for statutory category classification.
               </p>
             </div>

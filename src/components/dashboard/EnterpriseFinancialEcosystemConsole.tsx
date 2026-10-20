@@ -48,6 +48,7 @@ import {
   ApprovalStatus
 } from '../../constants/platformFinancialEcosystemData';
 import SubscriptionModelsConsole from './SubscriptionModelsConsole';
+import FinanceBankingPaymentsWidget from '../widgets/FinanceBankingPaymentsWidget';
 import {
   financialDb,
   SheetKey,
@@ -820,6 +821,9 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
       {/* ==================================================================== */}
       {activeTab === 'rails' && (
         <div className="space-y-6">
+          {/* FingerMobile Direct Pay & Banking Rails Widget */}
+          <FinanceBankingPaymentsWidget />
+
           {/* Revenue vs. Income vs. Profit Conceptual Trinity Card */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Revenue */}

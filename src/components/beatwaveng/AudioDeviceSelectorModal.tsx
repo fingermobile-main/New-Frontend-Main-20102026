@@ -53,7 +53,7 @@ export const AudioDeviceSelectorModal: React.FC<AudioDeviceSelectorModalProps> =
             </div>
             <div>
               <h3 className="text-base font-black text-white">Audio Output Devices</h3>
-              <p className="text-xs text-slate-400">Select media playback device (System / External / DAC)</p>
+              <p className="text-xs text-slate-300 font-medium">Select media playback device (System / External / DAC)</p>
             </div>
           </div>
           <button
@@ -104,11 +104,11 @@ export const AudioDeviceSelectorModal: React.FC<AudioDeviceSelectorModalProps> =
                   <div>
                     <div className="text-xs font-bold text-white flex items-center gap-2">
                       <span>{device.name}</span>
-                      <span className="text-[10px] uppercase font-mono px-1.5 py-0.2 rounded bg-slate-800 text-slate-400">
+                      <span className="text-[10px] uppercase font-mono px-1.5 py-0.2 rounded bg-slate-800 text-slate-300 font-semibold">
                         {device.type}
                       </span>
                     </div>
-                    <div className="text-[11px] text-slate-400">{device.bitrateSupport}</div>
+                    <div className="text-[11px] text-slate-300 font-medium">{device.bitrateSupport}</div>
                   </div>
                 </div>
 
@@ -133,7 +133,7 @@ export const AudioDeviceSelectorModal: React.FC<AudioDeviceSelectorModalProps> =
         </div>
 
         {/* Footer info */}
-        <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-400">
+        <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-300 font-medium">
           <div className="flex items-center gap-1.5">
             <Sparkles size={13} className="text-emerald-400" />
             <span>Lossless Bit-Perfect Audio Pipeline</span>

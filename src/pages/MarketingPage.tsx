@@ -69,7 +69,7 @@ const MarketingPage: React.FC = () => {
           <div className="flex items-center justify-between mb-6">
             <div>
               <h2 className="text-xl font-bold text-slate-900">Active Campaign Delivery</h2>
-              <p className="text-xs text-slate-500 mt-0.5">Real-time status of top running campaigns</p>
+              <p className="text-xs text-slate-700 font-medium mt-0.5">Real-time status of top running campaigns</p>
             </div>
             <button
               onClick={() => navigate('/campaigns')}
@@ -82,7 +82,7 @@ const MarketingPage: React.FC = () => {
           {loading ? (
             <p className="text-sm text-slate-700 py-6 text-center">Loading campaigns...</p>
           ) : recentCampaigns.length === 0 ? (
-            <div className="text-center py-8 text-slate-500">
+            <div className="text-center py-8 text-slate-700 font-medium">
               <p className="font-semibold text-sm">No active campaigns running</p>
               <button
                 onClick={() => navigate('/canary-ads')}
@@ -124,7 +124,7 @@ const MarketingPage: React.FC = () => {
                     </div>
                     <div>
                       <span className="text-slate-700 text-[10px] uppercase font-bold">Budget</span>
-                      <p className="font-bold text-slate-500">{camp.budget ? `${camp.budget} FIC` : `${camp.total_budget || 0} FIC`}</p>
+                      <p className="font-bold text-slate-700">{camp.budget ? `${camp.budget} FIC` : `${camp.total_budget || 0} FIC`}</p>
                     </div>
                   </div>
                 </div>

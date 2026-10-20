@@ -39,6 +39,7 @@ import { SystemMetric } from '../types/dashboard';
 import { guardianSearchIndexer } from '../services/GuardianSearchIndexingService';
 import CorporateGovernanceConsole from '../components/dashboard/CorporateGovernanceConsole';
 import EnterpriseFinancialEcosystemConsole from '../components/dashboard/EnterpriseFinancialEcosystemConsole';
+import StercsControlCenter from '../components/dashboard/StercsControlCenter';
 
 interface StercsModule {
   id: string;
@@ -102,7 +103,7 @@ const StercsDashboardPage: React.FC = () => {
     return unsub;
   }, []);
 
-  const [activeTab, setActiveTab] = useState<'overview' | 'modules' | 'controls' | 'governance' | 'erp-crm' | 'roles'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'defcon' | 'modules' | 'controls' | 'governance' | 'erp-crm' | 'roles'>('overview');
   const [timeRange, setTimeRange] = useState('7d');
   const [selectedCluster, setSelectedCluster] = useState('Global Production [Enclave Alpha]');
   const [searchQuery, setSearchQuery] = useState('');
@@ -127,6 +128,27 @@ const StercsDashboardPage: React.FC = () => {
   const [isSyncingLedger, setIsSyncingLedger] = useState(false);
   const [selectedPolicyForModal, setSelectedPolicyForModal] = useState<GovernancePolicy | null>(null);
   const [circuitBreakerTripped, setCircuitBreakerTripped] = useState(false);
+
+  // Dynamic Security Feature Flags (Interactive State)
+  const [securityFlags, setSecurityFlags] = useState([
+    { id: 'content-flagging', name: 'Autonomous Heuristic Content Flagging', desc: 'Real-time NLP and visual deepfake scan prior to feed dispatch', active: true },
+    { id: 'memory-lock', name: 'Camus Hardware Enclave Memory Lock', desc: 'Hardware-level isolated memory paging for execution modules', active: true },
+    { id: 'ledger-verifier', name: 'Infinity Coin Ledger Double-Entry Verifier', desc: 'Live block proof cross-matching with database transaction logs', active: true },
+    { id: 'minor-shield', name: 'Child Safety & Minor Persona Shield', desc: 'Restrict unverified contacts and blur unrated media automatically', active: true },
+    { id: 'ddos-throttle', name: 'DDoS & Rate Limiter Sovereign Throttle', desc: 'Auto-ban IPs exceeding 2,500 socket requests per second', active: true },
+    { id: 'zk-deletion', name: 'GDPR / NDPR Zero-Knowledge Deletion', desc: 'Cryptographically wipe revoked personal data within 100ms', active: false },
+  ]);
+
+  const handleToggleFlag = (id: string) => {
+    setSecurityFlags(prev => prev.map(f => {
+      if (f.id === id) {
+        const next = !f.active;
+        triggerToast(`Security policy "${f.name}" is now ${next ? 'ENFORCED' : 'STANDBY'}.`);
+        return { ...f, active: next };
+      }
+      return f;
+    }));
+  };
 
   const handleToggleCircuitBreaker = () => {
     const nextState = !circuitBreakerTripped;
@@ -617,9 +639,9 @@ const StercsDashboardPage: React.FC = () => {
                 <ShieldCheck className="w-4 h-4 text-blue-700" />
                 STERCS™ Platform
               </span>
-              <ChevronRight className="w-3.5 h-3.5 text-slate-500" />
+              <ChevronRight className="w-3.5 h-3.5 text-slate-600" />
               <span className="text-slate-800 font-bold">Sovereign Control Core</span>
-              <ChevronRight className="w-3.5 h-3.5 text-slate-500" />
+              <ChevronRight className="w-3.5 h-3.5 text-slate-600" />
               <div className="relative inline-block">
                 <select
                   value={selectedCluster}
@@ -930,6 +952,7 @@ const StercsDashboardPage: React.FC = () => {
           <nav className="flex space-x-8 -mb-px">
             {[
               { id: 'overview', label: 'Enclave Overview', icon: Activity },
+              { id: 'defcon', label: 'DEFCON Command & Geo-Fencing', icon: Shield },
               { id: 'modules', label: 'Module Consoles (12)', icon: Layers },
               { id: 'controls', label: 'Feature Flags & Security', icon: Sliders },
               { id: 'governance', label: 'Governance & Audits', icon: ShieldCheck },
@@ -945,7 +968,7 @@ const StercsDashboardPage: React.FC = () => {
                     : 'border-transparent text-slate-700 hover:text-slate-900 hover:border-slate-400'
                 }`}
               >
-                <tab.icon className={`w-4 h-4 ${activeTab === tab.id ? 'text-blue-600' : 'text-slate-500'}`} />
+                <tab.icon className={`w-4 h-4 ${activeTab === tab.id ? 'text-blue-600' : 'text-slate-600'}`} />
                 {tab.label}
               </button>
             ))}
@@ -1160,7 +1183,7 @@ const StercsDashboardPage: React.FC = () => {
                   </button>
 
                   <div className="relative">
-                    <Search className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
+                    <Search className="w-4 h-4 text-slate-600 absolute left-3 top-1/2 -translate-y-1/2" />
                     <input
                       type="text"
                       value={searchQuery}
@@ -1323,7 +1346,14 @@ const StercsDashboardPage: React.FC = () => {
           </div>
         )}
 
-        {/* TAB 2: MODULES MANAGEMENT */}
+        {/* TAB 2: DEFCON COMMAND & GEO-FENCING */}
+        {activeTab === 'defcon' && (
+          <div className="space-y-6">
+            <StercsControlCenter />
+          </div>
+        )}
+
+        {/* TAB 3: MODULES MANAGEMENT */}
         {activeTab === 'modules' && (
           <div className="space-y-6">
             <div className="bg-white rounded-lg border border-slate-300 p-5 shadow-2xs">
@@ -1410,24 +1440,23 @@ const StercsDashboardPage: React.FC = () => {
               <p className="text-xs text-slate-700 font-medium mb-4">Toggle autonomous enforcement thresholds across cluster nodes.</p>
 
               <div className="space-y-3">
-                {[
-                  { name: 'Autonomous Heuristic Content Flagging', desc: 'Real-time NLP and visual deepfake scan prior to feed dispatch', active: true },
-                  { name: 'Camus Hardware Enclave Memory Lock', desc: 'Hardware-level isolated memory paging for execution modules', active: true },
-                  { name: 'Infinity Coin Ledger Double-Entry Verifier', desc: 'Live block proof cross-matching with database transaction logs', active: true },
-                  { name: 'Child Safety & Minor Persona Shield', desc: 'Restrict unverified contacts and blur unrated media automatically', active: true },
-                  { name: 'DDoS & Rate Limiter Sovereign Throttle', desc: 'Auto-ban IPs exceeding 2,500 socket requests per second', active: true },
-                  { name: 'GDPR / NDPR Zero-Knowledge Deletion', desc: 'Cryptographically wipe revoked personal data within 100ms', active: false },
-                ].map((item, idx) => (
-                  <div key={idx} className="flex items-center justify-between p-3 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors">
+                {securityFlags.map((item) => (
+                  <div key={item.id} className="flex items-center justify-between p-3 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors">
                     <div>
                       <div className="font-bold text-xs text-slate-900">{item.name}</div>
                       <div className="text-[11px] text-slate-700 font-medium">{item.desc}</div>
                     </div>
-                    <span className={`px-2.5 py-1 rounded text-xs font-bold uppercase border ${
-                      item.active ? 'bg-emerald-100 text-emerald-950 border-emerald-300' : 'bg-slate-200 text-slate-800 border-slate-300'
-                    }`}>
+                    <button
+                      type="button"
+                      onClick={() => handleToggleFlag(item.id)}
+                      className={`px-3 py-1 rounded text-xs font-bold uppercase border transition-colors ${
+                        item.active 
+                          ? 'bg-emerald-100 text-emerald-950 border-emerald-400 hover:bg-emerald-200' 
+                          : 'bg-slate-200 text-slate-800 border-slate-300 hover:bg-slate-300'
+                      }`}
+                    >
                       {item.active ? 'Enforced' : 'Standby'}
-                    </span>
+                    </button>
                   </div>
                 ))}
               </div>
@@ -1731,7 +1760,7 @@ const StercsDashboardPage: React.FC = () => {
               </div>
               <button
                 onClick={() => setIsAiAgentModalOpen(false)}
-                className="text-slate-400 hover:text-white p-1 rounded transition-colors"
+                className="text-slate-300 hover:text-white p-1 rounded transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -1889,7 +1918,7 @@ const StercsDashboardPage: React.FC = () => {
               </div>
               <button
                 onClick={() => setIsRolesModalOpen(false)}
-                className="text-slate-400 hover:text-white p-1 rounded transition-colors"
+                className="text-slate-300 hover:text-white p-1 rounded transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -1954,7 +1983,7 @@ const StercsDashboardPage: React.FC = () => {
               </div>
               <button
                 onClick={() => setSelectedModuleForDrawer(null)}
-                className="text-slate-500 hover:text-slate-900 p-1 rounded transition-colors"
+                className="text-slate-600 hover:text-slate-900 p-1 rounded transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -2023,7 +2052,7 @@ const StercsDashboardPage: React.FC = () => {
               </div>
               <button
                 onClick={() => setSelectedPolicyForModal(null)}
-                className="text-slate-400 hover:text-white p-1 rounded transition-colors"
+                className="text-slate-300 hover:text-white p-1 rounded transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -2108,7 +2137,7 @@ const StercsDashboardPage: React.FC = () => {
           <span>{toastMessage}</span>
           <button
             onClick={() => setToastMessage(null)}
-            className="text-slate-400 hover:text-white ml-2"
+            className="text-slate-300 hover:text-white ml-2"
           >
             <X className="w-3.5 h-3.5" />
           </button>

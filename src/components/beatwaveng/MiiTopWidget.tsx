@@ -70,7 +70,7 @@ export const MiiTopWidget: React.FC<MiiTopWidgetProps> = ({ onOpenDeviceSelector
               </span>
             </div>
 
-            <div className="flex items-center gap-3 text-xs text-slate-400 mt-1 font-medium">
+            <div className="flex items-center gap-3 text-xs text-slate-300 font-medium mt-1">
               <span className="flex items-center gap-1">
                 <Users size={12} className="text-emerald-400" />
                 <strong className="text-white font-bold">{miiState.followersCount.toLocaleString()}</strong> Followers
@@ -97,7 +97,7 @@ export const MiiTopWidget: React.FC<MiiTopWidgetProps> = ({ onOpenDeviceSelector
               }`}
             />
             <div className="min-w-0">
-              <div className="text-[10px] font-black uppercase tracking-wider text-slate-400">
+              <div className="text-[10px] font-black uppercase tracking-wider text-slate-300 font-semibold">
                 Live Broadcast Status
               </div>
               <div className="text-xs font-bold text-white truncate">
@@ -122,7 +122,7 @@ export const MiiTopWidget: React.FC<MiiTopWidgetProps> = ({ onOpenDeviceSelector
               className={`px-2.5 py-1 rounded-xl text-[10px] font-bold transition-all ${
                 miiState.privacyMode === 'public'
                   ? 'bg-emerald-500 text-black shadow-md'
-                  : 'bg-slate-900 text-slate-400 hover:text-white'
+                  : 'bg-slate-900 text-slate-300 hover:text-white font-medium'
               }`}
               title="Public Broadcast"
             >
@@ -133,7 +133,7 @@ export const MiiTopWidget: React.FC<MiiTopWidgetProps> = ({ onOpenDeviceSelector
               className={`px-2.5 py-1 rounded-xl text-[10px] font-bold transition-all ${
                 miiState.privacyMode === 'private'
                   ? 'bg-amber-500 text-black shadow-md'
-                  : 'bg-slate-900 text-slate-400 hover:text-white'
+                  : 'bg-slate-900 text-slate-300 hover:text-white font-medium'
               }`}
               title="Private (Mutual PIN only)"
             >
@@ -144,7 +144,7 @@ export const MiiTopWidget: React.FC<MiiTopWidgetProps> = ({ onOpenDeviceSelector
               className={`px-2.5 py-1 rounded-xl text-[10px] font-bold transition-all ${
                 miiState.privacyMode === 'incognito'
                   ? 'bg-slate-600 text-white shadow-md'
-                  : 'bg-slate-900 text-slate-400 hover:text-white'
+                  : 'bg-slate-900 text-slate-300 hover:text-white font-medium'
               }`}
               title="Incognito Stealth"
             >
@@ -163,7 +163,7 @@ export const MiiTopWidget: React.FC<MiiTopWidgetProps> = ({ onOpenDeviceSelector
           >
             <Volume2 size={14} className="text-emerald-400" />
             <div className="text-left">
-              <div className="text-[9px] uppercase font-bold text-slate-400 leading-none">Output Device</div>
+              <div className="text-[9px] uppercase font-bold text-slate-300 leading-none">Output Device</div>
               <div className="text-white font-bold leading-tight truncate max-w-[120px]">
                 {activeAudioDevice.name}
               </div>
@@ -197,19 +197,19 @@ export const MiiTopWidget: React.FC<MiiTopWidgetProps> = ({ onOpenDeviceSelector
               </div>
               <button
                 onClick={() => setShowRequestsModal(false)}
-                className="text-slate-400 hover:text-white font-bold"
+                className="text-slate-300 hover:text-white font-bold"
               >
                 ✕
               </button>
             </div>
 
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-slate-300 font-medium">
               Fellow BeatwaveNG listeners request to exchange PINs to unlock mutual listening feeds, Colabo+ playlists, and VirDrive access.
             </p>
 
             <div className="space-y-3 max-h-72 overflow-y-auto pr-1">
               {pendingRequests.length === 0 ? (
-                <div className="p-6 text-center text-xs text-slate-400 bg-slate-950/50 rounded-2xl border border-slate-800">
+                <div className="p-6 text-center text-xs text-slate-300 font-medium bg-slate-950/50 rounded-2xl border border-slate-800">
                   No pending PIN requests. Share your Sovereign PIN <strong className="text-white">#749822</strong> with your crew!
                 </div>
               ) : (
@@ -227,7 +227,7 @@ export const MiiTopWidget: React.FC<MiiTopWidgetProps> = ({ onOpenDeviceSelector
                       <div>
                         <div className="text-xs font-bold text-white">{req.fromName}</div>
                         <div className="text-[11px] text-emerald-400 font-mono">PIN: #{req.fromPin}</div>
-                        <div className="text-[10px] text-slate-400 mt-0.5">{req.targetTitle}</div>
+                        <div className="text-[10px] text-slate-300 font-medium mt-0.5">{req.targetTitle}</div>
                       </div>
                     </div>
 

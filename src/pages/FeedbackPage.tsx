@@ -65,7 +65,7 @@ const FeedbackPage: React.FC = () => {
             <ChatBubbleBottomCenterTextIcon className="w-10 h-10" />
           </div>
           <h1 className="text-4xl font-black text-slate-900 tracking-tight">Send us Feedback</h1>
-          <p className="mt-4 text-xl font-medium text-slate-500 max-w-2xl mx-auto">
+          <p className="mt-4 text-xl font-medium text-slate-700 max-w-2xl mx-auto">
             We value your input. Let us know how we can improve the platform and your experience.
           </p>
         </div>

@@ -569,7 +569,7 @@ export const SovereignMediaCropperModal: React.FC<SovereignMediaCropperModalProp
             <button
               type="button"
               onClick={onClose}
-              className="text-slate-500 hover:text-slate-900 p-1.5 rounded-xl hover:bg-slate-100 transition-colors"
+              className="text-slate-600 hover:text-slate-900 p-1.5 rounded-xl hover:bg-slate-100 transition-colors"
             >
               <XCircle className="w-6 h-6" />
             </button>
@@ -618,7 +618,7 @@ export const SovereignMediaCropperModal: React.FC<SovereignMediaCropperModalProp
                   {selectedItemIds.length === containerItems.length && containerItems.length > 0 ? (
                     <CheckSquare className="w-4 h-4 text-emerald-600" />
                   ) : (
-                    <Square className="w-4 h-4 text-slate-500" />
+                    <Square className="w-4 h-4 text-slate-600" />
                   )}
                   <span>
                     {selectedItemIds.length === containerItems.length && containerItems.length > 0
@@ -694,7 +694,7 @@ export const SovereignMediaCropperModal: React.FC<SovereignMediaCropperModalProp
                           {isSelected ? (
                             <CheckSquare className="w-4 h-4 text-emerald-600" />
                           ) : (
-                            <Square className="w-4 h-4 text-slate-500" />
+                            <Square className="w-4 h-4 text-slate-600" />
                           )}
                         </button>
                         <span className="text-xs font-mono font-black text-slate-800">
@@ -788,7 +788,7 @@ export const SovereignMediaCropperModal: React.FC<SovereignMediaCropperModalProp
                           setSelectedItemIds([item.id]);
                           handleDeleteSelected();
                         }}
-                        className="p-1.5 rounded-lg text-slate-500 hover:text-red-700 hover:bg-red-50 transition-colors"
+                        className="p-1.5 rounded-lg text-slate-600 hover:text-red-700 hover:bg-red-50 transition-colors"
                         title="Delete this file"
                       >
                         <Trash2 className="w-4 h-4 text-red-600" />
@@ -942,7 +942,7 @@ export const SovereignMediaCropperModal: React.FC<SovereignMediaCropperModalProp
                     <span className="font-mono text-emerald-700">{zoom.toFixed(2)}x</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <ZoomOut className="w-4 h-4 text-slate-500" />
+                    <ZoomOut className="w-4 h-4 text-slate-600" />
                     <input
                       type="range"
                       min="0.8"
@@ -952,7 +952,7 @@ export const SovereignMediaCropperModal: React.FC<SovereignMediaCropperModalProp
                       onChange={(e) => setZoom(parseFloat(e.target.value))}
                       className="w-full accent-slate-900 cursor-pointer text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                     />
-                    <ZoomIn className="w-4 h-4 text-slate-500" />
+                    <ZoomIn className="w-4 h-4 text-slate-600" />
                   </div>
                 </div>
               )}

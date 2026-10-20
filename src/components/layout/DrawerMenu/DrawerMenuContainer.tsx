@@ -2,6 +2,17 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { DRAWER_MENU_CONFIG } from '../../../config/drawerMenuConfig';
 import userProfileSyncService from '../../../services/UserProfileSyncService';
+import { useAuth } from '../../../contexts/AuthContext';
+import {
+  getUserRoleTier,
+  canAccessMasterDashboard,
+  canAccessDashboard,
+  isDashboardRoute,
+  getUserRoleBadge,
+  getAuthorizedDashboardPath,
+  isContentCreator,
+  isBusinessEntity
+} from '../../../services/platformRbac';
 import {
   Search,
   ChevronDown,
@@ -131,8 +142,45 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
     return unsub;
   }, []);
 
+  const { user } = useAuth();
+  const path = (location.pathname || (typeof window !== 'undefined' ? window.location.pathname : '')).toLowerCase();
+  const isAuthOrOnboardingRoute = 
+    path === '/login' ||
+    path === '/register' ||
+    path === '/admin' ||
+    path === '/adminlogin' ||
+    path === '/verification' ||
+    path === '/official-verification' ||
+    path === '/securitysetup' ||
+    path === '/changepassword' ||
+    path === '/forgot-password' ||
+    path === '/onboarding' ||
+    path.startsWith('/auth') ||
+    path.includes('/login') ||
+    path.includes('/register') ||
+    path.includes('/onboarding') ||
+    path.includes('/adminlogin');
+
+  const isOnboarded = Boolean(
+    user &&
+    (user.onboardingComplete || (user as any).onboarding_completed) &&
+    (localStorage.getItem('onboardingComplete') === 'true' || localStorage.getItem('hasCompletedOnboarding') === 'true')
+  );
+
+  // Strict Security Rule: Never display menu under any circumstance until perfectly onboarded and outside auth/onboarding routes
+  if (isAuthOrOnboardingRoute || !isOnboarded) {
+    return null;
+  }
+
+  const roleTier = getUserRoleTier(user);
+  const roleBadge = getUserRoleBadge(user);
+  const canAccessMaster = canAccessMasterDashboard(user);
+  const authorizedDashboardPath = getAuthorizedDashboardPath(user);
+
   // Track open accordion categories - expand all by default
   const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({
+    'executive-dashboards': true,
+    'sovereign-governance': true,
     'community-social': true,
     'media-entertainment': true,
     'commerce-stores': true,
@@ -259,8 +307,8 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
               title="Click to open Member Profile Page / Wall"
             >
               <img
-                src={profile.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80'}
-                alt={profile.name || 'Member Profile Wall'}
+                src={(user && profile.avatar) || (user as any)?.avatar || '/assets/branding/default-avatar.svg'}
+                alt={((user?.firstName ? `${user.firstName} ${user.lastName || ''}`.trim() : user?.username) || 'Member Profile Wall')}
                 className="w-14 h-14 rounded-2xl object-cover ring-3 ring-orange-500/90 shadow-xl group-hover:scale-105 transition-transform bg-slate-900"
               />
               <span className={`absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full ring-2 ring-slate-950 ${isIncognito ? 'bg-purple-500' : 'bg-emerald-500'}`} />
@@ -277,11 +325,11 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
                   className="font-black text-sm text-white hover:text-orange-400 transition-colors truncate"
                   title="Click to view full Profile Wall"
                 >
-                  {profile.name || 'Israel Mbah'}
+                  {(user?.firstName ? `${user.firstName} ${user.lastName || ''}`.trim() : user?.username) || (user ? profile.name : '') || 'Sovereign Member'}
                 </Link>
                 <ShieldCheck className="w-4 h-4 text-sky-400 shrink-0" />
-                <span className="text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-orange-500/25 text-orange-300 border border-orange-500/50">
-                  Lvl 5 Sovereign
+                <span className={`text-[9px] font-black uppercase px-2 py-0.5 rounded ${roleBadge.badgeClass}`}>
+                  {roleBadge.label}
                 </span>
               </div>
 
@@ -292,11 +340,17 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
                     <Star key={i} className="w-3 h-3 fill-amber-400 text-amber-400" />
                   ))}
                 </div>
-                <span className="text-[10px] font-mono text-slate-200 font-bold">@{profile.username || 'israel_protocol'}</span>
+                <span className="text-[10px] font-mono text-slate-200 font-bold truncate max-w-[180px]">
+                  {user?.email || (user?.username ? `@${user.username}` : (user ? `@${profile.username}` : '@member'))}
+                </span>
               </div>
 
               <p className="text-xs text-slate-100 font-semibold truncate mt-0.5">
-                {profile.headline || 'CEO & CTO, Founder | FingerMobile Protocol'}
+                {roleTier === 'PRIMARY_SUPER_ADMIN'
+                  ? 'Founder & SuperAdmin | FingerMobile Protocol'
+                  : roleTier === 'SECONDARY_ADMIN_CFO'
+                    ? 'CFO & Co-Founder | FingerMobile Protocol'
+                    : ((user && profile.headline) || (user as any)?.headline || 'Sovereign Member | FingerMobile Protocol')}
               </p>
 
               {/* Consent Verified PIN & Security Grid */}
@@ -409,14 +463,39 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
               <User className="w-4 h-4 text-blue-400 mb-1 group-hover:scale-110 transition-transform" />
               <span className="text-[11px] font-bold text-slate-200 group-hover:text-white">Wall</span>
             </Link>
-            <Link
-              to="/dashboard"
-              onClick={() => !isDesktopSidebar && onClose()}
-              className="flex flex-col items-center justify-center p-2 rounded-xl bg-slate-800/90 hover:bg-slate-700/90 border border-slate-700 text-slate-100 hover:text-white transition-all text-center group shadow-xs"
-            >
-              <Sparkles className="w-4 h-4 text-orange-400 mb-1 group-hover:scale-110 transition-transform" />
-              <span className="text-[11px] font-bold text-slate-200 group-hover:text-white">Dashboard</span>
-            </Link>
+            {authorizedDashboardPath ? (
+              <Link
+                to={authorizedDashboardPath}
+                onClick={() => !isDesktopSidebar && onClose()}
+                className="flex flex-col items-center justify-center p-2 rounded-xl bg-slate-800/90 hover:bg-slate-700/90 border border-slate-700 text-slate-100 hover:text-white transition-all text-center group shadow-xs"
+                title={
+                  canAccessMaster
+                    ? 'Master Dashboard (Executive Access Granted)'
+                    : isContentCreator(user)
+                      ? 'Creator Studio Dashboard'
+                      : isBusinessEntity(user)
+                        ? 'Business Hub & Offices'
+                        : 'Your Assigned Dashboard'
+                }
+              >
+                <Sparkles className="w-4 h-4 text-orange-400 mb-1 group-hover:scale-110 transition-transform" />
+                <span className="text-[11px] font-bold text-slate-200 group-hover:text-white">
+                  {canAccessMaster ? 'Dashboard' : isContentCreator(user) ? 'Studio' : isBusinessEntity(user) ? 'Business' : 'Dashboard'}
+                </span>
+              </Link>
+            ) : (
+              <button
+                type="button"
+                onClick={() => {
+                  alert('Dashboard access restricted. Only Primary Admins, CFO/Co-Founders, Content Creators, or explicitly assigned members have dashboard access.');
+                }}
+                className="flex flex-col items-center justify-center p-2 rounded-xl bg-slate-900/60 border border-slate-800/80 text-slate-500 cursor-not-allowed transition-all text-center group shadow-xs opacity-60 hover:opacity-80"
+                title="Dashboard access restricted by RBAC"
+              >
+                <Lock className="w-4 h-4 text-slate-400 mb-1" />
+                <span className="text-[11px] font-bold text-slate-400">Dashboard</span>
+              </button>
+            )}
             <Link
               to="/wallet"
               onClick={() => !isDesktopSidebar && onClose()}
@@ -534,6 +613,41 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
                       <div className="p-1 space-y-1">
                         {cat.items.map((item) => {
                           const active = isActive(item.path);
+                          const isDashboard = isDashboardRoute(item.path);
+                          const hasDashboardAccess = canAccessDashboard(item.path, user);
+                          const isRestrictedDashboard = isDashboard && !hasDashboardAccess;
+
+                          if (isRestrictedDashboard) {
+                            return (
+                              <div
+                                key={item.id}
+                                onClick={() => {
+                                  alert(`Access to "${item.title}" is restricted by Platform RBAC. Contact Primary Admin (SuperAdmin) or CFO for dashboard assignment.`);
+                                }}
+                                className="group flex items-start justify-between p-2 rounded-lg text-xs bg-slate-950/60 border border-slate-800/80 text-slate-400 cursor-not-allowed opacity-60 hover:opacity-85 transition-opacity"
+                                title="Access Restricted: Executive or Assigned RBAC Required"
+                              >
+                                <div className="flex items-start space-x-2.5 min-w-0 flex-1">
+                                  <div className="mt-0.5 shrink-0">
+                                    <Lock className="w-3.5 h-3.5 text-rose-400" />
+                                  </div>
+                                  <div className="min-w-0 flex-1">
+                                    <div className="flex items-center space-x-1.5 flex-wrap">
+                                      <span className="font-bold text-xs truncate text-slate-300">{item.title}</span>
+                                      <span className="text-[9px] font-bold px-1.5 py-0.2 rounded-full uppercase bg-rose-950/70 text-rose-300 border border-rose-800/60">
+                                        Disabled (RBAC)
+                                      </span>
+                                    </div>
+                                    {item.description && (
+                                      <p className="text-[11px] mt-0.5 line-clamp-1 leading-normal text-slate-500 font-medium">
+                                        {item.description}
+                                      </p>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          }
 
                           return (
                             <Link
@@ -548,7 +662,13 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
                             >
                               <div className="flex items-start space-x-2.5 min-w-0 flex-1">
                                 <div className="mt-0.5 shrink-0">
-                                  {item.isPrivate ? (
+                                  {item.logoUrl ? (
+                                    <img
+                                      src={item.logoUrl}
+                                      alt={item.title}
+                                      className="w-4 h-4 rounded object-contain bg-slate-900/40 p-0.5 border border-slate-700/60 shadow-sm"
+                                    />
+                                  ) : item.isPrivate ? (
                                     <Lock className={`w-3.5 h-3.5 ${active ? 'text-white' : 'text-rose-400'}`} />
                                   ) : item.requiresPaidPlan ? (
                                     <Crown className={`w-3.5 h-3.5 ${active ? 'text-white' : 'text-amber-400'}`} />
@@ -609,6 +729,45 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
           <div className="space-y-2">
             {QUICK_CREATE_ITEMS.map((q) => {
               const IconComp = q.icon;
+              const isMasterDirector = q.path === '/master-dashboard';
+              const isAdminAudit = q.path === '/admin';
+              const isExecutiveRequired = isMasterDirector || isAdminAudit;
+              const hasAccess = isMasterDirector
+                ? canAccessMaster
+                : isAdminAudit
+                  ? (roleTier === 'PRIMARY_SUPER_ADMIN' || roleTier === 'SECONDARY_ADMIN_CFO')
+                  : true;
+
+              if (isExecutiveRequired && !hasAccess) {
+                return (
+                  <div
+                    key={q.id}
+                    onClick={() => {
+                      alert(`Access to "${q.title}" requires Executive RBAC (Primary Admin or CFO/Co-Founder).`);
+                    }}
+                    className="flex items-start gap-2.5 p-2.5 rounded-xl bg-slate-950/60 border border-slate-900 text-slate-500 cursor-not-allowed opacity-50 hover:opacity-75 transition-opacity"
+                    title="Executive RBAC required"
+                  >
+                    <div className="p-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-500 shrink-0">
+                      <Lock className="w-4 h-4 text-slate-400" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <h4 className="text-xs font-black text-slate-400">
+                          {q.title}
+                        </h4>
+                        <span className="text-[9px] font-bold px-1.5 py-0.2 rounded-full uppercase bg-rose-950/60 text-rose-300 border border-rose-800/50">
+                          Locked
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-slate-500 font-medium line-clamp-2 leading-relaxed mt-0.5">
+                        {q.description}
+                      </p>
+                    </div>
+                  </div>
+                );
+              }
+
               return (
                 <Link
                   key={q.id}

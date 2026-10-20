@@ -123,7 +123,7 @@ export const CreateMiiStatusModal: React.FC<CreateMiiStatusModalProps> = ({ isOp
                 ))}
                 {cards.length < 20 && (
                   <label className="w-20 h-20 flex-shrink-0 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-xl flex items-center justify-center cursor-pointer hover:border-emerald-500">
-                    <Plus className="w-6 h-6 text-slate-500" />
+                    <Plus className="w-6 h-6 text-slate-600" />
                     <input type="file" className="hidden text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" accept="image/*,video/*" onChange={handleFileChange} />
                   </label>
                 )}

@@ -421,7 +421,7 @@ export const LoanSqrPage: React.FC = () => {
                   Mbah Israel Obinna
                 </span>
               </p>
-              <p className="text-xs text-slate-400 leading-relaxed">
+              <p className="text-xs text-slate-300 font-medium leading-relaxed">
                 Senior Data Analyst • Intellectual Property Owner • The Visionary • Framework Designer •
                 Social Media Ideologist & Pioneer • Customer Behavior Analysis & Retention Specialist •
                 Cyber Security Framework Developer.
@@ -432,7 +432,7 @@ export const LoanSqrPage: React.FC = () => {
           {/* Quick Balance & Action Pod */}
           <div className="flex flex-col sm:flex-row items-center gap-4 bg-slate-900/90 border border-slate-800 p-4 rounded-2xl backdrop-blur-md shadow-xl w-full lg:w-auto">
             <div className="space-y-1 text-center sm:text-left pr-4 sm:border-r border-slate-800">
-              <span className="text-xs text-slate-400 uppercase tracking-wider font-semibold block">
+              <span className="text-xs text-slate-300 font-medium uppercase tracking-wider font-semibold block">
                 Your FIC Protocol Vault
               </span>
               <div className="text-2xl font-black text-white flex items-center justify-center sm:justify-start gap-1">
@@ -470,32 +470,32 @@ export const LoanSqrPage: React.FC = () => {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="bg-slate-900/70 border border-slate-800/80 p-4 rounded-xl">
-            <span className="text-xs text-slate-400 font-medium block">Total Disbursed Capital</span>
+            <span className="text-xs text-slate-300 font-medium font-medium block">Total Disbursed Capital</span>
             <div className="text-xl font-black text-white mt-1">
               ₦{stats?.totalDisbursed ? stats.totalDisbursed.toLocaleString() : '142,500,000'}
             </div>
             <span className="text-[11px] text-indigo-400">Bridging SME credit gaps</span>
           </div>
           <div className="bg-slate-900/70 border border-slate-800/80 p-4 rounded-xl">
-            <span className="text-xs text-slate-400 font-medium block">Guardian AI Approval Rate</span>
+            <span className="text-xs text-slate-300 font-medium font-medium block">Guardian AI Approval Rate</span>
             <div className="text-xl font-black text-emerald-400 mt-1">
               {stats?.approvalRate || '94.2%'}
             </div>
-            <span className="text-[11px] text-slate-400">Algorithmic risk evaluation</span>
+            <span className="text-[11px] text-slate-300 font-medium">Algorithmic risk evaluation</span>
           </div>
           <div className="bg-slate-900/70 border border-slate-800/80 p-4 rounded-xl">
-            <span className="text-xs text-slate-400 font-medium block">POS Volume Settled</span>
+            <span className="text-xs text-slate-300 font-medium font-medium block">POS Volume Settled</span>
             <div className="text-xl font-black text-white mt-1">
               ₦{stats?.totalPosVolume ? stats.totalPosVolume.toLocaleString() : '84,300,000'}
             </div>
             <span className="text-[11px] text-emerald-400">Same-day merchant float</span>
           </div>
           <div className="bg-slate-900/70 border border-slate-800/80 p-4 rounded-xl">
-            <span className="text-xs text-slate-400 font-medium block">Average Credit Score</span>
+            <span className="text-xs text-slate-300 font-medium font-medium block">Average Credit Score</span>
             <div className="text-xl font-black text-indigo-300 mt-1">
               {stats?.avgCreditScore || 742} / 850
             </div>
-            <span className="text-[11px] text-slate-400">Clean cash flow data model</span>
+            <span className="text-[11px] text-slate-300 font-medium">Clean cash flow data model</span>
           </div>
         </div>
       </section>
@@ -513,7 +513,7 @@ export const LoanSqrPage: React.FC = () => {
                   LoanSqr Built-in AI Search & Credit Oracle
                 </h3>
               </div>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-300 font-medium">
                 Instant semantic lookup across 10 loan offerings, Guardian AI parameters, SME borrowing advice, and POS settlement policies.
               </p>
             </div>
@@ -524,7 +524,7 @@ export const LoanSqrPage: React.FC = () => {
                 className={`px-3 py-1.5 rounded-lg font-medium transition ${
                   aiSearchFilter === 'all'
                     ? 'bg-indigo-600 text-white'
-                    : 'text-slate-400 hover:text-white'
+                    : 'text-slate-300 font-medium hover:text-white'
                 }`}
               >
                 All
@@ -534,7 +534,7 @@ export const LoanSqrPage: React.FC = () => {
                 className={`px-3 py-1.5 rounded-lg font-medium transition ${
                   aiSearchFilter === 'products'
                     ? 'bg-indigo-600 text-white'
-                    : 'text-slate-400 hover:text-white'
+                    : 'text-slate-300 font-medium hover:text-white'
                 }`}
               >
                 Products
@@ -544,7 +544,7 @@ export const LoanSqrPage: React.FC = () => {
                 className={`px-3 py-1.5 rounded-lg font-medium transition ${
                   aiSearchFilter === 'strategy'
                     ? 'bg-indigo-600 text-white'
-                    : 'text-slate-400 hover:text-white'
+                    : 'text-slate-300 font-medium hover:text-white'
                 }`}
               >
                 SME Advice
@@ -554,7 +554,7 @@ export const LoanSqrPage: React.FC = () => {
                 className={`px-3 py-1.5 rounded-lg font-medium transition ${
                   aiSearchFilter === 'faq'
                     ? 'bg-indigo-600 text-white'
-                    : 'text-slate-400 hover:text-white'
+                    : 'text-slate-300 font-medium hover:text-white'
                 }`}
               >
                 Underwriting
@@ -568,9 +568,9 @@ export const LoanSqrPage: React.FC = () => {
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
               placeholder="Search e.g. 'Fast Inventory Advance', 'POS settlement rate', '₦5,000 refundable fee', 'Margin calculation'..."
-              className="w-full bg-slate-950/90 border border-slate-800 rounded-xl py-3.5 pl-11 pr-28 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+              className="w-full bg-slate-950/90 border border-slate-800 rounded-xl py-3.5 pl-11 pr-28 text-sm text-slate-100 placeholder:text-slate-300 font-medium focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
             />
-            <SearchIcon className="w-5 h-5 text-slate-500 absolute left-3.5 top-3.5" />
+            <SearchIcon className="w-5 h-5 text-slate-300 font-medium absolute left-3.5 top-3.5" />
             <button
               type="submit"
               className="absolute right-2 top-2 px-4 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition flex items-center gap-1 cursor-pointer"
@@ -582,7 +582,7 @@ export const LoanSqrPage: React.FC = () => {
 
           {/* Quick Filter Chips */}
           <div className="flex flex-wrap items-center gap-2 mt-3 text-xs">
-            <span className="text-slate-500">Popular Queries:</span>
+            <span className="text-slate-300 font-medium">Popular Queries:</span>
             {[
               'Fast Business Loans',
               'POS Same-Day Settlement',
@@ -621,7 +621,7 @@ export const LoanSqrPage: React.FC = () => {
               className={`px-4 py-2.5 rounded-xl text-sm font-bold whitespace-nowrap transition flex items-center gap-2 cursor-pointer ${
                 activeTab === tab.id
                   ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
-                  : 'bg-slate-900/60 text-slate-400 hover:text-slate-200 hover:bg-slate-900'
+                  : 'bg-slate-900/60 text-slate-300 font-medium hover:text-slate-200 hover:bg-slate-900'
               }`}
             >
               <span>{tab.label}</span>
@@ -659,7 +659,7 @@ export const LoanSqrPage: React.FC = () => {
                   10 Offerings Available
                 </span>
               </h2>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-300 font-medium">
                 Preset decision parameters engineered specifically for supply chain traders, entrepreneurs, and MSMEs.
               </p>
             </div>
@@ -678,7 +678,7 @@ export const LoanSqrPage: React.FC = () => {
                   className={`px-3 py-1.5 rounded-lg font-medium transition cursor-pointer ${
                     selectedCategory === cat.id
                       ? 'bg-indigo-600 text-white'
-                      : 'text-slate-400 hover:text-white'
+                      : 'text-slate-300 font-medium hover:text-white'
                   }`}
                 >
                   {cat.label}
@@ -708,20 +708,20 @@ export const LoanSqrPage: React.FC = () => {
                     <h3 className="text-lg font-extrabold text-white group-hover:text-indigo-300 transition">
                       {product.title || product.name}
                     </h3>
-                    <p className="text-xs text-slate-400 mt-1 line-clamp-3 leading-relaxed">
+                    <p className="text-xs text-slate-300 font-medium mt-1 line-clamp-3 leading-relaxed">
                       {product.description}
                     </p>
                   </div>
 
                   <div className="grid grid-cols-2 gap-3 py-3 border-y border-slate-800/80 text-xs">
                     <div>
-                      <span className="text-slate-500 block">Maximum Limit</span>
+                      <span className="text-slate-300 font-medium block">Maximum Limit</span>
                       <span className="font-extrabold text-white text-sm">
                         ₦{product.maxAmount?.toLocaleString()}
                       </span>
                     </div>
                     <div>
-                      <span className="text-slate-500 block">Duration Window</span>
+                      <span className="text-slate-300 font-medium block">Duration Window</span>
                       <span className="font-extrabold text-indigo-300 text-sm">
                         {product.durationDays} Days ({product.durationMonths} Mo)
                       </span>
@@ -733,7 +733,7 @@ export const LoanSqrPage: React.FC = () => {
                       <CheckBadgeIcon className="w-4 h-4" />
                       <span>₦5,000 Refundable Verification Fee</span>
                     </div>
-                    <div className="flex items-center gap-1.5 text-slate-400">
+                    <div className="flex items-center gap-1.5 text-slate-300 font-medium">
                       <ShieldCheckIcon className="w-4 h-4 text-indigo-400" />
                       <span>
                         {product.collateralRequired
@@ -767,7 +767,7 @@ export const LoanSqrPage: React.FC = () => {
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
               <h2 className="text-xl font-black text-white">Active Loans & Recovery Monitor</h2>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-300 font-medium">
                 Multi-rail repayment tracking via Paystack, Flutterwave, Remita Direct Debit, NIBSS, Stripe & Rotessa.
               </p>
             </div>
@@ -784,7 +784,7 @@ export const LoanSqrPage: React.FC = () => {
             <div className="bg-slate-900 border border-slate-800 p-12 rounded-2xl text-center space-y-4">
               <CreditCardIcon className="w-12 h-12 text-slate-600 mx-auto" />
               <h3 className="text-lg font-bold text-white">No Active Loans Found</h3>
-              <p className="text-xs text-slate-400 max-w-md mx-auto">
+              <p className="text-xs text-slate-300 font-medium max-w-md mx-auto">
                 You have not booked any micro-financing loans yet. Select from our 10 ready-made LoanSqr offerings to receive instant liquidity.
               </p>
               <button
@@ -820,7 +820,7 @@ export const LoanSqrPage: React.FC = () => {
                     <h3 className="text-lg font-extrabold text-white">
                       {loan.product_name || loan.product_title || 'SME Business Facility'}
                     </h3>
-                    <p className="text-xs text-slate-400">
+                    <p className="text-xs text-slate-300 font-medium">
                       Disbursed to Virtual Account:{' '}
                       <span className="font-mono text-indigo-300">
                         {loan.virtual_disbursement_account || '99084729103'}
@@ -830,19 +830,19 @@ export const LoanSqrPage: React.FC = () => {
 
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 text-xs">
                     <div>
-                      <span className="text-slate-500 block">Principal Borrowed</span>
+                      <span className="text-slate-300 font-medium block">Principal Borrowed</span>
                       <span className="text-base font-black text-white">
                         ₦{loan.principal_amount?.toLocaleString()}
                       </span>
                     </div>
                     <div>
-                      <span className="text-slate-500 block">Outstanding Balance</span>
+                      <span className="text-slate-300 font-medium block">Outstanding Balance</span>
                       <span className="text-base font-black text-amber-400">
                         ₦{loan.outstanding_balance?.toLocaleString()}
                       </span>
                     </div>
                     <div>
-                      <span className="text-slate-500 block">Next Due Date</span>
+                      <span className="text-slate-300 font-medium block">Next Due Date</span>
                       <span className="text-base font-black text-indigo-300">
                         {loan.next_payment_date
                           ? new Date(loan.next_payment_date).toLocaleDateString()
@@ -878,7 +878,7 @@ export const LoanSqrPage: React.FC = () => {
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
               <h2 className="text-xl font-black text-white">Merchant POS Settlement & Float Operations</h2>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-300 font-medium">
                 Process customer transactions and access daily liquidity without cumbersome collateral delays.
               </p>
             </div>
@@ -893,25 +893,25 @@ export const LoanSqrPage: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-2">
-              <span className="text-xs text-slate-400 font-semibold block uppercase">
+              <span className="text-xs text-slate-300 font-medium font-semibold block uppercase">
                 Active POS Terminals
               </span>
               <div className="text-2xl font-black text-white">2 Terminals Online</div>
               <span className="text-xs text-emerald-400 font-medium">Terminal ID: POS-LAG-99214</span>
             </div>
             <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-2">
-              <span className="text-xs text-slate-400 font-semibold block uppercase">
+              <span className="text-xs text-slate-300 font-medium font-semibold block uppercase">
                 Today's Gross Turnover
               </span>
               <div className="text-2xl font-black text-indigo-300">₦780,000</div>
-              <span className="text-xs text-slate-400">42 Transactions verified</span>
+              <span className="text-xs text-slate-300 font-medium">42 Transactions verified</span>
             </div>
             <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-2">
-              <span className="text-xs text-slate-400 font-semibold block uppercase">
+              <span className="text-xs text-slate-300 font-medium font-semibold block uppercase">
                 Loan Deduction Auto-Split
               </span>
               <div className="text-2xl font-black text-amber-400">10% Allocated</div>
-              <span className="text-xs text-slate-400">Auto-reduces loan balance daily</span>
+              <span className="text-xs text-slate-300 font-medium">Auto-reduces loan balance daily</span>
             </div>
           </div>
 
@@ -920,7 +920,7 @@ export const LoanSqrPage: React.FC = () => {
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead>
-                  <tr className="border-b border-slate-800 text-slate-400">
+                  <tr className="border-b border-slate-800 text-slate-300 font-medium">
                     <th className="pb-3 font-semibold">Terminal</th>
                     <th className="pb-3 font-semibold">Business Name</th>
                     <th className="pb-3 font-semibold">Gross Volume</th>
@@ -947,7 +947,7 @@ export const LoanSqrPage: React.FC = () => {
                           {item.settlement_status}
                         </span>
                       </td>
-                      <td className="py-3 text-slate-400">
+                      <td className="py-3 text-slate-300 font-medium">
                         {item.settled_at ? new Date(item.settled_at).toLocaleDateString() : 'Today'}
                       </td>
                     </tr>
@@ -968,7 +968,7 @@ export const LoanSqrPage: React.FC = () => {
             <h2 className="text-2xl font-black text-white">
               Strategic Advisory for SME Micro-Financing & Borrowing
             </h2>
-            <p className="text-xs text-slate-400 mt-1">
+            <p className="text-xs text-slate-300 font-medium mt-1">
               Guidelines formulated by Mbah Israel Obinna to maximize growth while strictly safeguarding working capital cash flow.
             </p>
           </div>
@@ -979,7 +979,7 @@ export const LoanSqrPage: React.FC = () => {
                 1
               </div>
               <h3 className="text-base font-bold text-white">Borrow for Income-Generating Assets</h3>
-              <p className="text-xs text-slate-400 leading-relaxed">
+              <p className="text-xs text-slate-300 font-medium leading-relaxed">
                 Use short-term micro-loans exclusively for activities that yield immediate returns—such as stocking high-demand inventory or securing raw materials—to ensure the loan pays for itself.
               </p>
             </div>
@@ -989,7 +989,7 @@ export const LoanSqrPage: React.FC = () => {
                 2
               </div>
               <h3 className="text-base font-bold text-white">Maintain Clean Transaction Records</h3>
-              <p className="text-xs text-slate-400 leading-relaxed">
+              <p className="text-xs text-slate-300 font-medium leading-relaxed">
                 Digital lenders heavily rely on cash flow data from your POS settlements and bank statements rather than traditional collateral. Keeping all your business revenue flowing through the platform increases your credit score and unlocks higher borrowing limits.
               </p>
             </div>
@@ -999,7 +999,7 @@ export const LoanSqrPage: React.FC = () => {
                 3
               </div>
               <h3 className="text-base font-bold text-white">Factor Interest into Product Margins</h3>
-              <p className="text-xs text-slate-400 leading-relaxed">
+              <p className="text-xs text-slate-300 font-medium leading-relaxed">
                 Micro-loans often have shorter repayment windows. Always calculate the total cost of capital against your product margins to ensure your net profit comfortably covers the interest payments.
               </p>
             </div>
@@ -1011,7 +1011,7 @@ export const LoanSqrPage: React.FC = () => {
               <ChartBarIcon className="w-5 h-5 text-indigo-400" />
               <span>Capital Cost vs. Margin Profitability Calculator</span>
             </h3>
-            <p className="text-xs text-slate-400 mb-6">
+            <p className="text-xs text-slate-300 font-medium mb-6">
               Simulate your expected return before taking on facility credit.
             </p>
 
@@ -1048,15 +1048,15 @@ export const LoanSqrPage: React.FC = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6 pt-6 border-t border-slate-800/80">
               <div className="bg-slate-950/70 p-4 rounded-xl border border-slate-800">
-                <span className="text-xs text-slate-400">Total Interest Payable</span>
+                <span className="text-xs text-slate-300 font-medium">Total Interest Payable</span>
                 <div className="text-xl font-black text-rose-400 mt-1">₦{parseFloat(calcInterest).toLocaleString()}</div>
               </div>
               <div className="bg-slate-950/70 p-4 rounded-xl border border-slate-800">
-                <span className="text-xs text-slate-400">Gross Margin Return</span>
+                <span className="text-xs text-slate-300 font-medium">Gross Margin Return</span>
                 <div className="text-xl font-black text-indigo-300 mt-1">₦{parseFloat(calcGrossMarginReturn).toLocaleString()}</div>
               </div>
               <div className="bg-slate-950/70 p-4 rounded-xl border border-slate-800">
-                <span className="text-xs text-slate-400">Net Profit after Capital Cost</span>
+                <span className="text-xs text-slate-300 font-medium">Net Profit after Capital Cost</span>
                 <div className="text-xl font-black text-emerald-400 mt-1">₦{parseFloat(calcNetProfit).toLocaleString()}</div>
               </div>
             </div>
@@ -1075,7 +1075,7 @@ export const LoanSqrPage: React.FC = () => {
             </div>
             <div>
               <h2 className="text-xl font-black text-white">Guardian AI Loan Underwriter & Support</h2>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-300 font-medium">
                 Direct conversational assistance for loan criteria, background check certifications, and POS issues.
               </p>
             </div>
@@ -1099,7 +1099,7 @@ export const LoanSqrPage: React.FC = () => {
                   >
                     {msg.text}
                   </div>
-                  <span className="text-[10px] text-slate-500 mt-1 px-1">{msg.time}</span>
+                  <span className="text-[10px] text-slate-300 font-medium mt-1 px-1">{msg.time}</span>
                 </div>
               ))}
               {isSendingChat && (
@@ -1138,7 +1138,7 @@ export const LoanSqrPage: React.FC = () => {
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
               <h2 className="text-xl font-black text-white">LoanSqr Admin Console & Governance</h2>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-300 font-medium">
                 Master dashboard and STERCS underwriting console for customer origination and loan approvals.
               </p>
             </div>
@@ -1156,7 +1156,7 @@ export const LoanSqrPage: React.FC = () => {
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead>
-                  <tr className="border-b border-slate-800 text-slate-400">
+                  <tr className="border-b border-slate-800 text-slate-300 font-medium">
                     <th className="pb-3 font-semibold">App Number</th>
                     <th className="pb-3 font-semibold">Applicant</th>
                     <th className="pb-3 font-semibold">Business</th>
@@ -1172,7 +1172,7 @@ export const LoanSqrPage: React.FC = () => {
                     <tr key={app.id} className="hover:bg-slate-800/40 transition">
                       <td className="py-3 font-mono text-indigo-300">{app.application_number}</td>
                       <td className="py-3 font-semibold">{app.applicant_name}</td>
-                      <td className="py-3 text-slate-400">{app.business_name}</td>
+                      <td className="py-3 text-slate-300 font-medium">{app.business_name}</td>
                       <td className="py-3 font-bold text-white">
                         ₦{app.amount_requested?.toLocaleString()}
                       </td>
@@ -1216,14 +1216,14 @@ export const LoanSqrPage: React.FC = () => {
           <div className="bg-slate-900 border border-slate-800 w-full max-w-2xl rounded-2xl p-6 sm:p-8 shadow-2xl relative my-8">
             <button
               onClick={() => setShowApplyModal(false)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-white p-1"
+              className="absolute top-4 right-4 text-slate-300 font-medium hover:text-white p-1"
             >
               <XMarkIcon className="w-5 h-5" />
             </button>
 
             {/* Stepper Header */}
             <div className="mb-6">
-              <div className="flex items-center justify-between text-xs font-semibold text-slate-400 mb-2">
+              <div className="flex items-center justify-between text-xs font-semibold text-slate-300 font-medium mb-2">
                 <span>Step {wizardStep} of 6</span>
                 <span className="text-indigo-400">
                   {wizardStep === 1 && '1. Offer & Amount'}
@@ -1276,7 +1276,7 @@ export const LoanSqrPage: React.FC = () => {
                     onChange={e => setApplyAmount(parseFloat(e.target.value) || 0)}
                     className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white"
                   />
-                  <span className="text-[11px] text-slate-400 block mt-1">
+                  <span className="text-[11px] text-slate-300 font-medium block mt-1">
                     Maximum allowed for this product: ₦{selectedProduct?.maxAmount?.toLocaleString()}
                   </span>
                 </div>
@@ -1386,7 +1386,7 @@ export const LoanSqrPage: React.FC = () => {
                 <div className="pt-4 flex justify-between">
                   <button
                     onClick={() => setWizardStep(1)}
-                    className="px-4 py-2 text-xs text-slate-400 hover:text-white"
+                    className="px-4 py-2 text-xs text-slate-300 font-medium hover:text-white"
                   >
                     Back
                   </button>
@@ -1449,7 +1449,7 @@ export const LoanSqrPage: React.FC = () => {
                 <div className="pt-4 flex justify-between">
                   <button
                     onClick={() => setWizardStep(2)}
-                    className="px-4 py-2 text-xs text-slate-400 hover:text-white"
+                    className="px-4 py-2 text-xs text-slate-300 font-medium hover:text-white"
                   >
                     Back
                   </button>
@@ -1467,7 +1467,7 @@ export const LoanSqrPage: React.FC = () => {
             {wizardStep === 4 && (
               <div className="space-y-4">
                 <h3 className="text-lg font-bold text-white">Link Debit Card for Auto-Repayment</h3>
-                <p className="text-xs text-slate-400">
+                <p className="text-xs text-slate-300 font-medium">
                   LoanSqr integrates with Paystack, Flutterwave, Remita Direct Debit, NIBSS, Stripe, and Rotessa.
                 </p>
 
@@ -1476,7 +1476,7 @@ export const LoanSqrPage: React.FC = () => {
                     <span className="text-xs font-bold text-white">Card ending in •••• {cardLast4}</span>
                     <span className="text-xs text-indigo-400 font-mono font-bold uppercase">{cardBrand}</span>
                   </div>
-                  <span className="text-[11px] text-slate-500 block">
+                  <span className="text-[11px] text-slate-300 font-medium block">
                     Cardholder: {applicantName} | Expires 12/28
                   </span>
                 </div>
@@ -1501,7 +1501,7 @@ export const LoanSqrPage: React.FC = () => {
                 <div className="pt-4 flex justify-between">
                   <button
                     onClick={() => setWizardStep(3)}
-                    className="px-4 py-2 text-xs text-slate-400 hover:text-white"
+                    className="px-4 py-2 text-xs text-slate-300 font-medium hover:text-white"
                   >
                     Back
                   </button>
@@ -1543,11 +1543,11 @@ export const LoanSqrPage: React.FC = () => {
                       className={`p-3 rounded-xl border text-xs font-semibold transition text-left cursor-pointer ${
                         feePaidVia === 'fic_wallet'
                           ? 'border-indigo-500 bg-indigo-950/60 text-white'
-                          : 'border-slate-800 bg-slate-950 text-slate-400'
+                          : 'border-slate-800 bg-slate-950 text-slate-300 font-medium'
                       }`}
                     >
                       <span className="block font-bold">FIC In-App Vault</span>
-                      <span className="text-[11px] text-slate-500">Balance: {ficBalance} FIC</span>
+                      <span className="text-[11px] text-slate-300 font-medium">Balance: {ficBalance} FIC</span>
                     </button>
                     <button
                       type="button"
@@ -1555,11 +1555,11 @@ export const LoanSqrPage: React.FC = () => {
                       className={`p-3 rounded-xl border text-xs font-semibold transition text-left cursor-pointer ${
                         feePaidVia === 'card'
                           ? 'border-indigo-500 bg-indigo-950/60 text-white'
-                          : 'border-slate-800 bg-slate-950 text-slate-400'
+                          : 'border-slate-800 bg-slate-950 text-slate-300 font-medium'
                       }`}
                     >
                       <span className="block font-bold">Linked Debit Card</span>
-                      <span className="text-[11px] text-slate-500">•••• {cardLast4}</span>
+                      <span className="text-[11px] text-slate-300 font-medium">•••• {cardLast4}</span>
                     </button>
                   </div>
                 </div>
@@ -1567,7 +1567,7 @@ export const LoanSqrPage: React.FC = () => {
                 <div className="pt-4 flex justify-between">
                   <button
                     onClick={() => setWizardStep(4)}
-                    className="px-4 py-2 text-xs text-slate-400 hover:text-white"
+                    className="px-4 py-2 text-xs text-slate-300 font-medium hover:text-white"
                   >
                     Back
                   </button>
@@ -1603,20 +1603,20 @@ export const LoanSqrPage: React.FC = () => {
                   <h3 className="text-xl font-black text-white">
                     Loan Approved by Guardian AI!
                   </h3>
-                  <p className="text-xs text-slate-400 mt-1">
+                  <p className="text-xs text-slate-300 font-medium mt-1">
                     Your credit profile satisfies all criteria for immediate disbursement.
                   </p>
                 </div>
 
                 <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 grid grid-cols-2 gap-4 text-xs">
                   <div>
-                    <span className="text-slate-500 block">Guardian AI Score</span>
+                    <span className="text-slate-300 font-medium block">Guardian AI Score</span>
                     <span className="text-xl font-black text-emerald-400">
                       {underwritingResult.score} / 850
                     </span>
                   </div>
                   <div>
-                    <span className="text-slate-500 block">Risk Classification</span>
+                    <span className="text-slate-300 font-medium block">Risk Classification</span>
                     <span className="text-xl font-black text-indigo-300 uppercase">
                       {underwritingResult.riskTier} Risk
                     </span>
@@ -1630,7 +1630,7 @@ export const LoanSqrPage: React.FC = () => {
                   <div className="text-base font-mono font-bold text-white">
                     {underwritingResult.virtualAccount}
                   </div>
-                  <span className="text-[11px] text-slate-400 block">
+                  <span className="text-[11px] text-slate-300 font-medium block">
                     Funded in-app and ready for sovereign FIAT withdrawal.
                   </span>
                 </div>
@@ -1655,7 +1655,7 @@ export const LoanSqrPage: React.FC = () => {
           <div className="bg-slate-900 border border-slate-800 w-full max-w-md rounded-2xl p-6 shadow-2xl space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-base font-bold text-white">Repay Loan {repayingLoan.loan_number}</h3>
-              <button onClick={() => setRepayingLoan(null)} className="text-slate-400 hover:text-white">
+              <button onClick={() => setRepayingLoan(null)} className="text-slate-300 font-medium hover:text-white">
                 <XMarkIcon className="w-5 h-5" />
               </button>
             </div>
@@ -1688,7 +1688,7 @@ export const LoanSqrPage: React.FC = () => {
             <div className="pt-2 flex justify-end gap-2">
               <button
                 onClick={() => setRepayingLoan(null)}
-                className="px-4 py-2 text-xs text-slate-400 hover:text-white"
+                className="px-4 py-2 text-xs text-slate-300 font-medium hover:text-white"
               >
                 Cancel
               </button>
@@ -1712,7 +1712,7 @@ export const LoanSqrPage: React.FC = () => {
           <div className="bg-slate-900 border border-slate-800 w-full max-w-md rounded-2xl p-6 shadow-2xl space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-base font-bold text-white">Simulate POS Batch Settlement</h3>
-              <button onClick={() => setShowPosSimModal(false)} className="text-slate-400 hover:text-white">
+              <button onClick={() => setShowPosSimModal(false)} className="text-slate-300 font-medium hover:text-white">
                 <XMarkIcon className="w-5 h-5" />
               </button>
             </div>
@@ -1729,7 +1729,7 @@ export const LoanSqrPage: React.FC = () => {
               />
             </div>
 
-            <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 text-xs text-slate-400 space-y-1">
+            <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 text-xs text-slate-300 font-medium space-y-1">
               <div className="flex justify-between">
                 <span>1.0% Gateway Fee:</span>
                 <span className="text-white font-mono">₦{(posGrossVolume * 0.01).toLocaleString()}</span>
@@ -1747,7 +1747,7 @@ export const LoanSqrPage: React.FC = () => {
             <div className="pt-2 flex justify-end gap-2">
               <button
                 onClick={() => setShowPosSimModal(false)}
-                className="px-4 py-2 text-xs text-slate-400 hover:text-white"
+                className="px-4 py-2 text-xs text-slate-300 font-medium hover:text-white"
               >
                 Cancel
               </button>

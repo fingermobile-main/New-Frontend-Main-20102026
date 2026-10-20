@@ -57,7 +57,7 @@ class GroupsService {
   private api: AxiosInstance;
 
   constructor() {
-    const defaultApiUrl = process.env.REACT_APP_API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+    const defaultApiUrl = process.env.REACT_APP_API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
     this.api = axios.create({
       baseURL: process.env.REACT_APP_GROUPS_API_URL || `${defaultApiUrl}/groups`,
       headers: {

@@ -7,6 +7,7 @@ import {
   MagnifyingGlassIcon,
   ChevronDownIcon
 } from '@heroicons/react/24/outline';
+import { checkIsOnboarded } from '../contexts/AuthContext';
 
 interface HeaderProps {
   sidebarOpen: boolean;
@@ -22,6 +23,7 @@ const Header: React.FC<HeaderProps> = ({
   onLogout
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
+  const isOnboarded = checkIsOnboarded(user);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,20 +35,22 @@ const Header: React.FC<HeaderProps> = ({
     <header className="sticky top-0 z-40 flex items-center justify-between h-16 px-4 bg-white border-b border-slate-300 shadow-sm">
       {/* Left section */}
       <div className="flex items-center">
-        <button
-          type="button"
-          className="text-[#ff6b00] hover:text-[#e05e00] p-1.5 rounded-lg hover:bg-orange-50 transition mr-2"
-          onClick={onToggleSidebar}
-          aria-label="Open navigation menu"
-        >
-          <Bars3Icon className="w-6 h-6 text-[#ff6b00]" aria-hidden="true" />
-        </button>
+        {isOnboarded && (
+          <button
+            type="button"
+            className="text-[#ff6b00] hover:text-[#e05e00] p-1.5 rounded-lg hover:bg-orange-50 transition mr-2"
+            onClick={onToggleSidebar}
+            aria-label="Open navigation menu"
+          >
+            <Bars3Icon className="w-6 h-6 text-[#ff6b00]" aria-hidden="true" />
+          </button>
+        )}
         <div className="flex items-center">
           <div className="relative flex items-center">
             <form onSubmit={handleSearch} className="flex-1">
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <MagnifyingGlassIcon className="w-5 h-5 text-slate-500" aria-hidden="true" />
+                  <MagnifyingGlassIcon className="w-5 h-5 text-slate-600" aria-hidden="true" />
                 </div>
                 <input
                   type="text"
@@ -89,7 +93,7 @@ const Header: React.FC<HeaderProps> = ({
                   </span>
                 </div>
               )}
-              <ChevronDownIcon className="w-5 h-5 ml-1 text-slate-500" aria-hidden="true" />
+              <ChevronDownIcon className="w-5 h-5 ml-1 text-slate-600" aria-hidden="true" />
             </Menu.Button>
           </div>
           <Transition

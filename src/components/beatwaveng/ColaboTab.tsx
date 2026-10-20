@@ -103,7 +103,7 @@ export const ColaboTab: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column: Sessions List */}
         <div className="space-y-4">
-          <h3 className="text-xs font-black uppercase tracking-wider text-slate-400 px-1">
+          <h3 className="text-xs font-black uppercase tracking-wider text-slate-300 px-1">
             Active Colabo+ Rooms ({colaboSessions.length})
           </h3>
 
@@ -128,10 +128,10 @@ export const ColaboTab: React.FC = () => {
                     </span>
                   </div>
 
-                  <p className="text-[11px] text-slate-400 mt-1">Host: {session.hostName}</p>
+                  <p className="text-[11px] text-slate-300 font-medium mt-1">Host: {session.hostName}</p>
 
                   {/* Contributors Avatars */}
-                  <div className="flex items-center justify-between mt-3 pt-2.5 border-t border-slate-800/80 text-[11px] text-slate-400">
+                  <div className="flex items-center justify-between mt-3 pt-2.5 border-t border-slate-800/80 text-[11px] text-slate-300 font-medium">
                     <div className="flex items-center -space-x-2">
                       {session.contributors.map((c) => (
                         <img
@@ -142,7 +142,7 @@ export const ColaboTab: React.FC = () => {
                           className="w-6 h-6 rounded-full border-2 border-slate-900 object-cover"
                         />
                       ))}
-                      <span className="pl-3 text-[10px] text-slate-400 font-semibold">
+                      <span className="pl-3 text-[10px] text-slate-300 font-semibold">
                         {session.contributors.length} members
                       </span>
                     </div>
@@ -169,7 +169,7 @@ export const ColaboTab: React.FC = () => {
                     PIN: #{selectedSession.pin}
                   </span>
                 </div>
-                <p className="text-xs text-slate-400 mt-0.5">
+                <p className="text-xs text-slate-300 font-medium mt-0.5">
                   Host: <strong className="text-slate-200">{selectedSession.hostName}</strong> • Real-time sovereign synchronized session
                 </p>
               </div>
@@ -187,7 +187,7 @@ export const ColaboTab: React.FC = () => {
 
             {/* Contributors Pills */}
             <div>
-              <span className="text-[10px] uppercase font-bold text-slate-400 block mb-2">
+              <span className="text-[10px] uppercase font-bold text-slate-300 block mb-2">
                 Room Curators & Contributors
               </span>
               <div className="flex flex-wrap gap-2">
@@ -208,7 +208,7 @@ export const ColaboTab: React.FC = () => {
 
             {/* Track List */}
             <div className="space-y-2 pt-2">
-              <span className="text-[10px] uppercase font-bold text-slate-400 block mb-1">
+              <span className="text-[10px] uppercase font-bold text-slate-300 block mb-1">
                 Collaborative Queue ({selectedSession.tracks.length} tracks)
               </span>
 
@@ -239,7 +239,7 @@ export const ColaboTab: React.FC = () => {
 
                       <div className="min-w-0">
                         <div className="text-xs font-bold text-white truncate">{track.title}</div>
-                        <div className="text-[11px] text-slate-400 truncate">{track.artist}</div>
+                        <div className="text-[11px] text-slate-300 font-medium truncate">{track.artist}</div>
                       </div>
                     </div>
 
@@ -247,7 +247,7 @@ export const ColaboTab: React.FC = () => {
                       <span className="px-2 py-0.5 rounded-full bg-slate-900 text-slate-300 text-[10px] font-semibold border border-slate-800">
                         Added by Room
                       </span>
-                      <span className="text-xs font-mono text-slate-400">
+                      <span className="text-xs font-mono text-slate-300 font-medium">
                         {formatTime(track.duration)}
                       </span>
                     </div>
@@ -264,7 +264,7 @@ export const ColaboTab: React.FC = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
           <div className="bg-slate-900 border border-emerald-500/40 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4">
             <h3 className="text-base font-bold text-white">Create New Colabo+ Jam Room</h3>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-slate-300 font-medium">
               A unique 6-digit Join PIN will be generated. Share the PIN with friends or fellow producers to collaborate.
             </p>
             <form onSubmit={handleCreateSession} className="space-y-4">
@@ -305,7 +305,7 @@ export const ColaboTab: React.FC = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
           <div className="bg-slate-900 border border-emerald-500/40 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4">
             <h3 className="text-base font-bold text-white">Join Colabo+ Room by PIN</h3>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-slate-300 font-medium">
               Enter the 6-digit PIN shared by the room creator to verify your access.
             </p>
             <form onSubmit={handleJoinSession} className="space-y-4">
@@ -350,7 +350,7 @@ export const ColaboTab: React.FC = () => {
               <h3 className="text-sm font-bold text-white">Add Track to {selectedSession.title}</h3>
               <button
                 onClick={() => setShowAddTrackModal(false)}
-                className="text-slate-400 hover:text-white"
+                className="text-slate-300 hover:text-white"
               >
                 ✕
               </button>
@@ -366,7 +366,7 @@ export const ColaboTab: React.FC = () => {
                     <img src={t.coverArt} alt={t.title} className="w-9 h-9 rounded-lg object-cover" />
                     <div className="min-w-0">
                       <div className="text-xs font-bold text-white truncate">{t.title}</div>
-                      <div className="text-[10px] text-slate-400 truncate">{t.artist}</div>
+                      <div className="text-[10px] text-slate-300 font-medium truncate">{t.artist}</div>
                     </div>
                   </div>
 

@@ -219,7 +219,7 @@ const CanaryAdsPage: React.FC = () => {
 
           <div className="flex items-center gap-3 self-stretch md:self-auto justify-between md:justify-end">
             <div className="bg-slate-800/80 px-4 py-2.5 rounded-2xl border border-slate-700 text-right">
-              <span className="text-[10px] uppercase font-bold text-gray-400 tracking-wider block">Wallet Balance</span>
+              <span className="text-[10px] uppercase font-bold text-slate-300 tracking-wider block">Wallet Balance</span>
               <span className="text-base font-black text-yellow-400">{Number(ficBalance || 0).toLocaleString()} FIC</span>
             </div>
             <NavLink
@@ -285,7 +285,7 @@ const CanaryAdsPage: React.FC = () => {
               className={`pb-4 px-4 text-sm font-black whitespace-nowrap transition-colors border-b-2 ${
                 activeTab === tab.id
                   ? 'border-yellow-500 text-gray-900'
-                  : 'border-transparent text-gray-500 hover:text-gray-900'
+                  : 'border-transparent text-slate-600 hover:text-slate-900'
               }`}
             >
               {tab.label}
@@ -444,7 +444,7 @@ const CanaryAdsPage: React.FC = () => {
                     disabled={isSubmitting || selectedPlacements.length === 0}
                     className={`w-full py-4 rounded-2xl font-black text-sm text-slate-700 transition-all shadow-md ${
                       isSubmitting || selectedPlacements.length === 0
-                        ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                        ? 'bg-gray-200 text-slate-500 cursor-not-allowed'
                         : 'bg-gradient-to-r from-yellow-400 via-yellow-500 to-amber-500 hover:from-yellow-300 hover:to-amber-400'
                     }`}
                   >

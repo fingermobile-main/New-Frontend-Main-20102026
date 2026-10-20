@@ -152,7 +152,7 @@ const FranchiseManagementDashboard: React.FC<FranchiseManagementDashboardProps> 
     <div className="space-y-6">
       {/* Top Metrics Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+        <div className="bg-white p-5 rounded-2xl border border-slate-300 shadow-sm flex items-center gap-4">
           <div className="p-3 bg-purple-50 text-purple-600 rounded-xl">
             <BuildingStorefrontIcon className="w-6 h-6" />
           </div>
@@ -162,7 +162,7 @@ const FranchiseManagementDashboard: React.FC<FranchiseManagementDashboardProps> 
           </div>
         </div>
 
-        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+        <div className="bg-white p-5 rounded-2xl border border-slate-300 shadow-sm flex items-center gap-4">
           <div className="p-3 bg-blue-50 text-blue-600 rounded-xl">
             <MapPinIcon className="w-6 h-6" />
           </div>
@@ -172,7 +172,7 @@ const FranchiseManagementDashboard: React.FC<FranchiseManagementDashboardProps> 
           </div>
         </div>
 
-        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+        <div className="bg-white p-5 rounded-2xl border border-slate-300 shadow-sm flex items-center gap-4">
           <div className="p-3 bg-green-50 text-green-600 rounded-xl">
             <CurrencyDollarIcon className="w-6 h-6" />
           </div>
@@ -182,7 +182,7 @@ const FranchiseManagementDashboard: React.FC<FranchiseManagementDashboardProps> 
           </div>
         </div>
 
-        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+        <div className="bg-white p-5 rounded-2xl border border-slate-300 shadow-sm flex items-center gap-4">
           <div className="p-3 bg-amber-50 text-amber-600 rounded-xl">
             <UserGroupIcon className="w-6 h-6" />
           </div>
@@ -196,7 +196,7 @@ const FranchiseManagementDashboard: React.FC<FranchiseManagementDashboardProps> 
       {/* Main Table Card */}
       <div className="bg-white rounded-2xl border border-slate-300 shadow-sm overflow-hidden">
         {/* Table Toolbar */}
-        <div className="p-5 border-b border-slate-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="p-5 border-b border-slate-300 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div className="flex items-center gap-2">
             <button
               onClick={() => setActiveTab('franchises')}
@@ -226,12 +226,12 @@ const FranchiseManagementDashboard: React.FC<FranchiseManagementDashboardProps> 
               placeholder="Search franchises or license..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="px-3.5 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 w-full sm:w-64 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
+              className="px-3.5 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 w-full sm:w-64 text-slate-900 font-bold bg-white placeholder:text-slate-500"
             />
             <button
               onClick={fetchFranchiseData}
               title="Refresh Data"
-              className="p-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-gray-600 transition-colors"
+              className="p-2 border border-slate-300 rounded-lg hover:bg-gray-50 text-gray-600 transition-colors"
             >
               <ArrowPathIcon className={`w-5 h-5 ${loading ? 'animate-spin' : ''}`} />
             </button>
@@ -261,7 +261,7 @@ const FranchiseManagementDashboard: React.FC<FranchiseManagementDashboardProps> 
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-gray-50 text-slate-700 text-xs uppercase tracking-wider border-b border-slate-200">
+                <tr className="bg-gray-50 text-slate-700 text-xs uppercase tracking-wider border-b border-slate-300">
                   <th className="py-3 px-5">Franchise Name</th>
                   <th className="py-3 px-5">License #</th>
                   <th className="py-3 px-5">Tier</th>
@@ -316,7 +316,7 @@ const FranchiseManagementDashboard: React.FC<FranchiseManagementDashboardProps> 
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-gray-50 text-slate-700 text-xs uppercase tracking-wider border-b border-slate-200">
+                <tr className="bg-gray-50 text-slate-700 text-xs uppercase tracking-wider border-b border-slate-300">
                   <th className="py-3 px-5">Franchise</th>
                   <th className="py-3 px-5">Gross Revenue</th>
                   <th className="py-3 px-5">Share Rate</th>

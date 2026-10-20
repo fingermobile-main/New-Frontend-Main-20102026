@@ -216,7 +216,7 @@ const ForumsManagement: React.FC = () => {
   );
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+    <div className="bg-white rounded-2xl shadow-sm border border-slate-300 overflow-hidden">
       {/* Top Banner Header */}
       <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 p-6 text-white flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
@@ -228,9 +228,9 @@ const ForumsManagement: React.FC = () => {
               Master Forum & UGC Curation Control Plane
             </h2>
           </div>
-          <p className="text-xs text-slate-700 mt-1">
+          <p className="text-xs text-slate-300 mt-1 font-medium">
             Centrally manage 53 Forum Categories, Feed In-Card Algorithms, Ad Slots, and UGC Moderation for{' '}
-            <span className="text-orange-400 font-mono">http://localhost:3000/forum</span>
+            <span className="text-orange-400 font-mono font-bold">http://localhost:3000/forum</span>
           </p>
         </div>
 
@@ -239,14 +239,14 @@ const ForumsManagement: React.FC = () => {
             href="/forum"
             target="_blank"
             rel="noreferrer"
-            className="px-3 py-2 text-xs font-bold rounded-xl bg-white/10 hover:bg-white/20 text-slate-700 border border-white/10 flex items-center gap-1.5 transition"
+            className="px-3 py-2 text-xs font-bold rounded-xl bg-white/10 hover:bg-white/20 text-slate-200 hover:text-white border border-white/10 flex items-center gap-1.5 transition"
           >
             <ArrowTopRightOnSquareIcon className="w-4 h-4" />
             Preview Live Feed
           </a>
           <button
             onClick={loadCategories}
-            className="p-2 text-xs font-bold rounded-xl bg-white/10 hover:bg-white/20 text-slate-700 border border-white/10 transition"
+            className="p-2 text-xs font-bold rounded-xl bg-white/10 hover:bg-white/20 text-slate-200 hover:text-white border border-white/10 transition"
             title="Reload from backend"
           >
             <ArrowPathIcon className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
@@ -255,7 +255,7 @@ const ForumsManagement: React.FC = () => {
       </div>
 
       {/* Navigation Sub-Tabs */}
-      <div className="flex border-b border-slate-200 bg-slate-50/50 px-6">
+      <div className="flex border-b border-slate-300 bg-slate-50/50 px-6">
         {[
           { id: 'categories', label: `Categories Catalog (${categories.length})`, icon: ChatBubbleLeftRightIcon },
           { id: 'algorithm', label: 'Feed Card Algorithm & Injections', icon: AdjustmentsHorizontalIcon },
@@ -268,7 +268,7 @@ const ForumsManagement: React.FC = () => {
             className={`py-3.5 px-4 text-xs font-bold flex items-center gap-2 border-b-2 transition ${
               activeTab === tab.id
                 ? 'border-orange-500 text-orange-600 bg-white'
-                : 'border-transparent text-slate-500 hover:text-slate-800'
+                : 'border-transparent text-slate-700 hover:text-slate-900'
             }`}
           >
             <tab.icon className="w-4 h-4" />
@@ -282,13 +282,13 @@ const ForumsManagement: React.FC = () => {
         <div className="p-6 space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="relative flex-1 max-w-md">
-              <MagnifyingGlassIcon className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
+              <MagnifyingGlassIcon className="w-4 h-4 text-slate-600 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 placeholder="Search categories by name, slug or description..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-3 py-2 text-xs border border-slate-200 rounded-xl focus:outline-hidden focus:ring-2 focus:ring-orange-500 bg-white text-slate-900 font-bold border-slate-300 placeholder:text-slate-400"
+                className="w-full pl-9 pr-3 py-2 text-xs border border-slate-300 rounded-xl focus:outline-hidden focus:ring-2 focus:ring-orange-500 bg-white text-slate-900 font-bold placeholder:text-slate-500"
               />
             </div>
             <button
@@ -300,9 +300,9 @@ const ForumsManagement: React.FC = () => {
             </button>
           </div>
 
-          <div className="overflow-x-auto border border-slate-200 rounded-2xl">
-            <table className="w-full text-left text-xs text-slate-600">
-              <thead className="bg-slate-50 text-[11px] uppercase font-black tracking-wider text-slate-700 border-b border-slate-200">
+          <div className="overflow-x-auto border border-slate-300 rounded-2xl">
+            <table className="w-full text-left text-xs text-slate-800">
+              <thead className="bg-slate-100 text-[11px] uppercase font-bold tracking-wider text-slate-800 border-b border-slate-300">
                 <tr>
                   <th className="py-3 px-4">Icon / Name</th>
                   <th className="py-3 px-4">Slug</th>
@@ -312,7 +312,7 @@ const ForumsManagement: React.FC = () => {
                   <th className="py-3 px-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-slate-200">
                 {filteredCategories.map((cat) => (
                   <tr key={cat.id} className="hover:bg-slate-50/80 transition">
                     <td className="py-3 px-4 font-bold text-slate-900 flex items-center gap-2">
@@ -321,22 +321,22 @@ const ForumsManagement: React.FC = () => {
                       </span>
                       <span>{cat.name}</span>
                     </td>
-                    <td className="py-3 px-4 font-mono text-slate-500 text-[11px]">/{cat.slug || cat.id}</td>
-                    <td className="py-3 px-4 max-w-xs truncate text-slate-500">{cat.description || '—'}</td>
-                    <td className="py-3 px-4 text-center font-bold text-slate-700">{cat.threadsCount ?? (cat as any).threadCount ?? 0}</td>
-                    <td className="py-3 px-4 text-center font-bold text-slate-700">{cat.postsCount ?? (cat as any).postCount ?? 0}</td>
+                    <td className="py-3 px-4 font-mono text-slate-700 font-medium text-[11px]">/{cat.slug || cat.id}</td>
+                    <td className="py-3 px-4 max-w-xs truncate text-slate-700 font-medium">{cat.description || '—'}</td>
+                    <td className="py-3 px-4 text-center font-bold text-slate-900">{cat.threadsCount ?? (cat as any).threadCount ?? 0}</td>
+                    <td className="py-3 px-4 text-center font-bold text-slate-900">{cat.postsCount ?? (cat as any).postCount ?? 0}</td>
                     <td className="py-3 px-4 text-right">
                       <div className="flex items-center justify-end gap-1">
                         <button
                           onClick={() => handleOpenEditCategory(cat)}
-                          className="p-1.5 text-slate-700 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition"
+                          className="p-1.5 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition"
                           title="Edit Category"
                         >
                           <PencilSquareIcon className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => handleDeleteCategory(cat.id, cat.name)}
-                          className="p-1.5 text-slate-700 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition"
+                          className="p-1.5 text-slate-600 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition"
                           title="Delete Category"
                         >
                           <TrashIcon className="w-4 h-4" />
@@ -347,7 +347,7 @@ const ForumsManagement: React.FC = () => {
                 ))}
                 {filteredCategories.length === 0 && (
                   <tr>
-                    <td colSpan={6} className="py-8 text-center text-slate-800 text-xs">
+                    <td colSpan={6} className="py-8 text-center text-slate-700 font-semibold text-xs">
                       No categories found matching &quot;{searchQuery}&quot;
                     </td>
                   </tr>
@@ -374,7 +374,7 @@ const ForumsManagement: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Slot 1: FingerShorts */}
-            <div className="p-4 rounded-2xl border border-slate-200 bg-white space-y-3">
+            <div className="p-4 rounded-2xl border border-slate-300 bg-white space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className="p-2 rounded-xl bg-rose-50 text-rose-500 border border-rose-100">
@@ -391,10 +391,10 @@ const ForumsManagement: React.FC = () => {
                   onChange={(e) =>
                     setAlgoConfig({ ...algoConfig, enableFingerShorts: e.target.checked })
                   }
-                  className="rounded-sm text-slate-900 focus:ring-orange-500 w-4 h-4 cursor-pointer font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
+                  className="rounded-sm text-slate-900 focus:ring-orange-500 w-4 h-4 cursor-pointer font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-500"
                 />
               </div>
-              <div className="flex items-center justify-between text-xs pt-2 border-t border-slate-100">
+              <div className="flex items-center justify-between text-xs pt-2 border-t border-slate-300">
                 <span className="text-slate-600 font-medium">Injection Offset (Post #):</span>
                 <input
                   type="number"
@@ -404,14 +404,14 @@ const ForumsManagement: React.FC = () => {
                   onChange={(e) =>
                     setAlgoConfig({ ...algoConfig, fingerShortsInterval: parseInt(e.target.value) || 3 })
                   }
-                  className="w-16 px-2 py-1 text-center font-bold text-xs border border-slate-200 rounded-lg text-slate-900 border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
+                  className="w-16 px-2 py-1 text-center font-bold text-xs border border-slate-300 rounded-lg text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-500 font-mono"
                 />
               </div>
               <div className="text-[10px] text-slate-700">Default: Permanent after the first 3 Post Cards</div>
             </div>
 
             {/* Slot 2: Publicitee */}
-            <div className="p-4 rounded-2xl border border-slate-200 bg-white space-y-3">
+            <div className="p-4 rounded-2xl border border-slate-300 bg-white space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className="p-2 rounded-xl bg-orange-50 text-orange-500 border border-orange-100">
@@ -428,10 +428,10 @@ const ForumsManagement: React.FC = () => {
                   onChange={(e) =>
                     setAlgoConfig({ ...algoConfig, enablePublicitee: e.target.checked })
                   }
-                  className="rounded-sm text-slate-900 focus:ring-orange-500 w-4 h-4 cursor-pointer font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
+                  className="rounded-sm text-slate-900 focus:ring-orange-500 w-4 h-4 cursor-pointer font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-500"
                 />
               </div>
-              <div className="flex items-center justify-between text-xs pt-2 border-t border-slate-100">
+              <div className="flex items-center justify-between text-xs pt-2 border-t border-slate-300">
                 <span className="text-slate-600 font-medium">Interval (Every N Posts):</span>
                 <input
                   type="number"
@@ -441,14 +441,14 @@ const ForumsManagement: React.FC = () => {
                   onChange={(e) =>
                     setAlgoConfig({ ...algoConfig, publiciteeInterval: parseInt(e.target.value) || 5 })
                   }
-                  className="w-16 px-2 py-1 text-center font-bold text-xs border border-slate-200 rounded-lg text-slate-900 border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
+                  className="w-16 px-2 py-1 text-center font-bold text-xs border border-slate-300 rounded-lg text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-500 font-mono"
                 />
               </div>
               <div className="text-[10px] text-slate-700">Default: Permanent after the first 5 Post Cards</div>
             </div>
 
             {/* Slot 3: Discover */}
-            <div className="p-4 rounded-2xl border border-slate-200 bg-white space-y-3">
+            <div className="p-4 rounded-2xl border border-slate-300 bg-white space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className="p-2 rounded-xl bg-blue-50 text-blue-500 border border-blue-100">
@@ -465,10 +465,10 @@ const ForumsManagement: React.FC = () => {
                   onChange={(e) =>
                     setAlgoConfig({ ...algoConfig, enableDiscover: e.target.checked })
                   }
-                  className="rounded-sm text-slate-900 focus:ring-orange-500 w-4 h-4 cursor-pointer font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
+                  className="rounded-sm text-slate-900 focus:ring-orange-500 w-4 h-4 cursor-pointer font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-500"
                 />
               </div>
-              <div className="flex items-center justify-between text-xs pt-2 border-t border-slate-100">
+              <div className="flex items-center justify-between text-xs pt-2 border-t border-slate-300">
                 <span className="text-slate-600 font-medium">Interval (Every N Posts):</span>
                 <input
                   type="number"
@@ -478,14 +478,14 @@ const ForumsManagement: React.FC = () => {
                   onChange={(e) =>
                     setAlgoConfig({ ...algoConfig, discoverInterval: parseInt(e.target.value) || 5 })
                   }
-                  className="w-16 px-2 py-1 text-center font-bold text-xs border border-slate-200 rounded-lg text-slate-900 border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
+                  className="w-16 px-2 py-1 text-center font-bold text-xs border border-slate-300 rounded-lg text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-500 font-mono"
                 />
               </div>
               <div className="text-[10px] text-slate-700">Default: Permanent after the next 5 Post Cards</div>
             </div>
 
             {/* Slot 4: In-feed Ads */}
-            <div className="p-4 rounded-2xl border border-slate-200 bg-white space-y-3">
+            <div className="p-4 rounded-2xl border border-slate-300 bg-white space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className="p-2 rounded-xl bg-emerald-50 text-emerald-500 border border-emerald-100">
@@ -502,17 +502,17 @@ const ForumsManagement: React.FC = () => {
                   onChange={(e) =>
                     setAlgoConfig({ ...algoConfig, enableInfeedAds: e.target.checked })
                   }
-                  className="rounded-sm text-slate-900 focus:ring-orange-500 w-4 h-4 cursor-pointer font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
+                  className="rounded-sm text-slate-900 focus:ring-orange-500 w-4 h-4 cursor-pointer font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-500"
                 />
               </div>
-              <div className="flex items-center justify-between text-xs pt-2 border-t border-slate-100">
+              <div className="flex items-center justify-between text-xs pt-2 border-t border-slate-300">
                 <span className="text-slate-600 font-medium">Ad Network Engine:</span>
                 <select
                   value={algoConfig.adsProvider}
                   onChange={(e) =>
                     setAlgoConfig({ ...algoConfig, adsProvider: e.target.value as any })
                   }
-                  className="px-2 py-1 text-xs border border-slate-200 rounded-lg bg-white text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500"
+                  className="px-2 py-1 text-xs border border-slate-300 rounded-lg bg-white text-slate-900 font-bold focus:ring-2 focus:ring-indigo-500"
                 >
                   <option value="canary">Canary Ad Engine</option>
                   <option value="google_adsense">Google AdSense / AdMob</option>
@@ -523,7 +523,7 @@ const ForumsManagement: React.FC = () => {
             </div>
 
             {/* Slot 5: Hero Section (Guardian/Sentinel) */}
-            <div className="p-4 rounded-2xl border border-slate-200 bg-white space-y-3 md:col-span-2">
+            <div className="p-4 rounded-2xl border border-slate-300 bg-white space-y-3 md:col-span-2">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className="p-2 rounded-xl bg-purple-50 text-purple-500 border border-purple-100">
@@ -540,10 +540,10 @@ const ForumsManagement: React.FC = () => {
                   onChange={(e) =>
                     setAlgoConfig({ ...algoConfig, enableHeroSentinel: e.target.checked })
                   }
-                  className="rounded-sm text-slate-900 focus:ring-orange-500 w-4 h-4 cursor-pointer font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
+                  className="rounded-sm text-slate-900 focus:ring-orange-500 w-4 h-4 cursor-pointer font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-500"
                 />
               </div>
-              <div className="flex items-center justify-between text-xs pt-2 border-t border-slate-100">
+              <div className="flex items-center justify-between text-xs pt-2 border-t border-slate-300">
                 <span className="text-slate-600 font-medium">Interval (Every N Posts):</span>
                 <input
                   type="number"
@@ -553,14 +553,14 @@ const ForumsManagement: React.FC = () => {
                   onChange={(e) =>
                     setAlgoConfig({ ...algoConfig, heroSentinelInterval: parseInt(e.target.value) || 5 })
                   }
-                  className="w-16 px-2 py-1 text-center font-bold text-xs border border-slate-200 rounded-lg text-slate-900 border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
+                  className="w-16 px-2 py-1 text-center font-bold text-xs border border-slate-300 rounded-lg text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-500 font-mono"
                 />
               </div>
               <div className="text-[10px] text-slate-700">Default: Permanent Hero Section after the next 5 Post Cards</div>
             </div>
           </div>
 
-          <div className="flex justify-end pt-4 border-t border-slate-100">
+          <div className="flex justify-end pt-4 border-t border-slate-300">
             <button
               onClick={() => saveAlgorithmConfig(algoConfig)}
               className="px-6 py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs rounded-xl shadow-xs transition"
@@ -575,25 +575,25 @@ const ForumsManagement: React.FC = () => {
       {activeTab === 'moderation' && (
         <div className="p-6 space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="p-4 rounded-xl border border-slate-200 bg-slate-50/50">
+            <div className="p-4 rounded-xl border border-slate-300 bg-slate-50/50">
               <span className="text-[10px] font-black uppercase tracking-wider text-slate-700">Active Threads</span>
               <div className="text-2xl font-black text-slate-900 mt-1">1,482</div>
               <div className="text-[10px] text-emerald-600 mt-0.5">● 99.4% Clean Compliance</div>
             </div>
-            <div className="p-4 rounded-xl border border-slate-200 bg-slate-50/50">
+            <div className="p-4 rounded-xl border border-slate-300 bg-slate-50/50">
               <span className="text-[10px] font-black uppercase tracking-wider text-slate-700">Flagged For Review</span>
               <div className="text-2xl font-black text-amber-600 mt-1">7</div>
               <div className="text-[10px] text-amber-700 mt-0.5">Automated Guardian NLP scan</div>
             </div>
-            <div className="p-4 rounded-xl border border-slate-200 bg-slate-50/50">
+            <div className="p-4 rounded-xl border border-slate-300 bg-slate-50/50">
               <span className="text-[10px] font-black uppercase tracking-wider text-slate-700">Censored Items</span>
               <div className="text-2xl font-black text-rose-600 mt-1">3</div>
               <div className="text-[10px] text-rose-700 mt-0.5">CSAE & Violent text quarantined</div>
             </div>
           </div>
 
-          <div className="border border-slate-200 rounded-2xl overflow-hidden mt-4">
-            <div className="bg-slate-50 p-3 border-b border-slate-200 flex items-center justify-between">
+          <div className="border border-slate-300 rounded-2xl overflow-hidden mt-4">
+            <div className="bg-slate-50 p-3 border-b border-slate-300 flex items-center justify-between">
               <span className="text-xs font-bold text-slate-700">Flagged Discussions Queue</span>
               <span className="text-[10px] font-bold text-slate-500">Live Socket Updates</span>
             </div>
@@ -649,7 +649,7 @@ const ForumsManagement: React.FC = () => {
       {/* TAB 4: DATABASE SCHEMA & SERVICE MAPPING */}
       {activeTab === 'database' && (
         <div className="p-6 space-y-4">
-          <div className="border border-slate-200 rounded-2xl p-4 bg-slate-950 text-slate-200 font-mono text-xs space-y-2">
+          <div className="border border-slate-300 rounded-2xl p-4 bg-slate-950 text-slate-200 font-mono text-xs space-y-2">
             <div className="text-orange-400 font-bold">// PostgreSQL Backend Table Entities Connected:</div>
             <div>• forum_categories (id, name, slug, description, icon, post_count, thread_count, order)</div>
             <div>• forum_threads (id, category_id, title, author_id, pinned, locked, views, created_at)</div>
@@ -659,7 +659,7 @@ const ForumsManagement: React.FC = () => {
             <div>• ad_interstitials (id, type, placement_order, provider, active_flag)</div>
           </div>
 
-          <div className="flex items-center gap-2 text-xs text-slate-500">
+          <div className="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-300 font-medium">
             <CheckCircleIcon className="w-4 h-4 text-emerald-500" />
             <span>ForumService active across frontend REST endpoints (`/api/forum/*`)</span>
           </div>
@@ -683,7 +683,7 @@ const ForumsManagement: React.FC = () => {
                   placeholder="e.g. Artificial Intelligence & Robotics"
                   value={catName}
                   onChange={(e) => setCatName(e.target.value)}
-                  className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-orange-500 text-slate-900 font-bold bg-white placeholder:text-slate-500"
                 />
               </div>
 
@@ -695,7 +695,7 @@ const ForumsManagement: React.FC = () => {
                     placeholder="ai-robotics"
                     value={catSlug}
                     onChange={(e) => setCatSlug(e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-500 font-mono text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-orange-500 font-mono text-slate-900 font-bold bg-white placeholder:text-slate-500"
                   />
                 </div>
                 <div>
@@ -705,7 +705,7 @@ const ForumsManagement: React.FC = () => {
                     placeholder="🤖"
                     value={catIcon}
                     onChange={(e) => setCatIcon(e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-500 text-center text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-orange-500 text-center text-slate-900 font-bold bg-white placeholder:text-slate-500"
                   />
                 </div>
               </div>
@@ -717,11 +717,11 @@ const ForumsManagement: React.FC = () => {
                   placeholder="Discussions covering autonomous agents, LLMs, and robotics..."
                   value={catDesc}
                   onChange={(e) => setCatDesc(e.target.value)}
-                  className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-500 resize-none text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-orange-500 resize-none text-slate-900 font-bold bg-white placeholder:text-slate-500"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-4 border-t border-slate-100">
+              <div className="flex items-center justify-end gap-2 pt-4 border-t border-slate-300">
                 <button
                   type="button"
                   onClick={() => setIsCategoryModalOpen(false)}

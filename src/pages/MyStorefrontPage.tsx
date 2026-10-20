@@ -932,7 +932,7 @@ const MyStorefrontPage: React.FC = () => {
                     <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg">
                       <div className="space-y-1 text-center">
                         <svg
-                          className="mx-auto h-12 w-12 text-slate-500"
+                          className="mx-auto h-12 w-12 text-slate-600"
                           stroke="currentColor"
                           fill="none"
                           viewBox="0 0 48 48"
@@ -965,7 +965,7 @@ const MyStorefrontPage: React.FC = () => {
                     <div className="mt-1 flex items-center">
                       <span className="inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100 border text-gray-950 border-gray-400 font-black">
                         <svg
-                          className="h-full w-full text-slate-500"
+                          className="h-full w-full text-slate-600"
                           fill="currentColor"
                           viewBox="0 0 24 24"
                         >

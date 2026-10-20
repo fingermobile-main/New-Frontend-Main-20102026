@@ -213,8 +213,8 @@ const ProfessionalVideoEditor: React.FC<ProfessionalVideoEditorProps> = ({ proje
                       </div>
                     ) : (
                       <>
-                        <ArrowUpTrayIcon className="w-12 h-12 mx-auto text-slate-500" />
-                        <p className="mt-2 text-sm text-gray-400">Drag & drop files or</p>
+                        <ArrowUpTrayIcon className="w-12 h-12 mx-auto text-slate-600" />
+                        <p className="mt-2 text-sm text-slate-300 font-medium">Drag & drop files or</p>
                         <label htmlFor="file-upload" className="cursor-pointer text-blue-400 hover:text-blue-300">
                           Browse
                           <input id="file-upload" type="file" className="hidden" onChange={handleFileUpload} accept="video/*,image/*,audio/*" />
@@ -224,19 +224,19 @@ const ProfessionalVideoEditor: React.FC<ProfessionalVideoEditorProps> = ({ proje
                   </div>
                   {/* Placeholder for media items */}
                   <div className="grid grid-cols-2 gap-2">
-                    <div className="bg-gray-700 h-24 rounded-md flex items-center justify-center text-gray-400">Video 1</div>
-                    <div className="bg-gray-700 h-24 rounded-md flex items-center justify-center text-gray-400">Image 1</div>
-                    <div className="bg-gray-700 h-24 rounded-md flex items-center justify-center text-gray-400">Audio 1</div>
+                    <div className="bg-gray-700 h-24 rounded-md flex items-center justify-center text-slate-200 font-semibold">Video 1</div>
+                    <div className="bg-gray-700 h-24 rounded-md flex items-center justify-center text-slate-200 font-semibold">Image 1</div>
+                    <div className="bg-gray-700 h-24 rounded-md flex items-center justify-center text-slate-200 font-semibold">Audio 1</div>
                   </div>
                 </div>
               </Tab.Panel>
               <Tab.Panel>
                 <h3 className="text-lg font-semibold">Effects (Coming Soon)</h3>
-                <p className="text-gray-400">Explore a variety of visual and audio effects to enhance your content.</p>
+                <p className="text-slate-300 font-medium">Explore a variety of visual and audio effects to enhance your content.</p>
               </Tab.Panel>
               <Tab.Panel>
                 <h3 className="text-lg font-semibold">Text (Coming Soon)</h3>
-                <p className="text-gray-400">Add stylish text overlays and titles to your videos.</p>
+                <p className="text-slate-300 font-medium">Add stylish text overlays and titles to your videos.</p>
               </Tab.Panel>
             </Tab.Panels>
           </Tab.Group>
@@ -315,7 +315,7 @@ const ProfessionalVideoEditor: React.FC<ProfessionalVideoEditorProps> = ({ proje
                 style={{ left: `${(currentTime / duration) * 100}%` }}
               ></div>
               {/* Placeholder for timeline tracks */}
-              <div className="absolute inset-0 flex flex-col justify-around p-2 text-xs text-gray-400">
+              <div className="absolute inset-0 flex flex-col justify-around p-2 text-xs text-slate-300 font-medium">
                 <div>Video Track</div>
                 <div>Audio Track</div>
               </div>
@@ -343,11 +343,11 @@ const ProfessionalVideoEditor: React.FC<ProfessionalVideoEditorProps> = ({ proje
             <Tab.Panels className="mt-2">
               <Tab.Panel>
                 <h3 className="text-lg font-semibold">Inspector (Coming Soon)</h3>
-                <p className="text-gray-400">View and edit properties of selected elements on the timeline.</p>
+                <p className="text-slate-300 font-medium">View and edit properties of selected elements on the timeline.</p>
               </Tab.Panel>
               <Tab.Panel>
                 <h3 className="text-lg font-semibold">Project Settings (Coming Soon)</h3>
-                <p className="text-gray-400">Configure project-wide settings like resolution, frame rate, etc.</p>
+                <p className="text-slate-300 font-medium">Configure project-wide settings like resolution, frame rate, etc.</p>
               </Tab.Panel>
             </Tab.Panels>
           </Tab.Group>

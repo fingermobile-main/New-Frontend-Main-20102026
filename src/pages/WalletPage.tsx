@@ -41,6 +41,7 @@ import {
   FINANCIAL_ROLES_TAXONOMY
 } from '../constants/platformOwnership';
 import { downloadFicReceiptPdf, FICReceiptData } from '../utils/ficReceiptPdf';
+import FinanceBankingPaymentsWidget from '../components/widgets/FinanceBankingPaymentsWidget';
 
 interface WalletTransaction {
   id: string | number;
@@ -782,7 +783,7 @@ const WalletPage: React.FC = () => {
                 onClick={() => setShowRolesModal(true)}
                 className="border-slate-300 text-slate-700 hover:bg-slate-100 text-xs font-semibold gap-1.5"
               >
-                <Users className="w-4 h-4 text-slate-500" />
+                <Users className="w-4 h-4 text-slate-600" />
                 Accounting Roles Directory
               </Button>
 
@@ -800,6 +801,9 @@ const WalletPage: React.FC = () => {
               </Button>
             </div>
           </div>
+
+          {/* FINGERMOBILE DIRECT PAY - FINANCE, BANKING, PAYMENTS & EARNINGS WIDGET */}
+          <FinanceBankingPaymentsWidget />
 
           {/* DEDICATED SOVEREIGN TREASURY RAIL - HERO BANNER */}
           <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white shadow-xl border border-indigo-500/30 relative overflow-hidden">
@@ -986,7 +990,7 @@ const WalletPage: React.FC = () => {
                 <div className="text-right text-xs text-slate-300 font-mono">
                   <span>Seed Anchor: </span>
                   <span className="text-amber-300 font-bold">₦65.00 / FIC ($0.05)</span>
-                  <span className="mx-2 text-slate-500">|</span>
+                  <span className="mx-2 text-slate-600 font-bold">|</span>
                   <span>Standard: </span>
                   <span className="text-emerald-300 font-bold">₦650.00 / FIC ($0.50)</span>
                 </div>
@@ -1314,7 +1318,7 @@ const WalletPage: React.FC = () => {
                       <Award className="w-4 h-4 text-amber-600" />
                       MasterDashboard Accounts Treasury & CFO Bridge
                     </h3>
-                    <p className="text-xs text-slate-500">
+                    <p className="text-xs text-slate-700 font-medium">
                       Simulate or execute live Treasury Staff confirmation and CFO final authorization right from the interface.
                     </p>
                   </div>
@@ -1410,7 +1414,7 @@ const WalletPage: React.FC = () => {
                     <div className="p-2.5 bg-white rounded-xl border border-amber-200 text-xs space-y-1">
                       <p className="font-bold text-slate-900">{PLATFORM_OWNERSHIP.coFounder.name}</p>
                       <p className="text-[11px] text-amber-800 font-medium">Chief Financial Officer (CFO), Co-Founder, Admin-1</p>
-                      <div className="text-[10px] text-slate-500 space-y-0.5 pt-1 border-t border-slate-100">
+                      <div className="text-[10px] text-slate-700 font-medium space-y-0.5 pt-1 border-t border-slate-100">
                         {PLATFORM_OWNERSHIP.coFounder.rootMasterSeal?.map((seal, i) => (
                           <div key={i} className="text-emerald-700 font-semibold">{seal}</div>
                         ))}
@@ -1437,7 +1441,7 @@ const WalletPage: React.FC = () => {
                             ))}
                         </div>
                       ) : (
-                        <p className="text-xs text-slate-500 italic">All treasury requests are CFO validated and funded.</p>
+                        <p className="text-xs text-slate-700 font-medium italic">All treasury requests are CFO validated and funded.</p>
                       )}
                     </div>
                   </div>
@@ -1453,7 +1457,7 @@ const WalletPage: React.FC = () => {
                     <Layers className="w-5 h-5 text-indigo-600" />
                     Sovereign Vault Waterfall Depletion Protocol
                   </h3>
-                  <p className="text-xs text-slate-500 mt-1">
+                  <p className="text-xs text-slate-700 font-medium mt-1">
                     Platform Rule: Wallet 004 Treasury & Seed Sale must be depleted before Wallet 003, then Wallet 002, then Wallet 001.
                     New FIC minting is strictly locked until all vaults are depleted and SuperAdmin Founder approval is sealed.
                   </p>
@@ -1479,7 +1483,7 @@ const WalletPage: React.FC = () => {
                           }`}>
                             Priority {vault.priorityOrder}: {vault.vaultNumber === '004' ? 'Depleting 1st' : `Depleting ${vault.priorityOrder}th`}
                           </span>
-                          <span className="text-[11px] font-mono text-slate-500">Vault {vault.vaultNumber}</span>
+                          <span className="text-[11px] font-mono text-slate-700 font-bold">Vault {vault.vaultNumber}</span>
                         </div>
 
                         <h4 className="font-bold text-sm text-slate-900 mt-1 line-clamp-2">
@@ -1488,7 +1492,7 @@ const WalletPage: React.FC = () => {
 
                         <div className="mt-4 space-y-2">
                           <div className="flex justify-between text-xs font-mono">
-                            <span className="text-slate-500">Balance:</span>
+                            <span className="text-slate-700 font-bold">Balance:</span>
                             <span className="font-bold text-slate-900">{vault.balanceFIC.toLocaleString()} FIC</span>
                           </div>
 
@@ -1501,7 +1505,7 @@ const WalletPage: React.FC = () => {
                             />
                           </div>
 
-                          <div className="flex justify-between text-[10px] text-slate-500 font-mono">
+                          <div className="flex justify-between text-[10px] text-slate-700 font-mono font-medium">
                             <span>Depleted: {vault.depletedFIC.toLocaleString()} FIC</span>
                             <span>Cap: {vault.initialAllocationFIC.toLocaleString()} FIC</span>
                           </div>
@@ -1509,7 +1513,7 @@ const WalletPage: React.FC = () => {
 
                         <div className="mt-4 pt-3 border-t border-slate-200/60 text-[11px] text-slate-600">
                           <span className="font-semibold block text-slate-700">Custodial Multi-Sig:</span>
-                          <span className="text-slate-500 text-[10px] line-clamp-1">{vault.custodianTitle}</span>
+                          <span className="text-slate-700 font-medium text-[10px] line-clamp-1">{vault.custodianTitle}</span>
                         </div>
                       </div>
                     );
@@ -2301,7 +2305,7 @@ const WalletPage: React.FC = () => {
                 const roles = FINANCIAL_ROLES_TAXONOMY.filter((r) => r.category === tier.category);
                 return (
                   <div key={tier.category} className="space-y-3">
-                    <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider font-mono">
+                    <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider font-mono">
                       {tier.title} ({roles.length})
                     </h4>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">

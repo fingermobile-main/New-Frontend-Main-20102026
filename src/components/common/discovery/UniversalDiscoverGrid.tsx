@@ -108,7 +108,7 @@ export const UniversalDiscoverGrid: React.FC<UniversalDiscoverGridProps> = ({
       <div className="flex flex-col sm:flex-row gap-3 items-center justify-between">
         {/* Search Bar */}
         <div className="relative w-full sm:w-80">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-600" />
           <input
             type="text"
             placeholder={
@@ -134,7 +134,7 @@ export const UniversalDiscoverGrid: React.FC<UniversalDiscoverGridProps> = ({
 
       {/* Filter Category Chips */}
       <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-        <Filter className="w-3.5 h-3.5 text-slate-500 shrink-0 ml-1" />
+        <Filter className="w-3.5 h-3.5 text-slate-600 shrink-0 ml-1" />
         {filterOptions.map((opt) => {
           const isActive = selectedFilter === opt.id;
           return (
@@ -144,7 +144,7 @@ export const UniversalDiscoverGrid: React.FC<UniversalDiscoverGridProps> = ({
               className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
                 isActive
                   ? `bg-${accentColor}-500 text-slate-950 shadow-md shadow-${accentColor}-500/30`
-                  : 'bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white border border-slate-800'
+                  : 'bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800'
               }`}
             >
               {opt.label}
@@ -181,7 +181,7 @@ export const UniversalDiscoverGrid: React.FC<UniversalDiscoverGridProps> = ({
                         {member.verified && <CheckCircle2 className="w-3.5 h-3.5 text-sky-400" />}
                         {member.ninVerified && <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />}
                       </div>
-                      <div className="text-[11px] text-slate-400 font-mono">
+                      <div className="text-[11px] text-slate-300 font-mono font-medium">
                         {member.handle}
                       </div>
                       <div className="text-[10px] text-slate-500 flex items-center gap-1 mt-0.5">
@@ -204,7 +204,7 @@ export const UniversalDiscoverGrid: React.FC<UniversalDiscoverGridProps> = ({
 
                 {/* Shared Interest Chips */}
                 <div className="mb-4">
-                  <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-slate-300 mb-1.5">
                     Shared Resonance:
                   </div>
                   <div className="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto">
@@ -233,7 +233,7 @@ export const UniversalDiscoverGrid: React.FC<UniversalDiscoverGridProps> = ({
                       <div className="text-xs font-bold text-white truncate">
                         {member.favoriteMedia.title}
                       </div>
-                      <div className="text-[10px] text-slate-400 truncate">
+                      <div className="text-[10px] text-slate-300 font-medium truncate">
                         {member.favoriteMedia.subtitle}
                       </div>
                     </div>
@@ -271,7 +271,7 @@ export const UniversalDiscoverGrid: React.FC<UniversalDiscoverGridProps> = ({
           ))}
         </div>
       ) : (
-        <div className="py-12 text-center rounded-3xl bg-slate-900 border border-slate-800 text-slate-400 space-y-3">
+        <div className="py-12 text-center rounded-3xl bg-slate-900 border border-slate-800 text-slate-300 font-medium space-y-3">
           <Users className="w-10 h-10 mx-auto text-slate-600" />
           <h4 className="text-base font-bold text-white">No Matching Members Found</h4>
           <p className="text-xs max-w-sm mx-auto">

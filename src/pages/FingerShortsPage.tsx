@@ -164,7 +164,7 @@ const FingerShortsPage: React.FC = () => {
               <Scissors className="w-5 h-5 text-indigo-500" />
               <h3 className="font-bold text-lg text-gray-900 dark:text-white">Duets & Stitches Collaboration</h3>
             </div>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">
               Co-create split-screen Duets side-by-side or clip and stitch the first 5 seconds of any creator's FingerShort into your own 48h story.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
@@ -209,7 +209,7 @@ const FingerShortsPage: React.FC = () => {
               <Music className="w-5 h-5 text-purple-500" />
               <h3 className="font-bold text-lg text-gray-900 dark:text-white">Sounds & BeatwaveNG Audio Library</h3>
             </div>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">
               Browse licensed music tracks, trending voice clips, and original sounds for your 48h FingerShorts.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">

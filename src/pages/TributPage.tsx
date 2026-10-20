@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import MainLayout from '../components/layout/MainLayout';
 import { useAppContext } from '../contexts/AppContext';
 import {
@@ -34,6 +34,9 @@ import MemberTributProjectsModal from '../components/tribut/MemberTributProjects
 import TributCreatorUploadModal from '../components/tribut/TributCreatorUploadModal';
 import TributDownloadModal from '../components/tribut/TributDownloadModal';
 import TributDiscussionsTab from '../components/tribut/TributDiscussionsTab';
+import { PlatformWidgetsAndAdsRail } from '../components/widgets/PlatformWidgetsAndAdsRail';
+import ConnectWidget from '../components/widgets/ConnectWidget';
+import DiscoverWidget from '../components/widgets/DiscoverWidget';
 
 type TributViewTab = 'smart-feed' | 'search-feed' | 'my-boards' | 'discussions' | 'monetization';
 
@@ -52,6 +55,50 @@ export const TributPage: React.FC = () => {
   const [isSelectMode, setIsSelectMode] = useState<boolean>(false);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [isBatchDeleting, setIsBatchDeleting] = useState<boolean>(false);
+
+  // Infinite Pin Stream Observer & Generator (No Load More, No End)
+  const pinSentinelRef = useRef<HTMLDivElement>(null);
+  const isGeneratingPinsRef = useRef<boolean>(false);
+  const pinBatchCountRef = useRef<number>(1);
+
+  const loadMorePinsBatch = useCallback(() => {
+    if (isGeneratingPinsRef.current) return;
+    isGeneratingPinsRef.current = true;
+
+    const batch = pinBatchCountRef.current;
+    pinBatchCountRef.current += 1;
+
+    const newBatch: TributPinItem[] = TRIBUT_PINS_DATA.map((basePin, i) => ({
+      ...basePin,
+      id: `pin-inf-${batch}-${basePin.id}-${i}-${Date.now()}`,
+      title: `${basePin.title} (Node Relay #${batch}.${i + 1})`,
+      metrics: {
+        ...basePin.metrics,
+        saves: (basePin.metrics?.saves || 10) + Math.floor(Math.random() * 20),
+        downloads: (basePin.metrics?.downloads || 5) + Math.floor(Math.random() * 10),
+      },
+    }));
+
+    setPinsList((prev) => [...prev, ...newBatch]);
+
+    setTimeout(() => {
+      isGeneratingPinsRef.current = false;
+    }, 400);
+  }, []);
+
+  useEffect(() => {
+    if (!pinSentinelRef.current) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          loadMorePinsBatch();
+        }
+      },
+      { threshold: 0.1, rootMargin: '600px' }
+    );
+    observer.observe(pinSentinelRef.current);
+    return () => observer.disconnect();
+  }, [loadMorePinsBatch]);
 
   // ================= 2-HOUR DISPLAY STYLE ROTATION & MEMBER SETTINGS =================
   const get2HourRotationStyle = (): TributDisplayStyle => {
@@ -376,11 +423,16 @@ export const TributPage: React.FC = () => {
                   Guardian AI Curation Engine • 5 Algorithmic Pillars • Buy & Share System
                 </div>
 
-                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
-                  FingerMobile <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-300 to-indigo-300">Sovereign Tribut</span> & Smart Feed
-                </h1>
+                <div className="flex items-center gap-4">
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-slate-900 border border-purple-500/40 p-1.5 flex items-center justify-center shadow-lg shadow-purple-500/20 overflow-hidden shrink-0">
+                    <img src="/assets/logos/tribut_icon.png" alt="Tribut" className="w-full h-full object-contain" />
+                  </div>
+                  <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
+                    FingerMobile <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-300 to-indigo-300">Sovereign Tribut</span> & Smart Feed
+                  </h1>
+                </div>
 
-                <p className="text-slate-700 text-base sm:text-lg leading-relaxed font-normal">
+                <p className="text-slate-200 text-base sm:text-lg leading-relaxed font-normal">
                   Where digital inspiration meets commercial transactions. The <strong className="text-white font-bold">Guardian AI</strong> curates the highest-ranking user-generated content, organizing media into multi-style collage displays, collaborative design critique discussions, and shoppable product cards.
                 </p>
 
@@ -417,7 +469,7 @@ export const TributPage: React.FC = () => {
                     {isSelectMode ? 'Exit Batch Mode' : 'Batch Select & Multi-Delete'}
                   </button>
 
-                  <div className="flex items-center gap-2 text-xs text-slate-700">
+                  <div className="flex items-center gap-2 text-xs text-slate-300 font-medium">
                     <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                     <span>Shopping Engine Synced (MarketPlace, Storefront, OwnIt, Flamingo)</span>
                   </div>
@@ -537,7 +589,7 @@ export const TributPage: React.FC = () => {
                       >
                         <div className="flex justify-between items-center">
                           <span className="font-bold text-slate-900">{st.label}</span>
-                          <span className="text-[10px] text-slate-500">{st.layoutCount}</span>
+                          <span className="text-[10px] text-slate-700 font-semibold">{st.layoutCount}</span>
                         </div>
                         <span className="text-[11px] text-slate-600 line-clamp-1">{st.description}</span>
                       </button>
@@ -619,17 +671,17 @@ export const TributPage: React.FC = () => {
 
           {/* ==================== TAB 1: SMART FEED (Photos/Videos cards clean by default) ==================== */}
           {(activeTab === 'smart-feed' || activeTab === 'search-feed') && (
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-              {/* SIDEBAR: Personalized Search Feed & Filter Engine */}
-              <div className={`space-y-6 ${activeTab === 'search-feed' ? 'lg:col-span-4' : 'lg:col-span-1'}`}>
-                <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+              {/* LEFT COLUMN (3 cols): Static, does not scroll with page */}
+              <div className="lg:col-span-3 lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-5.5rem)] lg:overflow-y-auto space-y-4 scrollbar-none pr-1">
+                <div className="bg-white rounded-2xl border border-slate-300 shadow-sm p-4 space-y-4">
                   {/* Search Query Input */}
                   <div className="space-y-2">
                     <label className="text-xs font-black uppercase tracking-wider text-slate-900 block">
                       Guardian AI Search Engine
                     </label>
                     <div className="relative">
-                      <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                      <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-600" />
                       <input
                         type="text"
                         value={searchQuery}
@@ -728,16 +780,20 @@ export const TributPage: React.FC = () => {
                         />
                         <div className="min-w-0">
                           <h4 className="text-xs font-bold text-slate-900 truncate">{brd.name}</h4>
-                          <span className="text-[11px] text-slate-500 font-semibold">{brd.pinCount} saved pins</span>
+                          <span className="text-[11px] text-slate-700 font-semibold">{brd.pinCount} saved pins</span>
                         </div>
                       </div>
                     ))}
                   </div>
                 </div>
+
+                {/* Left Column Last 2 Widgets: Connect & Discover */}
+                <ConnectWidget pageContext="tribut" />
+                <DiscoverWidget pageContext="tribut" />
               </div>
 
-              {/* MAIN CONTENT: Smart Feed Rendered with active Display Style */}
-              <div className={`${activeTab === 'search-feed' ? 'hidden' : 'lg:col-span-3'} space-y-6`}>
+              {/* CENTER COLUMN (6 cols): Scrollable, no load more, no end */}
+              <div className="lg:col-span-6 space-y-6">
                 {/* ================= GUARDIAN AI UGC CURATION & MULTI-MEASURE SORTING BAR ================= */}
                 <div className="p-5 rounded-2xl bg-gradient-to-br from-purple-900/90 via-slate-900 to-indigo-950 text-white shadow-md border border-purple-700/50 space-y-4">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -767,7 +823,7 @@ export const TributPage: React.FC = () => {
                   <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 pt-3 border-t border-purple-800/80 items-center text-xs">
                     {/* Sort Order Selector (All Measures) */}
                     <div className="sm:col-span-7 flex items-center gap-2">
-                      <span className="font-bold text-slate-700 text-[11px] whitespace-nowrap">
+                      <span className="font-bold text-slate-300 text-[11px] whitespace-nowrap">
                         Rank Order:
                       </span>
                       <select
@@ -786,7 +842,7 @@ export const TributPage: React.FC = () => {
 
                     {/* UGC Platform Origin Filter */}
                     <div className="sm:col-span-5 flex items-center gap-2">
-                      <span className="font-bold text-slate-700 text-[11px] whitespace-nowrap">
+                      <span className="font-bold text-slate-300 text-[11px] whitespace-nowrap">
                         Origin:
                       </span>
                       <select
@@ -804,7 +860,7 @@ export const TributPage: React.FC = () => {
                 </div>
 
                 {/* Category Pills Bar */}
-                <div className="flex items-center gap-2 overflow-x-auto pb-2">
+                <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
                   {categories.map((cat) => (
                     <button
                       key={cat.id}
@@ -831,6 +887,39 @@ export const TributPage: React.FC = () => {
                   onPinClick={(pin) => setActivePinDetail(pin)}
                   onMemberClick={handleMemberClick}
                   onToggleSavePin={handleToggleSavePin}
+                />
+
+                {/* Infinite UGC Pin Sentinel (No Load More Button, No End) */}
+                <div ref={pinSentinelRef} className="py-6 text-center">
+                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-slate-300 shadow-xs text-xs font-bold text-slate-800">
+                    <span className="w-2.5 h-2.5 rounded-full bg-purple-500 animate-ping" />
+                    <span>Streaming more sovereign pins, member lookbooks & Canary ads...</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* RIGHT COLUMN (3 cols): Static, does not scroll, loads Platform Widgets & Canary Ads */}
+              <div className="lg:col-span-3 lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-5.5rem)] lg:overflow-y-auto space-y-4 scrollbar-none pl-1">
+                <PlatformWidgetsAndAdsRail
+                  pageContext="tribut"
+                  initialChildren={
+                    <div className="bg-gradient-to-br from-purple-900 to-indigo-950 text-white rounded-2xl p-4 shadow-md space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] font-black uppercase tracking-wider text-purple-300">Tribut Curated Vault</span>
+                        <span className="text-[10px] bg-purple-500/40 text-purple-200 px-2 py-0.5 rounded-full font-bold">WORM Verified</span>
+                      </div>
+                      <div>
+                        <h4 className="text-sm font-black">Sovereign Pin Ecosystem</h4>
+                        <p className="text-[11px] text-purple-200 mt-1 line-clamp-2">
+                          High-intent visual library organizing sovereign creations, product lookbooks, and tokenized downloads.
+                        </p>
+                      </div>
+                      <div className="flex items-center justify-between text-xs pt-1 border-t border-purple-800/60">
+                        <span className="text-purple-300">Total Indexed Pins:</span>
+                        <span className="font-mono font-bold text-emerald-400">{filteredPins.length}</span>
+                      </div>
+                    </div>
+                  }
                 />
               </div>
             </div>
@@ -1149,7 +1238,7 @@ export const TributPage: React.FC = () => {
                         />
                         <div>
                           <div className="text-xs font-bold">{board.name}</div>
-                          <span className="text-[10px] text-slate-500">{board.purpose}</span>
+                          <span className="text-[10px] text-slate-700 font-semibold">{board.purpose}</span>
                         </div>
                       </div>
                       <input
@@ -1212,7 +1301,7 @@ export const TributPage: React.FC = () => {
                   setSelectedIds([]);
                   setIsSelectMode(false);
                 }}
-                className="py-1.5 px-3 rounded-lg text-slate-400 hover:text-white text-xs font-semibold transition"
+                className="py-1.5 px-3 rounded-lg text-slate-300 hover:text-white text-xs font-semibold transition"
               >
                 Done
               </button>

@@ -52,7 +52,7 @@ const MusicUploadForm: React.FC<MusicUploadFormProps> = ({ onUpload }) => {
             id="music-upload"
           />
           <label htmlFor="music-upload" className="cursor-pointer">
-            <CloudArrowUpIcon className="w-12 h-12 mx-auto text-slate-500 mb-2" />
+            <CloudArrowUpIcon className="w-12 h-12 mx-auto text-slate-600 mb-2" />
             <p className="text-sm text-gray-600">
               {file ? file.name : 'Click to upload or drag and drop'}
             </p>

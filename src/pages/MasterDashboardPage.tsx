@@ -48,8 +48,16 @@ import {
   Coins,
   Banknote,
   Landmark,
+  LogOut,
+  Loader2,
 } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import {
+  canAccessMasterDashboard,
+  isContentCreator,
+  isBusinessEntity
+} from '../services/platformRbac';
 import { DashboardService } from '../services/dashboardService';
 import ConnectorArtifactConsole from '../components/dashboard/ConnectorArtifactConsole';
 import userProfileSyncService, { ComprehensiveUserProfile } from '../services/UserProfileSyncService';
@@ -76,14 +84,22 @@ import SubscriptionModelsConsole from '../components/dashboard/SubscriptionModel
 import MasterFinancialsConsole from '../components/dashboard/MasterFinancialsConsole';
 import GuardianAISeoPerformanceConsole from '../components/dashboard/GuardianAISeoPerformanceConsole';
 import MasterMembersConsole from '../components/dashboard/MasterMembersConsole';
-import MasterEcommerceConsole from '../components/dashboard/MasterEcommerceConsole';
 import CorporateGovernanceConsole from '../components/dashboard/CorporateGovernanceConsole';
 import MasterWidgetConsole from '../components/dashboard/MasterWidgetConsole';
 import MasterBeatwaveNGConsole from '../components/dashboard/MasterBeatwaveNGConsole';
+import DiscoverMasterConsole from '../components/dashboard/DiscoverMasterConsole';
+import SoundRiverMasterConsole from '../components/dashboard/SoundRiverMasterConsole';
+import SoundOceanMasterConsole from '../components/dashboard/SoundOceanMasterConsole';
+import LeadershipBoardConsole from '../components/dashboard/LeadershipBoardConsole';
 import MasterDancia4TvConsole from '../components/dashboard/MasterDancia4TvConsole';
-import PlatformDomainManagementConsole from '../components/dashboard/PlatformDomainManagementConsole';
+import PlatformDomainManagementConsole, {
+  COMMERCE_DOMAIN_KEYS,
+  PLATFORM_OPERATIONS_DOMAIN_KEYS,
+} from '../components/dashboard/PlatformDomainManagementConsole';
 import { guardianSearchIndexer, SearchBenchmarkResult } from '../services/GuardianSearchIndexingService';
 import ScreenCatalogManagementConsole from '../components/dashboard/ScreenCatalogManagementConsole';
+import StercsControlCenter from '../components/dashboard/StercsControlCenter';
+import UnifiedCommerceCatalogHub from '../components/dashboard/catalog/UnifiedCommerceCatalogHub';
 
 interface Section {
   id: string;
@@ -107,6 +123,22 @@ interface SystemComponent {
 }
 
 const MasterDashboardPage: React.FC = () => {
+  const navigate = useNavigate();
+  const { user, loading: authLoading, logout } = useAuth();
+  const hasAccess = canAccessMasterDashboard(user);
+
+  const handleLogout = () => {
+    logout();
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('token');
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      localStorage.removeItem('user');
+      localStorage.removeItem('fingermobile_token');
+    }
+    navigate('/login');
+  };
+
   const [searchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState(searchParams.get('tab') || 'overview');
 
@@ -116,6 +148,80 @@ const MasterDashboardPage: React.FC = () => {
       setActiveTab(tabParam);
     }
   }, [searchParams]);
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-4">
+        <Loader2 className="w-8 h-8 text-emerald-400 animate-spin" />
+        <p className="mt-4 text-xs font-semibold text-slate-400 tracking-wider uppercase">
+          Verifying Sovereign Protocol Credentials...
+        </p>
+      </div>
+    );
+  }
+
+  if (!hasAccess) {
+    return (
+      <div className="min-h-screen bg-slate-100 dark:bg-slate-950 flex items-center justify-center p-4">
+        <div className="max-w-md w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-2xl shadow-xl p-8 text-center">
+          <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-orange-100 dark:bg-orange-950/60 text-orange-600 flex items-center justify-center border border-orange-300 dark:border-orange-800">
+            <Lock className="w-8 h-8 text-[#ff6b00]" />
+          </div>
+          <h2 className="text-2xl font-black text-slate-900 dark:text-white mb-2">
+            Master Dashboard Access Restricted
+          </h2>
+          <p className="text-sm text-slate-700 dark:text-slate-300 mb-6 leading-relaxed font-medium">
+            The Master Dashboard is restricted to the <strong>Primary Admin & SuperAdmin</strong> (Owner) and the <strong>Secondary Admin</strong> (CFO & Co-Founder), or users with explicitly assigned executive console permissions.
+          </p>
+          <div className="bg-slate-50 dark:bg-slate-800/80 rounded-xl p-3.5 mb-6 text-xs text-slate-800 dark:text-slate-200 text-left border border-slate-300 dark:border-slate-700 space-y-1">
+            <div className="font-bold text-slate-900 dark:text-white mb-1.5 border-b border-slate-200 dark:border-slate-700 pb-1">
+              Active Member Identity:
+            </div>
+            <div><span className="font-semibold text-slate-700 dark:text-slate-300">Name:</span> {user?.firstName ? `${user.firstName} ${user.lastName || ''}`.trim() : user?.username || 'Guest'}</div>
+            <div><span className="font-semibold text-slate-700 dark:text-slate-300">Email:</span> {user?.email || 'Unspecified'}</div>
+            <div><span className="font-semibold text-slate-700 dark:text-slate-300">Role:</span> {user?.role || 'Member'}</div>
+          </div>
+          <div className="space-y-2.5">
+            {isContentCreator(user) && (
+              <button
+                type="button"
+                onClick={() => navigate('/creatordashboard')}
+                className="w-full py-3 px-4 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-black text-sm shadow-md transition-all cursor-pointer flex items-center justify-center gap-2"
+              >
+                <span>🎨</span>
+                <span>Go to Your Creator Studio Dashboard</span>
+              </button>
+            )}
+            {isBusinessEntity(user) && (
+              <button
+                type="button"
+                onClick={() => navigate('/businessoffices')}
+                className="w-full py-3 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-black text-sm shadow-md transition-all cursor-pointer flex items-center justify-center gap-2"
+              >
+                <span>🏢</span>
+                <span>Go to Your Business Hub</span>
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={() => navigate('/forum')}
+              className="w-full py-3 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-black text-sm shadow-md transition-all cursor-pointer"
+            >
+              Return to Forum Feed
+            </button>
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="w-full py-2.5 px-4 rounded-xl bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/60 dark:hover:bg-rose-900/80 border border-rose-300 dark:border-rose-700/70 text-rose-700 dark:text-rose-300 font-bold text-xs transition cursor-pointer flex items-center justify-center gap-2"
+            >
+              <LogOut className="w-4 h-4 text-rose-600 dark:text-rose-400" />
+              <span>Log Out</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
   const [sections, setSections] = useState<Section[]>([]);
   const [systemComponents, setSystemComponents] = useState<SystemComponent[]>(
     []
@@ -200,8 +306,6 @@ const MasterDashboardPage: React.FC = () => {
       triggerToast(`Emergency Invalidation broadcasted for perimeter: ${scope.toUpperCase()}`, 'error');
     }
   };
-
-  const navigate = useNavigate();
 
   const [syncedProfile, setSyncedProfile] = useState<ComprehensiveUserProfile>(() =>
     userProfileSyncService.getProfile()
@@ -1024,7 +1128,7 @@ const MasterDashboardPage: React.FC = () => {
             <h2 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight mt-1">
               {title}
             </h2>
-            <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5 max-w-2xl">
+            <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mt-0.5 max-w-2xl">
               {description}
             </p>
           </div>
@@ -1032,7 +1136,7 @@ const MasterDashboardPage: React.FC = () => {
           {/* Quick Search & Status Filter */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
             <div className="relative">
-              <Search className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
+              <Search className="w-4 h-4 text-slate-600 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 placeholder="Search controls, safeguards, telemetry..."
@@ -1063,7 +1167,7 @@ const MasterDashboardPage: React.FC = () => {
                   className={`px-3 py-1 rounded-lg text-xs font-bold capitalize transition ${
                     consoleStatusFilter === filter
                       ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-xs'
-                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                      : 'text-slate-700 dark:text-slate-300 font-medium hover:text-slate-900 dark:hover:text-white'
                   }`}
                 >
                   {filter}
@@ -1076,11 +1180,11 @@ const MasterDashboardPage: React.FC = () => {
         {/* Consoles Grid */}
         {groupConsoles.length === 0 ? (
           <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-12 text-center">
-            <div className="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center mx-auto text-slate-500 mb-3">
+            <div className="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center mx-auto text-slate-600 mb-3">
               <Search className="w-6 h-6" />
             </div>
             <h3 className="text-base font-bold text-slate-900 dark:text-white">No Consoles Found</h3>
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-xs text-slate-700 font-medium mt-1">
               No console matched &quot;{consoleSearchTerm}&quot; with filter &quot;{consoleStatusFilter}&quot;.
             </p>
             <button
@@ -1759,7 +1863,7 @@ const MasterDashboardPage: React.FC = () => {
           <h2 className="text-xl font-semibold text-gray-900">
             Section Management
           </h2>
-          <p className="text-xs text-gray-500 mt-0.5">
+          <p className="text-xs text-slate-700 font-medium mt-0.5">
             Control active operational status, routing and health parameters for
             all platform sections.
           </p>
@@ -2156,7 +2260,7 @@ const MasterDashboardPage: React.FC = () => {
           <h2 className="text-xl font-semibold text-gray-900">
             Alerts & Activities
           </h2>
-          <p className="text-xs text-gray-500 mt-0.5">
+          <p className="text-xs text-slate-700 font-medium mt-0.5">
             Real-time alerts, system health warnings and recent member actions
             across the platform.
           </p>
@@ -2305,7 +2409,7 @@ const MasterDashboardPage: React.FC = () => {
           <span>{toastMessage.text}</span>
           <button
             onClick={() => setToastMessage(null)}
-            className="text-slate-400 hover:text-white ml-2"
+            className="text-slate-300 hover:text-white ml-2"
           >
             <X className="w-4 h-4" />
           </button>
@@ -2321,7 +2425,7 @@ const MasterDashboardPage: React.FC = () => {
               <h1 className="text-2xl font-bold text-gray-900 ml-3">
                 Master Dashboard
               </h1>
-              <span className="ml-3 inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-950 border border-blue-400 font-bold font-black">
+              <span className="ml-3 inline-flex items-center px-3 py-1 rounded-full text-xs bg-blue-100 text-blue-950 border border-blue-400 font-black">
                 Platform Management
               </span>
             </div>
@@ -2336,7 +2440,7 @@ const MasterDashboardPage: React.FC = () => {
               >
                 <Search className="w-3.5 h-3.5 text-blue-600" />
                 <span>Search Screens & Dashboards</span>
-                <kbd className="px-1.5 py-0.5 text-[10px] font-mono bg-white border border-slate-300 rounded shadow-2xs text-slate-500">
+                <kbd className="px-1.5 py-0.5 text-[10px] font-mono bg-white border border-slate-300 rounded shadow-2xs text-slate-700 font-bold">
                   ⌘K
                 </kbd>
               </button>
@@ -2376,6 +2480,15 @@ const MasterDashboardPage: React.FC = () => {
                   <div className="text-[10px] text-slate-700 font-mono">@{syncedProfile.username}</div>
                 </div>
               </div>
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-rose-700 bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/50 dark:hover:bg-rose-900/60 dark:text-rose-300 border border-rose-200 dark:border-rose-800 rounded-lg transition shadow-2xs"
+                title="Log Out of Platform"
+              >
+                <LogOut className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" />
+                <span className="hidden md:inline">Log Out</span>
+              </button>
             </div>
           </div>
         </div>
@@ -2400,8 +2513,14 @@ const MasterDashboardPage: React.FC = () => {
               { id: 'community-identity', label: 'Community & Identity', badge: '9' },
               { id: 'media-discovery', label: 'Media & Discovery', badge: '10' },
               { id: 'beatwaveng-console', label: 'BeatwaveNG Audio Console', badge: 'Live Sync' },
+              { id: 'discover-console', label: 'Discover Master Console', badge: 'Topics & Swarms' },
+              { id: 'soundriver-console', label: 'SoundRiver Master Console', badge: '320kbps Stream' },
+              { id: 'soundocean-console', label: 'SoundOcean Master Console', badge: '24b/192k FLAC' },
+              { id: 'leaderboards-console', label: 'Cross-Engine Leadership', badge: '6 Pillars' },
               { id: 'dancia4tv-console', label: 'Dancia-4Tv Video Console', badge: 'Live Sync' },
-              { id: 'platform-domains-console', label: 'Community & Creator Data', badge: '13 Domains' },
+              { id: 'stercs-defense', label: 'STERCS Command & DefCon', badge: 'DefCon 5-1' },
+              { id: 'platform-domains-console', label: 'Community & Creator Data', badge: 'All Domains' },
+              { id: 'platform-operations-console', label: 'Games & Platform Operations', badge: '12 Domains' },
               { id: 'commerce-growth', label: 'Commerce & Growth', badge: '7' },
               { id: 'creation-config', label: 'Creation & Config', badge: '9' },
               { id: 'governance-ops', label: 'Platform Governance', badge: '15' },
@@ -2432,7 +2551,7 @@ const MasterDashboardPage: React.FC = () => {
                     className={`px-1.5 py-0.2 rounded-full text-[10px] font-mono font-bold ${
                       activeTab === tab.id
                         ? 'bg-blue-100 text-blue-950 border border-blue-400 font-bold dark:bg-blue-950 dark:text-blue-300'
-                        : 'bg-gray-100 text-blue-950 dark:bg-gray-800 dark:text-gray-400'
+                        : 'bg-gray-100 text-blue-950 dark:bg-gray-800 dark:text-slate-300 font-medium'
                     }font-black`}
                   >
                     {tab.badge}
@@ -2642,6 +2761,34 @@ const MasterDashboardPage: React.FC = () => {
               </div>
             )}
 
+            {/* Dedicated Discover Master Console Tab */}
+            {activeTab === 'discover-console' && (
+              <div className="space-y-6">
+                <DiscoverMasterConsole />
+              </div>
+            )}
+
+            {/* Dedicated SoundRiver Master Console Tab */}
+            {activeTab === 'soundriver-console' && (
+              <div className="space-y-6">
+                <SoundRiverMasterConsole />
+              </div>
+            )}
+
+            {/* Dedicated SoundOcean Master Console Tab */}
+            {activeTab === 'soundocean-console' && (
+              <div className="space-y-6">
+                <SoundOceanMasterConsole />
+              </div>
+            )}
+
+            {/* Dedicated Cross-Engine Leadership Boards Console Tab */}
+            {activeTab === 'leaderboards-console' && (
+              <div className="space-y-6">
+                <LeadershipBoardConsole />
+              </div>
+            )}
+
             {/* Dedicated Master Dancia-4Tv Video Console Tab */}
             {activeTab === 'dancia4tv-console' && (
               <div className="space-y-6">
@@ -2649,9 +2796,26 @@ const MasterDashboardPage: React.FC = () => {
               </div>
             )}
 
+            {/* Dedicated STERCS Command, DefCon & Geo-Restrictions Console Tab */}
+            {activeTab === 'stercs-defense' && (
+              <div className="space-y-6">
+                <StercsControlCenter />
+              </div>
+            )}
+
             {activeTab === 'platform-domains-console' && (
               <div className="space-y-6">
                 <PlatformDomainManagementConsole />
+              </div>
+            )}
+
+            {activeTab === 'platform-operations-console' && (
+              <div className="space-y-6">
+                <PlatformDomainManagementConsole
+                  domainKeys={PLATFORM_OPERATIONS_DOMAIN_KEYS}
+                  title="Games, Lending, Learning & Platform Operations"
+                  description="Manage persisted gaming, advertising, lending-facility, learning, franchise, streaming, downloads, StercsEditor, and wallet records. Financial transactions and player activity remain read-only where direct edits could compromise ledger or gameplay integrity."
+                />
               </div>
             )}
 
@@ -2693,7 +2857,12 @@ const MasterDashboardPage: React.FC = () => {
             {/* Dedicated E-Commerce & Storefronts Master Console Tab */}
             {activeTab === 'ecommerce' && (
               <div className="space-y-6">
-                <MasterEcommerceConsole />
+                <UnifiedCommerceCatalogHub />
+                <PlatformDomainManagementConsole
+                  domainKeys={COMMERCE_DOMAIN_KEYS}
+                  title="Marketplace, Storefront, Flamingo & OwnIt Management"
+                  description="Manage live PostgreSQL listings, stores, products, inventory, fashion catalogs, owned assets, fulfillment records, returns, and warranty claims. Payment transactions are deliberately read-only."
+                />
               </div>
             )}
 
@@ -2706,7 +2875,11 @@ const MasterDashboardPage: React.FC = () => {
 
             {activeTab === 'commerce-growth' && (
               <div className="space-y-8">
-                <MasterEcommerceConsole />
+                <PlatformDomainManagementConsole
+                  domainKeys={COMMERCE_DOMAIN_KEYS}
+                  title="Commerce Ecosystem Database Management"
+                  description="Create and maintain commerce records against PostgreSQL, apply supported lifecycle controls, and inspect management audit history."
+                />
                 {renderConsoleGroupContent(
                   'commerce-growth',
                   'Commerce & Growth Consoles',

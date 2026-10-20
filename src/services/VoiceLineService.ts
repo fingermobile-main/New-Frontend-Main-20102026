@@ -61,6 +61,7 @@ export interface VoiceLineLogPayload {
 
 export interface VoiceLineSettings {
   volume: number; // 0.0 to 1.0 (default 0.35)
+  playbackRate: number; // 0.5 to 1.5 (calibrated to 0.85 for relaxed, natural African vocal cadence)
   enabled: boolean; // Global master toggle
   microservices: {
     forum: boolean;
@@ -77,6 +78,7 @@ const SETTINGS_STORAGE_KEY = 'fingermobile_voiceline_settings';
 
 const DEFAULT_SETTINGS: VoiceLineSettings = {
   volume: 0.35, // 35% device/system speaker volume
+  playbackRate: 0.85, // Calibrated relaxed playback tempo (0.85x)
   enabled: true,
   microservices: {
     forum: true,
@@ -174,6 +176,7 @@ class VoiceLineService {
           const parsed = JSON.parse(stored);
           this.settings = {
             volume: typeof parsed.volume === 'number' ? parsed.volume : DEFAULT_SETTINGS.volume,
+            playbackRate: typeof parsed.playbackRate === 'number' ? parsed.playbackRate : DEFAULT_SETTINGS.playbackRate,
             enabled: typeof parsed.enabled === 'boolean' ? parsed.enabled : DEFAULT_SETTINGS.enabled,
             microservices: {
               ...DEFAULT_SETTINGS.microservices,
@@ -223,6 +226,19 @@ class VoiceLineService {
   public setVoiceLineVolume(volume: number): void {
     const clampedVolume = Math.max(0, Math.min(1, volume));
     this.saveSettings({ volume: clampedVolume });
+  }
+
+  public setVolume(volume: number): void {
+    this.setVoiceLineVolume(volume);
+  }
+
+  public getPlaybackRate(): number {
+    return this.settings.playbackRate || 0.85;
+  }
+
+  public setPlaybackRate(rate: number): void {
+    const clampedRate = Math.max(0.5, Math.min(1.5, rate));
+    this.saveSettings({ playbackRate: clampedRate });
   }
 
   public isMicroserviceVoiceLineEnabled(microservice: string): boolean {
@@ -440,8 +456,8 @@ class VoiceLineService {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.volume = volume;
-      utterance.rate = 1.05;
-      utterance.pitch = 1.1;
+      utterance.rate = this.settings.playbackRate || 0.85;
+      utterance.pitch = 1.0;
 
       // Select natural English voice if present
       const voices = window.speechSynthesis.getVoices();
@@ -516,6 +532,7 @@ class VoiceLineService {
       try {
         const audio = new Audio(matchingLine.audioUrl);
         audio.volume = volume;
+        audio.playbackRate = this.settings.playbackRate || 0.85;
         const playPromise = audio.play();
         if (playPromise !== undefined) {
           await playPromise;
@@ -533,7 +550,22 @@ class VoiceLineService {
       this.speakVoiceLineText(phraseToPlay, volume);
     }
 
-    // Level 4: Metric Logging
+    // Level 4: Metric Logging & Visual 2-Second 3D Reaction Dispatch
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(
+        new CustomEvent('fingermobile:voiceline', {
+          detail: {
+            text: phraseToPlay,
+            voiceLineId: matchingLine ? matchingLine.id : voiceLineId,
+            category: matchingLine ? matchingLine.category : microservice,
+            eventType,
+            microservice,
+            timestamp: Date.now()
+          }
+        })
+      );
+    }
+
     if (matchingLine) {
       this.logVoiceLinePlay(matchingLine.id, eventType, microservice);
     }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MainLayout from '../../components/layout/MainLayout';
 import { useAppContext } from '../../contexts/AppContext';
 import { useAuth } from '../../contexts/AuthContext';
@@ -22,6 +22,8 @@ import {
   RotateCcw
 } from 'lucide-react';
 import voiceLineServiceInstance, { VoiceLineSettings } from '../../services/VoiceLineService';
+import userProfileSyncService from '../../services/UserProfileSyncService';
+import UserService from '../../services/UserService';
 
 type SettingsTab =
   | 'profile'
@@ -40,16 +42,35 @@ export const SettingsPage: React.FC = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [copiedKey, setCopiedKey] = useState(false);
 
-  // Profile State
-  const [profile, setProfile] = useState({
-    name: user?.firstName ? `${user.firstName} ${user.lastName || ''}`.trim() : 'Alice Smith',
-    username: user?.username || 'alicesmith',
-    email: user?.email || 'alice@fingermobileprotocol.com',
-    phone: (user as any)?.phone || '+234 801 234 5678',
-    bio: (user as any)?.bio || 'Digital creator, photographer, and music enthusiast exploring Web3 storytelling on FingerMobile.',
-    avatarUrl: user?.avatar || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=256&q=80',
-    location: 'Lagos, Nigeria'
+  // Profile State hydrated from unified Source of Truth
+  const [profile, setProfile] = useState(() => {
+    const synced = userProfileSyncService.getProfile();
+    return {
+      name: synced.name,
+      username: synced.username,
+      email: synced.email,
+      phone: synced.phone || '+234 801 234 5678',
+      bio: synced.headline,
+      avatarUrl: synced.avatar,
+      location: synced.location || 'Lagos, Nigeria'
+    };
   });
+
+  // Subscribe to live reactive updates across all components/tabs
+  useEffect(() => {
+    const unsub = userProfileSyncService.subscribe((synced) => {
+      setProfile({
+        name: synced.name,
+        username: synced.username,
+        email: synced.email,
+        phone: synced.phone || '+234 801 234 5678',
+        bio: synced.headline,
+        avatarUrl: synced.avatar,
+        location: synced.location || 'Lagos, Nigeria'
+      });
+    });
+    return unsub;
+  }, []);
 
   // Security State
   const [security, setSecurity] = useState({
@@ -138,21 +159,73 @@ export const SettingsPage: React.FC = () => {
     setTimeout(() => setCopiedKey(false), 2000);
   };
 
-  const handleSaveProfile = (e: React.FormEvent) => {
+  const handleSaveProfile = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSaving(true);
-    setTimeout(() => {
-      if (user && setUser) {
-        setUser({
-          ...user,
-          username: profile.username,
-          email: profile.email,
+    try {
+      // 1. Update unified UserProfileSyncService (broadcasts live across Forum Profile Card, Drawer, Dashboards)
+      userProfileSyncService.updateProfile({
+        name: profile.name,
+        username: profile.username,
+        headline: profile.bio,
+        avatar: profile.avatarUrl,
+        email: profile.email,
+        phone: profile.phone,
+        location: profile.location
+      });
+
+      // 2. Synchronize directly with /profile Charter API (Source of Truth)
+      try {
+        const targetId = user?.id || (user as any)?.userId || '00000000-0000-0000-0000-000000000001';
+        await fetch(`http://localhost:5001/api/v1/profiles/${targetId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            display_name: profile.name,
+            username: profile.username,
+            avatar_url: profile.avatarUrl,
+            bio: profile.bio,
+            location: profile.location,
+            contact_email: profile.email
+          })
+        });
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.warn('Backend /api/v1/profiles sync fallback', err);
+      }
+
+      // 3. Synchronize with User Management API (/users/profile)
+      try {
+        const parts = profile.name.split(' ');
+        await UserService.updateUserProfile({
+          firstName: parts[0] || 'Israel',
+          lastName: parts.slice(1).join(' ') || 'Obinna Mbah',
+          bio: profile.bio,
           avatar: profile.avatarUrl
         });
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.warn('UserService sync fallback', err);
       }
+
+      // 4. Update AuthContext if session exists
+      if (user && setUser) {
+        const parts = profile.name.split(' ');
+        setUser({
+          ...user,
+          firstName: parts[0] || user.firstName,
+          lastName: parts.slice(1).join(' ') || user.lastName,
+          username: profile.username,
+          email: profile.email,
+          avatar: profile.avatarUrl,
+          bio: profile.bio
+        });
+      }
+
+      showToast('Profile preferences synchronized across Sovereign Database, Wall & Forum!', 'success');
+    } finally {
       setIsSaving(false);
-      showToast('Profile preferences updated successfully!', 'success');
-    }, 600);
+    }
   };
 
   const handleSaveSecurity = (e: React.FormEvent) => {
@@ -610,7 +683,7 @@ export const SettingsPage: React.FC = () => {
                       </div>
 
                       <div className="flex items-center gap-4">
-                        <VolumeX className="w-4 h-4 text-slate-500" />
+                        <VolumeX className="w-4 h-4 text-slate-600" />
                         <input
                           type="range"
                           min="0"

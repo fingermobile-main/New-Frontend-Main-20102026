@@ -124,7 +124,7 @@ export const FingerMobileLogoViewerModal: React.FC<FingerMobileLogoViewerModalPr
           <button
             type="button"
             onClick={onClose}
-            className="p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-200 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800 transition"
+            className="p-2 rounded-xl text-slate-700 hover:text-slate-900 hover:bg-slate-200 dark:text-slate-300 dark:hover:text-white dark:hover:bg-slate-800 transition"
             aria-label="Close Modal"
           >
             <X className="w-5 h-5" />
@@ -270,7 +270,7 @@ export const FingerMobileLogoViewerModal: React.FC<FingerMobileLogoViewerModalPr
                           </span>
                           {isSelected && <Check className="w-4 h-4 text-orange-600 shrink-0" />}
                         </div>
-                        <span className="text-[10px] font-mono text-slate-600 dark:text-slate-400 block mt-0.5">
+                        <span className="text-[10px] font-mono text-slate-700 dark:text-slate-300 font-medium block mt-0.5">
                           {v.resolution} • {v.format}
                         </span>
                       </div>
@@ -290,11 +290,11 @@ export const FingerMobileLogoViewerModal: React.FC<FingerMobileLogoViewerModalPr
               </p>
               <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-200 dark:border-slate-700 font-mono text-[11px]">
                 <div>
-                  <span className="text-slate-500 dark:text-slate-400 block text-[9px] uppercase">Format</span>
+                  <span className="text-slate-600 dark:text-slate-300 font-medium block text-[9px] uppercase">Format</span>
                   <span className="font-bold text-slate-900 dark:text-white">{selectedVariant.format}</span>
                 </div>
                 <div>
-                  <span className="text-slate-500 dark:text-slate-400 block text-[9px] uppercase">Color Space</span>
+                  <span className="text-slate-600 dark:text-slate-300 font-medium block text-[9px] uppercase">Color Space</span>
                   <span className="font-bold text-slate-900 dark:text-white">sRGB 4K Ultra HD</span>
                 </div>
               </div>

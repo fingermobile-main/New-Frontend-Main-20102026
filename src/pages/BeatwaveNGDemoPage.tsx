@@ -118,7 +118,7 @@ const BeatwaveNGDemoPage: React.FC = () => {
             </div>
             <div>
               <h1 className="text-lg font-bold tracking-tight">BeatwaveNG High-Fidelity Studio</h1>
-              <p className="text-xs text-slate-400">DSP Audio Pipeline • 32-bit Float Waveform Processing</p>
+              <p className="text-xs text-slate-300 font-medium">DSP Audio Pipeline • 32-bit Float Waveform Processing</p>
             </div>
           </div>
         </div>
@@ -177,7 +177,7 @@ const BeatwaveNGDemoPage: React.FC = () => {
           <div className="mt-4 flex flex-wrap items-center justify-between gap-4">
             <div>
               <p className="text-sm font-bold text-white">{selectedTrack?.title || 'Master Audio Channel'}</p>
-              <p className="text-xs text-slate-400">{selectedTrack?.artist_name || selectedTrack?.artist || 'Beatwave Artist'}</p>
+              <p className="text-xs text-slate-300 font-medium">{selectedTrack?.artist_name || selectedTrack?.artist || 'Beatwave Artist'}</p>
             </div>
             <div className="flex items-center space-x-3">
               <button
@@ -249,7 +249,7 @@ const BeatwaveNGDemoPage: React.FC = () => {
 
             {/* Quick Acoustic Profiles */}
             <div className="pt-2 border-t border-slate-800">
-              <span className="text-xs text-slate-500 block mb-2 font-semibold">Acoustic Presets</span>
+              <span className="text-xs text-slate-300 block mb-2 font-semibold">Acoustic Presets</span>
               <div className="grid grid-cols-2 gap-2">
                 {(['Club', 'Vocal', 'Bass', 'Studio Flat'] as const).map((pr) => (
                   <button
@@ -284,7 +284,7 @@ const BeatwaveNGDemoPage: React.FC = () => {
                 onChange={(e) => setBpm(Number(e.target.value))}
                 className="w-full accent-cyan-500 h-1.5 bg-slate-800 rounded-lg cursor-pointer"
               />
-              <div className="flex justify-between text-[10px] text-slate-500 mt-1">
+              <div className="flex justify-between text-[10px] text-slate-300 font-medium mt-1">
                 <span>70 (Slow Chill)</span>
                 <span>128 (Afro/House)</span>
                 <span>180 (Drum & Bass)</span>
@@ -295,7 +295,7 @@ const BeatwaveNGDemoPage: React.FC = () => {
             <div className="p-4 rounded-2xl bg-slate-800/40 border border-slate-700/50 flex items-center justify-between">
               <div>
                 <p className="text-xs font-bold text-white">3D Spatial Head-Tracking</p>
-                <p className="text-[11px] text-slate-400">Binaural 360-degree soundstage emulation</p>
+                <p className="text-[11px] text-slate-300 font-medium">Binaural 360-degree soundstage emulation</p>
               </div>
               <button
                 onClick={() => {
@@ -332,7 +332,7 @@ const BeatwaveNGDemoPage: React.FC = () => {
                 <Disc className="w-5 h-5 text-purple-400" />
                 <h3 className="font-bold text-base">Select Track Deck</h3>
               </div>
-              <span className="text-xs text-slate-500">{tracks.length} loaded</span>
+              <span className="text-xs text-slate-300 font-medium">{tracks.length} loaded</span>
             </div>
 
             <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
@@ -352,9 +352,9 @@ const BeatwaveNGDemoPage: React.FC = () => {
                 >
                   <div className="min-w-0 pr-2">
                     <p className="font-semibold text-xs truncate">{track.title}</p>
-                    <p className="text-[11px] text-slate-500 truncate">{track.artist_name || track.artist || 'Beatwave Artist'}</p>
+                    <p className="text-[11px] text-slate-300 font-medium truncate">{track.artist_name || track.artist || 'Beatwave Artist'}</p>
                   </div>
-                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700 whitespace-nowrap">
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 font-medium border border-slate-700 whitespace-nowrap">
                     {track.genre}
                   </span>
                 </div>

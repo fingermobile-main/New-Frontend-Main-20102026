@@ -678,7 +678,7 @@ const PortfolioPage: React.FC = () => {
                   <div>
                     <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Budget (FIC)</label>
                     <div className="relative">
-                      <CurrencyDollarIcon className="w-4 h-4 text-slate-500 absolute left-3 top-3" />
+                      <CurrencyDollarIcon className="w-4 h-4 text-slate-600 absolute left-3 top-3" />
                       <input
                         type="number"
                         min="25"
@@ -692,7 +692,7 @@ const PortfolioPage: React.FC = () => {
                   <div>
                     <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Timeline Deadline</label>
                     <div className="relative">
-                      <CalendarIcon className="w-4 h-4 text-slate-500 absolute left-3 top-3" />
+                      <CalendarIcon className="w-4 h-4 text-slate-600 absolute left-3 top-3" />
                       <input
                         type="text"
                         value={commissionForm.timeline}

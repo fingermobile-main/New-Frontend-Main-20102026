@@ -168,7 +168,7 @@ describe('Enhanced ProtocolService', () => {
       // Mock the network transmission for testing
       // In a real implementation, we'd mock the transmitMessage method
       try {
-        const result = await protocolService.connect('ws://localhost:3001');
+        const result = await protocolService.connect('ws://localhost:5001');
         // Assertions would depend on the mock implementation
         expect(result).toBeDefined();
       } catch (error) {

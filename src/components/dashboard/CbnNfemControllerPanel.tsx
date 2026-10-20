@@ -234,7 +234,7 @@ export const CbnNfemControllerPanel: React.FC = () => {
               className={`px-3 py-3 rounded-xl font-bold text-xs font-mono transition flex items-center justify-center gap-2 border ${
                 isSchedulerActive
                   ? 'bg-emerald-950/60 border-emerald-500 text-emerald-300'
-                  : 'bg-zinc-900 border-zinc-800 text-zinc-400 hover:text-white'
+                  : 'bg-zinc-900 border-zinc-800 text-zinc-300 font-medium hover:text-white'
               }`}
             >
               <Clock className="w-4 h-4" />
@@ -258,74 +258,74 @@ export const CbnNfemControllerPanel: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Card 1: Official Cleared NFEM VWAP Rate */}
         <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 shadow-sm space-y-2">
-          <div className="flex items-center justify-between text-zinc-400">
+          <div className="flex items-center justify-between text-zinc-300 font-medium">
             <span className="text-[11px] font-semibold uppercase tracking-wider">Daily NFEM VWAP Rate</span>
             <Landmark className="w-4 h-4 text-amber-400" />
           </div>
           <div className="text-2xl font-black font-mono text-amber-400">
             ₦{summary.vwapRate.toFixed(2)}
           </div>
-          <div className="flex items-center justify-between text-[11px] text-zinc-400 font-mono">
+          <div className="flex items-center justify-between text-[11px] text-zinc-300 font-mono">
             <span>Range: ₦{summary.lowRate.toFixed(2)} - ₦{summary.highRate.toFixed(2)}</span>
             <span className="text-emerald-400 font-bold">1 USD</span>
           </div>
-          <p className="text-[10px] text-zinc-500">
+          <p className="text-[10px] text-zinc-300 font-medium">
             Volume-Weighted Average Price cleared on Bloomberg BMatch & Refinitiv.
           </p>
         </div>
 
         {/* Card 2: 24h Interbank Turnover */}
         <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 shadow-sm space-y-2">
-          <div className="flex items-center justify-between text-zinc-400">
+          <div className="flex items-center justify-between text-zinc-300 font-medium">
             <span className="text-[11px] font-semibold uppercase tracking-wider">Interbank FX Turnover</span>
             <Activity className="w-4 h-4 text-emerald-400" />
           </div>
           <div className="text-2xl font-black font-mono text-emerald-400">
             ${(summary.totalTurnoverUsd / 1000000).toFixed(1)}M USD
           </div>
-          <div className="flex items-center justify-between text-[11px] text-zinc-400 font-mono">
+          <div className="flex items-center justify-between text-[11px] text-zinc-300 font-mono">
             <span>₦{(summary.totalNairaTurnover / 1000000000).toFixed(2)}B NGN</span>
             <span>{summary.transactionsCount} Trades</span>
           </div>
-          <p className="text-[10px] text-zinc-500">
+          <p className="text-[10px] text-zinc-300 font-medium">
             Total daily liquidity injected by Authorized Dealer Banks & IOCs.
           </p>
         </div>
 
         {/* Card 3: Calibrated FIC Token Valuation */}
         <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 shadow-sm space-y-2">
-          <div className="flex items-center justify-between text-zinc-400">
+          <div className="flex items-center justify-between text-zinc-300 font-medium">
             <span className="text-[11px] font-semibold uppercase tracking-wider">Calibrated FIC Parity</span>
             <DollarSign className="w-4 h-4 text-indigo-400" />
           </div>
           <div className="text-2xl font-black font-mono text-indigo-300">
             ₦{ficParity.ficNaira.toFixed(2)}
           </div>
-          <div className="flex items-center justify-between text-[11px] text-zinc-400 font-mono">
+          <div className="flex items-center justify-between text-[11px] text-zinc-300 font-mono">
             <span>1 FIC = ${ficParity.ficUsd.toFixed(2)} USD</span>
             <span className="text-amber-400 font-bold">{ficParity.discountPercent}% Buffer</span>
           </div>
-          <p className="text-[10px] text-zinc-500">
+          <p className="text-[10px] text-zinc-300 font-medium">
             Strict protocol standard: 1 USD = 20 FIC (1 FIC = $0.05c USD / ₦65.00k NGN).
           </p>
         </div>
 
         {/* Card 4: Real Effective Exchange Rate (REER) */}
         <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 shadow-sm space-y-2">
-          <div className="flex items-center justify-between text-zinc-400">
+          <div className="flex items-center justify-between text-zinc-300 font-medium">
             <span className="text-[11px] font-semibold uppercase tracking-wider">Composite REER Index</span>
             <Scale className="w-4 h-4 text-purple-400" />
           </div>
           <div className="text-2xl font-black font-mono text-purple-300">
             {reer.reerIndex.toFixed(2)}
           </div>
-          <div className="flex items-center justify-between text-[11px] text-zinc-400 font-mono">
+          <div className="flex items-center justify-between text-[11px] text-zinc-300 font-mono">
             <span>Base: {reer.baseYear}</span>
             <span className="px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-300 font-bold text-[10px]">
               {reer.valuationStatus}
             </span>
           </div>
-          <p className="text-[10px] text-zinc-500">
+          <p className="text-[10px] text-zinc-300 font-medium">
             BIS 6-currency trade-weighted purchasing power parity matrix.
           </p>
         </div>
@@ -360,14 +360,14 @@ export const CbnNfemControllerPanel: React.FC = () => {
 
         {/* Mathematical Formula Callout */}
         <div className="p-4 rounded-xl bg-black/60 border border-zinc-800 space-y-2">
-          <div className="flex items-center gap-2 text-xs font-mono text-zinc-400">
+          <div className="flex items-center gap-2 text-xs font-mono text-zinc-300">
             <Layers className="w-4 h-4 text-amber-400" />
             <span className="font-bold text-white">Central Bank Official Valuation Formula:</span>
           </div>
           <div className="p-3 bg-zinc-950 rounded-lg font-mono text-xs sm:text-sm text-amber-300 text-center tracking-wide border border-zinc-800/80">
             Daily NFEM Rate = ∑ (Price of Transaction × Volume of Transaction) ÷ Total Daily Turnover Volume
           </div>
-          <p className="text-[11px] text-zinc-400 leading-relaxed">
+          <p className="text-[11px] text-zinc-300 font-medium leading-relaxed">
             <strong>Volume Weighting Tilt Principle:</strong> Authorized dealer commercial banks, institutional investors, and international oil companies (IOCs) engage in a market-cleared mechanism. For instance, if <strong>Bank A buys $10 million at ₦1,330/$</strong> and <strong>Bank B buys $2 million at ₦1,335/$</strong>, the official published rate mathematically tilts closer to ₦1,330 because of the significantly higher volume traded at that level.
           </p>
         </div>
@@ -375,7 +375,7 @@ export const CbnNfemControllerPanel: React.FC = () => {
         {/* Live Interbank Transactions Table */}
         <div className="overflow-x-auto border border-zinc-800 rounded-xl">
           <table className="w-full text-left text-xs">
-            <thead className="bg-black/60 text-zinc-400 font-semibold border-b border-zinc-800 text-[10px] uppercase">
+            <thead className="bg-black/60 text-zinc-200 font-bold border-b border-zinc-800 text-[10px] uppercase">
               <tr>
                 <th className="py-3 px-4">Ticket Ref</th>
                 <th className="py-3 px-4">Interbank Dealer / Counterparty</th>
@@ -407,7 +407,7 @@ export const CbnNfemControllerPanel: React.FC = () => {
                         {tx.dealerType.replace(/_/g, ' ')}
                       </span>
                     </td>
-                    <td className="py-3 px-4 text-zinc-400 text-[11px]">{tx.tradingVenue}</td>
+                    <td className="py-3 px-4 text-zinc-300 text-[11px] font-medium">{tx.tradingVenue}</td>
                     <td className="py-3 px-4 text-right font-bold text-amber-400">
                       ₦{tx.price.toFixed(2)}
                     </td>
@@ -457,81 +457,81 @@ export const CbnNfemControllerPanel: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {/* Factor 1: Money Supply Differentials */}
           <div className="p-5 rounded-2xl bg-black/40 border border-zinc-800 space-y-3">
-            <div className="flex items-center justify-between text-zinc-400">
+            <div className="flex items-center justify-between text-zinc-300 font-medium">
               <span className="text-xs font-bold text-white uppercase tracking-wider">
                 1. Money Supply Differentials
               </span>
               <Database className="w-4 h-4 text-amber-400" />
             </div>
             <div className="space-y-1 font-mono text-xs">
-              <div className="flex justify-between text-zinc-400">
+              <div className="flex justify-between text-zinc-300 font-medium">
                 <span>Broad Money (M2):</span>
                 <span className="text-white font-bold">₦{factors.moneySupplyM2Naira.toFixed(1)} Trillion</span>
               </div>
-              <div className="flex justify-between text-zinc-400">
+              <div className="flex justify-between text-zinc-300 font-medium">
                 <span>Gross FX Reserves:</span>
                 <span className="text-emerald-400 font-bold">${factors.fxReservesUsd.toFixed(1)} Billion</span>
               </div>
-              <div className="flex justify-between text-zinc-400">
+              <div className="flex justify-between text-zinc-300 font-medium">
                 <span>M2 / Reserves Ratio:</span>
                 <span className="text-amber-400 font-bold">{factors.moneySupplyRatio.toFixed(2)}x</span>
               </div>
             </div>
-            <p className="text-[10px] text-zinc-400 leading-relaxed border-t border-zinc-800 pt-2">
+            <p className="text-[10px] text-zinc-300 font-medium leading-relaxed border-t border-zinc-800 pt-2">
               The volume of local Naira in circulation relative to available USD liquid reserves determines interbank pressure.
             </p>
           </div>
 
           {/* Factor 2: Foreign Exchange Turnover */}
           <div className="p-5 rounded-2xl bg-black/40 border border-zinc-800 space-y-3">
-            <div className="flex items-center justify-between text-zinc-400">
+            <div className="flex items-center justify-between text-zinc-300 font-medium">
               <span className="text-xs font-bold text-white uppercase tracking-wider">
                 2. Foreign Exchange Turnover
               </span>
               <Activity className="w-4 h-4 text-emerald-400" />
             </div>
             <div className="space-y-1 font-mono text-xs">
-              <div className="flex justify-between text-zinc-400">
+              <div className="flex justify-between text-zinc-300 font-medium">
                 <span>Daily NFEM Volume:</span>
                 <span className="text-white font-bold">${factors.dailyFxTurnoverUsd.toFixed(1)} Million</span>
               </div>
-              <div className="flex justify-between text-zinc-400">
+              <div className="flex justify-between text-zinc-300 font-medium">
                 <span>Interbank Depth:</span>
                 <span className="text-emerald-400 font-bold">Robust Willing-Seller Desk</span>
               </div>
-              <div className="flex justify-between text-zinc-400">
+              <div className="flex justify-between text-zinc-300 font-medium">
                 <span>Clearing Velocity:</span>
                 <span className="text-indigo-400 font-bold">T+0 Settlement (Instant)</span>
               </div>
             </div>
-            <p className="text-[10px] text-zinc-400 leading-relaxed border-t border-zinc-800 pt-2">
+            <p className="text-[10px] text-zinc-300 font-medium leading-relaxed border-t border-zinc-800 pt-2">
               Daily liquidity injected by autonomous dealers, IOCs, and foreign portfolio investors (FPIs).
             </p>
           </div>
 
           {/* Factor 3: Inflation Variance */}
           <div className="p-5 rounded-2xl bg-black/40 border border-zinc-800 space-y-3">
-            <div className="flex items-center justify-between text-zinc-400">
+            <div className="flex items-center justify-between text-zinc-300 font-medium">
               <span className="text-xs font-bold text-white uppercase tracking-wider">
                 3. Inflation Variance (CPI Gap)
               </span>
               <TrendingUp className="w-4 h-4 text-purple-400" />
             </div>
             <div className="space-y-1 font-mono text-xs">
-              <div className="flex justify-between text-zinc-400">
+              <div className="flex justify-between text-zinc-300 font-medium">
                 <span>Nigeria CPI (Headline):</span>
                 <span className="text-rose-400 font-bold">{factors.nigeriaCpi.toFixed(1)}%</span>
               </div>
-              <div className="flex justify-between text-zinc-400">
+              <div className="flex justify-between text-zinc-300 font-medium">
                 <span>US CPI (Headline):</span>
                 <span className="text-emerald-400 font-bold">{factors.usCpi.toFixed(1)}%</span>
               </div>
-              <div className="flex justify-between text-zinc-400">
+              <div className="flex justify-between text-zinc-300 font-medium">
                 <span>Inflation Differential:</span>
                 <span className="text-purple-300 font-bold">+{factors.inflationVariance.toFixed(1)}% Gap</span>
               </div>
             </div>
-            <p className="text-[10px] text-zinc-400 leading-relaxed border-t border-zinc-800 pt-2">
+            <p className="text-[10px] text-zinc-300 font-medium leading-relaxed border-t border-zinc-800 pt-2">
               The purchasing power gap between Nigeria and top trade partners directly influences forward curve parity.
             </p>
           </div>
@@ -562,7 +562,7 @@ export const CbnNfemControllerPanel: React.FC = () => {
           <div className="p-3 bg-zinc-950 rounded-lg font-mono text-xs sm:text-sm text-purple-300 text-center tracking-wide border border-zinc-800/80">
             REER = ∑ [ wi × ( E(Naira/i) ÷ ( P(Nigeria) / P(i) ) ) ]
           </div>
-          <p className="text-[11px] text-zinc-400 leading-relaxed">
+          <p className="text-[11px] text-zinc-300 font-medium leading-relaxed">
             Where <strong>wi</strong> represents trade flow weights assigned to Nigeria&apos;s top trading partners,
             <strong> E</strong> is the nominal exchange rate against partner currency <em>i</em>, and <strong>P</strong> represents the relative price levels (inflation) between nations.
           </p>
@@ -571,7 +571,7 @@ export const CbnNfemControllerPanel: React.FC = () => {
         {/* REER Partners Table */}
         <div className="overflow-x-auto border border-zinc-800 rounded-xl">
           <table className="w-full text-left text-xs">
-            <thead className="bg-black/60 text-zinc-400 font-semibold border-b border-zinc-800 text-[10px] uppercase">
+            <thead className="bg-black/60 text-zinc-200 font-bold border-b border-zinc-800 text-[10px] uppercase">
               <tr>
                 <th className="py-3 px-4">Trading Partner</th>
                 <th className="py-3 px-4">Currency</th>
@@ -598,7 +598,7 @@ export const CbnNfemControllerPanel: React.FC = () => {
                   <td className="py-3 px-4 text-right text-zinc-300">
                     {partner.foreignPriceIndex.toFixed(1)}
                   </td>
-                  <td className="py-3 px-4 text-right text-zinc-400">
+                  <td className="py-3 px-4 text-right text-zinc-300 font-medium">
                     {partner.relativePriceRatio.toFixed(3)}
                   </td>
                   <td className="py-3 px-4 text-right font-bold text-purple-300">
@@ -613,7 +613,7 @@ export const CbnNfemControllerPanel: React.FC = () => {
                   Composite REER Index Summary:
                 </td>
                 <td className="py-3 px-4 text-right font-bold text-indigo-400">100%</td>
-                <td colSpan={3} className="py-3 px-4 text-right text-zinc-400">
+                <td colSpan={3} className="py-3 px-4 text-right text-zinc-300 font-medium">
                   Status: <span className="text-emerald-400 font-bold">{reer.valuationStatus}</span>
                 </td>
                 <td className="py-3 px-4 text-right font-extrabold text-purple-300 text-sm">
@@ -638,7 +638,7 @@ export const CbnNfemControllerPanel: React.FC = () => {
               Autonomous Ingestion & Rate Synchronization Audit Trail
             </h3>
           </div>
-          <span className="text-xs font-mono text-zinc-400 flex items-center gap-1.5">
+          <span className="text-xs font-mono text-zinc-300 font-medium flex items-center gap-1.5">
             <ShieldCheck className="w-4 h-4 text-emerald-400" />
             <span>SHA-256 Validated</span>
           </span>
@@ -656,14 +656,14 @@ export const CbnNfemControllerPanel: React.FC = () => {
                     {log.status}
                   </span>
                   <span className="text-white font-bold">{log.source}</span>
-                  <span className="text-zinc-500 text-[11px]">{log.timestamp.slice(0, 19).replace('T', ' ')}</span>
+                  <span className="text-zinc-300 text-[11px] font-medium">{log.timestamp.slice(0, 19).replace('T', ' ')}</span>
                 </div>
-                <p className="text-zinc-400 text-[11px] font-sans">{log.message}</p>
+                <p className="text-zinc-300 text-[11px] font-sans font-medium">{log.message}</p>
               </div>
 
               <div className="text-right shrink-0">
                 <div className="text-amber-400 font-bold">VWAP: ₦{log.computedNfemVwap.toFixed(2)}</div>
-                <div className="text-[10px] text-zinc-500 truncate max-w-xs">{log.auditHash}</div>
+                <div className="text-[10px] text-zinc-300 font-medium truncate max-w-xs">{log.auditHash}</div>
               </div>
             </div>
           ))}
@@ -685,13 +685,13 @@ export const CbnNfemControllerPanel: React.FC = () => {
               </div>
               <button
                 onClick={() => setIsTradeModalOpen(false)}
-                className="text-zinc-400 hover:text-white"
+                className="text-zinc-300 hover:text-white"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <p className="text-xs text-zinc-400">
+            <p className="text-xs text-zinc-300 font-medium">
               Inject a transaction into the Bloomberg BMatch tape to watch how transaction volume dynamically tilts the Volume-Weighted Average Price (VWAP).
             </p>
 

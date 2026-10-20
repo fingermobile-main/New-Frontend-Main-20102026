@@ -73,7 +73,7 @@ const RoleManagementPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Role Management</h1>
-          <p className="text-sm text-gray-500 mt-1">Configure system roles, access levels, and granular authority.</p>
+          <p className="text-sm text-slate-700 font-medium mt-1">Configure system roles, access levels, and granular authority.</p>
         </div>
         <button
           onClick={() => setShowCreateModal(true)}
@@ -84,7 +84,7 @@ const RoleManagementPage: React.FC = () => {
       </div>
 
       {loading && (
-        <div className="text-center py-12 text-gray-500 text-sm">
+        <div className="text-center py-12 text-slate-700 font-medium text-sm">
           Loading platform roles from database...
         </div>
       )}
@@ -100,10 +100,10 @@ const RoleManagementPage: React.FC = () => {
           <table className="w-full text-left">
             <thead className="bg-gray-50 border-b border-slate-300">
               <tr>
-                <th className="p-4 font-semibold text-xs uppercase tracking-wider text-gray-600">Role Title</th>
-                <th className="p-4 font-semibold text-xs uppercase tracking-wider text-gray-600">Access Level</th>
-                <th className="p-4 font-semibold text-xs uppercase tracking-wider text-gray-600">Responsibility</th>
-                <th className="p-4 font-semibold text-xs uppercase tracking-wider text-gray-600 text-right">Actions</th>
+                <th className="p-4 font-bold text-xs uppercase tracking-wider text-slate-800">Role Title</th>
+                <th className="p-4 font-bold text-xs uppercase tracking-wider text-slate-800">Access Level</th>
+                <th className="p-4 font-bold text-xs uppercase tracking-wider text-slate-800">Responsibility</th>
+                <th className="p-4 font-bold text-xs uppercase tracking-wider text-slate-800 text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
@@ -113,7 +113,7 @@ const RoleManagementPage: React.FC = () => {
                     <div className="flex items-center gap-2">
                       <span>{role.title || role.name}</span>
                       {role.is_system && (
-                        <span className="px-2 py-0.5 text-xs font-medium bg-gray-100 text-gray-600 rounded">System</span>
+                        <span className="px-2 py-0.5 text-xs font-semibold bg-slate-100 text-slate-800 rounded">System</span>
                       )}
                     </div>
                   </td>
@@ -122,7 +122,7 @@ const RoleManagementPage: React.FC = () => {
                       Level {role.level}
                     </span>
                   </td>
-                  <td className="p-4 text-sm text-gray-600 max-w-md">
+                  <td className="p-4 text-sm text-slate-700 max-w-md">
                     {role.responsibility || role.description || 'System access role'}
                   </td>
                   <td className="p-4 text-sm text-right">
@@ -185,7 +185,7 @@ const RoleManagementPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setShowCreateModal(false)}
-                  className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900"
+                  className="px-4 py-2 text-sm text-slate-700 font-medium hover:text-gray-900"
                 >
                   Cancel
                 </button>

@@ -148,7 +148,7 @@ STATUS: AUDITED & SEC REGISTERED`;
     <div className="space-y-6">
       {/* Metrics Banner */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+        <div className="bg-white p-5 rounded-2xl border border-slate-300 shadow-sm flex items-center gap-4">
           <div className="p-3 bg-emerald-50 text-emerald-600 rounded-xl">
             <BuildingOfficeIcon className="w-6 h-6" />
           </div>
@@ -158,7 +158,7 @@ STATUS: AUDITED & SEC REGISTERED`;
           </div>
         </div>
 
-        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+        <div className="bg-white p-5 rounded-2xl border border-slate-300 shadow-sm flex items-center gap-4">
           <div className="p-3 bg-green-50 text-green-600 rounded-xl">
             <ArrowTrendingUpIcon className="w-6 h-6" />
           </div>
@@ -168,7 +168,7 @@ STATUS: AUDITED & SEC REGISTERED`;
           </div>
         </div>
 
-        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+        <div className="bg-white p-5 rounded-2xl border border-slate-300 shadow-sm flex items-center gap-4">
           <div className="p-3 bg-blue-50 text-blue-600 rounded-xl">
             <ChartBarIcon className="w-6 h-6" />
           </div>
@@ -178,7 +178,7 @@ STATUS: AUDITED & SEC REGISTERED`;
           </div>
         </div>
 
-        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+        <div className="bg-white p-5 rounded-2xl border border-slate-300 shadow-sm flex items-center gap-4">
           <div className="p-3 bg-purple-50 text-purple-600 rounded-xl">
             <ShieldCheckIcon className="w-6 h-6" />
           </div>
@@ -192,7 +192,7 @@ STATUS: AUDITED & SEC REGISTERED`;
       {/* Main Tabbed Container */}
       <div className="bg-white rounded-2xl border border-slate-300 shadow-sm overflow-hidden">
         {/* Navigation Tabs */}
-        <div className="p-5 border-b border-slate-200 flex items-center justify-between">
+        <div className="p-5 border-b border-slate-300 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <button
               onClick={() => setActiveTab('filings')}
@@ -222,7 +222,7 @@ STATUS: AUDITED & SEC REGISTERED`;
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-gray-50 text-slate-700 text-xs uppercase tracking-wider border-b border-slate-200">
+                <tr className="bg-gray-50 text-slate-700 text-xs uppercase tracking-wider border-b border-slate-300">
                   <th className="py-3 px-5">Report Title</th>
                   <th className="py-3 px-5">Filing Type</th>
                   <th className="py-3 px-5">Period</th>
@@ -291,7 +291,7 @@ STATUS: AUDITED & SEC REGISTERED`;
                     a.download = `${gov.title.replace(/\s+/g, '_')}.txt`;
                     a.click();
                   }}
-                  className="px-3.5 py-1.5 border border-gray-300 hover:border-emerald-600 hover:text-emerald-700 text-xs font-bold rounded-lg transition-colors"
+                  className="px-3.5 py-1.5 border border-slate-300 hover:border-emerald-600 hover:text-emerald-700 text-xs font-bold rounded-lg transition-colors"
                 >
                   View Policy
                 </button>

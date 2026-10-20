@@ -1,12 +1,8 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   MagnifyingGlassIcon,
   SparklesIcon,
-  ChatBubbleLeftRightIcon,
-  HeartIcon,
-  ShareIcon,
-  BookmarkIcon,
   PlusIcon,
   PhotoIcon,
   VideoCameraIcon,
@@ -14,18 +10,15 @@ import {
   CalendarIcon,
   PaperClipIcon,
   LinkIcon,
-  ShieldCheckIcon,
   ShoppingBagIcon,
   ChevronDownIcon,
   XMarkIcon,
-  EllipsisHorizontalIcon,
   LockClosedIcon,
   CameraIcon,
   MapPinIcon,
   MusicalNoteIcon,
   TvIcon,
   SignalIcon,
-  PlayIcon,
   ExclamationCircleIcon,
   ListBulletIcon,
   PaperAirplaneIcon,
@@ -33,12 +26,12 @@ import {
   ArrowPathIcon,
   CheckIcon,
   Bars3Icon,
+  ArrowRightOnRectangleIcon,
 } from '@heroicons/react/24/outline';
 import {
-  HeartIcon as HeartSolidIcon,
-  BookmarkIcon as BookmarkSolidIcon,
   CheckCircleIcon as CheckCircleSolidIcon,
 } from '@heroicons/react/24/solid';
+import { useAuth } from '../contexts/AuthContext';
 import ForumService from '../services/forumService';
 import ForumPostCard from '../components/forum/ForumPostCard';
 import { ForumCategory } from '../types/forum';
@@ -46,11 +39,21 @@ import WebRtcStudioDrawer from '../components/streaming/WebRtcStudioDrawer';
 import MediaEditorModal, { EditedMediaResult } from '../components/MediaEditorModal';
 import UniversalProfileCard from '../components/common/UniversalProfileCard';
 import userProfileSyncService from '../services/UserProfileSyncService';
+import authService from '../services/authService';
 import openGraphService, { OpenGraphMetadata } from '../services/OpenGraphService';
 import locationService from '../services/LocationService';
-import RotatingWidgetRail from '../components/widgets/RotatingWidgetRail';
 import FingerMobileLogoViewerModal from '../components/modals/FingerMobileLogoViewerModal';
+import { MiiStoriesBar } from '../components/forum/MiiStoriesBar';
+import { PhotoCreditsFeedBanner } from '../components/photocredits/PhotoCreditsFeedBanner';
+import { PubliciteeAdCard } from '../components/forum/PubliciteeAdCard';
+import { FingerShortsSection } from '../components/FingerShortsSection';
+import { DiscoverFeedSection } from '../components/forum/DiscoverFeedSection';
+import { CanaryAdsManager } from '../components/canary/CanaryAdsManager';
+import { PlatformWidgetsAndAdsRail } from '../components/widgets/PlatformWidgetsAndAdsRail';
 import voiceLineServiceInstance from '../services/VoiceLineService';
+import ConnectWidget from '../components/widgets/ConnectWidget';
+import DiscoverWidget from '../components/widgets/DiscoverWidget';
+import { CategoryBulletinFeedHeader, getCategoryEmoji } from '../components/forum/CategoryBulletinFeedHeader';
 
 // =============================================================================
 // MINI DRAWER / DROPDOWN MENU ENTITIES
@@ -406,133 +409,7 @@ interface FeedPost {
   commentsList?: FeedComment[];
 }
 
-// =============================================================================
-// MULTI-MEDIA POST GALLERY COMPONENT (Supports Multiple Photos & Videos)
-// =============================================================================
-const MultiMediaGallery: React.FC<{
-  urls: string[];
-  title: string;
-  author: string;
-  // eslint-disable-next-line no-unused-vars
-  onOpenLightbox: (item: { url: string; title: string; author: string }) => void;
-}> = ({ urls, title, author, onOpenLightbox }) => {
-  const [activeIndex, setActiveIndex] = useState(0);
 
-  if (!urls || urls.length === 0) return null;
-
-  if (urls.length === 1) {
-    const url = urls[0];
-    const isVideo = /\.(mp4|webm|mov|m4v)$/i.test(url) || url.startsWith('data:video');
-    return (
-      <div
-        onClick={() => !isVideo && onOpenLightbox({ url, title, author })}
-        className="mt-3 rounded-2xl overflow-hidden max-h-80 border border-slate-200 dark:border-slate-800 cursor-pointer relative group bg-slate-900"
-      >
-        {isVideo ? (
-          <video src={url} controls playsInline className="w-full max-h-80 object-contain bg-black" />
-        ) : (
-          <img src={url} alt={title} className="w-full h-full object-cover group-hover:scale-[1.01] transition duration-300" />
-        )}
-        {!isVideo && (
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition flex items-end justify-between p-3 text-white">
-            <span className="text-xs font-bold flex items-center gap-1.5 bg-black/60 px-2.5 py-1 rounded-xl">
-              <MagnifyingGlassIcon className="w-3.5 h-3.5 text-amber-300" />
-              Expand UHD Media
-            </span>
-            <span className="text-[10px] font-mono text-slate-300">FingerMobile High-Fi</span>
-          </div>
-        )}
-      </div>
-    );
-  }
-
-  const currentUrl = urls[activeIndex];
-  const isVideo = /\.(mp4|webm|mov|m4v)$/i.test(currentUrl) || currentUrl.startsWith('data:video');
-
-  return (
-    <div className="mt-3 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-slate-950 relative group">
-      {/* Current Active Item Viewport */}
-      <div
-        className="relative max-h-80 aspect-video flex items-center justify-center cursor-pointer overflow-hidden bg-black"
-        onClick={() => !isVideo && onOpenLightbox({ url: currentUrl, title, author })}
-      >
-        {isVideo ? (
-          <video src={currentUrl} controls playsInline className="w-full h-full object-contain" />
-        ) : (
-          <img
-            src={currentUrl}
-            alt={`${title} (${activeIndex + 1})`}
-            className="w-full h-full object-cover transition-all duration-200"
-          />
-        )}
-
-        {/* Counter Badge */}
-        <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-black/75 backdrop-blur-md text-white text-[11px] font-mono font-bold flex items-center gap-1 shadow-md">
-          <span>{activeIndex + 1}</span>
-          <span className="text-slate-400">/</span>
-          <span>{urls.length}</span>
-        </div>
-
-        {/* Previous Button */}
-        {activeIndex > 0 && (
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              setActiveIndex(activeIndex - 1);
-            }}
-            className="absolute left-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/60 hover:bg-black/90 text-white flex items-center justify-center backdrop-blur-md transition shadow-lg text-lg font-bold"
-            title="Previous media"
-          >
-            &#8249;
-          </button>
-        )}
-
-        {/* Next Button */}
-        {activeIndex < urls.length - 1 && (
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              setActiveIndex(activeIndex + 1);
-            }}
-            className="absolute right-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/60 hover:bg-black/90 text-white flex items-center justify-center backdrop-blur-md transition shadow-lg text-lg font-bold"
-            title="Next media"
-          >
-            &#8250;
-          </button>
-        )}
-      </div>
-
-      {/* Bottom Thumbnail Strip */}
-      <div className="p-2 bg-slate-900/90 border-t border-slate-800 flex items-center gap-2 overflow-x-auto scrollbar-none">
-        {urls.map((u, idx) => {
-          const isItemVideo = /\.(mp4|webm|mov|m4v)$/i.test(u) || u.startsWith('data:video');
-          return (
-            <button
-              key={idx}
-              type="button"
-              onClick={() => setActiveIndex(idx)}
-              className={`w-12 h-12 rounded-xl overflow-hidden border-2 transition flex-shrink-0 relative ${
-                activeIndex === idx
-                  ? 'border-indigo-500 scale-105 shadow-md'
-                  : 'border-slate-800 opacity-60 hover:opacity-100'
-              }`}
-            >
-              {isItemVideo ? (
-                <div className="w-full h-full bg-slate-800 flex items-center justify-center text-indigo-400 text-[10px] font-bold">
-                  VID
-                </div>
-              ) : (
-                <img src={u} alt={`thumb-${idx}`} className="w-full h-full object-cover" />
-              )}
-            </button>
-          );
-        })}
-      </div>
-    </div>
-  );
-};
 
 const DEFAULT_POSTS: FeedPost[] = [
   {
@@ -660,6 +537,393 @@ const DEFAULT_POSTS: FeedPost[] = [
       image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=600',
     },
   },
+  {
+    id: 'post-105',
+    title: 'Sovereign Executive Portraiture - Lighting & 85mm Prime Rig Test',
+    content: 'Completed the test run on the 85mm f/1.4 GM master lens with Rembrandt high-contrast lighting in Victoria Island. 4K high-res export uploaded to PhotoCredits catalog for community licensing.',
+    authorName: 'Israel Obinna Mbah',
+    authorHandle: '@israel_mbah',
+    authorAvatar: '/assets/branding/mbah_israel_obinna.jpeg',
+    authorRole: 'Protocol Founder',
+    categoryName: '📸 PhotoCredits™ Licensing & UGC Royalty Showcase',
+    createdAt: '5h ago',
+    likesCount: 1240,
+    commentsCount: 88,
+    sharesCount: 112,
+    isLiked: true,
+    isBookmarked: true,
+    tags: ['PhotoCredits', 'Portraiture', 'Founder', 'Photography'],
+    isVerified: true,
+    locationTag: 'Victoria Island Boardroom, Lagos',
+    mediaUrl: '/assets/branding/mbah_israel_obinna.jpeg',
+  },
+  {
+    id: 'post-106',
+    title: 'Pacific Coast Waves & 4K UHD Aerial Drone Cinematography',
+    content: 'Capturing sunset tides along the Pacific coastline with RED V-Raptor 8K. The raw ProRes log files are available for download with 80% creator royalty via PhotoCredits protocol.',
+    authorName: 'Elena Vance',
+    authorHandle: '@elena_cine',
+    authorAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150',
+    authorRole: 'Cinematographer',
+    categoryName: '📸 PhotoCredits™ Licensing & UGC Royalty Showcase',
+    createdAt: '6h ago',
+    likesCount: 985,
+    commentsCount: 64,
+    sharesCount: 95,
+    isLiked: false,
+    isBookmarked: false,
+    tags: ['Drone', '4KUHD', 'Cinematography', 'Coast'],
+    isVerified: true,
+    mediaUrl: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1000',
+  },
+  {
+    id: 'post-107',
+    title: 'Atlantic Cliffside Breezes & Sea Spray Long Exposure',
+    content: 'Long exposure photography at Cliffs of Moher, Ireland. 1/80s shutter speed with ND1000 glass filter to smooth the turbulent Atlantic mist.',
+    authorName: 'Liam O\'Connor',
+    authorHandle: '@liam_atlantic',
+    authorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150',
+    authorRole: 'Landscape Photographer',
+    categoryName: '📸 PhotoCredits™ Licensing & UGC Royalty Showcase',
+    createdAt: '7h ago',
+    likesCount: 840,
+    commentsCount: 52,
+    sharesCount: 78,
+    isLiked: true,
+    isBookmarked: false,
+    tags: ['Ireland', 'Cliffs', 'Atlantic', 'Nature'],
+    isVerified: true,
+    mediaUrl: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=1000',
+  },
+  {
+    id: 'post-108',
+    title: 'LoanSqr SME Micro-Finance Pool Yields 18.4% APY on P2P Float',
+    content: 'The community credit pool for West African trade merchants has reached 4.2M FIC liquidity. All collateral locks are secured by non-custodial smart contracts.',
+    authorName: 'Zara Sterling',
+    authorHandle: '@zara_lush',
+    authorAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150',
+    authorRole: 'DeFi Risk Lead',
+    categoryName: '💳 Micro-Financing, Float Engines & SME Liquidity',
+    createdAt: '8h ago',
+    likesCount: 620,
+    commentsCount: 89,
+    sharesCount: 45,
+    isLiked: false,
+    isBookmarked: true,
+    tags: ['LoanSqr', 'Liquidity', 'SME', 'Fintech'],
+    isVerified: true,
+  },
+  {
+    id: 'post-109',
+    title: 'Mega-Hallmarks Expansion: 250,000 Member Cluster Architecture',
+    content: 'We have updated the P2P gossiping layer to support massive 250k member hallmark communities without dropping state sync or lagging broadcast relays.',
+    authorName: 'Marcus Washington',
+    authorHandle: '@marcus_arch',
+    authorAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150',
+    authorRole: 'Infrastructure Engineer',
+    categoryName: '🏛️ Mega-Communities & 250k Hallmarks Architecture',
+    createdAt: '9h ago',
+    likesCount: 760,
+    commentsCount: 41,
+    sharesCount: 62,
+    isLiked: true,
+    isBookmarked: false,
+    tags: ['Hallmarks', 'Scale', 'Decentralized', 'Mesh'],
+    isVerified: true,
+  },
+  {
+    id: 'post-110',
+    title: 'OwnIt Luxury Escrow: Hermès Birkin Bag Verification Verified on Chain',
+    content: 'The physical NFC authentication seal embedded in the exotic crocodile leather was verified with a 100% cryptographic match. Escrow released in 350ms.',
+    authorName: 'Aisha Al-Mansoor',
+    authorHandle: '@aisha_dubai',
+    authorAvatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150',
+    authorRole: 'Luxury Appraiser',
+    categoryName: '💎 Sovereign Luxury Escrow & Authenticated Goods',
+    createdAt: '10h ago',
+    likesCount: 1450,
+    commentsCount: 115,
+    sharesCount: 180,
+    isLiked: false,
+    isBookmarked: true,
+    tags: ['OwnIt', 'Luxury', 'Hermes', 'Escrow'],
+    isVerified: true,
+    mediaUrl: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=1000',
+  },
+  {
+    id: 'post-111',
+    title: 'Flamingo Handwoven Royal Aso-Oke: Heritage Weaving in 2026',
+    content: 'Celebrating master weavers in Oyo State preserving hand-loomed gold silk threads. Check out our interactive mini-documentary in the cultural gallery.',
+    authorName: 'Folake Adele',
+    authorHandle: '@folake_couture',
+    authorAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150',
+    authorRole: 'Master Artisan',
+    categoryName: '👑 Pan-African Haute Couture & Heritage Guilds',
+    createdAt: '11h ago',
+    likesCount: 890,
+    commentsCount: 74,
+    sharesCount: 92,
+    isLiked: true,
+    isBookmarked: false,
+    tags: ['Flamingo', 'AsoOke', 'Couture', 'AfricanHeritage'],
+    isVerified: true,
+    mediaUrl: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1000',
+  },
+  {
+    id: 'post-112',
+    title: 'Canary Ads Studio Programmatic Bidding Engine Launched',
+    content: 'Advertisers can now deploy targeted Search, Display, In-Stream Video, and Demand Gen campaigns with automated ROI optimization and non-refundable escrow protection.',
+    authorName: 'David Chen',
+    authorHandle: '@david_camus',
+    authorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150',
+    authorRole: 'Ad Network Architect',
+    categoryName: '🎯 Canary Ads Governance & Review',
+    createdAt: '12h ago',
+    likesCount: 540,
+    commentsCount: 38,
+    sharesCount: 44,
+    isLiked: false,
+    isBookmarked: false,
+    tags: ['CanaryAds', 'Advertising', 'Programmatic', 'ROI'],
+    isVerified: true,
+  },
+  {
+    id: 'post-113',
+    title: 'WebRTC Studio Multi-Track Ingestion with Noise Suppression',
+    content: 'We integrated real-time WebRTC audio processing with sub-10ms DSP latency for live podcasters and streaming musicians across decentralized nodes.',
+    authorName: 'Amara Kalu',
+    authorHandle: '@amara_beats',
+    authorAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150',
+    authorRole: 'Audio Engineer',
+    categoryName: '🎵 BeatwaveNG Lossless Audio & Stems',
+    createdAt: '13h ago',
+    likesCount: 670,
+    commentsCount: 45,
+    sharesCount: 58,
+    isLiked: true,
+    isBookmarked: false,
+    tags: ['WebRTC', 'Audio', 'DSP', 'Streaming'],
+    isVerified: true,
+  },
+  {
+    id: 'post-114',
+    title: 'Urban Architecture & Sunset Skyline in Downtown Chicago',
+    content: 'Geometric glass reflections and warm amber sunlight illuminating modern skyscraper avenues. Shot on Fujifilm GFX 100 II with GF 23mm prime lens.',
+    authorName: 'Marcus Washington',
+    authorHandle: '@marcus_arch',
+    authorAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150',
+    authorRole: 'Architectural Photographer',
+    categoryName: '📸 PhotoCredits™ Licensing & UGC Royalty Showcase',
+    createdAt: '14h ago',
+    likesCount: 760,
+    commentsCount: 41,
+    sharesCount: 62,
+    isLiked: false,
+    isBookmarked: true,
+    tags: ['Chicago', 'Architecture', 'Urban', 'PhotoCredits'],
+    isVerified: true,
+    mediaUrl: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1000',
+  },
+  {
+    id: 'post-115',
+    title: 'Global Decentralized Governance Summit 2026 Concluded in Dubai',
+    content: 'Over 1,400 sovereign relay operators voted on the 2026–2028 network roadmap. Full consensus was reached on biometric keycard standardization.',
+    authorName: 'Aisha Al-Mansoor',
+    authorHandle: '@aisha_dubai',
+    authorAvatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150',
+    authorRole: 'Governance Validator',
+    categoryName: '🌐 General Discussions & Protocol Talk',
+    createdAt: '15h ago',
+    likesCount: 1450,
+    commentsCount: 115,
+    sharesCount: 180,
+    isLiked: true,
+    isBookmarked: false,
+    tags: ['Governance', 'Consensus', 'Dubai', 'Protocol'],
+    isVerified: true,
+    mediaUrl: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1000',
+  },
+  {
+    id: 'post-116',
+    title: 'Andes Cloud Forest & Emerald Ridge Aerial 4K Footage',
+    content: 'Panoramic 4K UHD video soaring above the Venezuelan Andes Cordillera and cloud forests. High altitude drone telemetry performed flawlessly.',
+    authorName: 'Sofia Rodriguez',
+    authorHandle: '@sofia_wildlife',
+    authorAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150',
+    authorRole: 'Wildlife Filmmaker',
+    categoryName: '📸 PhotoCredits™ Licensing & UGC Royalty Showcase',
+    createdAt: '16h ago',
+    likesCount: 1120,
+    commentsCount: 79,
+    sharesCount: 130,
+    isLiked: true,
+    isBookmarked: true,
+    tags: ['Andes', 'Nature', 'Aerial', '4K'],
+    isVerified: true,
+    mediaUrl: 'https://images.unsplash.com/photo-1511497584788-87676104235f?w=1000',
+  },
+  {
+    id: 'post-117',
+    title: 'Lush Pressies Gifting Protocol Records 100,000 Escrow Transfers',
+    content: 'Milestone achieved! 100k verified member-to-member gifts safely cleared via cryptographic escrow with 100% recipient delight rate.',
+    authorName: 'Zara Sterling',
+    authorHandle: '@zara_lush',
+    authorAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150',
+    authorRole: 'Community Lead',
+    categoryName: '🎁 Escrow-Backed Peer Gifting & Member Care',
+    createdAt: '17h ago',
+    likesCount: 920,
+    commentsCount: 68,
+    sharesCount: 84,
+    isLiked: false,
+    isBookmarked: false,
+    tags: ['LushPressies', 'Gifting', 'Milestone', 'Community'],
+    isVerified: true,
+  },
+  {
+    id: 'post-118',
+    title: 'Keycard NFC Tap-to-Sign Firmware v3.2 Released',
+    content: 'New firmware update enhances biometric sensor response time to 38 milliseconds. Compatible with all existing EAL6+ physical hardware cards.',
+    authorName: 'Tunde Adeleke',
+    authorHandle: '@tunde_dev',
+    authorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150',
+    authorRole: 'Core Cryptographer',
+    categoryName: '🛡️ Cryptographic Security & EAL6+ Enclaves',
+    createdAt: '18h ago',
+    likesCount: 480,
+    commentsCount: 32,
+    sharesCount: 40,
+    isLiked: true,
+    isBookmarked: false,
+    tags: ['Firmware', 'NFC', 'Keycard', 'Biometric'],
+    isVerified: true,
+  },
+  {
+    id: 'post-119',
+    title: 'BeatwaveNG High-Res Studio Session: Afro-Electronic Live Improvisation',
+    content: 'Live session recorded in Victoria Island with modular synthesizers and acoustic talking drums. Download the 32-bit float audio stems.',
+    authorName: 'Amara Kalu',
+    authorHandle: '@amara_beats',
+    authorAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150',
+    authorRole: 'Audio Engineer',
+    categoryName: '🎵 BeatwaveNG Lossless Audio & Stems',
+    createdAt: '19h ago',
+    likesCount: 710,
+    commentsCount: 53,
+    sharesCount: 65,
+    isLiked: false,
+    isBookmarked: true,
+    tags: ['BeatwaveNG', 'Synthesizer', 'Afrobeat', 'Live'],
+    isVerified: true,
+  },
+  {
+    id: 'post-120',
+    title: 'Dancia-4Tv Street Dance Battle Semifinals Highlight Reel',
+    content: 'The most electrifying pop-and-lock battles from across 16 African cities. Stream the full 4K WebRTC replay now.',
+    authorName: 'Chidi Okafor',
+    authorHandle: '@chidi_dancia',
+    authorAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150',
+    authorRole: 'Broadcast Director',
+    categoryName: '📺 Dancia-4Tv Live WebRTC Video Broadcasts',
+    createdAt: '20h ago',
+    likesCount: 890,
+    commentsCount: 62,
+    sharesCount: 77,
+    isLiked: true,
+    isBookmarked: false,
+    tags: ['Dancia4Tv', 'DanceBattle', 'Highlights', 'WebRTC'],
+    isVerified: true,
+  },
+  {
+    id: 'post-121',
+    title: 'Sovereign Identity Verification on Android & iOS Hardware Enclaves',
+    content: 'Cross-platform SDK documentation for FingerBio and Android StrongBox integration is now available on GitHub.',
+    authorName: 'Israel Obinna Mbah',
+    authorHandle: '@israel_mbah',
+    authorAvatar: '/assets/branding/mbah_israel_obinna.jpeg',
+    authorRole: 'Protocol Founder',
+    categoryName: '🛡️ Cryptographic Security & EAL6+ Enclaves',
+    createdAt: '21h ago',
+    likesCount: 1350,
+    commentsCount: 94,
+    sharesCount: 120,
+    isLiked: true,
+    isBookmarked: true,
+    tags: ['Identity', 'StrongBox', 'SDK', 'Mobile'],
+    isVerified: true,
+  },
+  {
+    id: 'post-122',
+    title: 'Vintage Leica M11 Monochrom Street Photography in Paris',
+    content: 'Pure black-and-white tonal depth capturing rain-slicked cobblestones in Montmartre. Published exclusively for PhotoCredits collectors.',
+    authorName: 'Liam O\'Connor',
+    authorHandle: '@liam_atlantic',
+    authorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150',
+    authorRole: 'Street Photographer',
+    categoryName: '📸 PhotoCredits™ Licensing & UGC Royalty Showcase',
+    createdAt: '22h ago',
+    likesCount: 640,
+    commentsCount: 42,
+    sharesCount: 51,
+    isLiked: false,
+    isBookmarked: false,
+    tags: ['Leica', 'StreetPhotography', 'Monochrome', 'Paris'],
+    isVerified: true,
+  },
+  {
+    id: 'post-123',
+    title: 'SME Merchant Working Capital: Fast Approvals via LoanSqr',
+    content: 'How small businesses are leveraging their on-chain transaction history to secure micro-loans with zero collateral bureaucracy.',
+    authorName: 'Zara Sterling',
+    authorHandle: '@zara_lush',
+    authorAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150',
+    authorRole: 'Fintech Specialist',
+    categoryName: '💳 Micro-Financing, Float Engines & SME Liquidity',
+    createdAt: '23h ago',
+    likesCount: 510,
+    commentsCount: 36,
+    sharesCount: 39,
+    isLiked: true,
+    isBookmarked: false,
+    tags: ['LoanSqr', 'SME', 'Credit', 'Decentralized'],
+    isVerified: true,
+  },
+  {
+    id: 'post-124',
+    title: 'Handmade Bronze Casting Guilds in Benin City: 2026 Exhibition',
+    content: 'Honoring centuries of lost-wax bronze casting excellence. Rare collector sculptures showcased on the Flamingo decentralized portal.',
+    authorName: 'Folake Adele',
+    authorHandle: '@folake_couture',
+    authorAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150',
+    authorRole: 'Master Artisan',
+    categoryName: '👑 Pan-African Haute Couture & Heritage Guilds',
+    createdAt: '1d ago',
+    likesCount: 780,
+    commentsCount: 58,
+    sharesCount: 71,
+    isLiked: false,
+    isBookmarked: true,
+    tags: ['BeninBronze', 'Flamingo', 'Artisans', 'Exhibition'],
+    isVerified: true,
+  },
+  {
+    id: 'post-125',
+    title: 'Decentralized Search Indexing & Privacy Guarantee Explained',
+    content: 'How the Guardian Search indexing engine indexes millions of community items without storing IP addresses or search histories.',
+    authorName: 'Tunde Adeleke',
+    authorHandle: '@tunde_dev',
+    authorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150',
+    authorRole: 'Core Cryptographer',
+    categoryName: '🌐 General Discussions & Protocol Talk',
+    createdAt: '1d ago',
+    likesCount: 690,
+    commentsCount: 47,
+    sharesCount: 55,
+    isLiked: true,
+    isBookmarked: false,
+    tags: ['Privacy', 'Search', 'Guardian', 'ZeroTelemetry'],
+    isVerified: true,
+  },
 ];
 
 // =============================================================================
@@ -667,15 +931,45 @@ const DEFAULT_POSTS: FeedPost[] = [
 // =============================================================================
 export const ForumPage: React.FC = () => {
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
+
+  const isOnboarded = Boolean(
+    user &&
+    (user.onboardingComplete || (user as any).onboarding_completed) &&
+    (localStorage.getItem('onboardingComplete') === 'true' || localStorage.getItem('hasCompletedOnboarding') === 'true')
+  );
+
+  const handleLogout = () => {
+    logout();
+    try {
+      authService.clearSession();
+    } catch (_e) {}
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('token');
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      localStorage.removeItem('user');
+      localStorage.removeItem('fingermobile_token');
+      localStorage.removeItem('onboardingComplete');
+      localStorage.removeItem('hasCompletedOnboarding');
+      localStorage.removeItem('fmp_member_profile');
+      localStorage.removeItem('fmp_comprehensive_profile');
+      try {
+        userProfileSyncService.clearProfile();
+      } catch (_e) {}
+    }
+    navigate('/login');
+  };
 
   // Navigation State
   const [activeSubNav, setActiveSubNav] = useState<string>('home');
   const [feedMode] = useState<'for_you' | 'following' | 'recent' | 'trending'>('for_you');
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>('all');
+  const [editorialMode, setEditorialMode] = useState<'curated' | 'all'>('curated');
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [showMiniDrawer, setShowMiniDrawer] = useState<boolean>(false);
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState<boolean>(false);
   const [isLogoViewerOpen, setIsLogoViewerOpen] = useState<boolean>(false);
+  const composerContainerRef = useRef<HTMLDivElement | null>(null);
 
   // Profile Data Synced Live from UserProfileSyncService
   const [syncedProfile, setSyncedProfile] = useState(() => userProfileSyncService.getProfile());
@@ -713,8 +1007,6 @@ export const ForumPage: React.FC = () => {
 
   // Post Card Lightbox & Interactive Media State
   const [selectedLightboxImage, setSelectedLightboxImage] = useState<{ url: string; title: string; author: string } | null>(null);
-  const [playingAudioPostId, setPlayingAudioPostId] = useState<string | null>(null);
-  const [activePostOptionsId, setActivePostOptionsId] = useState<string | null>(null);
 
   // Composer Form State
   const [composerTitle, setComposerTitle] = useState<string>('');
@@ -811,8 +1103,50 @@ export const ForumPage: React.FC = () => {
   const [posts, setPosts] = useState<FeedPost[]>(DEFAULT_POSTS);
   const [apiCategories, setApiCategories] = useState<{ id: string; name: string; icon: string }[]>(MASTER_CATEGORIES_CATALOG);
 
-  // Expanded Comments State
-  const [expandedComments, setExpandedComments] = useState<Record<string, boolean>>({ 'post-101': true });
+  // Infinite UGC Stream Generator & Observer (No Load More, No End)
+  const feedSentinelRef = useRef<HTMLDivElement>(null);
+  const isGeneratingUgcRef = useRef<boolean>(false);
+  const ugcBatchCountRef = useRef<number>(1);
+
+  const loadMoreUgcBatch = useCallback(() => {
+    if (isGeneratingUgcRef.current) return;
+    isGeneratingUgcRef.current = true;
+
+    const batch = ugcBatchCountRef.current;
+    ugcBatchCountRef.current += 1;
+
+    // Generate diverse UGC posts from default templates with live variations
+    const newBatch: FeedPost[] = DEFAULT_POSTS.map((basePost, i) => ({
+      ...basePost,
+      id: `ugc-inf-${batch}-${basePost.id}-${i}-${Date.now()}`,
+      title: `${basePost.title} (Protocol Relay #${batch}.${i + 1})`,
+      likesCount: basePost.likesCount + Math.floor(Math.random() * 45) + 5,
+      commentsCount: basePost.commentsCount + Math.floor(Math.random() * 8) + 1,
+      createdAt: 'Just now',
+    }));
+
+    setPosts((prev) => [...prev, ...newBatch]);
+
+    setTimeout(() => {
+      isGeneratingUgcRef.current = false;
+    }, 400);
+  }, []);
+
+  useEffect(() => {
+    if (!feedSentinelRef.current) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          loadMoreUgcBatch();
+        }
+      },
+      { threshold: 0.1, rootMargin: '600px' }
+    );
+    observer.observe(feedSentinelRef.current);
+    return () => observer.disconnect();
+  }, [loadMoreUgcBatch]);
+
+  // Comments Input Text State
   const [commentInputTexts, setCommentInputTexts] = useState<Record<string, string>>({});
 
   // Fetch Categories on Mount
@@ -821,11 +1155,14 @@ export const ForumPage: React.FC = () => {
       try {
         const res = await ForumService.getCategories();
         if (res.success && res.data?.categories && res.data.categories.length > 0) {
-          const loaded = res.data.categories.map((c: ForumCategory) => ({
-            id: String(c.id),
-            name: c.name,
-            icon: c.icon || '💬',
-          }));
+          const loaded = res.data.categories.map((c: ForumCategory) => {
+            const cleanName = (c.name || '').replace(/https?:\/\/[^\s]+/g, '').trim() || c.name;
+            return {
+              id: String(c.id),
+              name: cleanName,
+              icon: c.icon || getCategoryEmoji(cleanName),
+            };
+          });
           const existingNames = new Set(loaded.map((c) => c.name.toLowerCase()));
           const extra = MASTER_CATEGORIES_CATALOG.filter((c) => !existingNames.has(c.name.toLowerCase()));
           setApiCategories([...loaded, ...extra]);
@@ -893,13 +1230,81 @@ export const ForumPage: React.FC = () => {
         p.tags.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase())) ||
         p.categoryName.toLowerCase().includes(searchQuery.toLowerCase());
 
+      const cleanCategory = selectedCategoryId.toLowerCase().replace(/https?:\/\/[^\s]+/g, '').trim();
+      const postCatClean = p.categoryName.toLowerCase().replace(/https?:\/\/[^\s]+/g, '').trim();
+
       const matchCategory =
         selectedCategoryId === 'all' ||
-        p.categoryName.toLowerCase().includes(selectedCategoryId.toLowerCase());
+        postCatClean.includes(cleanCategory) ||
+        cleanCategory.includes(postCatClean);
 
       return matchSearch && matchCategory;
     });
   }, [posts, searchQuery, selectedCategoryId]);
+
+  // Fallback seed posts for categories with 0 posts
+  const categorySeedPosts = useMemo((): FeedPost[] => {
+    if (selectedCategoryId === 'all') return [];
+    const catClean = selectedCategoryId.replace(/https?:\/\/[^\s]+/g, '').trim();
+    const emoji = getCategoryEmoji(catClean);
+    return [
+      {
+        id: `seed-${catClean.toLowerCase().replace(/\s+/g, '-')}-1`,
+        title: `${catClean} Sovereign Community Dispatch & UGC Spotlight`,
+        content: `Welcome to the official ${catClean} feed! Members who follow and contribute here share dedicated user-generated content, technical breakdowns, audio updates, and peer-to-peer insights without platform media tech algorithms interfering.\n\nDrop your thoughts, media stems, or questions below to shape today's on-demand bulletin.`,
+        authorName: 'Israel Mbah',
+        authorHandle: '@israel_protocol',
+        authorAvatar: '/assets/branding/mbah_israel_obinna.jpeg',
+        authorRole: 'Protocol Architect',
+        categoryName: `${emoji} ${catClean}`,
+        tags: [catClean.replace(/\s+/g, ''), 'SovereignUGC', 'DailyBulletin', 'Community'],
+        likesCount: 48,
+        commentsCount: 4,
+        sharesCount: 12,
+        isLiked: false,
+        isBookmarked: false,
+        createdAt: '25m ago',
+        mediaUrls: ['https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1200&auto=format&fit=crop&q=80'],
+      },
+      {
+        id: `seed-${catClean.toLowerCase().replace(/\s+/g, '-')}-2`,
+        title: `Peer Review & Audio Notes on ${catClean} Developments`,
+        content: `Fresh on-demand audio update has been compiled for ${catClean}. Verified contributors are seeing high engagement on authentic member-generated dispatches today. What specific sub-topics should the AI direct editorial team spotlight in tomorrow's bulletin?`,
+        authorName: 'Elena Vance',
+        authorHandle: '@elena_vance',
+        authorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150',
+        authorRole: 'Editorial Lead',
+        categoryName: `${emoji} ${catClean}`,
+        tags: [catClean.replace(/\s+/g, ''), 'AudioBulletin', 'EditorialPick', 'UGC'],
+        likesCount: 32,
+        commentsCount: 2,
+        sharesCount: 8,
+        isLiked: false,
+        isBookmarked: false,
+        createdAt: '1h ago',
+        poll: {
+          question: `Which ${catClean} topic is most critical for today's daily stream?`,
+          totalVotes: 184,
+          durationDays: 3,
+          options: [
+            { text: 'Decentralized Architecture & Peer Verification', votes: 112 },
+            { text: 'Monetization & Direct Sovereign Escrow', votes: 72 }
+          ]
+        }
+      }
+    ];
+  }, [selectedCategoryId]);
+
+  const effectivePosts = useMemo(() => {
+    let list = filteredPosts;
+    if (selectedCategoryId !== 'all' && filteredPosts.length === 0) {
+      list = categorySeedPosts;
+    }
+    if (editorialMode === 'curated') {
+      return [...list].sort((a, b) => (b.likesCount + b.commentsCount) - (a.likesCount + a.commentsCount));
+    }
+    return list;
+  }, [selectedCategoryId, filteredPosts, categorySeedPosts, editorialMode]);
 
   // Markdown Inserter
   const insertMarkdownSyntax = (syntax: 'bold' | 'italic' | 'heading' | 'quote' | 'bullet' | 'code' | 'link') => {
@@ -1160,7 +1565,9 @@ export const ForumPage: React.FC = () => {
     }
 
     const matchedCat = apiCategories.find((c) => c.id === composerCategory || c.name === composerCategory);
-    const categoryLabel = matchedCat ? `${matchedCat.icon} ${matchedCat.name}` : composerCategory;
+    const cleanCatName = (matchedCat?.name || composerCategory).replace(/https?:\/\/[^\s]+/g, '').trim();
+    const emoji = getCategoryEmoji(cleanCatName, matchedCat?.icon);
+    const categoryLabel = `${emoji} ${cleanCatName}`;
 
     // Dynamically retrieve author from UserProfileSyncService for 100% sync
     const currentMember = userProfileSyncService.getProfile();
@@ -1556,28 +1963,30 @@ export const ForumPage: React.FC = () => {
                   <span className="text-base sm:text-lg font-black tracking-tight text-slate-900 dark:text-white flex items-center group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
                     FingerMobile<span className="text-[#ff6b00] ml-0.5">™</span>
                   </span>
-                  <span className="text-[10px] uppercase font-extrabold tracking-widest text-slate-600 dark:text-slate-400 -mt-1">
+                  <span className="text-[10px] uppercase font-extrabold tracking-widest text-slate-700 dark:text-slate-300 font-medium -mt-1">
                     Protocol
                   </span>
                 </button>
               </h1>
 
-              {/* 3. Orange Burger Menu / Drawer Button (Justified & Spaced) */}
-              <button
-                type="button"
-                onClick={() => window.dispatchEvent(new CustomEvent('open-drawer-menu'))}
-                className="p-2 sm:p-2.5 rounded-2xl border border-orange-200 dark:border-orange-500/30 bg-orange-50/80 hover:bg-orange-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-[#ff6b00] hover:text-[#e05e00] transition-all shadow-xs flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-orange-500/40 cursor-pointer ml-1 sm:ml-2"
-                aria-label="Open Navigation Drawer"
-                title="Platform Navigation (385 Pages / 230+ Screens)"
-              >
-                <Bars3Icon className="w-5 h-5 sm:w-6 sm:h-6 text-[#ff6b00]" />
-              </button>
+              {/* 3. Orange Burger Menu / Drawer Button (ONLY visible and accessible when perfectly onboarded) */}
+              {isOnboarded && (
+                <button
+                  type="button"
+                  onClick={() => window.dispatchEvent(new CustomEvent('open-drawer-menu'))}
+                  className="p-2 sm:p-2.5 rounded-2xl border border-orange-200 dark:border-orange-500/30 bg-orange-50/80 hover:bg-orange-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-[#ff6b00] hover:text-[#e05e00] transition-all shadow-xs flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-orange-500/40 cursor-pointer ml-1 sm:ml-2"
+                  aria-label="Open Navigation Drawer"
+                  title="Platform Navigation (385 Pages / 230+ Screens)"
+                >
+                  <Bars3Icon className="w-5 h-5 sm:w-6 sm:h-6 text-[#ff6b00]" />
+                </button>
+              )}
             </div>
 
             {/* Center: Search Bar (Spacious & Justified) */}
             <div className="hidden md:flex flex-1 max-w-lg mx-6">
               <div className="relative w-full">
-                <MagnifyingGlassIcon className="w-4 h-4 text-slate-500 absolute left-3 top-2.5" />
+                <MagnifyingGlassIcon className="w-4 h-4 text-slate-600 absolute left-3 top-2.5" />
                 <input
                   type="text"
                   placeholder="Search sovereign posts, stems, keycards, tags..."
@@ -1588,48 +1997,106 @@ export const ForumPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Right: Quick Navigation Badges & Settings Link */}
+            {/* Right: Quick Navigation Badges, Settings Link & Log Out / Auth CTAs */}
             <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => setIsLiveStudioOpen(true)}
-                className="px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl transition flex items-center gap-1.5 shadow-sm cursor-pointer"
-              >
-                <SignalIcon className="w-3.5 h-3.5 animate-pulse" />
-                <span>Go Live</span>
-              </button>
+              {!user ? (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => navigate('/login')}
+                    className="px-3.5 py-1.5 rounded-xl border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs hover:bg-slate-100 dark:hover:bg-slate-800 transition shadow-xs cursor-pointer"
+                  >
+                    Sign In
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => navigate('/register')}
+                    className="px-3.5 py-1.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-extrabold text-xs transition shadow-xs cursor-pointer"
+                  >
+                    Sign Up
+                  </button>
+                </>
+              ) : !isOnboarded ? (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => navigate('/onboarding')}
+                    className="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5"
+                  >
+                    <span>Complete Onboarding</span>
+                    <ArrowRightOnRectangleIcon className="w-3.5 h-3.5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/60 dark:hover:bg-rose-900/80 border border-rose-300 dark:border-rose-700/70 text-rose-700 dark:text-rose-300 hover:text-rose-900 font-extrabold text-xs transition flex items-center gap-1.5 shadow-xs cursor-pointer"
+                    title="Log Out of FingerMobile Protocol"
+                    aria-label="Log Out"
+                  >
+                    <ArrowRightOnRectangleIcon className="w-4 h-4 text-rose-600 dark:text-rose-400" />
+                    <span className="font-bold">Log Out</span>
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => setIsLiveStudioOpen(true)}
+                    className="px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl transition flex items-center gap-1.5 shadow-sm cursor-pointer"
+                  >
+                    <SignalIcon className="w-3.5 h-3.5 animate-pulse" />
+                    <span>Go Live</span>
+                  </button>
 
-              <button
-                type="button"
-                onClick={() => navigate('/settings')}
-                className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition"
-                title="Sovereign Profile & Settings (Syncs with Master Dashboard)"
-              >
-                <LockClosedIcon className="w-4 h-4" />
-              </button>
+                  <button
+                    type="button"
+                    onClick={() => navigate('/settings')}
+                    className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition"
+                    title="Sovereign Profile & Settings (Syncs with Master Dashboard)"
+                  >
+                    <LockClosedIcon className="w-4 h-4" />
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/60 dark:hover:bg-rose-900/80 border border-rose-300 dark:border-rose-700/70 text-rose-700 dark:text-rose-300 hover:text-rose-900 font-extrabold text-xs transition flex items-center gap-1.5 shadow-xs cursor-pointer"
+                    title="Log Out of FingerMobile Protocol"
+                    aria-label="Log Out"
+                  >
+                    <ArrowRightOnRectangleIcon className="w-4 h-4 text-rose-600 dark:text-rose-400" />
+                    <span className="font-bold">Log Out</span>
+                  </button>
+                </>
+              )}
             </div>
           </div>
 
           {/* Level 2 Sub-Nav Row */}
-          <div className="flex items-center gap-2 py-2 overflow-x-auto scrollbar-none border-t border-slate-100 dark:border-slate-800 text-xs">
-            {SUB_NAV_ITEMS.map((sub) => (
-              <button
-                key={sub.id}
-                type="button"
-                onClick={() => {
-                  setActiveSubNav(sub.id);
-                  navigate(sub.path);
-                }}
-                className={`px-3 py-1 rounded-lg font-bold whitespace-nowrap transition ${
-                  activeSubNav === sub.id
-                    ? 'bg-orange-600 text-white shadow-xs'
-                    : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
-                }`}
-              >
-                {sub.name}
-              </button>
-            ))}
-          </div>
+          <nav
+            aria-label="Forum Sub-Navigation"
+            className="w-full py-2 border-t border-slate-200 dark:border-slate-800 text-xs overflow-x-auto scrollbar-none"
+          >
+            <div className="grid grid-cols-6 gap-2 w-full min-w-[540px] sm:min-w-0">
+              {SUB_NAV_ITEMS.map((sub) => (
+                <button
+                  key={sub.id}
+                  type="button"
+                  onClick={() => {
+                    setActiveSubNav(sub.id);
+                    navigate(sub.path);
+                  }}
+                  className={`w-full py-1.5 px-2 sm:px-3 rounded-lg font-bold text-center whitespace-nowrap transition flex items-center justify-center cursor-pointer ${
+                    activeSubNav === sub.id
+                      ? 'bg-orange-600 text-white shadow-xs'
+                      : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'
+                  }`}
+                >
+                  {sub.name}
+                </button>
+              ))}
+            </div>
+          </nav>
         </div>
       </header>
 
@@ -1639,7 +2106,7 @@ export const ForumPage: React.FC = () => {
           {/* ======================================================================= */}
           {/* LEFT RAIL (3 cols): IDENTITY, UNIVERSAL PROFILE CARD, PRIVACY           */}
           {/* ======================================================================= */}
-          <div className="lg:col-span-3 space-y-4">
+          <div className="lg:col-span-3 lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-5.5rem)] lg:overflow-y-auto space-y-4 scrollbar-none pr-1">
             {/* 1. Sovereign Universal ProfileCard (Subscribed to UserProfileSyncService) */}
             <UniversalProfileCard />
 
@@ -1717,7 +2184,7 @@ export const ForumPage: React.FC = () => {
                     <div className="min-w-0 pr-2">
                       <div className="text-xs font-bold text-slate-900 dark:text-white group-hover:text-orange-600 flex items-center gap-1.5">
                         <span>{item.name}</span>
-                        <span className="text-[10px] font-semibold text-slate-600 dark:text-slate-400">({item.badge})</span>
+                        <span className="text-[10px] font-semibold text-slate-700 dark:text-slate-300 font-medium">({item.badge})</span>
                       </div>
                       <div className="text-[11px] text-slate-700 dark:text-slate-300 font-medium truncate mt-0.5">{item.description}</div>
                     </div>
@@ -1753,9 +2220,22 @@ export const ForumPage: React.FC = () => {
                       </>
                     ) : (
                       <>
-                        <span className="text-base">
-                          {apiCategories.find((c) => c.name.toLowerCase() === selectedCategoryId.toLowerCase())?.icon || '📁'}
-                        </span>
+                        {(() => {
+                          const currentCat = apiCategories.find((c) => c.name.toLowerCase() === selectedCategoryId.toLowerCase());
+                          const isUrl = currentCat?.icon && (currentCat.icon.startsWith('http') || currentCat.icon.startsWith('/'));
+                          return isUrl ? (
+                            <img
+                              src={currentCat!.icon}
+                              alt=""
+                              className="w-4 h-4 rounded-full object-cover shrink-0"
+                              onError={(e) => { (e.currentTarget as HTMLElement).style.display = 'none'; }}
+                            />
+                          ) : (
+                            <span className="text-base shrink-0 leading-none">
+                              {getCategoryEmoji(selectedCategoryId, currentCat?.icon)}
+                            </span>
+                          );
+                        })()}
                         <span className="truncate text-slate-900 dark:text-white font-bold">{selectedCategoryId}</span>
                       </>
                     )}
@@ -1787,6 +2267,7 @@ export const ForumPage: React.FC = () => {
 
                     {apiCategories.map((cat) => {
                       const isSelected = selectedCategoryId.toLowerCase() === cat.name.toLowerCase();
+                      const isUrl = cat.icon && (cat.icon.startsWith('http') || cat.icon.startsWith('/'));
                       return (
                         <button
                           key={cat.id}
@@ -1801,8 +2282,19 @@ export const ForumPage: React.FC = () => {
                               : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 font-semibold'
                           }`}
                         >
-                          <span className="truncate flex items-center gap-2">
-                            <span>{cat.icon}</span>
+                          <span className="truncate flex items-center gap-2 min-w-0">
+                            {isUrl ? (
+                              <img
+                                src={cat.icon}
+                                alt=""
+                                className="w-4 h-4 rounded-full object-cover shrink-0"
+                                onError={(e) => { (e.currentTarget as HTMLElement).style.display = 'none'; }}
+                              />
+                            ) : (
+                              <span className="text-base shrink-0 leading-none">
+                                {getCategoryEmoji(cat.name, cat.icon)}
+                              </span>
+                            )}
                             <span className="truncate">{cat.name}</span>
                           </span>
                           {isSelected && <CheckIcon className="w-4 h-4 text-slate-700 shrink-0 ml-1.5" />}
@@ -1813,79 +2305,113 @@ export const ForumPage: React.FC = () => {
                 )}
               </div>
             </div>
+
+            {/* Connect Widget (Directly under Topic Categories) */}
+            <ConnectWidget pageContext="forum" />
+
+            {/* Discovery Widget (Directly under Topic Categories) */}
+            <DiscoverWidget pageContext="forum" />
           </div>
 
           {/* ======================================================================= */}
           {/* CENTER RAIL (6 cols): STORIES, COMPOSER, RICH POST FEED                 */}
           {/* ======================================================================= */}
           <div className="lg:col-span-6 space-y-6">
-            {/* 1. Mii™®©℠ 48H Ephemeral Stories Bar */}
-            <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-3 shadow-xs">
-              <div className="flex items-center justify-between mb-2 px-1">
-                <span className="text-xs font-black text-slate-900 dark:text-white flex items-center gap-1">
-                  <SparklesIcon className="w-3.5 h-3.5 text-amber-500" />
-                  Mii™®©℠
-                </span>
-                <span className="text-[10px] text-slate-700 font-mono">48H Disappearing</span>
-              </div>
-              <div className="flex items-center gap-3 overflow-x-auto scrollbar-none py-1">
-                {/* Create Mii Button */}
-                <button
-                  type="button"
-                  onClick={() => setIsMiiCreatorOpen(true)}
-                  className="flex flex-col items-center gap-1 flex-shrink-0 group cursor-pointer"
-                >
-                  <div className="w-14 h-14 rounded-full border-2 border-dashed border-orange-400 flex items-center justify-center bg-orange-50/50 group-hover:bg-orange-100 transition border text-orange-950 font-black">
-                    <PlusIcon className="w-5 h-5 text-orange-600" />
-                  </div>
-                  <span className="text-[10px] font-bold text-slate-600 dark:text-slate-300">Create Mii™®©℠</span>
-                </button>
+            {/* 1. Mii™®©℠ 48H Ephemeral Stories Bar with Immediate UGC Display, 10s P2P Shuffle & Slide-In Fullscreen View */}
+            <MiiStoriesBar
+              currentUserName={isOnboarded ? syncedProfile.name : 'Guest'}
+              currentUserAvatar={isOnboarded ? syncedProfile.avatar : '/assets/branding/default-avatar.svg'}
+              triggerToast={(msg, type) => triggerToast(msg, type === 'warning' ? 'info' : type)}
+            />
 
-                {/* Story Avatars */}
-                {miiStories.map((story) => (
-                  <button
-                    key={story.id}
-                    type="button"
-                    onClick={() => setSelectedMii(story)}
-                    className="flex flex-col items-center gap-1 flex-shrink-0 cursor-pointer group"
-                  >
-                    <div className={`w-14 h-14 rounded-full p-0.5 border-2 ${story.isViewed ? 'border-slate-300' : 'border-gradient-to-tr border-orange-500 animate-pulse'}`}>
-                      <img src={story.avatar} alt={story.author} className="w-full h-full rounded-full object-cover" />
-                    </div>
-                    <span className="text-[10px] font-semibold text-slate-700 dark:text-slate-300 truncate max-w-[60px]">{story.author.split(' ')[0]}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
+            {/* Dedicated Category Space & Preferred Topics Feed Header */}
+            {selectedCategoryId !== 'all' && (
+              <CategoryBulletinFeedHeader
+                categoryName={selectedCategoryId}
+                categoryIcon={apiCategories.find((c) => c.name.toLowerCase() === selectedCategoryId.toLowerCase())?.icon}
+                totalPostsCount={effectivePosts.length}
+                editorialMode={editorialMode}
+                onToggleEditorialMode={(mode) => setEditorialMode(mode)}
+                onClearCategory={() => setSelectedCategoryId('all')}
+                onPublishToCategory={() => {
+                  setComposerCategory(selectedCategoryId);
+                  composerContainerRef.current?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                triggerToast={(msg, type) => triggerToast(msg, type === 'warning' ? 'info' : type)}
+              />
+            )}
 
             {/* 2. THE NEW HIGH-POWERED POST COMPOSER */}
-            <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 shadow-sm">
-              <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
-                <div className="flex items-center gap-2">
-                  <img
-                    src={syncedProfile.avatar}
-                    alt={syncedProfile.name}
-                    className="w-8 h-8 rounded-full object-cover border border-orange-200"
-                  />
-                  <div>
-                    <span className="text-xs font-bold text-slate-900 dark:text-white">{syncedProfile.name}</span>
-                    <span className="text-[10px] text-slate-700 block font-mono">@{syncedProfile.username}</span>
-                  </div>
+            {!isOnboarded ? (
+              <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-300 dark:border-slate-800 p-5 shadow-xs text-center">
+                <div className="w-12 h-12 rounded-full bg-orange-100 dark:bg-orange-950/60 border border-orange-400 mx-auto flex items-center justify-center mb-3">
+                  <span className="text-xl">✍️</span>
                 </div>
+                <h3 className="text-sm font-black text-slate-900 dark:text-white">
+                  Join the Sovereign Discussion
+                </h3>
+                <p className="text-xs text-slate-700 dark:text-slate-300 mt-1 max-w-md mx-auto">
+                  {!user
+                    ? 'Sign in or register your sovereign account to publish posts, stems, and participate in community feeds.'
+                    : 'Please complete your onboarding process to publish discussions and interact with the sovereign network.'}
+                </p>
+                <div className="mt-3 flex justify-center gap-2">
+                  {!user ? (
+                    <>
+                      <button
+                        type="button"
+                        onClick={() => navigate('/login')}
+                        className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition cursor-pointer"
+                      >
+                        Sign In
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => navigate('/register')}
+                        className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs rounded-xl transition shadow-xs cursor-pointer"
+                      >
+                        Register
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => navigate('/onboarding')}
+                      className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl transition shadow-xs cursor-pointer"
+                    >
+                      Complete Onboarding →
+                    </button>
+                  )}
+                </div>
+              </div>
+            ) : (
+              <div ref={composerContainerRef} className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-300 dark:border-slate-800 p-4 shadow-sm">
+                <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+                  <div className="flex items-center gap-2">
+                    <img
+                      src={syncedProfile.avatar}
+                      alt={syncedProfile.name}
+                      className="w-8 h-8 rounded-full object-cover border border-orange-200"
+                    />
+                    <div>
+                      <span className="text-xs font-bold text-slate-900 dark:text-white">{syncedProfile.name}</span>
+                      <span className="text-[10px] text-slate-700 block font-mono">@{syncedProfile.username}</span>
+                    </div>
+                  </div>
 
-                {/* Tab Switcher: Write vs Preview */}
-                <div className="flex items-center bg-slate-100 dark:bg-slate-800 p-0.5 rounded-lg text-[11px] font-bold">
-                  <button
+                  {/* Tab Switcher: Write vs Preview */}
+                  <div className="flex items-center bg-slate-100 dark:bg-slate-800 p-0.5 rounded-lg text-[11px] font-bold">
+                    <button
                     type="button"
                     onClick={() => setComposerTab('write')}
-                    className={`px-2.5 py-1 rounded-md transition ${composerTab === 'write' ? 'bg-white dark:bg-slate-700 text-orange-600 shadow-xs' : 'text-slate-500'}`}
+                    className={`px-2.5 py-1 rounded-md transition ${composerTab === 'write' ? 'bg-white dark:bg-slate-700 text-orange-600 shadow-xs' : 'text-slate-600'}`}
                   >
                     Write
                   </button>
                   <button
                     type="button"
                     onClick={() => setComposerTab('preview')}
-                    className={`px-2.5 py-1 rounded-md transition ${composerTab === 'preview' ? 'bg-white dark:bg-slate-700 text-orange-600 shadow-xs' : 'text-slate-500'}`}
+                    className={`px-2.5 py-1 rounded-md transition ${composerTab === 'preview' ? 'bg-white dark:bg-slate-700 text-orange-600 shadow-xs' : 'text-slate-600'}`}
                   >
                     Preview
                   </button>
@@ -1921,7 +2447,7 @@ export const ForumPage: React.FC = () => {
                     <option value="">▼ Select Mandatory Category (54 Available Topics)...</option>
                     {apiCategories.map((c) => (
                       <option key={c.id} value={c.name}>
-                        {c.icon} {c.name}
+                        {getCategoryEmoji(c.name, c.icon)} {c.name}
                       </option>
                     ))}
                   </select>
@@ -1990,7 +2516,7 @@ export const ForumPage: React.FC = () => {
                             setAttachedMediaList([]);
                             setAttachedMedia(null);
                           }}
-                          className="text-slate-400 hover:text-rose-400 text-[11px] font-semibold transition cursor-pointer"
+                          className="text-slate-300 hover:text-rose-400 text-[11px] font-semibold transition cursor-pointer"
                         >
                           Clear All
                         </button>
@@ -2071,7 +2597,7 @@ export const ForumPage: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => mediaFileInputRef.current?.click()}
-                        className="flex-shrink-0 w-28 h-28 rounded-xl border-2 border-dashed border-slate-700 hover:border-sky-500 bg-slate-900/40 hover:bg-slate-900 flex flex-col items-center justify-center gap-1 text-slate-500 hover:text-sky-300 transition cursor-pointer"
+                        className="flex-shrink-0 w-28 h-28 rounded-xl border-2 border-dashed border-slate-700 hover:border-sky-500 bg-slate-900/40 hover:bg-slate-900 flex flex-col items-center justify-center gap-1 text-slate-300 hover:text-sky-300 transition cursor-pointer"
                       >
                         <PlusIcon className="w-6 h-6" />
                         <span className="text-[10px] font-bold">Add Media</span>
@@ -2175,7 +2701,7 @@ export const ForumPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => setActiveComposerTool(activeComposerTool === 'media' ? null : 'media')}
-                      className={`p-2 rounded-xl transition ${activeComposerTool === 'media' ? 'bg-sky-500 text-white' : 'hover:bg-slate-100 text-slate-500'}`}
+                      className={`p-2 rounded-xl transition ${activeComposerTool === 'media' ? 'bg-sky-500 text-white' : 'hover:bg-slate-100 text-slate-600'}`}
                       title="Camera (Photo/Video & Presets)"
                     >
                       <CameraIcon className="w-4 h-4" />
@@ -2185,7 +2711,7 @@ export const ForumPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => setActiveComposerTool(activeComposerTool === 'poll' ? null : 'poll')}
-                      className={`p-2 rounded-xl transition ${activeComposerTool === 'poll' ? 'bg-purple-600 text-white' : 'hover:bg-slate-100 text-slate-500'}`}
+                      className={`p-2 rounded-xl transition ${activeComposerTool === 'poll' ? 'bg-purple-600 text-white' : 'hover:bg-slate-100 text-slate-600'}`}
                       title="Poll Creator"
                     >
                       <ChartBarIcon className="w-4 h-4" />
@@ -2195,7 +2721,7 @@ export const ForumPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => setActiveComposerTool(activeComposerTool === 'event' ? null : 'event')}
-                      className={`p-2 rounded-xl transition ${activeComposerTool === 'event' ? 'bg-emerald-600 text-white' : 'hover:bg-slate-100 text-slate-500'}`}
+                      className={`p-2 rounded-xl transition ${activeComposerTool === 'event' ? 'bg-emerald-600 text-white' : 'hover:bg-slate-100 text-slate-600'}`}
                       title="Event Scheduler & RSVP"
                     >
                       <CalendarIcon className="w-4 h-4" />
@@ -2205,7 +2731,7 @@ export const ForumPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => setActiveComposerTool(activeComposerTool === 'file' ? null : 'file')}
-                      className={`p-2 rounded-xl transition ${activeComposerTool === 'file' ? 'bg-indigo-600 text-white' : 'hover:bg-slate-100 text-slate-500'}`}
+                      className={`p-2 rounded-xl transition ${activeComposerTool === 'file' ? 'bg-indigo-600 text-white' : 'hover:bg-slate-100 text-slate-600'}`}
                       title="File Attachment & Whitepapers"
                     >
                       <PaperClipIcon className="w-4 h-4" />
@@ -2215,7 +2741,7 @@ export const ForumPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => setActiveComposerTool(activeComposerTool === 'link' ? null : 'link')}
-                      className={`p-2 rounded-xl transition ${activeComposerTool === 'link' ? 'bg-blue-600 text-white' : 'hover:bg-slate-100 text-slate-500'}`}
+                      className={`p-2 rounded-xl transition ${activeComposerTool === 'link' ? 'bg-blue-600 text-white' : 'hover:bg-slate-100 text-slate-600'}`}
                       title="Link Inserter & Open Graph (OG)"
                     >
                       <LinkIcon className="w-4 h-4" />
@@ -2225,7 +2751,7 @@ export const ForumPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => setActiveComposerTool(activeComposerTool === 'location' ? null : 'location')}
-                      className={`p-2 rounded-xl transition ${activeComposerTool === 'location' ? 'bg-rose-600 text-white' : 'hover:bg-slate-100 text-slate-500'}`}
+                      className={`p-2 rounded-xl transition ${activeComposerTool === 'location' ? 'bg-rose-600 text-white' : 'hover:bg-slate-100 text-slate-600'}`}
                       title="Location Tag (Auto-Fill from IP)"
                     >
                       <MapPinIcon className="w-4 h-4" />
@@ -2655,7 +3181,7 @@ export const ForumPage: React.FC = () => {
                           )}
                           <div className="flex-1 min-w-0">
                             <h4 className="font-black text-slate-900 text-xs truncate">{linkOgData.title}</h4>
-                            <p className="text-[11px] text-slate-500 line-clamp-2 mt-0.5">{linkOgData.description}</p>
+                            <p className="text-[11px] text-slate-700 font-medium line-clamp-2 mt-0.5">{linkOgData.description}</p>
                             <span className="text-[10px] font-mono text-blue-600 truncate block mt-1">{linkOgData.url}</span>
                           </div>
                         </div>
@@ -3216,7 +3742,7 @@ export const ForumPage: React.FC = () => {
                                         {prod.name}
                                       </h5>
                                       {prod.description && (
-                                        <p className="text-[10px] text-slate-500 line-clamp-1 mt-0.5">
+                                        <p className="text-[10px] text-slate-700 font-medium line-clamp-1 mt-0.5">
                                           {prod.description}
                                         </p>
                                       )}
@@ -3259,7 +3785,7 @@ export const ForumPage: React.FC = () => {
                           <div className="col-span-full py-8 text-center bg-white/70 rounded-2xl border border-dashed border-amber-200">
                             <ShoppingBagIcon className="w-8 h-8 text-amber-400 mx-auto mb-1.5" />
                             <p className="text-xs font-bold text-slate-700">No items found matching "{productSearchQuery}"</p>
-                            <p className="text-[11px] text-slate-500 mt-0.5">Try searching for Birkin, Rolex, Gift Card, Tip, Coupon, or select "All Stores"</p>
+                            <p className="text-[11px] text-slate-700 font-medium mt-0.5">Try searching for Birkin, Rolex, Gift Card, Tip, Coupon, or select "All Stores"</p>
                             <button
                               type="button"
                               onClick={() => {
@@ -3279,7 +3805,7 @@ export const ForumPage: React.FC = () => {
                       <div className="p-3 bg-white border border-amber-200 rounded-xl space-y-2">
                         <div className="text-[10px] font-black uppercase text-amber-800 flex items-center justify-between">
                           <span>Or Attach Bespoke Custom Store Item / Gift / Tip Voucher:</span>
-                          <span className="text-[9px] font-normal text-slate-500">Manual entry</span>
+                          <span className="text-[9px] font-semibold text-slate-700">Manual entry</span>
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                           <input
@@ -3336,95 +3862,128 @@ export const ForumPage: React.FC = () => {
                 })()}
               </form>
             </div>
+            )}
 
             {/* 3. FEED POST STREAM */}
             <div className="space-y-4">
-              {filteredPosts.map((post) => (
-                <ForumPostCard
-                  key={post.id}
-                  post={post}
-                  onLike={handleToggleLike}
-                  onToggleBookmark={handleToggleBookmark}
-                  onShare={handleSharePost}
-                  onVotePoll={handleVotePoll}
-                  onRsvpEvent={handleRsvpEvent}
-                  onAddComment={(postId, text) => {
-                    setCommentInputTexts((prev) => ({ ...prev, [postId]: text }));
-                    handleAddComment(postId);
-                  }}
-                  onOpenLightbox={setSelectedLightboxImage}
-                  triggerToast={(msg, type) => triggerToast(msg, type === 'warning' ? 'info' : type)}
-                />
+              {effectivePosts.map((post, index) => (
+                <React.Fragment key={post.id}>
+                  <ForumPostCard
+                    post={post}
+                    onLike={handleToggleLike}
+                    onToggleBookmark={handleToggleBookmark}
+                    onShare={handleSharePost}
+                    onVotePoll={handleVotePoll}
+                    onRsvpEvent={handleRsvpEvent}
+                    onAddComment={(postId, text) => {
+                      setCommentInputTexts((prev) => ({ ...prev, [postId]: text }));
+                      handleAddComment(postId);
+                    }}
+                    onOpenLightbox={setSelectedLightboxImage}
+                    triggerToast={(msg, type) => triggerToast(msg, type === 'warning' ? 'info' : type)}
+                  />
+
+                  {/* ============================================================== */}
+                  {/* INFINITE INTERLEAVED WIDGETS & ADS (EVERY 9 POSTS CONTINUOUSLY)*/}
+                  {/* ============================================================== */}
+                  {index % 9 === 8 && (
+                    <div className="space-y-4 my-6">
+                      {Math.floor(index / 9) % 3 === 0 && (
+                        <>
+                          <PhotoCreditsFeedBanner />
+                          <PubliciteeAdCard />
+                        </>
+                      )}
+                      {Math.floor(index / 9) % 3 === 1 && (
+                        <FingerShortsSection />
+                      )}
+                      {Math.floor(index / 9) % 3 === 2 && (
+                        <>
+                          <DiscoverFeedSection />
+                          <CanaryAdsManager format="shopping_card" />
+                        </>
+                      )}
+                    </div>
+                  )}
+                </React.Fragment>
               ))}
+
+              {/* Edge Case Fallback: If active search or category filters result in fewer than 9 posts */}
+              {effectivePosts.length > 0 && effectivePosts.length < 9 && (
+                <div className="space-y-6 mt-8 pt-4 border-t border-slate-200 dark:border-slate-800">
+                  <PhotoCreditsFeedBanner />
+                  <PubliciteeAdCard />
+                  <FingerShortsSection />
+                  <DiscoverFeedSection />
+                </div>
+              )}
+
+              {/* Infinite UGC Feed Sentinel (No Load More Button, No End) */}
+              <div ref={feedSentinelRef} className="py-6 text-center">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-slate-300 shadow-xs text-xs font-bold text-slate-800">
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping" />
+                  <span>Streaming more decentralized UGC, platform widgets & Canary ads...</span>
+                </div>
+              </div>
             </div>
           </div>
 
           {/* ======================================================================= */}
           {/* RIGHT RAIL (3 cols): STATS, CANARY ADS, HALLMARKS, LEADERBOARD         */}
           {/* ======================================================================= */}
-          <div className="lg:col-span-3 space-y-4">
-            {/* Protocol Market Ticker & Live Stats */}
-            <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 shadow-xs">
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-xs font-black uppercase text-slate-700">Live Network</span>
-                <span className="flex items-center gap-1 text-[10px] font-bold text-emerald-950 bg-emerald-50 px-2 py-0.5 rounded-full border  border-emerald-400 font-black">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
-                  P2P Online
-                </span>
-              </div>
-              <div className="space-y-2 text-xs">
-                <div className="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-800 rounded-xl">
-                  <span className="text-slate-500">FIC Token Price</span>
-                  <span className="font-mono font-bold text-emerald-600">$1.84 (+4.2%)</span>
-                </div>
-                <div className="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-800 rounded-xl">
-                  <span className="text-slate-500">Active Relays</span>
-                  <span className="font-mono font-bold text-slate-800 dark:text-slate-200">1,248 Nodes</span>
-                </div>
-                <div className="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-800 rounded-xl">
-                  <span className="text-slate-500">PIN Crypto Quota</span>
-                  <span className="font-mono font-bold text-orange-600">{syncedProfile.pinQuotaRemaining}/50 Op</span>
-                </div>
-              </div>
-            </div>
+          <div className="lg:col-span-3 lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-5.5rem)] lg:overflow-y-auto space-y-4 scrollbar-none pl-1">
+            <PlatformWidgetsAndAdsRail
+              pageContext="forum"
+              initialChildren={
+                <>
+                  {/* Protocol Market Ticker & Live Stats */}
+                  <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-300 dark:border-slate-800 p-4 shadow-xs">
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-xs font-black uppercase text-slate-900 dark:text-white">Live Network</span>
+                      <span className="flex items-center gap-1 text-[10px] font-bold text-emerald-950 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-400 font-black">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
+                        P2P Online
+                      </span>
+                    </div>
+                    <div className="space-y-2 text-xs">
+                      <div className="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200">
+                        <span className="text-slate-800 font-bold">FIC Token Price</span>
+                        <span className="font-mono font-bold text-emerald-600">$1.84 (+4.2%)</span>
+                      </div>
+                      <div className="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200">
+                        <span className="text-slate-800 font-bold">Active Relays</span>
+                        <span className="font-mono font-bold text-slate-800 dark:text-slate-200">1,248 Nodes</span>
+                      </div>
+                      <div className="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200">
+                        <span className="text-slate-800 font-bold">PIN Crypto Quota</span>
+                        <span className="font-mono font-bold text-orange-600">{syncedProfile.pinQuotaRemaining}/50 Op</span>
+                      </div>
+                    </div>
+                  </div>
 
-            {/* Hallmarks Featured Community Card */}
-            <div className="bg-gradient-to-br from-purple-900 to-indigo-950 text-white rounded-2xl p-4 shadow-md space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] font-black uppercase tracking-wider text-purple-300">Featured Hallmark</span>
-                <span className="text-[10px] bg-purple-500/40 text-purple-200 px-2 py-0.5 rounded-full font-bold">250k Cap</span>
-              </div>
-              <div>
-                <h4 className="text-sm font-black">Afrobeat Sovereign Creators</h4>
-                <p className="text-[11px] text-purple-200 mt-1 line-clamp-2">
-                  Mega-community of musicians, audio engineers, and producers sharing lossless BeatwaveNG stems and copyright splits.
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={() => navigate('/hallmarks')}
-                className="w-full py-2 bg-white text-purple-900 hover:bg-purple-100 text-xs font-bold rounded-xl transition"
-              >
-                Join Hallmark (148k Members)
-              </button>
-            </div>
-
-            {/* Dynamic 2-Hour Rotating Widgets + Permanent Canary Ads Bottom Rail */}
-            <RotatingWidgetRail />
-
-            {/* Quick Links Footer */}
-            <div className="p-3 text-[11px] text-slate-400 space-y-2">
-              <div className="flex flex-wrap gap-2">
-                <button onClick={() => navigate('/settings')} className="hover:underline">Settings</button>
-                <span>•</span>
-                <button onClick={() => navigate('/master-dashboard')} className="hover:underline">Master Dashboard</button>
-                <span>•</span>
-                <button onClick={() => navigate('/stercs')} className="hover:underline">Stercs Core</button>
-                <span>•</span>
-                <button onClick={() => navigate('/legal')} className="hover:underline">Terms & Privacy</button>
-              </div>
-              <div>© 2026 FingerMobile Protocol. Sovereign and Decentralized.</div>
-            </div>
+                  {/* Hallmarks Featured Community Card */}
+                  <div className="bg-gradient-to-br from-purple-900 to-indigo-950 text-white rounded-2xl p-4 shadow-md space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-black uppercase tracking-wider text-purple-300">Featured Hallmark</span>
+                      <span className="text-[10px] bg-purple-500/40 text-purple-200 px-2 py-0.5 rounded-full font-bold">250k Cap</span>
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-black">Afrobeat Sovereign Creators</h4>
+                      <p className="text-[11px] text-purple-200 mt-1 line-clamp-2">
+                        Mega-community of musicians, audio engineers, and producers sharing lossless BeatwaveNG stems and copyright splits.
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => navigate('/hallmarks')}
+                      className="w-full py-2 bg-white text-purple-900 hover:bg-purple-100 text-xs font-bold rounded-xl transition cursor-pointer"
+                    >
+                      Join Hallmark (148k Members)
+                    </button>
+                  </div>
+                </>
+              }
+            />
           </div>
         </div>
       </main>
@@ -3549,14 +4108,14 @@ export const ForumPage: React.FC = () => {
                 )}
 
                 {/* File Details & Action Controls */}
-                <div className="flex items-center justify-between text-[11px] text-slate-400 pt-1">
+                <div className="flex items-center justify-between text-[11px] text-slate-300 font-medium pt-1">
                   <div className="flex items-center gap-1.5 truncate max-w-[220px]">
                     <CheckCircleSolidIcon className="w-4 h-4 text-emerald-500 shrink-0" />
                     <span className="font-mono text-white truncate" title={miiMediaFileName || 'Attached media'}>
                       {miiMediaFileName || 'Media attached'}
                     </span>
                     {miiMediaFileSize && (
-                      <span className="text-[10px] text-slate-400 shrink-0">({miiMediaFileSize})</span>
+                      <span className="text-[10px] text-slate-300 font-medium shrink-0">({miiMediaFileSize})</span>
                     )}
                   </div>
                   <div className="flex items-center gap-1.5">
@@ -3609,7 +4168,7 @@ export const ForumPage: React.FC = () => {
                 <div className="text-xs font-black text-slate-900 dark:text-white">
                   Click to Select & Attach {miiType === 'photo' ? 'Image/Photo' : miiType === 'audio' ? 'Audio File' : 'Video Clip'}
                 </div>
-                <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
+                <p className="text-[11px] text-slate-700 dark:text-slate-300 font-medium mt-0.5">
                   Browse device files or drag & drop ({miiType === 'photo' ? 'JPG, PNG, GIF, WEBP' : miiType === 'audio' ? 'MP3, WAV, AAC, M4A' : 'MP4, WEBM, MOV'})
                 </p>
 
@@ -3626,7 +4185,7 @@ export const ForumPage: React.FC = () => {
 
             {/* Alternative Direct Media URL input */}
             <div>
-              <div className="flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 mb-1">
+              <div className="flex items-center justify-between text-[11px] text-slate-700 dark:text-slate-300 font-medium mb-1">
                 <span>Or provide direct media URL</span>
                 <span className="text-[10px] font-mono">HTTPS</span>
               </div>
@@ -3728,7 +4287,7 @@ export const ForumPage: React.FC = () => {
                 <img src={selectedMii.avatar} alt={selectedMii.author} className="w-8 h-8 rounded-full object-cover border border-orange-500" />
                 <div>
                   <span className="font-bold text-xs block">{selectedMii.author}</span>
-                  <span className="text-[10px] text-slate-400 font-mono">{selectedMii.expiresIn}</span>
+                  <span className="text-[10px] text-slate-300 font-medium font-mono">{selectedMii.expiresIn}</span>
                 </div>
               </div>
               <button onClick={() => setSelectedMii(null)} className="p-1 rounded-full bg-white/10 hover:bg-white/20">✕</button>
@@ -3757,7 +4316,7 @@ export const ForumPage: React.FC = () => {
               <div className="flex items-center gap-2">
                 <SparklesIcon className="w-4 h-4 text-orange-400" />
                 <span className="text-xs font-bold truncate max-w-md">{selectedLightboxImage.title}</span>
-                <span className="text-[10px] text-slate-400 font-mono">by {selectedLightboxImage.author}</span>
+                <span className="text-[10px] text-slate-300 font-medium font-mono">by {selectedLightboxImage.author}</span>
               </div>
               <button
                 onClick={() => setSelectedLightboxImage(null)}
@@ -3774,7 +4333,7 @@ export const ForumPage: React.FC = () => {
               />
             </div>
             <div className="p-3 bg-slate-950 border-t border-slate-800 flex items-center justify-between text-white text-xs">
-              <span className="text-[11px] text-slate-400">FingerMobile UHD High-Fidelity Media View</span>
+              <span className="text-[11px] text-slate-300 font-medium">FingerMobile UHD High-Fidelity Media View</span>
               <div className="flex items-center gap-2">
                 <a
                   href={selectedLightboxImage.url}

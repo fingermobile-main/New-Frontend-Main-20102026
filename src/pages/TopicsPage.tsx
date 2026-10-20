@@ -269,7 +269,7 @@ const TopicsPage: React.FC = () => {
         {/* Search Input & Category Pills */}
         <div className="mb-8 space-y-3">
           <div className="relative max-w-xl">
-            <MagnifyingGlassIcon className="w-5 h-5 text-slate-500 absolute left-3.5 top-3.5" />
+            <MagnifyingGlassIcon className="w-5 h-5 text-slate-600 absolute left-3.5 top-3.5" />
             <input
               type="text"
               placeholder="Search topics, categories, or #hashtags..."

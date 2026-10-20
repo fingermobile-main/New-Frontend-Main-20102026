@@ -24,7 +24,7 @@ const Navbar: React.FC = () => {
 
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, logout } = useAuth();
+  const { user, logout, isOnboarded } = useAuth();
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -41,7 +41,9 @@ const Navbar: React.FC = () => {
           <div className="flex items-center">
             <div className="relative">
               <button
-                onClick={() => setIsLogoMenuOpen(!isLogoMenuOpen)}
+                onClick={() => {
+                  if (isOnboarded) setIsLogoMenuOpen(!isLogoMenuOpen);
+                }}
                 onMouseEnter={handleLogoHover}
                 className="flex-shrink-0 flex items-center focus:outline-none"
                 aria-label="FingerMobile Home Menu"
@@ -59,7 +61,7 @@ const Navbar: React.FC = () => {
                 </span>
               </button>
 
-              {isLogoMenuOpen && (
+              {isOnboarded && isLogoMenuOpen && (
                 <div className="absolute left-0 mt-2 w-64 bg-white rounded-md shadow-lg py-1 z-50 ring-1 ring-black ring-opacity-5">
                   <Link
                     to="/"
@@ -136,68 +138,86 @@ const Navbar: React.FC = () => {
 
           <div className="hidden md:ml-4 md:flex md:items-center">
             {user ? (
-              // Logged in - Show Profile Dropdown
-              <div className="relative">
-                <button
-                  onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
-                  className="flex items-center space-x-2 text-sm font-medium text-gray-700 hover:text-gray-900 focus:outline-none"
-                >
-                  <img
-                    src={user.avatar || 'https://via.placeholder.com/32'}
-                    alt={user.username || 'User'}
-                    className="h-8 w-8 rounded-full"
-                  />
-                  <span>{user.username}</span>
-                  <ChevronDownIcon className="h-4 w-4" />
-                </button>
+              isOnboarded ? (
+                // Logged in & Onboarded - Show Profile Dropdown
+                <div className="relative">
+                  <button
+                    onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
+                    className="flex items-center space-x-2 text-sm font-medium text-gray-700 hover:text-gray-900 focus:outline-none"
+                  >
+                    <img
+                      src={user.avatar || '/assets/branding/default-avatar.svg'}
+                      alt={user.username || 'User'}
+                      className="h-8 w-8 rounded-full"
+                    />
+                    <span>{user.username}</span>
+                    <ChevronDownIcon className="h-4 w-4" />
+                  </button>
 
-                {isProfileMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 ring-1 ring-black ring-opacity-5">
-                    <Link
-                      to="/profile"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      onClick={() => setIsProfileMenuOpen(false)}
-                    >
-                      My Profile
-                    </Link>
-                    <Link
-                      to="/dashboard"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      onClick={() => setIsProfileMenuOpen(false)}
-                    >
-                      Dashboard
-                    </Link>
-                    <Link
-                      to="/wallet"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      onClick={() => setIsProfileMenuOpen(false)}
-                    >
-                      Wallet
-                    </Link>
-                    <Link
-                      to="/settings"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      onClick={() => setIsProfileMenuOpen(false)}
-                    >
-                      Settings
-                    </Link>
-                    <Link
-                      to="/creators-center"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      onClick={() => setIsProfileMenuOpen(false)}
-                    >
-                      Creators Center & Services
-                    </Link>
-                    <hr className="my-1" />
-                    <button
-                      onClick={handleLogout}
-                      className="block w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-gray-100"
-                    >
-                      Sign out
-                    </button>
-                  </div>
-                )}
-              </div>
+                  {isProfileMenuOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 ring-1 ring-black ring-opacity-5">
+                      <Link
+                        to="/profile"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        onClick={() => setIsProfileMenuOpen(false)}
+                      >
+                        My Profile
+                      </Link>
+                      <Link
+                        to="/dashboard"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        onClick={() => setIsProfileMenuOpen(false)}
+                      >
+                        Dashboard
+                      </Link>
+                      <Link
+                        to="/wallet"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        onClick={() => setIsProfileMenuOpen(false)}
+                      >
+                        Wallet
+                      </Link>
+                      <Link
+                        to="/settings"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        onClick={() => setIsProfileMenuOpen(false)}
+                      >
+                        Settings
+                      </Link>
+                      <Link
+                        to="/creators-center"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        onClick={() => setIsProfileMenuOpen(false)}
+                      >
+                        Creators Center & Services
+                      </Link>
+                      <hr className="my-1" />
+                      <button
+                        onClick={handleLogout}
+                        className="block w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-gray-100"
+                      >
+                        Sign out
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                // Logged in but NOT onboarded - Show Continue Onboarding & Logout
+                <div className="flex items-center gap-2">
+                  <Link
+                    to="/onboarding"
+                    className="px-3 py-1.5 text-xs font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 rounded-lg shadow-sm transition"
+                  >
+                    Complete Onboarding
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="px-3 py-1.5 text-xs font-semibold text-rose-700 hover:bg-rose-50 border border-rose-300 rounded-lg transition"
+                  >
+                    Sign out
+                  </button>
+                </div>
+              )
             ) : (
               // Not logged in - Show Sign in link
               <div className="ml-3 relative">
@@ -211,23 +231,26 @@ const Navbar: React.FC = () => {
             )}
           </div>
 
-          <div className="flex items-center md:hidden">
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-[#ff6b00] hover:text-[#e05e00] hover:bg-orange-50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-500"
-            >
-              <span className="sr-only">Open main menu</span>
-              {isMenuOpen ? (
-                <XMarkIcon className="block h-6 w-6 text-[#ff6b00]" aria-hidden="true" />
-              ) : (
-                <Bars3Icon className="block h-6 w-6 text-[#ff6b00]" aria-hidden="true" />
-              )}
-            </button>
-          </div>
+          {/* Mobile menu trigger - ONLY if perfectly onboarded */}
+          {isOnboarded && (
+            <div className="flex items-center md:hidden">
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="inline-flex items-center justify-center p-2 rounded-md text-[#ff6b00] hover:text-[#e05e00] hover:bg-orange-50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-500"
+              >
+                <span className="sr-only">Open main menu</span>
+                {isMenuOpen ? (
+                  <XMarkIcon className="block h-6 w-6 text-[#ff6b00]" aria-hidden="true" />
+                ) : (
+                  <Bars3Icon className="block h-6 w-6 text-[#ff6b00]" aria-hidden="true" />
+                )}
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
-      {isMenuOpen && (
+      {isOnboarded && isMenuOpen && (
         <div className="md:hidden">
           <div className="px-4 py-3 border-b border-slate-200 flex items-center space-x-2 bg-slate-50/80">
             <img

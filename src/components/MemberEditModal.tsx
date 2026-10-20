@@ -71,11 +71,11 @@ const MemberEditModal: React.FC<MemberEditModalProps> = ({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <User className="h-5 w-5" />
+          <DialogTitle className="flex items-center gap-2 text-slate-900 font-bold">
+            <User className="h-5 w-5 text-slate-700" />
             Edit Member Profile
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="text-slate-700">
             Update member information and account settings
           </DialogDescription>
         </DialogHeader>
@@ -83,29 +83,29 @@ const MemberEditModal: React.FC<MemberEditModalProps> = ({
         <form onSubmit={handleSubmit} className="space-y-4 mt-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Full Name</Label>
+              <Label htmlFor="name" className="text-slate-900 font-semibold">Full Name</Label>
               <div className="relative">
-                <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-600" />
                 <Input
                   id="name"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="pl-10"
+                  className="pl-10 text-slate-900 font-medium border-slate-300"
                   required
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="email">Email Address</Label>
+              <Label htmlFor="email" className="text-slate-900 font-semibold">Email Address</Label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <input
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-600" />
+                <Input
                   id="email"
                   type="email"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="pl-10"
+                  className="pl-10 text-slate-900 font-medium border-slate-300"
                   required
                 />
               </div>
@@ -114,51 +114,52 @@ const MemberEditModal: React.FC<MemberEditModalProps> = ({
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="phone">Phone Number</Label>
+              <Label htmlFor="phone" className="text-slate-900 font-semibold">Phone Number</Label>
               <div className="relative">
-                <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
                 <Input
                   id="phone"
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  className="pl-10"
+                  className="pl-10 text-slate-900 font-medium border-slate-300"
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="location">Location</Label>
+              <Label htmlFor="location" className="text-slate-900 font-semibold">Location</Label>
               <div className="relative">
-                <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
                 <Input
                   id="location"
                   value={formData.location}
                   onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                  className="pl-10"
+                  className="pl-10 text-slate-900 font-medium border-slate-300"
                 />
               </div>
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="bio">Bio</Label>
+            <Label htmlFor="bio" className="text-slate-900 font-semibold">Bio</Label>
             <Textarea
               id="bio"
               value={formData.bio}
               onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
               placeholder="Tell us about this member..."
               rows={3}
+              className="text-slate-900 font-medium border-slate-300"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="role">Role</Label>
+              <Label htmlFor="role" className="text-slate-900 font-semibold">Role</Label>
               <Select
                 value={formData.role}
                 onValueChange={(value: any) => setFormData({ ...formData, role: value })}
               >
-                <SelectTrigger>
+                <SelectTrigger className="border-slate-300 text-slate-900 font-medium">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -170,12 +171,12 @@ const MemberEditModal: React.FC<MemberEditModalProps> = ({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="status">Status</Label>
+              <Label htmlFor="status" className="text-slate-900 font-semibold">Status</Label>
               <Select
                 value={formData.status}
                 onValueChange={(value: any) => setFormData({ ...formData, status: value })}
               >
-                <SelectTrigger>
+                <SelectTrigger className="border-slate-300 text-slate-900 font-medium">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>

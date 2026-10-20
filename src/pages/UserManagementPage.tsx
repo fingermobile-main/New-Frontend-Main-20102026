@@ -330,7 +330,7 @@ const UserManagementPage: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search className="h-4 w-4 text-slate-500" />
+                <Search className="h-4 w-4 text-slate-600" />
               </div>
               <input
                 type="text"
@@ -436,12 +436,12 @@ const UserManagementPage: React.FC = () => {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-slate-900 font-medium flex items-center gap-1.5">
-                          <Mail className="h-3.5 w-3.5 text-slate-500" />
+                          <Mail className="h-3.5 w-3.5 text-slate-600" />
                           {user.email}
                         </div>
                         {user.phone && (
                           <div className="text-xs text-slate-700 flex items-center gap-1.5 mt-1">
-                            <Phone className="h-3.5 w-3.5 text-slate-500" />
+                            <Phone className="h-3.5 w-3.5 text-slate-600" />
                             {user.phone}
                           </div>
                         )}
@@ -582,7 +582,7 @@ const UserManagementPage: React.FC = () => {
               <h3 className="text-lg font-bold text-slate-900">Provision Member Account</h3>
               <button
                 type="button"
-                className="text-slate-500 hover:text-slate-900 p-1 rounded"
+                className="text-slate-600 hover:text-slate-900 p-1 rounded"
                 onClick={() => setShowCreateModal(false)}
               >
                 <X className="h-5 w-5" />

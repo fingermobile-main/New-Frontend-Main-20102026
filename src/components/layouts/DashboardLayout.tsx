@@ -35,7 +35,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     <header className="h-16 border-b bg-background px-6 flex items-center justify-between">
       <h1 className="text-xl font-semibold">Dashboard</h1>
       <div className="flex items-center gap-4">
-        <span className="text-sm text-muted-foreground">Welcome back</span>
+        <span className="text-sm text-slate-700 font-medium">Welcome back</span>
       </div>
     </header>
   );

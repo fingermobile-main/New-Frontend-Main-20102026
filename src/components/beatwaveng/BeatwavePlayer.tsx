@@ -77,7 +77,7 @@ const BeatwavePlayer: React.FC<BeatwavePlayerProps> = ({
   };
 
   if (!currentTrack) {
-    return <div className="bg-gray-900 rounded-lg p-6 text-center text-gray-400">No tracks available</div>;
+    return <div className="bg-gray-900 rounded-lg p-6 text-center text-slate-300 font-medium">No tracks available</div>;
   }
 
   return (
@@ -120,7 +120,7 @@ const BeatwavePlayer: React.FC<BeatwavePlayerProps> = ({
           }}
           className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
         />
-        <div className="flex justify-between mt-2 text-xs text-gray-400">
+        <div className="flex justify-between mt-2 text-xs text-slate-300 font-medium">
           <span>{formatTime(currentTime)}</span>
           <span>{formatTime(duration)}</span>
         </div>

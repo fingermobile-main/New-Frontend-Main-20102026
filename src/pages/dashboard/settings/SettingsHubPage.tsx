@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import MainLayout from '../../../components/layout/MainLayout';
 import {
   Search,
@@ -15,9 +16,13 @@ import {
   Webhook,
   RefreshCw,
   Plus,
-  Trash2
+  Trash2,
+  Palette,
+  ExternalLink
 } from 'lucide-react';
 import { useAppContext } from '../../../contexts/AppContext';
+import { useAuth } from '../../../contexts/AuthContext';
+import { getUserRoleTier, getUserRoleBadge } from '../../../services/platformRbac';
 
 interface CollaboratorSeat {
   id: string;
@@ -37,6 +42,11 @@ interface WebhookEndpoint {
 }
 
 export const SettingsHubPage: React.FC = () => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const roleTier = getUserRoleTier(user);
+  const roleBadge = getUserRoleBadge(user);
+
   const { showToast } = useAppContext();
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTab, setActiveTab] = useState<'hub' | 'general' | 'roles' | 'security' | 'communications' | 'storage' | 'commerce'>('hub');
@@ -185,6 +195,46 @@ export const SettingsHubPage: React.FC = () => {
 
   const hubCatalog = [
     {
+      id: 'users-permissions',
+      title: 'Users Permission Console',
+      category: 'RBAC Clearance',
+      description: 'Sovereign member matrix, Staff Level 1–5 assignment, Council of Dignitaries seats, and Moderator scopes.',
+      icon: Users,
+      badge: 'SuperAdmin & CFO',
+      badgeColor: 'bg-orange-100 text-orange-950 border-orange-400',
+      route: '/admin/users-permissions'
+    },
+    {
+      id: 'pages-permissions',
+      title: 'Pages Permission Console',
+      category: 'Route Gatekeeper',
+      description: '385-screen master directory, access level locks, maintenance mode triggers, and confidential field masking.',
+      icon: Lock,
+      badge: '385 Routes',
+      badgeColor: 'bg-purple-100 text-purple-950 border-purple-400',
+      route: '/admin/pages-permissions'
+    },
+    {
+      id: 'creators-console',
+      title: 'Content Creators Hive',
+      category: 'Creator Operations',
+      description: 'Creator tier subscriptions, 90/10 revenue share splits, UGC broadcaster approvals, and verification badges.',
+      icon: Shield,
+      badge: 'Creator Ops',
+      badgeColor: 'bg-pink-100 text-pink-950 border-pink-400',
+      route: '/admin/creators-console'
+    },
+    {
+      id: 'business-console',
+      title: 'Business & Orgs Console',
+      category: 'Enterprise Operations',
+      description: 'Corporate KYB accreditation, Enterprise SLA tiers, and Canary Ads lines of credit allocation.',
+      icon: Building2,
+      badge: 'Business Ops',
+      badgeColor: 'bg-emerald-100 text-emerald-950 border-emerald-400',
+      route: '/admin/business-console'
+    },
+    {
       id: 'general',
       title: 'Business & Node Identity',
       category: 'Foundation',
@@ -252,9 +302,14 @@ export const SettingsHubPage: React.FC = () => {
         {/* Header Banner */}
         <div className="bg-white border border-slate-300 rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 border border-slate-400 text-xs font-mono font-bold text-slate-950 uppercase tracking-wider mb-3 font-black">
-              <Shield className="w-4 h-4 text-blue-700" />
-              <span>Sovereign Protocol Management System</span>
+            <div className="flex flex-wrap items-center gap-2 mb-3">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 border border-slate-400 text-xs font-mono font-bold text-slate-950 uppercase tracking-wider font-black">
+                <Shield className="w-4 h-4 text-blue-700" />
+                <span>Sovereign Protocol Management System</span>
+              </div>
+              <span className={`px-2.5 py-0.5 rounded-full text-xs font-extrabold border ${roleBadge.badgeColor}`}>
+                {roleBadge.label}
+              </span>
             </div>
             <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
               Enterprise Settings Hub
@@ -397,7 +452,13 @@ export const SettingsHubPage: React.FC = () => {
                 return (
                   <div
                     key={item.id}
-                    onClick={() => setActiveTab(item.id as any)}
+                    onClick={() => {
+                      if ((item as any).route) {
+                        navigate((item as any).route);
+                      } else {
+                        setActiveTab(item.id as any);
+                      }
+                    }}
                     className="bg-white border border-slate-300 rounded-3xl p-6 shadow-sm hover:shadow-md hover:border-blue-600 cursor-pointer transition-all flex flex-col justify-between group"
                   >
                     <div>
@@ -422,10 +483,17 @@ export const SettingsHubPage: React.FC = () => {
                     </div>
 
                     <div className="pt-5 mt-5 border-t border-slate-200 flex items-center justify-between">
-                      <span className="text-xs font-bold text-blue-700 group-hover:underline">
-                        Open Subsystem Console
+                      <span className="text-xs font-bold text-blue-700 group-hover:underline flex items-center gap-1">
+                        {(item as any).route ? (
+                          <>
+                            <span>Open Dedicated Console</span>
+                            <ExternalLink className="w-3.5 h-3.5 ml-0.5" />
+                          </>
+                        ) : (
+                          'Open Subsystem Console'
+                        )}
                       </span>
-                      <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-blue-700 group-hover:translate-x-1 transition-all" />
+                      <ChevronRight className="w-4 h-4 text-slate-600 group-hover:text-blue-700 group-hover:translate-x-1 transition-all" />
                     </div>
                   </div>
                 );

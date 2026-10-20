@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CalendarDaysIcon, MapPinIcon, SunIcon, MoonIcon } from '@heroicons/react/24/outline';
+import { CalendarDaysIcon, MapPinIcon, SunIcon } from '@heroicons/react/24/outline';
 
 // Mock data for heatmap
 const generateMockHeatmapData = () => {
@@ -33,14 +33,12 @@ const generateMockHeatmapData = () => {
 const HeatmapView: React.FC = () => {
   const [heatmapData] = useState(generateMockHeatmapData());
   const [viewMode, setViewMode] = useState<'daily' | 'weekly' | 'monthly'>('weekly');
-  const [selectedDate, setSelectedDate] = useState<string>('2026-10-04');
-
   // Group data by day
-  const groupedByDay = heatmapData.reduce((acc, item) => {
+  const groupedByDay = heatmapData.reduce<Record<string, (typeof heatmapData)[number][]>>((acc, item) => {
     if (!acc[item.day]) acc[item.day] = [];
     acc[item.day].push(item);
     return acc;
-  }, {} as Record<number, typeof heatmapData>);
+  }, {});
 
   // Get activity levels for coloring
   const maxActivity = Math.max(...heatmapData.map(d => d.activity), 1);
@@ -109,22 +107,25 @@ const HeatmapView: React.FC = () => {
               </div>
 
               {/* Days and activity blocks */}
-              {Object.entries(groupedByDay).slice(0, 14).map(([day, dayData]) => (
-                <div key={day} className="flex items-center mt-1">
-                  <div className="w-12 text-xs text-slate-700 text-right pr-2">
-                    Day {parseInt(day) + 1}
+              {Object.keys(groupedByDay).slice(0, 14).map(day => {
+                const dayData = groupedByDay[day];
+                return (
+                  <div key={day} className="flex items-center mt-1">
+                    <div className="w-12 text-xs text-slate-700 text-right pr-2">
+                      Day {parseInt(day) + 1}
+                    </div>
+                    <div className="flex">
+                      {dayData.map((hourData, hourIndex) => (
+                        <div
+                          key={hourIndex}
+                          className={`w-8 h-8 mx-px ${getActivityColor(hourData.activity)}`}
+                          title={`Day ${parseInt(day) + 1}, ${hourData.hour}:00 - ${hourData.activity} activities`}
+                        />
+                      ))}
+                    </div>
                   </div>
-                  <div className="flex">
-                    {dayData.map((hourData, hourIndex) => (
-                      <div
-                        key={hourIndex}
-                        className={`w-8 h-8 mx-px ${getActivityColor(hourData.activity)}`}
-                        title={`Day ${parseInt(day) + 1}, ${hourData.hour}:00 - ${hourData.activity} activities`}
-                      />
-                    ))}
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
@@ -139,7 +140,7 @@ const HeatmapView: React.FC = () => {
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Peak Activity Time</p>
                 <p className="text-lg font-bold text-gray-900">7-10 PM</p>
-                <p className="text-xs text-gray-500 mt-1">Most engagement happens in the evening</p>
+                <p className="text-xs text-slate-700 font-medium mt-1">Most engagement happens in the evening</p>
               </div>
             </div>
           </div>
@@ -152,7 +153,7 @@ const HeatmapView: React.FC = () => {
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Best Day to Engage</p>
                 <p className="text-lg font-bold text-gray-900">Saturday</p>
-                <p className="text-xs text-gray-500 mt-1">Higher activity on weekends</p>
+                <p className="text-xs text-slate-700 font-medium mt-1">Higher activity on weekends</p>
               </div>
             </div>
           </div>
@@ -165,7 +166,7 @@ const HeatmapView: React.FC = () => {
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Optimal Frequency</p>
                 <p className="text-lg font-bold text-gray-900">Daily</p>
-                <p className="text-xs text-gray-500 mt-1">Consistent presence increases matches</p>
+                <p className="text-xs text-slate-700 font-medium mt-1">Consistent presence increases matches</p>
               </div>
             </div>
           </div>

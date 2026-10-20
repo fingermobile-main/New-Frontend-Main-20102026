@@ -483,7 +483,7 @@ export const ForumPostComposer: React.FC<ForumPostComposerProps> = ({
                 <button
                   type="button"
                   onClick={() => setAttachedMediaList([])}
-                  className="text-slate-400 hover:text-rose-400 text-[11px] font-semibold transition cursor-pointer"
+                  className="text-slate-300 hover:text-rose-400 text-[11px] font-semibold transition cursor-pointer"
                 >
                   Clear All
                 </button>

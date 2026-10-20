@@ -49,36 +49,37 @@ const FluxSchnellAI: React.FC<FluxSchnellAIProps> = ({ onGenerate }) => {
 
   return (
     <div className="w-full max-w-4xl mx-auto">
-      <Card>
+      <Card className="border-slate-200">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Sparkles className="h-6 w-6 text-purple-500" />
+          <CardTitle className="flex items-center gap-2 text-slate-900 font-bold">
+            <Sparkles className="h-6 w-6 text-purple-600" />
             Flux Schnell AI Image Generator
           </CardTitle>
-          <CardDescription>
+          <CardDescription className="text-slate-700">
             Create stunning images from text descriptions using advanced AI
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="prompt">Prompt</Label>
+            <Label htmlFor="prompt" className="text-slate-900 font-semibold">Prompt</Label>
             <Textarea
               id="prompt"
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               placeholder="Describe the image you want to create..."
               rows={4}
+              className="text-slate-900 font-medium border-slate-300"
             />
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-slate-700 font-medium">
               Be specific and detailed for better results
             </p>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="style">Style</Label>
+              <Label htmlFor="style" className="text-slate-900 font-semibold">Style</Label>
               <Select value={style} onValueChange={setStyle}>
-                <SelectTrigger>
+                <SelectTrigger className="border-slate-300 text-slate-900 font-medium">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -93,9 +94,9 @@ const FluxSchnellAI: React.FC<FluxSchnellAIProps> = ({ onGenerate }) => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="aspect-ratio">Aspect Ratio</Label>
+              <Label htmlFor="aspect-ratio" className="text-slate-900 font-semibold">Aspect Ratio</Label>
               <Select value={aspectRatio} onValueChange={setAspectRatio}>
-                <SelectTrigger>
+                <SelectTrigger className="border-slate-300 text-slate-900 font-medium">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -129,14 +130,14 @@ const FluxSchnellAI: React.FC<FluxSchnellAIProps> = ({ onGenerate }) => {
 
           {generatedImage && (
             <div className="space-y-4">
-              <div className="relative aspect-square bg-muted rounded-lg overflow-hidden">
+              <div className="relative aspect-square bg-slate-100 border border-slate-200 rounded-lg overflow-hidden">
                 <img
                   src={generatedImage}
                   alt="Generated image"
                   className="w-full h-full object-cover"
                 />
               </div>
-              <Button variant="outline" className="w-full" onClick={handleDownload}>
+              <Button variant="outline" className="w-full border-slate-300 text-slate-800 font-semibold" onClick={handleDownload}>
                 <Download className="h-4 w-4 mr-2" />
                 Download Image
               </Button>

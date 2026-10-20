@@ -45,7 +45,7 @@ const TrendingTopicsWidget: React.FC = () => {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 border border-slate-200 dark:border-slate-700">
       <h3 className="font-semibold text-lg mb-4 text-gray-900 dark:text-white">Trending Topics</h3>
       <div className="space-y-4">
         {loading ? (
@@ -59,7 +59,7 @@ const TrendingTopicsWidget: React.FC = () => {
                 {topic.hashtag}
               </span>
               <div className="flex items-center space-x-3">
-                <span className="text-xs text-slate-700 dark:text-gray-400">
+                <span className="text-xs text-slate-700 dark:text-slate-300 font-medium">
                   {formatPosts(topic.posts)} posts
                 </span>
                 <button
@@ -74,7 +74,7 @@ const TrendingTopicsWidget: React.FC = () => {
           ))
         )}
       </div>
-      <button className="mt-4 w-full text-center text-sm text-orange-500 font-medium hover:underline">
+      <button className="mt-4 w-full text-center text-sm text-orange-600 font-semibold hover:underline">
         Show More
       </button>
 

@@ -79,7 +79,7 @@ export const PeripheralNotificationShade: React.FC = () => {
               />
               {activeNotification.title}
             </h4>
-            <span className="text-[10px] text-slate-400 font-mono">
+            <span className="text-[10px] text-slate-300 font-medium font-mono">
               {activeNotification.displayWindowSeconds}s
             </span>
           </div>
@@ -91,7 +91,7 @@ export const PeripheralNotificationShade: React.FC = () => {
         <button
           type="button"
           onClick={() => setIsVisible(false)}
-          className="text-slate-400 hover:text-white p-1 rounded-lg transition-colors"
+          className="text-slate-300 hover:text-white p-1 rounded-lg transition-colors"
           title="Dismiss notification"
         >
           <XIcon className="w-3.5 h-3.5" />

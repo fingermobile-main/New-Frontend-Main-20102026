@@ -5,8 +5,9 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import userProfileSyncService from '../../services/UserProfileSyncService';
+import { useAuth } from '../../contexts/AuthContext';
 import {
   ChevronDown,
   Grid,
@@ -23,6 +24,13 @@ export const MemberProfileMenuTrigger: React.FC<MemberProfileMenuTriggerProps> =
   onToggleMenu,
   isOpen
 }) => {
+  const { user } = useAuth();
+  const isOnboarded = Boolean(
+    user &&
+    (user.onboardingComplete || (user as any).onboarding_completed) &&
+    (localStorage.getItem('onboardingComplete') === 'true' || localStorage.getItem('hasCompletedOnboarding') === 'true')
+  );
+
   const [profile, setProfile] = useState(() => userProfileSyncService.getProfile());
   const [isMinimized, setIsMinimized] = useState(false);
 
@@ -32,6 +40,33 @@ export const MemberProfileMenuTrigger: React.FC<MemberProfileMenuTriggerProps> =
     });
     return unsubscribe;
   }, []);
+
+  const location = useLocation();
+  const path = (location.pathname || (typeof window !== 'undefined' ? window.location.pathname : '')).toLowerCase();
+  const isAuthOrOnboardingRoute = 
+    path === '/login' ||
+    path === '/register' ||
+    path === '/admin' ||
+    path === '/adminlogin' ||
+    path === '/verification' ||
+    path === '/official-verification' ||
+    path === '/securitysetup' ||
+    path === '/changepassword' ||
+    path === '/forgot-password' ||
+    path === '/onboarding' ||
+    path.startsWith('/auth') ||
+    path.includes('/login') ||
+    path.includes('/register') ||
+    path.includes('/onboarding') ||
+    path.includes('/adminlogin');
+
+  // Strict Security Rule: Never display menu trigger for unauthenticated / unboarded users or on auth/onboarding routes
+  if (isAuthOrOnboardingRoute || !isOnboarded) {
+    return null;
+  }
+
+  const displayName = (user?.firstName ? `${user.firstName} ${user.lastName || ''}`.trim() : user?.username) || (user ? profile.name : '') || 'Sovereign Member';
+  const displayPin = profile.pinNumber || '749822';
 
   return (
     <div className="fixed top-2.5 left-3 z-[9995] pointer-events-auto transition-all duration-300">
@@ -43,8 +78,8 @@ export const MemberProfileMenuTrigger: React.FC<MemberProfileMenuTriggerProps> =
           title="Click to view Member Profile Page / Wall"
         >
           <img
-            src={profile.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80'}
-            alt={profile.name || 'Member Profile'}
+            src={profile.avatar || '/assets/branding/default-avatar.svg'}
+            alt={displayName}
             className="w-8 h-8 rounded-full object-cover ring-2 ring-orange-500/80 shadow-md"
           />
           <span className="absolute bottom-0.5 right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-slate-950" />
@@ -63,13 +98,13 @@ export const MemberProfileMenuTrigger: React.FC<MemberProfileMenuTriggerProps> =
             <div className="hidden sm:flex flex-col min-w-0 pr-1">
               <div className="flex items-center gap-1">
                 <span className="text-xs font-bold text-white truncate max-w-[110px]">
-                  {profile.name || 'Israel Mbah'}
+                  {displayName}
                 </span>
                 <ShieldCheck className="w-3.5 h-3.5 text-sky-400 shrink-0" />
               </div>
               <div className="flex items-center gap-1.5">
                 <span className="text-[10px] text-orange-400 font-bold tracking-wide">
-                  #PIN-{profile.pinNumber || '749822'}
+                  #PIN-{displayPin}
                 </span>
                 <span className="text-[10px] text-slate-200 font-semibold hidden md:inline">
                   • {profile.pinQuotaRemaining ?? 48} Pins

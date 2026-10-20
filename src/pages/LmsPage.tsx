@@ -234,19 +234,19 @@ const LmsPage: React.FC = () => {
       {/* Tabs */}
       <div className="flex border-b border-gray-200 mb-6">
         <button
-          className={`py-2 px-4 font-medium text-sm ${activeTab === 'courses' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
+          className={`py-2 px-4 font-medium text-sm ${activeTab === 'courses' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-slate-600 hover:text-slate-900 font-medium'}`}
           onClick={() => setActiveTab('courses')}
         >
           My Courses
         </button>
         <button
-          className={`py-2 px-4 font-medium text-sm ${activeTab === 'assignments' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
+          className={`py-2 px-4 font-medium text-sm ${activeTab === 'assignments' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-slate-600 hover:text-slate-900 font-medium'}`}
           onClick={() => setActiveTab('assignments')}
         >
           Assignments
         </button>
         <button
-          className={`py-2 px-4 font-medium text-sm ${activeTab === 'calendar' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
+          className={`py-2 px-4 font-medium text-sm ${activeTab === 'calendar' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-slate-600 hover:text-slate-900 font-medium'}`}
           onClick={() => setActiveTab('calendar')}
         >
           Calendar

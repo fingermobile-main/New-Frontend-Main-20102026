@@ -309,7 +309,7 @@ export const MiiPinExchangeModal: React.FC<PinExchangeModalProps> = ({
 
           {activeTab === 'syncPhone' && (
             <form onSubmit={handleSyncPhonebook} className="space-y-4">
-              <div className="text-xs text-gray-600 dark:text-gray-400">
+              <div className="text-xs text-slate-700 dark:text-slate-300 font-medium">
                 Paste or import phone numbers (one per line) to match against FingerMobile members with privacy-preserving hash matching.
               </div>
               <textarea

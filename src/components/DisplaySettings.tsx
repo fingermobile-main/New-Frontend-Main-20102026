@@ -44,7 +44,7 @@ const DisplaySettings: React.FC<DisplaySettingsProps> = ({
           <button
             key={mode.id}
             onClick={() => onModeChange(mode.id as DisplayMode)}
-            className={`p-2.5 rounded-lg transition-all ${currentMode === mode.id ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40' : 'text-gray-500 hover:text-white'}`}
+            className={`p-2.5 rounded-lg transition-all ${currentMode === mode.id ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40' : 'text-slate-300 font-medium hover:text-white'}`}
             title={mode.title}
           >
             {mode.icon}
@@ -58,7 +58,7 @@ const DisplaySettings: React.FC<DisplaySettingsProps> = ({
       <div className="flex items-center space-x-1">
         <button
           onClick={onToggleFavorites}
-          className={`p-2.5 rounded-xl transition-all ${showFavoritesOnly ? 'bg-red-500/20 text-red-500 border border-red-500/30' : 'text-gray-500 hover:text-white bg-white/5 border border-transparent'}`}
+          className={`p-2.5 rounded-xl transition-all ${showFavoritesOnly ? 'bg-red-500/20 text-red-500 border border-red-500/30' : 'text-slate-300 font-medium hover:text-white bg-white/5 border border-transparent'}`}
           title="Show Favorites Only"
         >
           <Heart size={16} fill={showFavoritesOnly ? 'currentColor' : 'none'} />
@@ -66,7 +66,7 @@ const DisplaySettings: React.FC<DisplaySettingsProps> = ({
 
         <button
           onClick={onToggleGroupVideos}
-          className={`p-2.5 rounded-xl transition-all ${groupVideos ? 'bg-indigo-500/20 text-indigo-400 border border-indigo-500/30' : 'text-gray-500 hover:text-white bg-white/5 border border-transparent'}`}
+          className={`p-2.5 rounded-xl transition-all ${groupVideos ? 'bg-indigo-500/20 text-indigo-400 border border-indigo-500/30' : 'text-slate-300 font-medium hover:text-white bg-white/5 border border-transparent'}`}
           title="Group Videos"
         >
           <VideoIcon size={16} />
@@ -74,7 +74,7 @@ const DisplaySettings: React.FC<DisplaySettingsProps> = ({
 
         <button
           onClick={onToggleGroupAudio}
-          className={`p-2.5 rounded-xl transition-all ${groupAudio ? 'bg-amber-500/20 text-amber-500 border border-amber-500/30' : 'text-gray-500 hover:text-white bg-white/5 border border-transparent'}`}
+          className={`p-2.5 rounded-xl transition-all ${groupAudio ? 'bg-amber-500/20 text-amber-500 border border-amber-500/30' : 'text-slate-300 font-medium hover:text-white bg-white/5 border border-transparent'}`}
           title="Group Audio Files"
         >
           <Music size={16} />

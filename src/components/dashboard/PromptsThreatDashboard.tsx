@@ -112,20 +112,20 @@ const PromptsThreatDashboard: React.FC<PromptsThreatDashboardProps> = ({ userId 
       {/* Stats Overview */}
       {stats && (
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow">
-            <div className="text-sm text-slate-700 dark:text-gray-400">Total Analyses</div>
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow border border-slate-300 dark:border-gray-700">
+            <div className="text-sm text-slate-800 dark:text-slate-200 font-bold">Total Analyses</div>
             <div className="text-2xl font-bold">{stats.totalAnalyses || 0}</div>
           </div>
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow">
-            <div className="text-sm text-slate-700 dark:text-gray-400">Threats Detected</div>
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow border border-slate-300 dark:border-gray-700">
+            <div className="text-sm text-slate-800 dark:text-slate-200 font-bold">Threats Detected</div>
             <div className="text-2xl font-bold text-red-600">{stats.threatsDetected || 0}</div>
           </div>
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow">
-            <div className="text-sm text-slate-700 dark:text-gray-400">Mitigations Applied</div>
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow border border-slate-300 dark:border-gray-700">
+            <div className="text-sm text-slate-800 dark:text-slate-200 font-bold">Mitigations Applied</div>
             <div className="text-2xl font-bold text-green-600">{stats.mitigationsApplied || 0}</div>
           </div>
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow">
-            <div className="text-sm text-slate-700 dark:text-gray-400">Detection Rate</div>
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow border border-slate-300 dark:border-gray-700">
+            <div className="text-sm text-slate-800 dark:text-slate-200 font-bold">Detection Rate</div>
             <div className="text-2xl font-bold text-blue-600">
               {stats.totalAnalyses > 0
                 ? Math.round((stats.threatsDetected / stats.totalAnalyses) * 100)
@@ -136,7 +136,7 @@ const PromptsThreatDashboard: React.FC<PromptsThreatDashboardProps> = ({ userId 
       )}
 
       {/* Prompt Analysis Input */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow">
+      <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow border border-slate-300 dark:border-gray-700">
         <h3 className="text-lg font-semibold mb-4">Analyze Prompt for Threats</h3>
 
         <div className="space-y-4">
@@ -144,7 +144,7 @@ const PromptsThreatDashboard: React.FC<PromptsThreatDashboardProps> = ({ userId 
             value={promptInput}
             onChange={(e) => setPromptInput(e.target.value)}
             placeholder="Enter prompt or input to analyze for security threats..."
-            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
+            className="w-full px-4 py-3 border border-slate-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white text-slate-900 font-bold bg-white placeholder:text-slate-500"
             rows={4}
           />
 
@@ -166,12 +166,12 @@ const PromptsThreatDashboard: React.FC<PromptsThreatDashboardProps> = ({ userId 
 
       {/* Last Analysis Result */}
       {lastAnalysis && (
-        <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow">
+        <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow border border-slate-300 dark:border-gray-700">
           <h3 className="text-lg font-semibold mb-4">Latest Analysis Result</h3>
 
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-slate-700 dark:text-gray-400">Risk Level:</span>
+              <span className="text-sm text-slate-800 dark:text-slate-200 font-bold">Risk Level:</span>
               <span className={`text-lg ${getRiskLevelColor(lastAnalysis.risk_level)}`}>
                 {lastAnalysis.risk_level.toUpperCase()}
               </span>
@@ -189,11 +189,11 @@ const PromptsThreatDashboard: React.FC<PromptsThreatDashboardProps> = ({ userId 
                           {threat.severity.toUpperCase()}
                         </span>
                       </div>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">{threat.description}</p>
+                      <p className="text-sm text-slate-700 dark:text-slate-300 font-medium mb-2">{threat.description}</p>
 
                       {threat.countermeasures.length > 0 && (
                         <div>
-                          <p className="text-xs font-medium text-slate-700 dark:text-gray-400 mb-1">Countermeasures:</p>
+                          <p className="text-xs font-bold text-slate-800 dark:text-slate-200 mb-1">Countermeasures:</p>
                           <div className="flex flex-wrap gap-2">
                             {threat.countermeasures.map((countermeasure: string, idx: number) => (
                               <button
@@ -216,7 +216,7 @@ const PromptsThreatDashboard: React.FC<PromptsThreatDashboardProps> = ({ userId 
             {lastAnalysis.recommendations.length > 0 && (
               <div>
                 <h4 className="font-medium mb-2">Recommendations</h4>
-                <ul className="list-disc list-inside space-y-1 text-sm text-gray-600 dark:text-gray-400">
+                <ul className="list-disc list-inside space-y-1 text-sm text-slate-700 dark:text-slate-300 font-medium">
                   {lastAnalysis.recommendations.map((rec, idx) => (
                     <li key={idx}>{rec}</li>
                   ))}
@@ -228,11 +228,11 @@ const PromptsThreatDashboard: React.FC<PromptsThreatDashboardProps> = ({ userId 
       )}
 
       {/* Threat History */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow">
+      <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow border border-slate-300 dark:border-gray-700">
         <h3 className="text-lg font-semibold mb-4">Recent Threat Analysis History</h3>
 
         {threatHistory.length === 0 ? (
-          <div className="text-center py-8 text-slate-700 dark:text-gray-400">
+          <div className="text-center py-8 text-slate-700 dark:text-slate-300 font-medium">
             No threat analyses yet. Start by analyzing a prompt above.
           </div>
         ) : (
@@ -240,7 +240,7 @@ const PromptsThreatDashboard: React.FC<PromptsThreatDashboardProps> = ({ userId 
             {threatHistory.slice(0, 10).map((analysis) => (
               <div key={analysis.analysis_id} className="border border-slate-300 dark:border-gray-700 rounded-lg p-3">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-slate-700 dark:text-gray-400">
+                  <span className="text-sm text-slate-700 dark:text-slate-300 font-medium">
                     {new Date(analysis.timestamp).toLocaleString()}
                   </span>
                   <span className={`text-sm ${getRiskLevelColor(analysis.risk_level)}`}>

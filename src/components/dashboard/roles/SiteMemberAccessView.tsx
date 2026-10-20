@@ -71,7 +71,7 @@ export const SiteMemberAccessView: React.FC<SiteMemberAccessViewProps> = ({
     <div className="space-y-6">
       {/* Breadcrumbs & Header */}
       <div>
-        <nav className="text-xs text-slate-500 dark:text-slate-400 mb-1 flex items-center gap-1.5">
+        <nav className="text-xs text-slate-700 dark:text-slate-300 font-medium mb-1 flex items-center gap-1.5">
           <span>Contacts</span>
           <span>&gt;</span>
           <span>Site Members</span>
@@ -89,7 +89,7 @@ export const SiteMemberAccessView: React.FC<SiteMemberAccessViewProps> = ({
                 Subscription Synced
               </span>
             </h1>
-            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
+            <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-medium mt-1">
               Manage member site access, role permissions, and subscription-tier page gating.
             </p>
           </div>
@@ -113,13 +113,13 @@ export const SiteMemberAccessView: React.FC<SiteMemberAccessViewProps> = ({
         </div>
 
         {/* View Mode Switcher */}
-        <div className="flex items-center gap-2 mt-4 border-b border-slate-200 dark:border-slate-800 pb-2">
+        <div className="flex items-center gap-2 mt-4 border-b border-slate-300 dark:border-slate-800 pb-2">
           <button
             onClick={() => setViewMode('roles-table')}
             className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${
               viewMode === 'roles-table'
                 ? 'bg-blue-600 text-white shadow-sm'
-                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                : 'text-slate-700 dark:text-slate-300 font-medium hover:bg-slate-100 dark:hover:bg-slate-800'
             }`}
           >
             Member Roles & Gated Pages
@@ -129,7 +129,7 @@ export const SiteMemberAccessView: React.FC<SiteMemberAccessViewProps> = ({
             className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5 ${
               viewMode === 'subscription-matrix'
                 ? 'bg-amber-500 text-black shadow-sm'
-                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                : 'text-slate-700 dark:text-slate-300 font-medium hover:bg-slate-100 dark:hover:bg-slate-800'
             }`}
           >
             <CreditCard className="w-3 h-3" />
@@ -141,7 +141,7 @@ export const SiteMemberAccessView: React.FC<SiteMemberAccessViewProps> = ({
       {/* Member Pages Access Banner (Screen 5 Requirement) */}
       <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 rounded-2xl p-6 text-white shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="space-y-1 max-w-xl">
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/20 text-slate-700 text-[10px] font-bold uppercase tracking-wider backdrop-blur-sm">
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/20 text-white text-[10px] font-bold uppercase tracking-wider backdrop-blur-sm">
             <Lock className="w-3 h-3" />
             <span>Private Content Architecture</span>
           </div>
@@ -162,24 +162,24 @@ export const SiteMemberAccessView: React.FC<SiteMemberAccessViewProps> = ({
 
       {/* View Mode 1: Roles Table */}
       {viewMode === 'roles-table' && (
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden">
+        <div className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden">
           {/* Table Toolbar */}
-          <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="p-4 border-b border-slate-300 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="flex items-center gap-2">
               <h3 className="text-base font-bold text-slate-900 dark:text-white">Member Roles</h3>
-              <span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-950 dark:text-slate-400 font-mono border border-slate-400 font-black">
+              <span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-950 dark:text-slate-200 font-mono border border-slate-400 font-black">
                 {memberRoles.length}
               </span>
             </div>
 
             <div className="relative">
-              <Search className="w-4 h-4 text-slate-500 absolute left-3 top-2.5" />
+              <Search className="w-4 h-4 text-slate-600 absolute left-3 top-2.5" />
               <input
                 type="text"
                 placeholder="Search member roles & plans..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="pl-9 pr-3 py-2 text-xs bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 w-56 sm:w-64 text-slate-900 dark:text-white font-bold border-slate-300 placeholder:text-slate-400"
+                className="pl-9 pr-3 py-2 text-xs bg-white dark:bg-slate-800/60 border border-slate-300 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 w-56 sm:w-64 text-slate-900 dark:text-white font-bold placeholder:text-slate-500"
               />
             </div>
           </div>
@@ -187,7 +187,7 @@ export const SiteMemberAccessView: React.FC<SiteMemberAccessViewProps> = ({
           {/* Roles Table */}
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
-              <thead className="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-700 uppercase tracking-wider font-semibold">
+              <thead className="bg-slate-100 dark:bg-slate-800/50 border-b border-slate-300 dark:border-slate-800 text-[11px] text-slate-700 dark:text-slate-300 uppercase tracking-wider font-bold">
                 <tr>
                   <th className="py-3 px-4">Role Name</th>
                   <th className="py-3 px-4">Linked Subscription Tier</th>
@@ -197,11 +197,11 @@ export const SiteMemberAccessView: React.FC<SiteMemberAccessViewProps> = ({
                   <th className="py-3 px-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-xs">
+              <tbody className="divide-y divide-slate-200 dark:divide-slate-800 text-xs">
                 {filteredRoles.map((role) => (
                   <tr key={role.id} className="hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition-colors">
                     {/* Role Name */}
-                    <td className="py-3.5 px-4 font-semibold text-slate-900 dark:text-white">
+                    <td className="py-3.5 px-4 font-bold text-slate-900 dark:text-white">
                       <div className="flex items-center gap-2">
                         <div className="w-7 h-7 rounded-lg bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 flex items-center justify-center font-bold text-xs">
                           {role.name.charAt(0)}
@@ -209,7 +209,7 @@ export const SiteMemberAccessView: React.FC<SiteMemberAccessViewProps> = ({
                         <div>
                           <div>{role.name}</div>
                           {role.description && (
-                            <div className="text-[11px] text-slate-500 dark:text-slate-400 font-normal line-clamp-1">
+                            <div className="text-[11px] text-slate-700 dark:text-slate-300 font-medium line-clamp-1">
                               {role.description}
                             </div>
                           )}
@@ -225,12 +225,12 @@ export const SiteMemberAccessView: React.FC<SiteMemberAccessViewProps> = ({
                             <CreditCard className="w-3 h-3" />
                             <span>{role.subscriptionPlanName}</span>
                           </span>
-                          <span className="text-[10px] text-slate-500">
+                          <span className="text-[10px] text-slate-700 font-medium">
                             {role.monthlyFIC ? `${role.monthlyFIC} FIC / mo (₦${role.monthlyNaira?.toLocaleString()})` : 'Free Tier (₦0)'}
                           </span>
                         </div>
                       ) : (
-                        <span className="text-slate-700 text-[10px]">Standard System Role</span>
+                        <span className="text-slate-700 font-medium text-[10px]">Standard System Role</span>
                       )}
                     </td>
 
@@ -251,7 +251,7 @@ export const SiteMemberAccessView: React.FC<SiteMemberAccessViewProps> = ({
                     </td>
 
                     {/* Date Created */}
-                    <td className="py-3.5 px-4 text-slate-500 dark:text-slate-400 text-[11px]">
+                    <td className="py-3.5 px-4 text-slate-700 dark:text-slate-300 font-medium text-[11px]">
                       {new Date(role.createdAt).toLocaleDateString()}
                     </td>
 
@@ -263,7 +263,7 @@ export const SiteMemberAccessView: React.FC<SiteMemberAccessViewProps> = ({
                             await onDeleteMemberRole(role.id);
                           }
                         }}
-                        className="p-1.5 text-slate-700 hover:text-red-600 rounded-lg hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors"
+                        className="p-1.5 text-slate-500 hover:text-red-600 rounded-lg hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors"
                         title="Delete role"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -279,14 +279,14 @@ export const SiteMemberAccessView: React.FC<SiteMemberAccessViewProps> = ({
 
       {/* View Mode 2: Subscription-Linked Gating Matrix */}
       {viewMode === 'subscription-matrix' && (
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm p-6 space-y-4">
+        <div className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-2xl shadow-sm p-6 space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
               <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
                 <CreditCard className="w-4 h-4 text-amber-500" />
                 <span>Subscription Tier &lt;&ndash;&gt; Member Access Matrix</span>
               </h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+              <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mt-0.5">
                 Each subscription pass automatically provisions a Member Role and unlocks corresponding private pages.
               </p>
             </div>
@@ -298,9 +298,9 @@ export const SiteMemberAccessView: React.FC<SiteMemberAccessViewProps> = ({
             </button>
           </div>
 
-          <div className="overflow-x-auto border border-slate-200 dark:border-slate-800 rounded-xl">
+          <div className="overflow-x-auto border border-slate-300 dark:border-slate-800 rounded-xl">
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-50 dark:bg-slate-800/60 text-slate-500 font-semibold border-b border-slate-200 dark:border-slate-800 text-[10px] uppercase">
+              <thead className="bg-slate-100 dark:bg-slate-800/60 text-slate-700 font-bold border-b border-slate-300 dark:border-slate-800 text-[10px] uppercase">
                 <tr>
                   <th className="p-3">Restricted Screen / Page</th>
                   <th className="p-3">Required Subscription Tier</th>
@@ -310,26 +310,26 @@ export const SiteMemberAccessView: React.FC<SiteMemberAccessViewProps> = ({
                   <th className="p-3 text-right">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+              <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
                 {memberPages.map((page) => (
                   <tr key={page.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/40">
-                    <td className="p-3 font-semibold text-slate-900 dark:text-white">
+                    <td className="p-3 font-bold text-slate-900 dark:text-white">
                       <div>{page.title}</div>
-                      <div className="text-[10px] font-mono text-amber-500">{page.path}</div>
+                      <div className="text-[10px] font-mono text-amber-600 dark:text-amber-400 font-bold">{page.path}</div>
                     </td>
-                    <td className="p-3 font-bold text-slate-700 dark:text-slate-300">
+                    <td className="p-3 font-bold text-slate-800 dark:text-slate-200">
                       {page.requiredSubscriptionTier || 'Open / Public'}
                     </td>
                     <td className="p-3">
-                      <span className="px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-950 dark:text-blue-300 text-[10px] font-mono border  border-blue-400 font-black">
+                      <span className="px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-950 dark:text-blue-300 text-[10px] font-mono border border-blue-400 font-bold">
                         {page.allowedRoleIds?.[0] || 'Standard Member'}
                       </span>
                     </td>
-                    <td className="p-3 font-mono font-bold text-amber-600 dark:text-amber-400">
+                    <td className="p-3 font-mono font-bold text-amber-700 dark:text-amber-400">
                       {page.monthlyFIC ? `${page.monthlyFIC} FIC (₦${(page.monthlyFIC * 100).toLocaleString()})` : 'Free Tier'}
                     </td>
-                    <td className="p-3 text-slate-500">
-                      <span className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-950 dark:text-slate-400 text-[10px] border border-slate-400 font-black">
+                    <td className="p-3 text-slate-700">
+                      <span className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-950 dark:text-slate-200 text-[10px] border border-slate-400 font-bold">
                         {page.gatedCategory || 'Paywalled Channel'}
                       </span>
                     </td>
@@ -338,7 +338,7 @@ export const SiteMemberAccessView: React.FC<SiteMemberAccessViewProps> = ({
                         onClick={() => {
                           alert(`Manually granting pass for ${page.title} (${page.path}) to current session member.`);
                         }}
-                        className="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-blue-600 hover:text-slate-700 rounded-lg text-[10px] font-bold transition"
+                        className="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-blue-600 hover:text-white rounded-lg text-[10px] font-bold transition border border-slate-300"
                       >
                         Grant Pass
                       </button>
@@ -354,19 +354,19 @@ export const SiteMemberAccessView: React.FC<SiteMemberAccessViewProps> = ({
       {/* Feature Cards Section (Screen 5: More tools to give members page access) */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {/* Card 1: Pricing Plans */}
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm flex flex-col justify-between hover:border-blue-500/50 transition-all">
+        <div className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-2xl p-5 shadow-sm flex flex-col justify-between hover:border-blue-500/50 transition-all">
           <div>
             <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mb-3">
               <CreditCard className="w-5 h-5" />
             </div>
             <h3 className="text-sm font-bold text-slate-900 dark:text-white">Platform Subscriptions (20 Modules)</h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
+            <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mt-1 leading-relaxed">
               Sell subscriptions, memberships and passes that grant access to exclusive gated platform modules.
             </p>
           </div>
           <button
             onClick={onNavigateToPricingPlans}
-            className="mt-4 text-xs font-bold text-amber-600 dark:text-amber-400 hover:underline flex items-center gap-1"
+            className="mt-4 text-xs font-bold text-amber-700 dark:text-amber-400 hover:underline flex items-center gap-1"
           >
             <span>Manage Platform Subscriptions &rarr;</span>
             <ChevronRight className="w-3.5 h-3.5" />
@@ -374,19 +374,19 @@ export const SiteMemberAccessView: React.FC<SiteMemberAccessViewProps> = ({
         </div>
 
         {/* Card 2: Badges */}
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm flex flex-col justify-between hover:border-blue-500/50 transition-all">
+        <div className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-2xl p-5 shadow-sm flex flex-col justify-between hover:border-blue-500/50 transition-all">
           <div>
             <div className="w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-950 text-amber-600 dark:text-amber-400 flex items-center justify-center mb-3">
               <Award className="w-5 h-5" />
             </div>
             <h3 className="text-sm font-bold text-slate-900 dark:text-white">Member Badges</h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
+            <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mt-1 leading-relaxed">
               Give members with the same badge access to specific site pages and milestone credentials.
             </p>
           </div>
           <button
             onClick={onNavigateToBadges}
-            className="mt-4 text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
+            className="mt-4 text-xs font-bold text-blue-700 dark:text-blue-400 hover:underline flex items-center gap-1"
           >
             <span>Create Badge Studio</span>
             <ChevronRight className="w-3.5 h-3.5" />
@@ -394,19 +394,19 @@ export const SiteMemberAccessView: React.FC<SiteMemberAccessViewProps> = ({
         </div>
 
         {/* Card 3: Signup & Login Settings */}
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm flex flex-col justify-between hover:border-blue-500/50 transition-all">
+        <div className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-2xl p-5 shadow-sm flex flex-col justify-between hover:border-blue-500/50 transition-all">
           <div>
             <div className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-3">
               <Settings className="w-5 h-5" />
             </div>
             <h3 className="text-sm font-bold text-slate-900 dark:text-white">Signup and login settings</h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
+            <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mt-1 leading-relaxed">
               Decide who can be a member, enable email confirmation, and add reCAPTCHA to secure your site.
             </p>
           </div>
           <button
             onClick={() => alert('Opening Sovereign Signup & Login Security Controls')}
-            className="mt-4 text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
+            className="mt-4 text-xs font-bold text-blue-700 dark:text-blue-400 hover:underline flex items-center gap-1"
           >
             <span>Manage Settings</span>
             <ChevronRight className="w-3.5 h-3.5" />
@@ -426,16 +426,16 @@ export const SiteMemberAccessView: React.FC<SiteMemberAccessViewProps> = ({
       {/* Create New Member Role Modal */}
       {isCreateRoleModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl max-w-md w-full shadow-2xl p-6">
+          <div className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-2xl max-w-md w-full shadow-2xl p-6">
             <h3 className="text-base font-bold text-slate-900 dark:text-white mb-1">
               Create New Member Role
             </h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
+            <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mb-4">
               e.g., Student, VIP, Subscriber, Instructor
             </p>
             <form onSubmit={handleCreateSubmit} className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                <label className="block text-xs font-bold text-slate-800 dark:text-slate-200 mb-1">
                   Role Name
                 </label>
                 <input
@@ -444,12 +444,12 @@ export const SiteMemberAccessView: React.FC<SiteMemberAccessViewProps> = ({
                   placeholder="e.g. VIP Subscriber"
                   value={newRoleName}
                   onChange={(e) => setNewRoleName(e.target.value)}
-                  className="w-full px-3 py-2 text-xs bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
+                  className="w-full px-3 py-2 text-xs bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-500"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                <label className="block text-xs font-bold text-slate-800 dark:text-slate-200 mb-1">
                   Description
                 </label>
                 <input
@@ -457,7 +457,7 @@ export const SiteMemberAccessView: React.FC<SiteMemberAccessViewProps> = ({
                   placeholder="Optional description"
                   value={newRoleDesc}
                   onChange={(e) => setNewRoleDesc(e.target.value)}
-                  className="w-full px-3 py-2 text-xs bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
+                  className="w-full px-3 py-2 text-xs bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-500"
                 />
               </div>
 
@@ -465,7 +465,7 @@ export const SiteMemberAccessView: React.FC<SiteMemberAccessViewProps> = ({
                 <button
                   type="button"
                   onClick={() => setIsCreateRoleModalOpen(false)}
-                  className="px-4 py-2 text-xs border border-slate-200 dark:border-slate-700 rounded-xl"
+                  className="px-4 py-2 text-xs font-bold border border-slate-300 dark:border-slate-700 rounded-xl text-slate-800 hover:bg-slate-100"
                 >
                   Cancel
                 </button>

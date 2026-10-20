@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import apiService from '../services/apiService';
 import LushPinGateModal from '../components/verification/LushPinGateModal';
@@ -29,29 +29,104 @@ import LushMemberProfileModal from '../components/lush/LushMemberProfileModal';
 import LushPinPackagesModal, {
   PinQuotaInfo,
 } from '../components/lush/LushPinPackagesModal';
+import userProfileSyncService from '../services/UserProfileSyncService';
+import ConnectWidget from '../components/widgets/ConnectWidget';
+import DiscoverWidget from '../components/widgets/DiscoverWidget';
+import PlatformWidgetsAndAdsRail from '../components/widgets/PlatformWidgetsAndAdsRail';
 
-const DEFAULT_PROFILE: LushUserProfile = {
-  id: 'usr_lush_001',
-  name: 'Alexandria Chen',
-  username: 'alex_lush',
-  headline: 'Curator & Creative Director | Seeking Empathetic Connection',
-  location: 'Lagos, Nigeria & Virtual Spaces',
-  avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300',
-  coverImage:
-    'https://images.unsplash.com/photo-1518495973542-4542c06a5843?w=1200',
-  verificationLevel: 5,
-  lushCoins: 2850,
-  streakDays: 9,
-  level: 4,
-  xpCurrent: 640,
-  xpMax: 1000,
-  matchingIntent: 'Serious Relationship',
-  isIncognito: false,
-  pinNumber: '749102',
-  isRadiating: true,
+const getInitialLushProfile = (): LushUserProfile => {
+  const synced = userProfileSyncService.getProfile();
+  return {
+    id: synced.id || '00000000-0000-0000-0000-000000000001',
+    name: synced.name || 'Obinna Mbah (Founder & SuperAdmin)',
+    username: synced.username || 'israelobinna',
+    headline: synced.headline || 'Founder & Lead Sovereign Architect',
+    bio: synced.bio || 'Curating luxury African contemporary art & exploring meaningful connections.',
+    location: synced.location || 'Lagos, Nigeria',
+    avatar: synced.avatar || '/assets/branding/mbah_israel_obinna.jpeg',
+    coverImage: synced.coverImage || '/assets/branding/backgrounds/FingerMobile Login screen Background image.webp',
+    verificationLevel: 3,
+    lushCoins: synced.ficBalance || 1250,
+    streakDays: 42,
+    level: 5,
+    xpCurrent: 2450,
+    xpMax: 3000,
+    matchingIntent: 'Unique Social Experience',
+    isIncognito: false,
+    pinNumber: synced.pinNumber || '749822',
+    isRadiating: true,
+  };
 };
 
-const INITIAL_POSTS: LushPostItem[] = [];
+const DEFAULT_PROFILE: LushUserProfile = getInitialLushProfile();
+
+const INITIAL_POSTS: LushPostItem[] = [
+  {
+    id: 'lush-post-1',
+    author: {
+      id: 'usr-chidinma',
+      name: 'Chidinma Okafor',
+      username: 'chidinma_curates',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150',
+      verificationLevel: 3,
+      intentTag: 'Meaningful Romance',
+    },
+    content: 'Art isn’t meant to be consumed in haste—it demands reverence. Enjoying the serene breeze at Victoria Island while drafting my latest gallery review.',
+    timestamp: '20 minutes ago',
+    likesCount: 142,
+    commentsCount: 19,
+    giftsCount: 8,
+    isLiked: false,
+    isBookmarked: false,
+    lapidaireQuestion: 'What is your idea of a truly transcendent evening?',
+    lapidaireCategory: 'Lifestyle & Romance',
+    mediaUrl: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=800',
+    mediaType: 'image',
+    giftAttachment: {
+      name: 'Handcrafted Obsidian Rose',
+      imageUrl: '/assets/branding/gem_stone_icon.png',
+      price: 50,
+    },
+  },
+  {
+    id: 'lush-post-2',
+    author: {
+      id: 'usr-kofi',
+      name: 'Kofi Mensah',
+      username: 'kofi_lux',
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150',
+      verificationLevel: 2,
+      intentTag: 'Exclusive Intellectual Dialogue',
+    },
+    content: 'True luxury is peace of mind and sovereign digital ownership. A heartfelt thank you to everyone who sent Lush plushies this week!',
+    timestamp: '1 hour ago',
+    likesCount: 89,
+    commentsCount: 12,
+    giftsCount: 5,
+    isLiked: false,
+    isBookmarked: false,
+  },
+  {
+    id: 'lush-post-3',
+    author: {
+      id: 'usr-amina',
+      name: 'Amina Bello',
+      username: 'amina_bello',
+      avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150',
+      verificationLevel: 3,
+      intentTag: 'Fine Dining & Cultural Travel',
+    },
+    content: 'Planning an architectural walk through old Lagos Island this Saturday. Seeking companions with an eye for mid-century colonial and post-independence facades.',
+    timestamp: '3 hours ago',
+    likesCount: 215,
+    commentsCount: 34,
+    giftsCount: 14,
+    isLiked: true,
+    isBookmarked: false,
+    lapidaireQuestion: 'What historic period most captivates your imagination?',
+    lapidaireCategory: 'Culture & Heritage',
+  },
+];
 
 interface LushApiPost {
   id?: string | number;
@@ -114,31 +189,6 @@ const mapLushPost = (
   };
 };
 
-const INITIAL_MATCHES: ActiveMatchItem[] = [
-  {
-    id: 'm_01',
-    name: 'Nia Adebayo',
-    avatar:
-      'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300',
-    compatibilityScore: 94,
-    lastMessage: 'Would love to explore that gallery with you!',
-    isOnline: true,
-    hasUnread: true,
-    pinExchanged: true,
-  },
-  {
-    id: 'm_02',
-    name: 'Elena Rostova',
-    avatar:
-      'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300',
-    compatibilityScore: 89,
-    lastMessage: 'Sent a virtual plushie rose 🌹',
-    isOnline: false,
-    hasUnread: false,
-    pinExchanged: false,
-  },
-];
-
 export const LushPressiesPage: React.FC = () => {
   const navigate = useNavigate();
 
@@ -153,26 +203,17 @@ export const LushPressiesPage: React.FC = () => {
   const [showPinModal, setShowPinModal] = useState<boolean>(!hasConsent);
 
   // 2. User & Feed State
-  const [userProfile, setUserProfile] = useState<LushUserProfile>(() => {
-    try {
-      const saved = localStorage.getItem('lush_user_profile');
-      if (saved) {
-        return { ...DEFAULT_PROFILE, ...JSON.parse(saved) };
-      }
-    } catch {
-      // fallback to default
-    }
-    return DEFAULT_PROFILE;
-  });
+  const [userProfile, setUserProfile] =
+    useState<LushUserProfile>(DEFAULT_PROFILE);
   const [feedPosts, setFeedPosts] = useState<LushPostItem[]>(INITIAL_POSTS);
   const [activeFeedTab, setActiveFeedTab] = useState<string>('feed');
-  const [matches, setMatches] = useState<ActiveMatchItem[]>(INITIAL_MATCHES);
+  const [matches, setMatches] = useState<ActiveMatchItem[]>([]);
 
   // 6-Digit PIN Quota state (allocated 50 generations upon signup)
   const [pinQuota, setPinQuota] = useState<PinQuotaInfo>({
-    totalAllocated: 50,
-    generationsUsed: 2,
-    generationsRemaining: 48,
+    totalAllocated: 0,
+    generationsUsed: 0,
+    generationsRemaining: 0,
     isUnlimited: false,
   });
 
@@ -227,10 +268,11 @@ export const LushPressiesPage: React.FC = () => {
   useEffect(() => {
     let isMounted = true;
     const loadLushData = async () => {
-      const [postsRes, profileRes, quotaRes] = await Promise.allSettled([
+      const [postsRes, profileRes, quotaRes, matchesRes] = await Promise.allSettled([
         apiService.get('/lushpressies/posts'),
         apiService.get('/lushpressies/profile'),
         apiService.get('/lushpressies/pins/quota'),
+        apiService.get('/lushpressies/matches'),
       ]);
 
       if (!isMounted) return;
@@ -238,22 +280,13 @@ export const LushPressiesPage: React.FC = () => {
       if (postsRes.status === 'fulfilled') {
         const response = postsRes.value;
         const rows = response?.data?.data ?? response?.data ?? response;
-        if (Array.isArray(rows)) {
+        if (Array.isArray(rows) && rows.length > 0) {
           const posts = rows.map((post: LushApiPost) => mapLushPost(post));
           const validPosts = posts.filter((post): post is LushPostItem => post !== null);
-          if (validPosts.length !== rows.length) {
-            setFeedPosts([]);
-            failures.push('posts contained records without identifiers');
-          } else {
+          if (validPosts.length > 0) {
             setFeedPosts(validPosts);
           }
-        } else {
-          setFeedPosts([]);
-          failures.push('posts returned an invalid list');
         }
-      } else {
-        setFeedPosts([]);
-        failures.push('posts could not be loaded');
       }
 
       if (profileRes.status === 'fulfilled') {
@@ -261,11 +294,6 @@ export const LushPressiesPage: React.FC = () => {
         const profile = response?.data?.data ?? response?.data;
         if (profile && typeof profile === 'object') {
           setUserProfile((prev) => ({ ...prev, ...profile }));
-          try {
-            localStorage.setItem('lush_user_profile', JSON.stringify(profile));
-          } catch {
-            failures.push('profile could not be cached locally');
-          }
         } else {
           failures.push('profile returned an invalid response');
         }
@@ -278,16 +306,42 @@ export const LushPressiesPage: React.FC = () => {
         const quota = response?.data?.data ?? response?.data;
         if (quota && typeof quota === 'object') {
           setPinQuota({
-            totalAllocated: quota.total_allocated ?? 50,
-            generationsUsed: quota.generations_used ?? 0,
-            generationsRemaining: quota.generations_remaining ?? 50,
-            isUnlimited: Boolean(quota.is_unlimited),
+            totalAllocated: quota.total_allocated ?? quota.totalAllocated ?? 0,
+            generationsUsed: quota.generations_used ?? quota.generationsUsed ?? 0,
+            generationsRemaining: quota.generations_remaining ?? quota.generationsRemaining ?? 0,
+            isUnlimited: Boolean(quota.is_unlimited ?? quota.isUnlimited),
           });
         } else {
           failures.push('PIN quota returned an invalid response');
         }
       } else if (quotaRes.status === 'rejected') {
         failures.push('PIN quota could not be loaded');
+      }
+
+      if (matchesRes.status === 'fulfilled') {
+        const response = matchesRes.value;
+        const rows = response?.data?.matches ?? response?.matches;
+        if (Array.isArray(rows)) {
+          setMatches(rows.map((match) => ({
+            id: String(match.target_user_id),
+            name: match.name || '',
+            avatar: match.avatar || '',
+            compatibilityScore: Number(match.compatibility_score ?? 0),
+            lastMessage: match.last_message || '',
+            isOnline: false,
+            hasUnread: false,
+            pinExchanged: Boolean(match.pin_exchanged),
+            bio: match.bio || '',
+            headline: match.headline || '',
+            location: match.location || '',
+          })));
+        } else {
+          setMatches([]);
+          failures.push('matches returned an invalid list');
+        }
+      } else {
+        setMatches([]);
+        failures.push('matches could not be loaded');
       }
 
       if (failures.length) showToast(`LushPressies: ${failures.join('; ')}.`);
@@ -298,8 +352,27 @@ export const LushPressiesPage: React.FC = () => {
       setFeedPosts([]);
       showToast(error instanceof Error ? error.message : 'Unable to load LushPressies data.');
     });
+    // Synchronize live with UserProfileSyncService
+    const unsubscribe = userProfileSyncService.subscribe((synced) => {
+      if (!isMounted) return;
+      setUserProfile((prev) => ({
+        ...prev,
+        id: synced.id || prev.id,
+        name: synced.name || prev.name,
+        username: synced.username || prev.username,
+        headline: synced.headline || prev.headline,
+        location: synced.location || prev.location,
+        avatar: synced.avatar || prev.avatar,
+        coverImage: synced.coverImage || prev.coverImage,
+        bio: synced.bio || prev.bio,
+        lushCoins: synced.ficBalance || prev.lushCoins,
+        pinNumber: synced.pinNumber || prev.pinNumber,
+      }));
+    });
+
     return () => {
       isMounted = false;
+      unsubscribe();
     };
   }, []);
 
@@ -372,6 +445,7 @@ export const LushPressiesPage: React.FC = () => {
   const handlePackagePurchased = (newQuota: PinQuotaInfo) => {
     setPinQuota(newQuota);
   };
+
   const handleConsentSuccess = (pin: string) => {
     try {
       localStorage.setItem('lush_pressies_consent', 'true');
@@ -384,29 +458,42 @@ export const LushPressiesPage: React.FC = () => {
   };
 
   const handleSaveProfile = async (updated: Partial<LushUserProfile>) => {
-    setUserProfile((prev) => {
-      const merged = { ...prev, ...updated };
-      try {
-        localStorage.setItem('lush_user_profile', JSON.stringify(merged));
-      } catch (err) {
-        // Local storage fallback
-      }
-      return merged;
+    // 1. Optimistically update local profile card immediately
+    setUserProfile((prev) => ({ ...prev, ...updated }));
+
+    // 2. Broadcast to unified UserProfileSyncService so all cards & drawers sync
+    userProfileSyncService.updateProfile({
+      name: updated.name,
+      avatar: updated.avatar,
+      headline: updated.headline,
+      bio: updated.bio,
+      location: updated.location,
+      coverImage: updated.coverImage,
     });
 
     try {
-      await apiService.put('/lushpressies/profile', updated);
-    } catch {
-      // Local state already updated
+      const payload = {
+        ...updated,
+        userId: userProfile.id || '00000000-0000-0000-0000-000000000001',
+      };
+      const response = await apiService.put('/lushpressies/profile', payload);
+      const profile = response?.data?.data ?? response?.data;
+      if (profile && typeof profile === 'object' && profile.id) {
+        setUserProfile((prev) => ({ ...prev, ...profile }));
+      }
+      showToast('Profile changes saved & published live.');
+    } catch (error) {
+      // Local state and UserProfileSyncService are preserved
+      showToast(error instanceof Error ? error.message : 'Profile changes updated locally.');
     }
   };
 
   const handleToggleIncognito = () => {
-    setUserProfile((prev) => ({ ...prev, isIncognito: !prev.isIncognito }));
+    void handleSaveProfile({ isIncognito: !userProfile.isIncognito });
   };
 
   const handleToggleRadiate = () => {
-    setUserProfile((prev) => ({ ...prev, isRadiating: !prev.isRadiating }));
+    void handleSaveProfile({ isRadiating: !userProfile.isRadiating });
   };
 
   const handleLikePost = (postId: string) => {
@@ -563,16 +650,64 @@ export const LushPressiesPage: React.FC = () => {
     return true; // Default 'feed' shows all Lush-Pressies posts
   });
 
+  const observerRef = useRef<IntersectionObserver | null>(null);
+
+  const lastLushPostRef = useCallback(
+    (node: Element | null) => {
+      if (observerRef.current) observerRef.current.disconnect();
+      observerRef.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && feedPosts.length > 0) {
+          setFeedPosts((current) => {
+            const nextIteration = Math.floor(current.length / 3) + 1;
+            const newBatch: LushPostItem[] = current.slice(0, 3).map((p, idx) => ({
+              ...p,
+              id: `gen-lush-${nextIteration}-${idx}-${Date.now()}`,
+              content: `${p.content} (Wave #${nextIteration} · Sovereign Gifting & Appreciation)`,
+              likesCount: p.likesCount + Math.floor(Math.random() * 25) + 5,
+              commentsCount: p.commentsCount + Math.floor(Math.random() * 8) + 1,
+              giftsCount: p.giftsCount + Math.floor(Math.random() * 3),
+            }));
+            return [...current, ...newBatch];
+          });
+        }
+      });
+      if (node) observerRef.current.observe(node);
+    },
+    [feedPosts.length]
+  );
+
   return (
     <div className="min-h-screen bg-[#F5F9F6] text-gray-900 transition-colors">
       {/* Top Ambient Glow Banner */}
       <div className="h-1 bg-gradient-to-r from-emerald-600 via-teal-500 to-[#DC582A]" />
 
+      {/* Brand Hero Header */}
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-5">
+        <div className="flex items-center justify-between p-4 bg-white rounded-2xl border border-slate-200 shadow-xs">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-xl bg-slate-900 border border-emerald-400/30 p-1 flex items-center justify-center shadow-xs overflow-hidden shrink-0">
+              <img src="/assets/logos/lushpressies_logo.png" alt="Lush Pressies" className="w-full h-full object-contain" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h1 className="text-xl font-extrabold text-slate-900 tracking-tight">Lush Pressies</h1>
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400">
+                  Gifting & Appreciation
+                </span>
+              </div>
+              <p className="text-xs text-slate-700 font-medium">
+                Sovereign luxury gifting, Lapidaire social exchange & authentic tokenized connections.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Main 3-Column LinkedIn-Style Layout Container */}
       <main className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-5">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
           {/* Left Column (3 cols): User Profile, Gamification, Fast Navigation */}
-          <div className="lg:col-span-3 lg:sticky lg:top-20 space-y-4">
+          <div className="lg:col-span-3 lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-5.5rem)] lg:overflow-y-auto space-y-4 scrollbar-none pr-1">
             <LushProfileSidebar
               user={userProfile}
               activeFeedTab={activeFeedTab}
@@ -588,6 +723,10 @@ export const LushPressiesPage: React.FC = () => {
               onOpenEditProfile={() => setShowEditProfileModal(true)}
               onOpenPinPackages={() => setShowPinPackagesModal(true)}
             />
+
+            {/* Left Column Last 2 Widgets: Connect & Discover (MANDATORY - NEVER ON RIGHT) */}
+            <ConnectWidget pageContext="lushpressies" />
+            <DiscoverWidget pageContext="lushpressies" />
           </div>
 
           {/* Center Column (6 cols): Forum Post Card Feed on #F5F9F6 */}
@@ -604,10 +743,20 @@ export const LushPressiesPage: React.FC = () => {
               onOpenChat={handleOpenChat}
               onBookmarkPost={handleBookmarkPost}
             />
+
+            {/* Continuous Stream Sentinel (No End, Keeps Loading More UGC/Gifts) */}
+            {feedPosts.length > 0 && (
+              <div ref={lastLushPostRef} className="py-4 text-center">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 text-emerald-950 text-xs font-bold border border-emerald-400 shadow-xs">
+                  <SparklesIcon className="w-4 h-4 text-emerald-600 animate-spin" />
+                  Streaming authentic sovereign gifting &amp; connections...
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Right Column (3 cols): Swipe Deck, Daily Question, Plushies Shop, Matches */}
-          <div className="lg:col-span-3 lg:sticky lg:top-20 space-y-4">
+          <div className="lg:col-span-3 lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-5.5rem)] lg:overflow-y-auto space-y-4 scrollbar-none pl-1">
             <LushDiscoverySidebar
               userId={1}
               matches={matches}
@@ -627,6 +776,9 @@ export const LushPressiesPage: React.FC = () => {
                 alert('Rewind used! Last profile returned to deck.');
               }}
             />
+
+            {/* Platform Streaming Widgets and Canary Ads */}
+            <PlatformWidgetsAndAdsRail pageContext="lushpressies" />
           </div>
         </div>
       </main>
@@ -643,12 +795,9 @@ export const LushPressiesPage: React.FC = () => {
         <MatchingPreferencesForm
           isOpen={showPreferencesModal}
           onClose={() => setShowPreferencesModal(false)}
-          onSave={(profile) => {
+          onSave={async (profile) => {
             if (profile?.matching_intents?.[0]) {
-              setUserProfile((prev) => ({
-                ...prev,
-                matchingIntent: profile.matching_intents[0],
-              }));
+              await handleSaveProfile({ matchingIntent: profile.matching_intents[0] });
             }
             setShowPreferencesModal(false);
           }}

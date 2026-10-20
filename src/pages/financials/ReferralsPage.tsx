@@ -85,7 +85,7 @@ const ReferralsPage: React.FC = () => {
         <div className="bg-white p-6 rounded-2xl border border-slate-300 shadow-sm">
           <div className="flex items-center justify-between text-slate-700 mb-1">
             <span className="text-xs font-bold uppercase tracking-wider">Total Referrals</span>
-            <Users className="w-4 h-4 text-slate-500" />
+            <Users className="w-4 h-4 text-slate-600" />
           </div>
           <p className="text-3xl font-mono font-black text-slate-900 mt-2">{stats.totalReferrals}</p>
           <p className="text-xs text-emerald-800 font-bold mt-1">+{stats.activeReferrals} Active Members</p>
@@ -247,7 +247,7 @@ const ReferralsPage: React.FC = () => {
           </div>
         ) : (
           <div className="p-12 text-center space-y-2">
-            <Users className="w-10 h-10 text-slate-500 mx-auto" />
+            <Users className="w-10 h-10 text-slate-600 mx-auto" />
             <p className="text-sm font-bold text-slate-800">No members referred yet</p>
             <p className="text-xs text-slate-700 font-medium">Share your invite link above to start earning 50 FIC per activation!</p>
           </div>

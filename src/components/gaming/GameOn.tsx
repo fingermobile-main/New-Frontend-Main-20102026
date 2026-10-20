@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Gamepad2, Trophy, Star, Users, Zap } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Gamepad2, Trophy, Star, Users, Zap, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
@@ -10,9 +11,21 @@ interface GameOnProps {
 }
 
 const GameOn: React.FC<GameOnProps> = ({ userId, onGameSelect }) => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = React.useState<'featured' | 'popular' | 'new'>('featured');
 
   const games = [
+    {
+      id: 'supervi',
+      title: 'SuperVi: Orbs of Glory',
+      description: 'Rise of the Six: Afro-futuristic 3D–5D runner across 16 global cyber cities',
+      players: 8420,
+      rating: 5.0,
+      category: '3D-5D Runner',
+      image: '🌟',
+      featured: true,
+      route: '/games/supervi'
+    },
     {
       id: '1',
       title: 'Finger War Championship',
@@ -21,7 +34,8 @@ const GameOn: React.FC<GameOnProps> = ({ userId, onGameSelect }) => {
       rating: 4.8,
       category: 'Action',
       image: '🎮',
-      featured: true
+      featured: true,
+      route: '/fingerwars'
     },
     {
       id: '2',
@@ -69,7 +83,7 @@ const GameOn: React.FC<GameOnProps> = ({ userId, onGameSelect }) => {
             <Gamepad2 className="h-8 w-8" />
             GameOn
           </h1>
-          <p className="text-muted-foreground mt-1">
+          <p className="text-slate-700 font-medium mt-1">
             Discover and play exciting games
           </p>
         </div>
@@ -116,7 +130,7 @@ const GameOn: React.FC<GameOnProps> = ({ userId, onGameSelect }) => {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between text-sm">
-                <div className="flex items-center gap-1 text-muted-foreground">
+                <div className="flex items-center gap-1 text-slate-700 font-semibold">
                   <Users className="h-4 w-4" />
                   {game.players.toLocaleString()}
                 </div>
@@ -129,8 +143,14 @@ const GameOn: React.FC<GameOnProps> = ({ userId, onGameSelect }) => {
                 {game.category}
               </Badge>
               <Button
-                className="w-full"
-                onClick={() => onGameSelect?.(game.id)}
+                className="w-full bg-slate-900 text-white hover:bg-slate-800"
+                onClick={() => {
+                  if (game.route) {
+                    navigate(game.route);
+                  } else {
+                    onGameSelect?.(game.id);
+                  }
+                }}
               >
                 Play Now
               </Button>

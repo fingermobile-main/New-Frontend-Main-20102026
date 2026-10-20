@@ -84,7 +84,7 @@ const DoughnutChart: React.FC<{
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <span className="text-2xl font-bold">{total.toLocaleString()}</span>
-          <span className="text-xs text-gray-500">Total</span>
+          <span className="text-xs text-slate-700 dark:text-slate-300 font-medium">Total</span>
         </div>
       </div>
       <div className="space-y-2">
@@ -93,7 +93,7 @@ const DoughnutChart: React.FC<{
             <div className={`w-3 h-3 rounded-full ${item.color}`}></div>
             <div>
               <p className="font-semibold text-sm">{item.type}</p>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-slate-700 dark:text-slate-300 font-medium">
                 {item.value.toLocaleString()}
               </p>
             </div>

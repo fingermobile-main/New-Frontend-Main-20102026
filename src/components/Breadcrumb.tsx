@@ -15,13 +15,13 @@ interface BreadcrumbProps {
 
 const Breadcrumb: React.FC<BreadcrumbProps> = ({
   items,
-  separator = <ChevronRight className="h-4 w-4" />,
+  separator = <ChevronRight className="h-4 w-4 text-slate-500" />,
   className = ''
 }) => {
   return (
     <nav aria-label="Breadcrumb" className={`flex items-center space-x-2 text-sm ${className}`}>
       <div className="flex items-center">
-        <Home className="h-4 w-4 text-muted-foreground hover:text-foreground transition-colors cursor-pointer" />
+        <Home className="h-4 w-4 text-slate-700 hover:text-slate-900 transition-colors cursor-pointer" />
       </div>
 
       {items.map((item, index) => (
@@ -31,19 +31,19 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
             {item.href ? (
               <a
                 href={item.href}
-                className="text-muted-foreground hover:text-foreground transition-colors"
+                className="text-slate-700 hover:text-slate-900 font-medium transition-colors"
               >
                 {item.label}
               </a>
             ) : item.onClick ? (
               <button
                 onClick={item.onClick}
-                className="text-muted-foreground hover:text-foreground transition-colors"
+                className="text-slate-700 hover:text-slate-900 font-medium transition-colors"
               >
                 {item.label}
               </button>
             ) : (
-              <span className="text-foreground font-medium">{item.label}</span>
+              <span className="text-slate-900 font-semibold">{item.label}</span>
             )}
           </div>
         </React.Fragment>

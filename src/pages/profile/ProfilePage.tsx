@@ -204,27 +204,31 @@ export const ProfilePage: React.FC = () => {
   const { member, showToast } = useAppContext();
 
   // 1. Core Profile & Relationship States
-  const [profile, setProfile] = useState<ExtendedUserProfile>(() => ({
-    name: 'Israel Obinna Mbah',
-    username: 'israelobinna',
-    headline: 'CEO & CTO, Founder | FingerMobile Protocol™ Sovereign Ecosystem Architect',
-    bio: 'Pioneering decentralized sovereign social architectures, cryptographic media protocols, and resilient privacy matrices across Africa and global nodes.',
-    location: 'Lagos, Nigeria',
-    website: 'https://fingermobileprotocol.com',
-    workplace: 'GraceLink Business Technologies Limited',
-    category: 'Creator Level 5 / Sovereign Architect',
-    privacy: 'public',
-    avatarUrl: '/assets/branding/mbah_israel_obinna.jpeg',
-    coverPhotoUrl:
-      localStorage.getItem('fingermobile_member_cover_photo') ||
-      '/assets/branding/backgrounds/FingerMobile Login screen Background image.webp',
-    coverPositionY: Number(localStorage.getItem('fingermobile_member_cover_position_y')) || 50,
-    coverFormat: (localStorage.getItem('fingermobile_member_cover_format') as CoverFormatKey) || 'profile-page',
-    skills: ['Sovereign Protocol Architecture', 'Cryptographic Enclaves', 'Fullstack Distributed Systems', 'WCAG AAA Design'],
-    stats: { connections: 14200, views: 58920, endorsements: 1240 },
-    verificationLevel: 5,
-    joinedDate: 'Joined March 2026'
-  }));
+  const [profile, setProfile] = useState<ExtendedUserProfile>(() => {
+    const synced = userProfileSyncService.getProfile();
+    return {
+      name: synced.name || (member as any)?.name || 'Sovereign Member',
+      username: synced.username || member?.username || 'member',
+      headline: synced.headline || 'Sovereign Citizen • FingerMobile Protocol',
+      bio: synced.bio || 'Sovereign Member participating in decentralized media, commerce and forums.',
+      location: synced.location || 'Lagos, Nigeria',
+      website: 'https://fingermobileprotocol.com',
+      workplace: 'FingerMobile Protocol',
+      category: 'Citizen / Sovereign Member',
+      privacy: 'public',
+      avatarUrl: synced.avatar || '/assets/branding/default-avatar.svg',
+      coverPhotoUrl:
+        localStorage.getItem('fingermobile_member_cover_photo') ||
+        synced.coverImage ||
+        '/assets/branding/backgrounds/FingerMobile Login screen Background image.webp',
+      coverPositionY: Number(localStorage.getItem('fingermobile_member_cover_position_y')) || 50,
+      coverFormat: (localStorage.getItem('fingermobile_member_cover_format') as CoverFormatKey) || 'profile-page',
+      skills: ['Sovereign Protocol Architecture', 'Cryptographic Enclaves', 'Fullstack Distributed Systems', 'WCAG AAA Design'],
+      stats: { connections: 142, views: 589, endorsements: 24 },
+      verificationLevel: 1,
+      joinedDate: 'Joined March 2026'
+    };
+  });
 
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<ProfileTab>('wall');
@@ -346,12 +350,18 @@ export const ProfilePage: React.FC = () => {
   // Load backend profile if target ID is provided
   useEffect(() => {
     const fetchBackendProfile = async () => {
-      const targetId = id || member?.id || '00000000-0000-0000-0000-000000000001';
+      const activeUser = member || (userProfileSyncService.isGuest() ? null : userProfileSyncService.getProfile());
+      const targetId = id && id !== 'me' ? id : activeUser?.id;
+      if (!targetId) {
+        setLoading(false);
+        return;
+      }
+
       try {
         setLoading(true);
         const res = await fetch(`http://localhost:5001/api/v1/profiles/${targetId}`, {
           headers: {
-            'x-viewer-id': member?.id || '00000000-0000-0000-0000-000000000001'
+            'x-viewer-id': activeUser?.id || targetId
           }
         });
         if (res.status === 404) {
@@ -375,6 +385,33 @@ export const ProfilePage: React.FC = () => {
             if (data.viewer_relationship) {
               setRelationshipRole(data.viewer_relationship);
             }
+            // Propagate Source of Truth to UserProfileSyncService for my own profile ONLY
+            if ((!id || id === 'me' || id === activeUser?.id) && activeUser?.id) {
+              userProfileSyncService.updateProfile({
+                name: data.header.display_name,
+                username: data.header.username,
+                avatar: data.header.avatar_url,
+                coverImage: data.header.cover_url,
+                headline: data.about.bio,
+                location: data.about.location
+              });
+            }
+          }
+        }
+
+        // Live subscription to UserProfileSyncService for my own profile
+        if (!id || id === 'me' || id === activeUser?.id) {
+          const synced = userProfileSyncService.getProfile();
+          if (synced && synced.name && synced.name !== 'Alice Smith') {
+            setProfile((prev) => ({
+              ...prev,
+              name: synced.name || prev.name,
+              username: synced.username || prev.username,
+              avatarUrl: synced.avatar || prev.avatarUrl,
+              coverPhotoUrl: synced.coverImage || prev.coverPhotoUrl,
+              bio: synced.headline || prev.bio,
+              location: synced.location || prev.location
+            }));
           }
         }
 
@@ -424,6 +461,24 @@ export const ProfilePage: React.FC = () => {
     };
 
     fetchBackendProfile();
+  }, [id, member]);
+
+  // Live reactive subscription to userProfileSyncService for immediate cross-tab sync
+  useEffect(() => {
+    if (!id || id === 'me' || id === member?.id || id === '00000000-0000-0000-0000-000000000001') {
+      const unsub = userProfileSyncService.subscribe((updated) => {
+        setProfile((prev) => ({
+          ...prev,
+          name: updated.name || prev.name,
+          username: updated.username || prev.username,
+          headline: updated.headline || prev.headline,
+          location: updated.location || prev.location,
+          avatarUrl: updated.avatar || prev.avatarUrl,
+          coverPhotoUrl: updated.coverImage || prev.coverPhotoUrl
+        }));
+      });
+      return unsub;
+    }
   }, [id, member]);
 
   // Wall Posts formatted according to http://localhost:3000/forum Post Card specification
@@ -1118,7 +1173,7 @@ export const ProfilePage: React.FC = () => {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6 text-center">
         <div className="bg-white rounded-3xl border border-slate-300 p-8 sm:p-12 max-w-md w-full shadow-xl space-y-4">
-          <div className="w-16 h-16 rounded-2xl bg-slate-100 border border-slate-300 flex items-center justify-center mx-auto text-slate-500">
+          <div className="w-16 h-16 rounded-2xl bg-slate-100 border border-slate-300 flex items-center justify-center mx-auto text-slate-600">
             <Lock className="w-8 h-8 text-slate-700" />
           </div>
           <h2 className="text-2xl font-black text-slate-900">404 - Profile Not Found</h2>
@@ -1536,12 +1591,12 @@ export const ProfilePage: React.FC = () => {
 
               <div className="pt-2 border-t border-slate-200 space-y-3 text-xs font-bold text-slate-800">
                 <div className="flex items-center gap-2.5">
-                  <MapPin className="w-4 h-4 text-slate-500 shrink-0" />
+                  <MapPin className="w-4 h-4 text-slate-600 shrink-0" />
                   <span>Lives in <strong className="text-slate-900">{formatLocation(profile.location)}</strong></span>
                 </div>
 
                 <div className="flex items-center gap-2.5">
-                  <Globe className="w-4 h-4 text-slate-500 shrink-0" />
+                  <Globe className="w-4 h-4 text-slate-600 shrink-0" />
                   <a
                     href={profile.website}
                     target="_blank"
@@ -1555,12 +1610,12 @@ export const ProfilePage: React.FC = () => {
                 {/* BIRTHDAY: Unmasked if Friend/Owner, Masked if Stranger */}
                 {isOwner || isFriend ? (
                   <div className="flex items-center gap-2.5 text-slate-800">
-                    <Calendar className="w-4 h-4 text-slate-500 shrink-0" />
+                    <Calendar className="w-4 h-4 text-slate-600 shrink-0" />
                     <span>Born <strong className="text-slate-900">18 June 1992</strong></span>
                   </div>
                 ) : (
-                  <div className="flex items-center gap-2.5 text-slate-500 italic text-[11px]">
-                    <Lock className="w-4 h-4 text-slate-500 shrink-0" />
+                  <div className="flex items-center gap-2.5 text-slate-600 italic text-[11px]">
+                    <Lock className="w-4 h-4 text-slate-600 shrink-0" />
                     <span>Birthday hidden or restricted</span>
                   </div>
                 )}
@@ -1568,18 +1623,18 @@ export const ProfilePage: React.FC = () => {
                 {/* EMAIL: Unmasked if Friend/Owner, Masked if Stranger */}
                 {isOwner || isFriend ? (
                   <div className="flex items-center gap-2.5 text-slate-800">
-                    <Mail className="w-4 h-4 text-slate-500 shrink-0" />
+                    <Mail className="w-4 h-4 text-slate-600 shrink-0" />
                     <span className="truncate">founder@fingermobileprotocol.com</span>
                   </div>
                 ) : (
-                  <div className="flex items-center gap-2.5 text-slate-500 italic text-[11px]">
-                    <Lock className="w-4 h-4 text-slate-500 shrink-0" />
+                  <div className="flex items-center gap-2.5 text-slate-600 italic text-[11px]">
+                    <Lock className="w-4 h-4 text-slate-600 shrink-0" />
                     <span>Contact details restricted</span>
                   </div>
                 )}
 
                 <div className="flex items-center gap-2.5 text-slate-700">
-                  <User className="w-4 h-4 text-slate-500 shrink-0" />
+                  <User className="w-4 h-4 text-slate-600 shrink-0" />
                   <span>Pronouns: <strong className="text-slate-900">he / him</strong></span>
                 </div>
               </div>
@@ -2025,7 +2080,7 @@ export const ProfilePage: React.FC = () => {
                         </p>
 
                         <div className="pt-2 border-t border-slate-200">
-                          <span className="text-[10px] font-mono font-bold text-slate-500 block truncate">
+                          <span className="text-[10px] font-mono font-bold text-slate-600 block truncate">
                             Seal: {badge.verificationHash}
                           </span>
                         </div>
@@ -2203,7 +2258,7 @@ export const ProfilePage: React.FC = () => {
                         </div>
                         <h4 className="text-sm font-black text-slate-900">{ev.title}</h4>
                         <p className="text-xs text-slate-600 flex items-center gap-1">
-                          <MapPin className="w-3.5 h-3.5 text-slate-500" />
+                          <MapPin className="w-3.5 h-3.5 text-slate-600" />
                           {ev.location}
                         </p>
                       </div>
@@ -2359,7 +2414,7 @@ export const ProfilePage: React.FC = () => {
                             folder.items.map((it, idx) => (
                               <div key={idx} className="flex items-center justify-between text-xs font-bold text-slate-800 p-2 rounded-xl bg-white/80 border border-slate-200">
                                 <span className="truncate max-w-[200px]">{it.name}</span>
-                                <span className="text-[11px] font-mono text-slate-500 shrink-0">{it.size}</span>
+                                <span className="text-[11px] font-mono text-slate-600 shrink-0">{it.size}</span>
                               </div>
                             ))
                           ) : (
@@ -2403,7 +2458,7 @@ export const ProfilePage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsHandshakeModalOpen(false)}
-                className="text-slate-500 hover:text-slate-800"
+                className="text-slate-600 hover:text-slate-800"
               >
                 <XCircle className="w-5 h-5" />
               </button>

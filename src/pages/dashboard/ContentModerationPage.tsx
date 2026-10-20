@@ -135,7 +135,7 @@ const ContentModerationPage: React.FC = () => {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10 pr-4 py-2 bg-white text-slate-900 font-bold border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
               />
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-slate-500 absolute left-3 top-2.5" viewBox="0 0 20 20" fill="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-slate-600 absolute left-3 top-2.5" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
               </svg>
             </div>
@@ -222,8 +222,8 @@ const ContentModerationPage: React.FC = () => {
             <div className="divide-y divide-gray-200 max-h-[600px] overflow-y-auto">
               {filteredItems.length === 0 ? (
                 <div className="p-8 text-center text-slate-700">
-                  <Shield className="w-12 h-12 mx-auto mb-3 text-slate-500" />
-                  <p className="text-sm">No items match your search</p>
+                  <Shield className="w-12 h-12 mx-auto mb-3 text-slate-600" />
+                  <p className="text-sm font-medium text-slate-700">No items match your search</p>
                 </div>
               ) : (
                 filteredItems.map((item) => (

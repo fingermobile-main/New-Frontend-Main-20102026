@@ -277,7 +277,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
             className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors flex items-center gap-1.5 ${
               activeTab === 'visual'
                 ? 'bg-orange-500 text-white shadow-sm'
-                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800'
+                : 'text-slate-700 dark:text-slate-300 font-semibold hover:bg-slate-200 dark:hover:bg-slate-800'
             }`}
           >
             <span>Visual RTE</span>
@@ -288,7 +288,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
             className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors flex items-center gap-1.5 ${
               activeTab === 'markdown'
                 ? 'bg-orange-500 text-white shadow-sm'
-                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800'
+                : 'text-slate-700 dark:text-slate-300 font-semibold hover:bg-slate-200 dark:hover:bg-slate-800'
             }`}
           >
             <FileCode className="w-3.5 h-3.5" />
@@ -300,7 +300,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
             className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors flex items-center gap-1.5 ${
               activeTab === 'html'
                 ? 'bg-orange-500 text-white shadow-sm'
-                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800'
+                : 'text-slate-700 dark:text-slate-300 font-semibold hover:bg-slate-200 dark:hover:bg-slate-800'
             }`}
           >
             <Code className="w-3.5 h-3.5" />
@@ -312,7 +312,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
             className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors flex items-center gap-1.5 ${
               activeTab === 'preview'
                 ? 'bg-orange-500 text-white shadow-sm'
-                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800'
+                : 'text-slate-700 dark:text-slate-300 font-semibold hover:bg-slate-200 dark:hover:bg-slate-800'
             }`}
           >
             <Eye className="w-3.5 h-3.5" />
@@ -321,14 +321,14 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
         </div>
 
         {/* Word Counter & Fullscreen Toggle */}
-        <div className="flex items-center space-x-3 text-xs text-slate-500 dark:text-slate-400">
+        <div className="flex items-center space-x-3 text-xs text-slate-700 dark:text-slate-300 font-semibold">
           <span className="hidden sm:inline font-medium">
             {wordCount} words • {charCount} chars
           </span>
           <button
             type="button"
             onClick={() => setIsFullscreen(!isFullscreen)}
-            className="p-1.5 text-slate-500 hover:text-slate-900 dark:hover:text-white rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 transition"
+            className="p-1.5 text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 transition"
             title={isFullscreen ? 'Exit Fullscreen' : 'Fullscreen Editor'}
           >
             {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}

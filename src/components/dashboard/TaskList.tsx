@@ -76,9 +76,9 @@ const TaskList: React.FC<TaskListProps> = ({
   };
 
   return (
-    <Card>
+    <Card className="border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm">
       <CardHeader>
-        <CardTitle className="text-base flex items-center gap-2">
+        <CardTitle className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
           <Calendar className="h-5 w-5" />
           Tasks & Reminders
         </CardTitle>
@@ -88,7 +88,7 @@ const TaskList: React.FC<TaskListProps> = ({
           {tasks.map((task) => (
             <div
               key={task.id}
-              className="flex items-start gap-3 p-3 border rounded-lg hover:bg-muted/50 transition-colors cursor-pointer"
+              className="flex items-start gap-3 p-3 border border-slate-300 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer"
               onClick={() => onTaskClick?.(task.id)} role="button" tabIndex={0}
             >
               <button
@@ -101,10 +101,10 @@ const TaskList: React.FC<TaskListProps> = ({
                 {getStatusIcon(task.status)}
               </button>
               <div className="flex-1 min-w-0">
-                <p className={`font-medium ${task.status === 'completed' ? 'line-through text-muted-foreground' : ''}`}>
+                <p className={`text-sm ${task.status === 'completed' ? 'line-through text-slate-500 font-medium' : 'text-slate-900 dark:text-white font-bold'}`}>
                   {task.title}
                 </p>
-                <div className="flex items-center gap-2 mt-1 text-xs text-muted-foreground">
+                <div className="flex items-center gap-2 mt-1 text-xs text-slate-700 dark:text-slate-300 font-medium">
                   <div className="flex items-center gap-1">
                     <Clock className="h-3 w-3" />
                     {formatDate(task.dueDate)}

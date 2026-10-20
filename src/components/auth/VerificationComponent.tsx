@@ -156,7 +156,7 @@ const VerificationComponent: React.FC<VerificationProps> = ({ phone, onSuccess }
       </form>
 
       <div className="mt-6 text-center">
-        <p className="text-gray-600 dark:text-gray-400 text-sm">
+        <p className="text-gray-700 dark:text-slate-300 font-medium text-sm">
           Didn't receive the code?{' '}
           <button
             onClick={handleResendCode}

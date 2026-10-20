@@ -82,7 +82,7 @@ const OrganizeThesePage: React.FC = () => {
               <div className="mt-4 w-64 bg-gray-200 rounded-full h-2.5 border text-gray-950 border-gray-400 font-black">
                 <div className="bg-blue-600 h-2.5 rounded-full" style={{ width: '75%' }}></div>
               </div>
-              <p className="text-sm text-gray-500 mt-2">75% complete</p>
+              <p className="text-sm text-slate-700 font-semibold mt-2">75% complete</p>
             </div>
           </div>
         ) : (

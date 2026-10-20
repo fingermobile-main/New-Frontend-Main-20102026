@@ -134,7 +134,7 @@ const SubscriptionDashboard: React.FC<SubscriptionDashboardProps> = ({
         <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
           Your Creator &amp; Influence Dashboard
         </h2>
-        <p className="mt-3 max-w-2xl mx-auto text-xl text-gray-500 sm:mt-4">
+        <p className="mt-3 max-w-2xl mx-auto text-xl text-slate-700 font-medium sm:mt-4">
           Manage your subscription and track your creator growth
         </p>
       </div>

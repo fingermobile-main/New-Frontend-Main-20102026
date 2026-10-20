@@ -146,7 +146,7 @@ export const BeatVlogsTab: React.FC = () => {
                 {vlog.title}
               </h3>
 
-              <div className="flex items-center gap-2 text-xs text-slate-400">
+              <div className="flex items-center gap-2 text-xs text-slate-300 font-medium">
                 <span className="font-bold text-slate-200">{vlog.creator}</span>
                 <span>•</span>
                 <span>{vlog.createdAt}</span>
@@ -157,7 +157,7 @@ export const BeatVlogsTab: React.FC = () => {
                 {vlog.tags.map((t, idx) => (
                   <span
                     key={idx}
-                    className="px-2 py-0.5 rounded-lg bg-slate-950 text-slate-400 text-[10px] font-medium border border-slate-800"
+                    className="px-2 py-0.5 rounded-lg bg-slate-950 text-slate-300 text-[10px] font-semibold border border-slate-800"
                   >
                     #{t}
                   </span>
@@ -165,7 +165,7 @@ export const BeatVlogsTab: React.FC = () => {
               </div>
 
               {/* Telemetry: Views & Likes */}
-              <div className="pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400 font-medium">
+              <div className="pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-300 font-medium">
                 <span className="flex items-center gap-1">
                   <Eye size={13} className="text-purple-400" />
                   {vlog.views.toLocaleString()} views
@@ -191,7 +191,7 @@ export const BeatVlogsTab: React.FC = () => {
               </div>
               <button
                 onClick={() => setActiveVideoModal(null)}
-                className="text-slate-400 hover:text-white"
+                className="text-slate-300 hover:text-white"
               >
                 ✕
               </button>
@@ -214,7 +214,7 @@ export const BeatVlogsTab: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex items-center justify-between text-xs text-slate-400 pt-2">
+            <div className="flex items-center justify-between text-xs text-slate-300 font-medium pt-2">
               <div>
                 Creator: <strong className="text-white">{activeVideoModal.creator}</strong> • {activeVideoModal.sharedInterest}
               </div>
@@ -237,7 +237,7 @@ export const BeatVlogsTab: React.FC = () => {
               <h3 className="text-sm font-bold text-white">Share a BeatVlog with Community</h3>
               <button
                 onClick={() => setShowUploadModal(false)}
-                className="text-slate-400 hover:text-white"
+                className="text-slate-300 hover:text-white"
               >
                 ✕
               </button>

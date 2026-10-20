@@ -2,6 +2,7 @@
 // Production-grade Authentication Service with integrated interceptors for automated token rotation and persistent storage.
 
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import userProfileSyncService from './UserProfileSyncService';
 
 const API_BASE_URL =
   process.env.REACT_APP_API_URL ||
@@ -154,10 +155,21 @@ class AuthService {
     localStorage.setItem('user', JSON.stringify(authData.user));
   }
 
-  private clearSession(): void {
+  public clearSession(): void {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    localStorage.removeItem('fingermobile_token');
+    localStorage.removeItem('onboardingComplete');
+    localStorage.removeItem('hasCompletedOnboarding');
+    localStorage.removeItem('fmp_member_profile');
+    localStorage.removeItem('fmp_comprehensive_profile');
+    try {
+      userProfileSyncService.clearProfile();
+    } catch (_e) {
+      // Ignore if sync service not initialized
+    }
   }
 
   // --- Auth API Actions ---
@@ -234,7 +246,7 @@ class AuthService {
           firstName: data.firstName || 'Sovereign',
           lastName: data.lastName || 'Member',
           phone: data.phone || '',
-          onboardingComplete: true
+          onboardingComplete: false
         };
         const fallbackData: AuthResponse = {
           user: mockUser,
@@ -244,8 +256,8 @@ class AuthService {
         this.setSession(fallbackData);
         localStorage.setItem('fingermobile_token', mockToken);
         localStorage.setItem('token', mockToken);
-        localStorage.setItem('onboardingComplete', 'true');
-        localStorage.setItem('hasCompletedOnboarding', 'true');
+        localStorage.removeItem('onboardingComplete');
+        localStorage.removeItem('hasCompletedOnboarding');
         return fallbackData;
       }
       throw error;

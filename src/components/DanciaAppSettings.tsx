@@ -77,7 +77,7 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as any)}
                 className={`w-full flex items-center space-x-4 px-6 py-3.5 rounded-2xl font-bold text-xs transition-all uppercase tracking-widest ${
-                  activeTab === tab.id ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40' : 'text-gray-500 hover:text-white hover:bg-white/5'
+                  activeTab === tab.id ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40' : 'text-slate-300 font-medium hover:text-white hover:bg-white/5'
                 }`}
               >
                 {tab.icon}
@@ -101,7 +101,7 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             {activeTab === 'media' && (
               <div className="space-y-8 animate-in slide-in-from-bottom-4 duration-500">
                 <section>
-                  <label htmlFor="storageLocations" className="text-xs font-black text-gray-500 uppercase tracking-widest block mb-4">Storage Locations</label>
+                  <label htmlFor="storageLocations" className="text-xs font-black text-slate-700 font-bold uppercase tracking-widest block mb-4">Storage Locations</label>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {mediaFolders.map(loc => (
                       <div key={loc} className="flex items-center justify-between p-5 bg-white/5 border border-white/5 rounded-2xl hover:bg-white/[0.07] transition-all">
@@ -127,10 +127,10 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                 </section>
                 <div className="flex items-center justify-between group cursor-pointer" onClick={() => toggle('autoRefreshEnabled')} role="button" tabIndex={0}>
                   <div className="flex items-center space-x-4">
-                    <RefreshCw className={`w-5 h-5 ${settings.autoRefreshEnabled ? 'text-blue-500' : 'text-gray-500'}`} />
+                    <RefreshCw className={`w-5 h-5 ${settings.autoRefreshEnabled ? 'text-blue-500' : 'text-slate-300 font-medium'}`} />
                     <div>
                       <p className="text-sm font-bold text-white uppercase tracking-tight">Auto Refresh/Rescan</p>
-                      <p className="text-xs text-gray-400 mt-1">Automatically detect new media on startup</p>
+                      <p className="text-xs text-slate-300 mt-1">Automatically detect new media on startup</p>
                     </div>
                   </div>
                   <div className={`w-14 h-8 rounded-full p-1 transition-colors ${settings.autoRefreshEnabled ? 'bg-blue-600' : 'bg-gray-800'}`}>
@@ -144,7 +144,7 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             {activeTab === 'video' && (
               <div className="space-y-10 animate-in slide-in-from-bottom-4 duration-500">
                 <section className="space-y-6">
-                  <span id="pipModeLabel" className="text-xs font-black text-gray-500 uppercase tracking-widest block">Background PiP Mode</span>
+                  <span id="pipModeLabel" className="text-xs font-black text-slate-700 font-bold uppercase tracking-widest block">Background PiP Mode</span>
                   <div className="grid grid-cols-3 gap-4" aria-labelledby="pipModeLabel">
                     {[
                       { id: 'background', label: 'Background', icon: <Play size={16} /> },
@@ -155,7 +155,7 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                         key={b.id}
                         onClick={() => handleSelect('pipBehavior', b.id)}
                         className={`py-4 px-6 rounded-2xl border font-bold text-xs uppercase tracking-widest transition-all flex items-center justify-center space-x-2 ${
-                          settings.pipBehavior === b.id ? 'bg-blue-600 border-transparent text-white shadow-xl' : 'bg-white/5 border-white/5 text-gray-500 hover:border-white/20'
+                          settings.pipBehavior === b.id ? 'bg-blue-600 border-transparent text-white shadow-xl' : 'bg-white/5 border-white/5 text-slate-300 font-medium hover:border-white/20'
                         }`}
                       >
                         {b.icon}
@@ -166,7 +166,7 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                 </section>
 
                 <section className="space-y-6">
-                  <span id="hardwareAccelLabel" className="text-xs font-black text-gray-500 uppercase tracking-widest block">Hardware Acceleration</span>
+                  <span id="hardwareAccelLabel" className="text-xs font-black text-slate-700 font-bold uppercase tracking-widest block">Hardware Acceleration</span>
                   <div className="space-y-4" aria-labelledby="hardwareAccelLabel">
                     {[
                       { id: 'disabled', label: 'Disabled', desc: 'Pure Software Decoding', icon: <Cpu size={18} /> },
@@ -196,10 +196,10 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
                 <div className="flex items-center justify-between" onClick={() => toggle('savePlaybackHistory')} role="button" tabIndex={0}>
                   <div className="flex items-center space-x-4">
-                    <History className={`w-5 h-5 ${settings.savePlaybackHistory ? 'text-blue-500' : 'text-gray-500'}`} />
+                    <History className={`w-5 h-5 ${settings.savePlaybackHistory ? 'text-blue-500' : 'text-slate-300 font-medium'}`} />
                     <div>
                       <p className="text-sm font-bold text-white uppercase tracking-tight">Save Playback History</p>
-                      <p className="text-xs text-gray-400 mt-1">Keep track of your watched media</p>
+                      <p className="text-xs text-slate-300 mt-1">Keep track of your watched media</p>
                     </div>
                   </div>
                   <div className={`w-14 h-8 rounded-full p-1 transition-colors ${settings.savePlaybackHistory ? 'bg-blue-600' : 'bg-gray-800'}`}>
@@ -212,7 +212,7 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             {activeTab === 'audio' && (
               <div className="space-y-10 animate-in slide-in-from-bottom-4 duration-500">
                 <section className="space-y-6">
-                  <label htmlFor="subtitleOpacity" className="text-xs font-black text-gray-500 uppercase tracking-widest block flex items-center space-x-2">
+                  <label htmlFor="subtitleOpacity" className="text-xs font-black text-slate-700 font-bold uppercase tracking-widest block flex items-center space-x-2">
                     <Volume2 size={16} />
                     <span>Subtitle Opacity</span>
                   </label>
@@ -231,7 +231,7 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                 </section>
 
                 <section className="space-y-6">
-                  <label htmlFor="subtitleAppearance" className="text-xs font-black text-gray-500 uppercase tracking-widest block flex items-center space-x-2">
+                  <label htmlFor="subtitleAppearance" className="text-xs font-black text-slate-700 font-bold uppercase tracking-widest block flex items-center space-x-2">
                     <Palette size={16} />
                     <span>Subtitle Appearance</span>
                   </label>
@@ -276,7 +276,7 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="flex items-center justify-between" onClick={() => toggle('autoLoadSubtitles')} role="button" tabIndex={0}>
                     <div className="flex items-center space-x-3">
-                      <Subtitles className={`w-5 h-5 ${settings.autoLoadSubtitles ? 'text-blue-500' : 'text-gray-500'}`} />
+                      <Subtitles className={`w-5 h-5 ${settings.autoLoadSubtitles ? 'text-blue-500' : 'text-slate-300 font-medium'}`} />
                       <span id="autoLoadSubtitlesLabel" className="text-sm font-bold text-white uppercase tracking-tight">Auto Load Subtitles</span>
                     </div>
                     <div className={`w-10 h-6 rounded-full p-1 transition-colors ${settings.autoLoadSubtitles ? 'bg-blue-600' : 'bg-gray-800'}`} role="switch" aria-checked={settings.autoLoadSubtitles} aria-labelledby="autoLoadSubtitlesLabel">
@@ -285,7 +285,7 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                   </div>
                   <div className="flex items-center justify-between" onClick={() => toggle('boldSubtitles')} role="button" tabIndex={0}>
                     <div className="flex items-center space-x-3">
-                      <Type className={`w-5 h-5 ${settings.boldSubtitles ? 'text-blue-500' : 'text-gray-500'}`} />
+                      <Type className={`w-5 h-5 ${settings.boldSubtitles ? 'text-blue-500' : 'text-slate-300 font-medium'}`} />
                       <span id="boldSubtitlesLabel" className="text-sm font-bold text-white uppercase tracking-tight">Bold Subtitles</span>
                     </div>
                     <div className={`w-10 h-6 rounded-full p-1 transition-colors ${settings.boldSubtitles ? 'bg-blue-600' : 'bg-gray-800'}`} role="switch" aria-checked={settings.boldSubtitles} aria-labelledby="boldSubtitlesLabel">
@@ -294,7 +294,7 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                   </div>
                   <div className="flex items-center justify-between" onClick={() => toggle('autoColorSubtitles')} role="button" tabIndex={0}>
                     <div className="flex items-center space-x-3">
-                      <Palette className={`w-5 h-5 ${settings.autoColorSubtitles ? 'text-blue-500' : 'text-gray-500'}`} />
+                      <Palette className={`w-5 h-5 ${settings.autoColorSubtitles ? 'text-blue-500' : 'text-slate-300 font-medium'}`} />
                       <span id="autoColorSubtitlesLabel" className="text-sm font-bold text-white uppercase tracking-tight">Auto Color Subtitles</span>
                     </div>
                     <div className={`w-10 h-6 rounded-full p-1 transition-colors ${settings.autoColorSubtitles ? 'bg-blue-600' : 'bg-gray-800'}`} role="switch" aria-checked={settings.autoColorSubtitles} aria-labelledby="autoColorSubtitlesLabel">
@@ -304,7 +304,7 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                 </div>
 
                 <section className="space-y-6">
-                  <label htmlFor="equalizerPreset" className="text-xs font-black text-gray-500 uppercase tracking-widest block flex items-center space-x-2">
+                  <label htmlFor="equalizerPreset" className="text-xs font-black text-slate-700 font-bold uppercase tracking-widest block flex items-center space-x-2">
                     <Equalizer size={16} />
                     <span>Equalizer Preset</span>
                   </label>
@@ -347,7 +347,7 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                   ].map(item => (
                     <div key={item.id} className="flex items-center justify-between group cursor-pointer p-4 bg-white/5 border border-white/5 rounded-2xl hover:bg-white/[0.07] transition-all" onClick={() => toggle(item.id as any)} role="button" tabIndex={0}>
                       <div className="flex items-center space-x-4">
-                        <div className={`${settings[item.id as keyof ProtocolSettings] ? 'text-blue-500' : 'text-gray-500'}`}>
+                        <div className={`${settings[item.id as keyof ProtocolSettings] ? 'text-blue-500' : 'text-slate-300 font-medium'}`}>
                           {item.icon}
                         </div>
                         <div>
@@ -368,7 +368,7 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             {activeTab === 'filtering' && (
               <div className="space-y-8 animate-in slide-in-from-bottom-4 duration-500">
                 <section>
-                  <span id="mediaFiltersLabel" className="text-xs font-black text-gray-500 uppercase tracking-widest block mb-6 flex items-center space-x-2">
+                  <span id="mediaFiltersLabel" className="text-xs font-black text-slate-700 font-bold uppercase tracking-widest block mb-6 flex items-center space-x-2">
                     <Filter size={16} />
                     <span>Media Filters</span>
                   </span>
@@ -418,7 +418,7 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             {activeTab === 'sorting' && (
               <div className="space-y-8 animate-in slide-in-from-bottom-4 duration-500">
                 <section>
-                  <span id="sortOrderLabel" className="text-xs font-black text-gray-500 uppercase tracking-widest block mb-6 flex items-center space-x-2">
+                  <span id="sortOrderLabel" className="text-xs font-black text-slate-700 font-bold uppercase tracking-widest block mb-6 flex items-center space-x-2">
                     <SortAsc size={16} />
                     <span>Sort Order</span>
                   </span>
@@ -438,7 +438,7 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                         }`}
                       >
                         <div className="flex items-center space-x-4">
-                          <div className={idx === 0 ? 'text-blue-500' : 'text-gray-500'}>
+                          <div className={idx === 0 ? 'text-blue-500' : 'text-slate-300 font-medium'}>
                             {sort.icon}
                           </div>
                           <span className="text-sm font-bold text-slate-700 uppercase tracking-tight">{sort.label}</span>
@@ -458,17 +458,17 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     <Shield size={24} />
                     <h3 className="text-lg font-black uppercase tracking-tight">AI Guardian Active</h3>
                   </div>
-                  <p className="text-sm text-gray-400 leading-relaxed">
+                  <p className="text-sm text-slate-300 leading-relaxed">
                     AI Face Seek scanning is enabled by default to ensure content matches IARC classifications for the active profile.
                   </p>
                 </div>
 
                 <div className="flex items-center justify-between" onClick={() => toggle('aiFaceSeekEnabled')} role="button" tabIndex={0}>
                   <div className="flex items-center space-x-4">
-                    <Eye className={`w-5 h-5 ${settings.aiFaceSeekEnabled ? 'text-blue-500' : 'text-gray-500'}`} />
+                    <Eye className={`w-5 h-5 ${settings.aiFaceSeekEnabled ? 'text-blue-500' : 'text-slate-300 font-medium'}`} />
                     <div>
                       <p className="text-sm font-bold text-white uppercase tracking-tight">AI Face Seek/Scan</p>
-                      <p className="text-xs text-gray-400 mt-1">Deep analysis of video frames for age-restricted content</p>
+                      <p className="text-xs text-slate-300 mt-1">Deep analysis of video frames for age-restricted content</p>
                     </div>
                   </div>
                   <div className={`w-14 h-8 rounded-full p-1 transition-colors ${settings.aiFaceSeekEnabled ? 'bg-blue-600' : 'bg-gray-800'}`}>
@@ -477,11 +477,11 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                 </div>
 
                 <div className="space-y-4">
-                  <span id="verificationMethodsLabel" className="text-xs font-black text-gray-500 uppercase tracking-widest block">Verification Methods</span>
+                  <span id="verificationMethodsLabel" className="text-xs font-black text-slate-700 font-bold uppercase tracking-widest block">Verification Methods</span>
                   <div className="grid grid-cols-1 gap-4" aria-labelledby="verificationMethodsLabel">
                     <div className="flex items-center justify-between p-5 bg-white/5 border border-white/5 rounded-2xl" onClick={() => toggle('emailVerificationEnabled')} role="button" tabIndex={0}>
                       <div className="flex items-center space-x-4">
-                        <CheckCircle className={settings.emailVerificationEnabled ? 'text-green-500' : 'text-gray-500'} size={20} />
+                        <CheckCircle className={settings.emailVerificationEnabled ? 'text-green-500' : 'text-slate-300 font-medium'} size={20} />
                         <div>
                           <p className="text-sm font-bold text-slate-700">Email Verification</p>
                           <p className="text-xs text-slate-700">Require email confirmation for sensitive actions</p>
@@ -493,7 +493,7 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     </div>
                     <div className="flex items-center justify-between p-5 bg-white/5 border border-white/5 rounded-2xl" onClick={() => toggle('phoneVerificationEnabled')} role="button" tabIndex={0}>
                       <div className="flex items-center space-x-4">
-                        <CheckCircle className={settings.phoneVerificationEnabled ? 'text-green-500' : 'text-gray-500'} size={20} />
+                        <CheckCircle className={settings.phoneVerificationEnabled ? 'text-green-500' : 'text-slate-300 font-medium'} size={20} />
                         <div>
                           <p className="text-sm font-bold text-slate-700">Phone Verification</p>
                           <p className="text-xs text-slate-700">Require phone confirmation for sensitive actions</p>
@@ -565,7 +565,7 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             {activeTab === 'advanced' && (
               <div className="space-y-6 animate-in slide-in-from-bottom-4 duration-500">
                 <div className="space-y-4">
-                  <span id="dataManagementLabel" className="text-xs font-black text-gray-500 uppercase tracking-widest block">Data Management</span>
+                  <span id="dataManagementLabel" className="text-xs font-black text-slate-700 font-bold uppercase tracking-widest block">Data Management</span>
                   <div aria-labelledby="dataManagementLabel">
                     {[
                       { label: 'Clear Cache', desc: 'Remove temporary files', icon: <Trash2 size={18} />, action: () => { showToast('Cache cleared', 'success'); }, variant: 'default' },
@@ -586,7 +586,7 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                           {adv.icon}
                           <div className="text-left">
                             <span className="text-sm font-bold uppercase tracking-widest block">{adv.label}</span>
-                            <span className="text-xs text-gray-400">{adv.desc}</span>
+                            <span className="text-xs text-slate-300">{adv.desc}</span>
                           </div>
                         </div>
                       </button>

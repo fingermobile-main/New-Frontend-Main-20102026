@@ -39,7 +39,7 @@ export const UniversalHeader: React.FC<UniversalHeaderProps> = ({ pageTitle }) =
           {/* COLUMN 2: Search bar, FIC, Live Wallet Balance, Profile image with dropdown */}
           <div className="flex-1 flex items-center justify-center max-w-xl mx-2 gap-3">
             <div className="relative w-full max-w-xs sm:max-w-sm">
-              <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+              <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-600" />
               <input
                 type="text"
                 value={searchQuery}
@@ -51,7 +51,7 @@ export const UniversalHeader: React.FC<UniversalHeaderProps> = ({ pageTitle }) =
               <button
                 type="button"
                 onClick={() => window.dispatchEvent(new CustomEvent('open-universal-search'))}
-                className="absolute right-2 top-1/2 -translate-y-1/2 px-1.5 py-0.5 text-[10px] font-mono font-bold text-slate-400 hover:text-white bg-slate-700/60 rounded border border-slate-600/60 transition"
+                className="absolute right-2 top-1/2 -translate-y-1/2 px-1.5 py-0.5 text-[10px] font-mono font-bold text-slate-300 hover:text-white bg-slate-700/60 rounded border border-slate-600/60 transition"
                 title="Universal AI Search (Cmd+K)"
               >
                 ⌘K
@@ -81,7 +81,7 @@ export const UniversalHeader: React.FC<UniversalHeaderProps> = ({ pageTitle }) =
                 <div className="absolute right-0 mt-2 w-56 rounded-xl bg-slate-900 border border-slate-800 shadow-2xl py-2 z-50 text-xs text-slate-300">
                   <div className="px-4 py-2 border-b border-slate-800">
                     <p className="font-bold text-white truncate">{(member as any)?.name || (member as any)?.username || 'Valued Member'}</p>
-                    <p className="text-slate-400 text-[10px] truncate">{member?.email || 'member@fingermobileprotocol.com'}</p>
+                    <p className="text-slate-300 font-medium text-[10px] truncate">{member?.email || 'member@fingermobileprotocol.com'}</p>
                   </div>
                   <Link
                     to="/member/landing"
@@ -154,14 +154,14 @@ export const UniversalHeader: React.FC<UniversalHeaderProps> = ({ pageTitle }) =
                 <button
                   type="button"
                   onClick={() => setIsBurgerOpen(false)}
-                  className="p-1 rounded-md text-slate-400 hover:text-white hover:bg-slate-800"
+                  className="p-1 rounded-md text-slate-300 hover:text-white hover:bg-slate-800"
                 >
                   <XIcon className="w-5 h-5" />
                 </button>
               </div>
 
               <div className="mt-4 space-y-2 text-xs">
-                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500 px-2">Ad Network & Monetization</p>
+                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-700 font-medium px-2">Ad Network & Monetization</p>
                 <Link
                   to="/canary/ad-maker"
                   onClick={() => setIsBurgerOpen(false)}
@@ -181,7 +181,7 @@ export const UniversalHeader: React.FC<UniversalHeaderProps> = ({ pageTitle }) =
               </div>
 
               <div className="mt-6 space-y-2 text-xs">
-                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500 px-2">Microservices & Channels</p>
+                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-700 font-medium px-2">Microservices & Channels</p>
                 <Link
                   to="/publicitee"
                   onClick={() => setIsBurgerOpen(false)}

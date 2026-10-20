@@ -162,7 +162,7 @@ class OnboardingService {
     }
 
     // Update current step based on progression logic
-    progress.currentStep = this.getNextStep(stepId, progress.completedSteps);
+    progress.currentStep = this.getNextStep(stepId, progress.completedSteps, progress.accountType);
 
     progress.updatedAt = new Date();
     this.progress.set(userId, progress);
@@ -170,19 +170,30 @@ class OnboardingService {
     return progress;
   }
 
-  private getNextStep(currentStep: string, completedSteps: string[]): string {
+  private getNextStep(currentStep: string, _completedSteps: string[], accountType?: string | null): string {
+    if (currentStep === 'terms-permissions') {
+      return 'account-type-selection';
+    }
+    if (currentStep === 'account-type-selection') {
+      if (accountType === 'creator') return 'content-creator-verification';
+      if (accountType === 'business') return 'business-verification';
+      return 'two-factor-setup';
+    }
+    if (currentStep === 'content-creator-verification' || currentStep === 'business-verification') {
+      return 'two-factor-setup';
+    }
+
     const onboardingFlow = [
       'welcome',
       'terms-permissions',
-      'registration',
+      'account-type-selection',
+      'content-creator-verification',
+      'business-verification',
       'two-factor-setup',
       'verification-captcha',
       'demographics-interests',
       'profile-customization',
       'p2p-algorithm-calibration',
-      'account-type-selection',
-      'content-creator-verification', // Only for creator accounts
-      'business-verification',       // Only for business accounts
       'ces-formula-education',
       'completion'
     ];
@@ -319,20 +330,32 @@ class OnboardingService {
       {
         id: 'welcome',
         title: 'Welcome to FingerMobile',
-        description: 'Let\'s get you set up with your account',
+        description: 'Get set up with your sovereign account',
         required: true
       },
       {
         id: 'terms-permissions',
-        title: 'Terms & Permissions',
-        description: 'Review and accept our agreements',
+        title: 'Legal & Privacy Policy Acceptance',
+        description: 'Review and accept Privacy Policy, CSAE Safety, and Sovereign Terms',
         required: true
       },
       {
-        id: 'registration',
-        title: 'Registration',
-        description: 'Create your account with email and phone',
+        id: 'account-type-selection',
+        title: 'Account Type Selection',
+        description: 'Choose Personal (Free), Creator (Membership), or Business',
         required: true
+      },
+      {
+        id: 'content-creator-verification',
+        title: 'Content Creator Verification',
+        description: 'Verify identity and select regional creator tier',
+        required: accountType === 'creator'
+      },
+      {
+        id: 'business-verification',
+        title: 'Business Verification',
+        description: 'Verify your business and brand credentials',
+        required: accountType === 'business'
       },
       {
         id: 'two-factor-setup',
@@ -343,55 +366,37 @@ class OnboardingService {
       {
         id: 'verification-captcha',
         title: 'Verification & Captcha',
-        description: 'Verify your information and prove you\'re human',
+        description: 'Verify information and prove you are human',
         required: true
       },
       {
         id: 'demographics-interests',
         title: 'Demographics & Interests',
-        description: 'Tell us about yourself and your interests',
+        description: 'Personalize your feed across 54 topic categories',
         required: true
       },
       {
         id: 'profile-customization',
         title: 'Profile Customization',
-        description: 'Set up your profile',
+        description: 'Set up your display name and sovereign avatar',
         required: true
       },
       {
         id: 'p2p-algorithm-calibration',
         title: 'P2P Algorithm Calibration',
-        description: 'Configure your matching preferences',
+        description: 'Configure your sovereign matching preferences',
         required: true
-      },
-      {
-        id: 'account-type-selection',
-        title: 'Account Type Selection',
-        description: 'Choose your account type',
-        required: true
-      },
-      {
-        id: 'content-creator-verification',
-        title: 'Content Creator Verification',
-        description: 'Verify your identity as a creator',
-        required: accountType === 'creator'
-      },
-      {
-        id: 'business-verification',
-        title: 'Business Verification',
-        description: 'Verify your business credentials',
-        required: accountType === 'business'
       },
       {
         id: 'ces-formula-education',
         title: 'CES Formula Education',
-        description: 'Learn how engagement is scored',
+        description: 'Learn how engagement is scored in FingerMobile',
         required: true
       },
       {
         id: 'completion',
         title: 'Onboarding Complete!',
-        description: 'You\'re all set to use FingerMobile',
+        description: 'Your sovereign profile is activated and ready to explore',
         required: false
       }
     ];

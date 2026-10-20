@@ -98,7 +98,7 @@ const CuratedDiscovery: React.FC<CuratedDiscoveryProps> = ({
             <h4 className="text-sm font-medium text-gray-900 group-hover:text-blue-600 transition-colors truncate">
               {item.title}
             </h4>
-            <p className="text-xs text-gray-500 mt-0.5">
+            <p className="text-xs text-slate-700 font-medium mt-0.5">
               {getSubtitle(item)}
             </p>
           </div>

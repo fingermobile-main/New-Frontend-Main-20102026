@@ -102,16 +102,16 @@ export default function CensoredPostWrapper({ options, children }: CensoredPostW
           <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-gray-900/10 backdrop-blur-sm p-6 text-center">
 
             {options.visualEffect === 'INTERSTITIAL' && (
-              <div className="bg-black/90 text-white p-8 rounded-xl max-w-sm mx-auto shadow-2xl mb-4">
+              <div className="bg-black/90 text-white p-8 rounded-xl max-w-sm mx-auto shadow-2xl mb-4 border border-white/10">
                 <svg className="w-12 h-12 text-red-500 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                 </svg>
                 <h3 className="text-xl font-bold mb-2">Content Warning</h3>
-                <p className="text-gray-300 text-sm mb-4">
+                <p className="text-slate-200 text-sm mb-4 font-medium">
                   The following content has been flagged by the creator or moderators as potentially sensitive.
                   {hasTags && ` Tags: ${options.tags.join(', ')}.`}
                 </p>
-                <p className="text-gray-400 text-xs italic">Viewer discretion is advised.</p>
+                <p className="text-slate-300 text-xs italic font-medium">Viewer discretion is advised.</p>
               </div>
             )}
 

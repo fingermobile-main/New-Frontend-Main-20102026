@@ -201,7 +201,7 @@ const LushSwipeController: React.FC<SwipeControllerProps> = ({
     return (
       <div className="text-center py-12">
         <h3 className="text-lg font-medium text-gray-900">No more profiles</h3>
-        <p className="mt-1 text-sm text-gray-500">Check back later for new matches!</p>
+        <p className="mt-1 text-sm text-slate-700 font-medium">Check back later for new matches!</p>
         <button
           onClick={loadSwipeDeck}
           className="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-brand-blue hover:bg-blue-700"

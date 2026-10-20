@@ -327,14 +327,14 @@ const SentientControlPage: React.FC = () => {
             >
               {process.priority}
             </span>
-            <span className="text-xs text-gray-400">{process.startTime}</span>
+            <span className="text-xs text-slate-300 font-medium">{process.startTime}</span>
           </div>
         </div>
         <div className="text-right">
           <div className="text-sm font-bold text-white">
             {process.progress}%
           </div>
-          <div className="text-xs text-gray-400">
+          <div className="text-xs text-slate-300 font-medium">
             ETA: {process.estimatedCompletion}
           </div>
         </div>
@@ -387,7 +387,7 @@ const SentientControlPage: React.FC = () => {
           <p className="text-sm text-gray-300 mt-2">{insight.description}</p>
         </div>
         <div className="text-right">
-          <div className="text-xs text-gray-400">{insight.timestamp}</div>
+          <div className="text-xs text-slate-300 font-medium">{insight.timestamp}</div>
           <div
             className="text-xs font-bold mt-1"
             style={{ color: `hsl(${insight.confidence * 1.2}, 100%, 70%)` }}
@@ -405,7 +405,7 @@ const SentientControlPage: React.FC = () => {
     <div className="p-4 rounded-lg border border-gray-700 bg-gray-800 hover:bg-gray-700/50 cursor-pointer">
       <div className="flex justify-between">
         <h3 className="font-bold text-white">{conversation.member}</h3>
-        <div className="text-xs text-gray-400">{conversation.timestamp}</div>
+        <div className="text-xs text-slate-300 font-medium">{conversation.timestamp}</div>
       </div>
       <p className="text-sm text-gray-300 mt-2 truncate">
         {conversation.lastMessage}
@@ -430,7 +430,7 @@ const SentientControlPage: React.FC = () => {
               <h1 className="text-2xl font-bold text-white">
                 SENTIENT™©® AI Control Center
               </h1>
-              <p className="text-sm text-gray-400">
+              <p className="text-sm text-slate-300 font-medium">
                 Cognitive Processing & Insight Generation System
               </p>
             </div>
@@ -443,7 +443,7 @@ const SentientControlPage: React.FC = () => {
               className={`px-6 py-4 text-sm font-medium ${
                 activeTab === 'processes'
                   ? 'text-brand-blue border-b-2 border-brand-blue'
-                  : 'text-gray-400 hover:text-gray-300'
+                  : 'text-slate-300 hover:text-white'
               }`}
               onClick={() => setActiveTab('processes')}
             >
@@ -456,7 +456,7 @@ const SentientControlPage: React.FC = () => {
               className={`px-6 py-4 text-sm font-medium ${
                 activeTab === 'insights'
                   ? 'text-brand-blue border-b-2 border-brand-blue'
-                  : 'text-gray-400 hover:text-gray-300'
+                  : 'text-slate-300 hover:text-white'
               }`}
               onClick={() => setActiveTab('insights')}
             >
@@ -469,7 +469,7 @@ const SentientControlPage: React.FC = () => {
               className={`px-6 py-4 text-sm font-medium ${
                 activeTab === 'conversations'
                   ? 'text-brand-blue border-b-2 border-brand-blue'
-                  : 'text-gray-400 hover:text-gray-300'
+                  : 'text-slate-300 hover:text-white'
               }`}
               onClick={() => setActiveTab('conversations')}
             >
@@ -528,12 +528,12 @@ const SentientControlPage: React.FC = () => {
                           )?.name
                         }
                       </h3>
-                      <p className="text-gray-400 mt-1">
+                      <p className="text-slate-300 font-medium mt-1">
                         Detailed process information and controls
                       </p>
                     </div>
                     <button
-                      className="text-gray-400 hover:text-white"
+                      className="text-slate-300 hover:text-white"
                       onClick={() => setSelectedProcess(null)}
                     >
                       Close
@@ -547,7 +547,7 @@ const SentientControlPage: React.FC = () => {
                       </h4>
                       <div className="space-y-3 text-sm">
                         <div className="flex justify-between">
-                          <span className="text-gray-400">Status</span>
+                          <span className="text-slate-300 font-semibold">Status</span>
                           <span className="text-white capitalize">
                             {
                               cognitiveProcesses.find(
@@ -557,7 +557,7 @@ const SentientControlPage: React.FC = () => {
                           </span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-gray-400">Priority</span>
+                          <span className="text-slate-300 font-semibold">Priority</span>
                           <span className="text-white capitalize">
                             {
                               cognitiveProcesses.find(
@@ -567,7 +567,7 @@ const SentientControlPage: React.FC = () => {
                           </span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-gray-400">Start Time</span>
+                          <span className="text-slate-300 font-semibold">Start Time</span>
                           <span className="text-white">
                             {
                               cognitiveProcesses.find(
@@ -577,7 +577,7 @@ const SentientControlPage: React.FC = () => {
                           </span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-gray-400">
+                          <span className="text-slate-300 font-semibold">
                             Estimated Completion
                           </span>
                           <span className="text-white">
@@ -589,7 +589,7 @@ const SentientControlPage: React.FC = () => {
                           </span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-gray-400">Progress</span>
+                          <span className="text-slate-300 font-semibold">Progress</span>
                           <span className="text-white">
                             {
                               cognitiveProcesses.find(
@@ -672,7 +672,7 @@ const SentientControlPage: React.FC = () => {
               )}
 
               {loading ? (
-                <div className="text-center py-8 text-gray-400">
+                <div className="text-center py-8 text-slate-300 font-medium">
                   Loading anomalies...
                 </div>
               ) : (
@@ -703,11 +703,11 @@ const SentientControlPage: React.FC = () => {
                                   {anomaly.description || 'Behavioral anomaly detected'}
                                 </p>
                                 {anomaly.member_id && (
-                                  <p className="text-xs text-gray-500 mt-1">Member: {anomaly.member_id}</p>
+                                  <p className="text-xs text-slate-300 font-medium mt-1">Member: {anomaly.member_id}</p>
                                 )}
                               </div>
                               <div className="text-right">
-                                <div className="text-xs text-gray-400">
+                                <div className="text-xs text-slate-300 font-medium">
                                   {new Date(anomaly.timestamp).toLocaleString()}
                                 </div>
                               </div>

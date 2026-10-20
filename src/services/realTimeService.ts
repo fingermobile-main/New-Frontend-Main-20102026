@@ -13,7 +13,7 @@ import {
 
 class RealTimeService extends WebSocketService {
   constructor() {
-    super({prodEndpoint: 'wss://api.fingermobileprotocol.com/ws', devEndpoint: 'ws://localhost:3001/ws'});
+    super({prodEndpoint: 'wss://api.fingermobileprotocol.com/ws', devEndpoint: 'ws://localhost:5001/ws'});
   }
 
   // Join a chat room

@@ -541,7 +541,7 @@ const MediaEditorModal: React.FC<MediaEditorModalProps> = ({
                   {mediaType.toUpperCase()}
                 </span>
               </div>
-              <p className="text-xs text-slate-400 truncate max-w-xs sm:max-w-md">
+              <p className="text-xs text-slate-300 truncate max-w-xs sm:max-w-md">
                 {mediaName} &bull; Banuba &amp; Sovereign Shader Presets
               </p>
             </div>
@@ -551,7 +551,7 @@ const MediaEditorModal: React.FC<MediaEditorModalProps> = ({
             <button
               type="button"
               onClick={handleResetAll}
-              className="px-3 py-1.5 text-xs text-slate-400 hover:text-white rounded-xl bg-slate-800/80 hover:bg-slate-800 transition"
+              className="px-3 py-1.5 text-xs text-slate-300 hover:text-white rounded-xl bg-slate-800/80 hover:bg-slate-800 transition"
               title="Reset all edits"
             >
               Reset
@@ -559,7 +559,7 @@ const MediaEditorModal: React.FC<MediaEditorModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="p-1.5 text-slate-400 hover:text-white rounded-xl hover:bg-slate-800 transition"
+              className="p-1.5 text-slate-300 hover:text-white rounded-xl hover:bg-slate-800 transition"
             >
               <XMarkIcon className="w-5 h-5" />
             </button>
@@ -659,7 +659,7 @@ const MediaEditorModal: React.FC<MediaEditorModalProps> = ({
                     onChange={(e) => handleVideoScrub(Number(e.target.value))}
                     className="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-indigo-500"
                   />
-                  <div className="flex justify-between text-[10px] font-mono text-slate-400">
+                  <div className="flex justify-between text-[10px] font-mono text-slate-300">
                     <span>
                       {videoElementRef.current
                         ? `${Math.floor(videoElementRef.current.currentTime || 0)}s`
@@ -709,7 +709,7 @@ const MediaEditorModal: React.FC<MediaEditorModalProps> = ({
                   className={`py-2 text-xs font-bold rounded-xl transition flex flex-col sm:flex-row items-center justify-center gap-1.5 ${
                     activeTab === 'filters'
                       ? 'bg-indigo-600 text-white shadow-md'
-                      : 'text-slate-400 hover:text-white'
+                      : 'text-slate-300 hover:text-white'
                   }`}
                 >
                   <SparklesIcon className="w-3.5 h-3.5" />
@@ -722,7 +722,7 @@ const MediaEditorModal: React.FC<MediaEditorModalProps> = ({
                   className={`py-2 text-xs font-bold rounded-xl transition flex flex-col sm:flex-row items-center justify-center gap-1.5 ${
                     activeTab === 'crop'
                       ? 'bg-indigo-600 text-white shadow-md'
-                      : 'text-slate-400 hover:text-white'
+                      : 'text-slate-300 hover:text-white'
                   }`}
                 >
                   <ScissorsIcon className="w-3.5 h-3.5" />
@@ -735,7 +735,7 @@ const MediaEditorModal: React.FC<MediaEditorModalProps> = ({
                   className={`py-2 text-xs font-bold rounded-xl transition flex flex-col sm:flex-row items-center justify-center gap-1.5 ${
                     activeTab === 'adjust'
                       ? 'bg-indigo-600 text-white shadow-md'
-                      : 'text-slate-400 hover:text-white'
+                      : 'text-slate-300 hover:text-white'
                   }`}
                 >
                   <AdjustmentsHorizontalIcon className="w-3.5 h-3.5" />
@@ -748,7 +748,7 @@ const MediaEditorModal: React.FC<MediaEditorModalProps> = ({
                   className={`py-2 text-xs font-bold rounded-xl transition flex flex-col sm:flex-row items-center justify-center gap-1.5 ${
                     activeTab === 'transform'
                       ? 'bg-indigo-600 text-white shadow-md'
-                      : 'text-slate-400 hover:text-white'
+                      : 'text-slate-300 hover:text-white'
                   }`}
                 >
                   <ArrowPathIcon className="w-3.5 h-3.5" />
@@ -762,7 +762,7 @@ const MediaEditorModal: React.FC<MediaEditorModalProps> = ({
                     className={`py-2 text-xs font-bold rounded-xl transition flex flex-col sm:flex-row items-center justify-center gap-1.5 ${
                       activeTab === 'timeline'
                         ? 'bg-indigo-600 text-white shadow-md'
-                        : 'text-slate-400 hover:text-white'
+                        : 'text-slate-300 hover:text-white'
                     }`}
                   >
                     <VideoCameraIcon className="w-3.5 h-3.5" />
@@ -804,7 +804,7 @@ const MediaEditorModal: React.FC<MediaEditorModalProps> = ({
                             <h5 className="font-bold text-xs text-white truncate pr-4">
                               {preset.name}
                             </h5>
-                            <p className="text-[10px] text-slate-400 mt-0.5 line-clamp-1">
+                            <p className="text-[10px] text-slate-300 mt-0.5 line-clamp-1">
                               {preset.subtitle}
                             </p>
                           </div>
@@ -840,11 +840,11 @@ const MediaEditorModal: React.FC<MediaEditorModalProps> = ({
                           className={`p-3 rounded-2xl border text-left transition ${
                             aspectRatio === item.id
                               ? 'bg-indigo-600/30 border-indigo-500 text-white'
-                              : 'bg-slate-950/60 border-slate-800 text-slate-400 hover:text-white'
+                              : 'bg-slate-950/60 border-slate-800 text-slate-300 hover:text-white'
                           }`}
                         >
                           <div className="font-bold text-xs">{item.label}</div>
-                          <div className="text-[10px] text-slate-400 mt-0.5">{item.desc}</div>
+                          <div className="text-[10px] text-slate-300 mt-0.5">{item.desc}</div>
                         </button>
                       ))}
                     </div>
@@ -1027,7 +1027,7 @@ const MediaEditorModal: React.FC<MediaEditorModalProps> = ({
                           className={`py-2 px-1 text-xs font-mono font-bold rounded-xl border transition ${
                             videoPlaybackRate === rate
                               ? 'bg-indigo-600 border-indigo-500 text-white shadow-md'
-                              : 'bg-slate-950 border-slate-800 text-slate-400 hover:text-white hover:border-slate-700'
+                              : 'bg-slate-950 border-slate-800 text-slate-300 hover:text-white hover:border-slate-700'
                           }`}
                         >
                           {rate}x
@@ -1080,7 +1080,7 @@ const MediaEditorModal: React.FC<MediaEditorModalProps> = ({
                     />
                   </div>
 
-                  <div className="p-3 bg-slate-950/80 rounded-xl border border-slate-800 text-slate-400 text-[11px] leading-relaxed">
+                  <div className="p-3 bg-slate-950/80 rounded-xl border border-slate-800 text-slate-300 text-[11px] leading-relaxed">
                     <span className="text-indigo-400 font-bold block mb-1">⚡ OpenCut &amp; CapCut Engine:</span>
                     Clips render client-side using hardware acceleration. Trimming sets instant non-destructive in/out keypoints and custom velocity parameters.
                   </div>

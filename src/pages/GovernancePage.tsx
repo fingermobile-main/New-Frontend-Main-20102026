@@ -14,7 +14,7 @@ const GovernancePage: React.FC = () => {
             <span className="text-[10px] font-black text-blue-500 uppercase tracking-[0.2em]">Official Protocol Governance</span>
           </div>
           <h1 className="text-5xl font-black text-white tracking-tighter">AI-Driven Integrity</h1>
-          <p className="text-gray-500 max-w-2xl mx-auto font-medium leading-relaxed">
+          <p className="text-slate-700 max-w-2xl mx-auto font-medium leading-relaxed">
             The FingerMobile Protocol™ utilizes state-of-the-art AI Seekers and automated harmonizers to ensure a safe, fair, and transparent ecosystem for all members.
           </p>
         </section>
@@ -49,7 +49,7 @@ const GovernancePage: React.FC = () => {
                 {policy.icon}
               </div>
               <h3 className="text-xl font-bold text-white tracking-tight">{policy.title}</h3>
-              <p className="text-sm text-gray-500 leading-relaxed font-medium">{policy.desc}</p>
+              <p className="text-sm text-slate-700 leading-relaxed font-medium">{policy.desc}</p>
               <div className="pt-4 flex items-center text-xs font-bold text-white/40 group-hover:text-white transition-colors">
                 <span>Read Full Document</span>
                 <Info size={14} className="ml-2" />

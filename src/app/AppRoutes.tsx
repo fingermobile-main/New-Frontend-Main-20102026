@@ -70,9 +70,9 @@ const AdvancedGiftingPage = lazy(() => import('../pages/AdvancedGiftingPage'));
 const GemsPage = lazy(() => import('../pages/GemsPage'));
 const FingerWarsPage = lazy(() => import('../pages/FingerWarsPage'));
 const AdvancedFingerWarPage = lazy(() => import('../pages/AdvancedFingerWarPage'));
-const HallmarkPage = lazy(() => import('../pages/HallmarkPage'));
 const HallmarksPage = lazy(() => import('../pages/HallmarksPage'));
 const GameOnPage = lazy(() => import('../pages/GameOnPage'));
+const SuperViPage = lazy(() => import('../pages/gaming/SuperViPage'));
 
 // Module 5: Communities, Groups & Collaboration
 const CommunitiesPage = lazy(() => import('../pages/CommunitiesPage'));
@@ -113,6 +113,13 @@ const StorefrontTrackingPage = lazy(() => import('../pages/StorefrontTrackingPag
 const FingerLuxPage = lazy(() => import('../pages/FingerLuxPage'));
 const LushPressiesPage = lazy(() => import('../pages/LushPressiesPage')); // Consolidated standard
 const MyDownloadsPage = lazy(() => import('../pages/MyDownloadsPage'));
+
+// Dedicated Product Catalogues & Store Consoles
+const GeneralProductCatalogPage = lazy(() => import('../pages/catalog/GeneralProductCatalogPage'));
+const MarketplaceCatalogPage = lazy(() => import('../pages/catalog/MarketplaceCatalogPage'));
+const FlamingoCatalogPage = lazy(() => import('../pages/catalog/FlamingoCatalogPage'));
+const OwnitCatalogPage = lazy(() => import('../pages/catalog/OwnitCatalogPage'));
+const StorefrontCatalogPage = lazy(() => import('../pages/catalog/StorefrontCatalogPage'));
 
 // Module 8: Wallets, Payments & Financial Operations
 const WalletPage = lazy(() => import('../pages/WalletPage'));
@@ -192,6 +199,16 @@ const StercsDashboardPage = lazy(() => import('../pages/StercsDashboardPage'));
 const StercsPage = lazy(() => import('../pages/StercsPage'));
 const GuardianAiPage = lazy(() => import('../pages/GuardianAiPage'));
 
+// Sovereign RBAC & Dedicated Consoles
+const BackOfficeOperationsPage = lazy(() => import('../pages/backoffice/BackOfficeOperationsPage'));
+const BadgePrivilegesEnclavePage = lazy(() => import('../pages/enclave/BadgePrivilegesEnclavePage'));
+const CouncilDignitariesChamberPage = lazy(() => import('../pages/governance/CouncilDignitariesChamberPage'));
+const ModeratorCommandCenterPage = lazy(() => import('../pages/moderation/ModeratorCommandCenterPage'));
+const UsersPermissionConsolePage = lazy(() => import('../pages/admin/UsersPermissionConsolePage'));
+const PagesPermissionConsolePage = lazy(() => import('../pages/admin/PagesPermissionConsolePage'));
+const ContentCreatorsConsolePage = lazy(() => import('../pages/admin/ContentCreatorsConsolePage'));
+const BusinessOrganizationsConsolePage = lazy(() => import('../pages/admin/BusinessOrganizationsConsolePage'));
+
 // Module 13: Systems Engineering, Data, Dev & Cloud Infrastructure
 const DeveloperPortalPage = lazy(() => import('../pages/dashboard/DeveloperPortalPage'));
 const DatabaseIntegrationDashboard = lazy(() => import('../pages/DatabaseIntegrationDashboard'));
@@ -267,34 +284,35 @@ const redirectTo = (to: string) => <Navigate to={to} replace />;
 // -----------------------------------------------------------------------------
 
 export const routes: RouteObject[] = [
+  // ---------------------------------------------------------------------------
+  // AUTH & ONBOARDING SCAFFOLD (S2) - Outside RootPlatformLayout: Strict menu lockdown
+  // ---------------------------------------------------------------------------
+  {
+    element: <AuthLayout />,
+    children: [
+      { path: '/login', element: <LoginPage /> },
+      { path: '/register', element: <RegisterPage /> },
+      { path: '/onboarding', element: <OnboardingPage /> },
+      { path: '/admin', element: redirectTo('/adminlogin') },
+      { path: '/adminlogin', element: <AdminLoginPage /> },
+      { path: '/verification', element: <VerificationPage /> },
+      { path: '/official-verification', element: <OfficialVerificationPage /> },
+      { path: '/admin/security', element: redirectTo('/securitysetup') },
+      { path: '/securitysetup', element: <SecuritySetupPage /> },
+      { path: '/change-password', element: redirectTo('/changepassword') },
+      { path: '/changepassword', element: <ChangePasswordPage /> },
+      { path: '/data-request', element: redirectTo('/datasubjectrequest') },
+      { path: '/datasubjectrequest', element: <DataSubjectRequestPage /> },
+      { path: '/forgot-password', element: <ForgotPasswordPage /> },
+      { path: '/forgotpassword', element: redirectTo('/forgot-password') },
+      { path: '/reset-password', element: redirectTo('/forgot-password') },
+      { path: '/checkout', element: <CheckoutPage /> },
+    ],
+  },
+
   {
     element: <RootPlatformLayout />,
     children: [
-      // ---------------------------------------------------------------------------
-      // AUTH SCAFFOLD (S2) - Unauthenticated / Minimal Identity Entry
-      // ---------------------------------------------------------------------------
-      {
-        element: <AuthLayout />,
-        children: [
-          { path: '/login', element: <LoginPage /> },
-          { path: '/register', element: <RegisterPage /> },
-          { path: '/admin', element: redirectTo('/adminlogin') },
-          { path: '/adminlogin', element: <AdminLoginPage /> },
-          { path: '/verification', element: <VerificationPage /> },
-          { path: '/official-verification', element: <OfficialVerificationPage /> },
-          { path: '/admin/security', element: redirectTo('/securitysetup') },
-          { path: '/securitysetup', element: <SecuritySetupPage /> },
-          { path: '/change-password', element: redirectTo('/changepassword') },
-          { path: '/changepassword', element: <ChangePasswordPage /> },
-          { path: '/data-request', element: redirectTo('/datasubjectrequest') },
-          { path: '/datasubjectrequest', element: <DataSubjectRequestPage /> },
-          { path: '/forgot-password', element: <ForgotPasswordPage /> },
-          { path: '/forgotpassword', element: redirectTo('/forgot-password') },
-          { path: '/reset-password', element: redirectTo('/forgot-password') },
-          { path: '/checkout', element: <CheckoutPage /> },
-        ],
-      },
-
       // ---------------------------------------------------------------------------
       // READER SCAFFOLD (S5) - Documentation & Legal Texts (Publicly Accessible)
       // ---------------------------------------------------------------------------
@@ -385,6 +403,16 @@ export const routes: RouteObject[] = [
           { path: '/product/:id', element: <ProductDetailPage /> },
           { path: '/productdetail', element: <ProductDetailPage /> },
           { path: '/catalogue', element: <CataloguePage /> },
+          { path: '/catalog/general', element: <GeneralProductCatalogPage /> },
+          { path: '/general-catalogue', element: <GeneralProductCatalogPage /> },
+          { path: '/catalog/marketplace', element: <MarketplaceCatalogPage /> },
+          { path: '/marketplace/catalogue', element: <MarketplaceCatalogPage /> },
+          { path: '/catalog/flamingo', element: <FlamingoCatalogPage /> },
+          { path: '/flamingo/catalogue', element: <FlamingoCatalogPage /> },
+          { path: '/catalog/ownit', element: <OwnitCatalogPage /> },
+          { path: '/ownit/catalogue', element: <OwnitCatalogPage /> },
+          { path: '/catalog/storefront', element: <StorefrontCatalogPage /> },
+          { path: '/storefront/catalogue', element: <StorefrontCatalogPage /> },
           { path: '/storefront', element: <StorefrontPage /> },
           { path: '/storefronts', element: <StorefrontsPage /> },
           { path: '/storefront/:id', element: <StorefrontDetailPage /> },
@@ -406,6 +434,8 @@ export const routes: RouteObject[] = [
           { path: '/finger-wars', element: redirectTo('/fingerwars') },
           { path: '/gameon', element: <GameOnPage /> },
           { path: '/game-on', element: redirectTo('/gameon') },
+          { path: '/supervi', element: <SuperViPage /> },
+          { path: '/games/supervi', element: <SuperViPage /> },
           { path: '/canaryads', element: <CanaryAdsPage /> },
           { path: '/canary-ads', element: redirectTo('/canaryads') },
           { path: '/photo-credits', element: redirectTo('/photocredits') },
@@ -420,9 +450,30 @@ export const routes: RouteObject[] = [
           { path: '/guardian', element: <GuardianAiPage /> },
           { path: '/master-dashboard', element: <MasterDashboardPage /> },
           { path: '/masterdashboard', element: <MasterDashboardPage /> },
+
+          // Sovereign RBAC & Dedicated Consoles
+          { path: '/backoffice/operations', element: <BackOfficeOperationsPage /> },
+          { path: '/enclave/badge-privileges', element: <BadgePrivilegesEnclavePage /> },
+          { path: '/council/governance', element: <CouncilDignitariesChamberPage /> },
+          { path: '/moderator/command-center', element: <ModeratorCommandCenterPage /> },
+          { path: '/admin/users-permissions', element: <UsersPermissionConsolePage /> },
+          { path: '/admin/users-permission', element: <UsersPermissionConsolePage /> },
+          { path: '/admin/pages-permissions', element: <PagesPermissionConsolePage /> },
+          { path: '/admin/pages-permission', element: <PagesPermissionConsolePage /> },
+          { path: '/admin/roles-permission', element: <RolesPermissionsPage /> },
+          { path: '/roles-permission', element: <RolesPermissionsPage /> },
+          { path: '/admin/creators-console', element: <ContentCreatorsConsolePage /> },
+          { path: '/creators-console', element: <ContentCreatorsConsolePage /> },
+          { path: '/admin/business-console', element: <BusinessOrganizationsConsolePage /> },
+          { path: '/business-console', element: <BusinessOrganizationsConsolePage /> },
           { path: '/seo', element: redirectTo('/masterdashboard?tab=seo') },
           { path: '/guardian/seo', element: redirectTo('/masterdashboard?tab=seo') },
           { path: '/financials', element: redirectTo('/masterdashboard?tab=financials') },
+          { path: '/discover-console', element: redirectTo('/masterdashboard?tab=discover-console') },
+          { path: '/soundriver-console', element: redirectTo('/masterdashboard?tab=soundriver-console') },
+          { path: '/soundocean-console', element: redirectTo('/masterdashboard?tab=soundocean-console') },
+          { path: '/leaderboards-console', element: redirectTo('/masterdashboard?tab=leaderboards-console') },
+          { path: '/leadershipboard-console', element: redirectTo('/masterdashboard?tab=leaderboards-console') },
           { path: '/stercs-dashboard', element: <StercsDashboardPage /> },
           { path: '/stercsdashboard', element: <StercsDashboardPage /> },
           { path: '/stercs', element: <StercsPage /> },
@@ -456,7 +507,8 @@ export const routes: RouteObject[] = [
           { path: '/my-downloads', element: redirectTo('/mydownloads') },
           { path: '/downloads', element: redirectTo('/mydownloads') },
           { path: '/pricing', element: redirectTo('/subscriptions') },
-          { path: '/hallmark', element: <HallmarkPage /> },
+          { path: '/hallmark', element: <HallmarksPage /> },
+          { path: '/hallmarks', element: <HallmarksPage /> },
           { path: '/photocredit/:id', element: <PhotoCreditDetailPage /> },
           { path: '/photocreditdetail', element: <PhotoCreditDetailPage /> },
           { path: '/profile', element: <ProfilePage /> },
@@ -472,7 +524,6 @@ export const routes: RouteObject[] = [
           { path: '/creator-mode', element: <CreatorMode /> },
           { path: '/ai-avatar-generator', element: <AIAvatarGenerator /> },
           { path: '/business-page', element: <BusinessPageFeatures /> },
-          { path: '/onboarding', element: <OnboardingPage /> },
           { path: '/user-management', element: <UserManagementPage /> },
 
           // Consolidated Route Aliases & Redirects to Prevent 404s
@@ -527,7 +578,7 @@ export const routes: RouteObject[] = [
           { path: '/campaigns', element: redirectTo('/advertising') },
           { path: '/create-post', element: redirectTo('/createpost') },
           { path: '/resources', element: redirectTo('/mydownloads') },
-          { path: '/success', element: redirectTo('/onboarding') },
+          { path: '/success', element: redirectTo('/forum') },
           { path: '/community-guidelines', element: redirectTo('/communityguidelines') },
           { path: '/csae-policy', element: redirectTo('/csaepolicy') },
           { path: '/live-spaces', element: redirectTo('/livestreaming') },
@@ -582,7 +633,6 @@ export const routes: RouteObject[] = [
               { path: '/dashboard', element: <DashboardPage /> },
               { path: '/dashboard/home', element: redirectTo('/dashboardhome') },
               { path: '/dashboardhome', element: <DashboardHomePage /> },
-              { path: '/onboarding', element: <OnboardingPage /> },
               { path: '/member-landing', element: redirectTo('/memberlanding') },
               { path: '/memberlanding', element: <MemberLandingPage /> },
               { path: '/settings', element: <SettingsPage /> },
@@ -626,7 +676,8 @@ export const routes: RouteObject[] = [
               { path: '/aiplaylist', element: <AiPlaylistPage /> },
               { path: '/advancedfingerwar', element: <AdvancedFingerWarPage /> },
               { path: '/gameon', element: <GameOnPage /> },
-              { path: '/hallmarks', element: <HallmarksPage /> },
+              { path: '/supervi', element: <SuperViPage /> },
+              { path: '/games/supervi', element: <SuperViPage /> },
               { path: '/gems', element: <GemsPage /> },
               { path: '/advanced-gifting', element: <AdvancedGiftingPage /> },
               { path: '/advancedgifting', element: <AdvancedGiftingPage /> },
@@ -664,6 +715,7 @@ export const routes: RouteObject[] = [
               { path: '/my-learning', element: redirectTo('/mylearning') },
               { path: '/mylearning', element: <MyLearningPage /> },
               { path: '/nysc', element: <NyscPage /> },
+              { path: '/programs/nysc', element: <NyscPage /> },
               { path: '/mii', element: <MiiPage /> },
               { path: '/my-pages', element: redirectTo('/mys') },
               { path: '/mys', element: <MyPages /> },
@@ -761,6 +813,7 @@ export const routes: RouteObject[] = [
                 element: <ShellLayout />,
                 children: [
                   { path: '/creator/dashboard', element: redirectTo('/creatordashboard') },
+                  { path: '/creator-dashboard', element: redirectTo('/creatordashboard') },
                   { path: '/creatordashboard', element: <CreatorDashboardPage /> },
                   { path: '/creator/influence', element: redirectTo('/creatorinfluence') },
                   { path: '/creatorinfluence', element: <CreatorInfluencePage /> },
@@ -894,10 +947,10 @@ export const routes: RouteObject[] = [
         element: (
           <div className="flex h-screen w-screen flex-col items-center justify-center bg-zinc-950 text-center font-mono">
             <h1 className="text-6xl font-extrabold text-emerald-400">404</h1>
-            <p className="mt-2 text-zinc-400">The requested platform screen does not exist.</p>
+            <p className="mt-2 text-zinc-300 font-medium">The requested platform screen does not exist.</p>
             <a
               href="/"
-              className="mt-6 border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 text-emerald-300 rounded hover:bg-emerald-500/20"
+              className="mt-6 border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 text-emerald-300 font-semibold rounded hover:bg-emerald-500/20"
             >
           Return Home
             </a>

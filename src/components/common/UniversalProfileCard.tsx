@@ -60,17 +60,17 @@ interface StoredMemberProfile {
 const STORAGE_KEY = 'fmp_member_profile';
 
 const DEFAULT_COVERS = [
+  { label: 'Login Background', url: '/assets/branding/backgrounds/FingerMobile Login screen Background image.webp' },
   { label: 'Sovereign Enclave', url: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&auto=format&fit=crop&q=80' },
   { label: 'Lagos Skyline', url: 'https://images.unsplash.com/photo-1577083552431-6e5fd01aa342?w=1200&auto=format&fit=crop&q=80' },
   { label: 'Sunset Emerald', url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&auto=format&fit=crop&q=80' },
-  { label: 'Cyber Horology', url: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=1200&auto=format&fit=crop&q=80' },
 ];
 
 const DEFAULT_AVATARS = [
+  { label: 'Founder Portrait', url: '/assets/branding/mbah_israel_obinna.jpeg' },
   { label: 'Obinna / Protocol', url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80' },
   { label: 'Executive Gold', url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80' },
   { label: 'Creator Studio', url: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&auto=format&fit=crop&q=80' },
-  { label: 'Tech Pioneer', url: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=400&auto=format&fit=crop&q=80' },
 ];
 
 export const UniversalProfileCard: React.FC<UniversalProfileCardProps> = ({
@@ -136,7 +136,7 @@ export const UniversalProfileCard: React.FC<UniversalProfileCardProps> = ({
     return unsub;
   }, []);
 
-  // Synchronize when customUser prop changes
+  // Synchronize when customUser or authUser changes
   useEffect(() => {
     if (customUser) {
       setProfileData((prev) => ({
@@ -149,8 +149,18 @@ export const UniversalProfileCard: React.FC<UniversalProfileCardProps> = ({
         coverImage: customUser.coverImage || prev.coverImage,
         pinNumber: customUser.pinNumber || prev.pinNumber,
       }));
+    } else if (authUser) {
+      const authName = (authUser as any).name || `${authUser.firstName || ''} ${authUser.lastName || ''}`.trim() || authUser.username;
+      if (authName) {
+        setProfileData((prev) => ({
+          ...prev,
+          name: authName,
+          username: authUser.username || prev.username,
+          avatar: authUser.avatar || prev.avatar,
+        }));
+      }
     }
-  }, [customUser]);
+  }, [customUser, authUser]);
 
   const saveProfile = async (updated: StoredMemberProfile) => {
     setProfileData(updated);
@@ -164,11 +174,11 @@ export const UniversalProfileCard: React.FC<UniversalProfileCardProps> = ({
       pinNumber: updated.pinNumber,
     });
 
-    // Persist to protocol backend database
+    // 1. Persist to protocol backend database (/users/profile)
     try {
       const parts = updated.name.split(' ');
-      const firstName = parts[0] || 'Member';
-      const lastName = parts.slice(1).join(' ') || '';
+      const firstName = parts[0] || 'Israel';
+      const lastName = parts.slice(1).join(' ') || 'Obinna Mbah';
       await UserService.updateUserProfile({
         firstName,
         lastName,
@@ -178,6 +188,25 @@ export const UniversalProfileCard: React.FC<UniversalProfileCardProps> = ({
     } catch (err) {
       // eslint-disable-next-line no-console
       console.warn('Backend database sync fallback', err);
+    }
+
+    // 2. Synchronize directly with /profile Charter API (Source of Truth)
+    try {
+      const targetUserId = (customUser as any)?.id || authUser?.id || (authUser as any)?.userId || '00000000-0000-0000-0000-000000000001';
+      await fetch(`http://localhost:5001/api/v1/profiles/${targetUserId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          display_name: updated.name,
+          username: updated.username,
+          avatar_url: updated.avatar,
+          cover_url: updated.coverImage,
+          bio: updated.headline,
+          location: updated.location
+        })
+      });
+    } catch {
+      // Offline fallback
     }
   };
 
@@ -258,6 +287,99 @@ export const UniversalProfileCard: React.FC<UniversalProfileCardProps> = ({
   const xpCurrent = customUser?.xpCurrent ?? 4200;
   const xpMax = customUser?.xpMax ?? 5000;
   const xpPercent = Math.min(100, Math.round((xpCurrent / xpMax) * 100));
+
+  const isGuest = !authUser;
+  const isPendingOnboarding = Boolean(
+    authUser &&
+    (!authUser.onboardingComplete && !(authUser as any).onboarding_completed) &&
+    (localStorage.getItem('onboardingComplete') !== 'true' && localStorage.getItem('hasCompletedOnboarding') !== 'true')
+  );
+
+  if (isGuest) {
+    return (
+      <div className={`universal-profile-card space-y-3.5 ${className}`}>
+        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-300 dark:border-slate-800 shadow-sm overflow-hidden p-5 text-center">
+          <div className="w-16 h-16 rounded-full bg-orange-100 dark:bg-orange-950/60 border-2 border-orange-400 mx-auto flex items-center justify-center p-2 mb-3">
+            <img
+              src="/assets/branding/default-avatar.svg"
+              alt="Guest Explorer"
+              className="w-12 h-12 object-contain"
+            />
+          </div>
+          <h2 className="text-base font-black text-slate-900 dark:text-white">
+            Guest Explorer
+          </h2>
+          <p className="text-xs font-mono font-bold text-orange-600 dark:text-orange-400 mt-0.5">
+            @guest • Public Observer
+          </p>
+          <p className="text-xs text-slate-700 dark:text-slate-300 mt-2 leading-relaxed">
+            You are browsing FingerMobile Protocol in public mode. Sign in or register to get your encrypted PIN, personal feed, and creator access.
+          </p>
+
+          <div className="mt-4 space-y-2">
+            <button
+              type="button"
+              onClick={() => navigate('/login')}
+              className="w-full py-2 px-3 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-extrabold text-xs shadow-xs transition cursor-pointer"
+            >
+              Sign In to Sovereign Account
+            </button>
+            <button
+              type="button"
+              onClick={() => navigate('/register')}
+              className="w-full py-2 px-3 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-900 dark:text-slate-200 font-bold text-xs shadow-xs transition cursor-pointer"
+            >
+              Register New Member
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (isPendingOnboarding) {
+    const applicantName =
+      (authUser as any)?.name ||
+      `${(authUser as any)?.firstName || ''} ${(authUser as any)?.lastName || ''}`.trim() ||
+      authUser?.username ||
+      'New Applicant';
+    return (
+      <div className={`universal-profile-card space-y-3.5 ${className}`}>
+        <div className="bg-white dark:bg-slate-900 rounded-2xl border-2 border-amber-400/80 shadow-sm overflow-hidden p-5 text-center">
+          <div className="w-16 h-16 rounded-full bg-amber-50 dark:bg-amber-950/40 border-2 border-amber-500 mx-auto flex items-center justify-center p-1 mb-3">
+            <img
+              src={authUser?.avatar || '/assets/branding/default-avatar.svg'}
+              alt={applicantName}
+              className="w-14 h-14 rounded-full object-cover"
+            />
+          </div>
+          <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-100 text-amber-950 border border-amber-400 mb-2">
+            Onboarding Required
+          </span>
+          <h2 className="text-base font-black text-slate-900 dark:text-white">
+            {applicantName}
+          </h2>
+          <p className="text-xs font-mono font-bold text-slate-700 dark:text-slate-400 mt-0.5">
+            @{authUser?.username || 'applicant'}
+          </p>
+          <p className="text-xs text-slate-700 dark:text-slate-300 mt-2 leading-relaxed">
+            Your application is registered. Please complete your onboarding steps to activate your sovereign profile, PIN, and navigation menu.
+          </p>
+
+          <div className="mt-4 space-y-2">
+            <button
+              type="button"
+              onClick={() => navigate('/onboarding')}
+              className="w-full py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs shadow-md transition cursor-pointer flex items-center justify-center gap-1.5"
+            >
+              <span>Continue Onboarding Flow</span>
+              <ArrowTopRightOnSquareIcon className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={`universal-profile-card space-y-3.5 ${className}`}>
@@ -364,7 +486,7 @@ export const UniversalProfileCard: React.FC<UniversalProfileCardProps> = ({
             <VerificationBadge level={customUser?.verificationLevel ?? 3} size="small" />
           </div>
 
-          <p className="text-[11px] text-slate-700 dark:text-gray-400 font-mono">@{profileData.username}</p>
+          <p className="text-[11px] text-slate-700 dark:text-gray-300 font-medium font-mono">@{profileData.username}</p>
           <p className="text-xs text-emerald-800 dark:text-emerald-400 font-semibold mt-1 line-clamp-1">
             {profileData.headline}
           </p>
@@ -442,7 +564,7 @@ export const UniversalProfileCard: React.FC<UniversalProfileCardProps> = ({
             <div className="flex items-center gap-1 text-gray-600 dark:text-gray-300">
               <span className="font-semibold text-emerald-900 dark:text-emerald-300">PIN Quota:</span>
               <span className="font-mono font-bold text-emerald-700 dark:text-emerald-400">{pinQuotaRemaining}/50</span>
-              <span className="text-[10px] text-gray-400">Remaining</span>
+              <span className="text-[10px] text-gray-600 dark:text-gray-300 font-medium">Remaining</span>
             </div>
             <button
               type="button"
@@ -470,7 +592,7 @@ export const UniversalProfileCard: React.FC<UniversalProfileCardProps> = ({
 
         {/* Level XP Progress Bar */}
         <div>
-          <div className="flex justify-between text-[10px] text-slate-700 dark:text-gray-400 mb-1 font-mono">
+          <div className="flex justify-between text-[10px] text-slate-700 dark:text-gray-300 font-medium mb-1 font-mono">
             <span>XP: {xpCurrent} / {xpMax}</span>
             <span className="font-bold text-emerald-700 dark:text-emerald-400">{xpPercent}%</span>
           </div>

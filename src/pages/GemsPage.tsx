@@ -3,6 +3,9 @@ import { useAppContext } from '../contexts/AppContext';
 import LoadingSpinner from '../components/LoadingSpinner';
 import gemsService, { GemItem } from '../services/gemsService';
 import UniversalProfileCard from '../components/common/UniversalProfileCard';
+import { PlatformWidgetsAndAdsRail } from '../components/widgets/PlatformWidgetsAndAdsRail';
+import ConnectWidget from '../components/widgets/ConnectWidget';
+import DiscoverWidget from '../components/widgets/DiscoverWidget';
 import voiceLineServiceInstance from '../services/VoiceLineService';
 import {
   Sparkles,
@@ -26,7 +29,6 @@ import {
   Send,
   Filter,
   X,
-  CreditCard,
   Coins
 } from 'lucide-react';
 
@@ -123,7 +125,6 @@ const GemsPage: React.FC = () => {
 
   // Infinite scroll
   const [pageState, setPageState] = useState(1);
-  const [hasMoreState, setHasMoreState] = useState(true);
   const observer = useRef<IntersectionObserver | null>(null);
   const gemsPerPage = 6;
 
@@ -209,22 +210,28 @@ const GemsPage: React.FC = () => {
     return filteredGems.slice(0, pageState * gemsPerPage);
   }, [filteredGems, pageState]);
 
-  useEffect(() => {
-    setHasMoreState(filteredGems.length > pageState * gemsPerPage);
-  }, [filteredGems, pageState]);
-
   const lastGemElementRef = useCallback(
     (node: Element | null) => {
       if (loadingState) return;
       if (observer.current) observer.current.disconnect();
       observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && hasMoreState) {
+        if (entries[0].isIntersecting && allGems.length > 0) {
           setPageState((prev) => prev + 1);
+          setAllGems((current) => {
+            const nextIteration = Math.floor(current.length / 6) + 1;
+            const newBatch: GemItem[] = current.slice(0, 6).map((item, idx) => ({
+              ...item,
+              id: `gen-gem-${nextIteration}-${idx}-${Date.now()}`,
+              title: `${item.title} · Relay #${nextIteration}.${idx + 1}`,
+              likes: (item.likes || 12) + Math.floor(Math.random() * 50) + 10
+            }));
+            return [...current, ...newBatch];
+          });
         }
       });
       if (node) observer.current.observe(node);
     },
-    [loadingState, hasMoreState]
+    [loadingState, allGems.length]
   );
 
   // Categories list
@@ -351,7 +358,7 @@ const GemsPage: React.FC = () => {
                   <Zap className="w-6 h-6 text-yellow-300 animate-pulse" />
                 </div>
                 <div>
-                  <div className="text-xs text-slate-400 uppercase tracking-wider font-semibold">Gem Balance</div>
+                  <div className="text-xs text-slate-300 font-medium uppercase tracking-wider font-semibold">Gem Balance</div>
                   <div className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-pink-300">
                     💎 {userBalance.toLocaleString()}
                   </div>
@@ -440,14 +447,42 @@ const GemsPage: React.FC = () => {
 
       {/* Main Content Sections */}
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
-          {/* Top Left ProfileCard Column */}
-          <div className="lg:col-span-1 space-y-4">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          {/* Left Column: Static & Sticky */}
+          <div className="lg:col-span-3 lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-5.5rem)] lg:overflow-y-auto space-y-4 scrollbar-none pr-1">
             <UniversalProfileCard />
+
+            {/* Quick Gem Treasury Card */}
+            <div className="bg-gradient-to-br from-slate-900 via-purple-950 to-slate-900 border border-purple-500/30 rounded-2xl p-4 shadow-xl text-white space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-bold text-purple-300 uppercase tracking-wider">
+                  Sovereign Gem Reserve
+                </span>
+                <Sparkles className="w-4 h-4 text-purple-400" />
+              </div>
+              <div className="text-2xl font-black text-purple-300 font-mono">
+                💎 {userBalance.toLocaleString()} Gems
+              </div>
+              <p className="text-[11px] text-slate-300 leading-relaxed">
+                Virtual micro-currency for tipping broadcasters, unlockable badges, and sovereign rewards.
+              </p>
+              <button
+                type="button"
+                onClick={() => setIsAddGemsModalOpen(true)}
+                className="w-full py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-md shadow-purple-600/30 cursor-pointer"
+              >
+                <Zap className="w-3.5 h-3.5 text-yellow-300" />
+                Acquire Sovereign Gems
+              </button>
+            </div>
+
+            {/* Left Column Last 2 Widgets: Connect & Discover */}
+            <ConnectWidget pageContext="gems" />
+            <DiscoverWidget pageContext="gems" />
           </div>
 
-          {/* Main Content Tabs Column */}
-          <div className="lg:col-span-3 space-y-6">
+          {/* Center Column: Scrollable Infinite Stream */}
+          <div className="lg:col-span-6 space-y-6">
         {/* ======================================================== */}
         {/* TAB 1: MARKETPLACE & STORE */}
         {/* ======================================================== */}
@@ -469,7 +504,7 @@ const GemsPage: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="font-bold text-white text-sm">Public Gems</h3>
-                    <p className="text-xs text-slate-400 mt-0.5">Discoverable globally across the FingerMobile ecosystem</p>
+                    <p className="text-xs text-slate-300 font-medium mt-0.5">Discoverable globally across the FingerMobile ecosystem</p>
                   </div>
                 </div>
               </div>
@@ -488,7 +523,7 @@ const GemsPage: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="font-bold text-white text-sm">Private & Visible</h3>
-                    <p className="text-xs text-slate-400 mt-0.5">Searchable by all, but unlockable only by pass holders</p>
+                    <p className="text-xs text-slate-300 font-medium mt-0.5">Searchable by all, but unlockable only by pass holders</p>
                   </div>
                 </div>
               </div>
@@ -507,7 +542,7 @@ const GemsPage: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="font-bold text-white text-sm">Secret / Hidden Gems</h3>
-                    <p className="text-xs text-slate-400 mt-0.5">Invisible to search; accessible only via direct invitations</p>
+                    <p className="text-xs text-slate-300 font-medium mt-0.5">Invisible to search; accessible only via direct invitations</p>
                   </div>
                 </div>
               </div>
@@ -517,13 +552,13 @@ const GemsPage: React.FC = () => {
             <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 sm:p-5 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 shadow-xl">
               {/* Search Bar */}
               <div className="relative flex-1">
-                <Search className="w-5 h-5 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <Search className="w-5 h-5 text-slate-300 font-medium absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
                   type="text"
                   placeholder="Search gems by title, creator, or keyword..."
                   value={searchTermState}
                   onChange={(e) => setSearchTermState(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-11 pr-4 py-2.5 text-sm text-slate-200 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-11 pr-4 py-2.5 text-sm text-slate-200 placeholder:text-slate-300 font-medium focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                 />
               </div>
 
@@ -546,7 +581,7 @@ const GemsPage: React.FC = () => {
 
               {/* Sort Selector */}
               <div className="flex items-center gap-2">
-                <Filter className="w-4 h-4 text-slate-500" />
+                <Filter className="w-4 h-4 text-slate-300 font-medium" />
                 <select
                   value={sortByState}
                   onChange={(e) => setSortByState(e.target.value as any)}
@@ -573,18 +608,18 @@ const GemsPage: React.FC = () => {
             {loadingState && (
               <div className="flex flex-col items-center justify-center py-20">
                 <LoadingSpinner />
-                <p className="mt-4 text-sm text-slate-400">Syncing Gem store from PostgreSQL cluster...</p>
+                <p className="mt-4 text-sm text-slate-300 font-medium">Syncing Gem store from PostgreSQL cluster...</p>
               </div>
             )}
 
             {/* Empty State */}
             {!loadingState && paginatedGems.length === 0 && (
               <div className="text-center py-16 px-4 bg-slate-900/40 border border-slate-800 rounded-2xl">
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-800 flex items-center justify-center text-slate-500">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-800 flex items-center justify-center text-slate-300 font-medium">
                   <Sparkles className="w-8 h-8" />
                 </div>
                 <h3 className="text-lg font-bold text-white">No Gem Items Found</h3>
-                <p className="text-sm text-slate-400 max-w-md mx-auto mt-1">
+                <p className="text-sm text-slate-300 font-medium max-w-md mx-auto mt-1">
                   No items match your active search or privacy filter criteria. Try resetting filters to browse all sovereign assets.
                 </p>
                 <button
@@ -602,7 +637,7 @@ const GemsPage: React.FC = () => {
 
             {/* Gems Grid */}
             {!loadingState && paginatedGems.length > 0 && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 {paginatedGems.map((gem, index) => {
                   const isLast = index === paginatedGems.length - 1;
                   const itemPrivacy = gem.privacy_type || 'public';
@@ -668,7 +703,7 @@ const GemsPage: React.FC = () => {
                             </div>
                           </div>
 
-                          <p className="text-xs text-slate-400 mt-1">
+                          <p className="text-xs text-slate-300 font-medium mt-1">
                             Issued by <span className="text-slate-300 font-medium">{gem.creator}</span>
                           </p>
 
@@ -683,7 +718,7 @@ const GemsPage: React.FC = () => {
                             onClick={() => {
                               showToast(`Saved ${gem.title} to wishlist`, 'info');
                             }}
-                            className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-red-400 transition-colors"
+                            className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium hover:text-red-400 transition-colors"
                             title="Add to favorites"
                           >
                             <Heart className="w-4 h-4" />
@@ -703,6 +738,14 @@ const GemsPage: React.FC = () => {
                 })}
               </div>
             )}
+
+            {/* Continuous Streaming Sentinel (No Load More, No End) */}
+            <div className="py-6 text-center">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900 border border-purple-500/30 text-xs font-bold text-purple-300 shadow-sm">
+                <span className="w-2.5 h-2.5 rounded-full bg-purple-500 animate-ping" />
+                <span>Streaming more sovereign gems, collectibles & broadcasts...</span>
+              </div>
+            </div>
           </div>
         )}
 
@@ -724,7 +767,7 @@ const GemsPage: React.FC = () => {
                   <p className="text-sm text-slate-300 mt-1 leading-relaxed">
                     Broadcast Channels allow eligible creators (50,000+ followers) and verified brands to push direct daily updates to followers. Updates appear straight on member walls and self-destruct after exactly 24 hours.
                   </p>
-                  <div className="flex flex-wrap items-center gap-3 mt-3 text-xs text-slate-400">
+                  <div className="flex flex-wrap items-center gap-3 mt-3 text-xs text-slate-300 font-medium">
                     <span className="flex items-center gap-1.5">
                       <CheckCircle2 className="w-4 h-4 text-emerald-400" /> 50,000 follower threshold check
                     </span>
@@ -745,7 +788,7 @@ const GemsPage: React.FC = () => {
                 <Send className="w-4 h-4 text-purple-400" />
                 Publish Ephemeral Broadcast Update
               </h3>
-              <p className="text-xs text-slate-400 mb-4">
+              <p className="text-xs text-slate-300 font-medium mb-4">
                 Eligible channels can publish text and media directly to subscriber feeds.
               </p>
 
@@ -762,12 +805,12 @@ const GemsPage: React.FC = () => {
                   value={newBroadcastText}
                   onChange={(e) => setNewBroadcastText(e.target.value)}
                   placeholder="Share a timely drop, salon invite, or exclusive update (expires in 24h)..."
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-slate-200 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-slate-200 placeholder:text-slate-300 font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 />
 
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                   <div className="flex items-center gap-3">
-                    <span className="text-xs text-slate-400 font-semibold">Tier Limit:</span>
+                    <span className="text-xs text-slate-300 font-medium font-semibold">Tier Limit:</span>
                     <label className="flex items-center gap-1.5 text-xs text-slate-300 cursor-pointer">
                       <input
                         type="radio"
@@ -815,7 +858,7 @@ const GemsPage: React.FC = () => {
 
               {broadcastPosts.length === 0 ? (
                 <div className="p-8 text-center bg-slate-900/40 border border-slate-800 rounded-2xl">
-                  <p className="text-sm text-slate-400">No active broadcasts in the last 24 hours.</p>
+                  <p className="text-sm text-slate-300 font-medium">No active broadcasts in the last 24 hours.</p>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -842,7 +885,7 @@ const GemsPage: React.FC = () => {
                                 <h4 className="text-sm font-bold text-white leading-tight">
                                   @{post.username || 'sovereign_creator'}
                                 </h4>
-                                <span className="text-[10px] text-slate-400">Verified Broadcast Channel</span>
+                                <span className="text-[10px] text-slate-300 font-medium">Verified Broadcast Channel</span>
                               </div>
                             </div>
                             <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-950/80 text-emerald-300 border border-emerald-500/30">
@@ -867,7 +910,7 @@ const GemsPage: React.FC = () => {
 
                         {/* Follower Reactions Bar */}
                         <div className="pt-3 border-t border-slate-800 flex items-center justify-between">
-                          <span className="text-xs text-slate-500">React to broadcast:</span>
+                          <span className="text-xs text-slate-300 font-medium">React to broadcast:</span>
                           <div className="flex items-center gap-1">
                             {['❤️', '🔥', '👏', '💎', '🚀'].map((emoji) => (
                               <button
@@ -903,7 +946,7 @@ const GemsPage: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="font-bold text-white text-base">Admin Assist: Keyword Auto-Moderation</h3>
-                    <p className="text-xs text-slate-400">
+                    <p className="text-xs text-slate-300 font-medium">
                       Enforces FingerMobile Words Moderation List & Platform Policy flags.
                     </p>
                   </div>
@@ -920,7 +963,7 @@ const GemsPage: React.FC = () => {
                     value={moderationTestText}
                     onChange={(e) => setModerationTestText(e.target.value)}
                     placeholder="e.g. Try typing: '100% free make money click here' or regular compliant text..."
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-200 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-200 placeholder:text-slate-300 font-medium focus:outline-none focus:ring-2 focus:ring-purple-500"
                   />
                   <button
                     onClick={runModerationCheck}
@@ -965,7 +1008,7 @@ const GemsPage: React.FC = () => {
                     </div>
                     <div>
                       <h3 className="font-bold text-white text-base">Anonymous Posting Toggle</h3>
-                      <p className="text-xs text-slate-400">Safe haven for sensitive discussions</p>
+                      <p className="text-xs text-slate-300 font-medium">Safe haven for sensitive discussions</p>
                     </div>
                   </div>
                   <button
@@ -1024,7 +1067,7 @@ const GemsPage: React.FC = () => {
                 <BookOpen className="w-5 h-5 text-sky-400" />
                 Featured Educational Modules & Guides
               </h3>
-              <p className="text-xs text-slate-400 mb-6">
+              <p className="text-xs text-slate-300 font-medium mb-6">
                 Step-by-step learning modules for creators, node runners, and sovereign group admins.
               </p>
 
@@ -1040,7 +1083,7 @@ const GemsPage: React.FC = () => {
                         <span>{guide.lessons} Lessons</span>
                       </div>
                       <h4 className="font-bold text-white text-sm mb-2">{guide.title}</h4>
-                      <p className="text-xs text-slate-400 leading-relaxed">{guide.description}</p>
+                      <p className="text-xs text-slate-300 font-medium leading-relaxed">{guide.description}</p>
                     </div>
 
                     <button
@@ -1056,6 +1099,11 @@ const GemsPage: React.FC = () => {
             </div>
           </div>
         )}
+      </div>
+
+          {/* Right Column: Static & Sticky Platform Rail */}
+          <div className="lg:col-span-3 lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-5.5rem)] lg:overflow-y-auto space-y-4 scrollbar-none pl-1">
+            <PlatformWidgetsAndAdsRail pageContext="gems" />
           </div>
         </div>
       </div>
@@ -1073,7 +1121,7 @@ const GemsPage: React.FC = () => {
               </div>
               <button
                 onClick={() => setSelectedItemForPurchase(null)}
-                className="text-slate-400 hover:text-white text-lg font-bold"
+                className="text-slate-300 font-medium hover:text-white text-lg font-bold"
               >
                 ✕
               </button>
@@ -1089,21 +1137,21 @@ const GemsPage: React.FC = () => {
 
             <div>
               <h3 className="text-lg font-extrabold text-white">{selectedItemForPurchase.title}</h3>
-              <p className="text-xs text-slate-400 mt-1">{selectedItemForPurchase.description}</p>
+              <p className="text-xs text-slate-300 font-medium mt-1">{selectedItemForPurchase.description}</p>
             </div>
 
             <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2 text-xs">
               <div className="flex items-center justify-between">
-                <span className="text-slate-400">Item Cost:</span>
+                <span className="text-slate-300 font-medium">Item Cost:</span>
                 <span className="font-bold text-purple-400">💎 {selectedItemForPurchase.price} Gems</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-slate-400">Your Current Balance:</span>
+                <span className="text-slate-300 font-medium">Your Current Balance:</span>
                 <span className="font-bold text-white">💎 {userBalance.toLocaleString()} Gems</span>
               </div>
               <div className="h-px bg-slate-800 my-1" />
               <div className="flex items-center justify-between">
-                <span className="text-slate-400">Remaining After Redemption:</span>
+                <span className="text-slate-300 font-medium">Remaining After Redemption:</span>
                 <span
                   className={`font-bold ${
                     userBalance >= selectedItemForPurchase.price ? 'text-emerald-400' : 'text-red-400'
@@ -1151,14 +1199,14 @@ const GemsPage: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="text-lg font-bold">Acquire Sovereign Gems 💎</h3>
-                  <p className="text-xs text-slate-400">
+                  <p className="text-xs text-slate-300 font-medium">
                     Virtual micro-currency for tipping, unlockable collectibles, and badges
                   </p>
                 </div>
               </div>
               <button
                 onClick={() => setIsAddGemsModalOpen(false)}
-                className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition"
+                className="p-2 rounded-xl text-slate-300 font-medium hover:text-white hover:bg-slate-800 transition"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -1222,7 +1270,7 @@ const GemsPage: React.FC = () => {
                       className={`p-2.5 rounded-xl border text-center text-xs font-semibold transition cursor-pointer flex flex-col items-center gap-1 ${
                         gemPaymentMethod === m.id
                           ? 'border-pink-500 bg-pink-950/30 text-white'
-                          : 'border-slate-800 bg-slate-800/40 text-slate-400 hover:text-white'
+                          : 'border-slate-800 bg-slate-800/40 text-slate-300 font-medium hover:text-white'
                       }`}
                     >
                       <span className="text-base">{m.icon}</span>
@@ -1233,11 +1281,11 @@ const GemsPage: React.FC = () => {
               </div>
 
               <div className="p-3.5 rounded-2xl bg-slate-800/60 border border-slate-700/60 text-xs space-y-2">
-                <div className="flex items-center justify-between text-slate-400">
+                <div className="flex items-center justify-between text-slate-300 font-medium">
                   <span>Current Gem Balance:</span>
                   <span className="font-bold text-white">💎 {userBalance.toLocaleString()} Gems</span>
                 </div>
-                <div className="flex items-center justify-between text-slate-400">
+                <div className="flex items-center justify-between text-slate-300 font-medium">
                   <span>Your Available FIC:</span>
                   <span className="font-bold text-purple-400">{ficBalance.toFixed(2)} FIC</span>
                 </div>

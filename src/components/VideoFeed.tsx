@@ -68,10 +68,10 @@ const VideoFeed: React.FC<VideoFeedProps> = ({
   return (
     <div className="space-y-4">
       {videos.map((video) => (
-        <Card key={video.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+        <Card key={video.id} className="border-slate-200 overflow-hidden hover:shadow-lg transition-shadow">
           {/* Video Thumbnail */}
           <div
-            className="relative aspect-video bg-muted cursor-pointer"
+            className="relative aspect-video bg-slate-100 border-b border-slate-200 cursor-pointer"
             onClick={() => onVideoClick?.(video.id)} role="button" tabIndex={0}
           >
             <img
@@ -84,7 +84,7 @@ const VideoFeed: React.FC<VideoFeedProps> = ({
                 <Play className="h-8 w-8 text-primary" />
               </div>
             </div>
-            <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+            <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded font-semibold">
               {video.duration}
             </div>
           </div>
@@ -99,45 +99,45 @@ const VideoFeed: React.FC<VideoFeedProps> = ({
                 size="md"
               />
               <div className="flex-1 min-w-0">
-                <h3 className="font-semibold line-clamp-2">{video.title}</h3>
-                <p className="text-sm text-muted-foreground">@{video.username}</p>
-                <p className="text-xs text-muted-foreground mt-1">
+                <h3 className="font-semibold text-slate-900 line-clamp-2">{video.title}</h3>
+                <p className="text-sm text-slate-700 font-medium">@{video.username}</p>
+                <p className="text-xs text-slate-600 font-medium mt-1">
                   {formatViews(video.views)} views
                 </p>
               </div>
-              <Button variant="ghost" size="icon">
+              <Button variant="ghost" size="icon" className="text-slate-700 hover:text-slate-900">
                 <MoreVertical className="h-4 w-4" />
               </Button>
             </div>
 
             {/* Actions */}
-            <div className="flex items-center gap-4 mt-3 pt-3 border-t">
+            <div className="flex items-center gap-4 mt-3 pt-3 border-t border-slate-200">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => onLike?.(video.id)}
-                className="gap-1"
+                className="gap-1 text-slate-700 hover:text-slate-900"
               >
                 <Heart className="h-4 w-4" />
-                <span className="text-xs">{video.likes}</span>
+                <span className="text-xs font-semibold">{video.likes}</span>
               </Button>
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => onComment?.(video.id)}
-                className="gap-1"
+                className="gap-1 text-slate-700 hover:text-slate-900"
               >
                 <MessageCircle className="h-4 w-4" />
-                <span className="text-xs">{video.comments}</span>
+                <span className="text-xs font-semibold">{video.comments}</span>
               </Button>
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => onShare?.(video.id)}
-                className="gap-1"
+                className="gap-1 text-slate-700 hover:text-slate-900"
               >
                 <Share2 className="h-4 w-4" />
-                <span className="text-xs">Share</span>
+                <span className="text-xs font-semibold">Share</span>
               </Button>
             </div>
           </CardContent>

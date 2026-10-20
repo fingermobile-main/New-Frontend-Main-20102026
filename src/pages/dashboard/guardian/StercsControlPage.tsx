@@ -150,7 +150,7 @@ const StercsControlPage: React.FC = () => {
                 (STERCS)
               </h1>
               <div className="flex items-center gap-2 mt-1">
-                <p className="text-sm text-gray-400">
+                <p className="text-sm text-slate-300 font-medium">
                   {systemMode === 'enterprise'
                     ? 'Enterprise Resource Management'
                     : 'Sentient Threat Evaluation & Response'}
@@ -184,12 +184,12 @@ const StercsControlPage: React.FC = () => {
               <h2 className="text-2xl font-bold mb-2 text-white">
                 STERCS™©® Access Required
               </h2>
-              <p className="text-gray-400 mb-2">
+              <p className="text-slate-300 font-medium mb-2">
                 {systemMode === 'enterprise'
                   ? 'Strategic Tactical Enterprise Resource Control Systems'
                   : 'Sentient Threat Evaluation & Response Control System'}
               </p>
-              <p className="text-gray-400 mb-8">
+              <p className="text-slate-300 font-medium mb-8">
                 Multi-factor authentication required for system access
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
@@ -223,7 +223,7 @@ const StercsControlPage: React.FC = () => {
                   {systemMode === 'enterprise' ? 'Enterprise' : 'Threat'}
                 </span>
               </div>
-              <p className="text-gray-400 mb-6">Enter 6-digit PIN 1</p>
+              <p className="text-slate-300 font-medium mb-6">Enter 6-digit PIN 1</p>
 
               <form onSubmit={handlePin1Submit}>
                 <div className="mb-4">
@@ -258,7 +258,7 @@ const StercsControlPage: React.FC = () => {
                     className={`flex-1 px-4 py-2 font-medium rounded-lg transition-colors ${
                       pin1.length === 6
                         ? 'bg-brand-blue hover:bg-blue-700 text-white'
-                        : 'bg-gray-800 text-gray-500 cursor-not-allowed'
+                        : 'bg-gray-800 text-slate-500 cursor-not-allowed'
                     }`}
                   >
                     Continue
@@ -282,7 +282,7 @@ const StercsControlPage: React.FC = () => {
                   {systemMode === 'enterprise' ? 'Enterprise' : 'Threat'}
                 </span>
               </div>
-              <p className="text-gray-400 mb-6">Enter 8-digit PIN 2</p>
+              <p className="text-slate-300 font-medium mb-6">Enter 8-digit PIN 2</p>
 
               <form onSubmit={handlePin2Submit}>
                 <div className="mb-4">
@@ -317,7 +317,7 @@ const StercsControlPage: React.FC = () => {
                     className={`flex-1 px-4 py-2 font-medium rounded-lg transition-colors ${
                       pin2.length === 8
                         ? 'bg-brand-blue hover:bg-blue-700 text-white'
-                        : 'bg-gray-800 text-gray-500 cursor-not-allowed'
+                        : 'bg-gray-800 text-slate-500 cursor-not-allowed'
                     }`}
                   >
                     Continue
@@ -341,7 +341,7 @@ const StercsControlPage: React.FC = () => {
                   {systemMode === 'enterprise' ? 'Enterprise' : 'Threat'}
                 </span>
               </div>
-              <p className="text-gray-400 mb-6 sm:text-base lg:text-lg">
+              <p className="text-slate-300 font-medium mb-6 sm:text-base lg:text-lg">
                 Please look into the camera for facial recognition
               </p>
 
@@ -362,7 +362,7 @@ const StercsControlPage: React.FC = () => {
                 </div>
               </div>
 
-              <p className="text-gray-400">Scanning... Please remain still</p>
+              <p className="text-slate-300 font-medium">Scanning... Please remain still</p>
 
               <div className="mt-6">
                 <button
@@ -382,7 +382,7 @@ const StercsControlPage: React.FC = () => {
                   <h2 className="text-2xl font-bold">
                     STERCS™©® Command Center
                   </h2>
-                  <p className="text-gray-400">
+                  <p className="text-slate-300 font-medium">
                     {systemMode === 'enterprise'
                       ? 'Strategic Tactical Enterprise Resource Control Systems'
                       : 'Sentient Threat Evaluation & Response Control System'}
@@ -422,7 +422,7 @@ const StercsControlPage: React.FC = () => {
                       <h3 className="font-bold text-white mb-2">
                         Resource Allocation
                       </h3>
-                      <p className="text-gray-400 text-sm">
+                      <p className="text-slate-300 font-medium text-sm">
                         Allocate and manage enterprise resources across regions
                       </p>
                     </div>
@@ -450,7 +450,7 @@ const StercsControlPage: React.FC = () => {
                       <h3 className="font-bold text-white mb-2">
                         Strategic Planning
                       </h3>
-                      <p className="text-gray-400 text-sm">
+                      <p className="text-slate-300 font-medium text-sm">
                         Deploy tactical strategies for enterprise growth
                       </p>
                     </div>
@@ -478,7 +478,7 @@ const StercsControlPage: React.FC = () => {
                       <h3 className="font-bold text-white mb-2">
                         Enterprise Backup
                       </h3>
-                      <p className="text-gray-400 text-sm">
+                      <p className="text-slate-300 font-medium text-sm">
                         Execute enterprise-wide backup procedures
                       </p>
                     </div>
@@ -506,7 +506,7 @@ const StercsControlPage: React.FC = () => {
                       <h3 className="font-bold text-white mb-2">
                         Performance Optimize
                       </h3>
-                      <p className="text-gray-400 text-sm">
+                      <p className="text-slate-300 font-medium text-sm">
                         Run enterprise optimization routines
                       </p>
                     </div>
@@ -534,7 +534,7 @@ const StercsControlPage: React.FC = () => {
                       <h3 className="font-bold text-white mb-2">
                         Resource Monitoring
                       </h3>
-                      <p className="text-gray-400 text-sm">
+                      <p className="text-slate-300 font-medium text-sm">
                         Monitor enterprise resource utilization
                       </p>
                     </div>
@@ -562,7 +562,7 @@ const StercsControlPage: React.FC = () => {
                       <h3 className="font-bold text-white mb-2">
                         Enterprise Wipe
                       </h3>
-                      <p className="text-gray-400 text-sm">
+                      <p className="text-slate-300 font-medium text-sm">
                         Initiate complete enterprise data wipe (IRREVERSIBLE)
                       </p>
                     </div>
@@ -577,7 +577,7 @@ const StercsControlPage: React.FC = () => {
                         <ShieldExclamationIcon className="w-6 h-6 text-red-400" />
                       </div>
                       <h3 className="font-bold text-white mb-2">Threat Scan</h3>
-                      <p className="text-gray-400 text-sm">
+                      <p className="text-slate-300 font-medium text-sm">
                         Execute comprehensive threat evaluation across all
                         platform modules
                       </p>
@@ -604,7 +604,7 @@ const StercsControlPage: React.FC = () => {
                         </svg>
                       </div>
                       <h3 className="font-bold text-white mb-2">AI Analysis</h3>
-                      <p className="text-gray-400 text-sm">
+                      <p className="text-slate-300 font-medium text-sm">
                         Deploy SENTIENT cognitive processing for pattern
                         analysis
                       </p>
@@ -633,7 +633,7 @@ const StercsControlPage: React.FC = () => {
                       <h3 className="font-bold text-white mb-2">
                         Security Lockdown
                       </h3>
-                      <p className="text-gray-400 text-sm">
+                      <p className="text-slate-300 font-medium text-sm">
                         Initiate platform-wide security lockdown procedures
                       </p>
                     </div>
@@ -661,7 +661,7 @@ const StercsControlPage: React.FC = () => {
                       <h3 className="font-bold text-white mb-2">
                         System Backup
                       </h3>
-                      <p className="text-gray-400 text-sm">
+                      <p className="text-slate-300 font-medium text-sm">
                         Execute full system backup to secure storage
                       </p>
                     </div>
@@ -689,7 +689,7 @@ const StercsControlPage: React.FC = () => {
                       <h3 className="font-bold text-white mb-2">
                         Performance Optimize
                       </h3>
-                      <p className="text-gray-400 text-sm">
+                      <p className="text-slate-300 font-medium text-sm">
                         Run system optimization routines for peak performance
                       </p>
                     </div>
@@ -715,7 +715,7 @@ const StercsControlPage: React.FC = () => {
                         </svg>
                       </div>
                       <h3 className="font-bold text-white mb-2">System Wipe</h3>
-                      <p className="text-gray-400 text-sm">
+                      <p className="text-slate-300 font-medium text-sm">
                         Initiate complete system wipe (IRREVERSIBLE)
                       </p>
                     </div>

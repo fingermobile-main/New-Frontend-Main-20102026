@@ -487,7 +487,7 @@ const MyWalletPage: React.FC = () => {
                       <td className="py-3 px-3 text-amber-900 dark:text-amber-300 font-bold">
                         {d.platformRetained.toLocaleString()} FIC
                       </td>
-                      <td className="py-3 px-3 text-[10px] text-slate-600 dark:text-slate-400 font-bold truncate max-w-[120px]">
+                      <td className="py-3 px-3 text-[10px] text-slate-700 dark:text-slate-300 font-bold truncate max-w-[120px]">
                         {d.txHash || '—'}
                       </td>
                     </tr>

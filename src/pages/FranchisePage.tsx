@@ -401,11 +401,11 @@ const FranchisePage: React.FC = () => {
 
                       <div className="mt-4 p-3 bg-slate-50 rounded-xl border border-slate-100 space-y-1.5 text-xs">
                         <div className="flex items-center gap-2 text-gray-600">
-                          <MapPinIcon className="w-4 h-4 text-slate-500 flex-shrink-0" />
+                          <MapPinIcon className="w-4 h-4 text-slate-600 flex-shrink-0" />
                           <span className="truncate">{f.address}</span>
                         </div>
                         <div className="flex items-center gap-2 text-gray-600">
-                          <PhoneIcon className="w-4 h-4 text-slate-500 flex-shrink-0" />
+                          <PhoneIcon className="w-4 h-4 text-slate-600 flex-shrink-0" />
                           <span>{f.contactPhone}</span>
                         </div>
                       </div>
@@ -619,7 +619,7 @@ const FranchisePage: React.FC = () => {
                     Your franchise application for <strong>{appSuccessData.entityName}</strong> has been logged.
                   </p>
                   <div className="my-6 p-4 bg-slate-900 rounded-2xl text-left font-mono text-xs text-emerald-400 space-y-1">
-                    <p className="text-gray-400 text-[10px]">APPLICATION RECEIPT</p>
+                    <p className="text-slate-300 font-medium text-[10px]">APPLICATION RECEIPT</p>
                     <p>TRACKING_ID: {appSuccessData.trackingId}</p>
                     <p>TIER: {appSuccessData.tier}</p>
                     <p>STATUS: PROVISIONING_KYC_VERIFICATION</p>

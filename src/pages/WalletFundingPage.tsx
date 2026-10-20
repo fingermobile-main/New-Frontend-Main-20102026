@@ -314,7 +314,7 @@ const WalletFundingPage: React.FC = () => {
                       </p>
                     </div>
                   </div>
-                  <ArrowRightIcon className="h-4 w-4 text-slate-500" />
+                  <ArrowRightIcon className="h-4 w-4 text-slate-600" />
                 </button>
 
                 <button
@@ -332,7 +332,7 @@ const WalletFundingPage: React.FC = () => {
                       </p>
                     </div>
                   </div>
-                  <ArrowRightIcon className="h-4 w-4 text-slate-500" />
+                  <ArrowRightIcon className="h-4 w-4 text-slate-600" />
                 </button>
               </div>
             </div>

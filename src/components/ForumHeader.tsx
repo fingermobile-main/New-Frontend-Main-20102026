@@ -17,7 +17,7 @@ const ForumHeader: React.FC<ForumHeaderProps> = ({ searchTerm, onSearchChange })
           <div className="flex-1 mx-8">
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <SearchIcon className="h-5 w-5 text-gray-400" />
+                <SearchIcon className="h-5 w-5 text-slate-600" />
               </div>
               <input
                 type="text"

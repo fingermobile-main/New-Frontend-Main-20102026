@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, Bell, User, Settings, Play, Shield } from 'lucide-react';
+import { Search, Bell, User, Settings, Shield } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 interface Dancia4TvHeaderProps {
@@ -38,8 +38,8 @@ const Dancia4TvHeader: React.FC<Dancia4TvHeaderProps> = ({
           onClick={() => handleNavClick('movies')}
           className="flex items-center space-x-2 group cursor-pointer"
         >
-          <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-900/40 group-hover:scale-110 transition-transform">
-            <Play fill="white" size={20} className="text-white ml-1" />
+          <div className="w-10 h-10 bg-slate-900 border border-blue-500/40 rounded-xl flex items-center justify-center shadow-lg shadow-blue-900/40 group-hover:scale-110 transition-transform overflow-hidden p-1 shrink-0">
+            <img src="/assets/logos/dancia4tv_logo.png" alt="Dancia-4Tv" className="w-full h-full object-contain" />
           </div>
           <div>
             <h1 className="text-2xl font-black tracking-tighter text-white">DANCIA-4Tv{'\u00AE\u2122\u00A9'}</h1>

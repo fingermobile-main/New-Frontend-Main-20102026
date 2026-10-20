@@ -35,19 +35,19 @@ const LiveStreamSetup: React.FC<LiveStreamSetupProps> = ({ onStartStream }) => {
 
   return (
     <div className="w-full max-w-2xl mx-auto">
-      <Card>
+      <Card className="border-slate-200">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Video className="h-6 w-6" />
+          <CardTitle className="flex items-center gap-2 text-slate-900">
+            <Video className="h-6 w-6 text-slate-700" />
             Start Live Stream
           </CardTitle>
-          <CardDescription>
+          <CardDescription className="text-slate-700">
             Configure your live stream settings before going live
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="stream-title">Stream Title</Label>
+            <Label htmlFor="stream-title" className="text-slate-900 font-semibold">Stream Title</Label>
             <Input
               id="stream-title"
               value={streamTitle}
@@ -58,7 +58,7 @@ const LiveStreamSetup: React.FC<LiveStreamSetupProps> = ({ onStartStream }) => {
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="category">Category</Label>
+              <Label htmlFor="category" className="text-slate-900 font-semibold">Category</Label>
               <Select value={category} onValueChange={setCategory}>
                 <SelectTrigger>
                   <SelectValue />
@@ -75,7 +75,7 @@ const LiveStreamSetup: React.FC<LiveStreamSetupProps> = ({ onStartStream }) => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="privacy">Privacy</Label>
+              <Label htmlFor="privacy" className="text-slate-900 font-semibold">Privacy</Label>
               <Select value={privacy} onValueChange={setPrivacy}>
                 <SelectTrigger>
                   <SelectValue />
@@ -91,14 +91,14 @@ const LiveStreamSetup: React.FC<LiveStreamSetupProps> = ({ onStartStream }) => {
           </div>
 
           <div className="space-y-3">
-            <Label>Stream Options</Label>
+            <Label className="text-slate-900 font-semibold">Stream Options</Label>
             <div className="space-y-2">
-              <div className="flex items-center justify-between p-3 border rounded-lg">
+              <div className="flex items-center justify-between p-3 border border-slate-200 rounded-lg">
                 <div className="flex items-center gap-3">
-                  <Users className="h-5 w-5 text-muted-foreground" />
+                  <Users className="h-5 w-5 text-slate-600" />
                   <div>
-                    <p className="font-medium">Enable Live Chat</p>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="font-semibold text-slate-900">Enable Live Chat</p>
+                    <p className="text-sm text-slate-700">
                       Allow viewers to chat during your stream
                     </p>
                   </div>
@@ -111,12 +111,12 @@ const LiveStreamSetup: React.FC<LiveStreamSetupProps> = ({ onStartStream }) => {
                 />
               </div>
 
-              <div className="flex items-center justify-between p-3 border rounded-lg">
+              <div className="flex items-center justify-between p-3 border border-slate-200 rounded-lg">
                 <div className="flex items-center gap-3">
-                  <Monitor className="h-5 w-5 text-muted-foreground" />
+                  <Monitor className="h-5 w-5 text-slate-500" />
                   <div>
-                    <p className="font-medium">Record Stream</p>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="font-semibold text-slate-900">Record Stream</p>
+                    <p className="text-sm text-slate-700">
                       Save a recording for later viewing
                     </p>
                   </div>
@@ -131,12 +131,12 @@ const LiveStreamSetup: React.FC<LiveStreamSetupProps> = ({ onStartStream }) => {
             </div>
           </div>
 
-          <div className="bg-muted/30 p-4 rounded-lg space-y-3">
-            <h3 className="font-semibold flex items-center gap-2">
-              <Camera className="h-4 w-4" />
+          <div className="bg-slate-50 border border-slate-200 p-4 rounded-lg space-y-3">
+            <h3 className="font-semibold flex items-center gap-2 text-slate-900">
+              <Camera className="h-4 w-4 text-slate-700" />
               Pre-Stream Checklist
             </h3>
-            <ul className="space-y-2 text-sm">
+            <ul className="space-y-2 text-sm text-slate-800 font-medium">
               <li className="flex items-center gap-2">
                 <div className="h-2 w-2 bg-green-500 rounded-full" />
                 Check your internet connection

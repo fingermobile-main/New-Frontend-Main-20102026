@@ -444,7 +444,7 @@ const EmailServiceConsolePage: React.FC = () => {
             {/* Filter & Search Bar */}
             <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div className="flex items-center gap-2 flex-1 max-w-md">
-                <Search className="w-4 h-4 text-slate-500" />
+                <Search className="w-4 h-4 text-slate-600" />
                 <input
                   type="text"
                   placeholder="Search 16 categories by name, topic, or keyword..."
@@ -464,7 +464,7 @@ const EmailServiceConsolePage: React.FC = () => {
                     className={`px-3 py-1 rounded-full font-medium transition-colors whitespace-nowrap ${
                       selectedCategory === cat
                         ? 'bg-blue-600 text-white'
-                        : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                        : 'bg-slate-100 text-slate-800 font-semibold hover:bg-slate-200'
                     }`}
                   >
                     {cat}
@@ -488,12 +488,12 @@ const EmailServiceConsolePage: React.FC = () => {
                       <span className="text-xs text-slate-700 font-mono">#{tpl.slug}</span>
                     </div>
                     <h3 className="text-base font-bold text-slate-900 mb-1.5">{tpl.name}</h3>
-                    <p className="text-xs text-slate-500 leading-relaxed mb-3">{tpl.description}</p>
+                    <p className="text-xs text-slate-700 font-medium leading-relaxed mb-3">{tpl.description}</p>
 
                     {/* Variables chips */}
                     <div className="flex flex-wrap gap-1 mb-4">
                       {tpl.variables.slice(0, 4).map((v) => (
-                        <span key={v} className="text-[10px] font-mono bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded">
+                        <span key={v} className="text-[10px] font-mono bg-slate-100 text-slate-800 font-semibold px-1.5 py-0.5 rounded">
                           {`{{${v}}}`}
                         </span>
                       ))}
@@ -687,7 +687,7 @@ const EmailServiceConsolePage: React.FC = () => {
           <div className="space-y-4">
             <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
               <h2 className="text-base font-bold text-slate-900 mb-1">Automated Member Lifecycle Triggers</h2>
-              <p className="text-xs text-slate-500 mb-4">
+              <p className="text-xs text-slate-700 font-medium mb-4">
                 These event triggers automatically compose and dispatch emails to members when platform events occur via Plunk REST API (`POST /v1/track`).
               </p>
 
@@ -709,7 +709,7 @@ const EmailServiceConsolePage: React.FC = () => {
                         <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                       </div>
                       <h4 className="text-sm font-bold text-slate-900">{wf.label}</h4>
-                      <p className="text-xs text-slate-500 mt-1">{wf.desc}</p>
+                      <p className="text-xs text-slate-700 font-medium mt-1">{wf.desc}</p>
                     </div>
 
                     <div className="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
@@ -737,7 +737,7 @@ const EmailServiceConsolePage: React.FC = () => {
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                   <h2 className="text-lg font-bold text-slate-900">Technical DNS & Authentication Stack</h2>
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-slate-700 font-medium">
                     Live verification of PTR (rDNS), SPF, DKIM, and DMARC alignment for domain <strong>fingermobileprotocol.com</strong>.
                   </p>
                 </div>
@@ -762,7 +762,7 @@ const EmailServiceConsolePage: React.FC = () => {
                   <div className="text-xs text-slate-700 font-mono bg-white p-2 rounded border border-emerald-100">
                     {dnsResults.checks.ptr.value}
                   </div>
-                  <p className="text-[11px] text-slate-500 mt-2">Points VPS Static IP back to mail.fingermobileprotocol.com</p>
+                  <p className="text-[11px] text-slate-700 font-medium mt-2">Points VPS Static IP back to mail.fingermobileprotocol.com</p>
                 </div>
 
                 <div className="p-4 rounded-xl border border-emerald-200 bg-emerald-50/50">
@@ -773,7 +773,7 @@ const EmailServiceConsolePage: React.FC = () => {
                   <div className="text-xs text-slate-700 font-mono bg-white p-2 rounded border border-emerald-100">
                     {dnsResults.checks.spf.record}
                   </div>
-                  <p className="text-[11px] text-slate-500 mt-2">Explicitly authorizes outbound server IPs</p>
+                  <p className="text-[11px] text-slate-700 font-medium mt-2">Explicitly authorizes outbound server IPs</p>
                 </div>
 
                 <div className="p-4 rounded-xl border border-emerald-200 bg-emerald-50/50">
@@ -784,7 +784,7 @@ const EmailServiceConsolePage: React.FC = () => {
                   <div className="text-xs text-slate-700 font-mono bg-white p-2 rounded border border-emerald-100">
                     s1._domainkey.fingermobileprotocol.com
                   </div>
-                  <p className="text-[11px] text-slate-500 mt-2">Cryptographic RSA header signing by Stalwart MTA</p>
+                  <p className="text-[11px] text-slate-700 font-medium mt-2">Cryptographic RSA header signing by Stalwart MTA</p>
                 </div>
 
                 <div className="p-4 rounded-xl border border-emerald-200 bg-emerald-50/50">
@@ -795,7 +795,7 @@ const EmailServiceConsolePage: React.FC = () => {
                   <div className="text-xs text-slate-700 font-mono bg-white p-2 rounded border border-emerald-100">
                     p=reject; pct=100
                   </div>
-                  <p className="text-[11px] text-slate-500 mt-2">Enforces quarantine/reject on unauthorized mail</p>
+                  <p className="text-[11px] text-slate-700 font-medium mt-2">Enforces quarantine/reject on unauthorized mail</p>
                 </div>
               </div>
             </div>
@@ -810,7 +810,7 @@ const EmailServiceConsolePage: React.FC = () => {
             <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-6">
               <div>
                 <h2 className="text-lg font-bold text-slate-900">Programmatic 6-Week IP Warm-up Schedule</h2>
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-slate-700 font-medium">
                   Gradually ramps sending volume on dedicated static IPs to prevent automated ISP spam blocking.
                 </p>
               </div>
@@ -818,7 +818,7 @@ const EmailServiceConsolePage: React.FC = () => {
               {/* Progress Gauge */}
               <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  <div className="text-xs font-bold text-slate-500 uppercase">Today's Dispatch Quota</div>
+                  <div className="text-xs font-bold text-slate-700 uppercase">Today's Dispatch Quota</div>
                   <div className="text-2xl font-extrabold text-slate-900">
                     {warmupStatus.sent_today} / {warmupStatus.daily_limit} emails sent
                   </div>
@@ -889,7 +889,7 @@ const EmailServiceConsolePage: React.FC = () => {
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                   <h2 className="text-lg font-bold text-slate-900">Bounce & Suppression Blacklist</h2>
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-slate-700 font-medium">
                     Protects sender reputation by instantly dropping hard bounces, complaints, and unsubscribes.
                   </p>
                 </div>

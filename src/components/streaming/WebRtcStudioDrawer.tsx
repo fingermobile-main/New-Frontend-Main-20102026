@@ -906,7 +906,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                   {currentTierConfig.capacityLimit.toLocaleString()} Max ({currentTierConfig.name.split(' ')[0]})
                 </button>
               </div>
-              <p className="text-xs text-gray-400">
+              <p className="text-xs text-slate-300 font-medium">
                 Ultra low-latency WebRTC broadcast • Create "Join Me Live" links • Platform Events &amp; Gems
               </p>
             </div>
@@ -921,7 +921,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                 className={`px-3 py-1.5 rounded-xl transition flex items-center gap-1.5 ${
                   activeTab === 'broadcast'
                     ? 'bg-red-600 text-white shadow-lg'
-                    : 'text-gray-400 hover:text-white'
+                    : 'text-slate-300 hover:text-white font-medium'
                 }`}
               >
                 <span className={`w-2 h-2 rounded-full ${isBroadcasting ? 'bg-white animate-ping' : 'bg-red-400'}`} />
@@ -934,7 +934,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                 className={`px-3 py-1.5 rounded-xl transition flex items-center gap-1.5 ${
                   activeTab === 'schedule'
                     ? 'bg-amber-600 text-white shadow-lg'
-                    : 'text-gray-400 hover:text-white'
+                    : 'text-slate-300 hover:text-white font-medium'
                 }`}
               >
                 <CalendarDaysIcon className="w-4 h-4 text-amber-400" />
@@ -947,7 +947,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                 className={`px-3 py-1.5 rounded-xl transition flex items-center gap-1.5 ${
                   activeTab === 'events'
                     ? 'bg-indigo-600 text-white shadow-lg'
-                    : 'text-gray-400 hover:text-white'
+                    : 'text-slate-300 hover:text-white font-medium'
                 }`}
               >
                 <ClockIcon className="w-4 h-4 text-indigo-400" />
@@ -967,7 +967,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
             <button
               type="button"
               onClick={handleClose}
-              className="p-2 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800 transition-colors ml-1"
+              className="p-2 rounded-xl text-slate-300 hover:text-white hover:bg-gray-800 transition-colors ml-1"
               title="Close Studio"
             >
               <XMarkIcon className="w-5 h-5" />
@@ -1028,12 +1028,12 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
 
                     {/* Camera Off Overlay */}
                     {isCameraOff && !cameraError && (
-                      <div className="absolute inset-0 bg-gray-950 flex flex-col items-center justify-center text-center p-6 text-gray-400">
+                      <div className="absolute inset-0 bg-gray-950 flex flex-col items-center justify-center text-center p-6 text-slate-300 font-medium">
                         <div className="w-16 h-16 rounded-2xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-3">
                           <VideoCameraIcon className="w-8 h-8 text-gray-600" />
                         </div>
                         <p className="text-sm font-bold text-gray-300">Camera Feed Paused</p>
-                        <p className="text-xs text-gray-500 mt-1">
+                        <p className="text-xs text-slate-300 font-medium mt-1">
                           Your camera is turned off. Click the camera icon below to resume.
                         </p>
                       </div>
@@ -1109,7 +1109,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                         className={`px-2.5 py-1 rounded-full text-[10px] font-bold backdrop-blur-sm transition border ${
                           isMirror
                             ? 'bg-gray-800/80 text-white border-gray-600'
-                            : 'bg-black/50 text-gray-400 border-gray-800'
+                            : 'bg-black/50 text-slate-300 border-gray-800 font-medium'
                         }`}
                         title="Toggle Mirror Camera"
                       >
@@ -1139,7 +1139,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                               Capacity: {currentTierConfig.capacityLimit.toLocaleString()}
                             </span>
                           </h4>
-                          <p className="text-[11px] text-gray-400">
+                          <p className="text-[11px] text-slate-300 font-medium">
                             Share this link so guests and community members can join your live broadcast
                           </p>
                         </div>
@@ -1153,7 +1153,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                           className={`px-2 py-1 rounded-lg font-bold transition ${
                             guestAccessMode === 'INTERACTIVE_COHOST'
                               ? 'bg-red-600 text-white shadow'
-                              : 'text-gray-400 hover:text-white'
+                              : 'text-slate-300 hover:text-white font-medium'
                           }`}
                           title="Guests can speak and share camera on stage"
                         >
@@ -1165,7 +1165,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                           className={`px-2 py-1 rounded-lg font-bold transition ${
                             guestAccessMode === 'OPEN_VIEWER'
                               ? 'bg-indigo-600 text-white shadow'
-                              : 'text-gray-400 hover:text-white'
+                              : 'text-slate-300 hover:text-white font-medium'
                           }`}
                           title="Audience can view HD stream and chat"
                         >
@@ -1177,7 +1177,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                           className={`px-2 py-1 rounded-lg font-bold transition ${
                             guestAccessMode === 'VIP_BACKSTAGE'
                               ? 'bg-amber-600 text-white shadow'
-                              : 'text-gray-400 hover:text-white'
+                              : 'text-slate-300 hover:text-white font-medium'
                           }`}
                           title="VIP green room with priority chat & tips"
                         >
@@ -1257,8 +1257,8 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                   {/* Hardware Device Selectors */}
                   <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
                     <div>
-                      <label className="text-[11px] font-semibold text-gray-400 flex items-center gap-1 mb-1">
-                        <VideoCameraIcon className="w-3.5 h-3.5 text-gray-400" /> Camera Source:
+                      <label className="text-[11px] font-semibold text-slate-300 flex items-center gap-1 mb-1">
+                        <VideoCameraIcon className="w-3.5 h-3.5 text-slate-300" /> Camera Source:
                       </label>
                       <select
                         value={isVirtualCamera ? 'virtual' : selectedVideoDeviceId}
@@ -1285,8 +1285,8 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                     </div>
 
                     <div>
-                      <label className="text-[11px] font-semibold text-gray-400 flex items-center gap-1 mb-1">
-                        <MicrophoneIcon className="w-3.5 h-3.5 text-gray-400" /> Audio / Mic:
+                      <label className="text-[11px] font-semibold text-slate-300 flex items-center gap-1 mb-1">
+                        <MicrophoneIcon className="w-3.5 h-3.5 text-slate-300" /> Audio / Mic:
                       </label>
                       <select
                         value={selectedAudioDeviceId}
@@ -1347,19 +1347,19 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                         <span className="flex items-center gap-1.5">
                           <CheckCircleIcon className="w-4 h-4" /> Live Broadcast Active
                         </span>
-                        <span className="font-mono text-gray-400">{streamId}</span>
+                        <span className="font-mono text-slate-300 font-medium">{streamId}</span>
                       </div>
                       <div className="grid grid-cols-1 gap-1 text-[11px] font-mono text-gray-300">
                         <div className="truncate">
-                          <span className="text-gray-500">Ingress: </span>
+                          <span className="text-slate-300 font-medium">Ingress: </span>
                           {ingressUrl || 'rtmp://live.fingermobileprotocol.com/app/live'}
                         </div>
                         <div className="truncate">
-                          <span className="text-gray-500">Stream Key: </span>
+                          <span className="text-slate-300 font-medium">Stream Key: </span>
                           {streamKey || 'sk_live_hidden_for_security'}
                         </div>
                         <div className="truncate">
-                          <span className="text-gray-500">HLS Playback: </span>
+                          <span className="text-slate-300 font-medium">HLS Playback: </span>
                           {playbackUrl || 'https://hls.fingermobileprotocol.com/live/stream.m3u8'}
                         </div>
                       </div>
@@ -1464,7 +1464,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                         className={`flex-1 py-1 rounded-lg transition flex items-center justify-center gap-1 ${
                           rightSidebarTab === 'chat'
                             ? 'bg-indigo-600 text-white shadow'
-                            : 'text-gray-400 hover:text-white'
+                            : 'text-slate-300 hover:text-white font-medium'
                         }`}
                       >
                         <ChatBubbleLeftEllipsisIcon className="w-3.5 h-3.5" />
@@ -1476,7 +1476,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                         className={`flex-1 py-1 rounded-lg transition flex items-center justify-center gap-1 ${
                           rightSidebarTab === 'stage'
                             ? 'bg-red-600 text-white shadow'
-                            : 'text-gray-400 hover:text-white'
+                            : 'text-slate-300 hover:text-white font-medium'
                         }`}
                       >
                         <UserGroupIcon className="w-3.5 h-3.5" />
@@ -1488,7 +1488,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                         className={`flex-1 py-1 rounded-lg transition flex items-center justify-center gap-1 ${
                           rightSidebarTab === 'gifts'
                             ? 'bg-amber-600 text-white shadow'
-                            : 'text-gray-400 hover:text-white'
+                            : 'text-slate-300 hover:text-white font-medium'
                         }`}
                       >
                         <GiftIcon className="w-3.5 h-3.5 text-amber-300" />
@@ -1526,7 +1526,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                             Host / Producer
                           </span>
                         </div>
-                        <p className="text-[11px] text-gray-400">Mr. Mbah Israel Obinna (@israelobinna)</p>
+                        <p className="text-[11px] text-slate-300 font-medium">Mr. Mbah Israel Obinna (@israelobinna)</p>
                       </div>
 
                       <div className="p-3 bg-gray-900/80 rounded-xl border border-gray-800">
@@ -1536,7 +1536,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                             {guestAccessMode}
                           </span>
                         </div>
-                        <p className="text-[11px] text-gray-400 mb-2">
+                        <p className="text-[11px] text-slate-300 font-medium mb-2">
                           Guests who open your "Join Me Live" link enter according to this policy.
                         </p>
                         <button
@@ -1554,7 +1554,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                           <SparklesIcon className="w-4 h-4 text-indigo-400" />
                           Stage Capacity Limit
                         </div>
-                        <p className="text-[11px] text-gray-400">
+                        <p className="text-[11px] text-slate-300 font-medium">
                           Current Tier: <strong className="text-white">{currentTierConfig.name}</strong> ({currentTierConfig.capacityLimit.toLocaleString()} max).
                         </p>
                       </div>
@@ -1633,8 +1633,8 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                             ) : (
                               <div className="p-2.5 bg-gray-900/40 border border-dashed border-gray-800 rounded-xl opacity-60 text-left">
                                 <div className="text-lg mb-1">💳</div>
-                                <div className="font-bold text-gray-400 text-xs">Gift Cards</div>
-                                <div className="text-[10px] text-gray-500">Master Tier Only</div>
+                                <div className="font-bold text-slate-300 text-xs">Gift Cards</div>
+                                <div className="text-[10px] text-slate-300 font-medium">Master Tier Only</div>
                               </div>
                             )}
                           </div>
@@ -1696,7 +1696,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                       <CalendarDaysIcon className="w-5 h-5 text-amber-400" />
                       Schedule a Live Broadcast (Platform Events)
                     </h3>
-                    <p className="text-xs text-gray-400">
+                    <p className="text-xs text-slate-300 font-medium">
                       Link your broadcast date and time to Platform Events &amp; Platform Gems with tier capacity governance.
                     </p>
                   </div>
@@ -1746,10 +1746,10 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                       >
                         <div className="flex items-center justify-between mb-1">
                           <span className="font-bold text-white text-xs">Free Tier</span>
-                          <span className="text-[10px] text-gray-400">0 FIC</span>
+                          <span className="text-[10px] text-slate-300 font-medium">0 FIC</span>
                         </div>
                         <div className="text-amber-400 font-mono text-[11px] font-bold">20-50 Capacity</div>
-                        <p className="text-[10px] text-gray-400 mt-1">
+                        <p className="text-[10px] text-slate-300 font-medium mt-1">
                           Non-monetized. Cannot send items, cannot receive/earn coupons &amp; gift cards.
                         </p>
                       </button>
@@ -1769,7 +1769,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                           <span className="text-[10px] text-indigo-400 font-mono">250 FIC/mo</span>
                         </div>
                         <div className="text-indigo-400 font-mono text-[11px] font-bold">2,000 Capacity</div>
-                        <p className="text-[10px] text-gray-400 mt-1">
+                        <p className="text-[10px] text-slate-300 font-medium mt-1">
                           Monetized. Members can send &amp; get limited Gifts, coupons &amp; gift cards.
                         </p>
                       </button>
@@ -1789,7 +1789,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                           <span className="text-[10px] text-amber-400 font-mono">1,200 FIC/mo</span>
                         </div>
                         <div className="text-amber-400 font-mono text-[11px] font-bold">200,000 Capacity</div>
-                        <p className="text-[10px] text-gray-400 mt-1">
+                        <p className="text-[10px] text-slate-300 font-medium mt-1">
                           Monetized. Members can send/get/earn Gifts, coupons, gift cards &amp; products.
                         </p>
                       </button>
@@ -1881,7 +1881,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                       placeholder="@israelobinna, @eunicembah, @superadmin"
                       className="w-full p-2.5 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
                     />
-                    <p className="text-[10px] text-gray-500 mt-1">Comma-separated usernames to automatically invite</p>
+                    <p className="text-[10px] text-slate-300 font-medium mt-1">Comma-separated usernames to automatically invite</p>
                   </div>
 
                   {/* Event Agenda / Description */}
@@ -1939,7 +1939,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                         <div>
                           <h4 className="font-black text-sm text-white">Broadcast Event Scheduled &amp; Linked!</h4>
                           <p className="text-xs text-emerald-300">{lastCreatedEvent.title}</p>
-                          <p className="text-[11px] text-gray-400 mt-0.5">
+                          <p className="text-[11px] text-slate-300 font-medium mt-0.5">
                             🗓️ {new Date(lastCreatedEvent.scheduledStartTime).toLocaleString([], { dateStyle: 'full', timeStyle: 'short' })}
                           </p>
                         </div>
@@ -1948,7 +1948,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                         <span className="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-mono font-bold">
                           {lastCreatedEvent.capacityLimit.toLocaleString()} Max Capacity
                         </span>
-                        <div className="text-[10px] text-gray-400 mt-1 font-mono">
+                        <div className="text-[10px] text-slate-300 font-medium mt-1 font-mono">
                           {lastCreatedEvent.tierKey}
                         </div>
                       </div>
@@ -2007,7 +2007,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                     </h4>
                   </div>
 
-                  <div className="space-y-3 text-xs text-gray-400 leading-relaxed">
+                  <div className="space-y-3 text-xs text-slate-300 font-medium leading-relaxed">
                     <div className="p-3 bg-gray-900 rounded-xl border border-gray-800/80">
                       <div className="font-bold text-rose-300 mb-1">
                         🔴 Free Tier (20 - 50 Limit)
@@ -2060,7 +2060,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                     <ClockIcon className="w-5 h-5 text-indigo-400" />
                     Scheduled "Join Me Live" Broadcasts
                   </h3>
-                  <p className="text-xs text-gray-400">
+                  <p className="text-xs text-slate-300 font-medium">
                     Review upcoming live broadcast sessions linked to Platform Events, with attendee capacity &amp; monetization tracking.
                   </p>
                 </div>
@@ -2081,7 +2081,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                     <CalendarDaysIcon className="w-8 h-8" />
                   </div>
                   <h4 className="text-sm font-bold text-gray-300">No Scheduled Broadcasts</h4>
-                  <p className="text-xs text-gray-500 max-w-sm mt-1 mb-4">
+                  <p className="text-xs text-slate-300 font-medium max-w-sm mt-1 mb-4">
                     You haven't scheduled any upcoming live broadcasts yet. Set a date and time to invite co-hosts and audience members.
                   </p>
                   <button
@@ -2126,7 +2126,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                               className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
                                 isUpcoming
                                   ? 'bg-emerald-500/20 text-emerald-400'
-                                  : 'bg-gray-800 text-gray-400'
+                                  : 'bg-gray-800 text-slate-300 font-medium'
                               }`}
                             >
                               {isUpcoming ? 'Upcoming' : 'Past Date'}
@@ -2134,7 +2134,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                           </div>
 
                           <h4 className="font-bold text-sm text-white mb-1">{event.title}</h4>
-                          <p className="text-xs text-gray-400 line-clamp-2 mb-3">
+                          <p className="text-xs text-slate-300 font-medium line-clamp-2 mb-3">
                             {event.description}
                           </p>
 
@@ -2150,17 +2150,17 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                                 minute: '2-digit'
                               })}
                             </div>
-                            <div className="flex items-center justify-between text-[11px] text-gray-400">
+                            <div className="flex items-center justify-between text-[11px] text-slate-300 font-medium">
                               <span>Duration: {event.durationMinutes} mins</span>
                               <span>Mode: {event.guestAccessMode}</span>
                             </div>
                             <div className="flex items-center justify-between text-[11px]">
-                              <span className="text-gray-400">
+                              <span className="text-slate-300 font-medium">
                                 Registered: {event.currentAttendees || 0}/{event.capacityLimit.toLocaleString()}
                               </span>
                               <span
                                 className={
-                                  event.monetizationEnabled ? 'text-emerald-400 font-bold' : 'text-gray-500'
+                                  event.monetizationEnabled ? 'text-emerald-400 font-bold' : 'text-slate-300 font-medium'
                                 }
                               >
                                 {event.monetizationEnabled ? 'Monetized • Gifts Active' : 'Free Tier • Non-Monetized'}
@@ -2175,7 +2175,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
 
                           {/* Join Link Bar */}
                           <div className="p-2 bg-black/60 rounded-xl border border-gray-800 flex items-center justify-between gap-2 text-xs font-mono text-gray-200 mb-3">
-                            <span className="truncate flex-1 text-gray-400 text-[11px]">{event.joinLink}</span>
+                            <span className="truncate flex-1 text-slate-300 font-medium text-[11px]">{event.joinLink}</span>
                             <button
                               type="button"
                               onClick={() => handleCopyJoinLink(event.joinLink)}
@@ -2242,7 +2242,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                             <button
                               type="button"
                               onClick={() => handleDeleteScheduled(event.id)}
-                              className="p-1.5 rounded-lg bg-gray-800 hover:bg-rose-900/60 text-gray-400 hover:text-rose-300 border border-gray-700 transition"
+                              className="p-1.5 rounded-lg bg-gray-800 hover:bg-rose-900/60 text-slate-300 hover:text-rose-300 border border-gray-700 transition"
                               title="Cancel / Delete Event"
                             >
                               <TrashIcon className="w-4 h-4" />
@@ -2269,7 +2269,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                   </div>
                   <div>
                     <h3 className="font-black text-lg text-white">Live Broadcast Studio Capacity &amp; Monetization Tiers</h3>
-                    <p className="text-xs text-gray-400">
+                    <p className="text-xs text-slate-300 font-medium">
                       Expand join request capacity and unlock platform gifting, coupons, gift cards, and product sales.
                     </p>
                   </div>
@@ -2277,7 +2277,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                 <button
                   type="button"
                   onClick={() => setIsUpgradeModalOpen(false)}
-                  className="p-2 text-gray-400 hover:text-white rounded-xl hover:bg-gray-800"
+                  className="p-2 text-slate-300 hover:text-white rounded-xl hover:bg-gray-800"
                 >
                   <XMarkIcon className="w-5 h-5" />
                 </button>
@@ -2296,12 +2296,12 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <span className="font-black text-sm text-gray-200">Free Tier</span>
-                      <span className="px-2 py-0.5 rounded-full bg-gray-800 text-[10px] text-gray-400 font-bold">
+                      <span className="px-2 py-0.5 rounded-full bg-gray-800 text-[10px] text-slate-300 font-bold">
                         Default
                       </span>
                     </div>
                     <div className="text-2xl font-black text-white font-mono">0 FIC</div>
-                    <div className="text-xs text-gray-400 mt-0.5">Free Standard Access</div>
+                    <div className="text-xs text-slate-300 font-medium mt-0.5">Free Standard Access</div>
 
                     <div className="mt-4 pt-3 border-t border-gray-800 space-y-2 text-xs text-gray-300">
                       <div className="flex items-center gap-1.5 font-bold text-amber-400">
@@ -2319,7 +2319,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                         <span>✕</span>
                         <span>Gift cards &amp; products disabled</span>
                       </div>
-                      <div className="flex items-start gap-1.5 text-gray-400">
+                      <div className="flex items-start gap-1.5 text-slate-300 font-medium">
                         <span>✓</span>
                         <span>Standard WebRTC HD Stream</span>
                       </div>
@@ -2328,7 +2328,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
 
                   <div className="mt-5 pt-3 border-t border-gray-800">
                     {activeTier === 'FREE' ? (
-                      <span className="block text-center py-2 bg-gray-800 text-gray-400 rounded-xl font-bold text-xs">
+                      <span className="block text-center py-2 bg-gray-800 text-slate-200 rounded-xl font-bold text-xs">
                         Current Active Tier
                       </span>
                     ) : (
@@ -2362,7 +2362,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                         Monetized
                       </span>
                     </div>
-                    <div className="text-2xl font-black text-white font-mono">250 FIC <span className="text-xs text-gray-400 font-normal">/mo</span></div>
+                    <div className="text-2xl font-black text-white font-mono">250 FIC <span className="text-xs text-slate-300 font-normal">/mo</span></div>
                     <div className="text-xs text-indigo-300 mt-0.5">or 500 Platform Gems</div>
 
                     <div className="mt-4 pt-3 border-t border-indigo-900/40 space-y-2 text-xs text-gray-300">
@@ -2424,7 +2424,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                         Full Access
                       </span>
                     </div>
-                    <div className="text-2xl font-black text-white font-mono">1,200 FIC <span className="text-xs text-gray-400 font-normal">/mo</span></div>
+                    <div className="text-2xl font-black text-white font-mono">1,200 FIC <span className="text-xs text-slate-300 font-normal">/mo</span></div>
                     <div className="text-xs text-amber-300 mt-0.5">or 2,500 Platform Gems</div>
 
                     <div className="mt-4 pt-3 border-t border-amber-900/40 space-y-2 text-xs text-gray-300">

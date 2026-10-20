@@ -76,7 +76,7 @@ const LyricsModal: React.FC<LyricsModalProps> = ({
                   {lyrics}
                 </pre>
               ) : (
-                <div className="text-center text-muted-foreground py-12">
+                <div className="text-center text-slate-700 dark:text-slate-300 font-medium py-12">
                   <FileText className="h-12 w-12 mx-auto mb-4 opacity-20" />
                   <p>No lyrics available for this track</p>
                 </div>

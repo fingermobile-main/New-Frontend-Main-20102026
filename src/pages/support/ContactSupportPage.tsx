@@ -87,7 +87,7 @@ const ContactSupportPage: React.FC = () => {
               <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
                 Support Ticket Dispatch Desk
               </h1>
-              <p className="text-slate-600 dark:text-slate-400 text-sm mt-0.5">
+              <p className="text-slate-700 dark:text-slate-300 font-medium text-sm mt-0.5">
                 Submit an official ticket directly to our protocol engineering & customer success dispatchers.
               </p>
             </div>
@@ -242,7 +242,7 @@ const ContactSupportPage: React.FC = () => {
                 <ClockIcon className="w-5 h-5 text-blue-600" />
                 <span>Service Level Agreements</span>
               </h3>
-              <ul className="space-y-3 text-xs text-slate-600 dark:text-slate-400">
+              <ul className="space-y-3 text-xs text-slate-700 dark:text-slate-300">
                 <li className="flex justify-between border-b border-slate-200 dark:border-slate-700 pb-2">
                   <span className="font-medium">Avg Response Time:</span>
                   <span className="font-bold text-emerald-600">~2.4 Hours</span>

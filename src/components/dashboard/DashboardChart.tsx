@@ -39,9 +39,9 @@ const DashboardChart: React.FC<DashboardChartProps> = ({
   const maxValue = Math.max(...data.map((d) => d.value));
 
   return (
-    <Card>
+    <Card className="border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm">
       <CardHeader>
-        <CardTitle className="text-base flex items-center gap-2">
+        <CardTitle className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
           {getIcon()}
           {title}
         </CardTitle>
@@ -59,7 +59,7 @@ const DashboardChart: React.FC<DashboardChartProps> = ({
                     minHeight: '20px'
                   }}
                 />
-                <span className="text-xs text-muted-foreground truncate w-full text-center">
+                <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 truncate w-full text-center">
                   {item.label}
                 </span>
               </div>
@@ -96,7 +96,7 @@ const DashboardChart: React.FC<DashboardChartProps> = ({
                       minHeight: '10px'
                     }}
                   />
-                  <span className="text-xs text-muted-foreground mt-2 truncate w-full text-center">
+                  <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 mt-2 truncate w-full text-center">
                     {item.label}
                   </span>
                 </div>
@@ -106,14 +106,14 @@ const DashboardChart: React.FC<DashboardChartProps> = ({
         </div>
 
         {/* Legend */}
-        <div className="flex flex-wrap gap-3 mt-4 pt-4 border-t">
+        <div className="flex flex-wrap gap-3 mt-4 pt-4 border-t border-slate-300 dark:border-slate-800">
           {data.map((item, index) => (
             <div key={index} className="flex items-center gap-2">
               <div
                 className="w-3 h-3 rounded"
                 style={{ backgroundColor: item.color || colors[index % colors.length] }}
               />
-              <span className="text-xs">{item.label}</span>
+              <span className="text-xs font-semibold text-slate-800 dark:text-slate-200">{item.label}</span>
             </div>
           ))}
         </div>

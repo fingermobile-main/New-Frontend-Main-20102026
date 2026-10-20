@@ -283,8 +283,8 @@ const GuardianControlPage: React.FC = () => {
           </div>
         </div>
         <div className="text-right">
-          <div className="text-xs text-gray-400">{threat.timestamp}</div>
-          <div className="text-xs text-gray-400 mt-1">
+          <div className="text-xs text-slate-300 font-medium">{threat.timestamp}</div>
+          <div className="text-xs text-slate-300 font-medium mt-1">
             Target: {threat.target}
           </div>
         </div>
@@ -308,7 +308,7 @@ const GuardianControlPage: React.FC = () => {
             {item.content}
           </p>
           <div className="flex items-center gap-2 mt-2">
-            <span className="text-xs text-gray-400">by {item.author}</span>
+            <span className="text-xs text-slate-300 font-medium">by {item.author}</span>
             <div className="flex items-center gap-1 text-xs text-red-400">
               <ExclamationTriangleIcon className="w-3 h-3" />
               <span>{item.flags}</span>
@@ -316,7 +316,7 @@ const GuardianControlPage: React.FC = () => {
           </div>
         </div>
         <div className="text-right">
-          <div className="text-xs text-gray-400">{item.timestamp}</div>
+          <div className="text-xs text-slate-300 font-medium">{item.timestamp}</div>
           <div className="flex gap-1 mt-2">
             <button
               onClick={() => handleModerate(item.id, 'approve')}
@@ -348,7 +348,7 @@ const GuardianControlPage: React.FC = () => {
               <h1 className="text-2xl font-bold text-white">
                 GUARDIAN™©® Protocol Control Center
               </h1>
-              <p className="text-sm text-gray-400">
+              <p className="text-sm text-slate-300 font-medium">
                 Security & Content Moderation System
               </p>
             </div>
@@ -361,7 +361,7 @@ const GuardianControlPage: React.FC = () => {
               className={`px-6 py-4 text-sm font-medium ${
                 activeTab === 'threats'
                   ? 'text-brand-blue border-b-2 border-brand-blue'
-                  : 'text-gray-400 hover:text-gray-300'
+                  : 'text-slate-300 hover:text-white'
               }`}
               onClick={() => setActiveTab('threats')}
             >
@@ -374,7 +374,7 @@ const GuardianControlPage: React.FC = () => {
               className={`px-6 py-4 text-sm font-medium ${
                 activeTab === 'moderation'
                   ? 'text-brand-blue border-b-2 border-brand-blue'
-                  : 'text-gray-400 hover:text-gray-300'
+                  : 'text-slate-300 hover:text-white'
               }`}
               onClick={() => setActiveTab('moderation')}
             >
@@ -387,7 +387,7 @@ const GuardianControlPage: React.FC = () => {
               className={`px-6 py-4 text-sm font-medium ${
                 activeTab === 'metrics'
                   ? 'text-brand-blue border-b-2 border-brand-blue'
-                  : 'text-gray-400 hover:text-gray-300'
+                  : 'text-slate-300 hover:text-white'
               }`}
               onClick={() => setActiveTab('metrics')}
             >
@@ -440,12 +440,12 @@ const GuardianControlPage: React.FC = () => {
                       <h3 className="text-xl font-bold text-white">
                         Threat Details
                       </h3>
-                      <p className="text-gray-400 mt-1">
+                      <p className="text-slate-300 font-medium mt-1">
                         Detailed information and actions for this threat
                       </p>
                     </div>
                     <button
-                      className="text-gray-400 hover:text-white"
+                      className="text-slate-300 hover:text-white"
                       onClick={() => setSelectedThreat(null)}
                     >
                       Close
@@ -459,13 +459,13 @@ const GuardianControlPage: React.FC = () => {
                       </h4>
                       <div className="space-y-3 text-sm">
                         <div>
-                          <span className="text-gray-400">Type:</span>
+                          <span className="text-slate-300 font-semibold">Type:</span>
                           <span className="text-white ml-2 capitalize">
                             {threats.find((t) => t.id === selectedThreat)?.type}
                           </span>
                         </div>
                         <div>
-                          <span className="text-gray-400">Severity:</span>
+                          <span className="text-slate-300 font-semibold">Severity:</span>
                           <span className="text-white ml-2 capitalize">
                             {
                               threats.find((t) => t.id === selectedThreat)
@@ -474,7 +474,7 @@ const GuardianControlPage: React.FC = () => {
                           </span>
                         </div>
                         <div>
-                          <span className="text-gray-400">Status:</span>
+                          <span className="text-slate-300 font-semibold">Status:</span>
                           <span className="text-white ml-2 capitalize">
                             {
                               threats.find((t) => t.id === selectedThreat)
@@ -483,7 +483,7 @@ const GuardianControlPage: React.FC = () => {
                           </span>
                         </div>
                         <div>
-                          <span className="text-gray-400">Target:</span>
+                          <span className="text-slate-300 font-semibold">Target:</span>
                           <span className="text-white ml-2">
                             {
                               threats.find((t) => t.id === selectedThreat)
@@ -492,7 +492,7 @@ const GuardianControlPage: React.FC = () => {
                           </span>
                         </div>
                         <div>
-                          <span className="text-gray-400">Reporter:</span>
+                          <span className="text-slate-300 font-semibold">Reporter:</span>
                           <span className="text-white ml-2">
                             {
                               threats.find((t) => t.id === selectedThreat)
@@ -501,7 +501,7 @@ const GuardianControlPage: React.FC = () => {
                           </span>
                         </div>
                         <div>
-                          <span className="text-gray-400">Timestamp:</span>
+                          <span className="text-slate-300 font-semibold">Timestamp:</span>
                           <span className="text-white ml-2">
                             {
                               threats.find((t) => t.id === selectedThreat)
@@ -587,7 +587,7 @@ const GuardianControlPage: React.FC = () => {
                   <div key={index} className="bg-gray-800 p-5 rounded-lg">
                     <div className="flex justify-between">
                       <div>
-                        <p className="text-gray-400 text-sm">{metric.name}</p>
+                        <p className="text-slate-300 font-medium text-sm">{metric.name}</p>
                         <p className="text-2xl font-bold text-white mt-1">
                           {metric.value.toLocaleString()}
                         </p>
@@ -630,7 +630,7 @@ const GuardianControlPage: React.FC = () => {
                         {metric.change >= 0 ? '+' : ''}
                         {metric.change}%
                       </span>
-                      <span className="text-gray-400 text-sm ml-2">
+                      <span className="text-slate-300 font-medium text-sm ml-2">
                         from last week
                       </span>
                     </div>
@@ -646,7 +646,7 @@ const GuardianControlPage: React.FC = () => {
                   <div className="space-y-4">
                     <div>
                       <div className="flex justify-between text-sm mb-1">
-                        <span className="text-gray-400">Spam</span>
+                        <span className="text-slate-300 font-medium">Spam</span>
                         <span className="text-white">35%</span>
                       </div>
                       <div className="w-full bg-gray-700 rounded-full h-2">
@@ -658,7 +658,7 @@ const GuardianControlPage: React.FC = () => {
                     </div>
                     <div>
                       <div className="flex justify-between text-sm mb-1">
-                        <span className="text-gray-400">Abuse</span>
+                        <span className="text-slate-300 font-medium">Abuse</span>
                         <span className="text-white">25%</span>
                       </div>
                       <div className="w-full bg-gray-700 rounded-full h-2">
@@ -670,7 +670,7 @@ const GuardianControlPage: React.FC = () => {
                     </div>
                     <div>
                       <div className="flex justify-between text-sm mb-1">
-                        <span className="text-gray-400">Fraud</span>
+                        <span className="text-slate-300 font-medium">Fraud</span>
                         <span className="text-white">20%</span>
                       </div>
                       <div className="w-full bg-gray-700 rounded-full h-2">
@@ -682,7 +682,7 @@ const GuardianControlPage: React.FC = () => {
                     </div>
                     <div>
                       <div className="flex justify-between text-sm mb-1">
-                        <span className="text-gray-400">Impersonation</span>
+                        <span className="text-slate-300 font-medium">Impersonation</span>
                         <span className="text-white">15%</span>
                       </div>
                       <div className="w-full bg-gray-700 rounded-full h-2">
@@ -694,7 +694,7 @@ const GuardianControlPage: React.FC = () => {
                     </div>
                     <div>
                       <div className="flex justify-between text-sm mb-1">
-                        <span className="text-gray-400">Other</span>
+                        <span className="text-slate-300 font-medium">Other</span>
                         <span className="text-white">5%</span>
                       </div>
                       <div className="w-full bg-gray-700 rounded-full h-2">
@@ -722,14 +722,14 @@ const GuardianControlPage: React.FC = () => {
                             className="w-full bg-brand-blue rounded-t"
                             style={{ height: `${height}%` }}
                           ></div>
-                          <div className="text-xs text-gray-400 mt-2">
+                          <div className="text-xs text-slate-300 font-medium mt-2">
                             {index + 1}
                           </div>
                         </div>
                       ),
                     )}
                   </div>
-                  <div className="flex justify-between text-xs text-gray-400 mt-2">
+                  <div className="flex justify-between text-xs text-slate-300 font-medium mt-2">
                     <span>12:00</span>
                     <span>18:00</span>
                   </div>

@@ -178,7 +178,77 @@ export const adminOperationsService = {
   getBillingRecords: async (): Promise<PlatformBillingRecord[]> => {
     const res = await api.get('/operations/billing');
     return res.data?.data || [];
+  },
+
+  getMembers: async (): Promise<AdminMember[]> => {
+    const res = await api.get('/admin/members');
+    return res.data?.members || res.data?.data || [];
+  },
+
+  createMember: async (data: Partial<AdminMember>): Promise<AdminMember> => {
+    const res = await api.post('/admin/members', data);
+    return res.data?.member || res.data?.data;
+  },
+
+  updateMember: async (memberId: string, data: Partial<AdminMember>): Promise<AdminMember> => {
+    const res = await api.put(`/admin/members/${memberId}`, data);
+    return res.data?.member || res.data?.data;
+  },
+
+  deleteMember: async (memberId: string, permanent: boolean = false): Promise<void> => {
+    await api.delete(`/admin/members/${memberId}?permanent=${permanent}`);
+  },
+
+  getUsers: async (): Promise<PlatformUser[]> => {
+    const res = await api.get('/admin/users');
+    return res.data?.users || res.data?.data || [];
+  },
+
+  strikeUser: async (userId: string): Promise<any> => {
+    const res = await api.post(`/admin/users/${userId}/strike`);
+    return res.data;
+  },
+
+  banUser: async (userId: string): Promise<any> => {
+    const res = await api.post(`/admin/users/${userId}/ban`);
+    return res.data;
+  },
+
+  refundUser: async (userId: string, amount: number = 50): Promise<any> => {
+    const res = await api.post(`/admin/users/${userId}/refund`, { amount });
+    return res.data;
+  },
+
+  creditUser: async (userId: string, amount: number = 100): Promise<any> => {
+    const res = await api.post(`/admin/users/${userId}/credits`, { amount });
+    return res.data;
   }
 };
+
+export interface AdminMember {
+  id: string;
+  username: string;
+  email: string;
+  role: string;
+  status: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface PlatformUser {
+  id: string;
+  uuid: string;
+  username: string;
+  email: string;
+  role: string;
+  status: string;
+  fiatBalance?: number;
+  cryptoBalance?: number;
+  aiCredits?: number;
+  isActive?: boolean;
+  isVerified?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+}
 
 export default adminOperationsService;

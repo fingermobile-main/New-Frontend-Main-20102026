@@ -76,12 +76,12 @@ const BeatwaveNGMusic: React.FC<BeatwaveNGMusicProps> = ({
             {track.coverArt ? (
               <img src={track.coverArt} alt={track.title} className="w-full h-full object-cover rounded-lg"  />
             ) : (
-              <Music className="h-10 w-10 text-muted-foreground" />
+              <Music className="h-10 w-10 text-slate-500" />
             )}
           </div>
           <div className="flex-1 min-w-0">
             <h3 className="font-semibold truncate">{track.title}</h3>
-            <p className="text-sm text-muted-foreground truncate">{track.artist}</p>
+            <p className="text-sm text-slate-700 dark:text-slate-300 font-medium truncate">{track.artist}</p>
             <Badge variant="secondary" className="mt-2">
               Beatwave NG
             </Badge>
@@ -89,7 +89,7 @@ const BeatwaveNGMusic: React.FC<BeatwaveNGMusicProps> = ({
         </div>
 
         <div className="space-y-2">
-          <div className="flex justify-between text-xs text-muted-foreground">
+          <div className="flex justify-between text-xs text-slate-700 dark:text-slate-300 font-medium">
             <span>{formatTime(currentTime)}</span>
             <span>{formatTime(track.duration)}</span>
           </div>
@@ -114,7 +114,7 @@ const BeatwaveNGMusic: React.FC<BeatwaveNGMusicProps> = ({
         </div>
 
         <div className="flex items-center gap-2">
-          <Volume2 className="h-4 w-4 text-muted-foreground" />
+          <Volume2 className="h-4 w-4 text-slate-500" />
           <Slider
             value={[volume]}
             onValueChange={handleVolumeChange}
@@ -122,7 +122,7 @@ const BeatwaveNGMusic: React.FC<BeatwaveNGMusicProps> = ({
             step={1}
             className="flex-1"
           />
-          <span className="text-xs text-muted-foreground w-8">{volume}%</span>
+          <span className="text-xs text-slate-700 dark:text-slate-300 font-medium w-8">{volume}%</span>
         </div>
       </CardContent>
     </Card>

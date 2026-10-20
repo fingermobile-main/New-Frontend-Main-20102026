@@ -88,7 +88,7 @@ const TierDisplayComponent: React.FC<TierDisplayComponentProps> = ({
         <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
           Creator &amp; Influence Infrastructure Program
         </h2>
-        <p className="mt-3 max-w-2xl mx-auto text-xl text-gray-500 sm:mt-4">
+        <p className="mt-3 max-w-2xl mx-auto text-xl text-slate-700 font-medium sm:mt-4">
           Choose the perfect plan for your creator journey
         </p>
       </div>
@@ -126,7 +126,7 @@ const TierDisplayComponent: React.FC<TierDisplayComponentProps> = ({
                     <span className="text-base font-medium text-gray-500">/mo</span>
                   </p>
 
-                  <p className="mt-1 text-gray-500">
+                  <p className="mt-1 text-slate-700 font-medium">
                     {typedTier.minFollowers.toLocaleString()} - {typedTier.maxFollowers.toLocaleString()} followers
                   </p>
                 </div>

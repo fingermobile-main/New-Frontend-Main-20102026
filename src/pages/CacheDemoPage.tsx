@@ -62,7 +62,7 @@ const CacheDemoPage: React.FC = () => {
         <div className="flex justify-between items-center mb-8">
           <div>
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white">CDN & Protocol Cache Demo</h1>
-            <p className="text-gray-600 dark:text-gray-400 mt-1">Live edge caching diagnostics and speed inspection</p>
+            <p className="text-slate-700 dark:text-slate-300 font-medium mt-1">Live edge caching diagnostics and speed inspection</p>
           </div>
           <div className="flex space-x-3">
             <button
@@ -84,22 +84,22 @@ const CacheDemoPage: React.FC = () => {
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-slate-300 dark:border-gray-700 shadow-sm">
-            <div className="text-sm font-medium text-slate-700 dark:text-gray-400">Cache Hit Ratio</div>
+            <div className="text-sm font-medium text-slate-700 dark:text-slate-300 font-medium">Cache Hit Ratio</div>
             <div className="text-3xl font-bold text-green-600 mt-2">{stats?.hitRatioPct || 94}%</div>
             <div className="text-xs text-slate-700 mt-1">High-efficiency edge routing</div>
           </div>
           <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-slate-300 dark:border-gray-700 shadow-sm">
-            <div className="text-sm font-medium text-slate-700 dark:text-gray-400">Total Requests Served</div>
+            <div className="text-sm font-medium text-slate-700 dark:text-slate-300 font-medium">Total Requests Served</div>
             <div className="text-3xl font-bold text-indigo-600 mt-2">{stats ? (stats.hits + stats.misses).toLocaleString() : '163,400'}</div>
             <div className="text-xs text-slate-700 mt-1">{stats?.hits?.toLocaleString() || '154,200'} hits</div>
           </div>
           <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-slate-300 dark:border-gray-700 shadow-sm">
-            <div className="text-sm font-medium text-slate-700 dark:text-gray-400">Cache Memory Allocated</div>
+            <div className="text-sm font-medium text-slate-700 dark:text-slate-300 font-medium">Cache Memory Allocated</div>
             <div className="text-3xl font-bold text-blue-600 mt-2">{stats?.size || '128.4 MB'}</div>
             <div className="text-xs text-slate-700 mt-1">Redis + CDN In-Memory</div>
           </div>
           <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-slate-300 dark:border-gray-700 shadow-sm">
-            <div className="text-sm font-medium text-slate-700 dark:text-gray-400">Active Caching Rules</div>
+            <div className="text-sm font-medium text-slate-700 dark:text-slate-300 font-medium">Active Caching Rules</div>
             <div className="text-3xl font-bold text-purple-600 mt-2">{stats?.activeRules || 12}</div>
             <div className="text-xs text-slate-700 mt-1">Pattern-based edge policies</div>
           </div>

@@ -352,7 +352,7 @@ const EventsPage: React.FC = () => {
           <div className="bg-white rounded-2xl shadow-xl border border-slate-300/80 p-5 space-y-4">
             <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
               <div className="relative w-full md:w-96">
-                <MagnifyingGlassIcon className="w-5 h-5 text-slate-500 absolute left-3.5 top-3" />
+                <MagnifyingGlassIcon className="w-5 h-5 text-slate-600 absolute left-3.5 top-3" />
                 <input
                   type="text"
                   placeholder="Search events, venues, organizers..."

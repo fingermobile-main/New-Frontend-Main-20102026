@@ -316,7 +316,7 @@ const MediaCatalogManagementConsole: React.FC<MediaCatalogManagementConsoleProps
             placeholder={`Search ${entity.label.toLowerCase()}...`}
             value={searchTerm}
             onChange={event => setSearchTerm(event.target.value)}
-            className="rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-bold text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-500"
+            className="rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-bold text-slate-900 placeholder:text-slate-500 focus:ring-2 focus:ring-indigo-500"
           />
           <label className="flex items-center gap-2 text-sm font-bold text-slate-800">
             <input type="checkbox" checked={includeArchived} onChange={event => setIncludeArchived(event.target.checked)} className="rounded border border-slate-300 bg-white font-bold text-slate-900" />
@@ -371,7 +371,7 @@ const MediaCatalogManagementConsole: React.FC<MediaCatalogManagementConsoleProps
                     type={field.type || 'text'}
                     value={formValues[field.key] ?? ''}
                     onChange={event => setFormValues(values => ({ ...values, [field.key]: event.target.value }))}
-                    className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 font-bold text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-500"
+                    className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 font-bold text-slate-900 placeholder:text-slate-500 focus:ring-2 focus:ring-indigo-500"
                   />
                 )}
                 {field.hint && <span className="block text-xs font-medium text-slate-700">{field.hint}</span>}
@@ -414,8 +414,8 @@ const MediaCatalogManagementConsole: React.FC<MediaCatalogManagementConsoleProps
                         if (event.currentTarget.open) void loadRecordAudit(record);
                       }}>
                         <summary className="cursor-pointer text-xs font-bold text-indigo-800">Metadata and audit state</summary>
-                        <pre className="mt-2 max-h-52 overflow-auto rounded border border-slate-200 bg-slate-50 p-2 text-xs text-slate-800">{JSON.stringify(record, null, 2)}</pre>
-                        <div className="mt-3 border-t border-slate-200 pt-2">
+                        <pre className="mt-2 max-h-52 overflow-auto rounded border border-slate-300 bg-slate-50 p-2 text-xs text-slate-800">{JSON.stringify(record, null, 2)}</pre>
+                        <div className="mt-3 border-t border-slate-300 pt-2">
                           <p className="text-xs font-bold text-slate-900">Audit history</p>
                           {auditLoading[String(record.id)] ? <p className="text-xs text-slate-700">Loading audit history…</p> : (
                             <ol className="mt-1 space-y-1">

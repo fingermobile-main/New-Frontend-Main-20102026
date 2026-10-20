@@ -57,14 +57,14 @@ const PubliciteeFeed: React.FC<PubliciteeFeedProps> = ({
   };
 
   return (
-    <Card>
+    <Card className="border-slate-200">
       <CardHeader>
         <div className="flex items-center justify-between">
-          <CardTitle className="text-base flex items-center gap-2">
-            <TrendingUp className="h-5 w-5" />
+          <CardTitle className="text-base flex items-center gap-2 text-slate-900 font-bold">
+            <TrendingUp className="h-5 w-5 text-slate-700" />
             Trending Now
           </CardTitle>
-          <Button variant="ghost" size="sm" onClick={onRefresh}>
+          <Button variant="ghost" size="sm" onClick={onRefresh} className="text-slate-700 font-semibold hover:text-slate-900">
             Refresh
           </Button>
         </div>
@@ -74,15 +74,15 @@ const PubliciteeFeed: React.FC<PubliciteeFeedProps> = ({
           {trends.map((trend, index) => (
             <div
               key={trend.id}
-              className="flex items-start gap-3 p-3 border rounded-lg hover:bg-muted/50 transition-colors cursor-pointer"
+              className="flex items-start gap-3 p-3 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer"
               onClick={() => onTrendClick?.(trend.id)} role="button" tabIndex={0}
             >
               {/* Rank Badge */}
               <div className="flex-shrink-0">
                 <Badge
                   variant={index === 0 ? 'default' : 'secondary'}
-                  className={`w-8 h-8 flex items-center justify-center ${
-                    index === 0 ? 'bg-red-500' : ''
+                  className={`w-8 h-8 flex items-center justify-center font-bold ${
+                    index === 0 ? 'bg-red-500 text-white' : 'bg-slate-100 text-slate-800 border border-slate-300'
                   }`}
                 >
                   {index + 1}
@@ -92,15 +92,15 @@ const PubliciteeFeed: React.FC<PubliciteeFeedProps> = ({
               {/* Content */}
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
-                  <h4 className="font-semibold truncate">{trend.title}</h4>
+                  <h4 className="font-semibold text-slate-900 truncate">{trend.title}</h4>
                   {index === 0 && <Flame className="h-4 w-4 text-orange-500" />}
                 </div>
-                <div className="flex items-center gap-2 mt-1 text-sm text-muted-foreground">
-                  <Badge variant="outline" className="text-xs">
+                <div className="flex items-center gap-2 mt-1 text-sm text-slate-700 font-medium">
+                  <Badge variant="outline" className="text-xs border-slate-300 text-slate-800 font-semibold">
                     {trend.category}
                   </Badge>
-                  <span className="flex items-center gap-1">
-                    <Activity className="h-3 w-3" />
+                  <span className="flex items-center gap-1 font-semibold text-slate-700">
+                    <Activity className="h-3 w-3 text-slate-500" />
                     {formatEngagement(trend.engagement)}
                   </span>
                 </div>

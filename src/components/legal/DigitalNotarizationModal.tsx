@@ -82,31 +82,31 @@ export const DigitalNotarizationModal: React.FC<Props> = ({ isOpen, onClose }) =
           <div className="py-6 space-y-4 text-xs font-sans">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-zinc-900/60 p-4 rounded-xl border border-white/5">
               <div>
-                <span className="text-zinc-400 block text-[11px]">Certified Document</span>
+                <span className="text-zinc-300 font-bold block text-[11px]">Certified Document</span>
                 <span className="font-bold text-white text-sm">{cert.documentTitle}</span>
               </div>
               <div>
-                <span className="text-zinc-400 block text-[11px]">Issued To (Sole Author & Custodian)</span>
+                <span className="text-zinc-300 font-bold block text-[11px]">Issued To (Sole Author & Custodian)</span>
                 <span className="font-bold text-amber-400 text-sm">{cert.issuedTo}</span>
               </div>
               <div>
-                <span className="text-zinc-400 block text-[11px]">Issuing Entity</span>
+                <span className="text-zinc-300 font-bold block text-[11px]">Issuing Entity</span>
                 <span className="font-semibold text-slate-200">{cert.entity}</span>
               </div>
               <div>
-                <span className="text-zinc-400 block text-[11px]">Reference ID</span>
+                <span className="text-zinc-300 font-bold block text-[11px]">Reference ID</span>
                 <span className="font-mono font-bold text-emerald-400">{cert.referenceId}</span>
               </div>
               <div>
-                <span className="text-zinc-400 block text-[11px]">Fingerprint ID</span>
+                <span className="text-zinc-300 font-bold block text-[11px]">Fingerprint ID</span>
                 <span className="font-mono font-bold text-amber-300">{cert.fingerprintId}</span>
               </div>
               <div>
-                <span className="text-zinc-400 block text-[11px]">Date Issued & Timestamp (UTC)</span>
+                <span className="text-zinc-300 font-bold block text-[11px]">Date Issued & Timestamp (UTC)</span>
                 <span className="font-mono text-zinc-300 flex items-center gap-1.5 mt-0.5">
                   <Calendar className="w-3.5 h-3.5 text-amber-400" />
                   {cert.dateIssued}
-                  <Clock className="w-3.5 h-3.5 text-zinc-400 ml-1" />
+                  <Clock className="w-3.5 h-3.5 text-zinc-300 ml-1" />
                   {cert.timestampUtc}
                 </span>
               </div>
@@ -115,7 +115,7 @@ export const DigitalNotarizationModal: React.FC<Props> = ({ isOpen, onClose }) =
             {/* SHA256 Hash Box */}
             <div className="bg-black/80 rounded-xl p-4 border border-amber-500/30">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-zinc-400 text-[11px] font-mono flex items-center gap-1.5">
+                <span className="text-zinc-300 font-medium text-[11px] font-mono flex items-center gap-1.5">
                   <Hash className="w-3.5 h-3.5 text-amber-400" />
                   Document Cryptographic SHA-256 Hash:
                 </span>
@@ -151,7 +151,7 @@ export const DigitalNotarizationModal: React.FC<Props> = ({ isOpen, onClose }) =
             </div>
 
             {/* Statutory Details */}
-            <div className="flex flex-wrap items-center justify-between gap-2 pt-2 text-[11px] text-zinc-400 font-mono">
+            <div className="flex flex-wrap items-center justify-between gap-2 pt-2 text-[11px] text-zinc-300 font-medium font-mono">
               <div>
                 <span>Statutory Basis: </span>
                 <span className="text-zinc-200">{cert.statutoryBasis}</span>

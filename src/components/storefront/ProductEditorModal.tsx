@@ -74,7 +74,7 @@ const ProductEditorModal: React.FC<ProductEditorModalProps> = ({
             <div className="space-y-2">
               <Label htmlFor="category">Category</Label>
               <div className="relative">
-                <Tag className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Tag className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
                 <Input
                   id="category"
                   value={category}
@@ -101,7 +101,7 @@ const ProductEditorModal: React.FC<ProductEditorModalProps> = ({
             <div className="space-y-2">
               <Label htmlFor="price">Price ($) *</Label>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">$</span>
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-700 font-bold">$</span>
                 <Input
                   id="price"
                   type="number"

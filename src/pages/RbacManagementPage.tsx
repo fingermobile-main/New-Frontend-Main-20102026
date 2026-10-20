@@ -82,7 +82,7 @@ const RbacManagementPage: React.FC = () => {
   if (!data) {
     return (
       <MainLayout>
-        <div className="flex justify-center items-center h-64 text-gray-500">
+        <div className="flex justify-center items-center h-64 text-slate-700 font-medium">
           No RBAC data available.
         </div>
       </MainLayout>

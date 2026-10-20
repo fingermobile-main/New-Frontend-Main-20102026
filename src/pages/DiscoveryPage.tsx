@@ -42,15 +42,15 @@ const DiscoveryItemCard: React.FC<DiscoveryItemCardProps> = React.memo(({ item, 
   const renderIcon = useCallback((type: string) => {
     switch (type) {
     case 'member':
-      return <MemberGroupIcon className="h-5 w-5 text-gray-500" />;
+      return <MemberGroupIcon className="h-5 w-5 text-slate-600" />;
     case 'group':
-      return <MemberGroupIcon className="h-5 w-5 text-gray-500" />;
+      return <MemberGroupIcon className="h-5 w-5 text-slate-600" />;
     case 'location':
-      return <MapPinIcon className="h-5 w-5 text-gray-500" />;
+      return <MapPinIcon className="h-5 w-5 text-slate-600" />;
     case 'content':
-      return <BookOpenIcon className="h-5 w-5 text-gray-500" />;
+      return <BookOpenIcon className="h-5 w-5 text-slate-600" />;
     default:
-      return <MemberGroupIcon className="h-5 w-5 text-gray-500" />;
+      return <MemberGroupIcon className="h-5 w-5 text-slate-600" />;
     }
   }, []);
 
@@ -267,7 +267,7 @@ const DiscoveryPage: React.FC = () => {
         <div className="mb-6">
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
+              <MagnifyingGlassIcon className="h-5 w-5 text-slate-600" />
             </div>
             <input
               type="text"
@@ -296,7 +296,7 @@ const DiscoveryPage: React.FC = () => {
                 className={`flex items-center py-4 px-1 border-b-2 font-medium text-sm sm:text-base ${
                   activeTab === tab.id
                     ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    : 'border-transparent text-slate-600 hover:text-slate-900 font-medium hover:border-slate-300'
                 }`}
               >
                 <tab.icon className="h-4 w-4 mr-2" />

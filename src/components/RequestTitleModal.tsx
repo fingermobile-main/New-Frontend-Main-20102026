@@ -23,12 +23,12 @@ const RequestTitleModal: React.FC<RequestTitleModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
-      <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md mx-4">
+      <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md mx-4 border border-slate-200 dark:border-slate-700">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold">Request Title</h2>
+          <h2 className="text-xl font-bold text-slate-900 dark:text-white">Request Title</h2>
           <button
             onClick={onClose}
-            className="text-slate-700 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+            className="text-slate-700 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white font-semibold"
           >
             Close
           </button>

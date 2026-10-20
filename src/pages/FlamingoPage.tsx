@@ -9,7 +9,6 @@
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import MainLayout from '../components/layout/MainLayout';
-import { useAuth } from '../contexts/AuthContext';
 import { useAppContext } from '../contexts/AppContext';
 import { FlamingoDualLockGuard } from '../components/commerce/FlamingoDualLockGuard';
 import SocialEmbedModal from '../components/commerce/SocialEmbedModal';
@@ -17,17 +16,13 @@ import apiService from '../services/apiService';
 import {
   Sparkles,
   ShieldCheck,
-  Lock,
   Search,
-  Filter,
-  Heart,
   ThumbsUp,
   ThumbsDown,
   ShoppingBag,
   Film,
   Play,
   X,
-  ChevronRight,
   Eye,
   Ruler,
   CheckCircle2,
@@ -37,13 +32,7 @@ import {
   Send,
   Package,
   Flame,
-  RefreshCw,
   Plus,
-  Compass,
-  Tag,
-  DollarSign,
-  Info,
-  SlidersHorizontal,
   Scissors
 } from 'lucide-react';
 
@@ -71,6 +60,12 @@ export interface FlamingoProduct {
     options: Array<{ id: number; text: string; votes: number }>;
   };
 }
+
+type FlamingoProductRecord = Partial<FlamingoProduct> & {
+  id: string | number;
+  images_urls?: string[] | null;
+  rating_average?: number | string | null;
+};
 
 export interface FlamingoCategory {
   id: number | string;
@@ -103,7 +98,7 @@ export interface BodyMeasurements {
 }
 
 // Fallback high-fashion runway inventory if offline/initial load
-const INITIAL_FLAMINGO_PRODUCTS: FlamingoProduct[] = [
+export const INITIAL_FLAMINGO_PRODUCTS: FlamingoProduct[] = [
   {
     id: 'flm_01',
     name: 'Midnight Rose Silk Charmeuse Bias-Cut Gown',
@@ -536,11 +531,10 @@ const FLAMINGO_AI_PROMPTS = [
 ];
 
 export const FlamingoPageContent: React.FC = () => {
-  const { user } = useAuth();
   const { showToast } = useAppContext();
 
   // State
-  const [products, setProducts] = useState<FlamingoProduct[]>(INITIAL_FLAMINGO_PRODUCTS);
+  const [products, setProducts] = useState<FlamingoProduct[]>([]);
   const [categories, setCategories] = useState<FlamingoCategory[]>([]);
   const [outfits, setOutfits] = useState<FlamingoOutfit[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -548,7 +542,6 @@ export const FlamingoPageContent: React.FC = () => {
   // Search & Filtering
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [selectedCollection, setSelectedCollection] = useState<string>('all');
   const [sortBy, setSortBy] = useState<'featured' | 'price_asc' | 'price_desc' | 'rating'>('featured');
   const [maxPriceFilter, setMaxPriceFilter] = useState<number>(1000);
 
@@ -612,34 +605,42 @@ export const FlamingoPageContent: React.FC = () => {
     try {
       setLoading(true);
       const [prodsRes, catsRes, outfitsRes] = await Promise.all([
-        apiService.get('/api/flamingo/products').catch(() => null),
-        apiService.get('/api/flamingo/categories').catch(() => null),
-        apiService.get('/api/flamingo/outfits').catch(() => null)
+        apiService.get<{ data?: FlamingoProductRecord[]; products?: FlamingoProductRecord[] }>('/api/flamingo/products'),
+        apiService.get<{ data?: FlamingoCategory[]; categories?: FlamingoCategory[] }>('/api/flamingo/categories'),
+        apiService.get<{ data?: FlamingoOutfit[]; outfits?: FlamingoOutfit[] }>('/api/flamingo/outfits')
       ]);
 
-      if (prodsRes?.data && Array.isArray(prodsRes.data) && prodsRes.data.length > 0) {
-        setProducts(prodsRes.data);
-      } else if (prodsRes?.products && Array.isArray(prodsRes.products) && prodsRes.products.length > 0) {
-        setProducts(prodsRes.products);
-      }
+      const productRows = Array.isArray(prodsRes.data) ? prodsRes.data : Array.isArray(prodsRes.products) ? prodsRes.products : [];
+      setProducts(productRows.map(product => ({
+        ...product,
+        id: String(product.id),
+        name: String(product.name || ''),
+        brand: String(product.brand || ''),
+        category: String(product.category || ''),
+        description: String(product.description || ''),
+        price: Number(product.price || 0),
+        currency: String(product.currency || ''),
+        images: Array.isArray(product.images_urls) ? product.images_urls : Array.isArray(product.images) ? product.images : [],
+        sizes_available: Array.isArray(product.sizes_available) ? product.sizes_available : [],
+        likes: Number(product.likes || 0),
+        dislikes: Number(product.dislikes || 0),
+        rating: Number(product.rating_average ?? product.rating ?? 0)
+      })));
 
-      if (catsRes?.data && Array.isArray(catsRes.data)) {
-        setCategories(catsRes.data);
-      } else if (catsRes?.categories && Array.isArray(catsRes.categories)) {
-        setCategories(catsRes.categories);
-      }
+      const categoryRows = Array.isArray(catsRes.data) ? catsRes.data : Array.isArray(catsRes.categories) ? catsRes.categories : [];
+      setCategories(categoryRows);
 
-      if (outfitsRes?.data && Array.isArray(outfitsRes.data)) {
-        setOutfits(outfitsRes.data);
-      } else if (outfitsRes?.outfits && Array.isArray(outfitsRes.outfits)) {
-        setOutfits(outfitsRes.outfits);
-      }
+      const outfitRows = Array.isArray(outfitsRes.data) ? outfitsRes.data : Array.isArray(outfitsRes.outfits) ? outfitsRes.outfits : [];
+      setOutfits(outfitRows);
     } catch {
-      // Retain fallback items
+      setProducts([]);
+      setCategories([]);
+      setOutfits([]);
+      showToast('Unable to load Flamingo data. Please try again.', 'error');
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [showToast]);
 
   useEffect(() => {
     fetchFlamingoData();
@@ -685,6 +686,7 @@ export const FlamingoPageContent: React.FC = () => {
   // Reactions & Poll Voting
   const handleReact = async (productId: string, type: 'like' | 'dislike') => {
     try {
+      await apiService.post(`/api/flamingo/products/${productId}/react`, { type });
       setProducts(prev =>
         prev.map(p => {
           if (p.id === productId) {
@@ -697,15 +699,15 @@ export const FlamingoPageContent: React.FC = () => {
           return p;
         })
       );
-      await apiService.post(`/api/flamingo/products/${productId}/react`, { type }).catch(() => {});
-      showToast(`Reaction recorded for runway piece`, 'success');
+      showToast('Reaction recorded for runway piece', 'success');
     } catch {
-      // Local state already updated
+      showToast('Unable to record reaction. Please try again.', 'error');
     }
   };
 
   const handlePollVote = async (productId: string, optionId: number) => {
     try {
+      await apiService.post(`/api/flamingo/products/${productId}/vote`, { optionId });
       setProducts(prev =>
         prev.map(p => {
           if (p.id === productId && p.poll_data) {
@@ -722,10 +724,9 @@ export const FlamingoPageContent: React.FC = () => {
           return p;
         })
       );
-      await apiService.post(`/api/flamingo/products/${productId}/vote`, { optionId }).catch(() => {});
       showToast('Runway silhouette vote submitted', 'success');
     } catch {
-      // Local fallback
+      showToast('Unable to record your vote. Please try again.', 'error');
     }
   };
 
@@ -744,20 +745,16 @@ export const FlamingoPageContent: React.FC = () => {
         selectedCategory === 'all' ||
         p.category.toLowerCase() === selectedCategory.toLowerCase();
 
-      const matchCollection =
-        selectedCollection === 'all' ||
-        (p.lookbook_collection && p.lookbook_collection.toLowerCase().includes(selectedCollection.toLowerCase()));
-
       const matchPrice = Number(p.price) <= maxPriceFilter;
 
-      return matchSearch && matchCategory && matchCollection && matchPrice;
+      return matchSearch && matchCategory && matchPrice;
     }).sort((a, b) => {
       if (sortBy === 'price_asc') return Number(a.price) - Number(b.price);
       if (sortBy === 'price_desc') return Number(b.price) - Number(a.price);
       if (sortBy === 'rating') return Number(b.rating) - Number(a.rating);
       return b.likes - a.likes;
     });
-  }, [products, searchQuery, selectedCategory, selectedCollection, maxPriceFilter, sortBy]);
+  }, [products, searchQuery, selectedCategory, maxPriceFilter, sortBy]);
 
   // Cart operations
   const addToBag = (product: FlamingoProduct, size?: string) => {
@@ -791,7 +788,7 @@ export const FlamingoPageContent: React.FC = () => {
     setStylistTyping(true);
 
     setTimeout(() => {
-      let aiReply = "Our master atelier recommends styling high-waisted fluid silk slips with structured steel-boned corsetry for contrast. All shipments are sealed in plain dual-corrugated cartons with zero branding.";
+      let aiReply = 'Our master atelier recommends styling high-waisted fluid silk slips with structured steel-boned corsetry for contrast. All shipments are sealed in plain dual-corrugated cartons with zero branding.';
       if (query.toLowerCase().includes('size') || query.toLowerCase().includes('bust')) {
         aiReply = `Based on your silhouette specifications (${userMeasurements.chest_cm}cm bust, ${userMeasurements.waist_cm}cm waist), your calibrated Flamingo size is ${calculatedSizeRec.top} (Corset: ${calculatedSizeRec.corset}). We recommend our bias-cut slip gowns for zero constriction.`;
       } else if (query.toLowerCase().includes('fabric') || query.toLowerCase().includes('silk')) {
@@ -830,7 +827,7 @@ export const FlamingoPageContent: React.FC = () => {
   return (
     <MainLayout>
       <div className="min-h-screen bg-slate-950 text-slate-100 selection:bg-pink-500/30 selection:text-pink-200">
-        
+
         {/* TOP STATUS & STATUTORY REGULATORY BAR */}
         <div className="bg-gradient-to-r from-slate-950 via-pink-950/40 to-slate-950 border-b border-pink-500/20 px-4 py-2 text-xs">
           <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
@@ -839,12 +836,12 @@ export const FlamingoPageContent: React.FC = () => {
                 <ShieldCheck className="w-4 h-4 text-pink-400" />
                 Statutory 19+ Dual-Lock Certified
               </span>
-              <span className="hidden md:inline text-slate-500">|</span>
-              <span className="hidden md:flex items-center gap-1 text-slate-400">
-                <Package className="w-3.5 h-3.5 text-slate-400" />
+              <span className="hidden md:inline text-slate-300 font-medium">|</span>
+              <span className="hidden md:flex items-center gap-1 text-slate-300 font-medium">
+                <Package className="w-3.5 h-3.5 text-slate-300 font-medium" />
                 100% Discrete Unmarked Packaging
               </span>
-              <span className="hidden md:inline text-slate-500">|</span>
+              <span className="hidden md:inline text-slate-300 font-medium">|</span>
               <span className="hidden lg:flex items-center gap-1 text-emerald-400 font-medium">
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
                 NDPA 2023 Cryptographic Privacy Seal
@@ -878,16 +875,23 @@ export const FlamingoPageContent: React.FC = () => {
           <div className="max-w-7xl mx-auto relative z-10">
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
               <div className="space-y-4 max-w-2xl">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-500/10 border border-pink-500/30 text-pink-400 text-xs font-bold tracking-widest uppercase">
-                  <Flame className="w-3.5 h-3.5 animate-pulse text-pink-400" />
-                  Flamingo Couture House • Private Runway
+                <div className="flex items-center gap-4">
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-slate-900 border border-pink-500/40 p-1.5 flex items-center justify-center shadow-lg shadow-pink-500/20 overflow-hidden shrink-0">
+                    <img src="/assets/logos/flamingo_icon.png" alt="Flamingo" className="w-full h-full object-contain" />
+                  </div>
+                  <div>
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-500/10 border border-pink-500/30 text-pink-400 text-xs font-bold tracking-widest uppercase mb-2">
+                      <Flame className="w-3.5 h-3.5 animate-pulse text-pink-400" />
+                      Flamingo Couture House • Private Runway
+                    </div>
+                    <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white leading-none">
+                      HIGH-FASHION <br />
+                      <span className="bg-gradient-to-r from-pink-400 via-rose-300 to-fuchsia-400 bg-clip-text text-transparent">
+                        RUNWAY & SILK LUXURY
+                      </span>
+                    </h1>
+                  </div>
                 </div>
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-none">
-                  HIGH-FASHION <br />
-                  <span className="bg-gradient-to-r from-pink-400 via-rose-300 to-fuchsia-400 bg-clip-text text-transparent">
-                    RUNWAY & SILK LUXURY
-                  </span>
-                </h1>
                 <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
                   Curated Haute Couture, Architectural Corsetry, Pure Grade 6A Mulberry Silk Loungewear, and Private Wardrobe Apparel. Presented in 4K runway walks with guaranteed discrete packaging.
                 </p>
@@ -925,7 +929,7 @@ export const FlamingoPageContent: React.FC = () => {
                     <span className="px-2.5 py-0.5 rounded-full bg-pink-500/20 text-pink-300 font-bold">
                       Runway Premiere Spotlight
                     </span>
-                    <span className="text-slate-400 font-mono">
+                    <span className="text-slate-300 font-medium font-mono">
                       {products[0].designer}
                     </span>
                   </div>
@@ -947,7 +951,7 @@ export const FlamingoPageContent: React.FC = () => {
                   <h3 className="font-bold text-white text-base line-clamp-1 mb-1">
                     {products[0].name}
                   </h3>
-                  <p className="text-slate-400 text-xs line-clamp-2 mb-3">
+                  <p className="text-slate-300 font-medium text-xs line-clamp-2 mb-3">
                     {products[0].fabric_details}
                   </p>
                   <div className="flex items-center justify-between pt-2 border-t border-slate-800">
@@ -979,12 +983,12 @@ export const FlamingoPageContent: React.FC = () => {
                   value={searchQuery}
                   onChange={e => setSearchQuery(e.target.value)}
                   placeholder="AI Search Flamingo: garments, silk robes, corsetry, designers, Mulberry silk..."
-                  className="w-full pl-11 pr-10 py-2.5 bg-slate-900 border border-slate-800 focus:border-pink-500 rounded-xl text-sm text-white placeholder:text-slate-500 outline-none transition"
+                  className="w-full pl-11 pr-10 py-2.5 bg-slate-900 border border-slate-800 focus:border-pink-500 rounded-xl text-sm text-white placeholder:text-slate-300 font-medium outline-none transition"
                 />
                 {searchQuery && (
                   <button
                     onClick={() => setSearchQuery('')}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-300 font-medium hover:text-white"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -1016,7 +1020,7 @@ export const FlamingoPageContent: React.FC = () => {
 
             {/* AI Search Quick Prompt Chips */}
             <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs no-scrollbar">
-              <span className="text-slate-500 font-semibold flex items-center gap-1 shrink-0">
+              <span className="text-slate-300 font-medium font-semibold flex items-center gap-1 shrink-0">
                 <Sparkles className="w-3 h-3 text-pink-400" /> AI Suggestions:
               </span>
               {FLAMINGO_AI_PROMPTS.map((prompt, idx) => (
@@ -1037,38 +1041,24 @@ export const FlamingoPageContent: React.FC = () => {
                 className={`px-3.5 py-1.5 rounded-full font-bold transition shrink-0 ${
                   selectedCategory === 'all'
                     ? 'bg-pink-600 text-white'
-                    : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+                    : 'bg-slate-900 text-slate-300 font-medium hover:text-white border border-slate-800'
                 }`}
               >
                 All Runway ({products.length})
               </button>
-              {[
-                'Wands & Power Massagers',
-                'Air-Suction & Clitoral Stimulators',
-                'Bullet & Precision Vibrators',
-                'Ergonomic & Steel Anal Toys',
-                'Vibrating Anal Stimulators',
-                'Progressive Anal Trainer Sets',
-                'Prostate & P-Spot Bio-Stimulators',
-                'Interactive & Automated Strokers',
-                'App-Controlled & Remote Wearables',
-                'Runway Haute Couture',
-                'Lingerie & Corsetry',
-                'Silk & Satin Sleepwear',
-                'Private Wardrobe'
-              ].map(cat => {
-                const count = products.filter(p => p.category.toLowerCase() === cat.toLowerCase()).length;
+              {categories.map(category => {
+                const count = products.filter(p => p.category.toLowerCase() === category.name.toLowerCase()).length;
                 return (
                   <button
-                    key={cat}
-                    onClick={() => setSelectedCategory(cat)}
+                    key={category.id}
+                    onClick={() => setSelectedCategory(category.name)}
                     className={`px-3.5 py-1.5 rounded-full font-bold transition shrink-0 ${
-                      selectedCategory.toLowerCase() === cat.toLowerCase()
+                      selectedCategory.toLowerCase() === category.name.toLowerCase()
                         ? 'bg-pink-600 text-white'
-                        : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+                        : 'bg-slate-900 text-slate-300 font-medium hover:text-white border border-slate-800'
                     }`}
                   >
-                    {cat} {count > 0 && `(${count})`}
+                    {category.name} {count > 0 && `(${count})`}
                   </button>
                 );
               })}
@@ -1088,13 +1078,13 @@ export const FlamingoPageContent: React.FC = () => {
                   {filteredProducts.length} Items Found
                 </span>
               </h2>
-              <p className="text-slate-400 text-xs mt-1">
+              <p className="text-slate-300 font-medium text-xs mt-1">
                 Every garment is individually inspected, steam-sanitized, and packed in unmarked privacy cartons.
               </p>
             </div>
 
             <div className="flex items-center gap-3">
-              <div className="flex items-center gap-2 text-xs text-slate-400">
+              <div className="flex items-center gap-2 text-xs text-slate-300 font-medium">
                 <span>Max Price:</span>
                 <input
                   type="range"
@@ -1111,11 +1101,13 @@ export const FlamingoPageContent: React.FC = () => {
           </div>
 
           {/* PRODUCTS GRID */}
-          {filteredProducts.length === 0 ? (
+          {loading ? (
+            <div className="text-center py-20 text-slate-300">Loading Flamingo catalog...</div>
+          ) : filteredProducts.length === 0 ? (
             <div className="text-center py-20 bg-slate-900/40 rounded-2xl border border-slate-800">
               <Sparkles className="w-12 h-12 text-pink-400 mx-auto mb-3 opacity-60" />
               <h3 className="text-lg font-bold text-white mb-1">No Runway Pieces Matched Query</h3>
-              <p className="text-slate-400 text-sm max-w-md mx-auto mb-4">
+              <p className="text-slate-300 font-medium text-sm max-w-md mx-auto mb-4">
                 Try searching for other terms like 'corset', 'silk', or click reset to view the entire runway catalog.
               </p>
               <button
@@ -1180,21 +1172,21 @@ export const FlamingoPageContent: React.FC = () => {
                   {/* Card Info Content */}
                   <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
                     <div>
-                      <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
+                      <div className="flex items-center justify-between text-xs text-slate-300 font-medium mb-1">
                         <span className="font-semibold text-pink-400">{product.category}</span>
                         <span className="font-mono">★ {product.rating}</span>
                       </div>
                       <h4 className="font-bold text-white text-sm line-clamp-1 group-hover:text-pink-300 transition">
                         {product.name}
                       </h4>
-                      <p className="text-slate-400 text-xs line-clamp-2 mt-1">
+                      <p className="text-slate-300 font-medium text-xs line-clamp-2 mt-1">
                         {product.description}
                       </p>
                     </div>
 
                     {/* Available Sizes Pills */}
                     <div className="space-y-1">
-                      <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                      <div className="text-[11px] font-bold text-slate-300 font-medium uppercase tracking-wider">
                         Available Sizes
                       </div>
                       <div className="flex flex-wrap gap-1">
@@ -1255,14 +1247,14 @@ export const FlamingoPageContent: React.FC = () => {
                         </button>
                         <button
                           onClick={() => handleReact(product.id, 'dislike')}
-                          className="flex items-center gap-1 px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-400 rounded text-xs transition"
+                          className="flex items-center gap-1 px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium rounded text-xs transition"
                           title="Pass on this silhouette"
                         >
                           <ThumbsDown className="w-3 h-3" />
                         </button>
                         <button
                           onClick={() => setEmbedProduct(product)}
-                          className="p-1 text-slate-400 hover:text-white"
+                          className="p-1 text-slate-300 font-medium hover:text-white"
                           title="Share Product"
                         >
                           <Share2 className="w-3.5 h-3.5" />
@@ -1303,7 +1295,7 @@ export const FlamingoPageContent: React.FC = () => {
                 <h3 className="text-xl sm:text-2xl font-black text-white">
                   Runway Lookbooks & Assembled Wardrobes
                 </h3>
-                <p className="text-slate-400 text-xs">
+                <p className="text-slate-300 font-medium text-xs">
                   Mix and match custom outfits curated by our atelier and top fashion members.
                 </p>
               </div>
@@ -1319,7 +1311,7 @@ export const FlamingoPageContent: React.FC = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {outfits.length === 0 ? (
-                <div className="col-span-full py-8 text-center text-slate-500 text-xs">
+                <div className="col-span-full py-8 text-center text-slate-300 font-medium text-xs">
                   No custom lookbooks created yet. Be the first to assemble a runway wardrobe!
                 </div>
               ) : (
@@ -1332,7 +1324,7 @@ export const FlamingoPageContent: React.FC = () => {
                       <span className="px-2 py-0.5 bg-pink-500/20 text-pink-300 font-bold rounded">
                         {outfit.occasion || 'Runway'}
                       </span>
-                      <span className="text-slate-500 font-mono">
+                      <span className="text-slate-300 font-medium font-mono">
                         {outfit.season || 'All Season'}
                       </span>
                     </div>
@@ -1340,7 +1332,7 @@ export const FlamingoPageContent: React.FC = () => {
                       {outfit.name}
                     </h4>
                     {outfit.description && (
-                      <p className="text-slate-400 text-xs line-clamp-2">
+                      <p className="text-slate-300 font-medium text-xs line-clamp-2">
                         {outfit.description}
                       </p>
                     )}
@@ -1349,14 +1341,14 @@ export const FlamingoPageContent: React.FC = () => {
                         {outfit.style_tags.map(t => (
                           <span
                             key={t}
-                            className="px-2 py-0.5 bg-slate-900 text-slate-400 text-[10px] rounded"
+                            className="px-2 py-0.5 bg-slate-900 text-slate-300 font-medium text-[10px] rounded"
                           >
                             #{t}
                           </span>
                         ))}
                       </div>
                     )}
-                    <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
+                    <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-300 font-medium">
                       <span>Public Runway Look</span>
                       <button
                         onClick={() => showToast(`Lookbook '${outfit.name}' saved to your favorites!`, 'success')}
@@ -1372,7 +1364,7 @@ export const FlamingoPageContent: React.FC = () => {
           </div>
 
           {/* STERCS & GOVERNANCE COMPLIANCE FOOTER */}
-          <div className="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border border-slate-800 rounded-2xl p-6 text-xs text-slate-400 space-y-3">
+          <div className="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border border-slate-800 rounded-2xl p-6 text-xs text-slate-300 font-medium space-y-3">
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div className="flex items-center gap-3">
                 <ShieldCheck className="w-5 h-5 text-pink-400 shrink-0" />
@@ -1380,7 +1372,7 @@ export const FlamingoPageContent: React.FC = () => {
                   <h5 className="font-bold text-white">
                     FingerMobile Protocol™ STERCS & Guardian Compliance
                   </h5>
-                  <p className="text-slate-400 text-[11px]">
+                  <p className="text-slate-300 font-medium text-[11px]">
                     All Flamingo transactions are verified under the NDPA 2023 Statutory Criteria. Guardian Age-Verification tokens ensure discrete compliance, with zero adult content exposure to unverified profiles.
                   </p>
                 </div>
@@ -1411,7 +1403,7 @@ export const FlamingoPageContent: React.FC = () => {
                 </div>
                 <button
                   onClick={() => setActiveRunwayVideo(null)}
-                  className="p-1 text-slate-400 hover:text-white"
+                  className="p-1 text-slate-300 font-medium hover:text-white"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -1432,7 +1424,7 @@ export const FlamingoPageContent: React.FC = () => {
                   <div className="font-bold text-white">
                     Designer: {activeRunwayVideo.designer}
                   </div>
-                  <div className="text-slate-400">
+                  <div className="text-slate-300 font-medium">
                     Collection: {activeRunwayVideo.lookbook_collection}
                   </div>
                 </div>
@@ -1468,7 +1460,7 @@ export const FlamingoPageContent: React.FC = () => {
                 </div>
                 <button
                   onClick={() => setActiveInspectProduct(null)}
-                  className="text-slate-400 hover:text-white"
+                  className="text-slate-300 font-medium hover:text-white"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -1476,15 +1468,15 @@ export const FlamingoPageContent: React.FC = () => {
 
               <div className="space-y-3 text-xs">
                 <div>
-                  <span className="font-bold text-slate-400 block mb-0.5">Garment Name</span>
+                  <span className="font-bold text-slate-300 font-medium block mb-0.5">Garment Name</span>
                   <span className="text-white font-semibold">{activeInspectProduct.name}</span>
                 </div>
                 <div>
-                  <span className="font-bold text-slate-400 block mb-0.5">Fabric & Materials</span>
+                  <span className="font-bold text-slate-300 font-medium block mb-0.5">Fabric & Materials</span>
                   <span className="text-pink-300 font-medium">{activeInspectProduct.fabric_details}</span>
                 </div>
                 <div>
-                  <span className="font-bold text-slate-400 block mb-0.5">Collection & Cut</span>
+                  <span className="font-bold text-slate-300 font-medium block mb-0.5">Collection & Cut</span>
                   <span className="text-slate-300">{activeInspectProduct.lookbook_collection} (Designed by {activeInspectProduct.designer})</span>
                 </div>
                 <div className="p-3 bg-slate-950 border border-slate-800 rounded-xl space-y-1">
@@ -1492,7 +1484,7 @@ export const FlamingoPageContent: React.FC = () => {
                     <Package className="w-4 h-4" />
                     Discrete Delivery Protocol Guaranteed
                   </div>
-                  <p className="text-slate-400 text-[11px]">
+                  <p className="text-slate-300 font-medium text-[11px]">
                     Plain outer packaging with zero mention of Flamingo or adult couture. Return address registered to generic logistics subsidiary.
                   </p>
                 </div>
@@ -1532,7 +1524,7 @@ export const FlamingoPageContent: React.FC = () => {
                 </div>
                 <button
                   onClick={() => setShowSizeMatrixModal(false)}
-                  className="text-slate-400 hover:text-white"
+                  className="text-slate-300 font-medium hover:text-white"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -1672,7 +1664,7 @@ export const FlamingoPageContent: React.FC = () => {
                 </div>
                 <button
                   onClick={() => setShowOutfitBuilderModal(false)}
-                  className="text-slate-400 hover:text-white"
+                  className="text-slate-300 font-medium hover:text-white"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -1778,7 +1770,7 @@ export const FlamingoPageContent: React.FC = () => {
                 </div>
                 <button
                   onClick={() => setShowAiStylistDrawer(false)}
-                  className="p-1 text-slate-400 hover:text-white"
+                  className="p-1 text-slate-300 font-medium hover:text-white"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -1800,12 +1792,12 @@ export const FlamingoPageContent: React.FC = () => {
                     >
                       {msg.text}
                     </div>
-                    <span className="text-[10px] text-slate-500 mt-1 px-1">{msg.timestamp}</span>
+                    <span className="text-[10px] text-slate-300 font-medium mt-1 px-1">{msg.timestamp}</span>
                   </div>
                 ))}
 
                 {stylistTyping && (
-                  <div className="text-slate-400 text-xs italic flex items-center gap-1.5">
+                  <div className="text-slate-300 font-medium text-xs italic flex items-center gap-1.5">
                     <Sparkles className="w-3.5 h-3.5 animate-spin text-pink-400" />
                     <span>Consulting atelier style charts...</span>
                   </div>
@@ -1818,7 +1810,7 @@ export const FlamingoPageContent: React.FC = () => {
                   <button
                     key={idx}
                     onClick={() => handleSendStylistQuery(chip)}
-                    className="px-2 py-1 bg-slate-950 border border-slate-800 text-slate-400 hover:text-pink-300 rounded whitespace-nowrap transition"
+                    className="px-2 py-1 bg-slate-950 border border-slate-800 text-slate-300 font-medium hover:text-pink-300 rounded whitespace-nowrap transition"
                   >
                     {chip}
                   </button>
@@ -1859,7 +1851,7 @@ export const FlamingoPageContent: React.FC = () => {
                 </div>
                 <button
                   onClick={() => setShowCartDrawer(false)}
-                  className="p-1 text-slate-400 hover:text-white"
+                  className="p-1 text-slate-300 font-medium hover:text-white"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -1868,7 +1860,7 @@ export const FlamingoPageContent: React.FC = () => {
               {/* Cart Items */}
               <div className="flex-1 overflow-y-auto p-4 space-y-3">
                 {cart.length === 0 ? (
-                  <div className="text-center py-16 text-slate-500 text-xs">
+                  <div className="text-center py-16 text-slate-300 font-medium text-xs">
                     <ShoppingBag className="w-10 h-10 mx-auto mb-2 opacity-50" />
                     Your private bag is currently empty.
                   </div>
@@ -1886,7 +1878,7 @@ export const FlamingoPageContent: React.FC = () => {
                         />
                         <div>
                           <div className="font-bold text-white line-clamp-1">{item.product.name}</div>
-                          <div className="text-slate-400 text-[11px]">Size: {item.selectedSize}</div>
+                          <div className="text-slate-300 font-medium text-[11px]">Size: {item.selectedSize}</div>
                           <div className="text-pink-400 font-mono font-bold mt-0.5">
                             {item.product.price} {item.product.currency} × {item.quantity}
                           </div>
@@ -1898,7 +1890,7 @@ export const FlamingoPageContent: React.FC = () => {
                           setCart(prev => prev.filter((_, i) => i !== idx));
                           showToast('Item removed from private bag', 'info');
                         }}
-                        className="text-slate-500 hover:text-rose-400 p-1"
+                        className="text-slate-300 font-medium hover:text-rose-400 p-1"
                       >
                         <X className="w-4 h-4" />
                       </button>
@@ -1912,7 +1904,7 @@ export const FlamingoPageContent: React.FC = () => {
                 <div className="p-4 border-t border-slate-800 bg-slate-950 space-y-4">
                   {/* Packaging Preference */}
                   <div className="space-y-1.5 text-xs">
-                    <span className="font-bold text-slate-400 uppercase tracking-wider text-[11px]">
+                    <span className="font-bold text-slate-300 font-medium uppercase tracking-wider text-[11px]">
                       Discreet Packaging Protocol
                     </span>
                     <select
@@ -1928,7 +1920,7 @@ export const FlamingoPageContent: React.FC = () => {
 
                   {/* Payment Rail */}
                   <div className="space-y-1.5 text-xs">
-                    <span className="font-bold text-slate-400 uppercase tracking-wider text-[11px]">
+                    <span className="font-bold text-slate-300 font-medium uppercase tracking-wider text-[11px]">
                       Sovereign Settlement Rail
                     </span>
                     <div className="grid grid-cols-3 gap-2">
@@ -1937,7 +1929,7 @@ export const FlamingoPageContent: React.FC = () => {
                         className={`py-2 text-center rounded-xl font-bold transition text-xs ${
                           checkoutRail === 'fic_vault'
                             ? 'bg-pink-600 text-white'
-                            : 'bg-slate-900 text-slate-400 border border-slate-800'
+                            : 'bg-slate-900 text-slate-300 font-medium border border-slate-800'
                         }`}
                       >
                         FIC Vault
@@ -1947,7 +1939,7 @@ export const FlamingoPageContent: React.FC = () => {
                         className={`py-2 text-center rounded-xl font-bold transition text-xs ${
                           checkoutRail === 'earnings'
                             ? 'bg-pink-600 text-white'
-                            : 'bg-slate-900 text-slate-400 border border-slate-800'
+                            : 'bg-slate-900 text-slate-300 font-medium border border-slate-800'
                         }`}
                       >
                         Earnings
@@ -1957,7 +1949,7 @@ export const FlamingoPageContent: React.FC = () => {
                         className={`py-2 text-center rounded-xl font-bold transition text-xs ${
                           checkoutRail === 'card'
                             ? 'bg-pink-600 text-white'
-                            : 'bg-slate-900 text-slate-400 border border-slate-800'
+                            : 'bg-slate-900 text-slate-300 font-medium border border-slate-800'
                         }`}
                       >
                         Credit Card
@@ -1968,7 +1960,7 @@ export const FlamingoPageContent: React.FC = () => {
                   {/* Total & Confirm Button */}
                   <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between">
                     <div>
-                      <span className="text-xs text-slate-400 block">Total Order</span>
+                      <span className="text-xs text-slate-300 font-medium block">Total Order</span>
                       <span className="text-lg font-black text-white font-mono">
                         {cartTotal.toFixed(2)} FIC
                       </span>

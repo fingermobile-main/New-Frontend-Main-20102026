@@ -75,11 +75,11 @@ const LinkAccountModal: React.FC<LinkAccountModalProps> = ({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Link className="h-5 w-5" />
+          <DialogTitle className="flex items-center gap-2 text-slate-900 font-bold">
+            <Link className="h-5 w-5 text-slate-700" />
             Link Account
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="text-slate-700">
             Connect external accounts to enable seamless transactions
           </DialogDescription>
         </DialogHeader>
@@ -90,7 +90,7 @@ const LinkAccountModal: React.FC<LinkAccountModalProps> = ({
               {accountTypes.map((account) => (
                 <div
                   key={account.id}
-                  className={`p-4 border rounded-lg hover:bg-muted/50 transition-colors cursor-pointer ${
+                  className={`p-4 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer ${
                     account.connected ? 'bg-green-50 border-green-200' : ''
                   }`}
                   onClick={() => !account.connected && setSelectedAccount(account.id)} role="button" tabIndex={0}
@@ -101,7 +101,7 @@ const LinkAccountModal: React.FC<LinkAccountModalProps> = ({
                         {account.icon}
                       </div>
                       <div>
-                        <h3 className="font-semibold">{account.name}</h3>
+                        <h3 className="font-semibold text-slate-900">{account.name}</h3>
                         <p className="text-sm text-slate-700">
                           {account.description}
                         </p>
@@ -124,7 +124,7 @@ const LinkAccountModal: React.FC<LinkAccountModalProps> = ({
                         </Button>
                       </div>
                     ) : (
-                      <Button variant="outline" size="sm">
+                      <Button variant="outline" size="sm" className="border-slate-300 text-slate-800 font-semibold">
                         Connect
                       </Button>
                     )}
@@ -134,18 +134,18 @@ const LinkAccountModal: React.FC<LinkAccountModalProps> = ({
             </div>
           ) : (
             <div className="space-y-4">
-              <div className="p-4 bg-muted rounded-lg">
-                <h3 className="font-semibold mb-2">
+              <div className="p-4 bg-slate-50 border border-slate-200 rounded-lg">
+                <h3 className="font-bold text-slate-900 mb-2">
                   {accountTypes.find((a) => a.id === selectedAccount)?.name}
                 </h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-slate-700 font-medium">
                   Enter your credentials to securely link this account
                 </p>
               </div>
 
               <div className="space-y-3">
                 <div className="space-y-2">
-                  <Label htmlFor="username">Username / Email</Label>
+                  <Label htmlFor="username" className="text-slate-900 font-semibold">Username / Email</Label>
                   <Input
                     id="username"
                     value={credentials.username}
@@ -156,8 +156,8 @@ const LinkAccountModal: React.FC<LinkAccountModalProps> = ({
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="password">Password</Label>
-                  <input
+                  <Label htmlFor="password" className="text-slate-900 font-semibold">Password</Label>
+                  <Input
                     id="password"
                     type="password"
                     value={credentials.password}
@@ -169,7 +169,7 @@ const LinkAccountModal: React.FC<LinkAccountModalProps> = ({
               </div>
 
               <div className="flex gap-2">
-                <Button variant="outline" className="flex-1" onClick={() => setSelectedAccount(null)}>
+                <Button variant="outline" className="flex-1 border-slate-300 text-slate-800 font-semibold" onClick={() => setSelectedAccount(null)}>
                   Back
                 </Button>
                 <Button className="flex-1" onClick={handleLinkAccount}>
@@ -181,7 +181,7 @@ const LinkAccountModal: React.FC<LinkAccountModalProps> = ({
         </div>
 
         <DialogFooter>
-          <p className="text-xs text-muted-foreground text-center w-full">
+          <p className="text-xs text-slate-700 font-medium text-center w-full">
             Your credentials are encrypted and stored securely. We never share your information.
           </p>
         </DialogFooter>

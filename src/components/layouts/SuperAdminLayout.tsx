@@ -25,7 +25,7 @@ const SuperAdminLayout: React.FC<SuperAdminLayoutProps> = ({ children }) => {
               <Shield className="h-8 w-8 text-primary" />
               <div>
                 <h1 className="text-xl font-bold">Super Admin Panel</h1>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-slate-700 font-medium">
                   System-wide administration and monitoring
                 </p>
               </div>

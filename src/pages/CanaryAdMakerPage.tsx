@@ -171,10 +171,10 @@ export const CanaryAdMakerPage: React.FC = () => {
               <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-500/20 text-amber-400 border border-amber-500/40">
                 Canary™ Engine
               </span>
-              <span className="text-xs text-slate-400">Internal Advertising & Self-Service Studio</span>
+              <span className="text-xs text-slate-300 font-medium">Internal Advertising & Self-Service Studio</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-white mt-1">FingerMobile Ad Creator</h1>
-            <p className="text-xs text-slate-400 mt-1 max-w-2xl">
+            <p className="text-xs text-slate-300 font-medium mt-1 max-w-2xl">
               Design, test, and adapt ad variations in minutes. All submissions undergo automated AI guidelines review and SuperAdmin scheduling.
             </p>
           </div>
@@ -189,7 +189,7 @@ export const CanaryAdMakerPage: React.FC = () => {
                     ? 'bg-amber-500 text-slate-950 font-black shadow-lg scale-105'
                     : step > s
                       ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-                      : 'bg-slate-800 text-slate-500'
+                      : 'bg-slate-800 text-slate-400'
                 }`}
               >
                 {step > s ? '✓' : s}
@@ -209,7 +209,7 @@ export const CanaryAdMakerPage: React.FC = () => {
               <div className="space-y-5">
                 <div>
                   <h3 className="text-lg font-black text-white">Step 1: Merchant Agreement & Non-Refundable Fee Policy</h3>
-                  <p className="text-xs text-slate-400 mt-1">
+                  <p className="text-xs text-slate-300 font-medium mt-1">
                     All external merchants and platform members must complete this privacy disclaimer before uploading media or committing ad budgets.
                   </p>
                 </div>
@@ -282,7 +282,7 @@ export const CanaryAdMakerPage: React.FC = () => {
               <div className="space-y-5">
                 <div>
                   <h3 className="text-lg font-black text-white">Step 2: Choose Marketing Campaign Type</h3>
-                  <p className="text-xs text-slate-400 mt-1">Select 1 of 10 automated marketing campaign structures supported by Canary.</p>
+                  <p className="text-xs text-slate-300 font-medium mt-1">Select 1 of 10 automated marketing campaign structures supported by Canary.</p>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-96 overflow-y-auto pr-1">
@@ -301,7 +301,7 @@ export const CanaryAdMakerPage: React.FC = () => {
                         <span className="text-xl">{type.icon}</span>
                         <h4 className="text-xs font-bold text-white">{type.name}</h4>
                       </div>
-                      <p className="text-[11px] text-slate-400 mt-1.5 line-clamp-2">{type.desc}</p>
+                      <p className="text-[11px] text-slate-300 font-medium mt-1.5 line-clamp-2">{type.desc}</p>
                     </button>
                   ))}
                 </div>
@@ -330,7 +330,7 @@ export const CanaryAdMakerPage: React.FC = () => {
               <div className="space-y-5">
                 <div>
                   <h3 className="text-lg font-black text-white">Step 3: Placement & Video Size Specs</h3>
-                  <p className="text-xs text-slate-400 mt-1">Choose where your video ad will appear across the FingerMobile network.</p>
+                  <p className="text-xs text-slate-300 font-medium mt-1">Choose where your video ad will appear across the FingerMobile network.</p>
                 </div>
 
                 <div>
@@ -358,7 +358,7 @@ export const CanaryAdMakerPage: React.FC = () => {
                     >
                       <h4 className="text-xs font-bold text-white">{p.name}</h4>
                       <p className="text-[10px] font-mono text-amber-400 mt-0.5">{p.ratio}</p>
-                      <p className="text-[11px] text-slate-400 mt-1">{p.specs}</p>
+                      <p className="text-[11px] text-slate-300 font-medium mt-1">{p.specs}</p>
                     </button>
                   ))}
                 </div>
@@ -405,7 +405,7 @@ export const CanaryAdMakerPage: React.FC = () => {
               <div className="space-y-4">
                 <div>
                   <h3 className="text-lg font-black text-white">Step 4: Creative Media & Copywriting</h3>
-                  <p className="text-xs text-slate-400 mt-1">Upload video source (MP4/MOV &lt;=100MB) and define text elements.</p>
+                  <p className="text-xs text-slate-300 font-medium mt-1">Upload video source (MP4/MOV &lt;=100MB) and define text elements.</p>
                 </div>
 
                 <div>
@@ -433,7 +433,7 @@ export const CanaryAdMakerPage: React.FC = () => {
                 <div>
                   <div className="flex justify-between items-center mb-1">
                     <label className="text-xs font-bold text-slate-300">Headline (Mandatory, max 40 chars)</label>
-                    <span className={`text-[10px] font-mono ${headline.length > headlineMax ? 'text-rose-400 font-bold' : 'text-slate-400'}`}>
+                    <span className={`text-[10px] font-mono ${headline.length > headlineMax ? 'text-rose-400 font-bold' : 'text-slate-300 font-medium'}`}>
                       {headline.length} / {headlineMax}
                     </span>
                   </div>
@@ -450,7 +450,7 @@ export const CanaryAdMakerPage: React.FC = () => {
                 <div>
                   <div className="flex justify-between items-center mb-1">
                     <label className="text-xs font-bold text-slate-300">Description</label>
-                    <span className="text-[10px] font-mono text-slate-400">
+                    <span className="text-[10px] font-mono text-slate-300 font-medium">
                       {description.length} / {descriptionMax}
                     </span>
                   </div>
@@ -526,7 +526,7 @@ export const CanaryAdMakerPage: React.FC = () => {
               <div className="space-y-5">
                 <div>
                   <h3 className="text-lg font-black text-white">Step 5: Budget & Non-Refundable Checkout</h3>
-                  <p className="text-xs text-slate-400 mt-1">Review costs and confirm escrow payment to move ad to SuperAdmin review.</p>
+                  <p className="text-xs text-slate-300 font-medium mt-1">Review costs and confirm escrow payment to move ad to SuperAdmin review.</p>
                 </div>
 
                 <div>
@@ -543,7 +543,7 @@ export const CanaryAdMakerPage: React.FC = () => {
                     onChange={(e) => setDailyBudget(Number(e.target.value))}
                     className="w-full accent-amber-500 cursor-pointer"
                   />
-                  <div className="flex justify-between text-[10px] text-slate-500">
+                  <div className="flex justify-between text-[10px] text-slate-300 font-medium">
                     <span>Min: $5</span>
                     <span>Standard: $25</span>
                     <span>Max: $500</span>
@@ -668,7 +668,7 @@ export const CanaryAdMakerPage: React.FC = () => {
           <div className="lg:col-span-5 space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-xs font-black uppercase tracking-wider text-amber-400">Live Ad Preview</h3>
-              <span className="text-[10px] text-slate-400 font-mono">Format: {placement}</span>
+              <span className="text-[10px] text-slate-300 font-medium font-mono">Format: {placement}</span>
             </div>
 
             {/* Preview Viewport */}
@@ -717,7 +717,7 @@ export const CanaryAdMakerPage: React.FC = () => {
                     </span>
                     <div>
                       <p className="text-xs font-bold text-white">{companyName || 'Your Brand Name'}</p>
-                      <p className="text-[10px] text-slate-400">Sponsored • Canary Network</p>
+                      <p className="text-[10px] text-slate-300 font-medium">Sponsored • Canary Network</p>
                     </div>
                   </div>
 
@@ -737,7 +737,7 @@ export const CanaryAdMakerPage: React.FC = () => {
                   <div className="flex items-center justify-between gap-3 pt-1">
                     <div className="flex-1">
                       <h4 className="text-xs font-bold text-white truncate">{headline || 'Enter Ad Headline'}</h4>
-                      <p className="text-[11px] text-slate-400 truncate">{description || 'Ad description will appear here'}</p>
+                      <p className="text-[11px] text-slate-300 font-medium truncate">{description || 'Ad description will appear here'}</p>
                     </div>
                     <button
                       type="button"

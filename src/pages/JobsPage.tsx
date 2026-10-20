@@ -141,7 +141,7 @@ const JobsPage: React.FC = () => {
         <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-4 mb-8">
           <form onSubmit={handleSearchSubmit} className="flex flex-col md:flex-row gap-4 mb-4">
             <div className="relative flex-1">
-              <SearchIcon className="w-5 h-5 absolute left-3 top-3.5 text-slate-500" />
+              <SearchIcon className="w-5 h-5 absolute left-3 top-3.5 text-slate-600" />
               <input
                 type="text"
                 placeholder="Search jobs by role, company, or keyword..."
@@ -226,7 +226,7 @@ const JobsPage: React.FC = () => {
                   <div className="flex items-center text-sm text-gray-600 mt-1 gap-4">
                     <span className="font-semibold text-gray-800">{job.company}</span>
                     <span className="flex items-center text-slate-700">
-                      <LocationMarkerIcon className="w-4 h-4 mr-1 text-slate-500" />
+                      <LocationMarkerIcon className="w-4 h-4 mr-1 text-slate-600" />
                       {job.location}
                     </span>
                   </div>

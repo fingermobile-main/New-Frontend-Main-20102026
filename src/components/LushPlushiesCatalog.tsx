@@ -757,7 +757,7 @@ const LushPlushiesCatalog: React.FC<LushPlushiesCatalogProps> = ({ onGiftSelect,
       {sortedProducts.length === 0 && (
         <div className="text-center py-12">
           <h3 className="text-lg font-medium text-gray-900">No gifts found</h3>
-          <p className="mt-1 text-sm text-gray-500">Try adjusting your search or category filters.</p>
+          <p className="mt-1 text-sm text-slate-700 font-medium">Try adjusting your search or category filters.</p>
         </div>
       )}
     </div>

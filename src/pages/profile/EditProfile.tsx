@@ -196,7 +196,7 @@ const EditProfile: React.FC = () => {
               />
             </div>
             {isUploading && (
-              <p className="mt-2 text-sm text-slate-700 dark:text-gray-400 font-medium">Uploading...</p>
+              <p className="mt-2 text-sm text-slate-700 dark:text-slate-300 font-semibold">Uploading...</p>
             )}
           </div>
 

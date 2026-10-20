@@ -545,7 +545,7 @@ const ProtocolCommunication: React.FC<ProtocolCommunicationProps> = ({
             className={`ml-2 p-2 rounded-full ${
               newMessage.trim()
                 ? 'bg-blue-500 text-white hover:bg-blue-600'
-                : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                : 'bg-slate-200 text-slate-500 cursor-not-allowed'
             }`}
           >
             <FiSend className="w-[18px] h-[18px]" />

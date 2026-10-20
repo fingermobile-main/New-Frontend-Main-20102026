@@ -355,7 +355,7 @@ export const LushEncoreView: React.FC<LushEncoreViewProps> = ({
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
           {/* Search Input */}
           <div className="relative flex-1">
-            <MagnifyingGlassIcon className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <MagnifyingGlassIcon className="w-4 h-4 text-slate-600 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={searchQuery}
@@ -551,19 +551,19 @@ export const LushEncoreView: React.FC<LushEncoreViewProps> = ({
                   {/* Highscore & Compatibility Meters */}
                   <div className="grid grid-cols-3 gap-2 p-2 bg-[#F5F9F6] border border-emerald-100 rounded-xl mb-3 text-center">
                     <div>
-                      <span className="text-[10px] text-gray-500 uppercase font-semibold">Affinity</span>
+                      <span className="text-[10px] text-slate-700 font-bold uppercase font-semibold">Affinity</span>
                       <p className="text-xs font-extrabold text-emerald-700">
                         {member.highscores.affinity}% Match
                       </p>
                     </div>
                     <div>
-                      <span className="text-[10px] text-gray-500 uppercase font-semibold">Trust Score</span>
+                      <span className="text-[10px] text-slate-700 font-bold uppercase font-semibold">Trust Score</span>
                       <p className="text-xs font-extrabold text-teal-700">
                         {member.highscores.trust} / 1000
                       </p>
                     </div>
                     <div>
-                      <span className="text-[10px] text-gray-500 uppercase font-semibold">Etiquette</span>
+                      <span className="text-[10px] text-slate-700 font-bold uppercase font-semibold">Etiquette</span>
                       <p className="text-xs font-extrabold text-[#DC582A]">
                         {member.highscores.etiquette}% Pure
                       </p>

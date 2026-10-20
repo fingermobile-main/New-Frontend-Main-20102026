@@ -154,7 +154,7 @@ const OwnitDashboard: React.FC = () => {
       {/* Header */}
       <div>
         <h1 className="text-3xl font-bold">Ownit Dashboard</h1>
-        <p className="text-muted-foreground">Track your owned products, orders, and warranties</p>
+        <p className="text-slate-700 dark:text-slate-300 font-medium">Track your owned products, orders, and warranties</p>
       </div>
 
       {/* Stats Cards */}
@@ -162,35 +162,35 @@ const OwnitDashboard: React.FC = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Items</CardTitle>
-            <Package className="h-4 w-4 text-muted-foreground" />
+            <Package className="h-4 w-4 text-slate-500" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{entries.length}</div>
-            <p className="text-xs text-muted-foreground">Owned products</p>
+            <p className="text-xs text-slate-700 dark:text-slate-300 font-medium">Owned products</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Orders</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+            <TrendingUp className="h-4 w-4 text-slate-500" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{orders.length}</div>
-            <p className="text-xs text-muted-foreground">Purchase history</p>
+            <p className="text-xs text-slate-700 dark:text-slate-300 font-medium">Purchase history</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Active Warranties</CardTitle>
-            <Clock className="h-4 w-4 text-muted-foreground" />
+            <Clock className="h-4 w-4 text-slate-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
               {entries.filter(e => e.warranty_end_date && new Date(e.warranty_end_date) > new Date()).length}
             </div>
-            <p className="text-xs text-muted-foreground">Currently covered</p>
+            <p className="text-xs text-slate-700 dark:text-slate-300 font-medium">Currently covered</p>
           </CardContent>
         </Card>
 
@@ -201,7 +201,7 @@ const OwnitDashboard: React.FC = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-orange-500">{warranties.length}</div>
-            <p className="text-xs text-muted-foreground">Within 30 days</p>
+            <p className="text-xs text-slate-700 dark:text-slate-300 font-medium">Within 30 days</p>
           </CardContent>
         </Card>
       </div>
@@ -250,7 +250,7 @@ const OwnitDashboard: React.FC = () => {
                   </div>
                   <div>
                     <p className="font-medium">{item.title}</p>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">
                       {item.brand} {item.model} • ${item.purchase_price?.toLocaleString()}
                     </p>
                   </div>
@@ -275,7 +275,7 @@ const OwnitDashboard: React.FC = () => {
               <div key={order.id} className="flex items-center justify-between p-3 border rounded-lg hover:bg-accent transition-colors">
                 <div>
                   <p className="font-medium">{order.order_number}</p>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">
                     {order.seller_name} • {new Date(order.order_date).toLocaleDateString()}
                   </p>
                 </div>

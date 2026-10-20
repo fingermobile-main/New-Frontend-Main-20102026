@@ -159,7 +159,7 @@ const GovernancePolicyDisplay: React.FC<GovernancePolicyDisplayProps> = ({
           </div>
           <div>
             <h2 className="text-2xl font-black text-white uppercase tracking-tight">AI Governance Policies</h2>
-            <p className="text-xs text-gray-400 font-bold uppercase tracking-widest">Transparent. Accountable. Secure.</p>
+            <p className="text-xs text-slate-300 font-bold uppercase tracking-widest">Transparent. Accountable. Secure.</p>
           </div>
         </div>
         <p className="text-sm text-gray-300 leading-relaxed">
@@ -177,7 +177,7 @@ const GovernancePolicyDisplay: React.FC<GovernancePolicyDisplayProps> = ({
             className={`flex items-center space-x-2 px-6 py-3 rounded-2xl font-bold text-xs uppercase tracking-widest whitespace-nowrap transition-all ${
               activeFilter === cat.id
                 ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40'
-                : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white border border-white/5'
+                : 'bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white border border-white/5'
             }`}
           >
             {cat.icon}
@@ -233,7 +233,7 @@ const GovernancePolicyDisplay: React.FC<GovernancePolicyDisplayProps> = ({
                       className={`px-4 py-2 rounded-xl font-bold text-xs uppercase tracking-wider transition-all ${
                         policy.consented
                           ? 'bg-green-600/20 text-green-500 border border-green-500/30'
-                          : 'bg-gray-800 text-gray-400 border border-white/10 hover:border-blue-500'
+                          : 'bg-gray-800 text-slate-300 border border-white/10 hover:border-blue-500'
                       }`}
                     >
                       {policy.consented ? 'Consented' : 'Consent Required'}
@@ -334,12 +334,12 @@ const GovernancePolicyDisplay: React.FC<GovernancePolicyDisplayProps> = ({
                   {decision.action === 'reviewed' && <Eye size={18} className="text-blue-500" />}
                   <div>
                     <p className="text-sm font-bold text-white capitalize">{decision.action}</p>
-                    <p className="text-xs text-gray-400">{decision.reason}</p>
+                    <p className="text-xs text-slate-300">{decision.reason}</p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="text-xs text-gray-400">{decision.timestamp.toLocaleDateString()}</p>
-                  <p className="text-xs text-gray-500 uppercase">By {decision.reviewedBy}</p>
+                  <p className="text-xs text-slate-300 font-medium">{decision.timestamp.toLocaleDateString()}</p>
+                  <p className="text-xs text-slate-700 font-medium uppercase">By {decision.reviewedBy}</p>
                 </div>
               </div>
             ))}

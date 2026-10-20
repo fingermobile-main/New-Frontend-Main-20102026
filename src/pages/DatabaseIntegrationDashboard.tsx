@@ -82,17 +82,17 @@ const DatabaseIntegrationDashboard: React.FC = () => {
             {/* Live Index Telemetry Pill */}
             <div className="flex items-center gap-3 bg-slate-800/80 px-4 py-2.5 rounded-2xl border border-indigo-500/30 font-mono text-xs">
               <div>
-                <span className="text-[10px] text-slate-400 block uppercase">Seek Latency</span>
+                <span className="text-[10px] text-slate-300 font-medium block uppercase">Seek Latency</span>
                 <span className="font-bold text-emerald-400">{benchmarkResult.executionTimeMs.toFixed(2)} ms</span>
               </div>
               <div className="h-6 w-px bg-slate-700" />
               <div>
-                <span className="text-[10px] text-slate-400 block uppercase">Structure</span>
+                <span className="text-[10px] text-slate-300 font-medium block uppercase">Structure</span>
                 <span className="font-bold text-cyan-300">{benchmarkResult.indexStructureUsed}</span>
               </div>
               <div className="h-6 w-px bg-slate-700" />
               <div>
-                <span className="text-[10px] text-slate-400 block uppercase">Evaluated</span>
+                <span className="text-[10px] text-slate-300 font-medium block uppercase">Evaluated</span>
                 <span className="font-bold text-amber-300">{benchmarkResult.recordsEvaluated} records</span>
               </div>
             </div>
@@ -112,7 +112,7 @@ const DatabaseIntegrationDashboard: React.FC = () => {
               {dbSearchQuery && (
                 <button
                   onClick={() => setDbSearchQuery('')}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-mono text-slate-400 hover:text-white px-2 py-1 rounded bg-slate-700/60"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-mono text-slate-300 font-medium hover:text-white px-2 py-1 rounded bg-slate-700/60"
                 >
                   Clear
                 </button>
@@ -121,7 +121,7 @@ const DatabaseIntegrationDashboard: React.FC = () => {
 
             {/* Cluster Quick Filters */}
             <div className="flex flex-wrap items-center gap-2 pt-1 text-xs">
-              <span className="text-slate-400 font-mono text-[11px] mr-1">Cluster Filter:</span>
+              <span className="text-slate-300 font-medium font-mono text-[11px] mr-1">Cluster Filter:</span>
               {[
                 { id: 'all', label: 'All Clusters' },
                 { id: 'user_management_service_db', label: 'User Auth Cluster' },
@@ -146,7 +146,7 @@ const DatabaseIntegrationDashboard: React.FC = () => {
 
             {/* Quick table tag triggers */}
             <div className="flex flex-wrap items-center gap-1.5 pt-1 text-[11px] font-mono text-indigo-300/70">
-              <span className="text-slate-400">Quick Index Seeks:</span>
+              <span className="text-slate-300 font-medium">Quick Index Seeks:</span>
               {['auth_users_tbl', 'fic_ledger_transactions', 'marketplace_orders_tbl', 'stercs_render_jobs_tbl', 'guardian_access_log'].map((t) => (
                 <button
                   key={t}
@@ -162,7 +162,7 @@ const DatabaseIntegrationDashboard: React.FC = () => {
           {/* Search Results Grid */}
           <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredResults.length === 0 ? (
-              <div className="col-span-full py-12 text-center text-slate-400 font-mono text-sm bg-slate-800/40 rounded-2xl border border-dashed border-slate-700">
+              <div className="col-span-full py-12 text-center text-slate-300 font-medium font-mono text-sm bg-slate-800/40 rounded-2xl border border-dashed border-slate-700">
                 No database tables matched "{dbSearchQuery}". Try another keyword or clear filter.
               </div>
             ) : (
@@ -187,18 +187,18 @@ const DatabaseIntegrationDashboard: React.FC = () => {
                     </p>
 
                     <div className="space-y-1.5 bg-slate-900/70 rounded-xl p-2.5 border border-slate-700/60 font-mono text-[11px]">
-                      <div className="flex items-center justify-between text-slate-400">
+                      <div className="flex items-center justify-between text-slate-300 font-medium">
                         <span>Cluster:</span>
                         <span className="text-slate-200 truncate max-w-[160px]">{entity.schemaDetails?.databaseCluster}</span>
                       </div>
-                      <div className="flex items-center justify-between text-slate-400">
+                      <div className="flex items-center justify-between text-slate-300 font-medium">
                         <span>Primary Key:</span>
                         <span className="text-amber-300 flex items-center gap-1">
                           <Key className="w-3 h-3 text-amber-400" />
                           {entity.schemaDetails?.primaryKey}
                         </span>
                       </div>
-                      <div className="flex items-center justify-between text-slate-400">
+                      <div className="flex items-center justify-between text-slate-300 font-medium">
                         <span>Est. Rows:</span>
                         <span className="text-emerald-400 font-bold">
                           {entity.schemaDetails?.estimatedRows?.toLocaleString()} rows
@@ -208,7 +208,7 @@ const DatabaseIntegrationDashboard: React.FC = () => {
 
                     {entity.schemaDetails?.indexedColumns && (
                       <div className="mt-3">
-                        <span className="text-[10px] font-mono text-slate-400 block mb-1">Indexed Columns:</span>
+                        <span className="text-[10px] font-mono text-slate-300 font-medium block mb-1">Indexed Columns:</span>
                         <div className="flex flex-wrap gap-1">
                           {entity.schemaDetails.indexedColumns.map((col, idx) => (
                             <span
@@ -223,7 +223,7 @@ const DatabaseIntegrationDashboard: React.FC = () => {
                     )}
                   </div>
 
-                  <div className="mt-4 pt-3 border-t border-slate-700/50 flex items-center justify-between text-[10px] font-mono text-slate-400">
+                  <div className="mt-4 pt-3 border-t border-slate-700/50 flex items-center justify-between text-[10px] font-mono text-slate-300 font-medium">
                     <span>Latency: {entity.telemetry?.responseTimeMs || 1.1}ms</span>
                     <span className="text-emerald-400 font-bold flex items-center gap-1">
                       <ShieldCheck className="w-3 h-3" />
@@ -305,7 +305,7 @@ const DatabaseIntegrationDashboard: React.FC = () => {
                   Manage Treasury
                 </button>
               </div>
-              <p className="text-[11px] text-gray-500 mt-2 font-mono">
+              <p className="text-[11px] text-slate-300 font-medium mt-2 font-mono">
                 Parity: 1 FIC = ₦100.00 NGN (Collateralized)
               </p>
             </div>

@@ -54,7 +54,7 @@ const NotificationManagement: React.FC = () => {
                   <MailIcon className="w-5 h-5 text-blue-500" />
                   <div>
                     <p className="font-medium">Email</p>
-                    <p className="text-sm text-gray-500">Receive notifications via email</p>
+                    <p className="text-sm text-slate-700 font-medium">Receive notifications via email</p>
                   </div>
                 </div>
                 <Switch
@@ -68,7 +68,7 @@ const NotificationManagement: React.FC = () => {
                   <BellIcon className="w-5 h-5 text-purple-500" />
                   <div>
                     <p className="font-medium">Push Notifications</p>
-                    <p className="text-sm text-gray-500">Receive notifications via push</p>
+                    <p className="text-sm text-slate-700 font-medium">Receive notifications via push</p>
                   </div>
                 </div>
                 <Switch
@@ -82,7 +82,7 @@ const NotificationManagement: React.FC = () => {
                   <SmartphoneIcon className="w-5 h-5 text-green-500" />
                   <div>
                     <p className="font-medium">SMS</p>
-                    <p className="text-sm text-gray-500">Receive notifications via text message</p>
+                    <p className="text-sm text-slate-700 font-medium">Receive notifications via text message</p>
                   </div>
                 </div>
                 <Switch
@@ -96,7 +96,7 @@ const NotificationManagement: React.FC = () => {
                   <GlobeIcon className="w-5 h-5 text-orange-500" />
                   <div>
                     <p className="font-medium">In-App</p>
-                    <p className="text-sm text-gray-500">Receive notifications within the app</p>
+                    <p className="text-sm text-slate-700 font-medium">Receive notifications within the app</p>
                   </div>
                 </div>
                 <Switch
@@ -113,7 +113,7 @@ const NotificationManagement: React.FC = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium">Announcements</p>
-                  <p className="text-sm text-gray-500">Important platform announcements</p>
+                  <p className="text-sm text-slate-700 font-medium">Important platform announcements</p>
                 </div>
                 <Switch
                   checked={categories.announcements}
@@ -124,7 +124,7 @@ const NotificationManagement: React.FC = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium">Product Updates</p>
-                  <p className="text-sm text-gray-500">New features and improvements</p>
+                  <p className="text-sm text-slate-700 font-medium">New features and improvements</p>
                 </div>
                 <Switch
                   checked={categories.updates}
@@ -135,7 +135,7 @@ const NotificationManagement: React.FC = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium">Promotions</p>
-                  <p className="text-sm text-gray-500">Special offers and discounts</p>
+                  <p className="text-sm text-slate-700 font-medium">Special offers and discounts</p>
                 </div>
                 <Switch
                   checked={categories.promotions}
@@ -146,7 +146,7 @@ const NotificationManagement: React.FC = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium">Reminders</p>
-                  <p className="text-sm text-gray-500">Personal reminders and notifications</p>
+                  <p className="text-sm text-slate-700 font-medium">Personal reminders and notifications</p>
                 </div>
                 <Switch
                   checked={categories.reminders}
@@ -157,7 +157,7 @@ const NotificationManagement: React.FC = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium">Security Alerts</p>
-                  <p className="text-sm text-gray-500">Security-related notifications</p>
+                  <p className="text-sm text-slate-700 font-medium">Security-related notifications</p>
                 </div>
                 <Switch
                   checked={categories.security}

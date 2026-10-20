@@ -185,8 +185,7 @@ const StorefrontDetailPage: React.FC = () => {
       showToast(`Successfully gifted ${amountNum} FIC to ${storefront?.name}!`, 'success');
       setShowGiftModal(false);
     } catch {
-      showToast('Gift transmission confirmed', 'success');
-      setShowGiftModal(false);
+      showToast('Unable to send the gift. Please try again.', 'error');
     }
   };
 
@@ -203,8 +202,7 @@ const StorefrontDetailPage: React.FC = () => {
       showToast('Paylink created & copied to clipboard!', 'success');
       setShowPaylinkModal(false);
     } catch {
-      showToast('Paylink generated successfully!', 'success');
-      setShowPaylinkModal(false);
+      showToast('Unable to create the paylink. Please try again.', 'error');
     }
   };
 
@@ -223,10 +221,15 @@ const StorefrontDetailPage: React.FC = () => {
         payment_method: 'FIC'
       });
 
-      const tracking = orderRes?.data?.tracking_number || orderRes?.data?.trackingNumber || 'SF-ONLINE';
-      showToast(`Purchased ${product.name}! Tracking: ${tracking}`, 'success');
+      const tracking = orderRes?.data?.tracking_number || orderRes?.data?.shipment?.tracking_number;
+      showToast(
+        tracking
+          ? `Order recorded for ${product.name}. Payment confirmation is pending. Tracking: ${tracking}`
+          : `Order recorded for ${product.name}. Payment confirmation is pending.`,
+        'success'
+      );
     } catch {
-      showToast(`Order for ${product.name} submitted successfully!`, 'success');
+      showToast(`Unable to submit the order for ${product.name}. Please try again.`, 'error');
     }
   };
 

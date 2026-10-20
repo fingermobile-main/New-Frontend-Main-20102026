@@ -187,7 +187,7 @@ const InboxPage: React.FC = () => {
       >
         <p className="break-words">{message.text}</p>
         {message.timestamp && (
-          <p className={`text-[10px] mt-1 text-right ${message.sender === 'me' ? 'text-blue-100' : 'text-gray-400'}`}>
+          <p className={`text-[10px] mt-1 text-right ${message.sender === 'me' ? 'text-blue-100' : 'text-slate-600 font-medium'}`}>
             {message.timestamp}
           </p>
         )}
@@ -202,7 +202,7 @@ const InboxPage: React.FC = () => {
           <h1 className="text-2xl font-bold text-gray-900 sm:text-2xl lg:text-3xl">
             Engagement Inbox
           </h1>
-          <p className="text-gray-500 text-sm mt-1">Manage all incoming member messages, creator inquiries, and support threads.</p>
+          <p className="text-slate-700 font-medium text-sm mt-1">Manage all incoming member messages, creator inquiries, and support threads.</p>
         </div>
         <button
           onClick={() => setShowNewModal(true)}

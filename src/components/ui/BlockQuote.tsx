@@ -12,7 +12,7 @@ const BlockQuote = React.forwardRef<HTMLQuoteElement, BlockQuoteProps>(
       <blockquote
         ref={ref}
         className={cn(
-          'border-l-4 border-primary pl-4 italic text-muted-foreground',
+          'border-l-4 border-primary pl-4 italic text-slate-700 dark:text-slate-300 font-medium',
           className
         )}
         cite={cite}

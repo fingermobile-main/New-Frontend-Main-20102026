@@ -82,7 +82,7 @@ export const SuperAdminTierRow: React.FC<TierRowProps> = ({
               isCapacityInvalid ? 'border-red-500 ring-1 ring-red-500' : 'border-gray-600 focus:border-blue-500'
             }`}
           />
-          <span className="text-gray-400 text-xs">/ {initialActive} active</span>
+          <span className="text-gray-300 font-medium text-xs">/ {initialActive} active</span>
         </div>
         {isCapacityInvalid && (
           <span className="text-xs text-red-400 block mt-1">Cannot be lower than active count</span>
@@ -123,7 +123,7 @@ export const SuperAdminTierRow: React.FC<TierRowProps> = ({
           className={`px-3.5 py-1.5 rounded text-xs font-medium transition cursor-pointer ${
             savedSuccess
               ? 'bg-emerald-600 text-white'
-              : 'bg-blue-600 hover:bg-blue-500 disabled:bg-gray-700 disabled:text-gray-400 disabled:cursor-not-allowed text-white'
+              : 'bg-blue-600 hover:bg-blue-500 disabled:bg-gray-700 disabled:text-gray-300 disabled:cursor-not-allowed text-white'
           }`}
         >
           {isSaving ? 'Saving...' : savedSuccess ? 'Saved ✓' : 'Update'}

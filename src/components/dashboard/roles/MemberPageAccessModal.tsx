@@ -56,7 +56,7 @@ export const MemberPageAccessModal: React.FC<MemberPageAccessModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl max-w-2xl w-full shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+      <div className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-2xl max-w-2xl w-full shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
         {/* Header */}
         <div className="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
           <div>
@@ -64,7 +64,7 @@ export const MemberPageAccessModal: React.FC<MemberPageAccessModalProps> = ({
               <Lock className="w-5 h-5 text-blue-600" />
               <span>Configure Gated Member Page Access</span>
             </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+            <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mt-1">
               Select which member roles are permitted to access each private page on your site.
             </p>
           </div>
@@ -92,13 +92,13 @@ export const MemberPageAccessModal: React.FC<MemberPageAccessModalProps> = ({
                   className={`p-3 rounded-xl border text-xs cursor-pointer transition-all ${
                     isSelected
                       ? 'bg-blue-600 text-white border-blue-600 font-semibold shadow-sm'
-                      : 'border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/50'
+                      : 'border-slate-300 dark:border-slate-800 text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/50'
                   }`}
                 >
-                  <div className="line-clamp-1">{p.title}</div>
+                  <div className="line-clamp-1 font-bold">{p.title}</div>
                   <div
                     className={`text-[10px] mt-0.5 font-mono ${
-                      isSelected ? 'text-blue-100' : 'text-slate-400'
+                      isSelected ? 'text-blue-100 font-bold' : 'text-slate-700 dark:text-slate-300 font-medium'
                     }`}
                   >
                     {p.path}
@@ -114,7 +114,7 @@ export const MemberPageAccessModal: React.FC<MemberPageAccessModalProps> = ({
               <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
                 <span>{activePage?.title}</span>
               </h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 font-mono">
+              <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mt-0.5 font-mono">
                 {activePage?.path}
               </p>
             </div>
@@ -133,14 +133,14 @@ export const MemberPageAccessModal: React.FC<MemberPageAccessModalProps> = ({
                     className={`p-3 rounded-xl border text-xs cursor-pointer flex items-center justify-between transition-all ${
                       isChecked
                         ? 'border-blue-500 bg-blue-50/50 dark:bg-blue-950/30'
-                        : 'border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/40'
+                        : 'border-slate-300 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/40'
                     }`}
                   >
                     <div>
                       <div className="font-semibold text-slate-900 dark:text-white">
                         {role.name}
                       </div>
-                      <div className="text-[11px] text-slate-500 dark:text-slate-400">
+                      <div className="text-[11px] text-slate-700 dark:text-slate-300 font-medium">
                         {role.assignedMembersCount} assigned members
                       </div>
                     </div>
@@ -165,7 +165,7 @@ export const MemberPageAccessModal: React.FC<MemberPageAccessModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 text-xs font-medium border border-slate-200 dark:border-slate-700 rounded-xl text-slate-700 dark:text-slate-300"
+            className="px-4 py-2 text-xs font-medium border border-slate-300 dark:border-slate-700 rounded-xl text-slate-700 dark:text-slate-300"
           >
             Cancel
           </button>

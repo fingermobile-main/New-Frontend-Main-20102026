@@ -31,16 +31,16 @@ const StorefrontCard: React.FC<StorefrontCardProps> = ({
       <Star
         key={i}
         className={`h-4 w-4 ${
-          i < rating ? 'text-yellow-500 fill-current' : 'text-muted-foreground'
+          i < rating ? 'text-yellow-500 fill-current' : 'text-slate-300'
         }`}
       />
     ));
   };
 
   return (
-    <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+    <Card className="border-slate-200 overflow-hidden hover:shadow-lg transition-shadow">
       {/* Product Image */}
-      <div className="aspect-square bg-muted relative">
+      <div className="aspect-square bg-slate-100 border-b border-slate-200 relative">
         {product.image ? (
           <img
             src={product.image}
@@ -49,7 +49,7 @@ const StorefrontCard: React.FC<StorefrontCardProps> = ({
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
-            <Package className="h-16 w-16 text-muted-foreground opacity-20" />
+            <Package className="h-16 w-16 text-slate-500 opacity-40" />
           </div>
         )}
         {!product.inStock && (
@@ -62,32 +62,32 @@ const StorefrontCard: React.FC<StorefrontCardProps> = ({
       <CardContent className="p-4 space-y-2">
         {/* Category */}
         {product.category && (
-          <Badge variant="secondary" className="text-xs">
+          <Badge variant="secondary" className="text-xs bg-slate-100 text-slate-800 border border-slate-300 font-semibold">
             {product.category}
           </Badge>
         )}
 
         {/* Product Name */}
-        <h3 className="font-semibold text-lg truncate">{product.name}</h3>
+        <h3 className="font-semibold text-lg text-slate-900 truncate">{product.name}</h3>
 
         {/* Rating */}
         {product.rating && (
           <div className="flex items-center gap-2">
             <div className="flex">{renderStars(product.rating)}</div>
-            <span className="text-sm text-muted-foreground">
+            <span className="text-sm text-slate-700 font-medium">
               ({product.reviews || 0})
             </span>
           </div>
         )}
 
         {/* Price */}
-        <div className="text-2xl font-bold">${product.price.toFixed(2)}</div>
+        <div className="text-2xl font-bold text-slate-900">${product.price.toFixed(2)}</div>
       </CardContent>
 
       <CardFooter className="p-4 pt-0 flex gap-2">
         <Button
           variant="outline"
-          className="flex-1"
+          className="flex-1 border-slate-300 text-slate-800 font-semibold"
           onClick={() => onViewDetails?.(product.id)}
         >
           View Details

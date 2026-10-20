@@ -7,7 +7,7 @@ export class ApiServiceClass {
 
   constructor() {
     this.axiosInstance = axios.create({
-      baseURL: process.env.REACT_APP_API_URL || 'http://localhost:3001/api',
+      baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5001/api',
       headers: {
         'Content-Type': 'application/json'
       }
@@ -23,7 +23,10 @@ export class ApiServiceClass {
             config.url = '/';
           }
         }
-        const token = localStorage.getItem('token');
+        const token =
+          localStorage.getItem('token') ||
+          localStorage.getItem('accessToken') ||
+          localStorage.getItem('fingermobile_token');
         if (token) {
           config.headers.Authorization = `Bearer ${token}`;
         }

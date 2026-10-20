@@ -69,7 +69,7 @@ const TrackItem: React.FC<TrackItemProps> = ({
         isPlaying ? 'bg-black/30' : 'hover:bg-black/10'
       }`}
     >
-      <div className="text-gray-400 font-medium w-6 text-center">{index}</div>
+      <div className="text-slate-300 font-bold w-6 text-center">{index}</div>
       <img
         src={track.albumArtUrl}
         alt={track.title}
@@ -79,21 +79,21 @@ const TrackItem: React.FC<TrackItemProps> = ({
         <p className={`font-semibold truncate ${isPlaying ? 'text-brand-blue' : 'text-gray-200'} lg:text-base`}>
           {track.title}
         </p>
-        <p className="text-sm text-gray-400 truncate lg:text-base">{track.artist}</p>
+        <p className="text-sm text-slate-300 font-medium truncate lg:text-base">{track.artist}</p>
       </div>
 
       {canEdit && (
         <button
           type="button"
           onClick={() => onRemove(track.id)}
-          className="p-2 text-gray-400 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity"
+          className="p-2 text-slate-300 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity"
           title="Remove from playlist"
         >
           <TrashIcon className="w-4 h-4" />
         </button>
       )}
 
-      <p className="text-sm text-gray-400 font-medium lg:text-base">
+      <p className="text-sm text-slate-300 font-medium lg:text-base">
         {formatDuration(track.duration)}
       </p>
 
@@ -251,7 +251,7 @@ const PlaylistDetailPage: React.FC = () => {
 
   if (!currentPlaylist) {
     return (
-      <div className="p-8 text-center text-gray-400">
+      <div className="p-8 text-center text-slate-300 font-medium">
         Playlist not found.
       </div>
     );
@@ -280,7 +280,7 @@ const PlaylistDetailPage: React.FC = () => {
               />
             ))
           ) : (
-            <div className="col-span-2 row-span-2 bg-gray-800 flex items-center justify-center text-gray-500">
+            <div className="col-span-2 row-span-2 bg-gray-800 flex items-center justify-center text-slate-300 font-medium">
               No Tracks
             </div>
           )}
@@ -386,7 +386,7 @@ const PlaylistDetailPage: React.FC = () => {
             ))}
           </div>
         ) : (
-          <div className="text-center py-12 text-gray-400">
+          <div className="text-center py-12 text-slate-300 font-medium">
             This playlist currently has no tracks.
           </div>
         )}

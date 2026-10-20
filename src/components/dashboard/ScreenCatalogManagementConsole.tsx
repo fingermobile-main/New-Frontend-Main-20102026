@@ -266,7 +266,7 @@ const ScreenCatalogManagementConsole: React.FC = () => {
                 disabled={Boolean(editingScreen)}
                 onChange={event => updateField('slug', event.target.value)}
                 placeholder="creator-studio"
-                className="w-full rounded border border-slate-300 bg-white px-3 py-2 text-slate-900 font-bold placeholder:text-slate-400 disabled:bg-slate-100"
+                className="w-full rounded border border-slate-300 bg-white px-3 py-2 text-slate-900 font-bold placeholder:text-slate-500 disabled:bg-slate-100"
               />
             </label>
             <label className="space-y-1 text-sm font-bold text-slate-800">
@@ -276,7 +276,7 @@ const ScreenCatalogManagementConsole: React.FC = () => {
                 maxLength={200}
                 value={form.title}
                 onChange={event => updateField('title', event.target.value)}
-                className="w-full rounded border border-slate-300 bg-white px-3 py-2 text-slate-900 font-bold placeholder:text-slate-400"
+                className="w-full rounded border border-slate-300 bg-white px-3 py-2 text-slate-900 font-bold placeholder:text-slate-500"
               />
             </label>
             <label className="space-y-1 text-sm font-bold text-slate-800">
@@ -285,7 +285,7 @@ const ScreenCatalogManagementConsole: React.FC = () => {
                 maxLength={100}
                 value={form.category}
                 onChange={event => updateField('category', event.target.value)}
-                className="w-full rounded border border-slate-300 bg-white px-3 py-2 text-slate-900 font-bold placeholder:text-slate-400"
+                className="w-full rounded border border-slate-300 bg-white px-3 py-2 text-slate-900 font-bold placeholder:text-slate-500"
               />
             </label>
             <label className="space-y-1 text-sm font-bold text-slate-800">
@@ -294,7 +294,7 @@ const ScreenCatalogManagementConsole: React.FC = () => {
                 value={form.rbacRoles}
                 onChange={event => updateField('rbacRoles', event.target.value)}
                 placeholder="user, member"
-                className="w-full rounded border border-slate-300 bg-white px-3 py-2 text-slate-900 font-bold placeholder:text-slate-400"
+                className="w-full rounded border border-slate-300 bg-white px-3 py-2 text-slate-900 font-bold placeholder:text-slate-500"
               />
             </label>
             <label className="space-y-1 text-sm font-bold text-slate-800">

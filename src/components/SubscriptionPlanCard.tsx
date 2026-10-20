@@ -34,9 +34,9 @@ const SubscriptionPlanCard: React.FC<SubscriptionPlanCardProps> = ({
   const isCurrentPlan = currentPlan === plan.id;
 
   return (
-    <Card className={`relative ${plan.popular ? 'border-primary shadow-lg' : ''}`}>
+    <Card className={`relative border-slate-200 ${plan.popular ? 'border-primary ring-1 ring-primary shadow-lg' : ''}`}>
       {plan.popular && (
-        <Badge className="absolute -top-3 left-1/2 -translate-x-1/2">
+        <Badge className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground font-semibold">
           <Star className="h-3 w-3 mr-1" />
           Most Popular
         </Badge>
@@ -44,15 +44,15 @@ const SubscriptionPlanCard: React.FC<SubscriptionPlanCardProps> = ({
       <CardHeader>
         <div className="flex items-center gap-2 mb-2">
           {plan.icon || <Crown className="h-6 w-6 text-primary" />}
-          <CardTitle>{plan.name}</CardTitle>
+          <CardTitle className="text-slate-900 font-bold">{plan.name}</CardTitle>
         </div>
-        <CardDescription>{plan.description}</CardDescription>
+        <CardDescription className="text-slate-700 font-medium">{plan.description}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="text-center">
-          <div className="text-4xl font-bold">
+          <div className="text-4xl font-bold text-slate-900">
             ${plan.price}
-            <span className="text-lg font-normal text-muted-foreground">
+            <span className="text-lg font-medium text-slate-700">
               /{plan.period}
             </span>
           </div>
@@ -62,12 +62,12 @@ const SubscriptionPlanCard: React.FC<SubscriptionPlanCardProps> = ({
             <div key={index} className="flex items-start gap-2">
               <Check
                 className={`h-5 w-5 flex-shrink-0 ${
-                  feature.included ? 'text-green-500' : 'text-muted-foreground'
+                  feature.included ? 'text-green-600' : 'text-slate-500'
                 }`}
               />
               <span
                 className={`text-sm ${
-                  !feature.included && 'text-muted-foreground line-through'
+                  feature.included ? 'text-slate-800 font-medium' : 'text-slate-500 line-through'
                 }`}
               >
                 {feature.text}

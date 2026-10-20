@@ -65,9 +65,9 @@ export const MySubTab: React.FC = () => {
         {/* Quota Telemetry & CTA */}
         <div className="flex flex-col sm:flex-row items-center gap-4 shrink-0">
           <div className="p-3.5 rounded-2xl bg-slate-950/80 border border-slate-800 text-center">
-            <div className="text-xs text-slate-400 font-bold uppercase tracking-wider">Seat Utilization</div>
+            <div className="text-xs text-slate-300 font-bold uppercase tracking-wider">Seat Utilization</div>
             <div className="text-xl font-black text-emerald-400 mt-0.5">
-              {allocatedCount} <span className="text-xs text-slate-400">/ {mySubMaxSeats} Seats Active</span>
+              {allocatedCount} <span className="text-xs text-slate-300 font-medium">/ {mySubMaxSeats} Seats Active</span>
             </div>
           </div>
 
@@ -112,7 +112,7 @@ export const MySubTab: React.FC = () => {
                         </span>
                       )}
                     </div>
-                    <div className="flex items-center gap-1.5 text-xs text-slate-400 mt-1 font-mono">
+                    <div className="flex items-center gap-1.5 text-xs text-slate-300 font-medium mt-1 font-mono">
                       <Key size={12} className="text-amber-400" />
                       <span>PIN: #{member.pin}</span>
                     </div>
@@ -122,7 +122,7 @@ export const MySubTab: React.FC = () => {
                 {!isOwner && (
                   <button
                     onClick={() => removeMySubMember(member.id)}
-                    className="p-2 rounded-xl bg-slate-800 hover:bg-red-900/50 text-slate-400 hover:text-red-300 transition-colors"
+                    className="p-2 rounded-xl bg-slate-800 hover:bg-red-900/50 text-slate-300 hover:text-red-300 transition-colors"
                     title="Revoke Seat"
                   >
                     <Trash2 size={14} />
@@ -130,7 +130,7 @@ export const MySubTab: React.FC = () => {
                 )}
               </div>
 
-              <div className="pt-3 border-t border-slate-800 space-y-1.5 text-xs text-slate-400">
+              <div className="pt-3 border-t border-slate-800 space-y-1.5 text-xs text-slate-300 font-medium">
                 <div className="flex items-center justify-between">
                   <span>Access Status:</span>
                   <span className="text-emerald-400 font-bold flex items-center gap-1">
@@ -154,12 +154,12 @@ export const MySubTab: React.FC = () => {
             onClick={() => setShowAddModal(true)}
             className="p-6 rounded-3xl border-2 border-dashed border-slate-800 hover:border-emerald-500/50 bg-slate-950/40 hover:bg-slate-900/40 flex flex-col items-center justify-center text-center cursor-pointer transition-all space-y-3 min-h-[190px]"
           >
-            <div className="w-12 h-12 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 group-hover:text-emerald-400">
+            <div className="w-12 h-12 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-300 group-hover:text-emerald-400">
               <Plus size={20} />
             </div>
             <div>
               <h4 className="text-sm font-bold text-slate-300">Vacant Subscription Seat</h4>
-              <p className="text-xs text-slate-400 mt-0.5">Assign collaborator via 6-digit Sovereign PIN</p>
+              <p className="text-xs text-slate-300 font-medium mt-0.5">Assign collaborator via 6-digit Sovereign PIN</p>
             </div>
           </div>
         ))}
@@ -170,7 +170,7 @@ export const MySubTab: React.FC = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
           <div className="bg-slate-900 border border-emerald-500/40 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4">
             <h3 className="text-base font-bold text-white">Add Member to MySub Plan by PIN</h3>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-slate-300 font-medium">
               Input your collaborator's verified 6-digit Member PIN to immediately activate their seat on your Sovereign Crew subscription.
             </p>
 

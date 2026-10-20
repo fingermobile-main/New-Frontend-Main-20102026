@@ -60,7 +60,7 @@ const PublishedPage: React.FC = () => {
   if (!page) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-gray-500">Page not found</div>
+        <div className="text-slate-700 font-medium">Page not found</div>
       </div>
     );
   }
@@ -81,14 +81,14 @@ const PublishedPage: React.FC = () => {
             className="max-w-full h-auto rounded-lg"
           />
           {block.content.caption && (
-            <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-2">{block.content.caption}</p>
+            <p className="text-center text-sm text-slate-700 dark:text-slate-300 font-medium mt-2">{block.content.caption}</p>
           )}
         </div>
       );
     case 'divider':
       return <hr className="my-6 border-gray-200 dark:border-gray-700" />;
     default:
-      return <div className="text-gray-500">Unsupported content type: {block.type}</div>;
+      return <div className="text-slate-700 font-medium">Unsupported content type: {block.type}</div>;
     }
   };
 
@@ -97,7 +97,7 @@ const PublishedPage: React.FC = () => {
       <article className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
         <header className="mb-6 pb-6 border-b border-slate-300 dark:border-gray-700">
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white">{page.title}</h1>
-          <div className="mt-4 text-sm text-slate-700 dark:text-gray-400">
+          <div className="mt-4 text-sm text-slate-700 dark:text-slate-300 font-medium">
             Published: {new Date(page.publishedAt || page.updatedAt).toLocaleDateString()}
           </div>
         </header>
@@ -110,7 +110,7 @@ const PublishedPage: React.FC = () => {
           ))}
         </div>
 
-        <footer className="mt-8 pt-6 border-t border-slate-300 dark:border-gray-700 text-sm text-slate-700 dark:text-gray-400">
+        <footer className="mt-8 pt-6 border-t border-slate-300 dark:border-gray-700 text-sm text-slate-700 dark:text-slate-300 font-medium">
           Last updated: {new Date(page.updatedAt).toLocaleDateString()}
         </footer>
       </article>

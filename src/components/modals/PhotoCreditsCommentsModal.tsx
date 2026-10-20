@@ -173,14 +173,14 @@ export const PhotoCreditsCommentsModal: React.FC<PhotoCreditsCommentsModalProps>
                     {c.author.charAt(0)}
                   </div>
                   <span className="font-bold text-slate-200">{c.author}</span>
-                  <span className="text-[10px] text-slate-400">{c.timestamp}</span>
+                  <span className="text-[10px] text-slate-300 font-medium">{c.timestamp}</span>
                 </div>
                 <button
                   onClick={() => handleToggleLike(c.id)}
                   className={`flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded transition-colors ${
                     c.hasLiked
                       ? 'text-red-400 bg-red-950/40'
-                      : 'text-slate-400 hover:text-slate-200 bg-slate-900'
+                      : 'text-slate-300 font-medium hover:text-white bg-slate-900'
                   }`}
                 >
                   <Heart className={`w-3 h-3 ${c.hasLiked ? 'fill-red-400' : ''}`} />

@@ -313,7 +313,7 @@ export const ConnectorArtifactConsole: React.FC = () => {
                     {currentUser.plan}
                   </span>
                 </div>
-                <div className="text-slate-400 mt-0.5">
+                <div className="text-slate-300 font-medium mt-0.5">
                   Queries: <span className="text-emerald-400 font-mono font-medium">{currentUser.quotas?.monthly_data_queries_used}</span> / {currentUser.quotas?.monthly_data_queries_max}
                 </div>
               </div>
@@ -351,7 +351,7 @@ export const ConnectorArtifactConsole: React.FC = () => {
                     : 'bg-slate-800/60 text-slate-300 hover:bg-slate-800 hover:text-white border border-slate-700/40'
                 }`}
               >
-                <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-white' : 'text-slate-400'}`} />
+                <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-white' : 'text-slate-300'}`} />
                 <span>{tab.label}</span>
                 {tab.count !== undefined && (
                   <span className={`px-1.5 py-0.2 rounded-full text-[10px] ${
@@ -369,7 +369,7 @@ export const ConnectorArtifactConsole: React.FC = () => {
       {/* Global Connector Switcher Bar */}
       <div className="bg-slate-900/90 border border-slate-800 rounded-xl p-4 flex flex-col md:flex-row items-center justify-between gap-4 shadow-lg">
         <div className="flex items-center gap-3 w-full md:w-auto">
-          <span className="text-xs font-medium text-slate-400 whitespace-nowrap">Active Connector:</span>
+          <span className="text-xs font-bold text-slate-300 whitespace-nowrap">Active Connector:</span>
           <select
             value={selectedConnector}
             onChange={e => setSelectedConnector(e.target.value)}
@@ -431,13 +431,13 @@ export const ConnectorArtifactConsole: React.FC = () => {
                   <h3 className="font-semibold text-white text-sm mt-3 group-hover:text-indigo-300 transition-colors">
                     {conn.name}
                   </h3>
-                  <div className="text-xs text-slate-400 mt-1 flex items-center justify-between">
+                  <div className="text-xs text-slate-300 font-medium mt-1 flex items-center justify-between">
                     <span className="capitalize">{conn.category}</span>
-                    <span className="font-mono text-[11px] text-slate-500">{conn.auth_type}</span>
+                    <span className="font-mono text-[11px] text-slate-300">{conn.auth_type}</span>
                   </div>
 
                   <div className="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
-                    <span className="text-slate-400">Linked Accounts:</span>
+                    <span className="text-slate-300 font-medium">Linked Accounts:</span>
                     <span className="px-2 py-0.5 rounded bg-slate-800 font-mono text-indigo-300 font-semibold text-[11px]">
                       {connAccounts.length}
                     </span>
@@ -445,12 +445,12 @@ export const ConnectorArtifactConsole: React.FC = () => {
 
                   <div className="mt-2 flex flex-wrap gap-1">
                     {conn.permissions.slice(0, 2).map((perm, idx) => (
-                      <span key={idx} className="text-[10px] px-1.5 py-0.5 rounded bg-slate-800/80 text-slate-400 border border-slate-700/40">
+                      <span key={idx} className="text-[10px] px-1.5 py-0.5 rounded bg-slate-800/80 text-slate-300 font-medium border border-slate-700/40">
                         {perm}
                       </span>
                     ))}
                     {conn.permissions.length > 2 && (
-                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-800/80 text-slate-500">
+                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-800/80 text-slate-300 font-medium">
                         +{conn.permissions.length - 2}
                       </span>
                     )}
@@ -468,7 +468,7 @@ export const ConnectorArtifactConsole: React.FC = () => {
                   <Layers className="w-4 h-4 text-indigo-400" />
                   Linked Account Directory Sheet (get_accounts)
                 </h3>
-                <p className="text-xs text-slate-400 mt-0.5">
+                <p className="text-xs text-slate-300 font-medium mt-0.5">
                   Filtered by active connector: <span className="text-indigo-400 font-medium">{selectedConnector}</span>
                 </p>
               </div>
@@ -477,7 +477,7 @@ export const ConnectorArtifactConsole: React.FC = () => {
                 className={`text-xs px-3 py-1.5 rounded-lg border transition-colors ${
                   !selectedAccount
                     ? 'bg-indigo-600 text-white border-indigo-500'
-                    : 'bg-slate-800 text-slate-400 border-slate-700 hover:text-white'
+                    : 'bg-slate-800 text-slate-300 font-medium border-slate-700 hover:text-white'
                 }`}
               >
                 Show All Accounts ({accounts.length})
@@ -486,7 +486,7 @@ export const ConnectorArtifactConsole: React.FC = () => {
 
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
-                <thead className="bg-slate-800/60 text-slate-400 border-b border-slate-800 font-semibold uppercase tracking-wider text-[10px]">
+                <thead className="bg-slate-800/60 text-slate-200 border-b border-slate-800 font-bold uppercase tracking-wider text-[10px]">
                   <tr>
                     <th className="px-5 py-3.5">Account ID</th>
                     <th className="px-5 py-3.5">Account Name</th>
@@ -509,13 +509,13 @@ export const ConnectorArtifactConsole: React.FC = () => {
                       >
                         <td className="px-5 py-3 font-mono text-indigo-300 font-semibold">{acc.id}</td>
                         <td className="px-5 py-3 text-white font-medium">{acc.account_name}</td>
-                        <td className="px-5 py-3 font-mono text-slate-400 text-[11px]">{acc.external_account_id}</td>
+                        <td className="px-5 py-3 font-mono text-slate-300 text-[11px]">{acc.external_account_id}</td>
                         <td className="px-5 py-3">
                           <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-mono text-[11px]">
                             {acc.currency}
                           </span>
                         </td>
-                        <td className="px-5 py-3 text-slate-400">{acc.timezone}</td>
+                        <td className="px-5 py-3 text-slate-300 font-medium">{acc.timezone}</td>
                         <td className="px-5 py-3">
                           <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
                             {acc.status}
@@ -552,13 +552,13 @@ export const ConnectorArtifactConsole: React.FC = () => {
                   <Sliders className="w-4 h-4 text-indigo-400" />
                   Schema & Mapping Inspector (get_fields & get_options)
                 </h3>
-                <p className="text-xs text-slate-400 mt-0.5">
+                <p className="text-xs text-slate-300 font-medium mt-0.5">
                   Distinguishing <span className="text-emerald-400 font-medium">Metrics</span> (numeric/percentage aggregates) vs{' '}
                   <span className="text-blue-400 font-medium">Dimensions</span> (breakdown criteria) for {selectedConnector}.
                 </p>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-xs text-slate-400">Total Fields:</span>
+                <span className="text-xs text-slate-300 font-medium">Total Fields:</span>
                 <span className="px-2.5 py-1 rounded-lg bg-slate-800 text-white font-mono font-semibold text-xs">
                   {schema?.all_fields?.length || 0}
                 </span>
@@ -591,9 +591,9 @@ export const ConnectorArtifactConsole: React.FC = () => {
                             {field.id}
                           </span>
                         </div>
-                        <p className="text-[11px] text-slate-400 mt-1">{field.description}</p>
+                        <p className="text-[11px] text-slate-300 font-medium mt-1">{field.description}</p>
                       </div>
-                      <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-400">
+                      <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300">
                         {field.type}
                       </span>
                     </div>
@@ -625,7 +625,7 @@ export const ConnectorArtifactConsole: React.FC = () => {
                             {field.id}
                           </span>
                         </div>
-                        <p className="text-[11px] text-slate-400 mt-1">{field.description}</p>
+                        <p className="text-[11px] text-slate-300 font-medium mt-1">{field.description}</p>
                       </div>
                       <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-slate-800 text-emerald-400">
                         {field.type}
@@ -646,7 +646,7 @@ export const ConnectorArtifactConsole: React.FC = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
                   {options.options.date_filter_columns && (
                     <div className="p-3.5 rounded-lg bg-slate-900 border border-slate-800">
-                      <span className="text-[11px] text-slate-400 uppercase font-semibold">Valid Date Filter Columns:</span>
+                      <span className="text-[11px] text-slate-300 uppercase font-bold">Valid Date Filter Columns:</span>
                       <div className="flex flex-wrap gap-1.5 mt-2">
                         {options.options.date_filter_columns.map(col => (
                           <span key={col} className="px-2 py-0.5 rounded bg-slate-800 text-purple-300 font-mono text-[11px] border border-purple-500/20">
@@ -659,7 +659,7 @@ export const ConnectorArtifactConsole: React.FC = () => {
 
                   {options.options.attribution_windows && (
                     <div className="p-3.5 rounded-lg bg-slate-900 border border-slate-800">
-                      <span className="text-[11px] text-slate-400 uppercase font-semibold">Attribution Windows:</span>
+                      <span className="text-[11px] text-slate-300 uppercase font-bold">Attribution Windows:</span>
                       <div className="flex flex-wrap gap-1.5 mt-2">
                         {options.options.attribution_windows.map(win => (
                           <span key={win} className="px-2 py-0.5 rounded bg-slate-800 text-cyan-300 font-mono text-[11px] border border-cyan-500/20">
@@ -672,7 +672,7 @@ export const ConnectorArtifactConsole: React.FC = () => {
 
                   {options.options.supported_breakdowns && (
                     <div className="p-3.5 rounded-lg bg-slate-900 border border-slate-800">
-                      <span className="text-[11px] text-slate-400 uppercase font-semibold">Supported Breakdowns:</span>
+                      <span className="text-[11px] text-slate-300 uppercase font-bold">Supported Breakdowns:</span>
                       <div className="flex flex-wrap gap-1.5 mt-2">
                         {options.options.supported_breakdowns.map(bd => (
                           <span key={bd} className="px-2 py-0.5 rounded bg-slate-800 text-amber-300 font-mono text-[11px] border border-amber-500/20">
@@ -700,7 +700,7 @@ export const ConnectorArtifactConsole: React.FC = () => {
                   <BarChart3 className="w-4 h-4 text-emerald-400" />
                   Data Ingestion Query Runner (get_data)
                 </h3>
-                <p className="text-xs text-slate-400 mt-0.5">
+                <p className="text-xs text-slate-300 font-medium mt-0.5">
                   Targeted queries with date ranges, accounts, and metrics/dimensions filters.
                 </p>
               </div>
@@ -720,9 +720,9 @@ export const ConnectorArtifactConsole: React.FC = () => {
             {/* Filter Parameters Form */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
               <div>
-                <label className="text-slate-400 font-medium block mb-1">Date Range Start:</label>
+                <label className="text-slate-300 font-bold block mb-1">Date Range Start:</label>
                 <div className="relative">
-                  <Calendar className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-2.5" />
+                  <Calendar className="w-3.5 h-3.5 text-slate-600 absolute left-3 top-2.5" />
                   <input
                     type="date"
                     value={dateFrom}
@@ -733,9 +733,9 @@ export const ConnectorArtifactConsole: React.FC = () => {
               </div>
 
               <div>
-                <label className="text-slate-400 font-medium block mb-1">Date Range End:</label>
+                <label className="text-slate-300 font-bold block mb-1">Date Range End:</label>
                 <div className="relative">
-                  <Calendar className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-2.5" />
+                  <Calendar className="w-3.5 h-3.5 text-slate-600 absolute left-3 top-2.5" />
                   <input
                     type="date"
                     value={dateTo}
@@ -746,7 +746,7 @@ export const ConnectorArtifactConsole: React.FC = () => {
               </div>
 
               <div>
-                <label className="text-slate-400 font-medium block mb-1">Target Account:</label>
+                <label className="text-slate-300 font-bold block mb-1">Target Account:</label>
                 <select
                   value={selectedAccount}
                   onChange={e => setSelectedAccount(e.target.value)}
@@ -764,7 +764,7 @@ export const ConnectorArtifactConsole: React.FC = () => {
               </div>
 
               <div>
-                <label className="text-slate-400 font-medium block mb-1">Fields Included:</label>
+                <label className="text-slate-300 font-bold block mb-1">Fields Included:</label>
                 <div className="text-[11px] bg-slate-800/80 border border-slate-700 rounded-lg px-3 py-2 text-indigo-300 font-mono truncate">
                   {selectedFields.length > 0 ? selectedFields.join(', ') : 'All fields'}
                 </div>
@@ -781,20 +781,20 @@ export const ConnectorArtifactConsole: React.FC = () => {
                   Query Execution Results ({queryResult.length} rows)
                 </h4>
               </div>
-              <span className="text-[11px] text-slate-400 font-mono">
+              <span className="text-[11px] text-slate-300 font-mono font-medium">
                 Range: {dateFrom} → {dateTo}
               </span>
             </div>
 
             {queryResult.length === 0 ? (
-              <div className="p-12 text-center text-slate-500">
-                <BarChart3 className="w-10 h-10 mx-auto text-slate-600 mb-2" />
-                <p className="text-xs">No records returned. Click "Run Targeted Query" to fetch live data.</p>
+              <div className="p-12 text-center text-slate-300">
+                <BarChart3 className="w-10 h-10 mx-auto text-slate-500 mb-2" />
+                <p className="text-xs font-medium">No records returned. Click "Run Targeted Query" to fetch live data.</p>
               </div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
-                  <thead className="bg-slate-800/60 text-slate-400 border-b border-slate-800 uppercase tracking-wider text-[10px]">
+                  <thead className="bg-slate-800/60 text-slate-200 border-b border-slate-800 font-bold uppercase tracking-wider text-[10px]">
                     <tr>
                       {Object.keys(queryResult[0]).map(key => (
                         <th key={key} className="px-5 py-3 font-semibold">
@@ -841,7 +841,7 @@ export const ConnectorArtifactConsole: React.FC = () => {
                   <Play className="w-4 h-4 text-amber-400" />
                   Action Tools & State Mutations (list_actions & run_action)
                 </h3>
-                <p className="text-xs text-slate-400 mt-0.5">
+                <p className="text-xs text-slate-300 font-medium mt-0.5">
                   Execute write operations and parameter modifications back to connector accounts with mandatory confirmation safeguards.
                 </p>
               </div>
@@ -862,16 +862,16 @@ export const ConnectorArtifactConsole: React.FC = () => {
                       <span className="font-mono text-[10px] text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20">
                         {action.id}
                       </span>
-                      <span className="text-[10px] uppercase font-mono text-slate-500">
+                      <span className="text-[10px] uppercase font-mono text-slate-300 font-medium">
                         {action.connector || selectedConnector}
                       </span>
                     </div>
                     <h4 className="font-semibold text-white text-sm mt-2">{action.name}</h4>
-                    <p className="text-xs text-slate-400 mt-1 leading-relaxed">{action.description}</p>
+                    <p className="text-xs text-slate-300 font-medium mt-1 leading-relaxed">{action.description}</p>
                   </div>
 
                   <div className="mt-5 pt-3 border-t border-slate-800/80 flex items-center justify-between">
-                    <span className="text-[11px] text-slate-500 font-mono">
+                    <span className="text-[11px] text-slate-300 font-medium font-mono">
                       {Object.keys(action.parameters || {}).length} params
                     </span>
                     <button
@@ -899,7 +899,7 @@ export const ConnectorArtifactConsole: React.FC = () => {
                   <Terminal className="w-4 h-4 text-cyan-400" />
                   Connector Action Audit Trail (get_action_logs)
                 </h3>
-                <p className="text-xs text-slate-400 mt-0.5">
+                <p className="text-xs text-slate-300 font-medium mt-0.5">
                   Immutable record of every state modification executed by users or agentic workflows.
                 </p>
               </div>
@@ -918,7 +918,7 @@ export const ConnectorArtifactConsole: React.FC = () => {
 
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
-                <thead className="bg-slate-800/60 text-slate-400 border-b border-slate-800 uppercase tracking-wider text-[10px]">
+                <thead className="bg-slate-800/60 text-slate-200 border-b border-slate-800 font-bold uppercase tracking-wider text-[10px]">
                   <tr>
                     <th className="px-5 py-3.5">Log ID</th>
                     <th className="px-5 py-3.5">Connector</th>
@@ -932,7 +932,7 @@ export const ConnectorArtifactConsole: React.FC = () => {
                 <tbody className="divide-y divide-slate-800/60 font-medium">
                   {actionLogs.length === 0 ? (
                     <tr>
-                      <td colSpan={7} className="px-5 py-8 text-center text-slate-500">
+                      <td colSpan={7} className="px-5 py-8 text-center text-slate-300 font-medium">
                         No actions logged yet. Run an action to record an audit entry.
                       </td>
                     </tr>
@@ -948,10 +948,10 @@ export const ConnectorArtifactConsole: React.FC = () => {
                             {log.status}
                           </span>
                         </td>
-                        <td className="px-5 py-3 font-mono text-slate-400 text-[11px] max-w-xs truncate">
+                        <td className="px-5 py-3 font-mono text-slate-300 text-[11px] max-w-xs truncate">
                           {typeof log.payload === 'string' ? log.payload : JSON.stringify(log.payload)}
                         </td>
-                        <td className="px-5 py-3 text-right text-slate-400 font-mono text-[11px]">
+                        <td className="px-5 py-3 text-right text-slate-300 font-mono text-[11px]">
                           {new Date(log.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
                         </td>
                       </tr>
@@ -981,7 +981,7 @@ export const ConnectorArtifactConsole: React.FC = () => {
               </div>
               <button
                 onClick={() => setActionModalOpen(false)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+                className="p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -1006,7 +1006,7 @@ export const ConnectorArtifactConsole: React.FC = () => {
                   <div key={paramName} className="space-y-1">
                     <div className="flex items-center justify-between text-xs">
                       <span className="text-slate-300 font-medium font-mono">{paramName}</span>
-                      <span className="text-slate-500 text-[10px]">{paramConfig.description}</span>
+                      <span className="text-slate-300 font-medium text-[10px]">{paramConfig.description}</span>
                     </div>
 
                     {paramConfig.enum ? (
@@ -1087,12 +1087,12 @@ export const ConnectorArtifactConsole: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="font-bold text-white text-base">Connector Auth & Link Manager</h3>
-                  <span className="text-xs text-slate-400">{authModalConnector}</span>
+                  <span className="text-xs text-slate-300 font-medium">{authModalConnector}</span>
                 </div>
               </div>
               <button
                 onClick={() => setAuthModalConnector(null)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+                className="p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -1130,7 +1130,7 @@ export const ConnectorArtifactConsole: React.FC = () => {
                     <HelpCircle className="w-4 h-4 text-indigo-400" />
                     Developer Connection Instructions:
                   </h4>
-                  <ul className="space-y-1.5 text-slate-400">
+                  <ul className="space-y-1.5 text-slate-300 font-medium">
                     {connectInfo.instructions?.map((step: string, idx: number) => (
                       <li key={idx} className="leading-relaxed">
                         {step}
@@ -1139,7 +1139,7 @@ export const ConnectorArtifactConsole: React.FC = () => {
                   </ul>
 
                   <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-[11px]">
-                    <span className="text-slate-500">API Documentation:</span>
+                    <span className="text-slate-300 font-medium">API Documentation:</span>
                     <a
                       href={connectInfo.documentation_url || '#'}
                       target="_blank"

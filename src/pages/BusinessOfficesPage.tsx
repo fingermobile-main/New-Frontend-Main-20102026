@@ -290,14 +290,14 @@ export const BusinessOfficesPage: React.FC = () => {
                   Corporate Offices & Global Network Hubs
                 </h1>
               </div>
-              <p className="text-sm text-slate-400 max-w-2xl">
+              <p className="text-sm text-slate-300 font-medium max-w-2xl">
                 FingerMobile Protocol operates sovereign governance centers, broadcast studios, and decentralized metaverse terminals spanning Nigeria, the United States, the United Kingdom, Ghana, Kenya, South Africa, and the global Web3 ecosystem.
               </p>
             </div>
 
             <div className="flex items-center gap-3">
               <div className="px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs">
-                <span className="text-slate-400">Vault Balance: </span>
+                <span className="text-slate-300 font-medium">Vault Balance: </span>
                 <span className="font-mono font-bold text-amber-400">{ficBalance.toLocaleString()} FIC</span>
               </div>
             </div>
@@ -310,7 +310,7 @@ export const BusinessOfficesPage: React.FC = () => {
                 <ShieldCheck className="w-6 h-6 text-amber-400" />
                 Corporate Leadership & Sovereign Governance
               </h2>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-300 font-medium">
                 Founders, executive directors, and communications leadership directing the global growth and statutory compliance of FingerMobile Protocol.
               </p>
             </div>
@@ -338,7 +338,7 @@ export const BusinessOfficesPage: React.FC = () => {
                 <p className="text-xs text-slate-300 mt-4 leading-relaxed">
                   Senior Data Analyst, Intellectual Property Owner, the Visionary, Framework Designer, Social Media Ideologist and Pioneer, specializing in customer behavior analysis, retention, and Cyber Security Framework engineering.
                 </p>
-                <div className="mt-4 pt-3 border-t border-slate-900 flex items-center justify-between text-[11px] text-slate-400 font-mono">
+                <div className="mt-4 pt-3 border-t border-slate-900 flex items-center justify-between text-[11px] text-slate-300 font-medium font-mono">
                   <span>ID: FM-FOUNDER-001</span>
                   <span className="text-amber-400 font-bold">STERCS™ Sovereign</span>
                 </div>
@@ -366,7 +366,7 @@ export const BusinessOfficesPage: React.FC = () => {
                 <p className="text-xs text-slate-300 mt-4 leading-relaxed">
                   Corporate Governance & Statutory Compliance Lead, managing institutional registry, stakeholder alignment, regulatory filings across CAC Nigeria, UK Companies House, and global entity charters.
                 </p>
-                <div className="mt-4 pt-3 border-t border-slate-900 flex items-center justify-between text-[11px] text-slate-400 font-mono">
+                <div className="mt-4 pt-3 border-t border-slate-900 flex items-center justify-between text-[11px] text-slate-300 font-medium font-mono">
                   <span>ID: FM-COFOUNDER-002</span>
                   <span className="text-emerald-400 font-bold">Statutory Governance</span>
                 </div>
@@ -394,7 +394,7 @@ export const BusinessOfficesPage: React.FC = () => {
                 <p className="text-xs text-slate-300 mt-4 leading-relaxed">
                   Head of Group Communications & Global Brand Marketing, spearheading institutional narrative, creator acquisition, public relations, omnichannel campaign strategies, and brand equity.
                 </p>
-                <div className="mt-4 pt-3 border-t border-slate-900 flex items-center justify-between text-[11px] text-slate-400 font-mono">
+                <div className="mt-4 pt-3 border-t border-slate-900 flex items-center justify-between text-[11px] text-slate-300 font-medium font-mono">
                   <span>ID: FM-EXEC-003</span>
                   <span className="text-purple-400 font-bold">Omnichannel Comms</span>
                 </div>
@@ -402,7 +402,7 @@ export const BusinessOfficesPage: React.FC = () => {
             </div>
 
             {/* Corporate Registration Badges */}
-            <div className="pt-4 border-t border-slate-800/80 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs text-slate-400">
+            <div className="pt-4 border-t border-slate-800/80 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs text-slate-300 font-medium">
               <div className="flex items-center gap-2">
                 <BadgeCheck className="w-4 h-4 text-emerald-400" />
                 <span>CAC Nigeria Registered</span>
@@ -430,67 +430,67 @@ export const BusinessOfficesPage: React.FC = () => {
                   <Sparkles className="w-6 h-6 text-amber-400" />
                   Core Sovereign Brand Ecosystem
                 </h2>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="text-xs text-slate-300 font-medium mt-1">
                   Decentralized multi-role entertainment, broadcasting, tokenomics, and matchmaking verticals powered by FingerMobile Protocol.
                 </p>
               </div>
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-xs font-mono text-amber-400">
-                <span>4 Core Protocols</span>
+                <span>10 Unified Ecosystem Platforms</span>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-              {/* Brand 1: BeatWaveNg */}
-              <div className="p-5 rounded-2xl bg-slate-950 border border-slate-800 hover:border-emerald-500/50 transition-all flex flex-col justify-between group shadow-lg">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+              {/* Brand 1: PhotoCredits */}
+              <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 hover:border-amber-500/50 transition-all flex flex-col justify-between group shadow-lg">
                 <div>
-                  <div className="w-14 h-14 rounded-2xl bg-slate-900 border border-slate-800 p-2 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform overflow-hidden">
+                  <div className="w-14 h-14 rounded-2xl bg-slate-900 border border-slate-800 p-2 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform overflow-hidden">
                     <img
-                      src="/assets/logos/beatwaveng_logo.png"
-                      alt="BeatWaveNg"
+                      src="/assets/logos/photocredits_icon.png"
+                      alt="PhotoCredits"
                       className="w-full h-full object-contain"
                     />
                   </div>
-                  <h3 className="font-extrabold text-base text-white">BeatWaveNg</h3>
-                  <p className="text-[11px] text-emerald-400 font-semibold mt-0.5">
-                    Audio & Live Beats Broadcast
+                  <h3 className="font-extrabold text-sm text-white">PhotoCredits</h3>
+                  <p className="text-[10px] text-amber-400 font-semibold mt-0.5">
+                    80/20 Photography Licensing
                   </p>
-                  <p className="text-xs text-slate-400 mt-2.5 leading-relaxed">
-                    Sovereign music streaming, live internet radio stations, DJ mixtape distribution, genre aggregators, and professional master studio equalizers.
+                  <p className="text-xs text-slate-300 font-medium mt-2 leading-relaxed">
+                    Sovereign creator licensing, community share voting, and monthly 150K FIC prize giveaways.
                   </p>
                 </div>
-                <div className="mt-5 pt-3 border-t border-slate-900">
+                <div className="mt-4 pt-2.5 border-t border-slate-900">
                   <a
-                    href="/beatwave-ng"
-                    className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-400 hover:text-emerald-300 hover:underline"
+                    href="/photocredits"
+                    className="inline-flex items-center gap-1 text-xs font-bold text-amber-400 hover:text-amber-300 hover:underline"
                   >
-                    <span>Launch BeatWaveNg</span>
+                    <span>Launch PhotoCredits</span>
                     <span>→</span>
                   </a>
                 </div>
               </div>
 
               {/* Brand 2: Dancia-4Tv */}
-              <div className="p-5 rounded-2xl bg-slate-950 border border-slate-800 hover:border-blue-500/50 transition-all flex flex-col justify-between group shadow-lg">
+              <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 hover:border-blue-500/50 transition-all flex flex-col justify-between group shadow-lg">
                 <div>
-                  <div className="w-14 h-14 rounded-2xl bg-slate-900 border border-slate-800 p-2 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform overflow-hidden">
+                  <div className="w-14 h-14 rounded-2xl bg-slate-900 border border-slate-800 p-2 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform overflow-hidden">
                     <img
                       src="/assets/logos/dancia4tv_logo.png"
                       alt="Dancia-4Tv"
                       className="w-full h-full object-contain"
                     />
                   </div>
-                  <h3 className="font-extrabold text-base text-white">Dancia-4Tv</h3>
-                  <p className="text-[11px] text-blue-400 font-semibold mt-0.5">
+                  <h3 className="font-extrabold text-sm text-white">Dancia-4Tv</h3>
+                  <p className="text-[10px] text-blue-400 font-semibold mt-0.5">
                     4K Television & Visual Reels
                   </p>
-                  <p className="text-xs text-slate-400 mt-2.5 leading-relaxed">
-                    High-definition broadcast television network, cultural choreography, creator video reels, interactive studio showcases, and livestreams.
+                  <p className="text-xs text-slate-300 font-medium mt-2 leading-relaxed">
+                    High-definition broadcast television network, cultural choreography, and interactive studio showcases.
                   </p>
                 </div>
-                <div className="mt-5 pt-3 border-t border-slate-900">
+                <div className="mt-4 pt-2.5 border-t border-slate-900">
                   <a
-                    href="/dancia-tv"
-                    className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-400 hover:text-blue-300 hover:underline"
+                    href="/dancia-4tv"
+                    className="inline-flex items-center gap-1 text-xs font-bold text-blue-400 hover:text-blue-300 hover:underline"
                   >
                     <span>Tune into Dancia-4Tv</span>
                     <span>→</span>
@@ -498,28 +498,115 @@ export const BusinessOfficesPage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Brand 3: Infinite Coin */}
-              <div className="p-5 rounded-2xl bg-slate-950 border border-slate-800 hover:border-amber-500/50 transition-all flex flex-col justify-between group shadow-lg">
+              {/* Brand 3: BeatWaveNg */}
+              <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 hover:border-emerald-500/50 transition-all flex flex-col justify-between group shadow-lg">
                 <div>
-                  <div className="w-14 h-14 rounded-2xl bg-slate-900 border border-slate-800 p-2 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform overflow-hidden">
+                  <div className="w-14 h-14 rounded-2xl bg-slate-900 border border-slate-800 p-2 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform overflow-hidden">
+                    <img
+                      src="/assets/logos/beatwaveng_logo.png"
+                      alt="BeatWaveNg"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  <h3 className="font-extrabold text-sm text-white">BeatWaveNg</h3>
+                  <p className="text-[10px] text-emerald-400 font-semibold mt-0.5">
+                    Audio & Live Beats Broadcast
+                  </p>
+                  <p className="text-xs text-slate-300 font-medium mt-2 leading-relaxed">
+                    Sovereign music streaming, live internet radio stations, DJ mixtape distribution, and studio equalizers.
+                  </p>
+                </div>
+                <div className="mt-4 pt-2.5 border-t border-slate-900">
+                  <a
+                    href="/beatwave-ng"
+                    className="inline-flex items-center gap-1 text-xs font-bold text-emerald-400 hover:text-emerald-300 hover:underline"
+                  >
+                    <span>Launch BeatWaveNg</span>
+                    <span>→</span>
+                  </a>
+                </div>
+              </div>
+
+              {/* Brand 4: MarketPlace */}
+              <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 hover:border-amber-500/50 transition-all flex flex-col justify-between group shadow-lg">
+                <div>
+                  <div className="w-14 h-14 rounded-2xl bg-slate-900 border border-slate-800 p-2 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform overflow-hidden">
+                    <img
+                      src="/assets/logos/marketplace_icon.png"
+                      alt="MarketPlace"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  <h3 className="font-extrabold text-sm text-white">MarketPlace</h3>
+                  <p className="text-[10px] text-amber-400 font-semibold mt-0.5">
+                    Sovereign Multi-Vendor Commerce
+                  </p>
+                  <p className="text-xs text-slate-300 font-medium mt-2 leading-relaxed">
+                    Decentralized digital and physical marketplace, vendor storefronts, and buyer protection escrow.
+                  </p>
+                </div>
+                <div className="mt-4 pt-2.5 border-t border-slate-900">
+                  <a
+                    href="/marketplace"
+                    className="inline-flex items-center gap-1 text-xs font-bold text-amber-400 hover:text-amber-300 hover:underline"
+                  >
+                    <span>Open MarketPlace</span>
+                    <span>→</span>
+                  </a>
+                </div>
+              </div>
+
+              {/* Brand 5: FingerLux */}
+              <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 hover:border-indigo-500/50 transition-all flex flex-col justify-between group shadow-lg">
+                <div>
+                  <div className="w-14 h-14 rounded-2xl bg-slate-900 border border-slate-800 p-2 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform overflow-hidden">
+                    <img
+                      src="/assets/logos/fingerlux_icon.png"
+                      alt="FingerLux"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  <h3 className="font-extrabold text-sm text-white">FingerLux</h3>
+                  <p className="text-[10px] text-indigo-400 font-semibold mt-0.5">
+                    Luxury Concierge & Scheduling
+                  </p>
+                  <p className="text-xs text-slate-300 font-medium mt-2 leading-relaxed">
+                    High-net-worth portfolio assets, private client showcase, appointment booking, and bespoke lifestyle.
+                  </p>
+                </div>
+                <div className="mt-4 pt-2.5 border-t border-slate-900">
+                  <a
+                    href="/fingerlux"
+                    className="inline-flex items-center gap-1 text-xs font-bold text-indigo-400 hover:text-indigo-300 hover:underline"
+                  >
+                    <span>Enter FingerLux</span>
+                    <span>→</span>
+                  </a>
+                </div>
+              </div>
+
+              {/* Brand 6: Infinite Coin (FIC) */}
+              <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 hover:border-amber-500/50 transition-all flex flex-col justify-between group shadow-lg">
+                <div>
+                  <div className="w-14 h-14 rounded-2xl bg-slate-900 border border-slate-800 p-2 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform overflow-hidden">
                     <img
                       src="/assets/logos/fic_logo.png"
                       alt="Infinite Coin (FIC)"
                       className="w-full h-full object-contain"
                     />
                   </div>
-                  <h3 className="font-extrabold text-base text-white">Infinite Coin (FIC)</h3>
-                  <p className="text-[11px] text-amber-400 font-semibold mt-0.5">
+                  <h3 className="font-extrabold text-sm text-white">Infinite Coin (FIC)</h3>
+                  <p className="text-[10px] text-amber-400 font-semibold mt-0.5">
                     Sovereign Protocol Currency
                   </p>
-                  <p className="text-xs text-slate-400 mt-2.5 leading-relaxed">
-                    Cryptographic utility coin powering on-chain and off-chain settlements, peer-to-peer tipping, corporate vaults, and marketplace liquidation.
+                  <p className="text-xs text-slate-300 font-medium mt-2 leading-relaxed">
+                    Cryptographic utility coin powering on-chain settlements, tipping, vaults, and liquidation.
                   </p>
                 </div>
-                <div className="mt-5 pt-3 border-t border-slate-900">
+                <div className="mt-4 pt-2.5 border-t border-slate-900">
                   <a
                     href="/wallet"
-                    className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-400 hover:text-amber-300 hover:underline"
+                    className="inline-flex items-center gap-1 text-xs font-bold text-amber-400 hover:text-amber-300 hover:underline"
                   >
                     <span>Open FIC Vault</span>
                     <span>→</span>
@@ -527,30 +614,117 @@ export const BusinessOfficesPage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Brand 4: Lush Pressies */}
-              <div className="p-5 rounded-2xl bg-slate-950 border border-slate-800 hover:border-pink-500/50 transition-all flex flex-col justify-between group shadow-lg">
+              {/* Brand 7: SuperVi */}
+              <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 hover:border-cyan-500/50 transition-all flex flex-col justify-between group shadow-lg">
                 <div>
-                  <div className="w-14 h-14 rounded-2xl bg-slate-900 border border-slate-800 p-2 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform overflow-hidden">
+                  <div className="w-14 h-14 rounded-2xl bg-slate-900 border border-slate-800 p-2 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform overflow-hidden">
+                    <img
+                      src="/assets/logos/supervi_logo.png"
+                      alt="SuperVi"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  <h3 className="font-extrabold text-sm text-white">SuperVi</h3>
+                  <p className="text-[10px] text-cyan-400 font-semibold mt-0.5">
+                    Orbs of Glory Action Runner
+                  </p>
+                  <p className="text-xs text-slate-300 font-medium mt-2 leading-relaxed">
+                    Multiplayer endless runner, character progression, competitive seasons, and esports tournaments.
+                  </p>
+                </div>
+                <div className="mt-4 pt-2.5 border-t border-slate-900">
+                  <a
+                    href="/games/supervi"
+                    className="inline-flex items-center gap-1 text-xs font-bold text-cyan-400 hover:text-cyan-300 hover:underline"
+                  >
+                    <span>Play SuperVi</span>
+                    <span>→</span>
+                  </a>
+                </div>
+              </div>
+
+              {/* Brand 8: Flamingo */}
+              <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 hover:border-pink-500/50 transition-all flex flex-col justify-between group shadow-lg">
+                <div>
+                  <div className="w-14 h-14 rounded-2xl bg-slate-900 border border-slate-800 p-2 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform overflow-hidden">
+                    <img
+                      src="/assets/logos/flamingo_icon.png"
+                      alt="Flamingo"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  <h3 className="font-extrabold text-sm text-white">Flamingo</h3>
+                  <p className="text-[10px] text-pink-400 font-semibold mt-0.5">
+                    Curated Lifestyle & Boutique
+                  </p>
+                  <p className="text-xs text-slate-300 font-medium mt-2 leading-relaxed">
+                    Private boutique storefront, artisanal apparel, and age-verified confidential catalog experience.
+                  </p>
+                </div>
+                <div className="mt-4 pt-2.5 border-t border-slate-900">
+                  <a
+                    href="/flamingo"
+                    className="inline-flex items-center gap-1 text-xs font-bold text-pink-400 hover:text-pink-300 hover:underline"
+                  >
+                    <span>Browse Flamingo</span>
+                    <span>→</span>
+                  </a>
+                </div>
+              </div>
+
+              {/* Brand 9: Lush Pressies */}
+              <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 hover:border-rose-500/50 transition-all flex flex-col justify-between group shadow-lg">
+                <div>
+                  <div className="w-14 h-14 rounded-2xl bg-slate-900 border border-slate-800 p-2 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform overflow-hidden">
                     <img
                       src="/assets/logos/lushpressies_logo.png"
                       alt="Lush Pressies"
                       className="w-full h-full object-contain"
                     />
                   </div>
-                  <h3 className="font-extrabold text-base text-white">Lush Pressies</h3>
-                  <p className="text-[11px] text-pink-400 font-semibold mt-0.5">
+                  <h3 className="font-extrabold text-sm text-white">Lush Pressies</h3>
+                  <p className="text-[10px] text-rose-400 font-semibold mt-0.5">
                     Matchmaking & Luxury Plushies
                   </p>
-                  <p className="text-xs text-slate-400 mt-2.5 leading-relaxed">
-                    Empathetic social connection, consensual 6-digit PIN handshake verification, Lapidaire icebreaker Q&A, and plushies gift exchanges.
+                  <p className="text-xs text-slate-300 font-medium mt-2 leading-relaxed">
+                    Empathetic social connection, mutual 6-digit PIN handshake verification, and plushies gifting.
                   </p>
                 </div>
-                <div className="mt-5 pt-3 border-t border-slate-900">
+                <div className="mt-4 pt-2.5 border-t border-slate-900">
                   <a
                     href="/lush-pressies"
-                    className="inline-flex items-center gap-1.5 text-xs font-bold text-pink-400 hover:text-pink-300 hover:underline"
+                    className="inline-flex items-center gap-1 text-xs font-bold text-rose-400 hover:text-rose-300 hover:underline"
                   >
                     <span>Enter Lush Pressies</span>
+                    <span>→</span>
+                  </a>
+                </div>
+              </div>
+
+              {/* Brand 10: tribut */}
+              <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 hover:border-purple-500/50 transition-all flex flex-col justify-between group shadow-lg">
+                <div>
+                  <div className="w-14 h-14 rounded-2xl bg-slate-900 border border-slate-800 p-2 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform overflow-hidden">
+                    <img
+                      src="/assets/logos/tribut_icon.png"
+                      alt="tribut"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  <h3 className="font-extrabold text-sm text-white">tribut</h3>
+                  <p className="text-[10px] text-purple-400 font-semibold mt-0.5">
+                    Memorials & Heritage Registry
+                  </p>
+                  <p className="text-xs text-slate-300 font-medium mt-2 leading-relaxed">
+                    Digital memorial shrines, permanent heritage registries, lifetime honors, and enduring tributes.
+                  </p>
+                </div>
+                <div className="mt-4 pt-2.5 border-t border-slate-900">
+                  <a
+                    href="/tribut"
+                    className="inline-flex items-center gap-1 text-xs font-bold text-purple-400 hover:text-purple-300 hover:underline"
+                  >
+                    <span>Visit tribut</span>
                     <span>→</span>
                   </a>
                 </div>
@@ -570,7 +744,7 @@ export const BusinessOfficesPage: React.FC = () => {
                     className={`px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
                       selectedRegion === tab
                         ? 'bg-amber-400 text-slate-950 font-bold shadow-md'
-                        : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+                        : 'bg-slate-900 text-slate-300 font-medium hover:text-white border border-slate-800'
                     }`}
                   >
                     {tab}
@@ -579,13 +753,13 @@ export const BusinessOfficesPage: React.FC = () => {
               </div>
 
               <div className="relative w-full md:w-80">
-                <Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <Search className="w-4 h-4 text-slate-300 absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
                   placeholder="Search city, country, or facility..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-9 pr-4 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200 focus:outline-none focus:border-amber-400 placeholder:text-slate-500"
+                  className="w-full pl-9 pr-4 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200 focus:outline-none focus:border-amber-400 placeholder:text-slate-300"
                 />
               </div>
             </div>
@@ -645,30 +819,30 @@ export const BusinessOfficesPage: React.FC = () => {
 
                       <div className="mt-4 space-y-2 text-xs text-slate-300">
                         <p className="flex items-start gap-2.5">
-                          <MapPin className="w-4 h-4 text-slate-500 flex-shrink-0 mt-0.5" />
+                          <MapPin className="w-4 h-4 text-slate-300 flex-shrink-0 mt-0.5" />
                           <span>{office.address}, {office.city}</span>
                         </p>
                         <p className="flex items-center gap-2.5">
-                          <Phone className="w-4 h-4 text-slate-500 flex-shrink-0" />
+                          <Phone className="w-4 h-4 text-slate-300 flex-shrink-0" />
                           <a href={`tel:${office.phone}`} className="hover:text-amber-300 transition-colors">
                             {office.phone}
                           </a>
                         </p>
                         <p className="flex items-center gap-2.5">
-                          <Mail className="w-4 h-4 text-slate-500 flex-shrink-0" />
+                          <Mail className="w-4 h-4 text-slate-300 flex-shrink-0" />
                           <a href={`mailto:${office.email}`} className="text-blue-400 hover:underline">
                             {office.email}
                           </a>
                         </p>
                         <p className="flex items-center gap-2.5">
-                          <Clock className="w-4 h-4 text-slate-500 flex-shrink-0" />
+                          <Clock className="w-4 h-4 text-slate-300 flex-shrink-0" />
                           <span>{office.hours}</span>
                         </p>
                       </div>
 
                       {/* Amenities */}
                       <div className="mt-4 pt-4 border-t border-slate-800">
-                        <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2">
+                        <p className="text-[11px] font-bold uppercase tracking-wider text-slate-300 font-medium mb-2">
                           Facilities & Services
                         </p>
                         <ul className="space-y-1.5">
@@ -712,7 +886,7 @@ export const BusinessOfficesPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setSelectedOffice(null)}
-                  className="absolute top-4 right-4 p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800"
+                  className="absolute top-4 right-4 p-2 text-slate-300 font-medium hover:text-white rounded-lg hover:bg-slate-800"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -721,7 +895,7 @@ export const BusinessOfficesPage: React.FC = () => {
                   <Calendar className="w-6 h-6 text-amber-400" />
                   <div>
                     <h3 className="font-bold text-lg text-white">Schedule an Office Visit</h3>
-                    <p className="text-xs text-slate-400">{selectedOffice.name}</p>
+                    <p className="text-xs text-slate-300 font-medium">{selectedOffice.name}</p>
                   </div>
                 </div>
 
@@ -764,7 +938,7 @@ export const BusinessOfficesPage: React.FC = () => {
                     <div>
                       <label className="text-xs font-semibold text-slate-300 block mb-1">Attendees</label>
                       <div className="relative">
-                        <Users className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
+                        <Users className="w-4 h-4 text-slate-300 absolute left-3 top-1/2 -translate-y-1/2" />
                         <select
                           value={attendeeCount}
                           onChange={(e) => setAttendeeCount(e.target.value)}
@@ -782,7 +956,7 @@ export const BusinessOfficesPage: React.FC = () => {
                   <div>
                     <label className="text-xs font-semibold text-slate-300 block mb-1">Purpose of Visit</label>
                     <div className="relative">
-                      <FileText className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
+                      <FileText className="w-4 h-4 text-slate-300 absolute left-3 top-1/2 -translate-y-1/2" />
                       <select
                         value={bookingPurpose}
                         onChange={(e) => setBookingPurpose(e.target.value)}

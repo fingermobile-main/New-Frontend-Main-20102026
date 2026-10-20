@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { api } from '../../services/api';
+
 interface ContentSchedulerProps {
   creatorId: string;
   onSchedule?: (postData: any) => void;
@@ -50,21 +52,24 @@ const ContentScheduler: React.FC<ContentSchedulerProps> = ({ creatorId, onSchedu
       const postData = {
         title,
         content,
-        scheduledFor: scheduledDateTime.toISOString(),
-        platforms,
-        category,
+        post_type: 'scheduled',
         tags: tags.split(',').map(t => t.trim()).filter(Boolean),
-        status: 'scheduled'
+        media_urls: [],
+        attachments: [],
+        composer_metadata: {
+          scheduledFor: scheduledDateTime.toISOString(),
+          platforms,
+          category
+        }
       };
 
-      // Mock API call - replace with actual service
-      console.info('Scheduling post:', postData);
+      const response = await api.post('/posts', postData);
 
       if (onSchedule) {
-        onSchedule(postData);
+        onSchedule(response.data?.data || postData);
       }
 
-      setSuccess(`Post scheduled for ${scheduledDateTime.toLocaleString()}`);
+      setSuccess(`Post scheduled for ${scheduledDateTime.toLocaleString()} and persisted to database.`);
 
       // Reset form
       setTitle('');
@@ -75,7 +80,37 @@ const ContentScheduler: React.FC<ContentSchedulerProps> = ({ creatorId, onSchedu
       setTags('');
 
     } catch (err: any) {
-      setError(err.message || 'Failed to schedule post');
+      setError(err.response?.data?.message || err.message || 'Failed to schedule post');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleSaveDraft = async () => {
+    if (!title.trim() && !content.trim()) {
+      setError('Please enter a title or content before saving as draft');
+      return;
+    }
+
+    try {
+      setSubmitting(true);
+      setError(null);
+
+      const draftPayload = {
+        title,
+        content,
+        post_type: 'draft',
+        tags: tags.split(',').map(t => t.trim()).filter(Boolean),
+        composer_metadata: {
+          category,
+          platforms
+        }
+      };
+
+      await api.post('/posts/draft', draftPayload);
+      setSuccess('Draft successfully synchronized to PostgreSQL storage.');
+    } catch (err: any) {
+      setError(err.response?.data?.message || err.message || 'Failed to save draft');
     } finally {
       setSubmitting(false);
     }
@@ -89,47 +124,42 @@ const ContentScheduler: React.FC<ContentSchedulerProps> = ({ creatorId, onSchedu
     );
   };
 
-  const getMinDateTime = () => {
-    const now = new Date();
-    return now.toISOString().slice(0, 16);
-  };
-
   return (
-    <div className="bg-white rounded-lg shadow-lg border border-slate-300 overflow-hidden">
+    <div className="bg-white rounded-xl shadow-md border border-slate-300 overflow-hidden">
       {/* Header */}
-      <div className="bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-4">
-        <h2 className="text-xl font-bold text-white">Schedule Content</h2>
-        <p className="text-sm text-indigo-100 mt-1">Plan and automate your content publishing</p>
+      <div className="bg-gradient-to-r from-indigo-700 to-purple-700 px-6 py-4 border-b border-indigo-800">
+        <h2 className="text-xl font-black text-white">Schedule Content</h2>
+        <p className="text-sm font-medium text-indigo-100 mt-1">Plan and automate your content publishing directly to the platform</p>
       </div>
 
       <form onSubmit={handleSubmit} className="p-6 space-y-6">
         {/* Success Message */}
         {success && (
-          <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+          <div className="bg-emerald-100 border border-emerald-400 text-emerald-950 rounded-xl p-4 font-bold shadow-xs">
             <div className="flex items-center gap-2">
-              <span className="text-green-600">✓</span>
-              <p className="text-green-800 font-medium">{success}</p>
+              <span className="text-emerald-800 text-lg">✓</span>
+              <p>{success}</p>
             </div>
           </div>
         )}
 
         {/* Error Message */}
         {error && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-            <p className="text-red-700">{error}</p>
+          <div className="bg-rose-100 border border-rose-400 text-rose-950 rounded-xl p-4 font-bold shadow-xs">
+            <p>{error}</p>
           </div>
         )}
 
         {/* Title */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Title *
+          <label className="block text-sm font-bold text-slate-800 mb-2">
+            Post Title *
           </label>
           <input
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
+            className="w-full px-4 py-2.5 rounded-lg text-slate-900 font-bold border border-slate-300 bg-white placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 shadow-xs"
             placeholder="Enter post title"
             required
           />
@@ -137,45 +167,44 @@ const ContentScheduler: React.FC<ContentSchedulerProps> = ({ creatorId, onSchedu
 
         {/* Content */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Content *
+          <label className="block text-sm font-bold text-slate-800 mb-2">
+            Post Content *
           </label>
           <textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            rows={6}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
+            rows={5}
+            className="w-full px-4 py-2.5 rounded-lg text-slate-900 font-bold border border-slate-300 bg-white placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 shadow-xs"
             placeholder="Write your content here..."
             required
           />
-          <p className="text-xs text-slate-700 mt-1">{content.length} characters</p>
+          <p className="text-xs font-semibold text-slate-700 mt-1.5">{content.length} characters</p>
         </div>
-
         {/* Schedule Date & Time */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Date *
+            <label className="block text-sm font-bold text-slate-800 mb-2">
+              Publication Date *
             </label>
             <input
               type="date"
               value={scheduledDate}
               onChange={(e) => setScheduledDate(e.target.value)}
               min={new Date().toISOString().split('T')[0]}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
+              className="w-full px-4 py-2.5 rounded-lg text-slate-900 font-bold border border-slate-300 bg-white placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 shadow-xs"
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Time *
+            <label className="block text-sm font-bold text-slate-800 mb-2">
+              Publication Time *
             </label>
             <input
               type="time"
               value={scheduledTime}
               onChange={(e) => setScheduledTime(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
+              className="w-full px-4 py-2.5 rounded-lg text-slate-900 font-bold border border-slate-300 bg-white placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 shadow-xs"
               required
             />
           </div>
@@ -183,8 +212,8 @@ const ContentScheduler: React.FC<ContentSchedulerProps> = ({ creatorId, onSchedu
 
         {/* Platforms */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Publish To
+          <label className="block text-sm font-bold text-slate-800 mb-2">
+            Target Channels
           </label>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {platforms_list.map((platform) => (
@@ -192,14 +221,14 @@ const ContentScheduler: React.FC<ContentSchedulerProps> = ({ creatorId, onSchedu
                 key={platform.id}
                 type="button"
                 onClick={() => togglePlatform(platform.id)}
-                className={`p-3 border-2 rounded-lg transition-all ${
+                className={`p-3 border-2 rounded-xl transition-all cursor-pointer ${
                   platforms.includes(platform.id)
-                    ? 'border-indigo-500 bg-indigo-50'
-                    : 'border-slate-300 hover:border-gray-300'
+                    ? 'border-indigo-600 bg-indigo-50 text-indigo-950 font-bold shadow-xs'
+                    : 'border-slate-300 hover:border-slate-400 text-slate-800 font-semibold bg-white'
                 }`}
               >
                 <div className="text-2xl mb-1">{platform.icon}</div>
-                <div className="text-sm font-medium">{platform.name}</div>
+                <div className="text-sm">{platform.name}</div>
               </button>
             ))}
           </div>
@@ -207,13 +236,13 @@ const ContentScheduler: React.FC<ContentSchedulerProps> = ({ creatorId, onSchedu
 
         {/* Category */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Category
+          <label className="block text-sm font-bold text-slate-800 mb-2">
+            Content Category
           </label>
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white"
+            className="w-full px-4 py-2.5 rounded-lg text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 shadow-xs"
           >
             <option value="">Select a category</option>
             {categories.map((cat) => (
@@ -224,23 +253,23 @@ const ContentScheduler: React.FC<ContentSchedulerProps> = ({ creatorId, onSchedu
 
         {/* Tags */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-bold text-slate-800 mb-2">
             Tags (comma-separated)
           </label>
           <input
             type="text"
             value={tags}
             onChange={(e) => setTags(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
-            placeholder="tech, tutorial, beginner"
+            className="w-full px-4 py-2.5 rounded-lg text-slate-900 font-bold border border-slate-300 bg-white placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 shadow-xs"
+            placeholder="tech, tutorial, protocol, business"
           />
         </div>
 
         {/* Preview Box */}
         {scheduledDate && scheduledTime && (
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-            <h4 className="font-semibold text-blue-900 mb-2">📅 Scheduled For</h4>
-            <p className="text-blue-800">
+          <div className="bg-blue-50 border border-blue-300 rounded-xl p-4 shadow-xs">
+            <h4 className="font-black text-blue-950 mb-1">📅 Scheduled For:</h4>
+            <p className="text-sm font-bold text-blue-900">
               {new Date(`${scheduledDate}T${scheduledTime}`).toLocaleString('en-US', {
                 weekday: 'long',
                 year: 'numeric',
@@ -253,18 +282,18 @@ const ContentScheduler: React.FC<ContentSchedulerProps> = ({ creatorId, onSchedu
           </div>
         )}
 
-        {/* Submit Button */}
+        {/* Action Buttons */}
         <div className="flex gap-3 pt-4 border-t border-slate-300">
           <button
             type="submit"
             disabled={submitting}
-            className="flex-1 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-1 px-5 py-3 bg-indigo-700 hover:bg-indigo-800 text-white rounded-xl transition-all font-black text-sm shadow-sm cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {submitting ? (
-              <span className="flex items-center justify-center gap-2">
+              <>
                 <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
-                Scheduling...
-              </span>
+                <span>Scheduling Post...</span>
+              </>
             ) : (
               'Schedule Post'
             )}
@@ -272,8 +301,9 @@ const ContentScheduler: React.FC<ContentSchedulerProps> = ({ creatorId, onSchedu
 
           <button
             type="button"
-            onClick={() => {/* save as draft */}}
-            className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"
+            disabled={submitting}
+            onClick={handleSaveDraft}
+            className="px-5 py-3 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 rounded-xl transition-all font-bold text-sm shadow-xs cursor-pointer disabled:opacity-50"
           >
             Save Draft
           </button>

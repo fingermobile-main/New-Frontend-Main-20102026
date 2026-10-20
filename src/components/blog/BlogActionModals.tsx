@@ -68,7 +68,7 @@ export const BlogCommentModal: React.FC<CommentModalProps> = ({
             <h3 className="font-bold text-gray-900 dark:text-white text-base flex items-center gap-2">
               <span>💬</span> Comments & Discussion
             </h3>
-            <p className="text-xs text-gray-500 dark:text-gray-400 truncate max-w-sm mt-0.5">
+            <p className="text-xs text-slate-700 dark:text-slate-300 font-medium truncate max-w-sm mt-0.5">
               {postTitle || 'Community Blog Article'}
             </p>
           </div>
@@ -166,7 +166,7 @@ export const BlogSendGiftModal: React.FC<SendGiftModalProps> = ({
             <h3 className="font-bold text-gray-900 dark:text-white text-base flex items-center gap-2">
               <span>🎁</span> Send Sovereign Gift
             </h3>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 truncate max-w-xs">
+            <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mt-0.5 truncate max-w-xs">
               Reward @{authorName || 'Author'} for &quot;{postTitle || 'Article'}&quot;
             </p>
           </div>
@@ -281,7 +281,7 @@ export const BlogPaylinkModal: React.FC<PaylinkModalProps> = ({
             <h3 className="font-bold text-gray-900 dark:text-white text-base flex items-center gap-2">
               <span>🔗</span> Create Sovereign Paylink
             </h3>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 truncate max-w-xs">
+            <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mt-0.5 truncate max-w-xs">
               For: {postTitle || 'Editorial Content'}
             </p>
           </div>
@@ -386,7 +386,7 @@ export const BlogTokenizeModal: React.FC<TokenizeModalProps> = ({
             <h3 className="font-bold text-gray-900 dark:text-white text-base flex items-center gap-2">
               <span>🪙</span> Tokenize Article to Hallmarks
             </h3>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 truncate max-w-xs">
+            <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mt-0.5 truncate max-w-xs">
               Mint as Sovereign Proof-of-Achievement NFT
             </p>
           </div>

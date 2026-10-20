@@ -3,7 +3,8 @@
 ## Overview
 This guide provides the correct procedure for starting the FingerMobile Platform production development servers. This document serves as the authoritative reference for platform developers to properly launch the development environment.
 
-## Platform Architecture
+## Platform Architecture instructions for use
+/Users/user/Documents/FingerMobile Protocol Communication/AGENTS.md
 
 ### Main Platform Location
 ```
@@ -41,7 +42,9 @@ At every new session start, run the auto-commit watcher service:
 cd "/Users/user/Documents/FingerMobile Protocol Communication"
 node auto commit watcher-git-commit-watcher.js
 ```
-This service automatically commits changes in `./src/pages` every 20 minutes locally.
+This service automatically commits changes in `./src/pages` every 10 minutes locally.
+
+#### Important: ensure that upon starting the Production Development Servers and Services that you Start the Backend API Server., Launch the backend Node/Express server in apps/backend so it listens on the right available port XXXX and connects to PostgreSQL on right available port XXXX. Ensure Frontend Endpoints Route to the Backend (wired frontend to backend)., make sure the Decommissioned LocalStorage Shim is not what is persisting and ensure to Remove the client-only localStorage fallback so that when you upload media., Browser sends multipart/form-data to Express backend. start the backend API and connect the upload and feed services directly to PostgreSQL now so all data saves to the database and always verify and confirm that the Backend Express API Started & Connected to PostgreSQL before proceeding and starting the Frontend.
 
 ### Step 2: Start Backend Server
 Open a terminal and navigate to the backend directory:
@@ -156,7 +159,13 @@ Before starting development work, verify:
 - [ ] Platform loads correctly in Chrome
 - [ ] Auto-commit watcher service running
 - [ ] API endpoints accessible
-- [ ] All core features functional
+- [ ] Backend is Connected to PostgreSQL and confirmed persisting data to PostgreSQL
+- [ ] All core features and microservices are fully functional
+- [ ] Remove the client-only localStorage fallback so that when you upload media., Browser sends multipart/form-data to Express backend.
+- [ ] Ensure Frontend and Backend wire up correctly with API Calls and Communication. Make sure all endpoints route correctly.
+- [ ] Always verify and confirm that the Backend Express API Started & Connected to PostgreSQL before proceeding and starting the Frontend.
+
+
 
 ## Notes
 

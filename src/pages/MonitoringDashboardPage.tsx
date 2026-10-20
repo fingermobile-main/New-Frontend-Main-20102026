@@ -164,7 +164,7 @@ const MonitoringDashboardPage: React.FC = () => {
               </label>
             </div>
           </div>
-          <div className="mt-2 flex items-center text-sm text-gray-500">
+          <div className="mt-2 flex items-center text-sm text-slate-700 font-medium">
             <ClockIcon className="h-4 w-4 mr-1" />
             Last updated: {lastUpdated.toLocaleTimeString()}
           </div>

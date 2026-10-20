@@ -54,11 +54,11 @@ const WatermarkPreviewModal: React.FC<WatermarkPreviewModalProps> = ({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Image className="h-5 w-5" />
+          <DialogTitle className="flex items-center gap-2 text-slate-900 font-bold">
+            <Image className="h-5 w-5 text-slate-700" />
             Watermark Preview
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="text-slate-700">
             Customize and preview your watermark before applying
           </DialogDescription>
         </DialogHeader>
@@ -66,20 +66,20 @@ const WatermarkPreviewModal: React.FC<WatermarkPreviewModalProps> = ({
         <div className="grid grid-cols-3 gap-6 mt-4">
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="watermark-text">Watermark Text</Label>
+              <Label htmlFor="watermark-text" className="text-slate-900 font-semibold">Watermark Text</Label>
               <div className="relative">
-                <Type className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Type className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
                 <Input
                   id="watermark-text"
                   value={watermarkText}
                   onChange={(e) => setWatermarkText(e.target.value)}
-                  className="pl-10"
+                  className="pl-10 text-slate-900 font-medium border-slate-300"
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label>Opacity: {opacity}%</Label>
+              <Label className="text-slate-900 font-semibold">Opacity: {opacity}%</Label>
               <Slider
                 value={[opacity]}
                 onValueChange={(value: number[]) => setOpacity(value[0])}
@@ -89,7 +89,7 @@ const WatermarkPreviewModal: React.FC<WatermarkPreviewModalProps> = ({
             </div>
 
             <div className="space-y-2">
-              <Label>Font Size: {fontSize}px</Label>
+              <Label className="text-slate-900 font-semibold">Font Size: {fontSize}px</Label>
               <Slider
                 value={[fontSize]}
                 onValueChange={(value: number[]) => setFontSize(value[0])}
@@ -100,9 +100,9 @@ const WatermarkPreviewModal: React.FC<WatermarkPreviewModalProps> = ({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="position">Position</Label>
+              <Label htmlFor="position" className="text-slate-900 font-semibold">Position</Label>
               <Select value={position} onValueChange={setPosition}>
-                <SelectTrigger>
+                <SelectTrigger className="border-slate-300 text-slate-900 font-medium">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -116,30 +116,30 @@ const WatermarkPreviewModal: React.FC<WatermarkPreviewModalProps> = ({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="color">Color</Label>
+              <Label htmlFor="color" className="text-slate-900 font-semibold">Color</Label>
               <div className="flex gap-2">
                 <Input
                   id="color"
                   type="color"
                   value={color}
                   onChange={(e) => setColor(e.target.value)}
-                  className="w-16 h-10 p-1"
+                  className="w-16 h-10 p-1 border-slate-300"
                 />
                 <Input
                   value={color}
                   onChange={(e) => setColor(e.target.value)}
-                  className="flex-1"
+                  className="flex-1 text-slate-900 font-medium border-slate-300"
                 />
               </div>
             </div>
           </div>
 
           <div className="col-span-2">
-            <div className="relative aspect-video bg-muted rounded-lg overflow-hidden border">
+            <div className="relative aspect-video bg-slate-100 rounded-lg overflow-hidden border border-slate-200">
               {imageUrl ? (
                 <img src={imageUrl} alt="Preview" className="w-full h-full object-cover"  />
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-muted-foreground">
+                <div className="w-full h-full flex items-center justify-center text-slate-700 font-medium">
                   No image loaded
                 </div>
               )}

@@ -77,7 +77,7 @@ const ForumLeftSidebar: React.FC<ForumLeftSidebarProps> = ({ isOpen, onClose }) 
       <div className="lg:hidden flex items-center justify-between p-4 border-b border-gray-700">
         <span className="text-lg font-semibold text-white">Navigation</span>
         <button onClick={onClose} className="p-2 hover:bg-gray-700 rounded-lg">
-          <XIcon className="w-6 h-6 text-slate-500" />
+          <XIcon className="w-6 h-6 text-slate-600" />
         </button>
       </div>
 
@@ -130,7 +130,7 @@ const ForumLeftSidebar: React.FC<ForumLeftSidebarProps> = ({ isOpen, onClose }) 
                       className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
                         isActive(subItem.path)
                           ? 'text-orange-500 bg-orange-500/10'
-                          : 'text-gray-400 hover:text-white hover:bg-gray-700'
+                          : 'text-gray-300 font-medium hover:text-white hover:bg-gray-700'
                       }`}
                     >
                       {subItem.label}
@@ -149,7 +149,7 @@ const ForumLeftSidebar: React.FC<ForumLeftSidebarProps> = ({ isOpen, onClose }) 
         <div className="px-3">
           <button
             onClick={() => setShowShortcuts(!showShortcuts)}
-            className="flex items-center justify-between w-full mb-3 text-xs font-semibold text-gray-400 uppercase tracking-wider hover:text-white transition-colors"
+            className="flex items-center justify-between w-full mb-3 text-xs font-bold text-gray-300 uppercase tracking-wider hover:text-white transition-colors"
           >
             <span>Your Shortcuts</span>
             {showShortcuts ? (
@@ -178,7 +178,7 @@ const ForumLeftSidebar: React.FC<ForumLeftSidebarProps> = ({ isOpen, onClose }) 
                 </Link>
               ))}
 
-              <button className="w-full px-3 py-2 text-sm text-gray-400 hover:text-white hover:bg-gray-700 rounded-lg transition-colors text-left">
+              <button className="w-full px-3 py-2 text-sm text-gray-300 font-medium hover:text-white hover:bg-gray-700 rounded-lg transition-colors text-left">
                 See more
               </button>
             </div>
@@ -188,7 +188,7 @@ const ForumLeftSidebar: React.FC<ForumLeftSidebarProps> = ({ isOpen, onClose }) 
 
       {/* Footer Links */}
       <div className="px-3 py-4 border-t border-gray-700">
-        <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-gray-500">
+        <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-slate-700 font-medium">
           <Link to="/privacy" className="hover:text-gray-300 transition-colors">Privacy</Link>
           <Link to="/terms" className="hover:text-gray-300 transition-colors">Terms</Link>
           <Link to="/user-policy" className="hover:text-gray-300 transition-colors">User Policy</Link>

@@ -205,7 +205,7 @@ const AudioCallModal: React.FC<AudioCallModalProps> = ({
                   </span>
                 )}
               </p>
-              <p className="text-[11px] text-slate-400 font-medium">
+              <p className="text-[11px] text-slate-300 font-medium">
                 P2P DTLS-SRTP • Opus 48kHz HD
               </p>
             </div>
@@ -213,7 +213,7 @@ const AudioCallModal: React.FC<AudioCallModalProps> = ({
 
           <div className="flex items-center gap-2">
             {isHandshakeVerified && metrics && (
-              <span className="hidden sm:inline-flex items-center gap-1 text-[11px] text-slate-400 px-2.5 py-1 rounded-full bg-slate-800/60 border border-slate-700">
+              <span className="hidden sm:inline-flex items-center gap-1 text-[11px] text-slate-300 px-2.5 py-1 rounded-full bg-slate-800/60 border border-slate-700">
                 <SignalIcon className="w-3 h-3 text-emerald-400" />
                 {metrics.latencyMs}ms
               </span>
@@ -221,7 +221,7 @@ const AudioCallModal: React.FC<AudioCallModalProps> = ({
             <button
               type="button"
               onClick={() => handleEndCall()}
-              className="p-1.5 rounded-full text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+              className="p-1.5 rounded-full text-slate-300 hover:text-white hover:bg-slate-800 transition-colors"
               title="Close modal"
             >
               <XMarkIcon className="w-5 h-5" />
@@ -239,14 +239,14 @@ const AudioCallModal: React.FC<AudioCallModalProps> = ({
 
             <div className="space-y-1 max-w-sm">
               <h3 className="text-lg font-black text-white">Mutual PIN Exchange Handshake</h3>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-300">
                 Guardian AI enforces that <strong className="text-white">each person must accept the PIN exchange</strong> before the encrypted voice channel unseals.
               </p>
             </div>
 
             {/* Generated Call PIN Box */}
             <div className="bg-slate-800/90 border border-slate-700 rounded-2xl p-3.5 w-full max-w-xs space-y-1.5">
-              <span className="text-[10px] font-black uppercase tracking-wider text-slate-400 block">
+              <span className="text-[10px] font-black uppercase tracking-wider text-slate-300 block">
                 6-Digit Sovereign Call PIN
               </span>
               <div className="flex items-center justify-center gap-2 font-mono text-2xl font-black text-amber-400 tracking-widest">
@@ -265,16 +265,16 @@ const AudioCallModal: React.FC<AudioCallModalProps> = ({
                 callerAccepted ? 'bg-emerald-950/40 border-emerald-500/50' : 'bg-slate-900 border-slate-800'
               }`}>
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Caller (You)</span>
+                  <span className="text-[10px] font-black uppercase tracking-wider text-slate-300">Caller (You)</span>
                   {callerAccepted ? (
                     <CheckCircleIcon className="w-4 h-4 text-emerald-400" />
                   ) : (
-                    <ClockIcon className="w-4 h-4 text-slate-500" />
+                    <ClockIcon className="w-4 h-4 text-slate-600" />
                   )}
                 </div>
                 <p className="text-xs font-bold text-white truncate">You</p>
                 <span className={`inline-block mt-1 text-[10px] font-bold px-2 py-0.5 rounded ${
-                  callerAccepted ? 'bg-emerald-500/20 text-emerald-300' : 'bg-slate-800 text-slate-400'
+                  callerAccepted ? 'bg-emerald-500/20 text-emerald-300' : 'bg-slate-800 text-slate-300'
                 }`}>
                   {callerAccepted ? 'PIN Accepted' : 'Pending'}
                 </span>
@@ -288,7 +288,7 @@ const AudioCallModal: React.FC<AudioCallModalProps> = ({
                 recipientAccepted ? 'bg-emerald-950/40 border-emerald-500/50' : 'bg-slate-900 border-slate-800 hover:border-slate-700'
               }`}>
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Recipient</span>
+                  <span className="text-[10px] font-black uppercase tracking-wider text-slate-300">Recipient</span>
                   {recipientAccepted ? (
                     <CheckCircleIcon className="w-4 h-4 text-emerald-400" />
                   ) : (
@@ -394,7 +394,7 @@ const AudioCallModal: React.FC<AudioCallModalProps> = ({
               <h2 className="text-2xl font-black tracking-tight text-white flex items-center justify-center gap-1.5">
                 {recipientName}
               </h2>
-              <p className="text-xs font-medium text-slate-400">
+              <p className="text-xs font-medium text-slate-300">
                 {role} • Mutual PIN Verified (2/2)
               </p>
 
@@ -439,7 +439,7 @@ const AudioCallModal: React.FC<AudioCallModalProps> = ({
                 )}
 
                 {callState === 'ended' && (
-                  <span className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-400 bg-slate-800 px-3 py-1 rounded-full">
+                  <span className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-300 bg-slate-800 px-3 py-1 rounded-full">
                     Call Ended
                   </span>
                 )}
@@ -502,7 +502,7 @@ const AudioCallModal: React.FC<AudioCallModalProps> = ({
               className={`w-14 h-14 rounded-2xl flex flex-col items-center justify-center transition-all disabled:opacity-40 ${
                 isSpeakerOn
                   ? 'bg-slate-700 text-emerald-400 border border-emerald-500/30'
-                  : 'bg-slate-800 text-slate-400'
+                  : 'bg-slate-800 text-slate-300'
               }`}
               title="Toggle speaker"
             >
@@ -542,9 +542,9 @@ const AudioCallModal: React.FC<AudioCallModalProps> = ({
             </button>
 
             {/* Sovereign Security Info */}
-            <div className="hidden sm:flex flex-col items-center justify-center text-slate-400" title="Verified Sovereign Encryption">
+            <div className="hidden sm:flex flex-col items-center justify-center text-slate-300" title="Verified Sovereign Encryption">
               <ShieldCheckIcon className="w-6 h-6 text-emerald-400" />
-              <span className="text-[9px] font-bold uppercase tracking-wider text-slate-400 mt-0.5">STERCS</span>
+              <span className="text-[9px] font-bold uppercase tracking-wider text-slate-300 mt-0.5">STERCS</span>
             </div>
           </div>
         </div>

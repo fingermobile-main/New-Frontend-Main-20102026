@@ -155,7 +155,7 @@ export const LushChatPanel: React.FC<LushChatPanelProps> = ({
                         </span>
                       )}
                     </div>
-                    <p className="text-[11px] text-gray-500 truncate mt-0.5">
+                    <p className="text-[11px] text-slate-700 font-medium truncate mt-0.5">
                       {c.last_message || 'PIN Exchanged! Say hello...'}
                     </p>
                   </div>
@@ -249,7 +249,7 @@ export const LushChatPanel: React.FC<LushChatPanelProps> = ({
                         )}
                         <p className="leading-relaxed whitespace-pre-wrap">{m.body}</p>
 
-                        <div className={`flex items-center gap-1 justify-end text-[9px] mt-1 ${isMe ? 'text-emerald-200' : 'text-gray-400'}`}>
+                        <div className={`flex items-center gap-1 justify-end text-[9px] mt-1 ${isMe ? 'text-emerald-200' : 'text-slate-600 font-medium'}`}>
                           <span>
                             {new Date(m.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                           </span>

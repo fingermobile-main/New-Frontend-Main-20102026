@@ -14,7 +14,7 @@ const LegalLayout: React.FC<LegalLayoutProps> = ({ children }) => {
             <Shield className="h-8 w-8 text-primary" />
             <div>
               <h1 className="text-2xl font-bold">Legal Center</h1>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-slate-700 font-medium">
                 Terms, Privacy Policy, and Legal Documents
               </p>
             </div>
@@ -30,7 +30,7 @@ const LegalLayout: React.FC<LegalLayoutProps> = ({ children }) => {
 
       <footer className="border-t bg-muted/30 mt-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center justify-between text-sm text-muted-foreground">
+          <div className="flex items-center justify-between text-sm text-slate-700 font-medium">
             <div className="flex items-center gap-4">
               <a href="#" className="hover:text-foreground transition-colors">
                 <FileText className="h-4 w-4 inline mr-1" />

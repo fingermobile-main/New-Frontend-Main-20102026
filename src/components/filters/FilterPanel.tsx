@@ -73,21 +73,21 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
   const activeFiltersCount = selectedCategories.length + selectedTags.length;
 
   return (
-    <Card>
+    <Card className="border-slate-200">
       <CardHeader>
         <div className="flex items-center justify-between">
-          <CardTitle className="text-base flex items-center gap-2">
-            <SlidersHorizontal className="h-5 w-5" />
+          <CardTitle className="text-base flex items-center gap-2 text-slate-900 font-bold">
+            <SlidersHorizontal className="h-5 w-5 text-slate-700" />
             Filters
           </CardTitle>
           {activeFiltersCount > 0 && (
-            <Badge variant="secondary">{activeFiltersCount} active</Badge>
+            <Badge variant="secondary" className="bg-slate-100 text-slate-800 border border-slate-300 font-semibold">{activeFiltersCount} active</Badge>
           )}
         </div>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-3">
-          <Label>Categories</Label>
+          <Label className="text-slate-900 font-semibold">Categories</Label>
           <div className="space-y-2">
             {categories.map((category) => (
               <div key={category.id} className="flex items-center justify-between">
@@ -99,13 +99,13 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
                   />
                   <label
                     htmlFor={`cat-${category.id}`}
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    className="text-sm font-semibold text-slate-900 leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                   >
                     {category.label}
                   </label>
                 </div>
                 {category.count && (
-                  <span className="text-xs text-muted-foreground">({category.count})</span>
+                  <span className="text-xs text-slate-600 font-medium">({category.count})</span>
                 )}
               </div>
             ))}
@@ -113,13 +113,13 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
         </div>
 
         <div className="space-y-3">
-          <Label>Tags</Label>
+          <Label className="text-slate-900 font-semibold">Tags</Label>
           <div className="flex flex-wrap gap-2">
             {tags.map((tag) => (
               <Badge
                 key={tag.id}
                 variant={selectedTags.includes(tag.id) ? 'default' : 'outline'}
-                className="cursor-pointer"
+                className={`cursor-pointer ${selectedTags.includes(tag.id) ? '' : 'border-slate-300 text-slate-800 font-medium'}`}
                 onClick={() => handleTagToggle(tag.id)}
               >
                 {tag.label}
@@ -132,21 +132,21 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
         </div>
 
         <div className="space-y-3">
-          <Label>Price Range</Label>
+          <Label className="text-slate-900 font-semibold">Price Range</Label>
           <Slider
             value={price}
             onValueChange={(value: number[]) => setPrice(value as [number, number])}
             max={priceRange[1]}
             step={10}
           />
-          <div className="flex justify-between text-sm text-muted-foreground">
+          <div className="flex justify-between text-sm text-slate-700 font-semibold">
             <span>${price[0]}</span>
             <span>${price[1]}</span>
           </div>
         </div>
 
-        <div className="flex gap-2 pt-4 border-t">
-          <Button variant="outline" className="flex-1" onClick={handleClear}>
+        <div className="flex gap-2 pt-4 border-t border-slate-200">
+          <Button variant="outline" className="flex-1 border-slate-300 text-slate-800 font-semibold" onClick={handleClear}>
             Clear All
           </Button>
           <Button className="flex-1" onClick={handleApply}>

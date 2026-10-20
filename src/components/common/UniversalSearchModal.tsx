@@ -155,7 +155,7 @@ const STATIC_REGISTRY: SearchResultItem[] = [
     category: 'Platform Screens',
     route: '/blogs',
     badge: 'Articles',
-    icon: <FileText className="w-4 h-4 text-slate-500" />
+    icon: <FileText className="w-4 h-4 text-slate-600" />
   },
   {
     id: 'nav-camus',
@@ -229,7 +229,7 @@ const STATIC_REGISTRY: SearchResultItem[] = [
     category: 'Enterprise Dashboards',
     route: '/compliance',
     badge: 'DPO / GDPR',
-    icon: <ShieldCheck className="w-4 h-4 text-slate-500" />
+    icon: <ShieldCheck className="w-4 h-4 text-slate-600" />
   },
   {
     id: 'dash-ai-governance',
@@ -476,7 +476,7 @@ export const UniversalSearchModal: React.FC<UniversalSearchModalProps> = ({ isOp
               <X className="w-4 h-4" />
             </button>
           ) : (
-            <kbd className="hidden sm:inline-flex items-center gap-0.5 px-2 py-0.5 text-[11px] font-mono text-slate-700 dark:text-slate-500 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded shadow-xs">
+            <kbd className="hidden sm:inline-flex items-center gap-0.5 px-2 py-0.5 text-[11px] font-mono text-slate-700 dark:text-slate-300 font-bold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded shadow-xs">
               ESC
             </kbd>
           )}
@@ -503,7 +503,7 @@ export const UniversalSearchModal: React.FC<UniversalSearchModalProps> = ({ isOp
                       className={`p-2 rounded-xl shrink-0 ${
                         isSelected
                           ? 'bg-emerald-500/20 text-emerald-600 dark:text-emerald-400'
-                          : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400'
+                          : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300'
                       }`}
                     >
                       {item.icon}
@@ -519,14 +519,14 @@ export const UniversalSearchModal: React.FC<UniversalSearchModalProps> = ({ isOp
                           </span>
                         )}
                       </div>
-                      <p className="text-xs text-slate-500 dark:text-slate-400 truncate mt-0.5">
+                      <p className="text-xs text-slate-700 dark:text-slate-300 font-medium truncate mt-0.5">
                         {item.description}
                       </p>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-2 pl-3 shrink-0">
-                    <span className="text-[10px] font-semibold text-slate-700 dark:text-slate-500 hidden sm:inline">
+                    <span className="text-[10px] font-semibold text-slate-700 dark:text-slate-300 font-bold hidden sm:inline">
                       {item.category}
                     </span>
                     {isSelected ? (
@@ -540,11 +540,11 @@ export const UniversalSearchModal: React.FC<UniversalSearchModalProps> = ({ isOp
             })
           ) : (
             <div className="text-center py-12 px-4">
-              <Bot className="w-10 h-10 text-slate-500 mx-auto mb-3" />
+              <Bot className="w-10 h-10 text-slate-600 mx-auto mb-3" />
               <h4 className="text-sm font-bold text-slate-900 dark:text-white">
                 No exact matches found for "{query}"
               </h4>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-sm mx-auto">
+              <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mt-1 max-w-sm mx-auto">
                 Guardian AI Search suggests checking related routes like /forum, /loansqr, or /master-dashboard.
               </p>
               <button
@@ -560,7 +560,7 @@ export const UniversalSearchModal: React.FC<UniversalSearchModalProps> = ({ isOp
         </div>
 
         {/* Modal Footer Controls */}
-        <div className="px-5 py-3 bg-slate-50 dark:bg-slate-900/80 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-700">
+        <div className="px-5 py-3 bg-slate-50 dark:bg-slate-900/80 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-[11px] text-slate-700 dark:text-slate-300 font-medium">
           <div className="flex items-center gap-3">
             <span className="flex items-center gap-1">
               <kbd className="px-1.5 py-0.5 rounded bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 font-mono text-[10px]">

@@ -100,7 +100,7 @@ export const LuminaAIModal: React.FC<LuminaModalProps> = ({ isOpen, onClose }) =
         )}
       </div>
       <div className="p-4 border-t border-gray-100 dark:border-gray-700 flex items-center justify-between">
-        <span className="text-xs text-gray-400">Ctrl+Enter to submit</span>
+        <span className="text-xs text-slate-700 dark:text-slate-300 font-medium">Ctrl+Enter to submit</span>
         <button
           onClick={handleAsk}
           disabled={loading || !question.trim()}
@@ -172,12 +172,12 @@ export const FeelingActivityModal: React.FC<FeelingActivityModalProps> = ({ isOp
             }`}
           >
             <span className="text-2xl">{emoji}</span>
-            <span className="text-xs text-gray-600 dark:text-gray-400 font-medium leading-tight">{label}</span>
+            <span className="text-xs text-slate-700 dark:text-slate-300 font-semibold leading-tight">{label}</span>
           </button>
         ))}
       </div>
       <div className="p-4 border-t border-gray-100 dark:border-gray-700 flex items-center justify-between">
-        <span className="text-sm text-gray-500">{selected ? `Selected: ${selected}` : 'Pick one above'}</span>
+        <span className="text-sm text-slate-700 dark:text-slate-300 font-medium">{selected ? `Selected: ${selected}` : 'Pick one above'}</span>
         <button
           onClick={() => { if (selected) { onSelect(selected); onClose(); } }}
           disabled={!selected}
@@ -240,7 +240,7 @@ export const CreateRoomModal: React.FC<CreateRoomModalProps> = ({ isOpen, onClos
           <span className="text-2xl">🎥</span>
           <div>
             <h2 className="font-black text-base">Create a Room</h2>
-            <p className="text-slate-400 text-xs">Livestream or video chat with friends</p>
+            <p className="text-slate-300 text-xs font-medium">Livestream or video chat with friends</p>
           </div>
         </div>
         <CloseBtn onClick={onClose} />
@@ -260,7 +260,7 @@ export const CreateRoomModal: React.FC<CreateRoomModalProps> = ({ isOpen, onClos
             {(['video', 'audio'] as const).map(t => (
               <button key={t} type="button" onClick={() => setRoomType(t)}
                 className={`flex-1 py-2.5 rounded-xl border text-sm font-medium transition ${
-                  roomType === t ? 'border-orange-500 bg-orange-50 dark:bg-orange-950/40 text-orange-600' : 'border-slate-300 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-orange-300'
+                  roomType === t ? 'border-orange-500 bg-orange-50 dark:bg-orange-950/40 text-orange-600 font-bold' : 'border-slate-300 dark:border-gray-700 text-slate-700 dark:text-slate-200 hover:border-orange-300'
                 }`}
               >{t === 'video' ? '📹 Video' : '🎙️ Audio Only'}</button>
             ))}
@@ -273,7 +273,7 @@ export const CreateRoomModal: React.FC<CreateRoomModalProps> = ({ isOpen, onClos
           <input type="range" min={2} max={50} value={maxPeople} onChange={e => setMaxPeople(Number(e.target.value))}
             className="w-full accent-orange-500"
           />
-          <div className="flex justify-between text-xs text-gray-400 mt-1"><span>2</span><span>50</span></div>
+          <div className="flex justify-between text-xs text-slate-700 dark:text-slate-300 font-semibold mt-1"><span>2</span><span>50</span></div>
         </div>
         <div className="rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 p-3">
           <p className="text-xs text-amber-700 dark:text-amber-400 leading-relaxed">

@@ -185,15 +185,20 @@ const FicVaultPage: React.FC = () => {
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-6">
-          <div>
-            <div className="flex items-center gap-2 mb-1 text-xs font-mono text-purple-600 dark:text-purple-400">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>[FingerMobile™Protocol] Sovereign Vault & Sleepers Staking Engine</span>
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 rounded-2xl bg-slate-900 border border-purple-500/40 p-1 flex items-center justify-center shadow-md overflow-hidden shrink-0">
+              <img src="/assets/logos/fic_logo.png" alt="Finger Infinite Coin" className="w-full h-full object-contain" />
             </div>
-            <h1 className="text-3xl font-extrabold tracking-tight">FIC Vault & &quot;Sleepers&quot; Pool</h1>
-            <p className="text-sm text-slate-700 dark:text-slate-300 font-medium mt-1">
-              Automated 1-Year locked staking period with guaranteed 1.5% fixed annual returns and multi-balance protocol custody.
-            </p>
+            <div>
+              <div className="flex items-center gap-2 mb-1 text-xs font-mono text-purple-600 dark:text-purple-400">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>[FingerMobile™Protocol] Sovereign Vault & Sleepers Staking Engine</span>
+              </div>
+              <h1 className="text-3xl font-extrabold tracking-tight">FIC Vault & &quot;Sleepers&quot; Pool</h1>
+              <p className="text-sm text-slate-700 dark:text-slate-300 font-medium mt-1">
+                Automated 1-Year locked staking period with guaranteed 1.5% fixed annual returns and multi-balance protocol custody.
+              </p>
+            </div>
           </div>
 
           <div className="flex items-center gap-3">
@@ -411,9 +416,9 @@ const FicVaultPage: React.FC = () => {
                               Claim Yield
                             </button>
                           ) : stake.status === 'withdrawn' ? (
-                            <span className="text-[11px] text-slate-600 dark:text-slate-400 font-bold">Completed</span>
+                            <span className="text-[11px] text-slate-700 dark:text-slate-300 font-bold">Completed</span>
                           ) : (
-                            <span className="text-[11px] text-slate-600 dark:text-slate-400 flex items-center justify-end gap-1 font-bold">
+                            <span className="text-[11px] text-slate-700 dark:text-slate-300 flex items-center justify-end gap-1 font-bold">
                               <Lock className="w-3 h-3" />
                               <span>Locked</span>
                             </span>

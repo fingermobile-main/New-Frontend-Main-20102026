@@ -341,7 +341,7 @@ export const LushProposeMeetModal: React.FC<LushProposeMeetModalProps> = ({
                 <CheckBadgeIcon className="w-5 h-5 text-emerald-600 flex-shrink-0" />
                 <div>
                   <p className="text-xs font-bold text-gray-900">FingerLux White-Glove Concierge</p>
-                  <p className="text-[11px] text-gray-500">
+                  <p className="text-[11px] text-slate-700 font-medium">
                     Includes private chauffeur coordination, priority table reservation & protocol security.
                   </p>
                 </div>

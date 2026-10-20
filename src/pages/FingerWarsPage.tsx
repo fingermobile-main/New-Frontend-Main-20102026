@@ -267,7 +267,7 @@ const FingerWarsPage: React.FC = () => {
 
           <div className="flex items-center gap-3 self-stretch md:self-auto justify-between md:justify-end">
             <div className="px-4 py-2 bg-slate-800/80 border border-slate-700 rounded-2xl text-right">
-              <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">War Chest</p>
+              <p className="text-[10px] text-slate-300 font-bold uppercase tracking-wider">War Chest</p>
               <p className="text-lg font-black text-yellow-400">{(ficBalance || 0).toLocaleString()} FIC</p>
             </div>
 
@@ -442,7 +442,7 @@ const FingerWarsPage: React.FC = () => {
                         className={`w-full py-2.5 rounded-xl text-xs font-black transition-colors ${
                           isComplete
                             ? 'bg-yellow-500 hover:bg-yellow-600 text-gray-950 shadow-sm'
-                            : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                            : 'bg-gray-100 text-slate-500 cursor-not-allowed'
                         }`}
                       >
                         {isComplete ? 'Claim Reward' : 'In Progress'}
@@ -459,7 +459,7 @@ const FingerWarsPage: React.FC = () => {
         {activeTab === 'lobby' && (
           <div className="space-y-4">
             <div className="flex justify-between items-center mb-2">
-              <span className="text-xs font-bold text-gray-500">Live Showdown Queue</span>
+              <span className="text-xs font-bold text-slate-700">Live Showdown Queue</span>
               <button
                 onClick={() => setShowCreateMatchModal(true)}
                 className="flex items-center gap-1.5 px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-gray-950 font-black rounded-xl text-xs transition-all shadow-sm"

@@ -15,11 +15,8 @@ import {
   Sparkles,
   DollarSign,
   TrendingUp,
-  ShieldCheck,
   Zap,
   ShoppingBag,
-  ExternalLink,
-  Layers,
   Clock
 } from 'lucide-react';
 import apiService from '../services/apiService';
@@ -192,8 +189,7 @@ const StorefrontsPage: React.FC = () => {
       showToast(`Transferred ${amountNum} FIC gift to ${selectedStore.name}!`, 'success');
       setShowGiftModal(false);
     } catch {
-      showToast(`Transferred ${amountNum} FIC gift to ${selectedStore.name}!`, 'success');
-      setShowGiftModal(false);
+      showToast(`Unable to transfer the gift to ${selectedStore.name}. Please try again.`, 'error');
     }
   };
 
@@ -231,9 +227,7 @@ const StorefrontsPage: React.FC = () => {
       setStoreTagline('');
       fetchStorefronts();
     } catch {
-      showToast(`Storefront "${storeName}" provisioned and linked to your creator profile!`, 'success');
-      setActiveTab('discover');
-      fetchStorefronts();
+      showToast(`Unable to create storefront "${storeName}". Please try again.`, 'error');
     } finally {
       setIsRegistering(false);
     }
@@ -243,7 +237,6 @@ const StorefrontsPage: React.FC = () => {
     <MainLayout pageTitle="Creator Storefronts & Merchant Gateway">
       <div className="min-h-screen bg-[#F5F9F6] text-slate-900 py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto space-y-8">
-          
           {/* Hero Header */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white p-6 sm:p-8 rounded-3xl border border-slate-300 shadow-sm">
             <div className="flex items-start gap-4">
@@ -282,7 +275,7 @@ const StorefrontsPage: React.FC = () => {
             <div className="bg-white p-4 rounded-2xl border border-slate-300 shadow-sm">
               <div className="flex items-center justify-between text-slate-700 mb-1">
                 <span className="text-xs font-bold">Active Stores</span>
-                <ShoppingBag className="w-4 h-4 text-slate-500" />
+                <ShoppingBag className="w-4 h-4 text-slate-600" />
               </div>
               <p className="text-xl font-mono font-black text-slate-900">{storefronts.length} Verified</p>
               <p className="text-[11px] text-emerald-800 font-semibold mt-0.5">● 100% On-Chain Escrow</p>
@@ -291,7 +284,7 @@ const StorefrontsPage: React.FC = () => {
             <div className="bg-white p-4 rounded-2xl border border-slate-300 shadow-sm">
               <div className="flex items-center justify-between text-slate-700 mb-1">
                 <span className="text-xs font-bold">Settlement Speed</span>
-                <Clock className="w-4 h-4 text-slate-500" />
+                <Clock className="w-4 h-4 text-slate-600" />
               </div>
               <p className="text-xl font-mono font-black text-slate-900">3 - 7 Days</p>
               <p className="text-[11px] text-slate-700 font-medium mt-0.5">Automated release via smart contracts</p>
@@ -300,7 +293,7 @@ const StorefrontsPage: React.FC = () => {
             <div className="bg-white p-4 rounded-2xl border border-slate-300 shadow-sm">
               <div className="flex items-center justify-between text-slate-700 mb-1">
                 <span className="text-xs font-bold">Commission Floor</span>
-                <TrendingUp className="w-4 h-4 text-slate-500" />
+                <TrendingUp className="w-4 h-4 text-slate-600" />
               </div>
               <p className="text-xl font-mono font-black text-emerald-800">0.75% Enterprise</p>
               <p className="text-[11px] text-slate-700 font-medium mt-0.5">Save up to 85% vs traditional carts</p>
@@ -406,7 +399,7 @@ const StorefrontsPage: React.FC = () => {
 
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-2 border-t border-slate-200">
                   <div className="relative flex-1">
-                    <Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                    <Search className="w-4 h-4 text-slate-600 absolute left-3.5 top-1/2 -translate-y-1/2" />
                     <input
                       type="text"
                       placeholder="Search store name, creator, product catalog..."
@@ -542,7 +535,7 @@ const StorefrontsPage: React.FC = () => {
                 </div>
               ) : (
                 <div className="py-20 text-center bg-white rounded-2xl border border-slate-300 shadow-sm space-y-3">
-                  <Store className="w-12 h-12 text-slate-500 mx-auto" />
+                  <Store className="w-12 h-12 text-slate-600 mx-auto" />
                   <h3 className="text-lg font-black text-slate-900">No Storefronts Found</h3>
                   <p className="text-xs text-slate-700 font-medium">No stores match your search or filter criteria.</p>
                 </div>

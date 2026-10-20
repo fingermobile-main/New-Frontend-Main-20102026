@@ -67,11 +67,11 @@ const AdsPanel: React.FC<AdsPanelProps> = ({
     <div className="w-full space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold flex items-center gap-2">
-            <Megaphone className="h-6 w-6" />
+          <h2 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+            <Megaphone className="h-6 w-6 text-slate-800" />
             Advertising Dashboard
           </h2>
-          <p className="text-muted-foreground mt-1">
+          <p className="text-slate-700 mt-1">
             Manage and monitor your ad campaigns
           </p>
         </div>
@@ -81,60 +81,60 @@ const AdsPanel: React.FC<AdsPanelProps> = ({
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card>
+        <Card className="border-slate-200">
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
+            <CardTitle className="text-sm font-semibold text-slate-700">
               Total Budget
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold flex items-center gap-2">
-              <DollarSign className="h-5 w-5 text-green-500" />
+            <div className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+              <DollarSign className="h-5 w-5 text-green-600" />
               ${totalBudget.toLocaleString()}
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-slate-200">
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
+            <CardTitle className="text-sm font-semibold text-slate-700">
               Spent
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold flex items-center gap-2">
-              <DollarSign className="h-5 w-5 text-blue-500" />
+            <div className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+              <DollarSign className="h-5 w-5 text-blue-600" />
               ${totalSpent.toLocaleString()}
             </div>
-            <p className="text-xs text-muted-foreground mt-1">
+            <p className="text-xs text-slate-700 font-medium mt-1">
               {((totalSpent / totalBudget) * 100).toFixed(1)}% of budget
             </p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-slate-200">
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
+            <CardTitle className="text-sm font-semibold text-slate-700">
               Impressions
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold flex items-center gap-2">
-              <Eye className="h-5 w-5 text-purple-500" />
+            <div className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+              <Eye className="h-5 w-5 text-purple-600" />
               {(totalImpressions / 1000).toFixed(1)}K
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-slate-200">
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
+            <CardTitle className="text-sm font-semibold text-slate-700">
               CTR
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold flex items-center gap-2">
-              <MousePointer className="h-5 w-5 text-orange-500" />
+            <div className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+              <MousePointer className="h-5 w-5 text-orange-600" />
               {ctr}%
             </div>
           </CardContent>
@@ -143,12 +143,12 @@ const AdsPanel: React.FC<AdsPanelProps> = ({
 
       <div className="space-y-3">
         {campaigns.map((campaign) => (
-          <Card key={campaign.id} className="hover:shadow-md transition-shadow">
+          <Card key={campaign.id} className="border-slate-200 hover:shadow-md transition-shadow">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>
-                  <CardTitle className="text-lg">{campaign.title}</CardTitle>
-                  <CardDescription>
+                  <CardTitle className="text-lg text-slate-900">{campaign.title}</CardTitle>
+                  <CardDescription className="text-slate-700">
                     ${campaign.spent.toLocaleString()} of ${campaign.budget.toLocaleString()} spent
                   </CardDescription>
                 </div>
@@ -168,21 +168,21 @@ const AdsPanel: React.FC<AdsPanelProps> = ({
             <CardContent>
               <div className="grid grid-cols-3 gap-4 mb-4">
                 <div>
-                  <p className="text-sm text-muted-foreground">Impressions</p>
-                  <p className="font-semibold">{(campaign.impressions / 1000).toFixed(1)}K</p>
+                  <p className="text-sm font-medium text-slate-700">Impressions</p>
+                  <p className="font-bold text-slate-900">{(campaign.impressions / 1000).toFixed(1)}K</p>
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Clicks</p>
-                  <p className="font-semibold">{campaign.clicks.toLocaleString()}</p>
+                  <p className="text-sm font-medium text-slate-700">Clicks</p>
+                  <p className="font-bold text-slate-900">{campaign.clicks.toLocaleString()}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">CTR</p>
-                  <p className="font-semibold">
+                  <p className="text-sm font-medium text-slate-700">CTR</p>
+                  <p className="font-bold text-slate-900">
                     {((campaign.clicks / campaign.impressions) * 100).toFixed(2)}%
                   </p>
                 </div>
               </div>
-              <div className="w-full bg-muted rounded-full h-2 mb-4">
+              <div className="w-full bg-slate-200 rounded-full h-2 mb-4">
                 <div
                   className="bg-primary h-2 rounded-full transition-all"
                   style={{

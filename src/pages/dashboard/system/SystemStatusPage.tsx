@@ -57,7 +57,7 @@ const SystemStatusPage: React.FC = () => {
           <CpuChipIcon className="w-8 h-8 text-indigo-600"/>
           <div>
             <h1 className="text-2xl font-bold text-gray-900 dark:text-white">System Status & Services</h1>
-            <p className="text-sm text-gray-500">Live operational health monitoring</p>
+            <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">Live operational health monitoring</p>
           </div>
         </div>
         <button
@@ -71,17 +71,17 @@ const SystemStatusPage: React.FC = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-slate-300 dark:border-gray-700 shadow-sm">
-          <p className="text-sm text-slate-700 dark:text-gray-400">Overall Status</p>
+          <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">Overall Status</p>
           <p className="text-2xl font-bold text-green-600 mt-1">
             {nodes.some(n => n.status === 'offline') ? 'System Degradation' : 'All Systems Operational'}
           </p>
         </div>
         <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-slate-300 dark:border-gray-700 shadow-sm">
-          <p className="text-sm text-slate-700 dark:text-gray-400">Total Monitored Nodes</p>
+          <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">Total Monitored Nodes</p>
           <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1">{nodes.length}</p>
         </div>
         <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-slate-300 dark:border-gray-700 shadow-sm">
-          <p className="text-sm text-slate-700 dark:text-gray-400">Average Node Latency</p>
+          <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">Average Node Latency</p>
           <p className="text-2xl font-bold text-indigo-600 mt-1">
             {nodes.length > 0 ? Math.round(nodes.reduce((acc, curr) => acc + curr.latency_ms, 0) / nodes.length) : 12} ms
           </p>

@@ -247,7 +247,7 @@ const UserReportsPage: React.FC = () => {
                 ) : (
                   <Card>
                     <CardContent className="flex items-center justify-center h-64">
-                      <p className="text-gray-500">Select a report to view details</p>
+                      <p className="text-slate-700 font-medium">Select a report to view details</p>
                     </CardContent>
                   </Card>
                 )}

@@ -17,7 +17,7 @@ export interface WebSocketConfig {
 
 export const DEFAULT_WS_CONFIG: WebSocketConfig = {
   prodEndpoint: 'wss://api.fingermobileprotocol.com/ws',
-  devEndpoint: 'ws://localhost:3001/ws',
+  devEndpoint: 'ws://localhost:5001/ws',
   maxReconnectAttempts: 5,
   baseReconnectDelay: 1000,
   heartbeatInterval: 30000,

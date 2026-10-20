@@ -72,17 +72,17 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({
   };
 
   return (
-    <Card>
+    <Card className="border-slate-200">
       <CardHeader>
         <div className="flex items-center justify-between">
-          <CardTitle className="text-base flex items-center gap-2">
-            <Bell className="h-5 w-5" />
+          <CardTitle className="text-base flex items-center gap-2 text-slate-900 font-bold">
+            <Bell className="h-5 w-5 text-slate-700" />
             Notifications
             {unreadCount > 0 && (
-              <Badge className="bg-red-500">{unreadCount}</Badge>
+              <Badge className="bg-red-500 text-white font-bold">{unreadCount}</Badge>
             )}
           </CardTitle>
-          <Button variant="ghost" size="sm" onClick={onViewAll}>
+          <Button variant="ghost" size="sm" onClick={onViewAll} className="text-slate-700 font-semibold hover:text-slate-900">
             View All
           </Button>
         </div>
@@ -92,35 +92,35 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({
           {notifications.map((notification) => (
             <div
               key={notification.id}
-              className={`p-3 border rounded-lg transition-colors ${
-                notification.read ? 'bg-muted/30' : 'bg-background hover:bg-muted/50'
+              className={`p-3 border border-slate-200 rounded-lg transition-colors ${
+                notification.read ? 'bg-slate-50' : 'bg-white hover:bg-slate-50/80'
               }`}
             >
               <div className="flex items-start gap-3">
                 <div className={`w-2 h-2 rounded-full mt-2 ${getTypeColor(notification.type)}`} />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between">
-                    <h4 className={`font-medium text-sm ${!notification.read ? '' : 'text-muted-foreground'}`}>
+                    <h4 className={`text-sm ${!notification.read ? 'font-bold text-slate-900' : 'font-semibold text-slate-700'}`}>
                       {notification.title}
                     </h4>
                     {!notification.read && (
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="h-6 w-6"
+                        className="h-6 w-6 text-slate-700 hover:text-slate-900"
                         onClick={() => onMarkAsRead?.(notification.id)}
                       >
                         <Check className="h-3 w-3" />
                       </Button>
                     )}
                   </div>
-                  <p className="text-xs text-muted-foreground mt-1">{notification.message}</p>
+                  <p className="text-xs text-slate-700 font-medium mt-1">{notification.message}</p>
                   <div className="flex items-center justify-between mt-2">
-                    <span className="text-xs text-muted-foreground">{notification.timestamp}</span>
+                    <span className="text-xs text-slate-600 font-medium">{notification.timestamp}</span>
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="h-6 w-6"
+                      className="h-6 w-6 text-slate-700 hover:text-slate-900"
                       onClick={() => onDismiss?.(notification.id)}
                     >
                       <X className="h-3 w-3" />

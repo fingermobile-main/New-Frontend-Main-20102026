@@ -64,7 +64,7 @@ const PolicyPage: React.FC = () => {
             <DocumentTextIcon className="w-7 h-7 text-blue-600" />
             <span>Policy & Statutory Document Management</span>
           </h1>
-          <p className="text-slate-500 text-sm mt-1">
+          <p className="text-slate-700 dark:text-slate-300 font-medium text-sm mt-1">
             Authoritative regulatory policies versioned and stored in PostgreSQL cluster.
           </p>
         </div>
@@ -82,12 +82,12 @@ const PolicyPage: React.FC = () => {
           <table className="w-full text-left">
             <thead className="bg-slate-50 dark:bg-slate-900/50 border-b border-slate-200 dark:border-slate-700">
               <tr>
-                <th className="p-4 font-bold text-xs uppercase tracking-wider text-slate-600 dark:text-slate-400">Document Title</th>
-                <th className="p-4 font-bold text-xs uppercase tracking-wider text-slate-600 dark:text-slate-400">Slug</th>
-                <th className="p-4 font-bold text-xs uppercase tracking-wider text-slate-600 dark:text-slate-400">Version</th>
-                <th className="p-4 font-bold text-xs uppercase tracking-wider text-slate-600 dark:text-slate-400">Status</th>
-                <th className="p-4 font-bold text-xs uppercase tracking-wider text-slate-600 dark:text-slate-400">Effective Date</th>
-                <th className="p-4 font-bold text-xs uppercase tracking-wider text-slate-600 dark:text-slate-400 text-right">Actions</th>
+                <th className="p-4 font-bold text-xs uppercase tracking-wider text-slate-800 dark:text-slate-200">Document Title</th>
+                <th className="p-4 font-bold text-xs uppercase tracking-wider text-slate-800 dark:text-slate-200">Slug</th>
+                <th className="p-4 font-bold text-xs uppercase tracking-wider text-slate-800 dark:text-slate-200">Version</th>
+                <th className="p-4 font-bold text-xs uppercase tracking-wider text-slate-800 dark:text-slate-200">Status</th>
+                <th className="p-4 font-bold text-xs uppercase tracking-wider text-slate-800 dark:text-slate-200">Effective Date</th>
+                <th className="p-4 font-bold text-xs uppercase tracking-wider text-slate-800 dark:text-slate-200 text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 dark:divide-slate-700/60 text-sm">
@@ -97,10 +97,10 @@ const PolicyPage: React.FC = () => {
                     <td className="p-4">
                       <div className="font-bold text-slate-900 dark:text-white">{doc.title}</div>
                       {doc.summary && (
-                        <div className="text-xs text-slate-500 truncate max-w-md mt-0.5">{doc.summary}</div>
+                        <div className="text-xs text-slate-700 dark:text-slate-300 font-medium truncate max-w-md mt-0.5">{doc.summary}</div>
                       )}
                     </td>
-                    <td className="p-4 font-mono text-xs text-slate-500">{doc.slug}</td>
+                    <td className="p-4 font-mono text-xs text-slate-700 dark:text-slate-300 font-medium">{doc.slug}</td>
                     <td className="p-4 font-semibold text-slate-700 dark:text-slate-300">v{doc.version}</td>
                     <td className="p-4">
                       <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-950 border border-emerald-400  dark:bg-emerald-900/40 dark:text-emerald-300 font-black">
@@ -108,7 +108,7 @@ const PolicyPage: React.FC = () => {
                         {doc.is_active ? 'Active' : 'Draft'}
                       </span>
                     </td>
-                    <td className="p-4 text-xs text-slate-600 dark:text-slate-400">
+                    <td className="p-4 text-xs text-slate-700 dark:text-slate-300 font-medium">
                       {new Date(doc.effective_date).toLocaleDateString()}
                     </td>
                     <td className="p-4 text-right">
@@ -123,7 +123,7 @@ const PolicyPage: React.FC = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={6} className="p-8 text-center text-slate-500 text-sm">
+                  <td colSpan={6} className="p-8 text-center text-slate-700 dark:text-slate-300 font-medium text-sm">
                     {loading ? 'Retrieving policies from PostgreSQL...' : 'No legal policies registered.'}
                   </td>
                 </tr>

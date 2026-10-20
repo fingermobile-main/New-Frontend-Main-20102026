@@ -13,10 +13,10 @@ const Footer: React.FC = () => {
           {/* Brand Section */}
           <div className="col-span-1 md:col-span-2">
             <h3 className="text-white text-lg font-bold mb-4">FingerMobile</h3>
-            <p className="text-gray-400 text-sm mb-4">
+            <p className="text-gray-300 font-medium text-sm mb-4">
               Empowering creators with innovative digital solutions and community-driven platforms.
             </p>
-            <p className="text-gray-500 text-xs">
+            <p className="text-gray-300 font-medium text-xs">
               © {currentYear} Mbah Israel Obinna. All rights reserved.
             </p>
           </div>
@@ -24,7 +24,7 @@ const Footer: React.FC = () => {
           {/* Quick Links */}
           <div>
             <h4 className="text-white font-semibold mb-4">Quick Links</h4>
-            <ul className="space-y-2 text-sm" aria-label="Quick navigation links">
+            <ul className="space-y-2 text-sm text-gray-300 font-medium" aria-label="Quick navigation links">
               <li><Link to="/" className="hover:text-white transition-colors">Home</Link></li>
               <li><Link to="/about" className="hover:text-white transition-colors">About Us</Link></li>
               <li><Link to="/marketplace" className="hover:text-white transition-colors">Marketplace</Link></li>
@@ -35,7 +35,7 @@ const Footer: React.FC = () => {
           {/* Legal */}
           <div>
             <h4 className="text-white font-semibold mb-4">Legal</h4>
-            <ul className="space-y-2 text-sm">
+            <ul className="space-y-2 text-sm text-gray-300 font-medium">
               <li><Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
               <li><Link to="/terms-of-service" className="hover:text-white transition-colors">Terms of Service</Link></li>
               <li><Link to="/cookie-policy" className="hover:text-white transition-colors">Cookie Policy</Link></li>
@@ -45,7 +45,7 @@ const Footer: React.FC = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-500">
+        <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-300 font-medium">
           <p>FingerMobile Protocol Communication™©® — All Intellectual Property Rights Reserved</p>
         </div>
       </div>

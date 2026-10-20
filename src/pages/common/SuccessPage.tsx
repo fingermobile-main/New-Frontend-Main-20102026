@@ -30,7 +30,7 @@ const SuccessPage: React.FC = () => {
     }, 2000);
 
     const redirectTimer = setTimeout(() => {
-      navigate('/login');
+      navigate('/forum');
     }, 3000);
 
     return () => {
@@ -50,14 +50,14 @@ const SuccessPage: React.FC = () => {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <div className="text-4xl md:text-5xl font-black bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-3 tracking-tight">
+        <div className="text-4xl md:text-5xl font-black text-[#ff6b00] mb-3 tracking-tight">
           FingerMobile
         </div>
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-50 dark:bg-green-950/40 text-green-950 dark:text-green-300 font-semibold text-sm mb-3 border border-green-400 dark:border-green-800 font-black">
           <span>✓</span>
           <span>Onboarding Completed Successfully</span>
         </div>
-        <p className="text-slate-700 dark:text-gray-400 text-sm animate-pulse">
+        <p className="text-slate-700 dark:text-slate-300 font-medium text-sm animate-pulse">
           Calibrating P2P services & preparing login experience...
         </p>
       </div>

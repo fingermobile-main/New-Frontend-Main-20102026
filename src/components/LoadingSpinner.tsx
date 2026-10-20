@@ -24,8 +24,8 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
 
   const colorClasses = {
     primary: 'text-indigo-600',
-    secondary: 'text-gray-600',
-    gray: 'text-gray-400',
+    secondary: 'text-slate-700',
+    gray: 'text-slate-600',
   };
 
   const spinnerClass = `${sizeClasses[size]} ${colorClasses[color]} animate-spin`;

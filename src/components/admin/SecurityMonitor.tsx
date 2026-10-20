@@ -99,7 +99,7 @@ const SecurityMonitor: React.FC<SecurityMonitorProps> = ({
             <Shield className="h-6 w-6" />
             Security Monitor
           </h2>
-          <p className="text-muted-foreground mt-1">
+          <p className="text-slate-700 font-medium mt-1">
             Real-time security event tracking
           </p>
         </div>
@@ -111,7 +111,7 @@ const SecurityMonitor: React.FC<SecurityMonitorProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
+            <CardTitle className="text-sm font-semibold text-slate-800">
               Critical Alerts
             </CardTitle>
           </CardHeader>
@@ -121,7 +121,7 @@ const SecurityMonitor: React.FC<SecurityMonitorProps> = ({
         </Card>
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
+            <CardTitle className="text-sm font-semibold text-slate-800">
               High Priority
             </CardTitle>
           </CardHeader>
@@ -131,7 +131,7 @@ const SecurityMonitor: React.FC<SecurityMonitorProps> = ({
         </Card>
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
+            <CardTitle className="text-sm font-semibold text-slate-800">
               Medium Priority
             </CardTitle>
           </CardHeader>
@@ -141,7 +141,7 @@ const SecurityMonitor: React.FC<SecurityMonitorProps> = ({
         </Card>
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
+            <CardTitle className="text-sm font-semibold text-slate-800">
               Low Priority
             </CardTitle>
           </CardHeader>
@@ -174,10 +174,10 @@ const SecurityMonitor: React.FC<SecurityMonitorProps> = ({
                     </Badge>
                     <span className="font-medium">{event.type.replace('_', ' ')}</span>
                   </div>
-                  <p className="text-sm text-muted-foreground mt-1 truncate">
+                  <p className="text-sm text-slate-700 font-medium mt-1 truncate">
                     {event.user} from {event.ip}
                   </p>
-                  <p className="text-xs text-muted-foreground mt-1">
+                  <p className="text-xs text-slate-600 mt-1">
                     {event.timestamp}
                   </p>
                 </div>

@@ -260,7 +260,7 @@ export const StructuredAboutSection: React.FC<StructuredAboutSectionProps> = ({
                     {detail.field_type === 'website' && <Globe className="w-4 h-4 text-purple-600" />}
                   </div>
                   <div className="truncate">
-                    <span className="text-[10px] font-bold text-slate-500 uppercase block">
+                    <span className="text-[10px] font-bold text-slate-700 font-bold uppercase block">
                       {detail.display_label}
                     </span>
                     <span className="text-xs font-black text-slate-900 truncate block">
@@ -292,7 +292,7 @@ export const StructuredAboutSection: React.FC<StructuredAboutSectionProps> = ({
 
         {/* Left Column: 14 Categories Vertical Navigation (4 cols) */}
         <aside className="md:col-span-4 rounded-2xl border border-slate-300 bg-slate-50 p-2 space-y-1">
-          <div className="px-3 py-2 text-[11px] font-black uppercase text-slate-500 tracking-wider">
+          <div className="px-3 py-2 text-[11px] font-black uppercase text-slate-700 font-medium tracking-wider">
             About Categories
           </div>
 
@@ -380,7 +380,7 @@ export const StructuredAboutSection: React.FC<StructuredAboutSectionProps> = ({
                     {profileData.bio}
                   </p>
                   <div className="flex items-center gap-2 text-xs font-bold text-slate-600">
-                    <Globe className="w-4 h-4 text-slate-500" />
+                    <Globe className="w-4 h-4 text-slate-700 font-medium" />
                     <span>Audience: <strong>Public to All Network Participants</strong></span>
                   </div>
                 </div>
@@ -401,13 +401,13 @@ export const StructuredAboutSection: React.FC<StructuredAboutSectionProps> = ({
               </div>
               <div className="bg-white p-5 rounded-xl border border-slate-200 space-y-3">
                 <div>
-                  <span className="text-[10px] font-bold text-slate-500 uppercase">Primary Classification</span>
+                  <span className="text-[10px] font-bold text-slate-700 font-bold uppercase">Primary Classification</span>
                   <div className="text-sm font-black text-slate-900 mt-0.5">
                     {profileData.category || 'Creator Level 5 / Sovereign Architect'}
                   </div>
                 </div>
                 <div className="pt-2 border-t border-slate-200">
-                  <span className="text-[10px] font-bold text-slate-500 uppercase">Recognized Subcategories</span>
+                  <span className="text-[10px] font-bold text-slate-700 font-bold uppercase">Recognized Subcategories</span>
                   <div className="flex flex-wrap gap-2 mt-1.5">
                     {['Decentralized Social Architectures', 'Zero-Knowledge Cryptography', 'Lossless Audio Stems'].map((sub, i) => (
                       <span key={i} className="px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 text-slate-800 border border-slate-300">
@@ -536,10 +536,10 @@ export const StructuredAboutSection: React.FC<StructuredAboutSectionProps> = ({
                     B.Eng Electronic Engineering & Decentralized Systems
                   </h5>
                   <p className="text-xs font-bold text-slate-700">University of Nigeria, Nsukka</p>
-                  <span className="text-[11px] text-slate-500 font-medium">Graduated with High Honors</span>
+                  <span className="text-[11px] text-slate-700 font-medium font-medium">Graduated with High Honors</span>
                 </div>
                 <div className="pt-2 border-t border-slate-100 space-y-1">
-                  <span className="text-[10px] font-bold text-slate-500 uppercase">Sovereign Protocol Credentials:</span>
+                  <span className="text-[10px] font-bold text-slate-700 font-bold uppercase">Sovereign Protocol Credentials:</span>
                   <div className="flex flex-wrap gap-1.5">
                     <span className="px-2 py-0.5 rounded bg-sky-50 text-sky-900 border border-sky-300 text-xs font-bold">
                       STERCS™ Certified Security Node #001
@@ -691,7 +691,7 @@ export const StructuredAboutSection: React.FC<StructuredAboutSectionProps> = ({
                 {['Devcon Bangkok 2024', 'ETHLagos 2025', 'Africa Internet Summit 2026', 'Singapore Web3 Expo'].map((dest, i) => (
                   <div key={i} className="p-3.5 rounded-xl bg-white border border-slate-200 flex items-center justify-between">
                     <span className="text-xs font-black text-slate-900">{dest}</span>
-                    <span className="text-[11px] font-bold text-slate-500">Verified Delegate</span>
+                    <span className="text-[11px] font-bold text-slate-700 font-medium">Verified Delegate</span>
                   </div>
                 ))}
               </div>

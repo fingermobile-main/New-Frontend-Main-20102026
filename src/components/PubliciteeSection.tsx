@@ -94,7 +94,7 @@ export const PubliciteeSection: React.FC<PubliciteeSectionProps> = ({
                 <Clock className="w-3 h-3" /> 168h TTL (7 Days)
               </span>
             </div>
-            <p className="text-xs text-gray-500 dark:text-gray-400">Reels for Short Film & Movie Makers, Vloggers and Skit Creators</p>
+            <p className="text-xs text-slate-700 dark:text-slate-300 font-medium">Reels for Short Film & Movie Makers, Vloggers and Skit Creators</p>
           </div>
         </div>
 
@@ -140,7 +140,7 @@ export const PubliciteeSection: React.FC<PubliciteeSectionProps> = ({
           ))}
         </div>
       ) : items.length === 0 ? (
-        <div className="text-center py-8 text-gray-500 dark:text-gray-400 text-sm">
+        <div className="text-center py-8 text-slate-700 dark:text-slate-300 font-medium text-sm">
           No active Publicitee reels found in this section.
         </div>
       ) : (
@@ -214,7 +214,7 @@ export const PubliciteeSection: React.FC<PubliciteeSectionProps> = ({
             <div className="p-4 text-white">
               <div className="flex items-center justify-between mb-1">
                 <span className="text-xs uppercase font-bold text-orange-400">{activeVideo.category.replace('_', ' ')}</span>
-                <span className="text-xs text-gray-400 font-mono">168h TTL Window</span>
+                <span className="text-xs text-slate-300 font-medium font-mono">168h TTL Window</span>
               </div>
               <h3 className="text-base font-bold">{activeVideo.title}</h3>
               {activeVideo.description && (

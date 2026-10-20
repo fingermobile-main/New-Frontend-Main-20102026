@@ -119,7 +119,7 @@ export const SocialEmbedModal: React.FC<SocialEmbedModalProps> = ({
               <h2 id="social-embed-title" className="text-base font-bold text-white tracking-tight">
                 Embed & Share Product
               </h2>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-300 font-medium">
                 Universal Cross-Social Bridge • FingerMobile Protocol™
               </p>
             </div>
@@ -127,7 +127,7 @@ export const SocialEmbedModal: React.FC<SocialEmbedModalProps> = ({
           <button
             onClick={onClose}
             aria-label="Close embed modal"
-            className="p-1.5 text-slate-400 rounded-lg hover:text-white hover:bg-slate-800 transition"
+            className="p-1.5 text-slate-300 rounded-lg hover:text-white hover:bg-slate-800 transition"
           >
             <CloseIcon className="w-5 h-5" />
           </button>
@@ -182,7 +182,7 @@ export const SocialEmbedModal: React.FC<SocialEmbedModalProps> = ({
 
           {/* Destination Selector */}
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">
               Select Destination Platform
             </label>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -213,7 +213,7 @@ export const SocialEmbedModal: React.FC<SocialEmbedModalProps> = ({
 
           {/* Custom Accompanying Note */}
           <div>
-            <label htmlFor="embed-note" className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+            <label htmlFor="embed-note" className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">
               Accompanying Caption / Note (Optional)
             </label>
             <textarea
@@ -228,7 +228,7 @@ export const SocialEmbedModal: React.FC<SocialEmbedModalProps> = ({
 
           {/* Quick External Social Sharing */}
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">
               Share to External Social Media
             </label>
             <div className="flex gap-2">
@@ -258,7 +258,7 @@ export const SocialEmbedModal: React.FC<SocialEmbedModalProps> = ({
 
           {/* Direct Link Copy */}
           <div className="flex items-center gap-2 p-2 bg-slate-950/80 border border-slate-800 rounded-xl">
-            <span className="text-xs text-slate-400 truncate flex-1 px-2 font-mono">
+            <span className="text-xs text-slate-300 font-medium truncate flex-1 px-2 font-mono">
               {productShareUrl}
             </span>
             <button
@@ -277,7 +277,7 @@ export const SocialEmbedModal: React.FC<SocialEmbedModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 text-xs font-semibold text-slate-400 hover:text-white transition"
+            className="px-4 py-2 text-xs font-semibold text-slate-300 hover:text-white transition"
           >
             Cancel
           </button>

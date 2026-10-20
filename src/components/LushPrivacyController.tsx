@@ -147,7 +147,7 @@ const LushPrivacyController: React.FC<LushPrivacyControllerProps> = ({
             <LockClosedIcon className="h-8 w-8 text-indigo-600" />
           </div>
           <h3 className="mt-4 text-lg font-medium text-gray-900">Content Access Restricted</h3>
-          <p className="mt-2 text-sm text-gray-500">
+          <p className="mt-2 text-sm text-slate-700 font-medium">
             This content has special privacy requirements that must be met before viewing.
           </p>
 

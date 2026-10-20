@@ -98,7 +98,7 @@ const BusinessHubPage: React.FC = () => {
                 <h1 className="text-2xl font-bold text-gray-900">
                   Business Hub: {selectedDepartment}
                 </h1>
-                <p className="text-gray-500">
+                <p className="text-slate-700 font-medium">
                   Your AI-powered business management center
                 </p>
               </div>

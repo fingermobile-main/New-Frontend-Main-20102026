@@ -107,7 +107,7 @@ export const H2AdBucket: React.FC = () => {
 
             <div className="flex-1 text-center sm:text-left">
               <div className="flex items-center justify-center sm:justify-start gap-2 mb-1">
-                <span className="text-[11px] font-bold text-slate-400">
+                <span className="text-[11px] font-bold text-slate-300">
                   {ad?.company_name || 'FingerMobile Verified Merchant'}
                 </span>
                 <span className="text-amber-500 text-[10px]">✓</span>
@@ -147,7 +147,7 @@ export const H2AdBucket: React.FC = () => {
               </div>
               <div>
                 <p className="text-xs font-bold text-slate-200">AdSense / AdMob Verified</p>
-                <p className="text-[11px] text-slate-400">Algorithmic placement tailored to member interests.</p>
+                <p className="text-[11px] text-slate-300 font-medium">Algorithmic placement tailored to member interests.</p>
               </div>
             </div>
             <div className="mt-3 text-right">
@@ -169,7 +169,7 @@ export const H2AdBucket: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setMaskBalance(!maskBalance)}
-                className="p-0.5 text-slate-400 hover:text-amber-400 transition-colors"
+                className="p-0.5 text-slate-300 hover:text-amber-400 transition-colors"
                 title={maskBalance ? 'Show balances' : 'Hide balances'}
               >
                 {maskBalance ? <EyeIcon className="w-3.5 h-3.5" /> : <EyeOffIcon className="w-3.5 h-3.5" />}
@@ -180,7 +180,7 @@ export const H2AdBucket: React.FC = () => {
             <div className="flex items-center justify-between px-3.5 py-3 border-b border-slate-800/50 hover:bg-slate-800/30 transition-colors flex-1">
               <div className="flex items-center gap-1.5">
                 <span className="text-amber-400 text-sm leading-none">🪙</span>
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wide leading-tight">FIC<br/>Tokens</span>
+                <span className="text-[10px] font-bold text-slate-200 uppercase tracking-wide leading-tight">FIC<br/>Tokens</span>
               </div>
               <span className="text-xs font-extrabold text-amber-300 tabular-nums text-right">
                 {maskBalance ? masked : vault.ficBalance.toLocaleString()}
@@ -191,7 +191,7 @@ export const H2AdBucket: React.FC = () => {
             <div className="flex items-center justify-between px-3.5 py-3 border-b border-slate-800/50 hover:bg-slate-800/30 transition-colors flex-1">
               <div className="flex items-center gap-1.5">
                 <span className="text-emerald-400 text-sm leading-none">💳</span>
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wide leading-tight">Live<br/>Wallet</span>
+                <span className="text-[10px] font-bold text-slate-200 uppercase tracking-wide leading-tight">Live<br/>Wallet</span>
               </div>
               <span className="text-xs font-extrabold text-emerald-300 tabular-nums text-right">
                 {maskBalance ? masked : `$${vault.walletBalance.toFixed(2)}`}
@@ -202,7 +202,7 @@ export const H2AdBucket: React.FC = () => {
             <div className="flex items-center justify-between px-3.5 py-3 hover:bg-slate-800/30 transition-colors flex-1">
               <div className="flex items-center gap-1.5">
                 <span className="text-indigo-400 text-sm leading-none">📈</span>
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wide leading-tight">Pending<br/>Earn</span>
+                <span className="text-[10px] font-bold text-slate-200 uppercase tracking-wide leading-tight">Pending<br/>Earn</span>
               </div>
               <span className="text-xs font-extrabold text-indigo-300 tabular-nums text-right">
                 {maskBalance ? masked : `${vault.pendingEarnings.toFixed(2)}`}

@@ -554,7 +554,7 @@ export const CoverPhotoEditorModal: React.FC<CoverPhotoEditorModalProps> = ({
             {/* RESOLUTION STATUS BAR */}
             <div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs pt-2 border-t border-slate-800">
               <div className="flex items-center gap-2">
-                <span className="text-slate-400 font-medium">Source Image Resolution:</span>
+                <span className="text-slate-300 font-medium">Source Image Resolution:</span>
                 <span className="font-mono font-bold text-white bg-slate-800 px-2 py-0.5 rounded border border-slate-700">
                   {detectedResolution.width} × {detectedResolution.height} px
                 </span>
@@ -580,7 +580,7 @@ export const CoverPhotoEditorModal: React.FC<CoverPhotoEditorModalProps> = ({
                 )}
               </div>
 
-              <div className="text-[11px] text-slate-400">
+              <div className="text-[11px] text-slate-300 font-medium">
                 Minimum Required: <strong className="text-white">{activeSpec.minWidth} × {activeSpec.minHeight} px</strong>
               </div>
             </div>

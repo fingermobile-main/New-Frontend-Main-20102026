@@ -90,53 +90,53 @@ const TrendsFeed: React.FC<TrendsFeedProps> = ({
   return (
     <div className="w-full space-y-4">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-2xl font-bold flex items-center gap-2">
+        <h2 className="text-2xl font-bold flex items-center gap-2 text-slate-900">
           <Flame className="h-6 w-6 text-orange-500" />
           Trending Topics
         </h2>
-        <Badge variant="secondary">Live Updates</Badge>
+        <Badge variant="secondary" className="bg-slate-100 text-slate-800 border border-slate-300 font-semibold">Live Updates</Badge>
       </div>
 
       <div className="space-y-3">
         {trends.map((trend, index) => (
           <Card
             key={trend.id}
-            className="hover:shadow-md transition-all cursor-pointer group"
+            className="border-slate-200 hover:shadow-md transition-all cursor-pointer group"
             onClick={() => onTrendClick?.(trend.id)}
           >
             <CardContent className="p-4">
               <div className="flex items-start gap-4">
-                <div className="text-3xl font-bold text-muted-foreground/20 min-w-[50px] text-center">
+                <div className="text-3xl font-black text-slate-300 min-w-[50px] text-center">
                   #{index + 1}
                 </div>
                 <div className="flex-1 space-y-2">
                   <div className="flex items-start justify-between gap-2">
-                    <h3 className="font-semibold text-lg group-hover:text-primary transition-colors line-clamp-2">
+                    <h3 className="font-bold text-lg text-slate-900 group-hover:text-primary transition-colors line-clamp-2">
                       {trend.title}
                     </h3>
-                    <Badge variant="outline" className="flex-shrink-0">
+                    <Badge variant="outline" className="flex-shrink-0 border-slate-300 text-slate-800 font-semibold">
                       {trend.category}
                     </Badge>
                   </div>
-                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                  <div className="flex items-center gap-4 text-sm text-slate-700 font-medium">
                     <div className="flex items-center gap-1">
-                      <Eye className="h-4 w-4" />
+                      <Eye className="h-4 w-4 text-slate-600" />
                       {formatNumber(trend.views)}
                     </div>
                     <div className="flex items-center gap-1">
-                      <MessageCircle className="h-4 w-4" />
+                      <MessageCircle className="h-4 w-4 text-slate-500" />
                       {formatNumber(trend.comments)}
                     </div>
                     <div className="flex items-center gap-1">
-                      <Share2 className="h-4 w-4" />
+                      <Share2 className="h-4 w-4 text-slate-500" />
                       {formatNumber(trend.shares)}
                     </div>
                     <div className="flex items-center gap-1">
-                      <TrendingUp className="h-4 w-4" />
+                      <TrendingUp className="h-4 w-4 text-slate-500" />
                       {trend.热度}%
                     </div>
                   </div>
-                  <p className="text-xs text-muted-foreground">{trend.timestamp}</p>
+                  <p className="text-xs text-slate-600 font-medium">{trend.timestamp}</p>
                 </div>
               </div>
             </CardContent>
@@ -144,7 +144,7 @@ const TrendsFeed: React.FC<TrendsFeedProps> = ({
         ))}
       </div>
 
-      <Button variant="outline" className="w-full mt-4">
+      <Button variant="outline" className="w-full mt-4 border-slate-300 text-slate-800 font-semibold">
         Load More Trends
       </Button>
     </div>

@@ -4,6 +4,7 @@ export interface DrawerMenuItem {
   description?: string;
   path: string;
   icon: string; // Lucide icon name or emoji fallback
+  logoUrl?: string;
   badge?: {
     text: string;
     type: 'primary' | 'success' | 'warning' | 'danger' | 'info';
@@ -22,6 +23,126 @@ export interface DrawerMenuCategory {
 }
 
 export const DRAWER_MENU_CONFIG: DrawerMenuCategory[] = [
+  {
+    id: 'executive-dashboards',
+    title: 'Executive & Managed Dashboards',
+    icon: 'LayoutDashboard',
+    description: 'Master Dashboard, UGC Analytics, Monetization Hub & Managed Consoles',
+    items: [
+      {
+        id: 'master-dashboard',
+        title: 'Master Dashboard',
+        description: 'Primary Executive Console, Governance & STERCS™ Enclave',
+        path: '/master-dashboard',
+        icon: 'Crown',
+        badge: { text: 'Executive', type: 'primary' }
+      },
+      {
+        id: 'monetization-dashboard',
+        title: 'Monetization Hub',
+        description: 'Overview of all platform earnings & revenue streams',
+        path: '/monetization-dashboard',
+        icon: 'TrendingUp',
+        badge: { text: 'Finance', type: 'info' }
+      },
+      {
+        id: 'ugc-dashboard',
+        title: 'UGC Analysis Dashboard',
+        description: 'Performance metrics for uploaded creator content',
+        path: '/ugc-dashboard',
+        icon: 'BarChart2',
+        badge: { text: 'Analytics', type: 'success' }
+      },
+      {
+        id: 'creator-dashboard',
+        title: 'Creator Studio Dashboard',
+        description: 'Manage creator channels, streams, events & assets',
+        path: '/creatordashboard',
+        icon: 'Video',
+        badge: { text: 'Studio', type: 'warning' }
+      },
+      {
+        id: 'monitoring-dashboard',
+        title: 'System Monitoring Dashboard',
+        description: 'Real-time infrastructure health, uptime & nodes',
+        path: '/monitoringdashboard',
+        icon: 'Activity',
+        badge: { text: 'Ops', type: 'info' }
+      },
+      {
+        id: 'users-permissions-console',
+        title: 'Users Permission Console',
+        description: 'SuperAdmin & CFO matrix for Staff, Badges, Honors & Mod Scopes',
+        path: '/admin/users-permissions',
+        icon: 'Users',
+        badge: { text: 'SuperAdmin', type: 'primary' }
+      },
+      {
+        id: 'pages-permissions-console',
+        title: 'Pages Permission Console',
+        description: 'Master 385-screen directory, route locks & data shielding',
+        path: '/admin/pages-permissions',
+        icon: 'Lock',
+        badge: { text: 'Gatekeeper', type: 'primary' }
+      },
+      {
+        id: 'creators-console',
+        title: 'Content Creators Console',
+        description: 'Manage Creator Tiers, Subscriptions & Monetization Splits',
+        path: '/admin/creators-console',
+        icon: 'Palette',
+        badge: { text: 'Creators Hive', type: 'primary' }
+      },
+      {
+        id: 'business-console',
+        title: 'Business & Orgs Console',
+        description: 'Enterprise Accounts, KYB Vetting, Corporate SLA & Canary Ads',
+        path: '/admin/business-console',
+        icon: 'Building2',
+        badge: { text: 'Enterprise Hive', type: 'primary' }
+      }
+    ]
+  },
+  {
+    id: 'sovereign-governance',
+    title: 'Sovereign Governance & Enclaves',
+    icon: 'Shield',
+    description: 'Back Office Operations, Badge Enclaves, Parliamentary Council & Moderation',
+    items: [
+      {
+        id: 'backoffice-ops',
+        title: 'Back Office Operations Portal',
+        description: 'Staff clearances for KYC, disputes, settlements & catalogue',
+        path: '/backoffice/operations',
+        icon: 'Briefcase',
+        badge: { text: 'Staff Lvl 1-5', type: 'info' }
+      },
+      {
+        id: 'badge-enclave',
+        title: 'Badge Sovereign Enclave',
+        description: 'Tiered perks, fee discounts, private vault keys & VIP drops',
+        path: '/enclave/badge-privileges',
+        icon: 'Award',
+        badge: { text: 'Perks', type: 'warning' }
+      },
+      {
+        id: 'council-governance',
+        title: 'Council of Dignitaries Chamber',
+        description: 'Parliamentary voting floor for Founding Ambassadors & Fellows',
+        path: '/council/governance',
+        icon: 'Landmark',
+        badge: { text: 'Council', type: 'primary' }
+      },
+      {
+        id: 'moderator-command',
+        title: 'Moderator Command Console',
+        description: 'Forum sentinel queue, thread lock/pin & member cooldowns',
+        path: '/moderator/command-center',
+        icon: 'ShieldAlert',
+        badge: { text: 'Sentinel', type: 'danger' }
+      }
+    ]
+  },
   {
     id: 'community-social',
     title: 'Community & Social Hub',
@@ -93,14 +214,16 @@ export const DRAWER_MENU_CONFIG: DrawerMenuCategory[] = [
         title: 'BeatwaveNG',
         description: 'Next-Gen music streaming & audio player',
         path: '/beatwave-ng',
-        icon: 'Music'
+        icon: 'Music',
+        logoUrl: '/assets/logos/beatwaveng_logo.png'
       },
       {
         id: 'dancia-4tv',
         title: 'Dancia-4Tv',
         description: 'Live broadcast TV, videos & streams',
         path: '/dancia-4tv',
-        icon: 'Video'
+        icon: 'Video',
+        logoUrl: '/assets/logos/dancia4tv_logo.png'
       },
       {
         id: 'programs',
@@ -108,6 +231,14 @@ export const DRAWER_MENU_CONFIG: DrawerMenuCategory[] = [
         description: 'Featured series & scheduled programs',
         path: '/programs',
         icon: 'Calendar'
+      },
+      {
+        id: 'nysc',
+        title: 'NYSC',
+        description: 'National Youth Service Corps (NYSC) Grants & Skills Scheme',
+        path: '/nysc',
+        icon: 'Award',
+        badge: { text: 'Grants', type: 'success' }
       },
       {
         id: 'events',
@@ -121,7 +252,8 @@ export const DRAWER_MENU_CONFIG: DrawerMenuCategory[] = [
         title: 'Tribut',
         description: 'Public media stream & creative showcase',
         path: '/tribut',
-        icon: 'Image'
+        icon: 'Image',
+        logoUrl: '/assets/logos/tribut_icon.png'
       },
       {
         id: 'lush-pressies',
@@ -129,6 +261,7 @@ export const DRAWER_MENU_CONFIG: DrawerMenuCategory[] = [
         description: 'Gifting & appreciation center',
         path: '/lush-pressies',
         icon: 'Gift',
+        logoUrl: '/assets/logos/lushpressies_logo.png',
         badge: { text: 'Hot', type: 'danger' }
       },
       {
@@ -152,6 +285,7 @@ export const DRAWER_MENU_CONFIG: DrawerMenuCategory[] = [
         description: 'Goods & Services curated from top 100 global stores',
         path: '/marketplace',
         icon: 'Store',
+        logoUrl: '/assets/logos/marketplace_icon.png',
         badge: { text: 'Curated', type: 'info' }
       },
       {
@@ -175,6 +309,7 @@ export const DRAWER_MENU_CONFIG: DrawerMenuCategory[] = [
         description: 'Private & privileged adult storefront',
         path: '/flamingo',
         icon: 'Lock',
+        logoUrl: '/assets/logos/flamingo_icon.png',
         isPrivate: true,
         requiresAgeVerification: true,
         badge: { text: '18+ Private', type: 'danger' }
@@ -208,6 +343,7 @@ export const DRAWER_MENU_CONFIG: DrawerMenuCategory[] = [
         description: 'Upload & download HD media for instant monetization',
         path: '/photocredits',
         icon: 'Camera',
+        logoUrl: '/assets/logos/photocredits_icon.png',
         badge: { text: 'Monetize', type: 'success' }
       },
       {
@@ -230,6 +366,7 @@ export const DRAWER_MENU_CONFIG: DrawerMenuCategory[] = [
         description: 'Premium luxury portfolio & high-end showcases',
         path: '/fingerlux',
         icon: 'Sparkles',
+        logoUrl: '/assets/logos/fingerlux_icon.png',
         badge: { text: 'VIP', type: 'warning' }
       },
       {
@@ -323,6 +460,7 @@ export const DRAWER_MENU_CONFIG: DrawerMenuCategory[] = [
         description: 'Platform native currency & vault balance',
         path: '/fic-vault',
         icon: 'Coins',
+        logoUrl: '/assets/logos/fic_logo.png',
         badge: { text: 'FIC', type: 'info' }
       },
       {
@@ -359,7 +497,17 @@ export const DRAWER_MENU_CONFIG: DrawerMenuCategory[] = [
         title: 'Game On',
         description: 'Gaming hub & leaderboards',
         path: '/game-on',
-        icon: 'Gamepad2'
+        icon: 'Gamepad2',
+        logoUrl: '/assets/logos/supervi_logo.png'
+      },
+      {
+        id: 'supervi-gaming',
+        title: 'SuperVi Arena',
+        description: 'SuperVi next-gen sovereign gaming & tournament arena',
+        path: '/games/supervi',
+        icon: 'Gamepad2',
+        logoUrl: '/assets/logos/supervi_logo.png',
+        badge: { text: 'Arena', type: 'warning' }
       },
       {
         id: 'finger-wars',

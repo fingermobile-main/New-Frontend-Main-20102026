@@ -36,6 +36,7 @@ import { CreatorSpotAvailabilityCard } from '../components/onboarding/CreatorSpo
 import { HumanCaptchaPuzzle } from '../components/onboarding/HumanCaptchaPuzzle';
 import { CESFormulaCard } from '../components/onboarding/CESFormulaCard';
 import { CountryAvailabilityData, CreatorTier } from '../types/creatorOnboarding';
+import userProfileSyncService from '../services/UserProfileSyncService';
 
 const OnboardingPage: React.FC = () => {
   const navigate = useNavigate();
@@ -152,6 +153,31 @@ const OnboardingPage: React.FC = () => {
     await nextStep();
   };
 
+  // Quick Action: Accept all legal terms and grant platform permissions
+  const handleSelectAllTermsAndPermissions = async () => {
+    await updateProgress({
+      termsAccepted: {
+        userAgreement: true,
+        privacyPolicy: true,
+        platformUseTerms: true,
+        conditions: true
+      },
+      permissionsGranted: {
+        location: true,
+        notifications: true,
+        audio: true,
+        media: true,
+        camera: true,
+        storage: true
+      },
+      verificationStatus: {
+        ...state.progress?.verificationStatus,
+        termsAccepted: true,
+        permissionsGranted: true
+      }
+    });
+  };
+
   // Handle registration step
   const handleRegistration = async () => {
     // In a real app, this would handle registration logic
@@ -240,9 +266,10 @@ const OnboardingPage: React.FC = () => {
   };
 
   // Handle account type selection
-  const handleAccountTypeSelect = async (type: 'personal' | 'creator' | 'business') => {
-    await setAccountType(type);
-    setTempData({ ...tempData, accountType: type });
+  const handleAccountTypeSelect = async (type?: 'personal' | 'creator' | 'business') => {
+    const selected = type || tempData.accountType || 'personal';
+    await setAccountType(selected);
+    setTempData({ ...tempData, accountType: selected });
     await nextStep();
   };
 
@@ -327,19 +354,40 @@ const OnboardingPage: React.FC = () => {
 
       // Update stored user if available
       const storedUser = localStorage.getItem('user');
+      const accountType = state.progress?.accountType || 'personal';
       if (storedUser) {
         try {
           const u = JSON.parse(storedUser);
           u.onboardingComplete = true;
           u.onboarding_completed = true;
+          u.accountType = accountType;
+          if (accountType === 'creator') {
+            u.role = 'Creator';
+            u.assignedDashboards = ['/creatordashboard', '/ugc-dashboard', '/monetization-dashboard'];
+          } else if (accountType === 'business') {
+            u.role = 'Business';
+            u.assignedDashboards = ['/businessoffices', '/monetization-dashboard', '/storefront'];
+          } else {
+            u.role = u.role || 'Member';
+          }
           localStorage.setItem('user', JSON.stringify(u));
+
+          // Sync sovereign profile state immediately
+          userProfileSyncService.updateProfile({
+            id: u.id,
+            username: u.username || 'citizen',
+            name: u.firstName ? `${u.firstName} ${u.lastName || ''}`.trim() : u.username || 'Sovereign Citizen',
+            headline: accountType === 'creator' ? 'Sovereign Content Creator' : accountType === 'business' ? 'Verified Business Organization' : 'Sovereign Protocol Citizen',
+            avatar: u.avatar || '/assets/branding/default-avatar.svg',
+            email: u.email || ''
+          });
         } catch (_err) {
           // Ignore parse errors
         }
       }
 
       // Notify backend if online
-      await api.post('/auth/complete-onboarding', { userId }).catch(() => {});
+      await api.post('/auth/complete-onboarding', { userId, accountType }).catch(() => {});
 
       await finalizeOnboarding();
     } catch {
@@ -421,38 +469,36 @@ const OnboardingPage: React.FC = () => {
 
     case 'terms-permissions':
       return (
-        <Card className="w-full max-w-3xl">
-          <CardHeader className="text-center">
-            <CardTitle>Terms & Permissions</CardTitle>
-            <CardDescription>
-                Please review and accept our agreements and permissions
+        <Card className="w-full max-w-3xl border border-slate-300 bg-white shadow-lg">
+          <CardHeader className="text-center pb-4 border-b border-slate-200">
+            <div className="mx-auto bg-gradient-to-tr from-emerald-500 to-teal-600 p-3 w-14 h-14 rounded-2xl flex items-center justify-center mb-3 shadow-md">
+              <DocumentTextIcon className="h-7 w-7 text-white" />
+            </div>
+            <CardTitle className="text-2xl font-black text-slate-900">
+              Sovereign Legal, Privacy & Platform Safety Agreements
+            </CardTitle>
+            <CardDescription className="text-sm text-slate-700 font-medium max-w-xl mx-auto mt-1">
+              FingerMobile operates under strict decentralized data sovereignty, zero advertising trackers, and absolute zero tolerance for child sexual abuse material. Please review and accept to proceed.
             </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-6">
-              <div className="space-y-4">
-                <div className="flex items-start space-x-3">
-                  <Checkbox
-                    id="userAgreement"
-                    checked={state.progress?.termsAccepted.userAgreement || false}
-                    onCheckedChange={(checked) => updateProgress({
-                      termsAccepted: {
-                        ...state.progress?.termsAccepted,
-                        userAgreement: Boolean(checked)
-                      }
-                    })}
-                  />
-                  <div>
-                    <Label htmlFor="userAgreement" className="font-medium">FingerMobile Protocol User Agreement</Label>
-                    <p className="text-sm text-gray-600 mt-1 flex items-center gap-2">
-                      <span>I agree to the terms of the FingerMobile Protocol User Agreement</span>
-                      <Link to="/terms-of-service" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline text-xs font-semibold inline-flex items-center ml-1">
-                        Read Terms &rarr;
-                      </Link>
-                    </p>
-                  </div>
-                </div>
 
+            {/* Quick Action One-Click Acceptance */}
+            <div className="mt-4 pt-2">
+              <button
+                type="button"
+                onClick={handleSelectAllTermsAndPermissions}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-indigo-50 border border-indigo-200 text-indigo-950 hover:bg-indigo-100 hover:border-indigo-300 transition shadow-xs cursor-pointer"
+              >
+                <CheckCircleIcon className="w-4 h-4 text-indigo-600" />
+                <span>Quick Action: Agree to All Terms & Grant Platform Permissions</span>
+              </button>
+            </div>
+          </CardHeader>
+          <CardContent className="pt-6 space-y-6">
+            <div className="space-y-4">
+              <h3 className="text-base font-bold text-slate-900">1. Mandatory Legal & Safety Frameworks</h3>
+              
+              {/* Privacy Policy */}
+              <div className="p-4 rounded-xl border border-slate-200 hover:border-slate-300 bg-slate-50/50 transition">
                 <div className="flex items-start space-x-3">
                   <Checkbox
                     id="privacyPolicy"
@@ -463,40 +509,31 @@ const OnboardingPage: React.FC = () => {
                         privacyPolicy: Boolean(checked)
                       }
                     })}
+                    className="mt-1"
                   />
-                  <div>
-                    <Label htmlFor="privacyPolicy" className="font-medium">Privacy Policy</Label>
-                    <p className="text-sm text-gray-600 mt-1 flex items-center gap-2">
-                      <span>I agree to the FingerMobile Privacy Policy</span>
-                      <Link to="/privacy-policy" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline text-xs font-semibold inline-flex items-center ml-1">
-                        Read Privacy Policy &rarr;
-                      </Link>
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between flex-wrap gap-2">
+                      <Label htmlFor="privacyPolicy" className="text-base font-bold text-slate-900 cursor-pointer">
+                        FingerMobile Privacy Policy & Sovereign Data Protection
+                      </Label>
+                      <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400">
+                        Zero Ad-Trackers • NDPR & GDPR Compliant
+                      </span>
+                    </div>
+                    <p className="text-sm text-slate-700 font-medium mt-1">
+                      FingerMobile Protocol never sells personal data, never embeds ad-tracking cookies, and never tracks off-platform behavioral activity. Sovereign biometrics remain encrypted locally on your personal device.
                     </p>
+                    <div className="mt-2">
+                      <Link to="/privacy-policy" target="_blank" rel="noopener noreferrer" className="text-indigo-700 hover:text-indigo-900 text-xs font-bold inline-flex items-center">
+                        Read Full Privacy Policy &rarr;
+                      </Link>
+                    </div>
                   </div>
                 </div>
+              </div>
 
-                <div className="flex items-start space-x-3">
-                  <Checkbox
-                    id="platformUseTerms"
-                    checked={state.progress?.termsAccepted.platformUseTerms || false}
-                    onCheckedChange={(checked) => updateProgress({
-                      termsAccepted: {
-                        ...state.progress?.termsAccepted,
-                        platformUseTerms: Boolean(checked)
-                      }
-                    })}
-                  />
-                  <div>
-                    <Label htmlFor="platformUseTerms" className="font-medium">Platform Use Terms</Label>
-                    <p className="text-sm text-gray-600 mt-1 flex items-center gap-2">
-                      <span>I agree to the Platform Use Terms & Community Guidelines</span>
-                      <Link to="/community-guidelines" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline text-xs font-semibold inline-flex items-center ml-1">
-                        Read Guidelines &rarr;
-                      </Link>
-                    </p>
-                  </div>
-                </div>
-
+              {/* CSAE Safety Policy */}
+              <div className="p-4 rounded-xl border border-rose-200 hover:border-rose-300 bg-rose-50/30 transition">
                 <div className="flex items-start space-x-3">
                   <Checkbox
                     id="conditions"
@@ -507,118 +544,221 @@ const OnboardingPage: React.FC = () => {
                         conditions: Boolean(checked)
                       }
                     })}
+                    className="mt-1"
                   />
-                  <div>
-                    <Label htmlFor="conditions" className="font-medium">Conditions & Safety Policies (CSAE)</Label>
-                    <p className="text-sm text-gray-600 mt-1 flex items-center gap-2">
-                      <span>I agree to the Platform Conditions & Safety Policies</span>
-                      <Link to="/csae-policy" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline text-xs font-semibold inline-flex items-center ml-1">
-                        Read Safety Policy &rarr;
-                      </Link>
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between flex-wrap gap-2">
+                      <Label htmlFor="conditions" className="text-base font-bold text-slate-900 cursor-pointer">
+                        CSAE & Child Protection Zero-Tolerance Safety Policy
+                      </Label>
+                      <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-950 border border-rose-400">
+                        Zero-Tolerance Lawful Mandate
+                      </span>
+                    </div>
+                    <p className="text-sm text-slate-700 font-medium mt-1">
+                      FingerMobile enforces an uncompromising zero-tolerance policy regarding Child Sexual Abuse Material (CSAM) and Child Sexual Exploitation and Abuse (CSAE). Any violation results in permanent ban and immediate referral to global law enforcement agencies (NCMEC / Interpol).
                     </p>
+                    <div className="mt-2">
+                      <Link to="/csae-policy" target="_blank" rel="noopener noreferrer" className="text-rose-700 hover:text-rose-900 text-xs font-bold inline-flex items-center">
+                        Read CSAE Safety Policy & Guidelines &rarr;
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div className="pt-4">
-                <h3 className="font-semibold mb-3">Platform Permissions</h3>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between p-3 bg-gray-50 rounded border">
-                    <div className="flex items-center">
-                      <MapPinIcon className="h-5 w-5 text-blue-500 mr-2" />
-                      <span>Location Access</span>
+              {/* User Agreement */}
+              <div className="p-4 rounded-xl border border-slate-200 hover:border-slate-300 bg-slate-50/50 transition">
+                <div className="flex items-start space-x-3">
+                  <Checkbox
+                    id="userAgreement"
+                    checked={state.progress?.termsAccepted.userAgreement || false}
+                    onCheckedChange={(checked) => updateProgress({
+                      termsAccepted: {
+                        ...state.progress?.termsAccepted,
+                        userAgreement: Boolean(checked)
+                      }
+                    })}
+                    className="mt-1"
+                  />
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between flex-wrap gap-2">
+                      <Label htmlFor="userAgreement" className="text-base font-bold text-slate-900 cursor-pointer">
+                        FingerMobile Protocol User Agreement
+                      </Label>
+                      <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-950 border border-blue-400">
+                        Decentralized Protocol Governance
+                      </span>
                     </div>
-                    <Checkbox
-                      checked={state.progress?.permissionsGranted.location || false}
-                      onCheckedChange={(checked) => updateProgress({
-                        permissionsGranted: {
-                          ...state.progress?.permissionsGranted,
-                          location: Boolean(checked)
-                        }
-                      })}
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between p-3 bg-gray-50 rounded border">
-                    <div className="flex items-center">
-                      <LockOpenIcon className="h-5 w-5 text-blue-500 mr-2" />
-                      <span>Notifications</span>
+                    <p className="text-sm text-slate-700 font-medium mt-1">
+                      Governs decentralized platform participation, peer-to-peer asset transfers, escrow settlements, and cryptographic identity sovereignty across the FingerMobile network.
+                    </p>
+                    <div className="mt-2">
+                      <Link to="/terms-of-service" target="_blank" rel="noopener noreferrer" className="text-indigo-700 hover:text-indigo-900 text-xs font-bold inline-flex items-center">
+                        Read User Agreement & Terms &rarr;
+                      </Link>
                     </div>
-                    <Checkbox
-                      checked={state.progress?.permissionsGranted.notifications || false}
-                      onCheckedChange={(checked) => updateProgress({
-                        permissionsGranted: {
-                          ...state.progress?.permissionsGranted,
-                          notifications: Boolean(checked)
-                        }
-                      })}
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between p-3 bg-gray-50 rounded border">
-                    <div className="flex items-center">
-                      <DocumentTextIcon className="h-5 w-5 text-blue-500 mr-2" />
-                      <span>Audio Access</span>
-                    </div>
-                    <Checkbox
-                      checked={state.progress?.permissionsGranted.audio || false}
-                      onCheckedChange={(checked) => updateProgress({
-                        permissionsGranted: {
-                          ...state.progress?.permissionsGranted,
-                          audio: Boolean(checked)
-                        }
-                      })}
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between p-3 bg-gray-50 rounded border">
-                    <div className="flex items-center">
-                      <CameraIcon className="h-5 w-5 text-blue-500 mr-2" />
-                      <span>Media & Camera Access</span>
-                    </div>
-                    <Checkbox
-                      checked={state.progress?.permissionsGranted.media || false}
-                      onCheckedChange={(checked) => updateProgress({
-                        permissionsGranted: {
-                          ...state.progress?.permissionsGranted,
-                          media: Boolean(checked)
-                        }
-                      })}
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between p-3 bg-gray-50 rounded border">
-                    <div className="flex items-center">
-                      <CogIcon className="h-5 w-5 text-blue-500 mr-2" />
-                      <span>Storage Access</span>
-                    </div>
-                    <Checkbox
-                      checked={state.progress?.permissionsGranted.storage || false}
-                      onCheckedChange={(checked) => updateProgress({
-                        permissionsGranted: {
-                          ...state.progress?.permissionsGranted,
-                          storage: Boolean(checked)
-                        }
-                      })}
-                    />
                   </div>
                 </div>
               </div>
 
-              <div className="flex justify-between pt-4">
-                <Button variant="outline" onClick={previousStep}>Back</Button>
-                <Button
-                  onClick={handleTermsAcceptance}
-                  disabled={
-                    !(state.progress?.termsAccepted.userAgreement &&
-                        state.progress?.termsAccepted.privacyPolicy &&
-                        state.progress?.termsAccepted.platformUseTerms &&
-                        state.progress?.termsAccepted.conditions)
-                  }
-                >
-                    Continue
-                </Button>
+              {/* Community Guidelines */}
+              <div className="p-4 rounded-xl border border-slate-200 hover:border-slate-300 bg-slate-50/50 transition">
+                <div className="flex items-start space-x-3">
+                  <Checkbox
+                    id="platformUseTerms"
+                    checked={state.progress?.termsAccepted.platformUseTerms || false}
+                    onCheckedChange={(checked) => updateProgress({
+                      termsAccepted: {
+                        ...state.progress?.termsAccepted,
+                        platformUseTerms: Boolean(checked)
+                      }
+                    })}
+                    className="mt-1"
+                  />
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between flex-wrap gap-2">
+                      <Label htmlFor="platformUseTerms" className="text-base font-bold text-slate-900 cursor-pointer">
+                        Platform Use Terms & Community Standards
+                      </Label>
+                      <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-950 border border-amber-400">
+                        Civic Town Square Ethics
+                      </span>
+                    </div>
+                    <p className="text-sm text-slate-700 font-medium mt-1">
+                      Standards against harassment, fraudulent commerce, automated bot manipulation, hate speech, and impersonation. Fosters merit-based reputation and authentic discussions.
+                    </p>
+                    <div className="mt-2">
+                      <Link to="/community-guidelines" target="_blank" rel="noopener noreferrer" className="text-indigo-700 hover:text-indigo-900 text-xs font-bold inline-flex items-center">
+                        Read Community Standards &rarr;
+                      </Link>
+                    </div>
+                  </div>
+                </div>
               </div>
+            </div>
+
+            {/* Platform Permissions */}
+            <div className="pt-4 border-t border-slate-200">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-base font-bold text-slate-900">2. Device Hardware Permissions</h3>
+                <span className="text-xs text-slate-700 font-medium">Toggle permissions for sovereign features</span>
+              </div>
+              <div className="space-y-2.5">
+                <div className="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-200">
+                  <div className="flex items-center">
+                    <MapPinIcon className="h-5 w-5 text-indigo-600 mr-3" />
+                    <div>
+                      <span className="text-sm font-bold text-slate-900 block">Location Access</span>
+                      <span className="text-xs text-slate-700 font-medium">Enables P2P proximity matching & regional creator calibration</span>
+                    </div>
+                  </div>
+                  <Checkbox
+                    checked={state.progress?.permissionsGranted.location || false}
+                    onCheckedChange={(checked) => updateProgress({
+                      permissionsGranted: {
+                        ...state.progress?.permissionsGranted,
+                        location: Boolean(checked)
+                      }
+                    })}
+                  />
+                </div>
+
+                <div className="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-200">
+                  <div className="flex items-center">
+                    <LockOpenIcon className="h-5 w-5 text-indigo-600 mr-3" />
+                    <div>
+                      <span className="text-sm font-bold text-slate-900 block">Push Notifications</span>
+                      <span className="text-xs text-slate-700 font-medium">Real-time alerts for forum replies, escrow transactions, and security</span>
+                    </div>
+                  </div>
+                  <Checkbox
+                    checked={state.progress?.permissionsGranted.notifications || false}
+                    onCheckedChange={(checked) => updateProgress({
+                      permissionsGranted: {
+                        ...state.progress?.permissionsGranted,
+                        notifications: Boolean(checked)
+                      }
+                    })}
+                  />
+                </div>
+
+                <div className="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-200">
+                  <div className="flex items-center">
+                    <CameraIcon className="h-5 w-5 text-indigo-600 mr-3" />
+                    <div>
+                      <span className="text-sm font-bold text-slate-900 block">Camera & Media Access</span>
+                      <span className="text-xs text-slate-700 font-medium">Required for uploading sovereign avatar, media posts, and creator verification</span>
+                    </div>
+                  </div>
+                  <Checkbox
+                    checked={state.progress?.permissionsGranted.media || false}
+                    onCheckedChange={(checked) => updateProgress({
+                      permissionsGranted: {
+                        ...state.progress?.permissionsGranted,
+                        media: Boolean(checked),
+                        camera: Boolean(checked)
+                      }
+                    })}
+                  />
+                </div>
+
+                <div className="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-200">
+                  <div className="flex items-center">
+                    <DocumentTextIcon className="h-5 w-5 text-indigo-600 mr-3" />
+                    <div>
+                      <span className="text-sm font-bold text-slate-900 block">Audio & Microphone</span>
+                      <span className="text-xs text-slate-700 font-medium">Enables live audio rooms, voice broadcasting, and voice messages</span>
+                    </div>
+                  </div>
+                  <Checkbox
+                    checked={state.progress?.permissionsGranted.audio || false}
+                    onCheckedChange={(checked) => updateProgress({
+                      permissionsGranted: {
+                        ...state.progress?.permissionsGranted,
+                        audio: Boolean(checked)
+                      }
+                    })}
+                  />
+                </div>
+
+                <div className="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-200">
+                  <div className="flex items-center">
+                    <CogIcon className="h-5 w-5 text-indigo-600 mr-3" />
+                    <div>
+                      <span className="text-sm font-bold text-slate-900 block">Local Device Storage</span>
+                      <span className="text-xs text-slate-700 font-medium">Sovereign caching of encrypted keys, offline feeds, and media</span>
+                    </div>
+                  </div>
+                  <Checkbox
+                    checked={state.progress?.permissionsGranted.storage || false}
+                    onCheckedChange={(checked) => updateProgress({
+                      permissionsGranted: {
+                        ...state.progress?.permissionsGranted,
+                        storage: Boolean(checked)
+                      }
+                    })}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-between items-center pt-4 border-t border-slate-200">
+              <Button variant="outline" onClick={previousStep} className="border-slate-300 text-slate-800">
+                Back
+              </Button>
+              <Button
+                onClick={handleTermsAcceptance}
+                disabled={
+                  !(state.progress?.termsAccepted.userAgreement &&
+                    state.progress?.termsAccepted.privacyPolicy &&
+                    state.progress?.termsAccepted.platformUseTerms &&
+                    state.progress?.termsAccepted.conditions)
+                }
+                className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-2.5 rounded-xl shadow-md disabled:opacity-50"
+              >
+                Accept Agreements & Continue &rarr;
+              </Button>
             </div>
           </CardContent>
         </Card>
@@ -639,7 +779,7 @@ const OnboardingPage: React.FC = () => {
                 <div>
                   <Label htmlFor="email">Email Address (Mandatory)</Label>
                   <div className="relative mt-1">
-                    <MailIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-500" />
+                    <MailIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-600" />
                     <Input
                       id="email"
                       type="email"
@@ -680,7 +820,7 @@ const OnboardingPage: React.FC = () => {
                 <div>
                   <Label htmlFor="password">Password</Label>
                   <div className="relative mt-1">
-                    <LockIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-500" />
+                    <LockIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-600" />
                     <Input
                       id="password"
                       type="password"
@@ -919,7 +1059,7 @@ const OnboardingPage: React.FC = () => {
                   <div>
                     <Label htmlFor="location">Location</Label>
                     <div className="relative mt-1">
-                      <GlobeIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-500" />
+                      <GlobeIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-600" />
                       <Input
                         id="location"
                         type="text"
@@ -1044,7 +1184,7 @@ const OnboardingPage: React.FC = () => {
                 <div>
                   <Label htmlFor="username">Username</Label>
                   <div className="relative mt-1">
-                    <UserIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-500" />
+                    <UserIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-600" />
                     <Input
                       id="username"
                       type="text"
@@ -1191,102 +1331,152 @@ const OnboardingPage: React.FC = () => {
         </Card>
       );
 
-    case 'account-type-selection':
+    case 'account-type-selection': {
+      const currentAccountType = tempData.accountType || state.progress?.accountType || 'personal';
+
       return (
-        <Card className="w-full max-w-2xl">
-          <CardHeader className="text-center">
-            <CardTitle>Account Type Selection</CardTitle>
-            <CardDescription>
-                Choose the type of account that best fits your needs
+        <Card className="w-full max-w-3xl border border-slate-300 bg-white shadow-xl">
+          <CardHeader className="text-center pb-4 border-b border-slate-200">
+            <div className="mx-auto bg-gradient-to-tr from-indigo-500 to-purple-600 p-3 w-14 h-14 rounded-2xl flex items-center justify-center mb-3 shadow-md">
+              <UserIcon className="h-7 w-7 text-white" />
+            </div>
+            <CardTitle className="text-2xl font-black text-slate-900">
+              Select Your Sovereign Account Type
+            </CardTitle>
+            <CardDescription className="text-sm text-slate-700 font-medium max-w-xl mx-auto mt-1">
+              Choose one of the 3 platform-specific account types to calibrate your tools, monetization capabilities, and sovereign ecosystem access.
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-6 space-y-5">
             <RadioGroup
-              value={tempData.accountType || ''}
+              value={currentAccountType}
               onValueChange={(value) => setTempData({ ...tempData, accountType: value as any })}
               className="space-y-4"
             >
+              {/* 1. Personal (Free Tier) */}
               <div 
-                className={`flex items-start space-x-4 p-4 border rounded-lg cursor-pointer transition-colors ${tempData.accountType === 'personal' ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20' : 'hover:bg-gray-50 dark:hover:bg-gray-800 bg-white dark:bg-slate-900'}`}
+                className={`flex items-start space-x-4 p-5 border-2 rounded-2xl cursor-pointer transition-all ${
+                  currentAccountType === 'personal'
+                    ? 'border-indigo-600 bg-indigo-50/40 shadow-sm ring-1 ring-indigo-600'
+                    : 'border-slate-300 hover:border-slate-400 bg-white'
+                }`}
                 onClick={() => setTempData({ ...tempData, accountType: 'personal' })}
               >
                 <RadioGroupItem value="personal" id="personal" className="mt-1" />
-                <div>
-                  <Label htmlFor="personal" className="text-base font-semibold">Personal Account</Label>
-                  <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
-                      Simple everyday user with limited features. No subscription options.
+                <div className="flex-1">
+                  <div className="flex items-center justify-between flex-wrap gap-2">
+                    <Label htmlFor="personal" className="text-lg font-bold text-slate-900 cursor-pointer">
+                      1. Personal (free tier)
+                    </Label>
+                    <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400">
+                      Free Tier • Individual Citizen
+                    </span>
+                  </div>
+                  <p className="text-sm text-slate-700 font-medium mt-1">
+                    Everyday sovereign individual with free tier access. Connect with friends, participate in debates, explore topics, post content, and engage in the decentralized forum.
                   </p>
-                  <ul className="mt-2 space-y-1 text-xs text-slate-700 dark:text-gray-400">
-                    <li className="flex items-center"><CheckCircleIcon className="h-3 w-3 text-green-500 mr-1" /> Basic features</li>
-                    <li className="flex items-center"><CheckCircleIcon className="h-3 w-3 text-green-500 mr-1" /> Standard visibility</li>
+                  <ul className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs text-slate-800 font-semibold">
+                    <li className="flex items-center"><CheckCircleIcon className="h-3.5 w-3.5 text-emerald-600 mr-1.5 flex-shrink-0" /> Free perpetual access (No subscription fees)</li>
+                    <li className="flex items-center"><CheckCircleIcon className="h-3.5 w-3.5 text-emerald-600 mr-1.5 flex-shrink-0" /> Decentralized feed & Community Forum</li>
+                    <li className="flex items-center"><CheckCircleIcon className="h-3.5 w-3.5 text-emerald-600 mr-1.5 flex-shrink-0" /> P2P sovereign encryption & local biometrics</li>
+                    <li className="flex items-center"><CheckCircleIcon className="h-3.5 w-3.5 text-emerald-600 mr-1.5 flex-shrink-0" /> Zero ad tracking & zero surveillance</li>
                   </ul>
                 </div>
               </div>
 
+              {/* 2. Content Creator (Membership) */}
               <div 
-                className={`flex items-start space-x-4 p-4 border rounded-lg cursor-pointer transition-colors ${tempData.accountType === 'creator' ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20' : 'hover:bg-gray-50 dark:hover:bg-gray-800 bg-white dark:bg-slate-900'}`}
+                className={`flex items-start space-x-4 p-5 border-2 rounded-2xl cursor-pointer transition-all ${
+                  currentAccountType === 'creator'
+                    ? 'border-purple-600 bg-purple-50/40 shadow-sm ring-1 ring-purple-600'
+                    : 'border-slate-300 hover:border-slate-400 bg-white'
+                }`}
                 onClick={() => setTempData({ ...tempData, accountType: 'creator' })}
               >
                 <RadioGroupItem value="creator" id="creator" className="mt-1" />
-                <div>
-                  <Label htmlFor="creator" className="text-base font-semibold">Content Creator Account</Label>
-                  <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
-                      For influencers, bloggers, and brand founders. Access to monetization features.
+                <div className="flex-1">
+                  <div className="flex items-center justify-between flex-wrap gap-2">
+                    <Label htmlFor="creator" className="text-lg font-bold text-slate-900 cursor-pointer">
+                      2. Content Creator (Membership)
+                    </Label>
+                    <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-950 border border-purple-400">
+                      Membership • Creator Suite
+                    </span>
+                  </div>
+                  <p className="text-sm text-slate-700 font-medium mt-1">
+                    For digital storytellers, influencers, streamers, artists, and media founders who build audiences and monetize sovereign content.
                   </p>
-                  <ul className="mt-2 space-y-1 text-xs text-slate-700 dark:text-gray-400">
-                    <li className="flex items-center"><CheckCircleIcon className="h-3 w-3 text-green-500 mr-1" /> Monetization tools</li>
-                    <li className="flex items-center"><CheckCircleIcon className="h-3 w-3 text-green-500 mr-1" /> Hallmark Page Boosting</li>
-                    <li className="flex items-center"><CheckCircleIcon className="h-3 w-3 text-green-500 mr-1" /> Live Broadcast features</li>
-                    <li className="flex items-center"><CheckCircleIcon className="h-3 w-3 text-green-500 mr-1" /> AI Features</li>
-                    <li className="flex items-center"><CheckCircleIcon className="h-3 w-3 text-green-500 mr-1" /> Subscriptions page</li>
-                    <li className="flex items-center"><CheckCircleIcon className="h-3 w-3 text-green-500 mr-1" /> Platform Member only Pages Suggestions</li>
-                    <li className="flex items-center"><CheckCircleIcon className="h-3 w-3 text-green-500 mr-1" /> Earning Features</li>
-                    <li className="flex items-center"><CheckCircleIcon className="h-3 w-3 text-green-500 mr-1" /> Full access to Hallmarks, Gems, Permanence, Blogs, Groups, Business Suite</li>
+                  <ul className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs text-slate-800 font-semibold">
+                    <li className="flex items-center"><CheckCircleIcon className="h-3.5 w-3.5 text-purple-600 mr-1.5 flex-shrink-0" /> Monetization tools & direct P2P earnings</li>
+                    <li className="flex items-center"><CheckCircleIcon className="h-3.5 w-3.5 text-purple-600 mr-1.5 flex-shrink-0" /> Verified Creator badge & Hallmark Page Boosting</li>
+                    <li className="flex items-center"><CheckCircleIcon className="h-3.5 w-3.5 text-purple-600 mr-1.5 flex-shrink-0" /> Live Broadcast streaming & AI Creative Studio</li>
+                    <li className="flex items-center"><CheckCircleIcon className="h-3.5 w-3.5 text-purple-600 mr-1.5 flex-shrink-0" /> Platform Member only Pages, Suggestions & Groups</li>
+                    <li className="flex items-center"><CheckCircleIcon className="h-3.5 w-3.5 text-purple-600 mr-1.5 flex-shrink-0" /> Regional quota reservation & milestone trophies</li>
+                    <li className="flex items-center"><CheckCircleIcon className="h-3.5 w-3.5 text-purple-600 mr-1.5 flex-shrink-0" /> Full access to Gems, Permanence, Blogs & Business Suite</li>
                   </ul>
                 </div>
               </div>
 
+              {/* 3. Business/Organization */}
               <div 
-                className={`flex items-start space-x-4 p-4 border rounded-lg cursor-pointer transition-colors ${tempData.accountType === 'business' ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20' : 'hover:bg-gray-50 dark:hover:bg-gray-800 bg-white dark:bg-slate-900'}`}
+                className={`flex items-start space-x-4 p-5 border-2 rounded-2xl cursor-pointer transition-all ${
+                  currentAccountType === 'business'
+                    ? 'border-amber-600 bg-amber-50/40 shadow-sm ring-1 ring-amber-600'
+                    : 'border-slate-300 hover:border-slate-400 bg-white'
+                }`}
                 onClick={() => setTempData({ ...tempData, accountType: 'business' })}
               >
                 <RadioGroupItem value="business" id="business" className="mt-1" />
-                <div>
-                  <Label htmlFor="business" className="text-base font-semibold">Business/Brand Profile</Label>
-                  <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
-                      For companies and organizations. Required for running ads and e-commerce.
+                <div className="flex-1">
+                  <div className="flex items-center justify-between flex-wrap gap-2">
+                    <Label htmlFor="business" className="text-lg font-bold text-slate-900 cursor-pointer">
+                      3. Business/Organization
+                    </Label>
+                    <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-950 border border-amber-400">
+                      Enterprise • Commercial Suite
+                    </span>
+                  </div>
+                  <p className="text-sm text-slate-700 font-medium mt-1">
+                    For companies, brand founders, merchants, NGOs, and enterprise organizations managing commercial operations, targeted ads, and store fronts.
                   </p>
-                  <ul className="mt-2 space-y-1 text-xs text-slate-700 dark:text-gray-400">
-                    <li className="flex items-center"><CheckCircleIcon className="h-3 w-3 text-green-500 mr-1" /> Ad capabilities</li>
-                    <li className="flex items-center"><CheckCircleIcon className="h-3 w-3 text-green-500 mr-1" /> E-commerce tools</li>
-                    <li className="flex items-center"><CheckCircleIcon className="h-3 w-3 text-green-500 mr-1" /> Business verification</li>
-                    <li className="flex items-center"><CheckCircleIcon className="h-3 w-3 text-green-500 mr-1" /> Advanced analytics</li>
-                    <li className="flex items-center"><CheckCircleIcon className="h-3 w-3 text-green-500 mr-1" /> Mandatory platform auditing fee (~$105 USD annually)</li>
-                    <li className="flex items-center"><CheckCircleIcon className="h-3 w-3 text-green-500 mr-1" /> Full Access to every and all Platform Member only Pages</li>
-                    <li className="flex items-center"><CheckCircleIcon className="h-3 w-3 text-green-500 mr-1" /> All Features and Suggestions</li>
+                  <ul className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs text-slate-800 font-semibold">
+                    <li className="flex items-center"><CheckCircleIcon className="h-3.5 w-3.5 text-amber-600 mr-1.5 flex-shrink-0" /> Official Business/Organization verification</li>
+                    <li className="flex items-center"><CheckCircleIcon className="h-3.5 w-3.5 text-amber-600 mr-1.5 flex-shrink-0" /> Sovereign Commerce Storefront & Escrow Checkout</li>
+                    <li className="flex items-center"><CheckCircleIcon className="h-3.5 w-3.5 text-amber-600 mr-1.5 flex-shrink-0" /> Protocol Advertising Engine & advanced analytics</li>
+                    <li className="flex items-center"><CheckCircleIcon className="h-3.5 w-3.5 text-amber-600 mr-1.5 flex-shrink-0" /> Mandatory platform auditing fee (~$105 USD annually)</li>
+                    <li className="flex items-center"><CheckCircleIcon className="h-3.5 w-3.5 text-amber-600 mr-1.5 flex-shrink-0" /> Complete access to all 385 Platform Pages & Business Hubs</li>
+                    <li className="flex items-center"><CheckCircleIcon className="h-3.5 w-3.5 text-amber-600 mr-1.5 flex-shrink-0" /> Dedicated corporate offices & governance compliance</li>
                   </ul>
                 </div>
               </div>
             </RadioGroup>
 
-            <div className="flex justify-between mt-6">
-              <Button variant="outline" onClick={previousStep}>Back</Button>
-              <Button onClick={() => handleAccountTypeSelect(tempData.accountType)}>Continue</Button>
+            <div className="flex justify-between items-center pt-4 border-t border-slate-200">
+              <Button variant="outline" onClick={previousStep} className="border-slate-300 text-slate-800">
+                Back
+              </Button>
+              <Button 
+                onClick={() => handleAccountTypeSelect(currentAccountType)}
+                className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-6 py-2.5 rounded-xl shadow-md"
+              >
+                Continue with {currentAccountType === 'creator' ? 'Content Creator' : currentAccountType === 'business' ? 'Business/Organization' : 'Personal (Free Tier)'} &rarr;
+              </Button>
             </div>
           </CardContent>
         </Card>
       );
+    }
 
     case 'content-creator-verification':
       return (
-        <Card className="w-full max-w-2xl">
-          <CardHeader className="text-center">
-            <div className="mx-auto bg-gradient-to-r from-purple-500 to-pink-600 p-3 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+        <Card className="w-full max-w-2xl border border-slate-300 bg-white shadow-xl">
+          <CardHeader className="text-center pb-4 border-b border-slate-200">
+            <div className="mx-auto bg-gradient-to-r from-purple-500 to-pink-600 p-3 w-16 h-16 rounded-2xl flex items-center justify-center mb-3 shadow-md">
               <GraduationCapIcon className="h-8 w-8 text-white" />
             </div>
-            <CardTitle>Content Creator Verification</CardTitle>
-            <CardDescription>
-                Verify your identity as a content creator
+            <CardTitle className="text-2xl font-black text-slate-900">Content Creator Verification</CardTitle>
+            <CardDescription className="text-sm text-slate-700 font-medium max-w-lg mx-auto mt-1">
+              Verify your identity and secure your regional creator tier membership
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -1350,7 +1540,7 @@ const OnboardingPage: React.FC = () => {
                       />
                       <label htmlFor="tier3" className="text-sm cursor-pointer">
                         <span className="font-medium text-gray-900 dark:text-slate-100 block">Tier 3 (Emerging/Micro)</span>
-                        <span className="text-slate-700 dark:text-slate-400 text-xs">Open self-registration capped by regional quota</span>
+                        <span className="text-slate-700 dark:text-slate-300 font-medium text-xs">Open self-registration capped by regional quota</span>
                       </label>
                     </div>
 
@@ -1366,7 +1556,7 @@ const OnboardingPage: React.FC = () => {
                       />
                       <label htmlFor="tier2" className="text-sm cursor-pointer">
                         <span className="font-medium text-gray-900 dark:text-slate-100 block">Tier 2 (Established / Pro)</span>
-                        <span className="text-slate-700 dark:text-slate-400 text-xs">Application-based with automated checks & portfolio validation</span>
+                        <span className="text-slate-700 dark:text-slate-300 font-medium text-xs">Application-based with automated checks & portfolio validation</span>
                       </label>
                     </div>
 
@@ -1382,7 +1572,7 @@ const OnboardingPage: React.FC = () => {
                       />
                       <label htmlFor="tier1" className="text-sm cursor-pointer">
                         <span className="font-medium text-gray-900 dark:text-slate-100 block">Tier 1 (Elite / Flagship)</span>
-                        <span className="text-slate-700 dark:text-slate-400 text-xs">Invite-only / SuperAdmin approval. Requires access token.</span>
+                        <span className="text-slate-700 dark:text-slate-300 font-medium text-xs">Invite-only / SuperAdmin approval. Requires access token.</span>
                       </label>
                     </div>
                   </div>
@@ -1507,56 +1697,56 @@ const OnboardingPage: React.FC = () => {
 
     case 'business-verification':
       return (
-        <Card className="w-full max-w-2xl">
-          <CardHeader className="text-center">
-            <div className="mx-auto bg-gradient-to-r from-indigo-500 to-blue-600 p-3 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+        <Card className="w-full max-w-2xl border border-slate-300 bg-white shadow-xl">
+          <CardHeader className="text-center pb-4 border-b border-slate-200">
+            <div className="mx-auto bg-gradient-to-r from-amber-500 to-indigo-600 p-3 w-16 h-16 rounded-2xl flex items-center justify-center mb-3 shadow-md">
               <BriefcaseIcon className="h-8 w-8 text-white" />
             </div>
-            <CardTitle>Business Verification</CardTitle>
-            <CardDescription>
-                Verify your business to access enterprise features
+            <CardTitle className="text-2xl font-black text-slate-900">Business / Organization Verification</CardTitle>
+            <CardDescription className="text-sm text-slate-700 font-medium max-w-lg mx-auto mt-1">
+              Verify your enterprise or brand organization to access commercial features & protocol storefronts
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-6">
             <div className="space-y-6">
-              <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
-                <h3 className="font-semibold text-indigo-900 mb-2">Required Business Documents:</h3>
-                <ul className="space-y-2 text-sm text-indigo-700">
+              <div className="bg-amber-50/60 border border-amber-300 rounded-xl p-4">
+                <h3 className="font-bold text-slate-900 mb-2">Required Business Documents:</h3>
+                <ul className="space-y-2 text-sm text-slate-800 font-medium">
                   <li className="flex items-start">
-                    <CheckCircleIcon className="h-4 w-4 text-indigo-500 mt-0.5 mr-2 flex-shrink-0" />
+                    <CheckCircleIcon className="h-4 w-4 text-emerald-600 mt-0.5 mr-2 flex-shrink-0" />
                     <span>Certificate of Incorporation or Business License</span>
                   </li>
                   <li className="flex items-start">
-                    <CheckCircleIcon className="h-4 w-4 text-indigo-500 mt-0.5 mr-2 flex-shrink-0" />
+                    <CheckCircleIcon className="h-4 w-4 text-emerald-600 mt-0.5 mr-2 flex-shrink-0" />
                     <span>Trademark Registration Certificate (if applicable)</span>
                   </li>
                   <li className="flex items-start">
-                    <CheckCircleIcon className="h-4 w-4 text-indigo-500 mt-0.5 mr-2 flex-shrink-0" />
+                    <CheckCircleIcon className="h-4 w-4 text-emerald-600 mt-0.5 mr-2 flex-shrink-0" />
                     <span>Legal Representative ID (Passport or Local ID)</span>
                   </li>
                   <li className="flex items-start">
-                    <CheckCircleIcon className="h-4 w-4 text-indigo-500 mt-0.5 mr-2 flex-shrink-0" />
+                    <CheckCircleIcon className="h-4 w-4 text-emerald-600 mt-0.5 mr-2 flex-shrink-0" />
                     <span>Official Application Letter</span>
                   </li>
                 </ul>
 
-                <div className="mt-4 text-sm text-indigo-700">
-                  <p>Verification timeline: 1 to 4 months for international businesses</p>
-                  <p className="mt-2">Fee: Mandatory, non-refundable platform auditing fee of ~$105 USD annually</p>
+                <div className="mt-4 text-xs text-slate-700 font-semibold space-y-1 border-t border-amber-200 pt-3">
+                  <p>• Verification timeline: 1 to 4 months for international businesses</p>
+                  <p>• Fee: Mandatory, non-refundable platform auditing fee of ~$105 USD annually</p>
                 </div>
               </div>
 
               <div className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="businessName">Business Name</Label>
-                    <Input id="businessName" type="text" placeholder="Enter business name" />
+                    <Label htmlFor="businessName" className="text-slate-900 font-bold text-sm">Business Name</Label>
+                    <Input id="businessName" type="text" placeholder="Enter legal business name" className="mt-1 text-slate-900 font-bold border border-slate-300 bg-white" />
                   </div>
                   <div>
-                    <Label htmlFor="businessType">Business Type</Label>
+                    <Label htmlFor="businessType" className="text-slate-900 font-bold text-sm">Business Type</Label>
                     <select
                       id="businessType"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full mt-1 px-3 py-2 border border-slate-300 rounded-md bg-white text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     >
                       <option value="">Select type</option>
                       <option value="company">Company</option>
@@ -1587,7 +1777,7 @@ const OnboardingPage: React.FC = () => {
                           />
                         </label>
                       </div>
-                      <p className="text-xs text-gray-500">PDF, JPG, PNG up to 10MB each</p>
+                      <p className="text-xs text-slate-700 font-medium">PDF, JPG, PNG up to 10MB each</p>
                       {businessDocuments && businessDocuments.length > 0 && (
                         <div className="text-xs text-green-600 mt-2">
                           {businessDocuments.length} document(s) uploaded

@@ -101,7 +101,7 @@ export const UniversalDiscoveryHub: React.FC<UniversalDiscoveryHubProps> = ({
                 className={`flex-1 sm:flex-none px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 ${
                   activeSubTab === 'lapidaire'
                     ? `bg-gradient-to-r ${gradientBg} text-white shadow-lg`
-                    : 'text-slate-400 hover:text-white'
+                    : 'text-slate-300 hover:text-white'
                 }`}
               >
                 <Flame className="w-4 h-4" />
@@ -112,7 +112,7 @@ export const UniversalDiscoveryHub: React.FC<UniversalDiscoveryHubProps> = ({
                 className={`flex-1 sm:flex-none px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 ${
                   activeSubTab === 'discover'
                     ? `bg-gradient-to-r ${gradientBg} text-white shadow-lg`
-                    : 'text-slate-400 hover:text-white'
+                    : 'text-slate-300 hover:text-white'
                 }`}
               >
                 <Compass className="w-4 h-4" />

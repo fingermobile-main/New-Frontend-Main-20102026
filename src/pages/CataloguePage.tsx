@@ -353,7 +353,7 @@ const CataloguePage: React.FC = () => {
             {/* Search Input and Sort Selector */}
             <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
               <div className="relative w-full md:w-96">
-                <MagnifyingGlassIcon className="w-5 h-5 text-slate-500 absolute left-3.5 top-3" />
+                <MagnifyingGlassIcon className="w-5 h-5 text-slate-600 absolute left-3.5 top-3" />
                 <input
                   type="text"
                   placeholder="Search by title, creator, stem, tags..."
@@ -780,7 +780,7 @@ const CataloguePage: React.FC = () => {
               </p>
 
               <div className="my-5 p-4 bg-slate-900 rounded-2xl text-left font-mono text-xs text-emerald-400 space-y-1 overflow-x-auto">
-                <p className="text-gray-400 text-[10px]">CRYPTOGRAPHIC RIGHTS CERTIFICATE</p>
+                <p className="text-slate-300 font-medium text-[10px]">CRYPTOGRAPHIC RIGHTS CERTIFICATE</p>
                 <p>CERT_HASH: {purchaseSuccessLicense.hash}</p>
                 <p>TIER: {purchaseSuccessLicense.tier}</p>
                 <p>TIMESTAMP: {new Date().toISOString()}</p>

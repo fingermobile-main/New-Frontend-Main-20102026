@@ -292,7 +292,7 @@ const CreateHallmarkModal: React.FC<CreateHallmarkModalProps> = ({
                 Official Entity Account
               </span>
             </div>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+            <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mt-0.5">
               Public account for businesses, creators, brands, and organizations to scale unlimited audiences.
             </p>
           </div>
@@ -367,10 +367,10 @@ const CreateHallmarkModal: React.FC<CreateHallmarkModalProps> = ({
                         </div>
                         <h3 className="font-bold text-gray-900 dark:text-white text-base mb-1">{item.title}</h3>
                         <p className="text-xs font-semibold text-purple-700 dark:text-purple-400 mb-2">👥 {item.capacity}</p>
-                        <div className="text-xs text-gray-600 dark:text-gray-300 font-medium mb-3 bg-gray-50 dark:bg-gray-700/50 p-2 rounded-lg">
+                        <div className="text-xs text-gray-800 dark:text-gray-200 font-semibold mb-3 bg-gray-50 dark:bg-gray-700/50 p-2 rounded-lg">
                           💳 {item.cost}
                         </div>
-                        <ul className="space-y-1.5 text-[11px] text-gray-600 dark:text-gray-400">
+                        <ul className="space-y-1.5 text-[11px] text-slate-700 dark:text-slate-300 font-medium">
                           {item.features.map((feat, idx) => (
                             <li key={idx} className="flex items-start">
                               <span className="text-green-500 mr-1.5 font-bold">✓</span>
@@ -549,7 +549,7 @@ const CreateHallmarkModal: React.FC<CreateHallmarkModalProps> = ({
                   
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                     <div>
-                      <label className="block text-[11px] font-medium text-gray-600 dark:text-gray-400 mb-1">
+                      <label className="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">
                         Guarantor FingerMobile ID(s)
                       </label>
                       <input
@@ -561,7 +561,7 @@ const CreateHallmarkModal: React.FC<CreateHallmarkModalProps> = ({
                       />
                     </div>
                     <div>
-                      <label className="block text-[11px] font-medium text-gray-600 dark:text-gray-400 mb-1">
+                      <label className="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">
                         Page Manager ID(s)
                       </label>
                       <input
@@ -573,7 +573,7 @@ const CreateHallmarkModal: React.FC<CreateHallmarkModalProps> = ({
                       />
                     </div>
                     <div>
-                      <label className="block text-[11px] font-medium text-gray-600 dark:text-gray-400 mb-1">
+                      <label className="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">
                         Badge Holder / Moderator ID
                       </label>
                       <input

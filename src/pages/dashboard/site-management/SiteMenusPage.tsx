@@ -105,7 +105,7 @@ const SiteMenusPage: React.FC = () => {
       <div className="flex justify-between items-center mb-6">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Site Menu Management</h1>
-          <p className="text-sm text-gray-500 mt-1">Configure headers, navigation bars, and footer links</p>
+          <p className="text-sm text-slate-700 font-medium mt-1">Configure headers, navigation bars, and footer links</p>
         </div>
         <button
           onClick={() => setShowAddMenuModal(true)}

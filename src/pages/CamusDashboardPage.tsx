@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 
 import { useAppContext } from '../contexts/AppContext';
 import { useAuth } from '../contexts/AuthContext';
-import { CAMUS_COURSES } from '../constants/camusConstants';
+import { CAMUS_COURSES, CAMUS_COURSE_BUNDLES, CAMUS_SUBSCRIPTION_PLANS } from '../constants/camusConstants';
 import {
   BookOpenIcon,
   MemberIcon,
@@ -20,8 +20,9 @@ import {
   LightBulbIcon
 } from '../icons';
 import InstructorDashboard from '../components/InstructorDashboard';
+import CamusAdminDashboard from '../components/camus/CamusAdminDashboard';
 import MainLayout from '../components/layout/MainLayout';
-import { CheckCircle, Award, Play, ShieldCheck, Download, ExternalLink } from 'lucide-react';
+import { CheckCircle, Award, Play, ShieldCheck, Download, ExternalLink, Package, Sparkles, Building, Layers } from 'lucide-react';
 
 interface Lesson {
   id: string;
@@ -70,6 +71,9 @@ const CamusDashboardPage: React.FC = () => {
   const { ficBalance, showToast } = useAppContext();
   const navigate = useNavigate();
   const location = useLocation();
+
+  // Multi-role state for switching between Student, Instructor Studio, and Admin Console
+  const [activeRole, setActiveRole] = useState<'student' | 'instructor' | 'admin'>('student');
 
   // Tab state (supports URL subpaths or internal tab state)
   const pathParts = location.pathname.split('/');
@@ -156,6 +160,11 @@ const CamusDashboardPage: React.FC = () => {
       icon: <BookOpenIcon className="w-5 h-5" />
     },
     {
+      id: 'bundles',
+      label: 'Bundles & Subscriptions',
+      icon: <Package className="w-5 h-5" />
+    },
+    {
       id: 'certificates',
       label: 'My Certificates',
       icon: <DocumentTextIcon className="w-5 h-5" />
@@ -197,11 +206,11 @@ const CamusDashboardPage: React.FC = () => {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-800 p-8 rounded-3xl text-white shadow-xl">
           <div className="flex items-center gap-4">
             <div className="p-3 bg-white/20 backdrop-blur-md rounded-2xl shadow-inner">
-              <AcademicCapIcon className="h-10 w-10 text-slate-700" />
+              <AcademicCapIcon className="h-10 w-10 text-white" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full bg-white/20 text-slate-700 font-bold">
+                <span className="text-[10px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-white/20 text-white font-bold">
                   Active Scholar
                 </span>
                 <span className="text-xs text-blue-200">ID: CAMUS-{member?.id || '8492'}</span>
@@ -225,8 +234,66 @@ const CamusDashboardPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Main Workspace Layout */}
-        <div className="flex flex-col lg:flex-row gap-8 items-start">
+        {/* Multi-Role Switcher: Student | Instructor Studio | University Admin */}
+        <div className="bg-white dark:bg-gray-900 p-2 sm:p-3 rounded-2xl border border-slate-300 dark:border-gray-800 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-2 px-2">
+            <span className="text-[11px] font-bold text-slate-800 uppercase tracking-wider">
+              LMS Workspace Mode:
+            </span>
+          </div>
+
+          <div className="grid grid-cols-3 gap-2 w-full sm:w-auto">
+            <button
+              onClick={() => setActiveRole('student')}
+              className={`px-3 sm:px-4 py-2 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 ${
+                activeRole === 'student'
+                  ? 'bg-blue-600 text-white shadow-sm font-black'
+                  : 'text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-gray-800'
+              }`}
+            >
+              <AcademicCapIcon className="w-4 h-4" />
+              <span>Student Scholar</span>
+            </button>
+
+            <button
+              onClick={() => setActiveRole('instructor')}
+              className={`px-3 sm:px-4 py-2 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 ${
+                activeRole === 'instructor'
+                  ? 'bg-indigo-600 text-white shadow-sm font-black'
+                  : 'text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-gray-800'
+              }`}
+            >
+              <Sparkles className="w-4 h-4 text-amber-400" />
+              <span>Instructor Studio</span>
+            </button>
+
+            <button
+              onClick={() => setActiveRole('admin')}
+              className={`px-3 sm:px-4 py-2 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 ${
+                activeRole === 'admin'
+                  ? 'bg-slate-900 text-white shadow-sm font-black'
+                  : 'text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-gray-800'
+              }`}
+            >
+              <ShieldCheck className="w-4 h-4 text-blue-400" />
+              <span>Admin Console</span>
+            </button>
+          </div>
+        </div>
+
+        {/* INSTRUCTOR STUDIO WORKSPACE */}
+        {activeRole === 'instructor' && (
+          <InstructorDashboard />
+        )}
+
+        {/* UNIVERSITY ADMIN WORKSPACE */}
+        {activeRole === 'admin' && (
+          <CamusAdminDashboard />
+        )}
+
+        {/* STUDENT SCHOLAR WORKSPACE */}
+        {activeRole === 'student' && (
+          <div className="flex flex-col lg:flex-row gap-8 items-start">
           {/* Sidebar Navigation */}
           <div className="lg:w-64 w-full flex-shrink-0 space-y-4">
             <nav className="bg-white dark:bg-gray-900 rounded-3xl shadow-sm border border-slate-200 dark:border-gray-800 p-3">
@@ -243,10 +310,10 @@ const CamusDashboardPage: React.FC = () => {
                           : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
                       }`}
                     >
-                      <span className={isActive ? 'text-white' : 'text-gray-400'}>{item.icon}</span>
+                      <span className={isActive ? 'text-white' : 'text-slate-600 dark:text-slate-300'}>{item.icon}</span>
                       <span className="ml-3 truncate">{item.label}</span>
                       {item.id === 'courses' && (
-                        <span className={`ml-auto text-[10px] font-mono px-2 py-0.5 rounded-full ${isActive ? 'bg-white/20 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-500'}`}>
+                        <span className={`ml-auto text-[10px] font-mono px-2 py-0.5 rounded-full ${isActive ? 'bg-white/20 text-white' : 'bg-gray-100 dark:bg-gray-800 text-slate-700 dark:text-slate-300 font-semibold'}`}>
                           {enrolledCourses.length}
                         </span>
                       )}
@@ -357,7 +424,7 @@ const CamusDashboardPage: React.FC = () => {
                     </div>
                   ) : (
                     <div className="text-center py-12">
-                      <BookOpenIcon className="w-10 h-10 text-slate-500 mx-auto mb-2" />
+                      <BookOpenIcon className="w-10 h-10 text-slate-600 mx-auto mb-2" />
                       <h4 className="font-bold text-sm text-gray-900 dark:text-white">No courses in progress</h4>
                       <p className="text-xs text-slate-700 mt-1">Enroll in your first course to begin learning.</p>
                       <button
@@ -431,6 +498,127 @@ const CamusDashboardPage: React.FC = () => {
                       </div>
                     </div>
                   ))}
+                </div>
+              </div>
+            )}
+
+            {/* TAB: BUNDLES & SUBSCRIPTIONS */}
+            {activeTab === 'bundles' && (
+              <div className="space-y-6">
+                {/* Degree Bundles Card */}
+                <div className="bg-white dark:bg-gray-900 rounded-3xl border border-slate-300 dark:border-gray-800 p-6 shadow-xs space-y-4">
+                  <div>
+                    <h2 className="text-xl font-black text-slate-900 dark:text-white flex items-center gap-2">
+                      <Package className="w-6 h-6 text-indigo-600" />
+                      Academic Course Bundles &amp; Degree Suites
+                    </h2>
+                    <p className="text-xs text-slate-700">
+                      Multi-course packaged degree tracks across Arts &amp; Social Sciences with bundled tuition discounts.
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {CAMUS_COURSE_BUNDLES.map((bundle) => (
+                      <div
+                        key={bundle.id}
+                        className="p-5 rounded-2xl border border-slate-300 dark:border-gray-700 bg-slate-50 dark:bg-gray-800/40 space-y-3 flex flex-col justify-between"
+                      >
+                        <div className="space-y-2">
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-blue-700">
+                            {bundle.faculty}
+                          </span>
+                          <h3 className="font-bold text-base text-slate-900 dark:text-white">
+                            {bundle.title}
+                          </h3>
+                          <p className="text-xs text-slate-700 leading-relaxed">
+                            {bundle.description}
+                          </p>
+
+                          <div className="flex items-center gap-3 pt-1">
+                            <span className="text-lg font-black font-mono text-emerald-800 dark:text-emerald-400">
+                              {bundle.bundlePrice} FIC
+                            </span>
+                            <span className="text-xs text-slate-500 line-through">
+                              {bundle.regularPrice} FIC
+                            </span>
+                            <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 text-[10px] font-bold">
+                              Save {bundle.savingsPercentage}%
+                            </span>
+                          </div>
+                          <div className="text-xs text-slate-800">
+                            <strong>Includes:</strong> {bundle.courseCount} Courses • {bundle.level}
+                          </div>
+                        </div>
+
+                        <div className="pt-3 border-t border-slate-200 dark:border-gray-700 flex items-center justify-between">
+                          <button
+                            onClick={() => {
+                              const newIds = Array.from(new Set([...enrolledIds, ...bundle.coursesIncluded]));
+                              setEnrolledIds(newIds);
+                              try { localStorage.setItem('camus_enrolled_courses', JSON.stringify(newIds)); } catch {}
+                              showToast(`Enrolled in degree bundle: "${bundle.title}"!`, 'success');
+                              setActiveTab('courses');
+                            }}
+                            className="w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow-xs transition"
+                          >
+                            Enroll in Complete Bundle →
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Subscriptions Card */}
+                <div className="bg-white dark:bg-gray-900 rounded-3xl border border-slate-300 dark:border-gray-800 p-6 shadow-xs space-y-4">
+                  <div>
+                    <h2 className="text-xl font-black text-slate-900 dark:text-white flex items-center gap-2">
+                      <Sparkles className="w-6 h-6 text-amber-500" />
+                      Scholar Subscriptions &amp; All-Access Passes
+                    </h2>
+                    <p className="text-xs text-slate-700">
+                      Unlimited access to School of Arts &amp; Social Sciences microlessons, AI tutoring, and WebRTC workshops.
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {CAMUS_SUBSCRIPTION_PLANS.map((plan) => (
+                      <div
+                        key={plan.id}
+                        className="p-5 rounded-2xl border border-slate-300 dark:border-gray-700 bg-white dark:bg-gray-800 flex flex-col justify-between"
+                      >
+                        <div className="space-y-2">
+                          {plan.badge && (
+                            <span className="px-2 py-0.5 rounded-full bg-blue-100 text-blue-950 border border-blue-400 font-bold text-[10px] uppercase">
+                              {plan.badge}
+                            </span>
+                          )}
+                          <h4 className="font-bold text-sm text-slate-900 dark:text-white">{plan.name}</h4>
+                          <div className="flex items-baseline gap-1">
+                            <span className="text-xl font-black font-mono text-slate-900 dark:text-white">
+                              {plan.priceFic} FIC
+                            </span>
+                            <span className="text-xs text-slate-700">/{plan.billingPeriod}</span>
+                          </div>
+                          <ul className="text-xs text-slate-800 space-y-1.5 pt-2">
+                            {plan.features.map((feat, idx) => (
+                              <li key={idx} className="flex items-start gap-1.5">
+                                <CheckCircle className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
+                                <span>{feat}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+
+                        <button
+                          onClick={() => showToast(`Activated subscription: ${plan.name}`, 'success')}
+                          className="mt-4 w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-xs transition"
+                        >
+                          Subscribe with FIC
+                        </button>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             )}
@@ -614,6 +802,7 @@ const CamusDashboardPage: React.FC = () => {
             )}
           </div>
         </div>
+        )}
       </div>
     </MainLayout>
   );

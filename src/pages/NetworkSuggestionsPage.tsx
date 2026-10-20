@@ -282,11 +282,11 @@ export const NetworkSuggestionsPage: React.FC = () => {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:ring-2 focus:ring-sky-500"
               />
-              <Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-3" />
+              <Search className="w-4 h-4 text-slate-600 absolute left-3.5 top-3" />
             </div>
 
             <div className="flex items-center gap-2 text-xs font-bold text-slate-700">
-              <Filter className="w-4 h-4 text-slate-500" />
+              <Filter className="w-4 h-4 text-slate-600" />
               <span>Showing {filteredPeers.length} recommendations</span>
             </div>
           </div>
@@ -373,7 +373,7 @@ export const NetworkSuggestionsPage: React.FC = () => {
                 {/* Mutual connections & Guild */}
                 <div className="space-y-1 text-xs text-slate-700">
                   <div className="flex items-center gap-1.5">
-                    <Users className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                    <Users className="w-3.5 h-3.5 text-slate-600 shrink-0" />
                     <span>
                       <strong className="text-slate-900">{peer.mutualCount} mutual connections</strong> ({peer.mutualNames})
                     </span>
@@ -430,7 +430,7 @@ export const NetworkSuggestionsPage: React.FC = () => {
 
         {filteredPeers.length === 0 && (
           <div className="bg-white p-12 rounded-3xl border border-slate-300 text-center space-y-3">
-            <Users className="w-10 h-10 text-slate-500 mx-auto" />
+            <Users className="w-10 h-10 text-slate-600 mx-auto" />
             <h3 className="text-base font-bold text-slate-900">No matching connections found</h3>
             <p className="text-xs text-slate-600">Try modifying your search keywords or category filters.</p>
             <button

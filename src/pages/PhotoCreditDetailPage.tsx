@@ -159,7 +159,7 @@ const PhotoCreditDetailPage: React.FC = () => {
             />
             <div>
               <h3 className="font-semibold">{uploader.name}</h3>
-              <p className="text-sm text-slate-700 dark:text-gray-400">by {uploader.name}</p>
+              <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">by {uploader.name}</p>
             </div>
           </div>
 
@@ -170,19 +170,19 @@ const PhotoCreditDetailPage: React.FC = () => {
           {/* Metadata */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 text-sm">
             <div>
-              <p className="text-slate-700 dark:text-gray-400">Camera</p>
+              <p className="text-slate-700 dark:text-slate-300 font-medium">Camera</p>
               <p className="font-medium">{photoCredit.cameraModel || 'N/A'}</p>
             </div>
             <div>
-              <p className="text-slate-700 dark:text-gray-400">Aperture</p>
+              <p className="text-slate-700 dark:text-slate-300 font-medium">Aperture</p>
               <p className="font-medium">{photoCredit.aperture || 'N/A'}</p>
             </div>
             <div>
-              <p className="text-slate-700 dark:text-gray-400">ISO</p>
+              <p className="text-slate-700 dark:text-slate-300 font-medium">ISO</p>
               <p className="font-medium">{photoCredit.iso || 'N/A'}</p>
             </div>
             <div>
-              <p className="text-slate-700 dark:text-gray-400">License</p>
+              <p className="text-slate-700 dark:text-slate-300 font-medium">License</p>
               <p className="font-medium">{photoCredit.license || 'N/A'}</p>
             </div>
           </div>
@@ -211,7 +211,7 @@ const PhotoCreditDetailPage: React.FC = () => {
             >
               Download for {photoCredit.cost} FIC
             </button>
-            <p className="text-xs text-slate-700 dark:text-gray-400 mt-2 text-center">
+            <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mt-2 text-center">
               {ficBalance} FIC in wallet
             </p>
           </div>

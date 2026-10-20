@@ -445,7 +445,7 @@ const PlatformServiceOfUsePage: React.FC = () => {
                 Search Sections
               </h2>
               <div className="relative mb-4">
-                <Search className="w-4 h-4 absolute left-3 top-3 text-slate-500" />
+                <Search className="w-4 h-4 absolute left-3 top-3 text-slate-600" />
                 <input
                   type="text"
                   placeholder="Filter clauses..."
@@ -463,15 +463,15 @@ const PlatformServiceOfUsePage: React.FC = () => {
                   <a
                     key={sec.id}
                     href={`#${sec.id}`}
-                    className="block px-3 py-1.5 text-xs rounded-lg text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 transition font-medium truncate"
+                    className="block px-3 py-1.5 text-xs rounded-lg text-slate-700 dark:text-slate-300 hover:text-emerald-700 dark:hover:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 transition font-semibold truncate"
                   >
                     {sec.number}. {sec.title}
                   </a>
                 ))}
               </nav>
 
-              <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800">
-                <div className="text-xs text-slate-500 space-y-1">
+              <div className="mt-6 pt-4 border-t border-slate-200 dark:border-slate-800">
+                <div className="text-xs text-slate-700 dark:text-slate-300 space-y-1">
                   <p><strong>Operator:</strong> GraceLink Ltd.</p>
                   <p><strong>Jurisdiction:</strong> Singapore</p>
                   <p><strong>Effective:</strong> Oct 9, 2026</p>

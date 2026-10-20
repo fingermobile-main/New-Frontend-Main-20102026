@@ -128,7 +128,7 @@ const CategoryFeedPage: React.FC = () => {
       <div className="space-y-6">
         {loading ? (
           <div className="text-center py-12">
-            <p className="text-gray-500">Loading category posts...</p>
+            <p className="text-slate-700 font-medium">Loading category posts...</p>
           </div>
         ) : posts.length > 0 ? (
           posts.map((post: Post) => (

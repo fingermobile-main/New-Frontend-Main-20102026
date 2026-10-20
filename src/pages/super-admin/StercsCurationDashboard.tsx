@@ -77,24 +77,24 @@ const StercsCurationDashboard: React.FC = () => {
         <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl p-8 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm relative overflow-hidden">
           <div className="relative z-10">
             <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">STERCS Content & Subscription Curation</h1>
-            <p className="text-slate-500 dark:text-slate-400 font-medium mt-1">Manage Products, Media, Advertisements, and Platform Subscription Models across FingerMobile Protocol.</p>
+            <p className="text-slate-700 dark:text-slate-300 font-medium mt-1">Manage Products, Media, Advertisements, and Platform Subscription Models across FingerMobile Protocol.</p>
           </div>
           <div className="flex flex-wrap gap-2.5 relative z-10">
             <button
               onClick={() => setActiveTab('subscriptions')}
-              className={`px-5 py-2 rounded-xl font-bold transition-colors ${activeTab === 'subscriptions' ? 'bg-indigo-600 text-white shadow-md' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200'}`}
+              className={`px-5 py-2 rounded-xl font-bold transition-colors ${activeTab === 'subscriptions' ? 'bg-indigo-600 text-white shadow-md' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200'}`}
             >
               Subscriptions & Free Tiers
             </button>
             <button
               onClick={() => setActiveTab('products')}
-              className={`px-5 py-2 rounded-xl font-bold transition-colors ${activeTab === 'products' ? 'bg-indigo-600 text-white shadow-md' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200'}`}
+              className={`px-5 py-2 rounded-xl font-bold transition-colors ${activeTab === 'products' ? 'bg-indigo-600 text-white shadow-md' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200'}`}
             >
               Products / Media
             </button>
             <button
               onClick={() => setActiveTab('ads')}
-              className={`px-5 py-2 rounded-xl font-bold transition-colors ${activeTab === 'ads' ? 'bg-indigo-600 text-white shadow-md' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200'}`}
+              className={`px-5 py-2 rounded-xl font-bold transition-colors ${activeTab === 'ads' ? 'bg-indigo-600 text-white shadow-md' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200'}`}
             >
               Advertising
             </button>
@@ -166,7 +166,7 @@ const StercsCurationDashboard: React.FC = () => {
             <div className="overflow-x-auto">
               <table className="w-full text-left">
                 <thead>
-                  <tr className="border-b border-slate-200 text-slate-500 text-sm">
+                  <tr className="border-b border-slate-200 text-slate-700 font-bold text-sm">
                     <th className="pb-3 font-bold">Name</th>
                     <th className="pb-3 font-bold">Platform</th>
                     <th className="pb-3 font-bold">Category</th>
@@ -177,7 +177,7 @@ const StercsCurationDashboard: React.FC = () => {
                 <tbody>
                   {(activeTab === 'products' ? products : ads).length === 0 ? (
                     <tr>
-                      <td colSpan={5} className="py-8 text-center text-slate-500 font-medium">No items found.</td>
+                      <td colSpan={5} className="py-8 text-center text-slate-700 font-medium">No items found.</td>
                     </tr>
                   ) : (
                     (activeTab === 'products' ? products : ads).map((item: any, i: number) => (

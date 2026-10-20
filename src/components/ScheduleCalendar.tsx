@@ -81,14 +81,14 @@ const ScheduleCalendar: React.FC<ScheduleCalendarProps> = ({
   };
 
   return (
-    <Card>
+    <Card className="border-slate-200">
       <CardHeader>
         <div className="flex items-center justify-between">
-          <CardTitle className="text-base flex items-center gap-2">
-            <Calendar className="h-5 w-5" />
+          <CardTitle className="text-base flex items-center gap-2 text-slate-900 font-bold">
+            <Calendar className="h-5 w-5 text-slate-700" />
             Upcoming Schedule
           </CardTitle>
-          <Button variant="ghost" size="sm" onClick={onViewAll}>
+          <Button variant="ghost" size="sm" onClick={onViewAll} className="text-slate-700 font-semibold hover:text-slate-900">
             View All
           </Button>
         </div>
@@ -98,29 +98,29 @@ const ScheduleCalendar: React.FC<ScheduleCalendarProps> = ({
           {events.map((event) => (
             <div
               key={event.id}
-              className="flex items-start gap-3 p-3 border rounded-lg hover:bg-muted/50 transition-colors cursor-pointer"
+              className="flex items-start gap-3 p-3 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer"
               onClick={() => onEventClick?.(event.id)} role="button" tabIndex={0}
             >
               <div className={`w-2 h-2 rounded-full mt-2 ${getTypeColor(event.type)}`} />
               <div className="flex-1 min-w-0">
-                <h4 className="font-medium text-sm truncate">{event.title}</h4>
-                <div className="flex items-center gap-2 mt-1 text-xs text-muted-foreground">
+                <h4 className="font-semibold text-sm text-slate-900 truncate">{event.title}</h4>
+                <div className="flex items-center gap-2 mt-1 text-xs text-slate-700 font-medium">
                   <div className="flex items-center gap-1">
-                    <Calendar className="h-3 w-3" />
+                    <Calendar className="h-3 w-3 text-slate-600" />
                     {formatDate(event.date)}
                   </div>
                   <div className="flex items-center gap-1">
-                    <Clock className="h-3 w-3" />
+                    <Clock className="h-3 w-3 text-slate-600" />
                     {event.time}
                   </div>
                   {event.participants && (
-                    <Badge variant="secondary" className="text-xs">
+                    <Badge variant="secondary" className="text-xs bg-slate-100 text-slate-800 border border-slate-300 font-semibold">
                       {event.participants} attending
                     </Badge>
                   )}
                 </div>
               </div>
-              <Bell className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+              <Bell className="h-4 w-4 text-slate-500 flex-shrink-0" />
             </div>
           ))}
         </div>

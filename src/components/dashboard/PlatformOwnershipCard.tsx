@@ -141,7 +141,7 @@ export const PlatformOwnershipCard: React.FC<Props> = ({ compact = false }) => {
               </span>
               <button
                 onClick={() => copyToClipboard(owner.meansOfIdentification.number, `${owner.id}-nin`)}
-                className="text-slate-300 hover:text-white p-1 rounded transition-colors"
+                className="text-slate-200 hover:text-white p-1 rounded transition-colors"
                 title="Copy NIN"
               >
                 {copiedKey === `${owner.id}-nin` ? (
@@ -204,7 +204,7 @@ export const PlatformOwnershipCard: React.FC<Props> = ({ compact = false }) => {
                   </span>
                   <button
                     onClick={() => copyToClipboard(email, `${owner.id}-email-${idx}`)}
-                    className="text-slate-300 hover:text-white p-1 rounded transition-colors"
+                    className="text-slate-200 hover:text-white p-1 rounded transition-colors"
                     title="Copy Email"
                   >
                     {copiedKey === `${owner.id}-email-${idx}` ? (
@@ -233,7 +233,7 @@ export const PlatformOwnershipCard: React.FC<Props> = ({ compact = false }) => {
                   <span className="font-mono text-white font-bold">{phone}</span>
                   <button
                     onClick={() => copyToClipboard(phone, `${owner.id}-phone-${idx}`)}
-                    className="text-slate-300 hover:text-white p-1 rounded transition-colors"
+                    className="text-slate-200 hover:text-white p-1 rounded transition-colors"
                     title="Copy Phone"
                   >
                     {copiedKey === `${owner.id}-phone-${idx}` ? (
@@ -319,7 +319,7 @@ export const PlatformOwnershipCard: React.FC<Props> = ({ compact = false }) => {
               3DiVi Face SDK • FacePlugin Liveness SDK • OpenFace Behavior Toolkit
             </span>
           </div>
-          <span className="text-[11px] font-mono text-slate-300">
+          <span className="text-[11px] font-mono text-slate-200 font-semibold">
             Platform Dependencies Installed • Live/Motion Active
           </span>
         </div>

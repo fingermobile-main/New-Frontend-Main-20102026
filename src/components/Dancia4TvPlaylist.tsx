@@ -53,7 +53,7 @@ const Dancia4TvPlaylist: React.FC = () => {
                 <span className="text-[10px] font-bold text-gray-500 flex items-center uppercase tracking-tighter">
                   <Clock size={10} className="mr-1" /> {video.duration}
                 </span>
-                <span className="text-[10px] font-bold text-gray-500 uppercase tracking-tighter">
+                <span className="text-[10px] font-bold text-slate-700 font-bold uppercase tracking-tighter">
                   {video.views} views
                 </span>
               </div>

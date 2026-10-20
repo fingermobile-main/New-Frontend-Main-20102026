@@ -35,7 +35,7 @@ const LoadingSpinner = React.forwardRef<HTMLDivElement, LoadingSpinnerProps>(
         {...props}
       >
         <div className={cn(spinnerVariants({ size }))} />
-        {label && <p className="text-sm text-muted-foreground">{label}</p>}
+        {label && <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">{label}</p>}
       </div>
     );
   }

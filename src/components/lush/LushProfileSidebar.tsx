@@ -244,7 +244,7 @@ export const LushProfileSidebar: React.FC<LushProfileSidebarProps> = ({
               <span>🪙</span>
               {user.lushCoins.toLocaleString()}
             </div>
-            <div className="text-[10px] text-gray-500 uppercase tracking-wider mt-0.5 font-medium">
+            <div className="text-[10px] text-slate-700 font-bold uppercase tracking-wider mt-0.5 font-medium">
               Lush Coins
             </div>
           </div>

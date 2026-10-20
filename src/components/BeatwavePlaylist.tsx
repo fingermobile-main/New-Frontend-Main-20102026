@@ -68,8 +68,8 @@ const BeatwavePlaylist: React.FC<BeatwavePlaylistProps> = ({
   return (
     <div className="w-full space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold flex items-center gap-2">
-          <ListMusic className="h-6 w-6" />
+        <h2 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+          <ListMusic className="h-6 w-6 text-slate-800" />
           My Playlists
         </h2>
         <Button size="sm">
@@ -80,13 +80,13 @@ const BeatwavePlaylist: React.FC<BeatwavePlaylistProps> = ({
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {playlists.map((playlist) => (
-          <Card key={playlist.id} className="hover:shadow-lg transition-shadow">
+          <Card key={playlist.id} className="border-slate-200 hover:shadow-lg transition-shadow">
             <CardHeader className="pb-3">
               <div className="flex items-start justify-between">
                 <div>
-                  <CardTitle className="text-lg">{playlist.name}</CardTitle>
+                  <CardTitle className="text-lg text-slate-900">{playlist.name}</CardTitle>
                   {playlist.description && (
-                    <p className="text-sm text-muted-foreground mt-1">
+                    <p className="text-sm text-slate-700 mt-1">
                       {playlist.description}
                     </p>
                   )}
@@ -116,33 +116,33 @@ const BeatwavePlaylist: React.FC<BeatwavePlaylistProps> = ({
                 {playlist.tracks.slice(0, 3).map((track) => (
                   <div
                     key={track.id}
-                    className="flex items-center justify-between p-2 rounded hover:bg-muted/50 cursor-pointer group"
+                    className="flex items-center justify-between p-2 rounded hover:bg-slate-100/60 cursor-pointer group"
                     onClick={() => onPlayTrack?.(track)} role="button" tabIndex={0}
                   >
                     <div className="flex items-center gap-2 flex-1 min-w-0">
-                      <Music className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                      <Music className="h-4 w-4 text-slate-500 flex-shrink-0" />
                       <div className="min-w-0 flex-1">
-                        <p className="text-sm font-medium truncate">{track.title}</p>
-                        <p className="text-xs text-muted-foreground truncate">
+                        <p className="text-sm font-bold text-slate-900 truncate">{track.title}</p>
+                        <p className="text-xs text-slate-700 truncate">
                           {track.artist}
                         </p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Clock className="h-3 w-3 text-muted-foreground" />
-                      <span className="text-xs text-muted-foreground">
+                      <Clock className="h-3 w-3 text-slate-600" />
+                      <span className="text-xs text-slate-700 font-medium">
                         {track.duration}
                       </span>
                     </div>
                   </div>
                 ))}
                 {playlist.tracks.length > 3 && (
-                  <p className="text-xs text-muted-foreground text-center pt-2">
+                  <p className="text-xs text-slate-700 font-medium text-center pt-2">
                     +{playlist.tracks.length - 3} more tracks
                   </p>
                 )}
               </div>
-              <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground">
+              <div className="mt-4 flex items-center justify-between text-xs text-slate-700">
                 <Badge variant="secondary">{playlist.tracks.length} tracks</Badge>
                 <span>Created {new Date(playlist.createdAt).toLocaleDateString()}</span>
               </div>

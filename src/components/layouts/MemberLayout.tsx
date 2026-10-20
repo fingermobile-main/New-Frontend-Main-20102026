@@ -52,7 +52,7 @@ const MemberLayout: React.FC<MemberLayoutProps> = ({ children, title, subtitle, 
                 className={`flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300 ${
                   isActive
                     ? 'bg-gradient-to-r from-indigo-500/10 to-teal-400/10 text-indigo-700 shadow-sm'
-                    : 'text-slate-500 hover:bg-slate-100/80 hover:text-slate-800 hover:scale-[1.02]'
+                    : 'text-slate-600 hover:bg-slate-100/80 hover:text-slate-800 hover:scale-[1.02]'
                 }`}
               >
                 <div className={`${isActive ? 'text-indigo-600' : ''}`}>{item.icon}</div>
@@ -63,7 +63,7 @@ const MemberLayout: React.FC<MemberLayoutProps> = ({ children, title, subtitle, 
         </nav>
 
         <div className="p-6 border-t border-slate-200/50">
-          <Link to="/logout" className="flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-500 hover:bg-red-50 hover:text-red-600 transition-all duration-300">
+          <Link to="/logout" className="flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-600 hover:bg-red-50 hover:text-red-600 transition-all duration-300">
             <span className="font-semibold">Log out</span>
           </Link>
         </div>
@@ -82,12 +82,12 @@ const MemberLayout: React.FC<MemberLayoutProps> = ({ children, title, subtitle, 
             </button>
             <div className="flex flex-col">
               <h1 className="text-2xl font-bold text-slate-800 tracking-tight">{displayTitle}</h1>
-              {subtitle && <p className="text-sm text-slate-500">{subtitle}</p>}
+              {subtitle && <p className="text-sm text-slate-700 font-medium">{subtitle}</p>}
             </div>
           </div>
 
           <div className="flex items-center gap-4">
-            <button className="relative p-2 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-all duration-300">
+            <button className="relative p-2 text-slate-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-all duration-300">
               <BellIcon className="w-6 h-6" />
               <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-rose-500 border-2 border-slate-50 rounded-full"></span>
             </button>
@@ -120,7 +120,7 @@ const MemberLayout: React.FC<MemberLayoutProps> = ({ children, title, subtitle, 
                 </div>
                 <span className="text-lg font-bold text-slate-800">Menu</span>
               </div>
-              <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 text-slate-500 hover:bg-slate-100 rounded-full">
+              <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 text-slate-600 hover:bg-slate-100 rounded-full">
                 <XMarkIcon className="w-6 h-6" />
               </button>
             </div>
@@ -155,7 +155,7 @@ const MemberLayout: React.FC<MemberLayoutProps> = ({ children, title, subtitle, 
                 key={item.name}
                 to={item.path}
                 className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-all ${
-                  isActive ? 'text-indigo-600' : 'text-slate-500 hover:text-slate-800'
+                  isActive ? 'text-indigo-600' : 'text-slate-600 hover:text-slate-800'
                 }`}
               >
                 <div className={`${isActive ? 'scale-110' : 'scale-100'} transition-transform duration-300`}>

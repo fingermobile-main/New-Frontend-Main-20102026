@@ -349,7 +349,7 @@ const PrivateMessagesPage: React.FC = () => {
                                     >
                                       <p className="break-words">{message.content}</p>
                                       <div className="flex justify-between items-center mt-1 gap-2">
-                                        <p className={`text-[10px] ${message.isOwn ? 'text-blue-100' : 'text-gray-400'}`}>
+                                        <p className={`text-[10px] ${message.isOwn ? 'text-blue-100' : 'text-slate-600 font-medium'}`}>
                                           {message.timestamp}
                                         </p>
                                         {message.isOwn && (

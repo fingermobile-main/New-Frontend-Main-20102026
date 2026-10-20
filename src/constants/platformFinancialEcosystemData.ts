@@ -301,6 +301,66 @@ export const PLATFORM_REVENUE_RAILS: PlatformRevenueRails = {
       purpose: 'International Platform Top-Line Revenue Collection Rail for Eurozone Enterprise Contracts & Subscriptions',
       type: 'TOP_LINE_REVENUE',
       status: 'ACTIVE_ONLINE'
+    },
+    {
+      id: 'DIRECT-FCMB-NGN',
+      currency: 'NGN',
+      currencyName: 'Nigerian Naira (NGN) - Direct Pay',
+      bankName: 'First City Monument Bank (FCMB)',
+      accountName: 'FingerMobile Protocol Communication Company',
+      accountNumber: '2004515736',
+      ussdCode: 'N/A',
+      swiftCode: 'FCMBNGLA',
+      branch: 'Adeola Hopewell VI Lagos',
+      address: 'Adeola Hopewell, Victoria Island, Lagos, Nigeria',
+      purpose: 'FingerMobile Direct Pay - Primary Receiving & Payout Rail for Members, Franchise, Salaries, Grants & Storefronts',
+      type: 'TOP_LINE_REVENUE',
+      status: 'ACTIVE_ONLINE'
+    },
+    {
+      id: 'DIRECT-FCMB-USD',
+      currency: 'USD',
+      currencyName: 'United States Dollar (USD) - Direct Pay',
+      bankName: 'First City Monument Bank Ltd (Corr: CITIBANK NY CITIUS33XXX)',
+      accountName: 'FingerMobile Protocol Communication',
+      accountNumber: '2005377173',
+      ussdCode: 'N/A',
+      swiftCode: 'FCMBNGLAXXX',
+      branch: 'Adeola Hopewell VI Lagos',
+      address: 'Adeola Hopewell, Victoria Island, Lagos, Nigeria',
+      purpose: 'FingerMobile Direct Pay - USD International Commercial Inflow & Creator Payout (Corr Acc: 36887918)',
+      type: 'TOP_LINE_REVENUE',
+      status: 'ACTIVE_ONLINE'
+    },
+    {
+      id: 'DIRECT-FCMB-GBP',
+      currency: 'GBP',
+      currencyName: 'Great British Pound (GBP) - Direct Pay',
+      bankName: 'First City Monument Bank Ltd (Corr: CITIBANK London CITIGB2LXXX)',
+      accountName: 'FingerMobile Protocol Communication',
+      accountNumber: '2005377269',
+      ussdCode: 'N/A',
+      swiftCode: 'FCMBNGLAXXX',
+      branch: 'Adeola Hopewell VI Lagos',
+      address: 'Adeola Hopewell, Victoria Island, Lagos, Nigeria',
+      purpose: 'FingerMobile Direct Pay - GBP International Rail (IBAN: GB08CITI18500811871706 / Corr Acc: 11871706)',
+      type: 'TOP_LINE_REVENUE',
+      status: 'ACTIVE_ONLINE'
+    },
+    {
+      id: 'DIRECT-FCMB-EUR',
+      currency: 'EUR',
+      currencyName: 'Euro (EUR) - Direct Pay',
+      bankName: 'First City Monument Bank Ltd',
+      accountName: 'FingerMobile Protocol Communication',
+      accountNumber: '2005377283',
+      ussdCode: 'N/A',
+      swiftCode: 'FCMBNGLA',
+      branch: 'Adeola Hopewell VI Lagos',
+      address: 'Adeola Hopewell, Victoria Island, Lagos, Nigeria',
+      purpose: 'FingerMobile Direct Pay - Eurozone Settlement Rail (Swift: FCMBNGLA / FCMBNGLAWEB)',
+      type: 'TOP_LINE_REVENUE',
+      status: 'ACTIVE_ONLINE'
     }
   ]
 };
@@ -522,7 +582,7 @@ export const DEFAULT_INCOME_STATEMENT: IncomeStatementSheetData = {
     { id: 'cogs_cloud_storage', name: 'Storage Server Hardware & Cloud Fedora Instances', category: 'Storage', amountNgn: 30000000.00, notes: '300 TB user media vault and database replicas' }
   ],
   opex: [
-    { id: 'opex_owners_comp', name: "Owner's Executive Compensation (CFO, CEO, CTO, COO)", category: 'Executive Compensation', amountNgn: 175062342.00, notes: '4 Executive council members' },
+    { id: 'opex_owners_comp', name: 'Owner\'s Executive Compensation (CFO, CEO, CTO, COO)', category: 'Executive Compensation', amountNgn: 175062342.00, notes: '4 Executive council members' },
     { id: 'opex_directors', name: 'Departmental Directors & Operational Heads (8 Staff)', category: 'Staff Compensation', amountNgn: 108000000.00, notes: 'Lead engineering, finance, security, and content' },
     { id: 'opex_tech_ops', name: 'Technical & Systems Engineering Personnel (8 Staff)', category: 'Technical Staff', amountNgn: 46800000.00, notes: 'Full-time DevOps, frontend, backend and QA' },
     { id: 'opex_marketing', name: 'National Strategic Marketing & Brand Publicity', category: 'Publicity', amountNgn: 60000000.00, notes: 'Multi-channel acquisition, media, billboards' },

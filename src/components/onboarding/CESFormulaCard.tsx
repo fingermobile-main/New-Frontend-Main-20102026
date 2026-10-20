@@ -36,7 +36,7 @@ export const CESFormulaCard: React.FC = () => {
                 <Icon className="w-3.5 h-3.5" />
               </div>
               <div>
-                <p className="text-[11px] text-slate-400">{m.name}</p>
+                <p className="text-[11px] text-slate-300 font-medium">{m.name}</p>
                 <p className="text-xs font-bold text-white">{m.points}</p>
               </div>
             </div>

@@ -48,7 +48,7 @@ const FlamingoApprovalPage: React.FC = () => {
       <div className="flex justify-between items-center mb-6">
         <div>
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Flamingo Luxury Content Moderation</h1>
-          <p className="text-sm text-gray-500">Review brand sizing, trademark authenticity, and outfits</p>
+          <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">Review brand sizing, trademark authenticity, and outfits</p>
         </div>
         <button
           onClick={loadSubmissions}
@@ -71,7 +71,7 @@ const FlamingoApprovalPage: React.FC = () => {
                   <span className="text-xs text-slate-700">ID: {item.content_id}</span>
                 </div>
                 <h3 className="font-semibold text-gray-900 dark:text-white mt-1 text-base">{item.reason}</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{item.description}</p>
+                <p className="text-sm text-slate-700 dark:text-slate-300 font-medium mt-1">{item.description}</p>
                 <p className="text-xs text-slate-700 mt-2">Submitted on {new Date(item.created_at).toLocaleString()}</p>
               </div>
               <div className="flex items-center gap-3">

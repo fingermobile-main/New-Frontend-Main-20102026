@@ -39,7 +39,7 @@ export const SharedInterestMatchCelebrationModal: React.FC<SharedInterestMatchCe
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 rounded-full bg-slate-800/80 hover:bg-slate-700 text-slate-400 hover:text-white transition"
+          className="absolute top-4 right-4 p-2 rounded-full bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white transition"
           aria-label="Close match dialog"
         >
           <X className="w-5 h-5" />
@@ -115,7 +115,7 @@ export const SharedInterestMatchCelebrationModal: React.FC<SharedInterestMatchCe
 
         {/* Mutual Resonances Highlights */}
         <div className="bg-slate-950/80 border border-slate-800 rounded-2xl p-4 mb-6 text-left">
-          <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-1.5">
+          <div className="text-[11px] font-bold uppercase tracking-wider text-slate-300 mb-2 flex items-center gap-1.5">
             <span>🎯 Shared Resonances in Common:</span>
           </div>
           <div className="flex flex-wrap gap-1.5">
@@ -161,7 +161,7 @@ export const SharedInterestMatchCelebrationModal: React.FC<SharedInterestMatchCe
 
         <button
           onClick={onClose}
-          className="mt-4 text-xs font-semibold text-slate-400 hover:text-white transition"
+          className="mt-4 text-xs font-semibold text-slate-300 hover:text-white transition"
         >
           Keep exploring deck →
         </button>

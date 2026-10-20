@@ -101,28 +101,33 @@ class UserService {
   static async getCurrentUser(): Promise<ApiResponse<User>> {
     try {
       const response = await ApiService.get('/users/profile');
+      const userData = response.data || response;
       return {
         success: true,
-        data: response.data,
+        data: userData,
         message: 'User profile retrieved successfully',
       };
     } catch (error: any) {
-      console.warn('Failed to retrieve user profile, using mock data', error);
+      console.warn('Failed to retrieve user profile from API, checking local session:', error);
+      if (typeof window !== 'undefined') {
+        const stored = localStorage.getItem('user');
+        if (stored) {
+          try {
+            const parsed = JSON.parse(stored);
+            return {
+              success: true,
+              message: 'Local session profile loaded',
+              data: parsed
+            };
+          } catch (_e) {
+            // ignore
+          }
+        }
+      }
       return {
-        success: true,
-        message: 'Mock profile retrieved',
-        data: {
-          id: 'mock-user-1',
-          username: 'mockuser',
-          email: 'mock@example.com',
-          firstName: 'Mock',
-          lastName: 'User',
-          displayName: 'Mock User',
-          bio: 'This is a mock bio.',
-          location: 'Metaverse',
-          verified: true,
-          roles: ['user'],
-        } as unknown as User
+        success: false,
+        message: 'Failed to retrieve profile',
+        data: null as any
       };
     }
   }

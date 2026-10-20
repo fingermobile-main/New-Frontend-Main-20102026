@@ -475,7 +475,7 @@ const MessagesPage: React.FC = () => {
             {/* Search Input: Sharp Core Standard */}
             <div className="p-3 border-b border-slate-300 bg-white">
               <div className="relative">
-                <MagnifyingGlassIcon className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+                <MagnifyingGlassIcon className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-600" />
                 <input
                   type="text"
                   value={searchQuery}
@@ -709,7 +709,7 @@ const MessagesPage: React.FC = () => {
                           )}
                           <div className="flex items-center justify-between text-[11px] font-bold text-slate-800 px-1">
                             <span className="truncate max-w-[200px]">{msg.fileName || msg.text}</span>
-                            <span className="text-[10px] font-mono text-slate-500">{msg.fileSize}</span>
+                            <span className="text-[10px] font-mono text-slate-600">{msg.fileSize}</span>
                           </div>
                           <div className="flex items-center gap-1 text-[10px] text-emerald-600 font-bold px-1">
                             <ShieldCheckIcon className="w-3.5 h-3.5 text-emerald-600" />
@@ -892,7 +892,7 @@ const MessagesPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setShowSendPaylinkModal(false)}
-                  className="p-1 rounded-lg text-slate-500 hover:text-slate-900"
+                  className="p-1 rounded-lg text-slate-600 hover:text-slate-900"
                 >
                   <XMarkIcon className="w-5 h-5" />
                 </button>
@@ -940,7 +940,7 @@ const MessagesPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setShowNewChatModal(false)}
-                  className="p-1 rounded-lg text-slate-500 hover:text-slate-900"
+                  className="p-1 rounded-lg text-slate-600 hover:text-slate-900"
                 >
                   <XMarkIcon className="w-5 h-5" />
                 </button>

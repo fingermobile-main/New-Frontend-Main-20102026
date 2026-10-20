@@ -46,7 +46,7 @@ const WalletComponent: React.FC<WalletProps> = ({
             <div className="text-5xl font-bold mb-2">
               ${balance.toLocaleString('en-US', { minimumFractionDigits: 2 })}
             </div>
-            <p className="text-muted-foreground">Available Balance</p>
+            <p className="text-slate-700 dark:text-slate-300 font-semibold">Available Balance</p>
           </div>
           <div className="flex gap-4 mt-6">
             <Button className="flex-1" onClick={() => onDeposit?.(100)}>
@@ -64,7 +64,7 @@ const WalletComponent: React.FC<WalletProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
+            <CardTitle className="text-sm font-semibold text-slate-800 dark:text-slate-200">
               Total Deposits
             </CardTitle>
           </CardHeader>
@@ -78,7 +78,7 @@ const WalletComponent: React.FC<WalletProps> = ({
 
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
+            <CardTitle className="text-sm font-semibold text-slate-800 dark:text-slate-200">
               Total Withdrawals
             </CardTitle>
           </CardHeader>
@@ -92,7 +92,7 @@ const WalletComponent: React.FC<WalletProps> = ({
 
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
+            <CardTitle className="text-sm font-semibold text-slate-800 dark:text-slate-200">
               Transactions
             </CardTitle>
           </CardHeader>
@@ -122,8 +122,8 @@ const WalletComponent: React.FC<WalletProps> = ({
                     className={`p-2 rounded-full ${
                       transaction.type === 'deposit'
                         ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
-                        : 'bg-red-100 text-green-950 border border-green-400 font-bold'
-                    }font-black`}
+                        : 'bg-red-100 text-red-950 border border-red-400 font-bold'
+                    } font-black`}
                   >
                     {transaction.type === 'deposit' ? (
                       <TrendingUp className="h-5 w-5" />
@@ -133,7 +133,7 @@ const WalletComponent: React.FC<WalletProps> = ({
                   </div>
                   <div>
                     <p className="font-medium">{transaction.description || 'No description'}</p>
-                    <p className="text-sm text-muted-foreground">{transaction.date}</p>
+                    <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">{transaction.date}</p>
                   </div>
                 </div>
                 <Badge

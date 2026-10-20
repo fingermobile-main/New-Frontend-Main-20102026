@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   MessageSquare,
   Award,
@@ -12,7 +12,9 @@ import {
   Sparkles,
   CheckCircle2,
   Menu,
+  LogOut,
 } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 
 interface ShowcaseItem {
   id: string;
@@ -192,6 +194,30 @@ const BOTTOM_ROW_ITEMS: ShowcaseItem[] = [
 ];
 
 const HomePage: React.FC = () => {
+  const { user, logout, isOnboarded } = useAuth();
+  const navigate = useNavigate();
+
+  // Check if session exists in memory or storage
+  const hasActiveSession = Boolean(
+    user ||
+    (typeof window !== 'undefined' &&
+      (localStorage.getItem('token') ||
+        localStorage.getItem('accessToken') ||
+        localStorage.getItem('fingermobile_token')))
+  );
+
+  const handleLogout = () => {
+    logout();
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('token');
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      localStorage.removeItem('user');
+      localStorage.removeItem('fingermobile_token');
+    }
+    navigate('/login');
+  };
+
   return (
     <div className="relative min-h-screen w-full bg-zinc-950 text-white font-sans overflow-x-hidden selection:bg-emerald-500 selection:text-black">
       {/* Background Graphic Layer */}
@@ -225,16 +251,18 @@ const HomePage: React.FC = () => {
         <header className="w-full border-b border-white/10 bg-black/40 backdrop-blur-xl sticky top-0 z-40">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <div className="flex items-center gap-2 sm:gap-3">
-              {/* Orange Burger Menu / Drawer Button */}
-              <button
-                type="button"
-                onClick={() => window.dispatchEvent(new CustomEvent('open-drawer-menu'))}
-                className="p-2 -ml-2 rounded-xl text-[#ff6b00] hover:text-[#ff8533] hover:bg-orange-500/10 transition flex items-center justify-center mr-1 focus:outline-none cursor-pointer"
-                aria-label="Open Navigation Drawer"
-                title="Platform Navigation (385 Pages / 230+ Screens)"
-              >
-                <Menu className="w-6 h-6 text-[#ff6b00]" />
-              </button>
+              {/* Orange Burger Menu / Drawer Button - STRICTLY LOCKED DOWN until onboarded */}
+              {isOnboarded && (
+                <button
+                  type="button"
+                  onClick={() => window.dispatchEvent(new CustomEvent('open-drawer-menu'))}
+                  className="p-2 -ml-2 rounded-xl text-[#ff6b00] hover:text-[#ff8533] hover:bg-orange-500/10 transition flex items-center justify-center mr-1 focus:outline-none cursor-pointer"
+                  aria-label="Open Navigation Drawer"
+                  title="Platform Navigation (385 Pages / 230+ Screens)"
+                >
+                  <Menu className="w-6 h-6 text-[#ff6b00]" />
+                </button>
+              )}
 
               {/* Header H1 with FingerMobile Orange Logo */}
               <h1 className="flex items-center">
@@ -250,7 +278,7 @@ const HomePage: React.FC = () => {
                     />
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-xl font-black tracking-tight text-white group-hover:text-[#ff6b00] transition-colors">
+                    <span className="text-xl font-black tracking-tight text-[#ff6b00] group-hover:text-[#ff8533] transition-colors">
                       FingerMobile<span className="text-[#ff6b00]">™</span>
                     </span>
                     <span className="text-[10px] uppercase font-bold tracking-widest text-[#ff6b00]/90 -mt-1">
@@ -261,64 +289,55 @@ const HomePage: React.FC = () => {
               </h1>
             </div>
 
-            <nav className="hidden md:flex items-center gap-1.5 text-xs font-bold text-zinc-100">
-              <Link
-                to="/forum"
-                className="px-3.5 py-2 rounded-lg hover:text-white hover:bg-white/10 transition-colors"
-              >
-                Forum
-              </Link>
-              <Link
-                to="/hallmarks"
-                className="px-3.5 py-2 rounded-lg hover:text-white hover:bg-white/10 transition-colors"
-              >
-                HallMarks
-              </Link>
-              <Link
-                to="/lushpressies"
-                className="px-3.5 py-2 rounded-lg hover:text-white hover:bg-white/10 transition-colors"
-              >
-                Lush-Pressies
-              </Link>
-              <Link
-                to="/fingerlux"
-                className="px-3.5 py-2 rounded-lg hover:text-white hover:bg-white/10 transition-colors"
-              >
-                FingerLux
-              </Link>
-              <Link
-                to="/beatwaveng"
-                className="px-3.5 py-2 rounded-lg hover:text-white hover:bg-white/10 transition-colors"
-              >
-                BeatwaveNG
-              </Link>
-              <Link
-                to="/dancia4tv"
-                className="px-3.5 py-2 rounded-lg hover:text-white hover:bg-white/10 transition-colors"
-              >
-                Dancia-4Tv
-              </Link>
-              <Link
-                to="/ownit"
-                className="px-3.5 py-2 rounded-lg hover:text-white hover:bg-white/10 transition-colors"
-              >
-                OwnIt
-              </Link>
-            </nav>
+            <div className="flex items-center gap-2 sm:gap-3">
+              {hasActiveSession ? (
+                <>
+                  {isOnboarded ? (
+                    <Link
+                      to="/forum"
+                      className="px-3 sm:px-4 py-2 text-xs font-bold text-white bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 rounded-xl shadow-md shadow-orange-500/20 transition-all flex items-center gap-1.5"
+                    >
+                      <span>Enter Forum</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </Link>
+                  ) : (
+                    <Link
+                      to="/onboarding"
+                      className="px-3 sm:px-4 py-2 text-xs font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 rounded-xl shadow-md shadow-emerald-500/20 transition-all flex items-center gap-1.5 animate-pulse"
+                    >
+                      <span>Complete Onboarding</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </Link>
+                  )}
 
-            <div className="flex items-center gap-3">
-              <Link
-                to="/login"
-                className="px-4 py-2 text-xs font-bold text-slate-700 hover:text-emerald-300 transition-colors border border-white/20 hover:border-white/40 rounded-xl bg-white/10 backdrop-blur"
-              >
-                Sign In
-              </Link>
-              <Link
-                to="/register"
-                className="px-4 py-2 text-xs font-bold text-black bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 rounded-xl shadow-lg shadow-emerald-500/25 transition-all transform hover:-translate-y-0.5"
-              >
-                Get Started
-              </Link>
+                  {/* Prominent High-Contrast LogOut Button */}
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="px-3 sm:px-4 py-2 text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 active:bg-rose-800 border border-rose-500 rounded-xl transition-all flex items-center gap-1.5 shadow-md shadow-rose-600/30 cursor-pointer"
+                    aria-label="Log Out"
+                    title="Log Out of FingerMobile Protocol"
+                  >
+                    <LogOut className="w-3.5 h-3.5 text-white" />
+                    <span>Log Out</span>
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    to="/login"
+                    className="px-4 py-2 text-xs font-bold text-white hover:text-[#ff6b00] transition-colors border border-white/20 hover:border-white/40 rounded-xl bg-white/10 backdrop-blur shadow-sm"
+                  >
+                    Sign In
+                  </Link>
+                  <Link
+                    to="/register"
+                    className="px-4 py-2 text-xs font-bold text-black bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 rounded-xl shadow-lg shadow-emerald-500/25 transition-all transform hover:-translate-y-0.5"
+                  >
+                    Get Started
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </header>
@@ -332,7 +351,7 @@ const HomePage: React.FC = () => {
 
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-tight">
             Welcome to{' '}
-            <span className="bg-gradient-to-r from-emerald-400 via-teal-200 to-white bg-clip-text text-transparent">
+            <span className="text-[#ff6b00]">
               FingerMobile
             </span>
           </h1>
@@ -388,7 +407,7 @@ const HomePage: React.FC = () => {
                     {/* Top Row Badge Index */}
                     <div className="absolute top-3 left-3 z-20 flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-black/85 backdrop-blur-md border border-white/20 text-[11px] font-black text-white">
                       <span className="text-emerald-400">0{index + 1}</span>
-                      <span className="text-zinc-400">•</span>
+                      <span className="text-zinc-400 font-bold">•</span>
                       <span>{item.name}</span>
                     </div>
 
@@ -453,7 +472,7 @@ const HomePage: React.FC = () => {
                         {/* Interactive Action CTA */}
                         <Link
                           to={item.link}
-                          className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-emerald-500 hover:text-slate-900 text-slate-700 text-xs font-black border border-white/20 hover:border-emerald-400 transition-all duration-200 group/btn mt-1"
+                          className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/15 hover:bg-emerald-500 hover:text-slate-900 text-white text-xs font-black border border-white/25 hover:border-emerald-400 transition-all duration-200 group/btn mt-1 shadow-md"
                         >
                           <span>{item.ctaText}</span>
                           <ArrowRight className="w-3.5 h-3.5 transform group-hover/btn:translate-x-1 transition-transform" />
@@ -502,7 +521,7 @@ const HomePage: React.FC = () => {
                     {/* Bottom Row Badge Index */}
                     <div className="absolute top-3 left-3 z-20 flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-black/85 backdrop-blur-md border border-white/20 text-[11px] font-black text-white">
                       <span className="text-cyan-400">0{index + 4}</span>
-                      <span className="text-zinc-400">•</span>
+                      <span className="text-zinc-400 font-bold">•</span>
                       <span>{item.name}</span>
                     </div>
 
@@ -567,7 +586,7 @@ const HomePage: React.FC = () => {
                         {/* Interactive Action CTA */}
                         <Link
                           to={item.link}
-                          className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-white/10 hover:bg-cyan-500 hover:text-slate-900 text-slate-700 text-xs font-black border border-white/20 hover:border-cyan-400 transition-all duration-200 group/btn mt-1"
+                          className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-white/15 hover:bg-cyan-500 hover:text-slate-900 text-white text-xs font-black border border-white/25 hover:border-cyan-400 transition-all duration-200 group/btn mt-1 shadow-md"
                         >
                           <span>{item.ctaText}</span>
                           <ArrowRight className="w-3.5 h-3.5 transform group-hover/btn:translate-x-1 transition-transform" />
@@ -583,8 +602,8 @@ const HomePage: React.FC = () => {
           {/* Quick Launchpad & Getting Started Bar */}
           <section className="rounded-3xl p-8 sm:p-10 border border-white/20 bg-gradient-to-r from-zinc-900/95 via-black/90 to-zinc-900/95 backdrop-blur-2xl shadow-2xl text-center relative overflow-hidden">
             <div className="relative z-10 max-w-3xl mx-auto space-y-4">
-              <span className="text-xs font-black tracking-widest uppercase text-emerald-300">
-                Join The Sovereign FingerMobile Experience
+              <span className="text-xs font-black tracking-wide text-emerald-300">
+                Join the sovereign FingerMobile experience
               </span>
               <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
                 Ready to explore all 7 ecosystems?
@@ -604,13 +623,13 @@ const HomePage: React.FC = () => {
                 </Link>
                 <Link
                   to="/login"
-                  className="px-6 py-3 rounded-xl bg-white/15 hover:bg-white/25 text-slate-700 text-xs font-black border border-white/25 transition-all"
+                  className="px-6 py-3 rounded-xl bg-white/20 hover:bg-white/30 text-white text-xs font-black border border-white/30 transition-all shadow-md"
                 >
                   Sign In to Dashboard
                 </Link>
                 <Link
                   to="/about"
-                  className="px-6 py-3 rounded-xl bg-transparent hover:bg-white/10 text-zinc-100 hover:text-white text-xs font-bold transition-all"
+                  className="px-6 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white hover:text-emerald-300 text-xs font-bold transition-all border border-white/20"
                 >
                   Learn About Protocol →
                 </Link>
@@ -623,10 +642,13 @@ const HomePage: React.FC = () => {
         <footer className="w-full border-t border-white/15 bg-black/80 backdrop-blur-xl py-8 mt-auto">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-zinc-200">
             <div className="flex items-center gap-3">
-              <span className="font-bold text-white">
-                FingerMobile Protocol™
+              <span className="font-bold text-[#ff6b00]">
+                FingerMobile
               </span>
-              <span className="text-zinc-400">•</span>
+              <span className="font-bold text-white">
+                Protocol™
+              </span>
+              <span className="text-zinc-500 font-bold">•</span>
               <span className="text-zinc-200 font-medium">© 2026 Mbah Israel Obinna. All Rights Reserved.</span>
             </div>
             <div className="flex items-center gap-6 font-semibold text-zinc-200">

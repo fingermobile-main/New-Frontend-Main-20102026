@@ -457,7 +457,7 @@ const MonetizationPage: React.FC = () => {
       case 'credit_card': return <CreditCard className="h-4 w-4 text-blue-500" />;
       case 'paypal': return <Wallet className="h-4 w-4 text-blue-500" />;
       case 'bank_transfer': return <Coins className="h-4 w-4 text-blue-500" />;
-      default: return <DollarSign className="h-4 w-4 text-gray-500" />;
+      default: return <DollarSign className="h-4 w-4 text-slate-600" />;
     }
   };
 

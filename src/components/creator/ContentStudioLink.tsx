@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { PencilSquareIcon } from '@heroicons/react/24/outline';
 
 interface ContentStudioLinkProps {
@@ -6,6 +7,7 @@ interface ContentStudioLinkProps {
 }
 
 const ContentStudioLink: React.FC<ContentStudioLinkProps> = ({ userId }) => {
+  const navigate = useNavigate();
   const [stats, setStats] = React.useState({
     drafts: 5,
     published: 23,
@@ -37,8 +39,11 @@ const ContentStudioLink: React.FC<ContentStudioLinkProps> = ({ userId }) => {
         </div>
       </div>
 
-      <button className="w-full px-4 py-2 bg-white text-purple-600 rounded-lg hover:bg-gray-100 transition-colors font-medium">
-        Open Studio
+      <button
+        onClick={() => navigate('/ugc/dashboard')}
+        className="w-full px-4 py-2 bg-white text-purple-700 hover:bg-slate-100 rounded-lg transition-colors font-bold text-sm shadow-md cursor-pointer"
+      >
+        Open Studio →
       </button>
     </div>
   );

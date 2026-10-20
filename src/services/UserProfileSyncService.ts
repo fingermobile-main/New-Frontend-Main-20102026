@@ -39,9 +39,11 @@ export interface LinkedAppEntry {
 
 export interface ComprehensiveUserProfile {
   // Identity & Basics
+  id?: string;
   name: string;
   username: string;
   headline: string;
+  bio?: string;
   gender: string;
   email: string;
   recoveryEmail: string;
@@ -103,18 +105,20 @@ const STORAGE_KEY_LEGACY = 'fmp_member_profile';
 const STORAGE_KEY_BLOCKED_MACS = 'fmp_blocked_macs';
 const STORAGE_KEY_USER = 'user';
 
-export const DEFAULT_COMPREHENSIVE_PROFILE: ComprehensiveUserProfile = {
-  name: 'Israel Mbah',
-  username: 'israel_protocol',
-  headline: 'Protocol Architect • Sovereign Creator • Lead Core Engineer',
+export const SUPERADMIN_PROFILE: ComprehensiveUserProfile = {
+  id: '00000000-0000-0000-0000-000000000001',
+  name: 'Israel Obinna Mbah',
+  username: 'israelobinna',
+  headline: 'CEO & CTO, Founder | FingerMobile Protocol™ Sovereign Ecosystem Architect',
+  bio: 'Curating luxury African contemporary art & exploring meaningful connections.',
   gender: 'Male',
-  email: 'israel@fingermobileprotocol.com',
+  email: 'founder@fingermobileprotocol.com',
   recoveryEmail: 'recovery.guardian@fingermobileprotocol.com',
   phone: '+234 801 234 5678',
-  birthday: '1994-08-14',
+  birthday: '1992-06-18',
   language: 'English (US)',
-  avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80',
-  coverImage: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&auto=format&fit=crop&q=80',
+  avatar: '/assets/branding/mbah_israel_obinna.jpeg',
+  coverImage: '/assets/branding/backgrounds/FingerMobile Login screen Background image.webp',
   location: 'Lagos, Nigeria',
 
   storeCreditBalance: 450.00,
@@ -142,7 +146,7 @@ export const DEFAULT_COMPREHENSIVE_PROFILE: ComprehensiveUserProfile = {
   authenticatorAppStatus: 'Active (Google Authenticator / TOTP)',
   authenticatorSecretKey: 'JBSWY3DPEHPK3PXP',
 
-  geminiPrompt: 'Act as Sovereign Guardian for Israel Mbah. Enforce Child Safety Policy (SEC-10), flag sensitive media, monitor wallet authorizations, and maintain end-to-end cryptographic integrity.',
+  geminiPrompt: 'Act as Sovereign Guardian for Israel Obinna Mbah. Enforce Child Safety Policy (SEC-10), flag sensitive media, monitor wallet authorizations, and maintain end-to-end cryptographic integrity.',
 
   twoStepPhones: ['+234 801 234 5678 (Primary)', '+234 809 111 2233 (Backup)'],
   recoveryContacts: ['Chief O. Adeleke (Guardian Node 01)', 'Engr. K. Amadi (Sovereign Trustee)'],
@@ -215,13 +219,68 @@ export const DEFAULT_COMPREHENSIVE_PROFILE: ComprehensiveUserProfile = {
   ],
 };
 
+export const DEFAULT_GUEST_PROFILE: ComprehensiveUserProfile = {
+  id: '',
+  name: 'Guest Explorer',
+  username: 'guest',
+  headline: 'Guest Explorer • FingerMobile Protocol',
+  bio: 'Exploring sovereign decentralized media, creator monetization & commerce ecosystem.',
+  gender: 'Other',
+  email: '',
+  recoveryEmail: '',
+  phone: '',
+  birthday: '',
+  language: 'English (US)',
+  avatar: '/assets/branding/default-avatar.svg',
+  coverImage: '/assets/branding/backgrounds/FingerMobile Login screen Background image.webp',
+  location: 'Global Decentralized Mesh',
+
+  storeCreditBalance: 0,
+  ficBalance: 0,
+
+  homeAddress: '',
+  workAddress: '',
+  otherAddresses: '',
+
+  pinNumber: '',
+  pinQuotaRemaining: 0,
+  pinQuotaMax: 50,
+  pinLastRotated: '',
+
+  twoStepActiveDate: '',
+  passkeysCount: 0,
+  passkeysList: [],
+  passwordLastChanged: '',
+  skipPasswordWhenPossible: false,
+  authenticatorAppStatus: 'Not Configured',
+  authenticatorSecretKey: '',
+
+  geminiPrompt: '',
+
+  twoStepPhones: [],
+  recoveryContacts: [],
+  recoveryPhone: '',
+  backupCodes: [],
+
+  linkedApps: [],
+
+  securityScore: 0,
+  securityTips: [],
+
+  loggedInDevices: [],
+  blockedMacAddresses: [],
+  inactiveDevices: [],
+};
+
+export const DEFAULT_COMPREHENSIVE_PROFILE = DEFAULT_GUEST_PROFILE;
+
 class UserProfileSyncService {
   private listeners: Array<(_profile: ComprehensiveUserProfile) => void> = [];
 
   constructor() {
     if (typeof window !== 'undefined') {
       window.addEventListener('storage', (e) => {
-        if (e.key === STORAGE_KEY_COMPREHENSIVE || e.key === STORAGE_KEY_LEGACY) {
+        if (e.key === STORAGE_KEY_COMPREHENSIVE || e.key === STORAGE_KEY_LEGACY || e.key === STORAGE_KEY_USER) {
           const current = this.getProfile();
           this.notifyListeners(current);
         }
@@ -233,41 +292,125 @@ class UserProfileSyncService {
     }
   }
 
+  public isGuest(): boolean {
+    if (typeof window === 'undefined') return true;
+    const hasUser = Boolean(localStorage.getItem(STORAGE_KEY_USER));
+    const hasToken = Boolean(
+      localStorage.getItem('accessToken') ||
+      localStorage.getItem('token') ||
+      localStorage.getItem('fingermobile_token')
+    );
+    return !hasUser && !hasToken;
+  }
+
+  public clearProfile(): void {
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.removeItem(STORAGE_KEY_COMPREHENSIVE);
+        localStorage.removeItem(STORAGE_KEY_LEGACY);
+        localStorage.removeItem(STORAGE_KEY_BLOCKED_MACS);
+        localStorage.removeItem(STORAGE_KEY_USER);
+        localStorage.removeItem('fmp_comprehensive_profile');
+        localStorage.removeItem('fmp_member_profile');
+      } catch (_e) {
+        // ignore
+      }
+    }
+    this.notifyListeners(DEFAULT_GUEST_PROFILE);
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('fmp_profile_updated'));
+    }
+  }
+
   public getProfile(): ComprehensiveUserProfile {
-    if (typeof window === 'undefined') return DEFAULT_COMPREHENSIVE_PROFILE;
+    if (typeof window === 'undefined') return DEFAULT_GUEST_PROFILE;
 
     try {
+      // 1. If not authenticated, always return clean Guest profile
+      const storedUser = localStorage.getItem(STORAGE_KEY_USER);
+      const token =
+        localStorage.getItem('accessToken') ||
+        localStorage.getItem('token') ||
+        localStorage.getItem('fingermobile_token');
+
+      if (!storedUser && !token) {
+        return DEFAULT_GUEST_PROFILE;
+      }
+
+      let userData: any = {};
+      if (storedUser) {
+        try {
+          userData = JSON.parse(storedUser);
+        } catch (_e) {
+          userData = {};
+        }
+      }
+
+      // Check if user is explicitly the SuperAdmin Founder
+      const isSuperAdmin = Boolean(
+        userData &&
+        (userData.username === 'israelobinna' ||
+         userData.email === 'fingermobileprotocol@gmail.com' ||
+         userData.email === 'founder@fingermobileprotocol.com') &&
+        (String(userData.role || '').toLowerCase() === 'superadmin' || String(userData.role || '').toLowerCase() === 'founder')
+      );
+
+      const baseProfile: ComprehensiveUserProfile = isSuperAdmin
+        ? SUPERADMIN_PROFILE
+        : {
+          ...DEFAULT_GUEST_PROFILE,
+          id: userData.id || 'sovereign_user',
+          name:
+            userData.name ||
+            `${userData.firstName || ''} ${userData.lastName || ''}`.trim() ||
+            userData.username ||
+            'Sovereign Member',
+          username: userData.username || 'member',
+          headline:
+            userData.headline ||
+            userData.bio ||
+            `${userData.role || 'Member'} • FingerMobile Protocol`,
+          bio: userData.bio || 'Sovereign Member participating in decentralized media, commerce and forums.',
+          email: userData.email || '',
+          phone: userData.phone || '',
+          avatar: userData.avatar || userData.avatarUrl || '/assets/branding/default-avatar.svg',
+          coverImage: userData.coverImage || '/assets/branding/backgrounds/FingerMobile Login screen Background image.webp',
+          location: userData.location || 'Lagos, Nigeria',
+          ficBalance: typeof userData.ficBalance === 'number' ? userData.ficBalance : 1000.0,
+          pinNumber: userData.pinNumber || '749822',
+          pinQuotaRemaining: userData.pinQuotaRemaining ?? 50,
+          pinQuotaMax: 50,
+          securityScore: 85,
+        };
+
       const storedComp = localStorage.getItem(STORAGE_KEY_COMPREHENSIVE);
       let compData: Partial<ComprehensiveUserProfile> = {};
       if (storedComp) {
-        compData = JSON.parse(storedComp);
+        try {
+          compData = JSON.parse(storedComp);
+          if (!isSuperAdmin && (compData.username === 'israelobinna' || compData.name === 'Israel Obinna Mbah' || compData.email === 'founder@fingermobileprotocol.com')) {
+            compData = {};
+          }
+        } catch (_e) {
+          compData = {};
+        }
       }
 
-      // Check legacy format
-      const storedLegacy = localStorage.getItem(STORAGE_KEY_LEGACY);
-      let legacyData: any = {};
-      if (storedLegacy) {
-        legacyData = JSON.parse(storedLegacy);
-      }
-
-      // Check auth user format
-      const storedUser = localStorage.getItem(STORAGE_KEY_USER);
-      let userData: any = {};
-      if (storedUser) {
-        userData = JSON.parse(storedUser);
-      }
-
-      // Merge with priority: comprehensive > legacy > user > default
       const merged: ComprehensiveUserProfile = {
-        ...DEFAULT_COMPREHENSIVE_PROFILE,
+        ...baseProfile,
         ...compData,
-        name: compData.name || legacyData.name || (userData.firstName ? `${userData.firstName} ${userData.lastName || ''}`.trim() : DEFAULT_COMPREHENSIVE_PROFILE.name),
-        username: compData.username || legacyData.username || userData.username || DEFAULT_COMPREHENSIVE_PROFILE.username,
-        headline: compData.headline || legacyData.headline || userData.bio || DEFAULT_COMPREHENSIVE_PROFILE.headline,
-        avatar: compData.avatar || legacyData.avatar || userData.avatar || DEFAULT_COMPREHENSIVE_PROFILE.avatar,
-        coverImage: compData.coverImage || legacyData.coverImage || DEFAULT_COMPREHENSIVE_PROFILE.coverImage,
-        location: compData.location || legacyData.location || userData.location || DEFAULT_COMPREHENSIVE_PROFILE.location,
-        pinNumber: compData.pinNumber || legacyData.pinNumber || DEFAULT_COMPREHENSIVE_PROFILE.pinNumber,
+        name:
+          compData.name ||
+          (userData.firstName
+            ? `${userData.firstName} ${userData.lastName || ''}`.trim()
+            : userData.name) ||
+          baseProfile.name,
+        username: compData.username || userData.username || baseProfile.username,
+        headline: compData.headline || userData.headline || userData.bio || baseProfile.headline,
+        avatar: compData.avatar || userData.avatar || userData.avatarUrl || baseProfile.avatar,
+        email: compData.email || userData.email || baseProfile.email,
+        phone: compData.phone || userData.phone || baseProfile.phone,
+        location: compData.location || userData.location || baseProfile.location,
       };
 
       // Load blocked macs if any
@@ -282,7 +425,7 @@ class UserProfileSyncService {
 
       return merged;
     } catch {
-      return DEFAULT_COMPREHENSIVE_PROFILE;
+      return DEFAULT_GUEST_PROFILE;
     }
   }
 

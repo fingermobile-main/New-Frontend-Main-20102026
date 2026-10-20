@@ -184,7 +184,7 @@ const VideoTranslationDashboard: React.FC = () => {
           </div>
           <div>
             <h1 className="text-2xl font-black tracking-tight">AI Video Translation &amp; Dubbing Studio</h1>
-            <p className="text-xs text-gray-400">
+            <p className="text-xs text-slate-300 font-medium">
               Multilingual Speech Recognition, Neural Subtitling &amp; Synchronized Voice Cloning
             </p>
           </div>
@@ -393,7 +393,7 @@ const VideoTranslationDashboard: React.FC = () => {
               Synchronized Subtitle Cue Matrix ({cues.length} Cues)
             </h3>
           </div>
-          <span className="text-xs text-gray-400 font-mono">
+          <span className="text-xs text-slate-300 font-medium font-mono">
             Source: {sourceLang.toUpperCase()} &rarr; Target: {targetLang.toUpperCase()}
           </span>
         </div>
@@ -402,7 +402,7 @@ const VideoTranslationDashboard: React.FC = () => {
           {cues.map((cue) => (
             <div key={cue.id} className="p-4 hover:bg-gray-800/40 transition-colors grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
               {/* Timestamp block */}
-              <div className="lg:col-span-2 flex items-center gap-1.5 text-[11px] font-mono text-gray-400">
+              <div className="lg:col-span-2 flex items-center gap-1.5 text-[11px] font-mono text-slate-300 font-medium">
                 <ClockIcon className="w-3.5 h-3.5 text-indigo-400" />
                 <span>{cue.startTime}</span>
                 <span className="text-gray-600">&rarr;</span>
@@ -411,7 +411,7 @@ const VideoTranslationDashboard: React.FC = () => {
 
               {/* Source spoken text */}
               <div className="lg:col-span-5">
-                <span className="text-[10px] uppercase font-bold text-gray-500 block mb-1">
+                <span className="text-[10px] uppercase font-bold text-slate-300 block mb-1">
                   Original Spoken Audio
                 </span>
                 <p className="text-xs text-gray-300 bg-black/40 p-2.5 rounded-xl border border-gray-800">

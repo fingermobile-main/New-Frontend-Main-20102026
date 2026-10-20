@@ -85,14 +85,14 @@ const HelpPage: React.FC = () => {
           <h1 className="text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight sm:text-5xl">
             How can we assist you?
           </h1>
-          <p className="mt-3 text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+          <p className="mt-3 text-lg text-slate-700 dark:text-slate-300 font-medium max-w-2xl mx-auto">
             Explore comprehensive guides for identity sovereignty, FIC financial transactions, content rights, and protocol compliance.
           </p>
 
           {/* Search Box */}
           <div className="mt-8 max-w-2xl mx-auto relative">
             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-              <MagnifyingGlassIcon className="h-5 w-5 text-slate-400" />
+              <MagnifyingGlassIcon className="h-5 w-5 text-slate-600" />
             </div>
             <input
               type="text"
@@ -164,8 +164,8 @@ const HelpPage: React.FC = () => {
             ))
           ) : (
             <div className="text-center py-12 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700">
-              <QuestionMarkCircleIcon className="w-12 h-12 text-slate-500 mx-auto mb-3" />
-              <p className="text-slate-600 dark:text-slate-400 font-medium">
+              <QuestionMarkCircleIcon className="w-12 h-12 text-slate-600 mx-auto mb-3" />
+              <p className="text-slate-700 dark:text-slate-300 font-semibold">
                 No matching help articles found for "{searchQuery}".
               </p>
             </div>
@@ -194,7 +194,7 @@ const HelpPage: React.FC = () => {
             <div>
               <QuestionMarkCircleIcon className="w-8 h-8 text-emerald-600 mb-3" />
               <h4 className="text-lg font-bold text-slate-900 dark:text-white">Official FAQ</h4>
-              <p className="text-slate-600 dark:text-slate-400 text-xs mt-1 leading-relaxed">
+              <p className="text-slate-700 dark:text-slate-300 font-medium text-xs mt-1 leading-relaxed">
                 Review answered questions regarding smart contracts, FIC payouts, and account limits.
               </p>
             </div>
@@ -210,7 +210,7 @@ const HelpPage: React.FC = () => {
             <div>
               <ShieldCheckIcon className="w-8 h-8 text-purple-600 mb-3" />
               <h4 className="text-lg font-bold text-slate-900 dark:text-white">Privacy & DSR Rights</h4>
-              <p className="text-slate-600 dark:text-slate-400 text-xs mt-1 leading-relaxed">
+              <p className="text-slate-700 dark:text-slate-300 font-medium text-xs mt-1 leading-relaxed">
                 Access your immutable data profile or request statutory account rectification.
               </p>
             </div>

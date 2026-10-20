@@ -1,12 +1,23 @@
 import { useNavigate } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { motion } from 'framer-motion';
 import { Eye, EyeOff, Phone, User, Mail } from 'lucide-react';
 import authService from '../../services/authService';
+import { userProfileSyncService } from '../../services/UserProfileSyncService';
+import { useAuth } from '../../contexts/AuthContext';
 
 const RegisterPage = () => {
   const navigate = useNavigate();
+  const { setUser, clearAuthData } = useAuth();
+
+  useEffect(() => {
+    // When visiting the registration screen as a new applicant, ensure any stale session is cleared
+    // and all navigation drawers are strictly closed.
+    clearAuthData();
+    window.dispatchEvent(new CustomEvent('close-drawer-menu'));
+  }, []);
+
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -132,15 +143,31 @@ const RegisterPage = () => {
       if (registerResponse.user) {
         const fullUser = {
           ...registerResponse.user,
-          onboardingComplete: true,
-          onboarding_completed: true,
+          onboardingComplete: false,
+          onboarding_completed: false,
         };
         localStorage.setItem('user', JSON.stringify(fullUser));
-        localStorage.setItem('onboardingComplete', 'true');
-        localStorage.setItem('hasCompletedOnboarding', 'true');
+        localStorage.removeItem('onboardingComplete');
+        localStorage.removeItem('hasCompletedOnboarding');
+
+        // Immediately update AuthContext state with fresh applicant user
+        setUser(fullUser);
+
+        // Reset profile store to clean state for new applicant
+        userProfileSyncService.clearProfile();
+        const memberFullName = fullUser.name || `${fullUser.firstName || ''} ${fullUser.lastName || ''}`.trim() || fullUser.username;
+        userProfileSyncService.updateProfile({
+          id: fullUser.id,
+          name: memberFullName,
+          username: fullUser.username,
+          email: fullUser.email,
+          phone: fullUser.phone,
+          avatar: fullUser.avatar || fullUser.avatarUrl || '/assets/branding/default-avatar.svg',
+          headline: 'Applicant (Onboarding in Progress)',
+        });
       }
 
-      // Navigate to forum or onboarding
+      // Navigate to onboarding
       navigate('/onboarding');
     } catch (error: any) {
       setErrors({
@@ -185,7 +212,7 @@ const RegisterPage = () => {
             <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">
               FingerMobile<span className="text-[#ff6b00]">™</span>
             </h1>
-            <p className="text-sm font-semibold tracking-normal text-slate-700 dark:text-gray-400 mt-1">
+            <p className="text-sm font-semibold tracking-normal text-slate-700 dark:text-slate-300 mt-1">
               Create your Sovereign Account
             </p>
           </div>
@@ -442,7 +469,7 @@ const RegisterPage = () => {
           </form>
 
           <div className="mt-6 text-center">
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">
               Already have an account?{' '}
               <button
                 onClick={handleLogin}

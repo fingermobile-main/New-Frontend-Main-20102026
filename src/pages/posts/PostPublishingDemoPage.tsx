@@ -135,7 +135,7 @@ const DemoContent: React.FC = () => {
                 <button
                   onClick={handleApplyAI}
                   className="w-full flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-                  aria-label="Button"><svg className="mr-2 h-5 w-5 text-slate-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  aria-label="Button"><svg className="mr-2 h-5 w-5 text-slate-700 font-medium" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clipRule="evenodd" />
                   </svg>
                   Apply AI Recommendations
@@ -216,7 +216,7 @@ const DemoContent: React.FC = () => {
 
 const PostPublishingDemoPage: React.FC = () => {
   return (
-    <ErrorBoundary fallback={<div className="min-h-screen flex items-center justify-center p-6 text-slate-500">Post publishing demo temporarily unavailable</div>}>
+    <ErrorBoundary fallback={<div className="min-h-screen flex items-center justify-center p-6 text-slate-700 font-medium">Post publishing demo temporarily unavailable</div>}>
       <PostPublishingProvider>
         <DemoContent />
       </PostPublishingProvider>

@@ -9,37 +9,25 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import MainLayout from '../components/layout/MainLayout';
 import apiService from '../services/apiService';
-import { useAuth } from '../contexts/AuthContext';
 import { useAppContext } from '../contexts/AppContext';
-import { CURATED_LUXURY_PRODUCTS, LuxuryProduct } from '../data/luxuryProducts';
 import SocialEmbedModal from '../components/commerce/SocialEmbedModal';
 import {
   Crown,
   Sparkles,
   ShieldCheck,
   Search,
-  Filter,
   Play,
-  Film,
   Award,
   Lock,
   ExternalLink,
   ChevronRight,
   Eye,
-  CheckCircle2,
   ThumbsUp,
   ThumbsDown,
   BarChart2,
   Copy,
-  Zap,
   Bot,
-  Send,
   Building,
-  Store,
-  Gem,
-  Watch,
-  Car,
-  Compass
 } from 'lucide-react';
 
 export interface OwnItStore {
@@ -91,14 +79,6 @@ export interface OwnItProduct {
   userReaction?: 'like' | 'dislike' | null;
 }
 
-const LUXURY_CATEGORIES = [
-  { id: 'all', label: 'All Curated Luxury', icon: Sparkles },
-  { id: 'Haute Horlogerie', label: 'Haute Horlogerie', icon: Watch },
-  { id: 'Fine Jewelry & Diamonds', label: 'Fine Jewelry & Diamonds', icon: Gem },
-  { id: 'Supercars & Hypercars', label: 'Supercars & Hypercars', icon: Car },
-  { id: 'Haute Couture', label: 'Haute Couture & Gala', icon: Crown }
-];
-
 const STORE_TYPE_LABELS: Record<string, string> = {
   celebrity_stall: 'Celebrity Gala Stall',
   branded_shopfront: 'Branded Luxury Salon',
@@ -107,7 +87,6 @@ const STORE_TYPE_LABELS: Record<string, string> = {
 };
 
 const OwnitPage: React.FC = () => {
-  const { member: user } = useAuth();
   const { showToast, ficBalance } = useAppContext();
 
   // Active navigation tab
@@ -121,7 +100,6 @@ const OwnitPage: React.FC = () => {
   // Search & Filter state
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [selectedStoreType, setSelectedStoreType] = useState<string>('all');
   const [selectedRarity, setSelectedRarity] = useState<string>('all');
 
   // Modals
@@ -129,11 +107,9 @@ const OwnitPage: React.FC = () => {
   const [activeCertificate, setActiveCertificate] = useState<OwnItProduct | null>(null);
   const [selectedProductForEscrow, setSelectedProductForEscrow] = useState<OwnItProduct | null>(null);
   const [embedProduct, setEmbedProduct] = useState<any | null>(null);
-  const [selectedPaymentRail, setSelectedPaymentRail] = useState<'fic' | 'escrow' | 'earnings'>('fic');
   const [isProcessingEscrow, setIsProcessingEscrow] = useState<boolean>(false);
 
   // VIP Concierge AI Chat
-  const [showConcierge, setShowConcierge] = useState<boolean>(false);
   const [conciergeInput, setConciergeInput] = useState<string>('');
   const [conciergeLogs, setConciergeLogs] = useState<{ sender: 'ai' | 'user'; text: string; time: string }[]>([
     {
@@ -148,14 +124,16 @@ const OwnitPage: React.FC = () => {
     setLoading(true);
     try {
       const [storesRes, prodsRes] = await Promise.all([
-        apiService.get('/api/ownit/stores').catch(() => ({ data: [] })),
-        apiService.get('/api/ownit/products').catch(() => ({ data: [] }))
+        apiService.get('/api/ownit/stores'),
+        apiService.get('/api/ownit/products')
       ]);
 
-      const loadedStores = storesRes.stores || storesRes.data || [];
-      const loadedProds = prodsRes.products || prodsRes.data || [];
+      const stores = storesRes.stores || storesRes.data || [];
+      const products = prodsRes.products || prodsRes.data || [];
+      const loadedStores: OwnItStore[] = Array.isArray(stores) ? stores : [];
+      const loadedProds: OwnItProduct[] = Array.isArray(products) ? products : [];
 
-      if (Array.isArray(loadedStores) && loadedStores.length > 0) {
+      if (Array.isArray(loadedStores)) {
         setStores(loadedStores);
       } else {
         setStores([
@@ -218,7 +196,7 @@ const OwnitPage: React.FC = () => {
         ]);
       }
 
-      if (Array.isArray(loadedProds) && loadedProds.length > 0) {
+      if (Array.isArray(loadedProds)) {
         setProducts(loadedProds);
       } else {
         setProducts([
@@ -358,7 +336,9 @@ const OwnitPage: React.FC = () => {
         ]);
       }
     } catch {
-      showToast('Loaded luxury mall from protocol cache', 'info');
+      setStores([]);
+      setProducts([]);
+      showToast('Unable to load OwnIt catalog. Please try again.', 'error');
     } finally {
       setLoading(false);
     }
@@ -396,7 +376,7 @@ const OwnitPage: React.FC = () => {
   // Handle Poll Voting
   const handleVotePoll = async (productId: string, optionId: number) => {
     try {
-      await apiService.post(`/api/ownit/products/${productId}/vote`, { optionId }).catch(() => ({}));
+      await apiService.post(`/api/ownit/products/${productId}/vote`, { optionId });
       setProducts(prev =>
         prev.map(p => {
           if (p.id !== productId || !p.poll_data) return p;
@@ -408,14 +388,14 @@ const OwnitPage: React.FC = () => {
       );
       showToast('VIP Poll Vote Registered in Provenance Ledger!', 'success');
     } catch {
-      showToast('Vote logged locally', 'info');
+      showToast('Unable to register your vote. Please try again.', 'error');
     }
   };
 
   // Handle Reaction
   const handleReaction = async (productId: string, reaction: 'like' | 'dislike') => {
     try {
-      await apiService.post(`/api/ownit/products/${productId}/react`, { reaction }).catch(() => ({}));
+      await apiService.post(`/api/ownit/products/${productId}/react`, { reaction });
       setProducts(prev =>
         prev.map(p => {
           if (p.id !== productId) return p;
@@ -426,14 +406,7 @@ const OwnitPage: React.FC = () => {
       );
       showToast(`+1 ${reaction}`, 'success');
     } catch {
-      setProducts(prev =>
-        prev.map(p => {
-          if (p.id !== productId) return p;
-          return reaction === 'like'
-            ? { ...p, likes: p.likes + 1, userReaction: 'like' }
-            : { ...p, dislikes: p.dislikes + 1, userReaction: 'dislike' };
-        })
-      );
+      showToast('Unable to register your reaction. Please try again.', 'error');
     }
   };
 
@@ -521,7 +494,7 @@ const OwnitPage: React.FC = () => {
                   <Building className="w-4 h-4 text-amber-400" /> Stalls & Branded Salons
                 </button>
                 <button
-                  onClick={() => setShowConcierge(true)}
+                  onClick={() => setActiveTab('vip-concierge')}
                   className="px-5 py-3.5 rounded-xl bg-stone-950 hover:bg-stone-900 text-amber-200/80 border border-stone-800 font-semibold text-xs transition-all flex items-center gap-2"
                 >
                   <Bot className="w-4 h-4 text-amber-400" /> VIP Concierge
@@ -607,182 +580,186 @@ const OwnitPage: React.FC = () => {
           {/* TAB 1: 4K LUXURY MALL SHOWCASE */}
           {activeTab === '4k-mall' && (
             <div className="space-y-10">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {filteredProducts.map((p) => {
-                  const mediaImage = (p.media_4k_urls && p.media_4k_urls[0]) || p.imageUrl || 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=2048&q=95';
-                  const poll = p.poll_data;
-                  const totalVotes = poll ? poll.options.reduce((acc, curr) => acc + curr.votes, 0) : 0;
+              {loading ? (
+                <p className="py-12 text-center text-amber-100">Loading OwnIt catalog...</p>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  {filteredProducts.map((p) => {
+                    const mediaImage = (p.media_4k_urls && p.media_4k_urls[0]) || p.imageUrl || 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=2048&q=95';
+                    const poll = p.poll_data;
+                    const totalVotes = poll ? poll.options.reduce((acc, curr) => acc + curr.votes, 0) : 0;
 
-                  return (
-                    <div
-                      key={p.id}
-                      className="rounded-3xl bg-stone-950 border border-amber-500/30 hover:border-amber-400/60 transition-all overflow-hidden flex flex-col shadow-2xl group"
-                    >
-                      {/* 4K Visual Stage */}
-                      <div className="relative h-80 bg-black overflow-hidden">
-                        <img
-                          src={mediaImage}
-                          alt={p.name}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                        />
-                        <div className="absolute top-4 left-4 flex flex-wrap gap-2">
-                          <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-amber-400 text-black shadow-lg">
+                    return (
+                      <div
+                        key={p.id}
+                        className="rounded-3xl bg-stone-950 border border-amber-500/30 hover:border-amber-400/60 transition-all overflow-hidden flex flex-col shadow-2xl group"
+                      >
+                        {/* 4K Visual Stage */}
+                        <div className="relative h-80 bg-black overflow-hidden">
+                          <img
+                            src={mediaImage}
+                            alt={p.name}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                          />
+                          <div className="absolute top-4 left-4 flex flex-wrap gap-2">
+                            <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-amber-400 text-black shadow-lg">
                             4K Ultra-Curated
-                          </span>
-                          <span className="px-3 py-1 rounded-full text-[10px] font-bold bg-black/80 backdrop-blur-md text-amber-300 border border-amber-500/40">
-                            {p.rarity_level || 'Unique 1-of-1'}
-                          </span>
-                        </div>
-
-                        {/* 4K Video Play Button */}
-                        {p.video_showcase_url && (
-                          <button
-                            onClick={() => setActiveVideoUrl(p.video_showcase_url || null)}
-                            className="absolute bottom-4 right-4 px-3.5 py-2 rounded-xl bg-black/80 hover:bg-amber-500 hover:text-slate-900 text-amber-300 backdrop-blur-md border border-amber-500/40 font-bold text-xs flex items-center gap-2 transition-all shadow-xl"
-                          >
-                            <Play className="w-4 h-4 fill-current" /> Watch 4K Cinematic Reel
-                          </button>
-                        )}
-                      </div>
-
-                      {/* Card Content */}
-                      <div className="p-7 flex-1 flex flex-col justify-between space-y-5">
-                        <div>
-                          <div className="flex items-center justify-between gap-2 mb-1">
-                            <span className="text-xs font-mono uppercase tracking-widest text-amber-400/80">{p.brand}</span>
-                            <span className="text-xs font-bold text-amber-400 flex items-center gap-1">
-                              ★ {p.rating} (Certified)
+                            </span>
+                            <span className="px-3 py-1 rounded-full text-[10px] font-bold bg-black/80 backdrop-blur-md text-amber-300 border border-amber-500/40">
+                              {p.rarity_level || 'Unique 1-of-1'}
                             </span>
                           </div>
-                          <h3 className="text-2xl font-black text-white tracking-tight leading-tight mb-2">{p.name}</h3>
-                          <p className="text-xs text-amber-100/70 line-clamp-3 leading-relaxed mb-4 font-light">
-                            {p.description}
-                          </p>
 
-                          {/* Celebrity Endorsement */}
-                          {p.celebrity_endorsement && (
-                            <div className="p-3 rounded-2xl bg-amber-950/20 border border-amber-500/20 text-xs text-amber-200/90 mb-4 flex items-center gap-2.5">
-                              <Crown className="w-4 h-4 text-amber-400 shrink-0" />
-                              <span className="italic">{p.celebrity_endorsement}</span>
-                            </div>
-                          )}
-
-                          {/* Authenticity Certificate Preview */}
-                          <div className="p-3.5 rounded-2xl bg-black border border-stone-800 text-xs space-y-1 mb-4 font-mono">
-                            <div className="flex justify-between text-stone-400 text-[11px]">
-                              <span>COA ID: <strong className="text-amber-300">{p.authenticity_cert_number}</strong></span>
-                              <button
-                                onClick={() => setActiveCertificate(p)}
-                                className="text-amber-400 hover:underline flex items-center gap-1"
-                              >
-                                View Vault Seal <ChevronRight className="w-3 h-3" />
-                              </button>
-                            </div>
-                            <div className="text-[10px] text-stone-500 truncate">
-                              SHA-256: {p.cryptographic_sha256}
-                            </div>
-                          </div>
-
-                          {/* Interactive VIP Gala Poll */}
-                          {poll && (
-                            <div className="p-4 rounded-2xl bg-stone-900 border border-amber-500/20 mb-4">
-                              <div className="flex items-center justify-between mb-2">
-                                <span className="text-xs font-bold text-amber-300 flex items-center gap-1.5">
-                                  <BarChart2 className="w-3.5 h-3.5 text-amber-400" /> VIP Collector Poll
-                                </span>
-                                <span className="text-[10px] font-mono text-stone-400">{totalVotes} Votes</span>
-                              </div>
-                              <p className="text-xs text-stone-200 mb-3">{poll.question}</p>
-
-                              <div className="space-y-2">
-                                {poll.options.map((opt) => {
-                                  const pct = totalVotes > 0 ? Math.round((opt.votes / totalVotes) * 100) : 0;
-                                  return (
-                                    <button
-                                      key={opt.id}
-                                      onClick={() => handleVotePoll(p.id, opt.id)}
-                                      disabled={p.hasVoted}
-                                      className="w-full text-left relative overflow-hidden rounded-xl bg-black border border-stone-800 hover:border-amber-500/40 p-2.5 text-xs transition-all disabled:cursor-default"
-                                    >
-                                      <div
-                                        className="absolute top-0 bottom-0 left-0 bg-amber-500/15 transition-all duration-500"
-                                        style={{ width: `${pct}%` }}
-                                      />
-                                      <div className="relative flex items-center justify-between font-medium">
-                                        <span className="text-amber-100">{opt.text}</span>
-                                        <span className="font-mono text-amber-400 font-bold ml-2">{pct}%</span>
-                                      </div>
-                                    </button>
-                                  );
-                                })}
-                              </div>
-                            </div>
+                          {/* 4K Video Play Button */}
+                          {p.video_showcase_url && (
+                            <button
+                              onClick={() => setActiveVideoUrl(p.video_showcase_url || null)}
+                              className="absolute bottom-4 right-4 px-3.5 py-2 rounded-xl bg-black/80 hover:bg-amber-500 hover:text-slate-900 text-amber-300 backdrop-blur-md border border-amber-500/40 font-bold text-xs flex items-center gap-2 transition-all shadow-xl"
+                            >
+                              <Play className="w-4 h-4 fill-current" /> Watch 4K Cinematic Reel
+                            </button>
                           )}
                         </div>
 
-                        {/* Footer & Escrow Initiation */}
-                        <div className="pt-4 border-t border-stone-800">
-                          <div className="flex items-center justify-between mb-4">
-                            <div>
-                              <span className="text-[10px] uppercase font-bold tracking-wider text-amber-400/60 block">Sovereign Valuation</span>
-                              <div className="flex items-baseline gap-2">
-                                <span className="text-2xl font-black text-amber-400">
-                                  {(p.price_fic || p.priceFic || (p.price / 10)).toLocaleString()} FIC
-                                </span>
-                                <span className="text-xs text-stone-400 font-medium">
-                                  (${p.price.toLocaleString()} USD)
-                                </span>
+                        {/* Card Content */}
+                        <div className="p-7 flex-1 flex flex-col justify-between space-y-5">
+                          <div>
+                            <div className="flex items-center justify-between gap-2 mb-1">
+                              <span className="text-xs font-mono uppercase tracking-widest text-amber-400/80">{p.brand}</span>
+                              <span className="text-xs font-bold text-amber-400 flex items-center gap-1">
+                              ★ {p.rating} (Certified)
+                              </span>
+                            </div>
+                            <h3 className="text-2xl font-black text-white tracking-tight leading-tight mb-2">{p.name}</h3>
+                            <p className="text-xs text-amber-100/70 line-clamp-3 leading-relaxed mb-4 font-light">
+                              {p.description}
+                            </p>
+
+                            {/* Celebrity Endorsement */}
+                            {p.celebrity_endorsement && (
+                              <div className="p-3 rounded-2xl bg-amber-950/20 border border-amber-500/20 text-xs text-amber-200/90 mb-4 flex items-center gap-2.5">
+                                <Crown className="w-4 h-4 text-amber-400 shrink-0" />
+                                <span className="italic">{p.celebrity_endorsement}</span>
+                              </div>
+                            )}
+
+                            {/* Authenticity Certificate Preview */}
+                            <div className="p-3.5 rounded-2xl bg-black border border-stone-800 text-xs space-y-1 mb-4 font-mono">
+                              <div className="flex justify-between text-stone-400 text-[11px]">
+                                <span>COA ID: <strong className="text-amber-300">{p.authenticity_cert_number}</strong></span>
+                                <button
+                                  onClick={() => setActiveCertificate(p)}
+                                  className="text-amber-400 hover:underline flex items-center gap-1"
+                                >
+                                View Vault Seal <ChevronRight className="w-3 h-3" />
+                                </button>
+                              </div>
+                              <div className="text-[10px] text-stone-500 truncate">
+                              SHA-256: {p.cryptographic_sha256}
                               </div>
                             </div>
 
-                            {/* Likes & Dislikes */}
-                            <div className="flex items-center gap-2">
-                              <button
-                                onClick={() => handleReaction(p.id, 'like')}
-                                className={`p-2 rounded-xl border flex items-center gap-1 text-xs transition-colors ${
-                                  p.userReaction === 'like'
-                                    ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
-                                    : 'bg-stone-900 hover:bg-stone-800 text-stone-300 border-stone-700'
-                                }`}
-                                title="Like"
-                              >
-                                <ThumbsUp className="w-3.5 h-3.5" />
-                                <span className="font-mono text-[11px]">{p.likes}</span>
-                              </button>
-                              <button
-                                onClick={() => handleReaction(p.id, 'dislike')}
-                                className={`p-2 rounded-xl border flex items-center gap-1 text-xs transition-colors ${
-                                  p.userReaction === 'dislike'
-                                    ? 'bg-rose-500/20 text-rose-300 border-rose-500/40'
-                                    : 'bg-stone-900 hover:bg-stone-800 text-stone-300 border-stone-700'
-                                }`}
-                                title="Dislike"
-                              >
-                                <ThumbsDown className="w-3.5 h-3.5" />
-                                <span className="font-mono text-[11px]">{p.dislikes}</span>
-                              </button>
-                              <button
-                                onClick={() => setEmbedProduct(p)}
-                                className="p-2 rounded-xl bg-stone-900 hover:bg-stone-800 text-stone-300 border border-stone-700 text-xs"
-                                title="Share & Embed"
-                              >
-                                <ExternalLink className="w-3.5 h-3.5" />
-                              </button>
-                            </div>
+                            {/* Interactive VIP Gala Poll */}
+                            {poll && (
+                              <div className="p-4 rounded-2xl bg-stone-900 border border-amber-500/20 mb-4">
+                                <div className="flex items-center justify-between mb-2">
+                                  <span className="text-xs font-bold text-amber-300 flex items-center gap-1.5">
+                                    <BarChart2 className="w-3.5 h-3.5 text-amber-400" /> VIP Collector Poll
+                                  </span>
+                                  <span className="text-[10px] font-mono text-stone-400">{totalVotes} Votes</span>
+                                </div>
+                                <p className="text-xs text-stone-200 mb-3">{poll.question}</p>
+
+                                <div className="space-y-2">
+                                  {poll.options.map((opt) => {
+                                    const pct = totalVotes > 0 ? Math.round((opt.votes / totalVotes) * 100) : 0;
+                                    return (
+                                      <button
+                                        key={opt.id}
+                                        onClick={() => handleVotePoll(p.id, opt.id)}
+                                        disabled={p.hasVoted}
+                                        className="w-full text-left relative overflow-hidden rounded-xl bg-black border border-stone-800 hover:border-amber-500/40 p-2.5 text-xs transition-all disabled:cursor-default"
+                                      >
+                                        <div
+                                          className="absolute top-0 bottom-0 left-0 bg-amber-500/15 transition-all duration-500"
+                                          style={{ width: `${pct}%` }}
+                                        />
+                                        <div className="relative flex items-center justify-between font-medium">
+                                          <span className="text-amber-100">{opt.text}</span>
+                                          <span className="font-mono text-amber-400 font-bold ml-2">{pct}%</span>
+                                        </div>
+                                      </button>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            )}
                           </div>
 
-                          <button
-                            onClick={() => setSelectedProductForEscrow(p)}
-                            className="w-full py-3.5 rounded-xl bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:from-amber-400 hover:to-yellow-300 text-slate-900 font-black text-xs uppercase tracking-widest transition-all shadow-xl shadow-amber-500/20 flex items-center justify-center gap-2"
-                          >
-                            <Lock className="w-4 h-4" /> Sovereign Escrow Acquisition
-                          </button>
+                          {/* Footer & Escrow Initiation */}
+                          <div className="pt-4 border-t border-stone-800">
+                            <div className="flex items-center justify-between mb-4">
+                              <div>
+                                <span className="text-[10px] uppercase font-bold tracking-wider text-amber-400/60 block">Sovereign Valuation</span>
+                                <div className="flex items-baseline gap-2">
+                                  <span className="text-2xl font-black text-amber-400">
+                                    {(p.price_fic || p.priceFic || (p.price / 10)).toLocaleString()} FIC
+                                  </span>
+                                  <span className="text-xs text-stone-400 font-medium">
+                                  (${p.price.toLocaleString()} USD)
+                                  </span>
+                                </div>
+                              </div>
+
+                              {/* Likes & Dislikes */}
+                              <div className="flex items-center gap-2">
+                                <button
+                                  onClick={() => handleReaction(p.id, 'like')}
+                                  className={`p-2 rounded-xl border flex items-center gap-1 text-xs transition-colors ${
+                                    p.userReaction === 'like'
+                                      ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
+                                      : 'bg-stone-900 hover:bg-stone-800 text-stone-300 border-stone-700'
+                                  }`}
+                                  title="Like"
+                                >
+                                  <ThumbsUp className="w-3.5 h-3.5" />
+                                  <span className="font-mono text-[11px]">{p.likes}</span>
+                                </button>
+                                <button
+                                  onClick={() => handleReaction(p.id, 'dislike')}
+                                  className={`p-2 rounded-xl border flex items-center gap-1 text-xs transition-colors ${
+                                    p.userReaction === 'dislike'
+                                      ? 'bg-rose-500/20 text-rose-300 border-rose-500/40'
+                                      : 'bg-stone-900 hover:bg-stone-800 text-stone-300 border-stone-700'
+                                  }`}
+                                  title="Dislike"
+                                >
+                                  <ThumbsDown className="w-3.5 h-3.5" />
+                                  <span className="font-mono text-[11px]">{p.dislikes}</span>
+                                </button>
+                                <button
+                                  onClick={() => setEmbedProduct(p)}
+                                  className="p-2 rounded-xl bg-stone-900 hover:bg-stone-800 text-stone-300 border border-stone-700 text-xs"
+                                  title="Share & Embed"
+                                >
+                                  <ExternalLink className="w-3.5 h-3.5" />
+                                </button>
+                              </div>
+                            </div>
+
+                            <button
+                              onClick={() => setSelectedProductForEscrow(p)}
+                              className="w-full py-3.5 rounded-xl bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:from-amber-400 hover:to-yellow-300 text-slate-900 font-black text-xs uppercase tracking-widest transition-all shadow-xl shadow-amber-500/20 flex items-center justify-center gap-2"
+                            >
+                              <Lock className="w-4 h-4" /> Sovereign Escrow Acquisition
+                            </button>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  );
-                })}
-              </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           )}
 

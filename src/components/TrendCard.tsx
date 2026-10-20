@@ -41,7 +41,7 @@ const TrendCard: React.FC<TrendCardProps> = ({ trend, rank, onClick }) => {
                 {trend.category}
               </Badge>
               <div className="flex items-center gap-1 text-slate-700">
-                <Eye className="h-3.5 w-3.5 text-slate-500" />
+                <Eye className="h-3.5 w-3.5 text-slate-600" />
                 <span>{formatNumber(trend.views)}</span>
               </div>
             </div>

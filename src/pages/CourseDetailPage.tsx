@@ -63,7 +63,7 @@ const CourseDetailPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="p-8 text-center text-gray-500">
+      <div className="p-8 text-center text-slate-700 font-medium">
         Loading course details...
       </div>
     );
@@ -75,7 +75,7 @@ const CourseDetailPage: React.FC = () => {
 
   if (!course) {
     return (
-      <div className="p-8 text-center text-gray-500">
+      <div className="p-8 text-center text-slate-700 font-medium">
         <h1 className="text-2xl font-bold mb-4">Course Not Found</h1>
         <NavLink
           to="/camus"
@@ -116,12 +116,12 @@ const CourseDetailPage: React.FC = () => {
             className="w-5 h-5 rounded text-brand-blue focus:ring-brand-blue disabled:opacity-50"
           />
           <span
-            className={`font-medium text-base sm:text-lg lg:text-xl ${isCompleted ? 'line-through text-gray-400' : 'text-gray-700'}`}
+            className={`font-medium text-base sm:text-lg lg:text-xl ${isCompleted ? 'line-through text-slate-600 font-semibold' : 'text-slate-900 font-medium'}`}
           >
             {lesson.title}
           </span>
         </div>
-        <span className="text-sm sm:text-base lg:text-lg text-gray-500">
+        <span className="text-sm sm:text-base lg:text-lg text-slate-700 font-medium">
           {lesson.duration}
         </span>
       </div>

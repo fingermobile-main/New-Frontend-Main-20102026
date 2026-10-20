@@ -59,7 +59,7 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ userId, period 
       <div className="bg-white rounded-lg shadow-sm border border-slate-300 p-6">
         <h3 className="text-lg font-bold text-gray-900 mb-4">Performance Overview</h3>
         <div className="h-64 bg-gradient-to-br from-blue-50 to-purple-50 rounded-lg flex items-center justify-center">
-          <p className="text-gray-500">Analytics chart visualization coming soon</p>
+          <p className="text-slate-700 font-medium">Analytics chart visualization coming soon</p>
         </div>
       </div>
     </div>

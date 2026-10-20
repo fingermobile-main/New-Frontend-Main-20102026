@@ -426,7 +426,7 @@ const CreateCourse: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => removeLesson(moduleIndex, lessonIndex)}
-                        className="absolute top-2 right-2 text-slate-500 hover:text-red-500 font-bold"
+                        className="absolute top-2 right-2 text-slate-600 hover:text-red-600 font-bold"
                       >
                         ×
                       </button>

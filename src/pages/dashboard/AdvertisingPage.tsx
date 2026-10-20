@@ -46,7 +46,7 @@ const DashboardAdvertisingPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">Advertising Management</h1>
-          <p className="text-slate-500 text-sm mt-1">Manage active campaigns, monitor budgets, and configure ad networks</p>
+          <p className="text-slate-700 font-medium text-sm mt-1">Manage active campaigns, monitor budgets, and configure ad networks</p>
         </div>
         <div className="flex items-center gap-3">
           <button
@@ -86,9 +86,9 @@ const DashboardAdvertisingPage: React.FC = () => {
             <LoadingSpinner />
           </div>
         ) : campaigns.length === 0 ? (
-          <div className="py-16 text-center text-slate-500">
-            <p className="font-semibold text-base">No advertising campaigns running</p>
-            <p className="text-sm mt-1">Create a campaign to start delivering ads across FingerMobile channels.</p>
+          <div className="py-16 text-center text-slate-700 font-medium">
+            <p className="font-semibold text-base text-slate-900">No advertising campaigns running</p>
+            <p className="text-sm text-slate-700 mt-1">Create a campaign to start delivering ads across FingerMobile channels.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -142,7 +142,7 @@ const DashboardAdvertisingPage: React.FC = () => {
                           {campaign.status}
                         </span>
                       </td>
-                      <td className="p-4 text-sm text-slate-500">
+                      <td className="p-4 text-sm text-slate-700 font-medium">
                         {campaign.endDate
                           ? new Date(campaign.endDate).toLocaleDateString()
                           : campaign.expiryDate

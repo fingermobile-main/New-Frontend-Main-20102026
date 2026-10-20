@@ -170,7 +170,7 @@ const DPOPage: React.FC = () => {
                 <h2 className="text-xl font-bold text-gray-900 dark:text-white">
                   Statutory Data Protection Framework
                 </h2>
-                <p className="text-xs text-slate-700 dark:text-gray-400 mt-1">
+                <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mt-1">
                   Enforcing the 6 core tenets of sovereign data privacy under the Nigeria Data Protection Act (NDPA 2023) and General Data Protection Regulation (GDPR)
                 </p>
               </div>
@@ -204,7 +204,7 @@ const DPOPage: React.FC = () => {
                 ].map((item, idx) => (
                   <div key={idx} className="p-4 rounded-2xl bg-gray-50 dark:bg-gray-900/50 border border-slate-200 dark:border-gray-800 text-xs">
                     <h4 className="font-bold text-gray-900 dark:text-white mb-1">{item.title}</h4>
-                    <p className="text-gray-600 dark:text-gray-400 leading-relaxed">{item.desc}</p>
+                    <p className="text-slate-700 dark:text-slate-300 font-medium leading-relaxed">{item.desc}</p>
                   </div>
                 ))}
               </div>
@@ -237,7 +237,7 @@ const DPOPage: React.FC = () => {
               <h2 className="text-xl font-bold text-gray-900 dark:text-white">
                 Submit a Data Subject Access Request (SAR)
               </h2>
-              <p className="text-xs text-slate-700 dark:text-gray-400 mt-1">
+              <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mt-1">
                 Exercise your statutory rights under NDPA 2023 and GDPR Articles 15-22. Our DPO office acknowledges requests within 48 business hours.
               </p>
             </div>
@@ -363,7 +363,7 @@ const DPOPage: React.FC = () => {
               <h2 className="text-xl font-bold text-gray-900 dark:text-white">
                 Cryptographic Consent & Audit Verification
               </h2>
-              <p className="text-xs text-slate-700 dark:text-gray-400 mt-1">
+              <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mt-1">
                 Zero-knowledge proof-of-consent logs and real-time security auditing
               </p>
             </div>
@@ -399,7 +399,7 @@ const DPOPage: React.FC = () => {
                 <CheckCircle2 className="w-4 h-4" />
                 <span>DPO CRYPTOGRAPHIC AUDIT RUNNER [ACTIVE]</span>
               </div>
-              <p className="text-slate-400">
+              <p className="text-slate-300 font-medium">
                 [OK] Database Integrity Fingerprint: verified (sha256:7b91..fa09)<br />
                 [OK] Active Token Rotation Policy: 3,600s with secure refresh revocation<br />
                 [OK] NDPA Section 24 Assessment: Compliant (Record of Processing Activities logged)<br />

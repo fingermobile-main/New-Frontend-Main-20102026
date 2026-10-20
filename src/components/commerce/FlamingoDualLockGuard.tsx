@@ -108,7 +108,7 @@ export const FlamingoDualLockGuard: React.FC<FlamingoDualLockGuardProps> = ({ ch
             <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
               Flamingo™ Adult Wellness
             </h1>
-            <p className="text-sm sm:text-base text-slate-400 max-w-lg mx-auto leading-relaxed">
+            <p className="text-sm sm:text-base text-slate-300 font-medium max-w-lg mx-auto leading-relaxed">
               Flamingo™ is a private adult wellness store accessible exclusively to Admins, Badge Holders, Moderators, and Premium/Premier Subscribers of the FingerMobile Protocol™.
             </p>
           </div>
@@ -118,7 +118,7 @@ export const FlamingoDualLockGuard: React.FC<FlamingoDualLockGuardProps> = ({ ch
               <ShieldCheckIcon className="w-5 h-5 text-pink-400 shrink-0 mt-0.5" />
               <div>
                 <h4 className="text-xs font-bold text-white uppercase tracking-wider">Badge & Moderator Access</h4>
-                <p className="text-xs text-slate-400 mt-1">Verified community leadership or hallmark credentials.</p>
+                <p className="text-xs text-slate-300 font-medium mt-1">Verified community leadership or hallmark credentials.</p>
               </div>
             </div>
 
@@ -126,7 +126,7 @@ export const FlamingoDualLockGuard: React.FC<FlamingoDualLockGuardProps> = ({ ch
               <span className="text-lg">⭐</span>
               <div>
                 <h4 className="text-xs font-bold text-white uppercase tracking-wider">Premium & Premier Members</h4>
-                <p className="text-xs text-slate-400 mt-1">Active subscription holders enjoy seamless private entry.</p>
+                <p className="text-xs text-slate-300 font-medium mt-1">Active subscription holders enjoy seamless private entry.</p>
               </div>
             </div>
           </div>
@@ -169,14 +169,14 @@ export const FlamingoDualLockGuard: React.FC<FlamingoDualLockGuardProps> = ({ ch
               🦩
             </div>
             <h2 className="text-2xl font-black text-white tracking-tight">Statutory Age Verification</h2>
-            <p className="text-xs text-slate-400 mt-1">
+            <p className="text-xs text-slate-300 font-medium mt-1">
               NDPA 2023 & Cybercrimes Act Compliance • Mandatory 19+ Gate
             </p>
           </div>
 
           <form onSubmit={handleVerifyAge} className="space-y-4">
             <div>
-              <label htmlFor="dob-input" className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">
+              <label htmlFor="dob-input" className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">
                 Date of Birth
               </label>
               <input

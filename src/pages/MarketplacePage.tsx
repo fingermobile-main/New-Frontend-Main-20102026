@@ -12,7 +12,6 @@ import apiService from '../services/apiService';
 import { useAuth } from '../contexts/AuthContext';
 import { useAppContext } from '../contexts/AppContext';
 import SocialEmbedModal from '../components/commerce/SocialEmbedModal';
-import { CURATED_FLAGSHIP_PRODUCTS } from '../data/curatedMarketplaceData';
 import {
   Sparkles,
   ShieldCheck,
@@ -72,7 +71,7 @@ export interface FlagshipOrder {
   currency: string;
   paymentRail: string;
   date: string;
-  status: 'processing' | 'shipped' | 'delivered';
+  status: string;
 }
 
 const MarketplacePage: React.FC = () => {
@@ -111,18 +110,7 @@ const MarketplacePage: React.FC = () => {
   ]);
 
   // Orders state
-  const [orders, setOrders] = useState<FlagshipOrder[]>([
-    {
-      id: 'ORD-FMP-8821',
-      productId: '1',
-      productName: 'FingerMobile Protocol Sovereign Keycard V3',
-      total: 1500,
-      currency: 'FIC',
-      paymentRail: 'FIC Protocol Settlement',
-      date: '2026-10-06',
-      status: 'shipped'
-    }
-  ]);
+  const [orders, setOrders] = useState<FlagshipOrder[]>([]);
 
   // Fetch flagship products from /api/marketplace/flagship
   const fetchFlagshipProducts = async () => {
@@ -131,22 +119,38 @@ const MarketplacePage: React.FC = () => {
     try {
       const res = await apiService.get('/api/marketplace/flagship');
       const data = res.products || res.data || (Array.isArray(res) ? res : []);
-      if (Array.isArray(data) && data.length > 0) {
-        setProducts(data);
-      } else {
-        // Fallback default curated flagship items (10 in each category, 40 total)
-        setProducts(CURATED_FLAGSHIP_PRODUCTS);
-      }
+      setProducts(Array.isArray(data) ? data : []);
     } catch {
-      setError('Unable to load flagship products. Using offline protocol cache.');
-      setProducts(CURATED_FLAGSHIP_PRODUCTS);
+      setError('Unable to load flagship products. Please try again.');
+      setProducts([]);
     } finally {
       setLoading(false);
     }
   };
 
+  const fetchOrders = async () => {
+    try {
+      const res = await apiService.get<{ orders?: Array<Record<string, unknown>>; data?: Array<Record<string, unknown>> }>('/api/marketplace/orders');
+      const data = res.orders || res.data || [];
+      setOrders(data.map(order => ({
+        id: String(order.id),
+        productId: String(order.productId || ''),
+        productName: String(order.productName || 'Marketplace order'),
+        total: Number(order.total || 0),
+        currency: String(order.currency || 'FIC'),
+        paymentRail: String(order.currency || 'Payment method unavailable'),
+        date: String(order.date || ''),
+        status: String(order.status || 'processing')
+      })));
+    } catch {
+      setError('Unable to load marketplace orders. Please try again.');
+      setOrders([]);
+    }
+  };
+
   useEffect(() => {
     fetchFlagshipProducts();
+    fetchOrders();
   }, []);
 
   // Filter products based on search query, category, and tab
@@ -170,8 +174,8 @@ const MarketplacePage: React.FC = () => {
       result = result.filter(p =>
         p.name.toLowerCase().includes(q) ||
         (p.tagline && p.tagline.toLowerCase().includes(q)) ||
-        p.description.toLowerCase().includes(q) ||
-        p.sku.toLowerCase().includes(q) ||
+        (p.description || '').toLowerCase().includes(q) ||
+        (p.sku || '').toLowerCase().includes(q) ||
         p.category.toLowerCase().includes(q)
       );
     }
@@ -209,20 +213,7 @@ const MarketplacePage: React.FC = () => {
       );
       showToast('Vote registered on Protocol Ledger!', 'success');
     } catch {
-      showToast('Vote logged locally', 'info');
-      setProducts(prev =>
-        prev.map(p => {
-          if (p.id !== productId || !p.poll_data) return p;
-          const updatedOptions = p.poll_data.options.map(opt =>
-            opt.id === optionId ? { ...opt, votes: opt.votes + 1 } : opt
-          );
-          return {
-            ...p,
-            hasVoted: true,
-            poll_data: { ...p.poll_data, options: updatedOptions }
-          };
-        })
-      );
+      showToast('Unable to register your vote. Please try again.', 'error');
     }
   };
 
@@ -242,14 +233,7 @@ const MarketplacePage: React.FC = () => {
       );
       showToast(`Reaction recorded: +1 ${reaction}`, 'success');
     } catch {
-      setProducts(prev =>
-        prev.map(p => {
-          if (p.id !== productId) return p;
-          return reaction === 'like'
-            ? { ...p, likes: p.likes + 1, userReaction: 'like' }
-            : { ...p, dislikes: p.dislikes + 1, userReaction: 'dislike' };
-        })
-      );
+      showToast('Unable to register your reaction. Please try again.', 'error');
     }
   };
 
@@ -266,16 +250,19 @@ const MarketplacePage: React.FC = () => {
         paymentRail: selectedPaymentRail
       };
 
-      await apiService.post('/api/marketplace/orders', orderData).catch(() => ({}));
-
+      const response = await apiService.post<{ success: boolean; data?: Record<string, unknown> }>('/api/marketplace/orders', orderData);
+      if (!response.success || !response.data) {
+        throw new Error('Order service did not return a persisted order');
+      }
+      const order = response.data;
       const newOrder: FlagshipOrder = {
-        id: `ORD-FMP-${Math.floor(1000 + Math.random() * 9000)}`,
-        productId: checkoutProduct.id,
+        id: String(order.id),
+        productId: String(order.productId || checkoutProduct.id),
         productName: checkoutProduct.name,
-        total: checkoutProduct.priceFic,
-        currency: 'FIC',
+        total: Number(order.total ?? checkoutProduct.priceFic),
+        currency: String(order.currency || 'FIC'),
         paymentRail: selectedPaymentRail === 'fic' ? 'FIC Protocol Tokens' : selectedPaymentRail === 'earnings' ? 'Platform Creator Wallet' : 'Debit/Credit Card',
-        date: new Date().toISOString().split('T')[0],
+        date: String(order.date || new Date().toISOString().split('T')[0]),
         status: 'processing'
       };
 
@@ -348,9 +335,14 @@ const MarketplacePage: React.FC = () => {
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-bold uppercase tracking-wider mb-4">
                 <Sparkles className="w-4 h-4 text-emerald-400" /> Company Flagship Vault
               </div>
-              <h1 className="text-4xl sm:text-5xl font-black text-white tracking-tight leading-tight mb-4">
-                The Platform&apos;s <span className="bg-gradient-to-r from-emerald-400 to-teal-200 bg-clip-text text-transparent">Flagship Store</span>
-              </h1>
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-slate-900 border border-emerald-500/40 p-1.5 flex items-center justify-center shadow-lg shadow-emerald-500/20 overflow-hidden shrink-0">
+                  <img src="/assets/logos/marketplace_icon.png" alt="Marketplace" className="w-full h-full object-contain" />
+                </div>
+                <h1 className="text-4xl sm:text-5xl font-black text-white tracking-tight leading-tight">
+                  The Platform&apos;s <span className="bg-gradient-to-r from-emerald-400 to-teal-200 bg-clip-text text-transparent">Flagship Store</span>
+                </h1>
+              </div>
               <p className="text-base text-slate-100 leading-relaxed mb-6 font-medium">
                 Where FingerMobile Protocol™ showcases its finest hardware innovations, sovereign keycards, official studio reference gear, and limited apparel. Authenticated with cryptographic SHA-256 provenance hashes.
               </p>
@@ -532,7 +524,7 @@ const MarketplacePage: React.FC = () => {
                 </p>
 
                 {orders.length === 0 ? (
-                  <div className="text-center py-12 text-slate-400 text-sm font-medium">
+                  <div className="text-center py-12 text-slate-700 text-sm font-medium">
                     No flagship orders placed yet.
                   </div>
                 ) : (
@@ -580,7 +572,7 @@ const MarketplacePage: React.FC = () => {
                 </div>
               ) : filteredProducts.length === 0 ? (
                 <div className="p-12 text-center rounded-3xl bg-slate-900/60 border border-slate-800 text-slate-200">
-                  <ShoppingBag className="w-12 h-12 text-slate-500 mx-auto mb-3" />
+                  <ShoppingBag className="w-12 h-12 text-slate-600 mx-auto mb-3" />
                   <p className="text-base font-bold text-white mb-1">No Flagship Goods Match Query</p>
                   <p className="text-xs text-slate-300 mb-4">Try clearing filters or search terms.</p>
                   <button

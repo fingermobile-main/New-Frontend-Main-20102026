@@ -495,10 +495,10 @@ const EditPostPage: React.FC = () => {
           <div className="bg-white rounded-xl shadow-sm border border-slate-200 flex flex-col overflow-hidden">
             <div className="px-5 py-3.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <FileText className="w-4 h-4 text-slate-500" />
+                <FileText className="w-4 h-4 text-slate-600" />
                 <span className="text-sm font-bold text-slate-800">Original Post</span>
               </div>
-              <div className="flex items-center gap-3 text-xs text-slate-500 font-medium">
+              <div className="flex items-center gap-3 text-xs text-slate-700 font-medium">
                 <span>{metrics.origWords} words</span>
                 <span>•</span>
                 <span>{metrics.readTimeOrig} min read</span>
@@ -544,7 +544,7 @@ const EditPostPage: React.FC = () => {
                   onClick={handleUndo}
                   disabled={historyIndex <= 0}
                   title="Undo AI edit"
-                  className="p-1 rounded text-slate-500 hover:text-slate-800 disabled:opacity-30 disabled:cursor-not-allowed"
+                  className="p-1 rounded text-slate-600 hover:text-slate-900 disabled:opacity-30 disabled:cursor-not-allowed"
                 >
                   <RotateCcw className="w-4 h-4" />
                 </button>
@@ -555,7 +555,7 @@ const EditPostPage: React.FC = () => {
                   onClick={handleRedo}
                   disabled={historyIndex >= history.length - 1}
                   title="Redo AI edit"
-                  className="p-1 rounded text-slate-500 hover:text-slate-800 disabled:opacity-30 disabled:cursor-not-allowed"
+                  className="p-1 rounded text-slate-600 hover:text-slate-900 disabled:opacity-30 disabled:cursor-not-allowed"
                 >
                   <RotateCcw className="w-4 h-4 scale-x-[-1]" />
                 </button>
@@ -589,7 +589,7 @@ const EditPostPage: React.FC = () => {
 
             {/* Bottom Actions for AI Output */}
             <div className="px-4 py-2.5 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs">
-              <div className="flex items-center gap-2 text-slate-500 font-medium">
+              <div className="flex items-center gap-2 text-slate-700 font-medium">
                 <span>{metrics.editedWords} words</span>
                 {editedContent && metrics.wordDiff !== 0 && (
                   <span className={`font-bold ${metrics.wordDiff > 0 ? 'text-blue-600' : 'text-amber-600'}`}>
@@ -634,7 +634,7 @@ const EditPostPage: React.FC = () => {
             </button>
             <button
               onClick={() => navigate('/forum')}
-              className="px-4 py-2 text-sm font-medium text-slate-500 hover:text-slate-800 transition-colors"
+              className="px-4 py-2 text-sm font-medium text-slate-700 hover:text-slate-900 transition-colors"
             >
               Cancel
             </button>

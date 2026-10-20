@@ -98,11 +98,11 @@ export const SongsTab: React.FC = () => {
           <h2 className="text-2xl font-black text-white flex items-center gap-2.5">
             <Music className="w-6 h-6 text-emerald-400" />
             <span>Songs Catalog</span>
-            <span className="text-xs font-mono px-2.5 py-0.5 rounded-full bg-slate-900 border border-slate-800 text-slate-400">
+            <span className="text-xs font-mono px-2.5 py-0.5 rounded-full bg-slate-900 border border-slate-800 text-slate-300">
               {filteredTracks.length} Tracks
             </span>
           </h2>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-slate-300 mt-1">
             Browse, stream, and queue high-fidelity sovereign master tracks across all genres.
           </p>
         </div>
@@ -122,7 +122,7 @@ export const SongsTab: React.FC = () => {
       {/* Search & Filters */}
       <div className="flex flex-col sm:flex-row gap-3 items-center justify-between">
         <div className="relative w-full sm:w-80">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-300" />
           <input
             type="text"
             placeholder="Search songs, artists, or albums..."
@@ -141,7 +141,7 @@ export const SongsTab: React.FC = () => {
               className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition ${
                 selectedQuality === q
                   ? 'bg-amber-500 text-slate-950 shadow-md'
-                  : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+                  : 'bg-slate-900 text-slate-300 hover:text-white border border-slate-800'
               }`}
             >
               {q}
@@ -159,7 +159,7 @@ export const SongsTab: React.FC = () => {
             className={`px-3 py-1 rounded-lg text-xs font-semibold whitespace-nowrap transition ${
               selectedGenre === g
                 ? 'bg-emerald-500 text-slate-950 font-bold'
-                : 'bg-slate-950 text-slate-400 hover:text-white border border-slate-800'
+                : 'bg-slate-950 text-slate-300 hover:text-white border border-slate-800'
             }`}
           >
             {g}
@@ -172,7 +172,7 @@ export const SongsTab: React.FC = () => {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-slate-800 bg-slate-950/60 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+              <tr className="border-b border-slate-800 bg-slate-950/60 text-[11px] font-bold text-slate-200 uppercase tracking-wider">
                 <th className="py-3 px-4 w-12 text-center">#</th>
                 <th className="py-3 px-4">Title &amp; Artist</th>
                 <th className="py-3 px-4 hidden md:table-cell">Album</th>
@@ -201,7 +201,7 @@ export const SongsTab: React.FC = () => {
                         className={`w-7 h-7 rounded-lg flex items-center justify-center transition mx-auto ${
                           isCurrent
                             ? 'bg-emerald-500 text-slate-950 shadow-md'
-                            : 'text-slate-400 group-hover:bg-slate-800 group-hover:text-white'
+                            : 'text-slate-300 group-hover:bg-slate-800 group-hover:text-white'
                         }`}
                         title={isCurrent && isPlaying ? 'Pause' : 'Play'}
                       >
@@ -234,7 +234,7 @@ export const SongsTab: React.FC = () => {
                           >
                             {track.title}
                           </div>
-                          <div className="text-[11px] text-slate-400 truncate">
+                          <div className="text-[11px] text-slate-300 truncate">
                             {track.artist}
                           </div>
                         </div>
@@ -265,14 +265,14 @@ export const SongsTab: React.FC = () => {
                         >
                           {track.audioQuality || 'Lossless'}
                         </span>
-                        <span className="text-[10px] text-slate-400 font-mono">
+                        <span className="text-[10px] text-slate-300 font-mono">
                           {track.bitrate ? track.bitrate.split(' ')[0] : '1411k'}
                         </span>
                       </div>
                     </td>
 
                     {/* Duration */}
-                    <td className="py-3 px-4 text-center font-mono text-slate-400 text-[11px]">
+                    <td className="py-3 px-4 text-center font-mono text-slate-300 text-[11px]">
                       {formatTime(track.duration)}
                     </td>
 
@@ -284,7 +284,7 @@ export const SongsTab: React.FC = () => {
                           className={`p-1.5 rounded-lg transition ${
                             track.isLiked
                               ? 'text-rose-500'
-                              : 'text-slate-400 hover:text-rose-400'
+                              : 'text-slate-300 hover:text-rose-400'
                           }`}
                           title="Like Track"
                         >
@@ -294,7 +294,7 @@ export const SongsTab: React.FC = () => {
                         </button>
                         <button
                           onClick={() => setAddToPlaylistTrack(track)}
-                          className="p-1.5 rounded-lg text-slate-400 hover:text-white transition"
+                          className="p-1.5 rounded-lg text-slate-300 hover:text-white transition"
                           title="Add to Playlist"
                         >
                           <Plus className="w-4 h-4" />
@@ -316,7 +316,7 @@ export const SongsTab: React.FC = () => {
             <h3 className="text-base font-bold text-white mb-2">
               Add "{addToPlaylistTrack.title}" to Playlist
             </h3>
-            <p className="text-xs text-slate-400 mb-4">
+            <p className="text-xs text-slate-300 mb-4">
               Enter a new playlist name or select an existing sovereign collection.
             </p>
 
@@ -340,7 +340,7 @@ export const SongsTab: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setAddToPlaylistTrack(null)}
-                  className="py-2 px-4 rounded-xl text-xs font-semibold bg-slate-800 text-slate-400 hover:text-white"
+                  className="py-2 px-4 rounded-xl text-xs font-semibold bg-slate-800 text-slate-300 hover:text-white"
                 >
                   Cancel
                 </button>

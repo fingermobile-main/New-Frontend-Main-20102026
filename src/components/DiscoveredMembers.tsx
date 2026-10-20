@@ -66,18 +66,18 @@ const DiscoveredMembers: React.FC<DiscoveredMembersProps> = ({
   return (
     <div className="w-full space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-bold flex items-center gap-2">
-          <Users className="h-5 w-5" />
+        <h2 className="text-xl font-bold flex items-center gap-2 text-slate-900">
+          <Users className="h-5 w-5 text-slate-700" />
           Discover Members
         </h2>
-        <Button variant="ghost" size="sm">
+        <Button variant="ghost" size="sm" className="text-slate-700 font-semibold hover:text-slate-900">
           View All
         </Button>
       </div>
 
       <div className="space-y-3">
         {members.map((member) => (
-          <Card key={member.id} className="hover:shadow-md transition-shadow">
+          <Card key={member.id} className="border-slate-200 hover:shadow-md transition-shadow">
             <CardContent className="p-4">
               <div className="flex items-start gap-3">
                 <button
@@ -96,27 +96,27 @@ const DiscoveredMembers: React.FC<DiscoveredMembersProps> = ({
                 </button>
                 <div className="flex-1 min-w-0">
                   <h3
-                    className="font-semibold hover:underline cursor-pointer truncate"
+                    className="font-semibold text-slate-900 hover:underline cursor-pointer truncate"
                     onClick={() => onViewProfile?.(member.id)}
                   >
                     {member.name}
                   </h3>
-                  <div className="flex flex-wrap gap-2 mt-1 text-sm text-muted-foreground">
+                  <div className="flex flex-wrap gap-2 mt-1 text-sm text-slate-700 font-medium">
                     {member.profession && (
                       <div className="flex items-center gap-1">
-                        <Briefcase className="h-3 w-3" />
+                        <Briefcase className="h-3 w-3 text-slate-500" />
                         <span className="truncate">{member.profession}</span>
                       </div>
                     )}
                     {member.location && (
                       <div className="flex items-center gap-1">
-                        <MapPin className="h-3 w-3" />
+                        <MapPin className="h-3 w-3 text-slate-500" />
                         <span>{member.location}</span>
                       </div>
                     )}
                   </div>
                   {member.mutualConnections && member.mutualConnections > 0 && (
-                    <p className="text-xs text-muted-foreground mt-1">
+                    <p className="text-xs text-slate-600 font-medium mt-1">
                       {member.mutualConnections} mutual connections
                     </p>
                   )}
@@ -124,6 +124,7 @@ const DiscoveredMembers: React.FC<DiscoveredMembersProps> = ({
                 <Button
                   size="sm"
                   variant={member.isFollowing ? 'outline' : 'default'}
+                  className={member.isFollowing ? 'border-slate-300 text-slate-800 font-semibold' : ''}
                   onClick={() => onFollow?.(member.id)}
                 >
                   <UserPlus className="h-4 w-4 mr-1" />

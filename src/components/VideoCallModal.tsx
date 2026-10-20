@@ -297,14 +297,14 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
 
               <div className="space-y-1">
                 <h3 className="text-xl font-black text-white">Mutual Video PIN Exchange Handshake</h3>
-                <p className="text-xs text-slate-400">
+                <p className="text-xs text-slate-300">
                   Guardian AI enforces that <strong className="text-white">each person must accept the PIN exchange</strong> before establishing the 1080p encrypted video stream with <span className="text-white font-bold">{recipientName}</span>.
                 </p>
               </div>
 
               {/* Generated Video PIN Box */}
               <div className="bg-slate-900 border border-slate-800 rounded-2xl p-3.5 space-y-1.5">
-                <span className="text-[10px] font-black uppercase tracking-wider text-slate-400 block">
+                <span className="text-[10px] font-black uppercase tracking-wider text-slate-300 block">
                   6-Digit Sovereign Video PIN
                 </span>
                 <div className="flex items-center justify-center gap-2 font-mono text-2xl font-black text-amber-400 tracking-widest">
@@ -323,16 +323,16 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
                   callerAccepted ? 'bg-emerald-950/40 border-emerald-500/50' : 'bg-slate-900 border-slate-800'
                 }`}>
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Caller (You)</span>
+                    <span className="text-[10px] font-black uppercase tracking-wider text-slate-300">Caller (You)</span>
                     {callerAccepted ? (
                       <CheckCircleIcon className="w-4 h-4 text-emerald-400" />
                     ) : (
-                      <ClockIcon className="w-4 h-4 text-slate-500" />
+                      <ClockIcon className="w-4 h-4 text-slate-600" />
                     )}
                   </div>
                   <p className="text-xs font-bold text-white truncate">You</p>
                   <span className={`inline-block mt-1 text-[10px] font-bold px-2 py-0.5 rounded ${
-                    callerAccepted ? 'bg-emerald-500/20 text-emerald-300' : 'bg-slate-800 text-slate-400'
+                    callerAccepted ? 'bg-emerald-500/20 text-emerald-300' : 'bg-slate-800 text-slate-300'
                   }`}>
                     {callerAccepted ? 'PIN Accepted' : 'Pending'}
                   </span>
@@ -346,7 +346,7 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
                   recipientAccepted ? 'bg-emerald-950/40 border-emerald-500/50' : 'bg-slate-900 border-slate-800 hover:border-slate-700'
                 }`}>
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Recipient</span>
+                    <span className="text-[10px] font-black uppercase tracking-wider text-slate-300">Recipient</span>
                     {recipientAccepted ? (
                       <CheckCircleIcon className="w-4 h-4 text-emerald-400" />
                     ) : (
@@ -415,7 +415,7 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
             <div className="absolute top-4 left-4 z-20 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-950/80 backdrop-blur-md border border-emerald-500/40 text-emerald-400 font-mono text-xs font-black shadow-xl">
               <ShieldCheckIcon className="w-4 h-4 text-emerald-400" />
               <span>Token: {guardianTokenId ? `${guardianTokenId.slice(0, 15)}... ` : ''}({formatCountdown(tokenRemainingSecs)})</span>
-              <span className="text-[10px] text-slate-400 font-sans font-normal">• Both Accepted (2/2)</span>
+              <span className="text-[10px] text-slate-300 font-sans font-normal">• Both Accepted (2/2)</span>
             </div>
 
             {/* Fallback Overlay if Remote is connecting */}
@@ -428,7 +428,7 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
                   <div className="absolute -inset-2 rounded-full border-2 border-emerald-400/50 animate-ping" />
                 </div>
                 <h4 className="text-lg font-black text-white">{recipientName}</h4>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="text-xs text-slate-300 mt-1">
                   {callState === 'initiating' && 'Mounting DTLS Video WebRTC Stream...'}
                   {callState === 'ringing' && 'Ringing remote peer camera feed...'}
                   {callState === 'failed' && 'Session error. Please retry.'}
@@ -449,8 +449,8 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
               />
 
               {isVideoPaused && (
-                <div className="w-full h-full flex flex-col items-center justify-center bg-slate-900 text-slate-400 p-2 text-center">
-                  <VideoCameraSlashIcon className="w-8 h-8 text-slate-500 mb-1" />
+                <div className="w-full h-full flex flex-col items-center justify-center bg-slate-900 text-slate-300 p-2 text-center">
+                  <VideoCameraSlashIcon className="w-8 h-8 text-slate-600 mb-1" />
                   <span className="text-[10px] font-bold">Camera Paused</span>
                 </div>
               )}

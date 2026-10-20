@@ -6,7 +6,7 @@ type AxiosInstance = InternalAxiosInstance;
 // Base API configuration
 const getApiBaseUrl = () => {
   const envUrl = process.env.REACT_APP_API_URL;
-  if (envUrl && !envUrl.includes(':3001')) {
+  if (envUrl) {
     return envUrl;
   }
   if (typeof window !== 'undefined' && window.location.port === '8000') {

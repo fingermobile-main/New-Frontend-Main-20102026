@@ -50,7 +50,7 @@ const LegalCompliancePage: React.FC = () => {
           <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
             Legal & Regulatory Compliance Console
           </h1>
-          <p className="text-slate-600 dark:text-slate-400 text-sm mt-1">
+          <p className="text-slate-700 dark:text-slate-300 font-medium text-sm mt-1">
             Supervise data subject requests, statutory purge schedules, policy documents, and cryptographic audit records.
           </p>
         </div>
@@ -66,7 +66,7 @@ const LegalCompliancePage: React.FC = () => {
       {/* KPI Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
-          <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Pending DSR Inquiries</p>
+          <p className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Pending DSR Inquiries</p>
           <p className="text-2xl font-black text-slate-900 dark:text-white mt-2">
             {dsrs.filter(d => d.status === 'pending').length}
           </p>
@@ -74,7 +74,7 @@ const LegalCompliancePage: React.FC = () => {
         </div>
 
         <div className="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
-          <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Scheduled Account Purges</p>
+          <p className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Scheduled Account Purges</p>
           <p className="text-2xl font-black text-rose-600 mt-2">
             {deletions.filter(d => d.status === 'confirmed').length}
           </p>
@@ -82,13 +82,13 @@ const LegalCompliancePage: React.FC = () => {
         </div>
 
         <div className="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
-          <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Statutory Framework</p>
+          <p className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Statutory Framework</p>
           <p className="text-2xl font-black text-emerald-600 mt-2">NDPA 2023</p>
-          <span className="text-xs text-slate-500 font-semibold mt-1 block">Certified Section 31</span>
+          <span className="text-xs text-slate-700 dark:text-slate-300 font-semibold mt-1 block">Certified Section 31</span>
         </div>
 
         <div className="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
-          <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Active Policies</p>
+          <p className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Active Policies</p>
           <p className="text-2xl font-black text-indigo-600 mt-2">6 Active</p>
           <Link to="/dashboard/policies" className="text-xs text-indigo-600 hover:underline font-semibold mt-1 block">
             Manage in Policy Editor →
@@ -103,7 +103,7 @@ const LegalCompliancePage: React.FC = () => {
             <h2 className="text-lg font-bold text-slate-900 dark:text-white">
               Data Subject Requests (DSR Queue)
             </h2>
-            <p className="text-xs text-slate-500">Live statutory requests submitted under NDPA/GDPR</p>
+            <p className="text-xs text-slate-700 dark:text-slate-300 font-medium">Live statutory requests submitted under NDPA/GDPR</p>
           </div>
           <Link
             to="/privacy/data-subject-request"
@@ -116,7 +116,7 @@ const LegalCompliancePage: React.FC = () => {
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
-            <thead className="bg-slate-50 dark:bg-slate-900/40 text-xs uppercase tracking-wider text-slate-500 border-b border-slate-200 dark:border-slate-700">
+            <thead className="bg-slate-50 dark:bg-slate-900/40 text-xs uppercase tracking-wider font-bold text-slate-800 dark:text-slate-200 border-b border-slate-200 dark:border-slate-700">
               <tr>
                 <th className="p-3">Claimant</th>
                 <th className="p-3">Request Type</th>
@@ -131,12 +131,12 @@ const LegalCompliancePage: React.FC = () => {
                   <tr key={req.id} className="hover:bg-slate-50/60 transition-colors">
                     <td className="p-3">
                       <div className="font-semibold text-slate-900 dark:text-white">{req.name}</div>
-                      <div className="text-xs text-slate-500">{req.email}</div>
+                      <div className="text-xs text-slate-700 dark:text-slate-300 font-medium">{req.email}</div>
                     </td>
                     <td className="p-3 font-semibold uppercase text-xs text-indigo-600">
                       {req.request_type}
                     </td>
-                    <td className="p-3 text-xs text-slate-600 dark:text-slate-400 max-w-xs truncate">
+                    <td className="p-3 text-xs text-slate-700 dark:text-slate-300 font-medium max-w-xs truncate">
                       {req.message || 'Standard access request'}
                     </td>
                     <td className="p-3">
@@ -150,14 +150,14 @@ const LegalCompliancePage: React.FC = () => {
                         {req.status}
                       </span>
                     </td>
-                    <td className="p-3 text-xs text-slate-500">
+                    <td className="p-3 text-xs text-slate-700 dark:text-slate-300 font-medium">
                       {new Date(req.created_at).toLocaleDateString()}
                     </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan={5} className="p-6 text-center text-slate-500 text-xs">
+                  <td colSpan={5} className="p-6 text-center text-slate-700 dark:text-slate-300 font-medium text-xs">
                     {loading ? 'Querying DSR registry...' : 'No pending Data Subject Requests logged.'}
                   </td>
                 </tr>
@@ -174,7 +174,7 @@ const LegalCompliancePage: React.FC = () => {
             <h2 className="text-lg font-bold text-slate-900 dark:text-white">
               Permanent Deletion Schedules
             </h2>
-            <p className="text-xs text-slate-500">Statutory 30-day grace period purge pipeline</p>
+            <p className="text-xs text-slate-700 dark:text-slate-300 font-medium">Statutory 30-day grace period purge pipeline</p>
           </div>
           <Link
             to="/account/delete"
@@ -187,7 +187,7 @@ const LegalCompliancePage: React.FC = () => {
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
-            <thead className="bg-slate-50 dark:bg-slate-900/40 text-xs uppercase tracking-wider text-slate-500 border-b border-slate-200 dark:border-slate-700">
+            <thead className="bg-slate-50 dark:bg-slate-900/40 text-xs uppercase tracking-wider font-bold text-slate-800 dark:text-slate-200 border-b border-slate-200 dark:border-slate-700">
               <tr>
                 <th className="p-3">Account Email</th>
                 <th className="p-3">Reason</th>
@@ -201,7 +201,7 @@ const LegalCompliancePage: React.FC = () => {
                 deletions.map((del) => (
                   <tr key={del.id} className="hover:bg-slate-50/60 transition-colors">
                     <td className="p-3 font-semibold text-slate-900 dark:text-white">{del.email}</td>
-                    <td className="p-3 text-xs text-slate-500 max-w-xs truncate">{del.reason || 'None provided'}</td>
+                    <td className="p-3 text-xs text-slate-700 dark:text-slate-300 font-medium max-w-xs truncate">{del.reason || 'None provided'}</td>
                     <td className="p-3">
                       <span className="inline-flex items-center gap-1 text-xs text-emerald-600 font-bold">
                         <CheckCircleIcon className="w-3 h-3" /> Confirmed
@@ -219,7 +219,7 @@ const LegalCompliancePage: React.FC = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={5} className="p-6 text-center text-slate-500 text-xs">
+                  <td colSpan={5} className="p-6 text-center text-slate-700 dark:text-slate-300 font-medium text-xs">
                     {loading ? 'Querying purge schedules...' : 'No accounts currently scheduled for deletion.'}
                   </td>
                 </tr>

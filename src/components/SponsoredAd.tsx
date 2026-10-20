@@ -24,12 +24,12 @@ const SponsoredAd: React.FC<SponsoredAdProps> = ({
 }) => {
   if (variant === 'banner') {
     return (
-      <div className="relative w-full bg-gradient-to-r from-primary/10 via-primary/5 to-transparent border-l-4 border-primary p-4 rounded-r-lg">
+      <div className="relative w-full bg-gradient-to-r from-primary/10 via-primary/5 to-transparent border-l-4 border-primary p-4 rounded-r-lg border-y border-r border-slate-200">
         {onClose && (
           <Button
             variant="ghost"
             size="icon"
-            className="absolute top-2 right-2 h-6 w-6"
+            className="absolute top-2 right-2 h-6 w-6 text-slate-700 hover:text-slate-900"
             onClick={onClose}
           >
             <X className="h-4 w-4" />
@@ -41,12 +41,12 @@ const SponsoredAd: React.FC<SponsoredAdProps> = ({
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1">
-              <Badge variant="outline" className="text-xs">
+              <Badge variant="outline" className="text-xs border-primary/40 text-primary font-bold">
                 Sponsored
               </Badge>
-              <h3 className="font-semibold">{title}</h3>
+              <h3 className="font-bold text-slate-900">{title}</h3>
             </div>
-            <p className="text-sm text-muted-foreground">{description}</p>
+            <p className="text-sm text-slate-700 font-medium">{description}</p>
           </div>
           <Button onClick={onCtaClick}>{ctaText}</Button>
         </div>
@@ -56,30 +56,30 @@ const SponsoredAd: React.FC<SponsoredAdProps> = ({
 
   if (variant === 'card') {
     return (
-      <div className="relative bg-card border rounded-lg overflow-hidden hover:shadow-md transition-shadow">
+      <div className="relative bg-white border border-slate-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow">
         {onClose && (
           <Button
             variant="ghost"
             size="icon"
-            className="absolute top-2 right-2 h-6 w-6 z-10"
+            className="absolute top-2 right-2 h-6 w-6 z-10 text-slate-700 hover:text-slate-900"
             onClick={onClose}
           >
             <X className="h-4 w-4" />
           </Button>
         )}
         {imageUrl && (
-          <div className="aspect-video bg-muted relative">
+          <div className="aspect-video bg-slate-100 border-b border-slate-200 relative">
             <img
               src={imageUrl}
               alt={title}
               className="w-full h-full object-cover"
             />
-            <Badge className="absolute top-2 left-2">Sponsored</Badge>
+            <Badge className="absolute top-2 left-2 bg-slate-900 text-white font-semibold">Sponsored</Badge>
           </div>
         )}
         <div className="p-4 space-y-3">
-          <h3 className="font-semibold text-lg">{title}</h3>
-          <p className="text-sm text-muted-foreground">{description}</p>
+          <h3 className="font-bold text-lg text-slate-900">{title}</h3>
+          <p className="text-sm text-slate-700 font-medium leading-relaxed">{description}</p>
           <Button className="w-full" onClick={onCtaClick}>
             {ctaText}
           </Button>
@@ -90,12 +90,12 @@ const SponsoredAd: React.FC<SponsoredAdProps> = ({
 
   // inline variant
   return (
-    <div className="relative flex items-start gap-3 p-3 bg-muted/30 rounded-lg border">
+    <div className="relative flex items-start gap-3 p-3 bg-slate-50 rounded-lg border border-slate-200">
       {onClose && (
         <Button
           variant="ghost"
           size="icon"
-          className="absolute top-1 right-1 h-5 w-5"
+          className="absolute top-1 right-1 h-5 w-5 text-slate-700 hover:text-slate-900"
           onClick={onClose}
         >
           <X className="h-3 w-3" />
@@ -106,14 +106,14 @@ const SponsoredAd: React.FC<SponsoredAdProps> = ({
       </div>
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-1">
-          <Badge variant="outline" className="text-[10px] px-1 py-0">
+          <Badge variant="outline" className="text-[10px] px-1 py-0 border-slate-300 text-slate-800 font-bold">
             Ad
           </Badge>
-          <span className="text-sm font-medium truncate">{title}</span>
+          <span className="text-sm font-semibold text-slate-900 truncate">{title}</span>
         </div>
-        <p className="text-xs text-muted-foreground line-clamp-2">{description}</p>
+        <p className="text-xs text-slate-700 font-medium line-clamp-2">{description}</p>
       </div>
-      <Button size="sm" variant="outline" onClick={onCtaClick}>
+      <Button size="sm" variant="outline" onClick={onCtaClick} className="border-slate-300 text-slate-800 font-semibold">
         {ctaText}
       </Button>
     </div>

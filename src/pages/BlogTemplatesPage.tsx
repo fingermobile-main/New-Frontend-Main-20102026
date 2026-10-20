@@ -200,7 +200,7 @@ const BlogTemplatesPage: React.FC = () => {
               <h1 className="text-3xl font-black text-gray-900 tracking-tight">
                 Free SEO Blog Templates
               </h1>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-slate-700 font-medium">
                 Turnkey structured templates with built-in Google Schema.org JSON-LD and 95+ SEO performance
               </p>
             </div>
@@ -240,7 +240,7 @@ const BlogTemplatesPage: React.FC = () => {
           </div>
 
           <div className="relative w-full sm:w-72">
-            <MagnifyingGlassIcon className="w-4 h-4 text-slate-500 absolute left-3 top-3" />
+            <MagnifyingGlassIcon className="w-4 h-4 text-slate-600 absolute left-3 top-3" />
             <input
               type="text"
               value={searchQuery}
@@ -338,12 +338,12 @@ const BlogTemplatesPage: React.FC = () => {
                   <h3 className="font-bold text-sm text-gray-100">
                     Schema.org JSON-LD Structured Data
                   </h3>
-                  <p className="text-xs text-gray-400">{activeJsonLdModal.name}</p>
+                  <p className="text-xs text-slate-300 font-medium">{activeJsonLdModal.name}</p>
                 </div>
                 <button
                   type="button"
                   onClick={() => setActiveJsonLdModal(null)}
-                  className="text-gray-400 hover:text-white text-lg font-bold"
+                  className="text-slate-300 hover:text-white text-lg font-bold"
                 >
                   &times;
                 </button>

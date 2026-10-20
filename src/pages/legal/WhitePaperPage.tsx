@@ -117,19 +117,19 @@ contract Fiat2IFCBridge is Ownable {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 py-4 text-xs">
                 <div className="bg-black/50 p-3 rounded-xl border border-white/5">
-                  <span className="text-zinc-400 text-[10px] block">Issued To (Author)</span>
+                  <span className="text-zinc-300 font-medium text-[10px] block">Issued To (Author)</span>
                   <span className="font-bold text-amber-300 text-xs">{cert.issuedTo}</span>
                 </div>
                 <div className="bg-black/50 p-3 rounded-xl border border-white/5">
-                  <span className="text-zinc-400 text-[10px] block">Reference ID</span>
+                  <span className="text-zinc-300 font-medium text-[10px] block">Reference ID</span>
                   <span className="font-mono font-bold text-emerald-400 text-xs">{cert.referenceId}</span>
                 </div>
                 <div className="bg-black/50 p-3 rounded-xl border border-white/5">
-                  <span className="text-zinc-400 text-[10px] block">Fingerprint ID</span>
+                  <span className="text-zinc-300 font-medium text-[10px] block">Fingerprint ID</span>
                   <span className="font-mono font-bold text-amber-300 text-xs">{cert.fingerprintId}</span>
                 </div>
                 <div className="bg-black/50 p-3 rounded-xl border border-white/5">
-                  <span className="text-zinc-400 text-[10px] block">Timestamp (UTC)</span>
+                  <span className="text-zinc-300 font-medium text-[10px] block">Timestamp (UTC)</span>
                   <span className="font-mono text-zinc-300 text-[11px] flex items-center gap-1 mt-0.5">
                     <Clock className="w-3 h-3 text-amber-400" />
                     {cert.timestampUtc}
@@ -141,7 +141,7 @@ contract Fiat2IFCBridge is Ownable {
               <div className="bg-black/70 rounded-xl p-3 border border-amber-500/20 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <div className="flex items-center gap-2 overflow-hidden text-xs">
                   <Hash className="w-4 h-4 text-amber-400 shrink-0" />
-                  <span className="text-zinc-400 font-mono text-[11px] shrink-0">SHA256:</span>
+                  <span className="text-zinc-300 font-mono text-[11px] font-semibold shrink-0">SHA256:</span>
                   <code className="text-amber-300 font-mono text-[11px] truncate select-all">{whitePaperHash}</code>
                 </div>
                 <button
@@ -281,7 +281,7 @@ contract Fiat2IFCBridge is Ownable {
                   <p><strong>Owner Signature / Fingerprint ID:</strong> {cert.fingerprintId}</p>
                   <p><strong>Reference ID:</strong> {cert.referenceId}</p>
                   <p><strong>Date Issued:</strong> {cert.dateIssued} | <strong>Timestamp (UTC):</strong> {cert.timestampUtc}</p>
-                  <p className="text-[11px] text-zinc-400 italic pt-1">{cert.verificationStatement}</p>
+                  <p className="text-[11px] text-zinc-300 font-medium italic pt-1">{cert.verificationStatement}</p>
                 </div>
               </div>
 

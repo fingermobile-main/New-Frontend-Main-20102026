@@ -213,7 +213,7 @@ export const PhotoCreditAiQualityModal: React.FC<PhotoCreditAiQualityModalProps>
 
           <button
             onClick={onClose}
-            className="p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-200 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800 transition"
+            className="p-2 rounded-xl text-slate-700 hover:text-slate-900 hover:bg-slate-200 dark:text-slate-300 dark:hover:text-white dark:hover:bg-slate-800 transition"
             aria-label="Close"
           >
             <X className="w-5 h-5" />
@@ -223,7 +223,7 @@ export const PhotoCreditAiQualityModal: React.FC<PhotoCreditAiQualityModalProps>
         {/* Top Summary Bar */}
         <div className="p-4 sm:p-5 bg-gradient-to-r from-amber-50 via-slate-100 to-emerald-50 dark:from-amber-950/30 dark:via-slate-900 dark:to-emerald-950/20 border-b border-slate-200 dark:border-slate-800 grid grid-cols-2 sm:grid-cols-4 gap-3">
           <div className="p-3 rounded-2xl bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-800 shadow-xs">
-            <div className="text-[11px] font-bold text-slate-700 dark:text-slate-400 uppercase tracking-wider flex items-center gap-1">
+            <div className="text-[11px] font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider flex items-center gap-1">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
               Culling Pass
             </div>
@@ -231,46 +231,46 @@ export const PhotoCreditAiQualityModal: React.FC<PhotoCreditAiQualityModalProps>
               <CheckCircle2 className="w-4 h-4 text-emerald-600" />
               {defaultBreakdown.cullingPass}
             </div>
-            <div className="text-[10px] text-slate-600 dark:text-slate-400 mt-0.5 truncate">
+            <div className="text-[10px] text-slate-700 dark:text-slate-300 font-medium mt-0.5 truncate">
               {defaultBreakdown.cullingNotes}
             </div>
           </div>
 
           <div className="p-3 rounded-2xl bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-800 shadow-xs">
-            <div className="text-[11px] font-bold text-slate-700 dark:text-slate-400 uppercase tracking-wider flex items-center gap-1">
+            <div className="text-[11px] font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider flex items-center gap-1">
               <Zap className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
               Science (Technical)
             </div>
             <div className="text-base font-black text-slate-900 dark:text-white mt-1">
               97.5% Average
             </div>
-            <div className="text-[10px] text-slate-600 dark:text-slate-400 mt-0.5">
+            <div className="text-[10px] text-slate-700 dark:text-slate-300 font-medium mt-0.5">
               Focus, Exposure, 14-Stop DR
             </div>
           </div>
 
           <div className="p-3 rounded-2xl bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-800 shadow-xs">
-            <div className="text-[11px] font-bold text-slate-700 dark:text-slate-400 uppercase tracking-wider flex items-center gap-1">
+            <div className="text-[11px] font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider flex items-center gap-1">
               <Sparkles className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
               Art (Composition)
             </div>
             <div className="text-base font-black text-slate-900 dark:text-white mt-1">
               97.3% Average
             </div>
-            <div className="text-[10px] text-slate-600 dark:text-slate-400 mt-0.5">
+            <div className="text-[10px] text-slate-700 dark:text-slate-300 font-medium mt-0.5">
               Rule of Thirds, Eye Flow
             </div>
           </div>
 
           <div className="p-3 rounded-2xl bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-800 shadow-xs">
-            <div className="text-[11px] font-bold text-slate-700 dark:text-slate-400 uppercase tracking-wider flex items-center gap-1">
+            <div className="text-[11px] font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider flex items-center gap-1">
               <Award className="w-3.5 h-3.5 text-amber-500" />
               Contest Staking Multiplier
             </div>
             <div className="text-base font-black text-amber-600 dark:text-amber-400 mt-1">
               1.25x Royalty Boost
             </div>
-            <div className="text-[10px] text-slate-600 dark:text-slate-400 mt-0.5">
+            <div className="text-[10px] text-slate-700 dark:text-slate-300 font-medium mt-0.5">
               Qualifies for Face of the Month
             </div>
           </div>
@@ -283,7 +283,7 @@ export const PhotoCreditAiQualityModal: React.FC<PhotoCreditAiQualityModalProps>
             className={`pb-3 px-3 text-xs font-bold transition flex items-center gap-1.5 border-b-2 ${
               activeTab === 'science'
                 ? 'border-amber-500 text-amber-700 dark:text-amber-400'
-                : 'border-transparent text-slate-700 dark:text-slate-400 hover:text-slate-900'
+                : 'border-transparent text-slate-700 dark:text-slate-300 font-medium hover:text-slate-900 dark:hover:text-white'
             }`}
           >
             <Sliders className="w-3.5 h-3.5" />
@@ -295,7 +295,7 @@ export const PhotoCreditAiQualityModal: React.FC<PhotoCreditAiQualityModalProps>
             className={`pb-3 px-3 text-xs font-bold transition flex items-center gap-1.5 border-b-2 ${
               activeTab === 'art'
                 ? 'border-indigo-500 text-indigo-700 dark:text-indigo-400'
-                : 'border-transparent text-slate-700 dark:text-slate-400 hover:text-slate-900'
+                : 'border-transparent text-slate-700 dark:text-slate-300 font-medium hover:text-slate-900 dark:hover:text-white'
             }`}
           >
             <Sparkles className="w-3.5 h-3.5" />
@@ -307,7 +307,7 @@ export const PhotoCreditAiQualityModal: React.FC<PhotoCreditAiQualityModalProps>
             className={`pb-3 px-3 text-xs font-bold transition flex items-center gap-1.5 border-b-2 ${
               activeTab === 'metadata'
                 ? 'border-emerald-500 text-emerald-700 dark:text-emerald-400'
-                : 'border-transparent text-slate-700 dark:text-slate-400 hover:text-slate-900'
+                : 'border-transparent text-slate-700 dark:text-slate-300 font-medium hover:text-slate-900 dark:hover:text-white'
             }`}
           >
             <Layers className="w-3.5 h-3.5" />
@@ -319,7 +319,7 @@ export const PhotoCreditAiQualityModal: React.FC<PhotoCreditAiQualityModalProps>
             className={`pb-3 px-3 text-xs font-bold transition flex items-center gap-1.5 border-b-2 ${
               activeTab === 'rest_test'
                 ? 'border-rose-500 text-rose-700 dark:text-rose-400'
-                : 'border-transparent text-slate-700 dark:text-slate-400 hover:text-slate-900'
+                : 'border-transparent text-slate-700 dark:text-slate-300 font-medium hover:text-slate-900 dark:hover:text-white'
             }`}
           >
             <Eye className="w-3.5 h-3.5" />
@@ -552,27 +552,27 @@ export const PhotoCreditAiQualityModal: React.FC<PhotoCreditAiQualityModalProps>
                 </h4>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs font-mono">
                   <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                    <span className="text-slate-600 dark:text-slate-400 block text-[10px]">Camera Body:</span>
+                    <span className="text-slate-700 dark:text-slate-300 font-medium block text-[10px]">Camera Body:</span>
                     <span className="text-slate-900 dark:text-white font-bold">{item.camera_info?.camera || 'Sony Alpha A7R V'}</span>
                   </div>
                   <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                    <span className="text-slate-600 dark:text-slate-400 block text-[10px]">Lens Model:</span>
+                    <span className="text-slate-700 dark:text-slate-300 font-medium block text-[10px]">Lens Model:</span>
                     <span className="text-slate-900 dark:text-white font-bold">{item.camera_info?.lens || 'Sony FE 85mm f/1.4 GM'}</span>
                   </div>
                   <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                    <span className="text-slate-600 dark:text-slate-400 block text-[10px]">Aperture:</span>
+                    <span className="text-slate-700 dark:text-slate-300 font-medium block text-[10px]">Aperture:</span>
                     <span className="text-slate-900 dark:text-white font-bold">{item.camera_info?.aperture || 'f/1.4'}</span>
                   </div>
                   <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                    <span className="text-slate-600 dark:text-slate-400 block text-[10px]">Shutter Speed:</span>
+                    <span className="text-slate-700 dark:text-slate-300 font-medium block text-[10px]">Shutter Speed:</span>
                     <span className="text-slate-900 dark:text-white font-bold">{item.camera_info?.shutter || '1/320s'}</span>
                   </div>
                   <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                    <span className="text-slate-600 dark:text-slate-400 block text-[10px]">ISO Sensitivity:</span>
+                    <span className="text-slate-700 dark:text-slate-300 font-medium block text-[10px]">ISO Sensitivity:</span>
                     <span className="text-slate-900 dark:text-white font-bold">{item.camera_info?.iso || 100}</span>
                   </div>
                   <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                    <span className="text-slate-600 dark:text-slate-400 block text-[10px]">Focal Length:</span>
+                    <span className="text-slate-700 dark:text-slate-300 font-medium block text-[10px]">Focal Length:</span>
                     <span className="text-slate-900 dark:text-white font-bold">{item.camera_info?.focalLength || '85mm'}</span>
                   </div>
                 </div>
@@ -702,7 +702,7 @@ export const PhotoCreditAiQualityModal: React.FC<PhotoCreditAiQualityModalProps>
                     </div>
                   </div>
 
-                  <span className="text-xs text-slate-700 dark:text-slate-400 font-mono">
+                  <span className="text-xs text-slate-700 dark:text-slate-300 font-medium font-mono">
                     Status: {isFlipped ? 'Mirror Inverted (Spot Imbalance)' : 'Standard Orientation'}
                   </span>
                 </div>
