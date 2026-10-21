@@ -4,6 +4,7 @@ import { router } from './app/AppRoutes';
 import { GlobalProviders } from './components/GlobalProviders';
 import UniversalSearchModal from './components/common/UniversalSearchModal';
 import { VoiceLineReactionOverlay } from './components/shared/VoiceLineReactionOverlay';
+import ConsentManager from './components/ConsentManager';
 
 function App() {
   const [isSearchOpen, setIsSearchOpen] = React.useState(false);
@@ -31,6 +32,7 @@ function App() {
       <div className="App relative min-h-screen">
         <VoiceLineReactionOverlay />
         <UniversalSearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+        <ConsentManager />
         <button
           type="button"
           onClick={() => setIsSearchOpen(true)}
