@@ -5,6 +5,7 @@ import StatCard from '../../components/StatCard';
 import TrendCard from '../../components/TrendCard';
 import PostCard from '../../components/PostCard';
 import { useWeb3 } from '../../contexts/Web3Context';
+import PlatformOwnershipCard from '../../components/dashboard/PlatformOwnershipCard';
 
 // Mock data for dashboard
 const mockStats = [
@@ -137,12 +138,17 @@ const DashboardHomePage: React.FC = () => {
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-2xl font-black text-slate-900">
             Creator Dashboard
           </h1>
-          <p className="text-gray-600">
+          <p className="text-slate-700 font-medium">
             Monitor your content performance and earnings
           </p>
+        </div>
+
+        {/* Sovereign Platform Ownership Proof */}
+        <div className="mb-8">
+          <PlatformOwnershipCard />
         </div>
 
         {/* Stats Overview */}
@@ -168,11 +174,11 @@ const DashboardHomePage: React.FC = () => {
                   <button
                     key={range}
                     onClick={() => setTimeRange(range)}
-                    className={`px-3 py-1 text-sm rounded-full ${
+                    className={`px-3 py-1 text-sm rounded-full transition-colors ${
                       timeRange === range
                         ? 'bg-blue-100 text-blue-950 border border-blue-400 font-bold'
-                        : 'text-blue-950 font-bold hover:bg-slate-100'
-                    }font-black`}
+                        : 'text-slate-800 font-bold hover:bg-slate-100 border border-slate-300'
+                    }`}
                   >
                     {range}
                   </button>

@@ -8,6 +8,7 @@ import SentientAIDashboard from '../../components/dashboard/SentientAIDashboard'
 import GuardianProtocolDashboard from '../../components/dashboard/GuardianProtocolDashboard';
 import PromptsThreatDashboard from '../../components/dashboard/PromptsThreatDashboard';
 import RegionalCreatorControlsPanel from '../../components/admin/RegionalCreatorControlsPanel';
+import PlatformOwnershipCard from '../../components/dashboard/PlatformOwnershipCard';
 
 import { GuardianSystemStatus, GuardianAlert } from '../../types';
 
@@ -115,9 +116,15 @@ AI Sentinel | FingerMobileTM STERCS System
   };
 
   return (
-    <div>
-      <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-6 gap-4">
-        <h1 className="text-3xl font-bold">Guardian™ Protocol Console</h1>
+    <div className="space-y-6">
+      {/* Sovereign Platform Ownership Proof */}
+      <PlatformOwnershipCard />
+
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+        <div>
+          <h1 className="text-3xl font-black text-slate-900">Guardian™ Sovereign Protocol Console</h1>
+          <p className="text-sm font-medium text-slate-700 mt-1">Multi-vector security grid, neural anomaly monitoring, and emergency protocol orchestration.</p>
+        </div>
         <div className="flex flex-wrap gap-2">
           <button
             className={`px-4 py-2 rounded-lg text-sm font-medium ${

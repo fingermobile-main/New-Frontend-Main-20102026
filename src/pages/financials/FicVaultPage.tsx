@@ -19,6 +19,7 @@ import {
   StakeInvestment,
   MultiBalanceUsdValuation,
 } from '../../types/enhanced-monetization';
+import PlatformOwnershipCard from '../../components/dashboard/PlatformOwnershipCard';
 
 const FicVaultPage: React.FC = () => {
   const { showToast } = useAppContext() || {};
@@ -183,6 +184,9 @@ const FicVaultPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto space-y-8">
+        {/* Sovereign Platform Ownership Proof */}
+        <PlatformOwnershipCard />
+
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-6">
           <div className="flex items-center gap-4">

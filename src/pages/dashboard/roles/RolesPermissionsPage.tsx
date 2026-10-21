@@ -7,6 +7,7 @@ import { Collaborator, CollaboratorSeatPlan, RoleDetail } from '../../../types/r
 import { useAuth } from '../../../contexts/AuthContext';
 import { getUserRoleTier, getUserRoleBadge } from '../../../services/platformRbac';
 import { Shield, Users, Lock, Building2, Sparkles, Sliders, CheckCircle, CreditCard, X } from 'lucide-react';
+import PlatformOwnershipCard from '../../../components/dashboard/PlatformOwnershipCard';
 
 export const RolesPermissionsPage: React.FC = () => {
   const navigate = useNavigate();
@@ -95,6 +96,9 @@ export const RolesPermissionsPage: React.FC = () => {
             <button onClick={() => setUpgradeSuccess(null)} className="text-emerald-900 font-black">✕</button>
           </div>
         )}
+
+        {/* Sovereign Platform Ownership Proof */}
+        <PlatformOwnershipCard />
 
         {/* Sovereign RBAC Navigation Bar */}
         <div className="bg-white border border-slate-300 rounded-2xl p-4 sm:p-6 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">

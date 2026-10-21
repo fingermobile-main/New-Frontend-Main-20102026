@@ -15,6 +15,7 @@ import { guardianService, GuardianStatus, GuardianRule, GuardianLog } from '../.
 import { moderationAdminService } from '../../../services/moderationAdminService';
 import { api } from '../../../services/api';
 import { Loader2, RefreshCw } from 'lucide-react';
+import PlatformOwnershipCard from '../../../components/dashboard/PlatformOwnershipCard';
 
 interface Threat {
   id: string;
@@ -337,8 +338,11 @@ const GuardianControlPage: React.FC = () => {
   );
 
   return (
-    <div className="max-w-7xl mx-auto p-6">
-      <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
+    <div className="max-w-7xl mx-auto p-6 space-y-6">
+      {/* Sovereign Platform Ownership Proof */}
+      <PlatformOwnershipCard />
+
+      <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden shadow-md">
         <div className="p-6 border-b border-gray-800">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-red-500/20 rounded-lg">

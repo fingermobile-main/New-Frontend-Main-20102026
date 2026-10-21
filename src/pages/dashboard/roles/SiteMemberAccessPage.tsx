@@ -4,6 +4,7 @@ import MainLayout from '../../../components/layout/MainLayout';
 import { SiteMemberAccessView } from '../../../components/dashboard/roles/SiteMemberAccessView';
 import rolesPermissionsService from '../../../services/rolesPermissionsService';
 import { MemberRole, MemberPage } from '../../../types/roles-permissions';
+import PlatformOwnershipCard from '../../../components/dashboard/PlatformOwnershipCard';
 
 export const SiteMemberAccessPage: React.FC = () => {
   const navigate = useNavigate();
@@ -43,9 +44,12 @@ export const SiteMemberAccessPage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 space-y-6">
+        {/* Sovereign Platform Ownership Proof */}
+        <PlatformOwnershipCard />
+
         {loading ? (
-          <div className="flex justify-center items-center h-64">
+          <div className="flex justify-center items-center h-64 bg-white rounded-2xl border border-slate-300">
             <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600"></div>
           </div>
         ) : (

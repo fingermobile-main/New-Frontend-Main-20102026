@@ -4,8 +4,8 @@ import React, {} from 'react';
 import { useAppContext } from '../../contexts/AppContext';
 
 import * as ReactRouterDOM from 'react-router-dom';
-import { FinancialsIcon, WalletIcon, CreditCardIcon, BanknotesIcon, GiftIcon, StarIcon, LockClosedIcon, VaultIcon, SubscriptionIcon, EarningsIcon, ReferralIcon, LoyaltyIcon, GiftCardIcon } from '../../icons';
-
+import { FinancialsIcon, WalletIcon, CreditCardIcon, VaultIcon, SubscriptionIcon, EarningsIcon, ReferralIcon, LoyaltyIcon, GiftCardIcon } from '../../icons';
+import PlatformOwnershipCard from '../../components/dashboard/PlatformOwnershipCard';
 
 const FinancialsPage = () => {
   const { showToast } = useAppContext();
@@ -22,20 +22,23 @@ const FinancialsPage = () => {
     { name: 'LoanSqr Micro-Finance', path: '/loansqr', icon: <CreditCardIcon /> }
   ];
 
-  const activeLinkClass = 'border-brand-blue text-brand-blue';
-  const inactiveLinkClass = 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300';
+  const activeLinkClass = 'border-blue-600 text-blue-900 font-black';
+  const inactiveLinkClass = 'border-transparent text-slate-700 hover:text-slate-900 font-bold hover:border-slate-300';
 
   return (
-    <div className="min-h-full">
-      <div className="border-b border-slate-300 bg-white sticky top-0 z-10">
-        <div className="p-6 lg:px-8">
-          <div className="flex items-center gap-4 mb-4">
-            <FinancialsIcon className="w-10 h-10 text-brand-blue" />
+    <div className="min-h-full space-y-6">
+      <div className="border-b border-slate-300 bg-white sticky top-0 z-10 shadow-xs">
+        <div className="p-6 lg:px-8 space-y-4">
+          <div className="flex items-center gap-4">
+            <FinancialsIcon className="w-10 h-10 text-blue-600" />
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Financials</h1>
-              <p className="text-gray-600">Manage your FIC wallet, subscriptions, and monetization.</p>
+              <h1 className="text-3xl font-black text-slate-900">Financial Ecosystem & Liquidity Matrix</h1>
+              <p className="text-slate-700 font-medium">Manage your sovereign FIC wallet, vault lockups, subscriptions, and institutional monetization.</p>
             </div>
           </div>
+
+          {/* Sovereign Platform Ownership Proof */}
+          <PlatformOwnershipCard />
         </div>
         <div className="px-6 lg:px-8">
           <nav className="-mb-px flex space-x-8 overflow-x-auto">
@@ -43,7 +46,7 @@ const FinancialsPage = () => {
               <ReactRouterDOM.NavLink
                 key={link.name}
                 to={link.path}
-                className={({ isActive }) => `flex items-center gap-2 py-3 px-1 border-b-2 font-semibold text-sm whitespace-nowrap ${isActive ? activeLinkClass : inactiveLinkClass}`}
+                className={({ isActive }) => `flex items-center gap-2 py-3 px-1 border-b-2 text-sm whitespace-nowrap transition-colors ${isActive ? activeLinkClass : inactiveLinkClass}`}
               >
                 {link.icon}
                 <span>{link.name}</span>
@@ -53,7 +56,9 @@ const FinancialsPage = () => {
         </div>
       </div>
 
-      <Outlet />
+      <div className="p-6 lg:px-8">
+        <Outlet />
+      </div>
     </div>
   );
 };
