@@ -163,7 +163,7 @@ export const CanaryAdMakerPage: React.FC = () => {
       <H2AdBucket />
 
       {/* MAIN AD STUDIO WORKSPACE */}
-      <main className="flex-1 max-w-7xl mx-auto px-4 py-8 w-full">
+      <main className="flex-1 w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 py-8">
         {/* Studio Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-slate-800 gap-4">
           <div>

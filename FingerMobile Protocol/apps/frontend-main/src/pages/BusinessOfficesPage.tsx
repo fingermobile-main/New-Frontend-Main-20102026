@@ -278,7 +278,7 @@ export const BusinessOfficesPage: React.FC = () => {
   return (
     <MainLayout pageTitle="Business Offices & Global Locations">
       <div className="min-h-screen bg-slate-950 text-slate-100 py-8 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto space-y-10">
+        <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto space-y-10">
           {/* Hero Header */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-slate-800 pb-8">
             <div>

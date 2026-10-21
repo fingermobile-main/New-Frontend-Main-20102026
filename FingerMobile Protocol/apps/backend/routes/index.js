@@ -71,6 +71,7 @@ const accountInactivityRoutes = require('./accountInactivity');
 const campaignsRoutes = require('./campaigns');
 const marketingRoutes = require('./marketing');
 const metricsRoutes = require('./metrics');
+const dpoRoutes = require('./dpo');
 const voicelinesRoutes = require('./voicelines');
 const emojiRoutes = require('./emojis');
 const voicefeedRoutes = require('./voicefeed');
@@ -264,6 +265,9 @@ router.use('/giftcards', giftcardsRoutes);
 router.use('/gifting', giftcardsRoutes);
 router.use('/advancedgifting', giftcardsRoutes);
 router.use('/metrics', metricsRoutes);
+router.use('/v1/vault/dpo', dpoRoutes);
+router.use('/vault/dpo', dpoRoutes);
+router.use('/dpo', dpoRoutes);
 
 // Health check endpoint
 router.get('/health', (req, res) => {

@@ -39,11 +39,11 @@ const OrganizeThesePage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="container mx-auto px-4 py-8">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-8 gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Organize These</h1>
-            <p className="text-gray-600 mt-2">
+            <h1 className="text-3xl font-black text-slate-900 tracking-tight">Organize These</h1>
+            <p className="text-slate-700 font-medium mt-2">
               AI-powered organization of your content, connections, and data
             </p>
           </div>
