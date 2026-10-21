@@ -3,17 +3,18 @@ const walletController = require('../controllers/WalletControllerComplete');
 const { authenticate } = require('../middleware/authenticate');
 const router = express.Router();
 
-// Resilient authentication wrapper: honors valid JWT token if provided; defaults to active dev user '4'
+// Resilient authentication wrapper: honors valid JWT token if provided; defaults to active dev user UUID
 const optionalAuth = (req, res, next) => {
+  const DEFAULT_USER_ID = 'b77e0895-0246-467e-9d74-fa8e59e788ec';
   if (req.headers && req.headers.authorization) {
     return authenticate(req, res, (err) => {
       if (err || !req.user) {
-        req.user = { id: '4', username: 'moderator', role: 'moderator' };
+        req.user = { id: DEFAULT_USER_ID, username: 'moderator', role: 'moderator' };
       }
       next();
     });
   }
-  req.user = { id: '4', username: 'moderator', role: 'moderator' };
+  req.user = { id: DEFAULT_USER_ID, username: 'moderator', role: 'moderator' };
   next();
 };
 
