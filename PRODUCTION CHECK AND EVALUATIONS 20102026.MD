@@ -1257,4 +1257,447 @@ Internal Ground Segment Testing Plan (20 Users)
 Twenty users generating synthetic traffic will help you calibrate the four biggest failure points before public onboarding:
 [ 20 Ground Testers ] ──► [ React UI (CloudFront) ] ──► [ Dockerized Node.js (Fargate) ] ──► [ RDS Proxy ] ──► [ Aurora PostgreSQL ]
                                                                       
+This flow turns regulatory requirements into a competitive advantage: users trust FingerMobile because they control their data, creators feel safe monetizing, and businesses can engage ethically. Every toggle, log entry, and purge job is designed for auditability, scalability, and user empowerment.
 
+
+Here are the three production-ready deliverables, structured for immediate integration by your engineering, compliance, and security teams.
+
+---
+# 🧩 1. React CMP Component (TypeScript + Accessible UI)
+
+**File:** `src/components/ConsentManager.tsx`
+```tsx
+import React, { useState, useEffect, useCallback } from "react";
+
+// Consent flag types matching your backend schema
+export type ConsentFlags = {
+  essential: boolean;
+  functional: boolean;
+  analytics: boolean;
+  marketing: boolean;
+  ai_training: boolean;
+};
+
+type ConsentProps = {
+  apiBaseUrl: string;
+  accessToken: string;
+  onConsentChange?: (flags: ConsentFlags) => void;
+  className?: string;
+};
+
+const DEFAULT_FLAGS: ConsentFlags = {
+  essential: true, // Cannot be toggled
+  functional: false,
+  analytics: false,
+  marketing: false,
+  ai_training: false,
+};
+
+const ConsentManager: React.FC<ConsentProps> = ({
+  apiBaseUrl,
+  accessToken,
+  onConsentChange,
+  className = "",
+}) => {
+  const [flags, setFlags] = useState<ConsentFlags>(DEFAULT_FLAGS);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
+  const [isBannerVisible, setIsBannerVisible] = useState(false);
+
+  // Fetch existing consent on mount
+  useEffect(() => {
+    const fetchConsent = async () => {
+      try {
+        const res = await fetch(`${apiBaseUrl}/v1/users/consent`, {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setFlags(data.flags);
+          setIsBannerVisible(data.consent_version === 0); // First launch
+        }
+      } catch {
+        setError("Failed to load consent preferences.");
+      }
+    };
+    if (accessToken) fetchConsent();
+  }, [apiBaseUrl, accessToken]);
+
+  const handleToggle = useCallback((key: keyof ConsentFlags) => {
+    if (key === "essential") return; // Locked by regulation
+    setFlags((prev) => ({ ...prev, [key]: !prev[key] }));
+    setSuccess(false);
+  }, []);
+
+  const handleSubmit = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch(`${apiBaseUrl}/v1/users/consent`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({ flags }),
+      });
+      if (!res.ok) throw new Error("Consent update failed");
+      setSuccess(true);
+      setIsBannerVisible(false);
+      onConsentChange?.(flags);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Unknown error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (!accessToken && !isBannerVisible) return null;
+
+  return (
+    <div className={`consent-manager ${className}`} role="dialog" aria-label="Privacy Consent">
+      {/* Banner Mode (First Launch) */}
+      {isBannerVisible && (
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-lg z-50">
+          <h2 className="text-lg font-semibold mb-2">🔐 Your Privacy, Your Control</h2>
+          <p className="text-sm text-gray-600 mb-3">
+            FingerMobile uses data to personalize your experience and improve AI features.
+            You control what we collect. Essential data is required for security & functionality.
+          </p>
+          <div className="flex flex-wrap gap-2 mb-3">
+            <button
+              onClick={() => setFlags({ ...DEFAULT_FLAGS, functional: true, analytics: true })}
+              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            >
+              Accept Non-Essential
+            </button>
+            <button
+              onClick={() => setFlags(DEFAULT_FLAGS)}
+              className="px-4 py-2 border border-gray-300 rounded hover:bg-gray-50"
+            >
+              Essential Only
+            </button>
+            <button
+              onClick={() => setIsBannerVisible(false)}
+              className="px-4 py-2 text-gray-500 underline text-sm"
+            >
+              Customize
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Detailed Settings Panel */}
+      <div className="max-w-lg mx-auto p-4 bg-gray-50 rounded-lg border border-gray-200">
+        <h3 className="text-base font-medium mb-4">Granular Consent Preferences</h3>
+        
+        {(Object.keys(flags) as (keyof ConsentFlags)[]).map((key) => (
+          <label key={key} className="flex items-start gap-3 mb-3 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={flags[key]}
+              onChange={() => handleToggle(key)}
+              disabled={key === "essential"}
+              aria-label={`${key} consent`}
+              className="mt-1 w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 disabled:opacity-50"
+            />
+            <div>
+              <span className="block font-medium capitalize">{key.replace("_", " ")}</span>
+              <span className="text-xs text-gray-500">
+                {key === "essential" && "Account security, spam prevention, legal compliance."}
+                {key === "functional" && "Save preferences, dual-account switching, custom feeds."}
+                {key === "analytics" && "Performance monitoring, bug tracking, anonymized metrics."}
+                {key === "marketing" && "Product updates, creator programs, feature announcements."}
+                {key === "ai_training" && "Improve avatar generation, ranking, and ad tools. Opt-out anytime."}
+              </span>
+            </div>
+          </label>
+        ))}
+
+        {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
+        {success && <p className="text-green-600 text-sm mb-2">✅ Preferences saved successfully.</p>}
+
+        <button
+          onClick={handleSubmit}
+          disabled={loading}
+          className="w-full py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50 mt-2"
+        >
+          {loading ? "Saving..." : "Save Preferences"}
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default ConsentManager;
+```
+**Integration Notes:**
+- Wrap in `AuthProvider` or pass JWT via props
+- Add focus trap & `aria-live="polite"` for screen readers if used as modal
+- Replace Tailwind classes with your design system as needed
+
+---
+# 📦 2. Terraform Audit Logging Module
+
+**Structure:** `modules/audit_logging/`
+
+### `main.tf`
+```hcl
+resource "aws_kms_key" "audit_log_key" {
+  description         = "KMS key for FingerMobile audit logs"
+  enable_key_rotation = true
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "Enable IAM User Permissions"
+        Effect = "Allow"
+        Principal = { AWS = "arn:aws:iam::${var.account_id}:root" }
+        Action = "kms:*"
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+resource "aws_s3_bucket" "audit_logs" {
+  bucket        = "${var.environment}-fingermobile-audit-logs-${var.region}"
+  force_destroy = false # Compliance: prevent accidental deletion
+
+  object_lock_enabled = true
+  tags = {
+    Name        = "Audit Logs"
+    Environment = var.environment
+    Compliance  = "GDPR-NDPR-Immutable"
+  }
+}
+
+resource "aws_s3_bucket_versioning" "audit_logs" {
+  bucket = aws_s3_bucket.audit_logs.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "audit_logs" {
+  bucket = aws_s3_bucket.audit_logs.id
+  rule {
+    apply_server_side_encryption_by_default {
+      kms_master_key_id = aws_kms_key.audit_log_key.arn
+      sse_algorithm     = "aws:kms"
+    }
+    bucket_key_enabled = true
+  }
+}
+
+# Object Lock Compliance Mode (WORM)
+resource "aws_s3_bucket_object_lock_configuration" "audit_logs" {
+  bucket = aws_s3_bucket.audit_logs.id
+  rule {
+    default_retention {
+      mode  = "COMPLIANCE"
+      days  = var.retention_days
+    }
+  }
+}
+
+# Lifecycle: move to Glacier Deep Archive after 1 year, expire after retention
+resource "aws_s3_bucket_lifecycle_configuration" "audit_logs" {
+  bucket = aws_s3_bucket.audit_logs.id
+  rule {
+    id     = "archive-and-expire"
+    status = "Enabled"
+    transition {
+      days          = 365
+      storage_class = "GLACIER_DEEP_ARCHIVE"
+    }
+    expiration {
+      days = var.retention_days
+    }
+    noncurrent_version_transition {
+      noncurrent_days = 30
+      storage_class   = "GLACIER"
+    }
+  }
+}
+
+# IAM Role for logging services (Kafka worker, Lambda, CloudTrail)
+resource "aws_iam_role" "audit_writer" {
+  name = "${var.environment}-audit-writer"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = ["lambda.amazonaws.com", "logs.amazonaws.com", "s3.amazonaws.com"]
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "audit_writer_policy" {
+  name = "${var.environment}-audit-writer-policy"
+  role = aws_iam_role.audit_writer.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:PutObject",
+          "s3:PutObjectVersion",
+          "s3:GetObjectVersion"
+        ]
+        Resource = "${aws_s3_bucket.audit_logs.arn}/*"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "kms:Encrypt",
+          "kms:Decrypt",
+          "kms:GenerateDataKey"
+        ]
+        Resource = aws_kms_key.audit_log_key.arn
+      }
+    ]
+  })
+}
+```
+
+### `variables.tf`
+```hcl
+variable "environment" {
+  type        = string
+  description = "Deployment environment (dev, staging, prod)"
+  validation {
+    condition     = contains(["dev", "staging", "prod"], var.environment)
+    error_message = "Must be dev, staging, or prod."
+  }
+}
+
+variable "region" {
+  type    = string
+  default = "af-south-1"
+}
+
+variable "account_id" {
+  type        = string
+  description = "AWS Account ID"
+}
+
+variable "retention_days" {
+  type        = number
+  default     = 2555 # 7 years for financial/compliance logs
+  description = "WORM retention period in days"
+}
+```
+
+### `outputs.tf`
+```hcl
+output "bucket_arn" {
+  value = aws_s3_bucket.audit_logs.arn
+}
+output "kms_key_arn" {
+  value = aws_kms_key.audit_log_key.arn
+}
+output "writer_role_arn" {
+  value = aws_iam_role.audit_writer.arn
+}
+```
+
+**Compliance Notes:**
+- `COMPLIANCE` mode prevents deletion/modification until retention expires (GDPR/NDPR audit requirement)
+- Use `aws_s3_bucket_policy` to deny `s3:DeleteObject` for all principals except `aws:PrincipalArn` matching the audit writer
+- Integrate with Kafka `consent.events` via AWS MSK Connect → S3 Sink Connector
+
+---
+# 📜 3. Filled Sample DPIA (GDPR/NDPR/EU AI Act Aligned)
+
+**Document:** `FingerMobile_Data_Protection_Impact_Assessment_v1.2.pdf` (Markdown below)
+
+```markdown
+# 📑 DATA PROTECTION IMPACT ASSESSMENT (DPIA)
+**Project/Processing:** FingerMobile Content & Lead-Gen Engine
+**Controller:** FingerMobile Ltd.
+**DPO:** compliance@fingermobile.com
+**Date:** October 21, 2026
+**Regulatory Scope:** GDPR, NDPR, EU AI Act, DSA, FTC Guidelines
+
+## 1. Processing Description
+| Aspect | Detail |
+|--------|--------|
+| **Purpose** | Deliver personalized content feeds, AI-assisted creation, SME lead-gen tracking, creator monetization, authenticity scoring |
+| **Data Subjects** | End-users, creators, business/page admins, employees |
+| **Data Categories** | Identifiers (email, username, hashed phone), behavioral (dwell, clicks, views), financial (payouts, tax docs), AI consent flags, C2PA provenance metadata |
+| **Processing Operations** | Collection, storage, profiling, AI training, automated decision-making (feed ranking, authenticity scoring), cross-border transfer, retention, deletion |
+
+## 2. Lawful Basis Mapping
+| Processing Activity | Legal Basis | Justification |
+|---------------------|-------------|---------------|
+| Account creation & authentication | Contract (Art. 6(1)(b) GDPR) | Necessary to provide platform access |
+| Feed personalization & dwell tracking | Legitimate Interest (Art. 6(1)(f)) + Consent (where AI training) | Balanced via transparency, opt-out, data minimization |
+| AI model training & avatar generation | Explicit Consent (Art. 6(1)(a), Art. 9 if biometric) | Granular toggle, opt-out at ingestion, C2PA disclosure |
+| Monetization & payouts | Contract + Legal Obligation (tax) | Required for creator economy operations |
+| Fraud/pod detection | Legitimate Interest + Regulatory Compliance | Necessary for platform integrity & DSA obligations |
+
+## 3. Risk Assessment & Mitigation
+| Risk | Likelihood | Impact | Risk Level | Mitigation Controls |
+|------|------------|--------|------------|---------------------|
+| Profiling without valid consent | Low | High | Medium | Granular CMP, middleware enforcement, audit logs, quarterly consent audits |
+| AI model bias / unfair reach penalty | Medium | High | High | Human-in-the-loop review, fairness testing, appeal workflow, algorithm choice toggle |
+| Cross-border data transfer violations | Low | High | Low | AWS regional endpoints, SCCs, data residency routing, NDPR/GDPR alignment |
+| PII leakage via E2EE key compromise | Very Low | Critical | Low | Device-bound keys, hardware keystore, zero-server-plaintext, bug bounty program |
+| Automated decision-making opacity | Medium | Medium | Medium | Transparency report, ranking factor dashboard, user override (`chronological` mode) |
+
+## 4. Necessity & Proportionality
+- **Data Minimization:** Only `dwell_ms`, `qualified_view`, `auth_score`, and `consent_flags` used for ranking. No exact location, IP, or contact details in ML pipelines.
+- **Purpose Limitation:** AI training strictly opt-in. Marketing data isolated from analytics. Financial records segregated in append-only ledger.
+- **Retention:** Raw events 90d, aggregated 3y, financial 7y, audit logs WORM 7y. Automated purge pipeline tested quarterly.
+- **User Control:** One-click consent export, granular revocation, feed algorithm toggle, data deletion within 72h SLA.
+
+## 5. Data Subject Rights Implementation
+| Right | Mechanism | SLA |
+|-------|-----------|-----|
+| Access & Portability | `/v1/users/consent/export`, `/v1/data/export` (JSON/CSV) | 48h |
+| Rectification | In-app profile edit, admin override for errors | 24h |
+| Erasure ("Right to be Forgotten") | Consent revoke → cascade delete → audit log | 72h |
+| Object to Profiling | Feed algorithm toggle, `auth_first` → `chronological` | Immediate |
+| Restrict Processing | `consent_flags` set to `false` → blocks non-essential pipelines | Immediate |
+
+## 6. AI Act Compliance (High-Risk Processing)
+- **Risk Classification:** Limited/Transparency risk (recommendation + content generation)
+- **Controls:** C2PA provenance, AI disclosure tags, human oversight queue, bias testing logs, model cards published quarterly
+- **Automated Decision-Making:** Users notified when AI significantly impacts reach/monetization; appeal process via Support Dashboard
+
+## 7. Sign-Off
+| Role | Name | Signature | Date |
+|------|------|-----------|------|
+| Data Protection Officer | ____________________ | ________________ | __________ |
+| Chief Technology Officer | ____________________ | ________________ | __________ |
+| Head of Product/Growth | ____________________ | ________________ | __________ |
+| External Legal Counsel | ____________________ | ________________ | __________ |
+
+*Next Review Date: April 21, 2027 or upon material feature change*
+```
+
+---
+# ✅ Deployment & Validation Checklist
+
+| Component | Validation Step | Success Criteria |
+|-----------|----------------|------------------|
+| React CMP | Render banner on fresh install; toggle `ai_training`; submit; verify API `200` | Flags persist in DB; UI updates; audit log created |
+| Terraform Audit | `terraform plan` → `apply`; upload test file; attempt delete | `COMPLIANCE` lock blocks deletion; KMS encrypts; IAM writer has `PutObject` only |
+| DPIA | Cross-check with processing map; run internal compliance review | All high risks have technical controls; sign-off collected; published to transparency page |
+
+---
+**Next Actions for Your Team:**
+1. `npm i react react-dom` → drop `ConsentManager.tsx` into `src/components/`
+2. `cd terraform/modules/audit_logging` → `terraform init && terraform plan -var-file=envs/prod.tfvars`
+3. Share filled DPIA with DPO/Legal for internal review & regulatory filing
+4. Wire CMP to your API Gateway middleware (`consentGuard`) and Kafka `consent.events` producer
+
+Need the Kafka MSK Connect S3 Sink config, middleware JWT validation code, or a Grafana consent compliance dashboard JSON? I can generate those immediately.
