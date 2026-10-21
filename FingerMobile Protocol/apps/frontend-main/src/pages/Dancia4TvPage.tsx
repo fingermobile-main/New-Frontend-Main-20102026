@@ -342,7 +342,7 @@ const Dancia4TvPage: React.FC = () => {
 
       {showSettingsModal && <DanciaAppSettings onClose={() => setShowSettingsModal(false)} />}
 
-      <main className="dancia4tv-main space-y-8">
+      <main className="dancia4tv-main max-w-[1536px] 2xl:max-w-[1680px] mx-auto w-full space-y-8">
         {/* Age Verification Modal */}
         {showAgeVerification && (
           <AgeVerificationModalLocal onVerify={handleAgeVerification} />

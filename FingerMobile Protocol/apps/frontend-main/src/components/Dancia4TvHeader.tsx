@@ -32,7 +32,7 @@ const Dancia4TvHeader: React.FC<Dancia4TvHeaderProps> = ({
   };
 
   return (
-    <header className="flex items-center justify-between py-6 mb-8 border-b border-white/5">
+    <header className="flex items-center justify-between py-6 mb-8 border-b border-white/5 max-w-[1536px] 2xl:max-w-[1680px] mx-auto w-full">
       <div className="flex items-center space-x-10">
         <div
           onClick={() => handleNavClick('movies')}

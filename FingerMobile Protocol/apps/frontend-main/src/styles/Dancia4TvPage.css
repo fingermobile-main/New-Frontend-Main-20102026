@@ -17,7 +17,8 @@
 .header-content {
   display: flex;
   align-items: center;
-  max-width: 1200px;
+  max-width: 1680px;
+  width: 100%;
   margin: 0 auto;
 }
 
@@ -105,7 +106,8 @@
 .dancia4tv-layout {
   display: flex;
   height: calc(100% - 40px);
-  max-width: 1200px;
+  max-width: 1680px;
+  width: 100%;
   margin: 0 auto;
   padding: 1rem;
 }
@@ -137,7 +139,8 @@
 
 /* Browse Content */
 .browse-content {
-  max-width: 1200px;
+  max-width: 1680px;
+  width: 100%;
   margin: 0 auto;
   padding: 1rem;
   height: calc(100% - 40px);
@@ -182,7 +185,8 @@
 
 /* Subscriptions Content */
 .subscriptions-content {
-  max-width: 1200px;
+  max-width: 1680px;
+  width: 100%;
   margin: 0 auto;
   padding: 1rem;
   height: calc(100% - 40px);
@@ -489,7 +493,8 @@
 
 .video-player {
   width: 80%;
-  max-width: 1200px;
+  max-width: 1680px;
+  width: 100%;
   background-color: #111;
   border-radius: 8px;
   overflow: hidden;

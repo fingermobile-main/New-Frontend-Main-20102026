@@ -101,7 +101,7 @@ class FingerShortsController {
           ) AS cards
         FROM fingershorts_sessions s
         JOIN fingershorts_cards c ON s.id = c.session_id
-        LEFT JOIN users u ON u.id::text = s.author_id OR u.uuid = s.author_id
+        LEFT JOIN users u ON u.id::text = s.author_id
         WHERE s.is_published = true 
           AND s.expires_at > NOW()
           AND c.expires_at > NOW()
@@ -165,7 +165,7 @@ class FingerShortsController {
         FROM fingershorts_sessions s
         JOIN fingershorts_cards c ON s.id = c.session_id
         JOIN follows f ON (f.following_id::text = s.author_id)
-        LEFT JOIN users u ON u.id::text = s.author_id OR u.uuid = s.author_id
+        LEFT JOIN users u ON u.id::text = s.author_id
         WHERE f.follower_id::text = $1
           AND s.is_published = true 
           AND s.expires_at > NOW()
@@ -198,7 +198,7 @@ class FingerShortsController {
           u.avatar_url AS author_avatar
         FROM fingershorts_cards c
         JOIN fingershorts_sessions s ON c.session_id = s.id
-        LEFT JOIN users u ON u.id::text = s.author_id OR u.uuid = s.author_id
+        LEFT JOIN users u ON u.id::text = s.author_id
         WHERE c.expires_at > NOW()
         ORDER BY (c.views_count * 0.4 + c.likes_count * 0.4 + c.comments_count * 0.2) DESC, c.created_at DESC
         LIMIT $1
@@ -224,7 +224,7 @@ class FingerShortsController {
           u.username AS author_name,
           u.avatar_url AS author_avatar
         FROM fingershorts_sessions s
-        LEFT JOIN users u ON u.id::text = s.author_id OR u.uuid = s.author_id
+        LEFT JOIN users u ON u.id::text = s.author_id
         WHERE s.id = $1
       `;
       const sessionRes = await pool.query(sessionQuery, [id]);

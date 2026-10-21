@@ -553,7 +553,8 @@ const BeatwaveNGPage: React.FC = () => {
       {/* ======================================================== */}
       {/* MAIN CONTENT AREA */}
       {/* ======================================================== */}
-      <main className="flex-1 min-w-0 p-4 sm:p-8 space-y-8 overflow-x-hidden">
+      <main className="flex-1 min-w-0 p-4 sm:p-8 overflow-x-hidden">
+        <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto w-full space-y-8">
         {/* MII SOVEREIGN PROFILE & LIVE BROADCAST TOP WIDGET */}
         <MiiTopWidget onOpenDeviceSelector={() => setShowDeviceModal(true)} />
 
@@ -1201,6 +1202,7 @@ const BeatwaveNGPage: React.FC = () => {
             </div>
           </div>
         )}
+        </div>
       </main>
 
       {/* ======================================================== */}

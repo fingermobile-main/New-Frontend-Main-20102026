@@ -4,8 +4,8 @@ const logger = require('../utils/logger');
 
 // Helper to format DB row to DanciaVideo object
 function formatVideo(row) {
-  const views = row.views || 0;
-  const likes = row.likes || 0;
+  const views = parseInt(row.views || 0, 10);
+  const likes = parseInt(row.likes || 0, 10);
   return {
     videoID: row.id,
     title: row.title,

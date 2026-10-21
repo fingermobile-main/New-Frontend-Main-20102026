@@ -44,7 +44,7 @@ class GameonController {
                 COALESCE(u.followers_count, 12) AS wins,
                 '88.5%' AS win_rate
          FROM gameon_leaderboards gl
-         LEFT JOIN users u ON u.uuid::text = gl.user_id::text
+         LEFT JOIN users u ON u.id::text = gl.user_id::text
          ORDER BY gl.rank ASC LIMIT 10`
       );
 
@@ -119,7 +119,7 @@ class GameonController {
       const result = await pool.query(
         `SELECT gl.*, u.username, u.avatar_url 
          FROM gameon_leaderboards gl
-         LEFT JOIN users u ON u.uuid::text = gl.user_id::text
+         LEFT JOIN users u ON u.id::text = gl.user_id::text
          ORDER BY gl.rank ASC LIMIT 25`
       );
       return res.json({ success: true, leaderboard: result.rows });
