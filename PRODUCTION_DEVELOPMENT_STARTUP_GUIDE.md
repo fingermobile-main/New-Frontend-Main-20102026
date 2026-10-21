@@ -33,7 +33,7 @@ Before starting the development servers, ensure you have:
 1. Node.js (v18 or higher)
 2. npm package manager
 3. Docker Desktop (if planning to use Docker Compose for production)
-4. PostgreSQL database (for full functionality)
+4. PostgreSQL database (for full functionality), Initialize all 15 platform databases specified in POSTGRES_MULTIPLE_DATABASES directly in fingermobile_postgres (including fingermobile_comms, fingermobile_business_db, fingermobile_identity_db, etc.). Both communications_service and business_suite_api reconnected immediately.
 5. Redis server (for caching and session management)
 
 ## Startup Procedures
@@ -155,7 +155,7 @@ Create test files in the `tests/` directory to automate browser interactions and
 
 ## Verification Checklist
 
-Before starting development work, verify:
+Before starting development work, verify: Initialized all 15 platform databases specified in POSTGRES_MULTIPLE_DATABASES directly in fingermobile_postgres (including fingermobile_comms, fingermobile_business_db, fingermobile_identity_db, etc.). Both communications_service and business_suite_api reconnected immediately.
 - [ ] Backend server running on `http://localhost:5001`
 - [ ] Frontend server running on `http://localhost:3000`
 - [ ] Platform loads correctly in Chrome

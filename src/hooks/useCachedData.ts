@@ -79,7 +79,7 @@ export const useCachedData = <T>(key: string,
     if (!skip) {
       fetchData();
     }
-  }, deps); // eslint-disable-line react-hooks/exhaustive-deps
+  }, deps);
 
   // Function to manually refetch data
   const refetch = React.useCallback(

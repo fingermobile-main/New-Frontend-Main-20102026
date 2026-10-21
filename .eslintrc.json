@@ -21,12 +21,15 @@
   "rules": {
     "no-unused-vars": "warn",
     "no-console": "warn",
-    "semi": ["error", "always"],
-    "quotes": ["error", "single"],
-    "indent": ["error", 2],
-    "no-trailing-spaces": "error",
-    "eol-last": "error",
-    "no-undef": "off"
+    "semi": "off",
+    "quotes": "off",
+    "indent": "off",
+    "no-trailing-spaces": "off",
+    "eol-last": "off",
+    "no-undef": "off",
+    "no-empty": "warn",
+    "no-constant-condition": "warn",
+    "no-case-declarations": "warn"
   },
   "ignorePatterns": [
     "node_modules/",

@@ -13,7 +13,7 @@ export interface FingerMobileToastProps {
 export const FingerMobileToast: React.FC<FingerMobileToastProps> = ({
   message,
   type = 'info',
-  duration = 4000,
+  duration = 1200,
   onClose
 }) => {
   const [isVisible, setIsVisible] = useState(true);

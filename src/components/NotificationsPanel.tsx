@@ -1,5 +1,5 @@
-import React, {} from 'react';
-
+import React from 'react';
+import FingerMobileEmojiImage from './common/FingerMobileEmojiImage';
 
 interface Notification {
   id: string;
@@ -19,6 +19,14 @@ interface NotificationsPanelProps {
   onMarkAsRead?: (id: string) => void;
 }
 
+const NOTIFICATION_EMOJI_MAP: Record<Notification['type'], string> = {
+  like: 'heart-eyes',
+  comment: 'idea-laptop',
+  follow: 'crown-royalty',
+  message: 'blowing-love',
+  system: 'headphones-music'
+};
+
 const NotificationsPanel: React.FC<NotificationsPanelProps> = ({
   isOpen,
   onClose,
@@ -34,16 +42,6 @@ const NotificationsPanel: React.FC<NotificationsPanelProps> = ({
     }
   };
 
-  const getNotificationIcon = (type: Notification['type']) => {
-    const icons: Record<Notification['type'], string> = {
-      like: '❤️',
-      comment: '💬',
-      follow: '👤',
-      message: '📧',
-      system: '🔔'
-    };
-    return icons[type] || '🔔';
-  };
 
   if (!isOpen) return null;
 
@@ -77,9 +75,13 @@ const NotificationsPanel: React.FC<NotificationsPanelProps> = ({
                   onClick={() => handleNotificationClick(notification.id, notification.link)} role="button" tabIndex={0}
                 >
                   <div className="flex items-start space-x-3">
-                    <span className="text-2xl flex-shrink-0">
-                      {getNotificationIcon(notification.type)}
-                    </span>
+                    <div className="flex-shrink-0 pt-0.5">
+                      <FingerMobileEmojiImage
+                        slug={NOTIFICATION_EMOJI_MAP[notification.type] || 'thumbs-up'}
+                        size="lg"
+                        showTooltip
+                      />
+                    </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-gray-900">{notification.title}</p>
                       <p className="text-xs text-gray-600 mt-1">{notification.message}</p>

@@ -11,7 +11,7 @@ export interface ToastProps {
 export const ToastNotification: React.FC<ToastProps> = ({
   message,
   type = 'info',
-  duration = 3500,
+  duration = 1200,
   onClose
 }) => {
   return (

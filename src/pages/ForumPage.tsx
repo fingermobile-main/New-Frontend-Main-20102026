@@ -27,6 +27,7 @@ import {
   CheckIcon,
   Bars3Icon,
   ArrowRightOnRectangleIcon,
+  FaceSmileIcon,
 } from '@heroicons/react/24/outline';
 import {
   CheckCircleIcon as CheckCircleSolidIcon,
@@ -54,6 +55,8 @@ import voiceLineServiceInstance from '../services/VoiceLineService';
 import ConnectWidget from '../components/widgets/ConnectWidget';
 import DiscoverWidget from '../components/widgets/DiscoverWidget';
 import { CategoryBulletinFeedHeader, getCategoryEmoji } from '../components/forum/CategoryBulletinFeedHeader';
+import { FingerMobileEmojiPicker } from '../components/common/FingerMobileEmojiPicker';
+import { renderContentWithFingerMobileEmojis } from '../utils/fingerMobileEmojiRenderer';
 
 // =============================================================================
 // MINI DRAWER / DROPDOWN MENU ENTITIES
@@ -1016,6 +1019,7 @@ export const ForumPage: React.FC = () => {
   const [composerTags, setComposerTags] = useState<string>('');
   const [composerTab, setComposerTab] = useState<'write' | 'preview'>('write');
   const [composerError, setComposerError] = useState<string | null>(null);
+  const [isComposerEmojiOpen, setIsComposerEmojiOpen] = useState<boolean>(false);
 
   // Active Tool Sub-Panel State
   const [activeComposerTool, setActiveComposerTool] = useState<
@@ -1095,9 +1099,22 @@ export const ForumPage: React.FC = () => {
 
   const triggerToast = (message: string, type: 'success' | 'info' | 'error' = 'success') => {
     setToastNotification({ message, type });
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(
+        new CustomEvent('fingermobile:toast', {
+          detail: {
+            message,
+            text: message,
+            type,
+            category: type,
+            timestamp: Date.now(),
+          },
+        })
+      );
+    }
     setTimeout(() => {
       setToastNotification(null);
-    }, 3500);
+    }, 1200);
   };
 
   // Feed State
@@ -1941,7 +1958,7 @@ export const ForumPage: React.FC = () => {
 
       {/* TOP NAVIGATION & LEVEL 2 NAVBAR */}
       <header className="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Left Section: 1. Logo, 2. FingerMobile, 3. Burger Menu (Justified & Well-Spaced) */}
             <div className="flex items-center gap-4 sm:gap-6 shrink-0">
@@ -2118,7 +2135,7 @@ export const ForumPage: React.FC = () => {
       </header>
 
       {/* MAIN CONTAINER */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+      <main className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 mt-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* ======================================================================= */}
           {/* LEFT RAIL (3 cols): IDENTITY, UNIVERSAL PROFILE CARD, PRIVACY           */}
@@ -2128,15 +2145,15 @@ export const ForumPage: React.FC = () => {
             <UniversalProfileCard />
 
             {/* Quick Live Studio & "Join Me Live" Card */}
-            <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-3.5 shadow-xs space-y-2">
+            <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-3.5 shadow-xs space-y-2.5">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-center gap-2">
                   <span className="w-2.5 h-2.5 rounded-full bg-rose-500 animate-pulse" />
-                  <span className="text-xs font-black text-slate-800 dark:text-white">
+                  <span className="text-sm font-black text-slate-800 dark:text-white">
                     Live Broadcast Studio
                   </span>
                 </div>
-                <span className="text-[9px] font-black uppercase tracking-wider bg-rose-500/10 text-rose-600 px-2 py-0.5 rounded-full border border-rose-500/20">
+                <span className="text-xs font-black uppercase tracking-wider bg-rose-500/10 text-rose-600 px-2.5 py-0.5 rounded-full border border-rose-500/20">
                   WebRTC
                 </span>
               </div>
@@ -2148,9 +2165,9 @@ export const ForumPage: React.FC = () => {
                     setLiveStudioInitialTab('broadcast');
                     setIsLiveStudioOpen(true);
                   }}
-                  className="py-2 px-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-[11px] font-bold transition flex items-center justify-center gap-1.5 shadow-sm cursor-pointer"
+                  className="py-2.5 px-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm cursor-pointer"
                 >
-                  <SignalIcon className="w-3.5 h-3.5" />
+                  <SignalIcon className="w-4 h-4" />
                   <span>Go Live</span>
                 </button>
 
@@ -2160,7 +2177,7 @@ export const ForumPage: React.FC = () => {
                     setLiveStudioInitialTab('schedule');
                     setIsLiveStudioOpen(true);
                   }}
-                  className="py-2 px-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-[11px] font-bold transition flex items-center justify-center gap-1.5 shadow-sm cursor-pointer"
+                  className="py-2.5 px-3 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm cursor-pointer"
                 >
                   <span>📅 Schedule</span>
                 </button>
@@ -2402,106 +2419,128 @@ export const ForumPage: React.FC = () => {
                 </div>
               </div>
             ) : (
-              <div ref={composerContainerRef} className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-300 dark:border-slate-800 p-4 shadow-sm">
-                <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
-                  <div className="flex items-center gap-2">
+              <div ref={composerContainerRef} className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-300 dark:border-slate-800 p-5 shadow-sm">
+                <div className="flex items-center justify-between pb-3.5 border-b border-slate-100 dark:border-slate-800">
+                  <div className="flex items-center gap-3">
                     <img
                       src={syncedProfile.avatar}
                       alt={syncedProfile.name}
-                      className="w-8 h-8 rounded-full object-cover border border-orange-200"
+                      className="w-10 h-10 rounded-full object-cover border border-orange-200"
                     />
                     <div>
-                      <span className="text-xs font-bold text-slate-900 dark:text-white">{syncedProfile.name}</span>
-                      <span className="text-[10px] text-slate-700 block font-mono">@{syncedProfile.username}</span>
+                      <span className="text-sm font-bold text-slate-900 dark:text-white">{syncedProfile.name}</span>
+                      <span className="text-xs text-slate-700 block font-mono">@{syncedProfile.username}</span>
                     </div>
                   </div>
 
                   {/* Tab Switcher: Write vs Preview */}
-                  <div className="flex items-center bg-slate-100 dark:bg-slate-800 p-0.5 rounded-lg text-[11px] font-bold">
+                  <div className="flex items-center bg-slate-100 dark:bg-slate-800 p-0.5 rounded-lg text-xs font-bold">
                     <button
-                    type="button"
-                    onClick={() => setComposerTab('write')}
-                    className={`px-2.5 py-1 rounded-md transition ${composerTab === 'write' ? 'bg-white dark:bg-slate-700 text-orange-600 shadow-xs' : 'text-slate-600'}`}
-                  >
-                    Write
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setComposerTab('preview')}
-                    className={`px-2.5 py-1 rounded-md transition ${composerTab === 'preview' ? 'bg-white dark:bg-slate-700 text-orange-600 shadow-xs' : 'text-slate-600'}`}
-                  >
-                    Preview
-                  </button>
-                </div>
-              </div>
-
-              {composerError && (
-                <div className="mt-3 p-2 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl flex items-center gap-2">
-                  <ExclamationCircleIcon className="w-4 h-4 flex-shrink-0" />
-                  <span>{composerError}</span>
-                </div>
-              )}
-
-              {/* Composer Form */}
-              <form onSubmit={handleCreatePost} className="mt-3 space-y-3">
-                {/* Optional Title */}
-                <input
-                  type="text"
-                  placeholder="Post title or headline (optional)..."
-                  value={composerTitle}
-                  onChange={(e) => setComposerTitle(e.target.value)}
-                  className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold focus:ring-1 focus:ring-orange-500 focus:outline-none text-slate-900 border-slate-300 placeholder:text-slate-400 focus:ring-2"
-                />
-
-                {/* Mandatory Category Dropdown */}
-                <div className="relative">
-                  <select
-                    value={composerCategory}
-                    onChange={(e) => setComposerCategory(e.target.value)}
-                    required
-                    className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-amber-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-slate-200 focus:ring-1 focus:ring-orange-500 focus:outline-none border-slate-300 focus:ring-2"
-                  >
-                    <option value="">▼ Select Mandatory Category (54 Available Topics)...</option>
-                    {apiCategories.map((c) => (
-                      <option key={c.id} value={c.name}>
-                        {getCategoryEmoji(c.name, c.icon)} {c.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Write / Preview Text Area */}
-                {composerTab === 'write' ? (
-                  <div className="space-y-1">
-                    <textarea
-                      rows={3}
-                      placeholder="Share discussions, paste https:// URLs for instant OG previews, or attach media/stems..."
-                      value={composerContent}
-                      onChange={handleContentChange}
-                      className="w-full p-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:ring-1 focus:ring-orange-500 focus:outline-none resize-none leading-relaxed text-slate-900 font-bold border-slate-300 placeholder:text-slate-400 focus:ring-2"
-                    />
-
-                    {/* Markdown Inserters */}
-                    <div className="flex items-center gap-1 text-[11px] text-slate-700">
-                      <span>Format:</span>
-                      <button type="button" onClick={() => insertMarkdownSyntax('bold')} className="hover:text-slate-700 font-bold px-1">B</button>
-                      <button type="button" onClick={() => insertMarkdownSyntax('italic')} className="hover:text-slate-700 italic px-1">I</button>
-                      <button type="button" onClick={() => insertMarkdownSyntax('heading')} className="hover:text-slate-700 px-1">H3</button>
-                      <button type="button" onClick={() => insertMarkdownSyntax('bullet')} className="hover:text-slate-700 px-1">• List</button>
-                      <button type="button" onClick={() => insertMarkdownSyntax('code')} className="hover:text-slate-700 font-mono px-1">&lt;/&gt;</button>
-                    </div>
+                      type="button"
+                      onClick={() => setComposerTab('write')}
+                      className={`px-3 py-1.5 rounded-md transition ${composerTab === 'write' ? 'bg-white dark:bg-slate-700 text-orange-600 shadow-xs' : 'text-slate-600'}`}
+                    >
+                      Write
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setComposerTab('preview')}
+                      className={`px-3 py-1.5 rounded-md transition ${composerTab === 'preview' ? 'bg-white dark:bg-slate-700 text-orange-600 shadow-xs' : 'text-slate-600'}`}
+                    >
+                      Preview
+                    </button>
                   </div>
-                ) : (
-                  <div className="p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl min-h-[80px] text-xs leading-relaxed">
-                    {composerContent ? (
-                      <div className="prose prose-xs dark:prose-invert">
-                        <p className="whitespace-pre-wrap">{composerContent}</p>
-                      </div>
-                    ) : (
-                      <span className="text-slate-700 italic">No content typed yet. Switch back to write.</span>
-                    )}
+                </div>
+
+                {composerError && (
+                  <div className="mt-3 p-2.5 bg-rose-50 border border-rose-200 text-rose-700 text-xs sm:text-sm rounded-xl flex items-center gap-2">
+                    <ExclamationCircleIcon className="w-4 h-4 flex-shrink-0" />
+                    <span>{composerError}</span>
                   </div>
                 )}
+
+                {/* Composer Form */}
+                <form onSubmit={handleCreatePost} className="mt-3.5 space-y-3.5">
+                  {/* Optional Title */}
+                  <input
+                    type="text"
+                    placeholder="Post title or headline (optional)..."
+                    value={composerTitle}
+                    onChange={(e) => setComposerTitle(e.target.value)}
+                    className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-sm font-bold focus:ring-2 focus:ring-orange-500 focus:outline-none text-slate-900 placeholder:text-slate-400"
+                  />
+
+                  {/* Mandatory Category Dropdown */}
+                  <div className="relative">
+                    <select
+                      value={composerCategory}
+                      onChange={(e) => setComposerCategory(e.target.value)}
+                      required
+                      className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-sm font-bold text-slate-900 dark:text-slate-200 focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                    >
+                      <option value="">▼ Select Mandatory Category (54 Available Topics)...</option>
+                      {apiCategories.map((c) => (
+                        <option key={c.id} value={c.name}>
+                          {getCategoryEmoji(c.name, c.icon)} {c.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Write / Preview Text Area */}
+                  {composerTab === 'write' ? (
+                    <div className="space-y-1.5">
+                      <textarea
+                        rows={3}
+                        placeholder="Share discussions, paste https:// URLs for instant OG previews, or attach media/stems..."
+                        value={composerContent}
+                        onChange={handleContentChange}
+                        className="w-full p-3.5 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-[15px] focus:ring-2 focus:ring-orange-500 focus:outline-none resize-none leading-relaxed text-slate-900 font-medium placeholder:text-slate-400"
+                      />
+
+                      {/* Markdown & 5D Emoji Inserters */}
+                      <div className="flex items-center justify-between gap-1.5 text-xs text-slate-700">
+                        <div className="flex items-center gap-1.5">
+                          <span>Format:</span>
+                          <button type="button" onClick={() => insertMarkdownSyntax('bold')} className="hover:text-slate-900 font-bold px-1.5 py-0.5 rounded hover:bg-slate-100">B</button>
+                          <button type="button" onClick={() => insertMarkdownSyntax('italic')} className="hover:text-slate-900 italic px-1.5 py-0.5 rounded hover:bg-slate-100">I</button>
+                          <button type="button" onClick={() => insertMarkdownSyntax('heading')} className="hover:text-slate-900 px-1.5 py-0.5 rounded hover:bg-slate-100">H3</button>
+                          <button type="button" onClick={() => insertMarkdownSyntax('bullet')} className="hover:text-slate-900 px-1.5 py-0.5 rounded hover:bg-slate-100">• List</button>
+                          <button type="button" onClick={() => insertMarkdownSyntax('code')} className="hover:text-slate-900 font-mono px-1.5 py-0.5 rounded hover:bg-slate-100">&lt;/&gt;</button>
+                        </div>
+                        <div className="relative">
+                          <button
+                            type="button"
+                            onClick={() => setIsComposerEmojiOpen(!isComposerEmojiOpen)}
+                            className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-800 hover:bg-emerald-100 border border-emerald-300 font-bold transition shadow-xs cursor-pointer"
+                            title="Insert FingerMobile 5D Brand Emojis & Emoticons"
+                          >
+                            <FaceSmileIcon className="w-3.5 h-3.5 text-emerald-700" />
+                            <span>5D Emojis</span>
+                          </button>
+                          <FingerMobileEmojiPicker
+                            isOpen={isComposerEmojiOpen}
+                            onClose={() => setIsComposerEmojiOpen(false)}
+                            onSelectEmoji={(emoji) => {
+                              setComposerContent((prev) => `${prev ? prev + ' ' : ''}[emoji:${emoji.slug}] `);
+                            }}
+                            position="top"
+                            align="right"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="p-3.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl min-h-[90px] text-[15px] leading-relaxed">
+                      {composerContent ? (
+                        <div className="prose prose-sm dark:prose-invert">
+                          <p className="whitespace-pre-wrap">{renderContentWithFingerMobileEmojis(composerContent)}</p>
+                        </div>
+                      ) : (
+                        <span className="text-slate-700 italic">No content typed yet. Switch back to write.</span>
+                      )}
+                    </div>
+                  )}
 
                 {/* ================================================================= */}
                 {/* MULTI-MEDIA ATTACHMENT GALLERY STRIP (Edit, Crop & Filters)        */}
@@ -2772,6 +2811,20 @@ export const ForumPage: React.FC = () => {
                       title="Location Tag (Auto-Fill from IP)"
                     >
                       <MapPinIcon className="w-4 h-4" />
+                    </button>
+
+                    {/* Tool: 5D Emojis & Emoticons */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setActiveComposerTool(activeComposerTool === 'emoji' ? null : 'emoji');
+                      }}
+                      className={`p-2 rounded-xl transition ${
+                        activeComposerTool === 'emoji' ? 'bg-emerald-600 text-white' : 'hover:bg-slate-100 text-slate-600'
+                      }`}
+                      title="FingerMobile 5D Brand Emojis & Emoticons"
+                    >
+                      <FaceSmileIcon className="w-4 h-4" />
                     </button>
 
                     {/* Tool 7: BeatwaveNG */}
@@ -3483,6 +3536,37 @@ export const ForumPage: React.FC = () => {
                 )}
 
                 {/* ================================================================= */}
+                {/* SUB-PANEL: FINGERMOBILE 5D BRAND EMOJIS & EMOTICONS               */}
+                {/* ================================================================= */}
+                {activeComposerTool === 'emoji' && (
+                  <div className="p-3.5 bg-emerald-50/90 border border-emerald-200 rounded-2xl space-y-2.5 text-xs animate-in fade-in duration-150">
+                    <div className="flex items-center justify-between pb-1 border-b border-emerald-200/60">
+                      <span className="font-bold text-emerald-950 flex items-center gap-1.5">
+                        <FaceSmileIcon className="w-4 h-4 text-emerald-700" />
+                        FingerMobile Official 5D Mint-Green Emojis & Emoticons
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => setActiveComposerTool(null)}
+                        className="text-emerald-700 hover:text-emerald-950 font-bold px-2 py-0.5 rounded hover:bg-emerald-100 cursor-pointer"
+                      >
+                        ✕ Close
+                      </button>
+                    </div>
+                    <FingerMobileEmojiPicker
+                      isOpen={true}
+                      onClose={() => setActiveComposerTool(null)}
+                      onSelectEmoji={(emoji) => {
+                        setComposerContent((prev) => `${prev ? prev + ' ' : ''}[emoji:${emoji.slug}] `);
+                        triggerToast(`Added ${emoji.name} emoji!`, 'success');
+                      }}
+                      position="bottom"
+                      className="static w-full shadow-none border-0 p-0"
+                    />
+                  </div>
+                )}
+
+                {/* ================================================================= */}
                 {/* SUB-PANEL 9: TAG PRODUCT (MarketPlace, OwnIt, Flamingo, Storefront, FingerLux) */}
                 {/* ================================================================= */}
                 {activeComposerTool === 'product' && (() => {
@@ -3956,22 +4040,22 @@ export const ForumPage: React.FC = () => {
                   {/* Protocol Market Ticker & Live Stats */}
                   <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-300 dark:border-slate-800 p-4 shadow-xs">
                     <div className="flex items-center justify-between mb-3">
-                      <span className="text-xs font-black uppercase text-slate-900 dark:text-white">Live Network</span>
-                      <span className="flex items-center gap-1 text-[10px] font-bold text-emerald-950 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-400 font-black">
+                      <span className="text-sm font-black uppercase text-slate-900 dark:text-white">Live Network</span>
+                      <span className="flex items-center gap-1.5 text-xs font-bold text-emerald-950 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-400 font-black">
                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
                         P2P Online
                       </span>
                     </div>
-                    <div className="space-y-2 text-xs">
-                      <div className="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200">
+                    <div className="space-y-2 text-sm">
+                      <div className="flex items-center justify-between p-2.5 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200">
                         <span className="text-slate-800 font-bold">FIC Token Price</span>
                         <span className="font-mono font-bold text-emerald-600">$1.84 (+4.2%)</span>
                       </div>
-                      <div className="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200">
+                      <div className="flex items-center justify-between p-2.5 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200">
                         <span className="text-slate-800 font-bold">Active Relays</span>
                         <span className="font-mono font-bold text-slate-800 dark:text-slate-200">1,248 Nodes</span>
                       </div>
-                      <div className="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200">
+                      <div className="flex items-center justify-between p-2.5 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200">
                         <span className="text-slate-800 font-bold">PIN Crypto Quota</span>
                         <span className="font-mono font-bold text-orange-600">{syncedProfile.pinQuotaRemaining}/50 Op</span>
                       </div>
@@ -3981,19 +4065,19 @@ export const ForumPage: React.FC = () => {
                   {/* Hallmarks Featured Community Card */}
                   <div className="bg-gradient-to-br from-purple-900 to-indigo-950 text-white rounded-2xl p-4 shadow-md space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-black uppercase tracking-wider text-purple-300">Featured Hallmark</span>
-                      <span className="text-[10px] bg-purple-500/40 text-purple-200 px-2 py-0.5 rounded-full font-bold">250k Cap</span>
+                      <span className="text-xs font-black uppercase tracking-wider text-purple-300">Featured Hallmark</span>
+                      <span className="text-xs bg-purple-500/40 text-purple-200 px-2.5 py-0.5 rounded-full font-bold">250k Cap</span>
                     </div>
                     <div>
-                      <h4 className="text-sm font-black">Afrobeat Sovereign Creators</h4>
-                      <p className="text-[11px] text-purple-200 mt-1 line-clamp-2">
+                      <h4 className="text-base font-black">Afrobeat Sovereign Creators</h4>
+                      <p className="text-xs text-purple-200 mt-1 line-clamp-2">
                         Mega-community of musicians, audio engineers, and producers sharing lossless BeatwaveNG stems and copyright splits.
                       </p>
                     </div>
                     <button
                       type="button"
                       onClick={() => navigate('/hallmarks')}
-                      className="w-full py-2 bg-white text-purple-900 hover:bg-purple-100 text-xs font-bold rounded-xl transition cursor-pointer"
+                      className="w-full py-2.5 bg-white text-purple-900 hover:bg-purple-100 text-xs font-bold rounded-xl transition cursor-pointer"
                     >
                       Join Hallmark (148k Members)
                     </button>

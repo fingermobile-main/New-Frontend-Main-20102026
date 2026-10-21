@@ -1,187 +1,158 @@
-import React, { useState, useMemo } from 'react';
-import { Sparkles, X, Search, Radio, MessageSquare, Headphones, ShieldCheck } from 'lucide-react';
-import { emojiPackService, FingerMobileEmojiItem, FINGERMOBILE_EMOJI_REGISTRY } from '../../services/emojiPackService';
+import React, { useState, useRef, useEffect } from 'react';
+import { FINGERMOBILE_EMOJI_REGISTRY, FingerMobileEmojiItem } from '../../services/emojiPackService';
+import { XMarkIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
-interface FingerMobileEmojiPickerProps {
+export interface FingerMobileEmojiPickerProps {
+  onSelectEmoji: (emoji: FingerMobileEmojiItem) => void;
   isOpen: boolean;
   onClose: () => void;
-  onSelectEmoji: (emoji: FingerMobileEmojiItem) => void;
-  className?: string;
   title?: string;
+  position?: 'top' | 'bottom';
+  align?: 'left' | 'right';
+  className?: string;
 }
 
-type CategoryTab = 'all' | 'reactions' | 'voiceline' | 'toast' | 'branding';
-
 export const FingerMobileEmojiPicker: React.FC<FingerMobileEmojiPickerProps> = ({
+  onSelectEmoji,
   isOpen,
   onClose,
-  onSelectEmoji,
+  title = 'FingerMobile Emojis',
+  position = 'top',
+  align = 'left',
   className = '',
-  title = 'FingerMobile™ Sovereign Emoji Pack'
 }) => {
-  const [activeCategory, setActiveCategory] = useState<CategoryTab>('all');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [hoveredEmoji, setHoveredEmoji] = useState<FingerMobileEmojiItem | null>(null);
+  const [search, setSearch] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const pickerRef = useRef<HTMLDivElement>(null);
 
-  const filteredEmojis = useMemo(() => {
-    return FINGERMOBILE_EMOJI_REGISTRY.filter((item) => {
-      const matchesCategory =
-        activeCategory === 'all'
-          ? true
-          : activeCategory === 'toast'
-          ? item.category === 'toast' || item.category === 'status'
-          : item.category === activeCategory;
-
-      const matchesSearch =
-        searchQuery.trim() === '' ||
-        item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.slug.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.altText.toLowerCase().includes(searchQuery.toLowerCase());
-
-      return matchesCategory && matchesSearch;
-    });
-  }, [activeCategory, searchQuery]);
+  // Close on outside click
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (pickerRef.current && !pickerRef.current.contains(e.target as Node)) {
+        onClose();
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
+  const filteredEmojis = FINGERMOBILE_EMOJI_REGISTRY.filter((emoji) => {
+    const matchesCategory =
+      selectedCategory === 'all' || emoji.category === selectedCategory;
+    const matchesSearch =
+      search === '' ||
+      emoji.name.toLowerCase().includes(search.toLowerCase()) ||
+      emoji.slug.toLowerCase().includes(search.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
+
   return (
     <div
-      role="dialog"
-      aria-modal="true"
-      aria-label="FingerMobile Emoji Picker"
-      className={`relative z-50 w-80 sm:w-96 rounded-2xl bg-white border-2 border-emerald-400/80 shadow-2xl overflow-hidden font-sans ${className}`}
-      style={{
-        boxShadow: '0 20px 40px -15px rgba(16, 185, 129, 0.25), 0 0 0 1px rgba(16, 185, 129, 0.1)'
-      }}
+      ref={pickerRef}
+      className={`absolute z-50 w-72 sm:w-80 bg-white dark:bg-slate-900 border border-emerald-300 dark:border-emerald-800 rounded-3xl shadow-2xl p-3.5 space-y-2.5 animate-in fade-in zoom-in-95 ${
+        position === 'top' ? 'bottom-full mb-2' : 'top-full mt-2'
+      } ${align === 'right' ? 'right-0' : 'left-0'} ${className}`}
     >
-      {/* Brand Header */}
-      <div className="bg-gradient-to-r from-emerald-900 via-slate-900 to-emerald-950 p-3.5 text-white flex items-center justify-between border-b border-emerald-500/30">
+      {/* Header */}
+      <div className="flex items-center justify-between pb-2 border-b border-emerald-100 dark:border-slate-800">
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg bg-emerald-400/20 border border-emerald-400/50 flex items-center justify-center text-emerald-300">
-            <Sparkles className="w-4 h-4" />
+          <div className="w-5 h-5 rounded-lg bg-[#defaf2] p-0.5 border border-emerald-300 flex items-center justify-center">
+            <img
+              src="/assets/emojis/thumbs_up_wink.png"
+              alt="FingerMobile Brand"
+              className="w-full h-full object-contain"
+            />
           </div>
-          <div>
-            <h3 className="text-xs font-black tracking-wide text-white uppercase flex items-center gap-1.5">
-              {title}
-              <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-emerald-500/30 text-emerald-300 border border-emerald-400/40">
-                5D Mint
-              </span>
-            </h3>
-            <p className="text-[10px] text-emerald-200/80 font-medium">
-              Sovereign branding asset • Glossy glass #defaf2
-            </p>
-          </div>
+          <span className="text-xs font-black text-slate-900 dark:text-white">
+            {title}
+          </span>
+          <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.2 rounded-md border border-emerald-300">
+            5D Mint
+          </span>
         </div>
         <button
+          type="button"
           onClick={onClose}
-          aria-label="Close emoji picker"
-          className="p-1 rounded-lg hover:bg-white/10 text-slate-300 hover:text-white transition"
+          className="p-1 text-slate-500 hover:text-slate-800 rounded-lg hover:bg-slate-100 transition"
+          title="Close emoji picker"
         >
-          <X className="w-4 h-4" />
+          <XMarkIcon className="w-4 h-4" />
         </button>
       </div>
 
       {/* Search Input */}
-      <div className="p-2.5 bg-slate-50 border-b border-slate-200">
-        <div className="relative">
-          <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search FingerMobile 5D emojis..."
-            className="w-full pl-8 pr-3 py-1.5 text-xs text-slate-900 font-bold border border-slate-300 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 placeholder:text-slate-400 placeholder:font-normal"
-          />
-        </div>
-
-        {/* Category Pills */}
-        <div className="flex items-center gap-1 mt-2 overflow-x-auto no-scrollbar pb-0.5">
-          {(
-            [
-              { id: 'all', label: 'All', icon: Sparkles },
-              { id: 'reactions', label: 'Reactions', icon: MessageSquare },
-              { id: 'voiceline', label: 'VoiceLine', icon: Headphones },
-              { id: 'toast', label: 'Alerts', icon: Radio },
-              { id: 'branding', label: 'Brand 5D', icon: ShieldCheck }
-            ] as const
-          ).map((tab) => {
-            const Icon = tab.icon;
-            const isActive = activeCategory === tab.id;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setActiveCategory(tab.id)}
-                className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition flex items-center gap-1 whitespace-nowrap cursor-pointer ${
-                  isActive
-                    ? 'bg-emerald-600 text-white shadow-sm'
-                    : 'bg-white text-slate-700 hover:bg-slate-200 border border-slate-200'
-                }`}
-              >
-                <Icon className="w-3 h-3" />
-                {tab.label}
-              </button>
-            );
-          })}
-        </div>
+      <div className="relative">
+        <MagnifyingGlassIcon className="w-3.5 h-3.5 text-slate-500 absolute left-2.5 top-2.5" />
+        <input
+          type="text"
+          placeholder="Search brand emojis..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full pl-8 pr-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white focus:ring-1 focus:ring-emerald-500 focus:outline-none"
+        />
       </div>
 
-      {/* Emoji Grid */}
-      <div className="p-3 max-h-60 overflow-y-auto grid grid-cols-4 sm:grid-cols-5 gap-2.5 bg-white">
+      {/* Categories Tabs */}
+      <div className="flex items-center gap-1 overflow-x-auto scrollbar-none pb-1 text-[11px] font-bold">
+        {[
+          { id: 'all', label: 'All' },
+          { id: 'reactions', label: 'Reactions' },
+          { id: 'toast', label: 'Status' },
+          { id: 'branding', label: 'Brand' },
+        ].map((tab) => (
+          <button
+            key={tab.id}
+            type="button"
+            onClick={() => setSelectedCategory(tab.id)}
+            className={`px-2.5 py-1 rounded-lg transition whitespace-nowrap ${
+              selectedCategory === tab.id
+                ? 'bg-emerald-600 text-white shadow-xs'
+                : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+            }`}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Grid of Emojis */}
+      <div className="grid grid-cols-4 sm:grid-cols-5 gap-2 max-h-48 overflow-y-auto pr-1">
         {filteredEmojis.map((emoji) => (
           <button
             key={emoji.id}
+            type="button"
             onClick={() => {
               onSelectEmoji(emoji);
+              onClose();
             }}
-            onMouseEnter={() => setHoveredEmoji(emoji)}
-            onMouseLeave={() => setHoveredEmoji(null)}
             title={emoji.name}
-            className="group relative flex flex-col items-center justify-center p-2 rounded-xl bg-slate-50 hover:bg-emerald-50/70 border border-slate-200 hover:border-emerald-400 transition-all cursor-pointer active:scale-95"
+            className="group relative p-1.5 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-emerald-400 bg-white dark:bg-slate-800 hover:bg-[#defaf2]/40 transition flex flex-col items-center justify-center cursor-pointer shadow-2xs hover:scale-110 duration-150"
           >
-            <div className="relative w-11 h-11 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#defaf2] via-[#bbf2e3] to-[#e6fff8] p-1 border border-emerald-300 flex items-center justify-center overflow-hidden">
               <img
                 src={emoji.imageUrl}
                 alt={emoji.altText}
-                className="w-10 h-10 object-contain rounded-full shadow-sm group-hover:scale-115 transition-transform duration-200"
+                className="w-full h-full object-contain"
                 loading="lazy"
               />
-              <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-emerald-400 border border-white" />
             </div>
-            <span className="mt-1 text-[10px] font-bold text-slate-800 truncate max-w-full group-hover:text-emerald-900">
-              {emoji.name.replace('FingerMobile ', '')}
+            <span className="text-[9px] font-medium text-slate-700 dark:text-slate-300 truncate w-full text-center mt-1">
+              {emoji.name.split(' ')[1] || emoji.name}
             </span>
           </button>
         ))}
-
         {filteredEmojis.length === 0 && (
-          <div className="col-span-full py-8 text-center text-xs text-slate-500 font-medium">
-            No FingerMobile brand emoji found for &quot;{searchQuery}&quot;
+          <div className="col-span-4 py-6 text-center text-xs text-slate-500">
+            No FingerMobile emojis found for "{search}"
           </div>
         )}
       </div>
 
-      {/* Hovered Emoji Preview Footer */}
-      <div className="p-2.5 bg-gradient-to-r from-emerald-50 to-slate-50 border-t border-slate-200 flex items-center justify-between">
-        {hoveredEmoji ? (
-          <div className="flex items-center gap-2">
-            <img
-              src={hoveredEmoji.imageUrl}
-              alt={hoveredEmoji.name}
-              className="w-7 h-7 object-contain rounded-full border border-emerald-400/50 bg-white"
-            />
-            <div className="leading-tight">
-              <p className="text-[11px] font-black text-slate-900">{hoveredEmoji.name}</p>
-              <p className="text-[10px] text-emerald-800 font-semibold font-mono">:{hoveredEmoji.slug}:</p>
-            </div>
-          </div>
-        ) : (
-          <p className="text-[11px] text-slate-600 font-medium">
-            FingerMobile official 5D mint-green glass emoji pack
-          </p>
-        )}
-        <span className="text-[9px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-950 font-bold border border-emerald-300">
-          #defaf2
-        </span>
+      <div className="text-[10px] text-slate-500 text-center border-t border-slate-100 dark:border-slate-800 pt-1.5 font-medium">
+        ✨ Official 5D Mint-Green Sovereign Emoji Pack
       </div>
     </div>
   );

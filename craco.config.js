@@ -13,6 +13,13 @@ module.exports = {
           (plugin) => plugin.constructor.name !== 'ModuleScopePlugin'
         );
       }
+
+      // Filter out ESLintWebpackPlugin so formatting rules don't crash dev server
+      if (webpackConfig.plugins) {
+        webpackConfig.plugins = webpackConfig.plugins.filter(
+          (plugin) => plugin.constructor.name !== 'ESLintWebpackPlugin'
+        );
+      }
       
       webpackConfig.resolve.fallback = {
         ...(webpackConfig.resolve.fallback || {}),

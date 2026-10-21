@@ -180,7 +180,7 @@ export const SAMPLE_BROADCAST_POSTS: BroadcastPost[] = [
     media_type: 'image',
     created_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
     expires_at: new Date(Date.now() + 22 * 60 * 60 * 1000).toISOString(),
-    reactions: { '❤️': 38, '💎': 54, '🔥': 22, '🚀': 19 },
+    reactions: { 'thumbs-up': 38, 'star-eyes': 54, 'crown-royalty': 22, 'headphones-music': 19 },
     isCurrentUserSender: true,
     analytics: {
       broadcastId: 101,
@@ -232,7 +232,7 @@ export const SAMPLE_BROADCAST_POSTS: BroadcastPost[] = [
     media_type: 'image',
     created_at: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(),
     expires_at: new Date(Date.now() + 19 * 60 * 60 * 1000).toISOString(),
-    reactions: { '❤️': 62, '🔥': 41, '👏': 35, '🚀': 28 },
+    reactions: { 'thumbs-up': 62, 'cool-sunglasses': 41, 'blowing-love': 35, 'star-eyes': 28 },
     isCurrentUserSender: false,
     analytics: {
       broadcastId: 102,
@@ -284,7 +284,7 @@ export const SAMPLE_BROADCAST_POSTS: BroadcastPost[] = [
     media_type: 'image',
     created_at: new Date(Date.now() - 7 * 60 * 60 * 1000).toISOString(),
     expires_at: new Date(Date.now() + 17 * 60 * 60 * 1000).toISOString(),
-    reactions: { '❤️': 89, '🔥': 53, '💎': 44, '🚀': 31 },
+    reactions: { 'blowing-love': 89, 'crown-royalty': 53, 'star-eyes': 44, 'headphones-music': 31 },
     isCurrentUserSender: false,
     analytics: {
       broadcastId: 103,

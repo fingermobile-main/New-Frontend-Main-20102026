@@ -25,6 +25,8 @@ import {
 import { VerificationBadge } from '../verification/VerificationBadge';
 import LushEncoreView from './LushEncoreView';
 import SwipeDeck from '../SwipeDeck';
+import { emojiPackService } from '../../services/emojiPackService';
+import FingerMobileEmojiImage from '../common/FingerMobileEmojiImage';
 
 export interface LushPostItem {
   id: string;
@@ -70,7 +72,24 @@ const isVideoUrl = (url?: string): boolean => {
   );
 };
 
-const POPULAR_EMOJIS = ['😊', '❤️', '😍', '🥂', '🌹', '✨', '🔥', '💎', '👏', '🙌', '🍾', '🎉'];
+const renderTextWithBrandEmojis = (text: string) => {
+  if (!text) return text;
+  const parts = text.split(/(:[a-z0-9-]+:)/g);
+  return parts.map((part, index) => {
+    if (part.startsWith(':') && part.endsWith(':')) {
+      const slug = part.slice(1, -1);
+      const isKnown = emojiPackService.getAllEmojis().some((e) => e.slug === slug);
+      if (isKnown) {
+        return (
+          <span key={index} className="inline-flex align-middle mx-0.5">
+            <FingerMobileEmojiImage slug={slug} size="sm" showTooltip />
+          </span>
+        );
+      }
+    }
+    return <span key={index}>{part}</span>;
+  });
+};
 
 interface LushForumFeedProps {
   posts: LushPostItem[];
@@ -430,18 +449,20 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
 
                   {/* Postcard Smileys / Emojis Bar */}
                   {showComposerEmojis && (
-                    <div className="flex flex-wrap items-center gap-1.5 p-2 bg-emerald-50/70 border border-emerald-200 rounded-xl">
-                      <span className="text-[10px] font-semibold text-emerald-800 mr-1">
-                        Smileys:
+                    <div className="flex flex-wrap items-center gap-1.5 p-2.5 bg-emerald-50/80 border border-emerald-300 rounded-xl">
+                      <span className="text-[10px] font-bold text-emerald-950 mr-1 flex items-center gap-1">
+                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                        5D Brand Emojis:
                       </span>
-                      {POPULAR_EMOJIS.map((emoji) => (
+                      {emojiPackService.getAllEmojis().map((emoji) => (
                         <button
-                          key={emoji}
+                          key={emoji.id}
                           type="button"
-                          onClick={() => setNewPostText((prev) => prev + emoji)}
-                          className="text-lg hover:scale-125 transition px-1 py-0.5 rounded hover:bg-emerald-200/50"
+                          title={emoji.name}
+                          onClick={() => setNewPostText((prev) => (prev ? `${prev} :${emoji.slug}: ` : `:${emoji.slug}: `))}
+                          className="p-1 rounded-lg hover:bg-emerald-200/60 transition-all hover:scale-110 active:scale-95 cursor-pointer flex items-center justify-center"
                         >
-                          {emoji}
+                          <FingerMobileEmojiImage slug={emoji.slug} size="sm" />
                         </button>
                       ))}
                     </div>
@@ -604,8 +625,8 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
 
                   {/* Post Content */}
                   <div className="px-4 sm:px-5 pb-3">
-                    <p className="text-sm text-gray-900 leading-relaxed whitespace-pre-line">
-                      {post.content}
+                    <p className="text-sm text-gray-900 leading-relaxed whitespace-pre-line flex flex-wrap items-center gap-1 font-medium">
+                      {renderTextWithBrandEmojis(post.content)}
                     </p>
                   </div>
 
@@ -771,7 +792,7 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
                                     {c.timestamp}
                                   </span>
                                 </div>
-                                <p className="text-gray-800">{c.text}</p>
+                                <p className="text-gray-800 flex flex-wrap items-center gap-1 font-medium">{renderTextWithBrandEmojis(c.text)}</p>
                               </div>
                             </div>
                           ))}
@@ -785,23 +806,27 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
                       {/* Comment Input with Smileys Attachment */}
                       <div className="space-y-1.5 pt-1">
                         {showCommentEmojis[post.id] && (
-                          <div className="flex flex-wrap items-center gap-1.5 p-2 bg-emerald-50 border border-emerald-200 rounded-xl animate-in fade-in">
-                            <span className="text-[10px] font-semibold text-emerald-800 mr-1">
-                              Smileys:
+                          <div className="flex flex-wrap items-center gap-1.5 p-2 bg-emerald-50 border border-emerald-300 rounded-xl animate-in fade-in">
+                            <span className="text-[10px] font-bold text-emerald-950 mr-1 flex items-center gap-1">
+                              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                              5D Brand Emojis:
                             </span>
-                            {POPULAR_EMOJIS.map((emoji) => (
+                            {emojiPackService.getAllEmojis().map((emoji) => (
                               <button
-                                key={emoji}
+                                key={emoji.id}
                                 type="button"
+                                title={emoji.name}
                                 onClick={() =>
                                   setCommentInputs((prev) => ({
                                     ...prev,
-                                    [post.id]: (prev[post.id] || '') + emoji,
+                                    [post.id]: prev[post.id]
+                                      ? `${prev[post.id]} :${emoji.slug}: `
+                                      : `:${emoji.slug}: `,
                                   }))
                                 }
-                                className="text-base hover:scale-125 transition px-1 py-0.5 rounded hover:bg-emerald-200/50"
+                                className="p-1 rounded-lg hover:bg-emerald-200/60 transition-all hover:scale-110 active:scale-95 cursor-pointer flex items-center justify-center"
                               >
-                                {emoji}
+                                <FingerMobileEmojiImage slug={emoji.slug} size="sm" />
                               </button>
                             ))}
                           </div>

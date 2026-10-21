@@ -679,11 +679,26 @@ export const AppProvider: React.FC<Props> = ({ children }) => {
     toastTimeoutRef.current = setTimeout(() => {
       setToastNotification(null);
       setToastType(null);
-    }, 4000);
+    }, 1200);
+
+    // Dispatch system-wide fingermobile:toast event for unified 5D reaction overlay
+    if (typeof window !== 'undefined' && typeof message === 'string') {
+      window.dispatchEvent(
+        new CustomEvent('fingermobile:toast', {
+          detail: {
+            message,
+            text: message,
+            type,
+            category: type,
+            timestamp: Date.now(),
+          },
+        })
+      );
+    }
 
     try {
       if (typeof message === 'string' && toast && typeof (toast as any)[type] === 'function') {
-        (toast as any)[type](message, { autoClose: 3500 });
+        (toast as any)[type](message, { autoClose: 1200 });
       }
     } catch {
       // Safe fallback
@@ -1413,7 +1428,7 @@ export const AppProvider: React.FC<Props> = ({ children }) => {
           <FingerMobileToast
             message={toastNotification}
             type={toastType || 'info'}
-            duration={4000}
+            duration={1200}
             onClose={() => {
               setToastNotification(null);
               setToastType(null);

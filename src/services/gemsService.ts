@@ -25,6 +25,7 @@ export interface GemsResponse {
 class GemsService {
   private api = axios.create({
     baseURL: process.env.REACT_APP_API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api',
+    timeout: 3500,
     headers: {
       'Content-Type': 'application/json'
     }

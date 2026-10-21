@@ -29,25 +29,32 @@ import {
   Send,
   Filter,
   X,
-  Coins
+  Coins,
+  Bot,
+  BarChart3,
+  Image as ImageIcon,
+  Palette,
+  MessageSquare
 } from 'lucide-react';
+import {
+  BroadcastChannelId,
+  BroadcastPost,
+  AutoReplySettings
+} from '../components/gems/types';
+import {
+  BROADCAST_CHANNELS,
+  DEFAULT_AUTO_REPLY_SETTINGS,
+  SAMPLE_BROADCAST_POSTS
+} from '../components/gems/defaultAutoReplyData';
+import { GemBroadcastPostCard } from '../components/gems/GemBroadcastPostCard';
+import { GemAutoReplyModal } from '../components/gems/GemAutoReplyModal';
+import { GemBroadcastAnalyticsModal } from '../components/gems/GemBroadcastAnalyticsModal';
+import { GemAutoReplyManager } from '../components/gems/GemAutoReplyManager';
+import { QuickReplyPicker } from '../components/common/autoreply/QuickReplyPicker';
+import autoReplyService from '../services/autoReplyService';
 
 type TabType = 'marketplace' | 'broadcast' | 'powertools' | 'guides';
 type PrivacyFilter = 'all' | 'public' | 'private_visible' | 'secret';
-
-interface BroadcastPost {
-  id: number;
-  creator_id: number;
-  content_text: string;
-  media_urls: string[];
-  privacy_type: string;
-  expires_at: string;
-  created_at: string;
-  username?: string;
-  first_name?: string;
-  avatar_url?: string;
-  reactions?: Record<string, number>;
-}
 
 const SAMPLE_GUIDES = [
   {
@@ -106,12 +113,26 @@ const GemsPage: React.FC = () => {
   const [gemPaymentMethod, setGemPaymentMethod] = useState<'FIC' | 'CARD' | 'CRYPTO'>('FIC');
   const [isAcquiringGems, setIsAcquiringGems] = useState(false);
 
-  // Broadcast Channels State
+  // Broadcast Channels State & Auto-Reply Architecture
   const [broadcastPosts, setBroadcastPosts] = useState<BroadcastPost[]>([]);
   const [isBroadcasting, setIsBroadcasting] = useState(false);
   const [newBroadcastText, setNewBroadcastText] = useState('');
   const [broadcastSubscriptionType, setBroadcastSubscriptionType] = useState<'basic' | 'premium'>('basic');
   const [broadcastError, setBroadcastError] = useState<string | null>(null);
+  const [selectedBroadcastChannel, setSelectedBroadcastChannel] = useState<BroadcastChannelId>('creators-salon');
+  const [selectedBannerStyle, setSelectedBannerStyle] = useState<'neon-sapphire' | 'emerald-sovereign' | 'sunset-amber' | 'cyber-amethyst'>('neon-sapphire');
+  const [broadcastMediaUrl, setBroadcastMediaUrl] = useState('');
+  const [broadcastMediaType, setBroadcastMediaType] = useState<'image' | 'video'>('image');
+
+  // Auto-Reply Settings & Modal State
+  const [autoReplySettings, setAutoReplySettings] = useState<AutoReplySettings>(() => autoReplyService.getSettings());
+  const [selectedBroadcastForAutoReply, setSelectedBroadcastForAutoReply] = useState<BroadcastPost | null>(null);
+  const [selectedBroadcastForAnalytics, setSelectedBroadcastForAnalytics] = useState<BroadcastPost | null>(null);
+
+  // Real-time word count calculation for 60-words maximum post card banner rule
+  const broadcastWordCount = useMemo(() => {
+    return newBroadcastText.trim() ? newBroadcastText.trim().split(/\s+/).length : 0;
+  }, [newBroadcastText]);
 
   // Admin Power Tools State
   const [anonymousPostingEnabled, setAnonymousPostingEnabled] = useState(false);
@@ -156,15 +177,17 @@ const GemsPage: React.FC = () => {
     }
   }, []);
 
-  // Fetch Broadcast Feed
+  // Fetch Broadcast Feed with fallback to 24h sample broadcasts
   const fetchBroadcastFeed = useCallback(async () => {
     try {
       const res = await gemsService.getBroadcastFeed();
-      if (res && res.data) {
+      if (res && res.data && res.data.length > 0) {
         setBroadcastPosts(res.data);
+      } else {
+        setBroadcastPosts(SAMPLE_BROADCAST_POSTS);
       }
     } catch {
-      // Non-fatal broadcast feed fallback
+      setBroadcastPosts(SAMPLE_BROADCAST_POSTS);
     }
   }, []);
 
@@ -248,13 +271,16 @@ const GemsPage: React.FC = () => {
       const res = await gemsService.redeemItem(selectedItemForPurchase.id);
       if (res.success) {
         showToast(res.message || `Successfully redeemed ${selectedItemForPurchase.title}!`, 'success');
-        voiceLineServiceInstance.playCommentaryVoiceLine('acquisition');
+        try {
+          voiceLineServiceInstance.playCommentaryVoiceLine('acquisition').catch(() => {});
+        } catch {
+          // Audio fallback safe
+        }
         if (res.newBalance !== undefined) {
           setUserBalance(res.newBalance);
         } else {
           refreshBalance();
         }
-        setSelectedItemForPurchase(null);
       } else {
         showToast(res.message || 'Redemption failed. Check your Gem balance.', 'error');
       }
@@ -262,6 +288,7 @@ const GemsPage: React.FC = () => {
       showToast(err.message || 'Error executing transaction', 'error');
     } finally {
       setIsPurchasing(false);
+      setSelectedItemForPurchase(null);
     }
   };
 
@@ -275,8 +302,8 @@ const GemsPage: React.FC = () => {
         selectedGemPack.name,
         gemPaymentMethod
       );
-      const updatedBalance = res && res.success && res.newBalance != null 
-        ? res.newBalance 
+      const updatedBalance = res && res.success && res.newBalance != null
+        ? res.newBalance
         : userBalance + selectedGemPack.gems;
 
       setUserBalance(updatedBalance);
@@ -284,9 +311,13 @@ const GemsPage: React.FC = () => {
         localStorage.setItem('fingermobile_gem_balance', String(updatedBalance));
       }
 
-      showToast(`Successfully added ${selectedGemPack.gems.toLocaleString()} Gems to your balance! 💎`, 'success');
-      voiceLineServiceInstance.playCommentaryVoiceLine('gems');
       setIsAddGemsModalOpen(false);
+      showToast(`Successfully added ${selectedGemPack.gems.toLocaleString()} Gems to your balance! 💎`, 'success');
+      try {
+        voiceLineServiceInstance.playCommentaryVoiceLine('gems').catch(() => {});
+      } catch {
+        // Safe commentary fallback
+      }
       refreshBalance();
     } catch (_err) {
       // Optimistic recovery for offline / disconnected environments
@@ -295,35 +326,173 @@ const GemsPage: React.FC = () => {
       if (typeof window !== 'undefined') {
         localStorage.setItem('fingermobile_gem_balance', String(updatedBalance));
       }
-      showToast(`Successfully added ${selectedGemPack.gems.toLocaleString()} Gems to your balance! 💎`, 'success');
-      voiceLineServiceInstance.playCommentaryVoiceLine('gems');
       setIsAddGemsModalOpen(false);
+      showToast(`Successfully added ${selectedGemPack.gems.toLocaleString()} Gems to your balance! 💎`, 'success');
+      try {
+        voiceLineServiceInstance.playCommentaryVoiceLine('gems').catch(() => {});
+      } catch {
+        // Safe commentary fallback
+      }
     } finally {
       setIsAcquiringGems(false);
+      setIsAddGemsModalOpen(false);
     }
   };
 
-  // Handle Broadcast Submission
+  // Handle Broadcast Submission (Rich Text 60 words maximum post card banner with media attached)
   const handlePostBroadcast = async () => {
     if (!newBroadcastText.trim()) return;
+    if (broadcastWordCount > 60) {
+      showToast('Broadcast exceeds 60 words maximum limit. Please condense your post card banner.', 'error');
+      return;
+    }
+    if (userBalance < 25) {
+      showToast('Insufficient Gems! You need at least 25 Gems to transmit a 24h broadcast.', 'error');
+      setIsAddGemsModalOpen(true);
+      return;
+    }
+
     setBroadcastError(null);
     setIsBroadcasting(true);
 
     try {
-      const res = await gemsService.postBroadcast(newBroadcastText);
-      if (res.success) {
-        showToast('Broadcast published! Live on follower walls for 24 hours.', 'success');
-        setNewBroadcastText('');
-        fetchBroadcastFeed();
-      } else {
-        setBroadcastError(res.message || 'Broadcast publication failed');
-        showToast(res.message || 'Broadcast rejected', 'error');
+      const selectedChannelObj = BROADCAST_CHANNELS.find((c) => c.id === selectedBroadcastChannel);
+      const mediaUrls = broadcastMediaUrl.trim() ? [broadcastMediaUrl.trim()] : [];
+
+      const newPost: BroadcastPost = {
+        id: `post-${Date.now()}`,
+        creator_id: 999,
+        username: 'you_sovereign',
+        first_name: 'You (Broadcaster)',
+        avatar_url: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=80',
+        content_text: newBroadcastText.trim(),
+        media_urls: mediaUrls,
+        media_type: broadcastMediaType,
+        channel_id: selectedBroadcastChannel,
+        channel_name: selectedChannelObj?.name || '#general-living-room',
+        privacy_type: 'public',
+        banner_style: selectedBannerStyle,
+        gem_cost: 25,
+        created_at: new Date().toISOString(),
+        expires_at: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+        reactions: { 'thumbs-up': 1, 'star-eyes': 1 },
+        isCurrentUserSender: true,
+        analytics: {
+          broadcastId: `post-${Date.now()}`,
+          totalImpressions: 48,
+          openRate: 95.8,
+          directReplyRate: 12.5,
+          autoRepliesTriggered: 6,
+          autoRepliesBreakdown: {
+            greeting: 3,
+            away: 1,
+            quickReplies: 2,
+            eventManagement: 0
+          },
+          ignoredCount: 0,
+          topChannels: [{ channel: selectedChannelObj?.name || '#general-living-room', reach: 48 }],
+          hourlyEngagement: [{ hour: '0h', views: 48 }],
+          sentimentSummary: { positive: 90, neutral: 10, inquiry: 0 }
+        }
+      };
+
+      // Optimistic balance deduction
+      const updatedBalance = Math.max(0, userBalance - 25);
+      setUserBalance(updatedBalance);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('fingermobile_gem_balance', String(updatedBalance));
       }
+
+      setBroadcastPosts((prev) => [newPost, ...prev]);
+      setNewBroadcastText('');
+      setBroadcastMediaUrl('');
+      showToast(`Broadcast published to ${selectedChannelObj?.name || '#general-living-room'}! Live for 24h. (25 💎 deducted)`, 'success');
+      voiceLineServiceInstance.playCommentaryVoiceLine('gems');
+
+      // Call backend in background
+      await gemsService.postBroadcast(newPost.content_text, mediaUrls);
     } catch (err: any) {
       setBroadcastError(err.message || 'Broadcast failed');
     } finally {
       setIsBroadcasting(false);
     }
+  };
+
+  // Broadcast receiver action handlers
+  const handleIgnoreBroadcast = (postId: number | string) => {
+    setBroadcastPosts((prev) => prev.filter((p) => p.id !== postId));
+    showToast('Broadcast dismissed from your living room feed.', 'info');
+  };
+
+  const handleDirectReply = (postId: number | string, replyText: string) => {
+    showToast(`Direct reply sent: "${replyText.slice(0, 30)}..."`, 'success');
+  };
+
+  const handleTriggerAutoReply = (post: BroadcastPost) => {
+    setSelectedBroadcastForAutoReply(post);
+  };
+
+  const handleViewAnalytics = (post: BroadcastPost) => {
+    setSelectedBroadcastForAnalytics(post);
+  };
+
+  const handleSendAutoReply = (
+    postId: number | string,
+    payload: { type: string; subject?: string; text: string }
+  ) => {
+    const targetPost = broadcastPosts.find((p) => p.id === postId);
+    autoReplyService.recordExecution({
+      recipientName: targetPost?.first_name || targetPost?.username || 'Creator',
+      sourceContext: 'gems_broadcast',
+      triggerType: payload.type.startsWith('event')
+        ? 'event_management'
+        : payload.type.startsWith('away')
+          ? 'away'
+          : payload.type.startsWith('quick')
+            ? 'quick_reply'
+            : 'greeting',
+      subject: payload.subject,
+      renderedText: payload.text
+    });
+
+    // Update broadcast post analytics
+    setBroadcastPosts((prev) =>
+      prev.map((p) => {
+        if (p.id === postId && p.analytics) {
+          const breakdown = { ...p.analytics.autoRepliesBreakdown };
+          if (payload.type.startsWith('greeting')) breakdown.greeting += 1;
+          else if (payload.type.startsWith('away')) breakdown.away += 1;
+          else if (payload.type.startsWith('quick')) breakdown.quickReplies += 1;
+          else breakdown.eventManagement += 1;
+
+          return {
+            ...p,
+            analytics: {
+              ...p.analytics,
+              autoRepliesTriggered: p.analytics.autoRepliesTriggered + 1,
+              autoRepliesBreakdown: breakdown
+            }
+          };
+        }
+        return p;
+      })
+    );
+
+    showToast(`Auto-Reply transmitted: ${payload.subject || payload.type}! 🤖`, 'success');
+  };
+
+  const handleBroadcastReaction = (postId: number | string, emoji: string) => {
+    setBroadcastPosts((prev) =>
+      prev.map((p) => {
+        if (p.id === postId) {
+          const reactions = { ...(p.reactions || {}) };
+          reactions[emoji] = (reactions[emoji] || 0) + 1;
+          return { ...p, reactions };
+        }
+        return p;
+      })
+    );
+    showToast(`Reacted with ${emoji}!`, 'success');
   };
 
   // Admin Assist Keyword Moderation Tester
@@ -438,8 +607,11 @@ const GemsPage: React.FC = () => {
                   : 'bg-slate-900/60 text-slate-300 hover:bg-slate-800 hover:text-white'
               }`}
             >
-              <Sliders className="w-4 h-4 text-amber-400" />
-              Admin Power Tools & Moderation
+              <Bot className="w-4 h-4 text-emerald-400" />
+              Admin Power Tools & Auto-Replies
+              <span className="ml-1 px-1.5 py-0.5 rounded-full text-xs bg-emerald-900/60 text-emerald-200">
+                Auto-Replies
+              </span>
             </button>
 
             <button
@@ -766,178 +938,284 @@ const GemsPage: React.FC = () => {
         {/* ======================================================== */}
         {activeTab === 'broadcast' && (
           <div className="space-y-6">
-            {/* Broadcast Architecture Explainer */}
-            <div className="p-6 rounded-2xl bg-gradient-to-r from-emerald-950/40 to-slate-900 border border-emerald-500/30">
+            {/* Gems Logic & Broadcast Explainer */}
+            <div className="p-6 rounded-3xl bg-gradient-to-r from-purple-950/70 via-slate-900 to-slate-900 border border-purple-500/40 shadow-xl">
               <div className="flex items-start gap-4">
-                <div className="p-3 rounded-xl bg-emerald-500/20 text-emerald-400 shrink-0">
+                <div className="p-3.5 rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-600 text-white shadow-lg shadow-purple-900/30 shrink-0">
                   <Radio className="w-6 h-6 animate-pulse" />
                 </div>
-                <div>
-                  <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                    Mini/Short-Lived Broadcast Channels (24h TTL)
+                <div className="space-y-2">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-purple-950 border border-purple-500/40 text-purple-300">
+                    <Sparkles className="w-3.5 h-3.5" />
+                    P2P Digital Living Room • 24-Hour Ephemeral Post Card Banners
+                  </div>
+                  <h3 className="text-xl font-black text-white">
+                    Gems Broadcast Channels & Auto-Reply Architecture
                   </h3>
-                  <p className="text-sm text-slate-300 mt-1 leading-relaxed">
-                    Broadcast Channels allow eligible creators (50,000+ followers) and verified brands to push direct daily updates to followers. Updates appear straight on member walls and self-destruct after exactly 24 hours.
+                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-3xl">
+                    Gems is not just a Micro-currency economy, but a full scale peer-to-peer digital living room where various platform minted Gem assets reside. Members purchase and send 24-hour ephemeral broadcast messages to various selectable channels and direct to members' profile and walls. Broadcasts appear as <strong>Rich Text 60 words maximum post card banner messages</strong> with image/video attached and automated admin power tools. Senders receive real-time analytics telemetry, while receivers can <strong>Ignore</strong>, <strong>Reply</strong>, or <strong>Use Auto-Reply</strong>!
                   </p>
-                  <div className="flex flex-wrap items-center gap-3 mt-3 text-xs text-slate-300 font-medium">
-                    <span className="flex items-center gap-1.5">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400" /> 50,000 follower threshold check
+                  <div className="flex flex-wrap items-center gap-3 pt-2 text-xs text-slate-300 font-semibold">
+                    <span className="flex items-center gap-1.5 text-purple-300">
+                      <Clock className="w-4 h-4 text-purple-400" /> 24-Hour TTL Self-Destruct
                     </span>
-                    <span className="flex items-center gap-1.5">
-                      <Clock className="w-4 h-4 text-amber-400" /> 24 Hour TTL auto-expiration
+                    <span className="flex items-center gap-1.5 text-pink-300">
+                      <ImageIcon className="w-4 h-4 text-pink-400" /> 60 Words Max + Media Attached
                     </span>
-                    <span className="flex items-center gap-1.5">
-                      <Layers className="w-4 h-4 text-indigo-400" /> 5–20 daily updates based on subscription
+                    <span className="flex items-center gap-1.5 text-emerald-300">
+                      <Bot className="w-4 h-4 text-emerald-400" /> Receiver Auto-Replies Suite
+                    </span>
+                    <span className="flex items-center gap-1.5 text-sky-300">
+                      <BarChart3 className="w-4 h-4 text-sky-400" /> Sender Analytics Response
                     </span>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Broadcast Creation Form (Creators with 50,000+ Followers) */}
-            <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-xl">
-              <h3 className="font-bold text-white text-base mb-2 flex items-center gap-2">
-                <Send className="w-4 h-4 text-purple-400" />
-                Publish Ephemeral Broadcast Update
-              </h3>
-              <p className="text-xs text-slate-300 font-medium mb-4">
-                Eligible channels can publish text and media directly to subscriber feeds.
-              </p>
+            {/* Broadcast Creation Form: 60 Words Max Post Card Banner Composer */}
+            <div className="bg-slate-900/90 border border-purple-500/30 rounded-3xl p-6 shadow-xl space-y-5">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-3 border-b border-slate-800">
+                <div>
+                  <h3 className="font-bold text-white text-base flex items-center gap-2">
+                    <Send className="w-4 h-4 text-purple-400" />
+                    Compose 24h Ephemeral Post Card Banner (Cost: 25 💎)
+                  </h3>
+                  <p className="text-xs text-slate-300 mt-0.5">
+                    Transmit directly to follower walls, profiles, and selectable living room channels.
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-2 text-xs">
+                  <span className="text-slate-300 font-semibold">Your Gems:</span>
+                  <span className="font-bold text-purple-300 px-2.5 py-1 rounded-xl bg-purple-950 border border-purple-500/40">
+                    💎 {userBalance.toLocaleString()}
+                  </span>
+                </div>
+              </div>
 
               {broadcastError && (
-                <div className="mb-4 p-3 rounded-lg bg-red-950/60 border border-red-800 text-red-300 text-xs flex items-center gap-2">
+                <div className="p-3.5 rounded-xl bg-red-950/70 border border-red-800 text-red-200 text-xs flex items-center gap-2">
                   <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
                   <span>{broadcastError}</span>
                 </div>
               )}
 
-              <div className="space-y-4">
+              {/* 1. Selectable Channels */}
+              <div>
+                <label className="block text-xs font-bold text-slate-200 uppercase tracking-wider mb-2">
+                  Select Broadcast Channel Destination:
+                </label>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                  {BROADCAST_CHANNELS.map((ch) => (
+                    <button
+                      key={ch.id}
+                      type="button"
+                      onClick={() => setSelectedBroadcastChannel(ch.id)}
+                      className={`p-2.5 rounded-xl border text-left transition cursor-pointer flex flex-col justify-between ${
+                        selectedBroadcastChannel === ch.id
+                          ? 'bg-purple-950/70 border-purple-500 text-white shadow-md ring-1 ring-purple-500/40'
+                          : 'bg-slate-950 border-slate-800 text-slate-300 hover:text-white hover:bg-slate-800'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="font-mono text-xs font-bold text-purple-300">{ch.name}</span>
+                        <span className="text-[9px] uppercase px-1.5 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-300 font-bold">
+                          {ch.badge}
+                        </span>
+                      </div>
+                      <span className="text-[10px] text-slate-300 line-clamp-1">{ch.description}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* 2. Banner Style Selector */}
+              <div>
+                <label className="block text-xs font-bold text-slate-200 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                  <Palette className="w-3.5 h-3.5 text-purple-400" />
+                  Post Card Visual Aesthetics:
+                </label>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  {[
+                    { id: 'neon-sapphire', label: 'Neon Sapphire', gradient: 'from-indigo-600 to-blue-500' },
+                    { id: 'emerald-sovereign', label: 'Emerald Sovereign', gradient: 'from-emerald-600 to-teal-500' },
+                    { id: 'sunset-amber', label: 'Sunset Amber', gradient: 'from-amber-600 to-orange-500' },
+                    { id: 'cyber-amethyst', label: 'Cyber Amethyst', gradient: 'from-fuchsia-600 to-purple-500' }
+                  ].map((style) => (
+                    <button
+                      key={style.id}
+                      type="button"
+                      onClick={() => setSelectedBannerStyle(style.id as any)}
+                      className={`p-2 rounded-xl border text-center text-xs font-bold transition cursor-pointer flex items-center justify-center gap-2 ${
+                        selectedBannerStyle === style.id
+                          ? 'bg-slate-950 border-purple-500 text-white ring-1 ring-purple-500/40'
+                          : 'bg-slate-950/60 border-slate-800 text-slate-300 hover:text-white'
+                      }`}
+                    >
+                      <span className={`w-3 h-3 rounded-full bg-gradient-to-r ${style.gradient}`} />
+                      <span>{style.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* 3. Textarea with strict 60 words counter & QuickReplyPicker */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold text-slate-200 uppercase tracking-wider">
+                    Post Card Banner Message (60 Words Maximum):
+                  </label>
+                  <div className="flex items-center gap-2">
+                    {/* QuickReplyPicker Reusable Component */}
+                    <QuickReplyPicker
+                      onSelectQuickReply={(text) => {
+                        const appended = newBroadcastText.trim() ? `${newBroadcastText} ${text}` : text;
+                        setNewBroadcastText(appended);
+                      }}
+                    />
+                    <span
+                      className={`text-xs font-mono font-bold px-2.5 py-0.5 rounded-lg border ${
+                        broadcastWordCount > 60
+                          ? 'bg-red-950 text-red-300 border-red-500 animate-pulse'
+                          : broadcastWordCount >= 50
+                            ? 'bg-amber-950 text-amber-300 border-amber-500'
+                            : 'bg-slate-950 text-emerald-400 border-slate-700'
+                      }`}
+                    >
+                      {broadcastWordCount} / 60 words
+                    </span>
+                  </div>
+                </div>
+
                 <textarea
                   rows={3}
                   value={newBroadcastText}
                   onChange={(e) => setNewBroadcastText(e.target.value)}
-                  placeholder="Share a timely drop, salon invite, or exclusive update (expires in 24h)..."
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-slate-200 placeholder:text-slate-300 font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  placeholder="Share a timely drop, salon invite, or exclusive update (expires in exactly 24h, max 60 words)..."
+                  className={`w-full bg-slate-950 border rounded-2xl p-4 text-sm text-slate-100 placeholder:text-slate-300 font-medium focus:outline-none transition ${
+                    broadcastWordCount > 60
+                      ? 'border-red-500 focus:ring-2 focus:ring-red-500'
+                      : 'border-slate-700 focus:ring-2 focus:ring-purple-500'
+                  }`}
                 />
 
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <div className="flex items-center gap-3">
-                    <span className="text-xs text-slate-300 font-medium font-semibold">Tier Limit:</span>
-                    <label className="flex items-center gap-1.5 text-xs text-slate-300 cursor-pointer">
-                      <input
-                        type="radio"
-                        checked={broadcastSubscriptionType === 'basic'}
-                        onChange={() => setBroadcastSubscriptionType('basic')}
-                        className="text-emerald-500 focus:ring-emerald-500"
-                      />
-                      Standard (5 / day)
-                    </label>
-                    <label className="flex items-center gap-1.5 text-xs text-slate-300 cursor-pointer">
-                      <input
-                        type="radio"
-                        checked={broadcastSubscriptionType === 'premium'}
-                        onChange={() => setBroadcastSubscriptionType('premium')}
-                        className="text-emerald-500 focus:ring-emerald-500"
-                      />
-                      Enterprise (20 / day)
-                    </label>
+                {broadcastWordCount > 60 && (
+                  <div className="p-3 rounded-xl bg-red-950/80 border border-red-800 text-red-200 text-xs flex items-center gap-2 animate-fade-in">
+                    <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
+                    <span>
+                      Message exceeds 60 words ({broadcastWordCount} words). Please condense by{' '}
+                      <strong>{broadcastWordCount - 60} words</strong> to meet the postcard banner standard.
+                    </span>
                   </div>
+                )}
+              </div>
 
-                  <button
-                    onClick={handlePostBroadcast}
-                    disabled={isBroadcasting || !newBroadcastText.trim()}
-                    className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-colors shadow-lg shadow-emerald-600/20"
-                  >
-                    {isBroadcasting ? (
-                      <LoadingSpinner />
-                    ) : (
-                      <>
-                        <Radio className="w-4 h-4" />
-                        Transmit Broadcast
-                      </>
-                    )}
-                  </button>
+              {/* 4. Media Attachment URL */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="sm:col-span-2">
+                  <label className="block text-xs font-bold text-slate-200 uppercase tracking-wider mb-1">
+                    Attached Media URL (Image or Video):
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="https://images.unsplash.com/... or .mp4 video URL"
+                    value={broadcastMediaUrl}
+                    onChange={(e) => setBroadcastMediaUrl(e.target.value)}
+                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  />
                 </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-200 uppercase tracking-wider mb-1">
+                    Media Type:
+                  </label>
+                  <select
+                    value={broadcastMediaType}
+                    onChange={(e) => setBroadcastMediaType(e.target.value as any)}
+                    aria-label="Select broadcast media type"
+                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  >
+                    <option value="image">Image Attachment</option>
+                    <option value="video">Video Reel (.mp4)</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Media Preview if provided */}
+              {broadcastMediaUrl && (
+                <div className="p-3 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-purple-300 block">
+                    Media Attachment Preview:
+                  </span>
+                  <div className="rounded-xl overflow-hidden max-h-48 border border-slate-800">
+                    {broadcastMediaType === 'video' ? (
+                      <video src={broadcastMediaUrl} controls className="w-full max-h-48 object-cover bg-black" />
+                    ) : (
+                      <img src={broadcastMediaUrl} alt="Preview" className="w-full max-h-48 object-cover" />
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Action & Cost Bar */}
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-3 border-t border-slate-800">
+                <div className="flex items-center gap-3 text-xs text-slate-300 font-semibold">
+                  <span className="flex items-center gap-1.5 text-purple-300">
+                    <Sparkles className="w-3.5 h-3.5 text-purple-400" />
+                    Broadcast Cost: <strong>25 Gems</strong>
+                  </span>
+                  <span>•</span>
+                  <span>Self-destructs after 24h</span>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handlePostBroadcast}
+                  disabled={isBroadcasting || !newBroadcastText.trim() || broadcastWordCount > 60}
+                  className="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 disabled:opacity-40 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-lg shadow-purple-900/40 cursor-pointer active:scale-95"
+                >
+                  {isBroadcasting ? (
+                    <LoadingSpinner />
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4" />
+                      <span>Transmit 24h Post Card Banner (25 💎)</span>
+                    </>
+                  )}
+                </button>
               </div>
             </div>
 
-            {/* Broadcast Feed */}
+            {/* Broadcast Feed: Post Card Banners */}
             <div className="space-y-4">
-              <h3 className="font-bold text-white text-lg flex items-center gap-2">
-                <Clock className="w-5 h-5 text-emerald-400" />
-                Active Broadcast Transmissions (Last 24 Hours)
-              </h3>
+              <div className="flex items-center justify-between">
+                <h3 className="font-bold text-white text-lg flex items-center gap-2">
+                  <Clock className="w-5 h-5 text-emerald-400" />
+                  Active 24h Ephemeral Broadcasts ({broadcastPosts.length})
+                </h3>
+                <span className="text-xs text-slate-300 font-semibold">
+                  Receivers can Ignore, Reply, or Use Auto-Reply
+                </span>
+              </div>
 
               {broadcastPosts.length === 0 ? (
                 <div className="p-8 text-center bg-slate-900/40 border border-slate-800 rounded-2xl">
-                  <p className="text-sm text-slate-300 font-medium">No active broadcasts in the last 24 hours.</p>
+                  <p className="text-sm text-slate-300">No active broadcasts in the last 24 hours.</p>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {broadcastPosts.map((post) => {
-                    const hoursLeft = Math.max(
-                      0,
-                      Math.round(
-                        (new Date(post.expires_at).getTime() - Date.now()) / (1000 * 60 * 60)
-                      )
-                    );
-
-                    return (
-                      <div
-                        key={post.id}
-                        className="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-emerald-500/40 transition-all shadow-lg flex flex-col justify-between"
-                      >
-                        <div>
-                          <div className="flex items-center justify-between gap-3 mb-3">
-                            <div className="flex items-center gap-2.5">
-                              <div className="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center text-emerald-300 font-bold text-xs">
-                                {post.username ? post.username[0].toUpperCase() : 'C'}
-                              </div>
-                              <div>
-                                <h4 className="text-sm font-bold text-white leading-tight">
-                                  @{post.username || 'sovereign_creator'}
-                                </h4>
-                                <span className="text-[10px] text-slate-300 font-medium">Verified Broadcast Channel</span>
-                              </div>
-                            </div>
-                            <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-950/80 text-emerald-300 border border-emerald-500/30">
-                              <Clock className="w-3 h-3" /> {hoursLeft}h left
-                            </span>
-                          </div>
-
-                          <p className="text-sm text-slate-200 leading-relaxed mb-4">
-                            {post.content_text}
-                          </p>
-
-                          {post.media_urls && post.media_urls.length > 0 && (
-                            <div className="rounded-xl overflow-hidden mb-4 border border-slate-800">
-                              <img
-                                src={post.media_urls[0]}
-                                alt="Broadcast attachment"
-                                className="w-full h-44 object-cover"
-                              />
-                            </div>
-                          )}
-                        </div>
-
-                        {/* Follower Reactions Bar */}
-                        <div className="pt-3 border-t border-slate-800 flex items-center justify-between">
-                          <span className="text-xs text-slate-300 font-medium">React to broadcast:</span>
-                          <div className="flex items-center gap-1">
-                            {['❤️', '🔥', '👏', '💎', '🚀'].map((emoji) => (
-                              <button
-                                key={emoji}
-                                onClick={() => showToast(`Reacted with ${emoji}!`, 'success')}
-                                className="p-1.5 rounded-lg hover:bg-slate-800 text-sm transition-transform hover:scale-125"
-                              >
-                                {emoji}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  {broadcastPosts.map((post) => (
+                    <GemBroadcastPostCard
+                      key={post.id}
+                      post={post}
+                      onIgnore={handleIgnoreBroadcast}
+                      onDirectReply={handleDirectReply}
+                      onTriggerAutoReply={handleTriggerAutoReply}
+                      onViewAnalytics={handleViewAnalytics}
+                      onReaction={handleBroadcastReaction}
+                    />
+                  ))}
                 </div>
               )}
             </div>
@@ -945,123 +1223,143 @@ const GemsPage: React.FC = () => {
         )}
 
         {/* ======================================================== */}
-        {/* TAB 3: ADMIN POWER TOOLS & MODERATION */}
+        {/* TAB 3: ADMIN POWER TOOLS & AUTO-REPLIES */}
         {/* ======================================================== */}
         {activeTab === 'powertools' && (
           <div className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Tool 1: Admin Assist & Keyword Auto-Moderation */}
-              <div className="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 shadow-xl space-y-4">
-                <div className="flex items-center gap-3">
-                  <div className="p-2.5 rounded-xl bg-purple-500/20 text-purple-400">
-                    <Shield className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-white text-base">Admin Assist: Keyword Auto-Moderation</h3>
-                    <p className="text-xs text-slate-300 font-medium">
-                      Enforces FingerMobile Words Moderation List & Platform Policy flags.
-                    </p>
-                  </div>
-                </div>
+            {/* Reusable Auto-Reply Configuration Suite */}
+            <GemAutoReplyManager
+              settings={autoReplySettings}
+              onUpdateSettings={(newSettings) => {
+                setAutoReplySettings(newSettings);
+                autoReplyService.saveSettings(newSettings);
+              }}
+              onShowToast={showToast}
+            />
 
-                <p className="text-xs text-slate-300 leading-relaxed">
-                  Automated filtration prevents spam promises, predatory promotions, and profane content from appearing in peer-to-peer living rooms.
-                </p>
+            {/* Existing Keyword Auto-Moderation & Anonymous Posting Tools */}
+            <div className="pt-4 border-t border-slate-800">
+              <h3 className="text-base font-bold text-white mb-4 flex items-center gap-2">
+                <Shield className="w-5 h-5 text-purple-400" />
+                Living Room Content Policies & Privacy Controls
+              </h3>
 
-                <div className="space-y-2">
-                  <label className="text-xs font-semibold text-slate-300">Test Content against Moderation List:</label>
-                  <textarea
-                    rows={3}
-                    value={moderationTestText}
-                    onChange={(e) => setModerationTestText(e.target.value)}
-                    placeholder="e.g. Try typing: '100% free make money click here' or regular compliant text..."
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-200 placeholder:text-slate-300 font-medium focus:outline-none focus:ring-2 focus:ring-purple-500"
-                  />
-                  <button
-                    onClick={runModerationCheck}
-                    className="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-lg text-xs font-bold transition-colors"
-                  >
-                    Run Policy Scanner
-                  </button>
-                </div>
-
-                {moderationResult && (
-                  <div
-                    className={`p-3 rounded-xl border text-xs ${
-                      moderationResult.clean
-                        ? 'bg-emerald-950/60 border-emerald-500/40 text-emerald-300'
-                        : 'bg-red-950/60 border-red-500/40 text-red-300'
-                    }`}
-                  >
-                    {moderationResult.clean ? (
-                      <span className="flex items-center gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                        Compliant: Content strictly satisfies all 4 platform principles (Authenticity, Safety, Privacy, Dignity).
-                      </span>
-                    ) : (
-                      <div>
-                        <span className="flex items-center gap-2 font-bold mb-1">
-                          <AlertCircle className="w-4 h-4 text-red-400" />
-                          Auto-Declined by Admin Assist!
-                        </span>
-                        <span>Flagged phrases: {moderationResult.flaggedWords.join(', ')}</span>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-
-              {/* Tool 2: Anonymous Posting & Membership Questions */}
-              <div className="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 shadow-xl space-y-4">
-                <div className="flex items-center justify-between">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Tool 1: Admin Assist & Keyword Auto-Moderation */}
+                <div className="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 shadow-xl space-y-4">
                   <div className="flex items-center gap-3">
-                    <div className="p-2.5 rounded-xl bg-indigo-500/20 text-indigo-400">
-                      <Sliders className="w-6 h-6" />
+                    <div className="p-2.5 rounded-xl bg-purple-500/20 text-purple-400">
+                      <Shield className="w-6 h-6" />
                     </div>
                     <div>
-                      <h3 className="font-bold text-white text-base">Anonymous Posting Toggle</h3>
-                      <p className="text-xs text-slate-300 font-medium">Safe haven for sensitive discussions</p>
+                      <h3 className="font-bold text-white text-base">Admin Assist: Keyword Auto-Moderation</h3>
+                      <p className="text-xs text-slate-300 font-medium">
+                        Enforces FingerMobile Words Moderation List & Platform Policy flags.
+                      </p>
                     </div>
                   </div>
-                  <button
-                    onClick={() => {
-                      setAnonymousPostingEnabled(!anonymousPostingEnabled);
-                      showToast(
-                        `Anonymous posting ${!anonymousPostingEnabled ? 'enabled' : 'disabled'} for members`,
-                        'info'
-                      );
-                    }}
-                    className={`w-12 h-6 rounded-full transition-colors relative p-0.5 ${
-                      anonymousPostingEnabled ? 'bg-indigo-600' : 'bg-slate-700'
-                    }`}
-                  >
-                    <div
-                      className={`w-5 h-5 rounded-full bg-white transition-transform ${
-                        anonymousPostingEnabled ? 'translate-x-6' : 'translate-x-0'
-                      }`}
+
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    Automated filtration prevents spam promises, predatory promotions, and profane content from appearing in peer-to-peer living rooms.
+                  </p>
+
+                  <div className="space-y-2">
+                    <label className="text-xs font-semibold text-slate-300">Test Content against Moderation List:</label>
+                    <textarea
+                      rows={3}
+                      value={moderationTestText}
+                      onChange={(e) => setModerationTestText(e.target.value)}
+                      placeholder="e.g. Try typing: '100% free make money click here' or regular compliant text..."
+                      className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-200 placeholder:text-slate-300 font-medium focus:outline-none focus:ring-2 focus:ring-purple-500"
                     />
-                  </button>
+                    <button
+                      type="button"
+                      onClick={runModerationCheck}
+                      className="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer"
+                    >
+                      Run Policy Scanner
+                    </button>
+                  </div>
+
+                  {moderationResult && (
+                    <div
+                      className={`p-3 rounded-xl border text-xs ${
+                        moderationResult.clean
+                          ? 'bg-emerald-950/60 border-emerald-500/40 text-emerald-300'
+                          : 'bg-red-950/60 border-red-500/40 text-red-300'
+                      }`}
+                    >
+                      {moderationResult.clean ? (
+                        <span className="flex items-center gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                          Compliant: Content strictly satisfies all 4 platform principles (Authenticity, Safety, Privacy, Dignity).
+                        </span>
+                      ) : (
+                        <div>
+                          <span className="flex items-center gap-2 font-bold mb-1">
+                            <AlertCircle className="w-4 h-4 text-red-400" />
+                            Auto-Declined by Admin Assist!
+                          </span>
+                          <span>Flagged phrases: {moderationResult.flaggedWords.join(', ')}</span>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
 
-                <p className="text-xs text-slate-300 leading-relaxed">
-                  Allows members to ask questions regarding sensitive health, finance, or relationship matters without public identity exposure while remaining fully accountable to admins behind the scenes.
-                </p>
-
-                {/* Membership Vetting Questions */}
-                <div className="pt-3 border-t border-slate-800">
-                  <h4 className="font-bold text-xs uppercase tracking-wider text-slate-300 mb-2">
-                    Membership Vetting Questions (Up to 3):
-                  </h4>
-                  <div className="space-y-2">
-                    {membershipQuestions.map((q, idx) => (
-                      <div
-                        key={idx}
-                        className="p-2.5 rounded-lg bg-slate-950 border border-slate-800 text-xs text-slate-300 flex items-start gap-2"
-                      >
-                        <span className="font-bold text-indigo-400">Q{idx + 1}:</span>
-                        <span>{q}</span>
+                {/* Tool 2: Anonymous Posting & Membership Questions */}
+                <div className="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 shadow-xl space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2.5 rounded-xl bg-indigo-500/20 text-indigo-400">
+                        <Sliders className="w-6 h-6" />
                       </div>
-                    ))}
+                      <div>
+                        <h3 className="font-bold text-white text-base">Anonymous Posting Toggle</h3>
+                        <p className="text-xs text-slate-300 font-medium">Safe haven for sensitive discussions</p>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setAnonymousPostingEnabled(!anonymousPostingEnabled);
+                        showToast(
+                          `Anonymous posting ${!anonymousPostingEnabled ? 'enabled' : 'disabled'} for members`,
+                          'info'
+                        );
+                      }}
+                      className={`w-12 h-6 rounded-full transition-colors relative p-0.5 cursor-pointer ${
+                        anonymousPostingEnabled ? 'bg-indigo-600' : 'bg-slate-700'
+                      }`}
+                    >
+                      <div
+                        className={`w-5 h-5 rounded-full bg-white transition-transform ${
+                          anonymousPostingEnabled ? 'translate-x-6' : 'translate-x-0'
+                        }`}
+                      />
+                    </button>
+                  </div>
+
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    Allows members to ask questions regarding sensitive health, finance, or relationship matters without public identity exposure while remaining fully accountable to admins behind the scenes.
+                  </p>
+
+                  {/* Membership Vetting Questions */}
+                  <div className="pt-3 border-t border-slate-800">
+                    <h4 className="font-bold text-xs uppercase tracking-wider text-slate-300 mb-2">
+                      Membership Vetting Questions (Up to 3):
+                    </h4>
+                    <div className="space-y-2">
+                      {membershipQuestions.map((q, idx) => (
+                        <div
+                          key={idx}
+                          className="p-2.5 rounded-lg bg-slate-950 border border-slate-800 text-xs text-slate-300 flex items-start gap-2"
+                        >
+                          <span className="font-bold text-indigo-400">Q{idx + 1}:</span>
+                          <span>{q}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1338,8 +1636,25 @@ const GemsPage: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Reusable Platform Auto-Reply Modal */}
+      <GemAutoReplyModal
+        post={selectedBroadcastForAutoReply}
+        settings={autoReplySettings}
+        isOpen={Boolean(selectedBroadcastForAutoReply)}
+        onClose={() => setSelectedBroadcastForAutoReply(null)}
+        onSendAutoReply={handleSendAutoReply}
+      />
+
+      {/* Broadcast Sender Analytics Response Modal */}
+      <GemBroadcastAnalyticsModal
+        post={selectedBroadcastForAnalytics}
+        isOpen={Boolean(selectedBroadcastForAnalytics)}
+        onClose={() => setSelectedBroadcastForAnalytics(null)}
+      />
     </div>
   );
 };
 
 export default GemsPage;
+

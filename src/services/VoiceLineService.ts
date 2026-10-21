@@ -525,6 +525,23 @@ class VoiceLineService {
     }
 
     const phraseToPlay = matchingLine ? matchingLine.text : text;
+
+    // Level 0: Visual 5D Mint-Green Reaction Dispatch IMMEDIATELY (1.2s max display)
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(
+        new CustomEvent('fingermobile:voiceline', {
+          detail: {
+            text: phraseToPlay,
+            voiceLineId: matchingLine ? matchingLine.id : voiceLineId,
+            category: matchingLine ? matchingLine.category : microservice,
+            eventType,
+            microservice,
+            timestamp: Date.now()
+          }
+        })
+      );
+    }
+
     let playedSuccessfully = false;
 
     // Level 1: Attempt HTML5 Audio Playback
@@ -548,22 +565,6 @@ class VoiceLineService {
     if (!playedSuccessfully) {
       this.playHarmonicChime(volume);
       this.speakVoiceLineText(phraseToPlay, volume);
-    }
-
-    // Level 4: Metric Logging & Visual 2-Second 3D Reaction Dispatch
-    if (typeof window !== 'undefined') {
-      window.dispatchEvent(
-        new CustomEvent('fingermobile:voiceline', {
-          detail: {
-            text: phraseToPlay,
-            voiceLineId: matchingLine ? matchingLine.id : voiceLineId,
-            category: matchingLine ? matchingLine.category : microservice,
-            eventType,
-            microservice,
-            timestamp: Date.now()
-          }
-        })
-      );
     }
 
     if (matchingLine) {
