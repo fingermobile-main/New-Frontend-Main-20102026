@@ -379,6 +379,8 @@ export const routes: RouteObject[] = [
           { path: '/discovery', element: <DiscoveryPage /> },
           { path: '/discovery/category/:category', element: <CategoryFeedPage /> },
           { path: '/categoryfeed', element: <CategoryFeedPage /> },
+          { path: '/categories', element: <CategoryFeedPage /> },
+          { path: '/categories/:categorySlug', element: <CategoryFeedPage /> },
           { path: '/search', element: <SearchPage /> },
           { path: '/trends', element: <TrendsPage /> },
           { path: '/trends/feed', element: <TrendsFeedPage /> },

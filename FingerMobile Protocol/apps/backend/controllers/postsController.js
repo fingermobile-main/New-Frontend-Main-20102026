@@ -28,7 +28,7 @@ class PostsController {
                COALESCE(u.username, 'Anonymous') as author_name,
                u.avatar_url as author_avatar
         FROM posts p
-        LEFT JOIN users u ON p.author_id = u.id
+        LEFT JOIN users u ON COALESCE(p.author_id, p.user_id) = u.id
         WHERE 1=1
       `;
 
@@ -37,12 +37,12 @@ class PostsController {
       // Add filters
       if (author_id) {
         params.push(author_id);
-        query += ` AND p.author_id = $${params.length}`;
+        query += ` AND (p.author_id::text = $${params.length} OR p.user_id::text = $${params.length})`;
       }
 
       if (category) {
-        params.push(category);
-        query += ` AND (p.post_type = $${params.length} OR p.tags @> ARRAY[$${params.length}]::text[])`;
+        params.push(`%${category}%`);
+        query += ` AND (p.category_name ILIKE $${params.length} OR p.category_id ILIKE $${params.length} OR p.post_type ILIKE $${params.length} OR $${params.length} = ANY(p.tags))`;
       }
 
       // Add sorting

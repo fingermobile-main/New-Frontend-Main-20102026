@@ -232,15 +232,18 @@ const VideosPage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8">
+      <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-300 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center">
-            <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-3 rounded-xl">
+            <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-3.5 rounded-2xl shadow-md text-white">
               <PlayIcon className="h-8 w-8 text-white" />
             </div>
             <div className="ml-4">
-              <h1 className="text-3xl font-bold text-gray-900">Videos</h1>
-              <p className="text-gray-600">Discover, watch and support creators in the community</p>
+              <div className="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-blue-100 text-blue-950 border border-blue-400 text-xs font-black uppercase mb-1">
+                Video Commons &bull; Dancia &amp; UGC Hub
+              </div>
+              <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">Videos Gallery</h1>
+              <p className="text-slate-700 font-medium mt-1">Discover, stream, and support creators across sovereign channels with micro-tipping</p>
             </div>
           </div>
         </div>
@@ -298,21 +301,23 @@ const VideosPage: React.FC = () => {
                     </div>
                   </div>
                   <div className="p-5">
-                    <h3 className="font-bold text-lg mb-2 line-clamp-2 h-14">{video.title}</h3>
+                    <h3 className="font-black text-slate-900 text-lg mb-2 line-clamp-2 h-14">{video.title}</h3>
 
                     <div className="flex items-center mb-3">
-                      <div className="bg-gray-200 border-2 border-dashed rounded-xl w-8 h-8" />
-                      <span className="ml-2 text-sm font-medium text-gray-700">{video.creator.name}</span>
+                      <div className="bg-slate-200 border border-slate-300 rounded-full w-8 h-8 flex items-center justify-center text-xs font-black text-slate-700">
+                        {video.creator.name.charAt(0)}
+                      </div>
+                      <span className="ml-2 text-sm font-bold text-slate-800">{video.creator.name}</span>
                     </div>
 
-                    <div className="flex justify-between text-sm text-slate-700 mb-4">
+                    <div className="flex justify-between text-sm text-slate-700 font-medium mb-4">
                       <span>{video.views.toLocaleString()} views</span>
                       <span>{video.uploadDate}</span>
                     </div>
 
                     <div className="flex justify-between items-center">
                       <div className="flex items-center space-x-4">
-                        <button className="flex items-center text-slate-700 hover:text-red-500">
+                        <button className="flex items-center text-slate-700 hover:text-red-500 font-bold text-xs">
                           <HeartIcon className="w-5 h-5 mr-1" />
                           <span>{video.likes}</span>
                         </button>
@@ -323,7 +328,7 @@ const VideosPage: React.FC = () => {
                           <BookmarkIcon className="w-5 h-5" />
                         </button>
                       </div>
-                      <button className="text-slate-700 hover:text-gray-700">
+                      <button className="text-slate-700 hover:text-slate-900">
                         <DotsHorizontalIcon className="w-5 h-5" />
                       </button>
                     </div>
@@ -331,13 +336,13 @@ const VideosPage: React.FC = () => {
                     <div className="mt-4 flex gap-2">
                       <button
                         onClick={() => onOpenGiftModal(video)}
-                        className="flex-1 flex items-center justify-center py-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg hover:from-purple-700 hover:to-indigo-700 transition-colors"
+                        className="flex-1 flex items-center justify-center py-2.5 bg-gradient-to-r from-purple-700 to-indigo-700 text-white font-bold rounded-xl hover:from-purple-800 hover:to-indigo-800 transition-colors shadow-sm"
                       >
                         <GiftIcon className="w-4 h-4 mr-2" /> Gift
                       </button>
                       <button
                         onClick={() => onOpenPaylinkModal(video)}
-                        className="flex-1 flex items-center justify-center py-2.5 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-lg hover:from-blue-700 hover:to-cyan-600 transition-colors"
+                        className="flex-1 flex items-center justify-center py-2.5 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold rounded-xl hover:from-blue-700 hover:to-cyan-700 transition-colors shadow-sm"
                       >
                         <LinkIcon className="w-4 h-4 mr-2" /> Pay
                       </button>
@@ -349,26 +354,31 @@ const VideosPage: React.FC = () => {
           </div>
 
           <div className="space-y-6">
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-100">
-              <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
-                <UserCircleIcon className="h-5 w-5 text-blue-600 mr-2" />
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-200 shadow-sm">
+              <h2 className="text-lg font-black text-slate-900 mb-4 flex items-center">
+                <UserCircleIcon className="h-5 w-5 text-blue-700 mr-2" />
                 Your FIC Balance
               </h2>
               <div className="flex items-center justify-between">
-                <span className="text-2xl font-bold text-gray-900">{ficBalance.toFixed(2)} FIC</span>
-                <button className="text-sm bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-3 py-1.5 rounded-lg hover:from-blue-700 hover:to-indigo-700">
+                <span className="text-3xl font-black text-slate-900">{ficBalance.toFixed(2)} FIC</span>
+                <button className="text-sm font-bold bg-blue-600 text-white px-3.5 py-2 rounded-xl hover:bg-blue-700 shadow-sm transition-colors">
                   Add Funds
                 </button>
               </div>
             </div>
 
-            <div className="bg-white rounded-xl shadow-md p-6 border border-slate-300">
-              <h2 className="text-lg font-bold text-gray-900 mb-4">Trending Categories</h2>
-              <div className="space-y-3">
-                {categories.slice(1, 5).map((category) => (
+            <div className="bg-white rounded-2xl shadow-sm p-6 border border-slate-300">
+              <h2 className="text-lg font-black text-slate-900 mb-4">Trending Categories</h2>
+              <div className="space-y-2.5">
+                {categories.slice(1, 6).map((category) => (
                   <button
                     key={category}
-                    className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-blue-50 hover:to-indigo-50 transition-colors"
+                    onClick={() => setSelectedCategory(category)}
+                    className={`w-full text-left px-4 py-2.5 rounded-xl font-bold text-sm transition-all border ${
+                      selectedCategory === category
+                        ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
+                        : 'bg-slate-50 text-slate-800 border-slate-200 hover:bg-slate-100 hover:text-slate-900'
+                    }`}
                   >
                     {category}
                   </button>

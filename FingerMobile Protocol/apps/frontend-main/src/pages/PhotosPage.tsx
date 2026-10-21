@@ -327,7 +327,7 @@ const PhotosPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Photos & Visual Art Studio">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
         
         {/* 1. HERO BANNER: Strict Contrast Hierarchy */}
         <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-300 shadow-sm relative overflow-hidden">

@@ -1,10 +1,10 @@
 const express = require('express');
 const postsController = require('../controllers/postsController.js');
-const { authenticate } = require('../middleware/authenticate');
+const { authenticate, optionalAuthenticate } = require('../middleware/authenticate');
 const router = express.Router();
 
 // Get all posts with filtering, sorting and pagination
-router.get('/', authenticate, postsController.getAll);
+router.get('/', optionalAuthenticate, postsController.getAll);
 
 // Composer Draft synchronization endpoints (Web & Mobile Auto-Save)
 router.get('/draft', authenticate, postsController.getDraft);
@@ -20,7 +20,7 @@ router.delete('/composer/draft', authenticate, postsController.deleteDraft);
 router.post('/ai-edit', authenticate, postsController.aiEditPost);
 
 // Get a specific post by ID
-router.get('/:postId', authenticate, postsController.getById);
+router.get('/:postId', optionalAuthenticate, postsController.getById);
 
 // Create a new post
 router.post('/', authenticate, postsController.create);
