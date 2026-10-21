@@ -171,20 +171,20 @@ const ProtocolDemoPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-6xl mx-auto px-4">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          <h1 className="text-3xl font-black text-slate-900 tracking-tight mb-2">
             FingerMobile Protocol Service
           </h1>
-          <p className="text-gray-600">
+          <p className="text-slate-700 font-medium">
             Demonstration of the custom protocol communication system
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Connection Panel */}
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-xl font-semibold mb-4">Connection Control</h2>
+          <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
+            <h2 className="text-xl font-black text-slate-900 mb-4">Connection Control</h2>
 
             <div className="mb-4">
               <div className="flex justify-between items-center mb-2">
@@ -239,8 +239,8 @@ const ProtocolDemoPage: React.FC = () => {
           </div>
 
           {/* Message Sending Panel */}
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-xl font-semibold mb-4">Send Message</h2>
+          <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
+            <h2 className="text-xl font-black text-slate-900 mb-4">Send Message</h2>
 
             <div className="space-y-4">
               <div>
@@ -303,8 +303,8 @@ const ProtocolDemoPage: React.FC = () => {
           </div>
 
           {/* Simulation Panel */}
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-xl font-semibold mb-4">Simulation</h2>
+          <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
+            <h2 className="text-xl font-black text-slate-900 mb-4">Simulation</h2>
 
             <div className="space-y-4">
               <div>
@@ -323,9 +323,9 @@ const ProtocolDemoPage: React.FC = () => {
           </div>
 
           {/* Activity Log */}
-          <div className="bg-white rounded-lg shadow-md p-6 lg:col-span-2">
+          <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6 lg:col-span-2">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-semibold">Activity Log</h2>
+              <h2 className="text-xl font-black text-slate-900">Activity Log</h2>
               <button
                 onClick={clearLogs}
                 className="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded-md text-sm"

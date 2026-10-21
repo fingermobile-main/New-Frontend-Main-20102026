@@ -134,7 +134,7 @@ const BeatwaveNGDemoPage: React.FC = () => {
       </header>
 
       {/* Main Studio Body */}
-      <main className="flex-1 max-w-7xl w-full mx-auto p-6 space-y-6">
+      <main className="flex-1 w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
         {/* Top Waveform Display */}
         <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl relative overflow-hidden">
           <div className="flex items-center justify-between mb-4">

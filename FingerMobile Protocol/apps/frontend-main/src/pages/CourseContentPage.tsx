@@ -45,11 +45,11 @@ const CourseContentPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Course Content">
-      <div className="course-content-page p-6 max-w-7xl mx-auto">
+      <div className="course-content-page p-4 sm:p-6 lg:p-8 w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto">
         <header className="mb-8">
-          <button onClick={() => navigate(-1)} className="text-blue-500 mb-4 hover:underline">&larr; Back to Course Detail</button>
-          <h1 className="text-3xl font-bold">{content?.title || `Course ${courseId}`}</h1>
-          <p className="text-gray-600 mt-2">Welcome to the course learning environment.</p>
+          <button onClick={() => navigate(-1)} className="text-blue-600 font-bold mb-4 hover:underline">&larr; Back to Course Detail</button>
+          <h1 className="text-3xl font-black text-slate-900 tracking-tight">{content?.title || `Course ${courseId}`}</h1>
+          <p className="text-slate-700 font-medium mt-2">Welcome to the course learning environment.</p>
         </header>
 
         {loading ? (
