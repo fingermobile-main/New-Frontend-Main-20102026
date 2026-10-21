@@ -344,7 +344,7 @@ const GuardianProtectionPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Guardian Protection">
-      <div className="max-w-7xl mx-auto px-4 py-6 space-y-8">
+      <div className="max-w-[1536px] 2xl:max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
         {/* Top Header Banner */}
         <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-red-950 via-slate-900 to-black p-6 md:p-8 text-white shadow-2xl border border-red-900/50">
           <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">

@@ -94,6 +94,7 @@ const EventsPage = lazy(() => import('../pages/EventsPage'));
 const BeatwaveNGPage = lazy(() => import('../pages/BeatwaveNGPage'));
 const AiPlaylistPage = lazy(() => import('../pages/music/AiPlaylistPage'));
 const AdvancedVoicePage = lazy(() => import('../pages/AdvancedVoicePage'));
+const VoiceFeedPage = lazy(() => import('../pages/VoiceFeedPage'));
 const Dancia4TvPage = lazy(() => import('../pages/Dancia4TvPage'));
 const VideoTranslationDashboard = lazy(() => import('../pages/VideoTranslationDashboard')); // Fixed missing route
 
@@ -197,6 +198,7 @@ const MasterDashboardPage = lazy(() => import('../pages/MasterDashboardPage'));
 const UserMembersConsolePage = lazy(() => import('../pages/UserMembersConsolePage'));
 const StercsDashboardPage = lazy(() => import('../pages/StercsDashboardPage'));
 const StercsPage = lazy(() => import('../pages/StercsPage'));
+const GuardianProtectionPage = lazy(() => import('../pages/GuardianProtectionPage'));
 const GuardianAiPage = lazy(() => import('../pages/GuardianAiPage'));
 
 // Sovereign RBAC & Dedicated Consoles
@@ -423,6 +425,8 @@ export const routes: RouteObject[] = [
           { path: '/lush-pressies', element: redirectTo('/lushpressies') },
           { path: '/lushpressies', element: <LushPressiesPage /> },
           { path: '/elearning', element: <ELearningPage /> },
+          { path: '/courses', element: <ELearningPage /> },
+          { path: '/academy', element: <ELearningPage /> },
           { path: '/course/:id', element: <CourseDetailPage /> },
           { path: '/coursedetail', element: <CourseDetailPage /> },
           { path: '/programs', element: <ProgramsPage /> },
@@ -479,6 +483,9 @@ export const routes: RouteObject[] = [
           { path: '/stercs-dashboard', element: <StercsDashboardPage /> },
           { path: '/stercsdashboard', element: <StercsDashboardPage /> },
           { path: '/stercs', element: <StercsPage /> },
+          { path: '/sterces', element: <GuardianProtectionPage /> },
+          { path: '/guardian-protection', element: <GuardianProtectionPage /> },
+          { path: '/guardianprotection', element: <GuardianProtectionPage /> },
           { path: '/stercs/compliance', element: <StercsDashboardPage /> },
           { path: '/stercs/modules', element: <StercsDashboardPage /> },
           { path: '/dashboard/roles', element: <StercsDashboardPage /> },
@@ -674,6 +681,8 @@ export const routes: RouteObject[] = [
               { path: '/live', element: redirectTo('/livestreaming') },
               { path: '/livestreaming', element: <LiveStreamingPage /> },
               { path: '/advancedvoice', element: <AdvancedVoicePage /> },
+              { path: '/voicefeed', element: <VoiceFeedPage /> },
+              { path: '/voice-feed', element: <VoiceFeedPage /> },
               { path: '/beatwaveng', element: <BeatwaveNGPage /> },
               { path: '/aiplaylist', element: <AiPlaylistPage /> },
               { path: '/advancedfingerwar', element: <AdvancedFingerWarPage /> },

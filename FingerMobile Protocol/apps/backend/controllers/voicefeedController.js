@@ -16,33 +16,35 @@ class VoiceFeedController {
     try {
       const { limit = 50, offset = 0, category, sortBy = 'created_at' } = req.query;
 
-      let whereClause = ['is_published = true'];
+      let whereClause = ['v.is_published = true'];
       let queryParams = [];
       let paramCount = 1;
 
       if (category) {
-        whereClause.push(`category = $${paramCount}`);
+        whereClause.push(`v.category = $${paramCount}`);
         queryParams.push(category);
         paramCount++;
       }
 
       const whereSQL = whereClause.join(' AND ');
+      const validSort = ['created_at', 'duration_seconds', 'title'].includes(sortBy) ? sortBy : 'created_at';
 
       const result = await pool.query(`SELECT 
           v.*,
           u.username as author_username,
           u.avatar_url as author_avatar,
           COUNT(DISTINCT l.id) as likes_count,
-          COUNT(DISTINCT c.id) as comments_count, COUNT(DISTINCT p.id) as plays_count
+          COUNT(DISTINCT c.id) as comments_count, 
+          COUNT(DISTINCT p.id) as plays_count
          FROM voicefeed_posts v
          JOIN users u ON v.author_id = u.id
-         LEFT JOIN likes l ON l.target_id = v.id AND l.target_type = 'voice_post'
+         LEFT JOIN voicefeed_likes l ON l.post_id = v.id
          LEFT JOIN voicefeed_comments c ON c.post_id = v.id
          LEFT JOIN voicefeed_plays p ON p.post_id = v.id
-         WHERE $1
+         WHERE ${whereSQL}
          GROUP BY v.id, u.username, u.avatar_url
-         ORDER BY v.${sortBy} DESC
-         LIMIT $${paramCount} OFFSET $${paramCount + 1}`, [...queryParams, parseInt(limit), parseInt(offset), whereSQL]);
+         ORDER BY v.${validSort} DESC
+         LIMIT $${paramCount} OFFSET $${paramCount + 1}`, [...queryParams, parseInt(limit, 10), parseInt(offset, 10)]);
 
       res.json({
         success: true,
@@ -169,7 +171,7 @@ class VoiceFeedController {
          FROM voicefeed_posts v
          JOIN users u ON v.author_id = u.id
          LEFT JOIN voicefeed_plays vp ON v.id = vp.post_id ${timeFilter}
-         LEFT JOIN likes l ON l.target_id = v.id AND l.target_type = 'voice_post' WHERE v.is_published = true
+         LEFT JOIN voicefeed_likes l ON l.post_id = v.id WHERE v.is_published = true
          GROUP BY v.id, u.username, u.avatar_url
          ORDER BY plays_count DESC
          LIMIT $1`, [parseInt(limit)]);

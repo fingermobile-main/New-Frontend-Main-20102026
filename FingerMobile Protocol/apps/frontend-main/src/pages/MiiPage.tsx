@@ -105,7 +105,7 @@ const MiiPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 space-y-6">
+    <div className="max-w-[1536px] 2xl:max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
       {/* Mii™ Protocol Specs Hero Banner */}
       <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-700 p-6 md:p-8 text-white shadow-xl">
         <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
@@ -269,7 +269,7 @@ const MiiPage: React.FC = () => {
               </div>
 
               {/* Mii Feed Cards */}
-              <div className="lg:col-span-2 space-y-4">
+              <div className="xl:col-span-7 space-y-4">
                 <div className="bg-white dark:bg-gray-900 border border-slate-300 dark:border-gray-800 rounded-3xl p-6 shadow-sm">
                   <div className="flex items-center justify-between mb-4">
                     <div>

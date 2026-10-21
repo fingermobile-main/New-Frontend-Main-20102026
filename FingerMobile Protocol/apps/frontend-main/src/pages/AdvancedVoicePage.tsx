@@ -9,7 +9,7 @@ const AdvancedVoicePage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Advanced Voice">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-[1536px] 2xl:max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
           <div className="flex items-center">
             <div className="bg-gradient-to-r from-blue-600 to-teal-600 p-3 rounded-xl">

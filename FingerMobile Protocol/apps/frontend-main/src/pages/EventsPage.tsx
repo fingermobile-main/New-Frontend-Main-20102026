@@ -321,7 +321,7 @@ const EventsPage: React.FC = () => {
       <div className="min-h-screen bg-slate-50 text-gray-900 pb-16">
         {/* Header Hero */}
         <div className="bg-gradient-to-r from-slate-950 via-blue-950 to-indigo-950 text-white py-12 px-4 sm:px-6 lg:px-8 border-b border-blue-900/40">
-          <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+          <div className="max-w-[1536px] 2xl:max-w-[1680px] w-full mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-semibold mb-3 border border-blue-500/30">
                 <CalendarIcon className="w-4 h-4 text-blue-400" />
@@ -348,7 +348,7 @@ const EventsPage: React.FC = () => {
         </div>
 
         {/* Toolbar & Filter Deck */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6">
+        <div className="max-w-[1536px] 2xl:max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8 -mt-6">
           <div className="bg-white rounded-2xl shadow-xl border border-slate-300/80 p-5 space-y-4">
             <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
               <div className="relative w-full md:w-96">
@@ -400,7 +400,7 @@ const EventsPage: React.FC = () => {
         </div>
 
         {/* Main Content Grid */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+        <div className="max-w-[1536px] 2xl:max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8 mt-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             {/* Events Roster (8 Cols) */}
             <div className="lg:col-span-8 space-y-6">

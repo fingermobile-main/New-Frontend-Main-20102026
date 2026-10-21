@@ -17,7 +17,7 @@ const ElearningCourse = db.sequelize.define('ElearningCourse', {
     onDelete: 'CASCADE'
   },
   instructor_id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.UUID,
     allowNull: false
   },
   title: {

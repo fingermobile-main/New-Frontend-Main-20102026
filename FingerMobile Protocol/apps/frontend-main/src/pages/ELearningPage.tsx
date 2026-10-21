@@ -213,7 +213,7 @@ const ELearningPage: React.FC = () => {
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
-        <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 py-16">
+        <div className="max-w-[1536px] 2xl:max-w-[1680px] w-full mx-auto p-4 sm:p-6 lg:p-8 py-16">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             <div>
               <h1 className="text-3xl font-extrabold sm:text-4xl lg:text-5xl">
@@ -300,7 +300,7 @@ const ELearningPage: React.FC = () => {
 
       {/* Stats Section */}
       <div className="py-12 p-4 sm:p-6 lg:p-8">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-[1536px] 2xl:max-w-[1680px] w-full mx-auto">
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {stats.map((stat, index) => (
               <StatsCard
@@ -316,7 +316,7 @@ const ELearningPage: React.FC = () => {
 
       {/* Features Section */}
       <div className="bg-gray-100 py-12 p-4 sm:p-6 lg:p-8">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-[1536px] 2xl:max-w-[1680px] w-full mx-auto">
           <div className="text-center">
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900">Why Choose Our E-Learning Platform</h2>
             <p className="mt-4 max-w-2xl mx-auto text-base sm:text-lg lg:text-xl text-slate-700">
@@ -339,7 +339,7 @@ const ELearningPage: React.FC = () => {
 
       {/* Courses Section */}
       <div className="py-12 p-4 sm:p-6 lg:p-8">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-[1536px] 2xl:max-w-[1680px] w-full mx-auto">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
             <div>
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900">Featured Courses</h2>
@@ -403,7 +403,7 @@ const ELearningPage: React.FC = () => {
 
       {/* Recommended Courses Section */}
       <div className="py-12 p-4 sm:p-6 lg:p-8 bg-gray-50">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-[1536px] 2xl:max-w-[1680px] w-full mx-auto">
           <div>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900">Recommended Courses</h2>
             <p className="mt-2 max-w-2xl text-base sm:text-lg text-slate-700">
@@ -430,7 +430,7 @@ const ELearningPage: React.FC = () => {
 
       {/* CTA Section */}
       <div className="bg-blue-600 p-4 sm:p-6 lg:p-8">
-        <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between">
+        <div className="max-w-[1536px] 2xl:max-w-[1680px] w-full mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between">
           <h2 className="text-2xl lg:text-4xl font-extrabold tracking-tight text-white">
             <span className="block">Ready to start learning?</span>
             <span className="block text-blue-200">Join our community of learners today.</span>
