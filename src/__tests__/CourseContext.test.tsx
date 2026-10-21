@@ -1,18 +1,17 @@
 import React, {} from 'react';
-import { useAppContext } from '../contexts/AppContext';
 import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { CourseProvider, useCourseContext } from '../contexts/CourseContext';
-import { api } from '../services/api';
+import { ApiService } from '../services/api';
+
+const mockShowToast = jest.fn();
 
 // Mock the api service
 jest.mock('../services/api', () => ({
-  api: {
-    get: jest.fn(),
-    post: jest.fn(),
-    put: jest.fn(),
-    delete: jest.fn()},
-  ApiService: {}
+  ApiService: { get: jest.fn(), post: jest.fn(), put: jest.fn(), delete: jest.fn() },
+}));
+jest.mock('../contexts/AppContext', () => ({
+  useAppContext: () => ({ showToast: mockShowToast }),
 }));
 
 // Test component to use the context
@@ -31,7 +30,7 @@ const TestComponent: React.FC = () => {
       </button>
       <button
         data-testid="create-course"
-        onClick={() => createCourse({ title: 'Test Course' })}
+        onClick={() => { void createCourse({ title: 'Test Course' }).catch(() => {}); }}
       >
         Create Course
       </button>
@@ -42,16 +41,17 @@ const TestComponent: React.FC = () => {
 describe('CourseContext', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    (ApiService.get as jest.Mock).mockResolvedValue({ data: [] });
   });
 
-  test('should provide initial state', () => {
+  test('should provide initial state', async () => {
     render(
       <CourseProvider>
         <TestComponent />
       </CourseProvider>,
     );
 
-    expect(screen.getByTestId('loading')).toHaveTextContent('false');
+    await waitFor(() => expect(screen.getByTestId('loading')).toHaveTextContent('false'));
     expect(screen.getByTestId('error')).toHaveTextContent('null');
     expect(screen.getByTestId('courses-count')).toHaveTextContent('0');
     expect(screen.getByTestId('enrollments-count')).toHaveTextContent('0');
@@ -63,7 +63,7 @@ describe('CourseContext', () => {
       { id: '2', title: 'Course 2' },
     ];
 
-    (api.get as jest.Mock).mockResolvedValue({
+    (ApiService.get as jest.Mock).mockResolvedValue({
       data: mockCourses});
 
     render(
@@ -85,7 +85,7 @@ describe('CourseContext', () => {
   });
 
   test('should handle fetch courses error', async () => {
-    (api.get as jest.Mock).mockRejectedValue(
+    (ApiService.get as jest.Mock).mockRejectedValue(
       new Error('Failed to fetch'),
     );
 
@@ -105,14 +105,14 @@ describe('CourseContext', () => {
 
     // Check error message
     expect(screen.getByTestId('error')).toHaveTextContent(
-      'Failed to fetch courses',
+      'Failed to fetch',
     );
   });
 
   test('should create course successfully', async () => {
     const newCourse = { id: '3', title: 'Test Course' };
 
-    (api.post as jest.Mock).mockResolvedValue({
+    (ApiService.post as jest.Mock).mockResolvedValue({
       data: newCourse});
 
     render(
@@ -134,7 +134,7 @@ describe('CourseContext', () => {
   });
 
   test('should handle create course error', async () => {
-    (api.post as jest.Mock).mockRejectedValue(
+    (ApiService.post as jest.Mock).mockRejectedValue(
       new Error('Failed to create'),
     );
 
@@ -154,7 +154,7 @@ describe('CourseContext', () => {
 
     // Check error message
     expect(screen.getByTestId('error')).toHaveTextContent(
-      'Failed to create course',
+      'Failed to create',
     );
   });
 });

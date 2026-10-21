@@ -31,7 +31,7 @@ describe('AuthService', () => {
         }
       };
 
-      mockedAxios.post.mockResolvedValue({
+      mockedAxios.create().post.mockResolvedValue({
         data: mockResponse });
 
       const credentials = {
@@ -42,22 +42,18 @@ describe('AuthService', () => {
       const response = await authService.login(credentials);
 
       expect(response).toEqual(mockResponse);
-      expect(mockedAxios.post).toHaveBeenCalledWith(
-        'http://localhost:3001/api/auth/login',
+      expect(mockedAxios.create().post).toHaveBeenCalledWith(
+        '/login',
         credentials
       );
     });
 
     it('should throw an error on failed login', async () => {
       const errorMessage = 'Invalid credentials';
+      const error = new Error(errorMessage);
+      (error as any).response = { data: { message: errorMessage } };
 
-      mockedAxios.post.mockRejectedValue({
-        response: {
-          data: {
-            message: errorMessage
-          }
-        }
-      });
+      mockedAxios.create().post.mockRejectedValue(error);
 
       const credentials = {
         phone: '+1234567890',
@@ -92,14 +88,14 @@ describe('AuthService', () => {
         }
       };
 
-      mockedAxios.post.mockResolvedValue({
+      mockedAxios.create().post.mockResolvedValue({
         data: mockRegisterResponse });
 
       const response = await authService.register(mockUserData);
 
       expect(response).toEqual(mockRegisterResponse);
-      expect(mockedAxios.post).toHaveBeenCalledWith(
-        'http://localhost:3001/api/auth/register',
+      expect(mockedAxios.create().post).toHaveBeenCalledWith(
+        '/register',
         mockUserData
       );
     });
@@ -114,14 +110,10 @@ describe('AuthService', () => {
       };
 
       const errorMessage = 'Registration failed';
+      const error = new Error(errorMessage);
+      (error as any).response = { data: { message: errorMessage } };
 
-      mockedAxios.post.mockRejectedValue({
-        response: {
-          data: {
-            message: errorMessage
-          }
-        }
-      });
+      mockedAxios.create().post.mockRejectedValue(error);
 
       await expect(authService.register(mockUserData)).rejects.toThrow(errorMessage);
     });
@@ -129,12 +121,12 @@ describe('AuthService', () => {
 
   describe('sendVerificationCode', () => {
     it('should call the API to send verification code', async () => {
-      mockedAxios.post.mockResolvedValue({});
+      mockedAxios.create().post.mockResolvedValue({});
 
       await authService.sendVerificationCode('+1234567890');
 
-      expect(mockedAxios.post).toHaveBeenCalledWith(
-        'http://localhost:3001/api/auth/send-verification',
+      expect(mockedAxios.create().post).toHaveBeenCalledWith(
+        '/send-verification',
         {
           phone: '+1234567890' }
       );
@@ -152,14 +144,14 @@ describe('AuthService', () => {
           email: 'test@example.com' }
       };
 
-      mockedAxios.post.mockResolvedValue({
+      mockedAxios.create().post.mockResolvedValue({
         data: mockResponse });
 
       const response = await authService.verifyCode('+1234567890', '123456');
 
       expect(response).toEqual(mockResponse);
-      expect(mockedAxios.post).toHaveBeenCalledWith(
-        'http://localhost:3001/api/auth/verify-code',
+      expect(mockedAxios.create().post).toHaveBeenCalledWith(
+        '/verify-code',
         {
           phone: '+1234567890',
           code: '123456' }
@@ -171,12 +163,12 @@ describe('AuthService', () => {
     it('should call the API to initiate password reset', async () => {
       const testData = {
         identifier: 'test@example.com' };
-      mockedAxios.post.mockResolvedValue({});
+      mockedAxios.create().post.mockResolvedValue({});
 
       await authService.forgotPassword(testData.identifier);
 
-      expect(mockedAxios.post).toHaveBeenCalledWith(
-        'http://localhost:3001/api/auth/forgot-password',
+      expect(mockedAxios.create().post).toHaveBeenCalledWith(
+        '/forgot-password',
         { identifier: testData.identifier }
       );
     });
@@ -184,28 +176,28 @@ describe('AuthService', () => {
 
   describe('resetPassword', () => {
     it('should call the API to reset password', async () => {
-      mockedAxios.post.mockResolvedValue({});
+      mockedAxios.create().post.mockResolvedValue({});
 
       await authService.resetPassword('token123', 'newPassword123');
 
-      expect(mockedAxios.post).toHaveBeenCalledWith(
-        'http://localhost:3001/api/auth/reset-password',
+      expect(mockedAxios.create().post).toHaveBeenCalledWith(
+        '/reset-password',
         {
           token: 'token123',
-          newpassword: process.env.TEST_USER_PASSWORD || 'secure_test_password' }
+          newPassword: 'newPassword123' }
       );
     });
   });
 
   describe('logout', () => {
     it('should call the API to logout and clear local storage', async () => {
-      mockedAxios.post.mockResolvedValue({});
+      mockedAxios.create().post.mockResolvedValue({});
       const removeItemSpy = jest.spyOn(Storage.prototype, 'removeItem');
 
       await authService.logout();
 
-      expect(mockedAxios.post).toHaveBeenCalledWith(
-        'http://localhost:3001/api/auth/logout'
+      expect(mockedAxios.create().post).toHaveBeenCalledWith(
+        '/logout'
       );
       expect(removeItemSpy).toHaveBeenCalledWith('accessToken');
       expect(removeItemSpy).toHaveBeenCalledWith('refreshToken');

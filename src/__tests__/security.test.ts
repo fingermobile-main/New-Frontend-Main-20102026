@@ -4,7 +4,7 @@ import security from '../utils/security';
 describe('Security Utilities', () => {
   describe('Password Hashing', () => {
     test('should hash password correctly', async () => {
-      const password = process.env.TEST_PASSWORD || 'secure_test_password';
+      const password = process.env.TEST_PASSWORD || 'Secure_test_password1!';
       const hash = await security.hashPassword(password);
 
       expect(hash).toBeDefined();
@@ -22,7 +22,7 @@ describe('Security Utilities', () => {
 
     test('should reject incorrect password', async () => {
       const password = process.env.TEST_PASSWORD || 'secure_test_password';
-      const wrongPassword = process.env.TEST_PASSWORD || 'secure_test_password';
+      const wrongPassword = 'different_secure_test_password';
       const hash = await security.hashPassword(password);
       const isMatch = await security.comparePassword(wrongPassword, hash);
 
@@ -94,14 +94,14 @@ describe('Security Utilities', () => {
 
   describe('Password Validation', () => {
     test('should validate strong password', () => {
-      const password = process.env.TEST_PASSWORD || 'secure_test_password';
+      const password = 'Secure_test_password1!';
       const result = security.validatePassword(password);
 
       expect(result.valid).toBe(true);
     });
 
     test('should reject weak password - too short', () => {
-      const password = process.env.TEST_PASSWORD || 'secure_test_password';
+      const password = 'Ab1!';
       const result = security.validatePassword(password);
 
       expect(result.valid).toBe(false);
@@ -109,7 +109,7 @@ describe('Security Utilities', () => {
     });
 
     test('should reject weak password - no uppercase', () => {
-      const password = process.env.TEST_PASSWORD || 'secure_test_password';
+      const password = 'secure_test_password1!';
       const result = security.validatePassword(password);
 
       expect(result.valid).toBe(false);
@@ -117,7 +117,7 @@ describe('Security Utilities', () => {
     });
 
     test('should reject weak password - no lowercase', () => {
-      const password = process.env.TEST_PASSWORD || 'secure_test_password';
+      const password = 'SECURE_TEST_PASSWORD1!';
       const result = security.validatePassword(password);
 
       expect(result.valid).toBe(false);
@@ -125,7 +125,7 @@ describe('Security Utilities', () => {
     });
 
     test('should reject weak password - no number', () => {
-      const password = process.env.TEST_PASSWORD || 'secure_test_password';
+      const password = 'Secure_test_password!';
       const result = security.validatePassword(password);
 
       expect(result.valid).toBe(false);
@@ -133,7 +133,7 @@ describe('Security Utilities', () => {
     });
 
     test('should reject weak password - no special character', () => {
-      const password = process.env.TEST_PASSWORD || 'secure_test_password';
+      const password = 'Securetestpassword1';
       const result = security.validatePassword(password);
 
       expect(result.valid).toBe(false);

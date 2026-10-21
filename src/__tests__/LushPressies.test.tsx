@@ -18,7 +18,7 @@ describe('LushPressiesPage Integration', () => {
       </MemoryRouter>
     );
     await waitFor(() => {
-      expect(screen.getByText('Alexandria Chen')).toBeInTheDocument();
+      expect(screen.getByText('Guest Explorer')).toBeInTheDocument();
     });
     expect(screen.getByText('Discovery Deck')).toBeInTheDocument();
     expect(screen.getByText('Mutual Matches')).toBeInTheDocument();

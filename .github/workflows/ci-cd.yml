@@ -26,7 +26,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     - name: Install dependencies
-      run: npm install
+      run: npm ci
 
     - name: Lint code
       run: npm run lint || echo "Linting issues found but continuing..."
@@ -36,6 +36,10 @@ jobs:
 
     - name: Build application
       run: npm run build
+      env:
+        # Lint runs in its own workflow step; CRA's implicit plugin pass is
+        # disabled because the repo has an existing standalone ESLint config.
+        DISABLE_ESLINT_PLUGIN: 'true'
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4

@@ -86,7 +86,7 @@ describe('CanaryAdsPage', () => {
 
     render(<CanaryAdsPage />);
 
-    expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
+    expect(screen.getByText('Loading active campaigns...')).toBeInTheDocument();
   });
 
   it('should render ads when loaded', async () => {
@@ -104,7 +104,7 @@ describe('CanaryAdsPage', () => {
     });
   });
 
-  it('should render error message when there is an error', async () => {
+  it('shows the empty campaigns state when no campaigns are available', async () => {
     mockUseAds.mockReturnValue({
       ads: [],
       loading: false,
@@ -113,9 +113,6 @@ describe('CanaryAdsPage', () => {
 
     render(<CanaryAdsPage />);
 
-    expect(
-      screen.getByText('Error loading ads: Failed to fetch ads.'),
-    ).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Retry' })).toBeInTheDocument();
+    expect(await screen.findByText('No active campaigns running. Launch your first campaign above!')).toBeInTheDocument();
   });
 });

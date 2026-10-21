@@ -26,7 +26,7 @@ describe('ProtocolCommunication Component', () => {
 
     expect(screen.getByText('Security Settings')).toBeInTheDocument();
 
-    const closeButton = screen.getByRole('button', { name: '' }); // The X button
+    const closeButton = screen.getByRole('button', { name: 'Close security settings' });
     fireEvent.click(closeButton);
 
     expect(screen.queryByText('Security Settings')).not.toBeInTheDocument();
@@ -36,7 +36,8 @@ describe('ProtocolCommunication Component', () => {
     render(<ProtocolCommunication />);
 
     const messageInput = screen.getByPlaceholderText('Type a message...');
-    const sendButton = screen.getByTitle('Send');
+    const sendButton = screen.getAllByRole('button').find((button) => !button.getAttribute('title') && !button.textContent?.trim());
+    expect(sendButton).toBeDefined();
 
     fireEvent.change(messageInput, { target: { value: 'Test message' } });
     fireEvent.click(sendButton);
@@ -55,8 +56,7 @@ describe('ProtocolCommunication Component', () => {
     );
 
     // Initially should show disconnected state
-    const wifiIcon = screen.getByLabelText(/wifi/i) || screen.getByLabelText(/wifi off/i);
-    expect(wifiIcon).toBeInTheDocument();
+    expect(screen.getByTitle('Connect')).toBeInTheDocument();
   });
 
   it('toggles encryption setting', () => {
@@ -72,14 +72,14 @@ describe('ProtocolCommunication Component', () => {
     expect(encryptionCheckbox).toBeChecked();
   });
 
-  it('responds to Enter key press for sending messages', () => {
+  it('responds to Enter key press for sending messages', async () => {
     render(<ProtocolCommunication />);
 
     const messageInput = screen.getByPlaceholderText('Type a message...');
     fireEvent.change(messageInput, { target: { value: 'Test message' } });
 
-    fireEvent.keyPress(messageInput, { key: 'Enter', code: 'Enter', char: '\n' });
+    fireEvent.keyDown(messageInput, { key: 'Enter', code: 'Enter' });
 
-    expect(messageInput).toHaveValue('');
+    await waitFor(() => expect(messageInput).toHaveValue(''));
   });
 });

@@ -1,17 +1,7 @@
-import React, {} from 'react';
-import { useAppContext } from '../../contexts/AppContext';
+import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import BeatwaveControls from '../../components/BeatwaveControls';
-
-// Mock the heroicons
-jest.mock('../components/icons', () => ({
-  PlayIcon: () => <div>Play Icon</div>,
-  PauseIcon: () => <div>Pause Icon</div>,
-  ArrowLeftIcon: () => <div>Previous Icon</div>,
-  ArrowRightIcon: () => <div>Next Icon</div>,
-  SpeakerWaveIcon: () => <div>Volume Icon</div>,
-  ArrowsPointingOutIcon: () => <div>Fullscreen Icon</div>}));
 
 describe('BeatwaveControls', () => {
   const mockProps = {
@@ -38,12 +28,12 @@ describe('BeatwaveControls', () => {
 
   it('displays play icon when not playing', () => {
     render(<BeatwaveControls {...mockProps} />);
-    expect(screen.getByText('Play Icon')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Play' }).querySelector('svg')).toBeInTheDocument();
   });
 
   it('displays pause icon when playing', () => {
     render(<BeatwaveControls {...mockProps} isPlaying={true} />);
-    expect(screen.getByText('Pause Icon')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Pause' }).querySelector('svg')).toBeInTheDocument();
   });
 
   it('calls onPlayPause when play/pause button is clicked', () => {

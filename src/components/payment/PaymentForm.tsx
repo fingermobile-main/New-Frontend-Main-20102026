@@ -1,16 +1,14 @@
 import React, { useState, useCallback } from 'react';
 import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
+  View as NativeView,
+  Text as NativeText,
+  TextInput as NativeTextInput,
+  TouchableOpacity as NativeTouchableOpacity,
   StyleSheet,
-  Alert,
-  ScrollView,
-  ActivityIndicator,
+  ScrollView as NativeScrollView,
+  ActivityIndicator as NativeActivityIndicator,
   KeyboardAvoidingView,
-  Platform,
-} from 'react-native';
+} from 'react-native-web';
 
 interface PaymentFormData {
   amount: string;
@@ -18,6 +16,18 @@ interface PaymentFormData {
   description: string;
   currency: string;
 }
+
+// react-native-web's runtime component is valid in React DOM, but the legacy
+// @types/react-native declaration in this project describes the native class
+// with an incompatible React component instance type.
+const WebKeyboardAvoidingView = KeyboardAvoidingView as unknown as React.ComponentType<any>;
+const View = NativeView as unknown as React.ComponentType<any>;
+const Text = NativeText as unknown as React.ComponentType<any>;
+const TextInput = NativeTextInput as unknown as React.ComponentType<any>;
+const TouchableOpacity = NativeTouchableOpacity as unknown as React.ComponentType<any>;
+const ScrollView = NativeScrollView as unknown as React.ComponentType<any>;
+const ActivityIndicator = NativeActivityIndicator as unknown as React.ComponentType<any>;
+const WebStyleSheet = StyleSheet as unknown as { create: (styles: Record<string, any>) => any };
 
 const INITIAL_FORM_STATE: PaymentFormData = {
   amount: '',
@@ -51,12 +61,12 @@ const PaymentForm: React.FC = () => {
     const numericAmount = parseFloat(formData.amount);
 
     if (isNaN(numericAmount) || numericAmount <= 0) {
-      Alert.alert('Validation Error', 'Please enter a valid amount greater than zero.');
+      window.alert('Validation Error: Please enter a valid amount greater than zero.');
       return;
     }
 
     if (!formData.paymentMethod.trim()) {
-      Alert.alert('Validation Error', 'Payment Method is required.');
+      window.alert('Validation Error: Payment Method is required.');
       return;
     }
 
@@ -68,20 +78,20 @@ const PaymentForm: React.FC = () => {
         amount: numericAmount,
       });
 
-      Alert.alert('Success', 'Payment processed successfully.');
+      window.alert('Success: Payment processed successfully.');
       setFormData(INITIAL_FORM_STATE);
     } catch (error) {
       console.error('Payment error:', error);
-      Alert.alert('Error', 'Failed to process payment. Please try again.');
+      window.alert('Error: Failed to process payment. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <KeyboardAvoidingView
+    <WebKeyboardAvoidingView
       style={styles.keyboardContainer}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      behavior="padding"
     >
       <ScrollView
         contentContainerStyle={styles.container}
@@ -153,11 +163,11 @@ const PaymentForm: React.FC = () => {
           )}
         </TouchableOpacity>
       </ScrollView>
-    </KeyboardAvoidingView>
+    </WebKeyboardAvoidingView>
   );
 };
 
-const styles = StyleSheet.create({
+const styles = WebStyleSheet.create({
   keyboardContainer: {
     flex: 1,
   },

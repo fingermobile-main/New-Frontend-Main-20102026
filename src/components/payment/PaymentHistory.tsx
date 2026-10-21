@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet, RefreshControl, Alert } from 'react-native';
+import { View, Text, FlatList as NativeFlatList, StyleSheet, RefreshControl } from 'react-native-web';
 import { paymentAPI } from '../../services/paymentAPI';
+
+const WebStyleSheet = StyleSheet as unknown as { create: (styles: Record<string, any>) => any };
+const FlatList = NativeFlatList as unknown as React.ComponentType<any>;
 
 interface PaymentHistoryItem {
   id: string;
@@ -55,7 +58,7 @@ const PaymentHistory: React.FC = () => {
       setPayments(mockPayments);
     } catch (error) {
       console.error('Error fetching payment history:', error);
-      Alert.alert('Error', 'Failed to load payment history');
+      window.alert('Error: Failed to load payment history');
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -112,7 +115,7 @@ const PaymentHistory: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const styles = WebStyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f5f5f5',

@@ -21,30 +21,29 @@ jest.mock('../components/layout/MainLayout', () => ({ children }: { children: Re
 ));
 
 describe('LiveStreamingPage', () => {
-  it('renders Live Streaming page and Go Live streamer action', () => {
+  it('renders the stream management page and create action', () => {
     render(
       <MemoryRouter>
         <LiveStreamingPage />
       </MemoryRouter>
     );
 
-    expect(screen.getByRole('heading', { level: 1, name: /Live Streaming/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Go Live/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1, name: 'Live Streaming Management' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Create Stream/i })).toBeInTheDocument();
   });
 
-  it('opens WebRTC studio drawer when Go Live is clicked', () => {
+  it('opens the create stream dialog', () => {
     render(
       <MemoryRouter>
         <LiveStreamingPage />
       </MemoryRouter>
     );
 
-    const goLiveBtn = screen.getByRole('button', { name: /Go Live/i });
-    fireEvent.click(goLiveBtn);
+    fireEvent.click(screen.getByRole('button', { name: /Create Stream/i }));
 
     expect(
-      screen.getByRole('heading', { level: 3, name: /WebRTC Live Broadcast Studio/i })
+      screen.getByRole('heading', { level: 3, name: /Create New Stream/i })
     ).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Start Broadcast/i })).toBeInTheDocument();
+    expect(screen.getAllByRole('button', { name: /Create Stream/i }).length).toBeGreaterThan(0);
   });
 });

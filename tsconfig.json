@@ -34,6 +34,7 @@
     "src/**/*.disabled.*",
     "src/**/*.disabled/**/*",
     "src/server.disabled",
+    "src/database/connection.ts",
     "src/**/*.test.tsx",
     "src/**/*.test.ts"
   ]

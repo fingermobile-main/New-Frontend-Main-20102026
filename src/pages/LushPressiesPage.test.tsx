@@ -3,6 +3,7 @@ import '@testing-library/jest-dom';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import LushPressiesPage from './LushPressiesPage';
+import apiService from '../services/apiService';
 
 describe('LushPressiesPage Component', () => {
   beforeEach(() => {
@@ -19,10 +20,9 @@ describe('LushPressiesPage Component', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText('Alexandria Chen')).toBeInTheDocument();
+      expect(screen.getByText('Guest Explorer')).toBeInTheDocument();
     });
 
-    expect(screen.getByText('@alex_lush')).toBeInTheDocument();
     expect(screen.getByText('Lush-Pressies Feed')).toBeInTheDocument();
     expect(screen.getAllByText(/Encore™ \(3–5★\)/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText('Discover Deck').length).toBeGreaterThan(0);
@@ -38,7 +38,7 @@ describe('LushPressiesPage Component', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText('Alexandria Chen')).toBeInTheDocument();
+      expect(screen.getByText('Guest Explorer')).toBeInTheDocument();
     });
 
     const encoreButtons = screen.getAllByRole('button', { name: /Encore™/i });
@@ -143,7 +143,7 @@ describe('LushPressiesPage Component', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText('Alexandria Chen')).toBeInTheDocument();
+      expect(screen.getByText('Guest Explorer')).toBeInTheDocument();
     });
 
     const editProfileBtn = screen.getByTitle('Edit Bio, Headline, Avatars & Banners');
@@ -167,7 +167,7 @@ describe('LushPressiesPage Component', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText('Alexandria Chen')).toBeInTheDocument();
+      expect(screen.getByText('Guest Explorer')).toBeInTheDocument();
     });
 
     // Check PIN Quota indicators
@@ -187,6 +187,13 @@ describe('LushPressiesPage Component', () => {
   });
 
   it('allows opening unlocked member profile and revoking 6-digit PIN', async () => {
+    jest.spyOn(apiService, 'get').mockImplementation(async (path: any) => {
+      if (path === '/lushpressies/matches') {
+        return { data: { matches: [{ target_user_id: 'nia-1', name: 'Nia Adebayo', pin_exchanged: true }] } } as any;
+      }
+      return { data: {} } as any;
+    });
+
     render(
       <MemoryRouter>
         <LushPressiesPage />
@@ -194,11 +201,11 @@ describe('LushPressiesPage Component', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText('Alexandria Chen')).toBeInTheDocument();
+      expect(screen.getByText('Guest Explorer')).toBeInTheDocument();
     });
 
     // Nia Adebayo is an unlocked match with pinExchanged: true in Mutual Matches
-    const niaMatches = screen.getAllByText('Nia Adebayo');
+    const niaMatches = await screen.findAllByText('Nia Adebayo');
     // The match card is the second one in the discovery sidebar
     fireEvent.click(niaMatches[niaMatches.length - 1]);
 

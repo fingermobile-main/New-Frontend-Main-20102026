@@ -24,10 +24,11 @@ describe('ProtocolService Integration', () => {
 
   describe('Connection Status', () => {
     it('should return connection status', () => {
-      const status = protocolService.getConnectionStatus();
+      const status = protocolService.getProtocolStatus();
       expect(status).toHaveProperty('connected');
       expect(status).toHaveProperty('sessionId');
       expect(status).toHaveProperty('serverId');
+      expect(typeof status.connected).toBe('boolean');
     });
   });
 });
