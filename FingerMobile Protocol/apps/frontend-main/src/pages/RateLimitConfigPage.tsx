@@ -140,7 +140,7 @@ const RateLimitConfigPage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center justify-between">

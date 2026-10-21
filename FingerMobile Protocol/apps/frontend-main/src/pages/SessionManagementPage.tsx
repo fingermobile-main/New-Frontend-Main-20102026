@@ -48,7 +48,7 @@ const SessionManagementPage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="max-w-4xl mx-auto px-4 py-8 space-y-6">
+      <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 py-8 space-y-6">
         <PlatformOwnershipCard />
 
         <div className="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-slate-300 gap-4">

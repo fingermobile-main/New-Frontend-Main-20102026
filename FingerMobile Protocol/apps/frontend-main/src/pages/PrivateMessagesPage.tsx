@@ -224,7 +224,7 @@ const PrivateMessagesPage: React.FC = () => {
   return (
     <MainLayout pageTitle="PrivateMessages">
       <div className="bg-white min-h-screen text-gray-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             {/* Left Sidebar */}
             <div className="hidden lg:block lg:col-span-3">

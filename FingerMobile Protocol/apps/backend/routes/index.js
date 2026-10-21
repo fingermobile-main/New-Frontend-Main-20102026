@@ -108,6 +108,7 @@ const moderationRoutes = require('./moderation');
 const uploadsRoutes = require('./uploads');
 const mediaRoutes = require('./media');
 const auditLogsRoutes = require('./audit-log-admin');
+const securityRoutes = require('./security');
 
 // Mount individual route modules under their respective paths
 router.use('/admin', adminRoutes);
@@ -129,8 +130,8 @@ router.use('/publicitee', publiciteeRoutes);
 router.use('/fingershorts', fingershortsRoutes);
 router.use('/beatwave', beatwaveRoutes);
 router.use('/beatwave-ng', beatwaveRoutes);
-router.use('/beatwaveng', beatwaveRoutes);
 router.use('/guardian', guardianRoutes);
+router.use('/security', securityRoutes);
 router.use('/sterces', stercesRoutes);
 router.use('/stercs', stercsRoutes);
 router.use('/voicelines', voicelinesRoutes);
