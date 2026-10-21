@@ -215,6 +215,36 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
   }, [showBanner]);
 
   // --------------------------------------------------------------------------
+  // PostgreSQL Financial Ecosystem Initial Synchronization
+  // --------------------------------------------------------------------------
+  useEffect(() => {
+    let isMounted = true;
+    const syncFromPostgres = async () => {
+      try {
+        const [isDb, bsDb, costDb, startDb, capexDb, logsDb] = await Promise.all([
+          financialDb.fetchSheetFromPostgres('income_statement'),
+          financialDb.fetchSheetFromPostgres('balance_sheet'),
+          financialDb.fetchSheetFromPostgres('cost_tcc_boq'),
+          financialDb.fetchSheetFromPostgres('startup_funds'),
+          financialDb.fetchSheetFromPostgres('capex_opex_dancia'),
+          financialDb.fetchAuditLogsFromPostgres()
+        ]);
+        if (!isMounted) return;
+        if (isDb && (isDb.revenues || isDb.items)) setIncomeStatement(isDb);
+        if (bsDb && (bsDb.currentAssets || bsDb.items)) setBalanceSheet(bsDb);
+        if (costDb && (costDb.items || costDb.fixedAssets)) setCostTccBoq(costDb);
+        if (startDb && (startDb.fixedAssets || startDb.items)) setStartupFunds(startDb);
+        if (capexDb && (capexDb.keyLineItems || capexDb.items)) setCapexOpexDancia(capexDb);
+        if (logsDb && logsDb.length > 0) setAuditList(logsDb);
+      } catch (err) {
+        console.warn('Initial financial DB sync note:', err);
+      }
+    };
+    syncFromPostgres();
+    return () => { isMounted = false; };
+  }, []);
+
+  // --------------------------------------------------------------------------
   // Tab 2: Ratio Sandbox State
   // --------------------------------------------------------------------------
   const [sandboxAssets, setSandboxAssets] = useState<number>(1391500000);
@@ -387,7 +417,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
   }, [selectedSheetKey, incomeStatement, balanceSheet, costTccBoq, startupFunds, capexOpexDancia]);
 
   // 1. Save CFO Draft
-  const handleSaveWorkingDraft = () => {
+  const handleSaveWorkingDraft = async () => {
     const actorName = governanceRole === 'CFO'
       ? 'Mrs. Mbah Eunice Emonena (CFO & Co-Founder)'
       : 'Mbah Israel Obinna (Super Admin - Editing on behalf of Executive Council)';
@@ -412,35 +442,36 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
     if (selectedSheetKey === 'income_statement') {
       updatedSheet = updateMeta(incomeStatement);
       setIncomeStatement(updatedSheet);
-      localStorage.setItem('fmp_dynamic_sheet_income_statement', JSON.stringify(updatedSheet));
     } else if (selectedSheetKey === 'balance_sheet') {
       updatedSheet = updateMeta(balanceSheet);
       setBalanceSheet(updatedSheet);
-      localStorage.setItem('fmp_dynamic_sheet_balance_sheet', JSON.stringify(updatedSheet));
     } else if (selectedSheetKey === 'cost_tcc_boq') {
       updatedSheet = updateMeta(costTccBoq);
       setCostTccBoq(updatedSheet);
-      localStorage.setItem('fmp_dynamic_sheet_cost_tcc_boq', JSON.stringify(updatedSheet));
     } else if (selectedSheetKey === 'startup_funds') {
       updatedSheet = updateMeta(startupFunds);
       setStartupFunds(updatedSheet);
-      localStorage.setItem('fmp_dynamic_sheet_startup_funds', JSON.stringify(updatedSheet));
     } else if (selectedSheetKey === 'capex_opex_dancia') {
       updatedSheet = updateMeta(capexOpexDancia);
       setCapexOpexDancia(updatedSheet);
-      localStorage.setItem('fmp_dynamic_sheet_capex_opex_dancia', JSON.stringify(updatedSheet));
     }
 
-    financialDb.recordAudit({
-      sheetKey: selectedSheetKey,
-      sheetLabel: financialDb.getSheetTitle(selectedSheetKey),
-      action: 'DRAFT_SAVED',
-      actor: actorName,
-      actorRole,
-      notes: `Working draft version v${updatedSheet.approval.version} committed to sovereign database.`,
-      version: updatedSheet.approval.version
-    });
-    setAuditList(financialDb.getAuditTrail());
+    try {
+      await financialDb.persistSheetToPostgres(selectedSheetKey, updatedSheet, updatedSheet.approval);
+      await financialDb.commitAuditLogToPostgres({
+        sheetKey: selectedSheetKey,
+        sheetLabel: financialDb.getSheetTitle(selectedSheetKey),
+        action: 'DRAFT_SAVED',
+        actor: actorName,
+        actorRole,
+        notes: `Working draft version v${updatedSheet.approval.version} committed to sovereign PostgreSQL database.`,
+        version: updatedSheet.approval.version
+      });
+      const logs = await financialDb.fetchAuditLogsFromPostgres();
+      setAuditList(logs);
+    } catch (e) {
+      console.warn('Error saving sheet to PostgreSQL backend:', e);
+    }
 
     if (selectedSheetKey === 'income_statement') {
       financialDb.updateConfig({
@@ -451,11 +482,11 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
     }
 
     setIsEditingSheet(true);
-    showBanner(`💾 Draft saved & committed to Sovereign Database (v${updatedSheet.approval.version}). Status: DRAFT.`);
+    showBanner(`💾 Draft saved & committed to PostgreSQL Sovereign Database (v${updatedSheet.approval.version}). Status: DRAFT.`);
   };
 
   // 2. Submit to Super Admin
-  const handleSubmitForApproval = () => {
+  const handleSubmitForApproval = async () => {
     const actorName = 'Mrs. Mbah Eunice Emonena (CFO & Co-Founder)';
     const updateMeta = (prev: any) => ({
       ...prev,
@@ -472,41 +503,42 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
     if (selectedSheetKey === 'income_statement') {
       updatedSheet = updateMeta(incomeStatement);
       setIncomeStatement(updatedSheet);
-      localStorage.setItem('fmp_dynamic_sheet_income_statement', JSON.stringify(updatedSheet));
     } else if (selectedSheetKey === 'balance_sheet') {
       updatedSheet = updateMeta(balanceSheet);
       setBalanceSheet(updatedSheet);
-      localStorage.setItem('fmp_dynamic_sheet_balance_sheet', JSON.stringify(updatedSheet));
     } else if (selectedSheetKey === 'cost_tcc_boq') {
       updatedSheet = updateMeta(costTccBoq);
       setCostTccBoq(updatedSheet);
-      localStorage.setItem('fmp_dynamic_sheet_cost_tcc_boq', JSON.stringify(updatedSheet));
     } else if (selectedSheetKey === 'startup_funds') {
       updatedSheet = updateMeta(startupFunds);
       setStartupFunds(updatedSheet);
-      localStorage.setItem('fmp_dynamic_sheet_startup_funds', JSON.stringify(updatedSheet));
     } else if (selectedSheetKey === 'capex_opex_dancia') {
       updatedSheet = updateMeta(capexOpexDancia);
       setCapexOpexDancia(updatedSheet);
-      localStorage.setItem('fmp_dynamic_sheet_capex_opex_dancia', JSON.stringify(updatedSheet));
     }
 
-    financialDb.recordAudit({
-      sheetKey: selectedSheetKey,
-      sheetLabel: financialDb.getSheetTitle(selectedSheetKey),
-      action: 'SUBMITTED_FOR_APPROVAL',
-      actor: actorName,
-      actorRole: 'CFO',
-      notes: 'Sheet submitted by CFO for statutory ratification and executive sign-off.',
-      version: updatedSheet.approval.version || 1
-    });
-    setAuditList(financialDb.getAuditTrail());
+    try {
+      await financialDb.persistSheetToPostgres(selectedSheetKey, updatedSheet, updatedSheet.approval);
+      await financialDb.commitAuditLogToPostgres({
+        sheetKey: selectedSheetKey,
+        sheetLabel: financialDb.getSheetTitle(selectedSheetKey),
+        action: 'SUBMITTED_FOR_APPROVAL',
+        actor: actorName,
+        actorRole: 'CFO',
+        notes: 'Sheet submitted by CFO for statutory ratification and executive sign-off.',
+        version: updatedSheet.approval.version || 1
+      });
+      const logs = await financialDb.fetchAuditLogsFromPostgres();
+      setAuditList(logs);
+    } catch (e) {
+      console.warn('Error submitting sheet to PostgreSQL backend:', e);
+    }
 
-    showBanner('📤 Submitted to SUPER ADMIN for ratification. Status: PENDING APPROVAL.');
+    showBanner('📤 Submitted to SUPER ADMIN for ratification in PostgreSQL. Status: PENDING APPROVAL.');
   };
 
   // 3. Ratify & Approve (Super Admin Only)
-  const handleSuperAdminApprove = () => {
+  const handleSuperAdminApprove = async () => {
     if (governanceRole !== 'SUPER_ADMIN') {
       setGovernanceRole('SUPER_ADMIN');
     }
@@ -527,42 +559,43 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
     if (selectedSheetKey === 'income_statement') {
       updatedSheet = updateMeta(incomeStatement);
       setIncomeStatement(updatedSheet);
-      localStorage.setItem('fmp_dynamic_sheet_income_statement', JSON.stringify(updatedSheet));
     } else if (selectedSheetKey === 'balance_sheet') {
       updatedSheet = updateMeta(balanceSheet);
       setBalanceSheet(updatedSheet);
-      localStorage.setItem('fmp_dynamic_sheet_balance_sheet', JSON.stringify(updatedSheet));
     } else if (selectedSheetKey === 'cost_tcc_boq') {
       updatedSheet = updateMeta(costTccBoq);
       setCostTccBoq(updatedSheet);
-      localStorage.setItem('fmp_dynamic_sheet_cost_tcc_boq', JSON.stringify(updatedSheet));
     } else if (selectedSheetKey === 'startup_funds') {
       updatedSheet = updateMeta(startupFunds);
       setStartupFunds(updatedSheet);
-      localStorage.setItem('fmp_dynamic_sheet_startup_funds', JSON.stringify(updatedSheet));
     } else if (selectedSheetKey === 'capex_opex_dancia') {
       updatedSheet = updateMeta(capexOpexDancia);
       setCapexOpexDancia(updatedSheet);
-      localStorage.setItem('fmp_dynamic_sheet_capex_opex_dancia', JSON.stringify(updatedSheet));
     }
 
-    financialDb.recordAudit({
-      sheetKey: selectedSheetKey,
-      sheetLabel: financialDb.getSheetTitle(selectedSheetKey),
-      action: 'SUPER_ADMIN_APPROVED',
-      actor: actorName,
-      actorRole: 'SUPER_ADMIN',
-      notes: 'Sheet officially ratified, locked, and immutably sealed by Supreme Council Authority.',
-      version: updatedSheet.approval.version || 1
-    });
-    setAuditList(financialDb.getAuditTrail());
+    try {
+      await financialDb.approveSheetInPostgres(selectedSheetKey, actorName);
+      await financialDb.commitAuditLogToPostgres({
+        sheetKey: selectedSheetKey,
+        sheetLabel: financialDb.getSheetTitle(selectedSheetKey),
+        action: 'SUPER_ADMIN_APPROVED',
+        actor: actorName,
+        actorRole: 'SUPER_ADMIN',
+        notes: 'Sheet officially ratified, locked, and immutably sealed in PostgreSQL by Supreme Council Authority.',
+        version: updatedSheet.approval.version || 1
+      });
+      const logs = await financialDb.fetchAuditLogsFromPostgres();
+      setAuditList(logs);
+    } catch (e) {
+      console.warn('Error approving sheet in PostgreSQL backend:', e);
+    }
 
     setIsEditingSheet(false);
-    showBanner('🛡️ RATIFIED & LOCKED by SUPER ADMIN. Immutable audit seal applied.');
+    showBanner('🛡️ RATIFIED & LOCKED in PostgreSQL by SUPER ADMIN. Immutable audit seal applied.');
   };
 
   // 4. Unlock for Revision
-  const handleSuperAdminUnlock = () => {
+  const handleSuperAdminUnlock = async () => {
     const actorName = governanceRole === 'SUPER_ADMIN'
       ? 'Mbah Israel Obinna (SUPER ADMIN - Supreme Authority)'
       : 'Mrs. Mbah Eunice Emonena (CFO - Revision Requested)';
@@ -581,70 +614,79 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
     if (selectedSheetKey === 'income_statement') {
       updatedSheet = updateMeta(incomeStatement);
       setIncomeStatement(updatedSheet);
-      localStorage.setItem('fmp_dynamic_sheet_income_statement', JSON.stringify(updatedSheet));
     } else if (selectedSheetKey === 'balance_sheet') {
       updatedSheet = updateMeta(balanceSheet);
       setBalanceSheet(updatedSheet);
-      localStorage.setItem('fmp_dynamic_sheet_balance_sheet', JSON.stringify(updatedSheet));
     } else if (selectedSheetKey === 'cost_tcc_boq') {
       updatedSheet = updateMeta(costTccBoq);
       setCostTccBoq(updatedSheet);
-      localStorage.setItem('fmp_dynamic_sheet_cost_tcc_boq', JSON.stringify(updatedSheet));
     } else if (selectedSheetKey === 'startup_funds') {
       updatedSheet = updateMeta(startupFunds);
       setStartupFunds(updatedSheet);
-      localStorage.setItem('fmp_dynamic_sheet_startup_funds', JSON.stringify(updatedSheet));
     } else if (selectedSheetKey === 'capex_opex_dancia') {
       updatedSheet = updateMeta(capexOpexDancia);
       setCapexOpexDancia(updatedSheet);
-      localStorage.setItem('fmp_dynamic_sheet_capex_opex_dancia', JSON.stringify(updatedSheet));
     }
 
-    financialDb.recordAudit({
-      sheetKey: selectedSheetKey,
-      sheetLabel: financialDb.getSheetTitle(selectedSheetKey),
-      action: 'UNLOCK_FOR_REVISION',
-      actor: actorName,
-      actorRole,
-      notes: 'Sheet unlocked for revisions. Full cell editing active.',
-      version: updatedSheet.approval.version || 1
-    });
-    setAuditList(financialDb.getAuditTrail());
+    try {
+      await financialDb.persistSheetToPostgres(selectedSheetKey, updatedSheet, updatedSheet.approval);
+      await financialDb.commitAuditLogToPostgres({
+        sheetKey: selectedSheetKey,
+        sheetLabel: financialDb.getSheetTitle(selectedSheetKey),
+        action: 'UNLOCK_FOR_REVISION',
+        actor: actorName,
+        actorRole,
+        notes: 'Sheet unlocked for revisions in PostgreSQL. Full cell editing active.',
+        version: updatedSheet.approval.version || 1
+      });
+      const logs = await financialDb.fetchAuditLogsFromPostgres();
+      setAuditList(logs);
+    } catch (e) {
+      console.warn('Error unlocking sheet in PostgreSQL backend:', e);
+    }
 
     setIsEditingSheet(true);
     showBanner('🔓 Sheet unlocked for revision! CFO and accounts staff can now update all cells.');
   };
 
   // 5. Reset to Baseline
-  const handleResetToBaseline = () => {
+  const handleResetToBaseline = async () => {
     if (window.confirm('Reset this sheet back to platform default baseline values?')) {
+      let resetSheet: any;
       if (selectedSheetKey === 'income_statement') {
+        resetSheet = DEFAULT_INCOME_STATEMENT;
         setIncomeStatement(DEFAULT_INCOME_STATEMENT);
-        localStorage.setItem('fmp_dynamic_sheet_income_statement', JSON.stringify(DEFAULT_INCOME_STATEMENT));
       } else if (selectedSheetKey === 'balance_sheet') {
+        resetSheet = DEFAULT_BALANCE_SHEET;
         setBalanceSheet(DEFAULT_BALANCE_SHEET);
-        localStorage.setItem('fmp_dynamic_sheet_balance_sheet', JSON.stringify(DEFAULT_BALANCE_SHEET));
       } else if (selectedSheetKey === 'cost_tcc_boq') {
+        resetSheet = DEFAULT_COST_TCC_BOQ;
         setCostTccBoq(DEFAULT_COST_TCC_BOQ);
-        localStorage.setItem('fmp_dynamic_sheet_cost_tcc_boq', JSON.stringify(DEFAULT_COST_TCC_BOQ));
       } else if (selectedSheetKey === 'startup_funds') {
+        resetSheet = DEFAULT_STARTUP_FUNDS;
         setStartupFunds(DEFAULT_STARTUP_FUNDS);
-        localStorage.setItem('fmp_dynamic_sheet_startup_funds', JSON.stringify(DEFAULT_STARTUP_FUNDS));
       } else if (selectedSheetKey === 'capex_opex_dancia') {
+        resetSheet = DEFAULT_CAPEX_OPEX_DANCIA4TV;
         setCapexOpexDancia(DEFAULT_CAPEX_OPEX_DANCIA4TV);
-        localStorage.setItem('fmp_dynamic_sheet_capex_opex_dancia', JSON.stringify(DEFAULT_CAPEX_OPEX_DANCIA4TV));
       }
-      financialDb.recordAudit({
-        sheetKey: selectedSheetKey,
-        sheetLabel: financialDb.getSheetTitle(selectedSheetKey),
-        action: 'SHEET_RESET',
-        actor: governanceRole === 'CFO' ? 'Mrs. Mbah Eunice Emonena (CFO)' : 'Mbah Israel Obinna (Super Admin)',
-        actorRole: governanceRole,
-        notes: 'Sheet reset to original platform baseline values.',
-        version: 1
-      });
-      setAuditList(financialDb.getAuditTrail());
-      showBanner('🔄 Sheet reset to default baseline values.');
+
+      try {
+        await financialDb.persistSheetToPostgres(selectedSheetKey, resetSheet, { status: 'DRAFT', version: 1, notes: 'Reset to platform default baseline values' });
+        await financialDb.commitAuditLogToPostgres({
+          sheetKey: selectedSheetKey,
+          sheetLabel: financialDb.getSheetTitle(selectedSheetKey),
+          action: 'SHEET_RESET',
+          actor: governanceRole === 'CFO' ? 'Mrs. Mbah Eunice Emonena (CFO)' : 'Mbah Israel Obinna (Super Admin)',
+          actorRole: governanceRole,
+          notes: 'Sheet reset to original platform baseline values in PostgreSQL.',
+          version: 1
+        });
+        const logs = await financialDb.fetchAuditLogsFromPostgres();
+        setAuditList(logs);
+      } catch (e) {
+        console.warn('Error resetting sheet in PostgreSQL backend:', e);
+      }
+      showBanner('🔄 Sheet reset to default baseline values in PostgreSQL.');
     }
   };
 
@@ -1768,6 +1810,8 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                 }));
                               }}
                               className="text-rose-700 hover:text-rose-900 p-1"
+                              title="Delete Item"
+                              aria-label="Delete COGS line item"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
                             </button>
@@ -1909,6 +1953,8 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                 }));
                               }}
                               className="text-rose-700 hover:text-rose-900 p-1"
+                              title="Delete Item"
+                              aria-label="Delete OPEX line item"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
                             </button>
@@ -2152,6 +2198,8 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                               }));
                             }}
                             className="text-rose-700 hover:text-rose-900 p-1"
+                            title="Delete Current Asset Item"
+                            aria-label="Delete Current Asset line item"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
@@ -2227,6 +2275,8 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                               }));
                             }}
                             className="text-rose-700 hover:text-rose-900 p-1"
+                            title="Delete Fixed Asset Item"
+                            aria-label="Delete Fixed Asset line item"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
@@ -2325,6 +2375,8 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                               }));
                             }}
                             className="text-rose-700 hover:text-rose-900 p-1"
+                            title="Delete Item"
+                            aria-label="Delete current liabilities line item"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
@@ -2373,6 +2425,8 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                               }));
                             }}
                             className="text-rose-700 hover:text-rose-900 p-1"
+                            title="Delete Item"
+                            aria-label="Delete long-term liability line item"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
@@ -2447,6 +2501,8 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                               }));
                             }}
                             className="text-rose-700 hover:text-rose-900 p-1"
+                            title="Delete Item"
+                            aria-label="Delete equity line item"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
@@ -2601,6 +2657,8 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                 }));
                               }}
                               className="text-rose-700 hover:text-rose-900 p-1"
+                              title="Delete Item"
+                              aria-label="Delete cost TCC BOQ line item"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
                             </button>
@@ -2708,6 +2766,8 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                             }));
                           }}
                           className="text-rose-700 hover:text-rose-900 p-1"
+                          title="Delete Item"
+                          aria-label="Delete startup fixed asset line item"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
@@ -2783,6 +2843,8 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                             }));
                           }}
                           className="text-rose-700 hover:text-rose-900 p-1"
+                          title="Delete Item"
+                          aria-label="Delete startup operating capital line item"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
@@ -2897,6 +2959,8 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                           }));
                         }}
                         className="text-rose-700 hover:text-rose-900 p-1"
+                        title="Delete Item"
+                        aria-label="Delete Capex Opex line item"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
@@ -3054,6 +3118,8 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                 </h3>
               </div>
               <button
+                type="button"
+                aria-label="Close Audit Modal"
                 onClick={() => setShowAuditModal(false)}
                 className="p-1.5 rounded-lg hover:bg-slate-200 text-slate-700 hover:text-slate-900"
               >

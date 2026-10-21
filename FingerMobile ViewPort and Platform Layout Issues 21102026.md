@@ -124,3 +124,24 @@ Tagged: Sovereign Hardware Keycard V3 (NFC) (MarketPlace • 250 FIC)
 Tag Product
 
 fix all the above and once youre done with your investigations., start docker compose up again to update/capture all the new improvements and changes we just made and fix every error as you proceed
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+most of the dashboard consoles only updates local state and calls a persistence function; but they all, as in all of them needs to make various API PUT request to micromanage and update their states and screens/pages. Similarly, handleInstantOffboard updates local state and uses the same persistence function, but should make an API PUT/GET/FETCH/DELETE/UPDATE/FREEZE/SUSPEND etc.
+
+ I need you to verify that each dashboard type and their consoles can make their independent expected API calls, persist data to their right databases etc.
+verify: that once the platform is Initialized all 15 platform databases specified in POSTGRES_MULTIPLE_DATABASES directly in fingermobile_postgres (including fingermobile_comms, fingermobile_business_db, fingermobile_identity_db, etc.). Both communications_service and business_suite_api reconnected immediately.
+- [ ] Backend server running on `http://localhost:5001`
+- [ ] Frontend server running on `http://localhost:3000`
+- [ ] Platform loads correctly in Chrome
+- [ ] Auto-commit watcher service running
+- [ ] API endpoints accessible
+- [ ] Backend is Connected to PostgreSQL and confirmed persisting data to PostgreSQL
+- [ ] All core features and microservices are fully functional
+- [ ] Remove the client-only localStorage fallback so that when you upload media., Browser sends multipart/form-data to Express backend.
+- [ ] Ensure Frontend and Backend wire up correctly with API Calls and Communication. Make sure all endpoints route correctly.
+- [ ] Always verify and confirm that the Backend Express API Started & Connected to PostgreSQL before proceeding and starting the Frontend.

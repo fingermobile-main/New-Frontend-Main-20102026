@@ -9,6 +9,9 @@ router.get('/conversations', authenticate, messagesController.getConversations);
 // Get messages with a specific member
 router.get('/conversations/:otherMemberId', authenticate, messagesController.getConversationMessages);
 
+// Delete an entire conversation channel
+router.delete('/conversations/:otherMemberId', authenticate, messagesController.deleteConversation);
+
 // Send a new message
 router.post('/', authenticate, messagesController.create);
 

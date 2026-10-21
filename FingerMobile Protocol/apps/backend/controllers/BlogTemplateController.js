@@ -119,8 +119,65 @@ class BlogTemplateController {
    */
   async getBlogTemplates(req, res) {
     try {
-      const { framework, niche, source, freeOnly } = req.query;
+      const { framework, niche, source, freeOnly, category } = req.query;
 
+      // 1. First attempt to fetch persisted templates from PostgreSQL
+      let dbTemplates = [];
+      try {
+        const result = await db.contentDb.query('SELECT * FROM blog_templates ORDER BY created_at DESC');
+        if (result && result.rows && result.rows.length > 0) {
+          dbTemplates = result.rows.map(r => ({
+            id: r.id,
+            name: r.name,
+            category: r.category,
+            seoScore: r.seo_score || 98,
+            schemaType: r.schema_type || 'Article',
+            estimatedReadMin: r.estimated_read_min || 5,
+            description: r.description || '',
+            headings: Array.isArray(r.headings) ? r.headings : (typeof r.headings === 'string' ? JSON.parse(r.headings) : ['Introduction', 'Core Overview', 'Summary']),
+            jsonLdSnippet: typeof r.json_ld_snippet === 'string' ? JSON.parse(r.json_ld_snippet) : (r.json_ld_snippet || { '@context': 'https://schema.org', '@type': 'Article' }),
+            author: r.author_id || 'system',
+            isFree: true,
+            isCustom: r.author_id !== 'system'
+          }));
+        }
+      } catch (dbErr) {
+        try {
+          const fallbackRes = await db.query('SELECT * FROM blog_templates ORDER BY created_at DESC');
+          if (fallbackRes && fallbackRes.rows && fallbackRes.rows.length > 0) {
+            dbTemplates = fallbackRes.rows.map(r => ({
+              id: r.id,
+              name: r.name,
+              category: r.category,
+              seoScore: r.seo_score || 98,
+              schemaType: r.schema_type || 'Article',
+              estimatedReadMin: r.estimated_read_min || 5,
+              description: r.description || '',
+              headings: Array.isArray(r.headings) ? r.headings : (typeof r.headings === 'string' ? JSON.parse(r.headings) : ['Introduction', 'Core Overview', 'Summary']),
+              jsonLdSnippet: typeof r.json_ld_snippet === 'string' ? JSON.parse(r.json_ld_snippet) : (r.json_ld_snippet || { '@context': 'https://schema.org', '@type': 'Article' }),
+              author: r.author_id || 'system',
+              isFree: true,
+              isCustom: r.author_id !== 'system'
+            }));
+          }
+        } catch (innerErr) {
+          logger.warn('Note: Could not query blog_templates from PostgreSQL:', innerErr.message);
+        }
+      }
+
+      if (dbTemplates.length > 0) {
+        let filtered = dbTemplates;
+        if (category && category !== 'All') {
+          filtered = filtered.filter(t => t.category.toLowerCase() === category.toLowerCase());
+        }
+        return res.status(200).json({
+          success: true,
+          count: filtered.length,
+          data: filtered
+        });
+      }
+
+      // 2. Fallback to static catalog if DB is unseeded
       let templates = [...BLOG_TEMPLATES_CATALOG];
 
       if (framework) {
@@ -135,6 +192,9 @@ class BlogTemplateController {
       if (freeOnly === 'true') {
         templates = templates.filter(t => t.isFree === true);
       }
+      if (category && category !== 'All') {
+        templates = templates.filter(t => t.category && t.category.toLowerCase() === category.toLowerCase());
+      }
 
       return res.status(200).json({
         success: true,
@@ -144,6 +204,109 @@ class BlogTemplateController {
     } catch (error) {
       logger.error('Error fetching blog templates:', error.message);
       return res.status(500).json({ success: false, error: 'Failed to retrieve blog templates' });
+    }
+  }
+
+  /**
+   * POST /api/blog-templates
+   * Create and persist a new custom blog template to PostgreSQL
+   */
+  async createTemplate(req, res) {
+    try {
+      const { name, category, description, headings, schemaType, jsonLdSnippet, estimatedReadMin } = req.body;
+      if (!name || !category) {
+        return res.status(400).json({ success: false, error: 'Name and category are required' });
+      }
+
+      const id = 'tmpl-' + Date.now().toString(36) + '-' + Math.random().toString(36).substring(2, 6);
+      const seoScore = Math.floor(Math.random() * 5) + 95;
+      const schema = schemaType || `${category}Article`;
+      const readMin = parseInt(estimatedReadMin, 10) || 5;
+      const headingsArr = Array.isArray(headings)
+        ? headings
+        : (typeof headings === 'string'
+            ? headings.split('\n').map(h => h.trim()).filter(Boolean)
+            : ['Introduction', 'Core Overview', 'Execution Plan', 'Conclusion']);
+
+      const jsonLd = jsonLdSnippet || {
+        '@context': 'https://schema.org',
+        '@type': schema.includes('/') ? schema.split('/')[0].trim() : schema,
+        headline: name,
+        description: description || ''
+      };
+
+      const insertSql = `
+        INSERT INTO blog_templates (id, name, category, seo_score, schema_type, estimated_read_min, description, headings, json_ld_snippet, author_id, is_featured)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+        RETURNING *
+      `;
+      const params = [
+        id,
+        name,
+        category,
+        seoScore,
+        schema,
+        readMin,
+        description || '',
+        JSON.stringify(headingsArr),
+        JSON.stringify(jsonLd),
+        req.user?.id ? String(req.user.id) : 'creator',
+        false
+      ];
+
+      let row;
+      try {
+        const result = await db.contentDb.query(insertSql, params);
+        row = result.rows[0];
+      } catch (err) {
+        const result = await db.query(insertSql, params);
+        row = result.rows[0];
+      }
+
+      return res.status(201).json({
+        success: true,
+        message: 'Custom blog template created and persisted successfully',
+        data: {
+          id: row.id,
+          name: row.name,
+          category: row.category,
+          seoScore: row.seo_score,
+          schemaType: row.schema_type,
+          estimatedReadMin: row.estimated_read_min,
+          description: row.description,
+          headings: Array.isArray(row.headings) ? row.headings : (typeof row.headings === 'string' ? JSON.parse(row.headings) : []),
+          jsonLdSnippet: typeof row.json_ld_snippet === 'string' ? JSON.parse(row.json_ld_snippet) : row.json_ld_snippet,
+          author: row.author_id,
+          isCustom: true
+        }
+      });
+    } catch (error) {
+      logger.error('Error creating blog template in PostgreSQL:', error.message);
+      return res.status(500).json({ success: false, error: 'Failed to create blog template' });
+    }
+  }
+
+  /**
+   * DELETE /api/blog-templates/:id
+   * Remove a custom template from PostgreSQL
+   */
+  async deleteTemplate(req, res) {
+    try {
+      const { id } = req.params;
+      const deleteSql = 'DELETE FROM blog_templates WHERE id = $1 RETURNING id';
+      try {
+        await db.contentDb.query(deleteSql, [id]);
+      } catch (err) {
+        await db.query(deleteSql, [id]);
+      }
+      return res.status(200).json({
+        success: true,
+        message: `Template '${id}' deleted successfully`,
+        deletedId: id
+      });
+    } catch (error) {
+      logger.error(`Error deleting template ${req.params.id}:`, error.message);
+      return res.status(500).json({ success: false, error: 'Failed to delete template' });
     }
   }
 
@@ -270,6 +433,8 @@ const controller = new BlogTemplateController();
 
 // Bind methods for express routes
 controller.getBlogTemplates = controller.getBlogTemplates.bind(controller);
+controller.createTemplate = controller.createTemplate.bind(controller);
+controller.deleteTemplate = controller.deleteTemplate.bind(controller);
 controller.getTemplateById = controller.getTemplateById.bind(controller);
 controller.scaffoldTemplate = controller.scaffoldTemplate.bind(controller);
 controller.customizeTemplate = controller.customizeTemplate.bind(controller);

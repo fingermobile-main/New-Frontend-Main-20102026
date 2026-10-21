@@ -525,6 +525,39 @@ class MessagesController {
       });
     }
   }
+
+  /**
+   * DELETE /api/messages/conversations/:otherMemberId
+   * Delete all messages in a conversation channel
+   */
+  async deleteConversation(req, res) {
+    try {
+      const memberId = req.user?.id || req.member?.id;
+      const { otherMemberId } = req.params;
+
+      if (!memberId) {
+        return res.status(401).json({ success: false, error: 'Authentication required' });
+      }
+
+      const deletedCount = await Message.destroy({
+        where: {
+          [Op.or]: [
+            { senderId: memberId, receiverId: otherMemberId },
+            { senderId: otherMemberId, receiverId: memberId }
+          ]
+        }
+      });
+
+      return res.json({
+        success: true,
+        message: 'Conversation channel deleted successfully',
+        deletedCount
+      });
+    } catch (err) {
+      logger.error('Error in deleteConversation:', err);
+      return res.status(500).json({ success: false, error: err.message });
+    }
+  }
 }
 
 module.exports = new MessagesController();

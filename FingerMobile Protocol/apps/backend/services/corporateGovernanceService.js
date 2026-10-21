@@ -7,6 +7,9 @@
  * and Member RBAC Credentialing & Portfolio Assignment.
  */
 
+const db = require('../db');
+const logger = require('../utils/logger');
+
 class CorporateGovernanceService {
   constructor() {
     this.roles = [];
@@ -1480,6 +1483,28 @@ class CorporateGovernanceService {
 
     this.roles.push(newRole);
     this.logAction('CREATE_ROLE', { roleId: newRole.id, title: newRole.title });
+
+    try {
+      db.governanceDb.query(`
+        INSERT INTO corporate_governance_roles (role_id, role_number, raci_code, title, department, designated_officer, clearance_level, primary_mandate, role_data, status)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9::jsonb, $10)
+        ON CONFLICT (role_id) DO UPDATE SET
+          title = EXCLUDED.title,
+          department = EXCLUDED.department,
+          designated_officer = EXCLUDED.designated_officer,
+          clearance_level = EXCLUDED.clearance_level,
+          primary_mandate = EXCLUDED.primary_mandate,
+          role_data = EXCLUDED.role_data,
+          status = EXCLUDED.status,
+          updated_at = CURRENT_TIMESTAMP
+      `, [newRole.id, newRole.roleNumber, newRole.raciCode, newRole.title, newRole.department, newRole.designatedOfficer, newRole.clearanceLevel, newRole.primaryMandate, JSON.stringify(newRole), newRole.status])
+      .catch(err => {
+        if (logger && logger.warn) logger.warn(`[CorporateGovernance] Failed to persist role ${newRole.id} to DB:`, err.message);
+      });
+    } catch {
+      // non-blocking
+    }
+
     return newRole;
   }
 
@@ -1505,6 +1530,28 @@ class CorporateGovernanceService {
 
     this.roles[index] = updated;
     this.logAction('UPDATE_ROLE', { roleId: id, updates: Object.keys(updateData) });
+
+    try {
+      db.governanceDb.query(`
+        INSERT INTO corporate_governance_roles (role_id, role_number, raci_code, title, department, designated_officer, clearance_level, primary_mandate, role_data, status)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9::jsonb, $10)
+        ON CONFLICT (role_id) DO UPDATE SET
+          title = EXCLUDED.title,
+          department = EXCLUDED.department,
+          designated_officer = EXCLUDED.designated_officer,
+          clearance_level = EXCLUDED.clearance_level,
+          primary_mandate = EXCLUDED.primary_mandate,
+          role_data = EXCLUDED.role_data,
+          status = EXCLUDED.status,
+          updated_at = CURRENT_TIMESTAMP
+      `, [updated.id, updated.roleNumber, updated.raciCode, updated.title, updated.department, updated.designatedOfficer, updated.clearanceLevel, updated.primaryMandate, JSON.stringify(updated), updated.status])
+      .catch(err => {
+        if (logger && logger.warn) logger.warn(`[CorporateGovernance] Failed to persist role update ${updated.id} to DB:`, err.message);
+      });
+    } catch {
+      // non-blocking
+    }
+
     return updated;
   }
 
@@ -1654,6 +1701,27 @@ class CorporateGovernanceService {
     role.status = 'ACTIVE_ASSIGNED';
 
     this.logAction('ASSIGN_MEMBER_PORTFOLIO', assignmentRecord);
+
+    try {
+      db.governanceDb.query(`
+        INSERT INTO corporate_member_assignments (member_id, member_name, member_email, role_id, sub_office_id, assigned_by, appointment_credential_id, status)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, 'ACTIVE')
+        ON CONFLICT (member_id, role_id) DO UPDATE SET
+          member_name = EXCLUDED.member_name,
+          member_email = EXCLUDED.member_email,
+          sub_office_id = EXCLUDED.sub_office_id,
+          assigned_by = EXCLUDED.assigned_by,
+          appointment_credential_id = EXCLUDED.appointment_credential_id,
+          status = 'ACTIVE',
+          assigned_at = CURRENT_TIMESTAMP
+      `, [memberId, assignmentRecord.memberName, assignmentRecord.memberEmail, role.id, subOfficeId || null, assignedBy, assignmentRecord.appointmentCredentialId])
+      .catch(err => {
+        if (logger && logger.warn) logger.warn(`[CorporateGovernance] Failed to persist member assignment to DB:`, err.message);
+      });
+    } catch {
+      // non-blocking
+    }
+
     return assignmentRecord;
   }
 

@@ -6,7 +6,7 @@
 // Op removed because it is unused
 const logger = require('../utils/logger');
 const forumService = require('../services/forumService');
-const { contentDb } = require('../db');
+const { contentDb, socialDb, pool } = require('../db');
 
 const isUuid = (val) => typeof val === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(val);
 
@@ -1668,6 +1668,231 @@ class ForumController {
       });
     }
   }
+
+  /**
+   * POST /api/forums/categories
+   * Create a new forum category in PostgreSQL
+   */
+  async createCategory(req, res) {
+    try {
+      const { name, slug, description, icon, display_order, sortOrder } = req.body;
+      if (!name) {
+        return res.status(400).json({ success: false, error: 'Name is required' });
+      }
+
+      const categorySlug = slug || name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+      const order = Number(display_order || sortOrder || 0);
+      const iconValue = icon || '💬';
+
+      const insertSql = `
+        INSERT INTO forum_categories (name, slug, description, icon, display_order, is_active)
+        VALUES ($1, $2, $3, $4, $5, true)
+        RETURNING *
+      `;
+
+      let result;
+      const targetDb = socialDb || contentDb || pool;
+      try {
+        result = await targetDb.query(insertSql, [name, categorySlug, description || '', iconValue, order]);
+      } catch (dbErr) {
+        // Fallback with minimal columns if some columns are omitted
+        result = await (pool || contentDb).query(
+          `INSERT INTO forum_categories (name, description) VALUES ($1, $2) RETURNING *`,
+          [name, description || '']
+        );
+      }
+
+      const created = result.rows[0];
+      return res.status(201).json({
+        success: true,
+        message: `Forum category "${name}" created and persisted to PostgreSQL`,
+        data: created
+      });
+    } catch (error) {
+      logger.error('Error creating forum category:', error);
+      return res.status(500).json({ success: false, error: 'Failed to create forum category' });
+    }
+  }
+
+  /**
+   * PUT /api/forums/categories/:id
+   * Update forum category in PostgreSQL
+   */
+  async updateCategory(req, res) {
+    try {
+      const { id } = req.params;
+      const { name, slug, description, icon, display_order, sortOrder, isActive } = req.body;
+
+      const updateSql = `
+        UPDATE forum_categories
+        SET name = COALESCE($1, name),
+            slug = COALESCE($2, slug),
+            description = COALESCE($3, description),
+            icon = COALESCE($4, icon),
+            display_order = COALESCE($5, display_order),
+            is_active = COALESCE($6, is_active)
+        WHERE id = $7 OR slug = $7
+        RETURNING *
+      `;
+
+      const targetDb = socialDb || contentDb || pool;
+      const result = await targetDb.query(updateSql, [
+        name,
+        slug,
+        description,
+        icon,
+        display_order !== undefined ? Number(display_order) : (sortOrder !== undefined ? Number(sortOrder) : null),
+        isActive !== undefined ? Boolean(isActive) : null,
+        id
+      ]);
+
+      if (result.rows.length === 0) {
+        return res.status(404).json({ success: false, error: 'Category not found' });
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: 'Forum category updated in PostgreSQL',
+        data: result.rows[0]
+      });
+    } catch (error) {
+      logger.error('Error updating forum category:', error);
+      return res.status(500).json({ success: false, error: 'Failed to update forum category' });
+    }
+  }
+
+  /**
+   * DELETE /api/forums/categories/:id
+   * Delete or deactivate forum category in PostgreSQL
+   */
+  async deleteCategory(req, res) {
+    try {
+      const { id } = req.params;
+      const targetDb = socialDb || contentDb || pool;
+      await targetDb.query(
+        'DELETE FROM forum_categories WHERE id = $1 OR slug = $1',
+        [id]
+      );
+      return res.status(200).json({
+        success: true,
+        message: `Forum category "${id}" deleted from PostgreSQL`
+      });
+    } catch (error) {
+      logger.error('Error deleting forum category:', error);
+      return res.status(500).json({ success: false, error: 'Failed to delete forum category' });
+    }
+  }
+
+  /**
+   * GET /api/forums/algorithm-config
+   * Get forum feed algorithm configuration
+   */
+  async getAlgorithmConfig(req, res) {
+    try {
+      const targetDb = socialDb || contentDb || pool;
+      let config = null;
+      try {
+        const result = await targetDb.query(
+          'SELECT * FROM forum_feed_algorithm_configs WHERE id = $1 LIMIT 1',
+          ['default']
+        );
+        if (result.rows.length > 0) {
+          config = result.rows[0];
+        }
+      } catch (_e) {}
+
+      if (!config) {
+        config = {
+          id: 'default',
+          trending_weight: 50,
+          recency_weight: 30,
+          engagement_weight: 20,
+          decay_hours: 24,
+          min_likes_for_trending: 5,
+          min_replies_for_trending: 3,
+          auto_collapse_negative: true,
+          boost_pinned_categories: true,
+          profanity_strictness: 'medium',
+          active_ranking_model: 'hybrid_velocity'
+        };
+      }
+
+      return res.status(200).json({
+        success: true,
+        data: config
+      });
+    } catch (error) {
+      logger.error('Error fetching forum algorithm config:', error);
+      return res.status(500).json({ success: false, error: 'Failed to fetch algorithm configuration' });
+    }
+  }
+
+  /**
+   * PUT /api/forums/algorithm-config
+   * Save forum feed algorithm configuration to PostgreSQL
+   */
+  async saveAlgorithmConfig(req, res) {
+    try {
+      const payload = req.body;
+      const targetDb = socialDb || contentDb || pool;
+
+      const upsertSql = `
+        INSERT INTO forum_feed_algorithm_configs (
+          id, trending_weight, recency_weight, engagement_weight, decay_hours,
+          min_likes_for_trending, min_replies_for_trending, auto_collapse_negative,
+          boost_pinned_categories, profanity_strictness, active_ranking_model, config, updated_at
+        ) VALUES (
+          'default', $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, CURRENT_TIMESTAMP
+        )
+        ON CONFLICT (id) DO UPDATE SET
+          trending_weight = EXCLUDED.trending_weight,
+          recency_weight = EXCLUDED.recency_weight,
+          engagement_weight = EXCLUDED.engagement_weight,
+          decay_hours = EXCLUDED.decay_hours,
+          min_likes_for_trending = EXCLUDED.min_likes_for_trending,
+          min_replies_for_trending = EXCLUDED.min_replies_for_trending,
+          auto_collapse_negative = EXCLUDED.auto_collapse_negative,
+          boost_pinned_categories = EXCLUDED.boost_pinned_categories,
+          profanity_strictness = EXCLUDED.profanity_strictness,
+          active_ranking_model = EXCLUDED.active_ranking_model,
+          config = EXCLUDED.config,
+          updated_at = CURRENT_TIMESTAMP
+        RETURNING *
+      `;
+
+      const params = [
+        Number(payload.trending_weight ?? payload.trendingWeight ?? 50),
+        Number(payload.recency_weight ?? payload.recencyWeight ?? 30),
+        Number(payload.engagement_weight ?? payload.engagementWeight ?? 20),
+        Number(payload.decay_hours ?? payload.decayHours ?? 24),
+        Number(payload.min_likes_for_trending ?? payload.minLikesForTrending ?? 5),
+        Number(payload.min_replies_for_trending ?? payload.minRepliesForTrending ?? 3),
+        Boolean(payload.auto_collapse_negative ?? payload.autoCollapseNegative ?? true),
+        Boolean(payload.boost_pinned_categories ?? payload.boostPinnedCategories ?? true),
+        String(payload.profanity_strictness ?? payload.profanityStrictness ?? 'medium'),
+        String(payload.active_ranking_model ?? payload.activeRankingModel ?? 'hybrid_velocity'),
+        JSON.stringify(payload)
+      ];
+
+      let result;
+      try {
+        result = await targetDb.query(upsertSql, params);
+      } catch (err) {
+        // Fallback or retry
+        result = await (pool || contentDb).query(upsertSql, params);
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: 'Forum feed algorithm configuration saved to PostgreSQL',
+        data: result.rows[0]
+      });
+    } catch (error) {
+      logger.error('Error saving algorithm config:', error);
+      return res.status(500).json({ success: false, error: 'Failed to persist algorithm configuration' });
+    }
+  }
 };
 
 module.exports = new ForumController();
+

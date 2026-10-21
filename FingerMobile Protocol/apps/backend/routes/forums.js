@@ -28,9 +28,16 @@ router.get('/notifications/unread-count', authenticate, ForumController.getUnrea
 router.post('/notifications/read-all', authenticate, ForumController.markAllNotificationsRead);
 router.post('/notifications/:id/read', authenticate, ForumController.markNotificationRead);
 
-// Get all forum categories / forums
+// Get all forum categories / forums (PostgreSQL Persisted)
 router.get('/', ForumController.getCategories);
 router.get('/categories', ForumController.getCategories);
+router.post('/categories', ForumController.createCategory);
+router.put('/categories/:id', ForumController.updateCategory);
+router.delete('/categories/:id', ForumController.deleteCategory);
+
+// Feed Algorithm Config (PostgreSQL Persisted)
+router.get('/algorithm-config', ForumController.getAlgorithmConfig);
+router.put('/algorithm-config', ForumController.saveAlgorithmConfig);
 
 // Get forum threads by category
 router.get('/:categoryId/threads', ForumController.getThreadsByCategory);

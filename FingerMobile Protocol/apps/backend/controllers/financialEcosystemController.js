@@ -41,11 +41,64 @@ exports.getAllSheets = async (req, res) => {
 
 exports.getSheetByKey = async (req, res) => {
   try {
-    const sheet = financialEcosystemService.getExcelSheet(req.params.key);
+    const sheet = await financialEcosystemService.getExcelSheet(req.params.key);
     if (!sheet) {
       return res.status(404).json({ success: false, message: `Sheet ${req.params.key} not found` });
     }
     return res.status(200).json({ success: true, data: sheet });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+exports.updateSheet = async (req, res) => {
+  try {
+    const { key } = req.params;
+    const { sheetData, metadata } = req.body;
+    const payloadData = sheetData || req.body;
+    const result = await financialEcosystemService.saveSheet(key, payloadData, metadata || {});
+    return res.status(200).json({
+      success: true,
+      message: `Financial sheet ${key} updated and persisted to PostgreSQL`,
+      data: result
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+exports.approveSheet = async (req, res) => {
+  try {
+    const { key } = req.params;
+    const { approver, notes } = req.body;
+    const result = await financialEcosystemService.approveSheet(key, approver, notes);
+    if (!result) {
+      return res.status(404).json({ success: false, message: `Sheet ${key} not found or could not be approved` });
+    }
+    return res.status(200).json({
+      success: true,
+      message: `Financial sheet ${key} approved by SuperAdmin and locked`,
+      data: result
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+exports.getAuditLogs = async (req, res) => {
+  try {
+    const { sheetKey } = req.query;
+    const logs = await financialEcosystemService.getAuditLogs(sheetKey);
+    return res.status(200).json({ success: true, count: logs.length, data: logs });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+exports.createAuditLog = async (req, res) => {
+  try {
+    await financialEcosystemService.recordAuditLog(req.body);
+    return res.status(201).json({ success: true, message: 'Audit record committed' });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }

@@ -125,6 +125,32 @@ const ForumsManagement: React.FC = () => {
       if (loadedCats.length > 0) {
         localStorage.setItem('fm_forum_categories', JSON.stringify(loadedCats));
       }
+
+      // Also retrieve persisted algorithm config from PostgreSQL
+      try {
+        const algoRes = await ForumService.getAlgorithmConfig();
+        if (algoRes.success && algoRes.data) {
+          const cfg = typeof algoRes.data.config === 'object' && algoRes.data.config !== null
+            ? algoRes.data.config
+            : (typeof algoRes.data.config === 'string' ? JSON.parse(algoRes.data.config) : algoRes.data);
+          if (cfg && typeof cfg === 'object') {
+            setAlgoConfig((prev) => ({
+              ...prev,
+              fingerShortsInterval: cfg.fingerShortsInterval ?? prev.fingerShortsInterval,
+              publiciteeInterval: cfg.publiciteeInterval ?? prev.publiciteeInterval,
+              discoverInterval: cfg.discoverInterval ?? prev.discoverInterval,
+              infeedAdsInterval: cfg.infeedAdsInterval ?? prev.infeedAdsInterval,
+              heroSentinelInterval: cfg.heroSentinelInterval ?? prev.heroSentinelInterval,
+              enableFingerShorts: cfg.enableFingerShorts ?? prev.enableFingerShorts,
+              enablePublicitee: cfg.enablePublicitee ?? prev.enablePublicitee,
+              enableDiscover: cfg.enableDiscover ?? prev.enableDiscover,
+              enableInfeedAds: cfg.enableInfeedAds ?? prev.enableInfeedAds,
+              enableHeroSentinel: cfg.enableHeroSentinel ?? prev.enableHeroSentinel,
+              adsProvider: cfg.adsProvider ?? prev.adsProvider,
+            }));
+          }
+        }
+      } catch (_e) {}
     } catch {
       // Graceful fallback already in place
     } finally {
@@ -136,10 +162,15 @@ const ForumsManagement: React.FC = () => {
     loadCategories();
   }, []);
 
-  const saveAlgorithmConfig = (newConfig: FeedAlgorithmConfig) => {
+  const saveAlgorithmConfig = async (newConfig: FeedAlgorithmConfig) => {
     setAlgoConfig(newConfig);
     localStorage.setItem('fm_feed_algorithm_config', JSON.stringify(newConfig));
-    showToast('Feed Algorithm Configuration saved successfully!');
+    try {
+      await ForumService.saveAlgorithmConfig(newConfig);
+      showToast('✅ Feed Algorithm Configuration persisted to PostgreSQL successfully!');
+    } catch {
+      showToast('Feed Algorithm Configuration saved locally.');
+    }
   };
 
   const handleOpenAddCategory = () => {
@@ -160,7 +191,7 @@ const ForumsManagement: React.FC = () => {
     setIsCategoryModalOpen(true);
   };
 
-  const handleSaveCategory = (e: React.FormEvent) => {
+  const handleSaveCategory = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!catName.trim()) return;
 
@@ -168,18 +199,35 @@ const ForumsManagement: React.FC = () => {
 
     let updated: ForumCategory[];
     if (editingCategory) {
-      // Edit
+      // Edit in PostgreSQL
+      const payload = { name: catName, slug, description: catDesc, icon: catIcon };
       updated = categories.map((c) =>
         c.id === editingCategory.id
-          ? { ...c, name: catName, slug, description: catDesc, icon: catIcon }
+          ? { ...c, ...payload }
           : c
       );
       setCategories(updated);
-      showToast(`Category "${catName}" updated.`);
+      localStorage.setItem('fm_forum_categories', JSON.stringify(updated));
+      setIsCategoryModalOpen(false);
+
+      const res = await ForumService.updateCategory(editingCategory.id, payload);
+      if (res.success) {
+        showToast(`✅ Category "${catName}" updated in PostgreSQL.`);
+      } else {
+        showToast(`Category "${catName}" updated locally.`);
+      }
     } else {
-      // Create
+      // Create in PostgreSQL
+      const payload = {
+        name: catName,
+        slug,
+        description: catDesc,
+        icon: catIcon,
+        sortOrder: categories.length + 1
+      };
+      const tempId = `cat-${Date.now()}`;
       const newCat: ForumCategory = {
-        id: `cat-${Date.now()}`,
+        id: tempId,
         name: catName,
         slug,
         description: catDesc,
@@ -193,18 +241,30 @@ const ForumsManagement: React.FC = () => {
       };
       updated = [newCat, ...categories];
       setCategories(updated);
-      showToast(`Category "${catName}" created.`);
+      localStorage.setItem('fm_forum_categories', JSON.stringify(updated));
+      setIsCategoryModalOpen(false);
+
+      const res = await ForumService.createCategory(payload);
+      if (res.success && res.data) {
+        setCategories((prev) => prev.map((c) => (c.id === tempId ? { ...c, id: (res.data as any).id || c.id } : c)));
+        showToast(`✅ Category "${catName}" created and persisted to PostgreSQL.`);
+      } else {
+        showToast(`Category "${catName}" created.`);
+      }
     }
-    localStorage.setItem('fm_forum_categories', JSON.stringify(updated));
-    setIsCategoryModalOpen(false);
   };
 
-  const handleDeleteCategory = (id: string, name: string) => {
+  const handleDeleteCategory = async (id: string, name: string) => {
     if (window.confirm(`Are you sure you want to delete category "${name}"?`)) {
       const updated = categories.filter((c) => c.id !== id);
       setCategories(updated);
       localStorage.setItem('fm_forum_categories', JSON.stringify(updated));
-      showToast(`Category "${name}" deleted.`);
+      const res = await ForumService.deleteCategory(id);
+      if (res.success) {
+        showToast(`✅ Category "${name}" removed from PostgreSQL.`);
+      } else {
+        showToast(`Category "${name}" deleted.`);
+      }
     }
   };
 

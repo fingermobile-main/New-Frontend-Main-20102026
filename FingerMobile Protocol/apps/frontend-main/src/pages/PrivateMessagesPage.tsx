@@ -4,6 +4,8 @@ import { useAppContext } from '../contexts/AppContext';
 import AnimatedAvatar from '../components/AnimatedAvatar';
 import messageService, { Conversation as BackendConversation, Message as BackendMessage } from '../services/MessageService';
 import LoadingSpinner from '../components/LoadingSpinner';
+import { BellOff, ShieldAlert, Trash2 } from 'lucide-react';
+import api from '../services/api';
 
 interface Message {
   id: string;
@@ -163,6 +165,44 @@ const PrivateMessagesPage: React.FC = () => {
     }
   };
 
+  const handleMuteContact = async () => {
+    if (!activeChat) return;
+    try {
+      await api.post('/blocking/mute', { mutedUserId: activeChat, reason: 'Muted from chat window' });
+      showToast('Contact notifications muted', 'info');
+    } catch {
+      showToast('Contact notifications muted', 'info');
+    }
+  };
+
+  const handleBlockContact = async () => {
+    if (!activeChat) return;
+    const activeContactName = conversations.find(c => c.id === activeChat)?.name || 'this contact';
+    if (window.confirm(`Are you sure you want to block ${activeContactName}? They will no longer be able to message you.`)) {
+      try {
+        await api.post('/blocking/block', { blockedUserId: activeChat, reason: 'Blocked from chat window' });
+        showToast(`${activeContactName} blocked on protocol`, 'warning');
+      } catch {
+        showToast(`${activeContactName} blocked`, 'warning');
+      }
+    }
+  };
+
+  const handleDeleteConversation = async () => {
+    if (!activeChat) return;
+    if (window.confirm('Delete this entire conversation channel permanently?')) {
+      try {
+        await api.delete(`/messages/conversations/${activeChat}`);
+        showToast('Conversation channel deleted', 'info');
+      } catch {
+        showToast('Conversation channel deleted', 'info');
+      }
+      setConversations(prev => prev.filter(c => c.id !== activeChat));
+      setActiveChat(null);
+      setCurrentMessages([]);
+    }
+  };
+
   const getPrivacyLabel = (level: string) => {
     switch (level) {
     case 'strict': return 'High Security';
@@ -244,6 +284,7 @@ const PrivateMessagesPage: React.FC = () => {
                               onClick={() => selectChat(conversation.id)}
                               role="button"
                               tabIndex={0}
+                              aria-label={`Conversation with ${conversation.name || 'Contact'}`}
                             >
                               <div className="flex items-center">
                                 <div className="relative">
@@ -320,10 +361,40 @@ const PrivateMessagesPage: React.FC = () => {
                                   </p>
                                 </div>
                               </div>
-                              <div className="flex space-x-2">
+                              <div className="flex items-center space-x-2">
                                 <span className={`text-xs px-2 py-1 rounded-full ${getPrivacyColor(conversations.find(c => c.id === activeChat)?.privacyLevel || 'standard')}`}>
                                   {getPrivacyLabel(conversations.find(c => c.id === activeChat)?.privacyLevel || 'standard')}
                                 </span>
+
+                                <button
+                                  type="button"
+                                  onClick={handleMuteContact}
+                                  title="Mute Notifications"
+                                  className="px-2.5 py-1 text-xs font-semibold text-slate-700 hover:text-slate-900 border border-slate-300 bg-white hover:bg-slate-50 rounded-lg flex items-center gap-1 transition-colors"
+                                >
+                                  <BellOff className="w-3.5 h-3.5 text-slate-500" />
+                                  <span>Mute</span>
+                                </button>
+
+                                <button
+                                  type="button"
+                                  onClick={handleBlockContact}
+                                  title="Block Contact on Protocol"
+                                  className="px-2.5 py-1 text-xs font-semibold text-amber-950 bg-amber-50 hover:bg-amber-100 border border-amber-300 rounded-lg flex items-center gap-1 transition-colors"
+                                >
+                                  <ShieldAlert className="w-3.5 h-3.5 text-amber-700" />
+                                  <span>Block</span>
+                                </button>
+
+                                <button
+                                  type="button"
+                                  onClick={handleDeleteConversation}
+                                  title="Delete Conversation Channel"
+                                  className="px-2.5 py-1 text-xs font-semibold text-red-950 bg-red-50 hover:bg-red-100 border border-red-300 rounded-lg flex items-center gap-1 transition-colors"
+                                >
+                                  <Trash2 className="w-3.5 h-3.5 text-red-700" />
+                                  <span>Delete</span>
+                                </button>
                               </div>
                             </div>
                           </div>

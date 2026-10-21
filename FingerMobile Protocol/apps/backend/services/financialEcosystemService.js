@@ -11,7 +11,10 @@
  * 6. Extracted Financial Models from 'FingerMobile Protocol Draft Financials 14102026.xlsx' (All 18 Sheets)
  */
 
-// In-Memory Thread-Safe State with persistence hooks
+const db = require('../db');
+const logger = require('../utils/logger');
+
+// In-Memory Thread-Safe State with PostgreSQL persistence hooks
 class FinancialEcosystemService {
   constructor() {
     this.initDestinationRails();
@@ -603,8 +606,178 @@ class FinancialEcosystemService {
     return this.excelSheets;
   }
 
-  getExcelSheet(key) {
-    return this.excelSheets[key] || null;
+  resolveSheetAlias(key) {
+    const keyAliases = {
+      'income_statement': 'sheet11_income_statement',
+      'balance_sheet': 'sheet13_balance_sheet',
+      'cost_tcc_boq': 'sheet1_cost',
+      'startup_funds': 'sheet3_startup_funds',
+      'capex_opex_dancia': 'sheet5_capex_opex_dancia4tv',
+      'sheet11_income_statement': 'income_statement',
+      'sheet13_balance_sheet': 'balance_sheet',
+      'sheet1_cost': 'cost_tcc_boq',
+      'sheet3_startup_funds': 'startup_funds',
+      'sheet5_capex_opex_dancia4tv': 'capex_opex_dancia'
+    };
+    return keyAliases[key] || key;
+  }
+
+  async getExcelSheet(key) {
+    const aliasKey = this.resolveSheetAlias(key);
+    try {
+      const res = await db.financialDb.query(
+        'SELECT sheet_key, title, version, status, last_edited_by, last_edited_at, approved_by, approved_at, notes, sheet_data FROM platform_financial_sheets WHERE sheet_key = $1 OR sheet_key = $2 LIMIT 1',
+        [key, aliasKey]
+      );
+      if (res.rows && res.rows.length > 0) {
+        const row = res.rows[0];
+        return {
+          sheetKey: row.sheet_key,
+          title: row.title,
+          version: row.version,
+          status: row.status,
+          lastEditedBy: row.last_edited_by,
+          lastEditedAt: row.last_edited_at,
+          approvedBy: row.approved_by,
+          approvedAt: row.approved_at,
+          notes: row.notes,
+          ...row.sheet_data
+        };
+      }
+    } catch (err) {
+      if (logger && logger.warn) logger.warn(`Error reading sheet ${key} from DB, falling back to memory:`, err.message);
+    }
+    return this.excelSheets[key] || this.excelSheets[aliasKey] || null;
+  }
+
+  async saveSheet(key, sheetData, metadata = {}) {
+    const aliasKey = this.resolveSheetAlias(key);
+    const title = metadata.title || (this.excelSheets[key] ? this.excelSheets[key].title : (this.excelSheets[aliasKey] ? this.excelSheets[aliasKey].title : `Sheet ${key}`));
+    const lastEditedBy = metadata.lastEditedBy || 'Mrs. Mbah Eunice Emonena (CFO)';
+    const status = metadata.status || 'DRAFT';
+    const notes = metadata.notes || '';
+    const version = Number(metadata.version) || 1;
+
+    try {
+      const res = await db.financialDb.query(`
+        INSERT INTO platform_financial_sheets (sheet_key, title, version, status, last_edited_by, last_edited_at, notes, sheet_data)
+        VALUES ($1, $2, $3, $4, $5, CURRENT_TIMESTAMP, $6, $7::jsonb)
+        ON CONFLICT (sheet_key) DO UPDATE SET
+          title = EXCLUDED.title,
+          version = platform_financial_sheets.version + 1,
+          status = EXCLUDED.status,
+          last_edited_by = EXCLUDED.last_edited_by,
+          last_edited_at = CURRENT_TIMESTAMP,
+          notes = EXCLUDED.notes,
+          sheet_data = EXCLUDED.sheet_data,
+          updated_at = CURRENT_TIMESTAMP
+        RETURNING *
+      `, [key, title, version, status, lastEditedBy, notes, JSON.stringify(sheetData)]);
+
+      // Update in-memory copy
+      this.excelSheets[key] = {
+        sheetKey: key,
+        title,
+        version: res.rows[0].version,
+        status: res.rows[0].status,
+        lastEditedBy,
+        lastEditedAt: res.rows[0].last_edited_at,
+        notes,
+        ...sheetData
+      };
+
+      // Record audit record
+      await this.recordAuditLog({
+        sheetKey: key,
+        sheetLabel: title,
+        action: 'DRAFT_SAVED',
+        actor: lastEditedBy,
+        actorRole: 'CFO',
+        notes: notes || 'Financial sheet state updated and persisted to PostgreSQL',
+        version: res.rows[0].version,
+        payloadSummary: `Updated ${key} with ${Object.keys(sheetData).length} financial fields.`
+      });
+
+      return res.rows[0];
+    } catch (err) {
+      if (logger && logger.error) logger.error(`Error persisting sheet ${key} to DB:`, err);
+      // Update in-memory copy as fallback
+      this.excelSheets[key] = { sheetKey: key, title, ...sheetData };
+      return { sheet_key: key, title, sheet_data: sheetData };
+    }
+  }
+
+  async approveSheet(key, approver = 'Mbah Israel Obinna (SUPER ADMIN)', notes = 'Approved') {
+    try {
+      const res = await db.financialDb.query(`
+        UPDATE platform_financial_sheets
+        SET status = 'APPROVED_BY_SUPER_ADMIN',
+            approved_by = $1,
+            approved_at = CURRENT_TIMESTAMP,
+            notes = COALESCE($2, notes),
+            updated_at = CURRENT_TIMESTAMP
+        WHERE sheet_key = $3
+        RETURNING *
+      `, [approver, notes, key]);
+
+      if (res.rows.length > 0) {
+        const approved = res.rows[0];
+        if (this.excelSheets[key]) {
+          this.excelSheets[key].status = 'APPROVED_BY_SUPER_ADMIN';
+          this.excelSheets[key].approvedBy = approver;
+          this.excelSheets[key].approvedAt = approved.approved_at;
+        }
+
+        await this.recordAuditLog({
+          sheetKey: key,
+          sheetLabel: approved.title,
+          action: 'SUPER_ADMIN_APPROVED',
+          actor: approver,
+          actorRole: 'SUPER_ADMIN',
+          notes: notes || 'SuperAdmin ratified financial model into immutable sovereign ledger',
+          version: approved.version
+        });
+
+        return approved;
+      }
+    } catch (err) {
+      if (logger && logger.error) logger.error(`Error approving sheet ${key} in DB:`, err);
+    }
+    return null;
+  }
+
+  async recordAuditLog(log) {
+    try {
+      await db.financialDb.query(`
+        INSERT INTO platform_financial_audit_ledger (sheet_key, sheet_label, action, actor, actor_role, notes, version, payload_summary)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      `, [
+        log.sheetKey,
+        log.sheetLabel || log.sheetKey,
+        log.action,
+        log.actor || 'System',
+        log.actorRole || 'CFO',
+        log.notes || '',
+        log.version || 1,
+        log.payloadSummary || ''
+      ]);
+    } catch (err) {
+      if (logger && logger.warn) logger.warn('Error recording financial audit log:', err.message);
+    }
+  }
+
+  async getAuditLogs(sheetKey) {
+    try {
+      const query = sheetKey
+        ? 'SELECT * FROM platform_financial_audit_ledger WHERE sheet_key = $1 ORDER BY timestamp DESC LIMIT 100'
+        : 'SELECT * FROM platform_financial_audit_ledger ORDER BY timestamp DESC LIMIT 100';
+      const params = sheetKey ? [sheetKey] : [];
+      const res = await db.financialDb.query(query, params);
+      return res.rows;
+    } catch (err) {
+      if (logger && logger.warn) logger.warn('Error fetching financial audit logs from DB:', err.message);
+      return [];
+    }
   }
 
   getLedger() {

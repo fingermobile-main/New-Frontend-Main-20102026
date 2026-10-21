@@ -118,15 +118,28 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
     };
     fetchBackendRoles();
 
-    // Load members for RBAC bridge
-    try {
-      const savedMembers = localStorage.getItem('fingermobile_master_members_db');
-      if (savedMembers) {
-        setMembersList(JSON.parse(savedMembers));
+    // Load members for RBAC bridge from backend
+    const fetchMembers = async () => {
+      try {
+        const res = await api.get('/admin/members');
+        const list = res.data?.data || res.data?.members || (Array.isArray(res.data) ? res.data : []);
+        if (Array.isArray(list) && list.length > 0) {
+          setMembersList(list);
+          return;
+        }
+      } catch {
+        // Fallback to local storage or defaults
       }
-    } catch {
-      // Ignore
-    }
+      try {
+        const savedMembers = localStorage.getItem('fingermobile_master_members_db');
+        if (savedMembers) {
+          setMembersList(JSON.parse(savedMembers));
+        }
+      } catch {
+        // Ignore
+      }
+    };
+    fetchMembers();
   }, []);
 
   const showToast = (msg: string) => {
@@ -405,6 +418,12 @@ export const CorporateGovernanceConsole: React.FC<CorporateGovernanceConsoleProp
           name: chosenMember?.name,
           email: chosenMember?.email
         }
+      });
+      await api.put(`/admin/members/${selectedMemberId}`, {
+        role: 'Manager',
+        corporateRoleNumber: selectedRoleForAssignment.roleNumber,
+        corporateRoleTitle: selectedRoleForAssignment.title,
+        assignedSubOffice: chosenSubOffice?.name || selectedRoleForAssignment.department
       });
     } catch {
       // Fallback

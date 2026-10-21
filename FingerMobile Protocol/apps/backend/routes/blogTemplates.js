@@ -10,6 +10,13 @@ const blogTemplateController = require('../controllers/BlogTemplateController');
 router.get('/', blogTemplateController.getBlogTemplates);
 
 /**
+ * @route   POST /api/blog-templates
+ * @desc    Create and persist a custom blog template in PostgreSQL
+ * @access  Public / Admin
+ */
+router.post('/', blogTemplateController.createTemplate);
+
+/**
  * @route   GET /api/blog-templates/:id
  * @desc    Get template details by ID
  * @access  Public
@@ -29,5 +36,12 @@ router.post('/scaffold', blogTemplateController.scaffoldTemplate);
  * @access  Public / Admin
  */
 router.post('/:id/customize', blogTemplateController.customizeTemplate);
+
+/**
+ * @route   DELETE /api/blog-templates/:id
+ * @desc    Delete custom template from PostgreSQL
+ * @access  Public / Admin
+ */
+router.delete('/:id', blogTemplateController.deleteTemplate);
 
 module.exports = router;

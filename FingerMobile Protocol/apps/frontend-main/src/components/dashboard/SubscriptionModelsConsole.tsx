@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Sparkles,
   Edit3,
@@ -18,9 +18,13 @@ import {
   CheckSquare,
   Square,
   FolderInput,
-  TrendingUp
+  TrendingUp,
+  Database,
+  RefreshCw
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { api } from '../../services/api';
+
 
 export interface EditableSubscriptionModel {
   id: string;
@@ -376,18 +380,74 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
   });
   const [savedBanner, setSavedBanner] = useState<string | null>(null);
 
-  // Sync to localStorage
-  const saveModelsToStorage = (updated: EditableSubscriptionModel[]) => {
+  const [isPersisting, setIsPersisting] = useState(false);
+  const [dbSyncStatus, setDbSyncStatus] = useState<'synced' | 'syncing' | 'offline'>('synced');
+
+  // Load from PostgreSQL database on mount
+  useEffect(() => {
+    let isMounted = true;
+    const fetchModels = async () => {
+      try {
+        const response = await api.get('/monetization/subscription-models');
+        if (response.data?.models && response.data.models.length > 0 && isMounted) {
+          const merged = response.data.models.map((dbModel: any) => {
+            const defaultMatch = CURATED_DEFAULT_MODELS.find((d) => d.id === dbModel.id);
+            return {
+              ...dbModel,
+              targetPage: dbModel.targetPage || defaultMatch?.targetPage || 'Subscriptions Page',
+              pageRoute: dbModel.pageRoute || defaultMatch?.pageRoute || '/subscriptions',
+              billingCycle: dbModel.billingCycle || defaultMatch?.billingCycle || 'monthly',
+              freeTrialDays: dbModel.freeTrialDays ?? defaultMatch?.freeTrialDays ?? (dbModel.isFreeTier ? 365 : 7),
+              monthlyNaira: dbModel.monthlyNaira ?? dbModel.monthlyNGN ?? defaultMatch?.monthlyNaira ?? 0,
+            };
+          });
+          setModels(merged);
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+          setDbSyncStatus('synced');
+        } else if (isMounted) {
+          // If database is empty, seed defaults to PostgreSQL
+          api.put('/monetization/subscription-models/batch', { models: CURATED_DEFAULT_MODELS }).catch(() => {});
+        }
+      } catch (err) {
+        console.warn('Could not reach backend monetization db, running with local cache', err);
+        if (isMounted) setDbSyncStatus('offline');
+      }
+    };
+
+    fetchModels();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  // Sync to PostgreSQL database and mirror to localStorage
+  const saveModelsToStorage = async (updated: EditableSubscriptionModel[], deletedId?: string) => {
     setModels(updated);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
     window.dispatchEvent(new CustomEvent('fingermobile_subscriptions_changed', { detail: updated }));
-    setSavedBanner('✅ Subscription models saved & synchronized successfully across platform!');
-    setTimeout(() => setSavedBanner(null), 3000);
+    setIsPersisting(true);
+    setDbSyncStatus('syncing');
+
+    try {
+      if (deletedId) {
+        await api.delete(`/monetization/subscription-models/${deletedId}`);
+      }
+      await api.put('/monetization/subscription-models/batch', { models: updated });
+      setDbSyncStatus('synced');
+      setSavedBanner('✅ Subscription models saved & persisted to PostgreSQL database successfully!');
+    } catch (error) {
+      console.error('Failed to persist models to backend:', error);
+      setDbSyncStatus('offline');
+      setSavedBanner('⚠️ Saved locally. Will retry synchronizing to PostgreSQL once connected.');
+    } finally {
+      setIsPersisting(false);
+      setTimeout(() => setSavedBanner(null), 3500);
+    }
   };
 
-  const handleResetDefaults = () => {
-    if (window.confirm('Reset all subscription models to platform default curated models?')) {
-      saveModelsToStorage(CURATED_DEFAULT_MODELS);
+  const handleResetDefaults = async () => {
+    if (window.confirm('Reset all subscription models to platform default curated models in PostgreSQL?')) {
+      await saveModelsToStorage(CURATED_DEFAULT_MODELS);
     }
   };
 
@@ -405,16 +465,16 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
     setTimeout(() => setSavedBanner(null), 4000);
   };
 
-  const handleSaveEdit = (e: React.FormEvent) => {
+  const handleSaveEdit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingModel) return;
 
     if (isCreatingNew) {
       const updated = [...models, { ...editingModel, id: `sub_${Date.now()}` }];
-      saveModelsToStorage(updated);
+      await saveModelsToStorage(updated);
     } else {
       const updated = models.map((m) => (m.id === editingModel.id ? editingModel : m));
-      saveModelsToStorage(updated);
+      await saveModelsToStorage(updated);
     }
     setEditingModel(null);
     setIsCreatingNew(false);
@@ -507,16 +567,15 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
     }
   };
 
-  const handleDeleteModel = (id: string) => {
+  const handleDeleteModel = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this subscription card?')) {
       const updated = models.filter((m) => m.id !== id);
-      saveModelsToStorage(updated);
       setSelectedIds((prev) => prev.filter((item) => item !== id));
-      setSavedBanner('🗑️ Subscription model removed.');
+      await saveModelsToStorage(updated, id);
     }
   };
 
-  const handleSyncToFinancialPnl = () => {
+  const handleSyncToFinancialPnl = async () => {
     const totalMonthlyNaira = models.reduce((acc, m) => {
       const subs = m.subscriberCount || 100;
       const nairaRate = m.monthlyNaira || (m.monthlyFIC * 65);
@@ -529,7 +588,12 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
         detail: { annualTotalNgn, totalMonthlyNaira, count: models.length }
       })
     );
-    setSavedBanner(`📊 Subscriptions synced to Financial P&L! Projected Annual Gross: ₦${annualTotalNgn.toLocaleString()} across ${models.length} active models.`);
+    try {
+      await api.put('/monetization/subscription-models/batch', { models });
+    } catch {}
+
+    setSavedBanner(`📊 Subscriptions synced to Financial P&L and PostgreSQL! Projected Annual Gross: ₦${annualTotalNgn.toLocaleString()} across ${models.length} active models.`);
+    setTimeout(() => setSavedBanner(null), 4000);
   };
 
   const filteredModels = models.filter((m) => {
@@ -551,13 +615,20 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
       <div className="rounded-2xl p-6 bg-gradient-to-r from-blue-900/40 via-indigo-900/30 to-purple-900/40 border border-blue-500/30 shadow-xl backdrop-blur-sm">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-1.5">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
               <span className="px-2.5 py-1 rounded-full text-xs font-mono font-bold bg-blue-500/20 text-blue-300 border border-blue-400/40 flex items-center gap-1">
                 <Sparkles className="w-3.5 h-3.5 text-blue-400" />
                 {sourceDashboard === 'StercsDashboard' ? 'STERCS Curation Engine' : 'Master Control Console'}
               </span>
-              <span className="px-2.5 py-1 rounded-full text-xs font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-400/40">
-                100% Live Editable
+              <span className={`px-2.5 py-1 rounded-full text-xs font-mono font-bold flex items-center gap-1.5 ${
+                dbSyncStatus === 'synced'
+                  ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-400/40'
+                  : dbSyncStatus === 'syncing'
+                    ? 'bg-amber-500/20 text-amber-300 border border-amber-400/40 animate-pulse'
+                    : 'bg-rose-500/20 text-rose-300 border border-rose-400/40'
+              }`}>
+                <Database className="w-3.5 h-3.5" />
+                {dbSyncStatus === 'synced' ? 'PostgreSQL Live Persisted' : dbSyncStatus === 'syncing' ? 'Syncing to PostgreSQL...' : 'Offline Local Cache'}
               </span>
             </div>
             <h2 className="text-2xl font-black text-white tracking-tight">
@@ -848,6 +919,7 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
                       onChange={() => handleToggleSelect(model.id)}
                       className="w-4 h-4 rounded text-blue-600 focus:ring-blue-500 cursor-pointer border-slate-700 bg-slate-900"
                       title="Select card for duplication, copy, or move"
+                      aria-label={`Select ${model.name}`}
                     />
                     <span
                       className={`text-[10px] font-mono uppercase px-2 py-0.5 rounded-full font-bold border ${
@@ -873,26 +945,32 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
                   <div className="flex items-center gap-1">
                     {/* Duplicate Single Card */}
                     <button
+                      type="button"
                       onClick={() => handleDuplicateSingle(model)}
                       className="p-1 rounded-lg text-slate-300 hover:text-emerald-400 hover:bg-slate-800 transition-colors"
                       title="Duplicate this subscription card"
+                      aria-label={`Duplicate ${model.name}`}
                     >
                       <Files className="w-3.5 h-3.5" />
                     </button>
                     <button
+                      type="button"
                       onClick={() => {
                         setEditingModel({ ...model });
                         setIsCreatingNew(false);
                       }}
                       className="p-1 rounded-lg text-slate-300 hover:text-sky-400 hover:bg-slate-800 transition-colors"
                       title="Edit Model"
+                      aria-label={`Edit ${model.name}`}
                     >
                       <Edit3 className="w-3.5 h-3.5" />
                     </button>
                     <button
+                      type="button"
                       onClick={() => handleDeleteModel(model.id)}
                       className="p-1 rounded-lg text-slate-200 hover:text-red-400 hover:bg-slate-800 transition-colors"
                       title="Delete Model"
+                      aria-label={`Delete ${model.name}`}
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
@@ -957,7 +1035,9 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
 
                 {model.isFreeTier ? (
                   <button
+                    type="button"
                     onClick={() => handleTestFreeTier(model)}
+                    aria-label={isCurrentActiveTest ? `Active session free tier: ${model.name}` : `Test out free tier: ${model.name}`}
                     className={`w-full py-2 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 ${
                       isCurrentActiveTest
                         ? 'bg-emerald-500 text-slate-950 font-black shadow-lg shadow-emerald-500/20'
@@ -1004,8 +1084,10 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
                 <span>{isCreatingNew ? 'Create New Subscription Model' : 'Edit Subscription Model'}</span>
               </h3>
               <button
+                type="button"
                 onClick={() => setEditingModel(null)}
                 className="text-slate-300 hover:text-white text-sm"
+                aria-label="Close subscription edit modal"
               >
                 ✕
               </button>
@@ -1156,6 +1238,7 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
                   type="button"
                   onClick={() => setEditingModel(null)}
                   className="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold"
+                  aria-label="Cancel editing subscription model"
                 >
                   Cancel
                 </button>

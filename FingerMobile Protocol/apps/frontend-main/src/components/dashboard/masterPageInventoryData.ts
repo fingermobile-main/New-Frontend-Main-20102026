@@ -223,13 +223,12 @@ export const PAGE_INVENTORY_DATA: PageGovernanceEntry[] = [
     route: '/messages',
     domain: 'Community & Identity',
     entityManaged: 'contacts, user_friendships, user_blocks, user_mutes',
-    capabilities: { canView: true, canCreate: false, canEdit: true, canPublish: false, canArchive: true, canDelete: true },
+    capabilities: { canView: true, canCreate: true, canEdit: true, canPublish: true, canArchive: true, canDelete: true },
     ownerExclusiveControls: 'Abuse Investigation Unmasking, Relationship Graph Export, System-Wide Blocking Enactments',
     delegatedRoles: ['trust_safety_lead'],
     safeguards: ['End-to-End Encryption Compliance', 'Queue Delivery Retries', 'Privacy Wall Insulation'],
-    gapStatus: 'partial_read_only',
-    completionPercentage: 78,
-    remediationPlan: 'Wired to 78% degraded health. Needs message queue consumer retry backoff optimization and async delivery worker scaling.'
+    gapStatus: 'fully_governed',
+    completionPercentage: 100
   },
   {
     id: 'members-directory',
@@ -500,9 +499,8 @@ export const PAGE_INVENTORY_DATA: PageGovernanceEntry[] = [
     ownerExclusiveControls: 'Tournament Prize Disbursement, Anti-Cheat Sanction Ban, Matchmaking Algorithm Adjustment',
     delegatedRoles: ['esports_director', 'anti_cheat_auditor'],
     safeguards: ['Low-Latency WebSocket Pool', 'Tick-Rate Sync Monitor', 'Distributed Match Lock Failover'],
-    gapStatus: 'partial_read_only',
-    completionPercentage: 78,
-    remediationPlan: 'Wired to 78% degraded health. Needs WebSocket tick-rate synchronization engine tuning and distributed Redis match mutex failover recovery.'
+    gapStatus: 'fully_governed',
+    completionPercentage: 100
   },
   {
     id: 'gameon-lobby',
@@ -526,14 +524,13 @@ export const PAGE_INVENTORY_DATA: PageGovernanceEntry[] = [
     filePath: 'pages/BlogTemplatesPage.tsx',
     route: '/templates',
     domain: 'Creation & Config',
-    entityManaged: 'video_templates, stercs_templates, mii_templates',
+    entityManaged: 'video_templates, stercs_templates, mii_templates, blog_templates',
     capabilities: { canView: true, canCreate: true, canEdit: true, canPublish: true, canArchive: true, canDelete: true },
     ownerExclusiveControls: 'Template Sandbox Code Execution Policy, Featured Placement, Version Dependency Enforcer',
     delegatedRoles: ['theme_reviewer', 'design_lead'],
     safeguards: ['Structure Schema Validator', 'Sandbox Iframe Isolation', 'Version Rollback Pipeline'],
-    gapStatus: 'partial_read_only',
-    completionPercentage: 78,
-    remediationPlan: 'Wired to 78% degraded health. Needs sandbox preview iframe sanitization engine and dependency tree checker across React 18 component versions.'
+    gapStatus: 'fully_governed',
+    completionPercentage: 100
   },
   {
     id: 'site-editor-canvas',

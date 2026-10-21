@@ -481,7 +481,7 @@ const MasterMembersConsole: React.FC = () => {
   const totalFicInCirculation = members.reduce((acc, m) => acc + (m.ficBalance || 0), 0);
 
   // Change Role Action
-  const handleUpdateRole = (newRole: PredefinedRole) => {
+  const handleUpdateRole = async (newRole: PredefinedRole) => {
     if (!selectedMember) return;
     if (selectedMember.isRootSuperAdmin) {
       showToast('SuperAdmin root authority cannot be modified or revoked.');
@@ -493,10 +493,16 @@ const MasterMembersConsole: React.FC = () => {
     persistMembers(updated);
     showToast(`Role for ${selectedMember.name} updated to ${newRole}`);
     setIsEditRoleModalOpen(false);
+
+    try {
+      await api.put(`/admin/members/${selectedMember.id}`, { role: newRole });
+    } catch {
+      // Fallback
+    }
   };
 
   // Instant Offboarding / Access Cut-Off Action
-  const handleInstantOffboard = (member: PlatformMember) => {
+  const handleInstantOffboard = async (member: PlatformMember) => {
     if (member.isRootSuperAdmin) {
       showToast('Cannot offboard Root SuperAdmin authority.');
       return;
@@ -506,10 +512,16 @@ const MasterMembersConsole: React.FC = () => {
     );
     persistMembers(updated);
     showToast(`Instant Offboard executed for ${member.name}. Access revoked immediately.`);
+
+    try {
+      await api.put(`/admin/members/${member.id}`, { role: 'Guest', status: 'Suspended' });
+    } catch {
+      // Fallback
+    }
   };
 
   // Toggle Account Freeze
-  const handleToggleFreeze = (member: PlatformMember) => {
+  const handleToggleFreeze = async (member: PlatformMember) => {
     if (member.isRootSuperAdmin) {
       showToast('Cannot freeze Root SuperAdmin authority.');
       return;
@@ -520,22 +532,35 @@ const MasterMembersConsole: React.FC = () => {
     );
     persistMembers(updated);
     showToast(`Account for ${member.name} is now ${nextStatus}`);
+
+    try {
+      await api.put(`/admin/members/${member.id}`, { status: nextStatus });
+    } catch {
+      // Fallback
+    }
   };
 
   // Grant FIC tokens
-  const handleGrantFic = () => {
+  const handleGrantFic = async () => {
     if (!selectedMember) return;
     const added = ficGrantAmount || 0;
+    const newBal = (selectedMember.ficBalance || 0) + added;
     const updated = members.map(m =>
-      m.id === selectedMember.id ? { ...m, ficBalance: m.ficBalance + added } : m
+      m.id === selectedMember.id ? { ...m, ficBalance: newBal } : m
     );
     persistMembers(updated);
     showToast(`Granted ${added} FIC to ${selectedMember.name}`);
     setIsGrantFicModalOpen(false);
+
+    try {
+      await api.put(`/admin/members/${selectedMember.id}`, { ficBalance: newBal });
+    } catch {
+      // Fallback
+    }
   };
 
   // Add new member
-  const handleCreateMember = (e: React.FormEvent) => {
+  const handleCreateMember = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newMemberName.trim() || !newMemberEmail.trim()) return;
 
@@ -562,6 +587,12 @@ const MasterMembersConsole: React.FC = () => {
     setNewMemberName('');
     setNewMemberEmail('');
     setNewMemberRole('Guest');
+
+    try {
+      await api.post('/admin/members', newM);
+    } catch {
+      // Fallback
+    }
   };
 
   // Open Edit Member Account Details
@@ -1435,6 +1466,8 @@ const MasterMembersConsole: React.FC = () => {
                 </div>
               </div>
               <button
+                type="button"
+                aria-label="Close Edit Role Modal"
                 onClick={() => setIsEditRoleModalOpen(false)}
                 className="p-1.5 rounded-lg text-slate-700 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
               >
@@ -1559,6 +1592,8 @@ const MasterMembersConsole: React.FC = () => {
                 </div>
               </div>
               <button
+                type="button"
+                aria-label="Close Grant FIC Modal"
                 onClick={() => setIsGrantFicModalOpen(false)}
                 className="p-1.5 rounded-lg text-slate-700 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
               >
@@ -1632,6 +1667,8 @@ const MasterMembersConsole: React.FC = () => {
                 </div>
               </div>
               <button
+                type="button"
+                aria-label="Close Add Member Modal"
                 onClick={() => setIsAddMemberModalOpen(false)}
                 className="p-1.5 rounded-lg text-slate-700 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
               >
@@ -1726,6 +1763,8 @@ const MasterMembersConsole: React.FC = () => {
                 </div>
               </div>
               <button
+                type="button"
+                aria-label="Close Edit Member Modal"
                 onClick={() => setIsEditMemberModalOpen(false)}
                 className="p-1.5 rounded-lg text-slate-700 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
               >
@@ -2011,6 +2050,8 @@ const MasterMembersConsole: React.FC = () => {
                 </div>
               </div>
               <button
+                type="button"
+                aria-label="Close Delete Member Modal"
                 onClick={() => setIsDeleteMemberModalOpen(false)}
                 className="p-1.5 rounded-lg text-slate-700 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
               >

@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Star, Clock, Users, BookOpen, CheckCircle, Award } from 'lucide-react';
+import api from '@/services/api';
 
 export interface CourseCardProps {
   id?: string;
@@ -78,7 +79,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
 
   const [studentCount, setStudentCount] = React.useState<number>(courseStudents);
 
-  const handleEnrollClick = (e: React.MouseEvent) => {
+  const handleEnrollClick = async (e: React.MouseEvent) => {
     e.stopPropagation();
     if (enrolledState) {
       if (onViewDetails) {
@@ -89,6 +90,12 @@ const CourseCard: React.FC<CourseCardProps> = ({
 
     setEnrolledState(true);
     setStudentCount(prev => prev + 1);
+
+    try {
+      await api.post(`/programs/${courseId}/enroll`);
+    } catch (err) {
+      console.warn('Backend enrollment note:', err);
+    }
 
     try {
       const stored = localStorage.getItem('camus_enrolled_courses');

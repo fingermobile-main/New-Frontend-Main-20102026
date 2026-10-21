@@ -6,6 +6,10 @@ const router = express.Router();
 
 router.get('/', blocking.getBlockedUsers);
 router.post('/', blocking.blockUser);
+router.post('/block', blocking.blockUser);
+router.post('/unblock', blocking.unblockUser);
+router.post('/mute', blocking.muteUser);
+router.post('/unmute', blocking.unmuteUser);
 router.delete('/:blockedmemberId', blocking.unblockUser);
 router.get('/check/:memberId', blocking.checkStatus);
 router.get('/blocked-by', blocking.getBlockedUsers); // stub

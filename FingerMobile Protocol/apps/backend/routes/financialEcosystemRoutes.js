@@ -13,9 +13,15 @@ router.get('/rails', controller.getRails);
 // Core Definitions (Revenue, Income, Profit)
 router.get('/definitions', controller.getDefinitions);
 
-// 18 Extracted Financial Sheets (from Excel blueprint)
+// 18 Extracted Financial Sheets (from Excel blueprint) with PostgreSQL Persistence
 router.get('/sheets', controller.getAllSheets);
 router.get('/sheets/:key', controller.getSheetByKey);
+router.put('/sheets/:key', controller.updateSheet);
+router.post('/sheets/:key/approve', controller.approveSheet);
+
+// Financial Audit Trail
+router.get('/audit-logs', controller.getAuditLogs);
+router.post('/audit-logs', controller.createAuditLog);
 
 // Business & Accounting Ratios
 router.get('/ratios', controller.getRatios);

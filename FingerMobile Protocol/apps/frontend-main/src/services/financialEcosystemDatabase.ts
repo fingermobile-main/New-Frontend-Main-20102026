@@ -6,6 +6,7 @@
  * and persistent storage across the entire platform financial ecosystem.
  */
 
+import api from './api';
 import {
   ApprovalStatus,
   BankAccountRail,
@@ -400,6 +401,100 @@ export class FinancialEcosystemDatabase {
   public getSweeps(): DbTableDoubleEntrySweep[] {
     const raw = localStorage.getItem(DB_KEYS.SWEEPS_LEDGER);
     return raw ? JSON.parse(raw) : [];
+  }
+
+  // --------------------------------------------------------------------------
+  // ASYNC POSTGRESQL FINANCIAL ECOSYSTEM PERSISTENCE
+  // --------------------------------------------------------------------------
+
+  public async fetchSheetFromPostgres(key: SheetKey): Promise<any> {
+    try {
+      const response = await api.get(`/financials/ecosystem/sheets/${key}`);
+      if (response.data && response.data.success && response.data.data) {
+        return response.data.data;
+      }
+    } catch (err) {
+      console.warn(`[FinancialDB] Could not fetch sheet ${key} from PostgreSQL backend, using fallback cache:`, err);
+    }
+    return null;
+  }
+
+  public async persistSheetToPostgres(key: SheetKey, sheetData: any, metadata?: Partial<DbTableSheetMetadata>): Promise<any> {
+    // 1. Update local cache
+    try {
+      localStorage.setItem(`fmp_dynamic_sheet_${key}`, JSON.stringify(sheetData));
+      if (metadata) {
+        const metaKey = `${DB_KEYS.SHEET_METADATA}_${key}`;
+        const currentMeta = this.getSheetMetadata(key);
+        localStorage.setItem(metaKey, JSON.stringify({ ...currentMeta, ...metadata, sheetKey: key }));
+      }
+    } catch {
+      // ignore local cache error
+    }
+
+    // 2. Persist directly to PostgreSQL database
+    try {
+      const response = await api.put(`/financials/ecosystem/sheets/${key}`, {
+        sheetData,
+        metadata: {
+          title: this.getSheetTitle(key),
+          lastEditedBy: metadata?.lastEditedBy || 'Mrs. Mbah Eunice Emonena (CFO)',
+          status: metadata?.status || 'DRAFT',
+          notes: metadata?.notes || '',
+          version: metadata?.version || 1
+        }
+      });
+      return response.data;
+    } catch (err) {
+      console.error(`[FinancialDB] Error persisting sheet ${key} to PostgreSQL:`, err);
+      throw err;
+    }
+  }
+
+  public async approveSheetInPostgres(key: SheetKey, approver?: string, notes?: string): Promise<any> {
+    try {
+      const response = await api.post(`/financials/ecosystem/sheets/${key}/approve`, {
+        approver: approver || 'Mbah Israel Obinna (SUPER ADMIN - Supreme Authority)',
+        notes: notes || 'Officially audited, verified, and ratified as the immutable baseline.'
+      });
+      return response.data;
+    } catch (err) {
+      console.error(`[FinancialDB] Error approving sheet ${key} in PostgreSQL:`, err);
+      throw err;
+    }
+  }
+
+  public async fetchAuditLogsFromPostgres(sheetKey?: SheetKey): Promise<DbTableAuditRecord[]> {
+    try {
+      const response = await api.get('/financials/ecosystem/audit-logs', {
+        params: sheetKey ? { sheetKey } : undefined
+      });
+      if (response.data && response.data.success && Array.isArray(response.data.data)) {
+        return response.data.data;
+      }
+    } catch (err) {
+      console.warn('[FinancialDB] Could not fetch audit logs from PostgreSQL, using local store:', err);
+    }
+    return this.getAuditTrail();
+  }
+
+  public async commitAuditLogToPostgres(record: Omit<DbTableAuditRecord, 'id' | 'timestamp'>): Promise<DbTableAuditRecord> {
+    const localRecord = this.recordAudit(record);
+    try {
+      await api.post('/financials/ecosystem/audit-logs', {
+        sheetKey: record.sheetKey,
+        sheetLabel: record.sheetLabel,
+        action: record.action,
+        actor: record.actor,
+        actorRole: record.actorRole,
+        notes: record.notes,
+        version: record.version,
+        payloadSummary: record.payloadSummary
+      });
+    } catch (err) {
+      console.warn('[FinancialDB] Could not commit audit record to PostgreSQL:', err);
+    }
+    return localRecord;
   }
 }
 

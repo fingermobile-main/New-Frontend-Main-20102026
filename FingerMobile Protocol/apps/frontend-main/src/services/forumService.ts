@@ -44,6 +44,95 @@ class ForumService {
     }
   }
 
+  // Create forum category in PostgreSQL
+  static async createCategory(categoryData: Partial<ForumCategory>): Promise<ApiResponse<ForumCategory>> {
+    try {
+      const response = await ApiService.post('/forums/categories', categoryData);
+      return {
+        success: true,
+        data: response.data.data || response.data,
+        message: response.data.message || 'Category created successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to create category',
+        error: error.response?.data?.error || error.message || 'Error creating category',
+      };
+    }
+  }
+
+  // Update forum category in PostgreSQL
+  static async updateCategory(id: string, categoryData: Partial<ForumCategory>): Promise<ApiResponse<ForumCategory>> {
+    try {
+      const response = await ApiService.put(`/forums/categories/${id}`, categoryData);
+      return {
+        success: true,
+        data: response.data.data || response.data,
+        message: response.data.message || 'Category updated successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to update category',
+        error: error.response?.data?.error || error.message || 'Error updating category',
+      };
+    }
+  }
+
+  // Delete forum category in PostgreSQL
+  static async deleteCategory(id: string): Promise<ApiResponse<void>> {
+    try {
+      const response = await ApiService.delete(`/forums/categories/${id}`);
+      return {
+        success: true,
+        message: response.data?.message || 'Category deleted successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to delete category',
+        error: error.response?.data?.error || error.message || 'Error deleting category',
+      };
+    }
+  }
+
+  // Get forum feed algorithm configuration
+  static async getAlgorithmConfig(): Promise<ApiResponse<any>> {
+    try {
+      const response = await ApiService.get('/forums/algorithm-config');
+      return {
+        success: true,
+        data: response.data.data || response.data,
+        message: 'Algorithm config retrieved successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to retrieve algorithm configuration',
+        error: error.response?.data?.error || error.message,
+      };
+    }
+  }
+
+  // Save forum feed algorithm configuration
+  static async saveAlgorithmConfig(config: any): Promise<ApiResponse<any>> {
+    try {
+      const response = await ApiService.put('/forums/algorithm-config', config);
+      return {
+        success: true,
+        data: response.data.data || response.data,
+        message: response.data?.message || 'Algorithm configuration saved successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to save algorithm configuration',
+        error: error.response?.data?.error || error.message,
+      };
+    }
+  }
+
   // Get forum threads by category
   static async getThreadsByCategory(
     categoryId: string,

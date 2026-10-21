@@ -9,10 +9,15 @@ const controller = require('../controllers/corporateGovernanceController');
 
 // Roles Catalog & Management
 router.get('/roles', controller.getRoles);
+router.get('/corporate-roles', controller.getRoles);
 router.get('/roles/:id', controller.getRoleById);
+router.get('/corporate-roles/:id', controller.getRoleById);
 router.post('/roles', controller.createRole);
+router.post('/corporate-roles', controller.createRole);
 router.put('/roles/:id', controller.updateRole);
+router.put('/corporate-roles/:id', controller.updateRole);
 router.delete('/roles/:id', controller.deleteRole);
+router.delete('/corporate-roles/:id', controller.deleteRole);
 
 // Sub-offices & Functional Units
 router.post('/roles/:roleId/sub-offices', controller.addSubOffice);
