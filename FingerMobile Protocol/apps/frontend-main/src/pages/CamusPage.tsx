@@ -564,7 +564,7 @@ export const CamusPage: React.FC = () => {
         {/* SLEEK, CLEAN MODERN HERO: CORPORATE TRAINING & STUDENT MASTERY ENGINE    */}
         {/* ========================================================================= */}
         <section className="bg-white border-b border-slate-200">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+          <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
             
             {/* Top Toolbar: Brand Identification, Mode Switcher & Navigation */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200">
@@ -860,7 +860,7 @@ export const CamusPage: React.FC = () => {
         {/* CLEAN STICKY SECTION NAVIGATION BAR                                       */}
         {/* ========================================================================= */}
         <section className="sticky top-0 z-30 bg-white border-b border-slate-300 shadow-xs">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex overflow-x-auto gap-2 py-2.5 no-scrollbar">
               
               <button
@@ -925,7 +925,7 @@ export const CamusPage: React.FC = () => {
         {/* ========================================================================= */}
         {/* MAIN BODY CONTENTS                                                        */}
         {/* ========================================================================= */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+        <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 pt-8">
 
           {/* TAB 1: ACADEMIC & CORPORATE COURSE CATALOG */}
           {activeSection === 'courses' && (

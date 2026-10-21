@@ -210,6 +210,8 @@ const UsersPermissionConsolePage = lazy(() => import('../pages/admin/UsersPermis
 const PagesPermissionConsolePage = lazy(() => import('../pages/admin/PagesPermissionConsolePage'));
 const ContentCreatorsConsolePage = lazy(() => import('../pages/admin/ContentCreatorsConsolePage'));
 const BusinessOrganizationsConsolePage = lazy(() => import('../pages/admin/BusinessOrganizationsConsolePage'));
+const ContentAdminDashboardPage = lazy(() => import('../pages/ContentAdminDashboardPage'));
+const MemberManagementPage = lazy(() => import('../pages/admin/MemberManagementPage'));
 
 // Module 13: Systems Engineering, Data, Dev & Cloud Infrastructure
 const DeveloperPortalPage = lazy(() => import('../pages/dashboard/DeveloperPortalPage'));
@@ -470,8 +472,16 @@ export const routes: RouteObject[] = [
           { path: '/roles-permission', element: <RolesPermissionsPage /> },
           { path: '/admin/creators-console', element: <ContentCreatorsConsolePage /> },
           { path: '/creators-console', element: <ContentCreatorsConsolePage /> },
+          { path: '/contentcreators', element: <ContentCreatorsConsolePage /> },
           { path: '/admin/business-console', element: <BusinessOrganizationsConsolePage /> },
           { path: '/business-console', element: <BusinessOrganizationsConsolePage /> },
+          { path: '/businessorganizations', element: <BusinessOrganizationsConsolePage /> },
+          { path: '/admin/content', element: <ContentAdminDashboardPage /> },
+          { path: '/contentadmindashboard', element: <ContentAdminDashboardPage /> },
+          { path: '/admin/members', element: <MemberManagementPage /> },
+          { path: '/membermanagement', element: <MemberManagementPage /> },
+          { path: '/userspermission', element: <UsersPermissionConsolePage /> },
+          { path: '/pagespermission', element: <PagesPermissionConsolePage /> },
           { path: '/seo', element: redirectTo('/masterdashboard?tab=seo') },
           { path: '/guardian/seo', element: redirectTo('/masterdashboard?tab=seo') },
           { path: '/financials', element: redirectTo('/masterdashboard?tab=financials') },

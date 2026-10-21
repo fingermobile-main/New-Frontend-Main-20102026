@@ -52,7 +52,7 @@ class AdminController {
 
       // Aliasing columns to camelCase to match frontend interfaces
       const result = await identityDb.query(
-        `SELECT id, uuid, username, email, role, 
+        `SELECT id, id as uuid, username, email, role, 
                 COALESCE(account_status, 'ACTIVE') as status, 
                 COALESCE(gem_balance, 0) as "fiatBalance", 
                 COALESCE(gem_balance, 0) as "cryptoBalance", 

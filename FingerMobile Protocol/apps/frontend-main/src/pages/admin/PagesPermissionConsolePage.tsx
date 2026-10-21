@@ -100,7 +100,7 @@ export const PagesPermissionConsolePage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-100 text-slate-900 py-8 px-4 sm:px-6 lg:px-8 font-sans">
-      <div className="max-w-7xl mx-auto space-y-6">
+      <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto space-y-6">
         {/* Navigation Breadcrumb */}
         <nav className="flex items-center gap-2 text-xs font-bold text-slate-700">
           <Link to="/forum" className="hover:text-orange-600 transition">Forum Home</Link>

@@ -7,7 +7,7 @@ import { Shield, Info, FileText, Eye, BookOpen } from 'lucide-react';
 const GovernancePage: React.FC = () => {
   return (
     <MainLayout>
-      <div className="max-w-6xl mx-auto py-12 px-6 space-y-12">
+      <div className="max-w-[1536px] 2xl:max-w-[1680px] w-full mx-auto py-10 px-4 sm:px-6 lg:px-8 space-y-12">
         {/* Hero Section */}
         <section className="text-center space-y-4">
           <div className="inline-flex items-center space-x-2 px-4 py-1.5 bg-blue-600/10 border border-blue-500/20 rounded-full">
