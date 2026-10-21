@@ -626,10 +626,10 @@ const PermanencePage: React.FC = () => {
   );
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-slate-900 mb-2">Permanence</h1>
-        <p className="text-slate-700">
+        <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight mb-2">Permanence</h1>
+        <p className="text-slate-700 font-medium">
           Visible to the Communities (Forum, Mii, Gems, Hallmarks, Groups,
           Blogs, Trends) and Ads area
         </p>

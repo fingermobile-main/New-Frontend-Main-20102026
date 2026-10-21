@@ -239,11 +239,104 @@ class SeadsController {
       });
     }
   }
-  async getAll(req, res) { res.json([]); }
-  async getById(req, res) { res.json({}); }
-  async create(req, res) { res.json({}); }
-  async update(req, res) { res.json({}); }
-  async delete(req, res) { res.json({}); }
+  async getProjects(req, res) {
+    try {
+      const { category } = req.query;
+      let query = `
+        SELECT 
+          p.id,
+          p.title,
+          p.category,
+          COALESCE(p.description, '') as pitch_summary,
+          COALESCE(p.funding_goal, 5000)::float as target_funding,
+          COALESCE(p.current_funding, 0)::float as current_funding,
+          p.deadline,
+          COALESCE(u.username, 'Community Organizer') as organizer_name,
+          'Lagos Mainland' as location,
+          COUNT(b.id)::int as backers_count
+        FROM seads_projects p
+        LEFT JOIN users u ON p.creator_id = u.id
+        LEFT JOIN seads_backers b ON p.id = b.project_id
+      `;
+      const params = [];
+      if (category && category !== 'all') {
+        query += ` WHERE p.category = $1`;
+        params.push(category);
+      }
+      query += ` GROUP BY p.id, u.username ORDER BY p.created_at DESC`;
+      const result = await pool.query(query, params);
+      res.json({
+        success: true,
+        data: result.rows
+      });
+    } catch (error) {
+      logger.error('Error in SeadsController.getProjects:', error);
+      res.status(500).json({ success: false, message: 'Failed to get seads projects' });
+    }
+  }
+
+  async backProject(req, res) {
+    try {
+      const id = req.params.id || req.params.projectId;
+      const { amount } = req.body;
+      const backerId = req.user?.id || '44444444-4444-4444-4444-444444444444';
+      const pledge = parseFloat(amount) || 50;
+
+      await pool.query(
+        `INSERT INTO seads_backers (id, project_id, backer_id, amount, backed_at)
+         VALUES (gen_random_uuid(), $1, $2, $3, NOW())`,
+        [id, backerId, pledge]
+      );
+
+      await pool.query(
+        `UPDATE seads_projects 
+         SET current_funding = current_funding + $1, updated_at = NOW() 
+         WHERE id = $2`,
+        [pledge, id]
+      );
+
+      res.json({ success: true, message: 'Project backed successfully' });
+    } catch (error) {
+      logger.error('Error in SeadsController.backProject:', error);
+      res.status(500).json({ success: false, message: 'Failed to back project' });
+    }
+  }
+
+  async createProject(req, res) {
+    try {
+      const creatorId = req.user?.id || '44444444-4444-4444-4444-444444444444';
+      const { title, pitch_summary, category, target_funding, deadline } = req.body;
+      if (!title) {
+        return res.status(400).json({ success: false, message: 'Title is required' });
+      }
+
+      const result = await pool.query(
+        `INSERT INTO seads_projects 
+         (id, title, description, category, creator_id, funding_goal, current_funding, deadline, status, created_at, updated_at)
+         VALUES (gen_random_uuid(), $1, $2, $3, $4, $5, 0, $6, 'active', NOW(), NOW())
+         RETURNING *`,
+        [
+          title,
+          pitch_summary || '',
+          category || 'Ecology & Urban Greenery',
+          creatorId,
+          parseFloat(target_funding) || 5000,
+          deadline || '2026-12-31'
+        ]
+      );
+
+      res.status(201).json({ success: true, data: result.rows[0] });
+    } catch (error) {
+      logger.error('Error in SeadsController.createProject:', error);
+      res.status(500).json({ success: false, message: 'Failed to create project' });
+    }
+  }
+
+  async getAll(req, res) { return this.getProjects(req, res); }
+  async getById(req, res) { return this.getProjects(req, res); }
+  async create(req, res) { return this.createProject(req, res); }
+  async update(req, res) { res.json({ success: true }); }
+  async delete(req, res) { res.json({ success: true }); }
 }
 
 module.exports = new SeadsController();

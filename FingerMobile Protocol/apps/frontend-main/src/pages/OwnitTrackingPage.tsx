@@ -292,10 +292,10 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
     flexWrap: 'wrap',
     gap: '16px',
-    maxWidth: '1280px',
+    maxWidth: '1680px',
     margin: '0 auto 24px auto',
     paddingBottom: '20px',
-    borderBottom: '1px solid #e2e8f0'
+    borderBottom: '1px solid #cbd5e1'
   },
   headerActionBlock: {
     display: 'flex',
@@ -312,11 +312,12 @@ const styles: Record<string, React.CSSProperties> = {
   },
   subtitle: {
     fontSize: '14px',
-    color: '#64748b',
+    color: '#334155',
+    fontWeight: '500',
     margin: '4px 0 0 0'
   },
   content: {
-    maxWidth: '1280px',
+    maxWidth: '1680px',
     margin: '0 auto'
   },
   dashboardGrid: {
