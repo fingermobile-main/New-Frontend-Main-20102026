@@ -717,7 +717,7 @@ const DiscoverPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Discover Nexus">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
+      <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
 
         {/* ======================================================================= */}
         {/* HERO COMMAND CENTER: Topics Engine, P2P Swarm & 30% Trends Nexus */}

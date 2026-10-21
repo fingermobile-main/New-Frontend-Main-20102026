@@ -73,7 +73,7 @@ const FingerShortsPage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="max-w-7xl mx-auto px-4 py-6 space-y-6">
+      <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 py-6 space-y-6">
         {/* Specifications Hero Banner */}
         <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 p-6 md:p-8 text-white shadow-xl">
           <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">

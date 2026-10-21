@@ -70,7 +70,7 @@ class SuperviLeaderboardsController {
           r.character_id,
           r.created_at
         FROM supervi_leaderboard_records r
-        LEFT JOIN users u ON (r.user_id = u.id::text OR r.user_id = u.uuid)
+        LEFT JOIN users u ON r.user_id = u.id::text
         WHERE r.leaderboard_id = $1 ${timeFilter}
         ORDER BY r.rank ASC, r.score DESC
         LIMIT $2 OFFSET $3
