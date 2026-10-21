@@ -38,6 +38,60 @@ import { CESFormulaCard } from '../components/onboarding/CESFormulaCard';
 import { CountryAvailabilityData, CreatorTier } from '../types/creatorOnboarding';
 import userProfileSyncService from '../services/UserProfileSyncService';
 
+export const ONBOARDING_BACKGROUNDS = {
+  // Screens 1 - 2: FingerMobile Login screen Background image
+  LOGIN_BG: '/assets/branding/backgrounds/FingerMobile-Login-screen-Background-image.webp',
+  // Screens 3 - 7 and Screen 10: Eunice Emonenna Mbah
+  EUNICE_BG: '/assets/branding/backgrounds/Eunice-Emonenna-Mbah.webp',
+  // Screens 8 - 9: FingerMobile Forgot password
+  FORGOT_PASSWORD_BG: '/assets/branding/backgrounds/FingerMobile-Forgot-password.webp',
+} as const;
+
+/**
+ * Returns the exact background image URL according to user specification:
+ * - Screens 1 - 2: FingerMobile Login screen Background image.webp
+ * - Screens 3 - 7: Eunice Emonenna Mbah.webp
+ * - Screens 8 - 9: FingerMobile Forgot password.webp
+ * - Screen 10: Eunice Emonenna Mbah.webp
+ */
+export const getOnboardingBackground = (stepNumber: number, stepId?: string): string => {
+  // 1. Exact step ID mapping
+  switch (stepId) {
+    case 'welcome':
+    case 'terms-permissions':
+      return ONBOARDING_BACKGROUNDS.LOGIN_BG;
+    case 'account-type-selection':
+    case 'content-creator-verification':
+    case 'business-verification':
+    case 'two-factor-setup':
+    case 'verification-captcha':
+    case 'demographics-interests':
+    case 'profile-customization':
+      return ONBOARDING_BACKGROUNDS.EUNICE_BG;
+    case 'p2p-algorithm-calibration':
+    case 'ces-formula-education':
+      return ONBOARDING_BACKGROUNDS.FORGOT_PASSWORD_BG;
+    case 'completion':
+      return ONBOARDING_BACKGROUNDS.EUNICE_BG;
+  }
+
+  // 2. Sequential step number mapping (1-based index)
+  if (stepNumber <= 2) {
+    return ONBOARDING_BACKGROUNDS.LOGIN_BG;
+  }
+  if (stepNumber >= 3 && stepNumber <= 7) {
+    return ONBOARDING_BACKGROUNDS.EUNICE_BG;
+  }
+  if (stepNumber === 8 || stepNumber === 9) {
+    return ONBOARDING_BACKGROUNDS.FORGOT_PASSWORD_BG;
+  }
+  if (stepNumber >= 10) {
+    return ONBOARDING_BACKGROUNDS.EUNICE_BG;
+  }
+
+  return ONBOARDING_BACKGROUNDS.LOGIN_BG;
+};
+
 const OnboardingPage: React.FC = () => {
   const navigate = useNavigate();
   const { state, initializeOnboarding, updateProgress, setAccountType, setInterests, setDemographics, markVerificationComplete, finalizeOnboarding, nextStep, previousStep } = useOnboarding();
@@ -57,6 +111,19 @@ const OnboardingPage: React.FC = () => {
   const [availabilityData, setAvailabilityData] = useState<CountryAvailabilityData | null>(null);
   const [tierFeedback, setTierFeedback] = useState<{ status: string; message: string } | null>(null);
   const [isSubmittingCreator, setIsSubmittingCreator] = useState<boolean>(false);
+
+  // Preload onboarding background assets to ensure zero flash on screen transitions
+  useEffect(() => {
+    const imagesToPreload = [
+      ONBOARDING_BACKGROUNDS.LOGIN_BG,
+      ONBOARDING_BACKGROUNDS.EUNICE_BG,
+      ONBOARDING_BACKGROUNDS.FORGOT_PASSWORD_BG,
+    ];
+    imagesToPreload.forEach(src => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, []);
 
   useEffect(() => {
     if (state.progress?.currentStep === 'demographics-interests' && mapContainerRef.current && !mapInstance) {
@@ -1978,20 +2045,33 @@ const OnboardingPage: React.FC = () => {
     }
   };
 
+  const currentStepIndex = state.progress
+    ? state.steps.findIndex(s => s.id === state.progress?.currentStep)
+    : state.currentStepIndex;
+  const currentStepNumber = currentStepIndex >= 0 ? currentStepIndex + 1 : 1;
+  const currentStepId = state.progress?.currentStep || state.steps[currentStepIndex]?.id || 'welcome';
+  const activeBackground = getOnboardingBackground(currentStepNumber, currentStepId);
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col">
-      <div className="container mx-auto px-4 py-8 flex-grow flex flex-col">
-        {/* Progress bar */}
-        <div className="mb-8 max-w-2xl mx-auto w-full">
+    <div
+      className="min-h-screen flex flex-col relative transition-all duration-700 ease-in-out bg-cover bg-center bg-no-repeat bg-fixed"
+      style={{ backgroundImage: `url("${activeBackground}")` }}
+    >
+      {/* High-contrast backdrop overlay to guarantee WCAG AAA readability and prevent visual distraction */}
+      <div className="absolute inset-0 bg-slate-950/40 backdrop-blur-[2px] pointer-events-none" />
+
+      <div className="relative z-10 container mx-auto px-4 py-8 flex-grow flex flex-col">
+        {/* Progress bar card */}
+        <div className="mb-8 max-w-2xl mx-auto w-full bg-white/95 backdrop-blur-md border border-slate-300 shadow-xl rounded-2xl p-4">
           <div className="flex justify-between items-center mb-2">
-            <span className="text-sm font-medium text-gray-700">
-              Step {state.progress ? state.steps.findIndex(s => s.id === state.progress?.currentStep) + 1 : 0} of {state.steps.length}
+            <span className="text-sm font-bold text-slate-900">
+              Step {currentStepNumber} of {state.steps.length}
             </span>
-            <span className="text-sm font-medium text-gray-700">
+            <span className="text-sm font-bold text-slate-800">
               {Math.round(progressPercentage)}% Complete
             </span>
           </div>
-          <Progress value={progressPercentage} className="h-2" />
+          <Progress value={progressPercentage} className="h-2.5 bg-slate-200" />
         </div>
 
         {/* Main content */}
