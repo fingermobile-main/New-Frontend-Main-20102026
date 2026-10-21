@@ -1,4 +1,6 @@
 import React, { useState, useEffect, createContext, useContext, useReducer, ReactNode, useCallback, useMemo } from 'react';
+import { toast } from 'react-toastify';
+import { FingerMobileToast } from '../components/common/FingerMobileToast';
 import {
   Member,
   Post,
@@ -665,10 +667,27 @@ export const AppProvider: React.FC<Props> = ({ children }) => {
 
   const [toastNotification, setToastNotification] = useState<string | React.ReactNode | null>(null);
   const [toastType, setToastType] = useState<'success' | 'error' | 'info' | 'warning' | null>(null);
+  const toastTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const showToast = useCallback((message: string | React.ReactNode, type: 'success' | 'error' | 'info' | 'warning' = 'info') => {
     setToastNotification(message);
     setToastType(type);
+
+    if (toastTimeoutRef.current) {
+      clearTimeout(toastTimeoutRef.current);
+    }
+    toastTimeoutRef.current = setTimeout(() => {
+      setToastNotification(null);
+      setToastType(null);
+    }, 4000);
+
+    try {
+      if (typeof message === 'string' && toast && typeof (toast as any)[type] === 'function') {
+        (toast as any)[type](message, { autoClose: 3500 });
+      }
+    } catch {
+      // Safe fallback
+    }
   }, []);
 
   const showSuccessToast = useCallback((message: string | React.ReactNode) => showToast(message, 'success'), [showToast]);
@@ -1387,7 +1406,24 @@ export const AppProvider: React.FC<Props> = ({ children }) => {
     setFeatureToggles, setPolicies, addXP, incrementStreak, handleGlobalAction
   ]);
 
-  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+  return (
+    <AppContext.Provider value={value}>
+      {toastNotification && (
+        <div className="fixed top-5 right-5 z-[9999] pointer-events-auto">
+          <FingerMobileToast
+            message={toastNotification}
+            type={toastType || 'info'}
+            duration={4000}
+            onClose={() => {
+              setToastNotification(null);
+              setToastType(null);
+            }}
+          />
+        </div>
+      )}
+      {children}
+    </AppContext.Provider>
+  );
 };
 
 export const useAppContext = (): AppContextType => {

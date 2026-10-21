@@ -1,10 +1,32 @@
 import React, { useEffect, useState } from 'react';
+import FingerMobileEmojiPicker from './common/FingerMobileEmojiPicker';
+import FingerMobileEmojiImage from './common/FingerMobileEmojiImage';
+import { emojiPackService, FingerMobileEmojiItem } from '../services/emojiPackService';
+
 interface LiveChatProps {
   roomId?: string;
   userId?: string;
   userName?: string;
   onSendMessage?: (message: string) => void;
 }
+
+const renderMessageWithBrandEmojis = (text: string) => {
+  const parts = text.split(/(:[a-z0-9-]+:)/g);
+  return parts.map((part, index) => {
+    if (part.startsWith(':') && part.endsWith(':')) {
+      const slug = part.slice(1, -1);
+      const isKnown = emojiPackService.getAllEmojis().some((e) => e.slug === slug);
+      if (isKnown) {
+        return (
+          <span key={index} className="inline-flex align-middle mx-0.5">
+            <FingerMobileEmojiImage slug={slug} size="sm" showTooltip />
+          </span>
+        );
+      }
+    }
+    return <span key={index}>{part}</span>;
+  });
+};
 
 const LiveChat: React.FC<LiveChatProps> = ({
   roomId = 'general',
@@ -13,16 +35,14 @@ const LiveChat: React.FC<LiveChatProps> = ({
   onSendMessage
 }) => {
   const [messages, setMessages] = useState<any[]>([
-    { id: 1, user: 'Alice', text: 'Hey everyone! 👋', timestamp: new Date(Date.now() - 300000), color: '#FF6B6B' },
-    { id: 2, user: 'Bob', text: 'Hi Alice! How are you?', timestamp: new Date(Date.now() - 240000), color: '#4ECDC4' },
-    { id: 3, user: 'Charlie', text: 'Great stream today!', timestamp: new Date(Date.now() - 180000), color: '#95E1D3' },
-    { id: 4, user: 'Diana', text: 'Thanks for sharing 🎉', timestamp: new Date(Date.now() - 120000), color: '#F38181' },
-    { id: 5, user: 'Eve', text: 'Love the content!', timestamp: new Date(Date.now() - 60000), color: '#AA96DA' }
+    { id: 1, user: 'Alice', text: 'Hey everyone! :thumbs-up:', timestamp: new Date(Date.now() - 300000), color: '#FF6B6B' },
+    { id: 2, user: 'Bob', text: 'Hi Alice! How are you enjoying FingerMobile?', timestamp: new Date(Date.now() - 240000), color: '#4ECDC4' },
+    { id: 3, user: 'Charlie', text: 'Great living room stream today! :headphones-music:', timestamp: new Date(Date.now() - 180000), color: '#95E1D3' },
+    { id: 4, user: 'Diana', text: 'Celebrated with gems! :star-eyes:', timestamp: new Date(Date.now() - 120000), color: '#F38181' },
+    { id: 5, user: 'Eve', text: 'Love the 5D mint brand vibes! :crown-royalty:', timestamp: new Date(Date.now() - 60000), color: '#AA96DA' }
   ]);
   const [newMessage, setNewMessage] = useState('');
   const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
-
-  const emojis = ['😀', '😂', '❤️', '👍', '🎉', '🔥', '💯', '👏', '🙌', '✨', '💪', '🚀'];
 
   const handleSendMessage = () => {
     if (!newMessage.trim()) return;
@@ -51,10 +71,11 @@ const LiveChat: React.FC<LiveChatProps> = ({
     }
   };
 
-  const addEmoji = (emoji: string) => {
-    setNewMessage(prev => prev + emoji);
+  const handleSelectBrandEmoji = (emoji: FingerMobileEmojiItem) => {
+    setNewMessage(prev => (prev ? `${prev} :${emoji.slug}: ` : `:${emoji.slug}: `));
     setIsEmojiPickerOpen(false);
   };
+
 
   const formatTime = (date: Date) => {
     return date.toLocaleTimeString('en-US', {
@@ -112,26 +133,23 @@ const LiveChat: React.FC<LiveChatProps> = ({
                 </span>
                 <span className="text-xs text-slate-700">{formatTime(msg.timestamp)}</span>
               </div>
-              <p className="text-sm text-gray-900 break-words">{msg.text}</p>
+              <p className="text-sm text-slate-900 break-words flex flex-wrap items-center gap-1 font-medium">
+                {renderMessageWithBrandEmojis(msg.text)}
+              </p>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Emoji Picker */}
+      {/* Official FingerMobile 5D Emoji Picker Popover */}
       {isEmojiPickerOpen && (
-        <div className="border-t border-slate-300 p-2 bg-white">
-          <div className="grid grid-cols-6 gap-2">
-            {emojis.map((emoji, idx) => (
-              <button
-                key={idx}
-                onClick={() => addEmoji(emoji)}
-                className="text-2xl hover:bg-gray-100 rounded p-2 transition-colors"
-              >
-                {emoji}
-              </button>
-            ))}
-          </div>
+        <div className="p-2 bg-emerald-50/50 border-t border-emerald-300 flex justify-center">
+          <FingerMobileEmojiPicker
+            isOpen={isEmojiPickerOpen}
+            onClose={() => setIsEmojiPickerOpen(false)}
+            onSelectEmoji={handleSelectBrandEmoji}
+            title="FingerMobile™ Chat Emojis"
+          />
         </div>
       )}
 
@@ -139,10 +157,12 @@ const LiveChat: React.FC<LiveChatProps> = ({
       <div className="border-t border-slate-300 p-3 bg-white">
         <div className="flex items-center gap-2">
           <button
+            type="button"
             onClick={() => setIsEmojiPickerOpen(!isEmojiPickerOpen)}
-            className="text-2xl hover:bg-gray-100 rounded p-2 transition-colors"
+            title="Insert FingerMobile 5D Brand Emoji"
+            className="p-1.5 hover:bg-emerald-50 rounded-xl transition-all border border-transparent hover:border-emerald-300 flex items-center justify-center cursor-pointer active:scale-95"
           >
-            😊
+            <FingerMobileEmojiImage slug="thumbs-up" size="md" />
           </button>
 
           <input
@@ -150,8 +170,8 @@ const LiveChat: React.FC<LiveChatProps> = ({
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder="Type a message..."
-            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
+            placeholder="Type a message or use FingerMobile 5D emojis..."
+            className="flex-1 px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
           />
 
           <button

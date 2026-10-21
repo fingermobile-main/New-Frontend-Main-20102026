@@ -1,4 +1,6 @@
 import React, { useState, createContext, useContext, ReactNode } from 'react';
+import { FingerMobileToast } from './common/FingerMobileToast';
+
 interface ToastContextType {
   addToast: (message: string, type?: 'success' | 'error' | 'info' | 'warning') => void;
 }
@@ -18,59 +20,29 @@ export const ToastProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     const id = Math.random().toString(36).substring(2, 9);
     const newToast: ToastItem = { id, message, type };
     setToasts(prev => [...prev, newToast]);
-
-    setTimeout(() => {
-      setToasts(prev => prev.filter(t => t.id !== id));
-    }, 5000);
   };
 
-  const toastStyle: React.CSSProperties = {
-    position: 'fixed',
-    top: '20px',
-    right: '20px',
-    zIndex: 9999,
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '10px'
+  const removeToast = (id: string) => {
+    setToasts(prev => prev.filter(t => t.id !== id));
   };
 
   return (
     <ToastContext.Provider value={{ addToast }}>
       {children}
-      <div style={toastStyle}>
+      <div className="fixed top-5 right-5 z-[9999] flex flex-col gap-3 pointer-events-auto">
         {toasts.map((toast) => (
-          <ToastComponent key={toast.id} message={toast.message} type={toast.type} />
+          <FingerMobileToast
+            key={toast.id}
+            id={toast.id}
+            message={toast.message}
+            type={toast.type}
+            duration={4500}
+            onClose={() => removeToast(toast.id)}
+          />
         ))}
       </div>
     </ToastContext.Provider>
   );
-};
-
-const ToastComponent: React.FC<{ message: string; type: 'success' | 'error' | 'info' | 'warning' }> = ({
-  message,
-  type
-}) => {
-  const baseStyle: React.CSSProperties = {
-    padding: '12px 16px',
-    borderRadius: '6px',
-    color: 'white',
-    boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-    maxWidth: '400px',
-    wordWrap: 'break-word',
-    display: 'flex',
-    alignItems: 'center'
-  };
-
-  const typeStyles: Record<string, React.CSSProperties> = {
-    success: { ...baseStyle, backgroundColor: '#4CAF50' },
-    error: { ...baseStyle, backgroundColor: '#F44336' },
-    info: { ...baseStyle, backgroundColor: '#2196F3' },
-    warning: { ...baseStyle, backgroundColor: '#FF9800' }
-  };
-
-  const style = typeStyles[type] || typeStyles.info;
-
-  return <div style={style}>{message}</div>;
 };
 
 export const useToast = () => {

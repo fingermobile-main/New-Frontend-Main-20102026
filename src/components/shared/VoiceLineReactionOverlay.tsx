@@ -72,30 +72,27 @@ export const VoiceLineReactionOverlay: React.FC = () => {
         {/* Glowing backdrop circle */}
         <div className="absolute -inset-10 bg-gradient-to-r from-amber-400/30 via-emerald-400/30 to-indigo-500/30 rounded-full blur-2xl animate-pulse" />
 
-        {/* 3D Emoticon Card */}
-        <div className="relative bg-white/95 backdrop-blur-md border-2 border-amber-400 rounded-3xl p-6 shadow-2xl flex flex-col items-center gap-3 min-w-[260px] max-w-[340px] text-center transform scale-105 transition-all">
-          {/* Animated 3D Graphic Badge */}
-          <div className="w-20 h-20 rounded-2xl bg-gradient-to-tr from-amber-500 via-rose-500 to-indigo-600 p-0.5 shadow-lg flex items-center justify-center transform rotate-3 hover:rotate-0 transition-transform">
-            <div className="w-full h-full bg-slate-900 rounded-[14px] flex items-center justify-center">
-              {reaction.iconType === 'trophy' && (
-                <Trophy className="w-10 h-10 text-amber-400 animate-pulse" />
-              )}
-              {reaction.iconType === 'crush' && (
-                <Star className="w-10 h-10 text-pink-400 animate-spin-slow" />
-              )}
-              {reaction.iconType === 'battle' && (
-                <ShieldAlert className="w-10 h-10 text-rose-400 animate-pulse" />
-              )}
-              {reaction.iconType === 'combo' && (
-                <Zap className="w-10 h-10 text-cyan-400 animate-bounce" />
-              )}
-              {reaction.iconType === 'stun' && (
-                <Flame className="w-10 h-10 text-orange-400 animate-pulse" />
-              )}
-              {reaction.iconType === 'sparkle' && (
-                <Sparkles className="w-10 h-10 text-emerald-400 animate-pulse" />
-              )}
-            </div>
+        {/* 3D Brand Emoji Card */}
+        <div className="relative bg-white/95 backdrop-blur-md border-2 border-emerald-400 rounded-3xl p-6 shadow-2xl flex flex-col items-center gap-3 min-w-[280px] max-w-[360px] text-center transform scale-105 transition-all">
+          {/* Official 5D Mint Green Glass Emoji Badge */}
+          <div className="w-24 h-24 rounded-3xl bg-gradient-to-tr from-[#defaf2] via-[#bbf2e3] to-[#e6fff8] p-1 shadow-lg shadow-emerald-500/20 border-2 border-emerald-300 flex items-center justify-center transform hover:scale-105 transition-transform overflow-hidden">
+            <img
+              src={
+                reaction.iconType === 'trophy'
+                  ? '/assets/emojis/crown_royalty.png'
+                  : reaction.iconType === 'crush'
+                  ? '/assets/emojis/kissing_heart.png'
+                  : reaction.iconType === 'battle'
+                  ? '/assets/emojis/cool_sunglasses.png'
+                  : reaction.iconType === 'combo'
+                  ? '/assets/emojis/star_eyes.png'
+                  : reaction.iconType === 'stun'
+                  ? '/assets/emojis/surprise_dismay.png'
+                  : '/assets/emojis/headphones_music.png'
+              }
+              alt="FingerMobile Brand 5D Emoji"
+              className="w-full h-full object-cover rounded-2xl"
+            />
           </div>
 
           {/* Voice transcript badge */}
