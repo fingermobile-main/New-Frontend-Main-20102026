@@ -179,12 +179,12 @@ export const MultiMediaGallery: React.FC<{
     return (
       <div
         onClick={() => !isVideo && onOpenLightbox({ url, title, author })}
-        className="mt-3.5 rounded-2xl overflow-hidden max-h-[560px] sm:max-h-[640px] border border-slate-300 dark:border-slate-800 cursor-pointer relative group bg-slate-900 shadow-xs"
+        className="-mx-5 mt-3.5 overflow-hidden max-h-[700px] sm:max-h-[760px] border-y border-slate-300 dark:border-slate-800 cursor-pointer relative group bg-slate-900 shadow-xs"
       >
         {isVideo ? (
-          <video src={url} controls playsInline className="w-full max-h-[560px] sm:max-h-[640px] object-contain bg-black" />
+          <video src={url} controls playsInline className="w-full max-h-[700px] sm:max-h-[760px] object-contain bg-black" />
         ) : (
-          <img src={url} alt={title} className="w-full max-h-[560px] sm:max-h-[640px] object-cover group-hover:scale-[1.01] transition duration-300" />
+          <img src={url} alt={title} className="w-full max-h-[700px] sm:max-h-[760px] object-cover group-hover:scale-[1.01] transition duration-300" />
         )}
         
         {/* Persistent Floating Edit UGC Button */}
@@ -237,10 +237,10 @@ export const MultiMediaGallery: React.FC<{
   const isVideo = /\.(mp4|webm|mov|m4v)$/i.test(currentUrl) || currentUrl.startsWith('data:video');
 
   return (
-    <div className="mt-3.5 rounded-2xl overflow-hidden border border-slate-300 dark:border-slate-800 bg-slate-950 relative group shadow-xs">
+    <div className="-mx-5 mt-3.5 overflow-hidden border-y border-slate-300 dark:border-slate-800 bg-slate-950 relative group shadow-xs">
       {/* Current Active Item Viewport */}
       <div
-        className="relative max-h-[520px] sm:max-h-[600px] aspect-[16/10] sm:aspect-video flex items-center justify-center cursor-pointer overflow-hidden bg-black"
+        className="relative max-h-[640px] sm:max-h-[720px] aspect-[16/10] sm:aspect-video flex items-center justify-center cursor-pointer overflow-hidden bg-black"
         onClick={() => !isVideo && onOpenLightbox({ url: currentUrl, title, author })}
       >
         {isVideo ? (

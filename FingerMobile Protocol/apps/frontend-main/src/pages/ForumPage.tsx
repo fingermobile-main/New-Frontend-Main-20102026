@@ -1427,37 +1427,51 @@ export const ForumPage: React.FC = () => {
   };
 
   // Handler for Tool 1: Multi-Media File Pick (Images & Videos)
-  const handleMediaFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleMediaFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     if (files.length === 0) return;
 
-    const newItems: AttachedMediaItem[] = [];
-    let count = 0;
+    triggerToast(`Uploading ${files.length} media file${files.length > 1 ? 's' : ''} to backend...`, 'info');
 
-    files.forEach((file) => {
+    const newItems: AttachedMediaItem[] = [];
+
+    for (const file of files) {
       const isVideo = file.type.startsWith('video/') || /\.(mp4|webm|mov|m4v)$/i.test(file.name);
       const sizeMb = (file.size / 1024 / 1024).toFixed(1);
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const result = event.target?.result as string;
-        newItems.push({
-          id: `media_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`,
-          url: result,
-          type: isVideo ? 'video' : 'image',
-          name: file.name,
-          size: `${sizeMb} MB`,
+
+      let serverUrl = '';
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        const res = await fetch('/api/uploads/file', {
+          method: 'POST',
+          body: formData,
         });
-        count++;
-        if (count === files.length) {
-          setAttachedMediaList((prev) => [...prev, ...newItems]);
-          setAttachedMedia((prev) => prev || newItems[0]?.url || null);
-          setMediaInputUrl('');
-          setActiveComposerTool(null);
-          triggerToast(`Attached ${files.length} media file${files.length > 1 ? 's' : ''}!`, 'success');
+        if (res.ok) {
+          const json = await res.json();
+          if (json.success && json.data?.url) {
+            serverUrl = json.data.url;
+          }
         }
-      };
-      reader.readAsDataURL(file);
-    });
+      } catch (uploadErr) {
+        console.warn('Backend multipart upload notice:', uploadErr);
+      }
+
+      const finalUrl = serverUrl || URL.createObjectURL(file);
+      newItems.push({
+        id: `media_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`,
+        url: finalUrl,
+        type: isVideo ? 'video' : 'image',
+        name: file.name,
+        size: `${sizeMb} MB`,
+      });
+    }
+
+    setAttachedMediaList((prev) => [...prev, ...newItems]);
+    setAttachedMedia((prev) => prev || newItems[0]?.url || null);
+    setMediaInputUrl('');
+    setActiveComposerTool(null);
+    triggerToast(`Attached ${files.length} media file${files.length > 1 ? 's' : ''}!`, 'success');
     e.target.value = '';
   };
 
