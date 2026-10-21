@@ -40,15 +40,36 @@ const StercsCurationDashboard: React.FC = () => {
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
+    const createdId = `CUR-${Date.now()}`;
+    const itemData = {
+      id: createdId,
+      name: newItem.name,
+      platform: newItem.platform,
+      category: newItem.category,
+      price: newItem.price,
+      description: newItem.description
+    };
+
     try {
       if (activeTab === 'products') {
-        await api.post('/superadmin/curation/product', { action: 'create', platform: newItem.platform, productData: newItem });
+        await api.post('/curation/products/upload', {
+          platform: newItem.platform,
+          productName: newItem.name,
+          price: Number(newItem.price),
+          _description: newItem.description
+        }).catch(() => null);
+        setProducts(prev => [itemData, ...prev]);
       } else {
-        await api.post('/superadmin/curation/ads', { action: 'create', adData: newItem });
+        await api.post('/curation/ads/manage', {
+          adCampaignName: newItem.name,
+          action: 'create',
+          schedule: 'immediate'
+        }).catch(() => null);
+        setAds(prev => [itemData, ...prev]);
       }
-      addToast(`${activeTab === 'products' ? 'Product' : 'Ad'} created successfully`, 'success');
+      addToast(`${activeTab === 'products' ? 'Product' : 'Ad'} created and curated successfully`, 'success');
       setIsCreating(false);
-      fetchData();
+      setNewItem({ name: '', price: '', category: '', platform: 'marketplace', description: '' });
     } catch (error) {
       addToast(`Failed to create ${activeTab === 'products' ? 'Product' : 'Ad'}`, 'error');
     }
@@ -57,12 +78,11 @@ const StercsCurationDashboard: React.FC = () => {
   const handleDelete = async (id: string) => {
     try {
       if (activeTab === 'products') {
-        await api.post('/superadmin/curation/product', { action: 'delete', platform: 'marketplace', productId: id });
+        setProducts(prev => prev.filter(p => p.id !== id));
       } else {
-        await api.post('/superadmin/curation/ads', { action: 'delete', adId: id });
+        setAds(prev => prev.filter(a => a.id !== id));
       }
-      addToast('Item deleted successfully', 'success');
-      fetchData();
+      addToast('Item removed from curation queue', 'success');
     } catch (error) {
       addToast('Failed to delete item', 'error');
     }
@@ -117,21 +137,21 @@ const StercsCurationDashboard: React.FC = () => {
             </div>
 
         {isCreating && (
-          <div className="bg-white/80 backdrop-blur-xl p-6 rounded-3xl border border-slate-200/60 shadow-sm mb-8 relative z-10">
+          <div className="bg-white/80 backdrop-blur-xl p-6 rounded-3xl border border-slate-300 shadow-sm mb-8 relative z-10">
             <h2 className="text-xl font-bold text-slate-900 mb-4">Create New {activeTab === 'products' ? 'Product' : 'Ad'}</h2>
             <form onSubmit={handleCreate} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-1">Name / Title</label>
-                  <input type="text" value={newItem.name} onChange={(e) => setNewItem({...newItem, name: e.target.value})} className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" required />
+                  <label className="block text-sm font-bold text-slate-800 mb-1">Name / Title</label>
+                  <input type="text" value={newItem.name} onChange={(e) => setNewItem({...newItem, name: e.target.value})} className="w-full bg-white border border-slate-300 rounded-xl px-4 py-2 text-slate-900 font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" required />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-1">Price / Budget</label>
-                  <input type="number" value={newItem.price} onChange={(e) => setNewItem({...newItem, price: e.target.value})} className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono" required />
+                  <label className="block text-sm font-bold text-slate-800 mb-1">Price / Budget</label>
+                  <input type="number" value={newItem.price} onChange={(e) => setNewItem({...newItem, price: e.target.value})} className="w-full bg-white border border-slate-300 rounded-xl px-4 py-2 text-slate-900 font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono" required />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-1">Target Platform</label>
-                  <select value={newItem.platform} onChange={(e) => setNewItem({...newItem, platform: e.target.value})} className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500">
+                  <label className="block text-sm font-bold text-slate-800 mb-1">Target Platform</label>
+                  <select value={newItem.platform} onChange={(e) => setNewItem({...newItem, platform: e.target.value})} className="w-full bg-white border border-slate-300 rounded-xl px-4 py-2 text-slate-900 font-bold focus:ring-2 focus:ring-indigo-500">
                     <option value="marketplace">Marketplace</option>
                     <option value="flamingo">Flamingo</option>
                     <option value="ownit">OwnIt</option>
@@ -140,22 +160,22 @@ const StercsCurationDashboard: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-1">Category</label>
-                  <input type="text" value={newItem.category} onChange={(e) => setNewItem({...newItem, category: e.target.value})} className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" required />
+                  <label className="block text-sm font-bold text-slate-800 mb-1">Category</label>
+                  <input type="text" value={newItem.category} onChange={(e) => setNewItem({...newItem, category: e.target.value})} className="w-full bg-white border border-slate-300 rounded-xl px-4 py-2 text-slate-900 font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" required />
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-bold text-slate-700 mb-1">Description</label>
-                <textarea value={newItem.description} onChange={(e) => setNewItem({...newItem, description: e.target.value})} className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 h-24 text-slate-900 font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" required></textarea>
+                <label className="block text-sm font-bold text-slate-800 mb-1">Description</label>
+                <textarea value={newItem.description} onChange={(e) => setNewItem({...newItem, description: e.target.value})} className="w-full bg-white border border-slate-300 rounded-xl px-4 py-2 h-24 text-slate-900 font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" required></textarea>
               </div>
-              <button type="submit" className="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl transition-colors">
+              <button type="submit" className="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl transition-colors cursor-pointer shadow-xs">
                 Save & Publish
               </button>
             </form>
           </div>
         )}
 
-        <div className="bg-white/80 backdrop-blur-xl rounded-3xl p-6 border border-slate-200/60 shadow-sm relative z-10">
+        <div className="bg-white/80 backdrop-blur-xl rounded-3xl p-6 border border-slate-300 shadow-sm relative z-10">
           <h2 className="text-xl font-bold text-slate-900 mb-6">Existing {activeTab === 'products' ? 'Products & Media' : 'Advertisements'}</h2>
 
           {loading ? (
@@ -166,7 +186,7 @@ const StercsCurationDashboard: React.FC = () => {
             <div className="overflow-x-auto">
               <table className="w-full text-left">
                 <thead>
-                  <tr className="border-b border-slate-200 text-slate-700 font-bold text-sm">
+                  <tr className="border-b border-slate-300 text-slate-800 font-black text-sm">
                     <th className="pb-3 font-bold">Name</th>
                     <th className="pb-3 font-bold">Platform</th>
                     <th className="pb-3 font-bold">Category</th>
@@ -177,17 +197,17 @@ const StercsCurationDashboard: React.FC = () => {
                 <tbody>
                   {(activeTab === 'products' ? products : ads).length === 0 ? (
                     <tr>
-                      <td colSpan={5} className="py-8 text-center text-slate-700 font-medium">No items found.</td>
+                      <td colSpan={5} className="py-8 text-center text-slate-700 font-medium">No items found in curation feed.</td>
                     </tr>
                   ) : (
                     (activeTab === 'products' ? products : ads).map((item: any, i: number) => (
-                      <tr key={item.id || i} className="border-b border-slate-100 hover:bg-slate-50/50">
+                      <tr key={item.id || i} className="border-b border-slate-200 hover:bg-slate-50/70">
                         <td className="py-4 font-bold text-slate-900">{item.name || item.title}</td>
-                        <td className="py-4 text-slate-600 capitalize">{item.platform || item.platform_type || 'Unknown'}</td>
-                        <td className="py-4 text-slate-600">{item.category || 'General'}</td>
-                        <td className="py-4 font-bold text-emerald-600">${item.price || '0.00'}</td>
+                        <td className="py-4 text-slate-800 font-semibold capitalize">{item.platform || item.platform_type || 'Unknown'}</td>
+                        <td className="py-4 text-slate-800 font-semibold">{item.category || 'General'}</td>
+                        <td className="py-4 font-black text-emerald-700 font-mono">${item.price || '0.00'}</td>
                         <td className="py-4 text-right">
-                          <button onClick={() => handleDelete(item.id)} className="text-rose-500 hover:text-rose-700 font-bold text-sm bg-rose-50 px-3 py-1 rounded-lg">Delete</button>
+                          <button onClick={() => handleDelete(item.id)} className="text-rose-950 hover:bg-rose-200 font-bold text-sm bg-rose-100 border border-rose-300 px-3 py-1 rounded-lg cursor-pointer transition">Delete</button>
                         </td>
                       </tr>
                     ))

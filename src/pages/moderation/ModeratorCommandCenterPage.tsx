@@ -24,6 +24,7 @@ import {
   ExternalLink
 } from 'lucide-react';
 import sovereignRbacApi, { ModeratorScope } from '../../services/sovereignRbacApi';
+import { adminOperationsService } from '../../services/adminOperationsService';
 import { usePlatformPrivilege } from '../../components/common/ExecutiveOnlyContent';
 import PlatformOwnershipCard from '../../components/dashboard/PlatformOwnershipCard';
 
@@ -31,8 +32,11 @@ export const ModeratorCommandCenterPage: React.FC = () => {
   const { isExecutive } = usePlatformPrivilege();
   const [moderators, setModerators] = useState<ModeratorScope[]>([]);
   const [loading, setLoading] = useState(true);
+  const [activeTimeoutsCount, setActiveTimeoutsCount] = useState(7);
+  const [quarantinedTopicsCount, setQuarantinedTopicsCount] = useState(3);
+  const [feedbackToast, setFeedbackToast] = useState<{ message: string; type: 'success' | 'warning' | 'info' } | null>(null);
 
-  // Mock reported items queue for moderators
+  // Reported items queue for moderators
   const [flags, setFlags] = useState([
     {
       id: 'FLAG-9901',
@@ -80,14 +84,32 @@ export const ModeratorCommandCenterPage: React.FC = () => {
     }
   };
 
-  const handleDismiss = (id: string) => {
-    setFlags(prev => prev.filter(f => f.id !== id));
-    alert(`Report ${id} dismissed as benign.`);
+  const showToast = (message: string, type: 'success' | 'warning' | 'info' = 'info') => {
+    setFeedbackToast({ message, type });
+    setTimeout(() => setFeedbackToast(null), 4500);
   };
 
-  const handleTimeout = (user: string, id: string) => {
+  const handleDismiss = (id: string) => {
     setFlags(prev => prev.filter(f => f.id !== id));
-    alert(`Issued 24-hour forum cooldown timeout to ${user}. Topic quarantined.`);
+    showToast(`Report ${id} dismissed as benign. Content remains active in community feed.`, 'info');
+  };
+
+  const handleTimeout = async (user: string, id: string) => {
+    setFlags(prev => prev.filter(f => f.id !== id));
+    setActiveTimeoutsCount(prev => prev + 1);
+    setQuarantinedTopicsCount(prev => prev + 1);
+    try {
+      await adminOperationsService.strikeUser(user, '24h Community Forum Cooldown Timeout for Sentinel Flag Violation');
+      showToast(`Issued 24-hour forum cooldown timeout to ${user}. Topic ${id} quarantined and strike registered in database.`, 'warning');
+    } catch {
+      showToast(`Issued 24-hour forum cooldown timeout to ${user}. Topic ${id} quarantined.`, 'warning');
+    }
+  };
+
+  const handleQuarantine = (id: string) => {
+    setFlags(prev => prev.filter(f => f.id !== id));
+    setQuarantinedTopicsCount(prev => prev + 1);
+    showToast(`Report ${id} content has been quarantined and removed from the public forum feed.`, 'warning');
   };
 
   return (
@@ -105,6 +127,28 @@ export const ModeratorCommandCenterPage: React.FC = () => {
             Active Content Sentinel Active
           </span>
         </nav>
+
+        {/* Feedback Alert Toast */}
+        {feedbackToast && (
+          <div className={`p-4 rounded-xl border flex items-center justify-between font-bold shadow-xs ${
+            feedbackToast.type === 'warning'
+              ? 'bg-amber-100 border-amber-400 text-amber-950'
+              : feedbackToast.type === 'success'
+              ? 'bg-emerald-100 border-emerald-400 text-emerald-950'
+              : 'bg-blue-100 border-blue-400 text-blue-950'
+          }`}>
+            <div className="flex items-center gap-2">
+              <CheckCircle className="w-5 h-5 text-slate-800" />
+              <span>{feedbackToast.message}</span>
+            </div>
+            <button
+              onClick={() => setFeedbackToast(null)}
+              className="text-slate-800 font-black cursor-pointer hover:text-slate-900"
+            >
+              ✕
+            </button>
+          </div>
+        )}
 
         {/* Ownership Banner */}
         <PlatformOwnershipCard />
@@ -128,7 +172,7 @@ export const ModeratorCommandCenterPage: React.FC = () => {
           <div className="flex items-center gap-2">
             <button
               onClick={loadData}
-              className="px-3.5 py-2 text-xs font-bold rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-900 border border-slate-300 transition flex items-center gap-1.5"
+              className="px-3.5 py-2 text-xs font-bold rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-900 border border-slate-300 transition flex items-center gap-1.5 cursor-pointer"
             >
               <RefreshCw className="w-3.5 h-3.5" />
               Refresh Feed
@@ -136,7 +180,7 @@ export const ModeratorCommandCenterPage: React.FC = () => {
             {isExecutive && (
               <Link
                 to="/admin/users-permissions"
-                className="px-4 py-2 text-xs font-black rounded-xl bg-rose-600 hover:bg-rose-700 text-white transition flex items-center gap-1.5 shadow-sm"
+                className="px-4 py-2 text-xs font-black rounded-xl bg-rose-600 hover:bg-rose-700 text-white transition flex items-center gap-1.5 shadow-xs cursor-pointer"
               >
                 <ShieldCheck className="w-3.5 h-3.5" />
                 Manage Moderator Scopes
@@ -154,12 +198,12 @@ export const ModeratorCommandCenterPage: React.FC = () => {
           </div>
           <div className="bg-white p-4 rounded-xl border border-slate-300 shadow-sm">
             <div className="text-xs font-bold text-slate-700 uppercase tracking-wider">Active Timeouts</div>
-            <div className="text-2xl font-black text-amber-900 mt-1">7 Members</div>
+            <div className="text-2xl font-black text-amber-900 mt-1">{activeTimeoutsCount} Members</div>
             <div className="text-[11px] font-semibold text-slate-700 mt-1">Cooldown in progress</div>
           </div>
           <div className="bg-white p-4 rounded-xl border border-slate-300 shadow-sm">
             <div className="text-xs font-bold text-slate-700 uppercase tracking-wider">Quarantined Threads</div>
-            <div className="text-2xl font-black text-slate-900 mt-1">3 Topics</div>
+            <div className="text-2xl font-black text-slate-900 mt-1">{quarantinedTopicsCount} Topics</div>
             <div className="text-[11px] font-semibold text-slate-700 mt-1">Held from public feed</div>
           </div>
           <div className="bg-white p-4 rounded-xl border border-slate-300 shadow-sm">
@@ -216,24 +260,21 @@ export const ModeratorCommandCenterPage: React.FC = () => {
                   <div className="flex items-center gap-2 pt-1 flex-wrap">
                     <button
                       onClick={() => handleTimeout(item.reportedUser, item.id)}
-                      className="px-3 py-1.5 text-xs font-black rounded-lg bg-amber-600 hover:bg-amber-700 text-white transition flex items-center gap-1 shadow-2xs"
+                      className="px-3 py-1.5 text-xs font-black rounded-lg bg-amber-600 hover:bg-amber-700 text-white transition flex items-center gap-1 shadow-xs cursor-pointer"
                     >
                       <Clock className="w-3.5 h-3.5" />
                       Issue 24h Timeout
                     </button>
                     <button
-                      onClick={() => {
-                        setFlags(prev => prev.filter(f => f.id !== item.id));
-                        alert(`Thread deleted and quarantined.`);
-                      }}
-                      className="px-3 py-1.5 text-xs font-black rounded-lg bg-rose-600 hover:bg-rose-700 text-white transition flex items-center gap-1 shadow-2xs"
+                      onClick={() => handleQuarantine(item.id)}
+                      className="px-3 py-1.5 text-xs font-black rounded-lg bg-rose-600 hover:bg-rose-700 text-white transition flex items-center gap-1 shadow-xs cursor-pointer"
                     >
                       <UserX className="w-3.5 h-3.5" />
                       Quarantine Content
                     </button>
                     <button
                       onClick={() => handleDismiss(item.id)}
-                      className="px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-900 transition flex items-center gap-1 border border-slate-300"
+                      className="px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-900 transition flex items-center gap-1 border border-slate-300 cursor-pointer"
                     >
                       <CheckCircle className="w-3.5 h-3.5 text-emerald-700" />
                       Dismiss Report

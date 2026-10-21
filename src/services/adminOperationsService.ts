@@ -204,8 +204,8 @@ export const adminOperationsService = {
     return res.data?.users || res.data?.data || [];
   },
 
-  strikeUser: async (userId: string): Promise<any> => {
-    const res = await api.post(`/admin/users/${userId}/strike`);
+  strikeUser: async (userId: string, reason?: string): Promise<any> => {
+    const res = await api.post(`/admin/users/${userId}/strike`, { reason });
     return res.data;
   },
 
