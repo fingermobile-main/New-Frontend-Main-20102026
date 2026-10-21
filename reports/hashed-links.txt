@@ -1,0 +1,23 @@
+FingerMobile Protocol/apps/admin-dashboard/src/pages/LoginPage.tsx:99:              <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
+FingerMobile Protocol/apps/frontend-main/public/login-static.html:170:                <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">
+FingerMobile Protocol/apps/frontend-main/public/login-static.html:176:                <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">
+FingerMobile Protocol/apps/frontend-main/src/components/ForumCategories.tsx:29:                  href="#"
+FingerMobile Protocol/apps/frontend-main/src/components/RightSidebar.tsx:13:            <a href="#" className="text-emerald-700 hover:underline font-bold text-xs">#FingerMobile</a>
+FingerMobile Protocol/apps/frontend-main/src/components/RightSidebar.tsx:16:            <a href="#" className="text-emerald-700 hover:underline font-bold text-xs">#TechInnovation</a>
+FingerMobile Protocol/apps/frontend-main/src/components/RightSidebar.tsx:19:            <a href="#" className="text-emerald-700 hover:underline font-bold text-xs">#Blockchain</a>
+FingerMobile Protocol/apps/frontend-main/src/components/RightSidebar.tsx:22:            <a href="#" className="text-emerald-700 hover:underline font-bold text-xs">#SocialMedia</a>
+FingerMobile Protocol/apps/frontend-main/src/components/RightSidebar.tsx:25:            <a href="#" className="text-emerald-700 hover:underline font-bold text-xs">#DigitalFuture</a>
+FingerMobile Protocol/apps/frontend-main/src/components/TierSelector.tsx:158:        <a href="#" className="text-blue-600 hover:text-blue-700 font-medium mt-2 inline-block">
+FingerMobile Protocol/apps/frontend-main/src/components/WalletConnectModal.tsx:140:                href="#"
+FingerMobile Protocol/apps/frontend-main/src/components/layouts/DashboardLayout.tsx:18:        <a href="#" className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-muted transition-colors">
+FingerMobile Protocol/apps/frontend-main/src/components/layouts/DashboardLayout.tsx:22:        <a href="#" className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-muted transition-colors">
+FingerMobile Protocol/apps/frontend-main/src/components/layouts/DashboardLayout.tsx:26:        <a href="#" className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-muted transition-colors">
+FingerMobile Protocol/apps/frontend-main/src/components/layouts/LegalLayout.tsx:35:              <a href="#" className="hover:text-foreground transition-colors">
+FingerMobile Protocol/apps/frontend-main/src/components/layouts/LegalLayout.tsx:39:              <a href="#" className="hover:text-foreground transition-colors">
+FingerMobile Protocol/apps/frontend-main/src/components/layouts/LegalLayout.tsx:43:              <a href="#" className="hover:text-foreground transition-colors">
+FingerMobile Protocol/apps/frontend-main/src/pages/HallmarkPage.tsx:341:          <a href="#" className="hover:underline">About</a>
+FingerMobile Protocol/apps/frontend-main/src/pages/HallmarkPage.tsx:342:          <a href="#" className="hover:underline">Terms</a>
+FingerMobile Protocol/apps/frontend-main/src/pages/HallmarkPage.tsx:343:          <a href="#" className="hover:underline">Privacy</a>
+FingerMobile Protocol/apps/frontend-main/src/pages/dashboard/ModerationDashboardPage.tsx:415:                              href="#"
+FingerMobile Protocol/apps/frontend-main/src/pages/dashboard/ModerationDashboardPage.tsx:421:                              href="#"
+FingerMobile Protocol/apps/frontend-main/src/pages/dashboard/ModerationDashboardPage.tsx:427:                              href="#"

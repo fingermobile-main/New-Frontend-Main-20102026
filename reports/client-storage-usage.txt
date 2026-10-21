@@ -1,0 +1,532 @@
+FingerMobile Protocol/apps/frontend-main/src/__tests__/LushPressies.test.tsx:9:    localStorage.clear();
+FingerMobile Protocol/apps/frontend-main/src/__tests__/LushPressies.test.tsx:10:    localStorage.setItem('lush_pressies_consent', 'true');
+FingerMobile Protocol/apps/frontend-main/src/__tests__/LushPressies.test.tsx:11:    localStorage.setItem('lush_pressies_user_pin', '749102');
+FingerMobile Protocol/apps/frontend-main/src/components/ConsentManager.tsx:43:  const effectiveToken = accessToken || (typeof window !== "undefined" ? localStorage.getItem("token") || localStorage.getItem("accessToken") || "" : "");
+FingerMobile Protocol/apps/frontend-main/src/components/ConsentManager.tsx:48:    const cachedConsent = typeof window !== "undefined" ? localStorage.getItem("fingermobile_consent_flags") : null;
+FingerMobile Protocol/apps/frontend-main/src/components/ConsentManager.tsx:74:              localStorage.setItem("fingermobile_consent_flags", JSON.stringify(updated));
+FingerMobile Protocol/apps/frontend-main/src/components/ConsentManager.tsx:105:        localStorage.setItem("fingermobile_consent_flags", JSON.stringify(newFlags));
+FingerMobile Protocol/apps/frontend-main/src/components/ConsentManager.tsx:106:        localStorage.setItem("cookieConsent", "true");
+FingerMobile Protocol/apps/frontend-main/src/components/CookieConsentBanner.tsx:7:    const consent = localStorage.getItem('cookieConsent');
+FingerMobile Protocol/apps/frontend-main/src/components/CookieConsentBanner.tsx:14:    localStorage.setItem('cookieConsent', 'true');
+FingerMobile Protocol/apps/frontend-main/src/components/CourseCard.tsx:70:      const stored = localStorage.getItem('camus_enrolled_courses');
+FingerMobile Protocol/apps/frontend-main/src/components/CourseCard.tsx:94:      const stored = localStorage.getItem('camus_enrolled_courses');
+FingerMobile Protocol/apps/frontend-main/src/components/CourseCard.tsx:98:        localStorage.setItem('camus_enrolled_courses', JSON.stringify(ids));
+FingerMobile Protocol/apps/frontend-main/src/components/CreateMiiStatusModal.tsx:28:      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+FingerMobile Protocol/apps/frontend-main/src/components/CreatePubliciteeShortsModal.tsx:83:      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+FingerMobile Protocol/apps/frontend-main/src/components/CreatorInfluence/PerksAndRosterComponent.tsx:149:      const token = localStorage.getItem('fingermobile_token') || localStorage.getItem('token');
+FingerMobile Protocol/apps/frontend-main/src/components/CrossPlatformGemsDisplay.jsx:17:            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+FingerMobile Protocol/apps/frontend-main/src/components/CrossPlatformGemsDisplay.jsx:30:            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+FingerMobile Protocol/apps/frontend-main/src/components/CrossPlatformGemsDisplay.jsx:43:            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+FingerMobile Protocol/apps/frontend-main/src/components/DPODashboard.jsx:15:            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+FingerMobile Protocol/apps/frontend-main/src/components/DPODashboard.jsx:28:            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+FingerMobile Protocol/apps/frontend-main/src/components/DPODashboard.jsx:62:            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+FingerMobile Protocol/apps/frontend-main/src/components/ForumFeatureModals.tsx:39:      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+FingerMobile Protocol/apps/frontend-main/src/components/ForumFeatureModals.tsx:212:      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+FingerMobile Protocol/apps/frontend-main/src/components/GemsHallmarksDisplay.jsx:16:            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+FingerMobile Protocol/apps/frontend-main/src/components/GemsHallmarksDisplay.jsx:29:            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+FingerMobile Protocol/apps/frontend-main/src/components/LushChatContext.tsx:31:    //   auth: { token: localStorage.getItem('token') }
+FingerMobile Protocol/apps/frontend-main/src/components/LushMatchContext.tsx:52:    localStorage.getItem('authToken') ||
+FingerMobile Protocol/apps/frontend-main/src/components/LushMatchContext.tsx:53:    localStorage.getItem('token') ||
+FingerMobile Protocol/apps/frontend-main/src/components/LushMatchContext.tsx:54:    sessionStorage.getItem('authToken') ||
+FingerMobile Protocol/apps/frontend-main/src/components/LushPrivacyController.tsx:56:            'Authorization': `Bearer ${localStorage.getItem('token')}`
+FingerMobile Protocol/apps/frontend-main/src/components/LushPrivacyController.tsx:84:          'Authorization': `Bearer ${localStorage.getItem('token')}`
+FingerMobile Protocol/apps/frontend-main/src/components/LushPrivacyController.tsx:112:              'Authorization': `Bearer ${localStorage.getItem('token')}`
+FingerMobile Protocol/apps/frontend-main/src/components/LushSwipeController.tsx:51:          'Authorization': `Bearer ${localStorage.getItem('token')}`
+FingerMobile Protocol/apps/frontend-main/src/components/LushSwipeController.tsx:150:          'Authorization': `Bearer ${localStorage.getItem('token')}`
+FingerMobile Protocol/apps/frontend-main/src/components/MatchingPreferencesForm.tsx:18:  return localStorage.getItem('authToken') || localStorage.getItem('token') || '';
+FingerMobile Protocol/apps/frontend-main/src/components/MiiModals.tsx:33:      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+FingerMobile Protocol/apps/frontend-main/src/components/MiiModals.tsx:66:      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+FingerMobile Protocol/apps/frontend-main/src/components/MiiModals.tsx:99:      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+FingerMobile Protocol/apps/frontend-main/src/components/MiiModals.tsx:130:      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+FingerMobile Protocol/apps/frontend-main/src/components/MiiModals.tsx:383:      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+FingerMobile Protocol/apps/frontend-main/src/components/MiiStoriesBar.tsx:65:      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+FingerMobile Protocol/apps/frontend-main/src/components/ProtectedRoute.tsx:12:  const storedUser = typeof window !== 'undefined' ? localStorage.getItem('user') : null;
+FingerMobile Protocol/apps/frontend-main/src/components/ProtectedRoute.tsx:13:  const storedToken = typeof window !== 'undefined' ? (localStorage.getItem('accessToken') || localStorage.getItem('token') || localStorage.getItem('fingermobile_token')) : null;
+FingerMobile Protocol/apps/frontend-main/src/components/StercsPageRenderer.tsx:39:        const token = localStorage.getItem('token');
+FingerMobile Protocol/apps/frontend-main/src/components/TwoFactorAuthSetup.tsx:62:      const token = localStorage.getItem('accessToken');
+FingerMobile Protocol/apps/frontend-main/src/components/camus/LessonPlanBuilder.tsx:268:      localStorage.setItem(`camus_lesson_plan_${plan.id}`, JSON.stringify(plan));
+FingerMobile Protocol/apps/frontend-main/src/components/commerce/FlamingoDualLockGuard.tsx:28:    const verified = localStorage.getItem('flamingo_age_verified') === 'true';
+FingerMobile Protocol/apps/frontend-main/src/components/commerce/FlamingoDualLockGuard.tsx:82:      localStorage.setItem('flamingo_age_verified', 'true');
+FingerMobile Protocol/apps/frontend-main/src/components/commerce/SocialEmbedModal.tsx:90:      sessionStorage.setItem('fm_pending_embed_card', JSON.stringify(payload));
+FingerMobile Protocol/apps/frontend-main/src/components/common/UniversalProfileCard.tsx:295:    (localStorage.getItem('onboardingComplete') !== 'true' && localStorage.getItem('hasCompletedOnboarding') !== 'true')
+FingerMobile Protocol/apps/frontend-main/src/components/common/discovery/UniversalLapidaireModal.tsx:34:      const saved = localStorage.getItem(storageKey);
+FingerMobile Protocol/apps/frontend-main/src/components/common/discovery/UniversalLapidaireModal.tsx:53:      localStorage.setItem(storageKey, JSON.stringify(updated));
+FingerMobile Protocol/apps/frontend-main/src/components/common/discovery/UniversalLapidaireModal.tsx:71:      localStorage.removeItem(storageKey);
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/CorporateGovernanceConsole.tsx:123:      const savedMembers = localStorage.getItem('fingermobile_master_members_db');
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/CorporateGovernanceConsole.tsx:372:      localStorage.setItem('fingermobile_master_members_db', JSON.stringify(updatedMembers));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:88:      const saved = localStorage.getItem('fmp_dynamic_sheet_income_statement');
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:98:      const saved = localStorage.getItem('fmp_dynamic_sheet_balance_sheet');
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:108:      const saved = localStorage.getItem('fmp_dynamic_sheet_cost_tcc_boq');
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:118:      const saved = localStorage.getItem('fmp_dynamic_sheet_startup_funds');
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:128:      const saved = localStorage.getItem('fmp_dynamic_sheet_capex_opex_dancia');
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:179:          localStorage.setItem('fmp_dynamic_sheet_income_statement', JSON.stringify(updated));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:207:          localStorage.setItem('fmp_dynamic_sheet_income_statement', JSON.stringify(updated));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:415:      localStorage.setItem('fmp_dynamic_sheet_income_statement', JSON.stringify(updatedSheet));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:419:      localStorage.setItem('fmp_dynamic_sheet_balance_sheet', JSON.stringify(updatedSheet));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:423:      localStorage.setItem('fmp_dynamic_sheet_cost_tcc_boq', JSON.stringify(updatedSheet));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:427:      localStorage.setItem('fmp_dynamic_sheet_startup_funds', JSON.stringify(updatedSheet));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:431:      localStorage.setItem('fmp_dynamic_sheet_capex_opex_dancia', JSON.stringify(updatedSheet));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:475:      localStorage.setItem('fmp_dynamic_sheet_income_statement', JSON.stringify(updatedSheet));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:479:      localStorage.setItem('fmp_dynamic_sheet_balance_sheet', JSON.stringify(updatedSheet));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:483:      localStorage.setItem('fmp_dynamic_sheet_cost_tcc_boq', JSON.stringify(updatedSheet));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:487:      localStorage.setItem('fmp_dynamic_sheet_startup_funds', JSON.stringify(updatedSheet));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:491:      localStorage.setItem('fmp_dynamic_sheet_capex_opex_dancia', JSON.stringify(updatedSheet));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:530:      localStorage.setItem('fmp_dynamic_sheet_income_statement', JSON.stringify(updatedSheet));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:534:      localStorage.setItem('fmp_dynamic_sheet_balance_sheet', JSON.stringify(updatedSheet));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:538:      localStorage.setItem('fmp_dynamic_sheet_cost_tcc_boq', JSON.stringify(updatedSheet));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:542:      localStorage.setItem('fmp_dynamic_sheet_startup_funds', JSON.stringify(updatedSheet));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:546:      localStorage.setItem('fmp_dynamic_sheet_capex_opex_dancia', JSON.stringify(updatedSheet));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:584:      localStorage.setItem('fmp_dynamic_sheet_income_statement', JSON.stringify(updatedSheet));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:588:      localStorage.setItem('fmp_dynamic_sheet_balance_sheet', JSON.stringify(updatedSheet));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:592:      localStorage.setItem('fmp_dynamic_sheet_cost_tcc_boq', JSON.stringify(updatedSheet));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:596:      localStorage.setItem('fmp_dynamic_sheet_startup_funds', JSON.stringify(updatedSheet));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:600:      localStorage.setItem('fmp_dynamic_sheet_capex_opex_dancia', JSON.stringify(updatedSheet));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:623:        localStorage.setItem('fmp_dynamic_sheet_income_statement', JSON.stringify(DEFAULT_INCOME_STATEMENT));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:626:        localStorage.setItem('fmp_dynamic_sheet_balance_sheet', JSON.stringify(DEFAULT_BALANCE_SHEET));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:629:        localStorage.setItem('fmp_dynamic_sheet_cost_tcc_boq', JSON.stringify(DEFAULT_COST_TCC_BOQ));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:632:        localStorage.setItem('fmp_dynamic_sheet_startup_funds', JSON.stringify(DEFAULT_STARTUP_FUNDS));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:635:        localStorage.setItem('fmp_dynamic_sheet_capex_opex_dancia', JSON.stringify(DEFAULT_CAPEX_OPEX_DANCIA4TV));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/ForumsManagement.tsx:60:      const saved = localStorage.getItem('fm_feed_algorithm_config');
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/ForumsManagement.tsx:94:        const cached = localStorage.getItem('fm_forum_categories');
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/ForumsManagement.tsx:126:        localStorage.setItem('fm_forum_categories', JSON.stringify(loadedCats));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/ForumsManagement.tsx:141:    localStorage.setItem('fm_feed_algorithm_config', JSON.stringify(newConfig));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/ForumsManagement.tsx:198:    localStorage.setItem('fm_forum_categories', JSON.stringify(updated));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/ForumsManagement.tsx:206:      localStorage.setItem('fm_forum_categories', JSON.stringify(updated));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/MasterFinancialsConsole.tsx:447:      const stored = localStorage.getItem(STORAGE_KEY_FIC_AUDIT);
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/MasterFinancialsConsole.tsx:451:      const storedCic = localStorage.getItem(STORAGE_KEY_CIC_LEDGER);
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/MasterFinancialsConsole.tsx:563:    localStorage.setItem(STORAGE_KEY_FIC_AUDIT, JSON.stringify(updatedLedger));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/MasterFinancialsConsole.tsx:580:    localStorage.setItem(STORAGE_KEY_CIC_LEDGER, JSON.stringify(updatedCic));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/MasterFinancialsConsole.tsx:629:      const existing = JSON.parse(localStorage.getItem(STORAGE_KEY_MEMBER_PURCHASES) || '[]');
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/MasterFinancialsConsole.tsx:631:      localStorage.setItem(STORAGE_KEY_MEMBER_PURCHASES, JSON.stringify(existing));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/MasterMembersConsole.tsx:358:      const saved = localStorage.getItem('fingermobile_master_members_db');
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/MasterMembersConsole.tsx:419:      localStorage.setItem('fingermobile_master_members_db', JSON.stringify(updated));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/SubscriptionModelsConsole.tsx:361:      const saved = localStorage.getItem(STORAGE_KEY);
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/SubscriptionModelsConsole.tsx:375:    return localStorage.getItem(ACTIVE_TEST_KEY) || 'sub_platform_free';
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/SubscriptionModelsConsole.tsx:382:    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/SubscriptionModelsConsole.tsx:396:    localStorage.setItem(ACTIVE_TEST_KEY, model.id);
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/SubscriptionModelsConsole.tsx:397:    localStorage.setItem('user_active_tier_name', model.name);
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/SubscriptionModelsConsole.tsx:398:    localStorage.setItem('user_active_tier_fic', String(model.monthlyFIC));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/SubscriptionModelsConsole.tsx:526:    localStorage.setItem('fingermobile_synced_subscription_pnl_annual_ngn', String(annualTotalNgn));
+FingerMobile Protocol/apps/frontend-main/src/components/editor/EnhancedEditorStudio.tsx:159:      const token = localStorage.getItem('fingermobile_token') || localStorage.getItem('token');
+FingerMobile Protocol/apps/frontend-main/src/components/forum/CategoryBulletinFeedHeader.tsx:111:      return localStorage.getItem(storageKey) === 'true';
+FingerMobile Protocol/apps/frontend-main/src/components/forum/CategoryBulletinFeedHeader.tsx:202:      localStorage.setItem(storageKey, String(nextState));
+FingerMobile Protocol/apps/frontend-main/src/components/forum/ForumPostCard.tsx:449:          Authorization: `Bearer ${localStorage.getItem('token') || ''}`,
+FingerMobile Protocol/apps/frontend-main/src/components/forum/MiiStoriesBar.tsx:112:      const saved = localStorage.getItem('fmp_mii_stories') || localStorage.getItem('fingermobile_mii_stories');
+FingerMobile Protocol/apps/frontend-main/src/components/forum/MiiStoriesBar.tsx:239:      localStorage.setItem('fmp_mii_stories', JSON.stringify(updated));
+FingerMobile Protocol/apps/frontend-main/src/components/gems/GemAutoReplyManager.tsx:59:      localStorage.setItem('fingermobile_autoreply_settings', JSON.stringify(currentSettings));
+FingerMobile Protocol/apps/frontend-main/src/components/layout/DrawerMenu/DrawerMenuContainer.tsx:167:    (localStorage.getItem('onboardingComplete') === 'true' || localStorage.getItem('hasCompletedOnboarding') === 'true')
+FingerMobile Protocol/apps/frontend-main/src/components/layout/H2AdBucket.tsx:48:        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+FingerMobile Protocol/apps/frontend-main/src/components/layout/MemberProfileMenuTrigger.tsx:31:    (localStorage.getItem('onboardingComplete') === 'true' || localStorage.getItem('hasCompletedOnboarding') === 'true')
+FingerMobile Protocol/apps/frontend-main/src/components/profile/ComprehensiveEditProfileModal.tsx:434:                          src={localStorage.getItem('fingermobile_member_cover_photo') || '/assets/branding/backgrounds/FingerMobile Login screen Background image.webp'}
+FingerMobile Protocol/apps/frontend-main/src/components/streaming/LiveStreamTipModal.tsx:39:      const token = localStorage.getItem('fingermobile_token') || localStorage.getItem('token');
+FingerMobile Protocol/apps/frontend-main/src/components/streaming/WebRtcStudioDrawer.tsx:590:          const token = localStorage.getItem('fingermobile_token') || localStorage.getItem('token');
+FingerMobile Protocol/apps/frontend-main/src/components/streaming/WebRtcStudioDrawer.tsx:711:      const token = localStorage.getItem('fingermobile_token') || localStorage.getItem('token');
+FingerMobile Protocol/apps/frontend-main/src/components/streaming/WebRtcStudioDrawer.tsx:755:      const token = localStorage.getItem('fingermobile_token') || localStorage.getItem('token');
+FingerMobile Protocol/apps/frontend-main/src/components/ugc/UGCContentStudio.tsx:163:        ? localStorage.getItem('token') || localStorage.getItem('accessToken') || ''
+FingerMobile Protocol/apps/frontend-main/src/components/verification/LushPinGateModal.tsx:85:        localStorage.setItem('lush_pressies_consent', 'true');
+FingerMobile Protocol/apps/frontend-main/src/components/verification/LushPinGateModal.tsx:86:        localStorage.setItem('lush_pressies_pin', pin);
+FingerMobile Protocol/apps/frontend-main/src/config/api.js:20:    const token = localStorage.getItem('accessToken');
+FingerMobile Protocol/apps/frontend-main/src/constants/corporateGovernanceData.ts:1525:    const raw = localStorage.getItem(CORPORATE_GOVERNANCE_LOCAL_STORAGE_KEY);
+FingerMobile Protocol/apps/frontend-main/src/constants/corporateGovernanceData.ts:1540:    localStorage.setItem(CORPORATE_GOVERNANCE_LOCAL_STORAGE_KEY, JSON.stringify(roles));
+FingerMobile Protocol/apps/frontend-main/src/contexts/AuthContext.tsx:38:    (localStorage.getItem('onboardingComplete') === 'true' || localStorage.getItem('hasCompletedOnboarding') === 'true');
+FingerMobile Protocol/apps/frontend-main/src/contexts/AuthContext.tsx:51:      const stored = localStorage.getItem('user');
+FingerMobile Protocol/apps/frontend-main/src/contexts/AuthContext.tsx:70:        const accessToken = localStorage.getItem('accessToken') ||
+FingerMobile Protocol/apps/frontend-main/src/contexts/AuthContext.tsx:71:                          localStorage.getItem('fingermobile_token') ||
+FingerMobile Protocol/apps/frontend-main/src/contexts/AuthContext.tsx:72:                          localStorage.getItem('token');
+FingerMobile Protocol/apps/frontend-main/src/contexts/AuthContext.tsx:75:          const storedUser = localStorage.getItem('user');
+FingerMobile Protocol/apps/frontend-main/src/contexts/AuthContext.tsx:106:    localStorage.removeItem('accessToken');
+FingerMobile Protocol/apps/frontend-main/src/contexts/AuthContext.tsx:107:    localStorage.removeItem('fingermobile_token');
+FingerMobile Protocol/apps/frontend-main/src/contexts/AuthContext.tsx:108:    localStorage.removeItem('token');
+FingerMobile Protocol/apps/frontend-main/src/contexts/AuthContext.tsx:109:    localStorage.removeItem('refreshToken');
+FingerMobile Protocol/apps/frontend-main/src/contexts/AuthContext.tsx:110:    localStorage.removeItem('user');
+FingerMobile Protocol/apps/frontend-main/src/contexts/AuthContext.tsx:111:    localStorage.removeItem('onboardingComplete');
+FingerMobile Protocol/apps/frontend-main/src/contexts/AuthContext.tsx:112:    localStorage.removeItem('hasCompletedOnboarding');
+FingerMobile Protocol/apps/frontend-main/src/contexts/AuthContext.tsx:113:    localStorage.removeItem('fmp_member_profile');
+FingerMobile Protocol/apps/frontend-main/src/contexts/AuthContext.tsx:114:    localStorage.removeItem('fmp_comprehensive_profile');
+FingerMobile Protocol/apps/frontend-main/src/contexts/AuthContext.tsx:134:        localStorage.setItem('accessToken', accessToken);
+FingerMobile Protocol/apps/frontend-main/src/contexts/AuthContext.tsx:135:        localStorage.setItem('refreshToken', refreshToken);
+FingerMobile Protocol/apps/frontend-main/src/contexts/AuthContext.tsx:177:          localStorage.setItem('accessToken', accessToken);
+FingerMobile Protocol/apps/frontend-main/src/contexts/AuthContext.tsx:178:          localStorage.setItem('refreshToken', refreshToken);
+FingerMobile Protocol/apps/frontend-main/src/contexts/AuthContext.tsx:205:      const refreshToken = localStorage.getItem('refreshToken');
+FingerMobile Protocol/apps/frontend-main/src/contexts/AuthContext.tsx:217:        localStorage.setItem('accessToken', accessToken);
+FingerMobile Protocol/apps/frontend-main/src/contexts/AuthContext.tsx:218:        localStorage.setItem('refreshToken', newRefreshToken);
+FingerMobile Protocol/apps/frontend-main/src/contexts/BeatwaveNGContext.tsx:1129:      const saved = localStorage.getItem('bw_playlists');
+FingerMobile Protocol/apps/frontend-main/src/contexts/BeatwaveNGContext.tsx:1152:      const saved = localStorage.getItem('bw_colabo_sessions');
+FingerMobile Protocol/apps/frontend-main/src/contexts/BeatwaveNGContext.tsx:1162:      const saved = localStorage.getItem('bw_virdrives');
+FingerMobile Protocol/apps/frontend-main/src/contexts/BeatwaveNGContext.tsx:1178:      const saved = localStorage.getItem('bw_beat_vlogs');
+FingerMobile Protocol/apps/frontend-main/src/contexts/BeatwaveNGContext.tsx:1188:      const saved = localStorage.getItem('bw_mysub_members');
+FingerMobile Protocol/apps/frontend-main/src/contexts/BeatwaveNGContext.tsx:1199:      const saved = localStorage.getItem('bw_mii_state');
+FingerMobile Protocol/apps/frontend-main/src/contexts/BeatwaveNGContext.tsx:1221:      localStorage.setItem('bw_playlists', JSON.stringify(playlists));
+FingerMobile Protocol/apps/frontend-main/src/contexts/BeatwaveNGContext.tsx:1227:      localStorage.setItem('bw_colabo_sessions', JSON.stringify(colaboSessions));
+FingerMobile Protocol/apps/frontend-main/src/contexts/BeatwaveNGContext.tsx:1233:      localStorage.setItem('bw_virdrives', JSON.stringify(virDrives));
+FingerMobile Protocol/apps/frontend-main/src/contexts/BeatwaveNGContext.tsx:1268:      localStorage.setItem('bw_beat_vlogs', JSON.stringify(beatVlogs));
+FingerMobile Protocol/apps/frontend-main/src/contexts/BeatwaveNGContext.tsx:1274:      localStorage.setItem('bw_mysub_members', JSON.stringify(mySubMembers));
+FingerMobile Protocol/apps/frontend-main/src/contexts/BeatwaveNGContext.tsx:1280:      localStorage.setItem('bw_mii_state', JSON.stringify(miiState));
+FingerMobile Protocol/apps/frontend-main/src/contexts/ContentContext.tsx:171:          'Authorization': `Bearer ${localStorage.getItem('accessToken') || ''}`
+FingerMobile Protocol/apps/frontend-main/src/contexts/ContentContext.tsx:191:          'Authorization': `Bearer ${localStorage.getItem('accessToken') || ''}`
+FingerMobile Protocol/apps/frontend-main/src/contexts/ContentContext.tsx:213:          'Authorization': `Bearer ${localStorage.getItem('accessToken') || ''}`
+FingerMobile Protocol/apps/frontend-main/src/contexts/ContentContext.tsx:241:          'Authorization': `Bearer ${localStorage.getItem('accessToken') || ''}`
+FingerMobile Protocol/apps/frontend-main/src/contexts/ContentContext.tsx:269:          'Authorization': `Bearer ${localStorage.getItem('accessToken') || ''}`
+FingerMobile Protocol/apps/frontend-main/src/contexts/ContentContext.tsx:291:          'Authorization': `Bearer ${localStorage.getItem('accessToken') || ''}`
+FingerMobile Protocol/apps/frontend-main/src/contexts/ContentContext.tsx:311:          'Authorization': `Bearer ${localStorage.getItem('accessToken') || ''}`
+FingerMobile Protocol/apps/frontend-main/src/contexts/ContentContext.tsx:339:          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+FingerMobile Protocol/apps/frontend-main/src/contexts/ContentContext.tsx:405:          'Authorization': `Bearer ${localStorage.getItem('accessToken') || ''}`
+FingerMobile Protocol/apps/frontend-main/src/contexts/Dancia4TvContext.tsx:198:    const savedMember = localStorage.getItem('dancia4tv_member');
+FingerMobile Protocol/apps/frontend-main/src/contexts/Dancia4TvContext.tsx:217:      localStorage.setItem('dancia4tv_member', JSON.stringify(currentMember));
+FingerMobile Protocol/apps/frontend-main/src/contexts/Dancia4TvContext.tsx:219:      localStorage.removeItem('dancia4tv_member');
+FingerMobile Protocol/apps/frontend-main/src/contexts/Dancia4TvProvider.tsx:121:    const savedMember = localStorage.getItem('dancia4tv_member');
+FingerMobile Protocol/apps/frontend-main/src/contexts/Dancia4TvProvider.tsx:139:      localStorage.setItem('dancia4tv_member', JSON.stringify(currentMember));
+FingerMobile Protocol/apps/frontend-main/src/contexts/Dancia4TvProvider.tsx:141:      localStorage.removeItem('dancia4tv_member');
+FingerMobile Protocol/apps/frontend-main/src/contexts/IdentityAuthContext.tsx:153:      const token = localStorage.getItem('accessToken');
+FingerMobile Protocol/apps/frontend-main/src/contexts/IdentityAuthContext.tsx:188:      localStorage.setItem('accessToken', result.accessToken);
+FingerMobile Protocol/apps/frontend-main/src/contexts/IdentityAuthContext.tsx:215:      localStorage.setItem('accessToken', result.accessToken);
+FingerMobile Protocol/apps/frontend-main/src/contexts/IdentityAuthContext.tsx:226:    localStorage.removeItem('accessToken');
+FingerMobile Protocol/apps/frontend-main/src/contexts/IdentityAuthContext.tsx:235:          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+FingerMobile Protocol/apps/frontend-main/src/contexts/IdentityAuthContext.tsx:268:          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+FingerMobile Protocol/apps/frontend-main/src/contexts/IdentityAuthContext.tsx:292:          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+FingerMobile Protocol/apps/frontend-main/src/contexts/IdentityAuthContext.tsx:300:        localStorage.setItem('accessToken', result.accessToken);
+FingerMobile Protocol/apps/frontend-main/src/contexts/MarketplaceContext.tsx:97:    const savedCart = localStorage.getItem('marketplaceCart');
+FingerMobile Protocol/apps/frontend-main/src/contexts/MarketplaceContext.tsx:100:    const savedWishlist = localStorage.getItem('marketplaceWishlist');
+FingerMobile Protocol/apps/frontend-main/src/contexts/MarketplaceContext.tsx:110:    localStorage.setItem('marketplaceCart', JSON.stringify(cart));
+FingerMobile Protocol/apps/frontend-main/src/contexts/MarketplaceContext.tsx:115:    localStorage.setItem('marketplaceWishlist', JSON.stringify(wishlist));
+FingerMobile Protocol/apps/frontend-main/src/contexts/OnboardingContext.tsx:363:        localStorage.setItem(`onboardingComplete_${state.progress.userId}`, 'true');
+FingerMobile Protocol/apps/frontend-main/src/contexts/OnboardingContext.tsx:366:        const userStr = localStorage.getItem('user');
+FingerMobile Protocol/apps/frontend-main/src/contexts/OnboardingContext.tsx:371:            localStorage.setItem('user', JSON.stringify(user));
+FingerMobile Protocol/apps/frontend-main/src/contexts/ProfileContext.tsx:149:    const savedProfile = localStorage.getItem('userProfile');
+FingerMobile Protocol/apps/frontend-main/src/contexts/ProfileContext.tsx:166:          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+FingerMobile Protocol/apps/frontend-main/src/contexts/ProfileContext.tsx:176:      localStorage.setItem('userProfile', JSON.stringify(profileData));
+FingerMobile Protocol/apps/frontend-main/src/contexts/ProfileContext.tsx:193:          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+FingerMobile Protocol/apps/frontend-main/src/contexts/ProfileContext.tsx:204:      localStorage.setItem('userProfile', JSON.stringify(updatedProfile));
+FingerMobile Protocol/apps/frontend-main/src/contexts/ProfileContext.tsx:255:          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+FingerMobile Protocol/apps/frontend-main/src/contexts/ProfileContext.tsx:303:          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+FingerMobile Protocol/apps/frontend-main/src/contexts/SuperViAuthContext.tsx:27:    const storedAuth = localStorage.getItem('supervi-auth');
+FingerMobile Protocol/apps/frontend-main/src/contexts/SuperViAuthContext.tsx:45:    localStorage.setItem('supervi-auth', JSON.stringify(newState));
+FingerMobile Protocol/apps/frontend-main/src/contexts/SuperViAuthContext.tsx:55:    localStorage.removeItem('supervi-auth');
+FingerMobile Protocol/apps/frontend-main/src/hooks/useCourseDetail.ts:64:              const currentUserId = localStorage.getItem('userId') || '4';
+FingerMobile Protocol/apps/frontend-main/src/hooks/useLushChat.ts:40:    localStorage.getItem('authToken') ||
+FingerMobile Protocol/apps/frontend-main/src/hooks/useLushChat.ts:41:    localStorage.getItem('token') ||
+FingerMobile Protocol/apps/frontend-main/src/hooks/useLushChat.ts:42:    sessionStorage.getItem('authToken') ||
+FingerMobile Protocol/apps/frontend-main/src/hooks/useLushSwipe.ts:283:      localStorage.getItem('authToken') ||
+FingerMobile Protocol/apps/frontend-main/src/hooks/useLushSwipe.ts:284:      localStorage.getItem('token') ||
+FingerMobile Protocol/apps/frontend-main/src/hooks/useLushSwipe.ts:285:      sessionStorage.getItem('authToken') ||
+FingerMobile Protocol/apps/frontend-main/src/hooks/useSuperViMultiplayer.ts:66:          token: localStorage.getItem('token') || '',
+FingerMobile Protocol/apps/frontend-main/src/hooks/useSuperViMultiplayer.ts:67:          isGuest: !localStorage.getItem('token'),
+FingerMobile Protocol/apps/frontend-main/src/hooks/useWidgets.ts:21:      const token = localStorage.getItem('token');
+FingerMobile Protocol/apps/frontend-main/src/layouts/DashboardLayout.tsx:28:    (localStorage.getItem('onboardingComplete') === 'true' || localStorage.getItem('hasCompletedOnboarding') === 'true')
+FingerMobile Protocol/apps/frontend-main/src/layouts/RootPlatformLayout.tsx:41:    (localStorage.getItem('onboardingComplete') === 'true' || localStorage.getItem('hasCompletedOnboarding') === 'true')
+FingerMobile Protocol/apps/frontend-main/src/pages/AdminLoginPage.tsx:25:        localStorage.setItem('adminToken', response.data.token);
+FingerMobile Protocol/apps/frontend-main/src/pages/AdminLoginPage.tsx:27:          localStorage.setItem('adminUser', JSON.stringify(response.data.user));
+FingerMobile Protocol/apps/frontend-main/src/pages/BlogsPage.tsx:98:    const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+FingerMobile Protocol/apps/frontend-main/src/pages/BlogsPage.tsx:99:    const user = localStorage.getItem('user') || sessionStorage.getItem('user');
+FingerMobile Protocol/apps/frontend-main/src/pages/CamusDashboardPage.tsx:96:      const stored = localStorage.getItem('camus_enrolled_courses');
+FingerMobile Protocol/apps/frontend-main/src/pages/CamusDashboardPage.tsx:561:                              try { localStorage.setItem('camus_enrolled_courses', JSON.stringify(newIds)); } catch {}
+FingerMobile Protocol/apps/frontend-main/src/pages/CamusDashboardPage.tsx:739:                            try { localStorage.setItem('camus_enrolled_courses', JSON.stringify(updated)); } catch {}
+FingerMobile Protocol/apps/frontend-main/src/pages/CourseDetailPage.tsx:34:  const currentUserId = localStorage.getItem('userId');
+FingerMobile Protocol/apps/frontend-main/src/pages/Dancia4TvPage.tsx:200:        const hasCompletedOnboarding = localStorage.getItem(
+FingerMobile Protocol/apps/frontend-main/src/pages/Dancia4TvPage.tsx:223:      localStorage.setItem('dancia4tv_onboarding_completed', 'true');
+FingerMobile Protocol/apps/frontend-main/src/pages/ForumPage.tsx:947:    (localStorage.getItem('onboardingComplete') === 'true' || localStorage.getItem('hasCompletedOnboarding') === 'true')
+FingerMobile Protocol/apps/frontend-main/src/pages/ForumPage.tsx:956:      localStorage.removeItem('token');
+FingerMobile Protocol/apps/frontend-main/src/pages/ForumPage.tsx:957:      localStorage.removeItem('accessToken');
+FingerMobile Protocol/apps/frontend-main/src/pages/ForumPage.tsx:958:      localStorage.removeItem('refreshToken');
+FingerMobile Protocol/apps/frontend-main/src/pages/ForumPage.tsx:959:      localStorage.removeItem('user');
+FingerMobile Protocol/apps/frontend-main/src/pages/ForumPage.tsx:960:      localStorage.removeItem('fingermobile_token');
+FingerMobile Protocol/apps/frontend-main/src/pages/ForumPage.tsx:961:      localStorage.removeItem('onboardingComplete');
+FingerMobile Protocol/apps/frontend-main/src/pages/ForumPage.tsx:962:      localStorage.removeItem('hasCompletedOnboarding');
+FingerMobile Protocol/apps/frontend-main/src/pages/ForumPage.tsx:963:      localStorage.removeItem('fmp_member_profile');
+FingerMobile Protocol/apps/frontend-main/src/pages/ForumPage.tsx:964:      localStorage.removeItem('fmp_comprehensive_profile');
+FingerMobile Protocol/apps/frontend-main/src/pages/ForumPage.tsx:995:      const saved = localStorage.getItem('fmp_mii_stories');
+FingerMobile Protocol/apps/frontend-main/src/pages/ForumPage.tsx:4432:                      localStorage.setItem('fingermobile_mii_stories', JSON.stringify(updated));
+FingerMobile Protocol/apps/frontend-main/src/pages/GemsPage.tsx:311:        localStorage.setItem('fingermobile_gem_balance', String(updatedBalance));
+FingerMobile Protocol/apps/frontend-main/src/pages/GemsPage.tsx:327:        localStorage.setItem('fingermobile_gem_balance', String(updatedBalance));
+FingerMobile Protocol/apps/frontend-main/src/pages/GemsPage.tsx:403:        localStorage.setItem('fingermobile_gem_balance', String(updatedBalance));
+FingerMobile Protocol/apps/frontend-main/src/pages/HallmarksPage.tsx:270:      const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+FingerMobile Protocol/apps/frontend-main/src/pages/HallmarksPage.tsx:271:      const userData = localStorage.getItem('user') || sessionStorage.getItem('user');
+FingerMobile Protocol/apps/frontend-main/src/pages/HomePage.tsx:204:      (localStorage.getItem('token') ||
+FingerMobile Protocol/apps/frontend-main/src/pages/HomePage.tsx:205:        localStorage.getItem('accessToken') ||
+FingerMobile Protocol/apps/frontend-main/src/pages/HomePage.tsx:206:        localStorage.getItem('fingermobile_token')))
+FingerMobile Protocol/apps/frontend-main/src/pages/HomePage.tsx:212:      localStorage.removeItem('token');
+FingerMobile Protocol/apps/frontend-main/src/pages/HomePage.tsx:213:      localStorage.removeItem('accessToken');
+FingerMobile Protocol/apps/frontend-main/src/pages/HomePage.tsx:214:      localStorage.removeItem('refreshToken');
+FingerMobile Protocol/apps/frontend-main/src/pages/HomePage.tsx:215:      localStorage.removeItem('user');
+FingerMobile Protocol/apps/frontend-main/src/pages/HomePage.tsx:216:      localStorage.removeItem('fingermobile_token');
+FingerMobile Protocol/apps/frontend-main/src/pages/LushPressiesPage.test.tsx:10:    localStorage.clear();
+FingerMobile Protocol/apps/frontend-main/src/pages/LushPressiesPage.test.tsx:11:    localStorage.setItem('lush_pressies_consent', 'true');
+FingerMobile Protocol/apps/frontend-main/src/pages/LushPressiesPage.test.tsx:12:    localStorage.setItem('lush_pressies_user_pin', '749102');
+FingerMobile Protocol/apps/frontend-main/src/pages/LushPressiesPage.tsx:198:      return localStorage.getItem('lush_pressies_consent') === 'true';
+FingerMobile Protocol/apps/frontend-main/src/pages/LushPressiesPage.tsx:451:      localStorage.setItem('lush_pressies_consent', 'true');
+FingerMobile Protocol/apps/frontend-main/src/pages/LushPressiesPage.tsx:452:      localStorage.setItem('lush_pressies_user_pin', pin);
+FingerMobile Protocol/apps/frontend-main/src/pages/MasterDashboardPage.tsx:133:      localStorage.removeItem('token');
+FingerMobile Protocol/apps/frontend-main/src/pages/MasterDashboardPage.tsx:134:      localStorage.removeItem('accessToken');
+FingerMobile Protocol/apps/frontend-main/src/pages/MasterDashboardPage.tsx:135:      localStorage.removeItem('refreshToken');
+FingerMobile Protocol/apps/frontend-main/src/pages/MasterDashboardPage.tsx:136:      localStorage.removeItem('user');
+FingerMobile Protocol/apps/frontend-main/src/pages/MasterDashboardPage.tsx:137:      localStorage.removeItem('fingermobile_token');
+FingerMobile Protocol/apps/frontend-main/src/pages/MiiPage.tsx:64:        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+FingerMobile Protocol/apps/frontend-main/src/pages/OnboardingPage.tsx:163:      const storedUser = typeof window !== 'undefined' ? localStorage.getItem('user') : null;
+FingerMobile Protocol/apps/frontend-main/src/pages/OnboardingPage.tsx:400:      localStorage.setItem('onboardingComplete', 'true');
+FingerMobile Protocol/apps/frontend-main/src/pages/OnboardingPage.tsx:401:      localStorage.setItem('hasCompletedOnboarding', 'true');
+FingerMobile Protocol/apps/frontend-main/src/pages/OnboardingPage.tsx:403:      localStorage.setItem(`onboardingComplete_${userId}`, 'true');
+FingerMobile Protocol/apps/frontend-main/src/pages/OnboardingPage.tsx:406:      const storedUser = localStorage.getItem('user');
+FingerMobile Protocol/apps/frontend-main/src/pages/OnboardingPage.tsx:423:          localStorage.setItem('user', JSON.stringify(u));
+FingerMobile Protocol/apps/frontend-main/src/pages/PhotoCreditsPage.tsx:454:      const stored = localStorage.getItem('fm_photocredits_saved_gallery');
+FingerMobile Protocol/apps/frontend-main/src/pages/PhotoCreditsPage.tsx:463:      const stored = localStorage.getItem('fm_photocredits_bookmarked');
+FingerMobile Protocol/apps/frontend-main/src/pages/PhotoCreditsPage.tsx:480:      const stored = localStorage.getItem('fm_photocredits_favorites');
+FingerMobile Protocol/apps/frontend-main/src/pages/PhotoCreditsPage.tsx:1147:      localStorage.setItem('fm_photocredits_saved_gallery', JSON.stringify(updated));
+FingerMobile Protocol/apps/frontend-main/src/pages/PhotoCreditsPage.tsx:1179:      localStorage.setItem('fm_photocredits_bookmarked', JSON.stringify(updated));
+FingerMobile Protocol/apps/frontend-main/src/pages/PhotoCreditsPage.tsx:1202:      localStorage.setItem('fm_photocredits_favorites', JSON.stringify(updated));
+FingerMobile Protocol/apps/frontend-main/src/pages/PubliciteePage.tsx:25:      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+FingerMobile Protocol/apps/frontend-main/src/pages/PubliciteePage.tsx:43:      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+FingerMobile Protocol/apps/frontend-main/src/pages/TributPage.tsx:111:    const saved = localStorage.getItem('fm_tribut_auto_rotate') || localStorage.getItem('fm_gallery_auto_rotate');
+FingerMobile Protocol/apps/frontend-main/src/pages/TributPage.tsx:116:    const saved = localStorage.getItem('fm_tribut_display_style') || localStorage.getItem('fm_gallery_display_style');
+FingerMobile Protocol/apps/frontend-main/src/pages/TributPage.tsx:157:    localStorage.setItem('fm_tribut_display_style', styleId);
+FingerMobile Protocol/apps/frontend-main/src/pages/TributPage.tsx:158:    localStorage.setItem('fm_tribut_auto_rotate', 'false');
+FingerMobile Protocol/apps/frontend-main/src/pages/TributPage.tsx:167:    localStorage.setItem('fm_tribut_auto_rotate', String(nextVal));
+FingerMobile Protocol/apps/frontend-main/src/pages/UGCDashboardPage.tsx:71:        ? localStorage.getItem('token') || localStorage.getItem('accessToken') || ''
+FingerMobile Protocol/apps/frontend-main/src/pages/auth/LoginPage.tsx:71:        localStorage.setItem('accessToken', token);
+FingerMobile Protocol/apps/frontend-main/src/pages/auth/LoginPage.tsx:72:        localStorage.setItem('fingermobile_token', token);
+FingerMobile Protocol/apps/frontend-main/src/pages/auth/LoginPage.tsx:73:        localStorage.setItem('token', token);
+FingerMobile Protocol/apps/frontend-main/src/pages/auth/LoginPage.tsx:76:        localStorage.setItem('refreshToken', loginResponse.refreshToken);
+FingerMobile Protocol/apps/frontend-main/src/pages/auth/LoginPage.tsx:84:        localStorage.setItem('user', JSON.stringify(fullUser));
+FingerMobile Protocol/apps/frontend-main/src/pages/auth/LoginPage.tsx:85:        localStorage.setItem('onboardingComplete', 'true');
+FingerMobile Protocol/apps/frontend-main/src/pages/auth/LoginPage.tsx:86:        localStorage.setItem('hasCompletedOnboarding', 'true');
+FingerMobile Protocol/apps/frontend-main/src/pages/auth/LoginPage.tsx:87:        localStorage.setItem(`onboardingComplete_${fullUser.id}`, 'true');
+FingerMobile Protocol/apps/frontend-main/src/pages/auth/LoginPage.tsx:204:        localStorage.setItem('accessToken', token);
+FingerMobile Protocol/apps/frontend-main/src/pages/auth/LoginPage.tsx:205:        localStorage.setItem('fingermobile_token', token);
+FingerMobile Protocol/apps/frontend-main/src/pages/auth/LoginPage.tsx:206:        localStorage.setItem('token', token);
+FingerMobile Protocol/apps/frontend-main/src/pages/auth/LoginPage.tsx:207:        localStorage.setItem('user', JSON.stringify(matchedAccount));
+FingerMobile Protocol/apps/frontend-main/src/pages/auth/LoginPage.tsx:208:        localStorage.setItem('onboardingComplete', 'true');
+FingerMobile Protocol/apps/frontend-main/src/pages/auth/LoginPage.tsx:255:          localStorage.setItem('accessToken', token);
+FingerMobile Protocol/apps/frontend-main/src/pages/auth/LoginPage.tsx:256:          localStorage.setItem('fingermobile_token', token);
+FingerMobile Protocol/apps/frontend-main/src/pages/auth/LoginPage.tsx:257:          localStorage.setItem('token', token);
+FingerMobile Protocol/apps/frontend-main/src/pages/auth/LoginPage.tsx:260:          localStorage.setItem('refreshToken', data.refreshToken);
+FingerMobile Protocol/apps/frontend-main/src/pages/auth/LoginPage.tsx:267:        localStorage.setItem('user', JSON.stringify(fullUser));
+FingerMobile Protocol/apps/frontend-main/src/pages/auth/LoginPage.tsx:268:        localStorage.setItem('onboardingComplete', 'true');
+FingerMobile Protocol/apps/frontend-main/src/pages/auth/LoginPage.tsx:269:        localStorage.setItem('hasCompletedOnboarding', 'true');
+FingerMobile Protocol/apps/frontend-main/src/pages/auth/LoginPage.tsx:270:        localStorage.setItem(`onboardingComplete_${fullUser.id}`, 'true');
+FingerMobile Protocol/apps/frontend-main/src/pages/auth/RegisterPage.tsx:136:        localStorage.setItem('accessToken', token);
+FingerMobile Protocol/apps/frontend-main/src/pages/auth/RegisterPage.tsx:137:        localStorage.setItem('fingermobile_token', token);
+FingerMobile Protocol/apps/frontend-main/src/pages/auth/RegisterPage.tsx:138:        localStorage.setItem('token', token);
+FingerMobile Protocol/apps/frontend-main/src/pages/auth/RegisterPage.tsx:141:        localStorage.setItem('refreshToken', registerResponse.refreshToken);
+FingerMobile Protocol/apps/frontend-main/src/pages/auth/RegisterPage.tsx:149:        localStorage.setItem('user', JSON.stringify(fullUser));
+FingerMobile Protocol/apps/frontend-main/src/pages/auth/RegisterPage.tsx:150:        localStorage.removeItem('onboardingComplete');
+FingerMobile Protocol/apps/frontend-main/src/pages/auth/RegisterPage.tsx:151:        localStorage.removeItem('hasCompletedOnboarding');
+FingerMobile Protocol/apps/frontend-main/src/pages/auth/SwitchProfilePage.tsx:47:    return localStorage.getItem('active_subprofile_id') || 'profile-personal';
+FingerMobile Protocol/apps/frontend-main/src/pages/auth/SwitchProfilePage.tsx:74:      localStorage.setItem('active_subprofile_id', id);
+FingerMobile Protocol/apps/frontend-main/src/pages/auth/SwitchProfilePage.tsx:75:      localStorage.setItem('active_subprofile', JSON.stringify(target));
+FingerMobile Protocol/apps/frontend-main/src/pages/common/SuccessPage.tsx:10:    localStorage.setItem('onboardingComplete', 'true');
+FingerMobile Protocol/apps/frontend-main/src/pages/common/SuccessPage.tsx:11:    localStorage.setItem('hasCompletedOnboarding', 'true');
+FingerMobile Protocol/apps/frontend-main/src/pages/common/SuccessPage.tsx:12:    const storedUser = localStorage.getItem('user');
+FingerMobile Protocol/apps/frontend-main/src/pages/common/SuccessPage.tsx:18:        localStorage.setItem('user', JSON.stringify(u));
+FingerMobile Protocol/apps/frontend-main/src/pages/common/SuccessPage.tsx:20:          localStorage.setItem(`onboardingComplete_${u.id}`, 'true');
+FingerMobile Protocol/apps/frontend-main/src/pages/financials/FicVaultPage.tsx:135:      localStorage.setItem('fingermobile_sleeper_stakes_v1', JSON.stringify(updatedStakes));
+FingerMobile Protocol/apps/frontend-main/src/pages/financials/SubscriptionsPage.tsx:482:      const saved = localStorage.getItem('fingermobile_curated_subscription_models');
+FingerMobile Protocol/apps/frontend-main/src/pages/financials/SubscriptionsPage.tsx:496:      localStorage.setItem('fingermobile_curated_subscription_models', JSON.stringify(updated));
+FingerMobile Protocol/apps/frontend-main/src/pages/profile/ProfilePage.tsx:221:        localStorage.getItem('fingermobile_member_cover_photo') ||
+FingerMobile Protocol/apps/frontend-main/src/pages/profile/ProfilePage.tsx:224:      coverPositionY: Number(localStorage.getItem('fingermobile_member_cover_position_y')) || 50,
+FingerMobile Protocol/apps/frontend-main/src/pages/profile/ProfilePage.tsx:225:      coverFormat: (localStorage.getItem('fingermobile_member_cover_format') as CoverFormatKey) || 'profile-page',
+FingerMobile Protocol/apps/frontend-main/src/pages/profile/ProfilePage.tsx:307:    localStorage.setItem('fingermobile_member_cover_photo', coverData.coverPhotoUrl);
+FingerMobile Protocol/apps/frontend-main/src/pages/profile/ProfilePage.tsx:308:    localStorage.setItem('fingermobile_member_cover_position_y', String(coverData.coverPositionY));
+FingerMobile Protocol/apps/frontend-main/src/pages/profile/ProfilePage.tsx:309:    localStorage.setItem('fingermobile_member_cover_format', coverData.coverFormat);
+FingerMobile Protocol/apps/frontend-main/src/services/CommerceService.ts:104:          const token = localStorage.getItem('auth_token');
+FingerMobile Protocol/apps/frontend-main/src/services/CommunityService.ts:37:      const token = localStorage.getItem('accessToken') || localStorage.getItem('fingermobile_token') || localStorage.getItem('token');
+FingerMobile Protocol/apps/frontend-main/src/services/HallmarksService.ts:83:      const token = localStorage.getItem('accessToken') || localStorage.getItem('fingermobile_token') || localStorage.getItem('token');
+FingerMobile Protocol/apps/frontend-main/src/services/LocationService.ts:78:        const stored = localStorage.getItem(STORAGE_KEY_LOCATION);
+FingerMobile Protocol/apps/frontend-main/src/services/LocationService.ts:95:        localStorage.setItem(STORAGE_KEY_LOCATION, JSON.stringify(location));
+FingerMobile Protocol/apps/frontend-main/src/services/MessageService.ts:75:        localStorage.getItem('accessToken') ||
+FingerMobile Protocol/apps/frontend-main/src/services/MessageService.ts:76:        localStorage.getItem('fingermobile_token') ||
+FingerMobile Protocol/apps/frontend-main/src/services/MessageService.ts:77:        localStorage.getItem('token');
+FingerMobile Protocol/apps/frontend-main/src/services/MiiService.ts:80:      const token = typeof window !== 'undefined' ? (localStorage.getItem('token') || sessionStorage.getItem('token')) : null;
+FingerMobile Protocol/apps/frontend-main/src/services/OpenGraphService.ts:211:      const stored = localStorage.getItem(`${OG_CACHE_KEY_PREFIX}${encodeURIComponent(url)}`);
+FingerMobile Protocol/apps/frontend-main/src/services/OpenGraphService.ts:226:      localStorage.setItem(`${OG_CACHE_KEY_PREFIX}${encodeURIComponent(url)}`, JSON.stringify(data));
+FingerMobile Protocol/apps/frontend-main/src/services/P2PLeaderboardKpiEngine.ts:232:      const raw = localStorage.getItem('FM_P2P_LEADERBOARD_CREATORS');
+FingerMobile Protocol/apps/frontend-main/src/services/P2PUgcStorageService.ts:75:        ? localStorage.getItem('token') || localStorage.getItem('accessToken') || ''
+FingerMobile Protocol/apps/frontend-main/src/services/PaymentService.ts:70:        const token = localStorage.getItem('token'); // or cookie-based session tokens
+FingerMobile Protocol/apps/frontend-main/src/services/PushNotificationService.ts:119:    let deviceId = localStorage.getItem('device_id');
+FingerMobile Protocol/apps/frontend-main/src/services/PushNotificationService.ts:122:      localStorage.setItem('device_id', deviceId);
+FingerMobile Protocol/apps/frontend-main/src/services/ThemeManagementService.ts:22:    const savedTheme = localStorage.getItem('stercs_global_theme');
+FingerMobile Protocol/apps/frontend-main/src/services/ThemeManagementService.ts:44:      localStorage.setItem('stercs_global_theme', JSON.stringify(this.currentTheme));
+FingerMobile Protocol/apps/frontend-main/src/services/UploadService.ts:36:        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+FingerMobile Protocol/apps/frontend-main/src/services/UserProfileSyncService.ts:297:    const hasUser = Boolean(localStorage.getItem(STORAGE_KEY_USER));
+FingerMobile Protocol/apps/frontend-main/src/services/UserProfileSyncService.ts:299:      localStorage.getItem('accessToken') ||
+FingerMobile Protocol/apps/frontend-main/src/services/UserProfileSyncService.ts:300:      localStorage.getItem('token') ||
+FingerMobile Protocol/apps/frontend-main/src/services/UserProfileSyncService.ts:301:      localStorage.getItem('fingermobile_token')
+FingerMobile Protocol/apps/frontend-main/src/services/UserProfileSyncService.ts:309:        localStorage.removeItem(STORAGE_KEY_COMPREHENSIVE);
+FingerMobile Protocol/apps/frontend-main/src/services/UserProfileSyncService.ts:310:        localStorage.removeItem(STORAGE_KEY_LEGACY);
+FingerMobile Protocol/apps/frontend-main/src/services/UserProfileSyncService.ts:311:        localStorage.removeItem(STORAGE_KEY_BLOCKED_MACS);
+FingerMobile Protocol/apps/frontend-main/src/services/UserProfileSyncService.ts:312:        localStorage.removeItem(STORAGE_KEY_USER);
+FingerMobile Protocol/apps/frontend-main/src/services/UserProfileSyncService.ts:313:        localStorage.removeItem('fmp_comprehensive_profile');
+FingerMobile Protocol/apps/frontend-main/src/services/UserProfileSyncService.ts:314:        localStorage.removeItem('fmp_member_profile');
+FingerMobile Protocol/apps/frontend-main/src/services/UserProfileSyncService.ts:330:      const storedUser = localStorage.getItem(STORAGE_KEY_USER);
+FingerMobile Protocol/apps/frontend-main/src/services/UserProfileSyncService.ts:332:        localStorage.getItem('accessToken') ||
+FingerMobile Protocol/apps/frontend-main/src/services/UserProfileSyncService.ts:333:        localStorage.getItem('token') ||
+FingerMobile Protocol/apps/frontend-main/src/services/UserProfileSyncService.ts:334:        localStorage.getItem('fingermobile_token');
+FingerMobile Protocol/apps/frontend-main/src/services/UserProfileSyncService.ts:386:      const storedComp = localStorage.getItem(STORAGE_KEY_COMPREHENSIVE);
+FingerMobile Protocol/apps/frontend-main/src/services/UserProfileSyncService.ts:417:      const blockedMacs = localStorage.getItem(STORAGE_KEY_BLOCKED_MACS);
+FingerMobile Protocol/apps/frontend-main/src/services/UserProfileSyncService.ts:441:        localStorage.setItem(STORAGE_KEY_COMPREHENSIVE, JSON.stringify(updated));
+FingerMobile Protocol/apps/frontend-main/src/services/UserProfileSyncService.ts:453:        localStorage.setItem(STORAGE_KEY_LEGACY, JSON.stringify(legacy));
+FingerMobile Protocol/apps/frontend-main/src/services/UserProfileSyncService.ts:456:        const storedUser = localStorage.getItem(STORAGE_KEY_USER);
+FingerMobile Protocol/apps/frontend-main/src/services/UserProfileSyncService.ts:470:            localStorage.setItem(STORAGE_KEY_USER, JSON.stringify(syncedUser));
+FingerMobile Protocol/apps/frontend-main/src/services/UserProfileSyncService.ts:492:    localStorage.setItem(STORAGE_KEY_BLOCKED_MACS, JSON.stringify(newBlocked));
+FingerMobile Protocol/apps/frontend-main/src/services/UserProfileSyncService.ts:507:    localStorage.setItem(STORAGE_KEY_BLOCKED_MACS, JSON.stringify(newBlocked));
+FingerMobile Protocol/apps/frontend-main/src/services/UserProfileSyncService.ts:563:    localStorage.removeItem(STORAGE_KEY_COMPREHENSIVE);
+FingerMobile Protocol/apps/frontend-main/src/services/UserProfileSyncService.ts:564:    localStorage.removeItem(STORAGE_KEY_LEGACY);
+FingerMobile Protocol/apps/frontend-main/src/services/UserProfileSyncService.ts:565:    localStorage.removeItem(STORAGE_KEY_USER);
+FingerMobile Protocol/apps/frontend-main/src/services/UserService.ts:113:        const stored = localStorage.getItem('user');
+FingerMobile Protocol/apps/frontend-main/src/services/VideoEditorService.ts:57:        const token = localStorage.getItem('token');
+FingerMobile Protocol/apps/frontend-main/src/services/VoiceLineService.ts:174:        const stored = localStorage.getItem(SETTINGS_STORAGE_KEY);
+FingerMobile Protocol/apps/frontend-main/src/services/VoiceLineService.ts:210:        localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(this.settings));
+FingerMobile Protocol/apps/frontend-main/src/services/VoiceLineService.ts:286:      const token = localStorage.getItem('token') || localStorage.getItem('auth_token');
+FingerMobile Protocol/apps/frontend-main/src/services/WalletService.ts:61:        const token = localStorage.getItem('token');
+FingerMobile Protocol/apps/frontend-main/src/services/__tests__/AuthFlow.integration.test.ts:11:    localStorage.clear();
+FingerMobile Protocol/apps/frontend-main/src/services/__tests__/AuthFlow.integration.test.ts:72:    localStorage.setItem('accessToken', 'access-5');
+FingerMobile Protocol/apps/frontend-main/src/services/__tests__/AuthFlow.integration.test.ts:73:    localStorage.setItem('refreshToken', 'refresh-5');
+FingerMobile Protocol/apps/frontend-main/src/services/adsService.ts:39:      const token = localStorage.getItem('authToken');
+FingerMobile Protocol/apps/frontend-main/src/services/adsService.ts:57:      const token = localStorage.getItem('authToken');
+FingerMobile Protocol/apps/frontend-main/src/services/adsService.ts:75:      const token = localStorage.getItem('authToken');
+FingerMobile Protocol/apps/frontend-main/src/services/adsService.ts:92:      const token = localStorage.getItem('authToken');
+FingerMobile Protocol/apps/frontend-main/src/services/adsService.ts:109:      const token = localStorage.getItem('authToken');
+FingerMobile Protocol/apps/frontend-main/src/services/adsService.ts:126:      const token = localStorage.getItem('authToken');
+FingerMobile Protocol/apps/frontend-main/src/services/adsService.ts:143:      const token = localStorage.getItem('authToken');
+FingerMobile Protocol/apps/frontend-main/src/services/api.ts:32:    const token = localStorage.getItem('accessToken') || localStorage.getItem('fingermobile_token') || localStorage.getItem('token');
+FingerMobile Protocol/apps/frontend-main/src/services/api.ts:54:        const refreshToken = localStorage.getItem('refreshToken');
+FingerMobile Protocol/apps/frontend-main/src/services/api.ts:61:          localStorage.setItem('accessToken', accessToken);
+FingerMobile Protocol/apps/frontend-main/src/services/api.ts:69:        localStorage.removeItem('accessToken');
+FingerMobile Protocol/apps/frontend-main/src/services/api.ts:70:        localStorage.removeItem('fingermobile_token');
+FingerMobile Protocol/apps/frontend-main/src/services/api.ts:71:        localStorage.removeItem('token');
+FingerMobile Protocol/apps/frontend-main/src/services/api.ts:72:        localStorage.removeItem('refreshToken');
+FingerMobile Protocol/apps/frontend-main/src/services/apiService.ts:27:          localStorage.getItem('token') ||
+FingerMobile Protocol/apps/frontend-main/src/services/apiService.ts:28:          localStorage.getItem('accessToken') ||
+FingerMobile Protocol/apps/frontend-main/src/services/apiService.ts:29:          localStorage.getItem('fingermobile_token');
+FingerMobile Protocol/apps/frontend-main/src/services/apiService.ts:137:    const token = localStorage.getItem('token');
+FingerMobile Protocol/apps/frontend-main/src/services/authService.ts:153:    localStorage.setItem('accessToken', authData.accessToken);
+FingerMobile Protocol/apps/frontend-main/src/services/authService.ts:154:    localStorage.setItem('refreshToken', authData.refreshToken);
+FingerMobile Protocol/apps/frontend-main/src/services/authService.ts:155:    localStorage.setItem('user', JSON.stringify(authData.user));
+FingerMobile Protocol/apps/frontend-main/src/services/authService.ts:159:    localStorage.removeItem('accessToken');
+FingerMobile Protocol/apps/frontend-main/src/services/authService.ts:160:    localStorage.removeItem('refreshToken');
+FingerMobile Protocol/apps/frontend-main/src/services/authService.ts:161:    localStorage.removeItem('user');
+FingerMobile Protocol/apps/frontend-main/src/services/authService.ts:162:    localStorage.removeItem('token');
+FingerMobile Protocol/apps/frontend-main/src/services/authService.ts:163:    localStorage.removeItem('fingermobile_token');
+FingerMobile Protocol/apps/frontend-main/src/services/authService.ts:164:    localStorage.removeItem('onboardingComplete');
+FingerMobile Protocol/apps/frontend-main/src/services/authService.ts:165:    localStorage.removeItem('hasCompletedOnboarding');
+FingerMobile Protocol/apps/frontend-main/src/services/authService.ts:166:    localStorage.removeItem('fmp_member_profile');
+FingerMobile Protocol/apps/frontend-main/src/services/authService.ts:167:    localStorage.removeItem('fmp_comprehensive_profile');
+FingerMobile Protocol/apps/frontend-main/src/services/authService.ts:188:        localStorage.setItem('fingermobile_token', token);
+FingerMobile Protocol/apps/frontend-main/src/services/authService.ts:189:        localStorage.setItem('token', token);
+FingerMobile Protocol/apps/frontend-main/src/services/authService.ts:190:        localStorage.setItem('onboardingComplete', 'true');
+FingerMobile Protocol/apps/frontend-main/src/services/authService.ts:191:        localStorage.setItem('hasCompletedOnboarding', 'true');
+FingerMobile Protocol/apps/frontend-main/src/services/authService.ts:193:          localStorage.setItem(`onboardingComplete_${data.user.id}`, 'true');
+FingerMobile Protocol/apps/frontend-main/src/services/authService.ts:198:          localStorage.setItem('mustChangePassword', 'true');
+FingerMobile Protocol/apps/frontend-main/src/services/authService.ts:200:          localStorage.removeItem('mustChangePassword');
+FingerMobile Protocol/apps/frontend-main/src/services/authService.ts:222:        localStorage.setItem('fingermobile_token', mockToken);
+FingerMobile Protocol/apps/frontend-main/src/services/authService.ts:223:        localStorage.setItem('token', mockToken);
+FingerMobile Protocol/apps/frontend-main/src/services/authService.ts:224:        localStorage.setItem('onboardingComplete', 'true');
+FingerMobile Protocol/apps/frontend-main/src/services/authService.ts:225:        localStorage.setItem('hasCompletedOnboarding', 'true');
+FingerMobile Protocol/apps/frontend-main/src/services/authService.ts:257:        localStorage.setItem('fingermobile_token', mockToken);
+FingerMobile Protocol/apps/frontend-main/src/services/authService.ts:258:        localStorage.setItem('token', mockToken);
+FingerMobile Protocol/apps/frontend-main/src/services/authService.ts:259:        localStorage.removeItem('onboardingComplete');
+FingerMobile Protocol/apps/frontend-main/src/services/authService.ts:260:        localStorage.removeItem('hasCompletedOnboarding');
+FingerMobile Protocol/apps/frontend-main/src/services/authService.ts:279:    const userStr = localStorage.getItem('user');
+FingerMobile Protocol/apps/frontend-main/src/services/authService.ts:291:    const currentRefreshToken = localStorage.getItem('refreshToken');
+FingerMobile Protocol/apps/frontend-main/src/services/authService.ts:301:      localStorage.setItem('accessToken', response.data.accessToken);
+FingerMobile Protocol/apps/frontend-main/src/services/authService.ts:302:      localStorage.setItem('refreshToken', response.data.refreshToken);
+FingerMobile Protocol/apps/frontend-main/src/services/authService.ts:338:    return localStorage.getItem('accessToken');
+FingerMobile Protocol/apps/frontend-main/src/services/authService.ts:342:    return localStorage.getItem('mustChangePassword') === 'true';
+FingerMobile Protocol/apps/frontend-main/src/services/authService.ts:346:    localStorage.removeItem('mustChangePassword');
+FingerMobile Protocol/apps/frontend-main/src/services/autoReplyService.ts:35:      const saved = localStorage.getItem(this.storageKey);
+FingerMobile Protocol/apps/frontend-main/src/services/autoReplyService.ts:39:      const savedLogs = localStorage.getItem(this.logsKey);
+FingerMobile Protocol/apps/frontend-main/src/services/autoReplyService.ts:57:        localStorage.setItem(this.storageKey, JSON.stringify(newSettings));
+FingerMobile Protocol/apps/frontend-main/src/services/autoReplyService.ts:212:        localStorage.setItem(this.logsKey, JSON.stringify(this.logs));
+FingerMobile Protocol/apps/frontend-main/src/services/badgeService.ts:270:      const stored = localStorage.getItem(STORAGE_KEY);
+FingerMobile Protocol/apps/frontend-main/src/services/badgeService.ts:282:      localStorage.setItem(STORAGE_KEY, JSON.stringify(badges));
+FingerMobile Protocol/apps/frontend-main/src/services/badgeService.ts:290:      const stored = localStorage.getItem(ASSIGNMENTS_STORAGE_KEY);
+FingerMobile Protocol/apps/frontend-main/src/services/badgeService.ts:302:      localStorage.setItem(ASSIGNMENTS_STORAGE_KEY, JSON.stringify(assignments));
+FingerMobile Protocol/apps/frontend-main/src/services/cbnNfemIngestionService.ts:218:      const storedTxs = localStorage.getItem(STORAGE_KEY_NFEM_TRANSACTIONS);
+FingerMobile Protocol/apps/frontend-main/src/services/cbnNfemIngestionService.ts:221:      const storedSummary = localStorage.getItem(STORAGE_KEY_NFEM_SUMMARY);
+FingerMobile Protocol/apps/frontend-main/src/services/cbnNfemIngestionService.ts:226:      const storedFactors = localStorage.getItem(STORAGE_KEY_STRUCTURAL_FACTORS);
+FingerMobile Protocol/apps/frontend-main/src/services/cbnNfemIngestionService.ts:231:      const storedLogs = localStorage.getItem(STORAGE_KEY_INGEST_LOGS);
+FingerMobile Protocol/apps/frontend-main/src/services/cbnNfemIngestionService.ts:591:      localStorage.setItem(STORAGE_KEY_NFEM_TRANSACTIONS, JSON.stringify(this.transactions));
+FingerMobile Protocol/apps/frontend-main/src/services/cbnNfemIngestionService.ts:593:        localStorage.setItem(STORAGE_KEY_NFEM_SUMMARY, JSON.stringify(this.currentSummary));
+FingerMobile Protocol/apps/frontend-main/src/services/cbnNfemIngestionService.ts:595:      localStorage.setItem(STORAGE_KEY_STRUCTURAL_FACTORS, JSON.stringify(this.structuralFactors));
+FingerMobile Protocol/apps/frontend-main/src/services/cbnNfemIngestionService.ts:596:      localStorage.setItem(STORAGE_KEY_INGEST_LOGS, JSON.stringify(this.auditLogs));
+FingerMobile Protocol/apps/frontend-main/src/services/enhancedWalletService.ts:138:      const raw = localStorage.getItem(STORAGE_KEY_WALLETS);
+FingerMobile Protocol/apps/frontend-main/src/services/enhancedWalletService.ts:161:      const raw = localStorage.getItem(STORAGE_KEY_WALLETS);
+FingerMobile Protocol/apps/frontend-main/src/services/enhancedWalletService.ts:164:      localStorage.setItem(STORAGE_KEY_WALLETS, JSON.stringify(wallets));
+FingerMobile Protocol/apps/frontend-main/src/services/enhancedWalletService.ts:312:      const raw = localStorage.getItem(STORAGE_KEY_STORE_TXS);
+FingerMobile Protocol/apps/frontend-main/src/services/enhancedWalletService.ts:331:      const raw = localStorage.getItem(STORAGE_KEY_STAKES);
+FingerMobile Protocol/apps/frontend-main/src/services/enhancedWalletService.ts:399:      const raw = localStorage.getItem(STORAGE_KEY_DISTRIBUTIONS);
+FingerMobile Protocol/apps/frontend-main/src/services/enhancedWalletService.ts:433:      localStorage.setItem(STORAGE_KEY_DISTRIBUTIONS, JSON.stringify(distributions));
+FingerMobile Protocol/apps/frontend-main/src/services/enhancedWalletService.ts:443:      localStorage.setItem(STORAGE_KEY_STAKES, JSON.stringify(stakes));
+FingerMobile Protocol/apps/frontend-main/src/services/enhancedWalletService.ts:453:      const raw = localStorage.getItem(STORAGE_KEY_STORE_TXS);
+FingerMobile Protocol/apps/frontend-main/src/services/enhancedWalletService.ts:456:      localStorage.setItem(STORAGE_KEY_STORE_TXS, JSON.stringify(list));
+FingerMobile Protocol/apps/frontend-main/src/services/exchangeRateService.ts:66:      const stored = localStorage.getItem(STORAGE_KEY_PLATFORM_FIC_RATE);
+FingerMobile Protocol/apps/frontend-main/src/services/exchangeRateService.ts:100:        localStorage.setItem(STORAGE_KEY_PLATFORM_FIC_RATE, newRate.toString());
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:161:      if (!localStorage.getItem(DB_KEYS.CONFIG)) {
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:173:        localStorage.setItem(DB_KEYS.CONFIG, JSON.stringify(defaultConfig));
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:177:      if (!localStorage.getItem(DB_KEYS.BANK_RAILS)) {
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:210:        localStorage.setItem(DB_KEYS.BANK_RAILS, JSON.stringify(initialRails));
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:230:      if (!localStorage.getItem(metaKey)) {
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:240:        localStorage.setItem(metaKey, JSON.stringify(defaultMeta));
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:264:    const raw = localStorage.getItem(DB_KEYS.CONFIG);
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:288:    localStorage.setItem(DB_KEYS.CONFIG, JSON.stringify(updated));
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:305:    const raw = localStorage.getItem(DB_KEYS.BANK_RAILS);
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:310:    localStorage.setItem(DB_KEYS.BANK_RAILS, JSON.stringify(rails));
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:326:    const raw = localStorage.getItem(`${DB_KEYS.SHEET_METADATA}_${sheetKey}`);
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:340:    localStorage.setItem(`${DB_KEYS.SHEET_METADATA}_${meta.sheetKey}`, JSON.stringify(meta));
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:347:    const existingRaw = localStorage.getItem(DB_KEYS.AUDIT_LOG);
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:355:    localStorage.setItem(DB_KEYS.AUDIT_LOG, JSON.stringify(updated));
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:360:    const raw = localStorage.getItem(DB_KEYS.AUDIT_LOG);
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:368:    const raw = localStorage.getItem(DB_KEYS.HEARTBEAT_LOG);
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:376:    localStorage.setItem(DB_KEYS.HEARTBEAT_LOG, JSON.stringify(updated));
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:380:    const raw = localStorage.getItem(DB_KEYS.HEARTBEAT_LOG);
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:388:    const raw = localStorage.getItem(DB_KEYS.SWEEPS_LEDGER);
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:396:    localStorage.setItem(DB_KEYS.SWEEPS_LEDGER, JSON.stringify(updated));
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:401:    const raw = localStorage.getItem(DB_KEYS.SWEEPS_LEDGER);
+FingerMobile Protocol/apps/frontend-main/src/services/financialHeartbeatService.ts:50:      const subRaw = localStorage.getItem('fmp_subscription_models');
+FingerMobile Protocol/apps/frontend-main/src/services/gemsService.ts:37:        localStorage.getItem('authToken') ||
+FingerMobile Protocol/apps/frontend-main/src/services/gemsService.ts:38:        localStorage.getItem('accessToken') ||
+FingerMobile Protocol/apps/frontend-main/src/services/gemsService.ts:39:        localStorage.getItem('fingermobile_token') ||
+FingerMobile Protocol/apps/frontend-main/src/services/gemsService.ts:40:        localStorage.getItem('token') ||
+FingerMobile Protocol/apps/frontend-main/src/services/gemsService.ts:41:        sessionStorage.getItem('authToken') ||
+FingerMobile Protocol/apps/frontend-main/src/services/gemsService.ts:42:        sessionStorage.getItem('accessToken') ||
+FingerMobile Protocol/apps/frontend-main/src/services/gemsService.ts:43:        sessionStorage.getItem('token');
+FingerMobile Protocol/apps/frontend-main/src/services/groupsService.ts:71:        const token = localStorage.getItem('accessToken') || localStorage.getItem('fingermobile_token') || localStorage.getItem('token');
+FingerMobile Protocol/apps/frontend-main/src/services/guardianSeoService.ts:92:    const raw = localStorage.getItem(STORAGE_KEY_SEO_STATE);
+FingerMobile Protocol/apps/frontend-main/src/services/guardianSeoService.ts:107:    localStorage.setItem(STORAGE_KEY_SEO_STATE, JSON.stringify({ history }));
+FingerMobile Protocol/apps/frontend-main/src/services/hallmarkService.ts:22:  const token = localStorage.getItem('accessToken') || localStorage.getItem('fingermobile_token') || localStorage.getItem('token');
+FingerMobile Protocol/apps/frontend-main/src/services/liveBroadcastService.ts:182:      const stored = localStorage.getItem(ACTIVE_TIER_KEY) as BroadcastTierKey;
+FingerMobile Protocol/apps/frontend-main/src/services/liveBroadcastService.ts:197:      localStorage.setItem(ACTIVE_TIER_KEY, tier);
+FingerMobile Protocol/apps/frontend-main/src/services/liveBroadcastService.ts:255:      const data = localStorage.getItem(STORAGE_KEY);
+FingerMobile Protocol/apps/frontend-main/src/services/liveBroadcastService.ts:301:      localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+FingerMobile Protocol/apps/frontend-main/src/services/liveBroadcastService.ts:308:      const token = localStorage.getItem('token') || localStorage.getItem('fingermobile_token');
+FingerMobile Protocol/apps/frontend-main/src/services/liveBroadcastService.ts:361:      const token = localStorage.getItem('token') || localStorage.getItem('fingermobile_token');
+FingerMobile Protocol/apps/frontend-main/src/services/liveBroadcastService.ts:389:        localStorage.setItem(STORAGE_KEY, JSON.stringify(currentEvents));
+FingerMobile Protocol/apps/frontend-main/src/services/liveBroadcastService.ts:449:      const token = localStorage.getItem('token') || localStorage.getItem('fingermobile_token');
+FingerMobile Protocol/apps/frontend-main/src/services/liveBroadcastService.ts:488:          localStorage.setItem(STORAGE_KEY, JSON.stringify(currentEvents));
+FingerMobile Protocol/apps/frontend-main/src/services/liveBroadcastService.ts:497:      const token = localStorage.getItem('token') || localStorage.getItem('fingermobile_token');
+FingerMobile Protocol/apps/frontend-main/src/services/liveBroadcastService.ts:524:      localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
+FingerMobile Protocol/apps/frontend-main/src/services/liveStreamService.ts:93:          const token = localStorage.getItem('authToken'); // or your secure cookie handler
+FingerMobile Protocol/apps/frontend-main/src/services/lushPressiesAPI.ts:24:  const token = localStorage.getItem('token') || localStorage.getItem('accessToken');
+FingerMobile Protocol/apps/frontend-main/src/services/platformRbac.ts:92:      const stored = localStorage.getItem('user');
+FingerMobile Protocol/apps/frontend-main/src/services/platformRbac.ts:162:      const stored = localStorage.getItem('user');
+FingerMobile Protocol/apps/frontend-main/src/services/rolesPermissionsService.ts:609:      const stored = localStorage.getItem(MODS_STORAGE_KEY);
+FingerMobile Protocol/apps/frontend-main/src/services/rolesPermissionsService.ts:706:      localStorage.setItem(MODS_STORAGE_KEY, JSON.stringify(serializable));
+FingerMobile Protocol/apps/frontend-main/src/services/webRtcCallingService.ts:87:      const token = localStorage.getItem('token') || localStorage.getItem('fm_token') || 'dev_guest_token';
+FingerMobile Protocol/apps/frontend-main/src/services/widgetService.ts:695:      const stored = localStorage.getItem(STORAGE_KEY);
+FingerMobile Protocol/apps/frontend-main/src/services/widgetService.ts:712:      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.widgets));
+FingerMobile Protocol/apps/frontend-main/src/services/widgetService.ts:734:      const stored = localStorage.getItem(ROTATION_STORAGE_KEY);
+FingerMobile Protocol/apps/frontend-main/src/services/widgetService.ts:738:        localStorage.setItem(ROTATION_STORAGE_KEY, JSON.stringify(rotationData));
+FingerMobile Protocol/apps/frontend-main/src/services/widgetService.ts:753:        localStorage.setItem(ROTATION_STORAGE_KEY, JSON.stringify(rotationData));
+FingerMobile Protocol/apps/frontend-main/src/services/widgetService.ts:785:      const stored = localStorage.getItem(ROTATION_STORAGE_KEY);
+FingerMobile Protocol/apps/frontend-main/src/services/widgetService.ts:794:      localStorage.setItem(ROTATION_STORAGE_KEY, JSON.stringify(rotationData));
+FingerMobile Protocol/apps/frontend-main/src/store/slices/authSlice.js:13:        localStorage.setItem('accessToken', response.data.accessToken);
+FingerMobile Protocol/apps/frontend-main/src/store/slices/authSlice.js:47:        localStorage.removeItem('accessToken');
+FingerMobile Protocol/apps/frontend-main/src/store/slices/authSlice.js:54:      localStorage.removeItem('accessToken');
+FingerMobile Protocol/apps/frontend-main/src/store/slices/authSlice.js:64:    token: localStorage.getItem('accessToken'),
+FingerMobile Protocol/apps/frontend-main/src/utils/lushKeyTokenUtils.ts:101:  localStorage.setItem('lushpressies_auth_token', token);
+FingerMobile Protocol/apps/frontend-main/src/utils/lushKeyTokenUtils.ts:108:  return localStorage.getItem('lushpressies_auth_token');
+FingerMobile Protocol/apps/frontend-main/src/utils/lushKeyTokenUtils.ts:115:  localStorage.removeItem('lushpressies_auth_token');
+FingerMobile Protocol/apps/frontend-main/src/utils/lushKeyTokenUtils.ts:122:  localStorage.setItem('lushpressies_refresh_token', token);
+FingerMobile Protocol/apps/frontend-main/src/utils/lushKeyTokenUtils.ts:129:  return localStorage.getItem('lushpressies_refresh_token');
+FingerMobile Protocol/apps/frontend-main/src/utils/lushKeyTokenUtils.ts:136:  localStorage.removeItem('lushpressies_refresh_token');
+FingerMobile Protocol/apps/frontend-main/src/utils/themeManager.ts:40:    const savedTheme = localStorage.getItem(this.THEME_KEY);
+FingerMobile Protocol/apps/frontend-main/src/utils/themeManager.ts:49:    localStorage.setItem(this.THEME_KEY, theme);
+FingerMobile Protocol/apps/frontend-main/src/utils/themeManager.ts:102:      const theme = localStorage.getItem(this.THEME_KEY);
