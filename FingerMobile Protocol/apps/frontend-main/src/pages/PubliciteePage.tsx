@@ -71,7 +71,7 @@ const PubliciteePage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="max-w-7xl mx-auto px-4 py-6 space-y-6">
+      <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
         {/* Creator Specs & Subscription Hero Banner */}
         <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-red-600 via-rose-600 to-orange-500 p-6 md:p-8 text-white shadow-xl">
           <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
@@ -121,20 +121,20 @@ const PubliciteePage: React.FC = () => {
                 </div>
               ) : (
                 <div>
-                  <div className="text-xs font-semibold text-rose-100">Creator Upload Access</div>
-                  <div className="text-2xl font-black text-slate-700">$3.00 <span className="text-xs font-medium text-rose-200">/ month</span></div>
+                  <div className="text-xs font-black text-rose-100 uppercase tracking-wide">Creator Upload Access</div>
+                  <div className="text-2xl font-black text-white">$3.00 <span className="text-xs font-semibold text-rose-200">/ month</span></div>
                   <div className="flex flex-col gap-2 mt-2">
                     <button
                       onClick={handleSubscribe}
                       disabled={subLoading}
-                      className="py-2.5 px-5 bg-white text-rose-600 hover:bg-rose-50 font-bold rounded-xl text-sm transition-all shadow-md flex items-center justify-center gap-1.5"
+                      className="py-2.5 px-5 bg-white text-rose-700 hover:bg-rose-50 font-bold rounded-xl text-sm transition-all shadow-md flex items-center justify-center gap-1.5"
                     >
                       <Sparkles className="w-4 h-4 text-amber-500" />
                       {subLoading ? 'Activating...' : 'Subscribe ($3.00/mo)'}
                     </button>
                     <button
                       onClick={() => setIsCreating(true)}
-                      className="text-xs text-slate-700 hover:underline font-semibold"
+                      className="text-xs text-rose-100 hover:text-white hover:underline font-semibold"
                     >
                       Or Upload with existing token
                     </button>
@@ -146,7 +146,7 @@ const PubliciteePage: React.FC = () => {
         </div>
 
         {/* Category Filter Pills & Create Trigger */}
-        <div className="flex items-center justify-between flex-wrap gap-4 border-b border-gray-200 dark:border-gray-800 pb-4">
+        <div className="flex items-center justify-between flex-wrap gap-4 border-b border-slate-300 pb-4">
           <div className="flex items-center space-x-2 overflow-x-auto pb-1">
             {[
               { id: 'all', label: 'All Reels' },
@@ -160,7 +160,7 @@ const PubliciteePage: React.FC = () => {
                 className={`px-4 py-2 rounded-full text-sm font-bold whitespace-nowrap transition-all ${
                   activeCategory === cat.id
                     ? 'bg-rose-600 text-white shadow'
-                    : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 hover:bg-gray-50'
+                    : 'bg-white text-slate-800 border border-slate-300 hover:bg-slate-50'
                 }`}
               >
                 {cat.label}

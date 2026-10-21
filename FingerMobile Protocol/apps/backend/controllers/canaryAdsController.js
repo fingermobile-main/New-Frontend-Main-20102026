@@ -1081,8 +1081,8 @@ class CanaryAdsController {
                c.campaign_type, 
                c.daily_budget, 
                c.total_budget,
-               c.impressions as campaign_impressions,
-               c.clicks as campaign_clicks,
+               COALESCE((SELECT COUNT(*) FROM canary_impressions ci WHERE ci.creative_id = cr.id), 0) as campaign_impressions,
+               COALESCE((SELECT COUNT(*) FROM canary_clicks cc WHERE cc.creative_id = cr.id), 0) as campaign_clicks,
                adv.company_name
         FROM canary_creatives cr
         JOIN canary_ad_groups g ON g.id = cr.ad_group_id

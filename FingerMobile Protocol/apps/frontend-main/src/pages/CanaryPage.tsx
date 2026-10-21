@@ -266,18 +266,21 @@ const CanaryPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Canary">
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="mb-10">
+      <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-300 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center">
-            <div className="bg-gradient-to-r from-yellow-500 to-amber-600 p-3 rounded-xl">
+            <div className="bg-gradient-to-r from-yellow-500 to-amber-600 p-3.5 rounded-2xl shadow-md text-white">
               <CanaryIcon className="h-8 w-8 text-white" />
             </div>
             <div className="ml-4">
-              <h1 className="text-3xl font-bold text-gray-900">
+              <div className="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-amber-100 text-amber-950 border border-amber-400 text-xs font-black uppercase mb-1">
+                Warrant Canary &amp; Sponsor Ads Studio
+              </div>
+              <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
                 FingerMobile Canary Ads
               </h1>
-              <p className="text-gray-600">
-                Submit advertisements for review. Our system ensures all ads meet the strict specifications for placement, dimensions, and content quality.
+              <p className="text-slate-700 font-medium mt-1">
+                Verified warrant canary disclosures, platform security alerts, and ad review portal ensuring strict quality standards.
               </p>
             </div>
           </div>

@@ -201,7 +201,7 @@ const CanaryAdsPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Canary Ads Platform">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
 
         {/* Hero Banner */}
         <div className="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-gradient-to-r from-slate-900 via-gray-900 to-indigo-950 p-6 sm:p-8 rounded-3xl border border-slate-800 text-white shadow-xl">

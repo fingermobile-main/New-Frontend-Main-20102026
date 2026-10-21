@@ -77,7 +77,7 @@ class PubliciteeController {
           u.avatar_url as author_avatar,
           EXTRACT(EPOCH FROM (p.expires_at - NOW())) / 3600 AS hours_remaining
         FROM publicitee_items p
-        LEFT JOIN users u ON u.id::text = p.author_id OR u.uuid = p.author_id
+        LEFT JOIN users u ON u.id::text = p.author_id
         WHERE p.status = 'published'
           AND p.expires_at > NOW()
       `;
@@ -158,7 +158,7 @@ class PubliciteeController {
           u.avatar_url as author_avatar,
           EXTRACT(EPOCH FROM (p.expires_at - NOW())) / 3600 AS hours_remaining
         FROM publicitee_items p
-        LEFT JOIN users u ON u.id::text = p.author_id OR u.uuid = p.author_id
+        LEFT JOIN users u ON u.id::text = p.author_id
         WHERE p.id = $1
       `;
       const result = await pool.query(query, [id]);
@@ -469,7 +469,7 @@ class PubliciteeController {
           u.username as author_username,
           u.avatar_url as author_avatar
         FROM publicitee_comments c
-        LEFT JOIN users u ON u.id::text = c.author_id OR u.uuid = c.author_id
+        LEFT JOIN users u ON u.id::text = c.author_id
         WHERE c.item_id = $1
         ORDER BY c.created_at ASC
       `;

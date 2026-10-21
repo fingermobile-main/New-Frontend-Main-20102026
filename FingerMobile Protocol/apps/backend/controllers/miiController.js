@@ -134,7 +134,7 @@ class MiiController {
           ) AS cards
         FROM mii_statuses s
         JOIN mii_status_cards c ON s.id = c.status_id
-        LEFT JOIN users u ON u.id::text = s.author_id OR u.uuid = s.author_id
+        LEFT JOIN users u ON u.id::text = s.author_id
         LEFT JOIN mii_contacts mc ON mc.user_id = s.author_id AND mc.contact_user_id = $1
         WHERE s.is_active = true
           AND s.expires_at > NOW()
@@ -536,7 +536,7 @@ class MiiController {
           u.username as reactor_name,
           u.avatar_url as reactor_avatar
         FROM mii_status_reactions r
-        LEFT JOIN users u ON u.id::text = r.reactor_id OR u.uuid = r.reactor_id
+        LEFT JOIN users u ON u.id::text = r.reactor_id
         WHERE r.card_id = $1
         ORDER BY r.created_at DESC
       `;
@@ -686,19 +686,19 @@ class MiiController {
 
       // Match against users table (by phone or hashed phone)
       const matchQuery = `
-        SELECT u.id, u.uuid, u.username, u.avatar_url, u.first_name, u.last_name,
+        SELECT u.id, u.id::text as uuid, u.username, u.avatar_url, u.first_name, u.last_name,
                mc.pin_status, mc.is_trusted, mc.activity_visible
         FROM users u
-        LEFT JOIN mii_contacts mc ON mc.user_id = $1 AND (mc.contact_user_id = u.id::text OR mc.contact_user_id = u.uuid)
+        LEFT JOIN mii_contacts mc ON mc.user_id = $1 AND mc.contact_user_id = u.id::text
         WHERE (
           MD5(u.phone) = ANY($2::text[]) 
           OR SHA256(u.phone::bytea) = ANY($2::bytea[])
           OR u.phone = ANY($2::text[])
         )
-        AND u.id != $3
+        AND u.id::text != $3::text
       `;
 
-      const matches = await pool.query(matchQuery, [String(userId), hashes, parseInt(userId, 10) || 0]);
+      const matches = await pool.query(matchQuery, [String(userId), hashes, String(userId)]);
 
       res.json({
         success: true,
@@ -913,7 +913,7 @@ class MiiController {
           p.now_watching_title,
           CASE WHEN ms.id IS NOT NULL THEN true ELSE false END AS has_active_mii_ring
         FROM mii_contacts mc
-        JOIN users u ON u.id::text = mc.contact_user_id OR u.uuid = mc.contact_user_id
+        JOIN users u ON u.id::text = mc.contact_user_id
         LEFT JOIN mii_activity_presence p ON p.user_id = mc.contact_user_id
         LEFT JOIN mii_statuses ms ON ms.author_id = mc.contact_user_id AND ms.is_active = true AND ms.expires_at > NOW()
         WHERE mc.user_id = $1 AND mc.pin_status != 'deleted'
