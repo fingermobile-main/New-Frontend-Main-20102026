@@ -53,26 +53,27 @@ class SecurityController {
    */
   async getActiveSessions(req, res) {
     try {
-      const userId = req.user?.id || req.member?.id || 1;
+      const defaultUserId = 'b77e0895-0246-467e-9d74-fa8e59e788ec';
+      const userId = req.user?.id || req.member?.id || defaultUserId;
 
       const result = await getPool().query(
-        `SELECT id, user_id, session_token, ip_address, user_agent, created_at, expires_at, is_active 
+        `SELECT id, user_id, session_token, ip_address, user_agent, created_at, expires_at, last_active_at 
          FROM user_sessions 
-         WHERE user_id = $1 AND is_active = true 
+         WHERE (user_id::text = $1::text OR $1 IS NULL)
          ORDER BY created_at DESC`,
         [userId]
       );
 
       // If no active sessions exist, seed the active session for the authenticated user
       if (result.rows.length === 0) {
-        const token = (req.headers.authorization || '').replace('Bearer ', '') || 'current-active-session';
+        const token = (req.headers.authorization || '').replace('Bearer ', '') || `session-${Date.now()}`;
         const ip = req.ip || '127.0.0.1';
         const safeIp = ip.includes(':') ? '127.0.0.1' : ip;
         const ua = req.headers['user-agent'] || 'FingerMobile Protocol Web Client';
 
         const newSess = await getPool().query(
-          `INSERT INTO user_sessions (user_id, session_token, ip_address, user_agent, created_at, expires_at, is_active)
-           VALUES ($1, $2, $3, $4, NOW(), NOW() + INTERVAL '30 days', true)
+          `INSERT INTO user_sessions (user_id, session_token, ip_address, user_agent, created_at, expires_at, last_active_at)
+           VALUES ($1, $2, $3, $4, NOW(), NOW() + INTERVAL '30 days', NOW())
            RETURNING *`,
           [userId, token, safeIp, ua]
         );
@@ -86,7 +87,7 @@ class SecurityController {
           id: String(s.id),
           platform: isMobile ? 'mobile' : 'web',
           current: idx === 0,
-          lastAccessed: s.created_at,
+          lastAccessed: s.last_active_at || s.created_at,
           createdAt: s.created_at,
           expiresAt: s.expires_at,
           ipAddress: s.ip_address || '127.0.0.1',
@@ -111,13 +112,12 @@ class SecurityController {
    */
   async revokeSession(req, res) {
     try {
-      const userId = req.user?.id || req.member?.id || 1;
       const sessionId = req.params.sessionId || req.params.id;
 
       if (sessionId) {
         await getPool().query(
-          'UPDATE user_sessions SET is_active = false WHERE id = $1 AND user_id = $2',
-          [sessionId, userId]
+          'DELETE FROM user_sessions WHERE id::text = $1',
+          [sessionId]
         );
       }
 
@@ -136,21 +136,22 @@ class SecurityController {
    */
   async revokeAllSessions(req, res) {
     try {
-      const userId = req.user?.id || req.member?.id || 1;
+      const defaultUserId = 'b77e0895-0246-467e-9d74-fa8e59e788ec';
+      const userId = req.user?.id || req.member?.id || defaultUserId;
       await getPool().query(
-        'UPDATE user_sessions SET is_active = false WHERE user_id = $1',
+        'DELETE FROM user_sessions WHERE user_id::text = $1::text',
         [userId]
       );
-
       res.status(200).json({
         success: true,
-        message: 'All sessions revoked successfully'
+        message: 'All other sessions revoked successfully'
       });
     } catch (error) {
       logger.error('Error in SecurityController.revokeAllSessions:', error);
-      res.status(500).json({ success: false, message: 'Failed to revoke sessions' });
+      res.status(500).json({ success: false, message: 'Failed to revoke all sessions' });
     }
   }
+
 
   /**
    * GET /api/security/settings
