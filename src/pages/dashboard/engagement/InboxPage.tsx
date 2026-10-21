@@ -5,6 +5,7 @@ import type { ChatContact } from '../../../types';
 import AnimatedAvatar from '../../../components/AnimatedAvatar';
 import messageService, { Message as BackendMessage } from '../../../services/MessageService';
 import LoadingSpinner from '../../../components/LoadingSpinner';
+import { PlatformOwnershipCard } from '../../../components/ownership/PlatformOwnershipCard';
 
 interface DisplayMessage {
   id: string;
@@ -197,22 +198,24 @@ const InboxPage: React.FC = () => {
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 sm:text-2xl lg:text-3xl">
+          <h1 className="text-3xl font-black text-slate-900">
             Engagement Inbox
           </h1>
-          <p className="text-slate-700 font-medium text-sm mt-1">Manage all incoming member messages, creator inquiries, and support threads.</p>
+          <p className="text-slate-700 font-semibold text-sm mt-1">Manage all incoming member messages, creator inquiries, and support threads.</p>
         </div>
         <button
           onClick={() => setShowNewModal(true)}
-          className="px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 shadow-sm transition-colors"
+          className="px-5 py-2.5 bg-blue-600 text-white text-sm font-bold rounded-full hover:bg-blue-700 shadow-sm transition-colors"
         >
           + New Message
         </button>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-slate-300 flex h-[calc(100vh-230px)] overflow-hidden">
+      <PlatformOwnershipCard className="mb-6" />
+
+      <div className="bg-white rounded-2xl shadow-xs border border-slate-300 flex h-[calc(100vh-270px)] overflow-hidden">
         {/* Contact List */}
         <div className="w-1/3 border-r border-slate-300 flex flex-col bg-gray-50/50">
           <div className="p-3 border-b border-slate-300 bg-white">

@@ -1,8 +1,8 @@
-import React, {} from 'react';
+import React from 'react';
 import { useAppContext } from '../../../contexts/AppContext';
-
 import StatCardUgc from './StatCardUgc';
 import type { UgcAnalyticsData } from '../../../types/missing';
+import { PlatformOwnershipCard } from '../../../components/ownership/PlatformOwnershipCard';
 
 // Local interface for community in analytics
 interface AnalyticsCommunity {
@@ -53,18 +53,18 @@ const BarChart: React.FC<{ data: { month: string; members: number }[] }> = ({
 }) => {
   const maxValue = Math.max(...data.map((d) => d.members));
   return (
-    <div className="bg-gray-50 p-4 rounded-lg h-56 flex items-end justify-around gap-2">
+    <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 h-56 flex items-end justify-around gap-2">
       {data.map((item) => (
         <div
           key={item.month}
           className="flex-1 flex flex-col items-center justify-end h-full"
         >
           <div
-            className="w-full bg-brand-blue rounded-t-md"
+            className="w-full bg-blue-600 rounded-t-md hover:bg-blue-700 transition-colors"
             style={{ height: `${(item.members / maxValue) * 100}%` }}
             title={`${item.members.toLocaleString()} members`}
           ></div>
-          <span className="text-xs font-semibold mt-2">{item.month}</span>
+          <span className="text-xs font-bold text-slate-800 mt-2">{item.month}</span>
         </div>
       ))}
     </div>
@@ -76,8 +76,16 @@ const UgcAnalyticsPage: React.FC = () => {
   const analytics = MOCK_ANALYTICS;
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-3xl font-black mb-6 text-slate-900">UGC Analytics</h1>
+    <div className="p-6 max-w-7xl mx-auto space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-black text-slate-900">UGC Analytics</h1>
+          <p className="text-sm font-semibold text-slate-700 mt-1">Creator communities, hallmark growth, and member engagement statistics</p>
+        </div>
+      </div>
+
+      <PlatformOwnershipCard />
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <StatCardUgc
           title="Total Communities"

@@ -20,9 +20,10 @@ import { LiveMotionFaceVerificationModal } from '../auth/LiveMotionFaceVerificat
 
 interface Props {
   compact?: boolean;
+  className?: string;
 }
 
-export const PlatformOwnershipCard: React.FC<Props> = ({ compact = false }) => {
+export const PlatformOwnershipCard: React.FC<Props> = ({ compact = false, className = '' }) => {
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [isExpanded, setIsExpanded] = useState(!compact);
   const [activeBiometricModal, setActiveBiometricModal] = useState<{
@@ -265,7 +266,7 @@ export const PlatformOwnershipCard: React.FC<Props> = ({ compact = false }) => {
 
   return (
     <>
-      <div className="mb-8 rounded-3xl bg-gradient-to-r from-slate-950 via-slate-900 to-zinc-950 border-2 border-slate-700 p-6 shadow-2xl text-white">
+      <div className={`mb-8 rounded-3xl bg-gradient-to-r from-slate-950 via-slate-900 to-zinc-950 border-2 border-slate-700 p-6 shadow-2xl text-white ${className}`}>
         {/* Header Banner */}
         <div className="flex flex-wrap items-center justify-between gap-4 mb-5">
           <div className="flex items-center gap-3.5">

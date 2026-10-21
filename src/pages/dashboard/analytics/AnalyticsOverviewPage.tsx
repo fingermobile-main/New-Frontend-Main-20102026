@@ -1,5 +1,6 @@
-import React, {} from 'react';
+import React from 'react';
 import { ChartBarIcon, MembersIcon, EyeIcon } from '../../../components/icons';
+import { PlatformOwnershipCard } from '../../../components/ownership/PlatformOwnershipCard';
 
 // Mock data for charts
 const monthlyViewsData = [
@@ -12,9 +13,9 @@ const monthlyViewsData = [
 ];
 
 const engagementData = [
-  { type: 'Likes', value: 12500, color: 'bg-red-500' },
-  { type: 'Comments', value: 3200, color: 'bg-blue-500' },
-  { type: 'Shares', value: 1800, color: 'bg-green-500' }
+  { type: 'Likes', value: 12500, color: 'bg-rose-500' },
+  { type: 'Comments', value: 3200, color: 'bg-blue-600' },
+  { type: 'Shares', value: 1800, color: 'bg-emerald-600' }
 ];
 
 const BarChart: React.FC<{ data: { name: string; views: number }[] }> = ({
@@ -22,18 +23,18 @@ const BarChart: React.FC<{ data: { name: string; views: number }[] }> = ({
 }) => {
   const maxViews = Math.max(...data.map((d) => d.views));
   return (
-    <div className="bg-gray-50 p-4 rounded-lg h-64 flex items-end justify-around gap-2">
+    <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 h-64 flex items-end justify-around gap-2">
       {data.map((item) => (
         <div
           key={item.name}
           className="flex-1 flex flex-col items-center justify-end h-full"
         >
           <div
-            className="w-full bg-brand-blue rounded-t-md hover:bg-blue-700 transition-colors"
+            className="w-full bg-blue-600 rounded-t-md hover:bg-blue-700 transition-colors cursor-pointer"
             style={{ height: `${(item.views / maxViews) * 100}%` }}
             title={`${item.views.toLocaleString()} views`}
           ></div>
-          <span className="text-xs font-semibold mt-2">{item.name}</span>
+          <span className="text-xs font-bold text-slate-800 mt-2">{item.name}</span>
         </div>
       ))}
     </div>
@@ -55,7 +56,7 @@ const DoughnutChart: React.FC<{
             r="15.915"
             fill="transparent"
             strokeWidth="3"
-            className="stroke-current text-gray-200"
+            className="stroke-current text-slate-200"
           />
           {
             data.reduce(
@@ -83,18 +84,18 @@ const DoughnutChart: React.FC<{
           }
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-2xl font-bold">{total.toLocaleString()}</span>
-          <span className="text-xs text-slate-700 dark:text-slate-300 font-medium">Total</span>
+          <span className="text-2xl font-black text-slate-900">{total.toLocaleString()}</span>
+          <span className="text-xs text-slate-700 font-bold uppercase tracking-wider">Total</span>
         </div>
       </div>
-      <div className="space-y-2">
+      <div className="space-y-3">
         {data.map((item) => (
-          <div key={item.type} className="flex items-center gap-2">
-            <div className={`w-3 h-3 rounded-full ${item.color}`}></div>
+          <div key={item.type} className="flex items-center gap-3">
+            <div className={`w-3.5 h-3.5 rounded-full ${item.color}`}></div>
             <div>
-              <p className="font-semibold text-sm">{item.type}</p>
-              <p className="text-xs text-slate-700 dark:text-slate-300 font-medium">
-                {item.value.toLocaleString()}
+              <p className="font-bold text-sm text-slate-900">{item.type}</p>
+              <p className="text-xs text-slate-700 font-semibold font-mono">
+                {item.value.toLocaleString()} interactions
               </p>
             </div>
           </div>
@@ -106,49 +107,56 @@ const DoughnutChart: React.FC<{
 
 const AnalyticsOverviewPage: React.FC = () => {
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-6">Analytics Overview</h1>
+    <div className="p-6 max-w-7xl mx-auto space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-black text-slate-900">Analytics Overview</h1>
+          <p className="text-sm font-semibold text-slate-700 mt-1">Holistic view of traffic volume, engagement velocity, and creator follower growth</p>
+        </div>
+      </div>
+
+      <PlatformOwnershipCard />
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div className="bg-white p-6 rounded-xl shadow-sm">
+        <div className="bg-white p-6 rounded-2xl shadow-xs border border-slate-300">
           <div className="flex items-center gap-3 mb-2">
-            <EyeIcon className="w-6 h-6 text-slate-700" />
-            <h3 className="font-bold text-lg">Total Views</h3>
+            <EyeIcon className="w-5 h-5 text-blue-600" />
+            <h3 className="font-bold text-sm text-slate-700 uppercase tracking-wider">Total Views</h3>
           </div>
-          <p className="text-4xl font-bold">1.2M</p>
-          <p className="text-sm text-green-600 font-semibold">
+          <p className="text-4xl font-black text-slate-900 mt-2">1.2M</p>
+          <span className="text-xs font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 px-2 py-0.5 rounded-full inline-block mt-3">
             +15% last 30 days
-          </p>
+          </span>
         </div>
-        <div className="bg-white p-6 rounded-xl shadow-sm">
+        <div className="bg-white p-6 rounded-2xl shadow-xs border border-slate-300">
           <div className="flex items-center gap-3 mb-2">
-            <MembersIcon className="w-6 h-6 text-slate-700" />
-            <h3 className="font-bold text-lg">Followers Gained</h3>
+            <MembersIcon className="w-5 h-5 text-indigo-600" />
+            <h3 className="font-bold text-sm text-slate-700 uppercase tracking-wider">Followers Gained</h3>
           </div>
-          <p className="text-4xl font-bold">5,832</p>
-          <p className="text-sm text-green-600 font-semibold">
+          <p className="text-4xl font-black text-slate-900 mt-2">5,832</p>
+          <span className="text-xs font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 px-2 py-0.5 rounded-full inline-block mt-3">
             +8% last 30 days
-          </p>
+          </span>
         </div>
-        <div className="bg-white p-6 rounded-xl shadow-sm">
+        <div className="bg-white p-6 rounded-2xl shadow-xs border border-slate-300">
           <div className="flex items-center gap-3 mb-2">
-            <ChartBarIcon className="w-6 h-6 text-slate-700" />
-            <h3 className="font-bold text-lg">Engagement Rate</h3>
+            <ChartBarIcon className="w-5 h-5 text-purple-600" />
+            <h3 className="font-bold text-sm text-slate-700 uppercase tracking-wider">Engagement Rate</h3>
           </div>
-          <p className="text-4xl font-bold">4.7%</p>
-          <p className="text-sm text-red-600 font-semibold">
-            -0.2% last 30 days
-          </p>
+          <p className="text-4xl font-black text-slate-900 mt-2">4.7%</p>
+          <span className="text-xs font-bold bg-slate-100 text-slate-800 border border-slate-300 px-2 py-0.5 rounded-full inline-block mt-3">
+            Normal Baseline (4.9%)
+          </span>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="bg-white p-6 rounded-xl shadow-sm">
-          <h3 className="text-xl font-bold mb-4">Monthly Post Views</h3>
+        <div className="bg-white p-6 rounded-2xl shadow-xs border border-slate-300">
+          <h3 className="text-xl font-black text-slate-900 mb-4">Monthly Post Views</h3>
           <BarChart data={monthlyViewsData} />
         </div>
-        <div className="bg-white p-6 rounded-xl shadow-sm">
-          <h3 className="text-xl font-bold mb-4">Engagement Breakdown</h3>
+        <div className="bg-white p-6 rounded-2xl shadow-xs border border-slate-300">
+          <h3 className="text-xl font-black text-slate-900 mb-4">Engagement Breakdown</h3>
           <DoughnutChart data={engagementData} />
         </div>
       </div>

@@ -3,6 +3,7 @@ import { useAppContext } from '../../../contexts/AppContext';
 import apiService from '../../../services/apiService';
 import type { StoreOrder } from '../../../types';
 import { PencilIcon, TrashIcon, XMarkIcon } from '../../../components/icons';
+import { PlatformOwnershipCard } from '../../../components/ownership/PlatformOwnershipCard';
 
 interface ProductItem {
   id: string;
@@ -13,11 +14,65 @@ interface ProductItem {
   stock?: number;
 }
 
+const FALLBACK_PRODUCTS: ProductItem[] = [
+  {
+    id: 'prod-001',
+    name: 'FingerMobile Protocol Hardware Key',
+    price: 150,
+    imageUrl: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=300&q=80',
+    category: 'Hardware',
+    stock: 25
+  },
+  {
+    id: 'prod-002',
+    name: 'FIC Quantum Staking Node License',
+    price: 499,
+    imageUrl: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=300&q=80',
+    category: 'Licensing',
+    stock: 12
+  },
+  {
+    id: 'prod-003',
+    name: 'FingerLux Biometric NFC Wearable',
+    price: 290,
+    imageUrl: 'https://images.unsplash.com/photo-1508615039623-a25605d2b022?auto=format&fit=crop&w=300&q=80',
+    category: 'Wearables',
+    stock: 18
+  }
+];
+
+const FALLBACK_ORDERS: StoreOrder[] = [
+  {
+    id: 'ord-8831a9',
+    customerName: 'Marcus Vance (Enterprise Node)',
+    productName: 'FIC Quantum Staking Node License',
+    total: 499,
+    status: 'Completed',
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: 'ord-9921b4',
+    customerName: 'Amara Chen (Verified Creator)',
+    productName: 'FingerLux Biometric NFC Wearable',
+    total: 290,
+    status: 'Processing',
+    createdAt: new Date(Date.now() - 3600000).toISOString()
+  },
+  {
+    id: 'ord-7740c2',
+    customerName: 'Devon Lee (Platform Node)',
+    productName: 'FingerMobile Protocol Hardware Key',
+    total: 150,
+    status: 'Pending',
+    createdAt: new Date(Date.now() - 7200000).toISOString()
+  }
+];
+
 const StoreManagementPage: React.FC = () => {
   const { showToast } = useAppContext();
 
-  const [products, setProducts] = useState<ProductItem[]>([]);
-  const [orders, setOrders] = useState<StoreOrder[]>([]);
+  const [products, setProducts] = useState<ProductItem[]>(FALLBACK_PRODUCTS);
+  const [orders, setOrders] = useState<StoreOrder[]>(FALLBACK_ORDERS);
   const [loading, setLoading] = useState(true);
 
   // Editor Modal state
@@ -57,8 +112,12 @@ const StoreManagementPage: React.FC = () => {
         createdAt: o.created_at || new Date().toISOString()
       }));
 
-      setProducts(fetchedProducts);
-      setOrders(fetchedOrders);
+      if (fetchedProducts.length > 0) {
+        setProducts(fetchedProducts);
+      }
+      if (fetchedOrders.length > 0) {
+        setOrders(fetchedOrders);
+      }
     } catch {
       showToast('Failed to load store management records', 'error');
     } finally {
@@ -172,6 +231,8 @@ const StoreManagementPage: React.FC = () => {
     <div className="p-6 max-w-7xl mx-auto">
       <h1 className="text-3xl font-black mb-6 text-slate-900">eCommerce Store Management</h1>
 
+      <PlatformOwnershipCard className="mb-6" />
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <StatCard
           title="Total Revenue"
@@ -248,8 +309,8 @@ const StoreManagementPage: React.FC = () => {
           )}
         </div>
 
-        <div className="lg:col-span-1 bg-white p-6 rounded-xl shadow-md border border-slate-200">
-          <h2 className="text-xl font-bold mb-4 text-gray-900">Recent Orders</h2>
+        <div className="lg:col-span-1 bg-white p-6 rounded-2xl shadow-xs border border-slate-300">
+          <h2 className="text-xl font-black mb-4 text-slate-900">Recent Orders</h2>
           <div className="overflow-x-auto max-h-96">
             {loading ? (
               <div className="py-12 text-center text-slate-700">Loading orders...</div>
