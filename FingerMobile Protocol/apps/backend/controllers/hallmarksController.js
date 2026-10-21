@@ -130,7 +130,7 @@ class HallmarksController {
       const result = await getPool().query(`
         SELECT h.*, u.username as creator_username
         FROM hallmarks h
-        LEFT JOIN members u ON h.creator_id = u.id
+        LEFT JOIN members u ON h.creator_id::text = u.id::text
         WHERE h.status = 'active'
         ORDER BY h.id ASC
       `);
@@ -576,8 +576,8 @@ class HallmarksController {
       const actions = await pool.query(`
         SELECT a.*, h.name as hallmark_name, u.username as moderator_username
         FROM moderation_pin_actions a
-        JOIN hallmarks h ON a.hallmark_id = h.id
-        JOIN users u ON a.moderator_id = u.id
+        LEFT JOIN hallmarks h ON a.hallmark_id = h.id
+        LEFT JOIN users u ON a.moderator_id::text = u.id::text
         ORDER BY a.created_at DESC
         LIMIT 50
       `);
@@ -598,7 +598,7 @@ class HallmarksController {
         `SELECT uh.*, h.name, h.description, h.tier, h.category, h.icon_url, h.status 
          FROM user_hallmarks uh 
          JOIN hallmarks h ON uh.hallmark_id = h.id 
-         WHERE uh.user_id = $1 
+         WHERE uh.user_id::text = $1::text 
          ORDER BY uh.awarded_at DESC`,
         [targetUserId]
       );

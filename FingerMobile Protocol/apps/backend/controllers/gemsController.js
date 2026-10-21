@@ -117,22 +117,23 @@ class GemsController {
       const userRes = await getPool().query('SELECT gem_balance FROM users WHERE id = $1', [userId]);
       const currentBalance = parseInt(userRes.rows[0]?.gem_balance || 0, 10);
 
-      if (currentBalance < item.price) {
+      const price = Math.round(Number(item.price));
+      if (currentBalance < price) {
         return res.status(400).json({
           success: false,
-          message: `Insufficient Gems. You need ${item.price} Gems, but have ${currentBalance}.`
+          message: `Insufficient Gems. You need ${price} Gems, but have ${currentBalance}.`
         });
       }
 
       const updatedUser = await getPool().query(
         'UPDATE users SET gem_balance = gem_balance - $1 WHERE id = $2 RETURNING gem_balance',
-        [item.price, userId]
+        [price, userId]
       );
       const newBalance = updatedUser.rows[0].gem_balance;
 
       await getPool().query(
         'INSERT INTO gem_transactions (user_id, item_id, amount, type, description) VALUES ($1, $2, $3, $4, $5)',
-        [userId, item.id, item.price, 'redeem', `Redeemed ${item.title}`]
+        [userId, item.id, price, 'redeemed', `Redeemed ${item.title}`]
       );
 
       res.status(200).json({

@@ -560,7 +560,7 @@ const HallmarksPage: React.FC = () => {
   return (
     <MainLayout>
       <div className="min-h-screen bg-slate-50/70 pb-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
 
           {/* 1. Flagship Executive Hero Section */}
           <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-white p-8 md:p-10 shadow-2xl border border-slate-800">
