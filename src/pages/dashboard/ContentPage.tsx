@@ -42,6 +42,7 @@ const ContentPage: React.FC = () => {
     },
     {
       id: '2',
+      type: 'photo',
       title: 'Summer Merchant Showcase Campaign',
       author: 'John Doe',
       status: 'Published',
@@ -49,6 +50,7 @@ const ContentPage: React.FC = () => {
     },
     {
       id: '3',
+      type: 'post',
       title: 'Tutorial: On-boarding to Local Franchise Hub',
       author: 'Emily Smith',
       status: 'Draft',
@@ -56,6 +58,7 @@ const ContentPage: React.FC = () => {
     },
     {
       id: '4',
+      type: 'music',
       title: 'Community Anthem: Beats of FingerMobile',
       author: 'Michael Brown',
       status: 'Published',
@@ -63,6 +66,7 @@ const ContentPage: React.FC = () => {
     },
     {
       id: '5',
+      type: 'post',
       title: 'Consensus Security & Safe Staking Directives',
       author: 'Sarah Johnson',
       status: 'Published',
@@ -70,6 +74,7 @@ const ContentPage: React.FC = () => {
     },
     {
       id: '6',
+      type: 'video',
       title: 'Behind the Scenes: Port Harcourt Node Launch',
       author: 'David Wilson',
       status: 'Pending',
