@@ -163,7 +163,7 @@ const optionalAuthenticate = async (req, res, next) => {
           );
         } else {
           userResult = await getIdentityDb().query(
-            'SELECT id, username, email, role, created_at, updated_at, is_active FROM users WHERE (uuid = $1 OR username = $1 OR email = $1)',
+            'SELECT id, username, email, role, created_at, updated_at, is_active FROM users WHERE (id::text = $1 OR username = $1 OR email = $1)',
             [userId]
           );
         }

@@ -91,21 +91,21 @@ const DiscoveryItemCard: React.FC<DiscoveryItemCardProps> = React.memo(({ item, 
   }, [item.type, handleAction]);
 
   return (
-    <div className="bg-white rounded-xl shadow-sm p-4 border border-slate-200">
+    <div className="bg-white rounded-xl shadow-sm p-4 border border-slate-300">
       <div className="flex items-start">
         <img
           src={item.avatar}
           alt={item.title}
-          className="w-12 h-12 rounded-full object-cover"
+          className="w-12 h-12 rounded-full object-cover border border-slate-200"
         />
         <div className="ml-4 flex-1">
-          <div className="flex items-center">
-            <h3 className="font-bold text-gray-900">
+          <div className="flex items-center gap-2">
+            <h3 className="font-bold text-slate-900">
               {item.title}
             </h3>
             {renderIcon(item.type)}
           </div>
-          <p className="text-sm text-gray-600 mt-1">
+          <p className="text-sm text-slate-700 mt-1">
             {item.description}
           </p>
           <div className="flex items-center mt-2 text-xs text-slate-700">
@@ -214,12 +214,24 @@ const DiscoveryPage: React.FC = () => {
     setIsLoading(false);
   }, []);
 
-  const filteredItems = discoveryItems.filter(
-    (item) =>
+  const filteredItems = discoveryItems.filter((item) => {
+    const matchesSearch =
       item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       (item.description?.toLowerCase() || '').includes(searchQuery.toLowerCase()) ||
-      item.category.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
+      item.category.toLowerCase().includes(searchQuery.toLowerCase());
+
+    if (!matchesSearch) return false;
+
+    if (activeTab === 'all') return true;
+    if (activeTab === 'people') return item.type === 'member';
+    if (activeTab === 'groups') return item.type === 'group';
+    if (activeTab === 'content') return item.type === 'content' || item.type === 'location';
+    if (activeTab === 'music') return item.category.toLowerCase() === 'music';
+    if (activeTab === 'movies') return item.category.toLowerCase() === 'film' || item.category.toLowerCase() === 'movies';
+    if (activeTab === 'education') return item.category.toLowerCase() === 'education';
+
+    return true;
+  });
 
   const handleSearch = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -252,14 +264,14 @@ const DiscoveryPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Discovery">
-      <div className="max-w-7xl mx-auto px-4 py-6">
+      <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
-            Discover
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900">
+            Discovery Hub
           </h1>
-          <p className="text-gray-600 mt-2">
-            Find new people, groups, and content based on your interests
+          <p className="text-slate-700 font-medium mt-2">
+            Find new people, groups, and content based on your interests across FingerMobile
           </p>
         </div>
 
@@ -274,13 +286,13 @@ const DiscoveryPage: React.FC = () => {
               value={searchQuery}
               onChange={handleSearch}
               placeholder="Search for people, groups, or content..."
-              className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 font-bold border-slate-300 placeholder:text-slate-400" />
+              className="block w-full pl-10 pr-3 py-3 border border-slate-300 rounded-xl bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 font-bold placeholder:text-slate-400" />
           </div>
         </div>
 
         {/* Tabs */}
-        <div className="mb-6 border-b border-gray-200">
-          <nav className="flex space-x-8" aria-label="Tabs">
+        <div className="mb-6 border-b border-slate-300">
+          <nav className="flex space-x-6 sm:space-x-8 overflow-x-auto pb-1" aria-label="Tabs">
             {[
               { id: 'all', label: 'All', icon: MemberGroupIcon },
               { id: 'people', label: 'People', icon: MemberGroupIcon },
@@ -293,10 +305,10 @@ const DiscoveryPage: React.FC = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center py-4 px-1 border-b-2 font-medium text-sm sm:text-base ${
+                className={`flex items-center py-3 px-2 border-b-2 font-bold text-sm sm:text-base whitespace-nowrap transition-colors ${
                   activeTab === tab.id
-                    ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-slate-600 hover:text-slate-900 font-medium hover:border-slate-300'
+                    ? 'border-blue-600 text-blue-700'
+                    : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300'
                 }`}
               >
                 <tab.icon className="h-4 w-4 mr-2" />
@@ -310,36 +322,42 @@ const DiscoveryPage: React.FC = () => {
           {/* Discovery Items */}
           <div className="lg:col-span-2 space-y-6">
             <div>
-              <h2 className="text-xl font-bold text-gray-900 mb-4">
+              <h2 className="text-xl font-black text-slate-900 mb-4">
                 Suggested for you
               </h2>
               <div className="space-y-4">
-                {filteredItems.map((item) => (
-                  <DiscoveryItemCard
-                    key={item.id}
-                    item={item}
-                    onAction={handleItemAction}
-                  />
-                ))}
+                {filteredItems.length === 0 ? (
+                  <div className="bg-white rounded-xl p-8 border border-slate-300 text-center">
+                    <p className="text-slate-700 font-semibold">No discovery items found matching your filter.</p>
+                  </div>
+                ) : (
+                  filteredItems.map((item) => (
+                    <DiscoveryItemCard
+                      key={item.id}
+                      item={item}
+                      onAction={handleItemAction}
+                    />
+                  ))
+                )}
               </div>
             </div>
           </div>
 
           {/* Right sidebar with CuratedDiscovery */}
-          <div>
-            <div className="bg-white rounded-xl shadow-sm p-6 border border-slate-200">
-              <h2 className="text-lg font-bold text-gray-900 mb-4">
+          <div className="space-y-6">
+            <div className="bg-white rounded-xl shadow-sm p-6 border border-slate-300">
+              <h2 className="text-lg font-black text-slate-900 mb-4">
                 Discover More
               </h2>
               <CuratedDiscovery />
             </div>
 
             {/* FIC Balance Card */}
-            <div className="mt-6 bg-gradient-to-r from-purple-600 to-blue-500 rounded-xl p-6 text-white">
+            <div className="bg-gradient-to-r from-purple-700 to-indigo-600 rounded-xl p-6 text-white shadow-md border border-purple-800">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-lg font-semibold">Your FIC Balance</h3>
-                  <p className="text-2xl font-bold">
+                  <h3 className="text-lg font-bold">Your FIC Balance</h3>
+                  <p className="text-3xl font-black mt-1">
                     {ficBalance.toFixed(2)} FIC
                   </p>
                 </div>
@@ -347,7 +365,7 @@ const DiscoveryPage: React.FC = () => {
               </div>
               <button
                 onClick={() => openModal('gift', {})}
-                className="mt-4 w-full bg-white text-purple-600 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+                className="mt-4 w-full bg-white text-purple-700 font-bold py-2.5 rounded-lg hover:bg-slate-100 transition-colors shadow-sm"
               >
                 Share with Community
               </button>
