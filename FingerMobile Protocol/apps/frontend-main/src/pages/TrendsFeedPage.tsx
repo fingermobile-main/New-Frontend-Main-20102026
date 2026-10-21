@@ -81,17 +81,17 @@ const TrendsFeedPage: React.FC<TrendsFeedPageProps> = ({
 
   return (
     <MainLayout>
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-10">
           <div className="flex items-center">
-            <div className="bg-gradient-to-r from-orange-500 to-amber-600 p-3 rounded-xl">
+            <div className="bg-gradient-to-r from-orange-500 to-amber-600 p-3 rounded-xl shadow-md">
               <FireIcon className="h-8 w-8 text-white" />
             </div>
             <div className="ml-4">
-              <h1 className="text-3xl font-bold text-gray-900">
+              <h1 className="text-3xl font-black text-slate-900 tracking-tight">
                 Trends Feed
               </h1>
-              <p className="text-gray-600">
+              <p className="text-slate-700 font-medium">
                 Discover the most popular and trending content in the community
               </p>
             </div>

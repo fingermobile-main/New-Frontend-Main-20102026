@@ -174,7 +174,7 @@ const LmsPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <PageHeader
         title="Learning Management System"
         description="Manage your courses, assignments, and track your educational progress"
@@ -182,35 +182,35 @@ const LmsPage: React.FC = () => {
 
       {/* Stats Summary */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-300">
           <div className="flex items-center">
-            <BookOpenIcon className="w-8 h-8 text-blue-500" />
+            <BookOpenIcon className="w-8 h-8 text-blue-600" />
             <div className="ml-4">
-              <p className="text-2xl font-bold text-gray-900">
+              <p className="text-2xl font-black text-slate-900">
                 {stats.totalCourses}
               </p>
-              <p className="text-sm text-slate-700">Total Courses</p>
+              <p className="text-sm font-semibold text-slate-700">Total Courses</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-300">
           <div className="flex items-center">
-            <ChartBarIcon className="w-8 h-8 text-green-500" />
+            <ChartBarIcon className="w-8 h-8 text-emerald-600" />
             <div className="ml-4">
-              <p className="text-2xl font-bold text-gray-900">
+              <p className="text-2xl font-black text-slate-900">
                 {stats.avgProgress.toFixed(0)}%
               </p>
-              <p className="text-sm text-slate-700">Avg Progress</p>
+              <p className="text-sm font-semibold text-slate-700">Avg Progress</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-300">
           <div className="flex items-center">
-            <AcademicCapIcon className="w-8 h-8 text-purple-500" />
+            <AcademicCapIcon className="w-8 h-8 text-purple-600" />
             <div className="ml-4">
-              <p className="text-2xl font-bold text-gray-900">
+              <p className="text-2xl font-black text-slate-900">
                 {stats.inProgress}
               </p>
               <p className="text-sm text-slate-700">In Progress</p>
