@@ -73,7 +73,7 @@ export const CanaryAdsManagementPage: React.FC = () => {
       <H2AdBucket />
 
       {/* DASHBOARD CONTENT */}
-      <main className="flex-1 max-w-7xl mx-auto px-4 py-8 w-full space-y-6">
+      <main className="flex-1 w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 py-8 space-y-6">
         <PlatformOwnershipCard />
 
         {/* Header */}

@@ -121,7 +121,7 @@ export const DPODashboardPage: React.FC = () => {
     <div className="min-h-screen bg-slate-950 text-white pb-20">
       <UniversalHeader pageTitle="DPO Legal Vault & Compliance Command" />
 
-      <main className="max-w-7xl mx-auto px-4 py-8 space-y-8">
+      <main className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 py-8 space-y-8">
         <PlatformOwnershipCard />
 
         {/* TOP STATUS BAR: 72H REGULATORY CLOCK & COMPLIANCE HEALTH GAUGE */}
