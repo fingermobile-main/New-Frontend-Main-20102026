@@ -669,7 +669,7 @@ const FingerLuxPage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 animate-slide-up">
+      <div className="max-w-[1536px] 2xl:max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 animate-slide-up">
         {/* Header Ribbon: Metrics, 40+ Currencies Selector, Locations, Mode Switcher */}
         <FingerLuxHeader
           activeTab={activeTab}

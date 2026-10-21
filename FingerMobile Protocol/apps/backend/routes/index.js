@@ -49,6 +49,7 @@ const masterDashboardRoutes = require('./masterDashboardRoutes');
 const tributRoutes = require('./tributRoutes');
 const creatorRulesRoutes = require('./creatorRules');
 const forumRoutes = require('./forums');
+const communitiesRoutes = require('./communities');
 const forumcategoriesRoutes = require('./forumcategories');
 const photocreditsRoutes = require('./photocredits');
 const canaryRoutes = require('./canary');
@@ -74,6 +75,7 @@ const publiciteeRoutes = require('./publicitee');
 const fingershortsRoutes = require('./fingershorts');
 const liveStreamRoutes = require('./liveStream');
 const beatwaveRoutes = require('./beatwaveRoutes');
+const jobsRoutes = require('./jobs');
 const guardianRoutes = require('./guardian');
 const stercesRoutes = require('./sterces');
 const stercsRoutes = require('./stercs');
@@ -91,6 +93,10 @@ const corporateGovernanceRoutes = require('./corporateGovernanceRoutes');
 const financialEcosystemRoutes = require('./financialEcosystemRoutes');
 const superviGameRoutes = require('./supervi_game');
 const superviAchievementsRoutes = require('./supervi_achievements');
+const conferenceRoutes = require('./conferenceRoutes');
+const fingerluxRoutes = require('./fingerluxRoutes');
+const videoTranslationRoutes = require('./videoTranslation');
+const giftcardsRoutes = require('./giftcards');
 const superviLeaderboardsRoutes = require('./supervi_leaderboards');
 const rbacConsolesRoutes = require('./rbacConsoles');
 const adminRoutes = require('./admin');
@@ -208,6 +214,9 @@ router.use('/permanence', permanenceRoutes);
 router.use('/gameon', gameonRoutes);
 router.use('/game-on', gameonRoutes);
 router.use('/programs', programsRoutes);
+router.use('/jobs', jobsRoutes);
+router.use('/communities', communitiesRoutes);
+router.use('/community', communitiesRoutes);
 router.use('/franchise', franchisesRoutes);
 router.use('/franchises', franchisesRoutes);
 router.use('/live-stream', liveStreamRoutes);
@@ -239,6 +248,17 @@ router.use('/governance', corporateGovernanceRoutes);
 router.use('/corporate-governance', corporateGovernanceRoutes);
 router.use('/financials/ecosystem', financialEcosystemRoutes);
 router.use('/financial-ecosystem', financialEcosystemRoutes);
+
+// Conference, Luxury Services, AI Video Studio & Gifting Suite
+router.use('/conference', conferenceRoutes);
+router.use('/conferences', conferenceRoutes);
+router.use('/fingerlux', fingerluxRoutes);
+router.use('/video-translation', videoTranslationRoutes);
+router.use('/videotranslation', videoTranslationRoutes);
+router.use('/v1/video-translation', videoTranslationRoutes);
+router.use('/giftcards', giftcardsRoutes);
+router.use('/gifting', giftcardsRoutes);
+router.use('/advancedgifting', giftcardsRoutes);
 
 // Health check endpoint
 router.get('/health', (req, res) => {

@@ -9,18 +9,18 @@ const AdvancedGiftingPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Advanced Gifting">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-[1536px] 2xl:max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
           <div className="flex items-center">
-            <div className="bg-gradient-to-r from-purple-600 to-pink-600 p-3 rounded-xl">
+            <div className="bg-gradient-to-r from-purple-600 to-pink-600 p-3.5 rounded-2xl shadow-md">
               <GiftIcon className="h-8 w-8 text-white" />
             </div>
             <div className="ml-4">
-              <h1 className="text-3xl font-bold text-gray-900">
-                Advanced Gifting Engine
+              <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">
+                Advanced Gifting &amp; Creator Tips
               </h1>
-              <p className="text-gray-600 mt-1">
-                Send and receive special gifts with effects, animations, and rewards
+              <p className="text-slate-700 font-medium mt-1">
+                Send and receive special gifts with dynamic effects, animations, on-chain hallmarks, and sovereign FIC rewards
               </p>
             </div>
           </div>
