@@ -78,6 +78,7 @@ const voicefeedRoutes = require('./voicefeed');
 const publiciteeRoutes = require('./publicitee');
 const fingershortsRoutes = require('./fingershorts');
 const liveStreamRoutes = require('./liveStream');
+const seadsRoutes = require('./seads');
 const beatwaveRoutes = require('./beatwaveRoutes');
 const jobsRoutes = require('./jobs');
 const guardianRoutes = require('./guardian');
@@ -227,6 +228,7 @@ router.use('/franchise', franchisesRoutes);
 router.use('/franchises', franchisesRoutes);
 router.use('/live-stream', liveStreamRoutes);
 router.use('/live-streams', liveStreamRoutes);
+router.use('/seads', seadsRoutes);
 // Add the new routes
 router.use('/spend-caps', spendCapsRoutes);
 router.use('/account-inactivity', accountInactivityRoutes);

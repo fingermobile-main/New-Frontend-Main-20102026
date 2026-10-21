@@ -188,7 +188,7 @@ const SeadsPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Seads Crowdfunding">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div className="flex items-center">
@@ -196,8 +196,8 @@ const SeadsPage: React.FC = () => {
               <GlobeAltIcon className="h-8 w-8" />
             </div>
             <div className="ml-4">
-              <h1 className="text-3xl font-black text-gray-900 tracking-tight">Seads Crowdfunding & Impact</h1>
-              <p className="text-gray-600 text-sm mt-0.5">Grassroots cultural preservation, environmental regeneration, and community initiatives</p>
+              <h1 className="text-3xl font-black text-slate-900 tracking-tight">Seads Crowdfunding & Impact</h1>
+              <p className="text-slate-700 font-medium text-sm mt-0.5">Grassroots cultural preservation, environmental regeneration, and community initiatives</p>
             </div>
           </div>
 

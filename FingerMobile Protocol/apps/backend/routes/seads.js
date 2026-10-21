@@ -5,9 +5,13 @@ const { authenticate } = require('../middleware/authenticate');
 const { monetizationDb } = require('../db');
 const router = express.Router();
 
-router.get('/projects', seads.getAll);
-router.get('/projects/:projectId', seads.getById);
-router.post('/projects', authenticate, seads.create);
+router.get('/', (req, res) => seads.getProjects(req, res));
+router.post('/', (req, res) => seads.createProject(req, res));
+router.post('/:id/back', (req, res) => seads.backProject(req, res));
+router.get('/projects', (req, res) => seads.getProjects(req, res));
+router.get('/projects/:projectId', (req, res) => seads.getById(req, res));
+router.post('/projects', (req, res) => seads.createProject(req, res));
+router.post('/projects/:id/back', (req, res) => seads.backProject(req, res));
 router.put('/projects/:projectId', seads.update);
 router.delete('/projects/:projectId', authenticate, seads.delete);
 router.get('/projects/:projectId/updates', seads.getById);
