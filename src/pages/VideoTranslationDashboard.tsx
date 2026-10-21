@@ -9,6 +9,7 @@ import {
   ClockIcon,
   VideoCameraIcon
 } from '@heroicons/react/24/outline';
+import PlatformOwnershipCard from '../components/dashboard/PlatformOwnershipCard';
 
 export interface SubtitleCue {
   id: string;
@@ -435,6 +436,9 @@ const VideoTranslationDashboard: React.FC = () => {
           ))}
         </div>
       </div>
+
+      {/* Sovereign Platform Ownership Directive */}
+      <PlatformOwnershipCard />
     </div>
   );
 };

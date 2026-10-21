@@ -3,6 +3,7 @@ import { useAppContext } from '../../contexts/AppContext';
 import { generateCodeWithAi } from '../../services/api';
 import { SparklesIcon } from '../../components/icons';
 import { AgenticAiResponse } from '../../types';
+import PlatformOwnershipCard from '../../components/dashboard/PlatformOwnershipCard';
 
 interface AiGeneratedComponentProps {
   response: AgenticAiResponse;
@@ -167,6 +168,11 @@ const CodeAgentPage: React.FC = () => {
         <label htmlFor="ai-consent" className="ml-2 text-gray-300 text-sm">
           I understand that AI-generated code may contain errors or security vulnerabilities and I will review it carefully before deployment.
         </label>
+      </div>
+
+      {/* Sovereign Platform Ownership Directive */}
+      <div className="mt-8">
+        <PlatformOwnershipCard />
       </div>
     </div>
   );

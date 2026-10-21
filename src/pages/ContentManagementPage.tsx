@@ -22,6 +22,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { apiService } from '../services/apiService';
 import { useAppContext } from '../contexts/AppContext';
+import PlatformOwnershipCard from '../components/dashboard/PlatformOwnershipCard';
 
 interface ContentItem {
   id: number;
@@ -486,6 +487,11 @@ const ContentManagementPage: React.FC = () => {
               </div>
             </div>
           )}
+        </div>
+
+        {/* Sovereign Platform Ownership Directive */}
+        <div className="mt-8">
+          <PlatformOwnershipCard />
         </div>
       </main>
 

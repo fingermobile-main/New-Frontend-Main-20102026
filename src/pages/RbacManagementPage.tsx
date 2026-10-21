@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import RbacDashboard from '../components/dashboard/RbacDashboard';
 import useRbacData from '../hooks/useRbacData';
 import MainLayout from '../components/layout/MainLayout';
+import PlatformOwnershipCard from '../components/dashboard/PlatformOwnershipCard';
 import { useAppContext } from '../contexts/AppContext';
 import { PlusIcon, UserGroupIcon, KeyIcon, BuildingOfficeIcon, UserCircleIcon } from '../icons';
 
@@ -379,7 +380,7 @@ const RbacManagementPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl p-6 border border-amber-100">
+            <div className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl p-6 border border-amber-300">
               <h3 className="font-bold text-gray-900 mb-2">Access Control Tips</h3>
               <ul className="space-y-2 text-sm text-gray-700">
                 <li className="flex items-start">
@@ -397,6 +398,11 @@ const RbacManagementPage: React.FC = () => {
               </ul>
             </div>
           </div>
+        </div>
+
+        {/* Sovereign Platform Ownership Directive */}
+        <div className="mt-8">
+          <PlatformOwnershipCard />
         </div>
 
         {/* Assign Role Modal */}

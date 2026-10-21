@@ -22,6 +22,7 @@ import ContentScheduler from '../components/creator/ContentScheduler';
 import EarningsTracker from '../components/creator/EarningsTracker';
 import AudienceAnalytics from '../components/creator/AudienceAnalytics';
 import ContentStudioLink from '../components/creator/ContentStudioLink';
+import PlatformOwnershipCard from '../components/dashboard/PlatformOwnershipCard';
 
 const CreatorDashboardPage: React.FC = () => {
   const navigate = useNavigate();
@@ -137,6 +138,11 @@ const CreatorDashboardPage: React.FC = () => {
         {activeTab === 'earnings' && <EarningsTracker creatorId="current-user" />}
         {activeTab === 'analytics' && <AudienceAnalytics creatorId="current-user" />}
         {activeTab === 'studio' && <ContentStudioLink />}
+      </div>
+
+      {/* Sovereign Platform Ownership Directive */}
+      <div className="mt-8">
+        <PlatformOwnershipCard />
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import MainLayout from '../components/layout/MainLayout';
+import PlatformOwnershipCard from '../components/dashboard/PlatformOwnershipCard';
 import { useAppContext } from '../contexts/AppContext';
 import {
   ShieldCheckIcon,
@@ -374,6 +375,11 @@ const AuditLogAdminPage: React.FC = () => {
             </div>
           </div>
         )}
+
+        {/* Sovereign Platform Ownership Directive */}
+        <div className="mt-8">
+          <PlatformOwnershipCard />
+        </div>
       </div>
     </MainLayout>
   );

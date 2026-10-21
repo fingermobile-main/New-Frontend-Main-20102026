@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MainLayout from '../components/layout/MainLayout';
+import PlatformOwnershipCard from '../components/dashboard/PlatformOwnershipCard';
 import {
   Shield,
   ShieldAlert,
@@ -715,6 +716,9 @@ export const ContentModeratorDashboardPage: React.FC = () => {
             </div>
           </div>
         )}
+
+        {/* Sovereign Platform Ownership Directive */}
+        <PlatformOwnershipCard />
 
         {/* Modal: Item Inspection Dialog */}
         {selectedItem && (

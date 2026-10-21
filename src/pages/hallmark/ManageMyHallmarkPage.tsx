@@ -6,6 +6,7 @@ import { XIcon } from '../../components/icons';
 import { hallmarkService, HallmarkApplication } from '../../services/hallmarkService';
 import { Hallmark, Member } from '../../types';
 import { useAppContext } from '../../contexts/AppContext';
+import PlatformOwnershipCard from '../../components/dashboard/PlatformOwnershipCard';
 
 const ManageMyHallmarkPage: React.FC = () => {
   const { member, showToast, startSession, joinSession, leaveSession, activeSession, openModal } = useAppContext();
@@ -360,6 +361,11 @@ const ManageMyHallmarkPage: React.FC = () => {
                 </div>
               </div>
             )}
+
+            {/* Sovereign Platform Ownership Directive */}
+            <div className="mt-8">
+              <PlatformOwnershipCard />
+            </div>
           </div>
         </div>
       )}

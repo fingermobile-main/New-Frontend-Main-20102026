@@ -19,6 +19,7 @@ import {
 import UGCPrivacyControlModal from '../components/privacy/UGCPrivacyControlModal';
 import { Shield, X, Upload, CheckCircle2, AlertCircle } from 'lucide-react';
 import { useAppContext } from '../contexts/AppContext';
+import PlatformOwnershipCard from '../components/dashboard/PlatformOwnershipCard';
 
 const UGCDashboardPage: React.FC = () => {
   const { showToast } = useAppContext();
@@ -122,6 +123,8 @@ const UGCDashboardPage: React.FC = () => {
           </button>
         </div>
       </div>
+
+      <PlatformOwnershipCard />
 
       {/* Main Tabbed Console */}
       <div className="bg-white rounded-xl shadow-md border border-slate-300 overflow-hidden">

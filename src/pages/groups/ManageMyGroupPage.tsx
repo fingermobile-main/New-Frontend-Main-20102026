@@ -5,6 +5,7 @@ import { useAppContext } from '../../contexts/AppContext';
 import { GroupContext } from '../../contexts/GroupContext';
 import { useAuth } from '../../contexts/AuthContext';
 import PageHeader from '../../components/PageHeader';
+import PlatformOwnershipCard from '../../components/dashboard/PlatformOwnershipCard';
 import { Group } from '../../types';
 import groupsService from '../../services/groupsService';
 
@@ -76,13 +77,13 @@ const ManageMyGroupPage = () => {
         description="Update your group settings."
       />
       <div className="p-6 lg:p-8">
-        <div className="max-w-2xl mx-auto bg-white p-6 rounded-xl shadow-md space-y-4">
+        <div className="max-w-2xl mx-auto bg-white p-6 rounded-xl shadow-md border border-slate-300 space-y-4">
           <div>
-            <label htmlFor="groupName" className="block text-sm font-medium">Group Name</label>
+            <label htmlFor="groupName" className="block text-sm font-bold text-slate-900">Group Name</label>
             <input id="groupName" type="text" value={name} onChange={(e) => setName(e.target.value)} className="w-full mt-1 p-2 border rounded-md text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" />
           </div>
           <div>
-            <label htmlFor="groupRules" className="block text-sm font-medium">Group Rules</label>
+            <label htmlFor="groupRules" className="block text-sm font-bold text-slate-900">Group Rules</label>
             <textarea id="groupRules" value={rules} onChange={e => setRules(e.target.value)} rows={5} className="w-full mt-1 p-2 border rounded-md text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" />
           </div>
           <div className="mt-6 flex justify-end">
@@ -90,6 +91,11 @@ const ManageMyGroupPage = () => {
               {isSaving ? 'Saving...' : 'Save Changes'}
             </button>
           </div>
+        </div>
+
+        {/* Sovereign Platform Ownership Directive */}
+        <div className="max-w-2xl mx-auto mt-8">
+          <PlatformOwnershipCard />
         </div>
       </div>
     </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Network, Zap, ShieldCheck, Sparkles, FileEdit, FileImage, Palette, Scissors, Mic, Globe, BarChart3, Lock, Settings, MoreHorizontal } from 'lucide-react';
+import PlatformOwnershipCard from '../components/dashboard/PlatformOwnershipCard';
 
 const StercsModulesPage: React.FC = () => {
   return (
@@ -211,6 +212,11 @@ const StercsModulesPage: React.FC = () => {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Sovereign Platform Ownership Directive */}
+        <div className="mt-8">
+          <PlatformOwnershipCard />
         </div>
       </main>
     </div>

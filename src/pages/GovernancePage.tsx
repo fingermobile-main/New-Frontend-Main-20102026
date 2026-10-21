@@ -1,6 +1,7 @@
 import React, {} from 'react';
 import MainLayout from '../layouts/MainLayout';
 import GovernanceDashboard from '../components/GovernanceDashboard';
+import PlatformOwnershipCard from '../components/dashboard/PlatformOwnershipCard';
 import { Shield, Info, FileText, Eye, BookOpen } from 'lucide-react';
 
 const GovernancePage: React.FC = () => {
@@ -70,6 +71,9 @@ const GovernancePage: React.FC = () => {
             </button>
           </div>
         </div>
+
+        {/* Sovereign Platform Ownership Directive */}
+        <PlatformOwnershipCard />
       </div>
     </MainLayout>
   );

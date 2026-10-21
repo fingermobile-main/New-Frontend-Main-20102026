@@ -1,5 +1,6 @@
 import React from 'react';
 import MainLayout from '../components/layout/MainLayout';
+import PlatformOwnershipCard from '../components/dashboard/PlatformOwnershipCard';
 import {
   PencilIcon,
   VideoCameraIcon,
@@ -138,11 +139,11 @@ const ContentCreatorDashboardPage: React.FC = () => {
             <div className="bg-white/80 backdrop-blur-xl rounded-3xl p-8 border border-slate-200/60 shadow-sm">
               <h2 className="text-xl font-bold text-slate-900 mb-6">Content Tips</h2>
               <div className="space-y-4">
-                <div className="flex gap-3 p-3 bg-amber-50 text-amber-800 rounded-xl border border-amber-100 text-sm font-medium">
+                <div className="flex gap-3 p-3 bg-amber-50 text-amber-950 rounded-xl border border-amber-300 text-sm font-bold">
                   <div className="mt-0.5">💡</div>
                   <p>Videos between 3-5 minutes have the highest retention rate this week.</p>
                 </div>
-                <div className="flex gap-3 p-3 bg-blue-50 text-blue-800 rounded-xl border border-blue-100 text-sm font-medium">
+                <div className="flex gap-3 p-3 bg-blue-50 text-blue-950 rounded-xl border border-blue-300 text-sm font-bold">
                   <div className="mt-0.5">📈</div>
                   <p>Articles with 'DeFi' in the title are trending in your community.</p>
                 </div>
@@ -151,6 +152,10 @@ const ContentCreatorDashboardPage: React.FC = () => {
           </div>
         </div>
 
+        {/* Sovereign Platform Ownership Directive */}
+        <div className="mt-8">
+          <PlatformOwnershipCard />
+        </div>
       </div>
     </MainLayout>
   );

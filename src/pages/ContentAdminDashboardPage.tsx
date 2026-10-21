@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MainLayout from '../components/layout/MainLayout';
+import PlatformOwnershipCard from '../components/dashboard/PlatformOwnershipCard';
 import {
   ShieldCheckIcon,
   ChartBarIcon,
@@ -331,6 +332,9 @@ const ContentAdminDashboardPage: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {/* Sovereign Platform Ownership Directive */}
+        <PlatformOwnershipCard />
 
         {/* Action Detail Inspection Modal */}
         {selectedAction && (

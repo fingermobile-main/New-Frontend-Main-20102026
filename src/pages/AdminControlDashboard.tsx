@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { logError, ErrorType } from '../utils/errorLogger';
 
 import MainLayout from '../components/layout/MainLayout';
+import PlatformOwnershipCard from '../components/dashboard/PlatformOwnershipCard';
 import adminControlService, {
   AdminActionItem,
   AdminMemberItem,
@@ -251,7 +252,7 @@ const AdminControlDashboard: React.FC = () => {
               <h1 className="text-3xl font-bold text-gray-900">
                 Admin Control Dashboard
               </h1>
-              <p className="text-gray-600">Securely manage platform operations and user activities</p>
+              <p className="text-slate-700 font-medium">Securely manage platform operations and user activities</p>
             </div>
           </div>
         </div>
@@ -585,7 +586,7 @@ const AdminControlDashboard: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl p-6 border border-amber-100">
+            <div className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl p-6 border border-amber-300">
               <h3 className="font-bold text-gray-900 mb-2">Security Notice</h3>
               <ul className="space-y-2 text-sm text-gray-700">
                 <li className="flex items-start">
@@ -603,6 +604,11 @@ const AdminControlDashboard: React.FC = () => {
               </ul>
             </div>
           </div>
+        </div>
+
+        {/* Sovereign Platform Ownership Directive */}
+        <div className="mt-8">
+          <PlatformOwnershipCard />
         </div>
       </div>
 

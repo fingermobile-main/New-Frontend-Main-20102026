@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import MainLayout from '../components/layout/MainLayout';
 import { useAppContext } from '../contexts/AppContext';
 import { useAuth } from '../contexts/AuthContext';
+import PlatformOwnershipCard from '../components/dashboard/PlatformOwnershipCard';
 import { adminOperationsService, PlatformDashboardStats, SystemHealthNode } from '../services/adminOperationsService';
 import {
   Activity,
@@ -350,6 +351,9 @@ const DashboardPage: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {/* Platform Ownership Authority Seal */}
+        <PlatformOwnershipCard />
 
         {/* Operational Filter and Search Controls */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-gray-900 p-4 rounded-2xl border border-slate-300 dark:border-gray-800 shadow-xs">

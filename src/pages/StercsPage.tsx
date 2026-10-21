@@ -32,6 +32,7 @@ import {
   X
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import PlatformOwnershipCard from '../components/dashboard/PlatformOwnershipCard';
 
 interface StercsModule {
   id: number;
@@ -1442,6 +1443,11 @@ const StercsPage: React.FC = () => {
             </div>
           </div>
         )}
+
+        {/* Sovereign Platform Ownership Directive */}
+        <div className="mt-8">
+          <PlatformOwnershipCard />
+        </div>
       </main>
 
       {/* Create Module Modal */}

@@ -5,6 +5,7 @@ import { useMonetization } from '../contexts/MonetizationContext';
 import MonetizationDashboard from '../components/dashboard/MonetizationDashboard';
 import GemTransactions from '../components/dashboard/GemTransactions';
 import EarningsAnalytics from '../components/dashboard/EarningsAnalytics';
+import PlatformOwnershipCard from '../components/dashboard/PlatformOwnershipCard';
 
 // --- Static Matrix Configuration Datastructure ---
 interface ResourceLink {
@@ -115,6 +116,8 @@ const MonetizationDashboardPage: React.FC = () => {
           </button>
         </div>
       </div>
+
+      <PlatformOwnershipCard />
 
       {error && (
         <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl shadow-sm">

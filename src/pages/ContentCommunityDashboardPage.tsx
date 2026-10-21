@@ -1,5 +1,6 @@
 import React from 'react';
 import MainLayout from '../components/layout/MainLayout';
+import PlatformOwnershipCard from '../components/dashboard/PlatformOwnershipCard';
 import {
   UserGroupIcon,
   ChatBubbleLeftRightIcon,
@@ -140,6 +141,10 @@ const ContentCommunityDashboardPage: React.FC = () => {
           </div>
         </div>
 
+        {/* Sovereign Platform Ownership Directive */}
+        <div className="mt-8">
+          <PlatformOwnershipCard />
+        </div>
       </div>
     </MainLayout>
   );
