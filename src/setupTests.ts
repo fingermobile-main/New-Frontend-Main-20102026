@@ -1,5 +1,9 @@
 import '@testing-library/jest-dom';
 
+// A few UI and password-hashing tests legitimately exceed Jest's 5s default
+// when the full coverage suite runs on shared or throttled CI workers.
+jest.setTimeout(30000);
+
 // Mock axios for all tests
 jest.mock('axios', () => {
   const mockAxiosInstance = {

@@ -145,6 +145,10 @@
   "jest": {
     "clearMocks": true,
     "resetMocks": false,
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/src/data/\\.quarantine/"
+    ],
     "moduleNameMapper": {
       "^@/(.*)$": "<rootDir>/src/$1"
     }
