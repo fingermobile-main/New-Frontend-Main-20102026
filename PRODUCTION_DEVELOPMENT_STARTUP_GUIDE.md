@@ -10,6 +10,8 @@ This guide provides the correct procedure for starting the FingerMobile Platform
 ```
 /Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps
 ```
+## Git 
+https://github.com/fingermobile-main/New-Frontend-Main-20102026
 
 ### Key Components
 - **Backend**: `.../apps/backend` (Node.js/Express server running on port 5001)

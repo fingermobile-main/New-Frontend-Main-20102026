@@ -23,6 +23,7 @@ import {
 import { useAppContext } from '../../../contexts/AppContext';
 import { useAuth } from '../../../contexts/AuthContext';
 import { getUserRoleTier, getUserRoleBadge } from '../../../services/platformRbac';
+import PlatformOwnershipCard from '../../../components/dashboard/PlatformOwnershipCard';
 
 interface CollaboratorSeat {
   id: string;
@@ -299,6 +300,9 @@ export const SettingsHubPage: React.FC = () => {
   return (
     <MainLayout>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 animate-in fade-in duration-300">
+        {/* Sovereign Platform Ownership Proof */}
+        <PlatformOwnershipCard />
+
         {/* Header Banner */}
         <div className="bg-white border border-slate-300 rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>

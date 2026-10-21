@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAppContext } from '../../../contexts/AppContext';
 import adminOperationsService from '../../../services/adminOperationsService';
+import PlatformOwnershipCard from '../../../components/dashboard/PlatformOwnershipCard';
 
 const GeneralSettingsPage = () => {
   const { settings, updateSettings, showToast } = useAppContext();
@@ -53,8 +54,14 @@ const GeneralSettingsPage = () => {
   };
 
   return (
-    <div>
-      <h1 className="text-2xl font-black text-slate-900 mb-6">General Settings</h1>
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-black text-slate-900">General Platform Settings</h1>
+        <p className="text-sm font-medium text-slate-700 mt-1">Configure foundational brand metadata and protocol identity parameters.</p>
+      </div>
+
+      {/* Sovereign Platform Ownership Proof */}
+      <PlatformOwnershipCard />
       <div className="max-w-2xl">
         <form onSubmit={handleSave} className="bg-white p-8 rounded-xl shadow-sm border border-slate-300 space-y-6">
           <div>

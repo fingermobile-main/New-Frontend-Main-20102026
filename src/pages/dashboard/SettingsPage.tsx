@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Switch } from '../../components/ui/Switch';
 import { Label } from '../../components/ui/Label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/Tabs';
+import PlatformOwnershipCard from '../../components/dashboard/PlatformOwnershipCard';
 
 const SettingsPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState('general');
@@ -42,19 +43,22 @@ const SettingsPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="min-h-screen bg-slate-50">
       <Header />
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="container mx-auto px-4 py-8"
+        className="container mx-auto px-4 py-8 space-y-6"
       >
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-800">Dashboard Settings</h1>
-          <p className="text-gray-600 mt-2">Manage your account and platform settings</p>
+        <div>
+          <h1 className="text-3xl font-black text-slate-900">Dashboard & Account Settings</h1>
+          <p className="text-slate-700 font-medium mt-1">Manage your sovereign account parameters, notifications, and biometric enclave privacy.</p>
         </div>
+
+        {/* Sovereign Platform Ownership Proof */}
+        <PlatformOwnershipCard />
 
         <Tabs defaultValue="general" className="w-full">
           <TabsList className="grid grid-cols-4">
