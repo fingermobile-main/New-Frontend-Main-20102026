@@ -682,7 +682,7 @@ export const LushPressiesPage: React.FC = () => {
       <div className="h-1 bg-gradient-to-r from-emerald-600 via-teal-500 to-[#DC582A]" />
 
       {/* Brand Hero Header */}
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-5">
+      <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-3 sm:px-6 lg:px-8 pt-5">
         <div className="flex items-center justify-between p-4 bg-white rounded-2xl border border-slate-200 shadow-xs">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-xl bg-slate-900 border border-emerald-400/30 p-1 flex items-center justify-center shadow-xs overflow-hidden shrink-0">
@@ -704,7 +704,7 @@ export const LushPressiesPage: React.FC = () => {
       </div>
 
       {/* Main 3-Column LinkedIn-Style Layout Container */}
-      <main className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-5">
+      <main className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-3 sm:px-6 lg:px-8 py-5">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
           {/* Left Column (3 cols): User Profile, Gamification, Fast Navigation */}
           <div className="lg:col-span-3 lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-5.5rem)] lg:overflow-y-auto space-y-4 scrollbar-none pr-1">
