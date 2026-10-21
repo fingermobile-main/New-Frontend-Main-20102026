@@ -448,7 +448,7 @@ const OwnitPage: React.FC = () => {
         {/* Subtle Gold Dust Header Glow */}
         <div className="absolute top-0 left-0 right-0 h-[480px] bg-gradient-to-b from-amber-950/30 via-stone-950 to-black pointer-events-none -z-10" />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+        <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 pt-8">
           {/* Top Marquee Status Bar */}
           <div className="flex flex-wrap items-center justify-between gap-4 p-3.5 mb-8 rounded-2xl bg-stone-950/90 border border-amber-500/30 backdrop-blur-md">
             <div className="flex items-center gap-3">

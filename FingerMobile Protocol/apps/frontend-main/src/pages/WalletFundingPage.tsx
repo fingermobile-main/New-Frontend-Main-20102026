@@ -149,7 +149,7 @@ const WalletFundingPage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
+      <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 py-8 space-y-8">
         <div className="text-center max-w-3xl mx-auto">
           <div className="mx-auto bg-gradient-to-r from-blue-600 to-indigo-700 p-3.5 w-16 h-16 rounded-2xl flex items-center justify-center shadow-sm border border-blue-500">
             <CurrencyNairaIcon className="h-8 w-8 text-white" />

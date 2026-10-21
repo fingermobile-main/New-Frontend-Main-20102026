@@ -100,7 +100,7 @@ const WalletAndPayPage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
+      <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 py-8 space-y-8">
         <div>
           <div className="flex items-center">
             <div className="bg-gradient-to-r from-emerald-600 to-green-700 p-3.5 rounded-2xl shadow-sm border border-emerald-500">

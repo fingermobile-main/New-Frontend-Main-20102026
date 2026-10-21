@@ -47,11 +47,17 @@ const inMemoryTransactions = [
 
 class WalletController {
 
+  resolveUserUuid(userId) {
+    const userStr = String(userId || 'b77e0895-0246-467e-9d74-fa8e59e788ec');
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(userStr);
+    return isUuid ? userStr : 'b77e0895-0246-467e-9d74-fa8e59e788ec';
+  }
+
   /**
    * Helper: ensure user has an active wallet
    */
   async ensureUserWallet(userId) {
-    const userStr = String(userId || '4');
+    const userStr = this.resolveUserUuid(userId);
 
     try {
       if (pool) {
@@ -65,7 +71,7 @@ class WalletController {
           const insertRes = await pool.query(
             `INSERT INTO fic_wallets (user_id, wallet_address, balance, currency, is_active)
              VALUES ($1, $2, $3, $4, TRUE)
-             ON CONFLICT (wallet_address) DO UPDATE SET balance = EXCLUDED.balance
+             ON CONFLICT (user_id) DO UPDATE SET balance = EXCLUDED.balance
              RETURNING id, user_id, wallet_address, balance, currency, is_active, created_at, updated_at`,
             [userStr, address, 1245.75, 'FIC']
           );
@@ -205,7 +211,7 @@ class WalletController {
       const limit = Math.min(parseInt(req.query.limit) || 20, 100);
       const offset = (page - 1) * limit;
 
-      const userId = String(req.user?.id || '4');
+      const userId = this.resolveUserUuid(req.user?.id);
       const wallet = await this.ensureUserWallet(userId);
 
       try {
@@ -218,13 +224,13 @@ class WalletController {
              WHERE wallet_id = $1 OR user_id = $2
              ORDER BY created_at DESC
              LIMIT $3 OFFSET $4`,
-            [wallet.id, parseInt(userId) || 4, limit, offset]
+            [wallet.id, userId, limit, offset]
           );
 
           if (txResult.rows.length > 0) {
             const countResult = await pool.query(
               'SELECT COUNT(*) as total FROM fic_transactions WHERE wallet_id = $1 OR user_id = $2',
-              [wallet.id, parseInt(userId) || 4]
+              [wallet.id, userId]
             );
 
             const total = parseInt(countResult.rows[0]?.total || 0);
@@ -319,7 +325,7 @@ class WalletController {
              VALUES ($1, $2, 'deposit', $3, 'deposit', $4, 'completed', $5, $6, $7, NOW())`,
             [
               wallet.id,
-              parseInt(userId) || 4,
+              this.resolveUserUuid(userId),
               numAmount,
               `Deposit via ${payment_method || 'Bank Transfer'}`,
               txRef,
@@ -409,8 +415,8 @@ class WalletController {
              VALUES ($1, $2, 'withdrawal', $3, 'withdrawal', $4, 'pending', $5, $6, $7, $8, NOW())`,
             [
               wallet.id,
-              parseInt(userId) || 4,
-              -numAmount,
+              this.resolveUserUuid(userId),
+              numAmount,
               `Withdrawal via ${withdrawal_method || 'Bank Payout'}`,
               txRef,
               wallet.wallet_address,

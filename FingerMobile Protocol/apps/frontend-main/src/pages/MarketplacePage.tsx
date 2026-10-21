@@ -306,7 +306,7 @@ const MarketplacePage: React.FC = () => {
         {/* Ambient Emerald Glow Header Background */}
         <div className="absolute top-0 left-0 right-0 h-96 bg-gradient-to-b from-emerald-950/40 via-slate-900 to-slate-950 pointer-events-none -z-10" />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+        <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 pt-8">
           {/* Top Platform Governance & Stercs Status Banner */}
           <div className="flex flex-wrap items-center justify-between gap-4 p-3.5 mb-8 rounded-2xl bg-slate-900/80 border border-emerald-500/20 backdrop-blur-md">
             <div className="flex items-center gap-3">

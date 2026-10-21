@@ -456,7 +456,7 @@ const StorefrontPage: React.FC = () => {
       <div className="min-h-screen bg-slate-900 text-slate-100 pb-24">
         {/* Top Header Banner */}
         <div className="bg-gradient-to-r from-blue-950 via-slate-900 to-indigo-950 border-b border-blue-500/20 py-8 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-blue-500/20 text-blue-300 border border-blue-500/30 text-xs font-bold uppercase tracking-wider mb-2">
                 <Store className="w-3.5 h-3.5" /> Member Subscription Stores & Merchant Mall
@@ -499,7 +499,7 @@ const StorefrontPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+        <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 pt-8">
           {/* Universal AI Search Engine Tool Bar */}
           <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 mb-8 shadow-lg">
             <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
