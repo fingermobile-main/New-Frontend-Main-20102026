@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import MainLayout from '../../../components/layout/MainLayout';
 import { BadgesStudioView } from '../../../components/dashboard/badges/BadgesStudioView';
+import PlatformOwnershipCard from '../../../components/dashboard/PlatformOwnershipCard';
 import badgeService from '../../../services/badgeService';
 import rolesPermissionsService from '../../../services/rolesPermissionsService';
 import { MemberBadge, MemberPage, MemberBadgeAssignment } from '../../../types/roles-permissions';
@@ -66,7 +67,8 @@ export const BadgesManagementPage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-6">
+        <PlatformOwnershipCard />
         {loading ? (
           <div className="flex justify-center items-center h-64">
             <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-amber-500"></div>

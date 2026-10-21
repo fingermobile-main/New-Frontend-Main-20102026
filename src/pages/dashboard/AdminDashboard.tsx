@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import AdminLayout from '../../components/admin/AdminLayout';
+import PlatformOwnershipCard from '../../components/dashboard/PlatformOwnershipCard';
 import { adminOperationsService } from '../../services/adminOperationsService';
 
 const AdminDashboard: React.FC = () => {
@@ -82,6 +83,8 @@ const AdminDashboard: React.FC = () => {
   return (
     <AdminLayout>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+        <PlatformOwnershipCard />
+
         {/* Header with Tab Switcher */}
         <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
@@ -192,8 +195,8 @@ const AdminDashboard: React.FC = () => {
                   {recentActivity.map((activity) => (
                     <li key={activity.id} className="px-5 py-3.5 hover:bg-slate-50 transition-colors">
                       <div className="flex items-center">
-                        <div className="h-9 w-9 rounded-full bg-blue-100 text-blue-950 border border-blue-400 font-bold flex items-center justify-center   shrink-0 font-black">
-                          <Activity className="h-4 w-4" />
+                        <div className="h-9 w-9 rounded-full bg-blue-100 text-blue-950 border border-blue-400 font-bold flex items-center justify-center shrink-0">
+                          <Activity className="h-4 w-4 text-blue-700" />
                         </div>
                         <div className="ml-3 flex-1">
                           <p className="text-sm font-bold text-slate-900">

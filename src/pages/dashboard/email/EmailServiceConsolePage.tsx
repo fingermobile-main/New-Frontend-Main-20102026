@@ -19,6 +19,7 @@ import {
 import { apiService } from '../../../services/apiService';
 import { useAppContext } from '../../../contexts/AppContext';
 import PageHeader from '../../../components/PageHeader';
+import PlatformOwnershipCard from '../../../components/dashboard/PlatformOwnershipCard';
 import { logError } from '../../../utils/errorLogger';
 
 // --- Template Interface ---
@@ -268,6 +269,32 @@ const EmailServiceConsolePage: React.FC = () => {
     remainingToday: 32
   });
 
+  // Suppression State
+  const [suppressionList, setSuppressionList] = useState<Array<{ email: string; reason: string; date: string }>>([
+    { email: 'bounced.test@example.com', reason: 'Hard Bounce (550 User Not Found)', date: 'Today' },
+    { email: 'complaint.user@domain.com', reason: 'Spam Complaint (FBL Report)', date: 'Yesterday' }
+  ]);
+  const [isAddingSuppression, setIsAddingSuppression] = useState(false);
+  const [newSuppressionEmail, setNewSuppressionEmail] = useState('');
+  const [newSuppressionReason, setNewSuppressionReason] = useState('Hard Bounce (550 User Not Found)');
+
+  const handleAddSuppression = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newSuppressionEmail.trim()) {
+      showToast('Please enter an email address', 'error');
+      return;
+    }
+    setSuppressionList(prev => [{ email: newSuppressionEmail.trim(), reason: newSuppressionReason, date: 'Just now' }, ...prev]);
+    showToast(`Added ${newSuppressionEmail} to suppression blacklist`, 'success');
+    setNewSuppressionEmail('');
+    setIsAddingSuppression(false);
+  };
+
+  const handleRemoveSuppression = (email: string) => {
+    setSuppressionList(prev => prev.filter(item => item.email !== email));
+    showToast(`Removed ${email} from blacklist`, 'info');
+  };
+
   // Fetch Live Templates from Backend
   useEffect(() => {
     apiService.get<any>('/api/admin/email/templates')
@@ -371,6 +398,8 @@ const EmailServiceConsolePage: React.FC = () => {
       <PageHeader title="Email Service & Deliverability Command Hub" />
 
       <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 space-y-8">
+        <PlatformOwnershipCard />
+
         {/* Top Header Card */}
         <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-blue-950 text-white rounded-2xl p-6 sm:p-8 shadow-xl border border-indigo-700/30">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
@@ -384,7 +413,7 @@ const EmailServiceConsolePage: React.FC = () => {
                 </span>
               </div>
               <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">Enterprise Email & Deliverability Suite</h1>
-              <p className="text-sm text-slate-700 mt-1 max-w-2xl">
+              <p className="text-sm text-slate-300 mt-1 max-w-2xl font-medium">
                 Self-hosted headless email automation for SuperAdmin, Admin & Back-Office operations. 16 curated open-source categories, cryptographic DNS validation, and IP warm-up reputation protection.
               </p>
             </div>
@@ -392,15 +421,15 @@ const EmailServiceConsolePage: React.FC = () => {
             {/* Quick Metrics */}
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               <div className="bg-white/10 backdrop-blur-md p-3.5 rounded-xl border border-white/10 text-center">
-                <div className="text-[11px] text-slate-700 font-medium">Deliverability Score</div>
+                <div className="text-[11px] text-slate-300 font-medium">Deliverability Score</div>
                 <div className="text-xl font-extrabold text-emerald-400">98/100 A+</div>
               </div>
               <div className="bg-white/10 backdrop-blur-md p-3.5 rounded-xl border border-white/10 text-center">
-                <div className="text-[11px] text-slate-700 font-medium">IP Warm-up Stage</div>
+                <div className="text-[11px] text-slate-300 font-medium">IP Warm-up Stage</div>
                 <div className="text-xl font-extrabold text-amber-400">Week {warmupStatus.current_week}</div>
               </div>
               <div className="bg-white/10 backdrop-blur-md p-3.5 rounded-xl border border-white/10 text-center col-span-2 sm:col-span-1">
-                <div className="text-[11px] text-slate-700 font-medium">Curated Templates</div>
+                <div className="text-[11px] text-slate-300 font-medium">Curated Templates</div>
                 <div className="text-xl font-extrabold text-blue-300">{templates.length} Templates</div>
               </div>
             </div>
@@ -473,54 +502,73 @@ const EmailServiceConsolePage: React.FC = () => {
               </div>
             </div>
 
-            {/* Template Card Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-              {filteredTemplates.map((tpl) => (
-                <div
-                  key={tpl.id}
-                  className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between"
+            {/* Template Card Grid / Empty State */}
+            {filteredTemplates.length === 0 ? (
+              <div className="bg-white rounded-2xl border border-slate-300 p-12 text-center shadow-sm">
+                <FileCode className="w-10 h-10 text-slate-400 mx-auto mb-3" />
+                <h3 className="text-base font-bold text-slate-900 mb-1">No Matching Templates Found</h3>
+                <p className="text-xs text-slate-700 max-w-sm mx-auto mb-4 font-medium">
+                  No templates match &quot;{searchQuery}&quot; under the &quot;{selectedCategory}&quot; category.
+                </p>
+                <button
+                  onClick={() => {
+                    setSearchQuery('');
+                    setSelectedCategory('All');
+                  }}
+                  className="px-4 py-2 text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-sm transition cursor-pointer"
                 >
-                  <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-[11px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">
-                        {tpl.category}
-                      </span>
-                      <span className="text-xs text-slate-700 font-mono">#{tpl.slug}</span>
-                    </div>
-                    <h3 className="text-base font-bold text-slate-900 mb-1.5">{tpl.name}</h3>
-                    <p className="text-xs text-slate-700 font-medium leading-relaxed mb-3">{tpl.description}</p>
-
-                    {/* Variables chips */}
-                    <div className="flex flex-wrap gap-1 mb-4">
-                      {tpl.variables.slice(0, 4).map((v) => (
-                        <span key={v} className="text-[10px] font-mono bg-slate-100 text-slate-800 font-semibold px-1.5 py-0.5 rounded">
-                          {`{{${v}}}`}
+                  Reset Template Filters
+                </button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                {filteredTemplates.map((tpl) => (
+                  <div
+                    key={tpl.id}
+                    className="bg-white rounded-xl border border-slate-300 p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-[11px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">
+                          {tpl.category}
                         </span>
-                      ))}
-                      {tpl.variables.length > 4 && (
-                        <span className="text-[10px] text-slate-700">+{tpl.variables.length - 4} more</span>
-                      )}
+                        <span className="text-xs text-slate-700 font-mono">#{tpl.slug}</span>
+                      </div>
+                      <h3 className="text-base font-bold text-slate-900 mb-1.5">{tpl.name}</h3>
+                      <p className="text-xs text-slate-700 font-medium leading-relaxed mb-3">{tpl.description}</p>
+
+                      {/* Variables chips */}
+                      <div className="flex flex-wrap gap-1 mb-4">
+                        {tpl.variables.slice(0, 4).map((v) => (
+                          <span key={v} className="text-[10px] font-mono bg-slate-100 text-slate-800 font-semibold px-1.5 py-0.5 rounded">
+                            {`{{${v}}}`}
+                          </span>
+                        ))}
+                        {tpl.variables.length > 4 && (
+                          <span className="text-[10px] text-slate-700">+{tpl.variables.length - 4} more</span>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="pt-3 border-t border-slate-200 flex items-center justify-between gap-2">
+                      <button
+                        onClick={() => setPreviewTemplate(tpl)}
+                        className="px-3 py-1.5 text-xs font-semibold text-slate-800 bg-slate-100 hover:bg-slate-200 rounded-lg flex items-center gap-1 transition-colors cursor-pointer"
+                      >
+                        <Eye className="w-3.5 h-3.5" />
+                        Preview
+                      </button>
+                      <button
+                        onClick={() => handleLoadIntoComposer(tpl)}
+                        className="px-3 py-1.5 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-lg flex items-center gap-1 shadow-sm transition-colors cursor-pointer"
+                      >
+                        Use in Composer &rarr;
+                      </button>
                     </div>
                   </div>
-
-                  <div className="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
-                    <button
-                      onClick={() => setPreviewTemplate(tpl)}
-                      className="px-3 py-1.5 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg flex items-center gap-1 transition-colors"
-                    >
-                      <Eye className="w-3.5 h-3.5" />
-                      Preview
-                    </button>
-                    <button
-                      onClick={() => handleLoadIntoComposer(tpl)}
-                      className="px-3 py-1.5 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-lg flex items-center gap-1 shadow-sm transition-colors"
-                    >
-                      Use in Composer &rarr;
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
@@ -885,17 +933,17 @@ const EmailServiceConsolePage: React.FC = () => {
         {/* ==================================================================== */}
         {activeTab === 'suppressions' && (
           <div className="space-y-4">
-            <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
+            <div className="bg-white p-6 rounded-2xl border border-slate-300 shadow-sm space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  <h2 className="text-lg font-bold text-slate-900">Bounce & Suppression Blacklist</h2>
+                  <h2 className="text-lg font-black text-slate-900">Bounce & Suppression Blacklist</h2>
                   <p className="text-xs text-slate-700 font-medium">
                     Protects sender reputation by instantly dropping hard bounces, complaints, and unsubscribes.
                   </p>
                 </div>
                 <button
-                  onClick={() => showToast('Enter email to manually suppress in prompt', 'info')}
-                  className="px-3 py-1.5 bg-slate-900 hover:bg-black text-white text-xs font-bold rounded-lg flex items-center gap-1 self-start sm:self-auto"
+                  onClick={() => setIsAddingSuppression(true)}
+                  className="px-3.5 py-2 bg-slate-900 hover:bg-black text-white text-xs font-bold rounded-xl flex items-center gap-1.5 self-start sm:self-auto shadow-sm cursor-pointer"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   Add Manual Suppression
@@ -905,32 +953,37 @@ const EmailServiceConsolePage: React.FC = () => {
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs border-collapse">
                   <thead>
-                    <tr className="border-b border-slate-200 text-slate-700 uppercase">
+                    <tr className="border-b border-slate-300 text-slate-800 uppercase font-black">
                       <th className="py-2.5 px-3">Suppressed Email</th>
                       <th className="py-2.5 px-3">Reason</th>
                       <th className="py-2.5 px-3">Date Added</th>
                       <th className="py-2.5 px-3 text-right">Action</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100 text-slate-700">
-                    {[
-                      { email: 'bounced.test@example.com', reason: 'Hard Bounce (550 User Not Found)', date: 'Today' },
-                      { email: 'complaint.user@domain.com', reason: 'Spam Complaint (FBL Report)', date: 'Yesterday' }
-                    ].map((row) => (
-                      <tr key={row.email}>
-                        <td className="py-3 px-3 font-mono">{row.email}</td>
-                        <td className="py-3 px-3 text-red-600 font-semibold">{row.reason}</td>
-                        <td className="py-3 px-3 text-slate-800">{row.date}</td>
-                        <td className="py-3 px-3 text-right">
-                          <button
-                            onClick={() => showToast(`Removed ${row.email} from blacklist`, 'info')}
-                            className="text-xs text-slate-700 hover:text-red-600"
-                          >
-                            Remove
-                          </button>
+                  <tbody className="divide-y divide-slate-200 text-slate-700">
+                    {suppressionList.length === 0 ? (
+                      <tr>
+                        <td colSpan={4} className="py-8 text-center text-slate-700 font-medium">
+                          No addresses currently in suppression blacklist.
                         </td>
                       </tr>
-                    ))}
+                    ) : (
+                      suppressionList.map((row) => (
+                        <tr key={row.email}>
+                          <td className="py-3 px-3 font-mono font-bold text-slate-900">{row.email}</td>
+                          <td className="py-3 px-3 text-red-600 font-bold">{row.reason}</td>
+                          <td className="py-3 px-3 text-slate-800 font-medium">{row.date}</td>
+                          <td className="py-3 px-3 text-right">
+                            <button
+                              onClick={() => handleRemoveSuppression(row.email)}
+                              className="text-xs text-red-600 hover:text-red-800 font-bold cursor-pointer hover:underline"
+                            >
+                              Remove
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    )}
                   </tbody>
                 </table>
               </div>
@@ -938,6 +991,68 @@ const EmailServiceConsolePage: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* Modal: Add Manual Suppression */}
+      {isAddingSuppression && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-300 space-y-4">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+              <h3 className="text-base font-black text-slate-900">Add Email Suppression</h3>
+              <button
+                onClick={() => setIsAddingSuppression(false)}
+                className="text-slate-500 hover:text-slate-900 font-bold p-1 cursor-pointer"
+              >
+                &times;
+              </button>
+            </div>
+            <form onSubmit={handleAddSuppression} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
+                  Target Recipient Email *
+                </label>
+                <input
+                  type="email"
+                  value={newSuppressionEmail}
+                  onChange={(e) => setNewSuppressionEmail(e.target.value)}
+                  placeholder="e.g. bounce-test@example.com"
+                  className="w-full px-3 py-2 text-xs font-bold border border-slate-300 rounded-lg text-slate-900 bg-white shadow-sm focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
+                  Suppression Category / Reason
+                </label>
+                <select
+                  value={newSuppressionReason}
+                  onChange={(e) => setNewSuppressionReason(e.target.value)}
+                  className="w-full px-3 py-2 text-xs font-bold border border-slate-300 rounded-lg text-slate-900 bg-white shadow-sm focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="Hard Bounce (550 User Not Found)">Hard Bounce (550 User Not Found)</option>
+                  <option value="Spam Complaint (FBL Report)">Spam Complaint (FBL Report)</option>
+                  <option value="Manual DPO/GDPR Opt-out">Manual DPO/GDPR Opt-out</option>
+                  <option value="Domain MX Inactive">Domain MX Inactive</option>
+                </select>
+              </div>
+              <div className="flex justify-end gap-2 pt-2 border-t border-slate-200">
+                <button
+                  type="button"
+                  onClick={() => setIsAddingSuppression(false)}
+                  className="px-4 py-2 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 text-xs font-bold text-white bg-slate-900 hover:bg-black rounded-lg shadow-sm cursor-pointer"
+                >
+                  Blacklist Email
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* Modal: Template Preview */}
       {previewTemplate && (

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../../contexts/AppContext';
 import { apiService } from '../../services/apiService';
 import { BuildingOfficeIcon, SparklesIcon as MagicWandIcon } from '@heroicons/react/24/solid';
@@ -9,8 +10,10 @@ import CrmMarketingWidget from '../../components/dashboard/crm/CrmMarketingWidge
 import CrmInvoicingWidget from '../../components/dashboard/crm/CrmInvoicingWidget';
 import CrmIntegrationsWidget from '../../components/dashboard/crm/CrmIntegrationsWidget';
 import MainLayout from '../../components/layout/MainLayout';
+import PlatformOwnershipCard from '../../components/dashboard/PlatformOwnershipCard';
 
 const BusinessHubPage: React.FC = () => {
+  const navigate = useNavigate();
   const { openModal, ficBalance, showToast } = useAppContext();
   const [selectedDepartment, setSelectedDepartment] = useState<string>('Finance');
 
@@ -18,7 +21,7 @@ const BusinessHubPage: React.FC = () => {
     try {
       await apiService.post(`/posts/${id}/like`);
       showToast?.('Content liked!', 'success');
-    } catch (err) {
+    } catch {
       showToast?.('Failed to like content', 'error');
     }
   };
@@ -27,7 +30,7 @@ const BusinessHubPage: React.FC = () => {
     try {
       await apiService.post(`/posts/${id}/comments`, { content: comment });
       showToast?.('Comment added!', 'success');
-    } catch (err) {
+    } catch {
       showToast?.('Failed to add comment', 'error');
     }
   };
@@ -44,7 +47,7 @@ const BusinessHubPage: React.FC = () => {
     try {
       await apiService.post(`/posts/${id}/vote`, { direction: vote });
       showToast?.(`Voted ${vote}!`, 'success');
-    } catch (err) {
+    } catch {
       showToast?.('Voting failed', 'error');
     }
   };
@@ -54,7 +57,7 @@ const BusinessHubPage: React.FC = () => {
     try {
       await apiService.delete(`/posts/${id}`);
       showToast?.('Post deleted successfully', 'success');
-    } catch (err) {
+    } catch {
       showToast?.('Failed to delete post', 'error');
     }
   };
@@ -63,7 +66,7 @@ const BusinessHubPage: React.FC = () => {
     try {
       await apiService.post(`/monetization/tokenize`, { postId: id });
       showToast?.('Tokenization initiated!', 'success');
-    } catch (err) {
+    } catch {
       showToast?.('Tokenization failed', 'error');
     }
   };
@@ -72,45 +75,61 @@ const BusinessHubPage: React.FC = () => {
     openModal('aiAssistant', { contextId: id });
   };
 
+  const departments = ['Finance', 'HR', 'Marketing'];
+
   return (
     <MainLayout pageTitle="Business Hub">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="flex items-center">
-            <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-3 rounded-xl">
+            <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-3 rounded-2xl shadow-md">
               <BuildingOfficeIcon className="h-8 w-8 text-white" />
             </div>
             <div className="ml-4">
-              <h1 className="text-3xl font-bold text-gray-900">
-                Business Hub: {selectedDepartment}
+              <h1 className="text-3xl font-black text-slate-900 tracking-tight">
+                Business Hub &amp; ERP Mesh
               </h1>
-              <p className="text-gray-600 mt-1">
-                Your AI-powered business management center
+              <p className="text-slate-700 font-medium text-sm mt-0.5">
+                AI-powered enterprise operations, CRM pipeline, and ledger reconciliation
               </p>
             </div>
           </div>
+
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => openModal('aiAssistant')}
+              className="flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold rounded-xl hover:from-blue-700 hover:to-indigo-700 transition shadow-sm text-xs cursor-pointer"
+            >
+              <MagicWandIcon className="w-4 h-4 mr-2" />
+              <span>Launch AI Advisor</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Platform Ownership Card */}
+        <PlatformOwnershipCard />
+
+        {/* Department Switcher Tabs */}
+        <div className="flex items-center gap-2 border-b border-slate-300 pb-2">
+          <span className="text-xs font-bold text-slate-700 mr-2 uppercase tracking-wide">Department:</span>
+          {departments.map((dept) => (
+            <button
+              key={dept}
+              onClick={() => setSelectedDepartment(dept)}
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer ${
+                selectedDepartment === dept
+                  ? 'bg-blue-600 text-white shadow-sm'
+                  : 'bg-white text-slate-800 border border-slate-300 hover:bg-slate-100'
+              }`}
+            >
+              {dept} Operations
+            </button>
+          ))}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           <div className="lg:col-span-3">
-            <div className="flex justify-between items-start mb-6">
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">
-                  Business Hub: {selectedDepartment}
-                </h1>
-                <p className="text-slate-700 font-medium">
-                  Your AI-powered business management center
-                </p>
-              </div>
-              <button
-                onClick={() => openModal('aiAssistant')}
-                className="flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-colors"
-              >
-                <MagicWandIcon className="w-5 h-5 mr-2" />
-                <span>AI Assistant</span>
-              </button>
-            </div>
-
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {selectedDepartment === 'Finance' && (
                 <>
@@ -143,49 +162,75 @@ const BusinessHubPage: React.FC = () => {
           </div>
 
           <div className="space-y-6">
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100">
-              <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-200 shadow-sm">
+              <h2 className="text-base font-black text-slate-900 mb-3 flex items-center">
                 <BuildingOfficeIcon className="h-5 w-5 text-blue-600 mr-2" />
-                Your FIC Balance
+                Enterprise Treasury
               </h2>
               <div className="flex items-center justify-between">
-                <span className="text-2xl font-bold text-gray-900">{ficBalance.toFixed(2)} FIC</span>
-                <button className="text-sm bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-3 py-1.5 rounded-lg hover:from-blue-700 hover:to-indigo-700">
-                  Add Funds
+                <span className="text-2xl font-black text-slate-900">{ficBalance.toFixed(2)} FIC</span>
+                <button
+                  onClick={() => navigate('/financials/wallet')}
+                  className="text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white px-3.5 py-1.5 rounded-lg shadow-sm cursor-pointer"
+                >
+                  Manage Wallet
+                </button>
+              </div>
+              <p className="text-[11px] text-slate-700 font-bold mt-2 font-mono">
+                Parity: 1 FIC = ₦100.00 NGN (Active Settlement)
+              </p>
+            </div>
+
+            <div className="bg-white rounded-2xl shadow-sm p-6 border border-slate-300">
+              <h2 className="text-base font-black text-slate-900 mb-4">Enterprise Shortcuts</h2>
+              <div className="space-y-2.5">
+                <button
+                  onClick={() => setSelectedDepartment('Marketing')}
+                  className="w-full text-left px-4 py-3 bg-slate-50 hover:bg-blue-50 border border-slate-200 rounded-xl transition flex items-center justify-between text-xs font-bold text-slate-800 cursor-pointer"
+                >
+                  <span className="flex items-center">
+                    <BuildingOfficeIcon className="h-4 w-4 text-blue-600 mr-2.5" />
+                    CRM Pipeline &amp; Contacts
+                  </span>
+                  <span className="text-slate-400">→</span>
+                </button>
+                <button
+                  onClick={() => navigate('/dashboard/finance')}
+                  className="w-full text-left px-4 py-3 bg-slate-50 hover:bg-blue-50 border border-slate-200 rounded-xl transition flex items-center justify-between text-xs font-bold text-slate-800 cursor-pointer"
+                >
+                  <span className="flex items-center">
+                    <BuildingOfficeIcon className="h-4 w-4 text-emerald-600 mr-2.5" />
+                    Treasury &amp; Financial Reports
+                  </span>
+                  <span className="text-slate-400">→</span>
+                </button>
+                <button
+                  onClick={() => setSelectedDepartment('HR')}
+                  className="w-full text-left px-4 py-3 bg-slate-50 hover:bg-blue-50 border border-slate-200 rounded-xl transition flex items-center justify-between text-xs font-bold text-slate-800 cursor-pointer"
+                >
+                  <span className="flex items-center">
+                    <BuildingOfficeIcon className="h-4 w-4 text-purple-600 mr-2.5" />
+                    HR Roster &amp; Payroll
+                  </span>
+                  <span className="text-slate-400">→</span>
                 </button>
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl shadow-md p-6 border border-slate-300">
-              <h2 className="text-lg font-bold text-gray-900 mb-4">Business Actions</h2>
-              <div className="space-y-3">
-                <button className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-blue-50 hover:to-indigo-50 transition-colors flex items-center">
-                  <BuildingOfficeIcon className="h-5 w-5 text-blue-600 mr-3" />
-                  Manage CRM
-                </button>
-                <button className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-blue-50 hover:to-indigo-50 transition-colors flex items-center">
-                  Financial Reports
-                </button>
-                <button className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-blue-50 hover:to-indigo-50 transition-colors flex items-center">
-                  HR Management
-                </button>
-              </div>
-            </div>
-
-            <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-6 border border-amber-100">
-              <h3 className="font-bold text-gray-900 mb-2">Business Tips</h3>
-              <ul className="space-y-2 text-sm text-gray-700">
+            <div className="bg-slate-50 rounded-2xl p-6 border border-slate-300">
+              <h3 className="font-black text-slate-900 mb-2 text-sm">ERP Operational Checklist</h3>
+              <ul className="space-y-2 text-xs text-slate-700 font-medium">
                 <li className="flex items-start">
-                  <span className="text-amber-500 mr-2">✓</span>
-                  <span>Automate routine tasks</span>
+                  <span className="text-emerald-600 mr-2 font-bold">✓</span>
+                  <span>Double-entry ledger auto-reconciles at midnight</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-amber-500 mr-2">✓</span>
-                  <span>Track key metrics</span>
+                  <span className="text-emerald-600 mr-2 font-bold">✓</span>
+                  <span>POS terminals report hourly transaction volume</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-amber-500 mr-2">✓</span>
-                  <span>Integrate systems</span>
+                  <span className="text-emerald-600 mr-2 font-bold">✓</span>
+                  <span>WORM cryptographic audit logging active</span>
                 </li>
               </ul>
             </div>

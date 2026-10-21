@@ -3,6 +3,7 @@ import { useParams, NavLink } from 'react-router-dom';
 import { useAppContext } from '../../contexts/AppContext';
 import { advertisingService, CampaignAnalyticsData } from '../../services/advertisingService';
 import LoadingSpinner from '../../components/LoadingSpinner';
+import PlatformOwnershipCard from '../../components/dashboard/PlatformOwnershipCard';
 
 const DashboardCampaignDetailPage: React.FC = () => {
   const { campaignId, id } = useParams<{ campaignId?: string; id?: string }>();
@@ -88,62 +89,64 @@ const DashboardCampaignDetailPage: React.FC = () => {
   const campaignTitle = analytics.campaign?.title || analytics.campaign?.name || 'Campaign Details';
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 space-y-6">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-6 max-w-7xl mx-auto">
       <NavLink
         to="/dashboard/campaigns"
-        className="text-sm font-semibold text-blue-600 hover:underline inline-flex items-center gap-1"
+        className="text-xs font-bold text-blue-600 hover:text-blue-800 inline-flex items-center gap-1 hover:underline cursor-pointer"
       >
-        &larr; Back to Campaigns
+        &larr; Back to Campaigns Management
       </NavLink>
 
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+      <PlatformOwnershipCard />
+
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">{campaignTitle}</h1>
-          <p className="text-xs font-mono text-slate-600 font-medium">ID: {effectiveId}</p>
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">{campaignTitle}</h1>
+          <p className="text-xs font-mono text-slate-700 font-bold mt-0.5">Campaign ID: {effectiveId}</p>
         </div>
         <span
-          className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${
+          className={`px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider border ${
             analytics.campaign?.status === 'active'
-              ? 'bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold'
-              : 'bg-amber-100 text-emerald-950 border border-emerald-400 font-bold'
-          } font-black`}
+              ? 'bg-emerald-100 text-emerald-950 border-emerald-400'
+              : 'bg-amber-100 text-amber-950 border-amber-400'
+          }`}
         >
           {analytics.campaign?.status || 'Active'}
         </span>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-          <h3 className="font-bold text-sm text-slate-700 uppercase tracking-wider">Total Reach</h3>
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-300">
+          <h3 className="font-black text-xs text-slate-800 uppercase tracking-wider">Total Reach</h3>
           <p className="text-3xl font-black text-slate-900 mt-2">
             {(analytics.reach?.total || 0).toLocaleString()}
           </p>
-          <p className="text-xs text-emerald-600 font-semibold mt-1">Verified Member Impressions</p>
+          <p className="text-xs text-emerald-800 font-bold mt-1">Verified Member Impressions</p>
         </div>
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-          <h3 className="font-bold text-sm text-slate-700 uppercase tracking-wider">Total Engagement</h3>
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-300">
+          <h3 className="font-black text-xs text-slate-800 uppercase tracking-wider">Total Engagement</h3>
           <p className="text-3xl font-black text-slate-900 mt-2">
             {(analytics.engagement?.total || 0).toLocaleString()}
           </p>
-          <p className="text-xs text-blue-600 font-semibold mt-1">Direct Clicks & Actions</p>
+          <p className="text-xs text-blue-800 font-bold mt-1">Direct Clicks &amp; Actions</p>
         </div>
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-          <h3 className="font-bold text-sm text-slate-700 uppercase tracking-wider">Total Spend</h3>
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-300">
+          <h3 className="font-black text-xs text-slate-800 uppercase tracking-wider">Total Spend</h3>
           <p className="text-3xl font-black text-slate-900 mt-2">
             {(analytics.spend?.total || 0).toLocaleString()} FIC
           </p>
-          <p className="text-xs text-slate-700 font-semibold mt-1">Accredited Escrow Spend</p>
+          <p className="text-xs text-slate-700 font-bold mt-1">Accredited Escrow Spend</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-          <h3 className="text-lg font-bold text-slate-900 mb-4">Daily Reach (Past 7 Days)</h3>
-          <BarChart data={analytics.reach?.data || []} color="bg-blue-500" />
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-300">
+          <h3 className="text-base font-black text-slate-900 mb-4">Daily Reach (Past 7 Days)</h3>
+          <BarChart data={analytics.reach?.data || []} color="bg-blue-600" />
         </div>
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-          <h3 className="text-lg font-bold text-slate-900 mb-4">Daily Engagement (Past 7 Days)</h3>
-          <BarChart data={analytics.engagement?.data || []} color="bg-emerald-500" />
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-300">
+          <h3 className="text-base font-black text-slate-900 mb-4">Daily Engagement (Past 7 Days)</h3>
+          <BarChart data={analytics.engagement?.data || []} color="bg-emerald-600" />
         </div>
       </div>
     </div>

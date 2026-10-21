@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../../contexts/AppContext';
 import { advertisingService, AdCampaignItem } from '../../services/advertisingService';
 import PartnerHouseWidget from '../../components/dashboard/PartnerHouseWidget';
+import PlatformOwnershipCard from '../../components/dashboard/PlatformOwnershipCard';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { MegaphoneIcon, PlusIcon, SparklesIcon } from '../../icons';
 
@@ -42,40 +43,42 @@ const DashboardAdvertisingPage: React.FC = () => {
   };
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 space-y-6">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-6 max-w-7xl mx-auto">
+      <PlatformOwnershipCard />
+
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">Advertising Management</h1>
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">Advertising Management</h1>
           <p className="text-slate-700 font-medium text-sm mt-1">Manage active campaigns, monitor budgets, and configure ad networks</p>
         </div>
         <div className="flex items-center gap-3">
           <button
             onClick={() => navigate('/canary-ad-maker')}
-            className="px-4 py-2 bg-gradient-to-r from-amber-500 to-yellow-500 hover:brightness-105 text-slate-950 font-bold rounded-xl shadow-sm text-sm flex items-center gap-2"
+            className="px-4 py-2 bg-gradient-to-r from-amber-500 to-yellow-500 hover:brightness-105 text-slate-950 font-black rounded-xl shadow-sm text-xs sm:text-sm flex items-center gap-2 cursor-pointer"
           >
             <SparklesIcon className="w-4 h-4" /> Canary Studio
           </button>
           <button
             onClick={() => navigate('/campaigns')}
-            className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-sm text-sm flex items-center gap-2"
+            className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-sm text-xs sm:text-sm flex items-center gap-2 cursor-pointer"
           >
             <PlusIcon className="w-4 h-4" /> Launch Campaign
           </button>
         </div>
       </div>
 
-      <div className="mb-8">
+      <div className="mb-6">
         <PartnerHouseWidget />
       </div>
 
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-        <div className="p-6 border-b border-slate-100 flex justify-between items-center">
-          <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+      <div className="bg-white rounded-2xl shadow-sm border border-slate-300 overflow-hidden">
+        <div className="p-6 border-b border-slate-200 flex justify-between items-center">
+          <h2 className="text-lg font-black text-slate-900 flex items-center gap-2">
             <MegaphoneIcon className="w-5 h-5 text-indigo-600" /> All Platform Campaigns
           </h2>
           <button
             onClick={() => fetchCampaigns()}
-            className="text-xs font-semibold text-indigo-600 hover:text-indigo-800"
+            className="text-xs font-bold text-indigo-600 hover:text-indigo-800 cursor-pointer"
           >
             Refresh List
           </button>
@@ -87,13 +90,13 @@ const DashboardAdvertisingPage: React.FC = () => {
           </div>
         ) : campaigns.length === 0 ? (
           <div className="py-16 text-center text-slate-700 font-medium">
-            <p className="font-semibold text-base text-slate-900">No advertising campaigns running</p>
+            <p className="font-black text-base text-slate-900">No advertising campaigns running</p>
             <p className="text-sm text-slate-700 mt-1">Create a campaign to start delivering ads across FingerMobile channels.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left">
-              <thead className="bg-slate-50 border-b border-slate-200 text-slate-600">
+              <thead className="bg-slate-50 border-b border-slate-300 text-slate-800 font-black">
                 <tr>
                   <th className="p-4 font-bold text-xs uppercase tracking-wider">Campaign</th>
                   <th className="p-4 font-bold text-xs uppercase tracking-wider">Format</th>
@@ -104,7 +107,7 @@ const DashboardAdvertisingPage: React.FC = () => {
                   <th className="p-4 font-bold text-xs uppercase tracking-wider text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-slate-200">
                 {campaigns.map((campaign) => {
                   const targeting = campaign.targeting || {};
                   return (
@@ -114,30 +117,30 @@ const DashboardAdvertisingPage: React.FC = () => {
                     >
                       <td className="p-4">
                         <p className="text-sm font-bold text-slate-900">{campaign.title || campaign.name}</p>
-                        <p className="text-xs font-mono text-slate-700">{campaign.id}</p>
+                        <p className="text-xs font-mono text-slate-700 font-semibold">{campaign.id}</p>
                       </td>
-                      <td className="p-4 text-xs font-medium text-slate-600 uppercase">
+                      <td className="p-4 text-xs font-bold text-slate-800 uppercase">
                         {campaign.campaign_type || campaign.type || 'Display'}
                       </td>
-                      <td className="p-4 text-xs text-slate-600">
-                        <p><strong>Geo:</strong> {targeting.geo || 'Global'}</p>
-                        <p><strong>Age:</strong> {targeting.age || 'All Ages'}</p>
+                      <td className="p-4 text-xs text-slate-700 font-medium">
+                        <p><strong className="text-slate-900">Geo:</strong> {targeting.geo || 'Global'}</p>
+                        <p><strong className="text-slate-900">Age:</strong> {targeting.age || 'All Ages'}</p>
                         {Array.isArray(targeting.interests) && targeting.interests.length > 0 && (
-                          <p><strong>Interests:</strong> {targeting.interests.join(', ')}</p>
+                          <p><strong className="text-slate-900">Interests:</strong> {targeting.interests.join(', ')}</p>
                         )}
                       </td>
-                      <td className="p-4 text-sm font-semibold text-slate-800">
+                      <td className="p-4 text-sm font-mono font-bold text-slate-900">
                         {campaign.budget ? `${campaign.budget} FIC` : `${campaign.total_budget || 0} FIC`}
                       </td>
                       <td className="p-4">
                         <span
-                          className={`inline-flex px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${
+                          className={`inline-flex px-2.5 py-1 rounded-full text-xs font-black uppercase tracking-wider border ${
                             campaign.status === 'active'
-                              ? 'bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold'
+                              ? 'bg-emerald-100 text-emerald-950 border-emerald-400'
                               : campaign.status === 'paused'
-                                ? 'bg-amber-100 text-emerald-950 border border-emerald-400 font-bold'
-                                : 'bg-slate-100 text-emerald-950'
-                          }font-black`}
+                                ? 'bg-amber-100 text-amber-950 border-amber-400'
+                                : 'bg-slate-100 text-slate-900 border-slate-300'
+                          }`}
                         >
                           {campaign.status}
                         </span>
@@ -152,16 +155,16 @@ const DashboardAdvertisingPage: React.FC = () => {
                       <td className="p-4 text-right space-x-2">
                         <button
                           onClick={() => navigate(`/campaigns/${campaign.id}`)}
-                          className="px-3 py-1 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg text-xs font-bold transition-colors"
+                          className="px-3 py-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-800 border border-indigo-200 rounded-lg text-xs font-bold transition-colors cursor-pointer"
                         >
                           View
                         </button>
                         <button
                           onClick={() => handleToggleStatus(campaign)}
-                          className={`px-3 py-1 rounded-lg text-xs font-bold transition-colors ${
+                          className={`px-3 py-1 rounded-lg text-xs font-bold transition-colors cursor-pointer border ${
                             campaign.status === 'active'
-                              ? 'bg-amber-50 text-amber-700 hover:bg-amber-100'
-                              : 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100'
+                              ? 'bg-amber-50 text-amber-900 border-amber-300 hover:bg-amber-100'
+                              : 'bg-emerald-50 text-emerald-900 border-emerald-300 hover:bg-emerald-100'
                           }`}
                         >
                           {campaign.status === 'active' ? 'Pause' : 'Activate'}

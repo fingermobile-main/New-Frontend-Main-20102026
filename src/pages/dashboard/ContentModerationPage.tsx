@@ -13,6 +13,7 @@ import { motion } from 'framer-motion';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '../../components/ui/Select';
 import { moderationAdminService, ModerationQueueItem } from '../../services/moderationAdminService';
 import { useAppContext } from '../../contexts/AppContext';
+import PlatformOwnershipCard from '../../components/dashboard/PlatformOwnershipCard';
 
 interface ModerationItem {
   id: string;
@@ -110,32 +111,34 @@ const ContentModerationPage: React.FC = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className="p-6"
+      className="p-6 space-y-6 max-w-7xl mx-auto"
     >
-      <div className="mb-8">
-        <div className="flex justify-between items-start">
+      <PlatformOwnershipCard />
+
+      <div className="mb-2">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-slate-900">Content Moderation</h1>
-            <p className="text-slate-700 mt-2">Review and moderate reported content</p>
+            <h1 className="text-3xl font-black text-slate-900 tracking-tight">Content Moderation Console</h1>
+            <p className="text-sm font-semibold text-slate-700 mt-1">Review, adjudicate, and moderate reported protocol content</p>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 w-full md:w-auto">
             <button
               onClick={loadData}
               disabled={loading}
-              className="flex items-center gap-2 px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium text-slate-800 hover:bg-slate-50 disabled:opacity-50"
+              className="flex items-center gap-2 px-3.5 py-2 bg-white border border-slate-300 rounded-xl text-sm font-bold text-slate-800 hover:bg-slate-50 disabled:opacity-50 cursor-pointer shadow-sm"
             >
               <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin text-blue-600' : ''}`} />
               Refresh
             </button>
-            <div className="relative">
+            <div className="relative flex-1 md:w-64">
               <input
                 type="text"
                 placeholder="Search by content or ID..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 pr-4 py-2 bg-white text-slate-900 font-bold border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
+                className="w-full pl-10 pr-4 py-2 bg-white text-slate-900 font-bold border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-slate-500 shadow-sm"
               />
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-slate-600 absolute left-3 top-2.5" viewBox="0 0 20 20" fill="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-slate-600 absolute left-3.5 top-3" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
               </svg>
             </div>
@@ -144,54 +147,54 @@ const ContentModerationPage: React.FC = () => {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <div className="bg-white rounded-lg shadow p-6">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
           <div className="flex items-center justify-between">
             <div className="p-3 rounded-lg bg-amber-100 border border-amber-400">
               <Clock className="w-6 h-6 text-amber-950" />
             </div>
-            <span className="text-2xl font-bold text-slate-800">{pendingItems.length}</span>
+            <span className="text-2xl font-black text-slate-900">{pendingItems.length}</span>
           </div>
-          <p className="text-sm text-slate-700 mt-2">Pending Review</p>
+          <p className="text-xs font-bold uppercase tracking-wider text-slate-700 mt-2">Pending Review</p>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
           <div className="flex items-center justify-between">
             <div className="p-3 rounded-lg bg-emerald-100 border border-emerald-400">
               <CheckCircle className="w-6 h-6 text-emerald-950" />
             </div>
-            <span className="text-2xl font-bold text-slate-800">{approvedCount}</span>
+            <span className="text-2xl font-black text-slate-900">{approvedCount}</span>
           </div>
-          <p className="text-sm text-slate-700 mt-2">Approved</p>
+          <p className="text-xs font-bold uppercase tracking-wider text-slate-700 mt-2">Approved</p>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
           <div className="flex items-center justify-between">
-            <div className="p-3 rounded-lg bg-red-100 border border-red-400">
-              <XCircle className="w-6 h-6 text-red-950" />
+            <div className="p-3 rounded-lg bg-rose-100 border border-rose-400">
+              <XCircle className="w-6 h-6 text-rose-950" />
             </div>
-            <span className="text-2xl font-bold text-slate-800">{rejectedCount}</span>
+            <span className="text-2xl font-black text-slate-900">{rejectedCount}</span>
           </div>
-          <p className="text-sm text-slate-700 mt-2">Rejected</p>
+          <p className="text-xs font-bold uppercase tracking-wider text-slate-700 mt-2">Rejected</p>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
           <div className="flex items-center justify-between">
             <div className="p-3 rounded-lg bg-blue-100 border border-blue-400">
               <Eye className="w-6 h-6 text-blue-950" />
             </div>
-            <span className="text-2xl font-bold text-slate-800">{moderationQueue.length}</span>
+            <span className="text-2xl font-black text-slate-900">{moderationQueue.length}</span>
           </div>
-          <p className="text-sm text-slate-700 mt-2">Total Reports</p>
+          <p className="text-xs font-bold uppercase tracking-wider text-slate-700 mt-2">Total Reports</p>
         </div>
       </div>
 
       {/* Moderation Queue */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-1">
-          <div className="bg-white rounded-lg shadow">
-            <div className="p-6 border-b border-slate-300">
-              <h2 className="text-xl font-semibold text-slate-900">Moderation Queue</h2>
+          <div className="bg-white rounded-xl shadow-sm border border-slate-300 overflow-hidden">
+            <div className="p-5 border-b border-slate-300 bg-slate-50/50">
+              <h2 className="text-lg font-black text-slate-900">Moderation Queue</h2>
             </div>
 
             <div className="p-4 border-b border-slate-300">
@@ -284,17 +287,17 @@ const ContentModerationPage: React.FC = () => {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.2 }}
-              className="bg-white rounded-lg shadow"
+              className="bg-white rounded-xl shadow-sm border border-slate-300 overflow-hidden"
             >
-              <div className="p-6 border-b border-slate-300">
+              <div className="p-6 border-b border-slate-300 bg-slate-50/50">
                 <div className="flex justify-between items-center">
-                  <h2 className="text-xl font-semibold text-slate-900">Report Details</h2>
-                  <span className={`text-sm px-3 py-1 rounded-full ${
+                  <h2 className="text-xl font-black text-slate-900">Report Details</h2>
+                  <span className={`text-xs px-3 py-1 rounded-full ${
                     selectedItem.status === 'pending'
-                      ? 'bg-amber-100 text-amber-950 border border-amber-400 font-black'
+                      ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
                       : selectedItem.status === 'approved'
-                        ? 'bg-emerald-100 text-emerald-950 border border-emerald-400 font-black'
-                        : 'bg-red-100 text-red-950 border border-red-400 font-black'
+                        ? 'bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold'
+                        : 'bg-rose-100 text-rose-950 border border-rose-400 font-bold'
                   }`}>
                     {selectedItem.status.charAt(0).toUpperCase() + selectedItem.status.slice(1)}
                   </span>
@@ -304,40 +307,40 @@ const ContentModerationPage: React.FC = () => {
               <div className="p-6 space-y-6">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <p className="text-sm text-slate-700">Report ID</p>
-                    <p className="text-slate-800 font-medium">{selectedItem.id}</p>
+                    <p className="text-xs font-bold uppercase tracking-wider text-slate-700">Report ID</p>
+                    <p className="text-slate-900 font-bold mt-0.5">{selectedItem.id}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-slate-700">Type</p>
-                    <p className="text-slate-800 font-medium capitalize">{selectedItem.type}</p>
+                    <p className="text-xs font-bold uppercase tracking-wider text-slate-700">Type</p>
+                    <p className="text-slate-900 font-bold capitalize mt-0.5">{selectedItem.type}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-slate-700">Status</p>
-                    <p className="text-slate-800 font-medium capitalize">{selectedItem.status}</p>
+                    <p className="text-xs font-bold uppercase tracking-wider text-slate-700">Status</p>
+                    <p className="text-slate-900 font-bold capitalize mt-0.5">{selectedItem.status}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-slate-700">Reported By</p>
-                    <p className="text-slate-800 font-medium">{selectedItem.reportedBy}</p>
+                    <p className="text-xs font-bold uppercase tracking-wider text-slate-700">Reported By</p>
+                    <p className="text-slate-900 font-bold mt-0.5">{selectedItem.reportedBy}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-slate-700">Date Reported</p>
-                    <p className="text-slate-800 font-medium">
+                    <p className="text-xs font-bold uppercase tracking-wider text-slate-700">Date Reported</p>
+                    <p className="text-slate-900 font-bold mt-0.5">
                       {new Date(selectedItem.timestamp).toLocaleString()}
                     </p>
                   </div>
                 </div>
 
                 <div>
-                  <p className="text-sm text-slate-700 mb-2">Reported Content</p>
-                  <div className="bg-slate-50 p-4 rounded-lg border border-slate-300">
-                    <p className="text-slate-800">{selectedItem.content}</p>
+                  <p className="text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Reported Content</p>
+                  <div className="bg-slate-50 p-4 rounded-xl border border-slate-300">
+                    <p className="text-slate-900 font-semibold">{selectedItem.content}</p>
                   </div>
                 </div>
 
                 <div>
-                  <p className="text-sm text-slate-700 mb-2">Reason for Report</p>
-                  <div className="bg-slate-50 p-4 rounded-lg border border-slate-300">
-                    <p className="text-slate-800">{selectedItem.reason}</p>
+                  <p className="text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Reason for Report</p>
+                  <div className="bg-slate-50 p-4 rounded-xl border border-slate-300">
+                    <p className="text-slate-900 font-semibold">{selectedItem.reason}</p>
                   </div>
                 </div>
 
@@ -345,10 +348,10 @@ const ContentModerationPage: React.FC = () => {
                   <button
                     onClick={() => handleApprove(selectedItem.id)}
                     disabled={selectedItem.status !== 'pending' || processingId === selectedItem.id}
-                    className={`flex-1 py-2 px-4 rounded-md font-medium flex items-center justify-center gap-2
+                    className={`flex-1 py-2.5 px-4 rounded-xl font-bold flex items-center justify-center gap-2 cursor-pointer shadow-sm
                       ${selectedItem.status === 'pending'
-              ? 'bg-emerald-700 hover:bg-emerald-800 text-white'
-              : 'bg-emerald-100 text-emerald-950 border border-emerald-400 font-black cursor-not-allowed'
+              ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
+              : 'bg-emerald-100 text-emerald-950 border border-emerald-400 cursor-not-allowed opacity-75'
             }`}
                   >
                     {processingId === selectedItem.id ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
@@ -357,10 +360,10 @@ const ContentModerationPage: React.FC = () => {
                   <button
                     onClick={() => handleReject(selectedItem.id)}
                     disabled={selectedItem.status !== 'pending' || processingId === selectedItem.id}
-                    className={`flex-1 py-2 px-4 rounded-md font-medium flex items-center justify-center gap-2
+                    className={`flex-1 py-2.5 px-4 rounded-xl font-bold flex items-center justify-center gap-2 cursor-pointer shadow-sm
                       ${selectedItem.status === 'pending'
-              ? 'bg-red-700 hover:bg-red-800 text-white'
-              : 'bg-red-100 text-red-950 border border-red-400 font-black cursor-not-allowed'
+              ? 'bg-rose-600 hover:bg-rose-700 text-white'
+              : 'bg-rose-100 text-rose-950 border border-rose-400 cursor-not-allowed opacity-75'
             }`}
                   >
                     {processingId === selectedItem.id ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
@@ -370,11 +373,11 @@ const ContentModerationPage: React.FC = () => {
               </div>
             </motion.div>
           ) : (
-            <div className="bg-white rounded-lg shadow h-full flex items-center justify-center p-12">
+            <div className="bg-white rounded-xl shadow-sm border border-slate-300 h-full flex items-center justify-center p-12">
               <div className="text-center">
-                <Shield className="w-16 h-16 mx-auto mb-4 text-slate-700" />
-                <h3 className="text-lg font-medium text-slate-900 mb-1">No content selected</h3>
-                <p className="text-slate-700">Select an item from the queue to view details</p>
+                <Shield className="w-16 h-16 mx-auto mb-4 text-slate-600" />
+                <h3 className="text-lg font-black text-slate-900 mb-1">No content selected</h3>
+                <p className="text-sm font-semibold text-slate-700">Select an item from the queue to view details</p>
               </div>
             </div>
           )}
