@@ -381,6 +381,7 @@ export interface FeedTaggedProduct {
 // Fallback Forum Posts
 interface FeedPost {
   id: string;
+  rawId?: string;
   title: string;
   content: string;
   authorName: string;
@@ -965,7 +966,7 @@ export const ForumPage: React.FC = () => {
   const [activeSubNav, setActiveSubNav] = useState<string>('home');
   const [feedMode] = useState<'for_you' | 'following' | 'recent' | 'trending'>('for_you');
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>('all');
-  const [editorialMode, setEditorialMode] = useState<'curated' | 'all'>('curated');
+  const [editorialMode, setEditorialMode] = useState<'curated' | 'all'>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState<boolean>(false);
   const [isLogoViewerOpen, setIsLogoViewerOpen] = useState<boolean>(false);
@@ -1305,10 +1306,17 @@ export const ForumPage: React.FC = () => {
     if (selectedCategoryId !== 'all' && filteredPosts.length === 0) {
       list = categorySeedPosts;
     }
+    // Real PostgreSQL persisted posts (posts with rawId) always stay prioritized at the top of the feed
+    const dbPosts = list.filter((p) => !!p.rawId);
+    const otherPosts = list.filter((p) => !p.rawId);
+
     if (editorialMode === 'curated') {
-      return [...list].sort((a, b) => (b.likesCount + b.commentsCount) - (a.likesCount + a.commentsCount));
+      const sortedOthers = [...otherPosts].sort(
+        (a, b) => (b.likesCount + b.commentsCount) - (a.likesCount + a.commentsCount)
+      );
+      return [...dbPosts, ...sortedOthers];
     }
-    return list;
+    return [...dbPosts, ...otherPosts];
   }, [selectedCategoryId, filteredPosts, categorySeedPosts, editorialMode]);
 
   // Markdown Inserter
