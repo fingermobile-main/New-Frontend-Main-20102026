@@ -116,13 +116,10 @@ function containsSensitiveInfo(filePath) {
   try {
     const content = fs.readFileSync(filePath, 'utf8');
     const sensitivePatterns = [
-      /password\s*[:=]\s*["'][^"']*["']/gi,
-      /secret\s*[:=]\s*["'][^"']*["']/gi,
-      /token\s*[:=]\s*["'][^"']*["']/gi,
-      /key\s*[:=]\s*["'][^"']*["']/gi,
-      /api_key\s*[:=]\s*["'][^"']*["']/gi,
-      /access_token\s*[:=]\s*["'][^"']*["']/gi,
-      /client_secret\s*[:=]\s*["'][^"']*["']/gi
+      /(?:password|passwd|pwd)\s*[:=]\s*["'][^"']{6,}["']/gi,
+      /(?:secret_key|client_secret|api_secret|app_secret|private_key)\s*[:=]\s*["'][^"']{6,}["']/gi,
+      /(?:bearer\s+[a-zA-Z0-9_\-\.]{20,})/gi,
+      /(?:api_key|access_token|auth_token)\s*[:=]\s*["'][a-zA-Z0-9_\-\.]{10,}["']/gi
     ];
     
     for (const pattern of sensitivePatterns) {
