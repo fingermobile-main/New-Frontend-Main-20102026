@@ -85,29 +85,33 @@ const CommunitiesPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Communities">
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-6">Communities</h1>
-        <p className="text-gray-600">Discover and join communities that match your interests.</p>
+      <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="mb-8">
+          <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Communities Hub</h1>
+          <p className="text-slate-700 text-base mt-2 font-medium">Discover, collaborate, and join thriving communities across music, technology, creative arts, and Web3.</p>
+        </div>
 
         {loading ? (
-          <div className="mt-8 text-center py-12">Loading communities...</div>
+          <div className="mt-8 text-center py-12 text-slate-700 font-semibold">Loading communities...</div>
         ) : (
           <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {communities.map((community) => (
-              <div key={community.id} className="bg-white p-6 rounded-lg shadow border border-slate-200 hover:shadow-md transition-shadow">
-                <h3 className="font-semibold text-lg text-gray-900">{community.name}</h3>
-                <p className="text-gray-600 mt-2 line-clamp-3">{community.description}</p>
-                <div className="mt-4 pt-4 border-t border-slate-200 flex justify-between items-center">
-                  <span className="text-sm text-slate-700">
-                    {community.memberCount ? `${community.memberCount.toLocaleString()} members` : 'New Community'}
+              <div key={community.id} className="bg-white p-6 rounded-xl shadow-sm border border-slate-300 hover:shadow-md transition-shadow flex flex-col justify-between">
+                <div>
+                  <h3 className="font-bold text-lg text-slate-900">{community.name}</h3>
+                  <p className="text-slate-700 mt-2 line-clamp-3 text-sm leading-relaxed">{community.description}</p>
+                </div>
+                <div className="mt-6 pt-4 border-t border-slate-200 flex justify-between items-center">
+                  <span className="text-xs font-semibold text-slate-700 uppercase tracking-wider">
+                    {community.memberCount ? `${community.memberCount.toLocaleString()} members` : 'Active Community'}
                   </span>
                   <button
                     onClick={() => handleJoin(community.id)}
-                    className={`text-sm font-medium px-4 py-1.5 rounded-full transition-colors ${
+                    className={`text-sm font-bold px-4 py-1.5 rounded-full transition-colors ${
                       joinedMap[community.id]
-                        ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
-                        : 'bg-blue-50 text-green-950 hover:bg-blue-100'
-                    }font-black`}
+                        ? 'bg-emerald-100 text-emerald-950 border border-emerald-400'
+                        : 'bg-blue-600 text-white hover:bg-blue-700'
+                    }`}
                   >
                     {joinedMap[community.id] ? 'Joined' : 'Join'}
                   </button>
@@ -115,7 +119,7 @@ const CommunitiesPage: React.FC = () => {
               </div>
             ))}
             {communities.length === 0 && (
-              <div className="col-span-full text-center py-12 text-slate-700 font-medium">
+              <div className="col-span-full text-center py-12 text-slate-700 font-semibold border border-dashed border-slate-300 rounded-xl bg-slate-50">
                 No communities found. Check back later!
               </div>
             )}

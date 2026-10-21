@@ -15,15 +15,15 @@ const ConferencePage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Conference">
-      <div className="max-w-7xl mx-auto px-4 py-6 h-[calc(100vh-5rem)] flex flex-col">
+      <div className="max-w-[1536px] 2xl:max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 h-[calc(100vh-5rem)] flex flex-col">
         {!isInMeeting ? (
           <div className="flex-1 flex items-center justify-center">
             <div className="bg-white p-8 rounded-3xl border border-slate-300 shadow-xl max-w-md w-full text-center">
               <div className="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <VideoCameraIcon className="w-8 h-8" />
               </div>
-              <h2 className="text-2xl font-black text-gray-900 mb-2">FingerMobile Video Meeting</h2>
-              <p className="text-xs text-slate-700 mb-6">Enter a room code or start an instant WebRTC conference call</p>
+              <h2 className="text-2xl font-black text-slate-900 mb-2">FingerMobile Video Meeting</h2>
+              <p className="text-sm font-medium text-slate-700 mb-6">Enter a room code or start an instant WebRTC conference call</p>
 
               <div className="space-y-3">
                 <input

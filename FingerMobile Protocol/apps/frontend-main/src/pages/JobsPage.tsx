@@ -112,12 +112,12 @@ const JobsPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Jobs & Careers">
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="max-w-[1536px] 2xl:max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Banner */}
         <div className="bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-800 rounded-2xl p-8 text-white mb-8 shadow-lg">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div>
-              <span className="text-xs uppercase tracking-wider font-semibold px-3 py-1 rounded-full bg-white/20 text-slate-700 mb-3 inline-block">
+              <span className="text-xs uppercase tracking-wider font-bold px-3 py-1 rounded-full bg-white/20 text-blue-100 mb-3 inline-block">
                 FingerMobile Careers & Opportunities
               </span>
               <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">
