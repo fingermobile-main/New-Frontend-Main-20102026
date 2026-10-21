@@ -2417,12 +2417,12 @@ const MasterDashboardPage: React.FC = () => {
       )}
 
       {/* Header */}
-      <header className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <header className="bg-white shadow border-b border-slate-200">
+        <div className="max-w-[1536px] 2xl:max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center">
-              <Grid3X3 className="h-8 w-8 text-blue-500 shrink-0" />
-              <h1 className="text-2xl font-bold text-gray-900 ml-3">
+              <Grid3X3 className="h-8 w-8 text-blue-600 shrink-0" />
+              <h1 className="text-2xl font-black text-slate-900 ml-3 tracking-tight">
                 Master Dashboard
               </h1>
               <span className="ml-3 inline-flex items-center px-3 py-1 rounded-full text-xs bg-blue-100 text-blue-950 border border-blue-400 font-black">
@@ -2494,7 +2494,7 @@ const MasterDashboardPage: React.FC = () => {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-[1536px] 2xl:max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Permanent Platform Ownership & Master Control Authority Seal */}
         <PlatformOwnershipCard />
 

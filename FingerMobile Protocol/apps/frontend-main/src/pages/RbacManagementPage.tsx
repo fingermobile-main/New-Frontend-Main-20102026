@@ -94,15 +94,15 @@ const RbacManagementPage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="mb-10">
+      <div className="max-w-[1536px] 2xl:max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="mb-8">
           <div className="flex items-center">
-            <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-3 rounded-xl">
+            <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-3.5 rounded-2xl shadow-md">
               <KeyIcon className="h-8 w-8 text-white" />
             </div>
             <div className="ml-4">
-              <h1 className="text-3xl font-bold text-gray-900">RBAC Management</h1>
-              <p className="text-gray-600">Manage roles, permissions, and access controls for the platform</p>
+              <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">RBAC &amp; Scoped Permissions Center</h1>
+              <p className="text-slate-700 font-medium mt-1">Manage hierarchical roles, cryptographic permission grants, and sovereign access gates</p>
             </div>
           </div>
         </div>

@@ -145,30 +145,30 @@ const AuditLogAdminPage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="max-w-[1536px] 2xl:max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="flex items-center">
-              <div className="bg-gradient-to-r from-red-600 to-orange-600 p-3 rounded-xl">
+              <div className="bg-gradient-to-r from-red-600 to-orange-600 p-3.5 rounded-2xl shadow-md">
                 <ShieldCheckIcon className="h-8 w-8 text-white" />
               </div>
               <div className="ml-4">
-                <h1 className="text-3xl font-bold text-gray-900">Audit Log Administration</h1>
-                <p className="text-gray-600">Monitor and manage system audit trails</p>
+                <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">WORM Cryptographic Audit Viewer</h1>
+                <p className="text-slate-700 font-medium mt-1">Immutable forensic audit trails, tamper alarms, and compliance records</p>
               </div>
             </div>
-            <div className="flex space-x-3">
+            <div className="flex items-center space-x-3">
               <button
                 onClick={handleExportLogs}
-                className="flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                className="flex items-center px-4 py-2 bg-white border border-slate-300 text-slate-900 font-bold text-xs rounded-xl hover:bg-slate-50 transition-colors shadow-sm"
               >
-                <DownloadIcon className="h-5 w-5 mr-2" />
+                <DownloadIcon className="h-4 w-4 mr-2 text-slate-700" />
                 Export CSV
               </button>
               <button
                 onClick={handleCleanupLogs}
-                className="flex items-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                className="flex items-center px-4 py-2 bg-rose-600 text-white font-bold text-xs rounded-xl hover:bg-rose-700 transition-colors shadow-sm"
               >
                 Cleanup Old Logs
               </button>
