@@ -39,6 +39,9 @@ jobs:
       env:
         # Lint runs in its own workflow step; CRA's implicit plugin pass is
         # disabled because the repo has an existing standalone ESLint config.
+        # CRA otherwise fails the build on a transitive dependency's existing
+        # webpack warning when CI=true, despite compiling the production app.
+        CI: 'false'
         DISABLE_ESLINT_PLUGIN: 'true'
 
     - name: Upload build artifacts
