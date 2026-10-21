@@ -98,18 +98,18 @@ const ModerationQueuePage: React.FC = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="container mx-auto px-4 py-8"
+        className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8"
       >
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-800">Moderation Queue</h1>
-          <p className="text-gray-600 mt-2">Review and manage reported content</p>
+          <h1 className="text-3xl font-black text-slate-900 tracking-tight">Moderation Queue</h1>
+          <p className="text-slate-700 font-medium mt-2">Review and manage reported content across the platform</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-1">
-            <Card>
+            <Card className="border border-slate-300 shadow-sm bg-white">
               <CardHeader>
-                <CardTitle>Pending Items ({filteredItems.length})</CardTitle>
+                <CardTitle className="text-lg font-bold text-slate-900">Pending Items ({filteredItems.length})</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4 max-h-[500px] overflow-y-auto pr-2">
@@ -151,27 +151,27 @@ const ModerationQueuePage: React.FC = () => {
 
           <div className="lg:col-span-2">
             {selectedItem ? (
-              <Card>
+              <Card className="border border-slate-300 shadow-sm bg-white">
                 <CardHeader>
-                  <CardTitle>Content Review</CardTitle>
+                  <CardTitle className="text-lg font-bold text-slate-900">Content Review</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="text-sm font-medium text-gray-700">Item ID</label>
-                        <p className="text-gray-900">{selectedItem.id}</p>
+                        <label className="text-sm font-semibold text-slate-700">Item ID</label>
+                        <p className="text-slate-900 font-mono text-sm mt-0.5">{selectedItem.id}</p>
                       </div>
                       <div>
-                        <label className="text-sm font-medium text-gray-700">Type</label>
-                        <p className="text-gray-900 capitalize">{selectedItem.type}</p>
+                        <label className="text-sm font-semibold text-slate-700">Type</label>
+                        <p className="text-slate-900 font-medium capitalize mt-0.5">{selectedItem.type}</p>
                       </div>
                       <div>
-                        <label className="text-sm font-medium text-gray-700">Category</label>
-                        <p className="text-gray-900 capitalize">{selectedItem.category.replace('-', ' ')}</p>
+                        <label className="text-sm font-semibold text-slate-700">Category</label>
+                        <p className="text-slate-900 font-medium capitalize mt-0.5">{selectedItem.category.replace('-', ' ')}</p>
                       </div>
                       <div>
-                        <label className="text-sm font-medium text-gray-700">Status</label>
+                        <label className="text-sm font-semibold text-slate-700">Status</label>
                         <Badge variant={
                           selectedItem.status === 'pending' ? 'default' :
                             selectedItem.status === 'reviewed' ? 'secondary' :
