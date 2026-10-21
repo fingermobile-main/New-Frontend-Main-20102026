@@ -16,6 +16,7 @@ interface GemSubmission {
 }
 
 import moderationAdminService from '../../../services/moderationAdminService';
+import PlatformOwnershipCard from '../../../components/dashboard/PlatformOwnershipCard';
 
 const GemApprovalPage: React.FC = () => {
   const { showToast } = useAppContext();
@@ -93,51 +94,62 @@ const GemApprovalPage: React.FC = () => {
   };
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-6">Gem Award & Approval Queue</h1>
+    <div className="p-6 max-w-5xl mx-auto space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-black text-slate-900 tracking-tight">Gem Award &amp; Approval Queue</h1>
+          <p className="text-sm text-slate-700 font-medium mt-1">
+            Review merit-based contributor gem allocations and community achievement grants
+          </p>
+        </div>
+        <span className="px-3 py-1 rounded-full text-xs font-bold bg-purple-100 text-purple-950 border border-purple-400 self-start sm:self-auto">
+          {submissions.length} Pending Grants
+        </span>
+      </div>
+
+      <PlatformOwnershipCard />
+
       {submissions.length > 0 ? (
         <div className="space-y-4">
           {submissions.map((sub) => (
-            <div key={sub.id} className="bg-white p-5 rounded-xl border border-slate-300 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div key={sub.id} className="bg-white p-5 rounded-xl border border-slate-300 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="font-bold text-gray-900 text-lg">{sub.title}</span>
-                  <span className="px-2 py-0.5 text-xs font-semibold bg-purple-100 text-purple-950 border border-purple-400 font-bold rounded-full font-black">
+                  <span className="font-black text-slate-900 text-base">{sub.title}</span>
+                  <span className="px-2.5 py-0.5 text-xs font-bold bg-purple-100 text-purple-950 border border-purple-400 rounded-full">
                     💎 {sub.gemAmount} Gems
                   </span>
                 </div>
-                <p className="text-sm text-slate-700 mt-0.5">
-                  Requested for <strong className="text-gray-700">{sub.userName}</strong> (@{sub.userHandle}) &middot; {sub.submittedAt}
+                <p className="text-xs text-slate-700 font-medium mt-1">
+                  Requested for <span className="text-slate-900 font-bold">{sub.userName}</span> (@{sub.userHandle}) &middot; {sub.submittedAt}
                 </p>
-                <p className="text-sm text-gray-600 mt-2 bg-gray-50 p-2.5 rounded-lg border border-slate-200">
+                <p className="text-xs text-slate-800 font-medium mt-2.5 bg-slate-50 p-3 rounded-lg border border-slate-200">
                   {sub.reason}
                 </p>
               </div>
-              <div className="flex items-center gap-2 self-end sm:self-center">
+              <div className="flex items-center gap-2.5 shrink-0 self-end md:self-center">
                 <button
                   onClick={() => handleReject(sub)}
                   disabled={processingId === sub.id}
-                  className="p-2 text-red-500 hover:bg-red-50 rounded-full transition-colors disabled:opacity-50"
-                  title="Reject"
+                  className="px-4 py-2 text-xs font-bold bg-rose-50 text-rose-950 border border-rose-300 hover:bg-rose-100 rounded-lg transition-colors disabled:opacity-50 cursor-pointer"
                 >
-                  <XCircleIcon className="w-6 h-6" />
+                  Reject Request
                 </button>
                 <button
                   onClick={() => handleApprove(sub)}
                   disabled={processingId === sub.id}
-                  className="p-2 text-green-600 hover:bg-green-50 rounded-full transition-colors disabled:opacity-50"
-                  title="Approve & Award Gems"
+                  className="px-4 py-2 text-xs font-bold bg-emerald-600 text-white hover:bg-emerald-700 rounded-lg shadow-sm transition-colors disabled:opacity-50 cursor-pointer"
                 >
-                  <CheckCircleIcon className="w-6 h-6" />
+                  Approve &amp; Award
                 </button>
               </div>
             </div>
           ))}
         </div>
       ) : (
-        <div className="text-center text-slate-700 py-12 bg-white rounded-xl shadow-md border">
-          <p className="font-semibold text-gray-700">The approval queue is empty.</p>
-          <p className="text-sm text-slate-700 mt-1">All gem reward submissions have been processed.</p>
+        <div className="text-center py-16 bg-white rounded-xl border border-dashed border-slate-300">
+          <p className="font-black text-slate-900 text-base">The gem approval queue is empty</p>
+          <p className="text-sm text-slate-700 font-medium mt-1">All gem reward submissions have been processed.</p>
         </div>
       )}
     </div>

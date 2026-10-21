@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { adminOperationsService, SystemHealthNode } from '../../services/adminOperationsService';
 import { useAppContext } from '../../contexts/AppContext';
+import PlatformOwnershipCard from '../../components/dashboard/PlatformOwnershipCard';
 
 const PlatformStatusPage: React.FC = () => {
   const { showToast } = useAppContext();
@@ -39,31 +40,33 @@ const PlatformStatusPage: React.FC = () => {
   const getStatusBadge = (status: string) => {
     switch (status) {
     case 'healthy':
-      return <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-950 border border-green-400 font-bold dark:bg-green-900/30 dark:text-green-400 font-black">Operational</span>;
+      return <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-950 border border-emerald-400">Operational</span>;
     case 'degraded':
-      return <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-950 border border-amber-400 font-bold dark:bg-yellow-900/30 dark:text-yellow-400 font-black">Degraded</span>;
+      return <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-950 border border-amber-400">Degraded</span>;
     case 'offline':
-      return <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-100 text-red-950 border border-red-400 font-bold dark:bg-red-900/30 dark:text-red-400 font-black">Offline</span>;
+      return <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-100 text-rose-950 border border-rose-400">Offline</span>;
     default:
-      return <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-gray-100 text-gray-950 dark:bg-gray-800 dark:text-gray-300 border border-gray-400 font-black">Maintenance</span>;
+      return <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-900 border border-slate-400">Maintenance</span>;
     }
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
-      <div className="flex justify-between items-center mb-6">
+    <div className="p-6 max-w-7xl mx-auto space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-black text-slate-900 dark:text-white">Platform Operations & Node Status</h1>
-          <p className="text-sm text-slate-700 dark:text-gray-300 mt-1 font-medium">Live PostgreSQL-backed cluster telemetry and service heartbeats</p>
+          <h1 className="text-3xl font-black text-slate-900 tracking-tight">Platform Operations &amp; Node Status</h1>
+          <p className="text-sm text-slate-700 mt-1 font-medium">Live PostgreSQL-backed cluster telemetry, node latency and service heartbeats</p>
         </div>
         <button
           onClick={handleRefresh}
           disabled={loading}
-          className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold transition shadow-sm text-sm"
+          className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold transition shadow-sm text-sm cursor-pointer disabled:opacity-50"
         >
           {loading ? 'Polling Nodes...' : 'Run Diagnostics'}
         </button>
       </div>
+
+      <PlatformOwnershipCard />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {nodes.map((node) => (
