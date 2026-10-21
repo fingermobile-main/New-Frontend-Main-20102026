@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { useAppContext } from '../../contexts/AppContext';
 import apiService from '../../services/apiService';
 import PageHeader from '../../components/PageHeader';
+import PlatformOwnershipCard from '../../components/dashboard/PlatformOwnershipCard';
 import AnimatedAvatar from '../../components/AnimatedAvatar';
 import { NIGERIAN_BANKS } from '../../constants';
 import { CreditCard, Landmark, ArrowDownRight, Clock, CheckCircle2, AlertCircle, Sparkles } from 'lucide-react';
@@ -122,8 +123,8 @@ const PaymentPayoutsPage: React.FC = () => {
               isCompleted
                 ? 'bg-emerald-100 text-emerald-950 border-emerald-400'
                 : isPending
-                ? 'bg-amber-100 text-emerald-950 border-emerald-400'
-                : 'bg-red-100 text-emerald-950 border-emerald-400'
+                ? 'bg-amber-100 text-amber-950 border-amber-400'
+                : 'bg-rose-100 text-rose-950 border-rose-400'
             }`}
           >
             {request.status}
@@ -155,6 +156,8 @@ const PaymentPayoutsPage: React.FC = () => {
 
   return (
     <div className="p-6 lg:p-8 space-y-8 text-slate-900 max-w-7xl mx-auto">
+      <PlatformOwnershipCard />
+
       {/* Header Banner */}
       <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-300 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-6">
         <div className="flex items-start gap-4">

@@ -722,6 +722,7 @@ export const routes: RouteObject[] = [
               { path: '/governance', element: <GovernancePage /> },
               { path: '/published', element: <PublishedPage /> },
               { path: '/communitymanagement', element: <CommunityManagementPage /> },
+              { path: '/community/management', element: <CommunityManagementPage /> },
               // Master Dashboard & Framework Consoles Direct Access
               { path: '/member-pages', element: <MyPages /> },
               { path: '/contacts', element: <ContactsPage /> },
@@ -845,7 +846,10 @@ export const routes: RouteObject[] = [
                   { path: '/business/offices', element: redirectTo('/businessoffices') },
                   { path: '/businessoffices', element: <BusinessOfficesPage /> },
                   { path: '/admin/franchise', element: redirectTo('/franchisemanagement') },
+                  { path: '/franchise', element: <FranchiseManagementPage /> },
+                  { path: '/franchise/:id', element: <FranchiseManagementPage /> },
                   { path: '/franchisemanagement', element: <FranchiseManagementPage /> },
+                  { path: '/franchisemanagement/:id', element: <FranchiseManagementPage /> },
                   { path: '/organizethese', element: <OrganizeThesePage /> },
                   { path: '/permanence', element: <PermanencePage /> },
                 ],

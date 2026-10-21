@@ -3,6 +3,7 @@ import { useAppContext } from '../../contexts/AppContext';
 import type { PayoutRequest, PayoutData } from '../../types';
 import { NIGERIAN_BANKS } from '../../constants';
 import AnimatedAvatar from '../../components/AnimatedAvatar';
+import PlatformOwnershipCard from '../../components/dashboard/PlatformOwnershipCard';
 import { apiService } from '../../services/apiService';
 
 const PayoutsPage: React.FC = () => {
@@ -174,117 +175,121 @@ const PayoutsPage: React.FC = () => {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      {/* Left Column: Form */}
-      <div className="lg:col-span-1">
-        <div className="bg-white border border-slate-300 p-6 rounded-2xl shadow-sm sticky top-24">
-          <h2 className="text-xl font-black text-slate-900 mb-4">Initiate Manual Payout</h2>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
-                Member ID
-              </label>
-              <input
-                type="text"
-                value={memberId}
-                onChange={(e) => setmemberId(e.target.value)}
-                className="w-full px-3 py-2 border border-slate-300 bg-white text-slate-900 font-bold rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-blue placeholder:text-slate-400"
-                placeholder="Enter member ID"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
-                Amount (FIC)
-              </label>
-              <input
-                type="number"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                className="w-full px-3 py-2 border border-slate-300 bg-white text-slate-900 font-bold rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-blue placeholder:text-slate-400 font-mono"
-                placeholder="e.g. 500"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
-                Bank
-              </label>
-              <select
-                value={bankName}
-                onChange={(e) => setBankName(e.target.value)}
-                className="w-full px-3 py-2 border border-slate-300 bg-white text-slate-900 font-bold rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-blue"
-              >
-                {NIGERIAN_BANKS.map((bank) => (
-                  <option key={bank.code} value={bank.name}>
-                    {bank.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
-                Account Number
-              </label>
-              <input
-                type="text"
-                maxLength={10}
-                value={accountNumber}
-                onChange={(e) => setAccountNumber(e.target.value.replace(/\D/g, ''))}
-                className="w-full px-3 py-2 border border-slate-300 bg-white text-slate-900 font-mono font-bold rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-blue placeholder:text-slate-400"
-                placeholder="0123456789"
-                required
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full py-2.5 font-bold text-sm bg-brand-blue text-white rounded-lg hover:bg-blue-700 shadow-sm transition-colors cursor-pointer"
-            >
-              Create Payout Request
-            </button>
-          </form>
-        </div>
-      </div>
+    <div className="space-y-8">
+      <PlatformOwnershipCard />
 
-      {/* Right Column: Lists */}
-      <div className="lg:col-span-2 space-y-8">
-        <div>
-          <h2 className="text-xl font-black text-slate-900 mb-4">
-            Pending Requests ({pendingRequests.length})
-          </h2>
-          {pendingRequests.length > 0 ? (
-            <div className="space-y-4">
-              {pendingRequests.map((req: PayoutRequest) => (
-                <PayoutRequestCard
-                  key={req.id}
-                  request={req}
-                  isPending={true}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Left Column: Form */}
+        <div className="lg:col-span-1">
+          <div className="bg-white border border-slate-300 p-6 rounded-2xl shadow-sm sticky top-24">
+            <h2 className="text-xl font-black text-slate-900 mb-4">Initiate Manual Payout</h2>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
+                  Member ID
+                </label>
+                <input
+                  type="text"
+                  value={memberId}
+                  onChange={(e) => setmemberId(e.target.value)}
+                  className="w-full px-3 py-2 border border-slate-300 bg-white text-slate-900 font-bold rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-blue placeholder:text-slate-400"
+                  placeholder="Enter member ID"
+                  required
                 />
-              ))}
-            </div>
-          ) : (
-            <p className="text-slate-700 text-sm bg-white border border-slate-300 p-6 rounded-xl text-center font-medium shadow-sm">
-              No pending payout requests.
-            </p>
-          )}
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
+                  Amount (FIC)
+                </label>
+                <input
+                  type="number"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  className="w-full px-3 py-2 border border-slate-300 bg-white text-slate-900 font-bold rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-blue placeholder:text-slate-400 font-mono"
+                  placeholder="e.g. 500"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
+                  Bank
+                </label>
+                <select
+                  value={bankName}
+                  onChange={(e) => setBankName(e.target.value)}
+                  className="w-full px-3 py-2 border border-slate-300 bg-white text-slate-900 font-bold rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-blue"
+                >
+                  {NIGERIAN_BANKS.map((bank) => (
+                    <option key={bank.code} value={bank.name}>
+                      {bank.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
+                  Account Number
+                </label>
+                <input
+                  type="text"
+                  maxLength={10}
+                  value={accountNumber}
+                  onChange={(e) => setAccountNumber(e.target.value.replace(/\D/g, ''))}
+                  className="w-full px-3 py-2 border border-slate-300 bg-white text-slate-900 font-mono font-bold rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-blue placeholder:text-slate-400"
+                  placeholder="0123456789"
+                  required
+                />
+              </div>
+              <button
+                type="submit"
+                className="w-full py-2.5 font-bold text-sm bg-brand-blue text-white rounded-lg hover:bg-blue-700 shadow-sm transition-colors cursor-pointer"
+              >
+                Create Payout Request
+              </button>
+            </form>
+          </div>
         </div>
-        <div>
-          <h2 className="text-xl font-black text-slate-900 mb-4">Payout History</h2>
-          {processedRequests.length > 0 ? (
-            <div className="space-y-4">
-              {processedRequests.map((req: PayoutRequest) => (
-                <PayoutRequestCard
-                  key={req.id}
-                  request={req}
-                  isPending={false}
-                />
-              ))}
-            </div>
-          ) : (
-            <p className="text-slate-700 text-sm bg-white border border-slate-300 p-6 rounded-xl text-center font-medium shadow-sm">
-              No processed payouts yet.
-            </p>
-          )}
+
+        {/* Right Column: Lists */}
+        <div className="lg:col-span-2 space-y-8">
+          <div>
+            <h2 className="text-xl font-black text-slate-900 mb-4">
+              Pending Requests ({pendingRequests.length})
+            </h2>
+            {pendingRequests.length > 0 ? (
+              <div className="space-y-4">
+                {pendingRequests.map((req: PayoutRequest) => (
+                  <PayoutRequestCard
+                    key={req.id}
+                    request={req}
+                    isPending={true}
+                  />
+                ))}
+              </div>
+            ) : (
+              <p className="text-slate-700 text-sm bg-white border border-slate-300 p-6 rounded-xl text-center font-medium shadow-sm">
+                No pending payout requests.
+              </p>
+            )}
+          </div>
+          <div>
+            <h2 className="text-xl font-black text-slate-900 mb-4">Payout History</h2>
+            {processedRequests.length > 0 ? (
+              <div className="space-y-4">
+                {processedRequests.map((req: PayoutRequest) => (
+                  <PayoutRequestCard
+                    key={req.id}
+                    request={req}
+                    isPending={false}
+                  />
+                ))}
+              </div>
+            ) : (
+              <p className="text-slate-700 text-sm bg-white border border-slate-300 p-6 rounded-xl text-center font-medium shadow-sm">
+                No processed payouts yet.
+              </p>
+            )}
+          </div>
         </div>
       </div>
     </div>
