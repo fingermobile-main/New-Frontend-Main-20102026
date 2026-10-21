@@ -50,4 +50,14 @@ module.exports = function(app) {
       secure: false,
     })
   );
+
+  // Proxy Prometheus and telemetry metrics
+  app.use(
+    '/metrics',
+    createProxyMiddleware({
+      target: backendTarget,
+      changeOrigin: true,
+      secure: false,
+    })
+  );
 };

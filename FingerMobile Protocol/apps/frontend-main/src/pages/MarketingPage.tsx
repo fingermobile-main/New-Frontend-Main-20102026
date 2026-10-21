@@ -30,7 +30,7 @@ const MarketingPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Marketing Hub">
-      <div className="max-w-7xl mx-auto px-4 py-8 animate-in fade-in slide-in-from-bottom-4 duration-700 space-y-8">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 py-8 animate-in fade-in slide-in-from-bottom-4 duration-700 space-y-8">
 
         {/* Hero header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-gradient-to-r from-indigo-900 via-indigo-800 to-slate-900 p-8 rounded-3xl text-white shadow-xl">

@@ -68,6 +68,9 @@ const catalogRoutes = require('./catalogRoutes');
 const franchisesRoutes = require('./franchisesRoutes');
 const spendCapsRoutes = require('./spendCaps'); // Add spend caps routes
 const accountInactivityRoutes = require('./accountInactivity');
+const campaignsRoutes = require('./campaigns');
+const marketingRoutes = require('./marketing');
+const metricsRoutes = require('./metrics');
 const voicelinesRoutes = require('./voicelines');
 const emojiRoutes = require('./emojis');
 const voicefeedRoutes = require('./voicefeed');
@@ -201,7 +204,8 @@ router.use('/gallery', tributRoutes);
 router.use('/canary', canaryRoutes);
 router.use('/canary-ads', canaryRoutes);
 router.use('/ads', canaryRoutes);
-router.use('/campaigns', canaryRoutes);
+router.use('/campaigns', campaignsRoutes);
+router.use('/marketing', marketingRoutes);
 router.use('/events', eventsRoutes);
 router.use('/storefront', storefrontRoutes);
 router.use('/storefronts', storefrontRoutes);
@@ -259,6 +263,7 @@ router.use('/v1/video-translation', videoTranslationRoutes);
 router.use('/giftcards', giftcardsRoutes);
 router.use('/gifting', giftcardsRoutes);
 router.use('/advancedgifting', giftcardsRoutes);
+router.use('/metrics', metricsRoutes);
 
 // Health check endpoint
 router.get('/health', (req, res) => {

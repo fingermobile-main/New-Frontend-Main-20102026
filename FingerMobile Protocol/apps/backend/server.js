@@ -297,6 +297,11 @@ app.use('/auth', sensitiveLimiter, oauth2Routes);
 // Static uploads directory serving
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// Metrics & Prometheus Telemetry
+const metricsRoutes = require('./routes/metrics');
+app.use('/metrics', metricsRoutes);
+app.use('/api/metrics', metricsRoutes);
+
 // Main Unified API Routes (mounted after auth/biometric to prevent catch-all interception)
 app.use('/api', apiRoutes);
 

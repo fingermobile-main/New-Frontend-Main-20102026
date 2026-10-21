@@ -34,8 +34,8 @@ const PrometheusMetricsPage: React.FC = () => {
   const fetchMetrics = async () => {
     try {
       setLoading(true);
-      const res = await fetch('/metrics');
-      if (res.ok) {
+      const res = await (fetch('/api/metrics').then(r => r.ok ? r : fetch('/metrics')).catch(() => fetch('/metrics')));
+      if (res && res.ok) {
         const text = await res.text();
         const parsed: MetricData[] = [];
         const lines = text.split('\n');
@@ -115,17 +115,17 @@ const PrometheusMetricsPage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <div className="bg-gradient-to-r from-orange-600 to-red-600 p-3 rounded-xl">
+              <div className="bg-gradient-to-r from-orange-600 to-red-600 p-3 rounded-xl shadow-md">
                 <ChartBarIcon className="h-8 w-8 text-white" />
               </div>
               <div className="ml-4">
-                <h1 className="text-3xl font-bold text-gray-900">Prometheus Metrics</h1>
-                <p className="text-gray-600">Explore and query system metrics using PromQL</p>
+                <h1 className="text-3xl font-black text-slate-900 tracking-tight">Prometheus Metrics</h1>
+                <p className="text-slate-700 font-medium">Explore and query system metrics using PromQL</p>
               </div>
             </div>
             <button

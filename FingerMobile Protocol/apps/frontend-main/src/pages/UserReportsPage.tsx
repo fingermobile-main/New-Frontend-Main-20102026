@@ -95,15 +95,15 @@ const UserReportsPage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 py-8">
         <div className="mb-10">
           <div className="flex items-center">
             <div className="bg-gradient-to-r from-red-600 to-orange-600 p-3 rounded-xl">
               <ShieldExclamationIcon className="h-8 w-8 text-white" />
             </div>
             <div className="ml-4">
-              <h1 className="text-3xl font-bold text-gray-900">User Reports</h1>
-              <p className="text-gray-600">Manage and review user-reported accounts and content</p>
+              <h1 className="text-3xl font-bold text-slate-900">User Reports</h1>
+              <p className="text-slate-700 font-medium">Manage and review user-reported accounts and content</p>
             </div>
           </div>
         </div>

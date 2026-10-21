@@ -56,7 +56,7 @@ const MonitoringDashboardPage: React.FC = () => {
   const fetchMetrics = async () => {
     try {
       setLoading(true);
-      const res = await fetch('/metrics').catch(() => null);
+      const res = await (fetch('/api/metrics').then(r => r.ok ? r : fetch('/metrics')).catch(() => fetch('/metrics').catch(() => null)));
       let activeConns = 14;
       let durationSec = 0.018;
 
@@ -132,7 +132,7 @@ const MonitoringDashboardPage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
