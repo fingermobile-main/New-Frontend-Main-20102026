@@ -1,0 +1,8 @@
+{
+    "camera": {},
+    "bokeh": {
+        "samples": 16
+    },
+    "scene": "test_bokeh",
+    "version": "2.0.0"
+}

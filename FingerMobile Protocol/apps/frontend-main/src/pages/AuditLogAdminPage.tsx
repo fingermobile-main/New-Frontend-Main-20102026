@@ -1,0 +1,388 @@
+import React, { useEffect, useState } from 'react';
+import MainLayout from '../components/layout/MainLayout';
+import PlatformOwnershipCard from '../components/dashboard/PlatformOwnershipCard';
+import { useAppContext } from '../contexts/AppContext';
+import {
+  ShieldCheckIcon,
+  // eslint-disable-next-line no-unused-vars
+  MagnifyingGlassIcon,
+  // eslint-disable-next-line no-unused-vars
+  ArrowPathIcon,
+  ClockIcon,
+  DownloadIcon,
+  FunnelIcon,
+  ExclamationTriangleIcon,
+  UserCircleIcon,
+  DocumentTextIcon
+} from '../icons';
+
+import { api } from '../services/api';
+
+interface AuditLog {
+  id: string;
+  userId: string;
+  username: string;
+  action: string;
+  resourceType: string;
+  resourceId: string;
+  ipAddress: string;
+  timestamp: string;
+  details?: Record<string, unknown>;
+}
+
+const AuditLogAdminPage: React.FC = () => {
+  const { showToast } = useAppContext();
+  const [logs, setLogs] = useState<AuditLog[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [filters, setFilters] = useState({
+    dateFrom: '',
+    dateTo: '',
+    user: '',
+    action: '',
+    resourceType: ''
+  });
+  const [stats, setStats] = useState({
+    totalLogs: 0,
+    todayLogs: 0,
+    uniqueUsers: 0,
+    topActions: [] as string[]
+  });
+
+  useEffect(() => {
+    fetchAuditLogs();
+    fetchStats();
+  }, [filters]);
+
+  const fetchAuditLogs = async () => {
+    try {
+      setLoading(true);
+      const res = await api.get('/admin/audit-logs', {
+        params: {
+          startDate: filters.dateFrom || undefined,
+          endDate: filters.dateTo || undefined,
+          action: filters.action || undefined,
+          resource_type: filters.resourceType || undefined,
+          limit: 50
+        }
+      });
+      const data = res.data?.logs || [];
+      const mapped: AuditLog[] = data.map((l: any) => ({
+        id: String(l.id),
+        userId: String(l.user_id || 'system'),
+        username: l.user_id ? `User #${String(l.user_id).slice(0, 8)}` : 'System Agent',
+        action: l.action || 'LOG_ENTRY',
+        resourceType: l.resource_type || 'system',
+        resourceId: String(l.resource_id || l.id),
+        ipAddress: l.ip_address || '127.0.0.1',
+        timestamp: l.created_at || new Date().toISOString(),
+        details: l.details || (l.metadata ? l.metadata : undefined)
+      }));
+      setLogs(mapped);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Failed to fetch audit logs:', error);
+      showToast('Failed to load audit logs from database', 'error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchStats = async () => {
+    try {
+      const res = await api.get('/admin/audit-logs/stats');
+      const data = res.data;
+      if (data) {
+        const topActions = (data.byAction || []).map((a: any) => a.action).slice(0, 3);
+        const todayLogs = (data.timeline || []).slice(-1)[0]?.count || 0;
+        setStats({
+          totalLogs: data.totalLogs || 0,
+          todayLogs: parseInt(todayLogs, 10) || 0,
+          uniqueUsers: (data.byAction || []).length || 0,
+          topActions: topActions.length > 0 ? topActions : ['SYSTEM_AUDIT']
+        });
+      }
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error('Failed to fetch stats:', e);
+    }
+  };
+
+  const handleExportLogs = () => {
+    const csvContent = [
+      ['ID', 'User', 'Action', 'Resource Type', 'IP Address', 'Timestamp'].join(','),
+      ...logs.map(log => [
+        log.id,
+        log.username,
+        log.action,
+        log.resourceType,
+        log.ipAddress,
+        new Date(log.timestamp).toISOString()
+      ].join(','))
+    ].join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `audit-logs-${new Date().toISOString()}.csv`;
+    a.click();
+    window.URL.revokeObjectURL(url);
+    showToast('Audit logs exported successfully', 'success');
+  };
+
+  const handleCleanupLogs = async () => {
+    if (confirm('Are you sure you want to delete logs older than 90 days? This action cannot be undone.')) {
+      try {
+        await api.delete('/admin/audit-logs/cleanup');
+        showToast('Old logs cleaned up successfully', 'success');
+        fetchAuditLogs();
+        fetchStats();
+      } catch (err: any) {
+        showToast(err.message || 'Cleanup job scheduled.', 'info');
+      }
+    }
+  };
+
+  return (
+    <MainLayout>
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        {/* Header */}
+        <div className="mb-8">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <div className="bg-gradient-to-r from-red-600 to-orange-600 p-3 rounded-xl">
+                <ShieldCheckIcon className="h-8 w-8 text-white" />
+              </div>
+              <div className="ml-4">
+                <h1 className="text-3xl font-bold text-gray-900">Audit Log Administration</h1>
+                <p className="text-gray-600">Monitor and manage system audit trails</p>
+              </div>
+            </div>
+            <div className="flex space-x-3">
+              <button
+                onClick={handleExportLogs}
+                className="flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                <DownloadIcon className="h-5 w-5 mr-2" />
+                Export CSV
+              </button>
+              <button
+                onClick={handleCleanupLogs}
+                className="flex items-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+              >
+                Cleanup Old Logs
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Statistics Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <div className="bg-white rounded-xl shadow-lg p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Total Logs</p>
+                <p className="text-3xl font-bold text-gray-900 mt-2">{stats.totalLogs.toLocaleString()}</p>
+              </div>
+              <DocumentTextIcon className="h-10 w-10 text-blue-500" />
+            </div>
+          </div>
+          <div className="bg-white rounded-xl shadow-lg p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Today's Logs</p>
+                <p className="text-3xl font-bold text-gray-900 mt-2">{stats.todayLogs.toLocaleString()}</p>
+              </div>
+              <ClockIcon className="h-10 w-10 text-green-500" />
+            </div>
+          </div>
+          <div className="bg-white rounded-xl shadow-lg p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Unique Users</p>
+                <p className="text-3xl font-bold text-gray-900 mt-2">{stats.uniqueUsers}</p>
+              </div>
+              <UserCircleIcon className="h-10 w-10 text-purple-500" />
+            </div>
+          </div>
+          <div className="bg-white rounded-xl shadow-lg p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Top Action</p>
+                <p className="text-lg font-bold text-gray-900 mt-2">{stats.topActions[0]}</p>
+              </div>
+              <ExclamationTriangleIcon className="h-10 w-10 text-orange-500" />
+            </div>
+          </div>
+        </div>
+
+        {/* Filters */}
+        <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
+          <div className="flex items-center space-x-2 mb-4">
+            <FunnelIcon className="h-5 w-5 text-slate-700" />
+            <h3 className="text-lg font-semibold text-gray-900">Advanced Filters</h3>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Date From</label>
+              <input
+                type="date"
+                value={filters.dateFrom}
+                onChange={(e) => setFilters({ ...filters, dateFrom: e.target.value })}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Date To</label>
+              <input
+                type="date"
+                value={filters.dateTo}
+                onChange={(e) => setFilters({ ...filters, dateTo: e.target.value })}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Username</label>
+              <input
+                type="text"
+                value={filters.user}
+                onChange={(e) => setFilters({ ...filters, user: e.target.value })}
+                placeholder="Search user..."
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Action</label>
+              <select
+                value={filters.action}
+                onChange={(e) => setFilters({ ...filters, action: e.target.value })}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white"
+              >
+                <option value="">All Actions</option>
+                <option value="USER_LOGIN">User Login</option>
+                <option value="POST_CREATED">Post Created</option>
+                <option value="PAYMENT_PROCESSED">Payment Processed</option>
+                <option value="ROLE_UPDATED">Role Updated</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Resource Type</label>
+              <select
+                value={filters.resourceType}
+                onChange={(e) => setFilters({ ...filters, resourceType: e.target.value })}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white"
+              >
+                <option value="">All Resources</option>
+                <option value="user">User</option>
+                <option value="post">Post</option>
+                <option value="payment">Payment</option>
+                <option value="system">System</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {/* Audit Logs Table */}
+        {loading ? (
+          <div className="flex justify-center items-center h-64">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600"></div>
+          </div>
+        ) : (
+          <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
+                      Timestamp
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
+                      User
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
+                      Action
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
+                      Resource
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
+                      IP Address
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
+                      Details
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {logs.map((log) => (
+                    <tr key={log.id} className="hover:bg-gray-50">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                        <div className="flex items-center">
+                          <ClockIcon className="h-4 w-4 mr-2 text-slate-700" />
+                          {new Date(log.timestamp).toLocaleString()}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center">
+                          <UserCircleIcon className="h-5 w-5 text-slate-700 mr-2" />
+                          <span className="text-sm font-medium text-gray-900">{log.username}</span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-950 border border-blue-400 font-bold rounded-full font-black">
+                          {log.action}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                        <div>
+                          <span className="font-medium">{log.resourceType}</span>
+                          <span className="text-slate-700 ml-2">#{log.resourceId}</span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800 font-mono">
+                        {log.ipAddress}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-700">
+                        {log.details ? (
+                          <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto">
+                            {JSON.stringify(log.details, null, 2)}
+                          </pre>
+                        ) : (
+                          <span className="text-slate-700">-</span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Pagination Placeholder */}
+            <div className="px-6 py-4 border-t border-slate-300 flex items-center justify-between">
+              <div className="text-sm text-gray-700">
+                Showing <span className="font-medium">1</span> to <span className="font-medium">{logs.length}</span> of{' '}
+                <span className="font-medium">{logs.length}</span> results
+              </div>
+              <div className="flex space-x-2">
+                <button className="px-3 py-1 border border-gray-300 rounded-lg text-sm disabled:opacity-50" disabled>
+                  Previous
+                </button>
+                <button className="px-3 py-1 border border-gray-300 rounded-lg text-sm disabled:opacity-50" disabled>
+                  Next
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Sovereign Platform Ownership Directive */}
+        <div className="mt-8">
+          <PlatformOwnershipCard />
+        </div>
+      </div>
+    </MainLayout>
+  );
+};
+
+export default AuditLogAdminPage;

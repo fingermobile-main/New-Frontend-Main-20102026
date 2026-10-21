@@ -1,0 +1,95 @@
+name: CI - Build and Test
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: fingermobile_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: |
+          cd apps/backend
+          npm ci
+      
+      - name: Run linter
+        run: |
+          cd apps/backend
+          npm run lint
+      
+      - name: Run TypeScript check
+        run: |
+          cd apps/backend
+          npx tsc --noEmit
+      
+      - name: Run unit tests
+        run: |
+          cd apps/backend
+          npm test
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/fingermobile_test
+          REDIS_URL: redis://localhost:6379
+          JWT_SECRET: test-secret
+          NODE_ENV: test
+      
+      - name: Run integration tests
+        run: |
+          cd apps/backend
+          npm run test:integration
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/fingermobile_test
+          REDIS_URL: redis://localhost:6379
+          JWT_SECRET: test-secret
+          NODE_ENV: test
+      
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./apps/backend/coverage/lcov.info
+          flags: backend
+      
+      - name: Build Docker images
+        run: |
+          docker compose build
+      
+      - name: Run security scan
+        run: |
+          npm audit --audit-level=moderate || true
+        working-directory: apps/backend

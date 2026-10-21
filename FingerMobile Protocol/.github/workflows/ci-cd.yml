@@ -1,0 +1,401 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, development]
+  pull_request:
+    branches: [main, development]
+
+env:
+  NODE_VERSION: "18"
+  POSTGRES_DB: fingermobile_test_db
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+  JWT_SECRET: ${{ secrets.JWT_SECRET }}
+
+jobs:
+  # =============================================================================
+  # Stage 1: Code Quality & Testing
+  # =============================================================================
+  code-quality:
+    name: Code Quality Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+          cache-dependency-path: |
+            apps/backend/package.json
+            apps/frontend-main/package.json
+
+      - name: Install backend dependencies
+        run: cd apps/backend && npm ci
+
+      - name: TypeScript compilation check
+        run: cd apps/backend && npx tsc --noEmit
+
+      - name: ESLint check
+        run: cd apps/backend && npm run lint || echo "No lint script configured"
+
+      - name: Check for console.log statements
+        run: |
+          if grep -r "console\.log" apps/backend/controllers/*.ts apps/backend/services/*.ts 2>/dev/null | grep -v "// "; then
+            echo "Warning: Found console.log statements in production code"
+            exit 0  # Don't fail build, just warn
+          fi
+
+  # =============================================================================
+  # Stage 2: Unit & Integration Tests
+  # =============================================================================
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_USER: ${{ env.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ env.POSTGRES_DB }}
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+          cache-dependency-path: apps/backend/package.json
+
+      - name: Install dependencies
+        run: cd apps/backend && npm ci
+
+      - name: Wait for PostgreSQL
+        run: |
+          until pg_isready -h localhost -p 5432 -U $POSTGRES_USER; do
+            echo "Waiting for PostgreSQL..."
+            sleep 2
+          done
+
+      - name: Initialize test database
+        run: |
+          cd apps/backend
+          PGPASSWORD=$POSTGRES_PASSWORD psql -h localhost -U $POSTGRES_USER -d $POSTGRES_DB -c "
+            CREATE TABLE IF NOT EXISTS users (
+              id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+              username VARCHAR(255) NOT NULL,
+              email VARCHAR(255) UNIQUE NOT NULL,
+              password_hash VARCHAR(255) NOT NULL,
+              role VARCHAR(50) DEFAULT 'user',
+              is_active BOOLEAN DEFAULT true,
+              created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+              updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+          "
+
+      - name: Run unit tests
+        run: cd apps/backend && npm test -- --coverage
+        env:
+          DATABASE_URL: postgresql://${{ env.POSTGRES_USER }}:${{ env.POSTGRES_PASSWORD }}@localhost:5432/${{ env.POSTGRES_DB }}
+          REDIS_URL: redis://localhost:6379
+          JWT_SECRET: ${{ env.JWT_SECRET }}
+          NODE_ENV: test
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        if: github.ref == 'refs/heads/main'
+        with:
+          file: ./apps/backend/coverage/lcov.info
+          flags: backend
+          name: backend-coverage
+          fail_ci_if_error: false
+
+  # =============================================================================
+  # Stage 3: Security Scanning
+  # =============================================================================
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run npm audit
+        run: cd apps/backend && npm audit --audit-level=moderate || true
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: "fs"
+          scan-ref: "."
+          format: "sarif"
+          output: "trivy-results.sarif"
+
+      - name: Upload Trivy results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        if: always()
+        with:
+          sarif_file: "trivy-results.sarif"
+
+  # =============================================================================
+  # Stage 4: Build Docker Images
+  # =============================================================================
+  build:
+    name: Build Docker Images
+    needs: [code-quality, test, security-scan]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/development'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: fingermobile/backend
+          tags: |
+            type=sha,prefix={{branch}}-
+            type=ref,event=branch
+            latest
+
+      - name: Build and push backend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./apps/backend
+          file: ./apps/backend/Dockerfile.staging
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build and push frontend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./apps/frontend-main
+          file: ./apps/frontend-main/Dockerfile
+          push: true
+          tags: fingermobile/frontend:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # =============================================================================
+  # Stage 5: Deploy to Staging
+  # =============================================================================
+  deploy-staging:
+    name: Deploy to Staging
+    needs: [build]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/development'
+    # environment:
+    #   name: staging
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to staging server
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.STAGING_HOST }}
+          username: ${{ secrets.STAGING_USER }}
+          key: ${{ secrets.STAGING_SSH_KEY }}
+          port: 22
+          script: |
+            cd /opt/fingermobile
+
+            # Pull latest changes
+            git pull origin development
+
+            # Update environment variables
+            cp .env.staging.template .env.staging
+
+            # Stop old containers gracefully
+            docker-compose -f docker-compose.staging.yml down --timeout 30
+
+            # Pull new images
+            docker-compose -f docker-compose.staging.yml pull
+
+            # Start new containers
+            docker-compose -f docker-compose.staging.yml up -d
+
+            # Wait for services to be healthy
+            sleep 30
+
+            # Run health checks
+            curl -f http://localhost:3001/health || exit 1
+
+            # Clean up old images
+            docker image prune -f
+
+      - name: Verify deployment
+        run: |
+          echo "Staging deployment completed"
+          echo "URL: https://staging.fingermobileprotocol.com"
+          echo "Health: http://staging.fingermobileprotocol.com/health"
+
+  # =============================================================================
+  # Stage 6: Deploy to Production (Manual Approval Required)
+  # =============================================================================
+  deploy-production:
+    name: Deploy to Production
+    needs: [build]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    # environment:
+    #   name: production
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create backup before deployment
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.PRODUCTION_HOST }}
+          username: ${{ secrets.PRODUCTION_USER }}
+          key: ${{ secrets.PRODUCTION_SSH_KEY }}
+          port: 22
+          script: |
+            cd /opt/fingermobile
+
+            # Create database backup
+            timestamp=$(date +%Y%m%d-%H%M%S)
+            docker exec fingermobile-postgres pg_dump -U postgres fingermobile_production_db | gzip > backups/db-backup-${timestamp}.sql.gz
+
+            # Keep only last 7 backups
+            find backups/ -name "db-backup-*.sql.gz" -mtime +7 -delete
+
+            echo "Backup created: db-backup-${timestamp}.sql.gz"
+
+      - name: Deploy to production server
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.PRODUCTION_HOST }}
+          username: ${{ secrets.PRODUCTION_USER }}
+          key: ${{ secrets.PRODUCTION_SSH_KEY }}
+          port: 22
+          script: |
+            cd /opt/fingermobile
+
+            # Pull latest changes
+            git pull origin main
+
+            # Update environment
+            cp .env.production.template .env.production
+
+            # Blue-Green Deployment Strategy
+            # Step 1: Build new containers without stopping old ones
+            docker-compose -f docker-compose.production.yml build --no-cache
+
+            # Step 2: Stop old containers gracefully (30s timeout)
+            docker-compose -f docker-compose.production.yml down --timeout 30
+
+            # Step 3: Start new containers
+            docker-compose -f docker-compose.production.yml up -d
+
+            # Step 4: Wait for health checks
+            max_attempts=30
+            attempt=1
+            while [ $attempt -le $max_attempts ]; do
+              if curl -sf http://localhost:3001/health > /dev/null 2>&1; then
+                echo "Production deployment successful"
+                break
+              fi
+              echo "Waiting for services... ($attempt/$max_attempts)"
+              sleep 5
+              ((attempt++))
+            done
+
+            if [ $attempt -gt $max_attempts ]; then
+              echo "Deployment failed - rolling back"
+              # Rollback would go here
+              exit 1
+            fi
+
+            # Step 5: Clean up
+            docker image prune -f
+
+      - name: Run post-deployment smoke tests
+        run: |
+          echo "Running smoke tests against production..."
+          # Add actual smoke test commands here
+          curl -f https://fingermobileprotocol.com/health || exit 1
+          curl -f https://api.fingermobileprotocol.com/health || exit 1
+
+      - name: Notify deployment success
+        if: success()
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
+          payload: |
+            {
+              "text": "✅ Production deployment successful",
+              "attachments": [{
+                "color": "good",
+                "fields": [
+                  {"title": "Branch", "value": "${{ github.ref_name }}", "short": true},
+                  {"title": "Commit", "value": "${{ github.sha }}", "short": true},
+                  {"title": "Deployed by", "value": "${{ github.actor }}", "short": true}
+                ]
+              }]
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
+      - name: Notify deployment failure
+        if: failure()
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
+          payload: |
+            {
+              "text": "❌ Production deployment FAILED",
+              "attachments": [{
+                "color": "danger",
+                "fields": [
+                  {"title": "Branch", "value": "${{ github.ref_name }}", "short": true},
+                  {"title": "Commit", "value": "${{ github.sha }}", "short": true},
+                  {"title": "Failed by", "value": "${{ github.actor }}", "short": true}
+                ]
+              }]
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}

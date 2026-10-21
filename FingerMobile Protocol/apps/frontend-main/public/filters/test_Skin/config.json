@@ -1,0 +1,233 @@
+{
+    "assets": {
+        "attachments": {
+            "ComposerRT_color": {
+                "type": "color"
+            },
+            "EffectRT0_color": {
+                "type": "color"
+            },
+            "EffectRT0_depth": {
+                "clear": [
+                    1.0
+                ],
+                "type": "depth"
+            }
+        },
+        "images": {
+            "camera: tex_rgb": {
+                "format": "rgba",
+                "type": "camera"
+            },
+            "camera: tex_uv": {
+                "format": "uv",
+                "type": "camera"
+            },
+            "camera: tex_y": {
+                "format": "y",
+                "type": "camera"
+            },
+            "null_image.png": {
+                "file_name": "images/null_image.png",
+                "type": "texture"
+            },
+            "null_lut.png": {
+                "file_name": "images/null_lut.png",
+                "type": "texture"
+            },
+            "preview.png": {
+                "file_name": "images/preview.png",
+                "type": "texture"
+            },
+            "skin": {
+                "active": true,
+                "recognizer_feature_name": "skin",
+                "type": "segmentation_mask"
+            }
+        },
+        "materials": {
+            "$builtin$materials/camera": {
+                "parameters": {
+                    "bnb_camera_orientation": {
+                        "type": "vec4",
+                        "value": [
+                            1,
+                            0,
+                            0,
+                            1
+                        ]
+                    },
+                    "bnb_camera_scale": {
+                        "type": "vec4",
+                        "value": [
+                            1,
+                            0,
+                            0,
+                            1
+                        ]
+                    },
+                    "bnb_view_width_fraction": {
+                        "type": "vec4",
+                        "value": [
+                            1,
+                            0,
+                            0,
+                            0
+                        ]
+                    }
+                },
+                "samplers": [
+                    {
+                        "image": "camera: tex_y",
+                        "name": "tex_y"
+                    },
+                    {
+                        "image": "camera: tex_uv",
+                        "name": "tex_uv"
+                    },
+                    {
+                        "image": "camera: tex_rgb",
+                        "name": "tex_rgb"
+                    }
+                ],
+                "state": {
+                    "backfaces": true,
+                    "blend": "off",
+                    "colorwrite": true,
+                    "ztest": false,
+                    "zwrite": false
+                }
+            },
+            "$builtin$materials/copy_pixels.0": {
+                "parameters": {},
+                "samplers": [
+                    {
+                        "image": "ComposerRT_color",
+                        "name": "tex_src"
+                    }
+                ],
+                "state": {
+                    "backfaces": true,
+                    "blend": "off",
+                    "colorwrite": true,
+                    "ztest": false,
+                    "zwrite": false
+                }
+            },
+            "shaders/TriMat": {
+                "built_in_samplers": [],
+                "samplers": [
+                    {
+                        "image": "skin",
+                        "name": "glfx_SKIN_MASK"
+                    },
+                    {
+                        "image": "ComposerRT_color",
+                        "name": "glfx_BACKGROUND"
+                    }
+                ],
+                "state": {
+                    "backfaces": true,
+                    "blend": "off",
+                    "colorwrite": true,
+                    "ztest": false,
+                    "zwrite": false
+                }
+            }
+        },
+        "media": {
+            "frx": {
+                "type": "video"
+            }
+        },
+        "meshes": {
+            "camera_surface": "$builtin$meshes/fs_tri",
+            "tri.bsm2": "meshes/tri.bsm2"
+        },
+        "morphs": {}
+    },
+    "components": {
+        "ComposerRT_copy": {
+            "materials": [
+                "$builtin$materials/copy_pixels.0"
+            ],
+            "mesh": "camera_surface",
+            "type": "mesh_instance"
+        },
+        "camera_surface": {
+            "materials": [
+                "$builtin$materials/camera"
+            ],
+            "mesh": "camera_surface",
+            "type": "mesh_instance"
+        }
+    },
+    "entities": {
+        "ComposerRT_copy_append_to_root__": {
+            "components": [
+                "ComposerRT_copy"
+            ],
+            "layer": "ComposerRT_copy"
+        },
+        "camera": {
+            "components": [
+                "camera_surface"
+            ],
+            "layer": "composer_pre"
+        },
+        "spawn_entity0": {
+            "add_to_legacy_entities_list": true,
+            "layers": [
+                "TriMat"
+            ]
+        }
+    },
+    "global_params": [
+        "js_color"
+    ],
+    "hierarchy": {
+        "root": [
+            "camera",
+            "ComposerRT_copy_append_to_root__"
+        ]
+    },
+    "layers": {
+        "ComposerRT_copy": {},
+        "TriMat": {},
+        "composer_pre": {}
+    },
+    "main_camera": {},
+    "render_list": {
+        "default": [
+            {
+                "layer": "composer_pre",
+                "render_target": "ComposerRT"
+            },
+            {
+                "layer": "ComposerRT_copy",
+                "render_target": "EffectRT0"
+            },
+            {
+                "layer": "TriMat",
+                "render_target": "EffectRT0",
+                "sub_geometries": [
+                    "TriMat"
+                ]
+            }
+        ]
+    },
+    "render_targets": {
+        "ComposerRT": [
+            "ComposerRT_color"
+        ],
+        "EffectRT0": [
+            "EffectRT0_color",
+            "EffectRT0_depth"
+        ]
+    },
+    "scene": "test_Skin",
+    "script": {
+        "entry_point": "config.js",
+        "type": "legacy"
+    }
+}

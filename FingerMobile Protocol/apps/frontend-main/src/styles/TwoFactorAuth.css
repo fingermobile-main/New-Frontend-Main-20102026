@@ -1,0 +1,260 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* TwoFactorAuth.css */
+.two-factor-auth-setup {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.setup-step {
+  text-align: center;
+}
+
+.setup-step h2 {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.setup-step p {
+  margin-bottom: 20px;
+  color: #666;
+}
+
+.setup-info {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 30px;
+  text-align: left;
+}
+
+.setup-info h3 {
+  margin-top: 0;
+  color: #333;
+}
+
+.setup-info ol {
+  padding-left: 20px;
+}
+
+.setup-info li {
+  margin-bottom: 10px;
+}
+
+.setup-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+.btn-primary,
+.btn-secondary,
+.btn-danger {
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+  border: none;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+}
+
+.btn-secondary:hover {
+  background-color: #545b62;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+}
+
+.btn-danger:hover {
+  background-color: #bd2130;
+}
+
+.qr-container {
+  display: flex;
+  justify-content: center;
+  margin: 30px 0;
+}
+
+.qr-placeholder {
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+}
+
+.manual-entry {
+  margin: 20px 0;
+  padding: 15px;
+  background-color: #e9ecef;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.secret-code {
+  display: block;
+  font-family: monospace;
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 10px;
+  letter-spacing: 2px;
+}
+
+.verification-input-container {
+  margin: 30px 0;
+}
+
+.verification-input {
+  width: 200px;
+  height: 50px;
+  font-size: 24px;
+  text-align: center;
+  letter-spacing: 5px;
+  border: 2px solid #ced4da;
+  border-radius: 6px;
+  margin: 0 auto;
+  display: block;
+}
+
+.verification-input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.backup-codes-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin: 30px 0;
+}
+
+.backup-code {
+  background-color: #f8f9fa;
+  border: 1px dashed #dee2e6;
+  border-radius: 6px;
+  padding: 15px;
+  font-family: monospace;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  letter-spacing: 2px;
+}
+
+.backup-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.success-icon {
+  font-size: 48px;
+  color: #28a745;
+  margin: 30px 0;
+}
+
+.error-message,
+.success-message {
+  padding: 12px;
+  border-radius: 6px;
+  margin: 20px 0;
+}
+
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.success-message {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.important {
+  background-color: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 6px;
+  padding: 15px;
+  margin: 20px 0;
+  color: #856404;
+  font-weight: bold;
+}
+
+/* Two-Factor Auth Settings Styles */
+.two-factor-auth-settings {
+  margin: 20px 0;
+}
+
+.setting-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.setting-section:last-child {
+  border-bottom: none;
+}
+
+.setting-info h3 {
+  margin: 0 0 5px 0;
+  color: #333;
+}
+
+.setting-info p {
+  margin: 0;
+  color: #666;
+}
+
+@media (max-width: 768px) {
+  .backup-codes-container {
+    grid-template-columns: 1fr;
+  }
+
+  .setup-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .setup-actions button {
+    width: 100%;
+  }
+
+  .setting-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+}

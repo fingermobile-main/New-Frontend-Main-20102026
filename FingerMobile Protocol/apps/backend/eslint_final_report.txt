@@ -1,0 +1,1099 @@
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/FingerMobile Protocol/apps/backend/utils/logger.js
+  6:37  error  Parsing error: Unterminated string constant
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/add_error_handling.js
+  168:2  error  Parsing error: Unexpected token :
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/add_error_handling_to_services.js
+  111:13  error  Parsing error: Unterminated string constant
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/app (1).js
+    5:7  warning  'rateLimit' is assigned a value but never used           no-unused-vars
+    6:7  warning  'path' is assigned a value but never used                no-unused-vars
+   16:7  warning  'authenticate' is assigned a value but never used        no-unused-vars
+   18:7  warning  'cognitiveLoad' is assigned a value but never used       no-unused-vars
+   24:7  warning  'searchValidation' is assigned a value but never used    no-unused-vars
+   29:7  warning  'websocketAuth' is assigned a value but never used       no-unused-vars
+   39:7  warning  'notificationRoutes' is assigned a value but never used  no-unused-vars
+  154:7  warning  'aiRoutes' is assigned a value but never used            no-unused-vars
+  188:7  warning  'aiRoutesTS' is assigned a value but never used          no-unused-vars
+  189:7  warning  'authRoutesTS' is assigned a value but never used        no-unused-vars
+  190:7  warning  'ficRoutesJS' is assigned a value but never used         no-unused-vars
+  191:7  warning  'ugcMediaRoutesJS' is assigned a value but never used    no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/app.js
+    4:7  warning  'rateLimit' is assigned a value but never used           no-unused-vars
+    5:7  warning  'path' is assigned a value but never used                no-unused-vars
+   16:7  warning  'authenticate' is assigned a value but never used        no-unused-vars
+   18:7  warning  'cognitiveLoad' is assigned a value but never used       no-unused-vars
+   24:7  warning  'searchValidation' is assigned a value but never used    no-unused-vars
+   29:7  warning  'websocketAuth' is assigned a value but never used       no-unused-vars
+   43:7  warning  'notificationRoutes' is assigned a value but never used  no-unused-vars
+  159:7  warning  'aiRoutes' is assigned a value but never used            no-unused-vars
+  193:7  warning  'aiRoutesTS' is assigned a value but never used          no-unused-vars
+  194:7  warning  'authRoutesTS' is assigned a value but never used        no-unused-vars
+  195:7  warning  'ficRoutesJS' is assigned a value but never used         no-unused-vars
+  196:7  warning  'ugcMediaRoutesJS' is assigned a value but never used    no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/apply_all_schemas (1).js
+  195:16  error  Parsing error: Unterminated string constant
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/apply_all_schemas.js
+  195:16  error  Parsing error: Unterminated string constant
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/audit_backend_implementation.js
+  2:1  error  Parsing error: Unexpected character '#'
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/check_users.js
+  25:9  warning  Unexpected console statement  no-console
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/comprehensive_platform_audit_autofix.js
+  2:1  error  Parsing error: Unexpected character '#'
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/config/payment-config.js
+  11:12  error  Parsing error: Unterminated string constant
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers-backup-1783413803460/achievementsController.js
+  125:9  error  Parsing error: Unexpected token include
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers-backup-1783413803460/activityController.js
+  198:40  error  Parsing error: Unexpected token createdAt
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers-backup-1783413803460/apiKeysController.js
+  87:18  error  Parsing error: Unexpected token name
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers-backup-1783413803460/blockingController.js
+  59:23  error  Parsing error: Unexpected token blockType
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers-backup-1783413803460/contentModerationController.js
+  55:23  error  Parsing error: Unexpected token data
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers-backup-1783413803460/fingerwarsController.js
+  125:58  error  Parsing error: Unexpected token participants
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers-backup-1783413803460/gemsController.js
+  71:17  error  Parsing error: Unexpected token offset
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers-backup-1783413803460/giftcardsController.js
+  167:16  error  Parsing error: Unexpected token currency
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers-backup-1783413803460/voicefeedController.js
+  58:36  error  Parsing error: Unexpected token total
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/AICreditBalanceController.js
+  9:7  warning  'AICreditBalanceService' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/ExportController.js
+  236:13  warning  'fileContent' is assigned a value but never used  no-unused-vars
+  298:21  warning  'filters' is defined but never used               no-unused-vars
+  316:25  warning  'filters' is defined but never used               no-unused-vars
+  369:28  warning  'filters' is defined but never used               no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/MeisheVideoEditorController.js
+  19:22  warning  'description' is assigned a value but never used  no-unused-vars
+  22:48  error    '$5' is not defined                               no-undef
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/OAuth2Controller.js
+   16:54  warning  'code_challenge' is assigned a value but never used         no-unused-vars
+   16:70  warning  'code_challenge_method' is assigned a value but never used  no-unused-vars
+   61:44  warning  'client_secret' is assigned a value but never used          no-unused-vars
+  150:32  error    'pool' is not defined                                       no-undef
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/StercsController.js
+  18:13  warning  'genre' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/WalletControllerComplete.js
+  7:9  warning  'identityDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/WebhookController.js
+  296:13  warning  'signature' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/achievementsController.js
+   12:9   warning  'Op' is assigned a value but never used                no-unused-vars
+   13:9   warning  'validationResult' is assigned a value but never used  no-unused-vars
+  216:17  warning  'userAchievement' is assigned a value but never used   no-unused-vars
+  257:9   error    Unexpected lexical declaration in case block           no-case-declarations
+  258:9   error    Unexpected lexical declaration in case block           no-case-declarations
+  263:9   error    Unexpected lexical declaration in case block           no-case-declarations
+  264:9   error    Unexpected lexical declaration in case block           no-case-declarations
+  273:9   error    Unexpected lexical declaration in case block           no-case-declarations
+  282:32  error    'funcName' is not defined                              no-undef
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/activityController.js
+   9:7  warning  'User' is assigned a value but never used  no-unused-vars
+  10:7  warning  'Post' is assigned a value but never used  no-unused-vars
+  11:9  warning  'Op' is assigned a value but never used    no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/adminController.js
+   6:7  warning  'jwt' is assigned a value but never used         no-unused-vars
+  10:9  warning  'JWT_SECRET' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/analyticsController.js
+   6:37  warning  'securityDb' is assigned a value but never used  no-unused-vars
+  17:13  warning  'userId' is assigned a value but never used      no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/biometricController.js
+   83:27  warning  'challenge' is assigned a value but never used      no-unused-vars
+  101:13  warning  'biometricData' is assigned a value but never used  no-unused-vars
+  186:27  warning  'challenge' is assigned a value but never used      no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/blogsController.js
+  252:9   warning  'category_id' is assigned a value but never used  no-unused-vars
+  253:9   warning  'tag' is assigned a value but never used          no-unused-vars
+  254:9   warning  'blog_id' is assigned a value but never used      no-unused-vars
+  311:13  warning  'countResult' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/businessHubController.js
+  1:7  warning  'db' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/commentsController.js
+  9:7  warning  'User' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/commerceController.js
+  22:19  warning  'sortBy' is assigned a value but never used  no-unused-vars
+  22:42  warning  'order' is assigned a value but never used   no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/communityController.js
+   84:13  warning  'member_id' is assigned a value but never used  no-unused-vars
+  121:13  warning  'member_id' is assigned a value but never used  no-unused-vars
+  280:13  warning  'member_id' is assigned a value but never used  no-unused-vars
+  339:13  warning  'member_id' is assigned a value but never used  no-unused-vars
+  374:13  warning  'member_id' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/controllers/LiveStreamController.js
+  508:30  warning  'userId' is defined but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/creatorInfluenceSubscriptionController.js
+  270:19  warning  'key' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/danciaController.js
+  1:7  warning  'db' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/fingershortsController.js
+  16:13  warning  'userId' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/forumsController.js
+  6:19  warning  'contentDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/gameonController.js
+  1:9  warning  'contentDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/giftcardsController.js
+  12:9  warning  'Op' is assigned a value but never used    no-unused-vars
+  13:9  warning  'body' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/helpcenterController.js
+  10:9  warning  'Op' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/initiateTokenization.js
+  45:11  warning  'product' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/meisheUvideoUeditorController.js
+  173:15  warning  'format' is assigned a value but never used   no-unused-vars
+  173:23  warning  'quality' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/metricsController.js
+  1:7  warning  'db' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/monetizationController.js
+  1:7  warning  'db' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/nexusgnnController.js
+  205:24  warning  'batchSize' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/paymentsController.js
+  9:9  warning  'body' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/postsController.js
+  614:12  error  Parsing error: Unexpected token =
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/recommendationsController.js
+  1:7  warning  'db' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/superSixController.js
+  92:13  warning  'sessionEnd' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/userManagementController.js
+  1:7  warning  'db' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/videoTranslationController.js
+  28:7  warning  'upload' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/voiceController.js
+  1:7  warning  'db' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/database/connection.js
+  31:53  error  'logger' is not defined  no-undef
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/database/seed_admin_data.js
+  1:9  warning  'Pool' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/database/seed_product_forum_data.js
+  1:9  warning  'Pool' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/db (1).js
+  16:36  warning  'res' is defined but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/db.js
+  16:36  warning  'res' is defined but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/db/migrations/add-verification-schema.js
+  74:18  error  Parsing error: Unterminated string constant
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/db/runMigrations.js
+   9:3   warning  'identityDb' is assigned a value but never used       no-unused-vars
+  11:3   warning  'socialDb' is assigned a value but never used         no-unused-vars
+  13:3   warning  'communicationDb' is assigned a value but never used  no-unused-vars
+  14:3   warning  'controlDb' is assigned a value but never used        no-unused-vars
+  31:21  error    Unnecessary escape character: \c                      no-useless-escape
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/find_unregistered_routes.js
+  2:1  error  Parsing error: Unexpected character '#'
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/fix_controller_syntax.js
+  13:44  error  Unnecessary escape character: \,  no-useless-escape
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/fix_logger.js
+  35:5  error  'logger' is not defined  no-undef
+  39:1  error  'logger' is not defined  no-undef
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/fix_multiline_strings.js
+  17:33  error  'doubleQuoteRegex' is not defined  no-undef
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/fix_permanence_service.js
+  8:16  error  Parsing error: Unexpected token with
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/fix_sql_injection.js
+  28:2  error  Parsing error: Unexpected token :
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/fix_syntax.js
+  3:7  warning  'glob' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/import_csv_data.js
+  52:11  warning  'result' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/import_csv_direct.js
+  2:1  error  Parsing error: Unexpected character '#'
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/import_forum_categories.js
+  2:1  error  Parsing error: Unexpected character '#'
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/import_remaining_csv.js
+  2:1  error  Parsing error: Unexpected character '#'
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/initTables.js
+  13:13  error  Parsing error: Unexpected token will
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/mcp-servers/mii-mcp-service.js
+    4:9   warning  'createCipher' is assigned a value but never used    no-unused-vars
+    4:23  warning  'createDecipher' is assigned a value but never used  no-unused-vars
+  200:31  warning  'memberId' is defined but never used                 no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/middleware/apiKeyAuth.js
+  44:5   error    'implementation:' is defined but never used             no-unused-labels
+  65:11  warning  'apiKey' is assigned a value but never used             no-unused-vars
+  66:11  warning  'providedSignature' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/middleware/auditTrail.js
+   28:1   error  Trailing spaces not allowed  no-trailing-spaces
+   30:1   error  Trailing spaces not allowed  no-trailing-spaces
+   35:1   error  Trailing spaces not allowed  no-trailing-spaces
+   41:1   error  Trailing spaces not allowed  no-trailing-spaces
+   46:1   error  Trailing spaces not allowed  no-trailing-spaces
+   49:1   error  Trailing spaces not allowed  no-trailing-spaces
+   82:1   error  Trailing spaces not allowed  no-trailing-spaces
+  157:46  error  Trailing spaces not allowed  no-trailing-spaces
+  158:38  error  Trailing spaces not allowed  no-trailing-spaces
+  159:39  error  Trailing spaces not allowed  no-trailing-spaces
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/middleware/auth.js
+    6:7   warning  'auth' is assigned a value but never used              no-unused-vars
+   39:7   warning  'authenticateUser' is assigned a value but never used  no-unused-vars
+   87:7   warning  'authorizeAdmin' is assigned a value but never used    no-unused-vars
+  151:39  error    'getAnonymitySettings' is not defined                  no-undef
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/middleware/authenticate.js
+  174:7  warning  'checkTOTPEnabled' is assigned a value but never used       no-unused-vars
+  218:7  warning  'checkRegistrationLock' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/middleware/errorHandler.js
+  6:38  warning  'next' is defined but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/middleware/errorTracking.js
+  36:44  warning  'next' is defined but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/middleware/inputValidation.js
+  7:29  warning  'header' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/middleware/nexusgnn.js
+  61:31  warning  'options' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/middleware/requestLogger.js
+  6:7  warning  'morgan' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/middleware/securityHeaders.js
+  6:7  warning  'helmet' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/middleware/sentinel-control.js
+  118:50  warning  'res' is defined but never used              no-unused-vars
+  145:52  warning  'res' is defined but never used              no-unused-vars
+  146:9   warning  'config' is assigned a value but never used  no-unused-vars
+  170:52  warning  'res' is defined but never used              no-unused-vars
+  171:9   warning  'config' is assigned a value but never used  no-unused-vars
+  202:51  warning  'res' is defined but never used              no-unused-vars
+  220:53  warning  'res' is defined but never used              no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/middleware/stercsTracker.js
+   34:9   warning  'pathParts' is assigned a value but never used  no-unused-vars
+   48:34  warning  'path' is defined but never used                no-unused-vars
+  157:24  warning  'severity' is assigned a value but never used   no-unused-vars
+  157:43  warning  'timestamp' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/middleware_compiled/middleware/errorHandler.js
+  5:38  error  Parsing error: Unexpected token ,
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/middleware_compiled/utils/logger.js
+  3:37  error  Parsing error: Unexpected token ,
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/middleware_compiled/utils/sentry.js
+  5:38  error  Parsing error: Unexpected token ,
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/models/AICreditBalanceModel.js
+   3:5    warning  '__awaiter' is assigned a value but never used    no-unused-vars
+  12:5    warning  '__generator' is assigned a value but never used  no-unused-vars
+  13:166  error    'Iterator' is not defined                         no-undef
+  41:9    warning  'Pool' is assigned a value but never used         no-unused-vars
+  54:50   warning  'metadata' is defined but never used              no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/models/advertisement.js
+  10:1  error  Parsing error: Unexpected token title
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/models/analyticsEvent.js
+  10:1  error  Parsing error: Unexpected token userId
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/models/blog.js
+  10:1  error  Parsing error: Unexpected token title
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/models/campaign.js
+  10:1  error  Parsing error: Unexpected token name
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/models/coupon.js
+  10:1  error  Parsing error: Unexpected token code
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/models/creatorSubscription.js
+  10:1  error  Parsing error: Unexpected token subscriberId
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/models/forum.js
+  10:1  error  Parsing error: Unexpected token name
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/models/giftcard.js
+  1:20  warning  'Op' is assigned a value but never used           no-unused-vars
+  1:24  warning  'Transaction' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/models/leaderboard.js
+  10:1  error  Parsing error: Unexpected token name
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/models/message.js
+  10:1  error  Parsing error: Unexpected token conversationId
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/models/notification.js
+  10:1  error  Parsing error: Unexpected token userId
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/models/p2pMatch.js
+  10:1  error  Parsing error: Unexpected token requesterId
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/models/paymentGateway.js
+  10:1  error  Parsing error: Unexpected token name
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/models/seadsInitiative.js
+  10:1  error  Parsing error: Unexpected token name
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/models/user.js
+  75:32  warning  'options' is defined but never used  no-unused-vars
+  81:32  warning  'options' is defined but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/models/videoEditorSession.js
+  10:1  error  Parsing error: Unexpected token userId
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/models/walletTransaction.js
+  10:1  error  Parsing error: Unexpected token userId
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/protocolClient (1).js
+   5:7   warning  'crypto' is assigned a value but never used  no-unused-vars
+  35:34  warning  'reject' is defined but never used           no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/protocolClient.js
+   5:7   warning  'crypto' is assigned a value but never used  no-unused-vars
+  35:34  warning  'reject' is defined but never used           no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/protocolServer (1).js
+  88:10  error  Parsing error: Unexpected token ,
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/protocolServer.js
+  88:10  error  Parsing error: Unexpected token ,
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/activity.js
+  4:9  warning  'socialDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/ai.js
+  4:9  warning  'identityDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/analytics.js
+  4:21  warning  'monetizationDb' is assigned a value but never used  no-unused-vars
+  4:37  warning  'securityDb' is assigned a value but never used      no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/apiKeys.js
+  4:7  warning  'apiKeyService' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/auth.js
+  5:7  warning  'crypto' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/authenticator.js
+  3:7  warning  'jwt' is assigned a value but never used         no-unused-vars
+  4:7  warning  'speakeasy' is assigned a value but never used   no-unused-vars
+  5:7  warning  'QRCode' is assigned a value but never used      no-unused-vars
+  6:9  warning  'identityDb' is assigned a value but never used  no-unused-vars
+  7:9  warning  'JWT_SECRET' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/backups.js
+    9:11  warning  'userId' is assigned a value but never used  no-unused-vars
+   30:11  warning  'userId' is assigned a value but never used  no-unused-vars
+   81:11  warning  'userId' is assigned a value but never used  no-unused-vars
+  102:11  warning  'userId' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/beatwave.js
+  4:9  warning  'identityDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/biometric.js
+  4:7  warning  'jwt' is assigned a value but never used         no-unused-vars
+  5:9  warning  'identityDb' is assigned a value but never used  no-unused-vars
+  6:9  warning  'JWT_SECRET' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/blocking.js
+  3:9  warning  'socialDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/camus.js
+  4:9  warning  'contentDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/canary.js
+  4:9  warning  'controlDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/commerce.js
+  3:9  warning  'monetizationDb' is assigned a value but never used  no-unused-vars
+  4:7  warning  'crypto' is assigned a value but never used          no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/connections.js
+  4:9  warning  'socialDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/contentModeration.js
+  4:7  warning  'contentModerationService' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/contentOperations.js
+  41:11  warning  'contentId' is assigned a value but never used  no-unused-vars
+  65:37  warning  'category' is assigned a value but never used   no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/contentmanagement.js
+  3:9  warning  'contentDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/creator.js
+  9:20  warning  'content' is assigned a value but never used    no-unused-vars
+  9:43  warning  'platforms' is assigned a value but never used  no-unused-vars
+  9:54  warning  'category' is assigned a value but never used   no-unused-vars
+  9:64  warning  'tags' is assigned a value but never used       no-unused-vars
+  9:70  warning  'status' is assigned a value but never used     no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/csvImport.js
+  3:7  warning  'CsvImportService' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/dashboard.js
+  4:9   warning  'identityDb' is assigned a value but never used  no-unused-vars
+  4:21  warning  'socialDb' is assigned a value but never used    no-unused-vars
+  4:31  warning  'contentDb' is assigned a value but never used   no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/developer.js
+  3:9  warning  'authDb' is assigned a value but never used  no-unused-vars
+  4:7  warning  'crypto' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/discover.js
+  3:9   warning  'contentDb' is assigned a value but never used       no-unused-vars
+  3:20  warning  'monetizationDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/elearning.js
+  3:9  warning  'contentDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/enhanced_wallet.js
+  4:9   warning  'monetizationDb' is assigned a value but never used         no-unused-vars
+  4:25  warning  'identityDb' is assigned a value but never used             no-unused-vars
+  5:7   warning  'EnhancedWalletService' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/fingershorts.js
+  4:9  warning  'contentDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/fingerwars.js
+  3:9  warning  'contentDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/flamingo.js
+  3:9  warning  'contentDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/forumcategories.js
+  4:9  warning  'socialDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/fraud-alerts.js
+  10:11  warning  'userId' is assigned a value but never used  no-unused-vars
+  17:29  warning  'limit' is assigned a value but never used   no-unused-vars
+  17:41  warning  'offset' is assigned a value but never used  no-unused-vars
+  95:11  warning  'userId' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/gameon.js
+  3:9  warning  'contentDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/gamification.js
+  4:9  warning  'socialDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/gems.js
+  4:9   warning  'identityDb' is assigned a value but never used      no-unused-vars
+  4:21  warning  'monetizationDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/general.js
+  3:9  warning  'identityDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/generalEndpoints.js
+  4:9  warning  'identityDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/groups.js
+  3:9  warning  'socialDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/hallmarks.js
+  4:7  warning  'hallmarkService' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/integrations-module.js
+  3:9  warning  'contentDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/integrations.js
+  3:9  warning  'authDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/items.js
+  4:9  warning  'identityDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/leaderboards.js
+  3:9  warning  'identityDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/lendsq.js
+  4:9   warning  'monetizationDb' is assigned a value but never used  no-unused-vars
+  4:25  warning  'contentDb' is assigned a value but never used       no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/likes.js
+  5:7  warning  'likesController' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/lumina-media.js
+  4:7  warning  'multer' is assigned a value but never used  no-unused-vars
+  5:7  warning  'path' is assigned a value but never used    no-unused-vars
+  6:7  warning  'fs' is assigned a value but never used      no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/lumina-upload.js
+  3:7  warning  'multer' is assigned a value but never used     no-unused-vars
+  4:7  warning  'path' is assigned a value but never used       no-unused-vars
+  5:7  warning  'fs' is assigned a value but never used         no-unused-vars
+  6:9  warning  'contentDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/lumina.js
+  4:7  warning  'multer' is assigned a value but never used                  no-unused-vars
+  5:7  warning  'path' is assigned a value but never used                    no-unused-vars
+  6:7  warning  'fs' is assigned a value but never used                      no-unused-vars
+  7:9  warning  'contentDb' is assigned a value but never used               no-unused-vars
+  8:7  warning  'ffmpegService' is assigned a value but never used           no-unused-vars
+  9:7  warning  'mediaProcessingService' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/lushpressies.js
+  3:9  warning  'commerceDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/marketplace-tms.js
+  3:9  warning  'commerceDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/marketplace.js
+    5:7   warning  'pool' is assigned a value but never used      no-unused-vars
+  711:11  warning  'memberId' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/media.js
+  3:9  warning  'contentDb' is assigned a value but never used  no-unused-vars
+  4:7  warning  'multer' is assigned a value but never used     no-unused-vars
+  5:7  warning  'path' is assigned a value but never used       no-unused-vars
+  6:7  warning  'fs' is assigned a value but never used         no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/meishe_video_editor.js
+  341:7   warning  'multer' is assigned a value but never used  no-unused-vars
+  342:7   warning  'path' is assigned a value but never used    no-unused-vars
+  343:13  warning  'uuidv4' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/memberprofiles.js
+  3:9  warning  'identityDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/members.js
+  4:9  warning  'identityDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/mii.js
+  4:9  warning  'socialDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/mobile_video_editor.js
+  4:7   warning  'multer' is assigned a value but never used                    no-unused-vars
+  5:7   warning  'path' is assigned a value but never used                      no-unused-vars
+  6:13  warning  'uuidv4' is assigned a value but never used                    no-unused-vars
+  7:9   warning  'monetizationDb' is assigned a value but never used            no-unused-vars
+  8:7   warning  'MobileVideoEditorService' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/moderation.js
+  3:9  warning  'socialDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/mylearning.js
+  3:9  warning  'contentDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/nysc.js
+  3:9  warning  'socialDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/ownit.js
+  3:9  warning  'contentDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/p2p-matching.js
+  3:7  warning  'db' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/payment-webhooks.js
+  25:7  error  Unexpected lexical declaration in case block  no-case-declarations
+  33:7  error  Unexpected lexical declaration in case block  no-case-declarations
+  41:7  error  Unexpected lexical declaration in case block  no-case-declarations
+  49:7  error  Unexpected lexical declaration in case block  no-case-declarations
+  56:7  error  Unexpected lexical declaration in case block  no-case-declarations
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/payments.js
+  27:7  warning  'validateCustomerCreation' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/permanence-data.js
+  4:7  warning  'db' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/permanence.js
+  4:7  warning  'permanenceService' is assigned a value but never used  no-unused-vars
+  5:9  warning  'socialDb' is assigned a value but never used           no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/permanence_monetization.js
+  4:7  warning  'PermanenceMonetizationService' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/photocredits.js
+  3:9  warning  'contentDb' is assigned a value but never used  no-unused-vars
+  4:7  warning  'multer' is assigned a value but never used     no-unused-vars
+  5:7  warning  'path' is assigned a value but never used       no-unused-vars
+  6:7  warning  'fs' is assigned a value but never used         no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/publicitee.js
+  4:9  warning  'monetizationDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/registrationLock.js
+  4:7  warning  'registrationLockService' is assigned a value but never used  no-unused-vars
+  5:9  warning  'logSecurityEvent' is assigned a value but never used         no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/seads.js
+  4:9  warning  'monetizationDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/security.js
+  4:9  warning  'identityDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/storefront.js
+  3:9  warning  'commerceDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/supervi_achievements.js
+  3:9  warning  'Pool' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/supervi_leaderboards.js
+  4:9  warning  'Pool' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/tms.js
+  3:9  warning  'contentDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/trends.js
+  3:9   warning  'contentDb' is assigned a value but never used  no-unused-vars
+  3:20  warning  'socialDb' is assigned a value but never used   no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/ugc_media_routes.js
+  4:7  warning  'ugcMediaService' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/video_editor.js
+  4:7   warning  'multer' is assigned a value but never used                  no-unused-vars
+  5:7   warning  'path' is assigned a value but never used                    no-unused-vars
+  6:13  warning  'uuidv4' is assigned a value but never used                  no-unused-vars
+  7:9   warning  'monetizationDb' is assigned a value but never used          no-unused-vars
+  8:7   warning  'VideoAssetService' is assigned a value but never used       no-unused-vars
+  9:7   warning  'VideoProcessingService' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/voicefeed.js
+  4:9  warning  'contentDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/voicelines.js
+  4:9  warning  'contentDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/run_comprehensive_audit.js
+  177:16  error  Parsing error: Unexpected token usage
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/scripts/auto_complete_stubs.js
+  13:15  error  Parsing error: Unexpected token methods
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/scripts/auto_register_missing_routes.js
+  156:13  error  Parsing error: Unterminated string constant
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/scripts/batch_fix_ts_errors.js
+  31:23  error  Parsing error: Unexpected token res
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/scripts/cleanup_duplicate_routes.js
+  41:17  error  Parsing error: Unterminated string constant
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/scripts/comprehensive_comma_fix.js
+  2:1  error  Parsing error: Unexpected character '#'
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/scripts/comprehensive_platform_audit.js
+  2:1  error  Parsing error: Unexpected character '#'
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/scripts/execute_migration.js
+  2:1  error  Parsing error: Unexpected character '#'
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/scripts/final_verification.js
+  19:2  error  Parsing error: Unexpected token :
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/scripts/fix_all_syntax_errors.js
+  2:1  error  Parsing error: Unexpected character '#'
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/scripts/fix_integration_tests.js
+  2:1  error  Parsing error: Unexpected character '#'
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/scripts/fix_typescript_errors.js
+  17:2  error  Parsing error: Unexpected token :
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/scripts/fix_unit_tests.js
+  2:1  error  Parsing error: Unexpected character '#'
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/scripts/implement_todos_phase1.js
+  36:16  error  Parsing error: Unterminated string constant
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/scripts/import-forum-data.js
+  6:21  warning  'contentDb' is assigned a value but never used        no-unused-vars
+  6:42  warning  'communicationDb' is assigned a value but never used  no-unused-vars
+  6:59  warning  'securityDb' is assigned a value but never used       no-unused-vars
+  6:71  warning  'monetizationDb' is assigned a value but never used   no-unused-vars
+  6:87  warning  'controlDb' is assigned a value but never used        no-unused-vars
+  6:98  warning  'financialDb' is assigned a value but never used      no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/scripts/importCsvData.js
+  24:18  error  Parsing error: Unterminated string constant
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/scripts/migrate_extended_ml.js
+  12:72  error  Parsing error: Unterminated string constant
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/scripts/migrate_fingershorts_ml.js
+  14:70  error  Parsing error: Unterminated string constant
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/scripts/migrate_missing_tables.js
+  14:70  error  Parsing error: Unterminated string constant
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/scripts/migrate_unified_ml.js
+  16:72  error  Parsing error: Unterminated string constant
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/scripts/populate_mock_data.js
+  21:5  warning  'userId' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/scripts/runCreatorInfluenceMigration.js
+  15:18  error  Parsing error: Unterminated string constant
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/scripts/testCsvImport.js
+  56:17  error  Parsing error: Unterminated string constant
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/scripts/todo_tracker.js
+  18:40  error  Parsing error: Unexpected token ,
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/scripts/verify_route_registration.js
+  86:13  error  Parsing error: Unterminated string constant
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/server (1).js
+  129:27  warning  'encoding' is defined but never used  no-unused-vars
+  249:25  warning  'next' is defined but never used      no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/server.js
+  136:27  warning  'encoding' is defined but never used  no-unused-vars
+  256:25  warning  'next' is defined but never used      no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/AIContentGenerationService.js
+  324:1  error  Parsing error: Unexpected token
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/AICreditBalanceService.js
+  21:46  warning  'reason' is defined but never used          no-unused-vars
+  30:40  warning  'limit' is assigned a value but never used  no-unused-vars
+  33:21  error    Unreachable code                            no-unreachable
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/APIDocsService.js
+  7:7  warning  'fs' is assigned a value but never used    no-unused-vars
+  8:7  warning  'path' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/AnalyticsEnhancedService.js
+  75:22  warning  'step' is defined but never used  no-unused-vars
+  79:21  error    Unreachable code                  no-unreachable
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/CDNService.js
+  88:7  error  Parsing error: Unexpected token {
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/ConferenceService.js
+  144:36  warning  'userId' is defined but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/FraudDetectionService.js
+   95:76  warning  'ipAddress' is defined but never used           no-unused-vars
+  199:58  warning  'userAgent' is defined but never used           no-unused-vars
+  319:19  warning  '_' is defined but never used                   no-unused-vars
+  399:24  warning  'filters' is assigned a value but never used    no-unused-vars
+  412:21  error    Unreachable code                                no-unreachable
+  421:23  warning  'timeframe' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/JWTRefreshService.js
+  18:9  error  Parsing error: Unexpected token process
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/OAuth2OIDCService.js
+   26:11  error  Unexpected newline between object and [ of property access  no-unexpected-multiline
+  125:11  error  Unexpected newline between object and [ of property access  no-unexpected-multiline
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/RecommendationService.js
+  417:65  warning  'value' is defined but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/StorageService.js
+   11:7   warning  'fs' is assigned a value but never used  no-unused-vars
+  324:35  error    Unnecessary escape character: \/         no-useless-escape
+  324:44  error    Unnecessary escape character: \.         no-useless-escape
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/TranscodingService.js
+  230:26  error  Promise executor functions should not be async  no-async-promise-executor
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/WidgetDataService.js
+  10:13  warning  'cacheKey' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/apiKeyService.js
+   98:13  warning  'hashedProvidedSecret' is assigned a value but never used  no-unused-vars
+  182:32  warning  'memberId' is defined but never used                       no-unused-vars
+  245:21  warning  'memberId' is defined but never used                       no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/challenge_stakes_service.js
+  2:25  warning  'identityDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/enhanced_wallet_service.js
+   2:25  warning  'identityDb' is assigned a value but never used             no-unused-vars
+   4:7   warning  'FICWalletService' is assigned a value but never used       no-unused-vars
+   5:7   warning  'FICTransactionservice' is assigned a value but never used  no-unused-vars
+  99:15  warning  'result' is assigned a value but never used                 no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/exchange_rate_service.js
+  3:9  warning  'logSecurityEvent' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/fic-subscription.js
+  439:34  warning  'member_id' is defined but never used  no-unused-vars
+  444:21  error    Unreachable code                       no-unreachable
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/fic_anonymity_service.js
+  71:48  warning  'transactionId' is defined but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/fic_paylink_service.js
+   36:13  warning  'updatedWallet' is assigned a value but never used         no-unused-vars
+  131:13  warning  'updatedCreatorWallet' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/fic_payment_gateway_service.js
+  4:7  warning  'FICTransactionservice' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/fic_service.js
+  2:9  warning  'monetizationDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/fraud-detection.js
+  16:9  error  Parsing error: Unexpected token unusual_login_patterns
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/matching-algorithm.js
+  19:7  error  Parsing error: Unexpected token PHOTO_CREDITS
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/mediaProcessingService.js
+  4:13  warning  'uuidv4' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/meishe_video_editor_service.js
+  5:9  warning  'spawn' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/monitoringService.js
+  67:7  error  Parsing error: Unexpected token 60000
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/nexusgnn.js
+  166:62  warning  'options' is assigned a value but never used  no-unused-vars
+  297:58  warning  'contentType' is defined but never used       no-unused-vars
+  689:39  warning  'contentType' is defined but never used       no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/notification_service.js
+  4:9  warning  'monetizationDb' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/opayService.js
+  133:7  warning  'transactionHistory' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/payment_gateway_service.js
+  220:7  error  Parsing error: Unexpected token {
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/platformCompatibilityService.js
+  62:11  warning  'thresholds' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/platformThemeService.js
+  433:13  warning  'result' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/profile-analysis.js
+  358:17  error    'member1Idmembermber2Id' is not defined  no-undef
+  509:25  warning  'coordinates' is defined but never used  no-unused-vars
+  520:30  warning  'lat' is defined but never used          no-unused-vars
+  520:35  warning  'lng' is defined but never used          no-unused-vars
+  592:19  warning  'memberId' is defined but never used     no-unused-vars
+  696:30  warning  'profile1' is defined but never used     no-unused-vars
+  696:40  warning  'profile2' is defined but never used     no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/safetyNumberService.js
+  148:21  error  Unreachable code  no-unreachable
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/sealedSenderService.js
+   88:13  warning  'iv' is assigned a value but never used  no-unused-vars
+  169:27  warning  'publicKey' is defined but never used    no-unused-vars
+  207:13  warning  'iv' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/three-way-matching.js
+  180:17  warning  'key' is assigned a value but never used  no-unused-vars
+  189:19  warning  'key' is assigned a value but never used  no-unused-vars
+  286:39  warning  'grn' is defined but never used           no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/ugc_media_service.js
+    9:9   warning  'getSignedUrl' is assigned a value but never used  no-unused-vars
+   83:13  warning  'mediaRecord' is assigned a value but never used   no-unused-vars
+  147:39  warning  'metadata' is defined but never used               no-unused-vars
+  325:22  warning  'media' is defined but never used                  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/videoTranslationService.js
+  6:7  warning  'path' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/video_asset_service.js
+  4:7  warning  'fs' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/video_processing_service.js
+    2:13  warning  'uuidv4' is assigned a value but never used         no-unused-vars
+    3:7   warning  'path' is assigned a value but never used           no-unused-vars
+  225:47  warning  'format' is assigned a value but never used         no-unused-vars
+  448:13  warning  'safeFont' is assigned a value but never used       no-unused-vars
+  526:13  warning  'safeInputPath' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/wallet_service.js
+  158:13  warning  'transactionResult' is assigned a value but never used  no-unused-vars
+  227:13  warning  'transactionResult' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/web3_service.js
+    3:9   warning  'logSecurityEvent' is assigned a value but never used  no-unused-vars
+  112:31  warning  'address' is defined but never used                    no-unused-vars
+  117:21  error    Unreachable code                                       no-unreachable
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/stercs-editor/controllers/editorController.js
+  28:5  error  Parsing error: Unexpected token catch
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/stercs-editor/migrate-reporting.js
+  4:65  error  Parsing error: Unexpected token host
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/stercs-editor/migrate-terminal.js
+  2:7  warning  'fs' is assigned a value but never used    no-unused-vars
+  3:7  warning  'path' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/stercs-editor/migrate-testing.js
+  4:65  error  Parsing error: Unexpected token host
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/stercs-editor/migrate.js
+  40:11  error  Parsing error: Unexpected token production
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/stercs-editor/routes/apis.js
+  18:11  error  Parsing error: Unexpected token ID
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/stercs-editor/routes/deployment.js
+  19:7  error  Parsing error: Unexpected token project
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/stercs-editor/routes/files.js
+  70:14  error  Parsing error: Unexpected token ,
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/stercs-editor/routes/memberProfile.js
+  120:6  error  Parsing error: Unexpected token :
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/stercs-editor/routes/mii.js
+  217:11  warning  'senderId' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/stercs-editor/routes/reporting.js
+  30:40  error  Parsing error: Unexpected token error
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/stercs-editor/routes/security.js
+  117:10  error  Parsing error: Unexpected token IP
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/stercs-editor/routes/testing.js
+  36:52  error  Parsing error: Unexpected token error
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/stercs-editor/services/aiGenerationService.js
+  129:60  warning  'limit' is assigned a value but never used  no-unused-vars
+  194:40  warning  'context' is defined but never used         no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/stercs-editor/services/apiService.js
+  293:46  warning  'options' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/stercs-editor/services/businessManagementService.js
+  46:5  error  Parsing error: Unexpected token catch
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/stercs-editor/services/deploymentService.js
+  318:7  error  Parsing error: Unexpected token const
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/stercs-editor/services/documentationService.js
+  136:12  error  Parsing error: Unexpected token ,
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/stercs-editor/services/explorerService.js
+  89:15  error  Parsing error: Unexpected token the
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/stercs-editor/services/integrationService.js
+  239:13  warning  'integration' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/stercs-editor/services/miiFingerOrbitService.js
+  345:13  warning  'pricingModel' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/stercs-editor/services/pageService.js
+  9:37  warning  'templateId' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/stercs-editor/services/reportingService.js
+  29:39  error  Parsing error: Unexpected token type
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/stercs-editor/services/terminalService.js
+  216:5  error  Parsing error: 'return' outside of function
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/stercs-editor/services/testingService.js
+  32:39  error  Parsing error: Unexpected token testType
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/stercs-editor/services/themeService.js
+   48:21  error    Unreachable code                                   no-unreachable
+  101:13  warning  'upsertResult' is assigned a value but never used  no-unused-vars
+  190:32  warning  'memberId' is defined but never used               no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/stercs-editor/services/versionControlService.js
+  45:11  error  Parsing error: Unexpected token {
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/temp_scripts/fix_controller_syntax.js
+  11:45  error  Unnecessary escape character: \,  no-useless-escape
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/test-routes.js
+  4:7  warning  'glob' is assigned a value but never used  no-unused-vars
+  5:7  warning  'path' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/test/integration-test.js
+  12:9  warning  'ContentRiskAssessment' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/test_payment_endpoint.js
+  2:1  error  Parsing error: Unexpected character '#'
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/test_post_engagements.js
+  45:11  warning  'pollRes' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/unified-products.js
+  9:13  warning  'platform' is assigned a value but never used  no-unused-vars
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/utils/sentry.js
+  65:34  warning  'hint' is defined but never used  no-unused-vars
+
+✖ 503 problems (142 errors, 361 warnings)
+  10 errors and 0 warnings potentially fixable with the `--fix` option.
+

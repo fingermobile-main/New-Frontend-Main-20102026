@@ -1,0 +1,11 @@
+name,description,interest_rate,max_amount,loan_term_days,eligibility_criteria
+"Payday Advance","Short-term loan to cover expenses until next paycheck",15.00,500.00,14,"{""min_salary"": 1000, ""employment_status"": ""full-time""}"
+"SME Booster Loan","Business expansion loan for small to medium enterprises",5.50,50000.00,365,"{""business_age_months"": 12, ""min_monthly_revenue"": 5000}"
+"Personal Credit Line","Revolving credit line for personal use",12.50,5000.00,30,"{""credit_score"": 650}"
+"Student Essentials Loan","Low-interest loan for educational supplies",3.00,1000.00,180,"{""student_status"": ""active"", ""age_under"": 25}"
+"Auto Repair Financing","Quick funds for unexpected vehicle repairs",8.50,2500.00,90,"{""vehicle_ownership"": true}"
+"Micro-Trader Capital","Daily or weekly repayment capital for market traders",20.00,200.00,7,"{""kyc_level"": 2}"
+"Tech Equipment Financing","Specialized loan for laptops and development gear",6.00,3000.00,180,"{""profession"": ""tech""}"
+"Emergency Medical Fund","Instant approval medical expense loan",4.50,10000.00,180,"{""insurance_status"": ""verified""}"
+"Travel & Vacation Loan","Finance your next holiday getaway",14.00,4000.00,365,"{""credit_score"": 700}"
+"Green Energy Loan","Financing for solar panels and inverters",4.00,15000.00,730,"{""home_owner"": true}"

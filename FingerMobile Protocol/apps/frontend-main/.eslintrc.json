@@ -1,0 +1,40 @@
+{
+  "env": {
+    "node": true,
+    "es2021": true,
+    "jest": true
+  },
+  "extends": [
+    "eslint:recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2021,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "rules": {
+    "no-unused-vars": "warn",
+    "no-console": "warn",
+    "semi": "off",
+    "quotes": "off",
+    "indent": "off",
+    "no-trailing-spaces": "off",
+    "eol-last": "off",
+    "no-undef": "off",
+    "no-empty": "warn",
+    "no-constant-condition": "warn",
+    "no-case-declarations": "warn"
+  },
+  "ignorePatterns": [
+    "node_modules/",
+    "dist/",
+    "backups/",
+    "*.test.js"
+  ]
+}

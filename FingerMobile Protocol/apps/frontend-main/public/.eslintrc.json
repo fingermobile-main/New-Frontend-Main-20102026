@@ -1,0 +1,13 @@
+{
+  "extends": ["../../.eslintrc.json"],
+  "rules": {
+    "no-console": "off",
+    "no-undef": "off"
+  },
+  "globals": {
+    "importScripts": "readonly",
+    "firebase": "readonly",
+    "clients": "readonly",
+    "self": "readonly"
+  }
+}

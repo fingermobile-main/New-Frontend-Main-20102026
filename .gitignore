@@ -459,3 +459,6 @@ config/staging.json
 
 # Exclude nested .git directories
 **/.git
+**/.git.bak
+.git.bak
+

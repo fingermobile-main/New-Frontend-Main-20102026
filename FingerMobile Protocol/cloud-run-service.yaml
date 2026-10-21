@@ -1,0 +1,101 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: fingermobile-backend
+  namespace: default
+spec:
+  template:
+    metadata:
+      annotations:
+        # Autoscaling configuration
+        autoscaling.knative.dev/minScale: "0"
+        autoscaling.knative.dev/maxScale: "10"
+        run.googleapis.com/startup-cpu-boost: "true"
+        
+        # Resource limits
+        run.googleapis.com/memory-limit: "512Mi"
+        run.googleapis.com/cpu-limit: "1000m"
+        
+        # Timeout
+        run.googleapis.com/timeout: "300s"
+        
+        # Cloud SQL connection
+        run.googleapis.com/cloudsql-instances: "fingermobile:us-central1:fingermobile-db"
+        
+        # VPC connector (optional, for private resources)
+        # run.googleapis.com/vpc-access-connector: "projects/fingermobile/locations/us-central1/connectors/my-connector"
+    spec:
+      containerConcurrency: 80
+      serviceAccountName: fingermobile-backend-sa@fingermobile.iam.gserviceaccount.com
+      containers:
+      - image: us-central1-docker.pkg.dev/fingermobile/fingermobile-repo/backend:latest
+        ports:
+        - containerPort: 3000
+        
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "3000"
+        - name: DB_HOST
+          value: "/cloudsql/fingermobile:us-central1:fingermobile-db"
+        - name: DB_PORT
+          value: "5432"
+        - name: DB_NAME
+          value: "fingermobile_db"
+        - name: DB_USER
+          value: "postgres"
+        - name: GOOGLE_CLOUD_PROJECT
+          value: "fingermobile"
+        - name: MEDIA_STORAGE
+          value: "gcs"
+        - name: GCS_BUCKET_NAME
+          value: "fingermobile-media-fingermobile"
+        - name: EXCHANGE_RATE_API
+          value: "https://api.exchangerate-api.com/v4/latest/USD"
+        - name: CORS_ORIGIN
+          value: "*"
+        
+        envFrom:
+        - secretRef:
+            name: backend-secrets
+        
+        resources:
+          limits:
+            cpu: "1000m"
+            memory: "512Mi"
+          requests:
+            cpu: "500m"
+            memory: "256Mi"
+        
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 10
+          periodSeconds: 30
+          timeoutSeconds: 5
+          failureThreshold: 3
+        
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 40
+          periodSeconds: 60
+          timeoutSeconds: 10
+          failureThreshold: 3
+
+---
+# Secret Manager references
+apiVersion: v1
+kind: Secret
+metadata:
+  name: backend-secrets
+type: Opaque
+stringData:
+  JWT_SECRET: projects/fingermobile/secrets/jwt-secret/versions/latest
+  DB_PASSWORD: projects/fingermobile/secrets/db-password/versions/latest
+  STRIPE_SECRET_KEY: projects/fingermobile/secrets/stripe-key/versions/latest
+  PAYSTACK_SECRET_KEY: projects/fingermobile/secrets/paystack-key/versions/latest
+  SENDGRID_API_KEY: projects/fingermobile/secrets/sendgrid-key/versions/latest

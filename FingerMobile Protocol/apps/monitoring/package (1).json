@@ -1,0 +1,14 @@
+{
+  "name": "monitoring",
+  "version": "1.0.0",
+  "description": "FingerMobile Protocol - monitoring application",
+  "private": true,
+  "scripts": {
+    "start": "echo 'Starting monitoring...'",
+    "dev": "echo 'Development mode for monitoring...'",
+    "build": "echo 'Building monitoring...'",
+    "test": "echo 'Testing monitoring...'"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

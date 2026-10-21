@@ -1,0 +1,31 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "FMP2026CORP.com.fingermobile.protocol.app",
+        "paths": [
+          "NOT /api/*",
+          "NOT /admin/*",
+          "/user/*",
+          "/*/user/*",
+          "/forum/*",
+          "/groups/*",
+          "/chat/*",
+          "/gems/*",
+          "/hallmarks/*",
+          "/tribut/*",
+          "/dancia4tv/*",
+          "/beatwaveng/*",
+          "/marketplace/*",
+          "/wallet/*",
+          "/nysc/*",
+          "/*"
+        ]
+      }
+    ]
+  },
+  "webcredentials": {
+    "apps": ["FMP2026CORP.com.fingermobile.protocol.app"]
+  }
+}

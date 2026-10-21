@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FingerMobile™ Protocol | Sovereign Media, Commerce &amp; Unified Decentralized Ecosystem</title>
+    <meta name="description" content="FingerMobile™ Protocol is a sovereign decentralized media, creator monetization, commerce, and identity platform powered by Guardian AI, FIC currency, BeatwaveNG, Dancia-4Tv, and 230+ native screens." />
+    <meta name="keywords" content="FingerMobile, FingerMobile Protocol, FIC Currency, Sovereign Media, BeatwaveNG, Dancia-4Tv, Guardian AI, Creator Monetization, Decentralized Social, P2P Commerce" />
+    <meta name="author" content="FingerMobile Protocol™ Engineering" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="theme-color" content="#ff6b00" />
+    <link rel="canonical" href="https://fingermobileprotocol.com/" />
+
+    <!-- Open Graph (Facebook, LinkedIn, Social Previews) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://fingermobileprotocol.com/" />
+    <meta property="og:title" content="FingerMobile™ Protocol | Sovereign Media &amp; Commerce Ecosystem" />
+    <meta property="og:description" content="Sovereign decentralized media, creator monetization, commerce, and identity platform powered by Guardian AI, FIC currency, BeatwaveNG, and Dancia-4Tv." />
+    <meta property="og:image" content="https://fingermobileprotocol.com/assets/branding/fingermobile/logo-orange.webp" />
+    <meta property="og:site_name" content="FingerMobile™ Protocol" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@FingerMobile" />
+    <meta name="twitter:creator" content="@FingerMobile" />
+    <meta name="twitter:title" content="FingerMobile™ Protocol | Sovereign Media &amp; Commerce Ecosystem" />
+    <meta name="twitter:description" content="Sovereign decentralized media, creator monetization, commerce, and identity platform powered by Guardian AI and FIC currency." />
+    <meta name="twitter:image" content="https://fingermobileprotocol.com/assets/branding/fingermobile/logo-orange.webp" />
+
+    <!-- Favicon & App Icons -->
+    <link rel="icon" type="image/webp" href="/assets/branding/fingermobile/logo-orange.webp" />
+    <link rel="apple-touch-icon" href="/assets/branding/fingermobile/logo-orange.webp" />
+
+    <!-- Schema.org JSON-LD Structured Data for Search Engine Crawlers -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://fingermobileprotocol.com/#organization",
+          "name": "FingerMobile Protocol™",
+          "url": "https://fingermobileprotocol.com/",
+          "email": "info@fingermobileprotocol.com",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://fingermobileprotocol.com/assets/branding/fingermobile/logo-orange.webp",
+            "caption": "FingerMobile Protocol Logo"
+          },
+          "contactPoint": [
+            {
+              "@type": "ContactPoint",
+              "contactType": "customer support",
+              "email": "fingermobileprotocol@gmail.com"
+            },
+            {
+              "@type": "ContactPoint",
+              "contactType": "general inquiries",
+              "email": "info@fingermobileprotocol.com"
+            }
+          ],
+          "sameAs": [
+            "https://twitter.com/FingerMobile",
+            "https://github.com/fingermobile"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://fingermobileprotocol.com/#website",
+          "url": "https://fingermobileprotocol.com/",
+          "name": "FingerMobile Protocol™",
+          "description": "Sovereign decentralized media, creator monetization, commerce, and identity platform.",
+          "publisher": {
+            "@id": "https://fingermobileprotocol.com/#organization"
+          },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://fingermobileprotocol.com/search?q={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "FingerMobile Protocol™ Platform",
+          "operatingSystem": "Web, iOS, Android, macOS, Windows",
+          "applicationCategory": "MultimediaApplication, BusinessApplication",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        }
+      ]
+    }
+    </script>
+    <style>
+      /* Glassmorphic Crystal White Splash Screen Styles */
+      #splash-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at 50% 40%, rgba(255, 255, 255, 0.98) 0%, rgba(245, 248, 252, 0.94) 50%, rgba(235, 240, 248, 0.9) 100%);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        opacity: 1;
+        transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .splash-card {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.90) 0%, rgba(255, 255, 255, 0.75) 100%);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(255, 255, 255, 0.9) inset;
+        border-radius: 28px;
+        padding: 32px 36px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 380px;
+        width: 90%;
+        backdrop-filter: blur(30px);
+        -webkit-backdrop-filter: blur(30px);
+      }
+
+      .splash-graphic-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      .splash-graphic-header {
+        font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+        font-size: 26px;
+        font-weight: 500;
+        color: #111827;
+        margin-bottom: 6px;
+        letter-spacing: -0.01em;
+      }
+
+      .splash-graphic-emblem {
+        width: 120px;
+        height: 120px;
+        object-fit: contain;
+        filter: drop-shadow(0 10px 20px rgba(255, 107, 0, 0.25));
+        animation: pulse 2.5s infinite ease-in-out;
+        margin: 4px 0;
+      }
+
+      .splash-graphic-tagline {
+        font-family: 'Dancing Script', 'Caveat', 'Great Vibes', 'Brush Script MT', cursive;
+        font-size: 19px;
+        font-weight: 600;
+        color: #1f2937;
+        margin-top: 6px;
+      }
+
+      .splash-title {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-size: 24px;
+        font-weight: 900;
+        color: #111827;
+        margin: 0 0 2px 0;
+        letter-spacing: -0.02em;
+      }
+
+      .splash-tagline {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-size: 11px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: #6b7280;
+        margin-bottom: 20px;
+        font-weight: 700;
+      }
+
+      .splash-progress-track {
+        width: 100%;
+        height: 6px;
+        background: rgba(226, 232, 240, 0.7);
+        border-radius: 9999px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .splash-progress-bar {
+        height: 100%;
+        width: 50%;
+        background: linear-gradient(90deg, #ff6b00, #f59e0b);
+        border-radius: 9999px;
+        animation: loadingBar 1.8s infinite ease-in-out;
+      }
+
+      @keyframes loadingBar {
+        0% { transform: translateX(-100%); width: 30%; }
+        50% { transform: translateX(50%); width: 70%; }
+        100% { transform: translateX(200%); width: 30%; }
+      }
+
+      @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+      }
+
+      /* Class to fade out the splash screen */
+      .fade-out {
+        opacity: 0 !important;
+        pointer-events: none;
+      }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <!-- Glassmorphic Crystal White Splash Screen -->
+    <div id="splash-screen">
+      <div class="splash-card">
+        <!-- Graphic Container -->
+        <div class="splash-graphic-container">
+          <div class="splash-graphic-header">FingerMobile</div>
+          <img
+            class="splash-graphic-emblem"
+            src="/assets/branding/fingermobile/fingermobile_emblem.png"
+            alt="FingerMobile Emblem"
+            onerror="this.onerror=null; this.src='/assets/branding/fingermobile/logo-orange.webp';"
+          />
+          <div class="splash-graphic-tagline">Join Us, Share your Moments!</div>
+        </div>
+
+        <!-- Directly Underneath That Graphic -->
+        <h1 class="splash-title">FingerMobile<span style="color:#ff6b00">™</span></h1>
+        <p class="splash-tagline">Protocol</p>
+
+        <div class="splash-progress-track">
+          <div class="splash-progress-bar"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main App Container -->
+    <div id="root"></div>
+
+    <script>
+      (function() {
+        var dismissed = false;
+        function dismissSplash() {
+          if (dismissed) return;
+          dismissed = true;
+          var splash = document.getElementById('splash-screen');
+          if (splash) {
+            splash.classList.add('fade-out');
+            setTimeout(function() {
+              splash.style.display = 'none';
+              if (splash.parentNode) {
+                splash.parentNode.removeChild(splash);
+              }
+            }, 300);
+          }
+        }
+
+        window.dismissSplashScreen = dismissSplash;
+
+        // Auto dismiss as soon as window loads or maximum 600ms safety timeout
+        if (document.readyState === 'complete') {
+          setTimeout(dismissSplash, 200);
+        } else {
+          window.addEventListener('load', function() {
+            setTimeout(dismissSplash, 200);
+          });
+        }
+        // Absolute fallback safety timeout
+        setTimeout(dismissSplash, 800);
+      })();
+    </script>
+  </body>
+</html>

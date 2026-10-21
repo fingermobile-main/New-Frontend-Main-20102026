@@ -1,0 +1,1132 @@
+{
+  "unregisteredRoutes": [
+    {
+      "file": "achievements.js",
+      "routeName": "achievements",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "activity.js",
+      "routeName": "activity",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "ai.js",
+      "routeName": "ai",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "apiDocumentation.js",
+      "routeName": "apiDocumentation",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "apiKeys.js",
+      "routeName": "apiKeys",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "audit-log-admin.js",
+      "routeName": "audit-log-admin",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "authEnhancements.js",
+      "routeName": "authEnhancements",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "authenticator.js",
+      "routeName": "authenticator",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "beatwave.js",
+      "routeName": "beatwave",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "biometric.js",
+      "routeName": "biometric",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "blocking.js",
+      "routeName": "blocking",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "blogs.js",
+      "routeName": "blogs",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "camus.js",
+      "routeName": "camus",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "canary.js",
+      "routeName": "canary",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "cdn.js",
+      "routeName": "cdn",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "commerce.js",
+      "routeName": "commerce",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "commissions.js",
+      "routeName": "commissions",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "communities.js",
+      "routeName": "communities",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "connections.js",
+      "routeName": "connections",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "contentModeration.js",
+      "routeName": "contentModeration",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "contentOperations.js",
+      "routeName": "contentOperations",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "contentmanagement.js",
+      "routeName": "contentmanagement",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "creatorInfluenceSubscriptionRoutes.js",
+      "routeName": "creatorInfluenceSubscriptionRoutes",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "csvImport.js",
+      "routeName": "csvImport",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "discover.js",
+      "routeName": "discover",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "elearning.js",
+      "routeName": "elearning",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "enhanced_wallet.js",
+      "routeName": "enhanced_wallet",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "export.js",
+      "routeName": "export",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "externalServices.js",
+      "routeName": "externalServices",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "feature-flags.js",
+      "routeName": "feature-flags",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "ficRoutes.js",
+      "routeName": "ficRoutes",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "fingerlux.js",
+      "routeName": "fingerlux",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "fingershorts.js",
+      "routeName": "fingershorts",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "fingerwars.js",
+      "routeName": "fingerwars",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "flamingo.js",
+      "routeName": "flamingo",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "forumcategories.js",
+      "routeName": "forumcategories",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "gameon.js",
+      "routeName": "gameon",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "gamification.js",
+      "routeName": "gamification",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "general.js",
+      "routeName": "general",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "generalEndpoints.js",
+      "routeName": "generalEndpoints",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "giftcards.js",
+      "routeName": "giftcards",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "governance.js",
+      "routeName": "governance",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "grading-system.routes.js",
+      "routeName": "grading-system.routes",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "groups.js",
+      "routeName": "groups",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "hallmarks.js",
+      "routeName": "hallmarks",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "helpcenter.js",
+      "routeName": "helpcenter",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "index.js",
+      "routeName": "index",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "integrations-module.js",
+      "routeName": "integrations-module",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "integrations.js",
+      "routeName": "integrations",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "items.js",
+      "routeName": "items",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "leaderboards.js",
+      "routeName": "leaderboards",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "lendsq.js",
+      "routeName": "lendsq",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "lumina-media.js",
+      "routeName": "lumina-media",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "lumina-upload.js",
+      "routeName": "lumina-upload",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "lumina.js",
+      "routeName": "lumina",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "lushpressies.js",
+      "routeName": "lushpressies",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "marketplace-tms.js",
+      "routeName": "marketplace-tms",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "media.js",
+      "routeName": "media",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "meishe_video_editor.js",
+      "routeName": "meishe_video_editor",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "memberprofiles.js",
+      "routeName": "memberprofiles",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "metrics.js",
+      "routeName": "metrics",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "mii.js",
+      "routeName": "mii",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "mobile_video_editor.js",
+      "routeName": "mobile_video_editor",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "moderation.js",
+      "routeName": "moderation",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "mylearning.js",
+      "routeName": "mylearning",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "nysc.js",
+      "routeName": "nysc",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "oauth2.js",
+      "routeName": "oauth2",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "ownit.js",
+      "routeName": "ownit",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "p2p-matching.js",
+      "routeName": "p2p-matching",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "permanence-data.js",
+      "routeName": "permanence-data",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "permanence_monetization.js",
+      "routeName": "permanence_monetization",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "photocredits.js",
+      "routeName": "photocredits",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "platformThemes.js",
+      "routeName": "platformThemes",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "protocol.js",
+      "routeName": "protocol",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "publicitee.js",
+      "routeName": "publicitee",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "registrationLock.js",
+      "routeName": "registrationLock",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "seads.js",
+      "routeName": "seads",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "search-elasticsearch.js",
+      "routeName": "search-elasticsearch",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "search.js",
+      "routeName": "search",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "security.js",
+      "routeName": "security",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "storefront.js",
+      "routeName": "storefront",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "supervi_achievements.js",
+      "routeName": "supervi_achievements",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "supervi_leaderboards.js",
+      "routeName": "supervi_leaderboards",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "tms.js",
+      "routeName": "tms",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "trends.js",
+      "routeName": "trends",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "twoFactorAuth.js",
+      "routeName": "twoFactorAuth",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "ugc_media_routes.js",
+      "routeName": "ugc_media_routes",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "userManagement.js",
+      "routeName": "userManagement",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "video_editor.js",
+      "routeName": "video_editor",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "voicefeed.js",
+      "routeName": "voicefeed",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "voicelines.js",
+      "routeName": "voicelines",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "webhook-deliveries.js",
+      "routeName": "webhook-deliveries",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "webhooks.js",
+      "routeName": "webhooks",
+      "status": "NOT_REGISTERED"
+    },
+    {
+      "file": "widgets.js",
+      "routeName": "widgets",
+      "status": "NOT_REGISTERED"
+    }
+  ],
+  "stubControllers": [
+    {
+      "file": "ai.js",
+      "type": "ROUTE",
+      "reason": "Contains stub pattern: TODO|FIXME|placeholder|stub"
+    },
+    {
+      "file": "authEnhancements.js",
+      "type": "ROUTE",
+      "reason": "Contains stub pattern: TODO|FIXME|placeholder|stub"
+    },
+    {
+      "file": "cdn.js",
+      "type": "ROUTE",
+      "reason": "Only 9 lines of code"
+    },
+    {
+      "file": "commissions.js",
+      "type": "ROUTE",
+      "reason": "Contains stub pattern: TODO|FIXME|placeholder|stub"
+    },
+    {
+      "file": "contentOperations.js",
+      "type": "ROUTE",
+      "reason": "Contains stub pattern: TODO|FIXME|placeholder|stub"
+    },
+    {
+      "file": "csvImport.js",
+      "type": "ROUTE",
+      "reason": "Only 9 lines of code"
+    },
+    {
+      "file": "dashboard.js",
+      "type": "ROUTE",
+      "reason": "Only 9 lines of code"
+    },
+    {
+      "file": "fic.js",
+      "type": "ROUTE",
+      "reason": "Contains stub pattern: TODO|FIXME|placeholder|stub"
+    },
+    {
+      "file": "fraud-alerts.js",
+      "type": "ROUTE",
+      "reason": "Contains stub pattern: TODO|FIXME|placeholder|stub"
+    },
+    {
+      "file": "identity.js",
+      "type": "ROUTE",
+      "reason": "Only 6 lines of code"
+    },
+    {
+      "file": "monetization.js",
+      "type": "ROUTE",
+      "reason": "Only 6 lines of code"
+    },
+    {
+      "file": "notifications.js",
+      "type": "ROUTE",
+      "reason": "Contains stub pattern: TODO|FIXME|placeholder|stub"
+    },
+    {
+      "file": "payment-webhooks.js",
+      "type": "ROUTE",
+      "reason": "Contains stub pattern: TODO|FIXME|placeholder|stub"
+    },
+    {
+      "file": "permanence-data.js",
+      "type": "ROUTE",
+      "reason": "Only 8 lines of code"
+    },
+    {
+      "file": "permanence_monetization.js",
+      "type": "ROUTE",
+      "reason": "Only 8 lines of code"
+    },
+    {
+      "file": "prompts.js",
+      "type": "ROUTE",
+      "reason": "Only 6 lines of code"
+    },
+    {
+      "file": "recommendations.js",
+      "type": "ROUTE",
+      "reason": "Contains stub pattern: TODO|FIXME|placeholder|stub"
+    },
+    {
+      "file": "search.js",
+      "type": "ROUTE",
+      "reason": "Contains stub pattern: TODO|FIXME|placeholder|stub"
+    },
+    {
+      "file": "sentient.js",
+      "type": "ROUTE",
+      "reason": "Only 9 lines of code"
+    },
+    {
+      "file": "stercs.js",
+      "type": "ROUTE",
+      "reason": "Contains stub pattern: TODO|FIXME|placeholder|stub"
+    },
+    {
+      "file": "uploads.js",
+      "type": "ROUTE",
+      "reason": "Contains stub pattern: TODO|FIXME|placeholder|stub"
+    },
+    {
+      "file": "userManagement.js",
+      "type": "ROUTE",
+      "reason": "Contains stub pattern: TODO|FIXME|placeholder|stub"
+    },
+    {
+      "file": "webhook-deliveries.js",
+      "type": "ROUTE",
+      "reason": "Only 7 lines of code"
+    },
+    {
+      "file": "widgets.js",
+      "type": "ROUTE",
+      "reason": "Only 9 lines of code"
+    },
+    {
+      "file": "CommissionController.js",
+      "type": "CONTROLLER",
+      "reason": "Contains stub pattern: TODO|FIXME|placeholder|stub"
+    },
+    {
+      "file": "FICController.js",
+      "type": "CONTROLLER",
+      "reason": "Contains stub pattern: TODO|FIXME|placeholder|stub"
+    },
+    {
+      "file": "UmeisheUvideoUeditorController.js",
+      "type": "CONTROLLER",
+      "reason": "Contains stub pattern: TODO|FIXME|placeholder|stub"
+    },
+    {
+      "file": "paymentsController.js",
+      "type": "CONTROLLER",
+      "reason": "Contains stub pattern: TODO|FIXME|placeholder|stub"
+    },
+    {
+      "file": "superSixController.js",
+      "type": "CONTROLLER",
+      "reason": "Contains stub pattern: TODO|FIXME|placeholder|stub"
+    }
+  ],
+  "stubServices": [
+    {
+      "file": "CommissionService.js",
+      "reason": "Contains stub pattern: TODO|FIXME|placeholder|stub"
+    },
+    {
+      "file": "FraudDetectionService.js",
+      "reason": "Contains stub pattern: TODO|FIXME|placeholder|stub"
+    },
+    {
+      "file": "TranscodingService.js",
+      "reason": "Contains stub pattern: TODO|FIXME|placeholder|stub"
+    },
+    {
+      "file": "analytics.js",
+      "reason": "Contains stub pattern: TODO|FIXME|placeholder|stub"
+    },
+    {
+      "file": "apiKeyService.js",
+      "reason": "Contains stub pattern: TODO|FIXME|placeholder|stub"
+    },
+    {
+      "file": "contentModerationService.js",
+      "reason": "Contains stub pattern: TODO|FIXME|placeholder|stub"
+    },
+    {
+      "file": "csvImportService.js",
+      "reason": "Contains stub pattern: TODO|FIXME|placeholder|stub"
+    },
+    {
+      "file": "opayService.js",
+      "reason": "Contains stub pattern: TODO|FIXME|placeholder|stub"
+    },
+    {
+      "file": "paystackService.js",
+      "reason": "Contains stub pattern: TODO|FIXME|placeholder|stub"
+    },
+    {
+      "file": "photoCreditsService.js",
+      "reason": "Contains stub pattern: TODO|FIXME|placeholder|stub"
+    },
+    {
+      "file": "profile-analysis.js",
+      "reason": "Contains stub pattern: TODO|FIXME|placeholder|stub"
+    },
+    {
+      "file": "sealedSenderService.js",
+      "reason": "Contains stub pattern: TODO|FIXME|placeholder|stub"
+    },
+    {
+      "file": "ugc_media_service.js",
+      "reason": "Contains stub pattern: TODO|FIXME|placeholder|stub"
+    },
+    {
+      "file": "web3_service.js",
+      "reason": "Contains stub pattern: TODO|FIXME|placeholder|stub"
+    }
+  ],
+  "missingModels": [],
+  "badImports": [
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/cdn.js",
+      "issue": "Import not found: ../controllers/CDNController.js",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/index.js",
+      "issue": "Import not found: ./stercs-editor",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/achievementsController.js",
+      "issue": "Import not found: ../models/wallet",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/notification_service.js",
+      "issue": "Import not found: ../../db",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/notification_service.js",
+      "issue": "Import not found: ../../utils/securityLogger",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/payment_gateway_service.js",
+      "issue": "Import not found: ../config/payment-config",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/transaction_monitoring.js",
+      "issue": "Import not found: ../../db",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/transaction_monitoring.js",
+      "issue": "Import not found: ../../utils/securityLogger",
+      "severity": "ERROR"
+    }
+  ],
+  "syntaxErrors": [
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/ai-credit-balance.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/auth.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/commissions.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/community.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/meishe_video_editor.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/messages.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/notifications.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/payments.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/routes/userManagement.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/AICreditBalanceController.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/AuditLogAdminController.js",
+      "issue": "Unclosed double quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/CourseContentController.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/ExportController.js",
+      "issue": "Unclosed double quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/GovernanceController.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/NotificationController.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/NotificationsControllerComplete.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/PostsControllerComplete.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/RateLimitConfigController.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/StercsController.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/achievementsController.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/aiController.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/aiUcreditUbalanceController.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/connectionsController.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/creatorInfluenceSubscriptionRoutesController.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/discoverController.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/gemsController.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/gradingUsystemController.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/hallmarksController.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/helpcenterController.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/integrations-moduleController.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/leaderboardsController.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/lendsqController.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/likesController.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/lumina-uploadController.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/meisheUvideoUeditorController.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/mylearningController.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/notificationsController.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/postsController.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/storefrontController.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/supervi_achievementsController.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/supervi_leaderboardsController.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/twoFactorAuthController.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/uploadsController.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/controllers/video_editorController.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/AIContentGenerationService.js",
+      "issue": "Mismatched parentheses: 93 open, 94 close",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/BackupService.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/ConferenceService.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/FICService.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/NotificationService.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/PaymentService.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/RecommendationService.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/SMSService.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/apiKeyService.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/challenge_stakes_service.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/contentModerationService.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/courseContentService.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/creatorInfluenceSubscriptionService.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/fic-subscription.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/fic_biometric_service.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/fic_paylink_service.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/fic_subscription_payment_service.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/fic_transaction_monitoring_service.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/governanceService.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/hallmarkService.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/marketplaceService.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/meishe_video_editor_service.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/mobile_video_editor_service.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/payment_gateway_service.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/paystackService.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/permanence_monetization_service.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/platformThemeService.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/profile-analysis.js",
+      "issue": "Mismatched parentheses: 241 open, 243 close",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/profile-analysis.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/sealedSenderService.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/signalwireService.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/three-way-matching.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/ugc_media_service.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/video_processing_service.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/wallet_service.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/services/web3_service.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    },
+    {
+      "file": "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/models/CourseContentModel.js",
+      "issue": "Unclosed single quote string",
+      "severity": "ERROR"
+    }
+  ],
+  "schemaMismatches": [],
+  "incompleteImplementations": [],
+  "missingBusinessLogic": []
+}

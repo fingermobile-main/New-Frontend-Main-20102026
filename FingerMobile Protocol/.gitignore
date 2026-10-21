@@ -1,0 +1,244 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Production builds
+/build
+/dist
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDEs
+.vscode/
+.idea/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# Temporary folders
+temp/
+tmp/
+
+# Platform specific
+*.swp
+*.swo
+*~
+*.swm
+*.swl
+*.swr
+*.swx
+*.swpx
+*.swpy
+*.swpz
+*.swpr
+*.swps
+*.swpt
+*.swpu
+*.swpv
+*.swpw
+
+# Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Ruby/Rails
+*.gem
+.bundle
+Gemfile.lock
+.ruby-version
+.rbenv-vars
+log/
+tmp/
+.rakeTasks
+_saved_session*
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+*.zip
+hs_err_pid*
+replay_pid*
+
+# Gradle
+.gradle/
+build/
+
+# Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# .NET
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]ogs/
+*.VC.db
+*.VC.VC.opendb
+
+# Mono
+mono_crash.*
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+**/.DS_Store
+**/._*
+**/.Spotlight-V100
+**/.Trashes
+**/ehthumbs.db
+**/Thumbs.db
+
+# Linux
+*~
+
+# Windows
+Thumbs.db
+ehthumbs.db
+[Ee]xpress/[Dd]ata/
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+
+# Android
+*.apk
+*.aar
+*.dex
+
+# iOS
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Backup files
+*.bak
+*.backup
+*.old
+*.orig
+*~
+
+# Large files that shouldn't be in git
+*.tar.*
+*.zip
+*.rar
+*.7z
+*.dmg
+*.iso
+*.img
+*.vhd
+*.ova
+*.ovf
+*.box
+*.vdi
+*.vmdk
+*.bin
+*.dat
+*.dump
+*.dmp
+
+# Generated files
+generated/
+gen/
+out/
+
+# Lock files
+*.lock
+
+# Cache directories
+.cache/
+node_modules_cache/
+
+# Local configuration files
+config/local.json
+config/production.json
+config/staging.json
+
+# Database migration backups
+.migration-backups/
+
+# Git LFS temporary files
+.lfs/
+.lfsconfig
+
+# Exclude nested git repositories within this repo
+UPDATED dev files 09092026/
+SLEEPERS MAIN/
+ARCHIVE BACKEUP AND DEVELOPMENT FILES 09092026/
+frontend-main-backup-20260819-185559/
+old-frontend-main/
+frontend-main.bak.1785580996/
+Optimized FingerMobile/
+archived_files/
+dev files 13042026/
+flutter/
+apps/frontend-main/.git/
+
+# Build artifacts & TypeScript caches
+dist/
+**/dist/
+*.tsbuildinfo
+
+# Scratch scripts & temporary test artifacts
+*.png
+eslint_report.json
+fix_*.py
+add_logger.py
+analyze_microservices.py
+compare_docker_apps.py
+generate_*.py
+scratchpad.js
+update_*.js
+test_*.js
+microservices_analysis.json
+port_legacy_backends.js
+run_live_forum_e2e_flow.js
+verify_forum_fix.js
+*.disabled*
+*.backup
+* copy*
+apps/backend/logs/

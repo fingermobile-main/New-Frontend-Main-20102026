@@ -1,0 +1,101 @@
+name: CD - Deploy to Production
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: "Deployment reason"
+        required: true
+        default: "Manual deployment"
+
+jobs:
+  deploy-production:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and push Docker images
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: fingermobile-backend
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f apps/backend/Dockerfile apps/backend
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+      - name: Deploy to production ECS (blue-green)
+        run: |
+          # Update task definition with new image
+          aws ecs register-task-definition \
+            --family fingermobile-backend \
+            --cli-input-json file://task-definition.json \
+            --region ${{ secrets.AWS_REGION }}
+
+          # Update service with new task definition
+          aws ecs update-service \
+            --cluster fingermobile-production \
+            --service backend-service \
+            --task-definition fingermobile-backend \
+            --force-new-deployment \
+            --region ${{ secrets.AWS_REGION }}
+
+      - name: Run database migrations
+        run: |
+          aws ecs run-task \
+            --cluster fingermobile-production \
+            --task-definition migration-task \
+            --launch-type FARGATE \
+            --network-configuration "awsvpcConfiguration={subnets=[${{ secrets.PRODUCTION_SUBNET }}],securityGroups=[${{ secrets.PRODUCTION_SG }}],assignPublicIp=ENABLED}" \
+            --region ${{ secrets.AWS_REGION }}
+
+      - name: Wait for deployment
+        run: |
+          aws ecs wait services-stable \
+            --cluster fingermobile-production \
+            --services backend-service \
+            --region ${{ secrets.AWS_REGION }}
+
+      - name: Health check
+        run: |
+          sleep 120
+          curl -f https://api.fingermobileprotocol.com/health || exit 1
+
+      - name: Run smoke tests
+        run: |
+          npm run test:smoke
+        env:
+          API_BASE_URL: https://api.fingermobileprotocol.com
+
+      - name: Notify Slack
+        if: always()
+        uses: slackapi/slack-github-action@v1
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        with:
+          channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
+          payload: |
+            {
+              "text": "Production deployment ${{ job.status }}: ${{ github.repository }} (${{ github.sha }}) by ${{ github.actor }}\nReason: ${{ github.event.inputs.reason }}"
+            }
+
+      - name: Create GitHub deployment
+        if: success()
+        uses: chrnorm/deployment-action@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          environment: production
+          initial-status: success

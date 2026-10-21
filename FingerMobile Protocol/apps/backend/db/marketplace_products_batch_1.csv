@@ -1,0 +1,6 @@
+sku,name,description,price,stock,category,seller_id
+"SKU001","Smartphone X","Latest smartphone with high-res camera","999.99","50","Electronics","e1a3b4c1-6b8f-4d9a-9e8b-1f2a3b4c5d6e"
+"SKU002","Wireless Earbuds","Noise-cancelling wireless earbuds","199.99","200","Electronics","e1a3b4c1-6b8f-4d9a-9e8b-1f2a3b4c5d6e"
+"SKU003","Ergonomic Office Chair","Comfortable chair for long hours","249.50","20","Furniture","f2b4c5d2-7c9f-5e0b-0f9c-2f3b4c5d6e7f"
+"LND001","Loansqr Starter Loan","Personal loan for quick cash needs","500.00","1000","Financial","f2b4c5d2-7c9f-5e0b-0f9c-2f3b4c5d6e7f"
+"LND002","Loansqr SME Business Loan","Small business expansion loan","5000.00","500","Financial","e1a3b4c1-6b8f-4d9a-9e8b-1f2a3b4c5d6e"

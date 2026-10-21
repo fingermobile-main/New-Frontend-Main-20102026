@@ -1,0 +1,932 @@
+{
+    "assets": {
+        "attachments": {
+            "ComposerRT_color": {
+                "type": "color"
+            },
+            "EffectRT0_color": {
+                "type": "color"
+            },
+            "EffectRT0_depth": {
+                "clear": [
+                    1.0
+                ],
+                "type": "depth"
+            },
+            "EffectRT1_color": {
+                "type": "color"
+            },
+            "EffectRT1_depth": {
+                "clear": [
+                    1.0
+                ],
+                "type": "depth"
+            },
+            "finalColorFilterRT_color": {
+                "type": "color"
+            }
+        },
+        "faces": {
+            "face0": {
+                "index": 0,
+                "mesh": "!glfx_FACE"
+            }
+        },
+        "images": {
+            "text": {
+                "type": "text_texture",
+                "font": "NotoSans-Regular.ttf",
+                "width": 1280,
+                "height": 400,
+                "text": "Tap \n ← Camera 360 →"
+              },
+            "body2_BaseColor.png": {
+                "file_name": "images/body2_BaseColor.png",
+                "type": "texture"
+            },
+            "body2_Metallic.png": {
+                "file_name": "images/body2_Metallic.png",
+                "type": "texture"
+            },
+            "body2_Normal.png": {
+                "file_name": "images/body2_Normal.png",
+                "type": "texture"
+            },
+            "body2_Roughness.png": {
+                "file_name": "images/body2_Roughness.png",
+                "type": "texture"
+            },
+            "body3_BaseColor.png": {
+                "file_name": "images/body3_BaseColor.png",
+                "type": "texture"
+            },
+            "body3_Metallic.png": {
+                "file_name": "images/body3_Metallic.png",
+                "type": "texture"
+            },
+            "body3_Normal.png": {
+                "file_name": "images/body3_Normal.png",
+                "type": "texture"
+            },
+            "body3_Roughness.png": {
+                "file_name": "images/body3_Roughness.png",
+                "type": "texture"
+            },
+            "body_BaseColor.png": {
+                "file_name": "images/body_BaseColor.png",
+                "type": "texture"
+            },
+            "body_Metallic.png": {
+                "file_name": "images/body_Metallic.png",
+                "type": "texture"
+            },
+            "body_Normal.png": {
+                "file_name": "images/body_Normal.png",
+                "type": "texture"
+            },
+            "body_Roughness.png": {
+                "file_name": "images/body_Roughness.png",
+                "type": "texture"
+            },
+            "brdf.ktx": {
+                "file_name": "images/brdf.ktx",
+                "type": "texture"
+            },
+            "camera_image": {
+                "algorithm": "camera_composer",
+                "type": "procedural_texture"
+            },
+            "env.ktx": {
+                "file_name": "images/env.ktx",
+                "type": "cubemap"
+            },
+            "faceShadow_BaseColor.png": {
+                "file_name": "images/faceShadow_BaseColor.png",
+                "type": "texture"
+            },
+            "ibl_diff.ktx": {
+                "file_name": "images/ibl_diff.ktx",
+                "type": "cubemap"
+            },
+            "ibl_spec.ktx": {
+                "file_name": "images/ibl_spec.ktx",
+                "type": "cubemap"
+            },
+            "lut_80_percent.png": {
+                "file_name": "images/lut_80_percent.png",
+                "type": "texture"
+            },
+            "null_image.png": {
+                "file_name": "images/null_image.png",
+                "type": "texture"
+            },
+            "null_lut.png": {
+                "file_name": "images/null_lut.png",
+                "type": "texture"
+            },
+            "preview.png": {
+                "file_name": "images/preview.png",
+                "type": "texture"
+            },
+            "redmask_new_3.png": {
+                "file_name": "images/redmask_new_3.png",
+                "type": "texture"
+            },
+            "soft_low.png": {
+                "file_name": "images/soft_low.png",
+                "type": "texture"
+            },
+            "sunny.png": {
+                "file_name": "images/sunny.png",
+                "type": "texture"
+            },
+            "teeth_highlighter5.png": {
+                "file_name": "images/teeth_highlighter5.png",
+                "type": "texture"
+            }
+        },
+        "materials": {
+            "$builtin$materials/copy_pixels.-1": {
+                "parameters": {},
+                "samplers": [
+                    {
+                        "image": "camera_image",
+                        "name": "tex_src"
+                    }
+                ],
+                "state": {
+                    "backfaces": true,
+                    "blend": "off",
+                    "colorwrite": true,
+                    "ztest": false,
+                    "zwrite": false
+                }
+            },
+            "$builtin$materials/copy_pixels.0": {
+                "parameters": {},
+                "samplers": [
+                    {
+                        "image": "ComposerRT_color",
+                        "name": "tex_src"
+                    }
+                ],
+                "state": {
+                    "backfaces": true,
+                    "blend": "off",
+                    "colorwrite": true,
+                    "ztest": false,
+                    "zwrite": false
+                }
+            },
+            "$builtin$materials/copy_pixels.1": {
+                "parameters": {},
+                "samplers": [
+                    {
+                        "image": "EffectRT0_color",
+                        "name": "tex_src"
+                    }
+                ],
+                "state": {
+                    "backfaces": true,
+                    "blend": "off",
+                    "colorwrite": true,
+                    "ztest": false,
+                    "zwrite": false
+                }
+            },
+            "shaders/TriMa2": {
+                "built_in_samplers": [],
+                "samplers": [
+                    {
+                        "image": "EffectRT0_color",
+                        "name": "glfx_BACKGROUND"
+                    }
+                ],
+                "state": {
+                    "backfaces": true,
+                    "blend": "off",
+                    "colorwrite": true,
+                    "ztest": true,
+                    "zwrite": false
+                }
+            },
+            "shaders/TriMat": {
+                "built_in_samplers": [],
+                "samplers": [
+                    {
+                        "image": "env.ktx",
+                        "name": "tex_env"
+                    }
+                ],
+                "state": {
+                    "backfaces": false,
+                    "blend": "alpha",
+                    "colorwrite": true,
+                    "ztest": true,
+                    "zwrite": false
+                }
+            },
+            "shaders/body": {
+                "built_in_samplers": [
+                    "bnb_BONES",
+                    "bnb_UVMORPH",
+                    "bnb_STATICPOS",
+                    "bnb_MORPH"
+                ],
+                "samplers": [
+                    {
+                        "image": "body_BaseColor.png",
+                        "name": "tex_diffuse"
+                    },
+                    {
+                        "image": "body_Normal.png",
+                        "name": "tex_normal"
+                    },
+                    {
+                        "image": "body_Metallic.png",
+                        "name": "tex_metallic"
+                    },
+                    {
+                        "image": "body_Roughness.png",
+                        "name": "tex_roughness"
+                    },
+                    {
+                        "image": "brdf.ktx",
+                        "name": "tex_brdf"
+                    },
+                    {
+                        "image": "ibl_diff.ktx",
+                        "name": "tex_ibl_diff"
+                    },
+                    {
+                        "image": "ibl_spec.ktx",
+                        "name": "tex_ibl_spec"
+                    },
+                    {
+                        "name": "bnb_BONES"
+                    },
+                    {
+                        "name": "bnb_UVMORPH"
+                    },
+                    {
+                        "name": "bnb_STATICPOS"
+                    },
+                    {
+                        "name": "bnb_MORPH"
+                    }
+                ],
+                "state": {
+                    "backfaces": false,
+                    "blend": "alpha",
+                    "colorwrite": true,
+                    "ztest": true,
+                    "zwrite": true
+                }
+            },
+            "shaders/body2": {
+                "built_in_samplers": [
+                    "bnb_BONES",
+                    "bnb_UVMORPH",
+                    "bnb_STATICPOS",
+                    "bnb_MORPH"
+                ],
+                "samplers": [
+                    {
+                        "image": "body2_BaseColor.png",
+                        "name": "tex_diffuse"
+                    },
+                    {
+                        "image": "body2_Normal.png",
+                        "name": "tex_normal"
+                    },
+                    {
+                        "image": "body2_Metallic.png",
+                        "name": "tex_metallic"
+                    },
+                    {
+                        "image": "body2_Roughness.png",
+                        "name": "tex_roughness"
+                    },
+                    {
+                        "image": "brdf.ktx",
+                        "name": "tex_brdf"
+                    },
+                    {
+                        "image": "ibl_diff.ktx",
+                        "name": "tex_ibl_diff"
+                    },
+                    {
+                        "image": "ibl_spec.ktx",
+                        "name": "tex_ibl_spec"
+                    },
+                    {
+                        "name": "bnb_BONES"
+                    },
+                    {
+                        "name": "bnb_UVMORPH"
+                    },
+                    {
+                        "name": "bnb_STATICPOS"
+                    },
+                    {
+                        "name": "bnb_MORPH"
+                    }
+                ],
+                "state": {
+                    "backfaces": false,
+                    "blend": "off",
+                    "colorwrite": true,
+                    "ztest": true,
+                    "zwrite": true
+                }
+            },
+            "shaders/body3": {
+                "built_in_samplers": [
+                    "bnb_BONES",
+                    "bnb_UVMORPH",
+                    "bnb_STATICPOS",
+                    "bnb_MORPH"
+                ],
+                "samplers": [
+                    {
+                        "image": "body3_BaseColor.png",
+                        "name": "tex_diffuse"
+                    },
+                    {
+                        "image": "body3_Normal.png",
+                        "name": "tex_normal"
+                    },
+                    {
+                        "image": "body3_Metallic.png",
+                        "name": "tex_metallic"
+                    },
+                    {
+                        "image": "body3_Roughness.png",
+                        "name": "tex_roughness"
+                    },
+                    {
+                        "image": "brdf.ktx",
+                        "name": "tex_brdf"
+                    },
+                    {
+                        "image": "ibl_diff.ktx",
+                        "name": "tex_ibl_diff"
+                    },
+                    {
+                        "image": "ibl_spec.ktx",
+                        "name": "tex_ibl_spec"
+                    },
+                    {
+                        "name": "bnb_BONES"
+                    },
+                    {
+                        "name": "bnb_UVMORPH"
+                    },
+                    {
+                        "name": "bnb_STATICPOS"
+                    },
+                    {
+                        "name": "bnb_MORPH"
+                    }
+                ],
+                "state": {
+                    "backfaces": false,
+                    "blend": "off",
+                    "colorwrite": true,
+                    "ztest": true,
+                    "zwrite": true
+                }
+            },
+            "shaders/finalColorFilter.fsh": {
+                "samplers": [
+                    {
+                        "image": "EffectRT1_color",
+                        "name": "s_src"
+                    },
+                    {
+                        "image": "sunny.png",
+                        "name": "lookupTexture"
+                    }
+                ],
+                "state": {
+                    "backfaces": true,
+                    "blend": "off",
+                    "colorwrite": true,
+                    "ztest": false,
+                    "zwrite": false
+                }
+            },
+            "bg": {
+                "path":"shaders/bg",
+                "samplers": [
+                  {
+                    "name": "s_text",
+                    "image": "text"
+                  }
+                ],
+                "state": {
+                  "blend": "alpha",
+                  "backfaces": false,
+                  "colorwrite": true,
+                  "ztest": false,
+                  "zwrite": false
+                }
+              },
+            "shaders/retouch": {
+                "built_in_samplers": [],
+                "lagacy_onface_flag": true,
+                "samplers": [
+                    {
+                        "image": "redmask_new_3.png",
+                        "name": "selection_tex"
+                    },
+                    {
+                        "image": "teeth_highlighter5.png",
+                        "name": "lookupTexTeeth"
+                    },
+                    {
+                        "image": "lut_80_percent.png",
+                        "name": "lookupTexEyes"
+                    },
+                    {
+                        "image": "soft_low.png",
+                        "name": "tex_softLight"
+                    },
+                    {
+                        "image": "faceShadow_BaseColor.png",
+                        "name": "tex_normalMakeup"
+                    },
+                    {
+                        "image": "ComposerRT_color",
+                        "name": "glfx_BACKGROUND"
+                    }
+                ],
+                "state": {
+                    "backfaces": false,
+                    "blend": "off",
+                    "colorwrite": true,
+                    "ztest": true,
+                    "zwrite": true
+                }
+            }
+        },
+        "media": {
+            "Cubemap_Moon_music_L_Channel.ogg": {
+                "file_name": "audios/Cubemap_Moon_music_L_Channel.ogg",
+                "type": "audio"
+            },
+            "frx": {
+                "type": "video"
+            }
+        },
+        "meshes": {
+            "!glfx_FACE": "$builtin$meshes/face.stream:0",
+            "camera_surface": "$builtin$meshes/fs_tri",
+            "face_morph_01.bsm2": "meshes/face_morph_01.bsm2",
+            "spaceman.bsm2": "meshes/spaceman.bsm2",
+            "tr2.bsm2": "meshes/tr2.bsm2",
+            "tri.bsm2": "meshes/tri.bsm2",
+      "quad_surface": "meshes/quad.bsm2"
+        },
+        "morphs": {}
+    },
+    "components": {
+        "!glfx_UPDATE_BG0": {
+            "materials": [
+                "$builtin$materials/copy_pixels.1"
+            ],
+            "mesh": "camera_surface",
+            "type": "mesh_instance"
+        },
+        "ComposerRT_copy": {
+            "materials": [
+                "$builtin$materials/copy_pixels.0"
+            ],
+            "mesh": "camera_surface",
+            "type": "mesh_instance"
+        },
+        "text_surface": {
+            "materials": ["bg"],
+            "mesh": "quad_surface",
+            "type": "mesh_instance"
+          },
+        "composer_camera_copy": {
+            "materials": [
+                "$builtin$materials/copy_pixels.-1"
+            ],
+            "mesh": "camera_surface",
+            "type": "mesh_instance"
+        },
+        "face_tracker:0": {
+            "face": "face0",
+            "type": "face_tracker"
+        },
+        "finalColorFilter": {
+            "materials": [
+                "shaders/finalColorFilter.fsh"
+            ],
+            "mesh": "camera_surface",
+            "type": "mesh_instance"
+        }
+    },
+    "entities": {
+        "!glfx_UPDATE_BG0": {
+            "components": [
+                "!glfx_UPDATE_BG0"
+            ],
+            "layer": "!glfx_UPDATE_BG0"
+        },
+        "text_surface": {
+            "components": [
+              "text_surface"
+            ],
+            "layer": "text"
+          },
+        "ComposerRT_copy_append_to_root__": {
+            "components": [
+                "ComposerRT_copy"
+            ],
+            "layer": "ComposerRT_copy"
+        },
+        "composer_camera_copy": {
+            "components": [
+                "composer_camera_copy"
+            ],
+            "layer": "camera_copy"
+        },
+        "face_tracker0": {
+            "components": [
+                "face_tracker:0"
+            ]
+        },
+        "finalColorFilter_append_to_root__": {
+            "components": "finalColorFilter",
+            "layer": "finalColorFilter"
+        },
+        "spawn_entity0": {
+            "add_to_legacy_entities_list": true,
+            "layers": [
+                "TriMat",
+                "retouch",
+                "body",
+                "body2",
+                "body3",
+                "TriMa2"
+            ]
+        },
+        "spawn_entity1": {
+            "add_to_legacy_entities_list": true,
+            "layers": [
+                "TriMat",
+                "retouch",
+                "body",
+                "body2",
+                "body3",
+                "TriMa2"
+            ]
+        },
+        "spawn_entity10": {
+            "add_to_legacy_entities_list": true,
+            "layers": [
+                "TriMat",
+                "retouch",
+                "body",
+                "body2",
+                "body3",
+                "TriMa2"
+            ]
+        },
+        "spawn_entity11": {
+            "add_to_legacy_entities_list": true,
+            "layers": [
+                "TriMat",
+                "retouch",
+                "body",
+                "body2",
+                "body3",
+                "TriMa2"
+            ]
+        },
+        "spawn_entity12": {
+            "add_to_legacy_entities_list": true,
+            "layers": [
+                "TriMat",
+                "retouch",
+                "body",
+                "body2",
+                "body3",
+                "TriMa2"
+            ]
+        },
+        "spawn_entity13": {
+            "add_to_legacy_entities_list": true,
+            "layers": [
+                "TriMat",
+                "retouch",
+                "body",
+                "body2",
+                "body3",
+                "TriMa2"
+            ]
+        },
+        "spawn_entity14": {
+            "add_to_legacy_entities_list": true,
+            "layers": [
+                "TriMat",
+                "retouch",
+                "body",
+                "body2",
+                "body3",
+                "TriMa2"
+            ]
+        },
+        "spawn_entity15": {
+            "add_to_legacy_entities_list": true,
+            "layers": [
+                "TriMat",
+                "retouch",
+                "body",
+                "body2",
+                "body3",
+                "TriMa2"
+            ]
+        },
+        "spawn_entity16": {
+            "add_to_legacy_entities_list": true,
+            "layers": [
+                "TriMat",
+                "retouch",
+                "body",
+                "body2",
+                "body3",
+                "TriMa2"
+            ]
+        },
+        "spawn_entity17": {
+            "add_to_legacy_entities_list": true,
+            "layers": [
+                "TriMat",
+                "retouch",
+                "body",
+                "body2",
+                "body3",
+                "TriMa2"
+            ]
+        },
+        "spawn_entity18": {
+            "add_to_legacy_entities_list": true,
+            "layers": [
+                "TriMat",
+                "retouch",
+                "body",
+                "body2",
+                "body3",
+                "TriMa2"
+            ]
+        },
+        "spawn_entity19": {
+            "add_to_legacy_entities_list": true,
+            "layers": [
+                "TriMat",
+                "retouch",
+                "body",
+                "body2",
+                "body3",
+                "TriMa2"
+            ]
+        },
+        "spawn_entity2": {
+            "add_to_legacy_entities_list": true,
+            "layers": [
+                "TriMat",
+                "retouch",
+                "body",
+                "body2",
+                "body3",
+                "TriMa2"
+            ]
+        },
+        "spawn_entity3": {
+            "add_to_legacy_entities_list": true,
+            "layers": [
+                "TriMat",
+                "retouch",
+                "body",
+                "body2",
+                "body3",
+                "TriMa2"
+            ]
+        },
+        "spawn_entity4": {
+            "add_to_legacy_entities_list": true,
+            "layers": [
+                "TriMat",
+                "retouch",
+                "body",
+                "body2",
+                "body3",
+                "TriMa2"
+            ]
+        },
+        "spawn_entity5": {
+            "add_to_legacy_entities_list": true,
+            "layers": [
+                "TriMat",
+                "retouch",
+                "body",
+                "body2",
+                "body3",
+                "TriMa2"
+            ]
+        },
+        "spawn_entity6": {
+            "add_to_legacy_entities_list": true,
+            "layers": [
+                "TriMat",
+                "retouch",
+                "body",
+                "body2",
+                "body3",
+                "TriMa2"
+            ]
+        },
+        "spawn_entity7": {
+            "add_to_legacy_entities_list": true,
+            "layers": [
+                "TriMat",
+                "retouch",
+                "body",
+                "body2",
+                "body3",
+                "TriMa2"
+            ]
+        },
+        "spawn_entity8": {
+            "add_to_legacy_entities_list": true,
+            "layers": [
+                "TriMat",
+                "retouch",
+                "body",
+                "body2",
+                "body3",
+                "TriMa2"
+            ]
+        },
+        "spawn_entity9": {
+            "add_to_legacy_entities_list": true,
+            "layers": [
+                "TriMat",
+                "retouch",
+                "body",
+                "body2",
+                "body3",
+                "TriMa2"
+            ]
+        }
+    },
+    "global_params": [
+        "randomVec"
+    ],
+    "hierarchy": {
+        "face_tracker0": [
+            "spawn_entity0",
+            "spawn_entity1",
+            "spawn_entity2",
+            "spawn_entity3",
+            "spawn_entity4",
+            "spawn_entity5",
+            "spawn_entity6",
+            "spawn_entity7",
+            "spawn_entity8",
+            "spawn_entity9",
+            "spawn_entity11",
+            "spawn_entity13",
+            "spawn_entity14",
+            "spawn_entity15",
+            "spawn_entity16",
+            "spawn_entity17",
+            "spawn_entity18",
+            "spawn_entity19"
+        ],
+        "root": [
+            "face_tracker0",
+            "spawn_entity10",
+            "spawn_entity12",
+            "composer_camera_copy",
+            "ComposerRT_copy_append_to_root__",
+            "!glfx_UPDATE_BG0",
+            "finalColorFilter_append_to_root__",
+            "text_surface"
+        ]
+    },
+    "layers": {
+        "!glfx_UPDATE_BG0": {},
+        "ComposerRT_copy": {},
+        "TriMa2": {},
+        "TriMat": {},
+        "body": {},
+        "body2": {},
+        "body3": {},
+    "text": {},
+        "camera_copy": {},
+        "composer_pre": {},
+        "finalColorFilter": {},
+        "internal_face_morph__": {},
+        "retouch": {}
+    },
+    "main_camera": {
+        "adjust_zfar": 3000,
+        "adjust_znear": 600
+    },
+    "render_list": {
+        "default": [
+            {
+                "layer": "camera_copy",
+                "render_target": "ComposerRT"
+            },
+            {
+                "layer": "ComposerRT_copy",
+                "render_target": "EffectRT0"
+            },
+            {
+                "layer": "TriMat",
+                "render_target": "EffectRT0",
+                "sub_geometries": [
+                    "TriMat"
+                ]
+            },
+            {
+                "layer": "retouch",
+                "render_target": "EffectRT0",
+                "sub_geometries": [
+                    "retouch"
+                ]
+            },
+            {
+                "layer": "body",
+                "render_target": "EffectRT0",
+                "sub_geometries": [
+                    "body"
+                ]
+            },
+            {
+                "layer": "body2",
+                "render_target": "EffectRT0",
+                "sub_geometries": [
+                    "body2"
+                ]
+            },
+            {
+                "layer": "body3",
+                "render_target": "EffectRT0",
+                "sub_geometries": [
+                    "body3"
+                ]
+            },
+            {
+                "layer": "!glfx_UPDATE_BG0",
+                "render_target": "EffectRT1"
+            },
+            {
+                "layer": "TriMa2",
+                "render_target": "EffectRT1",
+                "sub_geometries": [
+                    "TriMa2"
+                ]
+            },
+            {
+                "layer": "internal_face_morph__",
+                "render_target": "EffectRT1"
+            },
+            {
+                "layer": "text",
+                "render_target": "EffectRT1"
+              },
+            {
+                "layer": "finalColorFilter",
+                "render_target": "finalColorFilterRT"
+            }
+        ]
+    },
+    "render_targets": {
+        "ComposerRT": [
+            "ComposerRT_color"
+        ],
+        "EffectRT0": [
+            "EffectRT0_color",
+            "EffectRT0_depth"
+        ],
+        "EffectRT1": [
+            "EffectRT1_color",
+            "EffectRT1_depth"
+        ],
+        "finalColorFilterRT": [
+            "finalColorFilterRT_color"
+        ]
+    },
+    "scene": "CubemapMoon",
+    "script": {
+        "entry_point": "config.js",
+        "type": "legacy"
+    }
+}

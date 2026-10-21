@@ -1,0 +1,824 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.ugc-dashboard-page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.dashboard-header h1 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.dashboard-header p {
+  color: #666;
+  margin-bottom: 30px;
+}
+
+.dashboard-tabs {
+  display: flex;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 30px;
+}
+
+.tab {
+  padding: 12px 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #666;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+}
+
+.tab:hover {
+  color: #333;
+  background-color: #f5f5f5;
+}
+
+.tab.active {
+  color: #007bff;
+  border-bottom: 3px solid #007bff;
+  font-weight: 500;
+}
+
+.dashboard-content {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* UGC Content Studio Styles */
+.ugc-content-studio {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.studio-header h2 {
+  margin-top: 0;
+  color: #333;
+}
+
+.studio-actions {
+  margin-bottom: 20px;
+}
+
+.content-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.content-tabs .tab {
+  padding: 8px 16px;
+  border-radius: 20px;
+  background-color: #f0f0f0;
+  border: none;
+  font-size: 0.9rem;
+}
+
+.content-tabs .tab.active {
+  background-color: #007bff;
+  color: white;
+  border-bottom: none;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.content-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  background-color: #fafafa;
+}
+
+.content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.content-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.status-badge.draft {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+.status-badge.scheduled {
+  background-color: #17a2b8;
+  color: white;
+}
+
+.status-badge.published {
+  background-color: #28a745;
+  color: white;
+}
+
+.content-meta p {
+  margin: 5px 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.content-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  flex-wrap: wrap;
+}
+
+.btn-primary,
+.btn-secondary,
+.btn-danger {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #545b62;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+}
+
+/* UGC Publishing Tools Styles */
+.ugc-publishing-tools {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.ugc-publishing-tools h3 {
+  margin-top: 0;
+  color: #333;
+}
+
+.publishing-section {
+  margin-bottom: 25px;
+}
+
+.publishing-section h4 {
+  margin: 0 0 15px 0;
+  color: #444;
+}
+
+.radio-option,
+.checkbox-option {
+  display: block;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+
+.radio-option input,
+.checkbox-option input {
+  margin-right: 10px;
+}
+
+.option-description {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 5px 0 0 25px;
+}
+
+.communities-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.schedule-controls {
+  display: flex;
+  gap: 20px;
+}
+
+.form-group {
+  flex: 1;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #444;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.switch-option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 24px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #007bff;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+.price-input {
+  display: flex;
+  gap: 10px;
+}
+
+.price-input input {
+  flex: 2;
+}
+
+.price-input select {
+  flex: 1;
+}
+
+.publish-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+/* UGC Analytics Dashboard Styles */
+.ugc-analytics-dashboard {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.dashboard-header h2 {
+  margin: 0;
+  color: #333;
+}
+
+.time-range-selector {
+  display: flex;
+  gap: 5px;
+}
+
+.time-range-btn {
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  background: white;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.time-range-btn:hover {
+  background-color: #f5f5f5;
+}
+
+.time-range-btn.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.metric-card {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+}
+
+.metric-card h3 {
+  margin: 0 0 10px 0;
+  font-size: 1rem;
+  color: #666;
+}
+
+.metric-value {
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 0 0 10px 0;
+  color: #333;
+}
+
+.metric-change {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.metric-change.positive {
+  color: #28a745;
+}
+
+.metric-change.negative {
+  color: #dc3545;
+}
+
+.chart-section h3 {
+  margin: 0 0 20px 0;
+  color: #333;
+}
+
+.chart-container {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.chart-bars {
+  display: flex;
+  align-items: flex-end;
+  height: 200px;
+  gap: 10px;
+  justify-content: center;
+}
+
+.chart-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  max-width: 60px;
+}
+
+.bar-fill {
+  width: 100%;
+  background: linear-gradient(to top, #007bff, #00d4ff);
+  border-radius: 4px 4px 0 0;
+  min-height: 2px;
+}
+
+.bar-label {
+  margin-top: 10px;
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.top-content h3 {
+  margin: 0 0 20px 0;
+  color: #333;
+}
+
+.content-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.content-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+.content-info h4 {
+  margin: 0 0 5px 0;
+  color: #333;
+}
+
+.content-info p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.content-metrics {
+  display: flex;
+  gap: 15px;
+}
+
+.content-metrics span {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* UGC Monetization Panel Styles */
+.ugc-monetization-panel {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.panel-header h2 {
+  margin-top: 0;
+  color: #333;
+}
+
+.balance-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.balance-card {
+  background: linear-gradient(135deg, #007bff, #00d4ff);
+  border-radius: 8px;
+  padding: 20px;
+  color: white;
+  text-align: center;
+}
+
+.balance-card h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.1rem;
+}
+
+.balance-amount {
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.monetization-tabs {
+  display: flex;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 30px;
+}
+
+.earnings-history h3,
+.withdraw-funds h3 {
+  margin: 0 0 20px 0;
+  color: #333;
+}
+
+.earnings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.earning-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+.earning-info h4 {
+  margin: 0 0 5px 0;
+  color: #333;
+}
+
+.earning-info p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.earning-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+}
+
+.amount {
+  font-weight: 600;
+}
+
+.amount.paid {
+  color: #28a745;
+}
+
+.amount.pending {
+  color: #ffc107;
+}
+
+.amount.processing {
+  color: #17a2b8;
+}
+
+.withdraw-form {
+  max-width: 500px;
+  margin-bottom: 30px;
+}
+
+.available-text {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 5px;
+}
+
+.withdrawal-methods h4 {
+  margin: 0 0 20px 0;
+  color: #333;
+}
+
+.methods-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 20px;
+}
+
+.method-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fafafa;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.method-card:hover {
+  background: #f0f0f0;
+  border-color: #007bff;
+}
+
+.method-icon {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+/* UGC Scheduler Styles */
+.ugc-scheduler {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.scheduler-header h2 {
+  margin-top: 0;
+  color: #333;
+}
+
+.scheduler-actions {
+  margin-bottom: 30px;
+}
+
+.scheduled-content h3 {
+  margin: 0 0 20px 0;
+  color: #333;
+}
+
+.schedule-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.schedule-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+.schedule-info h4 {
+  margin: 0 0 5px 0;
+  color: #333;
+}
+
+.schedule-info p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.modal-header h3 {
+  margin: 0;
+  color: #333;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #999;
+}
+
+.close-button:hover {
+  color: #333;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 20px;
+  border-top: 1px solid #eee;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: #666;
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+  .ugc-dashboard-page {
+    padding: 10px;
+  }
+
+  .dashboard-tabs {
+    flex-wrap: wrap;
+  }
+
+  .tab {
+    flex: 1 0 auto;
+    text-align: center;
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .schedule-controls {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .balance-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .content-item,
+  .earning-item,
+  .schedule-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .content-metrics,
+  .earning-details,
+  .schedule-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .publish-actions {
+    flex-direction: column;
+  }
+
+  .publish-actions button {
+    width: 100%;
+  }
+}

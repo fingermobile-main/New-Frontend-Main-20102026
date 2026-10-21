@@ -1,0 +1,497 @@
+/**
+ * PostsController - Extracted from posts.js route handlers
+ * Date: June 9, 2026
+ * Purpose: Separate business logic from route definitions
+ */
+
+const { contentDb } = require('../db');
+const logger = require('../utils/logger');
+
+class PostsController {
+
+  /**
+   * GET /api/posts
+   * Get all posts with filtering, sorting and pagination
+   */
+  async getAllPosts(req, res) {
+    try {
+      const { page = 1, limit = 20, category, author_id, sort = 'newest' } = req.query;
+
+      // Validate page and limit parameters
+      const pageNum = parseInt(page) || 1;
+      const limitNum = parseInt(limit) || 20;
+      const offset = (pageNum - 1) * limitNum;
+
+      // Base query with author name and engagement counts
+      let query = ` SELECT p.*, 
+               m.membername as author_name, COALESCE(pl.like_count, 0) as likes_count, COALESCE(pc.comment_count, 0) as comments_count
+        FROM posts p
+        JOIN members m ON p.member_id = m.id
+        LEFT JOIN (
+          SELECT post_id, COUNT(*) as like_count 
+          FROM post_likes 
+          GROUP BY post_id
+        ) pl ON p.id = pl.post_id
+        LEFT JOIN (
+          SELECT post_id, COUNT(*) as comment_count 
+          FROM post_comments 
+          GROUP BY post_id
+        ) pc ON p.id = pc.post_id
+        WHERE 1=1
+      `;
+
+      const params = [];
+
+      // Add filters
+      if (author_id) {
+        params.push(author_id);
+        query += ` AND p.member_id = $${params.length}`;
+      }
+
+      if (category) {
+        params.push(category);
+        query += ` AND p.category = $${params.length}`;
+      }
+
+      // Add sorting
+      if (sort === 'popular') {
+        query += ' ORDER BY likes_count DESC, p.created_at DESC';
+      } else if (sort === 'oldest') {
+        query += ' ORDER BY p.created_at ASC';
+      } else {
+        // newest
+        query += ' ORDER BY p.created_at DESC';
+      }
+
+      // Add pagination
+      params.push(limitNum);
+      params.push(offset);
+      query += ` LIMIT $${params.length - 1} OFFSET $${params.length}`;
+
+      // Execute main query
+      const { rows: posts } = await contentDb.query(query, params);
+
+      // Get total count for pagination
+      let countQuery = ` SELECT COUNT(*) as total 
+        FROM posts p
+        WHERE 1=1
+      `;
+      const countParams = [];
+
+      if (author_id) {
+        countParams.push(author_id);
+        countQuery += ` AND p.member_id = $${countParams.length}`;
+      }
+      if (category) {
+        countParams.push(category);
+        countQuery += ` AND p.category = $${countParams.length}`;
+      }
+
+      const { rows: countResult } = await contentDb.query(countQuery, countParams);
+      const total = parseInt(countResult[0]?.total || 0);
+
+      res.json({
+        success: true,
+        data: {
+          posts,
+          pagination: {
+            currentPage: pageNum,
+            totalPages: Math.ceil(total / limitNum),
+            totalItems: total, itemsPerPage: limitNum
+          }
+        }
+      });
+    } catch (err) {
+      logger.error('Get Posts Error:', err);
+      res.status(500).json({
+        success: false, message: 'Server error retrieving posts'
+      });
+    }
+  }
+
+  /**
+   * GET /api/posts/:postId
+   * Get a specific post by ID
+   */
+  async getPostById(req, res) {
+    try {
+      const { postId } = req.params;
+      const userId = req.member?.id; // Current authenticated user
+
+      // Query to get post details with author info and engagement counts
+      const { rows } = await contentDb.query(
+        `SELECT p.*, 
+               m.membername as author_name,
+               COALESCE(pl.like_count, 0) as likes_count,
+               COALESCE(pc.comment_count, 0) as comments_count,
+               COALESCE(ul.user_liked, false) as user_liked
+         FROM posts p
+         JOIN members m ON p.member_id = m.id
+         LEFT JOIN (
+           SELECT post_id, COUNT(*) as like_count 
+           FROM post_likes 
+           GROUP BY post_id
+         ) pl ON p.id = pl.post_id
+         LEFT JOIN (
+           SELECT post_id, COUNT(*) as comment_count 
+           FROM post_comments 
+           GROUP BY post_id
+         ) pc ON p.id = pc.post_id
+         LEFT JOIN (
+           SELECT post_id, true as user_liked
+           FROM post_likes
+           WHERE user_id = $2
+         ) ul ON p.id = ul.post_id
+         WHERE p.id = $1`,
+        [postId, userId]
+      );
+
+      if (rows.length === 0) {
+        return res.status(404).json({
+          success: false, message: 'Post not found'
+        });
+      }
+
+      res.json({
+        success: true, data: rows[0]
+      });
+    } catch (err) {
+      logger.error('Get Post Error:', err);
+      res.status(500).json({
+        success: false, message: 'Server error retrieving post'
+      });
+    }
+  }
+
+  /**
+   * POST /api/posts
+   * Create a new post
+   */
+  async createPost(req, res) {
+    try {
+      const {
+        title,
+        content,
+        visibility,
+        location_point,
+        location_address,
+        category
+      } = req.body;
+      const member_id = req.member.id; // Authenticated user
+
+      // Basic validation
+      if (!title || !content) {
+        return res.status(400).json({
+          success: false, message: 'Title and content are required'
+        });
+      }
+
+      // Insert new post
+      const { rows } = await contentDb.query(
+        `INSERT INTO posts 
+         (member_id, title, content, visibility, location_point, location_address, category)
+         VALUES ($1, $2, $3, $4, $5, $6, $7)
+         RETURNING *`,
+        [
+          member_id,
+          title,
+          content, visibility || 'public',
+          location_point,
+          location_address,
+          category
+        ]
+      );
+
+      res.status(201).json({
+        success: true, message: 'Post created successfully', data: rows[0]
+      });
+    } catch (err) {
+      logger.error('Create Post Error:', err);
+      res.status(500).json({
+        success: false, message: 'Server error creating post'
+      });
+    }
+  }
+
+  /**
+   * PUT /api/posts/:postId
+   * Update a post
+   */
+  async updatePost(req, res) {
+    try {
+      const { postId } = req.params;
+      const {
+        title,
+        content,
+        visibility,
+        location_point,
+        location_address,
+        category } = req.body;
+      const member_id = req.member.id; // Authenticated user
+
+      // Check if post exists and belongs to the user
+      const postResult = await contentDb.query(
+        'SELECT id FROM posts WHERE id = $1 AND member_id = $2',
+        [postId, member_id]
+      );
+
+      if (postResult.rows.length === 0) {
+        return res.status(404).json({
+          success: false, message: 'Post not found or unauthorized'
+        });
+      }
+
+      // Build dynamic update query
+      const fields = {
+        title,
+        content,
+        visibility,
+        location_point,
+        location_address, category
+      };
+
+      const updates = [];
+      const values = [];
+
+      Object.entries(fields).forEach(([key, value]) => {
+        if (value !== undefined) {
+          updates.push(`${key} = $${updates.length + 1}`);
+          values.push(value);
+        }
+      });
+
+      if (updates.length === 0) {
+        return res.status(400).json({
+          success: false, message: 'No fields to update'
+        });
+      }
+
+      // Add the post ID for the WHERE clause
+      values.push(postId);
+
+      const { rows } = await contentDb.query(
+        `UPDATE posts 
+         SET ${updates.join(', ')}, updated_at = NOW()
+         WHERE id = $${values.length}
+         RETURNING *`,
+        values
+      );
+
+      res.json({
+        success: true, message: 'Post updated successfully', data: rows[0]
+      });
+    } catch (err) {
+      logger.error('Update Post Error:', err);
+      res.status(500).json({
+        success: false, message: 'Server error updating post'
+      });
+    }
+  }
+
+  /**
+   * DELETE /api/posts/:postId
+   * Delete a post
+   */
+  async deletePost(req, res) {
+    try {
+      const { postId } = req.params;
+      const member_id = req.member.id; // Authenticated user
+
+      // Check if post exists and belongs to the user
+      const postResult = await contentDb.query(
+        'SELECT id FROM posts WHERE id = $1 AND member_id = $2',
+        [postId, member_id]
+      );
+
+      if (postResult.rows.length === 0) {
+        return res.status(404).json({
+          success: false, message: 'Post not found or unauthorized'
+        });
+      }
+
+      // Delete the post
+      const { rows } = await contentDb.query(
+        'DELETE FROM posts WHERE id = $1 RETURNING *',
+        [postId]
+      );
+
+      res.json({
+        success: true, message: 'Post deleted successfully', data: rows[0]
+      });
+    } catch (err) {
+      logger.error('Delete Post Error:', err);
+      res.status(500).json({
+        success: false, message: 'Server error deleting post'
+      });
+    }
+  }
+
+  /**
+   * POST /api/posts/:postId/like
+   * Like or unlike a post
+   */
+  async toggleLike(req, res) {
+    try {
+      const { postId } = req.params;
+      const userId = req.member.id; // Authenticated user
+
+      // Check if post exists
+      const postResult = await contentDb.query(
+        'SELECT id FROM posts WHERE id = $1',
+        [postId]
+      );
+
+      if (postResult.rows.length === 0) {
+        return res.status(404).json({
+          success: false, message: 'Post not found'
+        });
+      }
+
+      // Check if user already liked this post
+      const likeResult = await contentDb.query(
+        'SELECT id FROM post_likes WHERE post_id = $1 AND user_id = $2', [postId, userId]
+      );
+
+      if (likeResult.rows.length > 0) {
+        // User already liked, so unlike
+        await contentDb.query(
+          'DELETE FROM post_likes WHERE post_id = $1 AND user_id = $2', [postId, userId]
+        );
+
+        res.json({
+          success: true, message: 'Post unliked successfully', data: { postId, liked: false }
+        });
+      } else {
+        // User hasn't liked yet, so add a like
+        await contentDb.query(
+          'INSERT INTO post_likes (post_id, user_id) VALUES ($1, $2)',
+          [postId, userId]
+        );
+
+        res.json({
+          success: true, message: 'Post liked successfully', data: { postId, liked: true }
+        });
+      }
+    } catch (err) {
+      logger.error('Like Post Error:', err);
+      res.status(500).json({
+        success: false, message: 'Server error liking post'
+      });
+    }
+  }
+
+  /**
+   * GET /api/posts/:postId/comments
+   * Get comments for a post
+   */
+  async getComments(req, res) {
+    try {
+      const { postId } = req.params;
+      const { page = 1, limit = 10 } = req.query;
+
+      // Validate page and limit parameters
+      const pageNum = parseInt(page) || 1;
+      const limitNum = parseInt(limit) || 10;
+      const offset = (pageNum - 1) * limitNum;
+
+      // Check if post exists
+      const postResult = await contentDb.query(
+        'SELECT id FROM posts WHERE id = $1',
+        [postId]
+      );
+
+      if (postResult.rows.length === 0) {
+        return res.status(404).json({
+          success: false, message: 'Post not found'
+        });
+      }
+
+      // Get comments with author info
+      const commentsQuery = ` SELECT c.*, m.membername as author_name
+        FROM post_comments c
+        JOIN members m ON c.member_id = m.id
+        WHERE c.post_id = $1
+        ORDER BY c.created_at DESC
+        LIMIT $2 OFFSET $3
+      `;
+
+      const comments = await contentDb.query(commentsQuery, [postId, limitNum, offset]);
+
+      // Get total comment count
+      const countResult = await contentDb.query(
+        'SELECT COUNT(*) as total FROM post_comments WHERE post_id = $1',
+        [postId]
+      );
+
+      const total = parseInt(countResult.rows[0]?.total || 0);
+
+      res.json({
+        success: true,
+        data: {
+          comments: comments.rows,
+          pagination: {
+            currentPage: pageNum,
+            totalPages: Math.ceil(total / limitNum),
+            totalItems: total, itemsPerPage: limitNum
+          }
+        }
+      });
+    } catch (err) {
+      logger.error('Get Comments Error:', err);
+      res.status(500).json({
+        success: false, message: 'Server error retrieving comments'
+      });
+    }
+  }
+
+  /**
+   * POST /api/posts/:postId/comments
+   * Add a comment to a post
+   */
+  async addComment(req, res) {
+    try {
+      const { postId } = req.params;
+      const { content } = req.body;
+      const member_id = req.member.id; // Authenticated user
+
+      // Validate content
+      if (!content || content.trim() === '') {
+        return res.status(400).json({
+          success: false, message: 'Comment content is required'
+        });
+      }
+
+      // Check if post exists
+      const postResult = await contentDb.query(
+        'SELECT id FROM posts WHERE id = $1',
+        [postId]
+      );
+
+      if (postResult.rows.length === 0) {
+        return res.status(404).json({
+          success: false, message: 'Post not found'
+        });
+      }
+
+      // Insert the comment
+      const { rows } = await contentDb.query(
+        `INSERT INTO post_comments 
+         (post_id, member_id, content)
+         VALUES ($1, $2, $3)
+         RETURNING *`,
+        [postId, member_id, content]
+      );
+
+      res.status(201).json({
+        success: true, message: 'Comment added successfully', data: rows[0]
+      });
+    } catch (err) {
+      logger.error('Add Comment Error:', err);
+      res.status(500).json({
+        success: false, message: 'Server error adding comment'
+      });
+    }
+  }
+}
+
+module.exports = new PostsController();

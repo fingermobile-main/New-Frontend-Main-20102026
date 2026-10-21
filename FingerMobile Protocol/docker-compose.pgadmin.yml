@@ -1,0 +1,111 @@
+version: "3.8"
+
+# ============================================
+# FingerMobile Protocol - pgAdmin4 Docker Compose
+# ============================================
+# Persistent pgAdmin4 setup with saved server configurations
+# ============================================
+
+services:
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: fingermobile-pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@fingermobileprotocol.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
+      # Optional: Enable HTTPS (requires SSL certificates)
+      # PGADMIN_CONFIG_ENABLE_HTTPS: 'True'
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+    volumes:
+      # Persist pgAdmin configuration and saved servers
+      - pgadmin_data:/var/lib/pgadmin
+      # Optional: Mount custom server configuration
+      # - ./servers.json:/pgadmin4/servers.json
+    networks:
+      - fingermobile-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/misc/ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    labels:
+      - "com.fingermobile.service=pgadmin"
+      - "com.fingermobile.description=Database Management Tool"
+
+volumes:
+  pgadmin_data:
+    driver: local
+    name: fingermobile_pgadmin_data
+
+networks:
+  fingermobile-network:
+    driver: bridge
+    name: fingermobile-network
+# ============================================
+# Usage Instructions
+# ============================================
+#
+# 1. Start pgAdmin4:
+#    docker-compose -f docker-compose.pgadmin.yml up -d
+#
+# 2. Access pgAdmin4:
+#    http://localhost:5050
+#
+# 3. Login:
+#    Email: admin@fingermobileprotocol.com (or set PGADMIN_EMAIL)
+#    Password: admin (or set PGADMIN_PASSWORD)
+#
+# 4. Stop pgAdmin4:
+#    docker-compose -f docker-compose.pgadmin.yml down
+#
+# 5. View logs:
+#    docker-compose -f docker-compose.pgadmin.yml logs -f
+#
+# 6. Remove completely (including data):
+#    docker-compose -f docker-compose.pgadmin.yml down -v
+#
+# ============================================
+# Environment Variables (.env file)
+# ============================================
+#
+# Create a .env file in the same directory:
+#
+# PGADMIN_EMAIL=admin@fingermobileprotocol.com
+# PGADMIN_PASSWORD=your_secure_password
+# PGADMIN_PORT=5050
+#
+# ============================================
+# Adding Database Servers
+# ============================================
+#
+# Option 1: Manual (Recommended)
+#   - Use the web interface to add servers
+#   - Configuration is automatically saved
+#
+# Option 2: Import JSON
+#   - Export servers from another pgAdmin instance
+#   - Place servers.json in project root
+#   - Uncomment the volume mount in this file
+#
+# Option 3: Run setup script
+#   - ./setup_pgadmin.sh will auto-discover databases
+#   - Follow the displayed connection info
+#
+# ============================================
+# Security Notes
+# ============================================
+#
+# ⚠️  Change default passwords before production use!
+# ⚠️  Don't expose port 5050 to public internet
+# ⚠️  Use strong passwords for all databases
+# ⚠️  Consider adding authentication proxy for remote access
+#
+# For production, consider:
+# - Using NGINX reverse proxy with SSL
+# - Implementing OAuth or LDAP authentication
+# - Restricting access by IP address
+# - Enabling audit logging

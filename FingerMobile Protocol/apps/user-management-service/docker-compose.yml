@@ -1,0 +1,77 @@
+version: '3.8'
+
+services:
+  user-management-service-db:
+    image: postgres:15-alpine
+    container_name: user_management_service_db
+    environment:
+      POSTGRES_DB: user_management_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: user_management_db_pwd_placeholder
+    ports:
+      - "5555:5432"
+    volumes:
+      - user_management_service_db_data:/var/lib/postgresql/data
+      # - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql # Uncomment and provide schema if available
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - fingermobile_network
+
+  user-management-service-redis:
+    image: redis:7-alpine
+    container_name: user_management_service_redis
+    command: redis-server --requirepass user_management_redis_placeholder
+    ports:
+      - "6555:6379"
+    volumes:
+      - user_management_service_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "user_management_redis_placeholder", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - fingermobile_network
+
+  user-management-service-backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: user_management_service_backend
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - DB_HOST=user-management-service-db
+      - DB_PORT=5432
+      - DB_NAME=user_management_db
+      - DB_USER=postgres
+      - DB_PASSWORD=user_management_db_pwd_placeholder
+      - REDIS_HOST=user-management-service-redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=user_management_redis_placeholder
+      - JWT_SECRET=user_management_jwt_placeholder
+    ports:
+      - "3001:3001"
+    depends_on:
+      user-management-service-db:
+        condition: service_healthy
+      user-management-service-redis:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - fingermobile_network
+
+volumes:
+  user_management_service_db_data:
+  user_management_service_redis_data:
+
+networks:
+  fingermobile_network:
+    external: true # Assumes the main network is created by the master compose file
+    name: fingermobile_network

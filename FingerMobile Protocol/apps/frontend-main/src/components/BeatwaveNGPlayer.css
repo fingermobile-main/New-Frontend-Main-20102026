@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --brand-blue: #3b82f6;
+  --brand-purple: #8b5cf6;
+  --brand-green: #10b981;
+  --brand-yellow: #f59e0b;
+  --brand-red: #ef4444;
+  --dark-bg: #0f172a;
+  --dark-card: #1e293b;
+  --dark-border: #334155;
+}
+
+/* Additional styles for BeatwaveNG */
+
+.bg-dark-bg {
+  background-color: var(--dark-bg);
+}
+
+.bg-dark-card {
+  background-color: var(--dark-card);
+}
+
+.border-dark-border {
+  border-color: var(--dark-border);
+}
+
+.text-brand-blue {
+  color: var(--brand-blue);
+}
+
+.text-brand-purple {
+  color: var(--brand-purple);
+}
+
+.text-brand-green {
+  color: var(--brand-green);
+}
+
+.text-brand-yellow {
+  color: var(--brand-yellow);
+}
+
+.text-brand-red {
+  color: var(--brand-red);
+}
+
+.bg-brand-blue {
+  background-color: var(--brand-blue);
+}
+
+.bg-brand-purple {
+  background-color: var(--brand-purple);
+}
+
+.bg-brand-green {
+  background-color: var(--brand-green);
+}
+
+.bg-brand-yellow {
+  background-color: var(--brand-yellow);
+}
+
+.bg-brand-red {
+  background-color: var(--brand-red);
+}
+
+/* Animation for playing indicator */
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(0.5);
+  }
+}
+
+.animate-pulse {
+  animation: pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}

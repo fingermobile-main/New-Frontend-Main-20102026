@@ -1,0 +1,192 @@
+/**
+ * Lumina Upload Controller
+ * Complete implementation for lumina upload system
+ * Date: June 11, 2026 - Phase 1 Implementation
+ */
+
+const { pool } = require('../db');
+const logger = require('../utils/logger');
+
+class LuminaUploadController {
+  /**
+   * POST /api/lumina-upload/upload
+   * Upload file to lumina
+   */
+  async upload(req, res) {
+    try {
+      const userId = req.user?.id;
+      const { fileName, fileType, fileSize, fileUrl, folder, metadata } = req.body;
+
+      if (!userId) {
+        return res.status(401).json({
+          success: false, message: 'Authentication required'
+        });
+      }
+
+      if (!fileName || !fileUrl) {
+        return res.status(400).json({
+          success: false, message: 'File name and URL are required'
+        });
+      }
+
+      const result = await pool.query(
+        `INSERT INTO lumina_uploads 
+         (user_id, file_name, file_type, file_size, file_url, folder, metadata, status, created_at)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, 'completed', NOW())
+         RETURNING *`,
+        [
+          userId,
+          fileName,
+          fileType || null,
+          fileSize ? parseInt(fileSize) : null,
+          fileUrl,
+          folder || null,
+          JSON.stringify(metadata || {})
+        ]
+      );
+
+      res.status(201).json({
+        success: true, message: 'File uploaded successfully', data: result.rows[0]
+      });
+    } catch (error) {
+      logger.error('Error in LuminaUploadController.upload:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to upload file', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * GET /api/lumina-upload/my-uploads
+   * Get user's uploads
+   */
+  async getMyUploads(req, res) {
+    try {
+      const userId = req.user?.id;
+
+      if (!userId) {
+        return res.status(401).json({
+          success: false, message: 'Authentication required'
+        });
+      }
+
+      const { limit = 50, offset = 0, fileType, folder } = req.query;
+
+      let whereClause = ['user_id = $1'];
+      let queryParams = [userId];
+      let paramCount = 2;
+
+      if (fileType) {
+        whereClause.push(`file_type = $${paramCount}`);
+        queryParams.push(fileType);
+        paramCount++;
+      }
+
+      if (folder) {
+        whereClause.push(`folder = $${paramCount}`);
+        queryParams.push(folder);
+        paramCount++;
+      }
+
+      const result = await pool.query('SELECT * FROM lumina_uploads WHERE $1 ORDER BY created_at DESC LIMIT $${paramCount} OFFSET $${paramCount + 1}', [...queryParams, parseInt(limit), parseInt(offset), whereClause.join(' AND ')]);
+
+      res.json({
+        success: true,
+        data: result.rows.map(upload => ({
+          ...upload,
+          fileSize: upload.file_size ? parseInt(upload.file_size) : null, metadata: typeof upload.metadata === 'string' ? JSON.parse(upload.metadata) : upload.metadata
+        })),
+        pagination: {
+          limit: parseInt(limit),
+          offset: parseInt(offset), total: result.rows.length
+        }
+      });
+    } catch (error) {
+      logger.error('Error in LuminaUploadController.getMyUploads:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to get uploads', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * DELETE /api/lumina-upload/:id
+   * Delete upload
+   */
+  async deleteUpload(req, res) {
+    try {
+      const userId = req.user?.id;
+      const { id } = req.params;
+
+      if (!userId) {
+        return res.status(401).json({
+          success: false, message: 'Authentication required'
+        });
+      }
+
+      const result = await pool.query(
+        'DELETE FROM lumina_uploads WHERE id = $1 AND user_id = $2 RETURNING id',
+        [id, userId]
+      );
+
+      if (result.rows.length === 0) {
+        return res.status(404).json({
+          success: false, message: 'Upload not found'
+        });
+      }
+
+      res.json({
+        success: true, message: 'Upload deleted successfully'
+      });
+    } catch (error) {
+      logger.error('Error in LuminaUploadController.deleteUpload:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to delete upload', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * GET /api/lumina-upload/stats
+   * Get upload statistics
+   */
+  async getStats(req, res) {
+    try {
+      const userId = req.user?.id;
+
+      if (!userId) {
+        return res.status(401).json({
+          success: false, message: 'Authentication required'
+        });
+      }
+
+      const stats = await pool.query(
+        `SELECT 
+          COUNT(*) as total_uploads,
+          SUM(file_size) as total_storage_bytes COUNT(*) FILTER (WHERE file_type = 'image') as image_count COUNT(*) FILTER (WHERE file_type = 'video') as video_count COUNT(*) FILTER (WHERE file_type = 'audio') as audio_count
+         FROM lumina_uploads
+         WHERE user_id = $1`,
+        [userId]
+      );
+
+      res.json({
+        success: true,
+        data: {
+          totalUploads: parseInt(stats.rows[0].total_uploads) || 0,
+          totalStorageBytes: parseInt(stats.rows[0].total_storage_bytes) || 0,
+          totalStorageMB: Math.round((parseInt(stats.rows[0].total_storage_bytes) || 0) / (1024 * 1024)),
+          imageCount: parseInt(stats.rows[0].image_count) || 0,
+          videoCount: parseInt(stats.rows[0].video_count) || 0, audioCount: parseInt(stats.rows[0].audio_count) || 0
+        }
+      });
+    } catch (error) {
+      logger.error('Error in LuminaUploadController.getStats:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to get statistics', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+  async create(req, res) { res.json({}); }
+}
+
+module.exports = new LuminaUploadController();

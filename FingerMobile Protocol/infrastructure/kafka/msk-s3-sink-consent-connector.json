@@ -1,0 +1,32 @@
+{
+  "name": "fingermobile-consent-audit-s3-sink-connector",
+  "config": {
+    "connector.class": "io.confluent.connect.s3.S3SinkConnector",
+    "tasks.max": "2",
+    "topics": "consent.events,audit.events",
+    "s3.region": "af-south-1",
+    "s3.bucket.name": "prod-fingermobile-audit-logs-af-south-1",
+    "s3.part.size": "5242880",
+    "s3.compression.codec": "gzip",
+    "s3.sse.algorithm": "aws:kms",
+    "s3.kms.key.id": "arn:aws:kms:af-south-1:ACCOUNT_ID:key/KMS_KEY_ID",
+    "storage.class": "io.confluent.connect.s3.storage.S3Storage",
+    "format.class": "io.confluent.connect.s3.format.json.JsonFormat",
+    "flush.size": "1000",
+    "rotate.interval.ms": "60000",
+    "rotate.schedule.interval.ms": "60000",
+    "partitioner.class": "io.confluent.connect.storage.partitioner.TimeBasedPartitioner",
+    "partition.duration.ms": "3600000",
+    "path.format": "'year'=YYYY/'month'=MM/'day'=dd/'hour'=HH",
+    "locale": "en",
+    "timezone": "UTC",
+    "timestamp.extractor": "RecordField",
+    "timestamp.field": "timestamp",
+    "schema.compatibility": "BACKWARD",
+    "errors.tolerance": "all",
+    "errors.deadletterqueue.topic.name": "consent.events.dlq",
+    "errors.deadletterqueue.topic.replication.factor": "3",
+    "errors.deadletterqueue.context.headers.enable": "true",
+    "enhanced.avro.schema.support": "false"
+  }
+}

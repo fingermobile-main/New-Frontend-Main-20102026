@@ -1,0 +1,314 @@
+[
+  {
+    "id": "638f7ece81ba080012b79320",
+    "name": "General Discussion",
+    "description": "Share your stories, ideas, pictures, videos and a lot more! Explore your Creativity.",
+    "slug": "general-discussion",
+    "imageUrl": "https://cdn.fingermobileprotocol.com/media/9a1209_ee5c0ff4ef7444f4ae3ec3f73bec51e7~mv2.jpg",
+    "accessLevel": "PUBLIC"
+  },
+  {
+    "id": "638f7ece81ba080012b79321",
+    "name": "Questions & Answers",
+    "description": "A talk, especially an informal one, between two or more people, in which news and ideas. Get answers and share knowledge",
+    "slug": "questions-answers",
+    "imageUrl": "https://cdn.fingermobileprotocol.com/media/9a1209_982e86bab7604f059c720cff2085e136~mv2.jpg",
+    "accessLevel": "PUBLIC"
+  },
+  {
+    "id": "659fa9b41c9ba300106832b6",
+    "name": "Verified Members",
+    "description": "FingerMobile Protocol Verified Members Platform",
+    "slug": "verified",
+    "imageUrl": "https://cdn.fingermobileprotocol.com/media/9a1209_800bf4c9f8a24d7898825d4198e8efab~mv2.jpg",
+    "accessLevel": "PUBLIC"
+  },
+  {
+    "id": "638f7ece81ba080012b79322",
+    "name": "Connect",
+    "description": "Welcome to one of the most popular free adult chat rooms. Participate in public or private discuss",
+    "slug": "connect",
+    "imageUrl": "https://cdn.fingermobileprotocol.com/media/9a1209_d1f670b6be6e40ec873f7c244ef26200~mv2.jpg",
+    "accessLevel": "PUBLIC"
+  },
+  {
+    "id": "639259af5bfe0100125117f7",
+    "name": "Dating",
+    "description": "Welcome! Have a look around and join the conversations. Never be Shy to say Hello!",
+    "slug": "dating",
+    "imageUrl": "https://cdn.fingermobileprotocol.com/media/9a1209_7f089d318e074129a259dc44f43ac559~mv2.jpg",
+    "accessLevel": "PUBLIC"
+  },
+  {
+    "id": "63b3ef33ad009a0012d8ef9f",
+    "name": "Sights N' Sounds",
+    "description": "Welcome! Have a look around and join the conversations.",
+    "slug": "sights-n-sounds",
+    "imageUrl": "https://cdn.fingermobileprotocol.com/media/9a1209_69c3a465ad7d482aa190be93287d4c1b~mv2.jpeg",
+    "accessLevel": "PUBLIC"
+  },
+  {
+    "id": "63b3f0a44867620013de7f27",
+    "name": "Movies N' More",
+    "description": "",
+    "slug": "movies-n-more",
+    "imageUrl": "https://cdn.fingermobileprotocol.com/media/9a1209_8caf098c1c6e4503ae97e07d79b6ba9e~mv2.webp",
+    "accessLevel": "PUBLIC"
+  },
+  {
+    "id": "63b9407ab3d1250012348ef5",
+    "name": "MirellaFacet®™©",
+    "description": "Welcome! Have a look around and join the conversations.",
+    "slug": "mirellafacet",
+    "imageUrl": "https://cdn.fingermobileprotocol.com/media/9a1209_e92d18c95ae3434ba71fef3e36fc5a3d~mv2.jpeg",
+    "accessLevel": "PUBLIC"
+  },
+  {
+    "id": "64502b55dc5ecb0012de3224",
+    "name": "Ketogenic",
+    "description": "The ketogenic diet is a high-fat, adequate-protein, low-carbohydrate dietary therapy",
+    "slug": "ketogenic",
+    "imageUrl": "https://cdn.fingermobileprotocol.com/media/9a1209_05538b9303d04377b535faa5adea8537~mv2.jpeg",
+    "accessLevel": "PUBLIC"
+  },
+  {
+    "id": "64502cefc7b45f0012ffeb98",
+    "name": "Nostalgic Arts",
+    "description": "Nostalgia is an intellectual and aesthetic crutch that prevents cultural artifacts from reflecting their own epochs.",
+    "slug": "nostalgic-arts",
+    "imageUrl": "https://cdn.fingermobileprotocol.com/media/9a1209_b557c4c74e054325850d17c3d23fb867~mv2.jpg",
+    "accessLevel": "PUBLIC"
+  },
+  {
+    "id": "64503154a5a26200122cbf1a",
+    "name": "Music N' Concerts",
+    "description": "A public musical performance around the globe., Join the conversations Now",
+    "slug": "music-n-concerts",
+    "imageUrl": "https://cdn.fingermobileprotocol.com/media/9a1209_4dd92e73f1654f9db86cb69decef3d9e~mv2.jpg",
+    "accessLevel": "PUBLIC"
+  },
+  {
+    "id": "6450342112f0fd00123f313a",
+    "name": "Fresh Out",
+    "description": "Join the conversations.. Connect with other members, get and share your moments and updates",
+    "slug": "fresh-out",
+    "imageUrl": "https://cdn.fingermobileprotocol.com/media/9a1209_8649b41fc25c46819f4dab41318b2787~mv2.jpg",
+    "accessLevel": "PUBLIC"
+  },
+  {
+    "id": "6457f2b8c353e70013cc0c8f",
+    "name": "School Fees Grant",
+    "description": "FingerGrants are the financial assistances that are non-repayable in nature. It is provided by the FingerMobile Protocol",
+    "slug": "school-fees-grant",
+    "imageUrl": "https://cdn.fingermobileprotocol.com/media/9a1209_3e41cb70bd504973a7d3ef9f034c69b6~mv2.jpg",
+    "accessLevel": "PUBLIC"
+  },
+  {
+    "id": "65a636447a17e300107988e6",
+    "name": "My College and I",
+    "description": "Welcome! Have a look around and join the conversations.",
+    "slug": "college",
+    "imageUrl": "https://cdn.fingermobileprotocol.com/media/9a1209_f0e4796ea3f7454dabe29d168342490d~mv2.jpg",
+    "accessLevel": "PUBLIC"
+  },
+  {
+    "id": "659fa690f1e8f300108c567e",
+    "name": "Give-Away",
+    "description": "Complete Tasks and Challenges. Strategise, Answer Correctly, Win Polls and  Win Prizes, Vouchers and Gift Cards",
+    "slug": "fingermobile-give-away",
+    "imageUrl": "https://cdn.fingermobileprotocol.com/media/11062b_77250f1db1cc45908e2c5efa3a565f79~mv2.jpg",
+    "accessLevel": "PUBLIC"
+  },
+  {
+    "id": "659d1bf89d6c5600100cb6cb",
+    "name": "'- The - Private Room",
+    "description": "",
+    "slug": "the-private-room",
+    "imageUrl": "https://cdn.fingermobileprotocol.com/media/9a1209_b12b5e2a40da4ed99a2a435aad96183e~mv2.png",
+    "accessLevel": "PRIVATE"
+  },
+  {
+    "id": "63b164bbb603b500120302f1",
+    "name": "Velvets N' Suedes",
+    "description": "Only Suitable for persons above 24 Years of age. IARC Classification/Certification/Discretion. Rated 24+ (DMLSNGVRA)",
+    "slug": "velvets",
+    "imageUrl": "https://cdn.fingermobileprotocol.com/media/9a1209_51a23d17e15f425093adc292099de66e~mv2.jpg",
+    "accessLevel": "SUBSCRIPTION"
+  },
+  {
+    "id": "66576b668afe1a0010418606",
+    "name": "Assured",
+    "description": "Inspired by desire and pleasure",
+    "slug": "aasure",
+    "imageUrl": "https://cdn.fingermobileprotocol.com/media/9a1209_bca34f91ddd546fb91b393f4b6960597~mv2.jpg",
+    "accessLevel": "PUBLIC"
+  },
+  {
+    "id": "659fac2d91da9d00100cd2e5",
+    "name": "Crypto ",
+    "description": "Decoding Crypto: What It Is, How It Works, and How to Get Started. The FingerMobile Infinite Coin",
+    "slug": "crypto",
+    "imageUrl": "https://cdn.fingermobileprotocol.com/media/9a1209_c608fb95661d49fcae6e8f62cbf45a7d~mv2.png",
+    "accessLevel": "PUBLIC"
+  },
+  {
+    "id": "65a641637e9fa30010df01e2",
+    "name": "Professional Classified Assets",
+    "description": "Connecting the world’s Professional Career and Classified Network of Asset.",
+    "slug": "professional-assets",
+    "imageUrl": "https://cdn.fingermobileprotocol.com/media/9a1209_161346d62a824ea39ee6b08c023362c9~mv2.jpg",
+    "accessLevel": "PUBLIC"
+  },
+  {
+    "id": "65a648763413a4001093be3b",
+    "name": "Sell It - Buy it. ",
+    "description": "Welcome! Have a look around and join the conversations.",
+    "slug": "ownit-r-tm",
+    "imageUrl": "https://cdn.fingermobileprotocol.com/media/9a1209_fca5b4387222407aaed0f17b794aa2b4~mv2.jpg",
+    "accessLevel": "PUBLIC"
+  },
+  {
+    "id": "6655c2c1bb23bb00102ad022",
+    "name": "Kitchen Orders",
+    "description": "A group for sharing kitchen orders tips and recipes. Place your Orders!",
+    "slug": "kitchen-orders",
+    "imageUrl": "https://cdn.fingermobileprotocol.com/media/9a1209_1d171457e47144b982aca9dd0916ec9c~mv2.png",
+    "accessLevel": "PUBLIC"
+  },
+  {
+    "id": "6655c8e3c9d029001093c7fb",
+    "name": "Tech and Gadgets",
+    "description": "World of Technology, Gadgets, Phones, Devices, Laptops, Mac and Windows. Have a look around and join Us!",
+    "slug": "tech-and-gadgets",
+    "imageUrl": "https://cdn.fingermobileprotocol.com/media/9a1209_eb4c8427357a40fc8ecb9de5df871fa7~mv2.png",
+    "accessLevel": "PUBLIC"
+  },
+  {
+    "id": "6655d19e0c45c70010821da0",
+    "name": "Lux",
+    "description": "Exclusive & Private 5 Star Luxury Air BnB experience Residential-style amenities like living rooms, kitchens and dining",
+    "slug": "lux-holidays",
+    "imageUrl": "https://cdn.fingermobileprotocol.com/media/9a1209_9e51d7170e684fe9aed71712e875d61d~mv2.jpg",
+    "accessLevel": "PRIVATE"
+  },
+  {
+    "id": "666eb881e4ce940010693e80",
+    "name": "Medical Health",
+    "description": "Health: A state of complete physical, mental, and social well-being and not merely the absence of disease or infirmity.",
+    "slug": "medical-health",
+    "imageUrl": "https://cdn.fingermobileprotocol.com/media/9a1209_e8e2cd1077424500b5257be64e6bc950~mv2.png",
+    "accessLevel": "BADGE_ONLY"
+  },
+  {
+    "id": "666ed66ba85ecb0010894f71",
+    "name": "Telehealth MedCare Counselling",
+    "description": "The use of electronic information & telecommunication technologies to support long-distance clinical health care",
+    "slug": "medcare-counseling",
+    "imageUrl": "https://cdn.fingermobileprotocol.com/media/9a1209_ffaad2fc296a4c33a8f11270181110d0~mv2.png",
+    "accessLevel": "BADGE_ONLY"
+  },
+  {
+    "id": "666ff26aa084a300103ee00d",
+    "name": "News Updates",
+    "description": "Covering Developmental Progress, World Events, Issues, Job Openings, Policies and Programs of the Private and Public Sectors",
+    "slug": "national-updates",
+    "imageUrl": "https://cdn.fingermobileprotocol.com/media/9a1209_8bccd2d867f64d57a5f083d5e219a7b3~mv2.png",
+    "accessLevel": "PUBLIC"
+  },
+  {
+    "id": "6672b165a4e2a20010b6c175",
+    "name": "Laffs",
+    "description": "Professional gathering for comic acts of entertainment, consisting of Memes, Media Jokes intended to make you Laff.",
+    "slug": "laffs-with-gana",
+    "imageUrl": "https://cdn.fingermobileprotocol.com/media/9a1209_9c78ad2fdc374e67b7480512ed092cdb~mv2.png",
+    "accessLevel": "PUBLIC"
+  },
+  {
+    "id": "6677db0197fc69001182c894",
+    "name": "Cyber Security",
+    "description": "The practice of protecting systems, networks, and programs from digital attacks.",
+    "slug": "cyber-security",
+    "imageUrl": "https://cdn.fingermobileprotocol.com/media/9a1209_272a6ed4263d4b23ba3063103c8465a7~mv2.jpg",
+    "accessLevel": "PUBLIC"
+  },
+  {
+    "id": "667c8ce16350310011734959",
+    "name": "ShopWithUsNaija",
+    "description": "",
+    "slug": "shopwithusnaija",
+    "imageUrl": "https://cdn.fingermobileprotocol.com/media/9a1209_2c9c1a27e09343068b03f86432a64e81~mv2.jpeg",
+    "accessLevel": "PUBLIC"
+  },
+  {
+    "id": "66c050e93563060011b8c587",
+    "name": "Chuta",
+    "description": "Red Flags in Relationships, dating, Marriages, Divorce, Love Life, Spousal Abuse, Cohabitations and Flings.",
+    "slug": "ify-chuta",
+    "imageUrl": "https://cdn.fingermobileprotocol.com/media/9a1209_1258615d957d4940a3d9ad70267b0ded~mv2.jpg",
+    "accessLevel": "PUBLIC"
+  },
+  {
+    "id": "66c057da01de3a0011e643ec",
+    "name": "Pets and Us",
+    "description": "Join the conversations.",
+    "slug": "pets-and-us",
+    "imageUrl": "https://cdn.fingermobileprotocol.com/media/9a1209_4310303ddeaf4c0fadf313baf5bc4bd8~mv2.png",
+    "accessLevel": "PUBLIC"
+  },
+  {
+    "id": "66c4f1ffb5645700112f059a",
+    "name": "Skitz",
+    "description": "",
+    "slug": "i-skits",
+    "imageUrl": "https://cdn.fingermobileprotocol.com/media/9a1209_1072e3dad0eb4c2a87ef8b1351663e8e~mv2.jpg",
+    "accessLevel": "PUBLIC"
+  },
+  {
+    "id": "66d3921fd35ba00011a25c02",
+    "name": "Nanee",
+    "description": "Recording and uploading your awesome video contents.  Join the trends",
+    "slug": "nanee",
+    "imageUrl": "https://cdn.fingermobileprotocol.com/media/9a1209_815931ce9ba1401197690bbd8498150e~mv2.jpeg",
+    "accessLevel": "PUBLIC"
+  },
+  {
+    "id": "66d3bb32c25c9d00126b407e",
+    "name": "Ayersha",
+    "description": "Hey its Aisha Sweety.",
+    "slug": "ayersha",
+    "imageUrl": "https://cdn.fingermobileprotocol.com/media/9a1209_cee64f8fa5b44c82b77680e04eaaf50c~mv2.jpg",
+    "accessLevel": "PUBLIC"
+  },
+  {
+    "id": "67483b7a6a0aaee6e578a25f",
+    "name": "Sportica Olympia ",
+    "description": "Stay up to date on your favourite sports and athletes. Discuss original Olympic and Sports Events or documentaries. Get exclusive stories",
+    "slug": "sportica-olympia",
+    "imageUrl": "https://cdn.fingermobileprotocol.com/media/9a1209_da458e82913d41e5af78c2344cbfc595~mv2.jpg",
+    "accessLevel": "PUBLIC"
+  },
+  {
+    "id": "67483d6380cf731b2bd95004",
+    "name": "Wild Nature",
+    "description": "Natural Environments not significantly disturbed by Human characteristical activities.",
+    "slug": "wild-nature",
+    "imageUrl": "https://cdn.fingermobileprotocol.com/media/9a1209_00bc4e68f8cd4fbb92aea32ef6d8228e~mv2.jpeg",
+    "accessLevel": "PUBLIC"
+  },
+  {
+    "id": "674e1f8c9b4a54700f2b1daa",
+    "name": "WAENI",
+    "description": "Caregivers can be family members, friends, social workers, health professionals, or members of the clergy",
+    "slug": "waeni",
+    "imageUrl": "https://cdn.fingermobileprotocol.com/media/9a1209_50aa8efff7c64e9385ae578fef0e738c~mv2.jpg",
+    "accessLevel": "PUBLIC"
+  },
+  {
+    "id": "6759519f4af43ad1dadbb019",
+    "name": "Law and Order ",
+    "description": "",
+    "slug": "law-and-order",
+    "imageUrl": "https://cdn.fingermobileprotocol.com/media/9a1209_75dc1e53e27640c980dedab074749527~mv2.png",
+    "accessLevel": "PUBLIC"
+  }
+]

@@ -1,0 +1,682 @@
+// Get user's luxury items
+router.get("/users/:userId/items", async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const { rows } = await contentDb.query(
+      `SELECT fl.*, b.name as brand_name, c.name as category_name
+       FROM fingerlux_items fl
+       JOIN fingerlux_brands b ON fl.brand_id = b.id
+       JOIN fingerlux_categories c ON fl.category_id = c.id
+       WHERE fl.seller_id = $1
+       ORDER BY fl.created_at DESC`,
+      [userId]
+    );
+
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// ============================================
+// AUCTION ENDPOINTS
+// ============================================
+
+// Get active auctions
+router.get("/auctions", async (req, res) => {
+  try {
+    const { status = 'active', limit = 20, offset = 0 } = req.query;
+
+    const { rows } = await contentDb.query(
+      `SELECT fa.*, fi.title as item_title, fi.cover_image,
+              fb.name as seller_name
+       FROM fingerlux_auctions fa
+       JOIN fingerlux_items fi ON fa.item_id = fi.id
+       LEFT JOIN members fb ON fa.seller_id::text = fb.id::text
+       WHERE fa.status = $1
+       ORDER BY fa.end_time ASC
+       LIMIT $2 OFFSET $3`,
+      [status, parseInt(limit), parseInt(offset)]
+    );
+
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Get auction details
+router.get("/auctions/:auctionId", async (req, res) => {
+  try {
+    const { auctionId } = req.params;
+
+    const { rows } = await contentDb.query(
+      `SELECT fa.*, fi.*, fb.name as seller_name
+       FROM fingerlux_auctions fa
+       JOIN fingerlux_items fi ON fa.item_id = fi.id
+       LEFT JOIN members fb ON fa.seller_id::text = fb.id::text
+       WHERE fa.id = $1`,
+      [auctionId]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Auction not found" });
+    }
+
+    // Get bids for this auction
+    const bidsResult = await contentDb.query(
+      `SELECT fb.*, m.username as bidder_name
+       FROM fingerlux_bids fb
+       LEFT JOIN members m ON fb.bidder_id::text = m.id::text
+       WHERE fb.auction_id = $1
+       ORDER BY fb.amount DESC
+       LIMIT 10`,
+      [auctionId]
+    );
+
+    res.json({
+      auction: rows[0],
+      bids: bidsResult.rows
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Place bid on auction
+router.post("/auctions/:auctionId/bids", async (req, res) => {
+  try {
+    const { auctionId } = req.params;
+    const { amount } = req.body;
+    const bidderId = req.member?.id;
+
+    if (!bidderId) {
+      return res.status(401).json({ error: "Authentication required" });
+    }
+
+    if (!amount || amount <= 0) {
+      return res.status(400).json({ error: "Valid bid amount required" });
+    }
+
+    // Check auction exists and is active
+    const auctionResult = await contentDb.query(
+      "SELECT * FROM fingerlux_auctions WHERE id = $1 AND status = 'active'",
+      [auctionId]
+    );
+
+    if (auctionResult.rows.length === 0) {
+      return res.status(404).json({ error: "Active auction not found" });
+    }
+
+    const auction = auctionResult.rows[0];
+
+    // Validate bid amount
+    const minBid = auction.current_bid || auction.starting_price;
+    if (amount <= minBid) {
+      return res.status(400).json({ 
+        error: `Bid must be greater than ${minBid}` 
+      });
+    }
+
+    // Place bid
+    const { rows } = await contentDb.query(
+      `INSERT INTO fingerlux_bids (auction_id, bidder_id, amount)
+       VALUES ($1, $2, $3)
+       RETURNING *`,
+      [auctionId, bidderId, amount]
+    );
+
+    res.status(201).json(rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Create new auction
+router.post("/auctions", async (req, res) => {
+  try {
+    const {
+      item_id,
+      starting_price,
+      reserve_price,
+      buy_now_price,
+      end_time,
+      auto_extend = true,
+      extension_minutes = 5
+    } = req.body;
+    const sellerId = req.member?.id;
+
+    if (!sellerId) {
+      return res.status(401).json({ error: "Authentication required" });
+    }
+
+    // Verify item ownership
+    const itemResult = await contentDb.query(
+      "SELECT id FROM fingerlux_items WHERE id = $1 AND seller_id = $2",
+      [item_id, sellerId]
+    );
+
+    if (itemResult.rows.length === 0) {
+      return res.status(404).json({ error: "Item not found or unauthorized" });
+    }
+
+    const { rows } = await contentDb.query(
+      `INSERT INTO fingerlux_auctions 
+       (item_id, seller_id, starting_price, reserve_price, buy_now_price, 
+        end_time, auto_extend, extension_minutes, status)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 'active')
+       RETURNING *`,
+      [
+        item_id,
+        sellerId,
+        starting_price,
+        reserve_price || null,
+        buy_now_price || null,
+        end_time,
+        auto_extend,
+        extension_minutes
+      ]
+    );
+
+    res.status(201).json(rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// ============================================
+// REVIEW ENDPOINTS
+// ============================================
+
+// Get reviews for an item
+router.get("/items/:itemId/reviews", async (req, res) => {
+  try {
+    const { itemId } = req.params;
+    const { limit = 20, offset = 0, sort_by = 'created_at', order = 'DESC' } = req.query;
+
+    const { rows } = await contentDb.query(
+      `SELECT fr.*, m.username as reviewer_name, m.avatar_url
+       FROM fingerlux_reviews fr
+       LEFT JOIN members m ON fr.reviewer_id::text = m.id::text
+       WHERE fr.item_id = $1 AND fr.status = 'approved'
+       ORDER BY fr.${sort_by} ${order}
+       LIMIT $2 OFFSET $3`,
+      [itemId, parseInt(limit), parseInt(offset)]
+    );
+
+    // Get average rating
+    const avgResult = await contentDb.query(
+      `SELECT AVG(rating) as avg_rating, COUNT(*) as total_reviews
+       FROM fingerlux_reviews
+       WHERE item_id = $1 AND status = 'approved'`,
+      [itemId]
+    );
+
+    res.json({
+      reviews: rows,
+      summary: avgResult.rows[0]
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Submit review
+router.post("/items/:itemId/reviews", async (req, res) => {
+  try {
+    const { itemId } = req.params;
+    const { rating, title, review_text, images } = req.body;
+    const reviewerId = req.member?.id;
+
+    if (!reviewerId) {
+      return res.status(401).json({ error: "Authentication required" });
+    }
+
+    if (!rating || rating < 1 || rating > 5) {
+      return res.status(400).json({ error: "Rating must be between 1 and 5" });
+    }
+
+    // Check if user already reviewed this item
+    const existingReview = await contentDb.query(
+      "SELECT id FROM fingerlux_reviews WHERE item_id = $1 AND reviewer_id = $2",
+      [itemId, reviewerId]
+    );
+
+    if (existingReview.rows.length > 0) {
+      return res.status(409).json({ error: "You have already reviewed this item" });
+    }
+
+    // Verify purchase (optional - can be enhanced with order history)
+    const verifiedPurchase = false; // TODO: Check order history
+
+    const { rows } = await contentDb.query(
+      `INSERT INTO fingerlux_reviews 
+       (item_id, reviewer_id, rating, title, review_text, images, verified_purchase, status)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, 'pending')
+       RETURNING *`,
+      [itemId, reviewerId, rating, title, review_text, images || [], verifiedPurchase]
+    );
+
+    res.status(201).json(rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Update review helpfulness
+router.post("/reviews/:reviewId/helpful", async (req, res) => {
+  try {
+    const { reviewId } = req.params;
+    const { is_helpful = true } = req.body;
+
+    await contentDb.query(
+      `UPDATE fingerlux_reviews 
+       SET ${is_helpful ? 'helpful_count' : 'not_helpful_count'} = 
+           ${is_helpful ? 'helpful_count' : 'not_helpful_count'} + 1
+       WHERE id = $1`,
+      [reviewId]
+    );
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// ============================================
+// WISHLIST ENDPOINTS
+// ============================================
+
+// Get user's wishlist
+router.get("/wishlist", async (req, res) => {
+  try {
+    const userId = req.member?.id;
+
+    if (!userId) {
+      return res.status(401).json({ error: "Authentication required" });
+    }
+
+    const { rows } = await contentDb.query(
+      `SELECT fw.*, fi.title, fi.price, fi.cover_image, fi.status,
+              fb.name as brand_name
+       FROM fingerlux_wishlist fw
+       JOIN fingerlux_items fi ON fw.item_id = fi.id
+       LEFT JOIN fingerlux_brands fb ON fi.brand_id = fb.id
+       WHERE fw.user_id = $1
+       ORDER BY fw.created_at DESC`,
+      [userId]
+    );
+
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Add item to wishlist
+router.post("/wishlist", async (req, res) => {
+  try {
+    const { item_id, notes, priority = 'medium' } = req.body;
+    const userId = req.member?.id;
+
+    if (!userId) {
+      return res.status(401).json({ error: "Authentication required" });
+    }
+
+    // Check if item exists
+    const itemResult = await contentDb.query(
+      "SELECT id FROM fingerlux_items WHERE id = $1",
+      [item_id]
+    );
+
+    if (itemResult.rows.length === 0) {
+      return res.status(404).json({ error: "Item not found" });
+    }
+
+    const { rows } = await contentDb.query(
+      `INSERT INTO fingerlux_wishlist (user_id, item_id, notes, priority)
+       VALUES ($1, $2, $3, $4)
+       ON CONFLICT (user_id, item_id) DO NOTHING
+       RETURNING *`,
+      [userId, item_id, notes, priority]
+    );
+
+    if (rows.length === 0) {
+      return res.status(409).json({ error: "Item already in wishlist" });
+    }
+
+    res.status(201).json(rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Remove item from wishlist
+router.delete("/wishlist/:itemId", async (req, res) => {
+  try {
+    const { itemId } = req.params;
+    const userId = req.member?.id;
+
+    if (!userId) {
+      return res.status(401).json({ error: "Authentication required" });
+    }
+
+    await contentDb.query(
+      "DELETE FROM fingerlux_wishlist WHERE user_id = $1 AND item_id = $2",
+      [userId, itemId]
+    );
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// ============================================
+// SHOPPING CART ENDPOINTS
+// ============================================
+
+// Get user's shopping cart
+router.get("/cart", async (req, res) => {
+  try {
+    const userId = req.member?.id;
+
+    if (!userId) {
+      return res.status(401).json({ error: "Authentication required" });
+    }
+
+    // Get or create cart
+    let cartResult = await contentDb.query(
+      "SELECT * FROM fingerlux_shopping_carts WHERE user_id = $1",
+      [userId]
+    );
+
+    if (cartResult.rows.length === 0) {
+      cartResult = await contentDb.query(
+        "INSERT INTO fingerlux_shopping_carts (user_id) VALUES ($1) RETURNING *",
+        [userId]
+      );
+    }
+
+    const cart = cartResult.rows[0];
+
+    // Get cart items
+    const itemsResult = await contentDb.query(
+      `SELECT fci.*, fi.title, fi.cover_image, fi.stock_quantity,
+              fb.name as brand_name
+       FROM fingerlux_cart_items fci
+       JOIN fingerlux_items fi ON fci.item_id = fi.id
+       LEFT JOIN fingerlux_brands fb ON fi.brand_id = fb.id
+       WHERE fci.cart_id = $1
+       ORDER BY fci.created_at DESC`,
+      [cart.id]
+    );
+
+    res.json({
+      cart,
+      items: itemsResult.rows
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Add item to cart
+router.post("/cart", async (req, res) => {
+  try {
+    const { item_id, quantity = 1, customizations } = req.body;
+    const userId = req.member?.id;
+
+    if (!userId) {
+      return res.status(401).json({ error: "Authentication required" });
+    }
+
+    // Get or create cart
+    let cartResult = await contentDb.query(
+      "SELECT id FROM fingerlux_shopping_carts WHERE user_id = $1",
+      [userId]
+    );
+
+    if (cartResult.rows.length === 0) {
+      cartResult = await contentDb.query(
+        "INSERT INTO fingerlux_shopping_carts (user_id) VALUES ($1) RETURNING id",
+        [userId]
+      );
+    }
+
+    const cartId = cartResult.rows[0].id;
+
+    // Get item price
+    const itemResult = await contentDb.query(
+      "SELECT id, price, stock_quantity FROM fingerlux_items WHERE id = $1 AND status = 'available'",
+      [item_id]
+    );
+
+    if (itemResult.rows.length === 0) {
+      return res.status(404).json({ error: "Item not found or unavailable" });
+    }
+
+    const item = itemResult.rows[0];
+
+    if (quantity > item.stock_quantity) {
+      return res.status(400).json({ 
+        error: `Only ${item.stock_quantity} items available` 
+      });
+    }
+
+    // Add or update cart item
+    const { rows } = await contentDb.query(
+      `INSERT INTO fingerlux_cart_items (cart_id, item_id, quantity, unit_price, customizations)
+       VALUES ($1, $2, $3, $4, $5)
+       ON CONFLICT (cart_id, item_id) 
+       DO UPDATE SET quantity = fingerlux_cart_items.quantity + $3, updated_at = NOW()
+       RETURNING *`,
+      [cartId, item_id, quantity, item.price, customizations]
+    );
+
+    res.status(201).json(rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Update cart item quantity
+router.put("/cart/:itemId", async (req, res) => {
+  try {
+    const { itemId } = req.params;
+    const { quantity } = req.body;
+    const userId = req.member?.id;
+
+    if (!userId) {
+      return res.status(401).json({ error: "Authentication required" });
+    }
+
+    if (quantity <= 0) {
+      // Remove item if quantity is 0 or negative
+      await contentDb.query(
+        `DELETE FROM fingerlux_cart_items fci
+         USING fingerlux_shopping_carts fsc
+         WHERE fci.cart_id = fsc.id AND fci.item_id = $1 AND fsc.user_id = $2`,
+        [itemId, userId]
+      );
+      return res.json({ success: true });
+    }
+
+    const { rows } = await contentDb.query(
+      `UPDATE fingerlux_cart_items fci
+       SET quantity = $1, updated_at = NOW()
+       FROM fingerlux_shopping_carts fsc
+       WHERE fci.cart_id = fsc.id AND fci.item_id = $2 AND fsc.user_id = $3
+       RETURNING fci.*`,
+      [quantity, itemId, userId]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Cart item not found" });
+    }
+
+    res.json(rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Remove item from cart
+router.delete("/cart/:itemId", async (req, res) => {
+  try {
+    const { itemId } = req.params;
+    const userId = req.member?.id;
+
+    if (!userId) {
+      return res.status(401).json({ error: "Authentication required" });
+    }
+
+    await contentDb.query(
+      `DELETE FROM fingerlux_cart_items fci
+       USING fingerlux_shopping_carts fsc
+       WHERE fci.cart_id = fsc.id AND fci.item_id = $1 AND fsc.user_id = $2`,
+      [itemId, userId]
+    );
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Clear cart
+router.delete("/cart", async (req, res) => {
+  try {
+    const userId = req.member?.id;
+
+    if (!userId) {
+      return res.status(401).json({ error: "Authentication required" });
+    }
+
+    await contentDb.query(
+      `DELETE FROM fingerlux_cart_items fci
+       USING fingerlux_shopping_carts fsc
+       WHERE fci.cart_id = fsc.id AND fsc.user_id = $1`,
+      [userId]
+    );
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// ============================================
+// SEARCH & DISCOVERY
+// ============================================
+
+// Search luxury items
+router.get("/search", async (req, res) => {
+  try {
+    const { q, category, brand, min_price, max_price, condition, limit = 20, offset = 0 } = req.query;
+
+    let query = `SELECT fi.*, fb.name as brand_name, fc.name as category_name
+                 FROM fingerlux_items fi
+                 JOIN fingerlux_brands fb ON fi.brand_id = fb.id
+                 JOIN fingerlux_categories fc ON fi.category_id = fc.id
+                 WHERE fi.status = 'available'`;
+    
+    const params = [];
+    let paramIndex = 0;
+
+    if (q) {
+      paramIndex++;
+      query += ` AND (fi.title ILIKE $${paramIndex} OR fi.description ILIKE $${paramIndex})`;
+      params.push(`%${q}%`);
+    }
+
+    if (category) {
+      paramIndex++;
+      query += ` AND fi.category_id = $${paramIndex}`;
+      params.push(category);
+    }
+
+    if (brand) {
+      paramIndex++;
+      query += ` AND fi.brand_id = $${paramIndex}`;
+      params.push(brand);
+    }
+
+    if (min_price) {
+      paramIndex++;
+      query += ` AND fi.price >= $${paramIndex}`;
+      params.push(parseFloat(min_price));
+    }
+
+    if (max_price) {
+      paramIndex++;
+      query += ` AND fi.price <= $${paramIndex}`;
+      params.push(parseFloat(max_price));
+    }
+
+    if (condition) {
+      paramIndex++;
+      query += ` AND fi.condition = $${paramIndex}`;
+      params.push(condition);
+    }
+
+    query += ` ORDER BY fi.created_at DESC LIMIT $${paramIndex + 1} OFFSET $${paramIndex + 2}`;
+    params.push(parseInt(limit), parseInt(offset));
+
+    const { rows } = await contentDb.query(query, params);
+
+    // Get total count
+    const countQuery = query.replace(/ORDER BY.*$/, '').replace(/SELECT.*?FROM/, 'SELECT COUNT(*) FROM');
+    const countResult = await contentDb.query(countQuery, params.slice(0, -2));
+
+    res.json({
+      items: rows,
+      total: parseInt(countResult.rows[0].count)
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Get featured items
+router.get("/featured", async (req, res) => {
+  try {
+    const { limit = 12 } = req.query;
+
+    const { rows } = await contentDb.query(
+      `SELECT fi.*, fb.name as brand_name, fc.name as category_name
+       FROM fingerlux_items fi
+       JOIN fingerlux_brands fb ON fi.brand_id = fb.id
+       JOIN fingerlux_categories fc ON fi.category_id = fc.id
+       WHERE fi.status = 'available' AND (fi.featured = true OR fi.editor_pick = true)
+       ORDER BY fi.created_at DESC
+       LIMIT $1`,
+      [parseInt(limit)]
+    );
+
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+module.exports = router;

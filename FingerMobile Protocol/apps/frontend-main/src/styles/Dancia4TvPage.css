@@ -1,0 +1,642 @@
+.dancia4tv-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  height: auto;
+  background-color: #030712;
+  color: #fff;
+  overflow-x: hidden;
+}
+
+.dancia4tv-header {
+  background-color: #111;
+  padding: 1rem;
+  border-bottom: 1px solid #333;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header-content h1 {
+  margin: 0 1rem 0 0;
+  font-size: 1.5rem;
+  color: #e50914;
+}
+
+.search-box {
+  flex: 1;
+  margin: 0 1rem;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #333;
+  background-color: #222;
+  color: #fff;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+}
+
+.profile-logo .member-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #e50914;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.mini-ad-space {
+  margin-left: 1rem;
+  padding: 0.5rem;
+  background-color: #222;
+  border-radius: 4px;
+  min-width: 150px;
+  text-align: center;
+}
+
+.dancia4tv-main {
+  flex: 1 0 auto;
+  overflow: visible;
+  position: relative;
+  width: 100%;
+}
+
+/* Tab Navigation */
+.tab-navigation {
+  display: flex;
+  background-color: #111;
+  border-bottom: 1px solid #333;
+}
+
+.tab-navigation button {
+  padding: 1rem 2rem;
+  background: none;
+  border: none;
+  color: #e2e8f0;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  border-bottom: 3px solid transparent;
+}
+
+.tab-navigation button.active {
+  color: #fff;
+  border-bottom: 3px solid #e50914;
+}
+
+.tab-navigation button:hover {
+  color: #fff;
+  background-color: #222;
+}
+
+.dancia4tv-layout {
+  display: flex;
+  height: calc(100% - 40px);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.column {
+  flex: 1;
+  padding: 0 0.5rem;
+  overflow-y: auto;
+}
+
+.dna-column {
+  border-right: 1px solid #333;
+}
+
+.canary-column {
+  border-left: 1px solid #333;
+}
+
+.column h2 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: #e50914;
+}
+
+.content-scroll {
+  height: calc(100% - 3rem);
+  overflow-y: auto;
+}
+
+/* Browse Content */
+.browse-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+  height: calc(100% - 40px);
+  overflow-y: auto;
+}
+
+.movie-types-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.movie-type-card {
+  background-color: #222;
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.movie-type-card h3 {
+  margin-top: 0;
+  color: #e50914;
+}
+
+.genres-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.genre-item-large {
+  background-color: #222;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.genre-item-large h3 {
+  margin-top: 0;
+  color: #e50914;
+}
+
+/* Subscriptions Content */
+.subscriptions-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+  height: calc(100% - 40px);
+  overflow-y: auto;
+}
+
+.subscription-plans-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.subscription-plan-card {
+  background-color: #222;
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+  border: 2px solid #333;
+  transition: all 0.3s ease;
+}
+
+.subscription-plan-card.subscribed {
+  border-color: #e50914;
+  background-color: #333;
+}
+
+.subscription-plan-card h3 {
+  margin-top: 0;
+  color: #e50914;
+}
+
+.plan-features ul {
+  list-style: none;
+  padding: 0;
+  text-align: left;
+}
+
+.plan-features li {
+  padding: 0.25rem 0;
+  border-bottom: 1px solid #333;
+}
+
+.plan-features li:last-child {
+  border-bottom: none;
+}
+
+.plan-pricing {
+  margin: 1rem 0;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.subscribe-button {
+  background-color: #e50914;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.unsubscribe-button {
+  background-color: #666;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.dancia4tv-footer {
+  background-color: #111;
+  border-top: 1px solid #333;
+  padding: 1rem;
+}
+
+.footer-nav ul {
+  display: flex;
+  justify-content: space-around;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-nav li {
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.footer-nav li:hover {
+  color: #e50914;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #222;
+  border-radius: 8px;
+  padding: 2rem;
+  max-width: 500px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  color: #e50914;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #333;
+  background-color: #333;
+  color: #fff;
+}
+
+.genres-grid,
+.artists-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.genre-item,
+.artist-item {
+  padding: 0.75rem;
+  background-color: #333;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.2s;
+}
+
+.genre-item:hover,
+.artist-item:hover {
+  background-color: #444;
+}
+
+.genre-item.selected,
+.artist-item.selected {
+  background-color: #e50914;
+}
+
+.selection-info {
+  text-align: center;
+  margin: 1rem 0;
+  font-weight: bold;
+}
+
+.continue-button {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #e50914;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.continue-button:hover {
+  background-color: #f40612;
+}
+
+/* Video Components */
+.video-recommendations h3 {
+  margin-top: 0;
+}
+
+.videos-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.video-card {
+  display: flex;
+  background-color: #333;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.video-thumbnail {
+  width: 120px;
+  height: 70px;
+}
+
+.placeholder-thumbnail {
+  width: 100%;
+  height: 100%;
+  background-color: #555;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.video-info {
+  padding: 0.5rem;
+  flex: 1;
+}
+
+.video-info h4 {
+  margin: 0 0 0.25rem 0;
+  font-size: 0.9rem;
+}
+
+.video-info p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #e2e8f0;
+  font-weight: 500;
+}
+
+.notifications-panel,
+.ads-panel {
+  margin-bottom: 2rem;
+}
+
+.notifications-panel h3,
+.ads-panel h3 {
+  margin-top: 0;
+  color: #e50914;
+}
+
+.notification-item {
+  padding: 0.75rem;
+  background-color: #333;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+}
+
+.notification-time {
+  font-size: 0.75rem;
+  color: #cbd5e1;
+  font-weight: 500;
+}
+
+.ad-content {
+  padding: 1rem;
+  background-color: #333;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.feed-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.feed-controls button {
+  margin-left: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Video Player Styles */
+.video-player-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.video-player {
+  width: 80%;
+  max-width: 1200px;
+  background-color: #111;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.video-player-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #222;
+}
+
+.video-player-header h3 {
+  margin: 0;
+  color: #e50914;
+}
+
+.video-player-header button {
+  background-color: #e50914;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.video-player-content {
+  padding: 1rem;
+}
+
+.video-display {
+  width: 100%;
+  height: 400px;
+  background-color: #000;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.video-placeholder {
+  color: #fff;
+  font-size: 1.2rem;
+}
+
+.video-controls {
+  margin-bottom: 1rem;
+}
+
+.control-buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.control-buttons button {
+  padding: 0.5rem 1rem;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background-color: #333;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress {
+  width: 30%;
+  height: 100%;
+  background-color: #e50914;
+}
+
+.video-info-panel {
+  background-color: #222;
+  padding: 1rem;
+  border-radius: 4px;
+}
+
+.video-info-panel h4 {
+  margin-top: 0;
+  color: #e50914;
+}
+
+.video-info-panel p {
+  margin: 0.5rem 0;
+}
+
+.engagement-stats {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #333;
+}
+
+.engagement-stats span {
+  background-color: #333;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .dancia4tv-layout {
+    flex-direction: column;
+  }
+
+  .column {
+    margin-bottom: 1rem;
+  }
+
+  .dna-column,
+  .canary-column {
+    border: none;
+  }
+
+  .genres-grid,
+  .artists-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .video-player {
+    width: 95%;
+  }
+
+  .video-display {
+    height: 200px;
+  }
+
+  .engagement-stats {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .subscription-plans-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .movie-types-grid,
+  .genres-list {
+    grid-template-columns: 1fr;
+  }
+}

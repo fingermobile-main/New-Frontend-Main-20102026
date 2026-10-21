@@ -1,0 +1,530 @@
+{
+    "assets": {
+        "attachments": {
+            "camera_color": {
+                "type": "color"
+            },
+            "bg_mask": {
+                "type": "color"
+            },
+            "hair_mask": {
+                "type": "color"
+            },
+            "lips_mask": {
+                "type": "color"
+            },
+            "skin_mask": {
+                "type": "color"
+            },
+            "eyes_mask": {
+                "type": "color"
+            }
+        },
+        "images": {
+            "default_tex.png": {
+                "file_name": "images/default_tex1.png",
+                "streamed": false,
+                "type": "texture"
+            },
+            "background_nn": {
+                "type": "segmentation_mask",
+                "active": false,
+                "recognizer_feature_name": "background"
+            },
+            "hair_nn": {
+                "type": "segmentation_mask",
+                "active": false,
+                "recognizer_feature_name": "hair"
+            },
+            "lips_nn": {
+                "type": "segmentation_mask",
+                "active": false,
+                "recognizer_feature_name": "lips"
+            },
+            "lips_shine_nn": {
+                "type": "segmentation_mask",
+                "active": false,
+                "recognizer_feature_name": "lips_shining"
+            },
+            "skin_nn": {
+                "type": "segmentation_mask",
+                "active": false,
+                "recognizer_feature_name": "skin"
+            },
+            "reye_nn": {
+                "type": "segmentation_mask",
+                "active": false,
+                "recognizer_feature_name": "right_eye"
+            },
+            "leye_nn": {
+                "type": "segmentation_mask",
+                "active": false,
+                "recognizer_feature_name": "left_eye"
+            },
+
+            "camera: tex_y": {
+                "type" : "camera",
+                "format": "y"
+            },
+            "camera: tex_uv": {
+                "type" : "camera",
+                "format": "uv"
+            },
+            "camera: tex_rgb": {
+                "type" : "camera",
+                "format": "rgba"
+            }
+        },
+        "materials": {
+            "shaders/bg": {
+                "samplers": [
+                    {
+                        "name": "s_bg",
+                        "image": "hair_mask"
+                    },
+                    {
+                        "name": "s_segmentation_mask",
+                        "image": "background_nn"
+                    },                    
+                    {
+                        "name": "bg_video",
+                        "image": "bg_video"
+                    },
+                    {
+                        "name": "bg_texture",
+                        "image": "default_tex.png"
+                    }
+                ],
+                "state": {
+                    "blend": "off",
+                    "backfaces": false,
+                    "colorwrite": true,
+                    "ztest": false,
+                    "zwrite": false
+                },
+                "parameters": {
+                    "bg_mode": {
+                        "type": "vec4",
+                        "value": [0, 0, 0, 0]
+                    },
+                    "tex_size": {
+                        "type": "vec4",
+                        "value": [0, 0, 0, 0]
+                    }
+                }
+
+            },
+            "shaders/hair": {
+                "samplers": [
+                    {
+                        "name": "s_bg",
+                        "image": "skin_mask"
+                    },
+                    {
+                        "name": "s_segmentation_mask",
+                        "image": "hair_nn"
+                    }
+                ],
+                "state": {
+                    "blend": "off",
+                    "backfaces": false,
+                    "colorwrite": true,
+                    "ztest": false,
+                    "zwrite": false
+                },
+                "parameters": {
+                    "hair_color": {
+                        "type": "vec4",
+                        "value": [0, 0, 0, 0]
+                    }
+                }
+            },
+            "shaders/lips": {
+                "samplers": [
+                    {
+                        "name": "s_bg",
+                        "image": "bg_mask"
+                    },
+                    {
+                        "name": "s_lips_mask",
+                        "image": "lips_nn"
+                    },
+                    {
+                        "name": "s_lips_shine_mask",
+                        "image": "lips_shine_nn"
+                    }
+                ],
+                "state": {
+                    "blend": "off",
+                    "backfaces": false,
+                    "colorwrite": true,
+                    "ztest": false,
+                    "zwrite": false
+                },
+                "parameters": {
+                    "lips_color": {
+                        "type": "vec4",
+                        "value": [0, 0, 0, 0]
+                    },
+                    "lips_config": {
+                        "type": "vec4",
+                        "value": [0, 0, 0, 0]
+                    },
+                    "lips_shine_mode": {
+                        "type": "vec4",
+                        "value": [0, 0, 0, 0]
+                    }
+                }
+            },
+            "shaders/reye": {
+                "samplers": [
+                    {
+                        "name": "s_bg",
+                        "image": "lips_mask"
+                    },
+                    {
+                        "name": "s_segmentation_mask",
+                        "image": "reye_nn"
+                    }
+                ],
+                "state": {
+                    "blend": "alpha",
+                    "backfaces": true,
+                    "colorwrite": true,
+                    "ztest": false,
+                    "zwrite": false
+                },
+                "parameters": {
+                    "eye_R_color": {
+                        "type": "vec4",
+                        "value": [0, 0, 0, 0]
+                    }
+                }
+            },
+            "shaders/leye": {
+                "samplers": [
+                    {
+                        "name": "s_bg",
+                        "image": "lips_mask"
+                    },
+                    {
+                        "name": "s_segmentation_mask",
+                        "image": "leye_nn"
+                    }
+                ],
+                "state": {
+                    "blend": "alpha",
+                    "backfaces": true,
+                    "colorwrite": true,
+                    "ztest": false,
+                    "zwrite": false
+                },
+                "parameters": {
+                    "eye_L_color": {
+                        "type": "vec4",
+                        "value": [0, 0, 0, 0]
+                    }
+                }
+            },
+            "shaders/skin": {
+                "samplers":[
+                    {
+                        "name": "s_bg",
+                        "image": "camera_color"
+                    },
+                    {
+                        "name": "s_segmentation_mask",
+                        "image": "skin_nn"
+                    }
+                ],
+                "state": {
+                    "blend": "off",
+                    "backfaces": false,
+                    "colorwrite": true,
+                    "ztest": false,
+                    "zwrite": false
+                },
+                "parameters": {
+                    "skin_color": {
+                        "type": "vec4",
+                        "value": [0, 0, 0, 0]
+                    }
+                }
+            },
+            "$builtin$materials/camera": {
+                "samplers": [
+                    {
+                        "name": "tex_y",
+                        "image": "camera: tex_y"
+                    },
+                    {
+                        "name": "tex_uv",
+                        "image": "camera: tex_uv"
+                    },
+                    {
+                        "name": "tex_rgb",
+                        "image": "camera: tex_rgb"
+                    }
+                ],
+                "state": {
+                    "backfaces": true,
+                    "blend": "off",
+                    "colorwrite": true,
+                    "ztest": false,
+                    "zwrite": false
+                },
+                "parameters": {
+                    "bnb_camera_orientation": {
+                        "type": "vec4",
+                        "value": [1, 0, 0, 1]
+                    },
+
+                    "bnb_camera_scale": {
+                        "type": "vec4",
+                        "value": [1, 0, 0, 1]
+                    },
+
+                    "bnb_view_width_fraction": {
+                        "type": "vec4",
+                        "value": [1, 0, 0, 0]
+                    }
+                }
+            },
+            "$builtin$materials/copy_pixels.1": {
+                "samplers": [
+                    {
+                        "name": "tex_src",
+                        "image": "bg_mask"
+                    }
+                ],
+                "state": {
+                    "backfaces": true,
+                    "blend": "off",
+                    "colorwrite": true,
+                    "ztest": false,
+                    "zwrite": false
+                },
+                "parameters": {}
+            },
+            "$builtin$materials/copy_pixels.2": {
+                "samplers": [
+                    {
+                        "name": "tex_src",
+                        "image": "lips_mask"
+                    }
+                ],
+                "state": {
+                    "backfaces": true,
+                    "blend": "off",
+                    "colorwrite": true,
+                    "ztest": false,
+                    "zwrite": false
+                },
+                "parameters": {}
+            }
+        },
+        "meshes": {
+            "!bnb_FACE0": "$builtin$meshes/face.stream:0",
+            "plane_surface": "$builtin$meshes/fs_tri",
+            "quad_surface": "meshes/quad.bsm2"
+        },
+        "media": {
+            "bg_video": {
+                "file_name": "videos/video.mp4",
+                "looped": false,
+                "play": false,
+                "type": "video"
+            }
+        },
+        "faces": {
+            "face0": {
+                "index": 0,
+                "mesh": "!bnb_FACE0"
+            }
+        }
+    },
+    "components": {
+        "camera_tri": {
+            "materials": ["$builtin$materials/camera"],
+            "mesh": "plane_surface",
+            "type": "mesh_instance"
+        },
+        "bg_copy": {
+            "materials": ["$builtin$materials/copy_pixels.1"],
+            "mesh": "plane_surface",
+            "type": "mesh_instance"
+        },
+        "lips_copy": {
+            "materials": ["$builtin$materials/copy_pixels.2"],
+            "mesh": "plane_surface",
+            "type": "mesh_instance"
+        },
+        "bg_surface": {
+            "materials": ["shaders/bg"],
+            "mesh": "plane_surface",
+            "type": "mesh_instance"
+        },
+        "hair_surface": {
+            "materials": ["shaders/hair"],
+            "mesh": "plane_surface",
+            "type": "mesh_instance"
+        },
+        "skin_surface": {
+            "materials": ["shaders/skin"],
+            "mesh": "plane_surface",
+            "type": "mesh_instance"
+        },
+        "lips_surface": {
+            "materials": ["shaders/lips"],
+            "mesh": "quad_surface",
+            "type": "mesh_instance"
+        },
+        "eyes_surface": {
+            "materials": ["shaders/leye", "shaders/reye"],
+            "mesh": "quad_surface",
+            "type": "mesh_instance"
+        },
+        "face_tracker:0": {
+            "type": "face_tracker",
+            "face": "face0"
+        }
+    },
+    "entities": {
+        "camera": {
+            "components": [
+                "camera_tri"
+            ],
+            "layer": "composer_pre"
+        },
+        "bg_copy": {
+            "components": [
+                "bg_copy"
+            ],
+            "layer": "bg_copy"
+        },
+        "lips_copy": {
+            "components": [
+                "lips_copy"
+            ],
+            "layer": "lips_copy"
+        },
+        "face_tracker0": {
+            "components": [
+                "face_tracker:0"
+            ]
+        },
+        "bg_surface": {
+            "components": [
+                "bg_surface"
+            ],
+            "layer": "bg"
+        },
+        "hair_surface": {
+            "components": [
+                "hair_surface"
+            ],
+            "layer": "hair"
+        },
+        "lips_surface": {
+            "components": [
+                "lips_surface"
+            ],
+            "layer": "lips"
+        },
+        "skin_surface": {
+            "components": [
+                "skin_surface"
+            ],
+            "layer": "skin"
+        },
+        "eyes_surface": {
+            "components": [
+                "eyes_surface"
+            ],
+            "layer": "eyes"
+        }
+    },
+    "hierarchy": {
+        "root": [
+            "camera",
+            "face_tracker0",
+            "hair_surface",
+            "lips_surface",
+            "skin_surface",
+            "bg_surface",
+            "eyes_surface"
+        ]
+    },
+    "layers": {
+        "bg": {},
+        "bg_copy": {},
+        "lips_copy": {},
+        "hair": {},
+        "lips": {},
+        "skin": {},
+        "eyes": {},
+        "composer_pre": {}
+    },
+    "render_list": {
+        "default": [
+            {
+                "layer": "composer_pre",
+                "render_target": "ComposerRT"
+            },
+            {
+                "layer": "skin",
+                "render_target": "skinRT"
+            },
+            {
+                "layer": "hair",
+                "render_target": "hairRT"
+            },
+            {
+                "layer": "bg",
+                "render_target": "bgRT"
+            },
+            {
+                "layer": "bg_copy",
+                "render_target": "lipsRT"
+            },
+            {
+                "layer": "lips",
+                "render_target": "lipsRT"
+            },
+            {
+                "layer": "lips_copy",
+                "render_target": "eyesRT"
+            },
+            {
+                "layer": "eyes",
+                "render_target": "eyesRT"
+            }
+        ]
+    },
+    "render_targets": {
+        "ComposerRT": [
+            "camera_color"
+        ],
+        "hairRT": [
+            "hair_mask"
+        ],
+        "lipsRT": [
+            "lips_mask"
+        ],
+        "bgRT": [
+            "bg_mask"
+        ],
+        "skinRT": [
+            "skin_mask"
+        ],
+        "eyesRT": [
+            "eyes_mask"
+        ]
+    },
+
+    "script": {
+        "type": "latest",
+        "entry_point": "config.js"
+    },
+    "scene": "0003_cu_Spider1_v3_b1"
+}

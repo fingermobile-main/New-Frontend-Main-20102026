@@ -1,0 +1,237 @@
+main:
+  params: [event]
+  steps:
+    - init_variables:
+        assign:
+          - bucket: ${event.data.bucket}
+          - fileName: ${event.data.name}
+          - projectId: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+          # Configuration for FingerMobile targeting Meta/TikTok monetization
+          - languages:
+              - code: "es"
+                voice: "es-US-Neural2-B"
+                langPair: "es-US"
+              - code: "fr"
+                voice: "fr-FR-Neural2-C"
+                langPair: "fr-FR"
+              - code: "pt"
+                voice: "pt-BR-Neural2-A"
+                langPair: "pt-BR"
+              - code: "zh"
+                voice: "cmn-CN-Neural2-A"
+                langPair: "cmn-CN"
+              - code: "hi"
+                voice: "hi-IN-Neural2-C"
+                langPair: "hi-IN"
+              - code: "ar"
+                voice: "ar-XA-Wavenet-B"
+                langPair: "ar-XA"
+              - code: "bn"
+                voice: "bn-IN-Wavenet-A"
+                langPair: "bn-IN"
+              - code: "ru"
+                voice: "ru-RU-Wavenet-E"
+                langPair: "ru-RU"
+              - code: "id"
+                voice: "id-ID-Wavenet-A"
+                langPair: "id-ID"
+
+    - validate_file_type:
+        switch:
+          - condition: ${not(regex.matches('(?i)\\.(mp4|mov|avi|wmv|flv|webm)$', fileName))}
+            raise: "Invalid file type. Only video files are allowed."
+        next: start_transcription
+
+    - start_transcription:
+        call: googleapis.videointelligence.v1.videos.annotate
+        args:
+          body:
+            inputUri: ${"gs://" + bucket + "/" + fileName}
+            features: ["SPEECH_TRANSCRIPTION"]
+            videoContext:
+              speechTranscriptionConfig:
+                languageCode: "en-US"
+                enableAutomaticPunctuation: true
+                enableWordConfidence: true
+        result: lroOperation
+
+    - poll_transcription:
+        call: googleapis.videointelligence.v1.projects.locations.operations.get
+        args:
+          name: ${lroOperation.name}
+        result: lroStatus
+        # Check if the operation is finished
+        next: check_transcription_status
+
+    - check_transcription_status:
+        switch:
+          - condition: ${not(lroStatus.done)}
+            next: wait_and_poll
+        next: extract_transcript
+
+    - wait_and_poll:
+        call: sys.sleep
+        args:
+          seconds: 10
+        next: poll_transcription
+
+    - extract_transcript:
+        assign:
+          # Extracting the transcript from the LRO response payload
+          - rawTranscript: ${lroStatus.response.annotationResults[0].speechTranscriptions[0].alternatives[0].transcript}
+
+    - process_languages:
+        for:
+          value: lang
+          in: ${languages}
+          steps:
+            - call_gemini_translation:
+                call: googleapis.aiplatform.v1.projects.locations.endpoints.generateContent
+                args:
+                  endpoint: ${"projects/" + projectId + "/locations/us-central1/endpoints/gemini-1-5-flash-001"}
+                  body:
+                    contents:
+                      - role: "user"
+                        parts:
+                          - text: "Analyze the provided video script text. Translate it into ${lang.code}. Adapt any idioms so they make natural, cultural sense to native speakers while strictly keeping the timeline timestamps identical to the input."
+                      - text: ${rawTranscript}
+                    generationConfig:
+                      responseMimeType: "application/json"
+                      responseSchema:
+                        type: "OBJECT"
+                        properties:
+                          clean_script_for_tts:
+                            type: "STRING"
+                            description: "Continuous prose translation of the script without any timestamps, brackets, or line numbers. Optimized for natural speech synthesis parsing."
+                          srt_subtitle_file:
+                            type: "STRING"
+                            description: "The complete, valid SRT formatted subtitle file string matching the exact format: line index, timestamp arrow block, and localized text followed by a double line break."
+                        required:
+                          - "clean_script_for_tts"
+                          - "srt_subtitle_file"
+                result: geminiResponse
+
+            - translate_text:
+                assign:
+                  - cleanTranslatedScript: ${geminiResponse.candidates[0].content.parts[0].json.clean_script_for_tts}
+                  - srtSubtitles: ${geminiResponse.candidates[0].content.parts[0].json.srt_subtitle_file}
+
+            - generate_voiceover:
+                call: googleapis.texttospeech.v1.text.synthesize
+                args:
+                  body:
+                    input:
+                      text: ${cleanTranslatedScript}
+                    voice:
+                      languageCode: ${lang.langPair}
+                      name: ${lang.voice}
+                    audioConfig:
+                      audioEncoding: "MP3"
+                      speakingRate: 1.0
+                      pitch: 0.0
+                result: ttsResponse
+
+            - save_audio_to_gcs:
+                call: googleapis.storage.v1.objects.insert
+                args:
+                  bucket: ${projectId + "-facebook-dubbed-outputs"}
+                  object: ${"audio/" + lang.code + "_" + fileName + ".mp3"}
+                  body: ${ttsResponse.audioContent}
+                  media:
+                    contentType: "audio/mpeg"
+                result: audioUploadResult
+
+            - save_subtitles_to_gcs:
+                call: googleapis.storage.v1.objects.insert
+                args:
+                  bucket: ${projectId + "-facebook-dubbed-outputs"}
+                  object: ${"subtitles/" + lang.code + "_" + fileName + ".srt"}
+                  body: ${srtSubtitles}
+                  media:
+                    contentType: "text/plain"
+                result: subtitleUploadResult
+
+            - stitch_video_and_audio:
+                call: googleapis.transcoder.v1.projects.locations.jobs.create
+                args:
+                  parent: ${"projects/" + projectId + "/locations/us-central1"}
+                  body:
+                    inputUri: ${"gs://" + bucket + "/" + fileName}
+                    outputUri: ${"gs://" + projectId + "-facebook-dubbed-outputs/final/" + lang.code + "/" + fileNameWithoutExtension(fileName) + "/"}
+                    config:
+                      inputs:
+                        - key: "input_video"
+                          uri: ${"gs://" + bucket + "/" + fileName}
+                        - key: "input_audio"
+                          uri: ${"gs://" + projectId + "-facebook-dubbed-outputs/audio/" + lang.code + "_" + fileName + ".mp3"}
+                        - key: "input_subtitles"
+                          uri: ${"gs://" + projectId + "-facebook-dubbed-outputs/subtitles/" + lang.code + "_" + fileName + ".srt"}
+                      editList:
+                        - key: "video_atom"
+                          inputs: ["input_video"]
+                        - key: "audio_atom"
+                          inputs: ["input_audio"]
+                        - key: "subtitle_atom"
+                          inputs: ["input_subtitles"]
+                      elementaryStreams:
+                        - key: "video_stream"
+                          videoStream:
+                            h264:
+                              heightPixels: 1080
+                              widthPixels: 1920
+                              bitrateBps: 5000000
+                              frameRate: 30
+                              rateControlMode: "vbr"
+                              enableTwoPass: true
+                        - key: "audio_stream"
+                          audioStream:
+                            codec: "aac"
+                            bitrateBps: 128000
+                            channelCount: 2
+                      muxStreams:
+                        - key: "final_output"
+                          container: "mp4"
+                          elementaryStreams: ["video_stream", "audio_stream"]
+                      overlays:
+                        - animations:
+                            - animationStatic:
+                                x: "10%"
+                                y: "90%"
+                                startTimeOffset: "0s"
+                          image:
+                            uri: ${"gs://" + projectId + "-facebook-dubbed-outputs/subtitles/" + lang.code + "_" + fileName + ".srt"}
+
+    - notify_completion:
+        call: http
+        args:
+          url: ${"https://api.fingermobileprotocol.com/api/v1/video-processing/completed?bucket=" + bucket + "&fileName=" + fileName}
+          method: "POST"
+          headers:
+            "Content-Type": "application/json"
+            "Authorization": ${"Bearer " + sys.get_env("FINGERMABLE_API_TOKEN")}
+          body:
+            status: "completed"
+            bucket: "${bucket}"
+            fileName: "${fileName}"
+            outputBucket: "${projectId + '-facebook-dubbed-outputs'}"
+            targetLanguages: "${languages}"
+            timestamp: "${sys.now()}"
+
+    - return_success:
+        return: "Video processing completed successfully for all target languages"
+
+# Helper function to remove file extension
+fileNameWithoutExtension:
+    params: [fullFileName]
+    steps:
+      - splitName:
+          assign:
+            - parts: '${split(fullFileName, ".")}'
+            - nameParts: '${parts[0:-1]}'
+        next: joinName
+      - joinName:
+          assign:
+            - result: '${join(nameParts, ".")}'
+        next: returnResult
+      - returnResult:
+          return: '${result}'

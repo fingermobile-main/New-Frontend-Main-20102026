@@ -1,0 +1,1697 @@
+./fix_routes.js:    const useStmt = `router.use('/${name.replace(/_/g, '-')}', authenticate, ${importName});\n`;
+./test_payment_endpoint.js:if (routeContent.includes('router.post("/process-payment"')) {
+./server.js:app.get('/', (req, res) => {
+./server.js:app.get('/health', (req, res) => {
+./stercs-simulator/simulatorRoutes.js:router.post('/run', async (req, res) => {
+./server (1).ts:app.get("/", (
+./server (1).ts:app.get("/health", (
+./server (1).ts:app.get('/api-docs.json', (
+./stercs-editor/routes/security.js:router.post("/policies", async (req, res) => {
+./stercs-editor/routes/security.js:router.get("/policies", async (req, res) => {
+./stercs-editor/routes/security.js:router.put("/policies/:policyId", async (req, res) => {
+./stercs-editor/routes/security.js:router.delete("/policies/:policyId", async (req, res) => {
+./stercs-editor/routes/security.js:router.post("/firewall-rules", async (req, res) => {
+./stercs-editor/routes/security.js:rule:", error); res.status(500).json({success: false, message: "Failed to create firewall rule", error: error.message }); } }); // Get firewall rules router.get("/firewall-rules", async (req, res) => { try { const memberId = req.member.id; const result = await SecurityService.getFirewallRules(memberId); res.status(200).json({success: true, message: result.message, data: result.rules }); } catch (error) { logger.error("Error getting firewall,
+./stercs-editor/routes/security.js:rules:", error); res.status(500).json({success: false, message: "Failed to retrieve firewall rules", error: error.message }); } }); // Update a firewall rule router.put("/firewall-rules/:ruleId", async (req, res) => { try { const memberId = req.member.id; const { ruleId } = req.params; const ruleData = req.body; const result = await SecurityService.updateFirewallRule( memberId, parseInt(ruleId), ruleData, ); res.status(200).json({success: true, message: result.message, data: result.rule }); } catch (error) { logger.error("Error updating firewall,
+./stercs-editor/routes/security.js:rule:", error); res.status(500).json({success: false, message: "Failed to update firewall rule", error: error.message }); } }); // Get security events router.get("/events", async (req, res) => { try { const memberId = req.member.id; const { eventType, startDate, endDate, limit } = req.query; const result = await SecurityService.getSecurityEvents(memberId, {eventType: eventType || null, startDate: startDate || null, endDate: endDate || null, limit: limit ? parseInt(limit) : null }); res.status(200).json({success: true, message: result.message, data: result.events }); } catch (error) { logger.error("Error getting security,
+./stercs-editor/routes/monitoring.js:router.post('/rules', async (req, res) => {
+./stercs-editor/routes/monitoring.js:router.get('/rules', async (req, res) => {
+./stercs-editor/routes/monitoring.js:router.get('/rules/:ruleId', async (req, res) => {
+./stercs-editor/routes/monitoring.js:router.put('/rules/:ruleId', async (req, res) => {
+./stercs-editor/routes/monitoring.js:router.delete('/rules/:ruleId', async (req, res) => {
+./stercs-editor/routes/monitoring.js:router.post('/metrics', async (req, res) => {
+./stercs-editor/routes/monitoring.js:router.get('/metrics', async (req, res) => {
+./stercs-editor/routes/monitoring.js:router.get('/alerts', async (req, res) => {
+./stercs-editor/routes/mii.js:router.post('/updates', authenticate, async (req, res) => {
+./stercs-editor/routes/mii.js:router.get('/updates', authenticate, async (req, res) => {
+./stercs-editor/routes/mii.js:router.post('/updates/:updateId/reactions', authenticate, async (req, res) => {
+./stercs-editor/routes/mii.js:router.post('/updates/:updateId/replies', authenticate, async (req, res) => {
+./stercs-editor/routes/mii.js:router.post('/exchange-pin', authenticate, async (req, res) => {
+./stercs-editor/routes/mii.js:router.post('/folders', authenticate, async (req, res) => {
+./stercs-editor/routes/mii.js:router.get('/profile', authenticate, async (req, res) => {
+./stercs-editor/routes/mii.js:router.get('/contacts', authenticate, async (req, res) => {
+./stercs-editor/routes/mii.js:router.post('/secure-message', authenticate, async (req, res) => {
+./stercs-editor/routes/mii.js:router.post('/disappearing-message', authenticate, async (req, res) => {
+./stercs-editor/routes/mii.js:router.post('/groups', authenticate, async (req, res) => {
+./stercs-editor/routes/mii.js:router.post('/groups/:groupId/add-member', authenticate, async (req, res) => {
+./stercs-editor/routes/mii.js:router.post('/groups/:groupId/message', authenticate, async (req, res) => {
+./stercs-editor/routes/mii.js:router.post('/broadcasts', authenticate, async (req, res) => {
+./stercs-editor/routes/mii.js:router.post('/channels', authenticate, async (req, res) => {
+./stercs-editor/routes/mii.js:router.post('/channels/:channelId/message', authenticate, async (req, res) => {
+./stercs-editor/routes/mii.js:router.post('/secret-chat', authenticate, async (req, res) => {
+./stercs-editor/routes/mii.js:router.get('/messages', authenticate, async (req, res) => {
+./stercs-editor/routes/mii.js:router.get('/groups', authenticate, async (req, res) => {
+./stercs-editor/routes/mii.js:router.get('/mcp-status', authenticate, async (req, res) => {
+./stercs-editor/routes/memberManagement.js:router.post('/members', async (req, res) => {
+./stercs-editor/routes/memberManagement.js:router.get('/members', async (req, res) => {
+./stercs-editor/routes/memberManagement.js:router.put('/members/:memberId', async (req, res) => {
+./stercs-editor/routes/memberManagement.js:router.delete('/members/:memberId', async (req, res) => {
+./stercs-editor/routes/memberManagement.js:router.post('/invitations', async (req, res) => {
+./stercs-editor/routes/memberManagement.js:router.get('/invitations', async (req, res) => {
+./stercs-editor/routes/memberManagement.js:router.delete('/invitations/:invitationId', async (req, res) => {
+./stercs-editor/routes/files.js:router.post("/upload", fileService.upload.single("file"), async (req, res) => {
+./stercs-editor/routes/files.js:router.get("/", async (req, res) => {
+./stercs-editor/routes/files.js:router.get("/:fileId", async (req, res) => {
+./stercs-editor/routes/files.js:router.delete("/:fileId", async (req, res) => {
+./stercs-editor/routes/files.js:router.post("/folders", async (req, res) => {
+./stercs-editor/routes/files.js:router.get("/folders", async (req, res) => {
+./stercs-editor/routes/files.js:router.get("/stats/:projectId", async (req, res) => {
+./stercs-editor/routes/documentation.js:router.get('/:docType', async (req, res) => {
+./stercs-editor/routes/documentation.js:router.get('/search/:query', async (req, res) => {
+./stercs-editor/routes/documentation.js:router.get('/quick-start', async (req, res) => {
+./stercs-editor/routes/documentation.js:router.get('/components/reference', async (req, res) => {
+./stercs-editor/routes/themes.js:router.get('/available', async (req, res) => {
+./stercs-editor/routes/themes.js:router.get('/current', async (req, res) => {
+./stercs-editor/routes/themes.js:router.post('/set', async (req, res) => {
+./stercs-editor/routes/themes.js:router.post('/custom', async (req, res) => {
+./stercs-editor/routes/themes.js:router.get('/custom', async (req, res) => {
+./stercs-editor/routes/themes.js:router.get('/global', async (req, res) => {
+./stercs-editor/routes/terminal.js:router.post('/execute', async (req, res) => {
+./stercs-editor/routes/terminal.js:router.post('/execute-dev', async (req, res) => {
+./stercs-editor/routes/terminal.js:router.get('/history', async (req, res) => {
+./stercs-editor/routes/terminal.js:router.post('/session', async (req, res) => {
+./stercs-editor/routes/terminal.js:router.post('/file-operation', async (req, res) => {
+./stercs-editor/routes/deployment.js:router.post("/configs", async (req, res) => {
+./stercs-editor/routes/deployment.js:config:", error); res.status(500).json({success: false, message: "Failed to create deployment configuration", error: error.message }); } }); // Get deployment configurations router.get("/configs", async (req, res) => { try { const memberId = req.member.id; const { projectId } = req.query; const result = await DeploymentService.getDeploymentConfigs( memberId, projectId ? parseInt(projectId) : null, ); res.status(200).json({success: true, message: result.message, data: result.configs }); } catch (error) { logger.error("Error getting deployment,
+./stercs-editor/routes/deployment.js:configs:", error); res.status(500).json({success: false, message: "Failed to retrieve deployment configurations", error: error.message }); } }); // Update a deployment configuration router.put("/configs/:configId", async (req, res) => { try { const memberId = req.member.id; const { configId } = req.params; const configData = req.body; const result = await DeploymentService.updateDeploymentConfig( memberId, parseInt(configId), configData, ); res.status(200).json({success: true, message: result.message, data: result.config }); } catch (error) { logger.error("Error updating deployment,
+./stercs-editor/routes/deployment.js:config:", error); res.status(500).json({success: false, message: "Failed to update deployment configuration", error: error.message }); } }); // Delete a deployment configuration router.delete("/configs/:configId", async (req, res) => { try { const memberId = req.member.id; const { configId } = req.params; const result = await DeploymentService.deleteDeploymentConfig( memberId, parseInt(configId), ); res.status(200).json({success: true, message: result.message }); } catch (error) { logger.error("Error deleting deployment,
+./stercs-editor/routes/deployment.js:config:", error); res.status(500).json({success: false, message: "Failed to delete deployment configuration", error: error.message }); } }); // Create a new deployment router.post("/", async (req, res) => { try { const memberId = req.member.id; const deploymentData = req.body; if (!deploymentData.configId || !deploymentData.projectId) { return res.status(400).json({success: false, message: "Configuration ID and Project ID are required for deployment" }); } const result = await DeploymentService.createDeployment( memberId, deploymentData, ); // In a real implementation, we would start the actual deployment process here // For now, we'll simulate it in the background setTimeout(async () => { try { await DeploymentService.executeDeployment(result.deployment.id); } catch (error) { logger.error("Error executing,
+./stercs-editor/routes/deployment.js:deployment:", error); res.status(500).json({success: false, message: "Failed to create deployment", error: error.message }); } }); // Get deployments router.get("/", async (req, res) => { try { const memberId = req.member.id; const { projectId, status, limit } = req.query; const result = await DeploymentService.getDeployments(memberId, {projectId: projectId ? parseInt(projectId) : null, status: status || null, limit: limit ? parseInt(limit) : null }); res.status(200).json({success: true, message: result.message, data: result.deployments }); } catch (error) { logger.error("Error getting,
+./stercs-editor/routes/deployment.js:deployments:", error); res.status(500).json({success: false, message: "Failed to retrieve deployments", error: error.message }); } }); // Update deployment status (for testing purposes) router.put("/:deploymentId/status", async (req, res) => { try { const memberId = req.member.id; const { deploymentId } = req.params; const { status, details } = req.body; if (!status) { return res.status(400).json({success: false, message: "Status is required" }); } const result = await DeploymentService.updateDeploymentStatus( memberId, parseInt(deploymentId), status, details, ); res.status(200).json({success: true, message: result.message, data: result.deployment }); } catch (error) { logger.error("Error updating deployment,
+./stercs-editor/routes/aiGeneration.js:router.post('/text', requireAdmin, async (req, res) => {
+./stercs-editor/routes/aiGeneration.js:router.post('/image', requireAdmin, async (req, res) => {
+./stercs-editor/routes/aiGeneration.js:router.get('/history', requireAdmin, async (req, res) => {
+./stercs-editor/routes/aiGeneration.js:router.post('/code-suggestions', requireAdmin, async (req, res) => {
+./stercs-editor/routes/aiGeneration.js:router.post('/sitemap', requireAdmin, async (req, res) => {
+./stercs-editor/routes/testing.js:router.post("/configs", async (req, res) => {
+./stercs-editor/routes/testing.js:  message: "Failed to create test configuration"   error: error.message", }); } }); // Get test configurations router.get("/configs", async (req, res) => { try { const memberId = req.member.id; const { projectId, testType, testFramework, limit } = req.query; const result = await TestingService.getTestConfigs(memberId, {projectId: projectId ? parseInt(projectId) : null, testType: testType || null, testFramework: testFramework || null, limit: limit ? parseInt(limit) : null }); res.status(200).json({success: true, message: result.message, data: result.configs }); } catch (error) { logger.error("Error getting test,
+./stercs-editor/routes/testing.js:router.put("/configs/:configId", async (req, res) => {
+./stercs-editor/routes/testing.js:  message: "Failed to update test configuration"   error: error.message", }); } }); // Delete a test configuration router.delete("/configs/:configId", async (req, res) => { try { const memberId = req.member.id; const { configId } = req.params; const result = await TestingService.deleteTestConfig( memberId, parseInt(configId), ); res.status(200).json({success: true, message: result.message }); } catch (error) { logger.error("Error deleting test,
+./stercs-editor/routes/testing.js:router.post("/runs", async (req, res) => {
+./stercs-editor/routes/testing.js:  message: "Failed to create test run"   error: error.message", }); } }); // Get test runs router.get("/runs", async (req, res) => { try { const memberId = req.member.id; const { projectId, status, testType, limit } = req.query; const result = await TestingService.getTestRuns(memberId, {projectId: projectId ? parseInt(projectId) : null, status: status || null, testType: testType || null, limit: limit ? parseInt(limit) : null }); res.status(200).json({success: true, message: result.message, data: result.testRuns }); } catch (error) { logger.error("Error getting test,
+./stercs-editor/routes/testing.js:router.put("/runs/:testRunId/status", async (req, res) => {
+./stercs-editor/routes/projectManagement.js:router.post('/projects', async (req, res) => {
+./stercs-editor/routes/projectManagement.js:router.get('/projects', async (req, res) => {
+./stercs-editor/routes/projectManagement.js:router.get('/projects/:projectId', async (req, res) => {
+./stercs-editor/routes/projectManagement.js:router.put('/projects/:projectId', async (req, res) => {
+./stercs-editor/routes/projectManagement.js:router.delete('/projects/:projectId', async (req, res) => {
+./stercs-editor/routes/projectManagement.js:router.post('/projects/:projectId/tasks', async (req, res) => {
+./stercs-editor/routes/projectManagement.js:router.get('/projects/:projectId/tasks', async (req, res) => {
+./stercs-editor/routes/projectManagement.js:router.put('/tasks/:taskId', async (req, res) => {
+./stercs-editor/routes/projectManagement.js:router.get('/projects/:projectId/stats', async (req, res) => {
+./stercs-editor/routes/performance.js:router.post('/configs', async (req, res) => {
+./stercs-editor/routes/performance.js:router.get('/configs', async (req, res) => {
+./stercs-editor/routes/performance.js:router.put('/configs/:configId', async (req, res) => {
+./stercs-editor/routes/performance.js:router.delete('/configs/:configId', async (req, res) => {
+./stercs-editor/routes/performance.js:router.post('/metrics', async (req, res) => {
+./stercs-editor/routes/performance.js:router.get('/metrics', async (req, res) => {
+./stercs-editor/routes/performance.js:router.get('/projects/:projectId/summary', async (req, res) => {
+./stercs-editor/routes/editor.js:router.get('/', async (req, res) => {
+./stercs-editor/routes/editor.js:router.get('/status', async (req, res) => {
+./stercs-editor/routes/editor.js:router.post('/save', EditorController.saveProject);
+./stercs-editor/routes/editor.js:router.get('/projects', EditorController.getMemberProjects);
+./stercs-editor/routes/editor.js:router.post('/projects', EditorController.createProject);
+./stercs-editor/routes/editor.js:router.put('/projects/:id', EditorController.saveProject);
+./stercs-editor/routes/editor.js:router.delete('/projects/:id', EditorController.deleteProject);
+./stercs-editor/routes/miiEnhanced.js:router.post('/media', authenticate, async (req, res) => {
+./stercs-editor/routes/miiEnhanced.js:router.post('/fingerorbit/folders', authenticate, async (req, res) => {
+./stercs-editor/routes/miiEnhanced.js:router.get('/fingerorbit/content', authenticate, async (req, res) => {
+./stercs-editor/routes/miiEnhanced.js:router.get('/can-download/:contentOwnerId', authenticate, async (req, res) => {
+./stercs-editor/routes/miiEnhanced.js:router.post('/currently-listening', authenticate, async (req, res) => {
+./stercs-editor/routes/miiEnhanced.js:router.post('/currently-watching', authenticate, async (req, res) => {
+./stercs-editor/routes/miiEnhanced.js:router.get('/showcase/:memberId', authenticate, async (req, res) => {
+./stercs-editor/routes/miiEnhanced.js:router.get('/authorized-viewers/:memberId', authenticate, async (req, res) => {
+./stercs-editor/routes/miiEnhanced.js:router.post('/updates/:updateId/reply', authenticate, async (req, res) => {
+./stercs-editor/routes/miiEnhanced.js:router.get('/contact-showcases', authenticate, async (req, res) => {
+./stercs-editor/routes/miiEnhanced.js:router.get('/messages', authenticate, async (req, res) => {
+./stercs-editor/routes/miiEnhanced.js:router.get('/groups', authenticate, async (req, res) => {
+./stercs-editor/routes/miiEnhanced.js:router.get('/mcp-status', authenticate, async (req, res) => {
+./stercs-editor/routes/analytics.js:router.post('/track-page-view', async (req, res) => {
+./stercs-editor/routes/analytics.js:router.post('/track-event', async (req, res) => {
+./stercs-editor/routes/analytics.js:router.get('/projects/:projectId', async (req, res) => {
+./stercs-editor/routes/analytics.js:router.get('/projects/:projectId/pages/:pageId', async (req, res) => {
+./stercs-editor/routes/analytics.js:router.get('/projects/:projectId/events', async (req, res) => {
+./stercs-editor/routes/analytics.js:router.post('/dashboards', async (req, res) => {
+./stercs-editor/routes/analytics.js:router.get('/dashboards', async (req, res) => {
+./stercs-editor/routes/analytics.js:router.put('/dashboards/:dashboardId', async (req, res) => {
+./stercs-editor/routes/miiFingerOrbit.js:router.post('/folders', authenticate, async (req, res) => {
+./stercs-editor/routes/miiFingerOrbit.js:router.post('/folders/:folderId/media', authenticate, async (req, res) => {
+./stercs-editor/routes/miiFingerOrbit.js:router.get('/content', authenticate, async (req, res) => {
+./stercs-editor/routes/miiFingerOrbit.js:router.post('/grant-access', authenticate, async (req, res) => {
+./stercs-editor/routes/miiFingerOrbit.js:router.post('/purchase', authenticate, async (req, res) => {
+./stercs-editor/routes/miiFingerOrbit.js:router.get('/earnings', authenticate, async (req, res) => {
+./stercs-editor/routes/miiFingerOrbit.js:router.get('/analytics', authenticate, async (req, res) => {
+./stercs-editor/routes/miiFingerOrbit.js:router.post('/media/:mediaId/view', authenticate, async (req, res) => {
+./stercs-editor/routes/miiFingerOrbit.js:router.post('/media/:mediaId/download', authenticate, async (req, res) => {
+./stercs-editor/routes/miiFingerOrbit.js:router.get('/media-access', authenticate, async (req, res) => {
+./stercs-editor/routes/reporting.js:router.post("/", async (req, res) => {
+./stercs-editor/routes/reporting.js:  message: "Failed to create report"   error: error.message", }); } }); // Get reports for a member router.get("/", async (req, res) => { try { const memberId = req.member.id; const { type, enabled, search, limit } = req.query; const result = await ReportingService.getReports(memberId, {type: type || null, enabled: enabled !== undefined ? enabled === "true" : undefined, search: search || null, limit: limit ? parseInt(limit) : null }); res.status(200).json({success: true, message: result.message, data: result.reports }); } catch (error) { logger.error("Error getting,
+./stercs-editor/routes/reporting.js:router.get("/:reportId", async (req, res) => {
+./stercs-editor/routes/reporting.js:  message: "Failed to retrieve report"   error: error.message", }); } }); // Update a report router.put("/:reportId", async (req, res) => { try { const memberId = req.member.id; const { reportId } = req.params; const reportData = req.body; const result = await ReportingService.updateReport( memberId, parseInt(reportId), reportData, ); res.status(200).json({success: true, message: result.message, data: result.report }); } catch (error) { logger.error("Error updating,
+./stercs-editor/routes/reporting.js:router.delete("/:reportId", async (req, res) => {
+./stercs-editor/routes/reporting.js:  message: "Failed to delete report"   error: error.message", }); } }); // Generate a report router.post("/:reportId/generate", async (req, res) => { try { const memberId = req.member.id; const { reportId } = req.params; const result = await ReportingService.generateReport( memberId, parseInt(reportId), ); res.status(200).json({success: true, message: result.message, data: result.report }); } catch (error) { logger.error("Error generating,
+./stercs-editor/routes/reporting.js:router.get("/:reportId/generated", async (req, res) => {
+./stercs-editor/routes/ecommerce.js:router.post('/products', async (req, res) => {
+./stercs-editor/routes/ecommerce.js:router.get('/products', async (req, res) => {
+./stercs-editor/routes/ecommerce.js:router.put('/products/:productId', async (req, res) => {
+./stercs-editor/routes/ecommerce.js:router.delete('/products/:productId', async (req, res) => {
+./stercs-editor/routes/ecommerce.js:router.post('/categories', async (req, res) => {
+./stercs-editor/routes/ecommerce.js:router.get('/categories', async (req, res) => {
+./stercs-editor/routes/ecommerce.js:router.post('/orders', async (req, res) => {
+./stercs-editor/routes/ecommerce.js:router.get('/orders', async (req, res) => {
+./stercs-editor/routes/ecommerce.js:router.put('/orders/:orderId/status', async (req, res) => {
+./stercs-editor/routes/integrations.js:router.post('/', async (req, res) => {
+./stercs-editor/routes/integrations.js:router.get('/', async (req, res) => {
+./stercs-editor/routes/integrations.js:router.get('/:integrationId', async (req, res) => {
+./stercs-editor/routes/integrations.js:router.put('/:integrationId', async (req, res) => {
+./stercs-editor/routes/integrations.js:router.delete('/:integrationId', async (req, res) => {
+./stercs-editor/routes/integrations.js:router.post('/:integrationId/test', async (req, res) => {
+./stercs-editor/routes/integrations.js:router.get('/:integrationId/stats', async (req, res) => {
+./stercs-editor/routes/logs.js:router.post('/', async (req, res) => {
+./stercs-editor/routes/logs.js:router.get('/', async (req, res) => {
+./stercs-editor/routes/logs.js:router.get('/project/:projectId', async (req, res) => {
+./stercs-editor/routes/logs.js:router.get('/stats', async (req, res) => {
+./stercs-editor/routes/businessManagement.js:router.post('/projects', async (req, res) => {
+./stercs-editor/routes/businessManagement.js:router.get('/projects', async (req, res) => {
+./stercs-editor/routes/businessManagement.js:router.put('/projects/:projectId', async (req, res) => {
+./stercs-editor/routes/businessManagement.js:router.delete('/projects/:projectId', async (req, res) => {
+./stercs-editor/routes/businessManagement.js:router.post('/projects/:projectId/goals', async (req, res) => {
+./stercs-editor/routes/businessManagement.js:router.get('/projects/:projectId/goals', async (req, res) => {
+./stercs-editor/routes/businessManagement.js:router.post('/goals/:goalId/milestones', async (req, res) => {
+./stercs-editor/routes/businessManagement.js:router.get('/goals/:goalId/milestones', async (req, res) => {
+./stercs-editor/routes/businessManagement.js:router.put('/milestones/:milestoneId/status', async (req, res) => {
+./stercs-editor/routes/apis.js:router.post("/", async (req, res) => {
+./stercs-editor/routes/apis.js:API:", error); res.status(500).json({success: false, message: "Failed to create API", error: error.message }); } }); // Get APIs for a member router.get("/", async (req, res) => { try { const memberId = req.member.id; const { projectId, search, limit } = req.query; const result = await ApiService.getApis(memberId, {projectId: projectId ? parseInt(projectId) : null, search: search || null, limit: limit ? parseInt(limit) : null }); res.status(200).json({success: true, message: result.message, data: result.apis }); } catch (error) { logger.error("Error getting,
+./stercs-editor/routes/apis.js:APIs:", error); res.status(500).json({success: false, message: "Failed to retrieve APIs", error: error.message }); } }); // Get API by ID router.get("/:apiId", async (req, res) => { try { const memberId = req.member.id; const { apiId } = req.params; const result = await ApiService.getApiById(memberId, parseInt(apiId)); res.status(200).json({success: true, message: result.message, data: result.api }); } catch (error) { logger.error("Error getting,
+./stercs-editor/routes/apis.js:API:", error); res.status(500).json({success: false, message: "Failed to retrieve API", error: error.message }); } }); // Update an API router.put("/:apiId", async (req, res) => { try { const memberId = req.member.id; const { apiId } = req.params; const apiData = req.body; const result = await ApiService.updateApi( memberId, parseInt(apiId), apiData, ); res.status(200).json({success: true, message: result.message, data: result.api }); } catch (error) { logger.error("Error updating,
+./stercs-editor/routes/apis.js:API:", error); res.status(500).json({success: false, message: "Failed to update API", error: error.message }); } }); // Delete an API router.delete("/:apiId", async (req, res) => { try { const memberId = req.member.id; const { apiId } = req.params; const result = await ApiService.deleteApi(memberId, parseInt(apiId)); res.status(200).json({success: true, message: result.message }); } catch (error) { logger.error("Error deleting,
+./stercs-editor/routes/apis.js:API:", error); res.status(500).json({success: false, message: "Failed to delete API", error: error.message }); } }); // Create an API endpoint router.post("/:apiId/endpoints", async (req, res) => { try { const memberId = req.member.id; const { apiId } = req.params; const endpointData = req.body; if (!endpointData.path || !endpointData.method) { return res.status(400).json({success: false, message: "Path and method are required for endpoint creation" }); } const result = await ApiService.createEndpoint( memberId, parseInt(apiId), endpointData, ); res.status(201).json({success: true, message: result.message, data: result.endpoint }); } catch (error) { logger.error("Error creating API,
+./stercs-editor/routes/apis.js:endpoint:", error); res.status(500).json({success: false, message: "Failed to create API endpoint", error: error.message }); } }); // Get API endpoints router.get("/:apiId/endpoints", async (req, res) => { try { const memberId = req.member.id; const { apiId } = req.params; const result = await ApiService.getEndpoints(memberId, parseInt(apiId)); res.status(200).json({success: true, message: result.message, data: result.endpoints }); } catch (error) { logger.error("Error getting API,
+./stercs-editor/routes/apis.js:endpoints:", error); res.status(500).json({success: false, message: "Failed to retrieve API endpoints", error: error.message }); } }); // Test an API endpoint router.post("/endpoints/:endpointId/test", async (req, res) => { try { const memberId = req.member.id; const { endpointId } = req.params; const testData = req.body; const result = await ApiService.testEndpoint( memberId, parseInt(endpointId), testData, ); res.status(200).json({success: true, message: result.message, data: result.testResult }); } catch (error) { logger.error("Error testing API,
+./stercs-editor/routes/apis.js:endpoint:", error); res.status(500).json({success: false, message: "Failed to test API endpoint", error: error.message }); } }); // Get API test history router.get("/endpoints/:endpointId/tests", async (req, res) => { try { const memberId = req.member.id; const { endpointId } = req.params; const { limit } = req.query; const result = await ApiService.getTestHistory( memberId, parseInt(endpointId), {limit: limit ? parseInt(limit) : null }, ); res.status(200).json({success: true, message: result.message, data: result.tests }); } catch (error) { logger.error("Error getting API test,
+./stercs-editor/routes/pages.js:router.get('/', async (req, res) => {
+./stercs-editor/routes/pages.js:router.post('/', async (req, res) => {
+./stercs-editor/routes/pages.js:router.put('/:id', async (req, res) => {
+./stercs-editor/routes/pages.js:router.delete('/:id', async (req, res) => {
+./stercs-editor/routes/versionControl.js:router.post('/initialize/:projectId', async (req, res) => {
+./stercs-editor/routes/versionControl.js:router.get('/history/:projectId', async (req, res) => {
+./stercs-editor/routes/versionControl.js:router.post('/commit/:projectId', async (req, res) => {
+./stercs-editor/routes/versionControl.js:router.post('/branch/:projectId', async (req, res) => {
+./stercs-editor/routes/versionControl.js:router.post('/switch-branch/:projectId', async (req, res) => {
+./stercs-editor/routes/versionControl.js:router.get('/branches/:projectId', async (req, res) => {
+./stercs-editor/routes/versionControl.js:router.get('/compare/:projectId', async (req, res) => {
+./stercs-editor/routes/versionControl.js:router.post('/revert/:projectId', async (req, res) => {
+./stercs-editor/routes/explorer.js:router.get('/project/:projectId', async (req, res) => {
+./stercs-editor/routes/explorer.js:router.post('/project/:projectId/create', async (req, res) => {
+./stercs-editor/routes/explorer.js:router.get('/project/:projectId/file', async (req, res) => {
+./stercs-editor/routes/explorer.js:router.put('/project/:projectId/file', async (req, res) => {
+./stercs-editor/routes/explorer.js:router.delete('/project/:projectId/item', async (req, res) => {
+./stercs-editor/routes/explorer.js:router.get('/history', async (req, res) => {
+./stercs-editor/routes/search.js:router.get('/files', async (req, res) => {
+./stercs-editor/routes/search.js:router.get('/content', async (req, res) => {
+./stercs-editor/routes/search.js:router.get('/components', async (req, res) => {
+./stercs-editor/routes/search.js:router.get('/projects', async (req, res) => {
+./stercs-editor/routes/memberProfile.js:router.get("/profile", async (req, res) => {
+./stercs-editor/routes/memberProfile.js:router.put("/profile", async (req, res) => {
+./stercs-editor/routes/memberProfile.js:router.get("/preferences", async (req, res) => {
+./stercs-editor/routes/memberProfile.js:router.put("/preferences", async (req, res) => {
+./stercs-editor/routes/memberProfile.js:router.post("/change-password", async (req, res) => {
+./stercs-editor/routes/memberProfile.js:router.get("/activity", async (req, res) => {
+./stercs-editor/routes/notifications.js:router.post('/', async (req, res) => {
+./stercs-editor/routes/notifications.js:router.get('/', async (req, res) => {
+./stercs-editor/routes/notifications.js:router.put('/:notificationId/read', async (req, res) => {
+./stercs-editor/routes/notifications.js:router.put('/read-all', async (req, res) => {
+./stercs-editor/routes/notifications.js:router.delete('/:notificationId', async (req, res) => {
+./stercs-editor/routes/notifications.js:router.get('/stats', async (req, res) => {
+./stercs-editor/routes/collaboration.js:router.post('/invite', async (req, res) => {
+./stercs-editor/routes/collaboration.js:router.get('/project/:projectId', async (req, res) => {
+./stercs-editor/routes/collaboration.js:router.put('/:collaboratorId', async (req, res) => {
+./stercs-editor/routes/collaboration.js:router.delete('/:collaboratorId', async (req, res) => {
+./stercs-editor/routes/collaboration.js:router.get('/invitations', async (req, res) => {
+./stercs-editor/routes/collaboration.js:router.post('/invitations/:invitationId/accept', async (req, res) => {
+./stercs-editor/routes/collaboration.js:router.post('/invitations/:invitationId/decline', async (req, res) => {
+./app (1).js:app.get('/', (req, res) => {
+./app (1).js:app.get('/health', healthCheck);
+./app (1).js:app.get('/ready', readinessProbe);
+./app (1).js:app.get('/live', livenessProbe);
+./__tests__/controllers/authenticationController.test.js:      app.post('/api/authenticator/setup', authenticatorController.setup2FA.bind(authenticatorController))
+./__tests__/controllers/authenticationController.test.js:      app.post('/api/authenticator/verify', authenticatorController.verify2FA.bind(authenticatorController))
+./__tests__/controllers/authenticationController.test.js:      app.get('/api/authenticator/status', authenticatorController.get2FAStatus.bind(authenticatorController))
+./__tests__/controllers/authenticationController.test.js:      app.post('/api/biometric/register', biometricController.registerBiometric.bind(biometricController))
+./__tests__/controllers/authenticationController.test.js:      app.post('/api/biometric/authenticate', biometricController.authenticateBiometric.bind(biometricController))
+./__tests__/controllers/authenticationController.test.js:      app.delete('/api/biometric/remove', biometricController.removeBiometric.bind(biometricController))
+./__tests__/controllers/authenticationController.test.js:      app.get('/api/security/audit-log', securityController.getAuditLog.bind(securityController))
+./__tests__/controllers/authenticationController.test.js:      app.get('/api/security/sessions', securityController.getActiveSessions.bind(securityController))
+./__tests__/controllers/authenticationController.test.js:      app.post('/api/security/sessions/:id/revoke', securityController.revokeSession.bind(securityController))
+./__tests__/controllers/authenticationController.test.js:      app.get('/api/security/settings', securityController.getSecuritySettings.bind(securityController))
+./__tests__/controllers/socialControllers.test.js:      app.post('/api/likes/:targetType/:targetId', likesController.like.bind(likesController));
+./__tests__/controllers/socialControllers.test.js:      app.delete('/api/likes/:targetType/:targetId', likesController.unlike.bind(likesController));
+./__tests__/controllers/socialControllers.test.js:      app.get('/api/likes/:targetType/:targetId/count', likesController.getLikeCount.bind(likesController));
+./__tests__/controllers/socialControllers.test.js:      app.post('/api/connections/request', connectionsController.sendRequest.bind(connectionsController));
+./__tests__/controllers/socialControllers.test.js:      app.post('/api/connections/:id/accept', connectionsController.acceptRequest.bind(connectionsController));
+./__tests__/controllers/socialControllers.test.js:      app.post('/api/connections/:id/reject', connectionsController.rejectRequest.bind(connectionsController));
+./__tests__/controllers/socialControllers.test.js:      app.get('/api/connections/my-connections', connectionsController.getMyConnections.bind(connectionsController));
+./__tests__/controllers/AIController.integration.test.ts:app.get('/api/ai/subscription/current', AIController.getCurrentSubscription.bind(AIController));
+./__tests__/controllers/AIController.integration.test.ts:app.get('/api/ai/subscription/plans', AIController.getSubscriptionPlans.bind(AIController));
+./__tests__/controllers/AIController.integration.test.ts:app.post('/api/ai/subscription/purchase', AIController.purchaseSubscription.bind(AIController));
+./__tests__/controllers/AIController.integration.test.ts:app.get('/api/ai/credits/balance', AIController.getCreditBalance.bind(AIController));
+./__tests__/controllers/AIController.integration.test.ts:app.post('/api/ai/credits/topup', AIController.topupCredits.bind(AIController));
+./__tests__/controllers/AIController.integration.test.ts:app.post('/api/ai/chat', AIController.chatAssistant.bind(AIController));
+./__tests__/controllers/AIController.integration.test.ts:app.post('/api/ai/generate/image', AIController.generateImage.bind(AIController));
+./__tests__/controllers/AIController.integration.test.ts:app.post('/api/ai/translate', AIController.translateText.bind(AIController));
+./__tests__/controllers/AIController.integration.test.ts:app.post('/api/ai/moderate', AIController.moderateContent.bind(AIController));
+./__tests__/controllers/AIController.integration.test.ts:app.get('/api/ai/usage/logs', AIController.getUsageLogs.bind(AIController));
+./__tests__/controllers/AIController.integration.test.ts:app.get('/api/ai/features', AIController.getAvailableFeatures.bind(AIController));
+./__tests__/controllers/elearningController.test.js:      app.get('/api/elearning/courses', elearningController.getCourses.bind(elearningController));
+./__tests__/controllers/elearningController.test.js:      app.post('/api/elearning/courses', elearningController.createCourse.bind(elearningController));
+./__tests__/controllers/elearningController.test.js:      app.post('/api/elearning/courses/:id/enroll', elearningController.enrollInCourse.bind(elearningController));
+./__tests__/controllers/elearningController.test.js:      app.get('/api/elearning/my-courses', elearningController.getMyCourses.bind(elearningController));
+./__tests__/controllers/gamificationController.test.js:app.get('/api/gamification/points', gamificationController.getUserPoints.bind(gamificationController))
+./__tests__/controllers/gamificationController.test.js:app.post('/api/gamification/points/add', gamificationController.addPoints.bind(gamificationController))
+./__tests__/controllers/gamificationController.test.js:app.get('/api/gamification/badges', gamificationController.getBadges.bind(gamificationController))
+./__tests__/controllers/gamificationController.test.js:app.get('/api/gamification/user-badges', gamificationController.getUserBadges.bind(gamificationController))
+./__tests__/controllers/gamificationController.test.js:app.get('/api/gamification/challenges', gamificationController.getChallenges.bind(gamificationController));
+./__tests__/controllers/gamificationController.test.js:app.post('/api/gamification/challenges/:id/progress', gamificationController.updateChallengeProgress.bind(gamificationController));
+./__tests__/controllers/commerceController.test.js:app.get('/api/commerce/products', commerceController.getProducts.bind(commerceController))
+./__tests__/controllers/commerceController.test.js:app.post('/api/commerce/products', commerceController.createProduct.bind(commerceController))
+./__tests__/controllers/commerceController.test.js:app.get('/api/commerce/cart', commerceController.getCart.bind(commerceController))
+./__tests__/controllers/commerceController.test.js:app.post('/api/commerce/cart/add', commerceController.addToCart.bind(commerceController))
+./__tests__/controllers/commerceController.test.js:app.post('/api/commerce/orders', commerceController.createOrder.bind(commerceController));
+./__tests__/controllers/commerceController.test.js:app.get('/api/commerce/orders', commerceController.getOrders.bind(commerceController));
+./__tests__/controllers/marketplaceController.test.js:      app.get('/api/fingerlux/items', fingerluxController.getItems.bind(fingerluxController));
+./__tests__/controllers/marketplaceController.test.js:      app.post('/api/fingerlux/items', fingerluxController.createItem.bind(fingerluxController));
+./__tests__/controllers/marketplaceController.test.js:      app.post('/api/f      app.post('/apreview', fingerluxController.addReview.bind(fingerluxController));
+./__tests__/controllers/marketplaceController.test.js:      app.get('/api/storefront/stores', storefrontController.getStores.bind(storefrontController));
+./__tests__/controllers/marketplaceController.test.js:      app.post('/api/storefront/stores', storefrontController.createStore.bind(storefrontController));
+./__tests__/controllers/marketplaceController.test.js:      app.get('/api/storefront/stores/:storeId/products', storefrontController.getStoreProducts.bind(storefrontController));
+./scripts/final_verification.js:    indexContent.includes(`router.use('/${route}`) || 
+./scripts/final_verification.js:    indexContent.includes(`router.use('/${route.replace(/_/g, '-')}'`)
+./scripts/cleanup_duplicate_routes.js:  if (indexContent.includes("router.use('/grading-system.routes'")) {
+./scripts/auto_register_missing_routes.js:    return `router.use('${endpoint}', authenticate, ${varName});`;
+./unified-products.js:router.get('/unified-products', async (req, res) => {
+./controllers/aiController.js:// router.get('/balance', (req, res) => AIController.getBalance(req, res));
+./server.ts:app.get("/", (
+./server.ts:app.get("/health", (
+./server.ts:app.get('/api-docs.json', (
+./routes/hallmarks.js:router.get('/', authenticate, hallmarks.getAll);
+./routes/hallmarks.js:router.get('/user/:userId', authenticate, hallmarks.getById);
+./routes/hallmarks.js:router.post('/', authenticate, hallmarks.create);
+./routes/hallmarks.js:router.post('/award', authenticate, hallmarks.create);
+./routes/hallmarks.js:router.post('/check-milestones', authenticate, hallmarks.create);
+./routes/marketplace-tms.js:router.get('/', marketplaceTms.getAll);
+./routes/marketplace-tms.js:router.get('/:orderId', marketplaceTms.getById);
+./routes/marketplace-tms.js:router.post('/', marketplaceTms.create);
+./routes/marketplace-tms.js:router.put('/:orderId', marketplaceTms.update);
+./routes/marketplace-tms.js:router.get('/:orderId/tracking', marketplaceTms.getById);
+./routes/security.js:router.post('/enable-mfa', authenticate, security.create);
+./routes/security.js:router.get('/settings', authenticate, security.getAll);
+./routes/security.js:router.put('/settings', authenticate, security.update);
+./routes/security.js:router.get('/sessions', authenticate, security.getAll);
+./routes/security.js:router.delete('/sessions/:sessionId', authenticate, security.delete);
+./routes/security.js:router.delete('/sessions', authenticate, security.delete);
+./routes/security.js:router.get('/events', authenticate, security.getAll);
+./routes/seads.js:router.get('/projects', seads.getAll);
+./routes/seads.js:router.get('/projects/:projectId', seads.getById);
+./routes/seads.js:router.post('/projects', authenticate, seads.create);
+./routes/seads.js:router.put('/projects/:projectId', seads.update);
+./routes/seads.js:router.delete('/projects/:projectId', authenticate, seads.delete);
+./routes/seads.js:router.get('/projects/:projectId/updates', seads.getById);
+./routes/seads.js:router.post('/projects/:projectId/updates', authenticate, seads.create);
+./routes/seads.js:router.get('/projects/:projectId/backers', seads.getById);
+./routes/seads.js:router.post('/backings', authenticate, seads.create);
+./routes/seads.js:router.get('/members/:memberId/backed-projects', authenticate, seads.getById);
+./routes/seads.js:router.post('/projects/:projectId/reviews', authenticate, seads.create);
+./routes/seads.js:router.get('/projects/:projectId/reviews', seads.getById);
+./routes/recommendations.js:router.get('/discover', authenticate, controller.getDiscoverFeed);
+./routes/connections.js:router.get('/', authenticate, connections.getMyConnections);
+./routes/connections.js:router.get('/requests', authenticate, connections.getPending);
+./routes/connections.js:router.post('/request/:targetMemberId', authenticate, connections.sendRequest);
+./routes/connections.js:router.post('/accept/:requestId', authenticate, connections.acceptRequest);
+./routes/connections.js:router.post('/reject/:requestId', authenticate, connections.rejectRequest);
+./routes/connections.js:router.delete('/remove/:connectedMemberId', authenticate, connections.removeConnection);
+./routes/connections.js:router.post('/block/:targetMemberId', authenticate, connections.sendRequest); // stub
+./routes/connections.js:router.delete('/unblock/:blockedMemberId', authenticate, connections.removeConnection); // stub
+./routes/connections.js:router.get('/blocked', authenticate, connections.getMyConnections); // stub
+./routes/connections.js:router.get('/search/:query', authenticate, connections.getMyConnections); // stub
+./routes/connections.js:router.get('/suggestions', authenticate, connections.getMyConnections); // stub
+./routes/video_editor.js:router.post('/upload', authenticate, video_editor.create);
+./routes/video_editor.js:router.post('/projects', video_editor.create);
+./routes/video_editor.js:router.get('/projects/:projectId', video_editor.getById);
+./routes/video_editor.js:router.get('/projects', video_editor.getAll);
+./routes/video_editor.js:router.put('/projects/:projectId', video_editor.update);
+./routes/video_editor.js:router.post('/projects/:projectId/save-draft', video_editor.create);
+./routes/video_editor.js:router.post('/projects/:projectId/schedule', video_editor.create);
+./routes/video_editor.js:router.post('/projects/:projectId/publish', video_editor.create);
+./routes/video_editor.js:router.delete('/projects/:projectId', video_editor.delete);
+./routes/video_editor.js:router.post('/jobs', video_editor.create);
+./routes/video_editor.js:router.get('/jobs/:jobId', video_editor.getById);
+./routes/video_editor.js:router.get('/projects/:projectId/jobs', video_editor.getById);
+./routes/video_editor.js:router.post('/jobs/:jobId/cancel', video_editor.create);
+./routes/discover.js:router.get('/content', discover.getAll);
+./routes/discover.js:router.get('/featured', discover.getFeatured);
+./routes/discover.js:router.get('/categories/:category', discover.getByCategory);
+./routes/discover.js:router.get('/creators', discover.getCreators);
+./routes/discover.js:router.get('/suggested/:memberId', discover.getSuggestions);
+./routes/discover.js:router.get('/broadcasts', discover.getBroadcasts);
+./routes/discover.js:router.get('/personalized', discover.getPersonalized);
+./routes/discover.js:router.get('/metrics/algorithm', discover.getAlgorithmMetrics);
+./routes/discover.js:router.post('/track-interaction', discover.trackInteraction);
+./routes/protocol.js:router.post('/handshake', (req, res) => {
+./routes/protocol.js:router.post('/message', (req, res) => {
+./routes/protocol.js:router.get('/status', (req, res) => {
+./routes/moderation.js:router.get('/reports', moderation.getAll);
+./routes/moderation.js:router.get('/reports/:reportId', moderation.getById);
+./routes/moderation.js:router.post('/reports', moderation.create);
+./routes/moderation.js:router.put('/reports/:reportId', moderation.update);
+./routes/moderation.js:router.get('/warnings/:userId', moderation.getById);
+./routes/moderation.js:router.get('/categories', moderation.getAll);
+./routes/moderation.js:router.get('/dashboard-stats', moderation.getAll);
+./routes/supervi_achievements.js:router.get('/health', supervi_achievements.getAll);
+./routes/supervi_achievements.js:router.get('/', supervi_achievements.getAll);
+./routes/supervi_achievements.js:router.get('/:id', supervi_achievements.getById);
+./routes/supervi_achievements.js:router.post('/', supervi_achievements.create);
+./routes/supervi_achievements.js:router.put('/:id', supervi_achievements.update);
+./routes/supervi_achievements.js:router.delete('/:id', supervi_achievements.delete);
+./routes/supervi_achievements.js:router.get('/members/:memberId', supervi_achievements.getById);
+./routes/supervi_achievements.js:router.post('/members/:memberId/:achievementId/unlock', supervi_achievements.create);
+./routes/supervi_achievements.js:router.post('/members/:memberId/:achievementId/progress', supervi_achievements.create);
+./routes/supervi_achievements.js:router.get('/members/:memberId/stats', supervi_achievements.getById);
+./routes/supervi_achievements.js:router.get('/top-achievers', supervi_achievements.getAll);
+./routes/ai.js:// router.post("/assist", authenticate, ai.chatAssistant);
+./routes/ai.js:// router.post("/generate-code", authenticate, ai.chatAssistant);
+./routes/ai.js:// router.get("/history", authenticate, ai.getUsageLogs);
+./routes/ai.js:// router.get("/code-history", authenticate, ai.getUsageLogs);
+./routes/ai.js:// router.get("/stats", authenticate, ai.getCreditBalance);
+./routes/ai.js:router.post('/assist', authenticate, (req, res) => res.json({ message: 'AI service coming soon' }));
+./routes/ai.js:router.post('/generate-code', authenticate, (req, res) => res.json({ message: 'AI service coming soon' }));
+./routes/ai.js:router.get('/history', authenticate, (req, res) => res.json({ history: [] }));
+./routes/ai.js:router.get('/code-history', authenticate, (req, res) => res.json({ history: [] }));
+./routes/ai.js:router.get('/stats', authenticate, (req, res) => res.json({ stats: {} }));
+./routes/payment.webhooks.ts:router.post('/paystack', async (req: Request, res: Response): Promise<void> => {
+./routes/payment.webhooks.ts:router.post('/flutterwave', async (req: Request, res: Response): Promise<void> => {
+./routes/payment.webhooks.ts:router.post('/stripe', async (req: Request, res: Response): Promise<void> => {
+./routes/ai.routes.ts:router.get('/subscription/current', AIController.getCurrentSubscription.bind(AIController));
+./routes/ai.routes.ts:router.get('/subscription/plans', AIController.getSubscriptionPlans.bind(AIController));
+./routes/ai.routes.ts:router.post('/subscription/purchase', AIController.purchaseSubscription.bind(AIController));
+./routes/ai.routes.ts:router.get('/credits/balance', AIController.getCreditBalance.bind(AIController));
+./routes/ai.routes.ts:router.post('/credits/topup', AIController.topupCredits.bind(AIController));
+./routes/ai.routes.ts:router.post('/chat', AIController.chatAssistant.bind(AIController));
+./routes/ai.routes.ts:router.post('/generate/image', AIController.generateImage.bind(AIController));
+./routes/ai.routes.ts:router.post('/translate', AIController.translateText.bind(AIController));
+./routes/ai.routes.ts:router.post('/moderate', AIController.moderateContent.bind(AIController));
+./routes/ai.routes.ts:router.get('/usage/logs', AIController.getUsageLogs.bind(AIController));
+./routes/ai.routes.ts:router.get('/features', AIController.getAvailableFeatures.bind(AIController));
+./routes/biometric.js:router.post('/enroll', authenticate, biometric.startRegistration); // stub for enroll
+./routes/biometric.js:router.post('/authenticate', authenticate, biometric.startAuthentication); // stub for authenticate
+./routes/biometric.js:router.delete('/remove', authenticate, biometric.disable);
+./routes/biometric.js:router.get('/status', authenticate, biometric.getStatus);
+./routes/forums.js:router.get('/posts', authenticate, ForumController.getAllPosts);
+./routes/forums.js:router.get('/categories', ForumController.getCategories);
+./routes/forums.js:router.get('/:categoryId/threads', ForumController.getThreadsByCategory);
+./routes/forums.js:router.post('/:categoryId/threads', authenticate, ForumController.createThread);
+./routes/forums.js:router.get('/threads/:threadId', ForumController.getThreadById);
+./routes/forums.js:router.get('/threads/:threadId/posts', ForumController.getPostsByThread);
+./routes/forums.js:router.post('/posts', authenticate, ForumController.createPost);
+./routes/forums.js:router.get('/posts/:postId', ForumController.getPostById);
+./routes/forums.js:router.put('/threads/:threadId', authenticate, ForumController.updateThread);
+./routes/forums.js:router.put('/posts/:postId', authenticate, ForumController.updatePost);
+./routes/forums.js:router.delete('/threads/:threadId', authenticate, ForumController.deleteThread);
+./routes/forums.js:router.delete('/posts/:postId', authenticate, ForumController.deletePost);
+./routes/forums.js:router.post('/threads/:threadId/pin', authenticate, ForumController.pinThread);
+./routes/forums.js:router.delete('/threads/:threadId/pin', authenticate, ForumController.unpinThread);
+./routes/forums.js:router.post('/threads/:threadId/lock', authenticate, ForumController.lockThread);
+./routes/forums.js:router.delete('/threads/:threadId/lock', authenticate, ForumController.unlockThread);
+./routes/forums.js:router.post('/threads/:threadId/subscribe', authenticate, ForumController.subscribeToThread);
+./routes/forums.js:router.delete('/threads/:threadId/subscribe', authenticate, ForumController.unsubscribeFromThread);
+./routes/forums.js:router.post('/posts/:postId/report', authenticate, ForumController.reportPost);
+./routes/forums.js:router.get('/search', ForumController.searchPosts);
+./routes/canary.js:router.get('/alerts', canary.getAll);
+./routes/canary.js:router.get('/alerts/:id', canary.getById);
+./routes/canary.js:router.post('/alerts', canary.create);
+./routes/canary.js:router.put('/alerts/:id/resolve', authenticate, canary.resolve);
+./routes/canary.js:router.delete('/alerts/:id', authenticate, canary.delete);
+./routes/canary.js:router.get('/subscriptions', authenticate, canary.getSubscriptions);
+./routes/canary.js:router.post('/subscriptions', authenticate, canary.createSubscription);
+./routes/canary.js:router.put('/subscriptions/:id', authenticate, canary.updateSubscription);
+./routes/canary.js:router.delete('/subscriptions/:id', authenticate, canary.deleteSubscription);
+./routes/canary.js:router.get('/stats', canary.getStats);
+./routes/canary.js:router.get('/trending', canary.getAll); // stub
+./routes/canary.js:router.get('/metrics/algorithm', canary.getAll); // stub
+./routes/canary.js:router.post('/track-interaction', authenticate, canary.create); // stub
+./routes/generalEndpoints.js:router.post('/ai/assist', authenticate, generalendpoints.create);
+./routes/generalEndpoints.js:router.post('/ai/generate-code', authenticate, generalendpoints.create);
+./routes/generalEndpoints.js:router.post('/posts/:id/like', authenticate, generalendpoints.create);
+./routes/generalEndpoints.js:router.post('/posts/:id/vote', authenticate, generalendpoints.create);
+./routes/generalEndpoints.js:router.post('/posts/:id/tokenize', authenticate, generalendpoints.create);
+./routes/generalEndpoints.js:router.post('/gifts/send', authenticate, generalendpoints.create);
+./routes/generalEndpoints.js:router.post('/paylinks/create', authenticate, generalendpoints.create);
+./routes/generalEndpoints.js:router.get('/analytics/engagement-metrics', authenticate, generalendpoints.getAll);
+./routes/generalEndpoints.js:router.get('/analytics/revenue', authenticate, generalendpoints.getAll);
+./routes/generalEndpoints.js:router.get('/analytics/traffic', authenticate, generalendpoints.getAll);
+./routes/verifications.js:router.post('/creator', authenticate, submitCreatorVerification);
+./routes/integrations-module.js:router.get('/', integrationsModule.getAll);
+./routes/integrations-module.js:router.get('/:integrationId', integrationsModule.getById);
+./routes/integrations-module.js:router.post('/', integrationsModule.create);
+./routes/integrations-module.js:router.put('/:integrationId', integrationsModule.update);
+./routes/integrations-module.js:router.delete('/:integrationId', integrationsModule.delete);
+./routes/integrations-module.js:router.get('/user/:userId', integrationsModule.getById);
+./routes/integrations-module.js:router.patch('/:integrationId/toggle', integrationsModule.handle);
+./routes/integrations-module.js:router.post('/:integrationId/test', integrationsModule.create);
+./routes/transactions.js:router.post('/gift', authenticate, async (req, res) => {
+./routes/fic.js:router.get('/balance', authenticate, fic.getBalance);
+./routes/fic.js:router.get('/transactions', authenticate, fic.getTransactions);
+./routes/fic.js:router.post('/transfer', authenticate, fic.transfer);
+./routes/fic.js:router.post('/purchase', authenticate, fic.purchase);
+./routes/fic.js:router.get('/stats', requireAdmin, fic.getStats);
+./routes/oauth2.js:router.get('/google', passport.authenticate('google', {
+./routes/oauth2.js:router.get('/google/callback', passport.authenticate('google', {
+./routes/oauth2.js:router.get('/facebook', passport.authenticate('facebook', {
+./routes/oauth2.js:router.get('/facebook/callback', passport.authenticate('facebook', {
+./routes/oauth2.js:router.get('/link/google', passport.authenticate('google', {
+./routes/oauth2.js:router.get('/link/google/callback', passport.authenticate('google', {
+./routes/oauth2.js:router.get('/link/facebook', passport.authenticate('facebook', {
+./routes/oauth2.js:router.get('/link/facebook/callback', passport.authenticate('facebook', {
+./routes/ownit.js:router.get('/categories', ownit.getAll);
+./routes/ownit.js:router.get('/entries', ownit.getAll);
+./routes/ownit.js:router.get('/entries/:entryId', ownit.getById);
+./routes/ownit.js:router.post('/entries', ownit.create);
+./routes/ownit.js:router.put('/entries/:entryId', ownit.update);
+./routes/ownit.js:router.delete('/entries/:entryId', ownit.delete);
+./routes/ownit.js:router.get('/users/:userId/entries', ownit.getById);
+./routes/ownit.js:router.get('/warranties/expiring', ownit.getAll);
+./routes/ownit.js:router.get('/orders', ownit.getAll);
+./routes/ownit.js:router.get('/orders/:orderId', ownit.getById);
+./routes/ownit.js:router.post('/orders', ownit.create);
+./routes/ownit.js:router.put('/orders/:orderId', ownit.update);
+./routes/ownit.js:router.get('/users/:userId/orders', ownit.getById);
+./routes/ownit.js:router.get('/returns', ownit.getAll);
+./routes/ownit.js:router.post('/returns', ownit.create);
+./routes/ownit.js:router.put('/returns/:returnId', ownit.update);
+./routes/ownit.js:router.get('/warranty-claims', ownit.getAll);
+./routes/ownit.js:router.post('/warranty-claims', ownit.create);
+./routes/ownit.js:router.put('/warranty-claims/:claimId', ownit.update);
+./routes/mobile_video_editor.js:router.post('/projects', authenticate, mobile_video_editor.create);
+./routes/mobile_video_editor.js:router.post('/projects/:projectId/effects', mobile_video_editor.create);
+./routes/mobile_video_editor.js:router.post('/projects/:projectId/filters', mobile_video_editor.create);
+./routes/mobile_video_editor.js:router.post('/projects/:projectId/text', mobile_video_editor.create);
+./routes/mobile_video_editor.js:router.post('/projects/:projectId/stickers', mobile_video_editor.create);
+./routes/mobile_video_editor.js:router.post('/projects/:projectId/render', mobile_video_editor.create);
+./routes/mobile_video_editor.js:router.post('/projects/:projectId/export', mobile_video_editor.create);
+./routes/mobile_video_editor.js:router.get('/projects/:projectId', mobile_video_editor.getById);
+./routes/mobile_video_editor.js:router.get('/projects', mobile_video_editor.getAll);
+./routes/sentient.js:router.post('/analyze', authenticate, sentient.analyzeBehavior);
+./routes/sentient.js:router.get('/baseline/:memberId', authenticate, sentient.getBaseline);
+./routes/sentient.js:router.put('/baseline', authenticate, sentient.updateBaseline);
+./routes/sentient.js:router.get('/anomalies', authenticate, sentient.getAnomalies);
+./routes/storefront.js:router.get('/', storefront.getStores);
+./routes/storefront.js:router.get('/products', storefront.getProducts);
+./routes/storefront.js:router.post('/products', storefront.addProduct);
+./routes/storefront.js:router.get('/orders/my-orders', storefront.getMyOrders);
+./routes/storefront.js:router.get('/stats', storefront.getStats);
+./routes/storefront.js:router.get('/:slug', storefront.getStore); // Note: using getStore to be implemented
+./routes/storefront.js:router.post('/', storefront.createStore);
+./routes/storefront.js:router.put('/:storeId', storefront.update);
+./routes/storefront.js:router.delete('/:storeId', storefront.delete);
+./routes/storefront.js:router.get('/users/:userId/storefronts', storefront.getStores);
+./routes/storefront.js:router.get('/:storeId/products', storefront.getProducts);
+./routes/storefront.js:router.get('/products/:productId', storefront.getProducts);
+./routes/storefront.js:router.post('/:storeId/products', storefront.addProduct);
+./routes/storefront.js:router.put('/products/:productId', storefront.update);
+./routes/storefront.js:router.delete('/products/:productId', storefront.delete);
+./routes/storefront.js:router.get('/products/:productId/inventory', storefront.getProducts);
+./routes/storefront.js:router.put('/inventory/:inventoryId', storefront.update);
+./routes/storefront.js:router.post('/inventory/:inventoryId/restock', storefront.create);
+./routes/storefront.js:router.get('/inventory/:inventoryId/logs', storefront.getProducts);
+./routes/storefront.js:router.get('/:storeId/inventory/low-stock', storefront.getProducts);
+./routes/storefront.js:router.get('/:storeId/analytics/daily', storefront.getStats);
+./routes/storefront.js:router.get('/:storeId/analytics/events', storefront.getStats);
+./routes/storefront.js:router.get('/:storeId/analytics/dashboard', storefront.getStats);
+./routes/meishe_video_editor.js:router.post('/projects', authenticate, meisheController.createProject);
+./routes/meishe_video_editor.js:router.post('/projects/:projectId/beauty', authenticate, meisheController.applyBeautyEffect);
+./routes/meishe_video_editor.js:router.post('/projects/:projectId/ar-effects', authenticate, meisheController.applyAREffect);
+./routes/meishe_video_editor.js:router.post('/projects/:projectId/ai-features', authenticate, meisheController.applyAIFeature);
+./routes/meishe_video_editor.js:router.post('/projects/:projectId/templates', authenticate, meisheController.applyTemplate);
+./routes/meishe_video_editor.js:router.get('/templates', authenticate, meisheController.getTemplates);
+./routes/meishe_video_editor.js:router.get('/filters', authenticate, meisheController.getFilters);
+./routes/meishe_video_editor.js:router.get('/stickers', authenticate, meisheController.getStickers);
+./routes/meishe_video_editor.js:router.post('/projects/:projectId/render', authenticate, meisheController.renderProject);
+./routes/meishe_video_editor.js:router.get('/projects/:projectId', authenticate, meisheController.getProject);
+./routes/meishe_video_editor.js:router.get('/projects', authenticate, meisheController.getProjectsForMember);
+./routes/monetization.js:router.get('/subscriptions', authenticate, controller.getSubscriptions);
+./routes/monetization.js:router.post('/subscriptions', authenticate, controller.createSubscription);
+./routes/monetization.js:router.delete('/subscriptions', authenticate, controller.cancelSubscription);
+./routes/monetization.js:router.get('/dashboard', authenticate, controller.getDashboard);
+./routes/monetization.js:router.post('/payout', authenticate, controller.requestPayout);
+./routes/leaderboards.js:router.get('/', leaderboards.getAll);
+./routes/leaderboards.js:router.get('/:leaderboardId', leaderboards.getById);
+./routes/leaderboards.js:router.get('/:leaderboardId/positions', leaderboards.getById);
+./routes/leaderboards.js:router.get('/:leaderboardId/user/:userId', leaderboards.getById);
+./routes/leaderboards.js:router.post('/', leaderboards.create);
+./routes/leaderboards.js:router.post('/:leaderboardId/score', leaderboards.create);
+./routes/leaderboards.js:router.get('/:leaderboardId/top/:count', leaderboards.getById);
+./routes/prompts.js:router.post('/analyze', authenticate, prompts.analyzePrompt);
+./routes/contentModeration.js:router.post('/assess-content', authenticate, contentmoderation.create);
+./routes/contentModeration.js:router.post('/submit-for-review', authenticate, contentmoderation.create);
+./routes/contentModeration.js:router.post('/data-portability/request', authenticate, contentmoderation.create);
+./routes/contentModeration.js:router.post('/child-protection', authenticate, contentmoderation.create);
+./routes/contentModeration.js:router.get('/compliance-health', authenticate, contentmoderation.getAll);
+./routes/export.js:router.post('/', ExportController.createExport);
+./routes/export.js:router.get('/jobs', ExportController.listExportJobs);
+./routes/export.js:router.get('/jobs/:id', ExportController.getExportJob);
+./routes/export.js:router.get('/download/:id', ExportController.downloadExport);
+./routes/export.js:router.delete('/jobs/:id', ExportController.deleteExportJob);
+./routes/groups.js:router.get('/', groups.getAll);
+./routes/groups.js:router.get('/:groupId', groups.getById);
+./routes/groups.js:router.post('/', groups.create);
+./routes/groups.js:router.post('/:groupId/join', groups.create);
+./routes/groups.js:router.post('/:groupId/leave', groups.create);
+./routes/groups.js:router.get('/:groupId/members', groups.getById);
+./routes/groups.js:router.get('/user/:userId', groups.getById);
+./routes/groups.js:router.get('/categories', groups.getAll);
+./routes/mii.js:router.get('/updates', authenticate, mii.getAll);
+./routes/mii.js:router.post('/updates', authenticate, mii.create);
+./routes/mii.js:router.post('/updates/:updateId/like', authenticate, mii.create);
+./routes/mii.js:router.post('/updates/:updateId/view', authenticate, mii.create);
+./routes/mii.js:router.get('/stats', authenticate, mii.getAll);
+./routes/mii.js:router.get('/profile/:memberId', authenticate, mii.getById);
+./routes/mii.js:router.put('/profile', authenticate, mii.update);
+./routes/mii.js:router.post('/voice-line/trigger', authenticate, mii.create);
+./routes/mii.js:router.get('/analytics', authenticate, mii.getAll);
+./routes/mii.js:router.get('/monetization', authenticate, mii.getAll);
+./routes/mii.js:router.post('/follow/:targetMemberId', authenticate, mii.create);
+./routes/mii.js:router.get('/recommendations', authenticate, mii.getRecommendations);
+./routes/mii.js:router.get('/metrics/algorithm', authenticate, mii.getAlgorithmMetrics);
+./routes/mii.js:router.post('/track-interaction', authenticate, mii.trackInteraction);
+./routes/apiKeys.js:router.post('/', authenticate, apikeys.create);
+./routes/apiKeys.js:router.get('/:apiKeyId', authenticate, apikeys.getAll); // stub fallback
+./routes/apiKeys.js:router.get('/', authenticate, apikeys.getAll);
+./routes/apiKeys.js:router.delete('/:apiKeyId', authenticate, apikeys.delete);
+./routes/apiKeys.js:router.put('/:apiKeyId/rotate', authenticate, apikeys.rotateKey);
+./routes/apiKeys.js:router.post('/verify', apikeys.create); // stub fallback
+./routes/helpcenter.js:router.get('/faqs', helpcenterController.getFAQs.bind(helpcenterController));
+./routes/helpcenter.js:router.get('/categories', helpcenterController.getCategories.bind(helpcenterController));
+./routes/helpcenter.js:router.post('/faqs/:id/feedback', authenticate, helpcenterController.submitFeedback.bind(helpcenterController));
+./routes/helpcenter.js:router.post('/tickets', authenticate, helpcenterController.createTicket.bind(helpcenterController));
+./routes/helpcenter.js:router.get('/tickets', authenticate, helpcenterController.getAllTickets.bind(helpcenterController));
+./routes/helpcenter.js:router.get('/tickets/:id', authenticate, helpcenterController.getTicketById.bind(helpcenterController));
+./routes/helpcenter.js:router.post('/tickets/:id/messages', authenticate, helpcenterController.addMessage.bind(helpcenterController));
+./routes/helpcenter.js:router.put('/tickets/:id/status', authenticate, helpcenterController.updateStatus.bind(helpcenterController));
+./routes/helpcenter.js:router.get('/stats', authenticate, helpcenterController.getStats.bind(helpcenterController));
+./routes/fraud-alerts.js:router.get('/', async (req, res) => {
+./routes/fraud-alerts.js:router.post('/:id/resolve', async (req, res) => {
+./routes/fraud-alerts.js:router.post('/unblock-user', async (req, res) => {
+./routes/fraud-alerts.js:router.get('/stats', async (req, res) => {
+./routes/products.js:router.get('/:id', getProductById);
+./routes/lushpressies.js:router.get('/arrangements', lushpressies.getAll);
+./routes/lushpressies.js:router.get('/arrangements/:arrangementId', lushpressies.getById);
+./routes/lushpressies.js:router.post('/arrangements', lushpressies.create);
+./routes/lushpressies.js:router.get('/categories', lushpressies.getAll);
+./routes/lushpressies.js:router.get('/creators/:creatorId/arrangements', lushpressies.getById);
+./routes/lushpressies.js:router.put('/arrangements/:arrangementId', lushpressies.update);
+./routes/lushpressies.js:router.delete('/arrangements/:arrangementId', lushpressies.delete);
+./routes/grading-system.js:router.get('/', authenticate, gradingSystemController.getGradingScales);
+./routes/grading-system.js:router.get('/:id', authenticate, gradingSystemController.getGradingScaleById);
+./routes/grading-system.js:router.post('/', authenticate, gradingSystemController.createGradingScale);
+./routes/grading-system.js:router.post('/grades', authenticate, gradingSystemController.submitGrade);
+./routes/grading-system.js:router.put('/grades/:id', authenticate, gradingSystemController.updateGrade);
+./routes/grading-system.js:router.delete('/grades/:id', authenticate, gradingSystemController.deleteGrade);
+./routes/grading-system.js:router.get('/students/:studentId/grades', authenticate, gradingSystemController.getStudentGrades);
+./routes/platformThemes.js:router.get('/active', controller.getActiveTheme);
+./routes/platformThemes.js:router.get('/', authenticate, requireAdmin, controller.getThemes);
+./routes/platformThemes.js:router.post('/', authenticate, requireAdmin, controller.createTheme);
+./routes/platformThemes.js:router.put('/:id', authenticate, requireAdmin, controller.updateTheme);
+./routes/platformThemes.js:router.delete('/:id', authenticate, requireAdmin, controller.deleteTheme);
+./routes/creatorInfluenceSubscriptionRoutes.js:router.get('/tiers', CreatorInfluenceSubscriptionController.getAllSubscriptionTiers);
+./routes/creatorInfluenceSubscriptionRoutes.js:router.post('/recommend/:member_id', CreatorInfluenceSubscriptionController.getSubscriptionRecommendations);
+./routes/creatorInfluenceSubscriptionRoutes.js:router.post('/', CreatorInfluenceSubscriptionController.createSubscription);
+./routes/creatorInfluenceSubscriptionRoutes.js:router.get('/member/:member_id', CreatorInfluenceSubscriptionController.getMemberSubscription);
+./routes/creatorInfluenceSubscriptionRoutes.js:router.get('/benefits/:level', CreatorInfluenceSubscriptionController.getSubscriptionBenefits);
+./routes/creatorInfluenceSubscriptionRoutes.js:router.patch('/upgrade/:member_id', CreatorInfluenceSubscriptionController.upgradeSubscription);
+./routes/creatorInfluenceSubscriptionRoutes.js:router.patch('/downgrade/:member_id', CreatorInfluenceSubscriptionController.downgradeSubscription);
+./routes/creatorInfluenceSubscriptionRoutes.js:router.delete('/cancel/:subscription_id', CreatorInfluenceSubscriptionController.cancelSubscription);
+./routes/creatorInfluenceSubscriptionRoutes.js:router.get('/access/:member_id/:feature', CreatorInfluenceSubscriptionController.checkFeatureAccess);
+./routes/creatorInfluenceSubscriptionRoutes.js:router.post('/payment', CreatorInfluenceSubscriptionController.processSubscriptionPayment);
+./routes/creatorInfluenceSubscriptionRoutes.js:router.get('/usage/:member_id', CreatorInfluenceSubscriptionController.getSubscriptionUsage);
+./routes/creatorInfluenceSubscriptionRoutes.js:router.get('/billing/:member_id', CreatorInfluenceSubscriptionController.getBillingHistory);
+./routes/creatorInfluenceSubscriptionRoutes.js:router.get('/invoice/:subscription_id', CreatorInfluenceSubscriptionController.generateInvoice);
+./routes/posts.js:router.get('/', authenticate, postsController.getAll);
+./routes/posts.js:router.get('/:postId', authenticate, postsController.getById);
+./routes/posts.js:router.post('/', authenticate, postsController.create);
+./routes/posts.js:router.put('/:postId', authenticate, postsController.update);
+./routes/posts.js:router.delete('/:postId', authenticate, postsController.delete);
+./routes/posts.js:router.post('/:postId/like', authenticate, postsController.likePost);
+./routes/posts.js:router.get('/:postId/comments', authenticate, postsController.getComments);
+./routes/posts.js:router.post('/:postId/comments', authenticate, postsController.addComment);
+./routes/posts.js:router.post('/:postId/dislike', authenticate, postsController.dislikePost);
+./routes/posts.js:router.post('/:postId/poll/vote', authenticate, postsController.votePoll);
+./routes/posts.js:router.post('/:postId/gift', authenticate, postsController.sendGift);
+./routes/posts.js:router.post('/:postId/giftcard', authenticate, postsController.sendGiftcard);
+./routes/posts.js:router.post('/:postId/gem', authenticate, postsController.sendGem);
+./routes/posts.js:router.post('/:postId/product', authenticate, postsController.sendProduct);
+./routes/posts.js://    router.get('/', authenticate, async (req, res) => { ... });
+./routes/posts.js://    router.get('/', authenticate, postsController.getAll);
+./routes/activity.js:router.get('/', authenticate, activity.getAll);
+./routes/activity.js:router.get('/own', authenticate, activity.getAll);
+./routes/activity.js:router.get('/member/:memberId', authenticate, activity.getAll); // stub fallback
+./routes/activity.js:router.post('/', authenticate, activity.create);
+./routes/activity.js:router.get('/types/:activityType', activity.getAll); // stub fallback
+./routes/activity.js:router.get('/content/:contentId', activity.getAll); // stub fallback
+./routes/activity.js:router.get('/recent/:days?', authenticate, activity.getAll); // stub fallback
+./routes/activity.js:router.get('/stats/:memberId', activity.getStats);
+./routes/activity.js:router.delete('/:activityId', authenticate, activity.getAll); // stub fallback
+./routes/payment-webhooks.js:router.post('/stripe', express.raw({ type: 'application/json' }), async (req, res) => {
+./routes/payment-webhooks.js:router.post('/paypal', express.json(), async (req, res) => {
+./routes/media.js:router.get('/', media.getAll);
+./routes/media.js:router.get('/:mediaId', media.getById);
+./routes/media.js:router.post('/upload', media.create);
+./routes/media.js:router.put('/:mediaId', media.update);
+./routes/media.js:router.delete('/:mediaId', media.delete);
+./routes/media.js:router.get('/user/:userId', media.getById);
+./routes/media.js:router.get('/trending', media.getAll);
+./routes/ai-credit-balance.js:router.get('/', authenticate, aiCreditBalanceController.getBalance);
+./routes/ai-credit-balance.js:router.post('/add', authenticate, aiCreditBalanceController.addCredits);
+./routes/ai-credit-balance.js:router.post('/deduct', authenticate, aiCreditBalanceController.deductCredits);
+./routes/ai-credit-balance.js:router.get('/transactions', authenticate, aiCreditBalanceController.getTransactions);
+./routes/permanence-data.js:router.get('/data', authenticate, (req, res) => res.json({ success: true, data: [] }));
+./routes/permanence-data.js:router.put('/settings', authenticate, permanenceData.update);
+./routes/metrics.js:router.get('/platform', authenticate, controller.getPlatformInsights);
+./routes/metrics.js:router.get('/user', authenticate, controller.getUserAnalytics);
+./routes/cache-management.js:router.get('/stats', (req, res) => {
+./routes/cache-management.js:router.post('/clear', (req, res) => {
+./routes/mylearning.js:router.get('/courses', mylearning.getAll);
+./routes/mylearning.js:router.get('/courses/:courseId', mylearning.getById);
+./routes/mylearning.js:router.post('/courses', mylearning.create);
+./routes/mylearning.js:router.post('/courses/:courseId/enroll', mylearning.create);
+./routes/mylearning.js:router.get('/students/:studentId/courses', mylearning.getById);
+./routes/mylearning.js:router.get('/instructors/:instructorId/courses', mylearning.getById);
+./routes/mylearning.js:router.post('/courses/:courseId/modules', mylearning.create);
+./routes/mylearning.js:router.get('/courses/:courseId/modules', mylearning.getById);
+./routes/mylearning.js:router.get('/categories', mylearning.getAll);
+./routes/externalServices.js:router.post('/signalwire/send-sms', externalServicesController.sendSignalwireSMS);
+./routes/externalServices.js:router.post('/signalwire/send-otp', externalServicesController.sendSignalwireOTP);
+./routes/externalServices.js:router.post('/moniepoint/init-transaction', externalServicesController.initMoniepointTransaction);
+./routes/externalServices.js:router.post('/moniepoint/process-payout', externalServicesController.processMoniepointPayout);
+./routes/externalServices.js:router.get('/moniepoint/wallet-balance', externalServicesController.getMoniepointWalletBalance);
+./routes/externalServices.js:router.post('/opay/process-payout', externalServicesController.processOpayPayout);
+./routes/externalServices.js:router.post('/opay/validate-payment', externalServicesController.validateOpayPayment);
+./routes/externalServices.js:router.post('/photocredits/create', externalServicesController.purchasePhotoCredits);
+./routes/externalServices.js:router.post('/photocredits/add-to-board', externalServicesController.create);
+./routes/externalServices.js:router.post('/photocredits/record-download', externalServicesController.create);
+./routes/externalServices.js:router.get('/photocredits/trending', externalServicesController.getAll);
+./routes/externalServices.js:router.get('/photocredits/recommended/:memberId', externalServicesController.getById);
+./routes/externalServices.js:router.post('/supersix/session', externalServicesController.handleSuperSix);
+./routes/externalServices.js:router.put('/supersix/session/:sessionId', externalServicesController.handleSuperSix);
+./routes/externalServices.js:router.put('/supersix/session/:sessionId/end', externalServicesController.handleSuperSix);
+./routes/externalServices.js:router.get('/supersix/member/:memberId/stats', externalServicesController.handleSuperSix);
+./routes/externalServices.js:router.get('/supersix/leaderboards', externalServicesController.handleSuperSix);
+./routes/externalServices.js:router.get('/supersix/daily-challenges', externalServicesController.handleSuperSix);
+./routes/commerce.js:router.get('/cart', (req, res) => commerce.getAll(req, res));
+./routes/commerce.js:router.post('/cart/items', (req, res) => commerce.create(req, res));
+./routes/commerce.js:router.put('/cart/items/:id', (req, res) => commerce.update(req, res));
+./routes/commerce.js:router.delete('/cart/items/:id', (req, res) => commerce.delete(req, res));
+./routes/commerce.js:router.post('/orders', (req, res) => commerce.create(req, res));
+./routes/commerce.js:router.get('/orders', (req, res) => commerce.getAll(req, res));
+./routes/commerce.js:router.get('/orders/:id', (req, res) => commerce.getById(req, res));
+./routes/auth.js:router.post('/register', async (req, res) => {
+./routes/auth.js:router.post('/verify-email', async (req, res) => {
+./routes/auth.js:router.post('/verify-phone', async (req, res) => {
+./routes/auth.js:router.post('/setup-2fa', async (req, res) => {
+./routes/auth.js:router.post('/login', async (req, res) => {
+./routes/auth.js:router.post('/verify-2fa-login', async (req, res) => {
+./routes/auth.js:router.post('/forgot-password/request', async (req, res) => {
+./routes/auth.js:router.post('/forgot-password/verify-phone', async (req, res) => {
+./routes/auth.js:router.post('/forgot-password/verify-email', async (req, res) => {
+./routes/auth.js:router.post('/forgot-password/reset', async (req, res) => {
+./routes/auth.js:router.post('/resend-email-code', async (req, res) => {
+./routes/auth.js:router.post('/resend-phone-code', async (req, res) => {
+./routes/videoTranslation.js:router.post('/upload', auth, upload.single('video'), validateVideoUpload, uploadVideo);
+./routes/videoTranslation.js:router.get('/status/:processingId', auth, getTranslationStatus);
+./routes/videoTranslation.js:router.get('/my-videos', auth, getUserVideos);
+./routes/videoTranslation.js:router.get('/languages', auth, getAvailableLanguages);
+./routes/videoTranslation.js:router.get('/quota', auth, getQuotaInfo);
+./routes/videoTranslation.js:router.delete('/:videoId', auth, validateVideoDeletion, deleteVideo);
+./routes/communities.js:router.get('/', CommunityController.getAll.bind(CommunityController));
+./routes/communities.js:router.get('/:id', CommunityController.getById.bind(CommunityController));
+./routes/communities.js:router.post('/', authenticate, CommunityController.create.bind(CommunityController));
+./routes/communities.js:router.post('/:communityId/join', authenticate, CommunityController.join.bind(CommunityController));
+./routes/communities.js:router.delete('/:communityId/leave', authenticate, CommunityController.leave.bind(CommunityController));
+./routes/communities.js:router.put('/:id', authenticate, CommunityController.update.bind(CommunityController));
+./routes/communities.js:router.delete('/:id', authenticate, CommunityController.delete.bind(CommunityController));
+./routes/communities.js:router.get('/:communityId/members', authenticate, CommunityController.getMembers.bind(CommunityController));
+./routes/apiDocumentation.js:router.get('/', authenticateApiKey, (req, res) => {
+./routes/apiDocumentation.js:router.get('/security', authenticateApiKey, (req, res) => {
+./routes/webhook-deliveries.js:router.get('/:id', WebhookController.getDeliveries);
+./routes/rate-limit-config.js:router.get('/', (req, res) => {
+./routes/rate-limit-config.js:router.put('/', (req, res) => {
+./routes/fingerwars.js:router.get('/games', fingerwars.getAll);
+./routes/fingerwars.js:router.get('/games/:gameId', fingerwars.getById);
+./routes/fingerwars.js:router.post('/games', fingerwars.create);
+./routes/fingerwars.js:router.post('/games/:gameId/join', fingerwars.create);
+./routes/fingerwars.js:router.post('/games/:gameId/leave', fingerwars.create);
+./routes/fingerwars.js:router.get('/players/:playerId/games', fingerwars.getById);
+./routes/fingerwars.js:router.get('/players/:playerId/participations', fingerwars.getById);
+./routes/fingerwars.js:router.get('/categories', fingerwars.getAll);
+./routes/course-content.js:router.get('/', courseContentController.getAll);
+./routes/course-content.js:router.get('/categories', courseContentController.getCategories);
+./routes/course-content.js:router.get('/:id', courseContentController.getById);
+./routes/course-content.js:router.get('/my-courses', authenticate, courseContentController.getMyCourses);
+./routes/course-content.js:router.post('/:id/enroll', authenticate, courseContentController.enroll);
+./routes/course-content.js:router.get('/:courseId/progress', authenticate, courseContentController.getProgress);
+./routes/course-content.js:router.put('/lessons/:lessonId/complete', authenticate, courseContentController.completeLesson);
+./routes/course-content.js:router.post('/:id/review', authenticate, courseContentController.createReview);
+./routes/course-content.js:router.post('/', authenticate, courseContentController.create);
+./routes/course-content.js:router.put('/:id', authenticate, courseContentController.update);
+./routes/course-content.js:router.delete('/:id', authenticate, courseContentController.delete);
+./routes/members.js:router.get('/', authenticate, (req, res) => members.getAll(req, res));
+./routes/members.js:router.get('/:memberId', authenticate, (req, res) => members.getById(req, res));
+./routes/members.js:router.put('/:memberId', authenticate, (req, res) => members.update(req, res));
+./routes/members.js:router.get('/:memberId/followers', authenticate, (req, res) => members.getById(req, res));
+./routes/members.js:router.get('/:memberId/following', authenticate, (req, res) => members.getById(req, res));
+./routes/members.js:router.post('/:memberId/follow', authenticate, (req, res) => members.create(req, res));
+./routes/members.js:router.post('/:memberId/unfollow', authenticate, (req, res) => members.create(req, res));
+./routes/members.js:router.get('/profile', authenticate, (req, res) => members.getAll(req, res));
+./routes/members.js:router.get('/:memberId/wallet-balance', authenticate, (req, res) => members.getById(req, res));
+./routes/members.js:router.get('/:memberId/notifications/count', authenticate, (req, res) => members.getById(req, res));
+./routes/search-elasticsearch.js:router.get('/', authenticate, search.search);
+./routes/search-elasticsearch.js:router.get('/autocomplete', authenticate, search.autocomplete);
+./routes/search-elasticsearch.js:router.get('/facets', authenticate, search.facetedSearch);
+./routes/search-elasticsearch.js:router.post('/reindex', authenticate, search.reindex); // Admin only
+./routes/search-elasticsearch.js:router.post('/index/:type/:id', authenticate, search.indexDocument);
+./routes/ugc_media_routes.js:router.post('/upload', authenticate, ugc_media_routes.create);
+./routes/ugc_media_routes.js:router.post('/process/:mediaId', authenticate, ugc_media_routes.create);
+./routes/ugc_media_routes.js:router.get('/:mediaId/metadata', authenticate, ugc_media_routes.getById);
+./routes/ugc_media_routes.js:router.delete('/:mediaId', authenticate, ugc_media_routes.delete);
+./routes/stercs-editor.js:router.post('/pages', stercsEditorController.savePage);
+./routes/stercs-editor.js:router.get('/pages', stercsEditorController.listPages);
+./routes/stercs-editor.js:router.get('/pages/:slug', stercsEditorController.getPageBySlug);
+./routes/camus.js:router.get('/courses', camus.getProjects); // stub
+./routes/camus.js:router.get('/courses/:courseId', camus.getProjects); // stub
+./routes/camus.js:router.post('/courses', authenticate, camus.createProject); // stub
+./routes/camus.js:router.put('/courses/:courseId', camus.createProject); // stub
+./routes/camus.js:router.delete('/courses/:courseId', authenticate, camus.createProject); // stub
+./routes/camus.js:router.get('/courses/:courseId/modules', camus.getProjects); // stub
+./routes/camus.js:router.post('/courses/:courseId/modules', authenticate, camus.createProject); // stub
+./routes/camus.js:router.get('/modules/:moduleId/lessons', camus.getProjects); // stub
+./routes/camus.js:router.post('/modules/:moduleId/lessons', camus.createProject); // stub
+./routes/camus.js:router.post('/enrollments', authenticate, camus.createProject); // stub
+./routes/camus.js:router.get('/members/:memberId/enrollments', camus.getProjects); // stub
+./routes/camus.js:router.get('/courses/:courseId/enrollments', authenticate, camus.getProjects); // stub
+./routes/camus.js:router.post('/courses/:courseId/reviews', authenticate, camus.createProject); // stub
+./routes/camus.js:router.get('/courses/:courseId/reviews', camus.getProjects); // stub
+./routes/index.js:router.use('/auth', authRoutes);
+./routes/index.js:router.use('/wallet', authenticate, walletRoutes);
+./routes/index.js:router.use('/ai', authenticate, aiRoutes);
+./routes/index.js:router.use('/webhooks', paymentWebhooks);
+./routes/index.js:router.use('/video-translation', authenticate, videoTranslationRoutes);
+./routes/index.js:router.get('/can-go-live', authenticate, LiveStreamController.canGoLive);
+./routes/index.js:router.use('/payments', authenticate, paymentsRoutes);
+./routes/index.js:router.use('/notifications', authenticate, notificationRoutes);
+./routes/index.js:router.use('/messages', authenticate, messageRoutes);
+./routes/index.js:router.use('/posts', authenticate, postRoutes);
+./routes/index.js:router.use('/cache-management', authenticate, authenticatedLimiter, cacheManagementRoutes);
+./routes/index.js:router.use('/contentmanagement', authenticate, authenticatedLimiter, contentManagementRoutes);
+./routes/index.js:router.use('/metrics', authenticate, authenticatedLimiter, metricsRoutes);
+./routes/index.js:router.use('/rate-limit-config', authenticate, authenticatedLimiter, rateLimitConfigRoutes);
+./routes/index.js:router.use('/voice-feed', authenticate, authenticatedLimiter, voiceFeedRoutes);
+./routes/index.js:router.use('/voice-lines', authenticate, authenticatedLimiter, voiceLinesRoutes);
+./routes/index.js:router.use('/creator-influence-subscription-routes', authenticate, authenticatedLimiter, creatorInfluenceSubscriptionRoutes);
+./routes/index.js:router.use('/marketplace', marketplaceRoutes);
+./routes/index.js:router.use('/community', authenticate, authenticatedLimiter, communityRoutes);
+./routes/index.js:router.use('/comments', authenticate, authenticatedLimiter, commentRoutes);
+./routes/index.js:router.use('/commerce', authenticate, authenticatedLimiter, commerceRoutes);
+./routes/index.js:router.use('/members', authenticate, authenticatedLimiter, memberRoutes);
+./routes/index.js:router.use('/gameon', authenticate, authenticatedLimiter, gameonRoutes);
+./routes/index.js:router.use('/camus', authenticate, authenticatedLimiter, camusRoutes);
+./routes/index.js:router.use('/grading-system', authenticate, authenticatedLimiter, gradingSystemRoutes);
+./routes/index.js:router.use('/ai-credit-balance', authenticate, authenticatedLimiter, aiCreditBalanceRoutes);
+./routes/index.js:router.use('/giftcards', authenticate, authenticatedLimiter, giftcardsRoutes);
+./routes/index.js:router.use('/helpcenter', authenticate, authenticatedLimiter, helpcenterRoutes);
+./routes/index.js:router.use('/achievements', authenticate, authenticatedLimiter, achievementsRoutes);
+./routes/index.js:router.use('/fingerlux', authenticate, authenticatedLimiter, fingerluxRoutes);
+./routes/index.js:router.use('/commissions', authenticate, authenticatedLimiter, commissionsRoutes);
+./routes/index.js:router.use('/recommendations', authenticate, authenticatedLimiter, recommendationsRoutes);
+./routes/index.js:router.use('/ugc-media', authenticate, authenticatedLimiter, ugcMediaRoutes);
+./routes/index.js:router.use('/fingerwars', authenticate, authenticatedLimiter, fingerwarsRoutes);
+./routes/index.js:router.use('/blogs', authenticate, authenticatedLimiter, blogsRoutes);
+./routes/index.js:router.use('/forums', forumsRoutes);
+./routes/index.js:router.use('/analytics', authenticate, authenticatedLimiter, analyticsRoutes);
+./routes/index.js:router.use('/admin', authenticate, authenticatedLimiter, adminRoutes);
+./routes/index.js:router.use('/feature-flags', authenticate, authenticatedLimiter, featureFlagsRoutes);
+./routes/index.js:router.use('/governance', authenticate, authenticatedLimiter, governanceRoutes);
+./routes/index.js:router.use('/export', authenticate, authenticatedLimiter, exportRoutes);
+./routes/index.js:router.use('/fraud-alerts', authenticate, authenticatedLimiter, fraudAlertsRoutes);
+./routes/index.js:router.use('/security', authenticate, authenticatedLimiter, securityRoutes);
+./routes/index.js:router.use('/users', authenticate, authenticatedLimiter, userManagementRoutes);
+./routes/index.js:router.use('/leaderboards', authenticate, authenticatedLimiter, leaderboardsRoutes);
+./routes/index.js:router.use('/gems', authenticate, authenticatedLimiter, gemsRoutes);
+./routes/index.js:router.use('/fic', authenticate, authenticatedLimiter, ficRoutes);
+./routes/index.js:router.use('/stercs', authenticate, authenticatedLimiter, stercsRoutes);
+./routes/index.js:router.use('/sentient', authenticate, authenticatedLimiter, sentientRoutes);
+./routes/index.js:router.use('/backups', authenticate, authenticatedLimiter, backupsRoutes);
+./routes/index.js:router.use('/communities', authenticate, authenticatedLimiter, communitiesRoutes);
+./routes/index.js:router.use('/fingershorts', authenticate, authenticatedLimiter, fingershortsRoutes);
+./routes/index.js:router.use('/beatwave', authenticate, authenticatedLimiter, beatwaveRoutes);
+./routes/index.js:router.use('/lumina', authenticate, authenticatedLimiter, luminaRoutes);
+./routes/index.js:router.use('/activity', authenticate, authenticatedLimiter, activityRoutes);
+./routes/index.js:router.use('/apiDocumentation', authenticate, authenticatedLimiter, apiDocumentationRoutes);
+./routes/index.js:router.use('/apiKeys', authenticate, authenticatedLimiter, apiKeysRoutes);
+./routes/index.js:router.use('/audit-log-admin', authenticate, authenticatedLimiter, auditLogAdminRoutes);
+./routes/index.js:router.use('/authEnhancements', authenticate, authenticatedLimiter, authEnhancementsRoutes);
+./routes/index.js:router.use('/authenticator', authenticate, authenticatedLimiter, authenticatorRoutes);
+./routes/index.js:router.use('/biometric', authenticate, authenticatedLimiter, biometricRoutes);
+./routes/index.js:router.use('/blocking', authenticate, authenticatedLimiter, blockingRoutes);
+./routes/index.js:router.use('/canary', authenticate, authenticatedLimiter, canaryRoutes);
+./routes/index.js:router.use('/cdn', authenticate, authenticatedLimiter, cdnRoutes);
+./routes/index.js:router.use('/connections', authenticate, authenticatedLimiter, connectionsRoutes);
+./routes/index.js:router.use('/contentModeration', authenticate, authenticatedLimiter, contentModerationRoutes);
+./routes/index.js:router.use('/contentOperations', authenticate, authenticatedLimiter, contentOperationsRoutes);
+./routes/index.js:router.use('/course-content', authenticate, authenticatedLimiter, courseContentRoutes);
+./routes/index.js:router.use('/csvImport', authenticate, authenticatedLimiter, csvImportRoutes);
+./routes/index.js:router.use('/dashboard', authenticate, authenticatedLimiter, dashboardRoutes);
+./routes/index.js:router.use('/developer', authenticate, authenticatedLimiter, developerRoutes);
+./routes/index.js:router.use('/discover', authenticate, authenticatedLimiter, discoverRoutes);
+./routes/index.js:router.use('/elearning', authenticate, authenticatedLimiter, elearningRoutes);
+./routes/index.js:router.use('/enhanced-wallet', authenticate, authenticatedLimiter, enhancedWalletRoutes);
+./routes/index.js:router.use('/externalServices', authenticate, authenticatedLimiter, externalServicesRoutes);
+./routes/index.js:router.use('/ficRoutes', authenticate, authenticatedLimiter, ficRoutesFull);
+./routes/index.js:router.use('/flamingo', authenticate, authenticatedLimiter, flamingoRoutes);
+./routes/index.js:router.use('/forumcategories', authenticate, authenticatedLimiter, forumCategoriesRoutes);
+./routes/index.js:router.use('/gamification', authenticate, authenticatedLimiter, gamificationRoutes);
+./routes/index.js:router.use('/general', authenticate, authenticatedLimiter, generalRoutes);
+./routes/index.js:router.use('/generalEndpoints', authenticate, authenticatedLimiter, generalEndpointsRoutes);
+./routes/index.js:router.use('/groups', authenticate, authenticatedLimiter, groupsRoutes);
+./routes/index.js:router.use('/hallmarks', authenticate, authenticatedLimiter, hallmarksRoutes);
+./routes/index.js:router.use('/identity', authenticate, authenticatedLimiter, identityRoutes);
+./routes/index.js:router.use('/integrations-module', authenticate, authenticatedLimiter, integrationsModuleRoutes);
+./routes/index.js:router.use('/integrations', authenticate, authenticatedLimiter, integrationsRoutes);
+./routes/index.js:router.use('/items', authenticate, authenticatedLimiter, itemsRoutes);
+./routes/index.js:router.use('/lendsq', authenticate, authenticatedLimiter, Loansqroutes);
+./routes/index.js:router.use('/likes', authenticate, authenticatedLimiter, likesRoutes);
+./routes/index.js:router.use('/lumina-media', authenticate, authenticatedLimiter, luminaMediaRoutes);
+./routes/index.js:router.use('/lumina-upload', authenticate, authenticatedLimiter, luminaUploadRoutes);
+./routes/index.js:router.use('/lushpressies', authenticate, authenticatedLimiter, lushpressiesRoutes);
+./routes/index.js:router.use('/marketplace-tms', authenticate, authenticatedLimiter, marketplaceTmsRoutes);
+./routes/index.js:router.use('/media', authenticate, authenticatedLimiter, mediaRoutes);
+./routes/index.js:router.use('/meishe-video-editor', authenticate, authenticatedLimiter, meisheVideoEditorRoutes);
+./routes/index.js:router.use('/memberprofiles', authenticate, authenticatedLimiter, memberProfilesRoutes);
+./routes/index.js:router.use('/mii', authenticate, authenticatedLimiter, miiRoutes);
+./routes/index.js:router.use('/mobile-video-editor', authenticate, authenticatedLimiter, mobileVideoEditorRoutes);
+./routes/index.js:router.use('/moderation', authenticate, authenticatedLimiter, moderationRoutes);
+./routes/index.js:router.use('/monetization', authenticate, authenticatedLimiter, monetizationRoutes);
+./routes/index.js:router.use('/mylearning', authenticate, authenticatedLimiter, myLearningRoutes);
+./routes/index.js:router.use('/nexusgnn', authenticate, authenticatedLimiter, nexusGnnRoutes);
+./routes/index.js:router.use('/nysc', authenticate, authenticatedLimiter, nyscRoutes);
+./routes/index.js:router.use('/oauth2', authenticate, authenticatedLimiter, oauth2Routes);
+./routes/index.js:router.use('/ownit', authenticate, authenticatedLimiter, ownitRoutes);
+./routes/index.js:router.use('/p2p-matching', authenticate, authenticatedLimiter, p2pMatchingRoutes);
+./routes/index.js:router.use('/payment-webhooks', paymentWebhookRoutes);
+./routes/index.js:router.use('/permanence-data', authenticate, authenticatedLimiter, permanenceDataRoutes);
+./routes/index.js:router.use('/permanence', authenticate, authenticatedLimiter, permanenceRoutes);
+./routes/index.js:router.use('/permanence-monetization', authenticate, authenticatedLimiter, permanenceMonetizationRoutes);
+./routes/index.js:router.use('/photocredits', authenticate, authenticatedLimiter, photoCreditsRoutes);
+./routes/index.js:router.use('/platformThemes', authenticate, authenticatedLimiter, platformThemesRoutes);
+./routes/index.js:router.use('/prompts', authenticate, authenticatedLimiter, promptsRoutes);
+./routes/index.js:router.use('/protocol', authenticate, authenticatedLimiter, protocolRoutes);
+./routes/index.js:router.use('/publicitee', authenticate, authenticatedLimiter, publiciteeRoutes);
+./routes/index.js:router.use('/registrationLock', authenticate, authenticatedLimiter, registrationLockRoutes);
+./routes/index.js:router.use('/seads', authenticate, authenticatedLimiter, seadsRoutes);
+./routes/index.js:router.use('/search-elasticsearch', authenticate, authenticatedLimiter, searchElasticsearchRoutes);
+./routes/index.js:router.use('/search', authenticate, authenticatedLimiter, searchRoutes);
+./routes/index.js:router.use('/storefront', authenticate, authenticatedLimiter, storefrontRoutes);
+./routes/index.js:router.use('/supervi-achievements', authenticate, authenticatedLimiter, superviAchievementsRoutes);
+./routes/index.js:router.use('/supervi-leaderboards', authenticate, authenticatedLimiter, superviLeaderboardsRoutes);
+./routes/index.js:router.use('/tms', authenticate, authenticatedLimiter, tmsRoutes);
+./routes/index.js:router.use('/trends', authenticate, authenticatedLimiter, trendsRoutes);
+./routes/index.js:router.use('/twoFactorAuth', authenticate, authenticatedLimiter, twoFactorAuthRoutes);
+./routes/index.js:router.use('/uploads', authenticate, authenticatedLimiter, uploadsRoutes);
+./routes/index.js:router.use('/video-editor', authenticate, authenticatedLimiter, videoEditorRoutes);
+./routes/index.js:// router.use('/voicefeed', authenticate, voiceFeedRoutes);
+./routes/index.js:// router.use('/voicelines', authenticate, voiceLinesRoutes);
+./routes/index.js:router.use('/webhook-deliveries', authenticate, authenticatedLimiter, webhookDeliveriesRoutes);
+./routes/index.js:router.use('/webhooks-manage', authenticate, authenticatedLimiter, webhooksRoutes);
+./routes/index.js:router.use('/widgets', authenticate, authenticatedLimiter, widgetsRoutes);
+./routes/elearning.js:router.get('/programs', elearning.getAll);
+./routes/elearning.js:router.get('/programs/:programId', elearning.getById);
+./routes/elearning.js:router.post('/programs', elearning.create);
+./routes/elearning.js:router.post('/programs/:programId/enroll', elearning.create);
+./routes/elearning.js:router.get('/students/:studentId/programs', elearning.getById);
+./routes/elearning.js:router.get('/providers/:providerId/programs', elearning.getById);
+./routes/elearning.js:router.post('/programs/:programId/courses', elearning.create);
+./routes/elearning.js:router.get('/programs/:programId/courses', elearning.getById);
+./routes/elearning.js:router.get('/categories', elearning.getAll);
+./routes/elearning.js:router.post('/assignments/:assignmentId/submit', elearning.create);
+./routes/publicitee.js:router.get('/campaigns', publicitee.getAll);
+./routes/publicitee.js:router.get('/campaigns/:campaignId', publicitee.getById);
+./routes/publicitee.js:router.post('/campaigns', publicitee.create);
+./routes/publicitee.js:router.put('/campaigns/:campaignId', publicitee.update);
+./routes/publicitee.js:router.delete('/campaigns/:campaignId', authenticate, publicitee.delete);
+./routes/publicitee.js:router.get('/campaigns/:campaignId/impressions', publicitee.getById);
+./routes/publicitee.js:router.post('/impressions', authenticate, publicitee.create);
+./routes/publicitee.js:router.get('/campaigns/:campaignId/analytics', publicitee.getById);
+./routes/publicitee.js:router.get('/members/:memberId/campaigns', authenticate, publicitee.getById);
+./routes/permanence_monetization.js:router.post('/challenges/:challengeId/stake', authenticate, permanence_monetization.create);
+./routes/permanence_monetization.js:router.get('/earnings', permanence_monetization.getAll);
+./routes/commissions.js:router.post('/calculate', CommissionController.calculate.bind(CommissionController));
+./routes/commissions.js:router.post('/record', authenticate, CommissionController.record.bind(CommissionController));
+./routes/commissions.js:router.get('/my-commissions', authenticate, CommissionController.getMyCommissions.bind(CommissionController));
+./routes/commissions.js:router.post('/payout', authenticate, CommissionController.processPayout.bind(CommissionController));
+./routes/commissions.js:router.get('/stats', authenticate, CommissionController.getStats.bind(CommissionController));
+./routes/commissions.js:router.get('/pending', requireAdmin, CommissionController.getPendingCommissions.bind(CommissionController));
+./routes/commissions.js:router.put('/rules', requireAdmin, CommissionController.updateRule.bind(CommissionController));
+./routes/platformLogos.js:router.get('/platform-logos', getPlatformLogos);
+./routes/nexusgnn.js:router.post('/match', authenticate, findMatchesLimiter, validateMatchRequest, nexusgnnController.findMatches);
+./routes/nexusgnn.js:router.get('/recommendations/:userId', authenticate, recommendationsLimiter, nexusgnnController.getRecommendations);
+./routes/nexusgnn.js:router.post('/content/:id/lifecycle', authenticate, lifecycleUpdateLimiter, validateLifecycleUpdate, nexusgnnController.updateContentLifecycle);
+./routes/nexusgnn.js:router.get('/graph/analytics', authenticate, nexusgnnController.getGraphAnalytics);
+./routes/nexusgnn.js:router.post('/embeddings/update', authenticate, nexusgnnController.updateEmbeddings);
+./routes/nexusgnn.js:router.get('/serendipity/:userId', authenticate, nexusgnnController.getSerendipityContent);
+./routes/nexusgnn.js:router.post('/graph/node', authenticate, nexusgnnController.createGraphNode);
+./routes/nexusgnn.js:router.post('/graph/edge', authenticate, nexusgnnController.createGraphEdge);
+./routes/nexusgnn.js:router.get('/score/:userId/:contentId', authenticate, cacheMatchScore, nexusgnnController.getMatchScore);
+./routes/nexusgnn.js:router.put('/config/weights', authenticate, nexusgnnController.updateAlgorithmWeights);
+./routes/authenticator.js:router.post('/enable', authenticator.setup);
+./routes/authenticator.js:router.post('/verify', authenticator.verify);
+./routes/authenticator.js:router.post('/disable', authenticator.disable);
+./routes/authenticator.js:router.post('/verify-login', authenticator.validate);
+./routes/memberprofiles.js:router.get('/:id', memberprofiles.getById);
+./routes/memberprofiles.js:router.post('/', memberprofiles.create);
+./routes/memberprofiles.js:router.put('/:id', memberprofiles.update);
+./routes/memberprofiles.js:router.delete('/:id', memberprofiles.delete);
+./routes/memberprofiles.js:router.get('/:id/account-settings', memberprofiles.getById);
+./routes/memberprofiles.js:router.put('/:id/account-settings', memberprofiles.update);
+./routes/memberprofiles.js:router.get('/:id/privacy-controls', memberprofiles.getById);
+./routes/memberprofiles.js:router.put('/:id/privacy-controls/:contentType', memberprofiles.update);
+./routes/memberprofiles.js:router.get('/:id/security-settings', memberprofiles.getById);
+./routes/memberprofiles.js:router.put('/:id/security-settings', memberprofiles.update);
+./routes/memberprofiles.js:router.get('/:id/login-history', memberprofiles.getById);
+./routes/likes.js:router.get('/', authenticate, (req, res) => {
+./routes/likes.js:router.post('/', authenticate, (req, res) => {
+./routes/likes.js:router.delete('/', authenticate, (req, res) => {
+./routes/likes.js:router.get('/count', authenticate, (req, res) => {
+./routes/fingershorts.js:router.get('/for-you', authenticate, fingershorts.getForYou);
+./routes/fingershorts.js:router.get('/following', authenticate, fingershorts.getFollowing);
+./routes/fingershorts.js:router.get('/trending', authenticate, fingershorts.getTrending);
+./routes/fingershorts.js:router.get('/videos', fingershorts.getAll);
+./routes/fingershorts.js:router.get('/videos/:id', authenticate, fingershorts.getById);
+./routes/fingershorts.js:router.post('/videos', authenticate, fingershorts.create);
+./routes/fingershorts.js:router.put('/videos/:id', authenticate, fingershorts.update);
+./routes/fingershorts.js:router.delete('/videos/:id', authenticate, fingershorts.delete);
+./routes/fingershorts.js:router.post('/videos/:id/view', authenticate, fingershorts.recordView);
+./routes/fingershorts.js:router.post('/videos/:id/like', authenticate, fingershorts.toggleLike);
+./routes/fingershorts.js:router.get('/videos/:id/comments', authenticate, fingershorts.getComments);
+./routes/fingershorts.js:router.post('/videos/:id/comments', authenticate, fingershorts.addComment);
+./routes/fingershorts.js:router.delete('/comments/:id', authenticate, fingershorts.deleteComment);
+./routes/fingershorts.js:router.get('/metrics/algorithm', authenticate, fingershorts.getAlgorithmMetrics);
+./routes/backups.js:router.post('/create', async (req, res) => {
+./routes/backups.js:router.get('/list', async (req, res) => {
+./routes/backups.js:router.post('/restore', async (req, res) => {
+./routes/backups.js:router.delete('/cleanup', async (req, res) => {
+./routes/backups.js:router.get('/stats', async (req, res) => {
+./routes/registrationLock.js:router.post('/set', authenticate, registrationlock.create);
+./routes/registrationLock.js:router.post('/verify', authenticate, registrationlock.create);
+./routes/registrationLock.js:router.delete('/remove', authenticate, registrationlock.delete);
+./routes/registrationLock.js:router.get('/status', authenticate, registrationlock.getAll);
+./routes/ficRoutes.js:router.post('/wallet/initialize', ficroutes.initializeWallet.bind(ficroutes));
+./routes/ficRoutes.js:router.get('/wallet/:memberId', ficroutes.getWallet.bind(ficroutes));
+./routes/ficRoutes.js:router.post('/transaction', ficroutes.createTransaction.bind(ficroutes));
+./routes/ficRoutes.js:router.post('/exchange', ficroutes.exchange.bind(ficroutes));
+./routes/ficRoutes.js:router.post('/payment', ficroutes.payment.bind(ficroutes));
+./routes/ficRoutes.js:router.post('/payout', ficroutes.payout.bind(ficroutes));
+./routes/ficRoutes.js:router.post('/biometric/register', ficroutes.registerBiometric.bind(ficroutes));
+./routes/ficRoutes.js:router.post('/biometric/verify', ficroutes.verifyBiometric.bind(ficroutes));
+./routes/ficRoutes.js:router.get('/anonymity/:memberId', ficroutes.getAnonymity.bind(ficroutes));
+./routes/ficRoutes.js:router.put('/anonymity/:memberId', ficroutes.updateAnonymity.bind(ficroutes));
+./routes/ficRoutes.js:router.post('/subscription/payment', ficroutes.payment.bind(ficroutes));
+./routes/ficRoutes.js:router.post('/paylink', ficroutes.createPaylink.bind(ficroutes));
+./routes/ficRoutes.js:router.post('/paylink/redeem', ficroutes.redeemPaylink.bind(ficroutes));
+./routes/ficRoutes.js:router.get('/paylink/:memberId', ficroutes.getPaylink.bind(ficroutes));
+./routes/ficRoutes.js:router.put('/paylink/cancel/:paylinkId', ficroutes.cancelPaylink.bind(ficroutes));
+./routes/ficRoutes.js:router.get('/transactions/:memberId', ficroutes.getTransactions.bind(ficroutes));
+./routes/ficRoutes.js:router.get('/exchange-rate', ficroutes.getExchangeRates.bind(ficroutes));
+./routes/ficRoutes.js:router.get('/payment-gateways', ficroutes.getPaymentGateways.bind(ficroutes));
+./routes/ficRoutes.js:router.get('/biometric/:memberId', ficroutes.getBiometric.bind(ficroutes));
+./routes/revenue.js:router.post('/subscription', RevenueController.createSubscription);
+./routes/revenue.js:router.post('/campaign', RevenueController.createAdCampaign);
+./routes/revenue.js:router.post('/distribute-revenue', RevenueController.distributeAdRevenue);
+./routes/audit-log-admin.js:router.get('/', AuditLogAdminController.queryLogs);
+./routes/audit-log-admin.js:router.get('/stats', AuditLogAdminController.getStats);
+./routes/audit-log-admin.js:router.post('/export', AuditLogAdminController.exportLogs);
+./routes/audit-log-admin.js:router.delete('/cleanup', AuditLogAdminController.cleanupLogs);
+./routes/audit-log-admin.js:router.get('/:id', AuditLogAdminController.getLogEntry);
+./routes/audit-log-admin.js:router.post('/search', AuditLogAdminController.searchLogs);
+./routes/audit-log-admin.js:router.get('/trace/:traceId', AuditLogAdminController.getTraceTimeline);
+./routes/audit-log-admin.js:router.get('/session/:sessionId', AuditLogAdminController.getSessionForensics);
+./routes/developer.js:router.get('/applications', developer.getAll);
+./routes/developer.js:router.post('/applications', developer.create);
+./routes/developer.js:router.get('/applications/:appId', developer.getById);
+./routes/developer.js:router.put('/applications/:appId', developer.update);
+./routes/developer.js:router.delete('/applications/:appId', developer.delete);
+./routes/developer.js:router.get('/applications/:appId/keys', developer.getById);
+./routes/developer.js:router.post('/applications/:appId/keys', developer.create);
+./routes/developer.js:router.put('/keys/:keyId', developer.update);
+./routes/developer.js:router.delete('/keys/:keyId', developer.delete);
+./routes/businessHub.js:router.get('/metrics', authenticate, controller.getBusinessMetrics);
+./routes/businessHub.js:router.put('/profile', authenticate, controller.updateBusinessProfile);
+./routes/creator.js:router.post('/schedule', authenticate, async (req, res) => {
+./routes/webhooks.js:router.post('/', WebhookController.registerWebhook);
+./routes/webhooks.js:router.get('/', WebhookController.listWebhooks);
+./routes/webhooks.js:router.put('/:id', WebhookController.updateWebhook);
+./routes/webhooks.js:router.delete('/:id', WebhookController.deleteWebhook);
+./routes/webhooks.js:router.get('/:id/deliveries', WebhookController.getDeliveries);
+./routes/webhooks.js:router.post('/:id/test', WebhookController.testWebhook);
+./routes/p2p-matching.js:router.get('/member-profiles', p2pMatching.getAll);
+./routes/p2p-matching.js:router.get('/member-profiles/:id', p2pMatching.getById);
+./routes/p2p-matching.js:router.post('/member-profiles', p2pMatching.create);
+./routes/p2p-matching.js:router.post('/find-matches', p2pMatching.findMatch);
+./routes/p2p-matching.js:router.post('/matches', p2pMatching.create);
+./routes/p2p-matching.js:router.get('/matches/:memberId', p2pMatching.getById);
+./routes/p2p-matching.js:router.put('/matches/:matchId', p2pMatching.update);
+./routes/p2p-matching.js:router.get('/fic-subscriptions/:memberId', p2pMatching.getById);
+./routes/p2p-matching.js:router.post('/fic-subscriptions', p2pMatching.create);
+./routes/p2p-matching.js:router.post('/procurement-documents', p2pMatching.create);
+./routes/p2p-matching.js:router.get('/procurement-documents', p2pMatching.getAll);
+./routes/p2p-matching.js:router.post('/three-way-matching', p2pMatching.create);
+./routes/p2p-matching.js:router.get('/three-way-matches', p2pMatching.getAll);
+./routes/p2p-matching.js:router.post('/ai-insights', p2pMatching.create);
+./routes/p2p-matching.js:router.get('/analytics-reports', p2pMatching.getAll);
+./routes/p2p-matching.js:router.post('/supply-demand-policies', p2pMatching.create);
+./routes/p2p-matching.js:router.get('/profile-analysis/:analyzedmemberId', p2pMatching.getById);
+./routes/p2p-matching.js:router.post('/marketing-matches', p2pMatching.create);
+./routes/p2p-matching.js:router.get('/sentinel-logs', p2pMatching.getAll);
+./routes/twoFactorAuth.js:router.post('/enable', authenticate, enableTotp);
+./routes/twoFactorAuth.js:router.post('/verify', authenticate, verifyTotp);
+./routes/twoFactorAuth.js:router.post('/disable', authenticate, disableTotp);
+./routes/twoFactorAuth.js:router.post('/backup-codes/generate', authenticate, generateBackupCodes);
+./routes/twoFactorAuth.js:router.post('/backup-codes/verify', authenticate, verifyBackupCode);
+./routes/forumcategories.js:router.get('/', forumcategories.getAll);
+./routes/forumcategories.js:router.get('/:categoryId', forumcategories.getById);
+./routes/forumcategories.js:router.post('/', authenticate, forumcategories.create);
+./routes/forumcategories.js:router.put('/:categoryId', authenticate, forumcategories.update);
+./routes/forumcategories.js:router.delete('/:categoryId', authenticate, forumcategories.delete);
+./routes/forumcategories.js:router.get('/:categoryId/threads', forumcategories.getById);
+./routes/forumcategories.js:router.get('/popular', forumcategories.getAll);
+./routes/uploads.js:router.post('/', authenticate, upload.single('file'), async (req, res) => {
+./routes/uploads.js:router.post('/multiple', authenticate, upload.array('files', 10), (req, res) => {
+./routes/uploads.js:router.get('/:id', authenticate, (req, res) => {
+./routes/uploads.js:router.delete('/:id', authenticate, (req, res) => {
+./routes/uploads.js:router.post('/presigned-url', authenticate, async (req, res) => {
+./routes/uploads.js:router.get('/:id/url', authenticate, async (req, res) => {
+./routes/achievements.js:router.get('/', achievementsController.getUserAchievements);
+./routes/achievements.js:router.get('/available', achievementsController.getAll);
+./routes/achievements.js:router.post('/:achievementId/claim', achievementsController.checkAndAward);
+./routes/achievements.js:router.get('/leaderboard', achievementsController.getLeaderboard);
+./routes/trends.js:router.get('/trends', trends.getAll);
+./routes/trends.js:router.get('/hashtags', trends.getAll);
+./routes/trends.js:router.get('/topics/:category', trends.getById);
+./routes/trends.js:router.get('/creators', trends.getAll);
+./routes/trends.js:router.get('/summary', trends.getAll);
+./routes/analytics.js:router.get('/engagement-metrics', authenticate, analyticsController.getEngagementMetrics);
+./routes/analytics.js:router.get('/revenue', authenticate, analyticsController.getRevenue);
+./routes/analytics.js:router.get('/traffic', authenticate, analyticsController.getTraffic);
+./routes/analytics.js:router.get('/user-growth', authenticate, analyticsController.getUserGrowth);
+./routes/analytics.js:router.get('/conversion', authenticate, analyticsController.getConversion);
+./routes/analytics.js:router.get('/retention', authenticate, analyticsController.getRetention);
+./routes/analytics.js://    router.get('/', authenticate, async (req, res) => { ... });
+./routes/analytics.js://    router.get('/', authenticate, analyticsController.getAll);
+./routes/wallet.js:router.get('/', authenticate, walletController.getWallet);
+./routes/wallet.js:router.post('/', authenticate, walletController.createWallet);
+./routes/wallet.js:router.get('/balance', authenticate, walletController.getBalance);
+./routes/wallet.js:router.get('/transactions', authenticate, walletController.getTransactions);
+./routes/wallet.js:router.post('/deposit', authenticate, walletController.deposit);
+./routes/wallet.js:router.post('/withdraw', authenticate, walletController.withdraw);
+./routes/wallet.js:router.post('/transfer', authenticate, walletController.transfer);
+./routes/wallet.js:router.get('/exchange-rates', walletController.getExchangeRates);
+./routes/governance.js:router.get('/policies', authenticate, governance.getAllPolicies);
+./routes/governance.js:router.get('/policies/:id', authenticate, governance.getPolicyById);
+./routes/governance.js:router.post('/policies', authenticate, governance.createPolicy);
+./routes/governance.js:router.put('/policies/:id', authenticate, governance.updatePolicy);
+./routes/governance.js:router.delete('/policies/:id', authenticate, governance.deletePolicy);
+./routes/governance.js:router.post('/consent', authenticate, governance.grantConsent);
+./routes/governance.js:router.delete('/consent/:policyId', authenticate, governance.withdrawConsent);
+./routes/governance.js:router.get('/consent/user', authenticate, governance.getUserConsents);
+./routes/governance.js:router.post('/validate', authenticate, governance.validateAction);
+./routes/governance.js:router.get('/audit-logs', authenticate, governance.getAuditLogs);
+./routes/lumina-upload.js:router.post('/upload', luminaUpload.create);
+./routes/lumina-upload.js:router.post('/transcode', luminaUpload.create);
+./routes/feature-flags.js:router.get('/check/:key', authenticate, featureFlag.checkFlag);
+./routes/feature-flags.js:router.get('/all', authenticate, featureFlag.getAllFlags);
+./routes/feature-flags.js:router.post('/', authenticate, featureFlag.createFlag); // Admin only
+./routes/feature-flags.js:router.put('/:id', authenticate, featureFlag.updateFlag); // Admin only
+./routes/feature-flags.js:router.delete('/:id', authenticate, featureFlag.deleteFlag); // Admin only
+./routes/fingerlux.js:router.get('/users/:userId/items', fingerlux.getById);
+./routes/fingerlux.js:router.get('/auctions', fingerlux.getAll);
+./routes/fingerlux.js:router.get('/auctions/:auctionId', fingerlux.getById);
+./routes/fingerlux.js:router.post('/auctions/:auctionId/bids', fingerlux.create);
+./routes/fingerlux.js:router.post('/auctions', fingerlux.create);
+./routes/fingerlux.js:router.get('/items/:itemId/reviews', fingerlux.getById);
+./routes/fingerlux.js:router.post('/items/:itemId/reviews', fingerlux.create);
+./routes/fingerlux.js:router.post('/reviews/:reviewId/helpful', fingerlux.create);
+./routes/fingerlux.js:router.get('/wishlist', fingerlux.getAll);
+./routes/fingerlux.js:router.post('/wishlist', fingerlux.create);
+./routes/fingerlux.js:router.delete('/wishlist/:itemId', fingerlux.delete);
+./routes/fingerlux.js:router.get('/cart', fingerlux.getAll);
+./routes/fingerlux.js:router.post('/cart', fingerlux.create);
+./routes/fingerlux.js:router.put('/cart/:itemId', fingerlux.update);
+./routes/fingerlux.js:router.delete('/cart/:itemId', fingerlux.delete);
+./routes/fingerlux.js:router.delete('/cart', fingerlux.delete);
+./routes/fingerlux.js:router.get('/search', fingerlux.getAll);
+./routes/fingerlux.js:router.get('/featured', fingerlux.getAll);
+./routes/fingerlux.js:router.get('/', authenticate, fingerlux.getAll);
+./routes/fingerlux.js:router.get('/', authenticate, fingerlux.getAll);
+./routes/inventory.js:router.get('/low-stock-report', getLowStockReport);
+./routes/blogs.js:router.get('/', BlogsController.getAll);
+./routes/blogs.js:router.get('/:blogId', BlogsController.getById);
+./routes/blogs.js:router.post('/', BlogsController.create);
+./routes/blogs.js:router.put('/:blogId', BlogsController.update);
+./routes/blogs.js:router.delete('/:blogId', BlogsController.delete);
+./routes/blogs.js:router.get('/user/:userId', (req, res) => {
+./routes/comments.js:router.get('/', authenticate, commentsController.getAll);
+./routes/comments.js:router.get('/:id', authenticate, commentsController.getById);
+./routes/comments.js:router.post('/', authenticate, commentsController.create);
+./routes/comments.js:router.put('/:id', authenticate, commentsController.update);
+./routes/comments.js:router.delete('/:id', authenticate, commentsController.delete);
+./routes/comments.js:router.post('/:id/like', authenticate, commentsController.like);
+./routes/general.js:router.get('/status', general.getAll);
+./routes/general.js:router.get('/config', general.getAll);
+./routes/general.js:router.get('/stats', general.getAll);
+./routes/general.js:router.get('/search', general.getAll);
+./routes/general.js:router.get('/trending', general.getAll);
+./routes/general.js:router.get('/announcements', general.getAll);
+./routes/general.js:router.get('/health', general.getAll);
+./routes/nysc.js:router.get('/batches', nysc.getAll);
+./routes/nysc.js:router.get('/batches/:batchId', nysc.getById);
+./routes/nysc.js:router.get('/batches/:batchId/corpers', nysc.getById);
+./routes/nysc.js:router.get('/corpers/:corperId', nysc.getById);
+./routes/nysc.js:router.post('/register', nysc.create);
+./routes/nysc.js:router.get('/state/:stateCode', nysc.getById);
+./routes/nysc.js:router.get('/corpers/:corperId/service-record', nysc.getById);
+./routes/nysc.js:router.post('/projects', nysc.create);
+./routes/nysc.js:router.get('/events', nysc.getAll);
+./routes/photocredits.js:router.get('/', photocredits.getAll);
+./routes/photocredits.js:router.get('/:photoId', photocredits.getById);
+./routes/photocredits.js:router.post('/upload', photocredits.create);
+./routes/photocredits.js:router.post('/:photoId/purchase-license', photocredits.create);
+./routes/photocredits.js:router.get('/licenses/user/:userId', photocredits.getById);
+./routes/photocredits.js:router.get('/categories', photocredits.getAll);
+./routes/photocredits.js:router.put('/:photoId', photocredits.update);
+./routes/gamification.js:router.get('/profile/:memberId', authenticate, gamification.getById);
+./routes/gamification.js:router.get('/achievements/:memberId', gamification.getById);
+./routes/gamification.js:router.get('/achievements', gamification.getAll);
+./routes/gamification.js:router.get('/badges/:memberId', gamification.getById);
+./routes/gamification.js:router.get('/leaderboard', gamification.getAll);
+./routes/gamification.js:router.get('/progress/:memberId', gamification.getById);
+./routes/gamification.js:router.get('/streak/:memberId', gamification.getById);
+./routes/gamification.js:router.post('/update-streak/:memberId', gamification.create);
+./routes/gamification.js:router.post('/award-points', gamification.create);
+./routes/giftcards.js:router.get('/stats', authenticate, giftcardsController.getStats);
+./routes/supervi_leaderboards.js:router.get('/health', supervi_leaderboards.getAll);
+./routes/supervi_leaderboards.js:router.get('/', supervi_leaderboards.getAll);
+./routes/supervi_leaderboards.js:router.get('/:id', supervi_leaderboards.getById);
+./routes/supervi_leaderboards.js:router.post('/', supervi_leaderboards.create);
+./routes/supervi_leaderboards.js:router.put('/:id', supervi_leaderboards.update);
+./routes/supervi_leaderboards.js:router.delete('/:id', supervi_leaderboards.delete);
+./routes/supervi_leaderboards.js:router.get('/:id/entries', supervi_leaderboards.getById);
+./routes/supervi_leaderboards.js:router.get('/:id/members/:memberId/position', supervi_leaderboards.getById);
+./routes/supervi_leaderboards.js:router.post('/:id/submit-score', authenticate, supervi_leaderboards.create);
+./routes/supervi_leaderboards.js:router.get('/:id/stats', supervi_leaderboards.getById);
+./routes/supervi_leaderboards.js:router.get('/members/:memberId/best-scores', supervi_leaderboards.getById);
+./routes/voicelines.js:router.get('/voicelines', voicelines.getClips);
+./routes/voicelines.js:router.get('/voicelines/:voiceLineId', voicelines.getClips); // stub fallback
+./routes/voicelines.js:router.post('/voicelines', voicelines.uploadClip);
+./routes/voicelines.js:router.put('/voicelines/:voiceLineId', voicelines.getClips); // stub fallback
+./routes/voicelines.js:router.delete('/voicelines/:voiceLineId', authenticate, voicelines.getClips); // stub fallback
+./routes/voicelines.js:router.post('/voicelines/:voiceLineId/like', authenticate, voicelines.uploadClip); // stub fallback
+./routes/voicelines.js:router.delete('/voicelines/:voiceLineId/like', authenticate, voicelines.getClips); // stub fallback
+./routes/voicelines.js:router.get('/members/:memberId/voicelines', authenticate, voicelines.getClips); // stub fallback
+./routes/voicelines.js:router.get('/voicelines/:voiceLineId/comments', voicelines.getClips); // stub fallback
+./routes/voicelines.js:router.post('/voicelines/:voiceLineId/comments', authenticate, voicelines.uploadClip); // stub fallback
+./routes/voicelines.js:router.delete('/comments/:commentId', authenticate, voicelines.getClips); // stub fallback
+./routes/lumina.js:router.post('/upload', lumina.create);
+./routes/lumina.js:router.get('/user/:userId/assets', lumina.getById);
+./routes/lumina.js:router.get('/user/:userId/balance', lumina.getById);
+./routes/lumina.js:router.post('/claim-reward', lumina.create);
+./routes/lumina.js:router.post('/transcode', authenticate, lumina.create);
+./routes/lumina.js:router.post('/thumbnail', authenticate, lumina.create);
+./routes/lumina.js:router.get('/artworks', lumina.getAll);
+./routes/gameon.js:router.get('/events', gameon.getAll);
+./routes/gameon.js:router.get('/events/:eventId', gameon.getById);
+./routes/gameon.js:router.post('/events', gameon.create);
+./routes/gameon.js:router.post('/events/:eventId/register', gameon.create);
+./routes/gameon.js:router.delete('/events/:eventId/unregister', gameon.delete);
+./routes/gameon.js:router.get('/users/:userId/events', gameon.getById);
+./routes/gameon.js:router.get('/users/:userId/organized-events', gameon.getById);
+./routes/gameon.js:router.get('/categories', gameon.getAll);
+./routes/payment-gateways.ts:router.post('/stripe/create-payment-intent', async (req, res) => {
+./routes/payment-gateways.ts:router.post('/stripe/create-checkout-session', async (req, res) => {
+./routes/payment-gateways.ts:router.post('/stripe/create-one-time-checkout', async (req, res) => {
+./routes/payment-gateways.ts:router.get('/stripe/customer-portal/:userId', async (req, res) => {
+./routes/payment-gateways.ts:router.post('/crypto/connect-wallet', async (req, res) => {
+./routes/payment-gateways.ts:router.get('/crypto/balance/:address', async (req, res) => {
+./routes/payment-gateways.ts:router.post('/crypto/transfer-fic', async (req, res) => {
+./routes/payment-gateways.ts:router.post('/crypto/approve-spending', async (req, res) => {
+./routes/payment-gateways.ts:router.get('/crypto/allowance/:ownerAddress/:spenderAddress', async (req, res) => {
+./routes/payment-gateways.ts:router.post('/crypto/generate-wallet', async (req, res) => {
+./routes/payment-gateways.ts:router.post('/process-payment', async (req, res) => {
+./routes/beatwave.js:router.get('/tracks', authenticate, beatwave.getTracks);
+./routes/beatwave.js:router.get('/tracks/:id', beatwave.getTracks); // stub
+./routes/beatwave.js:router.post('/tracks', authenticate, beatwave.uploadTrack);
+./routes/beatwave.js:router.put('/tracks/:id', authenticate, beatwave.uploadTrack); // stub
+./routes/beatwave.js:router.delete('/tracks/:id', authenticate, beatwave.uploadTrack); // stub
+./routes/beatwave.js:router.post('/tracks/:id/like', authenticate, beatwave.uploadTrack); // stub
+./routes/beatwave.js:router.post('/tracks/:id/save', authenticate, beatwave.uploadTrack); // stub
+./routes/beatwave.js:router.post('/tracks/:id/play', beatwave.recordPlay);
+./routes/beatwave.js:router.get('/playlists', beatwave.getTracks); // stub
+./routes/beatwave.js:router.get('/playlists/:id', beatwave.getTracks); // stub
+./routes/beatwave.js:router.post('/playlists', authenticate, beatwave.uploadTrack); // stub
+./routes/beatwave.js:router.post('/playlists/:id/tracks', authenticate, beatwave.uploadTrack); // stub
+./routes/beatwave.js:router.delete('/playlists/:playlistId/tracks/:trackId', authenticate, beatwave.uploadTrack); // stub
+./routes/beatwave.js:router.get('/artists', beatwave.getTracks); // stub
+./routes/beatwave.js:router.get('/artists/:id', beatwave.getTracks); // stub
+./routes/beatwave.js:router.get('/albums', beatwave.getTracks); // stub
+./routes/beatwave.js:router.get('/albums/:id', beatwave.getTracks); // stub
+./routes/beatwave.js:router.get('/search', beatwave.getTracks); // stub
+./routes/beatwave.js:router.get('/recommended/:memberId', authenticate, beatwave.getTracks); // stub
+./routes/beatwave.js:router.get('/trending', beatwave.getTrending);
+./routes/beatwave.js:router.get('/history/recent', authenticate, beatwave.getTracks); // stub
+./routes/identity.js:router.get('/', (req, res) => {
+./routes/identity.js:router.post('/verifications/creator', authenticate, async (req, res) => {
+./routes/identity.js:router.post('/verifications/enterprise', authenticate, async (req, res) => {
+./routes/items.js:router.get('/', authenticate, items.getAll);
+./routes/items.js:router.get('/:id', authenticate, items.getById);
+./routes/items.js:router.post('/', authenticate, items.create);
+./routes/items.js:router.put('/:id', authenticate, items.update);
+./routes/items.js:router.delete('/:id', authenticate, items.delete);
+./routes/items.js:router.post('/:id/flag', authenticate, items.create);
+./routes/dancia.js:router.get('/channels', authenticate, controller.getTvChannels);
+./routes/dancia.js:router.get('/schedule', authenticate, controller.getSchedule);
+./routes/integrations.js:router.get('/', integrations.getAll);
+./routes/integrations.js:router.post('/', integrations.create);
+./routes/integrations.js:router.get('/:integrationId', integrations.getById);
+./routes/integrations.js:router.put('/:integrationId', integrations.update);
+./routes/integrations.js:router.delete('/:integrationId', integrations.delete);
+./routes/integrations.js:router.get('/services/list', integrations.getAll);
+./routes/admin.js:router.get('/admin/members', authenticate, adminController.getMembers);
+./routes/admin.js:router.post('/admin/members', authenticate, adminController.createMember);
+./routes/admin.js:router.get('/users', authenticate, adminController.getUsers);
+./routes/admin.js:router.post('/users', authenticate, adminController.manageUser);
+./routes/admin.js:router.get('/admin/verification-records', authenticate, adminController.getVerificationRecords);
+./routes/admin.js:router.post('/admin/update-verification-status', authenticate, adminController.updateVerificationStatus);
+./routes/admin.js:router.get('/admin/security-events', authenticate, adminController.getSecurityEvents);
+./routes/admin.js:router.get('/admin/configurations', authenticate, adminController.getConfigurations);
+./routes/admin.js:router.put('/admin/configurations/:key', authenticate, adminController.updateConfiguration);
+./routes/admin.js:router.get('/admin/rbac/roles', authenticate, adminRbacController.getRoles);
+./routes/admin.js:router.post('/admin/rbac/assign', authenticate, adminRbacController.assignRole);
+./routes/admin.js:router.get('/admin/rbac/permissions', authenticate, adminRbacController.getPermissions);
+./routes/admin.js:router.get('/admin/rate-limit', authenticate, adminRateLimitController.getRateLimits);
+./routes/admin.js:router.post('/admin/rate-limit', authenticate, adminRateLimitController.updateRateLimit);
+./routes/community.js:router.post('/rules', authenticate, communityController.createRule);
+./routes/community.js:router.get('/rules/:communityType/:communityId', communityController.getRules);
+./routes/community.js:router.put('/rules/:id', authenticate, communityController.updateRule);
+./routes/community.js:router.delete('/rules/:id', authenticate, communityController.deleteRule);
+./routes/community.js:router.post('/moderators', authenticate, communityController.assignModerator);
+./routes/community.js:router.get('/moderators/:communityType/:communityId', communityController.getModerators);
+./routes/community.js:router.delete('/moderators/:id', authenticate, communityController.removeModerator);
+./routes/community.js:router.put('/members/:communityType/:communityId/:memberId/role', authenticate, communityController.updateMemberRole);
+./routes/community.js:router.get('/analytics/:communityType/:communityId', authenticate, communityController.getAnalytics);
+./routes/community.js:router.post('/analytics/:communityType/:communityId/refresh', authenticate, communityController.refreshAnalytics);
+./routes/index.ts:router.use("/auth", authRoutes);
+./routes/index.ts:router.use("/ai", aiRoutes);
+./routes/index.ts:router.use("/webhooks", paymentWebhooks);
+./routes/index.ts:router.get("/can-go-live", authMiddleware, LiveStreamController.canGoLive);
+./routes/index.ts:router.use('/notifications', authMiddleware, notificationRoutes);
+./routes/index.ts:router.use('/messages', authMiddleware, messageRoutes);
+./routes/index.ts:router.use('/posts', authMiddleware, postRoutes);
+./routes/index.ts:router.use('/marketplace', authMiddleware, marketplaceRoutes);
+./routes/index.ts:router.use('/community', authMiddleware, communityRoutes);
+./routes/index.ts:router.use('/comments', authMiddleware, commentRoutes);
+./routes/index.ts:router.use('/commerce', authMiddleware, commerceRoutes);
+./routes/index.ts:router.use('/members', authMiddleware, memberRoutes);
+./routes/index.ts:router.use('/gameon', authMiddleware, gameonRoutes);
+./routes/index.ts:router.use('/camus', authMiddleware, camusRoutes);
+./routes/index.ts:router.use('/grading-system', authMiddleware, gradingSystemRoutes);
+./routes/index.ts:router.use('/ai-credit-balance', authMiddleware, aiCreditBalanceRoutes);
+./routes/index.ts:// router.use('/achievements', authMiddleware, achievementsRoutes); // DISABLED - missing controller
+./routes/index.ts:router.use('/activity', authMiddleware, activityRoutes);
+./routes/index.ts:router.use('/gamification', authMiddleware, gamificationRoutes);
+./routes/index.ts:router.use('/gems', authMiddleware, gemsRoutes);
+./routes/index.ts:router.use('/leaderboards', authMiddleware, leaderboardsRoutes);
+./routes/index.ts:router.use('/likes', authMiddleware, likesRoutes);
+./routes/index.ts:router.use('/admin', authMiddleware, adminRoutes);
+./routes/index.ts:router.use('/analytics', authMiddleware, analyticsRoutes);
+./routes/index.ts:router.use('/api-keys', authMiddleware, apiKeysRoutes);
+./routes/index.ts:router.use('/dashboard', authMiddleware, dashboardRoutes);
+./routes/index.ts:router.use('/authenticator', authMiddleware, authenticatorRoutes);
+./routes/index.ts:router.use('/biometric', authMiddleware, biometricRoutes);
+./routes/index.ts:router.use('/blocking', authMiddleware, blockingRoutes);
+./routes/index.ts:router.use('/registration-lock', authMiddleware, registrationLockRoutes);
+./routes/index.ts:router.use('/security', authMiddleware, securityRoutes);
+./routes/index.ts:router.use('/two-factor-auth', authMiddleware, twoFactorAuthRoutes);
+./routes/index.ts:router.use('/beatwave', authMiddleware, beatwaveRoutes);
+./routes/index.ts:// router.use('/blogs', authMiddleware, blogsRoutes); // DISABLED - missing controller
+./routes/index.ts:router.use('/canary', authMiddleware, canaryRoutes);
+./routes/index.ts:router.use('/content-moderation', authMiddleware, contentModerationRoutes);
+./routes/index.ts:router.use('/content-management', authMiddleware, contentmanagementRoutes);
+./routes/index.ts:router.use('/fingershorts', authMiddleware, fingershortsRoutes);
+./routes/index.ts:router.use('/fingerwars', authMiddleware, fingerwarsRoutes);
+./routes/index.ts:router.use('/flamingo', authMiddleware, flamingoRoutes);
+./routes/index.ts:router.use('/lumina', authMiddleware, luminaRoutes);
+./routes/index.ts:router.use('/lumina-media', authMiddleware, luminaMediaRoutes);
+./routes/index.ts:router.use('/lumina-upload', authMiddleware, luminaUploadRoutes);
+./routes/index.ts:router.use('/lushpressies', authMiddleware, lushpressiesRoutes);
+./routes/index.ts:router.use('/media', authMiddleware, mediaRoutes);
+./routes/index.ts:router.use('/meishe-video-editor', authMiddleware, meisheVideoEditorRoutes);
+./routes/index.ts:router.use('/mobile-video-editor', authMiddleware, mobileVideoEditorRoutes);
+./routes/index.ts:router.use('/moderation', authMiddleware, moderationRoutes);
+./routes/index.ts:router.use('/mylearning', authMiddleware, mylearningRoutes);
+./routes/index.ts:router.use('/connections', authMiddleware, connectionsRoutes);
+./routes/index.ts:router.use('/forum-categories', authMiddleware, forumcategoriesRoutes);
+./routes/index.ts:router.use('/forums', authMiddleware, forumsRoutes);
+./routes/index.ts:router.use('/groups', authMiddleware, groupsRoutes);
+./routes/index.ts:router.use('/creator-influence-subscription', authMiddleware, creatorInfluenceSubscriptionRoutes);
+./routes/index.ts:router.use('/csv-import', authMiddleware, csvImportRoutes);
+./routes/index.ts:router.use('/external-services', authMiddleware, externalServicesRoutes);
+./routes/index.ts:router.use('/fic', authMiddleware, ficRoutes);
+./routes/index.ts:router.use('/fingerlux', authMiddleware, fingerluxRoutes);
+./routes/index.ts:router.use('/giftcards', authMiddleware, giftcardsRoutes);
+./routes/index.ts:router.use('/items', authMiddleware, itemsRoutes);
+./routes/index.ts:router.use('/marketplace-tms', authMiddleware, marketplaceTmsRoutes);
+./routes/index.ts:router.use('/permanence', authMiddleware, permanenceRoutes);
+./routes/index.ts:router.use('/permanence-data', authMiddleware, permanenceDataRoutes);
+./routes/index.ts:router.use('/permanence-monetization', authMiddleware, permanenceMonetizationRoutes);
+./routes/index.ts:router.use('/photocredits', authMiddleware, photocreditsRoutes);
+./routes/index.ts:router.use('/platform-themes', authMiddleware, platformThemesRoutes);
+./routes/index.ts:router.use('/publicitee', authMiddleware, publiciteeRoutes);
+./routes/index.ts:router.use('/storefront', authMiddleware, storefrontRoutes);
+./routes/index.ts:router.use('/tms', authMiddleware, tmsRoutes);
+./routes/index.ts:router.use('/elearning', authMiddleware, elearningRoutes);
+./routes/index.ts:router.use('/developer', authMiddleware, developerRoutes);
+./routes/index.ts:router.use('/discover', authMiddleware, discoverRoutes);
+./routes/index.ts:router.use('/enhanced-wallet', authMiddleware, enhancedWalletRoutes);
+./routes/index.ts:router.use('/general', authMiddleware, generalRoutes);
+./routes/index.ts:router.use('/general-endpoints', authMiddleware, generalEndpointsRoutes);
+./routes/index.ts:router.use('/hallmarks', authMiddleware, hallmarksRoutes);
+./routes/index.ts:router.use('/governance', authMiddleware, governanceRoutes);
+./routes/index.ts:router.use('/help-center', authMiddleware, helpcenterRoutes);
+./routes/index.ts:router.use('/integrations', authMiddleware, integrationsRoutes);
+./routes/index.ts:router.use('/integrations-module', authMiddleware, integrationsModuleRoutes);
+./routes/index.ts:router.use('/lendsq', authMiddleware, Loansqroutes);
+./routes/index.ts:router.use('/member-profiles', authMiddleware, memberprofilesRoutes);
+./routes/index.ts:router.use('/mii', authMiddleware, miiRoutes);
+./routes/index.ts:router.use('/nysc', authMiddleware, nyscRoutes);
+./routes/index.ts:router.use('/ownit', authMiddleware, ownitRoutes);
+./routes/index.ts:router.use('/p2p-matching', authMiddleware, p2pMatchingRoutes);
+./routes/index.ts:router.use('/protocol', authMiddleware, protocolRoutes);
+./routes/index.ts:router.use('/seads', authMiddleware, seadsRoutes);
+./routes/index.ts:router.use('/search', authMiddleware, searchRoutes); // Legacy SQL-based search
+./routes/index.ts:router.use('/search-es', authMiddleware, searchElasticsearchRoutes); // Elasticsearch-powered search
+./routes/index.ts:router.use('/supervi-achievements', authMiddleware, superviAchievementsRoutes);
+./routes/index.ts:router.use('/supervi-leaderboards', authMiddleware, superviLeaderboardsRoutes);
+./routes/index.ts:router.use('/trends', authMiddleware, trendsRoutes);
+./routes/index.ts:router.use('/ugc-media', authMiddleware, ugcMediaRoutesRoutes);
+./routes/index.ts:router.use('/payments', authMiddleware, paymentRoutes); // Updated to use new payment gateways routes
+./routes/index.ts:router.use('/stercs', stercsRoutes); // Public routes for shows/episodes
+./routes/index.ts:router.use('/payment-webhooks', paymentWebhooks); // Webhook endpoint (no auth)
+./routes/index.ts:router.use('/metrics', metricsRoutes); // Prometheus metrics (public for scraping)
+./routes/index.ts:router.use('/recommendations', recommendationsRoutes);
+./routes/index.ts:router.use('/feature-flags', featureFlagsRoutes);
+./routes/index.ts:router.use('/sentient', authMiddleware, sentientRoutes);
+./routes/index.ts:router.use('/prompts', promptsRoutes);
+./routes/index.ts:router.use('/commissions', authMiddleware, commissionsRoutes);
+./routes/index.ts:router.use('/communities', authMiddleware, communitiesRoutes);
+./routes/index.ts:router.use('/help-center-alt', authMiddleware, helpcenterRoutesFile);
+./routes/index.ts:router.use('/achievements-alt', authMiddleware, achievementsRoutesFile);
+./routes/index.ts:router.use('/giftcards-alt', authMiddleware, giftcardsRoutesFile);
+./routes/index.ts:router.use('/grading-system-alt', authMiddleware, gradingSystemRoutesFile);
+./routes/index.ts:router.use('/gameon-alt', authMiddleware, gameonRoutesFile);
+./routes/index.ts:router.use('/camus-alt', authMiddleware, camusRoutesFile);
+./routes/index.ts:router.use('/ai-credit-balance-alt', authMiddleware, aiCreditBalanceRoutesFile);
+./routes/index.ts:// router.use('/blogs-alt', authMiddleware, blogsRoutesFile); // DISABLED - missing controller
+./routes/index.ts:router.use('/forums-alt', authMiddleware, forumsRoutesFile);
+./routes/index.ts:router.use('/leaderboards-alt', authMiddleware, leaderboardsRoutesFile);
+./routes/index.ts:router.use('/gems-alt', authMiddleware, gemsRoutesFile);
+./routes/index.ts:router.use('/fic-alt', authMiddleware, ficRoutesFile);
+./routes/index.ts:router.use('/fic-routes', authMiddleware, ficRoutesAlt);
+./routes/index.ts:router.use('/fingershorts-alt', authMiddleware, fingershortsRoutesFile);
+./routes/index.ts:router.use('/flamingo-alt', authMiddleware, flamingoRoutesFile);
+./routes/index.ts:router.use('/beatwave-alt', authMiddleware, beatwaveRoutesFile);
+./routes/index.ts:router.use('/lumina-alt', authMiddleware, luminaRoutesFile);
+./routes/index.ts:router.use('/seads-alt', authMiddleware, seadsRoutesFile);
+./routes/index.ts:router.use('/nexusgnn', authMiddleware, nexusgnnRoutes);
+./routes/index.ts:router.use('/stercs-alt', authMiddleware, stercsRoutesFile);
+./routes/index.ts:router.use('/ownit-alt', authMiddleware, ownitRoutesFile);
+./routes/index.ts:router.use('/publicitee-alt', authMiddleware, publiciteeRoutesFile);
+./routes/index.ts:router.use('/lushpressies-alt', authMiddleware, lushpressiesRoutesFile);
+./routes/index.ts:router.use('/hallmarks-alt', authMiddleware, hallmarksRoutesFile);
+./routes/index.ts:router.use('/photocredits-alt', authMiddleware, photocreditsRoutesFile);
+./routes/index.ts:router.use('/mii', authMiddleware, miiRoutesFile);
+./routes/index.ts:router.use('/sentient-alt', authMiddleware, sentientRoutesFile);
+./routes/index.ts:router.use('/permanence-alt', authMiddleware, permanenceRoutesFile);
+./routes/index.ts:router.use('/governance-alt', authMiddleware, governanceRoutesFile);
+./routes/index.ts:router.use('/nysc-alt', authMiddleware, nyscRoutesFile);
+./routes/index.ts:router.use('/lendsq-alt', authMiddleware, LoansqroutesFile);
+./routes/index.ts:router.use('/p2p-matching-alt', authMiddleware, p2pMatchingRoutesFile);
+./routes/index.ts:router.use('/admin-alt', authMiddleware, adminRoutesFile);
+./routes/index.ts:router.use('/analytics-alt', authMiddleware, analyticsRoutesFile);
+./routes/index.ts:router.use('/audit-log-admin', authMiddleware, auditLogAdminRoutes);
+./routes/index.ts:router.use('/backups', authMiddleware, backupsRoutes);
+./routes/index.ts:router.use('/cdn', authMiddleware, cdnRoutes);
+./routes/index.ts:router.use('/content-moderation-alt', authMiddleware, contentModerationRoutesFile);
+./routes/index.ts:router.use('/export', authMiddleware, exportRoutes);
+./routes/index.ts:router.use('/feature-flags-alt', authMiddleware, featureFlagsRoutesFile);
+./routes/index.ts:router.use('/fraud-alerts', authMiddleware, fraudAlertsRoutes);
+./routes/index.ts:router.use('/security-alt', authMiddleware, securityRoutesFile);
+./routes/index.ts:router.use('/user-management', authMiddleware, userManagementRoutes);
+./routes/index.ts:router.use('/webhook-deliveries', authMiddleware, webhookDeliveriesRoutes);
+./routes/index.ts:router.use('/widgets', authMiddleware, widgetsRoutes);
+./routes/index.ts:router.use('/webhooks-app', authMiddleware, webhooksRoutes);
+./routes/index.ts:router.use('/fingerlux-alt', authMiddleware, fingerluxRoutesFile);
+./routes/index.ts:router.use('/fingerwars-alt', authMiddleware, fingerwarsRoutesFile);
+./routes/index.ts:router.use('/uploads', authMiddleware, uploadsRoutes);
+./routes/index.ts:router.use('/video-editor', authMiddleware, videoEditorRoutes);
+./routes/index.ts:router.use('/voicefeed', authMiddleware, voicefeedRoutes);
+./routes/index.ts:router.use('/voicelines', authMiddleware, voicelinesRoutes);
+./routes/stercs.js:router.get('/projects', authenticate, async (req, res) => {
+./routes/stercs.js:router.post('/projects', authenticate, async (req, res) => {
+./routes/stercs.js:router.get('/projects/:id', authenticate, async (req, res) => {
+./routes/stercs.js:router.put('/projects/:id', authenticate, async (req, res) => {
+./routes/stercs.js:router.delete('/projects/:id', authenticate, async (req, res) => {
+./routes/stercs.js:router.post('/projects/:id/publish', authenticate, async (req, res) => {
+./routes/contentmanagement.js:router.get('/', contentmanagement.getPages);
+./routes/contentmanagement.js:router.get('/:contentId', contentmanagement.getPages); // stub fallback
+./routes/contentmanagement.js:router.post('/', contentmanagement.createPage);
+./routes/contentmanagement.js:router.put('/:contentId', contentmanagement.updatePage);
+./routes/contentmanagement.js:router.delete('/:contentId', contentmanagement.deletePage);
+./routes/contentmanagement.js:router.get('/author/:authorId', contentmanagement.getPages); // stub fallback
+./routes/contentmanagement.js:router.get('/categories', contentmanagement.getPages); // stub fallback
+./routes/contentmanagement.js:router.get('/tags', contentmanagement.getPages); // stub fallback
+./routes/authEnhancements.js:router.post('/refresh-token', async (req, res) => {
+./routes/authEnhancements.js:router.post('/logout-all-devices', async (req, res) => {
+./routes/authEnhancements.js:router.get('/sessions', async (req, res) => {
+./routes/authEnhancements.js:router.delete('/session/:id', async (req, res) => {
+./routes/authEnhancements.js:router.post('/mfa/enable', async (req, res) => {
+./routes/authEnhancements.js:router.post('/mfa/verify', async (req, res) => {
+./routes/flamingo.js:router.get('/categories', flamingo.getAll);
+./routes/flamingo.js:router.get('/size-charts', flamingo.getAll);
+./routes/flamingo.js:router.get('/size-charts/:id', flamingo.getById);
+./routes/flamingo.js:router.post('/size-charts', flamingo.create);
+./routes/flamingo.js:router.get('/brand-sizings', flamingo.getAll);
+./routes/flamingo.js:router.get('/brand-sizings/:brandName', flamingo.getById);
+./routes/flamingo.js:router.put('/brand-sizings/:brandName', flamingo.update);
+./routes/flamingo.js:router.get('/measurements/:userId', flamingo.getById);
+./routes/flamingo.js:router.post('/measurements/:userId', flamingo.create);
+./routes/flamingo.js:router.put('/measurements/:userId', flamingo.update);
+./routes/flamingo.js:router.get('/users/:userId/recommendations', flamingo.getById);
+./routes/flamingo.js:router.get('/users/:userId/recommendations/:brandName/:categoryId', flamingo.getById);
+./routes/flamingo.js:router.post('/recommendations/:recommendationId/feedback', flamingo.create);
+./routes/flamingo.js:router.get('/users/:userId/outfits', flamingo.getById);
+./routes/flamingo.js:router.get('/outfits/:outfitId', flamingo.getById);
+./routes/flamingo.js:router.post('/outfits', flamingo.create);
+./routes/flamingo.js:router.put('/outfits/:outfitId', flamingo.update);
+./routes/flamingo.js:router.delete('/outfits/:outfitId', flamingo.delete);
+./routes/flamingo.js:router.post('/outfits/:outfitId/items', flamingo.create);
+./routes/flamingo.js:router.put('/outfit-items/:itemId', flamingo.update);
+./routes/flamingo.js:router.delete('/outfit-items/:itemId', flamingo.delete);
+./routes/flamingo.js:router.get('/public-outfits', flamingo.getAll);
+./routes/flamingo.js:router.post('/outfits/:outfitId/like', flamingo.create);
+./routes/flamingo.js:router.post('/outfits/:outfitId/save', flamingo.create);
+./routes/tms.js:router.get('/', tms.getAll);
+./routes/tms.js:router.get('/:entryId', tms.getById);
+./routes/tms.js:router.post('/', tms.create);
+./routes/tms.js:router.put('/:entryId', tms.update);
+./routes/tms.js:router.delete('/:entryId', tms.delete);
+./routes/dashboard.js:router.get('/', authenticate, dashboard.getDashboard);
+./routes/dashboard.js:router.get('/metrics', authenticate, dashboard.getDashboard); // stub
+./routes/dashboard.js:router.get('/activities', authenticate, dashboard.getDashboard); // stub
+./routes/voice.js:router.post('/process', authenticate, controller.processVoice);
+./routes/voice.js:router.get('/settings', authenticate, controller.getVoiceSettings);
+./routes/developer-portal.js:router.get('/openapi.json', developerPortalController.getOpenAPISpec);
+./routes/developer-portal.js:router.get('/examples/curl', developerPortalController.getCurlExamples);
+./routes/developer-portal.js:router.get('/sdk/javascript', developerPortalController.getJavaScriptSDK);
+./routes/developer-portal.js:router.get('/sdk/python', developerPortalController.getPythonSDK);
+./routes/developer-portal.js:router.post('/docs/generate', authenticate, developerPortalController.regenerateDocs);
+./routes/developer-portal.js:router.get('/stats', authenticate, developerPortalController.getAPIStats);
+./routes/gems.js:router.get('/balance', authenticate, gems.getAll);
+./routes/gems.js:router.get('/transactions', authenticate, gems.getAll);
+./routes/gems.js:router.post('/award', authenticate, gems.create);
+./routes/gems.js:router.post('/deduct', authenticate, gems.create);
+./routes/gems.js:router.post('/transfer', authenticate, gems.create);
+./routes/widgets.js:router.get('/:type', authenticate, WidgetsController.getWidget);
+./routes/widgets.js:router.post('/batch', authenticate, WidgetsController.getBatchWidgets);
+./routes/widgets.js:router.post('/invalidate-cache', authenticate, WidgetsController.invalidateCache);
+./routes/widgets.js:router.get('/types', authenticate, WidgetsController.listWidgetTypes);
+./routes/payments.ts:router.post('/stripe/create-payment-intent', async (req, res) => {
+./routes/payments.ts:router.post('/stripe/create-checkout-session', async (req, res) => {
+./routes/payments.ts:router.post('/stripe/create-one-time-checkout', async (req, res) => {
+./routes/payments.ts:router.get('/stripe/customer-portal/:userId', async (req, res) => {
+./routes/payments.ts:router.post('/crypto/connect-wallet', async (req, res) => {
+./routes/payments.ts:router.get('/crypto/balance/:address', async (req, res) => {
+./routes/payments.ts:router.post('/crypto/transfer-fic', async (req, res) => {
+./routes/payments.ts:router.post('/crypto/approve-spending', async (req, res) => {
+./routes/payments.ts:router.get('/crypto/allowance/:ownerAddress/:spenderAddress', async (req, res) => {
+./routes/payments.ts:router.post('/crypto/generate-wallet', async (req, res) => {
+./routes/payments.ts:router.post('/process-payment', async (req, res) => {
+./routes/payments.ts:router.post('/tip', async (req, res) => {
+./routes/payments.ts:router.post('/ad-revenue/distribute', async (req, res) => {
+./routes/payments.ts:router.post('/credits/add', async (req, res) => {
+./routes/payments.ts:router.post('/payouts', async (req, res) => {
+./routes/lumina-media.js:router.post('/upload', authenticate, luminaMedia.create);
+./routes/lumina-media.js:router.post('/transcode', authenticate, luminaMedia.create);
+./routes/lumina-media.js:router.post('/apply-filter', authenticate, luminaMedia.create);
+./routes/lumina-media.js:router.get('/files/:id', luminaMedia.getById);
+./routes/lumina-media.js:router.get('/my-assets', authenticate, luminaMedia.getAll);
+./routes/lumina-media.js:router.delete('/files/:id', authenticate, luminaMedia.delete);
+./routes/search.js:router.get('/', async (req, res) => {
+./routes/search.js:router.get('/suggestions', async (req, res) => {
+./routes/search.js:router.post('/index', authenticate, requireAdmin, async (req, res) => {
+./routes/search.js:router.delete('/index/:id', authenticate, requireAdmin, async (req, res) => {
+./routes/search.js:router.post('/queries', search.create);
+./routes/search.js:router.get('/queries', search.getAll);
+./routes/search.js:router.post('/saved', search.create);
+./routes/search.js:router.get('/saved', search.getAll);
+./routes/search.js:router.put('/saved/:id', search.update);
+./routes/search.js:router.delete('/saved/:id', search.delete);
+./routes/payment-webhooks.ts:router.post('/stripe', express.raw({type: 'application/json'}), PaymentController.handleStripeWebhook);
+./routes/payment-webhooks.ts:router.post('/tip', PaymentController.processTip);
+./routes/payment-webhooks.ts:router.post('/ad-revenue-distribution', PaymentController.processAdRevenueDistribution);
+./routes/payment-webhooks.ts:router.post('/subscription-purchase', PaymentController.processSubscriptionPurchase);
+./routes/payment-webhooks.ts:router.post('/add-credits', PaymentController.addCredits);
+./routes/voicefeed.js:router.get('/clips', voicefeed.getPosts);
+./routes/voicefeed.js:router.get('/clips/:clipId', voicefeed.getPosts); // stub fallback
+./routes/voicefeed.js:router.post('/clips', voicefeed.createPost);
+./routes/voicefeed.js:router.put('/clips/:clipId', voicefeed.getPosts); // stub fallback
+./routes/voicefeed.js:router.delete('/clips/:clipId', authenticate, voicefeed.getPosts); // stub fallback
+./routes/voicefeed.js:router.post('/clips/:clipId/like', authenticate, voicefeed.createPost); // stub fallback
+./routes/voicefeed.js:router.delete('/clips/:clipId/like', authenticate, voicefeed.getPosts); // stub fallback
+./routes/voicefeed.js:router.get('/members/:memberId/clips', authenticate, voicefeed.getPosts); // stub fallback
+./routes/voicefeed.js:router.get('/clips/:clipId/comments', voicefeed.getPosts); // stub fallback
+./routes/voicefeed.js:router.post('/clips/:clipId/comments', authenticate, voicefeed.createPost); // stub fallback
+./routes/voicefeed.js:router.delete('/comments/:commentId', authenticate, voicefeed.getPosts); // stub fallback
+./routes/notifications.js:router.post('/email', async (req, res) => {
+./routes/notifications.js:router.post('/sms', async (req, res) => {
+./routes/notifications.js:router.post('/push', async (req, res) => {
+./routes/notifications.js:router.post('/register-device', async (req, res) => {
+./routes/notifications.js:router.get('/preferences', async (req, res) => {
+./routes/notifications.js:router.put('/preferences', async (req, res) => {
+./routes/marketplace.js:router.get('/unified-products', async (req, res) => {
+./routes/marketplace.js:router.get('/products', async (req, res) => {
+./routes/marketplace.js:router.get('/products/:id', async (req, res) => {
+./routes/marketplace.js:router.post('/products', authenticate, async (req, res) => {
+./routes/marketplace.js:router.put('/products/:id', authenticate, async (req, res) => {
+./routes/marketplace.js:router.delete('/products/:id', authenticate, async (req, res) => {
+./routes/marketplace.js:router.get('/cart', authenticate, async (req, res) => {
+./routes/marketplace.js:router.post('/cart', authenticate, async (req, res) => {
+./routes/marketplace.js:router.put('/cart/:productId', authenticate, async (req, res) => {
+./routes/marketplace.js:router.delete('/cart/:productId', authenticate, async (req, res) => {
+./routes/marketplace.js:router.delete('/cart', authenticate, async (req, res) => {
+./routes/marketplace.js:router.get('/wishlist', authenticate, async (req, res) => {
+./routes/marketplace.js:router.post('/wishlist', authenticate, async (req, res) => {
+./routes/marketplace.js:router.delete('/wishlist/:productId', authenticate, async (req, res) => {
+./routes/marketplace.js:router.post('/reviews', authenticate, async (req, res) => {
+./routes/marketplace.js:router.get('/reviews/:productId', async (req, res) => {
+./routes/marketplace.js:router.put('/reviews/:id', authenticate, async (req, res) => {
+./routes/marketplace.js:router.delete('/reviews/:id', authenticate, async (req, res) => {
+./routes/marketplace.js:router.get('/categories', async (req, res) => {
+./routes/marketplace.js:router.get('/categories/:slug', async (req, res) => {
+./routes/marketplace.js:router.post('/products/:id/purchase', authenticate, async (req, res) => {
+./routes/marketplace.js:router.get('/analytics', authenticate, async (req, res) => {
+./routes/marketplace.js:router.get('/unified-orders', authenticate, async (req, res) => {
+./routes/marketplace.js:router.get('/transactions', authenticate, async (req, res) => {
+./routes/auth.routes.ts:router.get("/verify-email/:token", AuthController.verifyEmail);
+./routes/auth.routes.ts:router.post("/logout", authMiddleware, AuthController.logout);
+./routes/auth.routes.ts:router.post("/refresh-token", authMiddleware, AuthController.refreshToken);
+./routes/auth.routes.ts:router.get("/profile", authMiddleware, AuthController.getProfile);
+./routes/auth.routes.ts:router.put("/profile", authMiddleware, AuthController.updateProfile);
+./routes/auth.routes.ts:router.post("/change-password", authMiddleware, AuthController.changePassword);
+./routes/enhanced_wallet.js:router.get('/', authenticate, enhanced_wallet.getAll);
+./routes/enhanced_wallet.js:router.post('/distribute-earnings', enhanced_wallet.create);
+./routes/enhanced_wallet.js:router.post('/stake', enhanced_wallet.create);
+./routes/enhanced_wallet.js:router.get('/stakes', enhanced_wallet.getAll);
+./routes/enhanced_wallet.js:router.get('/distribution-history', enhanced_wallet.getAll);
+./routes/enhanced_wallet.js:router.post('/convert/store-credit-to-fic', enhanced_wallet.create);
+./routes/revenue_wallet.js:router.get('/:userId/balance', RevenueWalletController.getWalletBalance);
+./routes/revenue_wallet.js:router.post('/deposit', RevenueWalletController.depositFunds);
+./routes/revenue_wallet.js:router.post('/tip', RevenueWalletController.sendTip);
+./routes/messages.js:router.get('/conversations', authenticate, messagesController.getConversations);
+./routes/messages.js:router.get('/conversations/:otherMemberId', authenticate, messagesController.getConversationMessages);
+./routes/messages.js:router.post('/', authenticate, messagesController.create);
+./routes/messages.js:router.get('/:messageId', authenticate, messagesController.getById);
+./routes/messages.js:router.put('/:messageId', authenticate, messagesController.update);
+./routes/messages.js:router.delete('/:messageId', authenticate, messagesController.delete);
+./routes/messages.js:router.post('/mark-as-read', authenticate, messagesController.markAsRead);
+./routes/messages.js:router.get('/unread-count', authenticate, messagesController.getUnreadCount);
+./routes/userManagement.js:router.get('/profile', authenticate, controller.getProfile);
+./routes/userManagement.js:router.put('/profile', authenticate, controller.updateProfile);
+./routes/userManagement.js:router.put('/settings', authenticate, controller.updateSettings);
+./routes/userManagement.js:router.get('/:id/ces', controller.getCES);
+./routes/contentOperations.js:router.post('/upload', upload.single('file'), async (req, res) => {
+./routes/contentOperations.js:router.get('/trending', async (req, res) => {
+./routes/contentOperations.js:router.get('/recommended', async (req, res) => {
+./routes/contentOperations.js:router.post('/:id/report', async (req, res) => {
+./routes/contentOperations.js:router.get('/:id/analytics', async (req, res) => {
+./routes/blocking.js:router.get('/', blocking.getBlockedUsers);
+./routes/blocking.js:router.post('/', blocking.blockUser);
+./routes/blocking.js:router.delete('/:blockedmemberId', blocking.unblockUser);
+./routes/blocking.js:router.get('/check/:memberId', blocking.checkStatus);
+./routes/blocking.js:router.get('/blocked-by', blocking.getBlockedUsers); // stub
+./routes/permanence.js:router.get('/challenges', permanence.getAll);
+./routes/permanence.js:router.get('/challenges/:id', permanence.getById);
+./routes/permanence.js:router.post('/challenges', permanence.create);
+./routes/permanence.js:router.put('/challenges/:id', permanence.update);
+./routes/permanence.js:router.delete('/challenges/:id', permanence.delete);
+./routes/permanence.js:router.post('/challenges/:id/participate', authenticate, permanence.create);
+./routes/permanence.js:router.post('/challenges/:id/stake', permanence.create);
+./routes/permanence.js:router.get('/streams', permanence.getAll);
+./routes/permanence.js:router.post('/streams', permanence.create);
+./routes/permanence.js:router.put('/streams/:id/start', permanence.update);
+./routes/permanence.js:router.put('/streams/:id/stop', permanence.update);
+./routes/lendsq.js:router.get('/loans', lendsq.getAll);
+./routes/lendsq.js:router.get('/loans/:id', lendsq.getById);
+./routes/lendsq.js:router.post('/loans', lendsq.create);
+./routes/lendsq.js:router.put('/loans/:id', lendsq.update);
+./routes/lendsq.js:router.delete('/loans/:id', authenticate, lendsq.delete);
+./routes/lendsq.js:router.post('/loans/:id/invest', authenticate, lendsq.create);
+./routes/lendsq.js:router.get('/loans/:id/investments', lendsq.getById);
+./routes/lendsq.js:router.get('/member/investments', authenticate, lendsq.getAll);
+./routes/lendsq.js:router.get('/member/loans', authenticate, lendsq.getAll);
+./routes/lendsq.js:router.get('/stats', lendsq.getAll);
+./routes/lendsq.js:router.post('/loans/:id/repayment', authenticate, lendsq.create);
+./routes/lendsq.js:router.get('/products', lendsq.getAll);
+./routes/lendsq.js:router.get('/products/:productId', lendsq.getById);
+./routes/lendsq.js:router.post('/applications', lendsq.create);
+./routes/lendsq.js:router.get('/users/:userId/applications', lendsq.getById);
+./routes/lendsq.js:router.get('/users/:userId/loans', lendsq.getById);
+./routes/lendsq.js:router.post('/loans/:loanId/payments', lendsq.create);
+./routes/lendsq.js:router.get('/loans/:loanId/payments', lendsq.getById);
+./routes/lendsq.js:router.get('/categories', lendsq.getAll);
+./routes/csvImport.js:router.post('/import-all', csvimport.create);
+./routes/csvImport.js:router.post('/import-members', csvimport.create);
+./routes/csvImport.js:router.post('/import-blog-posts', csvimport.create);
+./routes/csvImport.js:router.post('/import-forum-categories', csvimport.create);
+./routes/cdn.js:router.post('/invalidate', authenticate, cdn.invalidateCache); // Admin only
+./routes/cdn.js:router.get('/stats', authenticate, cdn.getCacheStats);
+./routes/cdn.js:router.get('/performance', authenticate, cdn.getPerformanceMetrics);
+./routes/cdn.js:router.post('/configure-rules', authenticate, cdn.configureCachingRules); // Admin only
+./app.js:app.get('/', (req, res) => {
+./app.js:app.get('/health', healthCheck);
+./app.js:app.get('/ready', readinessProbe);
+./app.js:app.get('/live', livenessProbe);

@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --brand-blue: #3b82f6;
+  --brand-purple: #8b5cf6;
+  --brand-green: #10b981;
+  --brand-yellow: #f59e0b;
+  --brand-red: #ef4444;
+  --dark-bg: #0f172a;
+  --dark-card: #1e293b;
+  --dark-border: #334155;
+}

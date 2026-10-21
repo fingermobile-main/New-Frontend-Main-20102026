@@ -1,0 +1,80 @@
+/* Override styles for specific components */
+
+/* Override for toast notifications */
+.Toastify__toast-container {
+  width: auto;
+  min-width: 300px;
+}
+
+.Toastify__toast {
+  background-color: #1f2937;
+  color: #f9fafb;
+  border-radius: 0.5rem;
+}
+
+.Toastify__toast--success {
+  background-color: #10b981;
+}
+
+.Toastify__toast--error {
+  background-color: #ef4444;
+}
+
+.Toastify__toast--warning {
+  background-color: #f59e0b;
+}
+
+.Toastify__toast--info {
+  background-color: #3b82f6;
+}
+
+/* Override for button styles */
+.btn-primary {
+  @apply bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded;
+}
+
+.btn-secondary {
+  @apply bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded;
+}
+
+.btn-success {
+  @apply bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded;
+}
+
+.btn-danger {
+  @apply bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded;
+}
+
+/* Override for form elements */
+.form-input {
+  @apply w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white;
+}
+
+.form-select {
+  @apply w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white;
+}
+
+/* Override for card styles */
+.card {
+  @apply bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-gray-700;
+}
+
+/* Override for modal styles */
+.modal-overlay {
+  @apply fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4;
+}
+
+.modal-content {
+  @apply bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 w-full max-w-md;
+}
+
+/* Responsive overrides */
+@media (max-width: 640px) {
+  .card {
+    @apply p-4;
+  }
+  
+  .modal-content {
+    @apply p-4;
+  }
+}

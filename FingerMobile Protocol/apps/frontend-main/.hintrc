@@ -1,0 +1,10 @@
+{
+  "extends": ["web-recommended"],
+  "formatters": ["summary"],
+  "hints": {
+    "no-inline-styles": "off"
+  },
+  "rules": {
+    "no-inline-styles": "off"
+  }
+}

@@ -1,0 +1,355 @@
+version: "3.8"
+
+# ==========================================
+# FingerMobile Protocol - Staging Environment
+# Date: June 11, 2026
+# Purpose: Complete staging deployment with all components
+# ==========================================
+
+services:
+  # ==========================================
+  # MAIN API SERVER
+  # ==========================================
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.staging
+    container_name: fingermobile-api-staging
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=staging
+      - PORT=3000
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    env_file:
+      - .env.staging
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./logs:/app/logs
+      - ./uploads:/app/uploads
+      - ./backups:/app/backups
+    networks:
+      - fingermobile-staging-network
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 2G
+        reservations:
+          cpus: "1.0"
+          memory: 1G
+      restart_policy:
+        condition: on-failure
+        max_attempts: 5
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.rule=Host(`staging-api.fingermobileprotocol.com`)"
+      - "traefik.http.services.api.loadbalancer.server.port=3000"
+
+  # ==========================================
+  # WEBSOCKET SERVER
+  # ==========================================
+  websocket:
+    build:
+      context: .
+      dockerfile: Dockerfile.ws
+    container_name: fingermobile-ws-staging
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=staging
+      - WS_PORT=3001
+      - REDIS_HOST=redis
+    env_file:
+      - .env.staging
+    depends_on:
+      - redis
+    networks:
+      - fingermobile-staging-network
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 1G
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/ws/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ==========================================
+  # POSTGRESQL DATABASE (Primary)
+  # ==========================================
+  postgres:
+    image: postgres:14-alpine
+    container_name: fingermobile-db-staging
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${DB_USER:-fingermobile_staging}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME:-fingermobile_staging}
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --lc-collate=C --lc-ctype=C"
+    volumes:
+      - postgres-staging-data:/var/lib/postgresql/data
+      - ./database/comprehensive_controller_schemas.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./database/security_schemas.sql:/docker-entrypoint-initdb.d/02-security.sql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/03-init.sql
+    networks:
+      - fingermobile-staging-network
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 4G
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-fingermobile_staging}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # ==========================================
+  # REDIS (Cache & Sessions)
+  # ==========================================
+  redis:
+    image: redis:7-alpine
+    container_name: fingermobile-redis-staging
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: >
+      redis-server
+      --requirepass ${REDIS_PASSWORD}
+      --maxmemory 2gb
+      --maxmemory-policy allkeys-lru
+      --appendonly yes
+    volumes:
+      - redis-staging-data:/data
+    networks:
+      - fingermobile-staging-network
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 2G
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ==========================================
+  # NGINX (Reverse Proxy & Load Balancer)
+  # ==========================================
+  nginx:
+    image: nginx:alpine
+    container_name: fingermobile-nginx-staging
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx-staging.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+      - ./public:/usr/share/nginx/html:ro
+    depends_on:
+      - api
+      - websocket
+    networks:
+      - fingermobile-staging-network
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512M
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ==========================================
+  # PROMETHEUS (Metrics Collection)
+  # ==========================================
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: fingermobile-prometheus-staging
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-staging-data:/prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.console.libraries=/usr/share/prometheus/console_libraries"
+      - "--web.console.templates=/usr/share/prometheus/consoles"
+    networks:
+      - fingermobile-staging-network
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 1G
+
+  # ==========================================
+  # GRAFANA (Visualization & Dashboards)
+  # ==========================================
+  grafana:
+    image: grafana/grafana:latest
+    container_name: fingermobile-grafana-staging
+    restart: unless-stopped
+    ports:
+      - "3002:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-admin}
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - grafana-staging-data:/var/lib/grafana
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources:ro
+    depends_on:
+      - prometheus
+    networks:
+      - fingermobile-staging-network
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
+
+  # ==========================================
+  # ELASTICSEARCH (Log Storage)
+  # ==========================================
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+    container_name: fingermobile-elasticsearch-staging
+    restart: unless-stopped
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - xpack.security.enabled=false
+    volumes:
+      - elasticsearch-staging-data:/usr/share/elasticsearch/data
+    networks:
+      - fingermobile-staging-network
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 2G
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9200/_cluster/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # ==========================================
+  # KIBANA (Log Visualization)
+  # ==========================================
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.11.0
+    container_name: fingermobile-kibana-staging
+    restart: unless-stopped
+    ports:
+      - "5601:5601"
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    depends_on:
+      - elasticsearch
+    networks:
+      - fingermobile-staging-network
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 1G
+
+  # ==========================================
+  # FILEBEAT (Log Shipping)
+  # ==========================================
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:8.11.0
+    container_name: fingermobile-filebeat-staging
+    restart: unless-stopped
+    user: root
+    volumes:
+      - ./logs:/var/log/fingermobile:ro
+      - ./monitoring/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    depends_on:
+      - elasticsearch
+    networks:
+      - fingermobile-staging-network
+
+  # ==========================================
+  # TRAEFIK (API Gateway & SSL Termination)
+  # ==========================================
+  traefik:
+    image: traefik:v2.10
+    container_name: fingermobile-traefik-staging
+    restart: unless-stopped
+    ports:
+      - "8080:8080" # Dashboard
+      - "8081:80" # HTTP
+      - "8082:443" # HTTPS
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./traefik/dynamic:/etc/traefik/dynamic:ro
+      - ./ssl:/etc/traefik/ssl:ro
+    networks:
+      - fingermobile-staging-network
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512M
+    command:
+      - "--api.dashboard=true"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.email=admin@fingermobileprotocol.com"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+
+volumes:
+  postgres-staging-data:
+    driver: local
+  redis-staging-data:
+    driver: local
+  prometheus-staging-data:
+    driver: local
+  grafana-staging-data:
+    driver: local
+  elasticsearch-staging-data:
+    driver: local
+
+networks:
+  fingermobile-staging-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

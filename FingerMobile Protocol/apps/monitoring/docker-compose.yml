@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  monitoring-db:
+    image: postgres:15-alpine
+    container_name: monitoring_db
+    environment:
+      POSTGRES_DB: monitoring_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: monitoring_db_pwd_74451a28cc0d2b52
+    ports:
+      - "5445:5432"
+    volumes:
+      - monitoring_db_data:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - monitoring_network
+
+  monitoring-redis:
+    image: redis:7-alpine
+    container_name: monitoring_redis
+    command: redis-server --requirepass monitoring_redis_0561755413fe8373
+    ports:
+      - "6492:6379"
+    volumes:
+      - monitoring_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "monitoring_redis_0561755413fe8373", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - monitoring_network
+
+  monitoring-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: monitoring_backend
+    environment:
+      - NODE_ENV=production
+      - PORT=3004
+      - DB_HOST=monitoring-db
+      - DB_PORT=5432
+      - DB_NAME=monitoring_db
+      - DB_USER=postgres
+      - DB_PASSWORD=monitoring_db_pwd_74451a28cc0d2b52
+      - REDIS_HOST=monitoring-redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=monitoring_redis_0561755413fe8373
+      - JWT_SECRET=monitoring_jwt_11558aa12eaf86d78059803c0f4bd9a3f8b4bb9c992db1a5f64b6b254c27694b
+    ports:
+      - "3004:3004"
+    depends_on:
+      monitoring-db:
+        condition: service_healthy
+      monitoring-redis:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - monitoring_network
+
+volumes:
+  monitoring_db_data:
+  monitoring_redis_data:
+
+networks:
+  monitoring_network:
+    driver: bridge

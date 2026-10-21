@@ -1,0 +1,24 @@
+{
+  "testEnvironment": "node",
+  "roots": ["<rootDir>/__tests__"],
+  "testMatch": [
+    "**/__tests__/**/*.test.js",
+    "**/__tests__/**/*.test.ts"
+  ],
+  "collectCoverageFrom": [
+    "controllers/**/*.{js,ts}",
+    "models/**/*.{js,ts}",
+    "routes/**/*.{js,ts}",
+    "middleware/**/*.{js,ts}",
+    "services/**/*.{js,ts}",
+    "!**/node_modules/**",
+    "!**/__tests__/**"
+  ],
+  "moduleFileExtensions": ["ts", "js", "json"],
+  "transform": {
+    "^.+\\.ts$": "ts-jest"
+  },
+  "setupFilesAfterEnv": ["<rootDir>/jest.setup.js"],
+  "verbose": true,
+  "testTimeout": 30000
+}

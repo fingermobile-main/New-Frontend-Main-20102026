@@ -1,0 +1,2286 @@
+networks:
+  fingermobile_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  pgadmin_data:
+    driver: local
+  backend_uploads:
+    driver: local
+  gameon_db_data:
+  fingerlux_db_data:
+  flamingo_db_data:
+  fingerwars_db_data:
+  trends_db_data:
+  gems_db_data:
+  beatwaveng_db_data:
+  beatwaveng_redis_data:
+  camus_db_data:
+  camus_redis_data:
+  cmap_db_data:
+  cmap_redis_data:
+  dancia4tv_db_data:
+  dancia4tv_redis_data:
+  elearning_db_data:
+  elearning_redis_data:
+  hallmarks_db_data:
+  hallmarks_redis_data:
+  blogs_db_data:
+  groups_db_data:
+  fingershorts_db_data:
+  loansqr_db_data:
+  loansqr_redis_data:
+  luminagallery_db_data:
+  luminagallery_redis_data:
+  lushpressies_db_data:
+  lushpressies_redis_data:
+  marketplace_db_data:
+  marketplace_redis_data:
+  mii_db_data:
+  mii_redis_data:
+  monitoring_db_data:
+  monitoring_redis_data:
+  mylearning_db_data:
+  mylearning_redis_data:
+  mystorefront_db_data:
+  mystorefront_redis_data:
+
+  # Volumes for Placeholder Services
+  user_management_service_db_data:
+  user_management_service_redis_data:
+  vivo_fun_db_data:
+  vivo_fun_redis_data:
+  wasi_cloud_db_data:
+  wasi_cloud_redis_data:
+  web_analytics_service_db_data:
+  web_analytics_service_redis_data:
+
+services:
+  # API Gateway / Load Balancer
+  api-gateway:
+    build:
+      context: ./apps/load-balancer
+      dockerfile: Dockerfile
+    container_name: api_gateway
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    networks:
+      - fingermobile_network
+    volumes:
+      - ./apps/load-balancer/conf.d:/etc/nginx/conf.d:ro
+    depends_on:
+      fingermobile-backend:
+        condition: service_started
+
+  # Core Frontend Main (React / TypeScript Web App)
+  frontend-main:
+    build:
+      context: ./apps/frontend-main
+      dockerfile: Dockerfile.prod
+    container_name: fingermobile_frontend_main
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+      - "3001:80"
+    networks:
+      - fingermobile_network
+    depends_on:
+      fingermobile-backend:
+        condition: service_started
+
+  # Core Platform Services
+  fingermobile-backend:
+    build:
+      context: ./apps/backend
+      dockerfile: Dockerfile
+    container_name: fingermobile_backend
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - DB_HOST=fingermobile-postgres
+      - DB_PORT=5432
+      - DB_USER=${POSTGRES_USER}
+      - DB_PASSWORD=${POSTGRES_PASSWORD}
+      - DB_NAME=${POSTGRES_DB}
+      - REDIS_HOST=fingermobile-redis
+      - REDIS_PORT=6379
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@fingermobile-postgres:5432/${POSTGRES_DB}
+    ports:
+      - "5000:3000" # Map backend port externally, adjust if needed
+    depends_on:
+      fingermobile-postgres:
+        condition: service_healthy
+      fingermobile-redis:
+        condition: service_started
+    volumes:
+      - backend_uploads:/app/uploads # For persistent file uploads
+    networks:
+      - fingermobile_network
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://127.0.0.1:3000/health",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  #     depends_on:
+  #       - fingermobile-backend
+  #     networks:
+  #       - fingermobile_network
+
+  fingermobile-postgres:
+    image: postgres:14-alpine
+    container_name: fingermobile_postgres
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_MULTIPLE_DATABASES=fingermobile_identity_db,fingermobile_content_db,fingermobile_social_db,fingermobile_monetization_db,fingermobile_learning_db,fingermobile_gaming_db,prompts_db,guardian_db,sentient_db,meishe_db,nexusgnn_db,seshat_db,governance_db,fingermobile_business_db,fingermobile_comms
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database:/docker-entrypoint-initdb.d
+    networks:
+      - fingermobile_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  fingermobile-redis:
+    image: redis:7-alpine
+    container_name: fingermobile_redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    env_file:
+      - .env
+    environment:
+      - REDIS_REPLICATION_MODE=master
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - fingermobile_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  fingermobile-pgadmin:
+    image: dpage/pgadmin4
+    container_name: fingermobile_pgadmin
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
+      - PGADMIN_CONFIG_SERVER_MODE=False
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+      - ./servers.json:/pgadmin4/servers.json # Optional: pre-configure server connections
+    networks:
+      - fingermobile_network
+    depends_on:
+      - fingermobile-postgres
+
+  # Integrated Services (those with existing compose files, adapted)
+  # Example: GameOn (adapted from its compose file)
+  gameon-db:
+    image: postgres:13
+    container_name: gameon_db
+    environment:
+      POSTGRES_DB: gameon_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: gameon_db_password
+    ports:
+      - "54321:5432" # Use different external port to avoid conflict
+    volumes:
+      - gameon_db_data:/var/lib/postgresql/data
+      # - ./Microservices 06102026/GameOn/database/schema.sql:/docker-entrypoint-initdb.d/schema.sql # Path needs adjustment
+    networks:
+      - fingermobile_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  gameon-redis:
+    image: redis:7-alpine
+    container_name: gameon_redis
+    command: redis-server --requirepass GameOn_redis_password
+    ports:
+      - "6380:6379" # Use different external port
+    networks:
+      - fingermobile_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a gameon_redis_password ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # [Pending Microservice - Extracted into core backend]   gameon-backend:
+  #     build:
+  #       context: ./Microservices 06102026/GameOn
+  #       dockerfile: Dockerfile
+  #     container_name: gameon_backend
+  #     environment:
+  #       - NODE_ENV=production
+  #       - PORT=3001
+  #       - DB_HOST=gameon-db
+  #       - DB_PORT=5432
+  #       - DB_NAME=gameon_db
+  #       - DB_USER=postgres
+  #       - DB_PASSWORD=gameon_db_password
+  #       - DATABASE_URL=postgresql://postgres:gameon_db_password@gameon-db:5432/gameon_db
+  #       - REDIS_HOST=gameon-redis
+  #       - REDIS_PORT=6379
+  #       - REDIS_PASSWORD=GameOn_redis_password
+  #       - JWT_SECRET=GameOn_jwt_secret_key_2026_production
+  #       - JWT_EXPIRES_IN=7d
+  #     ports:
+  #       - "30011:3001" # Use different external port
+  #     depends_on:
+  #       gameon-db:
+  #         condition: service_healthy
+  #       gameon-redis:
+  #         condition: service_healthy
+  #     networks:
+  #       - fingermobile_network
+  #     restart: unless-stopped
+  # 
+  # Example: FingerLux (adapted from its compose file)
+  # [Pending Microservice - Extracted into core backend]   fingerlux-backend:
+  #     build:
+  #       context: ./Microservices 06102026/FingerLux
+  #       dockerfile: Dockerfile
+  #     container_name: fingerlux_backend
+  #     ports:
+  #       - "5006:5000"
+  #     environment:
+  #       - FINGERLUX_BACKEND_PORT=5000 # Internal port for the service
+  #       - POSTGRES_HOST=fingerlux-db
+  #       - POSTGRES_PORT=5432
+  #       - POSTGRES_USER=fingerlux_user
+  #       - POSTGRES_PASSWORD=fingerlux_pass
+  #       - POSTGRES_DB=fingerlux_db
+  #       - REDIS_HOST=fingerlux-redis
+  #       - REDIS_PORT=6379
+  #       - REDIS_URL=redis://:fingermobile_redis_secure_password_2026_min32chars@fingerlux-redis:6379
+  #     networks:
+  #       - fingermobile_network
+  #     depends_on:
+  #       - fingerlux-db
+  #       - fingerlux-redis
+  #     restart: unless-stopped
+  #     # healthcheck: # Add if available in source
+  # 
+  fingerlux-db:
+    image: postgres:13-alpine
+    container_name: fingerlux_db
+    ports:
+      - "5436:5432"
+    environment:
+      - POSTGRES_USER=fingerlux_user
+      - POSTGRES_PASSWORD=fingerlux_pass
+      - POSTGRES_DB=fingerlux_db
+    volumes:
+      - fingerlux_db_data:/var/lib/postgresql/data
+      # - ./Microservices 06102026/FingerLux/database/schema.sql:/docker-entrypoint-initdb.d/schema.sql # Path needs adjustment
+    networks:
+      - fingermobile_network
+    restart: unless-stopped
+    # healthcheck: # Add if available in source
+
+  fingerlux-redis:
+    image: redis:6.2-alpine
+    container_name: fingerlux_redis
+    command: redis-server --requirepass fingermobile_redis_secure_password_2026_min32chars
+    ports:
+      - "6383:6379"
+    networks:
+      - fingermobile_network
+    restart: unless-stopped
+    # healthcheck: # Add if available in source
+
+  # [Pending Microservice - Extracted into core backend]   fingerlux-frontend:
+  #     build:
+  #       context: ./Microservices 06102026/FingerLux/frontend
+  #       dockerfile: Dockerfile
+  #     container_name: fingerlux_frontend
+  #     ports:
+  #       - "3007:80"
+  #     environment:
+  #       - VITE_FINGERLUX_BACKEND_URL=http://localhost:5006 # Adjust if needed
+  #     networks:
+  #       - fingermobile_network
+  #     depends_on:
+  #       - fingerlux-backend
+  #     healthcheck:
+  #       test:
+  #         [
+  #           "CMD",
+  #           "wget",
+  #           "--no-verbose",
+  #           "--tries=1",
+  #           "--spider",
+  #           "http://127.0.0.1:80",
+  #         ]
+  #       interval: 30s
+  #       timeout: 10s
+  #       retries: 3
+  #       start_period: 40s
+  # 
+  #   # Example: Flamingo (adapted from its compose file)
+  flamingo-db:
+    image: postgres:13-alpine
+    container_name: flamingo_db
+    ports:
+      - "5437:5432"
+    environment:
+      - POSTGRES_USER=flamingo_user
+      - POSTGRES_PASSWORD=flamingo_pass
+      - POSTGRES_DB=flamingo_db
+    volumes:
+      - flamingo_db_data:/var/lib/postgresql/data
+      # - ./Microservices 06102026/Flamingo/database/schema.sql:/docker-entrypoint-initdb.d/schema.sql # Path needs adjustment
+    networks:
+      - fingermobile_network
+    restart: unless-stopped
+    # healthcheck: # Add if available in source
+
+  flamingo-redis:
+    image: redis:6.2-alpine
+    container_name: flamingo_redis
+    command: redis-server --requirepass fingermobile_redis_secure_password_2026_min32chars
+    ports:
+      - "6384:6379"
+    networks:
+      - fingermobile_network
+    restart: unless-stopped
+    # healthcheck: # Add if available in source
+
+  # [Pending Microservice - Extracted into core backend]   flamingo-backend:
+  #     build:
+  #       context: ./Microservices 06102026/Flamingo
+  #       dockerfile: Dockerfile
+  #     container_name: flamingo_backend
+  #     ports:
+  #       - "5007:5000"
+  #     environment:
+  #       - FLAMINGO_BACKEND_PORT=5000
+  #       - POSTGRES_HOST=flamingo-db
+  #       - POSTGRES_PORT=5432
+  #       - POSTGRES_USER=flamingo_user
+  #       - POSTGRES_PASSWORD=flamingo_pass
+  #       - POSTGRES_DB=flamingo_db
+  #       - REDIS_HOST=flamingo-redis
+  #       - REDIS_PORT=6379
+  #       - REDIS_URL=redis://:fingermobile_redis_secure_password_2026_min32chars@flamingo-redis:6379
+  #     networks:
+  #       - fingermobile_network
+  #     depends_on:
+  #       - flamingo-db
+  #       - flamingo-redis
+  #     restart: unless-stopped
+  #     # healthcheck: # Add if available in source
+  # 
+  # [Pending Microservice - Extracted into core backend]   flamingo-frontend:
+  #     build:
+  #       context: ./Microservices 06102026/Flamingo/frontend
+  #       dockerfile: Dockerfile
+  #     container_name: flamingo_frontend
+  #     ports:
+  #       - "3008:80"
+  #     environment:
+  #       - VITE_FLAMINGO_BACKEND_URL=http://localhost:5007
+  #     networks:
+  #       - fingermobile_network
+  #     depends_on:
+  #       - flamingo-backend
+  #     healthcheck:
+  #       test:
+  #         [
+  #           "CMD",
+  #           "wget",
+  #           "--no-verbose",
+  #           "--tries=1",
+  #           "--spider",
+  #           "http://127.0.0.1:80",
+  #         ]
+  #       interval: 30s
+  #       timeout: 10s
+  #       retries: 3
+  #       start_period: 40s
+  # 
+  #   # Example: FingerWars (adapted from its compose file)
+  fingerwars-db:
+    image: postgres:13-alpine
+    container_name: fingerwars_db
+    ports:
+      - "5438:5432"
+    environment:
+      - POSTGRES_USER=fingerwars_user
+      - POSTGRES_PASSWORD=fingerwars_pass
+      - POSTGRES_DB=fingerwars_db
+    volumes:
+      - fingerwars_db_data:/var/lib/postgresql/data
+      # - ./Microservices 06102026/FingerWars/database/schema.sql:/docker-entrypoint-initdb.d/schema.sql # Path needs adjustment
+    networks:
+      - fingermobile_network
+    restart: unless-stopped
+    # healthcheck: # Add if available in source
+
+  fingerwars-redis:
+    image: redis:6.2-alpine
+    container_name: fingerwars_redis
+    command: redis-server --requirepass fingermobile_redis_secure_password_2026_min32chars
+    ports:
+      - "6385:6379"
+    networks:
+      - fingermobile_network
+    restart: unless-stopped
+    # healthcheck: # Add if available in source
+
+  # [Pending Microservice - Extracted into core backend]   fingerwars-backend:
+  #     build:
+  #       context: ./Microservices 06102026/FingerWars
+  #       dockerfile: Dockerfile
+  #     container_name: fingerwars_backend
+  #     ports:
+  #       - "5008:5000"
+  #     environment:
+  #       - FINGERWARS_BACKEND_PORT=5000
+  #       - POSTGRES_HOST=fingerwars-db
+  #       - POSTGRES_PORT=5432
+  #       - POSTGRES_USER=fingerwars_user
+  #       - POSTGRES_PASSWORD=fingerwars_pass
+  #       - POSTGRES_DB=fingerwars_db
+  #       - REDIS_HOST=fingerwars-redis
+  #       - REDIS_PORT=6379
+  #       - REDIS_URL=redis://:fingermobile_redis_secure_password_2026_min32chars@fingerwars-redis:6379
+  #     networks:
+  #       - fingermobile_network
+  #     depends_on:
+  #       - fingerwars-redis
+  #     restart: unless-stopped
+  # 
+  # [Pending Microservice - Extracted into core backend]   fingerwars-frontend:
+  #     build:
+  #       context: ./Microservices 06102026/FingerWars/frontend
+  #       dockerfile: Dockerfile
+  #     container_name: fingerwars_frontend
+  #     ports:
+  #       - "3009:80"
+  #     environment:
+  #       - VITE_FINGERWARS_BACKEND_URL=http://localhost:5008
+  #     networks:
+  #       - fingermobile_network
+  #     depends_on:
+  #       - fingerwars-backend
+  #     healthcheck:
+  #       test:
+  #         [
+  #           "CMD",
+  #           "wget",
+  #           "--no-verbose",
+  #           "--tries=1",
+  #           "--spider",
+  #           "http://127.0.0.1:80",
+  #         ]
+  #       interval: 30s
+  #       timeout: 10s
+  #       retries: 3
+  #       start_period: 40s
+  # 
+  # [Pending Microservice - Extracted into core backend]   trends-frontend:
+  #     build:
+  #       context: ./Microservices 06102026/trends/frontend # Assuming structure like /frontend
+  #       dockerfile: Dockerfile
+  #     container_name: trends_frontend
+  #     ports:
+  #       - "3010:80"
+  #     environment:
+  #       - VITE_TRENDS_BACKEND_URL=http://localhost:5009
+  #     networks:
+  #       - fingermobile_network
+  #     depends_on:
+  #       - trends-backend
+  #     healthcheck:
+  #       test:
+  #         [
+  #           "CMD",
+  #           "wget",
+  #           "--no-verbose",
+  #           "--tries=1",
+  #           "--spider",
+  #           "http://127.0.0.1:80",
+  #         ]
+  #       interval: 30s
+  #       timeout: 10s
+  #       retries: 3
+  # 
+  #     depends_on:
+  #       - gems-backend
+
+  # [Pending Microservice - Extracted into core backend]   gems-frontend:
+  #     build:
+  #       context: ./Microservices 06102026/gems-frontend/frontend # Vite app is usually in a subdirectory
+  #       dockerfile: Dockerfile
+  #     container_name: gems_frontend
+  #     ports:
+  #       - "3011:80"
+  #     environment:
+  #       - VITE_GEMS_BACKEND_URL=http://localhost:5010
+  #     networks:
+  #       - fingermobile_network
+  #     # depends_on:
+  #     #   - gems-backend
+  #     healthcheck:
+  #       test:
+  #         [
+  #           "CMD",
+  #           "wget",
+  #           "--no-verbose",
+  #           "--tries=1",
+  #           "--spider",
+  #           "http://127.0.0.1:80",
+  #         ]
+  #       interval: 30s
+  #       timeout: 10s
+  #       retries: 3
+  #       start_period: 40s
+  #       - gems-backend
+
+  #     depends_on:
+  #       - fingerwars-backend
+  #
+  #   # Example: Trends (adapted from its compose file structure)
+  trends-db:
+    image: postgres:13-alpine
+    container_name: trends_db
+    ports:
+      - "5439:5432"
+    environment:
+      - POSTGRES_USER=trends_user
+      - POSTGRES_PASSWORD=trends_pass
+      - POSTGRES_DB=trends_db
+    volumes:
+      - trends_db_data:/var/lib/postgresql/data
+      # - ./Microservices 06102026/trends/database/schema.sql:/docker-entrypoint-initdb.d/schema.sql # Path needs adjustment
+    networks:
+      - fingermobile_network
+    restart: unless-stopped
+    # healthcheck: # Add if available in source
+
+  trends-redis:
+    image: redis:6.2-alpine
+    container_name: trends_redis
+    command: redis-server --requirepass fingermobile_redis_secure_password_2026_min32chars
+    ports:
+      - "6386:6379"
+    networks:
+      - fingermobile_network
+    restart: unless-stopped
+    # healthcheck: # Add if available in source
+
+  # [Pending Microservice - Extracted into core backend]   trends-backend:
+  #     build:
+  #       context: ./Microservices 06102026/trends # Assuming structure like /backend with server.js
+  #       dockerfile: Dockerfile
+  #     container_name: trends_backend
+  #     ports:
+  #       - "5009:5000"
+  #     environment:
+  #       - TRENDS_BACKEND_PORT=5000
+  #       - POSTGRES_HOST=trends-db
+  #       - POSTGRES_PORT=5432
+  #       - POSTGRES_USER=trends_user
+  #       - POSTGRES_PASSWORD=trends_pass
+  #       - POSTGRES_DB=trends_db
+  #       - REDIS_HOST=trends-redis
+  #       - REDIS_PORT=6379
+  #       - REDIS_URL=redis://:fingermobile_redis_secure_password_2026_min32chars@trends-redis:6379
+  #     networks:
+  #       - fingermobile_network
+  #     depends_on:
+  #       - trends-db
+  #       - trends-redis
+  #     restart: unless-stopped
+  #     # healthcheck: # Add if available in source
+  # 
+  #     depends_on:
+  #       - fingerwars-backend
+
+  #     depends_on:
+  #       - trends-backend
+  #
+  #   # Example: Gems (adapted from its compose file structure)
+  # [Pending Microservice - Extracted into core backend]   gems-backend:
+  #     build:
+  #       context: ./Microservices 06102026/gems-backend
+  #       dockerfile: Dockerfile
+  #     container_name: gems_backend
+  #     ports:
+  #       - "5010:5010"
+  #     environment:
+  #       - PORT=5010
+  #       - NODE_ENV=production
+  #       - DB_HOST=gems-db
+  #       - DB_PORT=5432
+  #       - DB_NAME=gems_db
+  #       - DB_USER=gems_user
+  #       - DB_PASSWORD=gems_pass
+  #       - REDIS_HOST=gems-redis
+  #       - REDIS_PORT=6379
+  #       - REDIS_PASSWORD=gems_redis_secure_password
+  #       - DATABASE_URL=postgresql://gems_user:gems_pass@gems-db:5432/gems_db
+  #     networks:
+  #       - fingermobile_network
+  #     depends_on:
+  #       - gems-db
+  #       - gems-redis
+  #     restart: unless-stopped
+  #
+  gems-db:
+    image: postgres:13-alpine
+    container_name: gems_db
+    ports:
+      - "5440:5432"
+    environment:
+      - POSTGRES_USER=gems_user
+      - POSTGRES_PASSWORD=gems_pass
+      - POSTGRES_DB=gems_db
+    volumes:
+      - gems_db_data:/var/lib/postgresql/data
+      - ./Microservices 06102026/gems-database/database/schema.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - fingermobile_network
+    restart: unless-stopped
+    # healthcheck: # Add if available in source
+
+  gems-redis:
+    image: redis:6.2-alpine
+    container_name: gems_redis
+    command: redis-server --requirepass gems_redis_secure_password
+    ports:
+      - "6387:6379"
+    networks:
+      - fingermobile_network
+    restart: unless-stopped
+    # healthcheck: # Add healthcheck once the app has a health endpoint
+    #   test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:3000/health"]
+
+  # beatwaveng service
+  # [Pending Microservice - Extracted into core backend]   beatwaveng:
+  #     build:
+  #       context: ./Microservices 06102026/beatwaveng
+  #       dockerfile: Dockerfile
+  #     container_name: beatwaveng_service
+  #     restart: unless-stopped
+  #     env_file:
+  #       - .env
+  #     environment:
+  #       - BEATWAVENG_PORT=5029
+  #       - DB_HOST=beatwaveng-db
+  #       - DB_PORT=5432
+  #       - DB_NAME=beatwaveng_db
+  #       - DB_USER=${DB_USER:-postgres}
+  #       - DB_PASSWORD=${DB_PASSWORD:-beatwaveng_db_pwd_74451a28cc0d2b52}
+  #       - REDIS_HOST=beatwaveng-redis
+  #       - REDIS_PORT=6379
+  #       - REDIS_PASSWORD=${REDIS_PASSWORD:-beatwaveng_redis_0561755413fe8373}
+  #       - JWT_SECRET=${JWT_SECRET:-beatwaveng_jwt_secret_key_2026_production}
+  #       - CORS_ORIGIN=${CORS_ORIGIN:-http://localhost:3000}
+  #     ports:
+  #       - "5029:5029"
+  #     networks:
+  #       - fingermobile_network
+  #     depends_on:
+  #       - beatwaveng-db
+  #       - beatwaveng-redis
+  #     healthcheck:
+  #       test:
+  #         [
+  #           "CMD",
+  #           "wget",
+  #           "--no-verbose",
+  #           "--tries=1",
+  #           "--spider",
+  #           "http://127.0.0.1:5029/health",
+  #         ]
+  #       interval: 30s
+  #       timeout: 10s
+  #       retries: 3
+  #       start_period: 40s
+  # 
+  # beatwaveng database
+  beatwaveng-db:
+    image: postgres:14-alpine
+    container_name: beatwaveng_db
+    ports:
+      - "5441:5432"
+    environment:
+      - POSTGRES_USER=${DB_USER:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-beatwaveng_db_pwd_74451a28cc0d2b52}
+      - POSTGRES_DB=beatwaveng_db
+    volumes:
+      - beatwaveng_db_data:/var/lib/postgresql/data
+      - ./Microservices 06102026/beatwaveng/database/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+    networks:
+      - fingermobile_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d beatwaveng_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # beatwaveng redis
+  beatwaveng-redis:
+    image: redis:7-alpine
+    container_name: beatwaveng_redis
+    command: redis-server --requirepass ${REDIS_PASSWORD:-beatwaveng_redis_0561755413fe8373}
+    ports:
+      - "6388:6379"
+    volumes:
+      - beatwaveng_redis_data:/data
+    networks:
+      - fingermobile_network
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "redis-cli -a '${REDIS_PASSWORD:-beatwaveng_redis_0561755413fe8373}' ping | grep -q PONG",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # camus service
+  # [Pending Microservice - Extracted into core backend]   camus:
+  #     build:
+  #       context: ./Microservices 06102026/camus
+  #       dockerfile: Dockerfile
+  #     container_name: camus_service
+  #     restart: unless-stopped
+  #     env_file:
+  #       - .env
+  #     environment:
+  #       - CAMUS_PORT=5030
+  #       - DB_HOST=camus-db
+  #       - DB_PORT=5432
+  #       - DB_NAME=camus_db
+  #       - DB_USER=${DB_USER:-postgres}
+  #       - DB_PASSWORD=${DB_PASSWORD:-camus_db_pwd_74451a28cc0d2b52}
+  #       - REDIS_HOST=camus-redis
+  #       - REDIS_PORT=6379
+  #       - REDIS_PASSWORD=${REDIS_PASSWORD:-camus_redis_0561755413fe8373}
+  #       - JWT_SECRET=${JWT_SECRET:-camus_jwt_secret_key_2026_production}
+  #       - CORS_ORIGIN=${CORS_ORIGIN:-http://localhost:3000}
+  #     ports:
+  #       - "5030:5030"
+  #     networks:
+  #       - fingermobile_network
+  #     depends_on:
+  #       - camus-db
+  #       - camus-redis
+  #     healthcheck:
+  #       test:
+  #         [
+  #           "CMD",
+  #           "wget",
+  #           "--no-verbose",
+  #           "--tries=1",
+  #           "--spider",
+  #           "http://127.0.0.1:5030/health",
+  #         ]
+  #       interval: 30s
+  #       timeout: 10s
+  #       retries: 3
+  #       start_period: 40s
+  # 
+  # camus database
+  camus-db:
+    image: postgres:14-alpine
+    container_name: camus_db
+    ports:
+      - "5442:5432"
+    environment:
+      - POSTGRES_USER=${DB_USER:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-camus_db_pwd_74451a28cc0d2b52}
+      - POSTGRES_DB=camus_db
+    volumes:
+      - camus_db_data:/var/lib/postgresql/data
+      - ./Microservices 06102026/camus/database/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+    networks:
+      - fingermobile_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d camus_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # camus redis
+  camus-redis:
+    image: redis:7-alpine
+    container_name: camus_redis
+    command: redis-server --requirepass ${REDIS_PASSWORD:-camus_redis_0561755413fe8373}
+    ports:
+      - "6389:6379"
+    volumes:
+      - camus_redis_data:/data
+    networks:
+      - fingermobile_network
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "redis-cli -a '${REDIS_PASSWORD:-camus_redis_0561755413fe8373}' ping | grep -q PONG",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # communications service
+  communications-service:
+    build:
+      context: ../Communication/FingerMobile
+      dockerfile: Dockerfile
+    container_name: communications_service
+    restart: unless-stopped
+    env_file:
+      - ../Communication/FingerMobile/.env
+    environment:
+      - COMMUNICATIONS_PORT=3002
+      - DB_HOST=fingermobile-postgres
+      - DB_PORT=5432
+      - DB_NAME=fingermobile_comms
+      - DB_USER=${POSTGRES_USER:-postgres}
+      - DB_PASS=${POSTGRES_PASSWORD:-password}
+      - JWT_SECRET=${JWT_SECRET:-your_jwt_secret_here}
+      - WS_MAX_PAYLOAD=50MB
+      - WS_PING_INTERVAL=30000
+    ports:
+      - "3002:3002"
+    networks:
+      - fingermobile_network
+    depends_on:
+      fingermobile-postgres:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://127.0.0.1:3002/health",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # business suite service
+  business-suite-api:
+    build:
+      context: ../FingerMobile Business and Monetization Suite
+      dockerfile: Dockerfile
+    container_name: business_suite_api
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - PORT=3003
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@fingermobile-postgres:5432/fingermobile_business_db
+      - REDIS_URL=redis://fingermobile-redis:6379
+      - JWT_SECRET=${JWT_SECRET:-your_jwt_secret_here}
+      - LOG_LEVEL=info
+    ports:
+      - "3003:3003"
+    networks:
+      - fingermobile_network
+    depends_on:
+      fingermobile-postgres:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://127.0.0.1:3003/health",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # cmap service
+  #   cmap:
+  #     build:
+  #       context: ./Microservices 06102026/cmap/backend
+  #       dockerfile: Dockerfile
+  #     container_name: cmap_service
+  #     restart: unless-stopped
+  #     env_file:
+  #       - .env
+  #     environment:
+  #       - CMAP_PORT=5031
+  #       - DB_HOST=cmap-db
+  #       - DB_PORT=5432
+  #       - DB_NAME=cmap_db
+  #       - DB_USER=${DB_USER:-postgres}
+  #       - DB_PASSWORD=${DB_PASSWORD:-cmap_db_pwd_74451a28cc0d2b52}
+  #       - REDIS_HOST=cmap-redis
+  #       - REDIS_PORT=6379
+  #       - REDIS_PASSWORD=${REDIS_PASSWORD:-cmap_redis_0561755413fe8373}
+  #       - JWT_SECRET=${JWT_SECRET:-cmap_jwt_secret_key_2026_production}
+  #       - CORS_ORIGIN=${CORS_ORIGIN:-http://localhost:3000}
+  #     ports:
+  #       - "5031:5031"
+  #     networks:
+  #       - fingermobile_network
+  #     depends_on:
+  #       - cmap-db
+  #       - cmap-redis
+  #     healthcheck:
+  #       test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:5031/health"]
+  #       interval: 30s
+  #       timeout: 10s
+  #       retries: 3
+  #       start_period: 40s
+  #
+  #   # cmap database
+  cmap-db:
+    image: postgres:14-alpine
+    container_name: cmap_db
+    ports:
+      - "5443:5432"
+    environment:
+      - POSTGRES_USER=${DB_USER:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-cmap_db_pwd_74451a28cc0d2b52}
+      - POSTGRES_DB=cmap_db
+    volumes:
+      - cmap_db_data:/var/lib/postgresql/data
+      - ./Microservices 06102026/cmap/database/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+    networks:
+      - fingermobile_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d cmap_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # cmap redis
+  cmap-redis:
+    image: redis:7-alpine
+    container_name: cmap_redis
+    command: redis-server --requirepass ${REDIS_PASSWORD:-cmap_redis_0561755413fe8373}
+    ports:
+      - "6390:6379"
+    volumes:
+      - cmap_redis_data:/data
+    networks:
+      - fingermobile_network
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "redis-cli -a '${REDIS_PASSWORD:-cmap_redis_0561755413fe8373}' ping | grep -q PONG",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # dancia4tv service
+  # [Pending Microservice - Extracted into core backend]   dancia4tv:
+  #     build:
+  #       context: ./Microservices 06102026/dancia4tv
+  #       dockerfile: Dockerfile
+  #     container_name: dancia4tv_service
+  #     restart: unless-stopped
+  #     env_file:
+  #       - .env
+  #     environment:
+  #       - DANCIA4TV_PORT=5032
+  #       - DB_HOST=dancia4tv-db
+  #       - DB_PORT=5432
+  #       - DB_NAME=dancia4tv_db
+  #       - DB_USER=${DB_USER:-postgres}
+  #       - DB_PASSWORD=${DB_PASSWORD:-dancia4tv_db_pwd_74451a28cc0d2b52}
+  #       - REDIS_HOST=dancia4tv-redis
+  #       - REDIS_PORT=6379
+  #       - REDIS_PASSWORD=${REDIS_PASSWORD:-dancia4tv_redis_0561755413fe8373}
+  #       - JWT_SECRET=${JWT_SECRET:-dancia4tv_jwt_secret_key_2026_production}
+  #       - CORS_ORIGIN=${CORS_ORIGIN:-http://localhost:3000}
+  #     ports:
+  #       - "5032:5032"
+  #     networks:
+  #       - fingermobile_network
+  #     depends_on:
+  #       - dancia4tv-db
+  #       - dancia4tv-redis
+  #     healthcheck:
+  #       test:
+  #         [
+  #           "CMD",
+  #           "wget",
+  #           "--no-verbose",
+  #           "--tries=1",
+  #           "--spider",
+  #           "http://127.0.0.1:5032/health",
+  #         ]
+  #       interval: 30s
+  #       timeout: 10s
+  #       retries: 3
+  #       start_period: 40s
+  # 
+  # dancia4tv database
+  dancia4tv-db:
+    image: postgres:14-alpine
+    container_name: dancia4tv_db
+    ports:
+      - "5444:5432"
+    environment:
+      - POSTGRES_USER=${DB_USER:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-dancia4tv_db_pwd_74451a28cc0d2b52}
+      - POSTGRES_DB=dancia4tv_db
+    volumes:
+      - dancia4tv_db_data:/var/lib/postgresql/data
+      - ./Microservices 06102026/dancia4tv/database/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+    networks:
+      - fingermobile_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d dancia4tv_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # dancia4tv redis
+  dancia4tv-redis:
+    image: redis:7-alpine
+    container_name: dancia4tv_redis
+    command: redis-server --requirepass ${REDIS_PASSWORD:-dancia4tv_redis_0561755413fe8373}
+    ports:
+      - "6391:6379"
+    volumes:
+      - dancia4tv_redis_data:/data
+    networks:
+      - fingermobile_network
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "redis-cli -a '${REDIS_PASSWORD:-dancia4tv_redis_0561755413fe8373}' ping | grep -q PONG",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # elearning service
+  # [Pending Microservice - Extracted into core backend]   elearning:
+  #     build:
+  #       context: ./Microservices 06102026/elearning
+  #       dockerfile: Dockerfile
+  #     container_name: elearning_service
+  #     restart: unless-stopped
+  #     env_file:
+  #       - .env
+  #     environment:
+  #       - ELEARNING_PORT=5033
+  #       - DB_HOST=elearning-db
+  #       - DB_PORT=5432
+  #       - DB_NAME=elearning_db
+  #       - DB_USER=${DB_USER:-postgres}
+  #       - DB_PASSWORD=${DB_PASSWORD:-elearning_db_pwd_74451a28cc0d2b52}
+  #       - REDIS_HOST=elearning-redis
+  #       - REDIS_PORT=6379
+  #       - REDIS_PASSWORD=${REDIS_PASSWORD:-elearning_redis_0561755413fe8373}
+  #       - JWT_SECRET=${JWT_SECRET:-elearning_jwt_secret_key_2026_production}
+  #       - CORS_ORIGIN=${CORS_ORIGIN:-http://localhost:3000}
+  #     ports:
+  #       - "5033:5033"
+  #     networks:
+  #       - fingermobile_network
+  #     depends_on:
+  #       - elearning-db
+  #       - elearning-redis
+  #     healthcheck:
+  #       test:
+  #         [
+  #           "CMD",
+  #           "wget",
+  #           "--no-verbose",
+  #           "--tries=1",
+  #           "--spider",
+  #           "http://127.0.0.1:5033/health",
+  #         ]
+  #       interval: 30s
+  #       timeout: 10s
+  #       retries: 3
+  #       start_period: 40s
+  # 
+  # elearning database
+  elearning-db:
+    image: postgres:14-alpine
+    container_name: elearning_db
+    ports:
+      - "5445:5432"
+    environment:
+      - POSTGRES_USER=${DB_USER:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-elearning_db_pwd_74451a28cc0d2b52}
+      - POSTGRES_DB=elearning_db
+    volumes:
+      - elearning_db_data:/var/lib/postgresql/data
+      - ./Microservices 06102026/elearning/database/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+    networks:
+      - fingermobile_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d elearning_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # elearning redis
+  elearning-redis:
+    image: redis:7-alpine
+    container_name: elearning_redis
+    command: redis-server --requirepass ${REDIS_PASSWORD:-elearning_redis_0561755413fe8373}
+    ports:
+      - "6392:6379"
+    volumes:
+      - elearning_redis_data:/data
+    networks:
+      - fingermobile_network
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "redis-cli -a '${REDIS_PASSWORD:-elearning_redis_0561755413fe8373}' ping | grep -q PONG",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # hallmarks service
+  # [Pending Microservice - Extracted into core backend]   hallmarks:
+  #     build:
+  #       context: ./Microservices 06102026/hallmarks
+  #       dockerfile: Dockerfile
+  #     container_name: hallmarks_service
+  #     restart: unless-stopped
+  #     env_file:
+  #       - .env
+  #     environment:
+  #       - HALLMARKS_PORT=5034
+  #       - DB_HOST=hallmarks-db
+  #       - DB_PORT=5432
+  #       - DB_NAME=hallmarks_db
+  #       - DB_USER=${DB_USER:-postgres}
+  #       - DB_PASSWORD=${DB_PASSWORD:-hallmarks_db_pwd_74451a28cc0d2b52}
+  #       - REDIS_HOST=hallmarks-redis
+  #       - REDIS_PORT=6379
+  #       - REDIS_PASSWORD=${REDIS_PASSWORD:-hallmarks_redis_0561755413fe8373}
+  #       - JWT_SECRET=${JWT_SECRET:-hallmarks_jwt_secret_key_2026_production}
+  #       - CORS_ORIGIN=${CORS_ORIGIN:-http://localhost:3000}
+  #     ports:
+  #       - "5034:5034"
+  #     networks:
+  #       - fingermobile_network
+  #     depends_on:
+  #       - hallmarks-db
+  #       - hallmarks-redis
+  #     healthcheck:
+  #       test:
+  #         [
+  #           "CMD",
+  #           "wget",
+  #           "--no-verbose",
+  #           "--tries=1",
+  #           "--spider",
+  #           "http://127.0.0.1:5034/health",
+  #         ]
+  #       interval: 30s
+  #       timeout: 10s
+  #       retries: 3
+  #       start_period: 40s
+  # 
+  # hallmarks database
+  hallmarks-db:
+    image: postgres:14-alpine
+    container_name: hallmarks_db
+    ports:
+      - "5446:5432"
+    environment:
+      - POSTGRES_USER=${DB_USER:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-hallmarks_db_pwd_74451a28cc0d2b52}
+      - POSTGRES_DB=hallmarks_db
+    volumes:
+      - hallmarks_db_data:/var/lib/postgresql/data
+      - ./Microservices 06102026/hallmarks/database/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+    networks:
+      - fingermobile_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d hallmarks_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # hallmarks redis
+  hallmarks-redis:
+    image: redis:7-alpine
+    container_name: hallmarks_redis
+    command: redis-server --requirepass ${REDIS_PASSWORD:-hallmarks_redis_0561755413fe8373}
+    ports:
+      - "6393:6379"
+    volumes:
+      - hallmarks_redis_data:/data
+    networks:
+      - fingermobile_network
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "redis-cli -a '${REDIS_PASSWORD:-hallmarks_redis_0561755413fe8373}' ping | grep -q PONG",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # loansqr service
+  # [Pending Microservice - Extracted into core backend]   loansqr:
+  #     build:
+  #       context: ./Microservices 06102026/loansqr
+  #       dockerfile: Dockerfile
+  #     container_name: loansqr_service
+  #     restart: unless-stopped
+  #     env_file:
+  #       - .env
+  #     environment:
+  #       - LOANSQR_PORT=5035
+  #       - DB_HOST=loansqr-db
+  #       - DB_PORT=5432
+  #       - DB_NAME=loansqr_db
+  #       - DB_USER=${DB_USER:-postgres}
+  #       - DB_PASSWORD=${DB_PASSWORD:-loansqr_db_pwd_74451a28cc0d2b52}
+  #       - REDIS_HOST=loansqr-redis
+  #       - REDIS_PORT=6379
+  #       - REDIS_PASSWORD=${REDIS_PASSWORD:-loansqr_redis_0561755413fe8373}
+  #       - JWT_SECRET=${JWT_SECRET:-loansqr_jwt_secret_key_2026_production}
+  #       - CORS_ORIGIN=${CORS_ORIGIN:-http://localhost:3000}
+  #     ports:
+  #       - "5035:5035"
+  #     networks:
+  #       - fingermobile_network
+  #     depends_on:
+  #       - loansqr-db
+  #       - loansqr-redis
+  #     healthcheck:
+  #       test:
+  #         [
+  #           "CMD",
+  #           "wget",
+  #           "--no-verbose",
+  #           "--tries=1",
+  #           "--spider",
+  #           "http://127.0.0.1:5035/health",
+  #         ]
+  #       interval: 30s
+  #       timeout: 10s
+  #       retries: 3
+  #       start_period: 40s
+  # 
+  # loansqr database
+  loansqr-db:
+    image: postgres:14-alpine
+    container_name: loansqr_db
+    ports:
+      - "5447:5432"
+    environment:
+      - POSTGRES_USER=${DB_USER:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-loansqr_db_pwd_74451a28cc0d2b52}
+      - POSTGRES_DB=loansqr_db
+    volumes:
+      - loansqr_db_data:/var/lib/postgresql/data
+      - ./Microservices 06102026/loansqr/database/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+    networks:
+      - fingermobile_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d loansqr_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # loansqr redis
+  loansqr-redis:
+    image: redis:7-alpine
+    container_name: loansqr_redis
+    restart: unless-stopped
+    ports:
+      - "6394:6379"
+  #     container_name: luminagallery_service
+  #     restart: unless-stopped
+  #     env_file:
+  #       - .env
+  #     environment:
+  #       - LUMINAGALLERY_PORT=5036
+  #       - DB_HOST=luminagallery-db
+  #       - DB_PORT=5432
+  #       - DB_NAME=luminagallery_db
+  #       - DB_USER=${DB_USER:-postgres}
+  #       - DB_PASSWORD=${DB_PASSWORD:-luminagallery_db_pwd_74451a28cc0d2b52}
+  #       - REDIS_HOST=luminagallery-redis
+  #       - REDIS_PORT=6379
+  #       - REDIS_PASSWORD=${REDIS_PASSWORD:-luminagallery_redis_0561755413fe8373}
+  #       - JWT_SECRET=${JWT_SECRET:-luminagallery_jwt_secret_key_2026_production}
+  #       - CORS_ORIGIN=${CORS_ORIGIN:-http://localhost:3000}
+  #     ports:
+  #       - "5036:5036"
+  #     networks:
+  #       - fingermobile_network
+  #     depends_on:
+  #       - luminagallery-db
+  #       - luminagallery-redis
+  #     healthcheck:
+  #       test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:5036/health"]
+  #       interval: 30s
+  #       timeout: 10s
+  #       retries: 3
+  #       start_period: 40s
+  #
+  #   # LuminaGallery database
+  luminagallery-db:
+    image: postgres:14-alpine
+    container_name: luminagallery_db
+    ports:
+      - "5448:5432"
+    environment:
+      - POSTGRES_USER=${DB_USER:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-luminagallery_db_pwd_74451a28cc0d2b52}
+      - POSTGRES_DB=luminagallery_db
+    volumes:
+      - luminagallery_db_data:/var/lib/postgresql/data
+      - ./Microservices 06102026/LuminaGallery/database/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+    networks:
+      - fingermobile_network
+    restart: unless-stopped
+    healthcheck:
+      test:
+        ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d luminagallery_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # LuminaGallery redis
+  luminagallery-redis:
+    image: redis:7-alpine
+    container_name: luminagallery_redis
+    command: redis-server --requirepass ${REDIS_PASSWORD:-luminagallery_redis_0561755413fe8373}
+    ports:
+      - "6395:6379"
+    volumes:
+      - luminagallery_redis_data:/data
+    networks:
+      - fingermobile_network
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "redis-cli -a '${REDIS_PASSWORD:-luminagallery_redis_0561755413fe8373}' ping | grep -q PONG",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # lushpressies service
+  # [Pending Microservice - Extracted into core backend]   lushpressies:
+  #     build:
+  #       context: ./Microservices 06102026/lushpressies
+  #       dockerfile: Dockerfile
+  #     container_name: lushpressies_service
+  #     restart: unless-stopped
+  #     env_file:
+  #       - .env
+  #     environment:
+  #       - PORT=3001
+  #       - DB_HOST=lushpressies-db
+  #       - DB_PORT=5432
+  #       - DB_NAME=lushpressies_db
+  #       - DB_USER=${DB_USER:-postgres}
+  #       - DB_PASSWORD=${DB_PASSWORD:-lushpressies_db_pwd_74451a28cc0d2b52}
+  #       - REDIS_HOST=lushpressies-redis
+  #       - REDIS_PORT=6379
+  #       - REDIS_PASSWORD=${REDIS_PASSWORD:-lushpressies_redis_0561755413fe8373}
+  #       - JWT_SECRET=${JWT_SECRET:-lushpressies_jwt_secret_key_2026_production}
+  #       - CORS_ORIGIN=${CORS_ORIGIN:-http://localhost:3000}
+  #     ports:
+  #       - "3016:3001"
+  #     networks:
+  #       - fingermobile_network
+  #     depends_on:
+  #       - lushpressies-db
+  #       - lushpressies-redis
+  #     healthcheck:
+  #       test:
+  #         [
+  #           "CMD",
+  #           "wget",
+  #           "--no-verbose",
+  #           "--tries=1",
+  #           "--spider",
+  #           "http://127.0.0.1:3001/health",
+  #         ]
+  #       interval: 30s
+  #       timeout: 10s
+  #       retries: 3
+  #       start_period: 40s
+  # 
+  # lushpressies database
+  lushpressies-db:
+    image: postgres:14-alpine
+    container_name: lushpressies_db
+    ports:
+      - "5460:5432"
+    environment:
+      - POSTGRES_USER=${DB_USER:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-lushpressies_db_pwd_74451a28cc0d2b52}
+      - POSTGRES_DB=lushpressies_db
+    volumes:
+      - lushpressies_db_data:/var/lib/postgresql/data
+      - ./Microservices 06102026/lushpressies/database/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+    networks:
+      - fingermobile_network
+    restart: unless-stopped
+    healthcheck:
+      test:
+        ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d lushpressies_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # lushpressies redis
+  lushpressies-redis:
+    image: redis:7-alpine
+    container_name: lushpressies_redis
+    restart: unless-stopped
+    ports:
+      - "6396:6379"
+  #     container_name: marketplace_service
+  #     restart: unless-stopped
+  #     env_file:
+  #       - .env
+  #     environment:
+  #       - MARKETPLACE_PORT=3002
+  #       - DB_HOST=marketplace-db
+  #       - DB_PORT=5432
+  #       - DB_NAME=marketplace_db
+  #       - DB_USER=${DB_USER:-postgres}
+  #       - DB_PASSWORD=${DB_PASSWORD:-marketplace_db_pwd_74451a28cc0d2b52}
+  #       - REDIS_HOST=marketplace-redis
+  #       - REDIS_PORT=6379
+  #       - REDIS_PASSWORD=${REDIS_PASSWORD:-marketplace_redis_0561755413fe8373}
+  #       - JWT_SECRET=${JWT_SECRET:-marketplace_jwt_secret_key_2026_production}
+  #       - CORS_ORIGIN=${CORS_ORIGIN:-http://localhost:3000}
+  #     ports:
+  #       - "3017:3002"
+  #     networks:
+  #       - fingermobile_network
+  #     depends_on:
+  #       - marketplace-db
+  #       - marketplace-redis
+  #     healthcheck:
+  #       test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:3002/health"]
+  #       interval: 30s
+  #       timeout: 10s
+  #       retries: 3
+  #       start_period: 40s
+  #
+  #   # marketplace database
+  marketplace-db:
+    image: postgres:14-alpine
+    container_name: marketplace_db
+    ports:
+      - "5459:5432"
+    environment:
+      - POSTGRES_USER=${DB_USER:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-marketplace_db_pwd_74451a28cc0d2b52}
+      - POSTGRES_DB=marketplace_db
+    volumes:
+      - marketplace_db_data:/var/lib/postgresql/data
+      - ./Microservices 06102026/marketplace/database/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+    networks:
+      - fingermobile_network
+    restart: unless-stopped
+    healthcheck:
+      test:
+        ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d marketplace_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # marketplace redis
+  marketplace-redis:
+    image: redis:7-alpine
+    container_name: marketplace_redis
+    command: redis-server --requirepass ${REDIS_PASSWORD:-marketplace_redis_0561755413fe8373}
+    ports:
+      - "6397:6379"
+    volumes:
+      - marketplace_redis_data:/data
+    networks:
+      - fingermobile_network
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "redis-cli -a '${REDIS_PASSWORD:-marketplace_redis_0561755413fe8373}' ping | grep -q PONG",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # mii service
+  # [Pending Microservice - Extracted into core backend]   mii:
+  #     build:
+  #       context: ./Microservices 06102026/mii
+  #       dockerfile: Dockerfile
+  #     container_name: mii_service
+  #     restart: unless-stopped
+  #     env_file:
+  #       - .env
+  #     environment:
+  #       - PORT=3003
+  #       - DB_HOST=mii-db
+  #       - DB_PORT=5432
+  #       - DB_NAME=mii_db
+  #       - DB_USER=${DB_USER:-postgres}
+  #       - DB_PASSWORD=${DB_PASSWORD:-mii_db_pwd_74451a28cc0d2b52}
+  #       - REDIS_HOST=mii-redis
+  #       - REDIS_PORT=6379
+  #       - REDIS_PASSWORD=${REDIS_PASSWORD:-mii_redis_0561755413fe8373}
+  #       - JWT_SECRET=${JWT_SECRET:-mii_jwt_secret_key_2026_production}
+  #       - CORS_ORIGIN=${CORS_ORIGIN:-http://localhost:3000}
+  #     ports:
+  #       - "3018:3003"
+  #     networks:
+  #       - fingermobile_network
+  #     depends_on:
+  #       - mii-db
+  #       - mii-redis
+  #     healthcheck:
+  #       test:
+  #         [
+  #           "CMD",
+  #           "wget",
+  #           "--no-verbose",
+  #           "--tries=1",
+  #           "--spider",
+  #           "http://127.0.0.1:3003/health",
+  #         ]
+  #       interval: 30s
+  #       timeout: 10s
+  #       retries: 3
+  #       start_period: 40s
+  # 
+  # mii database
+  mii-db:
+    image: postgres:14-alpine
+    container_name: mii_db
+    ports:
+      - "5461:5432"
+    environment:
+      - POSTGRES_USER=${DB_USER:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-mii_db_pwd_74451a28cc0d2b52}
+      - POSTGRES_DB=mii_db
+    volumes:
+      - mii_db_data:/var/lib/postgresql/data
+      - ./Microservices 06102026/mii/database/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+    networks:
+      - fingermobile_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d mii_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # mii redis
+  mii-redis:
+    image: redis:7-alpine
+    container_name: mii_redis
+    command: redis-server --requirepass ${REDIS_PASSWORD:-mii_redis_0561755413fe8373}
+    ports:
+      - "6398:6379"
+    volumes:
+      - mii_redis_data:/data
+    networks:
+      - fingermobile_network
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "redis-cli -a '${REDIS_PASSWORD:-mii_redis_0561755413fe8373}' ping | grep -q PONG",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # monitoring service
+  monitoring:
+    build:
+      context: ./apps/monitoring
+      dockerfile: Dockerfile
+    container_name: monitoring_service
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - PORT=3004
+      - DB_HOST=monitoring-db
+      - DB_PORT=5432
+      - DB_NAME=monitoring_db
+      - DB_USER=${DB_USER:-postgres}
+      - DB_PASSWORD=${DB_PASSWORD:-monitoring_db_pwd_74451a28cc0d2b52}
+      - REDIS_HOST=monitoring-redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-monitoring_redis_0561755413fe8373}
+      - JWT_SECRET=${JWT_SECRET:-monitoring_jwt_secret_key_2026_production}
+      - CORS_ORIGIN=${CORS_ORIGIN:-http://localhost:3000}
+    ports:
+      - "3019:3004"
+    networks:
+      - fingermobile_network
+    depends_on:
+      - monitoring-db
+      - monitoring-redis
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://127.0.0.1:3004/health",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # monitoring database
+  monitoring-db:
+    image: postgres:14-alpine
+    container_name: monitoring_db
+    ports:
+      - "5462:5432"
+    environment:
+      - POSTGRES_USER=${DB_USER:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-monitoring_db_pwd_74451a28cc0d2b52}
+      - POSTGRES_DB=monitoring_db
+    volumes:
+      - monitoring_db_data:/var/lib/postgresql/data
+      - ./apps/monitoring/database/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+    networks:
+      - fingermobile_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d monitoring_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # monitoring redis
+  monitoring-redis:
+    image: redis:7-alpine
+    container_name: monitoring_redis
+    command: redis-server --requirepass ${REDIS_PASSWORD:-monitoring_redis_0561755413fe8373}
+    ports:
+      - "6399:6379"
+    volumes:
+      - monitoring_redis_data:/data
+    networks:
+      - fingermobile_network
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "redis-cli -a '${REDIS_PASSWORD:-monitoring_redis_0561755413fe8373}' ping | grep -q PONG",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # MyLearning service
+  # [Pending Microservice - Extracted into core backend]   mylearning:
+  #     build:
+  #       context: ./Microservices 06102026/MyLearning
+  #       dockerfile: Dockerfile
+  #     container_name: mylearning_service
+  #     restart: unless-stopped
+  #     env_file:
+  #       - .env
+  #     environment:
+  #       - PORT=3005
+  #       - DB_HOST=mylearning-db
+  #       - DB_PORT=5432
+  #       - DB_NAME=mylearning_db
+  #       - DB_USER=${DB_USER:-postgres}
+  #       - DB_PASSWORD=${DB_PASSWORD:-mylearning_db_pwd_74451a28cc0d2b52}
+  #       - REDIS_HOST=mylearning-redis
+  #       - REDIS_PORT=6379
+  #       - REDIS_PASSWORD=${REDIS_PASSWORD:-mylearning_redis_0561755413fe8373}
+  #       - JWT_SECRET=${JWT_SECRET:-mylearning_jwt_secret_key_2026_production}
+  #       - CORS_ORIGIN=${CORS_ORIGIN:-http://localhost:3000}
+  #     ports:
+  #       - "3020:3005"
+  #     networks:
+  #       - fingermobile_network
+  #     depends_on:
+  #       - mylearning-db
+  #       - mylearning-redis
+  #     healthcheck:
+  #       test:
+  #         [
+  #           "CMD",
+  #           "wget",
+  #           "--no-verbose",
+  #           "--tries=1",
+  #           "--spider",
+  #           "http://127.0.0.1:3005/health",
+  #         ]
+  #       interval: 30s
+  #       timeout: 10s
+  #       retries: 3
+  #       start_period: 40s
+  # 
+  # MyLearning database
+  mylearning-db:
+    image: postgres:14-alpine
+    container_name: mylearning_db
+    ports:
+      - "5463:5432"
+    environment:
+      - POSTGRES_USER=${DB_USER:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-mylearning_db_pwd_74451a28cc0d2b52}
+      - POSTGRES_DB=mylearning_db
+    volumes:
+      - mylearning_db_data:/var/lib/postgresql/data
+      - ./Microservices 06102026/MyLearning/database/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+    networks:
+      - fingermobile_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d mylearning_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # MyLearning redis
+  mylearning-redis:
+    image: redis:7-alpine
+    container_name: mylearning_redis
+    command: redis-server --requirepass ${REDIS_PASSWORD:-mylearning_redis_0561755413fe8373}
+    ports:
+      - "6400:6379"
+    volumes:
+      - mylearning_redis_data:/data
+    networks:
+      - fingermobile_network
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "redis-cli -a '${REDIS_PASSWORD:-mylearning_redis_0561755413fe8373}' ping | grep -q PONG",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # mystorefront service
+  # [Pending Microservice - Extracted into core backend]   mystorefront:
+  #     build:
+  #       context: ./Microservices 06102026/mystorefront
+  #       dockerfile: Dockerfile
+  #     container_name: mystorefront_service
+  #     restart: unless-stopped
+  #     env_file:
+  #       - .env
+  #     environment:
+  #       - PORT=3006
+  #       - DB_HOST=mystorefront-db
+  #       - DB_PORT=5432
+  #       - DB_NAME=mystorefront_db
+  #       - DB_USER=${DB_USER:-postgres}
+  #       - DB_PASSWORD=${DB_PASSWORD:-mystorefront_db_pwd_74451a28cc0d2b52}
+  #       - REDIS_HOST=mystorefront-redis
+  #       - REDIS_PORT=6379
+  #       - REDIS_PASSWORD=${REDIS_PASSWORD:-mystorefront_redis_0561755413fe8373}
+  #       - JWT_SECRET=${JWT_SECRET:-mystorefront_jwt_secret_key_2026_production}
+  #       - CORS_ORIGIN=${CORS_ORIGIN:-http://localhost:3000}
+  #     ports:
+  #       - "3021:3006"
+  #     networks:
+  #       - fingermobile_network
+  #     depends_on:
+  #       - mystorefront-db
+  #       - mystorefront-redis
+  #     healthcheck:
+  #       test:
+  #         [
+  #           "CMD",
+  #           "wget",
+  #           "--no-verbose",
+  #           "--tries=1",
+  #           "--spider",
+  #           "http://127.0.0.1:3006/health",
+  #         ]
+  #       interval: 30s
+  #       timeout: 10s
+  #       retries: 3
+  #       start_period: 40s
+  # 
+  # mystorefront database
+  mystorefront-db:
+    image: postgres:14-alpine
+    container_name: mystorefront_db
+    ports:
+      - "5464:5432"
+    environment:
+      - POSTGRES_USER=${DB_USER:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-mystorefront_db_pwd_74451a28cc0d2b52}
+      - POSTGRES_DB=mystorefront_db
+    volumes:
+      - mystorefront_db_data:/var/lib/postgresql/data
+      - ./Microservices 06102026/mystorefront/database/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+    networks:
+      - fingermobile_network
+    restart: unless-stopped
+    healthcheck:
+      test:
+        ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d mystorefront_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # mystorefront redis
+  mystorefront-redis:
+    image: redis:7-alpine
+    container_name: mystorefront_redis
+    command: redis-server --requirepass ${REDIS_PASSWORD:-mystorefront_redis_0561755413fe8373}
+    ports:
+      - "6401:6379"
+    volumes:
+      - mystorefront_redis_data:/data
+    networks:
+      - fingermobile_network
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "redis-cli -a '${REDIS_PASSWORD:-mystorefront_redis_0561755413fe8373}' ping | grep -q PONG",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Placeholder Service: vivo-fun
+  vivo-fun-db:
+    image: postgres:14-alpine
+    container_name: vivo_fun_db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=${DB_USER:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-password}
+      - POSTGRES_DB=vivo_fun_db
+    networks:
+      - fingermobile_network
+  # #     container_name: vivo_fun_backend
+  # #     environment:
+  # #       - NODE_ENV=production
+  # #       - PORT=3002
+  # #       - DB_HOST=vivo-fun-db
+  # #       - DB_PORT=5432
+  # #       - DB_NAME=vivo_fun_db
+  # #       - DB_USER=postgres
+  # #       - DB_PASSWORD=vivo_fun_db_pwd_placeholder
+  # #       - REDIS_HOST=vivo-fun-redis
+  # #       - REDIS_PORT=6379
+  # #       - REDIS_PASSWORD=vivo_fun_redis_placeholder
+  # #       - JWT_SECRET=vivo_fun_jwt_placeholder
+  # #     ports:
+  # #       - "3002:3002"
+  # #     depends_on:
+  # #       vivo-fun-db:
+  # #         condition: service_healthy
+  # #       vivo-fun-redis:
+  # #         condition: service_healthy
+  # #     restart: unless-stopped
+  # #     networks:
+  # #       - fingermobile_network
+  # #
+  # #   # Placeholder Service: user-management-service
+  user-management-service-db:
+    image: postgres:14-alpine
+    container_name: user_management_service_db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=${DB_USER:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-password}
+      - POSTGRES_DB=user_management_service_db
+    networks:
+      - fingermobile_network
+  # #     container_name: user_management_service_backend
+  # #     environment:
+  # #       - NODE_ENV=production
+  # #       - PORT=3001
+  # #       - DB_HOST=user-management-service-db
+  # #       - DB_PORT=5432
+  # #       - DB_NAME=user_management_db
+  # #       - DB_USER=postgres
+  # #       - DB_PASSWORD=user_management_db_pwd_placeholder
+  # #       - REDIS_HOST=user-management-service-redis
+  # #       - REDIS_PORT=6379
+  # #       - REDIS_PASSWORD=user_management_redis_placeholder
+  # #       - JWT_SECRET=user_management_jwt_placeholder
+  # #     ports:
+  # #       - "3001:3001"
+  # #     depends_on:
+  # #       user-management-service-db:
+  # #         condition: service_healthy
+  # #       user-management-service-redis:
+  # #         condition: service_healthy
+  # #     restart: unless-stopped
+  # #     networks:
+  # #       - fingermobile_network
+  # #
+  # #   # Placeholder Service: wasi-cloud
+  wasi-cloud-db:
+    image: postgres:14-alpine
+    container_name: wasi_cloud_db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=${DB_USER:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-password}
+      - POSTGRES_DB=wasi_cloud_db
+    networks:
+      - fingermobile_network
+  # #     container_name: wasi_cloud_backend
+  # #     environment:
+  # #       - NODE_ENV=production
+  # #       - PORT=3003
+  # #       - DB_HOST=wasi-cloud-db
+  # #       - DB_PORT=5432
+  # #       - DB_NAME=wasi_cloud_db
+  # #       - DB_USER=postgres
+  # #       - DB_PASSWORD=wasi_cloud_db_pwd_placeholder
+  # #       - REDIS_HOST=wasi-cloud-redis
+  # #       - REDIS_PORT=6379
+  # #       - REDIS_PASSWORD=wasi_cloud_redis_placeholder
+  # #       - JWT_SECRET=wasi_cloud_jwt_placeholder
+  # #     ports:
+  # #       - "3003:3003"
+  # #     depends_on:
+  # #       wasi-cloud-db:
+  # #         condition: service_healthy
+  # #       wasi-cloud-redis:
+  # #         condition: service_healthy
+  # #     restart: unless-stopped
+  # #     networks:
+  # #       - fingermobile_network
+  # #
+  # #   # Placeholder Service: web-analytics-service
+  web-analytics-service-db:
+    image: postgres:14-alpine
+    container_name: web_analytics_service_db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=${DB_USER:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-password}
+      - POSTGRES_DB=web_analytics_service_db
+    networks:
+      - fingermobile_network
+  # #     container_name: web_analytics_service_backend
+  # #     environment:
+  # #       - NODE_ENV=production
+  # #       - PORT=3004
+  # #       - DB_HOST=web-analytics-service-db
+  # #       - DB_PORT=5432
+  # #       - DB_NAME=web_analytics_db
+  # #       - DB_USER=postgres
+  # #       - DB_PASSWORD=web_analytics_db_pwd_placeholder
+  # #       - REDIS_HOST=web-analytics-service-redis
+  # #       - REDIS_PORT=6379
+  # #       - REDIS_PASSWORD=web_analytics_redis_placeholder
+  # #       - JWT_SECRET=web_analytics_jwt_placeholder
+  # #     ports:
+  # #       - "3004:3004"
+  # #     depends_on:
+  # #       web-analytics-service-db:
+  # #         condition: service_healthy
+  # #       web-analytics-service-redis:
+  # #         condition: service_healthy
+  # #     restart: unless-stopped
+  # #     networks:
+  # #       - fingermobile_network
+  # #
+  # #
+
+  # FingerMobile Communication Module
+  # [Pending Microservice - Extracted into core backend]   communication-service:
+  #     build:
+  #       context: ../Communication/FingerMobile
+  #       dockerfile: Dockerfile
+  #     container_name: communication_service
+  #     restart: unless-stopped
+  #     env_file:
+  #       - ../Communication/FingerMobile/.env
+  #     ports:
+  #       - "4000:4000"
+  #     networks:
+  #       - fingermobile_network
+  #     depends_on:
+  #       - fingermobile-postgres
+  #       - fingermobile-redis
+  # 
+  # FingerMobile Business and Monetization Suite
+  # [Pending Microservice - Extracted into core backend]   monetization-api:
+  #     build:
+  #       context: ../FingerMobile Business and Monetization Suite
+  #       dockerfile: Dockerfile
+  #     container_name: monetization_service
+  #     ports:
+  #       - "3001:3001"
+  #     environment:
+  #       - NODE_ENV=production
+  #       - PORT=3001
+  #       - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@fingermobile-postgres:5432/fingermobile_monetization_db
+  #       - REDIS_URL=redis://fingermobile-redis:6379
+  #       - JWT_SECRET=${JWT_SECRET:-business_suite_jwt_secret_key_2026_production}
+  #       - WEBHOOK_SECRET=${WEBHOOK_SECRET:-business_suite_webhook_secret_placeholder}
+  #       - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY:-sk_test_placeholder}
+  #       - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET:-whsec_placeholder}
+  #     networks:
+  #       - fingermobile_network
+  #     depends_on:
+  #       - fingermobile-postgres
+  #       - fingermobile-redis
+  #     restart: unless-stopped
+  # 
+  # New Services
+  user-management-service:
+    build:
+      context: ./apps/user-management-service
+    container_name: user_management_service
+    ports:
+      - "5011:3000"
+    environment:
+      - DB_HOST=fingermobile-postgres
+      - DB_NAME=user_management_service_db
+      - DB_USER=${POSTGRES_USER:-postgres}
+      - DB_PASSWORD=${POSTGRES_PASSWORD:-password}
+    networks:
+      - fingermobile_network
+    depends_on:
+      - fingermobile-postgres
+
+  # [Pending Microservice - Extracted into core backend]   fmbf-biometrics:
+  #     build:
+  #       context: ./Microservices 06102026/fmbf-biometrics
+  #     container_name: fmbf_biometrics
+  #     ports:
+  #       - "5012:5000"
+  #     networks:
+  #       - fingermobile_network
+  # 
+  web-analytics-service:
+    build:
+      context: ./apps/web-analytics-service
+    container_name: web_analytics_service
+    ports:
+      - "5013:3000"
+    environment:
+      - DB_HOST=fingermobile-postgres
+      - DB_NAME=web_analytics_service_db
+      - DB_USER=${POSTGRES_USER:-postgres}
+      - DB_PASSWORD=${POSTGRES_PASSWORD:-password}
+    networks:
+      - fingermobile_network
+    depends_on:
+      - fingermobile-postgres
+
+  # [Pending Microservice - Extracted into core backend]   vivo-fun:
+  #     build:
+  #       context: ./Microservices 06102026/vivo-fun
+  #     container_name: vivo_fun
+  #     ports:
+  #       - "5014:3000"
+  #     environment:
+  #       - DB_HOST=fingermobile-postgres
+  #       - DB_NAME=vivo_fun_db
+  #       - DB_USER=postgres
+  #       - DB_PASSWORD=postgres
+  #     volumes:
+  #       - ./Assets/FingerMobile Image and Video Filters and Assets:/Assets/FingerMobile Image and Video Filters and Assets
+  #     networks:
+  #       - fingermobile_network
+  #     depends_on:
+  #       - fingermobile-postgres
+  # 
+  # blogs service
+  # [Pending Microservice - Extracted into core backend]   blogs:
+  #     build:
+  #       context: ./Microservices 06102026/blogs
+  #     container_name: blogs_service
+  #     ports:
+  #       - "5038:5038"
+  #     environment:
+  #       - PORT=5038
+  #       - BLOGS_PORT=5038
+  #       - DB_HOST=blogs-db
+  #       - DB_PORT=5432
+  #       - DB_NAME=blogs_db
+  #       - DB_USER=postgres
+  #       - DB_PASSWORD=${DB_PASSWORD:-blogs_db_pwd_94451a28cc0d2b52}
+  #     networks:
+  #       - fingermobile_network
+  #     depends_on:
+  #       - blogs-db
+  # 
+  # blogs database
+  blogs-db:
+    image: postgres:13-alpine
+    container_name: blogs_db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-blogs_db_pwd_94451a28cc0d2b52}
+      - POSTGRES_DB=blogs_db
+    volumes:
+      - blogs_db_data:/var/lib/postgresql/data
+      - ./Microservices 06102026/blogs/database/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+    networks:
+      - fingermobile_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d blogs_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # [Pending Microservice - Extracted into core backend]   groups:
+  #     build:
+  #       context: ./Microservices 06102026/groups
+  #     container_name: groups_service
+  #     ports:
+  #       - "5036:5036"
+  #     environment:
+  #       - GROUPS_PORT=5036
+  #       - DB_HOST=groups-db
+  #       - DB_PORT=5432
+  #       - DB_NAME=groups_db
+  #       - DB_USER=postgres
+  #       - DB_PASSWORD=${DB_PASSWORD:-groups_db_pwd_94451a28cc0d2b52}
+  #     networks:
+  #       - fingermobile_network
+  #     depends_on:
+  #       - groups-db
+  # 
+  groups-db:
+    image: postgres:13-alpine
+    container_name: groups_db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-groups_db_pwd_94451a28cc0d2b52}
+      - POSTGRES_DB=groups_db
+    volumes:
+      - groups_db_data:/var/lib/postgresql/data
+      - ./Microservices 06102026/groups/database/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+    networks:
+      - fingermobile_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d groups_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # [Pending Microservice - Extracted into core backend]   fingershorts:
+  #     build:
+  #       context: ./Microservices 06102026/fingershorts
+  #     container_name: fingershorts_service
+  #     ports:
+  #       - "5037:5037"
+  #     environment:
+  #       - FINGERSHORTS_PORT=5037
+  #       - DB_HOST=fingershorts-db
+  #       - DB_PORT=5432
+  #       - DB_NAME=fingershorts_db
+  #       - DB_USER=postgres
+  #       - DB_PASSWORD=${DB_PASSWORD:-fingershorts_db_pwd_94451a28cc0d2b52}
+  #     networks:
+  #       - fingermobile_network
+  #     depends_on:
+  #       - fingershorts-db
+  # 
+  fingershorts-db:
+    image: postgres:13-alpine
+    container_name: fingershorts_db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-fingershorts_db_pwd_94451a28cc0d2b52}
+      - POSTGRES_DB=fingershorts_db
+    volumes:
+      - fingershorts_db_data:/var/lib/postgresql/data
+      - ./Microservices 06102026/fingershorts/database/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+    networks:
+      - fingermobile_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d fingershorts_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5

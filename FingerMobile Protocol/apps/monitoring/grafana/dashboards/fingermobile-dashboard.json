@@ -1,0 +1,224 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "FingerMobile Platform Dashboard",
+    "tags": ["fingermobile", "platform", "monitoring"],
+    "style": "dark",
+    "timezone": "browser",
+    "panels": [
+      {
+        "id": 1,
+        "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+        "type": "graph",
+        "title": "API Response Times",
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[5m])) by (le, handler))",
+            "legendFormat": "{{handler}}"
+          }
+        ],
+        "yAxes": [
+          {
+            "label": "Response Time (seconds)",
+            "show": true
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+        "type": "graph",
+        "title": "API Request Rates",
+        "targets": [
+          {
+            "expr": "sum(rate(http_requests_total[5m])) by (status_code)",
+            "legendFormat": "{{status_code}}"
+          }
+        ],
+        "yAxes": [
+          {
+            "label": "Requests/sec",
+            "show": true
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "gridPos": { "h": 8, "w": 6, "x": 0, "y": 8 },
+        "type": "stat",
+        "title": "Active Users",
+        "targets": [
+          {
+            "expr": "count(users_active)",
+            "legendFormat": "Active Users"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "none",
+            "color": {
+              "mode": "thresholds"
+            },
+            "thresholds": {
+              "steps": [
+                { "color": "green", "value": null },
+                { "color": "red", "value": 80 }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": 4,
+        "gridPos": { "h": 8, "w": 6, "x": 6, "y": 8 },
+        "type": "stat",
+        "title": "System Uptime",
+        "targets": [
+          {
+            "expr": "up",
+            "legendFormat": "Up Time"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "s",
+            "color": {
+              "mode": "thresholds"
+            },
+            "thresholds": {
+              "steps": [
+                { "color": "red", "value": null },
+                { "color": "green", "value": 1 }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": 5,
+        "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
+        "type": "graph",
+        "title": "Database Connection Pool",
+        "targets": [
+          {
+            "expr": "pg_stat_activity_count",
+            "legendFormat": "Active Connections"
+          },
+          {
+            "expr": "pg_stat_activity_count{state=\"idle\"}",
+            "legendFormat": "Idle Connections"
+          }
+        ],
+        "yAxes": [
+          {
+            "label": "Connections",
+            "show": true
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "gridPos": { "h": 8, "w": 8, "x": 0, "y": 16 },
+        "type": "graph",
+        "title": "Memory Usage",
+        "targets": [
+          {
+            "expr": "process_resident_memory_bytes",
+            "legendFormat": "RSS Memory"
+          },
+          {
+            "expr": "nodejs_heap_size_used_bytes",
+            "legendFormat": "Heap Memory"
+          }
+        ],
+        "yAxes": [
+          {
+            "label": "Bytes",
+            "show": true
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "gridPos": { "h": 8, "w": 8, "x": 8, "y": 16 },
+        "type": "graph",
+        "title": "CPU Usage",
+        "targets": [
+          {
+            "expr": "rate(process_cpu_seconds_total[1m])",
+            "legendFormat": "CPU Usage"
+          }
+        ],
+        "yAxes": [
+          {
+            "label": "Cores",
+            "show": true
+          }
+        ]
+      },
+      {
+        "id": 8,
+        "gridPos": { "h": 8, "w": 8, "x": 16, "y": 16 },
+        "type": "graph",
+        "title": "Disk Usage",
+        "targets": [
+          {
+            "expr": "node_filesystem_size_bytes - node_filesystem_free_bytes",
+            "legendFormat": "Used Space"
+          }
+        ],
+        "yAxes": [
+          {
+            "label": "Bytes",
+            "show": true
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "gridPos": { "h": 8, "w": 12, "x": 0, "y": 24 },
+        "type": "graph",
+        "title": "Mobile App Performance",
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.95, sum(rate(app_render_duration_ms_bucket[5m])) by (le, page))",
+            "legendFormat": "{{page}}"
+          }
+        ],
+        "yAxes": [
+          {
+            "label": "Render Time (ms)",
+            "show": true
+          }
+        ]
+      },
+      {
+        "id": 10,
+        "gridPos": { "h": 8, "w": 12, "x": 12, "y": 24 },
+        "type": "graph",
+        "title": "Marketplace Activity",
+        "targets": [
+          {
+            "expr": "increase(marketplace_product_views_total[1h])",
+            "legendFormat": "Product Views"
+          },
+          {
+            "expr": "increase(marketplace_orders_total[1h])",
+            "legendFormat": "Orders"
+          }
+        ],
+        "yAxes": [
+          {
+            "label": "Count",
+            "show": true
+          }
+        ]
+      }
+    ],
+    "time": {
+      "from": "now-6h",
+      "to": "now"
+    },
+    "refresh": "5s"
+  }
+}

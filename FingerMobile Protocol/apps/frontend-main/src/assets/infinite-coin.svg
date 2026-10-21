@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <!-- Infinite Coin SVG -->
+  <defs>
+    <linearGradient id="coinGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFD700" />
+      <stop offset="100%" stop-color="#FFA500" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2" />
+    </filter>
+  </defs>
+  <!-- Coin base -->
+  <circle cx="50" cy="50" r="45" fill="url(#coinGradient)" stroke="#B8860B" stroke-width="2" />
+  <!-- Infinity symbol -->
+  <path d="M30,50 C30,42 38,35 45,35 C52,35 55,42 55,50 C55,58 52,65 45,65 C38,65 30,58 30,50 Z M70,50 C70,42 62,35 55,35 C48,35 45,42 45,50 C45,58 48,65 55,65 C62,65 70,58 70,50 Z" 
+        fill="none" stroke="#FFFFFF" stroke-width="5" />
+  <!-- FIC text -->
+  <text x="50" y="85" font-family="Arial, sans-serif" font-weight="bold" font-size="12" fill="#FFFFFF" text-anchor="middle">FIC</text>
+</svg>
