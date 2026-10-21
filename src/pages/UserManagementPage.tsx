@@ -12,10 +12,15 @@ import {
   UserPlus,
   ChevronLeft,
   ChevronRight,
-  X
+  X,
+  Shield,
+  ShieldCheck,
+  CheckCircle,
+  AlertTriangle
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
+import PlatformOwnershipCard from '../components/dashboard/PlatformOwnershipCard';
 
 interface PlatformUser {
   id: number;
@@ -48,6 +53,7 @@ const UserManagementPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage] = useState(10);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [selectedUserForActivity, setSelectedUserForActivity] = useState<PlatformUser | null>(null);
   const [newUser, setNewUser] = useState({
     email: '',
     password: '',
@@ -325,6 +331,8 @@ const UserManagementPage: React.FC = () => {
       </header>
 
       <main className="max-w-7xl mx-auto space-y-6">
+        <PlatformOwnershipCard />
+
         {/* Filters and Search */}
         <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-5">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -468,9 +476,9 @@ const UserManagementPage: React.FC = () => {
                         <div className="flex items-center justify-end space-x-2">
                           <button
                             type="button"
-                            title="Inspect Activity"
+                            title="Inspect Member Activity & Enclave Credentials"
                             className="p-1.5 text-blue-700 hover:text-blue-900 hover:bg-blue-50 rounded"
-                            onClick={() => navigate(`/dashboard/users/${user.id}/activity`)}
+                            onClick={() => setSelectedUserForActivity(user)}
                           >
                             <Activity className="h-4 w-4" />
                           </button>
@@ -573,6 +581,170 @@ const UserManagementPage: React.FC = () => {
           )}
         </div>
       </main>
+
+      {/* Member Activity & Enclave Credentials Modal */}
+      {selectedUserForActivity && (
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm overflow-y-auto h-full w-full z-50 flex items-center justify-center p-4">
+          <div className="relative mx-auto p-6 border border-slate-300 w-full max-w-2xl shadow-2xl rounded-2xl bg-white max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-start pb-4 border-b border-slate-200">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 bg-blue-100 text-blue-950 border border-blue-400 rounded-xl font-black">
+                  <UserIcon className="h-6 w-6 text-blue-800" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-xl font-black text-slate-900">
+                      {selectedUserForActivity.firstName} {selectedUserForActivity.lastName}
+                    </h3>
+                    <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold ${getRoleColor(selectedUserForActivity.role)}`}>
+                      {selectedUserForActivity.role.toUpperCase()}
+                    </span>
+                    <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold ${getStatusColor(selectedUserForActivity.status)}`}>
+                      {selectedUserForActivity.status.toUpperCase()}
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-700 font-semibold mt-0.5">
+                    @{selectedUserForActivity.username} • {selectedUserForActivity.email} • ID: #{selectedUserForActivity.id}
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                className="text-slate-600 hover:text-slate-900 p-1.5 rounded-lg hover:bg-slate-100 transition-colors"
+                onClick={() => setSelectedUserForActivity(null)}
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            <div className="py-4 space-y-5">
+              {/* Balances & Assets KPI Grid */}
+              <div className="grid grid-cols-3 gap-3">
+                <div className="p-3 bg-slate-50 border border-slate-300 rounded-xl">
+                  <span className="text-[10px] font-bold text-slate-700 uppercase tracking-wider block">Fiat Balance</span>
+                  <span className="text-lg font-black text-slate-900">${(selectedUserForActivity.fiatBalance || 0).toLocaleString()}</span>
+                </div>
+                <div className="p-3 bg-slate-50 border border-slate-300 rounded-xl">
+                  <span className="text-[10px] font-bold text-slate-700 uppercase tracking-wider block">Crypto FIC</span>
+                  <span className="text-lg font-black text-slate-900">{(selectedUserForActivity.cryptoBalance || 0).toLocaleString()} FIC</span>
+                </div>
+                <div className="p-3 bg-slate-50 border border-slate-300 rounded-xl">
+                  <span className="text-[10px] font-bold text-slate-700 uppercase tracking-wider block">AI Inference Credits</span>
+                  <span className="text-lg font-black text-slate-900">{selectedUserForActivity.aiCredits || 0} Credits</span>
+                </div>
+              </div>
+
+              {/* CES Trust Score & Strikes */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="p-4 border border-slate-300 rounded-xl bg-white space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs font-bold text-slate-800">CES Sovereign Trust Rating</span>
+                    <span className="text-xs font-black text-emerald-950 bg-emerald-100 border border-emerald-400 px-2 py-0.5 rounded">
+                      {selectedUserForActivity.cesScore || 90}/100
+                    </span>
+                  </div>
+                  <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden border border-slate-300">
+                    <div
+                      className="bg-emerald-600 h-full rounded-full transition-all"
+                      style={{ width: `${selectedUserForActivity.cesScore || 90}%` }}
+                    />
+                  </div>
+                  <p className="text-[11px] text-slate-700 font-medium">Attested through decentralized biometric enclave validator</p>
+                </div>
+
+                <div className="p-4 border border-slate-300 rounded-xl bg-white space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs font-bold text-slate-800">Moderation Strikes</span>
+                    <span className={`text-xs font-bold px-2 py-0.5 rounded border ${
+                      (selectedUserForActivity.strikes || 0) >= 2
+                        ? 'bg-rose-100 text-rose-950 border-rose-400 font-bold'
+                        : 'bg-slate-100 text-slate-900 border-slate-300 font-bold'
+                    }`}>
+                      {selectedUserForActivity.strikes || 0} of 3 Strikes
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 pt-1">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const updated = { ...selectedUserForActivity, strikes: 0 };
+                        setSelectedUserForActivity(updated);
+                        setUsers(prev => prev.map(u => u.id === updated.id ? updated : u));
+                      }}
+                      className="px-2.5 py-1 text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-800 rounded border border-slate-300 transition-colors"
+                    >
+                      Clear Strikes
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const updated = { ...selectedUserForActivity, strikes: Math.min((selectedUserForActivity.strikes || 0) + 1, 3) };
+                        setSelectedUserForActivity(updated);
+                        setUsers(prev => prev.map(u => u.id === updated.id ? updated : u));
+                      }}
+                      className="px-2.5 py-1 text-xs font-bold bg-amber-100 hover:bg-amber-200 text-amber-950 rounded border border-amber-400 transition-colors"
+                    >
+                      Issue Warning Strike
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Protocol Telemetry Stream */}
+              <div className="border border-slate-300 rounded-xl p-4 bg-slate-50 space-y-2.5">
+                <h4 className="text-xs font-black text-slate-900 uppercase tracking-wider">Live Member Audit Telemetry</h4>
+                <div className="space-y-2 text-xs text-slate-800">
+                  <div className="flex items-center justify-between p-2 rounded bg-white border border-slate-200">
+                    <span className="font-semibold text-slate-900">Enclave Biometric Verification</span>
+                    <span className="text-emerald-800 font-bold">Hardware Attested</span>
+                  </div>
+                  <div className="flex items-center justify-between p-2 rounded bg-white border border-slate-200">
+                    <span className="font-semibold text-slate-900">Last Session Origin</span>
+                    <span className="text-slate-700 font-mono font-medium">{selectedUserForActivity.lastLoginAt ? new Date(selectedUserForActivity.lastLoginAt).toLocaleString() : 'Active session'}</span>
+                  </div>
+                  <div className="flex items-center justify-between p-2 rounded bg-white border border-slate-200">
+                    <span className="font-semibold text-slate-900">Account Age / Provisioned</span>
+                    <span className="text-slate-700 font-mono font-medium">{new Date(selectedUserForActivity.createdAt).toLocaleDateString()}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-slate-200">
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleRoleChange(selectedUserForActivity.id, selectedUserForActivity.role === 'admin' ? 'user' : 'admin');
+                    setSelectedUserForActivity(prev => prev ? { ...prev, role: prev.role === 'admin' ? 'user' : 'admin' } : null);
+                  }}
+                  className="px-3 py-1.5 text-xs font-bold bg-purple-100 text-purple-950 border border-purple-400 rounded-lg hover:bg-purple-200 transition-colors"
+                >
+                  Toggle Admin Role
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const newSt = selectedUserForActivity.status === 'active' ? 'suspended' : 'active';
+                    handleStatusChange(selectedUserForActivity.id, newSt);
+                    setSelectedUserForActivity(prev => prev ? { ...prev, status: newSt } : null);
+                  }}
+                  className="px-3 py-1.5 text-xs font-bold bg-amber-100 text-amber-950 border border-amber-400 rounded-lg hover:bg-amber-200 transition-colors"
+                >
+                  {selectedUserForActivity.status === 'active' ? 'Suspend Account' : 'Reactivate Account'}
+                </button>
+              </div>
+              <button
+                type="button"
+                className="px-4 py-2 text-xs font-bold text-slate-800 bg-slate-100 hover:bg-slate-200 rounded-lg border border-slate-300 transition-colors"
+                onClick={() => setSelectedUserForActivity(null)}
+              >
+                Close Inspector
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Create User Modal */}
       {showCreateModal && (

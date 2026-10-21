@@ -22,6 +22,7 @@ import {
 import InstructorDashboard from '../components/InstructorDashboard';
 import CamusAdminDashboard from '../components/camus/CamusAdminDashboard';
 import MainLayout from '../components/layout/MainLayout';
+import PlatformOwnershipCard from '../components/dashboard/PlatformOwnershipCard';
 import { CheckCircle, Award, Play, ShieldCheck, Download, ExternalLink, Package, Sparkles, Building, Layers } from 'lucide-react';
 
 interface Lesson {
@@ -202,6 +203,8 @@ const CamusDashboardPage: React.FC = () => {
   return (
     <MainLayout pageTitle="CAMUS LMS Dashboard">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+        <PlatformOwnershipCard />
+
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-800 p-8 rounded-3xl text-white shadow-xl">
           <div className="flex items-center gap-4">

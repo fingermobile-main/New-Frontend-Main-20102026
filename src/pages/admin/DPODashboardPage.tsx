@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import UniversalHeader from '../../components/layout/UniversalHeader';
 import api from '../../services/api';
+import PlatformOwnershipCard from '../../components/dashboard/PlatformOwnershipCard';
 
 interface CARReportData {
   certificationVersion: string;
@@ -121,6 +122,8 @@ export const DPODashboardPage: React.FC = () => {
       <UniversalHeader pageTitle="DPO Legal Vault & Compliance Command" />
 
       <main className="max-w-7xl mx-auto px-4 py-8 space-y-8">
+        <PlatformOwnershipCard />
+
         {/* TOP STATUS BAR: 72H REGULATORY CLOCK & COMPLIANCE HEALTH GAUGE */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="p-6 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl flex items-center justify-between">

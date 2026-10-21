@@ -40,6 +40,7 @@ import { guardianSearchIndexer } from '../services/GuardianSearchIndexingService
 import CorporateGovernanceConsole from '../components/dashboard/CorporateGovernanceConsole';
 import EnterpriseFinancialEcosystemConsole from '../components/dashboard/EnterpriseFinancialEcosystemConsole';
 import StercsControlCenter from '../components/dashboard/StercsControlCenter';
+import PlatformOwnershipCard from '../components/dashboard/PlatformOwnershipCard';
 
 interface StercsModule {
   id: string;
@@ -749,6 +750,8 @@ const StercsDashboardPage: React.FC = () => {
       </div>
 
       <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+        <PlatformOwnershipCard />
+
         {/* 2. Top SEMrush Hero Domain Analytics / Authority KPI Bar (5 Columns) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
           {/* Card 1: STERCS Trust Index */}

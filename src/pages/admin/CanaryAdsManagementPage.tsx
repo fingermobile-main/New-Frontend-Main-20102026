@@ -3,6 +3,7 @@ import UniversalHeader from '../../components/layout/UniversalHeader';
 import H2AdBucket from '../../components/layout/H2AdBucket';
 import { advertisingService, QueueItem } from '../../services/advertisingService';
 import { useAppContext } from '../../contexts/AppContext';
+import PlatformOwnershipCard from '../../components/dashboard/PlatformOwnershipCard';
 
 export const CanaryAdsManagementPage: React.FC = () => {
   const { showToast } = useAppContext();
@@ -72,7 +73,9 @@ export const CanaryAdsManagementPage: React.FC = () => {
       <H2AdBucket />
 
       {/* DASHBOARD CONTENT */}
-      <main className="flex-1 max-w-7xl mx-auto px-4 py-8 w-full">
+      <main className="flex-1 max-w-7xl mx-auto px-4 py-8 w-full space-y-6">
+        <PlatformOwnershipCard />
+
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-slate-800 gap-4">
           <div>
