@@ -1187,16 +1187,15 @@ class CanaryAdsController {
     try {
       const statsRes = await pool.query(`
         SELECT 
-          COUNT(*) as total_campaigns,
-          COUNT(*) FILTER (WHERE status = 'active') as active_campaigns,
-          COALESCE(SUM(impressions), 0) as total_reach,
-          COALESCE(SUM(clicks), 0) as total_clicks,
-          COALESCE(SUM(conversions), 0) as total_conversions,
-          COALESCE(SUM(spent), 0) as total_spend
-        FROM canary_campaigns
+          (SELECT COUNT(*) FROM canary_campaigns) as total_campaigns,
+          (SELECT COUNT(*) FROM canary_campaigns WHERE status = 'active') as active_campaigns,
+          (SELECT COUNT(*) FROM canary_impressions) as total_reach,
+          (SELECT COUNT(*) FROM canary_clicks) as total_clicks,
+          (SELECT COUNT(*) FROM canary_clicks WHERE converted = true) as total_conversions,
+          (SELECT COALESCE(SUM(amount), 0) FROM canary_payments WHERE status = 'paid') as total_spend
       `);
 
-      const row = statsRes.rows[0];
+      const row = statsRes.rows[0] || {};
       const totalCampaigns = parseInt(row.total_campaigns || 0, 10);
       const activeCampaigns = parseInt(row.active_campaigns || 0, 10);
       const totalReach = parseInt(row.total_reach || 0, 10);
@@ -1212,7 +1211,7 @@ class CanaryAdsController {
 
       const convPercent = totalClicks > 0
         ? ((totalConversions / totalClicks) * 100).toFixed(0) + '%'
-        : '12%';
+        : '0%';
 
       return res.json({
         success: true,

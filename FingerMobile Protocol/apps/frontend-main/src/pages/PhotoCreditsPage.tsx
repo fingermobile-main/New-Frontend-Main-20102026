@@ -1780,7 +1780,7 @@ Status: VALIDATED & PERMANENTLY RECORDED
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 py-6 px-3 sm:px-6 lg:px-8">
       {/* Header Banner */}
-      <div className="max-w-7xl mx-auto mb-8">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto mb-8">
         <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-amber-950/70 via-emerald-950/40 to-slate-900/90 border border-amber-500/30 p-6 sm:p-8 backdrop-blur-xl shadow-2xl">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div>
@@ -1908,7 +1908,7 @@ Status: VALIDATED & PERMANENTLY RECORDED
       </div>
 
       {/* Main Content Area */}
-      <div className="max-w-7xl mx-auto">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto">
         {/* ======================================================== */}
         {/* TAB 1: GALLERY & LICENSING */}
         {/* ======================================================== */}

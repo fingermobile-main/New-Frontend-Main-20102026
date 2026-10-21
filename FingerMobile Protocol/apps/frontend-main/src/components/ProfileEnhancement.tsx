@@ -116,7 +116,7 @@ const ProfileEnhancement: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md text-slate-800">
+    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-6 bg-white rounded-lg shadow-md text-slate-800">
       <h2 className="text-2xl font-bold text-slate-900 mb-6">Profile Enhancement</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
