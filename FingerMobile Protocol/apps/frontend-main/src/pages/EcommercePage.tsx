@@ -172,9 +172,34 @@ const EcommercePage: React.FC = () => {
           }
         ];
         
-        setProducts(mockProducts);
+        let initialProducts = mockProducts;
+        try {
+          const apiRes = await fetch('/api/marketplace/products');
+          if (apiRes.ok) {
+            const data = await apiRes.json();
+            if (data.success && Array.isArray(data.data) && data.data.length > 0) {
+              initialProducts = data.data.map((item: any) => ({
+                id: item.id,
+                name: item.name || 'Unnamed Product',
+                description: item.description || '',
+                price: parseFloat(item.price) || 0,
+                category: item.category || 'general',
+                stockQuantity: item.stock_quantity || item.stockQuantity || 10,
+                sku: item.sku || `SKU-${item.id}`,
+                status: item.status || 'active',
+                images: item.images || ['https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400'],
+                createdAt: item.created_at || new Date().toISOString(),
+                updatedAt: item.updated_at || new Date().toISOString()
+              }));
+            }
+          }
+        } catch (apiErr) {
+          console.warn('Marketplace products API fallback to seed:', apiErr);
+        }
+
+        setProducts(initialProducts);
         setOrders(mockOrders);
-        setFilteredProducts(mockProducts);
+        setFilteredProducts(initialProducts);
         setFilteredOrders(mockOrders);
         setLoading(false);
       } catch (error) {
@@ -318,14 +343,14 @@ const EcommercePage: React.FC = () => {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center">
-              <ShoppingCart className="h-8 w-8 text-blue-500" />
-              <h1 className="text-2xl font-bold text-gray-900 ml-3">E-commerce Management</h1>
+              <ShoppingCart className="h-8 w-8 text-blue-600" />
+              <h1 className="text-2xl sm:text-3xl font-black text-slate-900 ml-3 tracking-tight">E-commerce Management</h1>
             </div>
             <button 
-              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center shadow-sm"
               onClick={() => setShowCreateModal(true)}
             >
               <Plus className="h-4 w-4 mr-1" />
@@ -335,7 +360,7 @@ const EcommercePage: React.FC = () => {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Tabs */}
         <div className="border-b border-slate-300 mb-6">
           <nav className="-mb-px flex space-x-8">

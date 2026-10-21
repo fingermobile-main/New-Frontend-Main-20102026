@@ -67,9 +67,9 @@ class ModerationController {
           END as content_preview
          FROM moderation_queue m
          LEFT JOIN users rb ON m.reported_by::text = rb.id::text
-         LEFT JOIN posts p ON m.content_type = 'post' AND m.content_id = p.id::text
-         LEFT JOIN comments c ON m.content_type = 'comment' AND m.content_id = c.id::text
-         LEFT JOIN users u ON m.content_type = 'user' AND m.content_id = u.id::text
+         LEFT JOIN posts p ON m.content_type = 'post' AND m.content_id::text = p.id::text
+         LEFT JOIN comments c ON m.content_type = 'comment' AND m.content_id::text = c.id::text
+         LEFT JOIN users u ON m.content_type = 'user' AND m.content_id::text = u.id::text
          WHERE ${whereSQL}
          ORDER BY 
            CASE m.priority

@@ -242,17 +242,17 @@ const AdminControlDashboard: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-10">
           <div className="flex items-center">
-            <div className="bg-gradient-to-r from-red-600 to-orange-600 p-3 rounded-xl">
+            <div className="bg-gradient-to-r from-red-600 to-orange-600 p-3 rounded-xl shadow-md">
               <ShieldCheckIcon className="h-8 w-8 text-white" />
             </div>
             <div className="ml-4">
-              <h1 className="text-3xl font-bold text-gray-900">
+              <h1 className="text-3xl font-black text-slate-900 tracking-tight">
                 Admin Control Dashboard
               </h1>
-              <p className="text-slate-700 font-medium">Securely manage platform operations and user activities</p>
+              <p className="text-slate-700 font-medium">Securely manage platform operations, multi-signature controls, and user activities</p>
             </div>
           </div>
         </div>
@@ -260,9 +260,9 @@ const AdminControlDashboard: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           <div className="lg:col-span-3">
             {/* Security Controls */}
-            <div className="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-slate-200">
+            <div className="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-slate-300">
               <div className="p-1 bg-gradient-to-r from-red-500 to-orange-500 rounded-lg mb-6"></div>
-              <h2 className="text-lg font-medium text-gray-900 mb-4">
+              <h2 className="text-lg font-bold text-slate-900 mb-4">
                 Security Controls
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

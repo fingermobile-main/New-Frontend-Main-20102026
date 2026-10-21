@@ -934,6 +934,8 @@ export const routes: RouteObject[] = [
                   { path: '/admin/governance', element: redirectTo('/governance') },
                   { path: '/database-integration-dashboard', element: <DatabaseIntegrationDashboard /> },
                   { path: '/database-integration', element: redirectTo('/database-integration-dashboard') },
+                  { path: '/admin/database-integration', element: redirectTo('/database-integration-dashboard') },
+                  { path: '/databaseintegration', element: redirectTo('/database-integration-dashboard') },
                   { path: '/database-dashboard', element: redirectTo('/database-integration-dashboard') },
                   { path: '/databaseintegrationdashboard', element: <DatabaseIntegrationDashboard /> },
                   { path: '/database-report', element: redirectTo('/databaseintegrationreport') },

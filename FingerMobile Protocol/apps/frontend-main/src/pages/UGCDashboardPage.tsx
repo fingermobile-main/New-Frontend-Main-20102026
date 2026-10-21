@@ -97,7 +97,7 @@ const UGCDashboardPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+    <div className="max-w-[1536px] 2xl:max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
       {/* Banner */}
       <div className="bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-800 rounded-xl shadow-lg p-6 text-white border border-blue-900">
         <div className="flex flex-wrap items-center justify-between gap-4">
