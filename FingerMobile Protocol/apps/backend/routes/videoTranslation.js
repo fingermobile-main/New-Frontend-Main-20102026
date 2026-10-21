@@ -23,7 +23,7 @@ const auth = async (req, res, next) => {
   } catch {
     // Continue with default user
   }
-  req.user = { id: '4', username: 'moderator', role: 'admin' };
+  req.user = { id: 'b77e0895-0246-467e-9d74-fa8e59e788ec', username: 'moderator', role: 'admin' };
   next();
 };
 const validateVideoUpload = (req, res, next) => next();

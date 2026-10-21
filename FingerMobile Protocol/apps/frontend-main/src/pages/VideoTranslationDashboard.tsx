@@ -176,9 +176,10 @@ const VideoTranslationDashboard: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white p-4 sm:p-6 lg:p-8 space-y-6">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-gray-800 gap-4">
+    <div className="min-h-screen bg-gray-950 text-white p-4 sm:p-6 lg:p-8">
+      <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto space-y-6">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-gray-800 gap-4">
         <div className="flex items-center gap-3">
           <div className="p-3 bg-indigo-600/20 text-indigo-400 border border-indigo-500/30 rounded-2xl">
             <LanguageIcon className="w-8 h-8" />
@@ -439,6 +440,7 @@ const VideoTranslationDashboard: React.FC = () => {
 
       {/* Sovereign Platform Ownership Directive */}
       <PlatformOwnershipCard />
+      </div>
     </div>
   );
 };

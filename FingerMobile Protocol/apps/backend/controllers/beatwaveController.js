@@ -724,7 +724,7 @@ class BeatwaveController {
           p.created_at as "createdAt",
           u.username as "ownerName"
         FROM beatwave_playlists p
-        LEFT JOIN users u ON p.owner_id = u.id
+        LEFT JOIN users u ON p.owner_id::text = u.id::text
         WHERE (p.is_public = true OR p.is_public IS NULL)
           AND p.moderation_status = 'active'
           AND p.archived_at IS NULL

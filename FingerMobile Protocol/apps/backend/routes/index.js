@@ -30,7 +30,7 @@ const repaymentsRoutes = require('./repayments');
 const marketplaceRoutes = require('./marketplaceRoutes');
 const ownitRoutes = require('./ownit');
 const camusRoutes = require('./camus');
-const fingerluxRoutes = require('./fingerlux');
+const fingerluxLegacyRoutes = require('./fingerlux');
 const elearningRoutes = require('./elearning');
 const fingerwarsRoutes = require('./fingerwars');
 const flamingoRoutes = require('./flamingoRoutes');
@@ -252,7 +252,6 @@ router.use('/financial-ecosystem', financialEcosystemRoutes);
 // Conference, Luxury Services, AI Video Studio & Gifting Suite
 router.use('/conference', conferenceRoutes);
 router.use('/conferences', conferenceRoutes);
-router.use('/fingerlux', fingerluxRoutes);
 router.use('/video-translation', videoTranslationRoutes);
 router.use('/videotranslation', videoTranslationRoutes);
 router.use('/v1/video-translation', videoTranslationRoutes);
