@@ -1207,8 +1207,13 @@ export const ForumPage: React.FC = () => {
           feedMode,
           search: searchQuery || undefined,
         });
-        if (isMounted && res.success && res.data?.posts && res.data.posts.length > 0) {
-          setPosts(res.data.posts);
+        if (isMounted && res.success && res.data?.posts) {
+          if (res.data.posts.length > 0) {
+            // Database-persisted posts take highest priority at the top of the feed
+            const dbPostIds = new Set(res.data.posts.map((p: any) => p.id));
+            const remainingDefaults = DEFAULT_POSTS.filter((dp) => !dbPostIds.has(dp.id));
+            setPosts([...res.data.posts, ...remainingDefaults]);
+          }
         }
       } catch {
         /* keep existing state on network or server error */
@@ -1672,13 +1677,15 @@ export const ForumPage: React.FC = () => {
 
       const res = await ForumService.createFeedPost(payload);
       if (res.success && res.data) {
-        const persistedId = `post-${res.data.id || res.data.rawId || tempPostId}`;
+        const rawKey = res.data.rawId || (res.data.id ? res.data.id.replace(/^post-/, '') : tempPostId);
+        const persistedId = `post-${rawKey}`;
         setPosts((prev) =>
           prev.map((p) =>
             p.id === tempPostId
               ? {
                 ...p,
                 id: persistedId,
+                rawId: rawKey,
                 createdAt: res.data.createdAt || p.createdAt,
                 poll: res.data.poll || p.poll,
                 event: res.data.event || p.event,
@@ -1687,9 +1694,11 @@ export const ForumPage: React.FC = () => {
           )
         );
         triggerToast('Post persisted to PostgreSQL database!', 'success');
+      } else {
+        triggerToast(`Failed to persist post: ${res.message || res.error || 'Database error'}`, 'error');
       }
-    } catch {
-      /* backend persistence error ignored */
+    } catch (err: any) {
+      triggerToast(`Network error persisting post: ${err.message || 'Server offline'}`, 'error');
     }
   };
 
