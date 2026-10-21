@@ -137,18 +137,18 @@ const CourseDetailPage: React.FC = () => {
     <div className="bg-gray-50 min-h-screen">
       {/* Header */}
       <div className="bg-white p-4 sm:p-6 lg:p-8">
-        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="md:col-span-2">
             <NavLink
-              to="/camus"
-              className="text-sm sm:text-base lg:text-lg font-semibold text-brand-blue hover:underline"
+              to="/courses"
+              className="text-sm sm:text-base lg:text-lg font-bold text-blue-600 hover:underline"
             >
-              Back to Courses
+              &larr; Back to Courses
             </NavLink>
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mt-4">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 mt-4 tracking-tight">
               {course.title}
             </h1>
-            <p className="text-lg sm:text-xl lg:text-2xl text-gray-600 mt-2">
+            <p className="text-lg sm:text-xl lg:text-2xl text-slate-700 mt-2 font-medium">
               {course.description}
             </p>
             <div className="flex items-center gap-4 mt-4">
@@ -219,17 +219,19 @@ const CourseDetailPage: React.FC = () => {
       </div>
 
       {/* Tabs */}
-      <div className="max-w-5xl mx-auto mt-6 bg-white rounded-lg shadow-sm p-2 flex">
-        <TabButton {...({ active: activeTab === 'curriculum', onClick: () => setActiveTab('curriculum'), children: 'Curriculum' } as any)} />
-        <TabButton {...({ active: activeTab === 'comments', onClick: () => setActiveTab('comments'), children: 'Comments' } as any)} />
-        <TabButton {...({ active: activeTab === 'reviews', onClick: () => setActiveTab('reviews'), children: 'Reviews' } as any)} />
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+        <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-2 flex">
+          <TabButton {...({ active: activeTab === 'curriculum', onClick: () => setActiveTab('curriculum'), children: 'Curriculum' } as any)} />
+          <TabButton {...({ active: activeTab === 'comments', onClick: () => setActiveTab('comments'), children: 'Comments' } as any)} />
+          <TabButton {...({ active: activeTab === 'reviews', onClick: () => setActiveTab('reviews'), children: 'Reviews' } as any)} />
+        </div>
       </div>
 
       {/* Content */}
-      <div className="max-w-5xl mx-auto mt-6 mb-12">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 mt-6 mb-12">
         {activeTab === 'curriculum' && (
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <h2 className="text-xl font-bold mb-4">Course Modules</h2>
+          <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
+            <h2 className="text-xl font-black text-slate-900 mb-4">Course Modules</h2>
             {(course as any).modules && (course as any).modules.length > 0 ? (
               <div className="space-y-4">
                 {(course as any).modules.map((module: any, idx: number) => (

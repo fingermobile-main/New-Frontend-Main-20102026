@@ -409,6 +409,7 @@ export const routes: RouteObject[] = [
           { path: '/product/:id', element: <ProductDetailPage /> },
           { path: '/productdetail', element: <ProductDetailPage /> },
           { path: '/catalogue', element: <CataloguePage /> },
+          { path: '/catalog', element: redirectTo('/catalogue') },
           { path: '/catalog/general', element: <GeneralProductCatalogPage /> },
           { path: '/general-catalogue', element: <GeneralProductCatalogPage /> },
           { path: '/catalog/marketplace', element: <MarketplaceCatalogPage /> },

@@ -177,6 +177,7 @@ router.use('/ownit', ownitRoutes);
 router.use('/camus', camusRoutes);
 router.use('/fingerlux', fingerluxRoutes);
 router.use('/elearning', elearningRoutes);
+router.use('/courses', elearningRoutes);
 router.use('/fingerwars', fingerwarsRoutes);
 router.use('/finger-wars', fingerwarsRoutes);
 router.use('/flamingo', flamingoRoutes);
