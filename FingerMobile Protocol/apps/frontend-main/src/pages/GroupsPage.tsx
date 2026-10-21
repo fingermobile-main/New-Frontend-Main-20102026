@@ -270,7 +270,7 @@ const GroupsPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 py-6 px-3 sm:px-6 lg:px-8">
       {/* Top Banner & Living Room Identity */}
-      <div className="max-w-7xl mx-auto mb-8">
+      <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto mb-8">
         <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-900/60 via-indigo-900/40 to-slate-900/90 border border-blue-500/30 p-6 sm:p-8 backdrop-blur-xl shadow-2xl">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div>
@@ -394,7 +394,7 @@ const GroupsPage: React.FC = () => {
       </div>
 
       {/* Main Content Area */}
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           {/* Left Column: Static & Sticky */}
           <div className="lg:col-span-3 lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-5.5rem)] lg:overflow-y-auto space-y-4 scrollbar-none pr-1">

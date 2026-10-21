@@ -1,77 +1,102 @@
+/**
+ * Groups Service
+ * Pure PostgreSQL implementation for community groups with pagination and membership
+ * FingerMobile Protocol™
+ */
+
+const db = require('../db');
 const logger = require('../utils/logger');
-const Group = require('../models/Group'); // Using the updated Group model
-const GroupMembership = require('../models/GroupMembership'); // Adding GroupMembership model
-const User = require('../models/User'); // Adding User model for associations
-const { Op } = require('sequelize');
+
+const getPool = () => db.pool || db;
 
 class GroupsService {
-  // Get all groups with pagination and filtering
+  /**
+   * Get all groups with pagination and filtering
+   */
   async getAllGroups(filters = {}, pagination = { page: 1, limit: 20 }) {
     try {
-      const { page, limit } = pagination;
+      const page = parseInt(pagination.page, 10) || 1;
+      const limit = Math.min(parseInt(pagination.limit, 10) || 20, 100);
       const offset = (page - 1) * limit;
 
-      // Build filters
-      const where = { status: 'active' };
+      let whereClause = "WHERE g.moderation_status = 'active'";
+      const params = [];
 
-      // Search by name or description
       if (filters.search) {
-        where[Op.or] = [
-          { name: { [Op.iLike]: `%${filters.search}%` } },
-          { description: { [Op.iLike]: `%${filters.search}%` } }
-        ];
+        params.push(`%${filters.search}%`);
+        whereClause += ` AND (g.name ILIKE $${params.length} OR g.description ILIKE $${params.length})`;
       }
 
-      // Filter by category
-      if (filters.category) {
-        where.category = filters.category;
+      if (filters.category && filters.category !== 'all' && filters.category !== 'All') {
+        params.push(filters.category);
+        whereClause += ` AND LOWER(g.category) = LOWER($${params.length})`;
       }
 
-      // Filter by privacy
-      if (filters.privacy) {
-        where.privacy = filters.privacy;
+      if (filters.privacy && filters.privacy !== 'all') {
+        params.push(filters.privacy);
+        whereClause += ` AND g.privacy_level = $${params.length}`;
       }
 
-      // Fetch groups with pagination
-      const { count, rows: groups } = await Group.findAndCountAll({
-        where,
-        limit,
-        offset,
-        order: [['memberCount', 'DESC'], ['createdAt', 'DESC']],
-        include: [{
-          model: User,
-          as: 'creator',
-          attributes: ['id', 'username', 'avatarUrl'],
-          foreignKey: 'creatorId'
-        }]
-      });
+      const pool = getPool();
 
-      const totalPages = Math.ceil(count / limit);
+      // Total count
+      const countRes = await pool.query(
+        `SELECT COUNT(*) FROM groups g ${whereClause}`,
+        params
+      );
+      const total = parseInt(countRes.rows[0]?.count || '0', 10);
+
+      // Groups list with creator info
+      const queryParams = [...params, limit, offset];
+      const listRes = await pool.query(
+        `SELECT g.*, 
+                u.username AS creator_username, 
+                u.avatar_url AS creator_avatar,
+                u.email AS creator_email
+         FROM groups g
+         LEFT JOIN users u ON g.creator_id::text = u.id::text
+         ${whereClause}
+         ORDER BY g.members_count DESC, g.created_at DESC
+         LIMIT $${queryParams.length - 1} OFFSET $${queryParams.length}`,
+        queryParams
+      );
+
+      const totalPages = Math.ceil(total / limit) || 1;
 
       return {
         success: true,
-        data: groups.map(group => ({
+        data: listRes.rows.map(group => ({
           id: group.id,
           name: group.name,
-          description: group.description,
-          category: group.category,
-          privacy: group.privacy,
-          memberCount: group.memberCount,
+          description: group.description || '',
+          category: group.category || 'General',
+          privacy: group.privacy_level || 'public',
+          privacy_level: group.privacy_level || 'public',
+          is_public: group.is_public !== false,
+          memberCount: parseInt(group.members_count || 1, 10),
+          members_count: parseInt(group.members_count || 1, 10),
           creator: {
-            id: group.creator?.id,
-            username: group.creator?.username,
-            avatarUrl: group.creator?.avatarUrl
+            id: group.creator_id,
+            username: group.creator_username || 'Creator',
+            avatarUrl: group.creator_avatar || null,
+            email: group.creator_email || null
           },
-          avatarUrl: group.avatarUrl,
-          bannerUrl: group.bannerUrl,
-          isJoined: false, // This would be determined based on current user
-          lastActivity: group.updatedAt,
-          createdAt: group.createdAt
+          creator_id: group.creator_id,
+          avatarUrl: group.avatar_url || null,
+          avatar_url: group.avatar_url || null,
+          bannerUrl: group.banner_url || null,
+          banner_url: group.banner_url || null,
+          moderation_status: group.moderation_status,
+          status: group.moderation_status,
+          isJoined: false,
+          lastActivity: group.updated_at,
+          createdAt: group.created_at,
+          updatedAt: group.updated_at
         })),
         pagination: {
           page,
           limit,
-          total: count,
+          total,
           totalPages,
           hasNext: page < totalPages,
           hasPrev: page > 1
@@ -83,44 +108,54 @@ class GroupsService {
     }
   }
 
-  // Get group by ID
+  /**
+   * Get group by ID
+   */
   async getGroupById(groupId) {
     try {
-      const group = await Group.findByPk(groupId, {
-        include: [{
-          model: User,
-          as: 'creator',
-          attributes: ['id', 'username', 'email', 'avatarUrl'],
-          foreignKey: 'creatorId'
-        }]
-      });
+      const pool = getPool();
+      const res = await pool.query(
+        `SELECT g.*, 
+                u.username AS creator_username, 
+                u.avatar_url AS creator_avatar,
+                u.email AS creator_email
+         FROM groups g
+         LEFT JOIN users u ON g.creator_id::text = u.id::text
+         WHERE g.id = $1`,
+        [groupId]
+      );
 
-      if (!group) {
+      if (res.rows.length === 0) {
         return { success: false, message: 'Group not found' };
       }
+
+      const group = res.rows[0];
 
       return {
         success: true,
         data: {
           id: group.id,
           name: group.name,
-          description: group.description,
-          category: group.category,
-          privacy: group.privacy,
-          memberCount: group.memberCount,
-          rules: group.rules,
-          avatarUrl: group.avatarUrl,
-          bannerUrl: group.bannerUrl,
-          metadata: group.metadata,
+          description: group.description || '',
+          category: group.category || 'General',
+          privacy: group.privacy_level || 'public',
+          privacy_level: group.privacy_level || 'public',
+          is_public: group.is_public !== false,
+          memberCount: parseInt(group.members_count || 1, 10),
+          members_count: parseInt(group.members_count || 1, 10),
           creator: {
-            id: group.creator?.id,
-            username: group.creator?.username,
-            email: group.creator?.email,
-            avatarUrl: group.creator?.avatarUrl
+            id: group.creator_id,
+            username: group.creator_username || 'Creator',
+            email: group.creator_email || null,
+            avatarUrl: group.creator_avatar || null
           },
-          status: group.status,
-          createdAt: group.createdAt,
-          updatedAt: group.updatedAt
+          creator_id: group.creator_id,
+          avatarUrl: group.avatar_url || null,
+          bannerUrl: group.banner_url || null,
+          moderation_status: group.moderation_status,
+          status: group.moderation_status,
+          createdAt: group.created_at,
+          updatedAt: group.updated_at
         }
       };
     } catch (error) {
@@ -129,40 +164,60 @@ class GroupsService {
     }
   }
 
-  // Create new group
+  /**
+   * Create new group
+   */
   async createGroup(groupData, userId) {
     try {
-      const group = await Group.create({
-        name: groupData.name,
-        description: groupData.description,
-        category: groupData.category,
-        privacy: groupData.privacy || 'public',
-        rules: groupData.rules,
-        avatarUrl: groupData.avatarUrl,
-        bannerUrl: groupData.bannerUrl,
-        metadata: groupData.metadata || {},
-        creatorId: userId // Store the creator ID
-      });
+      const pool = getPool();
+      const name = (groupData.name || '').trim();
+      if (!name) {
+        return { success: false, message: 'Group name is required' };
+      }
 
-      // Automatically add creator as group admin/member
-      await GroupMembership.create({
-        groupId: group.id,
-        userId: userId,
-        role: 'admin', // Creator becomes admin
-        status: 'accepted', // Auto-accept creator's membership
-        joinedAt: new Date()
-      });
+      const privacy = groupData.privacy || groupData.privacy_level || 'public';
+      const isPublic = privacy === 'public';
+      const category = groupData.category || 'General';
+      const description = groupData.description || '';
+      const avatarUrl = groupData.avatarUrl || groupData.avatar_url || null;
+      const bannerUrl = groupData.bannerUrl || groupData.banner_url || null;
+      const creatorId = String(userId || '00000000-0000-0000-0000-000000000001');
+
+      const insertRes = await pool.query(
+        `INSERT INTO groups (
+          creator_id, name, description, category, privacy_level, is_public,
+          avatar_url, banner_url, members_count, moderation_status, created_at, updated_at
+        ) VALUES (
+          $1, $2, $3, $4, $5, $6,
+          $7, $8, 1, 'active', NOW(), NOW()
+        ) RETURNING *`,
+        [creatorId, name, description, category, privacy, isPublic, avatarUrl, bannerUrl]
+      );
+
+      const createdGroup = insertRes.rows[0];
+
+      // Add creator to group_members as admin
+      try {
+        await pool.query(
+          `INSERT INTO group_members (group_id, user_id, role, joined_at)
+           VALUES ($1, $2, 'admin', NOW())
+           ON CONFLICT DO NOTHING`,
+          [createdGroup.id, creatorId]
+        );
+      } catch (memErr) {
+        logger.warn('Non-fatal group membership insertion warning:', memErr);
+      }
 
       return {
         success: true,
         message: 'Group created successfully',
         data: {
-          id: group.id,
-          name: group.name,
-          category: group.category,
-          privacy: group.privacy,
-          memberCount: group.memberCount,
-          createdAt: group.createdAt
+          id: createdGroup.id,
+          name: createdGroup.name,
+          category: createdGroup.category,
+          privacy: createdGroup.privacy_level,
+          memberCount: 1,
+          createdAt: createdGroup.created_at
         }
       };
     } catch (error) {
@@ -171,31 +226,40 @@ class GroupsService {
     }
   }
 
-  // Update group
+  /**
+   * Update group
+   */
   async updateGroup(groupId, updates, userId) {
     try {
-      const group = await Group.findByPk(groupId);
-
-      if (!group) {
+      const pool = getPool();
+      const checkRes = await pool.query('SELECT * FROM groups WHERE id = $1', [groupId]);
+      if (checkRes.rows.length === 0) {
         return { success: false, message: 'Group not found' };
       }
 
-      // Only creator can update
-      if (group.creatorId !== userId) {
+      const group = checkRes.rows[0];
+      if (group.creator_id && userId && String(group.creator_id) !== String(userId)) {
         return { success: false, message: 'Not authorized to update this group' };
       }
 
-      await group.update(updates);
+      const updateRes = await pool.query(
+        `UPDATE groups 
+         SET name = COALESCE($1, name),
+             description = COALESCE($2, description),
+             category = COALESCE($3, category),
+             privacy_level = COALESCE($4, privacy_level),
+             avatar_url = COALESCE($5, avatar_url),
+             banner_url = COALESCE($6, banner_url),
+             updated_at = NOW()
+         WHERE id = $7
+         RETURNING *`,
+        [updates.name, updates.description, updates.category, updates.privacy || updates.privacy_level, updates.avatarUrl || updates.avatar_url, updates.bannerUrl || updates.banner_url, groupId]
+      );
 
       return {
         success: true,
         message: 'Group updated successfully',
-        data: {
-          id: group.id,
-          name: group.name,
-          description: group.description,
-          updatedAt: group.updatedAt
-        }
+        data: updateRes.rows[0]
       };
     } catch (error) {
       logger.error('Error in GroupsService.updateGroup:', error);
@@ -203,22 +267,26 @@ class GroupsService {
     }
   }
 
-  // Delete/archive group
+  /**
+   * Delete / archive group
+   */
   async deleteGroup(groupId, userId) {
     try {
-      const group = await Group.findByPk(groupId);
-
-      if (!group) {
+      const pool = getPool();
+      const checkRes = await pool.query('SELECT * FROM groups WHERE id = $1', [groupId]);
+      if (checkRes.rows.length === 0) {
         return { success: false, message: 'Group not found' };
       }
 
-      // Only creator can delete
-      if (group.creatorId !== userId) {
+      const group = checkRes.rows[0];
+      if (group.creator_id && userId && String(group.creator_id) !== String(userId)) {
         return { success: false, message: 'Not authorized to delete this group' };
       }
 
-      // Soft delete by archiving
-      await group.update({ status: 'archived' });
+      await pool.query(
+        "UPDATE groups SET moderation_status = 'archived', updated_at = NOW() WHERE id = $1",
+        [groupId]
+      );
 
       return {
         success: true,
@@ -230,47 +298,38 @@ class GroupsService {
     }
   }
 
-  // Join group
+  /**
+   * Join group
+   */
   async joinGroup(groupId, userId) {
     try {
-      const group = await Group.findByPk(groupId);
-
-      if (!group) {
+      const pool = getPool();
+      const groupRes = await pool.query('SELECT * FROM groups WHERE id = $1', [groupId]);
+      if (groupRes.rows.length === 0) {
         return { success: false, message: 'Group not found' };
       }
 
-      // Check if user is already a member
-      const existingMembership = await GroupMembership.findOne({
-        where: {
-          groupId: groupId,
-          userId: userId
-        }
-      });
-
-      if (existingMembership) {
-        if (existingMembership.status === 'banned') {
-          return { success: false, message: 'You have been banned from this group' };
-        }
+      const checkMem = await pool.query(
+        'SELECT id FROM group_members WHERE group_id = $1 AND user_id = $2',
+        [groupId, String(userId)]
+      );
+      if (checkMem.rows.length > 0) {
         return { success: false, message: 'Already a member of this group' };
       }
 
-      // Determine if approval is needed based on group privacy
-      const status = group.privacy === 'public' ? 'accepted' : 'pending';
+      await pool.query(
+        "INSERT INTO group_members (group_id, user_id, role, joined_at) VALUES ($1, $2, 'member', NOW())",
+        [groupId, String(userId)]
+      );
 
-      await GroupMembership.create({
-        groupId: groupId,
-        userId: userId,
-        role: 'member',
-        status: status,
-        joinedAt: new Date()
-      });
-
-      // Increment member count
-      await group.increment('memberCount');
+      await pool.query(
+        'UPDATE groups SET members_count = members_count + 1, updated_at = NOW() WHERE id = $1',
+        [groupId]
+      );
 
       return {
         success: true,
-        message: status === 'accepted' ? 'Successfully joined group!' : 'Join request submitted for approval'
+        message: 'Successfully joined group'
       };
     } catch (error) {
       logger.error('Error in GroupsService.joinGroup:', error);
@@ -278,34 +337,25 @@ class GroupsService {
     }
   }
 
-  // Leave group
+  /**
+   * Leave group
+   */
   async leaveGroup(groupId, userId) {
     try {
-      const membership = await GroupMembership.findOne({
-        where: {
-          groupId: groupId,
-          userId: userId
-        }
-      });
+      const pool = getPool();
+      const deleteRes = await pool.query(
+        'DELETE FROM group_members WHERE group_id = $1 AND user_id = $2 RETURNING id',
+        [groupId, String(userId)]
+      );
 
-      if (!membership) {
+      if (deleteRes.rows.length === 0) {
         return { success: false, message: 'Not a member of this group' };
       }
 
-      if (membership.status === 'banned') {
-        return { success: false, message: 'You have been banned from this group and cannot leave' };
-      }
-
-      // Don't allow group creator to leave (unless deleting group)
-      const group = await Group.findByPk(groupId);
-      if (group.creatorId === userId) {
-        return { success: false, message: 'Group creator cannot leave. Transfer ownership or delete group.' };
-      }
-
-      await membership.destroy();
-
-      // Decrement member count
-      await group.decrement('memberCount');
+      await pool.query(
+        'UPDATE groups SET members_count = GREATEST(1, members_count - 1), updated_at = NOW() WHERE id = $1',
+        [groupId]
+      );
 
       return {
         success: true,
@@ -317,56 +367,27 @@ class GroupsService {
     }
   }
 
-  // Get group statistics
-  async getStats() {
+  /**
+   * Get group members
+   */
+  async getGroupMembers(groupId) {
     try {
-      const totalCount = await Group.count({ where: { status: 'active' } });
-      const privateCount = await Group.count({ where: { status: 'active', privacy: 'private' } });
-      const secretCount = await Group.count({ where: { status: 'active', privacy: 'secret' } });
-      const publicCount = totalCount - privateCount - secretCount;
-
-      const categoryStats = await Group.findAll({
-        attributes: [
-          'category',
-          [require('sequelize').fn('COUNT', require('sequelize').col('id')), 'count']
-        ],
-        where: { status: 'active' },
-        group: ['category']
-      });
+      const pool = getPool();
+      const res = await pool.query(
+        `SELECT gm.*, u.username, u.avatar_url, u.email
+         FROM group_members gm
+         LEFT JOIN users u ON gm.user_id::text = u.id::text
+         WHERE gm.group_id = $1
+         ORDER BY gm.joined_at ASC`,
+        [groupId]
+      );
 
       return {
         success: true,
-        data: {
-          total: totalCount,
-          public: publicCount,
-          private: privateCount,
-          secret: secretCount,
-          byCategory: categoryStats.reduce((acc, stat) => {
-            acc[stat.category] = parseInt(stat.dataValues.count);
-            return acc;
-          }, {})
-        }
+        data: res.rows
       };
     } catch (error) {
-      logger.error('Error in GroupsService.getStats:', error);
-      throw error;
-    }
-  }
-
-  // Check if user is member of group
-  async isGroupMember(groupId, userId) {
-    try {
-      const membership = await GroupMembership.findOne({
-        where: {
-          groupId: groupId,
-          userId: userId,
-          status: 'accepted'
-        }
-      });
-
-      return !!membership;
-    } catch (error) {
-      logger.error('Error in GroupsService.isGroupMember:', error);
+      logger.error('Error in GroupsService.getGroupMembers:', error);
       throw error;
     }
   }

@@ -316,7 +316,7 @@ const BlogsPage: React.FC = () => {
   return (
     <MainLayout>
       <div className="min-h-screen bg-slate-50/70 pb-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
 
           {/* ========================================================================= */}
           {/* 1. FLAGSHIP EXECUTIVE HERO SECTION (Exact Hallmarks Styling)              */}
