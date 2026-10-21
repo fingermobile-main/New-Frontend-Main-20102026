@@ -100,5 +100,27 @@ is it that the data from the website is not getting to the databases., why is th
 
 
 
-start docker compose up
-fix every error as you proceed
+New Todo/Tasks;- do a 3 minuts investigation on the below and report your findings:-
+ensure we have no pending database migrations., no more missing databases, no more missing databse tables, columns and rows., and that we do not have any more UUID issues in any of the databases and tables.
+
+i am asking you because i am about to create another Post and comment on the ForumPage 
+and i attached 3 Media Files Attached
+✕
+Poll: are we making progress
+✕
+Event: sing a long
+✕
+Link: YouTube • High Definition Streaming Video
+✕
+Location: Madala, FCT, Nigeria
+✕
+Stem: DJ Spinall Ft. Davido & Wande Coal OLOWO (Lossless WAV)
+✕
+Stream: Steve Jobs Introducing The iPhone At MacWorld 2007 copy (Live WebRTC Broadcast)
+✕
+Tagged: Sovereign Hardware Keycard V3 (NFC) (MarketPlace • 250 FIC)
+✕
+
+Tag Product
+
+fix all the above and once youre done with your investigations., start docker compose up again to update/capture all the new improvements and changes we just made and fix every error as you proceed
