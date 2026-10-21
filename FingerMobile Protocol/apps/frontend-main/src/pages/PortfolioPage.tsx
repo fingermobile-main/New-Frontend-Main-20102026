@@ -296,7 +296,7 @@ const PortfolioPage: React.FC = () => {
         </div>
 
         {/* Profile Card & Stats Header */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-24 relative z-10">
+        <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 -mt-24 relative z-10">
           <div className="bg-white rounded-3xl shadow-xl border border-slate-300/80 p-6 sm:p-8">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
               {/* Avatar & Bio */}
@@ -401,7 +401,7 @@ const PortfolioPage: React.FC = () => {
         </div>
 
         {/* Tab Navigation Deck */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+        <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 mt-8">
           <div className="flex border-b border-slate-300 gap-6">
             <button
               onClick={() => setActiveTab('projects')}
@@ -451,7 +451,7 @@ const PortfolioPage: React.FC = () => {
         </div>
 
         {/* Tab Content Display */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+        <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 mt-6">
           {/* Tab 1: Featured Projects */}
           {activeTab === 'projects' && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

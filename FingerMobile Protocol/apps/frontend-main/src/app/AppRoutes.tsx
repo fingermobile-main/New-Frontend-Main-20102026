@@ -817,6 +817,7 @@ export const routes: RouteObject[] = [
                   { path: '/stercs/editor', element: redirectTo('/stercseditor') },
                   { path: '/stercseditor', element: <StercsEditorPage /> },
                   { path: '/stercs/media-library', element: redirectTo('/stercsmedialibrary') },
+                  { path: '/media-library', element: redirectTo('/stercsmedialibrary') },
                   { path: '/stercsmedialibrary', element: <StercsMediaLibraryPage /> },
                   { path: '/stercs/theme-designer', element: redirectTo('/stercsthemedesigner') },
                   { path: '/stercsthemedesigner', element: <StercsThemeDesignerPage /> },
