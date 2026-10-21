@@ -1,12 +1,15 @@
 import React, { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import DatabaseIntegrationReport from '../components/DatabaseIntegrationReport';
 import MainLayout from '../components/layout/MainLayout';
+import PlatformOwnershipCard from '../components/dashboard/PlatformOwnershipCard';
 import { useAppContext } from '../contexts/AppContext';
 import { ServerIcon, DatabaseIcon, UserCircleIcon, ChartBarIcon, CheckCircleIcon, ClockIcon } from '../icons';
 import { Search, Zap, ShieldCheck, Database as DbIcon, Table, Key, ArrowRight } from 'lucide-react';
 import { guardianSearchIndexer, SearchBenchmarkResult } from '../services/GuardianSearchIndexingService';
 
 const DatabaseIntegrationDashboard: React.FC = () => {
+  const navigate = useNavigate();
   const { ficBalance, showToast } = useAppContext();
   const [dbSearchQuery, setDbSearchQuery] = useState('');
   const [selectedClusterFilter, setSelectedClusterFilter] = useState<string>('all');
@@ -36,12 +39,12 @@ const DatabaseIntegrationDashboard: React.FC = () => {
             </div>
             <div className="ml-4">
               <div className="flex items-center gap-2">
-                <h1 className="text-3xl font-black text-gray-900 tracking-tight">Database Integration Dashboard</h1>
-                <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-100 text-emerald-950 border border-emerald-400    font-black">
+                <h1 className="text-3xl font-black text-slate-900 tracking-tight">Database Integration Dashboard</h1>
+                <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 font-black">
                   B-Tree Indexed
                 </span>
               </div>
-              <p className="text-gray-600 text-sm mt-0.5">
+              <p className="text-slate-700 font-medium text-sm mt-0.5">
                 High-performance database indexing, zero full-table scans, sub-millisecond B-Tree seek operations
               </p>
             </div>
@@ -50,13 +53,16 @@ const DatabaseIntegrationDashboard: React.FC = () => {
           <div className="flex items-center gap-2">
             <button
               onClick={() => showToast('All 7 database clusters verified healthy and synchronized', 'success')}
-              className="px-4 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl text-xs font-bold shadow-sm hover:from-emerald-700 hover:to-teal-700 flex items-center gap-2"
+              className="px-4 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl text-xs font-bold shadow-sm hover:from-emerald-700 hover:to-teal-700 flex items-center gap-2 cursor-pointer"
             >
               <Zap className="w-4 h-4" />
               Verify Cluster Sync
             </button>
           </div>
         </div>
+
+        {/* Platform Ownership Card */}
+        <PlatformOwnershipCard />
 
         {/* 1. GUARDIAN HIGH-PERFORMANCE DATABASE INDEX SEARCH ENGINE */}
         <div className="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 rounded-3xl p-6 text-white border border-indigo-500/30 shadow-2xl">
@@ -241,30 +247,30 @@ const DatabaseIntegrationDashboard: React.FC = () => {
           <div className="lg:col-span-3 space-y-6">
             <DatabaseIntegrationReport />
 
-            <div className="bg-white rounded-2xl shadow-xl p-6 border border-slate-200">
-              <h2 className="text-xl font-semibold mb-4 text-gray-900">Integration Status Overview</h2>
+            <div className="bg-white rounded-2xl shadow-xl p-6 border border-slate-300">
+              <h2 className="text-xl font-black mb-4 text-slate-900">Integration Status Overview</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="border-l-4 border-blue-500 pl-4 py-2">
-                  <h3 className="font-semibold text-gray-900">Member Management</h3>
-                  <p className="text-sm text-gray-600">Authentication and member data (48k records, B-Tree indexed)</p>
+                  <h3 className="font-bold text-slate-900">Member Management</h3>
+                  <p className="text-sm text-slate-700 font-medium">Authentication and member data (48k records, B-Tree indexed)</p>
                 </div>
-                <div className="border-l-4 border-green-500 pl-4 py-2">
-                  <h3 className="font-semibold text-gray-900">Content Management</h3>
-                  <p className="text-sm text-gray-600">Posts, forums, and media (180k records, GIN text indexed)</p>
+                <div className="border-l-4 border-emerald-500 pl-4 py-2">
+                  <h3 className="font-bold text-slate-900">Content Management</h3>
+                  <p className="text-sm text-slate-700 font-medium">Posts, forums, and media (180k records, GIN text indexed)</p>
                 </div>
-                <div className="border-l-4 border-yellow-500 pl-4 py-2">
-                  <h3 className="font-semibold text-gray-900">Marketplace &amp; Treasury</h3>
-                  <p className="text-sm text-gray-600">FIC double-entry ledger &amp; transactions (148k rows, SHA-256 indexed)</p>
+                <div className="border-l-4 border-amber-500 pl-4 py-2">
+                  <h3 className="font-bold text-slate-900">Marketplace &amp; Treasury</h3>
+                  <p className="text-sm text-slate-700 font-medium">FIC double-entry ledger &amp; transactions (148k rows, SHA-256 indexed)</p>
                 </div>
                 <div className="border-l-4 border-purple-500 pl-4 py-2">
-                  <h3 className="font-semibold text-gray-900">Community Features</h3>
-                  <p className="text-sm text-gray-600">Groups, memberships, and interactions (52k records, Hash indexed)</p>
+                  <h3 className="font-bold text-slate-900">Community Features</h3>
+                  <p className="text-sm text-slate-700 font-medium">Groups, memberships, and interactions (52k records, Hash indexed)</p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl shadow-xl p-6 border border-slate-200">
-              <h2 className="text-xl font-semibold mb-4 text-gray-900">Component Integration Status</h2>
+            <div className="bg-white rounded-2xl shadow-xl p-6 border border-slate-300">
+              <h2 className="text-xl font-black mb-4 text-slate-900">Component Integration Status</h2>
               <div className="space-y-4">
                 {[
                   { name: 'BeatwaveNG', desc: 'Music streaming platform & audio stems', cat: 'Audio' },
@@ -275,13 +281,13 @@ const DatabaseIntegrationDashboard: React.FC = () => {
                   { name: 'Marketplace Components', desc: 'Storefront, OwnIt, Flamingo, PhotoCredits', cat: 'Commerce' },
                   { name: 'Guardian AI Cyber Protection', desc: 'Biometric telemetry & intrusion prevention DB', cat: 'Security' }
                 ].map((comp, idx) => (
-                  <div key={idx} className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl border border-slate-300">
+                  <div key={idx} className="flex items-center justify-between p-4 bg-gradient-to-r from-slate-50 to-slate-100 rounded-xl border border-slate-300">
                     <div>
-                      <h3 className="font-bold text-gray-900">{comp.name}</h3>
-                      <p className="text-xs text-gray-600">{comp.desc}</p>
+                      <h3 className="font-bold text-slate-900">{comp.name}</h3>
+                      <p className="text-xs text-slate-700 font-medium">{comp.desc}</p>
                     </div>
-                    <span className="px-3 py-1 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-full text-xs font-semibold flex items-center shadow-xs">
-                      <CheckCircleIcon className="h-4 w-4 mr-1" />
+                    <span className="px-3 py-1 bg-emerald-100 text-emerald-950 border border-emerald-400 rounded-full text-xs font-bold flex items-center shadow-xs">
+                      <CheckCircleIcon className="h-4 w-4 mr-1 text-emerald-700" />
                       Integrated &amp; Indexed
                     </span>
                   </div>
@@ -291,21 +297,24 @@ const DatabaseIntegrationDashboard: React.FC = () => {
           </div>
 
           <div className="space-y-6">
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100 shadow-sm">
-              <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-200 shadow-sm">
+              <h2 className="text-lg font-black text-slate-900 mb-4 flex items-center">
                 <UserCircleIcon className="h-5 w-5 text-blue-600 mr-2" />
                 Admin FIC Balance
               </h2>
               <div className="flex items-center justify-between">
-                <span className="text-2xl font-black text-gray-900">{ficBalance.toFixed(2)} FIC</span>
+                <span className="text-2xl font-black text-slate-900">{ficBalance.toFixed(2)} FIC</span>
                 <button
-                  onClick={() => showToast('Redirecting to FIC Treasury & Liquidity console...', 'info')}
-                  className="text-xs font-bold bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-3 py-1.5 rounded-lg hover:from-blue-700 hover:to-indigo-700 shadow-xs"
+                  onClick={() => {
+                    showToast('Navigating to Treasury & Liquidity console...', 'info');
+                    navigate('/dashboard/finance');
+                  }}
+                  className="text-xs font-bold bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-3.5 py-2 rounded-lg hover:from-blue-700 hover:to-indigo-700 shadow-sm cursor-pointer transition-transform active:scale-95"
                 >
                   Manage Treasury
                 </button>
               </div>
-              <p className="text-[11px] text-slate-300 font-medium mt-2 font-mono">
+              <p className="text-[11px] text-slate-700 font-bold mt-2 font-mono">
                 Parity: 1 FIC = ₦100.00 NGN (Collateralized)
               </p>
             </div>

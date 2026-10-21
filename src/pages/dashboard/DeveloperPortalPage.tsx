@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { DocumentTextIcon, CodeBracketIcon, ArrowDownTrayIcon, BookOpenIcon } from '@heroicons/react/24/outline';
 import api from '../../services/api';
+import PlatformOwnershipCard from '../../components/dashboard/PlatformOwnershipCard';
 
 const DeveloperPortalPage: React.FC = () => {
   const [stats, setStats] = useState<any>({
@@ -47,43 +48,54 @@ const DeveloperPortalPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-slate-50">
       {/* Header */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-12">
+      <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-bold mb-2">Developer Portal</h1>
-          <p className="text-lg opacity-90">Complete API documentation, SDKs, and integration guides</p>
+          <div className="flex items-center gap-3">
+            <h1 className="text-4xl font-black tracking-tight">Developer Portal &amp; API Mesh</h1>
+            <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-white/20 border border-white/40">
+              OpenAPI 3.1
+            </span>
+          </div>
+          <p className="text-base text-slate-100 font-medium mt-2">Complete API documentation, type-safe SDKs, and enterprise integration blueprints</p>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        {/* Platform Ownership Card */}
+        <PlatformOwnershipCard />
+
         {/* Stats Cards */}
         {!loading && stats && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div className="bg-white rounded-lg shadow-sm border border-slate-300 p-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
               <div className="flex items-center justify-between mb-2">
-                <CodeBracketIcon className="w-8 h-8 text-blue-500" />
+                <CodeBracketIcon className="w-8 h-8 text-blue-600" />
               </div>
-              <p className="text-sm text-gray-600">Total Endpoints</p>
-              <p className="text-3xl font-bold text-gray-900">{stats.total_endpoints}</p>
+              <p className="text-sm font-bold text-slate-700">Total Endpoints</p>
+              <p className="text-3xl font-black text-slate-900 mt-1">{stats.total_endpoints}</p>
+              <p className="text-xs text-slate-700 font-medium mt-1">REST &amp; WebSocket APIs</p>
             </div>
 
-            <div className="bg-white rounded-lg shadow-sm border border-slate-300 p-6">
+            <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
               <div className="flex items-center justify-between mb-2">
-                <BookOpenIcon className="w-8 h-8 text-green-500" />
+                <BookOpenIcon className="w-8 h-8 text-emerald-600" />
               </div>
-              <p className="text-sm text-gray-600">Documented</p>
-              <p className="text-3xl font-bold text-gray-900">{stats.documented_endpoints}</p>
+              <p className="text-sm font-bold text-slate-700">Documented</p>
+              <p className="text-3xl font-black text-slate-900 mt-1">{stats.documented_endpoints}</p>
+              <p className="text-xs text-slate-700 font-medium mt-1">100% specification parity</p>
             </div>
 
-            <div className="bg-white rounded-lg shadow-sm border border-slate-300 p-6">
+            <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
               <div className="flex items-center justify-between mb-2">
-                <ArrowDownTrayIcon className="w-8 h-8 text-purple-500" />
+                <ArrowDownTrayIcon className="w-8 h-8 text-purple-600" />
               </div>
-              <p className="text-sm text-gray-600">Last Updated</p>
-              <p className="text-lg font-semibold text-gray-900">
+              <p className="text-sm font-bold text-slate-700">Last Spec Update</p>
+              <p className="text-xl font-black text-slate-900 mt-2">
                 {new Date(stats.last_updated).toLocaleDateString()}
               </p>
+              <p className="text-xs text-slate-700 font-medium mt-1">Synchronized with Node backend</p>
             </div>
           </div>
         )}
@@ -91,125 +103,144 @@ const DeveloperPortalPage: React.FC = () => {
         {/* Documentation Sections */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* API Documentation */}
-          <div className="bg-white rounded-lg shadow-sm border border-slate-300 p-6">
-            <div className="flex items-center mb-4">
-              <DocumentTextIcon className="w-6 h-6 text-blue-500 mr-2" />
-              <h2 className="text-xl font-bold text-gray-900">API Documentation</h2>
+          <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center mb-3">
+                <DocumentTextIcon className="w-6 h-6 text-blue-600 mr-2" />
+                <h2 className="text-xl font-black text-slate-900">API Documentation</h2>
+              </div>
+              <p className="text-slate-700 font-medium text-sm mb-6">
+                Browse our comprehensive OpenAPI specification with interactive examples, schema validation, and sandbox execution.
+              </p>
             </div>
-            <p className="text-gray-600 mb-4">
-              Browse our comprehensive OpenAPI specification with interactive examples
-            </p>
             <div className="space-y-3">
               <a
                 href="/api-docs"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block w-full bg-blue-50 hover:bg-blue-100 text-blue-950 border border-blue-400 font-bold font-medium py-3 px-4 rounded-lg transition-colors text-center"
+                className="block w-full bg-blue-50 hover:bg-blue-100 text-blue-950 border border-blue-400 font-bold py-3 px-4 rounded-xl transition-colors text-center text-sm cursor-pointer"
               >
-                View Swagger UI →
+                Launch Swagger UI Explorer →
               </a>
               <a
                 href="/api/developer/openapi.json"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block w-full bg-gray-50 hover:bg-gray-100 text-gray-700 font-medium py-3 px-4 rounded-lg transition-colors text-center"
+                className="block w-full bg-slate-100 hover:bg-slate-200 text-slate-900 border border-slate-300 font-bold py-3 px-4 rounded-xl transition-colors text-center text-sm cursor-pointer"
               >
-                Download OpenAPI JSON
+                Download OpenAPI JSON Spec
               </a>
             </div>
           </div>
 
           {/* SDK Downloads */}
-          <div className="bg-white rounded-lg shadow-sm border border-slate-300 p-6">
-            <div className="flex items-center mb-4">
-              <CodeBracketIcon className="w-6 h-6 text-purple-500 mr-2" />
-              <h2 className="text-xl font-bold text-gray-900">SDK Downloads</h2>
+          <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center mb-3">
+                <CodeBracketIcon className="w-6 h-6 text-purple-600 mr-2" />
+                <h2 className="text-xl font-black text-slate-900">SDK Downloads</h2>
+              </div>
+              <p className="text-slate-700 font-medium text-sm mb-6">
+                Official client libraries for rapid, type-safe integration across modern backend and frontend stacks.
+              </p>
             </div>
-            <p className="text-gray-600 mb-4">
-              Official client libraries for quick integration
-            </p>
             <div className="space-y-3">
               <button
                 onClick={() => downloadSDK('javascript')}
-                className="w-full bg-purple-50 hover:bg-purple-100 text-purple-950 border border-purple-400 font-bold font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center"
+                className="w-full bg-purple-50 hover:bg-purple-100 text-purple-950 border border-purple-400 font-bold py-3 px-4 rounded-xl transition-colors flex items-center justify-center text-sm cursor-pointer"
               >
                 <span className="mr-2">📦</span>
-                JavaScript/TypeScript SDK
+                Download TypeScript / Node SDK
               </button>
               <button
                 onClick={() => downloadSDK('python')}
-                className="w-full bg-yellow-50 hover:bg-amber-100 text-amber-950 border border-amber-400 font-bold font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center"
+                className="w-full bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-400 font-bold py-3 px-4 rounded-xl transition-colors flex items-center justify-center text-sm cursor-pointer"
               >
                 <span className="mr-2">🐍</span>
-                Python SDK
+                Download Python SDK (Wheel &amp; Source)
               </button>
             </div>
           </div>
 
           {/* Code Examples */}
-          <div className="bg-white rounded-lg shadow-sm border border-slate-300 p-6">
-            <div className="flex items-center mb-4">
-              <span className="text-2xl mr-2">💻</span>
-              <h2 className="text-xl font-bold text-gray-900">Code Examples</h2>
+          <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center mb-3">
+                <span className="text-2xl mr-2">💻</span>
+                <h2 className="text-xl font-black text-slate-900">cURL Integration Suite</h2>
+              </div>
+              <p className="text-slate-700 font-medium text-sm mb-6">
+                Ready-to-use executable cURL scripts for authentication, wallet transactions, and media queries.
+              </p>
             </div>
-            <p className="text-gray-600 mb-4">
-              Ready-to-use cURL examples for all endpoints
-            </p>
             <a
               href="/api/developer/examples/curl"
               download="curl-examples.sh"
-              className="block w-full bg-green-50 hover:bg-green-100 text-green-950 border border-green-400 font-bold font-medium py-3 px-4 rounded-lg transition-colors text-center"
+              className="block w-full bg-emerald-50 hover:bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold py-3 px-4 rounded-xl transition-colors text-center text-sm cursor-pointer"
             >
-              Download cURL Examples
+              Download cURL Integration Scripts (.sh)
             </a>
           </div>
 
           {/* Quick Start Guide */}
-          <div className="bg-white rounded-lg shadow-sm border border-slate-300 p-6">
-            <div className="flex items-center mb-4">
-              <BookOpenIcon className="w-6 h-6 text-orange-500 mr-2" />
-              <h2 className="text-xl font-bold text-gray-900">Quick Start</h2>
+          <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center mb-3">
+                <BookOpenIcon className="w-6 h-6 text-orange-600 mr-2" />
+                <h2 className="text-xl font-black text-slate-900">Quick Start Sandbox</h2>
+              </div>
+              <p className="text-slate-700 font-medium text-sm mb-3">
+                Initialize client instance with scoped JWT auth token:
+              </p>
             </div>
-            <div className="bg-gray-900 text-gray-100 rounded-lg p-4 font-mono text-sm overflow-x-auto">
-              <pre>{`// JavaScript Example
+            <div className="bg-slate-900 text-slate-100 rounded-xl p-4 font-mono text-xs overflow-x-auto border border-slate-800">
+              <pre>{`// JavaScript / TypeScript Example
 import FingerMobileSDK from 'fingermobile-sdk';
 
 const sdk = new FingerMobileSDK('YOUR_API_KEY');
 
-// Get courses
-const courses = await sdk.getCourses({ limit: 10 });
+// Query double-entry FIC ledger balance
+const balance = await sdk.wallet.getBalance();
 
-// Enroll in course
-await sdk.enrollInCourse(123);
-
-// Get analytics dashboard
-const dashboard = await sdk.getDashboardData('monthly');`}</pre>
+// Query 7 PostgreSQL cluster status
+const clusterStatus = await sdk.operations.getClusterHealth();`}</pre>
             </div>
           </div>
         </div>
 
         {/* API Categories */}
-        <div className="mt-8 bg-white rounded-lg shadow-sm border border-slate-300 p-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-6">API Categories</h2>
+        <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="text-xl font-black text-slate-900">API Endpoint Categories</h2>
+              <p className="text-xs text-slate-700 font-medium mt-0.5">Partitioned microservice endpoints across the protocol</p>
+            </div>
+            <span className="px-3 py-1 bg-blue-100 text-blue-950 border border-blue-400 rounded-full text-xs font-bold">
+              9 Active Modules
+            </span>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {[
-              { name: 'Authentication', icon: '🔐', count: 5 },
-              { name: 'Course Content', icon: '🎓', count: 14 },
-              { name: 'Analytics', icon: '📊', count: 6 },
-              { name: 'Analytics Enhanced', icon: '📈', count: 7 },
-              { name: 'Sentient AI', icon: '🤖', count: 4 },
-              { name: 'PROMPTS', icon: '🛡️', count: 4 },
-              { name: 'Wallet', icon: '💰', count: 8 },
-              { name: 'Payments', icon: '💳', count: 6 },
-              { name: 'Staking', icon: '⚡', count: 5 }
+              { name: 'Authentication & Identity', icon: '🔐', count: 5 },
+              { name: 'Course & Media Content', icon: '🎓', count: 14 },
+              { name: 'Analytics Telemetry', icon: '📊', count: 6 },
+              { name: 'Enhanced Telemetry Mesh', icon: '📈', count: 7 },
+              { name: 'Sentient AI & Prompts', icon: '🤖', count: 8 },
+              { name: 'DEFCON & Cybersecurity', icon: '🛡️', count: 4 },
+              { name: 'FIC Wallet & Ledger', icon: '💰', count: 8 },
+              { name: 'Merchant Payments & Gateways', icon: '💳', count: 6 },
+              { name: 'Staking & Liquidity Pools', icon: '⚡', count: 5 }
             ].map((category, idx) => (
-              <div key={idx} className="border border-slate-300 rounded-lg p-4 hover:shadow-md transition-shadow">
+              <div key={idx} className="bg-slate-50 border border-slate-300 rounded-xl p-4 hover:shadow-md transition-shadow">
                 <div className="flex items-center justify-between">
-                  <div>
-                    <span className="text-2xl mr-2">{category.icon}</span>
-                    <h3 className="font-semibold text-gray-900">{category.name}</h3>
+                  <div className="flex items-center">
+                    <span className="text-2xl mr-2.5">{category.icon}</span>
+                    <h3 className="font-bold text-slate-900 text-sm">{category.name}</h3>
                   </div>
-                  <span className="text-sm text-slate-700">{category.count} endpoints</span>
+                  <span className="text-xs font-bold text-slate-700 bg-white px-2.5 py-1 rounded-full border border-slate-200">
+                    {category.count} endpoints
+                  </span>
                 </div>
               </div>
             ))}

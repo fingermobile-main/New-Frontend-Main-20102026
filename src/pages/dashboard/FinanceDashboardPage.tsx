@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { apiService } from '../../services/apiService';
+import PlatformOwnershipCard from '../../components/dashboard/PlatformOwnershipCard';
 
 interface TransactionItem {
   id: string;
@@ -115,6 +116,8 @@ const FinanceDashboardPage: React.FC = () => {
             Monitor platform liquidity, merchant payouts, subscriptions, and financial settlement
           </p>
         </div>
+
+        <PlatformOwnershipCard />
 
         {/* Financial Overview */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
