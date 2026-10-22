@@ -175,7 +175,12 @@ const OrderTracker: React.FC<OrderTrackerProps> = ({ userId }) => {
                     {formatCurrency(order.total_amount)}
                   </p>
                 </div>
-                <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium">
+                <button
+                  type="button"
+                  aria-label={`View details for order ${order.order_number || order.id}`}
+                  onClick={() => window.location.assign(`/ownit/orders/${order.id}`)}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+                >
                   View Details
                 </button>
               </div>

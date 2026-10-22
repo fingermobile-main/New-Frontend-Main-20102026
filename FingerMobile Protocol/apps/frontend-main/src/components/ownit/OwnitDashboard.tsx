@@ -225,7 +225,13 @@ const OwnitDashboard: React.FC = () => {
                       Expires: {new Date(item.warranty_end_date!).toLocaleDateString()}
                     </p>
                   </div>
-                  <Button size="sm" variant="outline">
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="outline"
+                    aria-label={`Extend warranty for ${item.title}`}
+                    onClick={() => window.location.assign(`/ownit/warranty/extend?item=${encodeURIComponent(item.id)}`)}
+                  >
                     Extend Warranty
                   </Button>
                 </div>

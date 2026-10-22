@@ -683,7 +683,12 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
                           full UGC
                         </span>
                       </div>
-                      <button className="font-bold text-amber-800 underline">
+                      <button
+                        type="button"
+                        aria-label="Request 8-digit mutual PIN exchange"
+                        onClick={() => showToast('8-digit mutual PIN exchange request sent to author!')}
+                        className="font-bold text-amber-800 underline"
+                      >
                         Request Exchange
                       </button>
                     </div>

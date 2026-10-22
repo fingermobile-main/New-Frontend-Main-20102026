@@ -26,6 +26,7 @@ export const TributDiscussionsTab: React.FC<TributDiscussionsTabProps> = ({
   const [discussions, setDiscussions] = useState<DesignDiscussionItem[]>(COMMUNITY_DESIGN_DISCUSSIONS);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
+  const [expandedDiscussionId, setExpandedDiscussionId] = useState<string | null>(null);
 
   // New discussion form
   const [newTitle, setNewTitle] = useState('');
@@ -226,7 +227,12 @@ export const TributDiscussionsTab: React.FC<TributDiscussionsTabProps> = ({
                     <span>{d.upvotesCount} Upvotes</span>
                   </button>
 
-                  <button className="flex items-center gap-1 hover:text-purple-700 py-1 px-2 rounded-lg hover:bg-slate-100 transition">
+                  <button
+                    type="button"
+                    aria-label={`View ${d.commentsCount} critiques for ${d.title}`}
+                    onClick={() => setExpandedDiscussionId(expandedDiscussionId === d.id ? null : d.id)}
+                    className="flex items-center gap-1 hover:text-purple-700 py-1 px-2 rounded-lg hover:bg-slate-100 transition"
+                  >
                     <ChatBubbleIcon className="w-3.5 h-3.5" />
                     <span>{d.commentsCount} Critiques</span>
                   </button>

@@ -22,7 +22,12 @@ const PremiumContentAdWidget: React.FC = () => {
           Get advanced analytics, verified badge, and priority support.
         </p>
 
-        <button className="w-full bg-brand-blue hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-semibold transition-colors shadow-sm">
+        <button
+          type="button"
+          aria-label="Upgrade to premium features"
+          onClick={() => window.location.assign('/pricing')}
+          className="w-full bg-brand-blue hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-semibold transition-colors shadow-sm"
+        >
           Upgrade Now
         </button>
       </div>
