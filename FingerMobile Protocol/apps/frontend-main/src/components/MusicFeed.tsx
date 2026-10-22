@@ -1,4 +1,5 @@
 import React, {} from 'react';
+import { Link } from 'react-router-dom';
 import { Music, Play, Heart, Share2, MoreHorizontal } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -68,8 +69,8 @@ const MusicFeed: React.FC<MusicFeedProps> = ({
           <Music className="h-6 w-6 text-slate-800" />
           Music Feed
         </h2>
-        <Button variant="ghost" size="sm" className="text-slate-800 font-semibold hover:text-slate-900">
-          View All
+        <Button variant="ghost" size="sm" asChild className="text-slate-800 font-semibold hover:text-slate-900">
+          <Link to="/beatwave">View All</Link>
         </Button>
       </div>
 
@@ -91,7 +92,9 @@ const MusicFeed: React.FC<MusicFeedProps> = ({
                     </div>
                   )}
                   <Button
+                    type="button"
                     size="icon"
+                    aria-label={`Play ${track.title} by ${track.artist}`}
                     className="absolute inset-0 m-auto h-10 w-10 opacity-0 hover:opacity-100 transition-opacity"
                     onClick={() => onPlayTrack?.(track)}
                   >
@@ -110,17 +113,33 @@ const MusicFeed: React.FC<MusicFeedProps> = ({
                 <div className="flex items-center gap-2">
                   <span className="text-sm text-slate-700 font-medium">{track.duration}</span>
                   <Button
+                    type="button"
                     variant="ghost"
                     size="icon"
+                    aria-label={track.isLiked ? `Unlike ${track.title}` : `Like ${track.title}`}
                     onClick={() => onLikeTrack?.(track.id)}
                     className={track.isLiked ? 'text-red-500' : 'text-slate-700'}
                   >
                     <Heart className={`h-5 w-5 ${track.isLiked ? 'fill-current' : ''}`} />
                   </Button>
-                  <Button variant="ghost" size="icon" onClick={() => onShareTrack?.(track.id)} className="text-slate-700">
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    aria-label={`Share ${track.title}`}
+                    onClick={() => onShareTrack?.(track.id)}
+                    className="text-slate-700"
+                  >
                     <Share2 className="h-5 w-5" />
                   </Button>
-                  <Button variant="ghost" size="icon" className="text-slate-700">
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    aria-label={`More options for ${track.title}`}
+                    onClick={() => alert(`Options for ${track.title}`)}
+                    className="text-slate-700"
+                  >
                     <MoreHorizontal className="h-5 w-5" />
                   </Button>
                 </div>

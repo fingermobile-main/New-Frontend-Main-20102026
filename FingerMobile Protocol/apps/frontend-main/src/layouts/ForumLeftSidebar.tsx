@@ -88,7 +88,12 @@ const ForumLeftSidebar: React.FC<ForumLeftSidebarProps> = ({ isOpen, onClose }) 
       {/* Mobile Close Button */}
       <div className="lg:hidden flex items-center justify-between p-4 border-b border-gray-700">
         <span className="text-lg font-semibold text-white">Navigation</span>
-        <button onClick={onClose} className="p-2 hover:bg-gray-700 rounded-lg">
+        <button
+          type="button"
+          aria-label="Close navigation drawer"
+          onClick={onClose}
+          className="p-2 hover:bg-gray-700 rounded-lg"
+        >
           <XIcon className="w-6 h-6 text-slate-600" />
         </button>
       </div>
@@ -207,9 +212,12 @@ const ForumLeftSidebar: React.FC<ForumLeftSidebarProps> = ({ isOpen, onClose }) 
                 </Link>
               ))}
 
-              <button className="w-full px-3 py-2 text-sm text-gray-300 font-medium hover:text-white hover:bg-gray-700 rounded-lg transition-colors text-left">
+              <Link
+                to="/communities"
+                className="block w-full px-3 py-2 text-sm text-gray-300 font-medium hover:text-white hover:bg-gray-700 rounded-lg transition-colors text-left"
+              >
                 See more
-              </button>
+              </Link>
             </div>
           )}
         </div>

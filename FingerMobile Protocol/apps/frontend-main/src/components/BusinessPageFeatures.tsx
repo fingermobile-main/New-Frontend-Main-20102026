@@ -32,6 +32,13 @@ const BusinessPageFeatures: React.FC = () => {
     description: '',
     price: ''
   });
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [saveStatus, setSaveStatus] = useState<string | null>(null);
+
+  const handleSave = () => {
+    setSaveStatus('Business page configuration saved successfully!');
+    setTimeout(() => setSaveStatus(null), 3000);
+  };
 
   const handleAddMediaCard = () => {
     if (currentCard.url.trim() !== '') {
@@ -323,11 +330,32 @@ const BusinessPageFeatures: React.FC = () => {
         </div>
       </div>
 
+      {saveStatus && (
+        <div className="mt-4 p-3 bg-emerald-50 border border-emerald-300 rounded-lg text-emerald-900 text-sm font-medium text-right">
+          {saveStatus}
+        </div>
+      )}
+
+      {isPreviewOpen && (
+        <div className="mt-4 p-4 bg-slate-50 border border-slate-300 rounded-lg">
+          <h4 className="text-sm font-bold text-slate-900 mb-2">Live Preview: {pageName || 'Untitled Business Page'}</h4>
+          <p className="text-sm text-slate-700">{businessDescription || 'No description provided yet.'}</p>
+        </div>
+      )}
+
       <div className="mt-6 flex justify-end space-x-3">
-        <button className="px-6 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500">
-          Preview
+        <button
+          type="button"
+          onClick={() => setIsPreviewOpen(prev => !prev)}
+          className="px-6 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 font-medium"
+        >
+          {isPreviewOpen ? 'Hide Preview' : 'Preview'}
         </button>
-        <button className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <button
+          type="button"
+          onClick={handleSave}
+          className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium"
+        >
           Save Business Page
         </button>
       </div>

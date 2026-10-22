@@ -1,19 +1,28 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Navbar: React.FC = () => {
   return (
     <nav className="bg-white dark:bg-gray-800 border-b border-slate-300 dark:border-gray-700 p-4">
       <div className="container mx-auto flex justify-between items-center">
         <div className="flex items-center space-x-4">
-          <h1 className="text-xl font-bold text-orange-500">FingerMobile</h1>
+          <Link to="/" className="text-xl font-bold text-orange-500 hover:text-orange-600 transition-colors">
+            FingerMobile
+          </Link>
         </div>
         <div className="flex items-center space-x-4">
-          <button className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors text-sm">
+          <Link
+            to="/login"
+            className="bg-green-600 hover:bg-green-700 text-white font-medium px-4 py-2 rounded-lg transition-colors text-sm inline-block"
+          >
             Log In
-          </button>
-          <button className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors text-sm">
+          </Link>
+          <Link
+            to="/register"
+            className="text-slate-800 dark:text-gray-200 hover:text-slate-900 dark:hover:text-white font-medium transition-colors text-sm inline-block"
+          >
             Create Account
-          </button>
+          </Link>
         </div>
       </div>
     </nav>

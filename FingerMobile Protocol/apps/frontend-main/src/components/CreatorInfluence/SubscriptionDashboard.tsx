@@ -221,6 +221,7 @@ const SubscriptionDashboard: React.FC<SubscriptionDashboardProps> = ({
 
             <div className="mt-8 flex flex-wrap gap-4">
               <button
+                type="button"
                 onClick={() => setShowCancelModal(true)}
                 className="px-6 py-3 border border-red-600 text-red-600 text-base font-medium rounded-md hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
               >
@@ -228,15 +229,23 @@ const SubscriptionDashboard: React.FC<SubscriptionDashboardProps> = ({
               </button>
 
               <button
-                disabled
-                className="px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+                type="button"
+                onClick={() => navigate('/settings/billing')}
+                className="px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
                 Update Payment Method
               </button>
 
               <button
-                disabled
-                className="px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+                type="button"
+                onClick={() => {
+                  if (billingHistory.length > 0) {
+                    alert(`Downloading latest invoice ${billingHistory[0].id}...`);
+                  } else {
+                    navigate('/settings/billing');
+                  }
+                }}
+                className="px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
                 Download Invoice
               </button>

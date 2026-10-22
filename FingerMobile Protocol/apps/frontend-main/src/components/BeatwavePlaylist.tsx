@@ -31,13 +31,15 @@ interface BeatwavePlaylistProps {
   onPlayTrack?: (track: Track) => void;
   onEditPlaylist?: (playlistId: string) => void;
   onDeletePlaylist?: (playlistId: string) => void;
+  onCreatePlaylist?: () => void;
 }
 
 const BeatwavePlaylist: React.FC<BeatwavePlaylistProps> = ({
   playlists: propPlaylists,
   onPlayTrack,
   onEditPlaylist,
-  onDeletePlaylist
+  onDeletePlaylist,
+  onCreatePlaylist
 }) => {
   const defaultPlaylists: Playlist[] = [
     {
@@ -72,7 +74,17 @@ const BeatwavePlaylist: React.FC<BeatwavePlaylistProps> = ({
           <ListMusic className="h-6 w-6 text-slate-800" />
           My Playlists
         </h2>
-        <Button size="sm">
+        <Button
+          type="button"
+          size="sm"
+          onClick={() => {
+            if (onCreatePlaylist) {
+              onCreatePlaylist();
+            } else {
+              alert('Create new playlist feature');
+            }
+          }}
+        >
           <Music className="h-4 w-4 mr-2" />
           New Playlist
         </Button>
@@ -93,7 +105,7 @@ const BeatwavePlaylist: React.FC<BeatwavePlaylistProps> = ({
                 </div>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon">
+                    <Button variant="ghost" size="icon" aria-label={`Options for playlist ${playlist.name}`}>
                       <MoreVertical className="h-4 w-4" />
                     </Button>
                   </DropdownMenuTrigger>

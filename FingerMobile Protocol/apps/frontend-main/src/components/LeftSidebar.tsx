@@ -82,12 +82,18 @@ const LeftSidebar: React.FC = () => {
 
       {/* Quick Actions from design document */}
       <div className="mt-6 pt-6 border-t border-fm-gray-200">
-        <button className="w-full bg-fm-orange text-white py-2.5 rounded-full text-sm font-medium hover:bg-fm-orange-hover transition-colors mb-2">
+        <Link
+          to="/createpost"
+          className="w-full bg-fm-orange text-white py-2.5 rounded-full text-sm font-medium hover:bg-fm-orange-hover transition-colors mb-2 block text-center"
+        >
           ✏️ Create Post
-        </button>
-        <button className="w-full bg-fm-blue text-white py-2.5 rounded-full text-sm font-medium hover:bg-fm-blue-hover transition-colors">
+        </Link>
+        <Link
+          to="/golive"
+          className="w-full bg-fm-blue text-white py-2.5 rounded-full text-sm font-medium hover:bg-fm-blue-hover transition-colors block text-center"
+        >
           📹 Go Live
-        </button>
+        </Link>
       </div>
 
       {/* Discover section from design document */}

@@ -26,6 +26,8 @@ export const LushCallModal: React.FC<LushCallModalProps> = ({
 }) => {
   const [callDuration, setCallDuration] = useState(0);
   const [isRinging, setIsRinging] = useState(true);
+  const [isMuted, setIsMuted] = useState(false);
+  const [isSpeakerOn, setIsSpeakerOn] = useState(false);
 
   const isCaller = activeCall.callerId === currentUserId;
   const isCallee = activeCall.calleeId === currentUserId;
@@ -85,6 +87,8 @@ export const LushCallModal: React.FC<LushCallModalProps> = ({
           {activeCall.status === 'incoming' && isCallee && (
             <>
               <button
+                type="button"
+                aria-label="Answer call"
                 onClick={onAnswer}
                 className="w-14 h-14 rounded-full bg-green-500 flex items-center justify-center text-white hover:bg-green-600 transition-colors"
               >
@@ -93,6 +97,8 @@ export const LushCallModal: React.FC<LushCallModalProps> = ({
                 </svg>
               </button>
               <button
+                type="button"
+                aria-label="Decline call"
                 onClick={onEnd}
                 className="w-14 h-14 rounded-full bg-red-500 flex items-center justify-center text-white hover:bg-red-600 transition-colors"
               >
@@ -105,6 +111,8 @@ export const LushCallModal: React.FC<LushCallModalProps> = ({
 
           {(activeCall.status === 'outgoing' || activeCall.status === 'active') && isCaller && (
             <button
+              type="button"
+              aria-label="End call"
               onClick={onEnd}
               className="w-14 h-14 rounded-full bg-red-500 flex items-center justify-center text-white hover:bg-red-600 transition-colors"
             >
@@ -117,12 +125,30 @@ export const LushCallModal: React.FC<LushCallModalProps> = ({
 
         {activeCall.status === 'active' && (
           <div className="mt-6 flex justify-center space-x-4">
-            <button className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-950 hover:bg-gray-300 transition-colors border border-gray-400 font-black">
+            <button
+              type="button"
+              aria-label={isMuted ? 'Unmute microphone' : 'Mute microphone'}
+              onClick={() => setIsMuted(prev => !prev)}
+              className={`w-12 h-12 rounded-full flex items-center justify-center transition-colors border font-black ${
+                isMuted
+                  ? 'bg-red-100 text-red-900 border-red-400'
+                  : 'bg-gray-200 text-gray-950 hover:bg-gray-300 border-gray-400'
+              }`}
+            >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
               </svg>
             </button>
-            <button className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-950 hover:bg-gray-300 transition-colors border border-gray-400 font-black">
+            <button
+              type="button"
+              aria-label={isSpeakerOn ? 'Turn off speaker' : 'Turn on speaker'}
+              onClick={() => setIsSpeakerOn(prev => !prev)}
+              className={`w-12 h-12 rounded-full flex items-center justify-center transition-colors border font-black ${
+                isSpeakerOn
+                  ? 'bg-blue-100 text-blue-900 border-blue-400'
+                  : 'bg-gray-200 text-gray-950 hover:bg-gray-300 border-gray-400'
+              }`}
+            >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15.536a5 5 0 001.414 1.414m1.414-4.243a5 5 0 000-7.072m-2.828 9.9a9 9 0 010-12.728" />
               </svg>

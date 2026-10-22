@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useProfile } from '../contexts/ProfileContext';
 import { useMonetization } from '../contexts/MonetizationContext';
 
 const CreatorMode: React.FC = () => {
+  const navigate = useNavigate();
   const profile = useProfile();
   const monetization = useMonetization();
   const [isCreatorMode, setIsCreatorMode] = useState<boolean>(false);
@@ -180,8 +182,20 @@ const CreatorMode: React.FC = () => {
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
-                      <button className="text-blue-600 hover:text-blue-900 mr-3">Edit</button>
-                      <button className="text-indigo-600 hover:text-indigo-900">Contribute</button>
+                      <button
+                        type="button"
+                        onClick={() => navigate(`/articles/${article.id}/edit`)}
+                        className="text-blue-600 hover:text-blue-900 mr-3 font-medium"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => navigate(`/articles/${article.id}/contribute`)}
+                        className="text-indigo-600 hover:text-indigo-900 font-medium"
+                      >
+                        Contribute
+                      </button>
                     </td>
                   </tr>
                 ))}
