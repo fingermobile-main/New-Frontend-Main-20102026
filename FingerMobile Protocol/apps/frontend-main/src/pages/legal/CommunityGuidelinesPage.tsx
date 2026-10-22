@@ -7,8 +7,8 @@ const CommunityGuidelinesPage = () => {
 
   const Section: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
     <section className="mb-8">
-      <h3 className="text-xl font-bold text-gray-800 border-b border-gray-300 pb-2 mb-4">{title}</h3>
-      <div className="prose prose-sm max-w-none text-gray-600">
+      <h3 className="text-xl font-black text-slate-900 border-b border-slate-300 pb-2 mb-4">{title}</h3>
+      <div className="prose prose-sm max-w-none text-slate-700 font-medium leading-relaxed">
         {children}
       </div>
     </section>
@@ -16,7 +16,7 @@ const CommunityGuidelinesPage = () => {
 
   return (
     <LegalLayout>
-      <div className="bg-white rounded-xl shadow-sm p-6 lg:p-8">
+      <div className="bg-white rounded-2xl shadow-sm border border-slate-300 p-6 lg:p-8">
         <LegalDocumentBanner
           slug="community-guidelines"
           defaultTitle="FingerMobile Community Guidelines"
@@ -25,10 +25,10 @@ const CommunityGuidelinesPage = () => {
         />
 
         <div className="flex items-center gap-4 mb-6">
-          <MembersIcon className="w-10 h-10 text-brand-blue" />
+          <MembersIcon className="w-10 h-10 text-blue-600" />
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Community Guidelines</h1>
-            <p className="text-gray-600">Building a safe and respectful community together.</p>
+            <h1 className="text-3xl font-black text-slate-900">Community Guidelines</h1>
+            <p className="text-slate-700 font-medium">Building a safe and respectful community together.</p>
           </div>
         </div>
 
@@ -89,8 +89,8 @@ const CommunityGuidelinesPage = () => {
 
           <Section title="Contact Us">
             <p>If you have questions about these community guidelines or need assistance with a community-related issue, please contact us at:</p>
-            <div className="mt-3 p-4 bg-gray-50 rounded-lg border">
-              <p className="font-medium">FingerMobile Protocol™ Community Team</p>
+            <div className="mt-3 p-4 bg-slate-50 rounded-xl border border-slate-300 text-slate-800 font-medium">
+              <p className="font-bold text-slate-900">FingerMobile Protocol™ Community Team</p>
               <p>Email: info@fingermobileprotocol.com / fingermobileprotocol@gmail.com</p>
               <p>Official Website: https://fingermobileprotocol.com</p>
             </div>

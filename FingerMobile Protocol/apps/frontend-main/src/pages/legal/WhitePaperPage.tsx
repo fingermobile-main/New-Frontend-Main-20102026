@@ -30,8 +30,8 @@ const WhitePaperPage: React.FC = () => {
 
   const Section: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
     <section className="mb-8">
-      <h2 className="text-2xl font-bold text-gray-800 border-b-2 border-brand-blue pb-2 mb-4">{title}</h2>
-      <div className="prose prose-sm max-w-none text-gray-600">
+      <h2 className="text-2xl font-bold text-slate-900 border-b-2 border-brand-blue pb-2 mb-4">{title}</h2>
+      <div className="prose prose-sm max-w-none text-slate-700">
         {children}
       </div>
     </section>
@@ -39,8 +39,8 @@ const WhitePaperPage: React.FC = () => {
 
   const SubSection: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
     <div className="mt-6">
-      <h3 className="text-lg font-bold text-gray-700">{title}</h3>
-      <div className="mt-2">{children}</div>
+      <h3 className="text-lg font-bold text-slate-800">{title}</h3>
+      <div className="mt-2 text-slate-700">{children}</div>
     </div>
   );
 
@@ -67,7 +67,7 @@ contract Fiat2IFCBridge is Ownable {
   return (
     <LegalLayout>
       <div className="p-6 lg:p-8 bg-white rounded-2xl shadow-sm border border-slate-300 min-h-full">
-        <div className="max-w-4xl mx-auto">
+        <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto">
           <LegalDocumentBanner
             slug="whitepaper"
             defaultTitle="FingerMobile Protocol Technical Whitepaper"
@@ -78,9 +78,9 @@ contract Fiat2IFCBridge is Ownable {
           <div className="flex items-center gap-4 mb-6">
             <PolicyIcon className="w-10 h-10 text-brand-blue" />
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">INFINITE COIN™©® (IFO / FIC) — WHITE PAPER</h1>
-              <p className="text-gray-600">Version 1.0 (IP Version) — July 9, 2025</p>
-              <p className="text-xs text-slate-700">Registered Intellectual Property — FingerMobile Protocol Communication™©®</p>
+              <h1 className="text-3xl font-black text-slate-900">INFINITE COIN™©® (IFO / FIC) — WHITE PAPER</h1>
+              <p className="text-slate-700 font-medium">Version 1.0 (IP Version) — July 9, 2025</p>
+              <p className="text-xs text-slate-700 font-semibold">Registered Intellectual Property — FingerMobile Protocol Communication™©®</p>
             </div>
           </div>
 
@@ -164,7 +164,7 @@ contract Fiat2IFCBridge is Ownable {
             </div>
           </div>
 
-          <div className="bg-gray-50 p-6 rounded-xl border">
+          <div className="bg-slate-50 p-6 lg:p-8 rounded-2xl border border-slate-300 space-y-6">
             <Section title="1. Executive Summary">
               <p>Infinite Coin™©® (IFO / FIC) is a decentralized, programmable digital currency and exchange unit built to power the FingerMobile™ ecosystem — a creator-first protocol that fuses fintech, generative AI, secure communications, and social commerce into a unified platform. IFO is designed as the financial core of a globally-scaled UGC economy.</p>
             </Section>
@@ -285,7 +285,7 @@ contract Fiat2IFCBridge is Ownable {
                 </div>
               </div>
 
-              <h4 className="font-bold mt-6 mb-2 text-gray-800">FIC Smart Contract Example: Fiat2IFCBridge.sol</h4>
+              <h4 className="font-bold mt-6 mb-2 text-slate-900">FIC Smart Contract Example: Fiat2IFCBridge.sol</h4>
               <pre className="bg-gray-800 text-gray-200 p-4 rounded-lg overflow-x-auto text-xs">
                 <code>{smartContractCode.trim()}</code>
               </pre>

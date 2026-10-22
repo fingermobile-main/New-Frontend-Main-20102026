@@ -112,67 +112,69 @@ const CodeAgentPage: React.FC = () => {
 
   return (
     <div className="flex flex-col h-full bg-gray-900 text-white p-6">
-      <h1 className="text-3xl font-bold text-cyan-400 mb-6">Code Agent</h1>
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto flex flex-col flex-grow">
+        <h1 className="text-3xl font-black text-cyan-400 mb-6">Code Agent</h1>
 
-      <div className="flex-grow overflow-y-auto pr-4 mb-6 custom-scrollbar">
-        {history.map((item, index) => (
-          <div key={index} className="mb-6 p-4 bg-gray-800 rounded-lg border border-gray-700">
-            <p className="font-semibold text-gray-200 mb-2">Prompt: {item.prompt}</p>
-            <div className="p-4 bg-gray-800 rounded-lg border border-gray-700">
-              <p className="font-semibold text-cyan-400">Gemini Code Agent</p>
-              {item.response && <ResponseDisplay response={item.response} />}
+        <div className="flex-grow overflow-y-auto pr-4 mb-6 custom-scrollbar">
+          {history.map((item, index) => (
+            <div key={index} className="mb-6 p-4 bg-gray-800 rounded-lg border border-gray-700">
+              <p className="font-semibold text-gray-200 mb-2">Prompt: {item.prompt}</p>
+              <div className="p-4 bg-gray-800 rounded-lg border border-gray-700">
+                <p className="font-semibold text-cyan-400">Gemini Code Agent</p>
+                {item.response && <ResponseDisplay response={item.response} />}
+              </div>
             </div>
-          </div>
-        ))}
-        {isLoading && (
-          <div className="flex items-center justify-center mb-6">
-            <SparklesIcon className="animate-spin h-8 w-8 text-cyan-400" />
-            <p className="ml-3 text-lg text-cyan-400">Generating code...</p>
-          </div>
-        )}
-        {response && !isLoading && history.length === 0 && (
-          <div className="mb-6 p-4 bg-gray-800 rounded-lg border border-gray-700">
-            <p className="font-semibold text-cyan-400">Gemini Code Agent</p>
-            <ResponseDisplay response={response} />
-          </div>
-        )}
-        <div ref={chatEndRef} />
-      </div>
+          ))}
+          {isLoading && (
+            <div className="flex items-center justify-center mb-6">
+              <SparklesIcon className="animate-spin h-8 w-8 text-cyan-400" />
+              <p className="ml-3 text-lg text-cyan-400">Generating code...</p>
+            </div>
+          )}
+          {response && !isLoading && history.length === 0 && (
+            <div className="mb-6 p-4 bg-gray-800 rounded-lg border border-gray-700">
+              <p className="font-semibold text-cyan-400">Gemini Code Agent</p>
+              <ResponseDisplay response={response} />
+            </div>
+          )}
+          <div ref={chatEndRef} />
+        </div>
 
-      <form onSubmit={handleSubmit} className="flex items-center space-x-4">
-        <input
-          type="text"
-          value={prompt}
-          onChange={(e) => setPrompt(e.target.value)}
-          placeholder="Describe the code you want the AI to generate or modify..."
-          className="flex-grow p-3 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-500"
-          disabled={isLoading || !consentGiven}
-        />
-        <button
-          type="submit"
-          className="bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
-          disabled={isLoading || !consentGiven}
-        >
-          {isLoading ? 'Generating...' : 'Generate Code'}
-        </button>
-      </form>
+        <form onSubmit={handleSubmit} className="flex items-center space-x-4">
+          <input
+            type="text"
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+            placeholder="Describe the code you want the AI to generate or modify..."
+            className="flex-grow p-3 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder:text-slate-400 focus:outline-none focus:border-cyan-500 text-sm font-medium"
+            disabled={isLoading || !consentGiven}
+          />
+          <button
+            type="submit"
+            className="bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+            disabled={isLoading || !consentGiven}
+          >
+            {isLoading ? 'Generating...' : 'Generate Code'}
+          </button>
+        </form>
 
-      <div className="mt-4 flex items-center">
-        <input
-          type="checkbox"
-          id="ai-consent"
-          checked={consentGiven}
-          onChange={(e) => setConsentGiven(e.target.checked)}
-          className="form-checkbox h-5 w-5 text-cyan-600 rounded focus:ring-cyan-500"
-        />
-        <label htmlFor="ai-consent" className="ml-2 text-gray-300 text-sm">
-          I understand that AI-generated code may contain errors or security vulnerabilities and I will review it carefully before deployment.
-        </label>
-      </div>
+        <div className="mt-4 flex items-center">
+          <input
+            type="checkbox"
+            id="ai-consent"
+            checked={consentGiven}
+            onChange={(e) => setConsentGiven(e.target.checked)}
+            className="form-checkbox h-5 w-5 text-cyan-600 rounded focus:ring-cyan-500"
+          />
+          <label htmlFor="ai-consent" className="ml-2 text-gray-300 text-sm font-medium">
+            I understand that AI-generated code may contain errors or security vulnerabilities and I will review it carefully before deployment.
+          </label>
+        </div>
 
-      {/* Sovereign Platform Ownership Directive */}
-      <div className="mt-8">
-        <PlatformOwnershipCard />
+        {/* Sovereign Platform Ownership Directive */}
+        <div className="mt-8">
+          <PlatformOwnershipCard />
+        </div>
       </div>
     </div>
   );

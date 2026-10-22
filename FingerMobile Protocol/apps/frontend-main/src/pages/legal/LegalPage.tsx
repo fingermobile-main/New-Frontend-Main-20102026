@@ -92,11 +92,11 @@ const LegalPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-6xl mx-auto">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto">
         <div className="flex flex-col md:flex-row md:items-center justify-between pb-8 border-b border-slate-300">
           <div>
-            <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Legal & Compliance Hub</h1>
-            <p className="mt-2 text-base text-gray-600">
+            <h1 className="text-3xl font-black text-slate-900 tracking-tight">Legal & Compliance Hub</h1>
+            <p className="mt-2 text-base text-slate-700 font-medium">
               Statutory documents, sovereign rights, cryptographic policies, and dispute mediation.
             </p>
           </div>
@@ -114,16 +114,16 @@ const LegalPage: React.FC = () => {
             <Link
               key={idx}
               to={item.to}
-              className="bg-white p-6 rounded-2xl border border-slate-300 shadow-sm hover:shadow-md hover:border-blue-300 transition-all flex flex-col justify-between"
+              className="bg-white p-6 rounded-2xl border border-slate-300 shadow-sm hover:shadow-md hover:border-blue-400 transition-all flex flex-col justify-between"
             >
               <div>
-                <div className="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center mb-4">
+                <div className="w-12 h-12 rounded-xl bg-slate-50 flex items-center justify-center mb-4 border border-slate-200">
                   {item.icon}
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-1">{item.title}</h3>
-                <p className="text-sm text-gray-600">{item.desc}</p>
+                <h3 className="text-lg font-bold text-slate-900 mb-1">{item.title}</h3>
+                <p className="text-sm text-slate-700 font-medium">{item.desc}</p>
               </div>
-              <div className="mt-4 text-xs font-semibold text-blue-600 flex items-center">
+              <div className="mt-4 text-xs font-bold text-blue-600 flex items-center">
                 Read document &rarr;
               </div>
             </Link>
@@ -133,19 +133,19 @@ const LegalPage: React.FC = () => {
         {/* DMCA Modal */}
         {showDmcaModal && (
           <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl shadow-xl max-w-lg w-full p-6 max-h-[90vh] overflow-y-auto">
+            <div className="bg-white rounded-2xl shadow-xl max-w-lg w-full p-6 max-h-[90vh] overflow-y-auto border border-slate-300">
               <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-bold text-gray-900">File DMCA / Copyright Claim</h2>
+                <h2 className="text-xl font-bold text-slate-900">File DMCA / Copyright Claim</h2>
                 <button
                   onClick={() => setShowDmcaModal(false)}
-                  className="text-slate-700 hover:text-gray-600 text-2xl font-bold"
+                  className="text-slate-700 hover:text-slate-900 text-2xl font-bold"
                 >
                   &times;
                 </button>
               </div>
               <form onSubmit={handleDmcaSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-1">Claimant Full Name</label>
+                  <label className="block text-xs font-bold text-slate-800 mb-1">Claimant Full Name</label>
                   <input
                     type="text"
                     required
@@ -155,7 +155,7 @@ const LegalPage: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-1">Claimant Email</label>
+                  <label className="block text-xs font-bold text-slate-800 mb-1">Claimant Email</label>
                   <input
                     type="email"
                     required
@@ -165,7 +165,7 @@ const LegalPage: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-1">Infringing URL on Platform</label>
+                  <label className="block text-xs font-bold text-slate-800 mb-1">Infringing URL on Platform</label>
                   <input
                     type="url"
                     required
@@ -176,7 +176,7 @@ const LegalPage: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-1">Original Work Evidence URL</label>
+                  <label className="block text-xs font-bold text-slate-800 mb-1">Original Work Evidence URL</label>
                   <input
                     type="url"
                     value={dmcaForm.original_work_url}
@@ -185,7 +185,7 @@ const LegalPage: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-1">Infringement Description</label>
+                  <label className="block text-xs font-bold text-slate-800 mb-1">Infringement Description</label>
                   <textarea
                     rows={3}
                     required
@@ -195,7 +195,7 @@ const LegalPage: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-1">Digital Signature</label>
+                  <label className="block text-xs font-bold text-slate-800 mb-1">Digital Signature</label>
                   <input
                     type="text"
                     required
@@ -209,14 +209,14 @@ const LegalPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setShowDmcaModal(false)}
-                    className="px-4 py-2 border rounded-lg text-sm text-gray-600 hover:bg-gray-50"
+                    className="px-4 py-2 border border-slate-300 rounded-lg text-sm font-bold text-slate-700 hover:bg-slate-100 transition-colors"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-semibold disabled:opacity-50"
+                    className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-bold disabled:opacity-50 transition-colors"
                   >
                     {isSubmitting ? 'Submitting...' : 'Submit Claim'}
                   </button>

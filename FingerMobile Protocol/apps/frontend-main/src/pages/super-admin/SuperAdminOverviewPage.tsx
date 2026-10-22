@@ -116,7 +116,7 @@ AI Sentinel | FingerMobileTM STERCS System
   };
 
   return (
-    <div className="space-y-6">
+    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto space-y-6">
       {/* Sovereign Platform Ownership Proof */}
       <PlatformOwnershipCard />
 

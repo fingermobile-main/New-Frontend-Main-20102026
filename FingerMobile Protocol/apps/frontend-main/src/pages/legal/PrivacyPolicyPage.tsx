@@ -151,14 +151,14 @@ const PrivacyPolicyPage = () => {
               of this site, or your dealings with this site, please contact us
               at:
             </p>
-            <div className="mt-3 p-4 bg-gray-50 rounded-lg border">
-              <p className="font-medium">FingerMobile Protocol™ Data Protection &amp; Legal</p>
-              <p>Email: info@fingermobileprotocol.com / fingermobileprotocol@gmail.com</p>
-              <p>Official Website: https://fingermobileprotocol.com</p>
+            <div className="mt-3 p-5 bg-slate-50 rounded-2xl border border-slate-300 space-y-1 text-slate-800">
+              <p className="font-bold text-slate-900">FingerMobile Protocol™ Data Protection &amp; Legal</p>
+              <p className="text-slate-700 font-medium text-xs">Email: <span className="font-bold text-blue-700">info@fingermobileprotocol.com</span> / fingermobileprotocol@gmail.com</p>
+              <p className="text-slate-700 font-medium text-xs">Official Website: <a href="https://fingermobileprotocol.com" target="_blank" rel="noopener noreferrer" className="text-blue-700 underline font-semibold">https://fingermobileprotocol.com</a></p>
             </div>
           </Section>
 
-          <div className="mt-8 pt-6 border-t border-gray-300 text-sm text-slate-700">
+          <div className="mt-8 pt-6 border-t border-slate-300 text-sm text-slate-700 font-medium">
             <p>Last Updated: December 20, 2025</p>
           </div>
         </div>

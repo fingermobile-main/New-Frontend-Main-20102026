@@ -66,7 +66,7 @@ const SearchResultsPage: React.FC = () => {
 
   if (error) {
     return (
-      <div className="max-w-4xl mx-auto p-4">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-4 sm:px-6 lg:px-8 py-8">
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
           <strong className="font-bold">Error! </strong>
           <span className="block sm:inline">{error}</span>
@@ -76,9 +76,9 @@ const SearchResultsPage: React.FC = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-4">
+    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Search Results</h1>
+        <h1 className="text-3xl font-black text-slate-900 dark:text-white">Search Results</h1>
         <p className="text-slate-700 dark:text-slate-300 font-medium">
           Found {results.length} results for "{query}" {type !== 'all' && `in ${type}`}
         </p>
@@ -87,7 +87,7 @@ const SearchResultsPage: React.FC = () => {
       <div className="mb-6">
         <button
           onClick={handleAiAssistAction}
-          className="flex items-center text-brand-blue hover:text-blue-700 font-semibold"
+          className="flex items-center text-brand-blue hover:text-blue-700 font-bold text-sm"
         >
           <span>Ask AI for help with these results</span>
         </button>
@@ -99,7 +99,7 @@ const SearchResultsPage: React.FC = () => {
             <a
               key={result.id}
               href={result.url}
-              className="block bg-white dark:bg-gray-800 rounded-lg shadow p-4 hover:shadow-md transition-shadow border border-slate-200 dark:border-gray-700"
+              className="block bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-5 hover:shadow-md transition-shadow border border-slate-300 dark:border-gray-700"
             >
               <div className="flex">
                 {result.thumbnail && (
@@ -108,10 +108,10 @@ const SearchResultsPage: React.FC = () => {
                   </div>
                 )}
                 <div>
-                  <h3 className="text-lg font-medium text-gray-900 dark:text-white">{result.title}</h3>
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white">{result.title}</h3>
                   <p className="text-slate-700 dark:text-slate-300 font-medium">{result.description}</p>
-                  <div className="mt-1">
-                    <span className="inline-block px-2 py-1 text-xs font-semibold text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 rounded">
+                  <div className="mt-2">
+                    <span className="inline-block px-2.5 py-1 text-xs font-bold text-slate-800 dark:text-gray-200 bg-slate-100 dark:bg-gray-700 border border-slate-300 dark:border-gray-600 rounded-lg">
                       {result.type}
                     </span>
                   </div>

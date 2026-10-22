@@ -79,10 +79,10 @@ const LegalIndexPage: React.FC = () => {
             <ShieldCheckIcon className="w-4 h-4" />
             <span>FingerMobile Protocol™ Legal Trust Center</span>
           </div>
-          <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight sm:text-4xl">
+          <h1 className="text-3xl font-black text-slate-900 tracking-tight sm:text-4xl">
             Legal & Compliance Center
           </h1>
-          <p className="text-gray-600 max-w-2xl mx-auto mt-2 text-sm sm:text-base">
+          <p className="text-slate-700 font-medium max-w-2xl mx-auto mt-2 text-sm sm:text-base">
             Official repository of protocol agreements, privacy rights, governance frameworks, and statutory compliance under the Nigeria Data Protection Act (NDPA 2023) and global GDPR standards.
           </p>
         </div>
@@ -97,21 +97,21 @@ const LegalIndexPage: React.FC = () => {
             >
               <div>
                 <div className="flex items-center justify-between mb-4">
-                  <div className="p-3 bg-gray-50 rounded-xl group-hover:bg-blue-50 transition-colors">
+                  <div className="p-3 bg-slate-50 rounded-xl group-hover:bg-blue-50 transition-colors">
                     {doc.icon}
                   </div>
-                  <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-950 border border-slate-400 font-black">
+                  <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-950 border border-slate-400">
                     {doc.badge}
                   </span>
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                <h3 className="text-lg font-black text-slate-900 mb-2 group-hover:text-blue-600 transition-colors">
                   {doc.title}
                 </h3>
-                <p className="text-gray-600 text-sm leading-relaxed">
+                <p className="text-slate-700 font-medium text-sm leading-relaxed">
                   {doc.description}
                 </p>
               </div>
-              <div className="mt-6 flex items-center text-blue-600 font-semibold text-sm">
+              <div className="mt-6 flex items-center text-blue-600 font-bold text-sm">
                 <span>View Policy</span>
                 <span className="ml-1 group-hover:translate-x-1 transition-transform">→</span>
               </div>
@@ -124,8 +124,8 @@ const LegalIndexPage: React.FC = () => {
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
               <span className="text-xs uppercase tracking-widest text-blue-400 font-bold">Data Subject Sovereignty</span>
-              <h2 className="text-2xl font-bold mt-1">Exercise Your Legal & Privacy Rights</h2>
-              <p className="text-slate-700 text-sm mt-1 max-w-xl">
+              <h2 className="text-2xl font-black mt-1 text-white">Exercise Your Legal & Privacy Rights</h2>
+              <p className="text-slate-300 font-medium text-sm mt-1 max-w-xl">
                 Submit NDPA/GDPR Data Subject Requests for access, rectification, or porting of your account data. You may also initiate permanent account termination or report copyright infringement.
               </p>
             </div>

@@ -37,33 +37,33 @@ const DemoContent: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-4xl mx-auto px-4">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Intelligent Post Publishing</h1>
-          <p className="mt-2 text-gray-600">
+          <h1 className="text-3xl font-black text-slate-900">Intelligent Post Publishing</h1>
+          <p className="mt-2 text-slate-700 font-medium">
             Configure advanced settings for your post with AI-powered recommendations
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">Create Your Post</h2>
+            <div className="bg-white rounded-2xl shadow-sm border border-slate-300 p-6 mb-6">
+              <h2 className="text-xl font-bold text-slate-900 mb-4">Create Your Post</h2>
               <textarea
                 value={postContent}
                 onChange={(e) => setPostContent(e.target.value)}
                 placeholder="What would you like to share with your audience?"
-                className="w-full h-40 p-4 border border-gray-300 rounded-md focus:ring-2 focus:ring-brand-blue focus:border-brand-blue text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
+                className="w-full h-40 p-4 border border-slate-300 rounded-xl focus:ring-2 focus:ring-brand-blue focus:border-brand-blue text-slate-900 font-bold bg-white placeholder:text-slate-400"
               />
 
               <div className="mt-4 flex justify-between items-center">
-                <div className="text-sm text-slate-700">
+                <div className="text-sm text-slate-700 font-semibold">
                   {postContent.length} characters
                 </div>
                 <button
                   onClick={handleSave}
                   disabled={isSaving}
-                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-brand-blue hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-blue disabled:opacity-50"
+                  className="inline-flex items-center px-5 py-2.5 border border-transparent text-sm font-bold rounded-xl shadow-sm text-white bg-brand-blue hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-blue disabled:opacity-50 transition-colors"
                 >
                   {isSaving ? (
                     <>
@@ -78,8 +78,8 @@ const DemoContent: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">AI Recommendations</h2>
+            <div className="bg-white rounded-2xl shadow-sm border border-slate-300 p-6">
+              <h2 className="text-xl font-bold text-slate-900 mb-4">AI Recommendations</h2>
               <div className="space-y-4">
                 <div className="flex items-start">
                   <div className="flex-shrink-0">
@@ -90,8 +90,8 @@ const DemoContent: React.FC = () => {
                     </div>
                   </div>
                   <div className="ml-3">
-                    <h3 className="text-sm font-medium text-gray-900">Optimal Posting Time</h3>
-                    <p className="text-sm text-slate-700 mt-1">
+                    <h3 className="text-sm font-bold text-slate-900">Optimal Posting Time</h3>
+                    <p className="text-sm text-slate-700 font-medium mt-1">
                       Based on your content, we recommend posting at 6:00 PM for maximum engagement.
                     </p>
                   </div>
@@ -107,8 +107,8 @@ const DemoContent: React.FC = () => {
                     </div>
                   </div>
                   <div className="ml-3">
-                    <h3 className="text-sm font-medium text-gray-900">Target Audience</h3>
-                    <p className="text-sm text-slate-700 mt-1">
+                    <h3 className="text-sm font-bold text-slate-900">Target Audience</h3>
+                    <p className="text-sm text-slate-700 font-medium mt-1">
                       Your post is likely to resonate with members aged 25-34, particularly females.
                     </p>
                   </div>
@@ -123,8 +123,8 @@ const DemoContent: React.FC = () => {
                     </div>
                   </div>
                   <div className="ml-3">
-                    <h3 className="text-sm font-medium text-gray-900">Monetization Suggestion</h3>
-                    <p className="text-sm text-slate-700 mt-1">
+                    <h3 className="text-sm font-bold text-slate-900">Monetization Suggestion</h3>
+                    <p className="text-sm text-slate-700 font-medium mt-1">
                       This post has high monetization potential. Consider enabling subscription-based access.
                     </p>
                   </div>
@@ -134,8 +134,8 @@ const DemoContent: React.FC = () => {
               <div className="mt-6">
                 <button
                   onClick={handleApplyAI}
-                  className="w-full flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-                  aria-label="Button"><svg className="mr-2 h-5 w-5 text-slate-700 font-medium" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  className="w-full flex justify-center items-center px-4 py-2.5 border border-slate-300 shadow-sm text-sm font-bold rounded-xl text-slate-800 bg-white hover:bg-slate-50 transition-colors"
+                  aria-label="Button"><svg className="mr-2 h-5 w-5 text-indigo-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clipRule="evenodd" />
                   </svg>
                   Apply AI Recommendations
@@ -147,62 +147,62 @@ const DemoContent: React.FC = () => {
           <div>
             <PostPublishingSettings />
 
-            <div className="mt-6 bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">Platform Integration</h2>
+            <div className="mt-6 bg-white rounded-2xl shadow-sm border border-slate-300 p-6">
+              <h2 className="text-xl font-bold text-slate-900 mb-4">Platform Integration</h2>
               <div className="space-y-4">
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
-                    <div className="bg-blue-100 rounded-full p-1 border text-blue-950 border-blue-400 font-black">
-                      <svg className="h-6 w-6 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div className="bg-blue-100 rounded-full p-1.5 border text-blue-950 border-blue-400 font-black">
+                      <svg className="h-5 w-5 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                       </svg>
                     </div>
                   </div>
                   <div className="ml-3">
-                    <p className="text-sm font-medium text-gray-900">STERCS Integration</p>
-                    <p className="text-sm text-slate-700">Platform-wide policy enforcement</p>
+                    <p className="text-sm font-bold text-slate-900">STERCS Integration</p>
+                    <p className="text-xs text-slate-700 font-medium">Platform-wide policy enforcement</p>
                   </div>
                 </div>
 
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
-                    <div className="bg-green-100 rounded-full p-1 border text-green-950 border-green-400 font-black">
-                      <svg className="h-6 w-6 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div className="bg-green-100 rounded-full p-1.5 border text-green-950 border-green-400 font-black">
+                      <svg className="h-5 w-5 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                       </svg>
                     </div>
                   </div>
                   <div className="ml-3">
-                    <p className="text-sm font-medium text-gray-900">GUARDIAN Protocol</p>
-                    <p className="text-sm text-slate-700">Content moderation and compliance</p>
+                    <p className="text-sm font-bold text-slate-900">GUARDIAN Protocol</p>
+                    <p className="text-xs text-slate-700 font-medium">Content moderation and compliance</p>
                   </div>
                 </div>
 
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
-                    <div className="bg-purple-100 rounded-full p-1 border text-purple-950 border-purple-400 font-black">
-                      <svg className="h-6 w-6 text-purple-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div className="bg-purple-100 rounded-full p-1.5 border text-purple-950 border-purple-400 font-black">
+                      <svg className="h-5 w-5 text-purple-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                     </div>
                   </div>
                   <div className="ml-3">
-                    <p className="text-sm font-medium text-gray-900">SENTIENT System</p>
-                    <p className="text-sm text-slate-700">Emotional intelligence analysis</p>
+                    <p className="text-sm font-bold text-slate-900">SENTIENT System</p>
+                    <p className="text-xs text-slate-700 font-medium">Emotional intelligence analysis</p>
                   </div>
                 </div>
 
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
-                    <div className="bg-yellow-100 rounded-full p-1 border text-yellow-950 border-yellow-400 font-black">
-                      <svg className="h-6 w-6 text-yellow-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div className="bg-yellow-100 rounded-full p-1.5 border text-yellow-950 border-yellow-400 font-black">
+                      <svg className="h-5 w-5 text-yellow-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
                       </svg>
                     </div>
                   </div>
                   <div className="ml-3">
-                    <p className="text-sm font-medium text-gray-900">PROMPT Guidance</p>
-                    <p className="text-sm text-slate-700">Member engagement and guidance</p>
+                    <p className="text-sm font-bold text-slate-900">PROMPT Guidance</p>
+                    <p className="text-xs text-slate-700 font-medium">Member engagement and guidance</p>
                   </div>
                 </div>
               </div>

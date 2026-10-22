@@ -10,7 +10,7 @@ const TermsOfServicePage = () => {
     children
   }) => (
     <section className="mb-8">
-      <h3 className="text-xl font-black text-slate-900 border-b border-slate-200 pb-2 mb-4">
+      <h3 className="text-xl font-black text-slate-900 border-b border-slate-300 pb-2 mb-4">
         {title}
       </h3>
       <div className="text-slate-700 font-medium text-sm leading-relaxed space-y-2">{children}</div>
@@ -157,7 +157,7 @@ const TermsOfServicePage = () => {
             </div>
           </Section>
 
-          <div className="mt-8 pt-6 border-t border-slate-200 text-xs font-semibold text-slate-600">
+          <div className="mt-8 pt-6 border-t border-slate-300 text-sm font-medium text-slate-700">
             <p>Last Updated: December 20, 2025</p>
           </div>
         </div>

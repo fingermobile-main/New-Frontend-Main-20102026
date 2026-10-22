@@ -10,10 +10,10 @@ const CSAEPolicyPage: React.FC = () => {
     children
   }) => (
     <section className="mb-8">
-      <h3 className="text-xl font-bold text-gray-800 border-b border-gray-200 pb-2 mb-4">
+      <h3 className="text-xl font-black text-slate-900 border-b border-slate-300 pb-2 mb-4">
         {title}
       </h3>
-      <div className="prose prose-sm max-w-none text-gray-600 leading-relaxed">{children}</div>
+      <div className="prose prose-sm max-w-none text-slate-700 font-medium leading-relaxed">{children}</div>
     </section>
   );
 
@@ -32,10 +32,10 @@ const CSAEPolicyPage: React.FC = () => {
             <PolicyIcon className="w-10 h-10" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">
+            <h1 className="text-3xl font-black text-slate-900">
               Child Sexual Abuse and Exploitation (CSAE) Policy
             </h1>
-            <p className="text-gray-600">
+            <p className="text-slate-700 font-medium">
               Zero tolerance for child abuse or sexual exploitation across all communication rails.
             </p>
           </div>

@@ -267,129 +267,131 @@ const PlaylistDetailPage: React.FC = () => {
           : 'bg-gradient-to-b from-gray-800 to-black'
       }`}
     >
-      {/* Header */}
-      <div className="p-8 flex flex-col md:flex-row md:items-end gap-6">
-        <div className="w-48 h-48 rounded-lg shadow-2xl grid grid-cols-2 grid-rows-2 gap-px overflow-hidden bg-gray-700 flex-shrink-0">
-          {coverArt.length > 0 ? (
-            coverArt.map((url, i) => (
-              <img
-                key={`${url}-${i}`}
-                src={url}
-                alt={`Cover preview ${i + 1}`}
-                className="w-full h-full object-cover"
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto">
+        {/* Header */}
+        <div className="p-6 sm:p-8 flex flex-col md:flex-row md:items-end gap-6">
+          <div className="w-48 h-48 rounded-lg shadow-2xl grid grid-cols-2 grid-rows-2 gap-px overflow-hidden bg-gray-700 flex-shrink-0 border border-white/10">
+            {coverArt.length > 0 ? (
+              coverArt.map((url, i) => (
+                <img
+                  key={`${url}-${i}`}
+                  src={url}
+                  alt={`Cover preview ${i + 1}`}
+                  className="w-full h-full object-cover"
+                />
+              ))
+            ) : (
+              <div className="col-span-2 row-span-2 bg-gray-800 flex items-center justify-center text-slate-300 font-medium">
+                No Tracks
+              </div>
+            )}
+          </div>
+
+          <div>
+            <h2 className="text-sm font-bold uppercase tracking-wider text-gray-300 lg:text-xl">Playlist</h2>
+            <h1 className="text-4xl sm:text-5xl font-extrabold drop-shadow-lg lg:text-7xl">{currentPlaylist.name}</h1>
+            {currentPlaylist.description && (
+              <p className="text-gray-300 mt-2 lg:text-base font-medium">{currentPlaylist.description}</p>
+            )}
+            <div className="flex items-center gap-2 mt-4 text-sm lg:text-base">
+              <AnimatedAvatar
+                staticUrl={owner.avatarUrl}
+                animatedUrl={owner.animatedAvatarUrl}
+                altText={owner.name || owner.username}
+                className="w-6 h-6 rounded-full"
               />
-            ))
+              <span className="font-semibold">{owner.name || owner.username}</span>
+              <span>&middot;</span>
+              <span>{currentPlaylist.trackIds?.length || 0} songs</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Action Controls Toolbar */}
+        <div className="p-6 sm:p-8 flex items-center gap-4 bg-black/20 backdrop-blur-sm sticky top-0 z-10 border-y border-white/5">
+          <button
+            type="button"
+            onClick={() => trackDetails[0] && handlePlayMedia(trackDetails[0])}
+            className="w-14 h-14 bg-brand-blue rounded-full flex items-center justify-center shadow-lg hover:scale-105 transition-transform"
+            aria-label="Play all tracks"
+          >
+            <PlayIcon className="w-8 h-8 fill-current" />
+          </button>
+
+          <button
+            type="button"
+            onClick={handleSmartShuffle}
+            className="p-3 text-gray-300 hover:text-white transition-colors"
+            title="Smart Shuffle"
+          >
+            <ShuffleIcon className="w-6 h-6" />
+          </button>
+
+          {isOwner && (
+            <>
+              <button
+                type="button"
+                onClick={handlePinPlaylist}
+                className="p-3 text-gray-300 hover:text-white transition-colors"
+                title={currentPlaylist.isPinned ? 'Unpin Playlist' : 'Pin Playlist'}
+              >
+                <PinIcon className={`w-6 h-6 ${currentPlaylist.isPinned ? 'text-brand-blue fill-current' : ''}`} />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => openModal('tokenizePlaylist', { playlist: currentPlaylist })}
+                className="p-3 text-gray-300 hover:text-white transition-colors"
+                title="Tokenize Playlist"
+              >
+                <TokenIcon className={`w-6 h-6 ${currentPlaylist.isTokenized ? 'text-purple-400' : ''}`} />
+              </button>
+
+              <button
+                type="button"
+                onClick={handleToggleCollaborative}
+                className="p-3 text-gray-300 hover:text-white transition-colors"
+                title={currentPlaylist.isCollaborative ? 'Disable Collaboration' : 'Enable Collaboration'}
+              >
+                <MembersIcon className={`w-6 h-6 ${currentPlaylist.isCollaborative ? 'text-green-400' : ''}`} />
+              </button>
+            </>
+          )}
+
+          {isOwner && currentPlaylist.isCollaborative && (
+            <button
+              type="button"
+              onClick={() => openModal('inviteCollaborators', { playlist: currentPlaylist })}
+              className="px-4 py-2 flex items-center gap-2 text-sm font-semibold bg-white/10 rounded-full hover:bg-white/20 transition-colors"
+            >
+              <HandshakeIcon className="w-4 h-4" /> Invite
+            </button>
+          )}
+        </div>
+
+        {/* Track List */}
+        <div className="p-6 sm:p-8 pt-4">
+          {trackDetails.length > 0 ? (
+            <div className="space-y-1">
+              {trackDetails.map((track, i) => (
+                <TrackItem
+                  key={track.id}
+                  track={track}
+                  index={i + 1}
+                  isPlaying={currentlyPlaying?.id === track.id}
+                  canEdit={canEdit}
+                  onPlay={handlePlayMedia}
+                  onPause={handlePauseMedia}
+                  onRemove={handleRemoveTrack}
+                />
+              ))}
+            </div>
           ) : (
-            <div className="col-span-2 row-span-2 bg-gray-800 flex items-center justify-center text-slate-300 font-medium">
-              No Tracks
+            <div className="text-center py-12 text-slate-300 font-medium">
+              This playlist currently has no tracks.
             </div>
           )}
         </div>
-
-        <div>
-          <h2 className="text-sm font-bold uppercase tracking-wider text-gray-300 lg:text-xl">Playlist</h2>
-          <h1 className="text-5xl font-extrabold drop-shadow-lg lg:text-7xl">{currentPlaylist.name}</h1>
-          {currentPlaylist.description && (
-            <p className="text-gray-300 mt-2 lg:text-base">{currentPlaylist.description}</p>
-          )}
-          <div className="flex items-center gap-2 mt-4 text-sm lg:text-base">
-            <AnimatedAvatar
-              staticUrl={owner.avatarUrl}
-              animatedUrl={owner.animatedAvatarUrl}
-              altText={owner.name || owner.username}
-              className="w-6 h-6 rounded-full"
-            />
-            <span className="font-semibold">{owner.name || owner.username}</span>
-            <span>&middot;</span>
-            <span>{currentPlaylist.trackIds?.length || 0} songs</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Action Controls Toolbar */}
-      <div className="p-8 flex items-center gap-4 bg-black/20 backdrop-blur-sm sticky top-0 z-10">
-        <button
-          type="button"
-          onClick={() => trackDetails[0] && handlePlayMedia(trackDetails[0])}
-          className="w-14 h-14 bg-brand-blue rounded-full flex items-center justify-center shadow-lg hover:scale-105 transition-transform"
-          aria-label="Play all tracks"
-        >
-          <PlayIcon className="w-8 h-8 fill-current" />
-        </button>
-
-        <button
-          type="button"
-          onClick={handleSmartShuffle}
-          className="p-3 text-gray-300 hover:text-white transition-colors"
-          title="Smart Shuffle"
-        >
-          <ShuffleIcon className="w-6 h-6" />
-        </button>
-
-        {isOwner && (
-          <>
-            <button
-              type="button"
-              onClick={handlePinPlaylist}
-              className="p-3 text-gray-300 hover:text-white transition-colors"
-              title={currentPlaylist.isPinned ? 'Unpin Playlist' : 'Pin Playlist'}
-            >
-              <PinIcon className={`w-6 h-6 ${currentPlaylist.isPinned ? 'text-brand-blue fill-current' : ''}`} />
-            </button>
-
-            <button
-              type="button"
-              onClick={() => openModal('tokenizePlaylist', { playlist: currentPlaylist })}
-              className="p-3 text-gray-300 hover:text-white transition-colors"
-              title="Tokenize Playlist"
-            >
-              <TokenIcon className={`w-6 h-6 ${currentPlaylist.isTokenized ? 'text-purple-400' : ''}`} />
-            </button>
-
-            <button
-              type="button"
-              onClick={handleToggleCollaborative}
-              className="p-3 text-gray-300 hover:text-white transition-colors"
-              title={currentPlaylist.isCollaborative ? 'Disable Collaboration' : 'Enable Collaboration'}
-            >
-              <MembersIcon className={`w-6 h-6 ${currentPlaylist.isCollaborative ? 'text-green-400' : ''}`} />
-            </button>
-          </>
-        )}
-
-        {isOwner && currentPlaylist.isCollaborative && (
-          <button
-            type="button"
-            onClick={() => openModal('inviteCollaborators', { playlist: currentPlaylist })}
-            className="px-4 py-2 flex items-center gap-2 text-sm font-semibold bg-white/10 rounded-full hover:bg-white/20 transition-colors"
-          >
-            <HandshakeIcon className="w-4 h-4" /> Invite
-          </button>
-        )}
-      </div>
-
-      {/* Track List */}
-      <div className="p-8 pt-4">
-        {trackDetails.length > 0 ? (
-          <div className="space-y-1">
-            {trackDetails.map((track, i) => (
-              <TrackItem
-                key={track.id}
-                track={track}
-                index={i + 1}
-                isPlaying={currentlyPlaying?.id === track.id}
-                canEdit={canEdit}
-                onPlay={handlePlayMedia}
-                onPause={handlePauseMedia}
-                onRemove={handleRemoveTrack}
-              />
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-12 text-slate-300 font-medium">
-            This playlist currently has no tracks.
-          </div>
-        )}
       </div>
     </div>
   );
