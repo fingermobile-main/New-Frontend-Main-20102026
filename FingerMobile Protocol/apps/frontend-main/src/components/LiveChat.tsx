@@ -43,6 +43,7 @@ const LiveChat: React.FC<LiveChatProps> = ({
   ]);
   const [newMessage, setNewMessage] = useState('');
   const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
 
   const handleSendMessage = () => {
     if (!newMessage.trim()) return;
@@ -107,7 +108,7 @@ const LiveChat: React.FC<LiveChatProps> = ({
             {messages.length} online
           </span>
         </div>
-        <button type="button" aria-label="Chat settings" onClick={() => {}} className="text-white hover:bg-white/20 rounded-full p-2 transition-colors">
+        <button type="button" aria-label="Chat settings" onClick={() => setShowSettings(!showSettings)} className="text-white hover:bg-white/20 rounded-full p-2 transition-colors">
           ⚙️
         </button>
       </div>

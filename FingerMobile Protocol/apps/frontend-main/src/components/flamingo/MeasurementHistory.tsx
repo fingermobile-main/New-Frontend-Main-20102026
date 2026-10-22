@@ -157,7 +157,12 @@ const MeasurementHistory: React.FC<MeasurementHistoryProps> = ({ userId }) => {
       {measurements.length === 0 ? (
         <div className="text-center py-12 bg-gray-50 rounded-lg">
           <p className="text-slate-700">No measurement history yet</p>
-          <button className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">
+          <button
+            type="button"
+            aria-label="Take first measurement"
+            onClick={() => window.location.assign('/flamingo/measure')}
+            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+          >
             Take First Measurement
           </button>
         </div>

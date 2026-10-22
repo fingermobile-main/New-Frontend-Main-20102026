@@ -75,6 +75,11 @@ const UGCPublishingTools: React.FC = () => {
     }));
   };
 
+  const handleSaveDraft = () => {
+    console.info('Saving draft with settings:', settings);
+    showToast('Draft saved successfully!', 'info');
+  };
+
   const handleSubmit = () => {
     // Logic to publish content with these settings
     console.info('Publishing with settings:', settings);
@@ -214,8 +219,20 @@ const UGCPublishingTools: React.FC = () => {
       </div>
 
       <div className="publish-actions">
-        <button type="button" aria-label="Save content as draft" className="btn-secondary">Save as Draft</button>
-        <button type="submit" aria-label="Publish content" onClick={handleSubmit} className="btn-primary">
+        <button
+          type="button"
+          aria-label="Save content as draft"
+          onClick={handleSaveDraft}
+          className="btn-secondary"
+        >
+          Save as Draft
+        </button>
+        <button
+          type="button"
+          aria-label="Publish content"
+          onClick={handleSubmit}
+          className="btn-primary"
+        >
           Publish
         </button>
       </div>

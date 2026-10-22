@@ -182,7 +182,12 @@ const RecommendationCard: React.FC<RecommendationCardProps> = ({
 
       {/* Action Button */}
       {!showFeedback && (
-        <button className="w-full mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">
+        <button
+          type="button"
+          aria-label={`View size chart for ${recommendation.brand || 'product'}`}
+          onClick={() => window.location.assign(`/flamingo/size-charts?brand=${encodeURIComponent(recommendation.brand || '')}`)}
+          className="w-full mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+        >
           View Size Chart →
         </button>
       )}

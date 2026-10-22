@@ -57,6 +57,8 @@ export const AudioDeviceSelectorModal: React.FC<AudioDeviceSelectorModalProps> =
             </div>
           </div>
           <button
+            type="button"
+            aria-label="Close audio devices modal"
             onClick={onClose}
             className="p-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors"
           >
@@ -121,6 +123,8 @@ export const AudioDeviceSelectorModal: React.FC<AudioDeviceSelectorModalProps> =
                   ) : (
                     <button
                       type="button"
+                      aria-label={`Route audio to ${device.name}`}
+                      onClick={() => setAudioDevice(device)}
                       className="px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium"
                     >
                       Route Audio

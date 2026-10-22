@@ -141,6 +141,9 @@ const VideoUpload = () => {
               <Button
                 variant="contained"
                 component="label"
+                type="button"
+                aria-label="Select Video File"
+                onClick={() => fileInputRef.current?.click()}
                 disabled={isUploading}
                 fullWidth
               >

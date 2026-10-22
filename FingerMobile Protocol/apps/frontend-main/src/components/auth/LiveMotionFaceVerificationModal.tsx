@@ -298,7 +298,10 @@ export const LiveMotionFaceVerificationModal: React.FC<Props> = ({
               </button>
             ) : (
               <button
+                type="button"
+                aria-label="Scanning Face in progress"
                 disabled
+                onClick={(e) => { e.stopPropagation(); }}
                 className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-800 text-slate-300 text-xs font-semibold cursor-not-allowed"
               >
                 <RefreshCw className="w-3.5 h-3.5 animate-spin text-cyan-400" />

@@ -213,7 +213,12 @@ const BrandSizingInfo: React.FC<BrandSizingInfoProps> = ({ brandName }) => {
                   View detailed size charts with chest, waist, and hip measurements
                 </p>
               </div>
-              <button className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium text-sm">
+              <button
+                type="button"
+                aria-label={`View size chart for ${selectedSizing.brand}`}
+                onClick={() => window.location.assign(`/flamingo/size-charts?brand=${encodeURIComponent(selectedSizing.brand)}`)}
+                className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium text-sm"
+              >
                 View Size Chart →
               </button>
             </div>

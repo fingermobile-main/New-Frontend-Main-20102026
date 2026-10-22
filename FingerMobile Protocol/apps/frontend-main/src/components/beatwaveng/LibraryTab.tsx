@@ -221,7 +221,18 @@ export const LibraryTab: React.FC = () => {
                 </p>
                 <div className="flex items-center justify-between text-xs text-slate-300 pt-3 mt-3 border-t border-slate-800/80 font-medium">
                   <span>{pl.trackCount} Tracks</span>
-                  <button className="text-emerald-400 hover:underline flex items-center gap-1 font-bold">
+                  <button
+                    type="button"
+                    aria-label={`Share playlist ${pl.title}`}
+                    onClick={() => {
+                      if (navigator.share) {
+                        navigator.share({ title: pl.title, url: window.location.href }).catch(() => {});
+                      } else {
+                        navigator.clipboard?.writeText(window.location.href);
+                      }
+                    }}
+                    className="text-emerald-400 hover:underline flex items-center gap-1 font-bold"
+                  >
                     <Share2 size={12} />
                     Share Playlist
                   </button>

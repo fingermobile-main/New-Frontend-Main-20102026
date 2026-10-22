@@ -186,7 +186,12 @@ const ReadingListView: React.FC<ReadingListViewProps> = ({
           <div className="text-6xl mb-4">📚</div>
           <h3 className="text-xl font-bold text-gray-900 mb-2">Your reading list is empty</h3>
           <p className="text-gray-600 mb-4">Save articles to read them later</p>
-          <button className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium">
+          <button
+            type="button"
+            aria-label="Browse articles"
+            onClick={() => window.location.assign('/blog')}
+            className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium"
+          >
             Browse Articles
           </button>
         </div>

@@ -498,11 +498,13 @@ const CommunityGroupFeatures: React.FC = () => {
         </div>
       </div>
 
-      <div className="mt-6 flex justify-end">
+      <div className="mt-6 flex items-center justify-end gap-3">
+        {savedNotice && <span className="text-sm font-bold text-emerald-600">Group settings saved successfully!</span>}
         <button
-          type="submit"
+          type="button"
           aria-label="Save your group settings"
-          className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          onClick={handleSaveGroupSettings}
+          className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium"
         >
           Save Group Settings
         </button>

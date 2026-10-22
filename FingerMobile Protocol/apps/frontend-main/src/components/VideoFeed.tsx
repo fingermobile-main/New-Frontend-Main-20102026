@@ -105,7 +105,14 @@ const VideoFeed: React.FC<VideoFeedProps> = ({
                   {formatViews(video.views)} views
                 </p>
               </div>
-              <Button variant="ghost" size="icon" type="button" aria-label="More video options" className="text-slate-700 hover:text-slate-900">
+              <Button
+                variant="ghost"
+                size="icon"
+                type="button"
+                aria-label="More video options"
+                onClick={() => onShare?.(video.id)}
+                className="text-slate-700 hover:text-slate-900"
+              >
                 <MoreVertical className="h-4 w-4" />
               </Button>
             </div>

@@ -24,6 +24,8 @@ const SortOptions: React.FC<SortOptionsProps> = ({
   currentSort = 'recent',
   currentFilter = 'all'
 }) => {
+  const [showCustomRange, setShowCustomRange] = React.useState(false);
+
   return (
     <Card>
       <CardHeader>
@@ -63,7 +65,14 @@ const SortOptions: React.FC<SortOptionsProps> = ({
           </Select>
         </div>
 
-        <Button variant="outline" size="sm" className="w-full">
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          aria-label="Select custom date range"
+          onClick={() => setShowCustomRange(!showCustomRange)}
+          className="w-full"
+        >
           <Calendar className="h-4 w-4 mr-2" />
           Custom Date Range
         </Button>

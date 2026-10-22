@@ -48,6 +48,7 @@ export const CollaboratorsTable: React.FC<CollaboratorsTableProps> = ({
   const [locationModalCollaborator, setLocationModalCollaborator] = useState<Collaborator | null>(null);
   const [roleEditCollaborator, setRoleEditCollaborator] = useState<Collaborator | null>(null);
   const [selectedRoleForEdit, setSelectedRoleForEdit] = useState<string>('');
+  const [showFilterDropdown, setShowFilterDropdown] = useState(false);
 
   const filteredList = collaborators.filter(
     (c) =>
@@ -152,7 +153,7 @@ export const CollaboratorsTable: React.FC<CollaboratorsTableProps> = ({
             <button
               type="button"
               aria-label="Filter collaborators"
-              onClick={() => {}}
+              onClick={() => setShowFilterDropdown(!showFilterDropdown)}
               className="px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-800 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-1.5"
             >
               <Filter className="w-3.5 h-3.5 text-slate-600" />

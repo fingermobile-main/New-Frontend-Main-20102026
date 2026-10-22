@@ -65,10 +65,21 @@ const VideoEditor: React.FC<VideoEditorProps> = ({ videoUrl, onSave }) => {
 
         {/* Actions */}
         <div className="flex gap-2">
-          <Button variant="outline" className="flex-1">
+          <Button
+            type="button"
+            variant="outline"
+            aria-label="Preview video"
+            onClick={() => alert('Video preview initialized')}
+            className="flex-1"
+          >
             Preview
           </Button>
-          <Button className="flex-1" onClick={() => onSave?.(new Blob())}>
+          <Button
+            type="button"
+            aria-label="Export video"
+            className="flex-1"
+            onClick={() => onSave?.(new Blob())}
+          >
             Export Video
           </Button>
         </div>

@@ -212,6 +212,14 @@ export const TagProductSearchBar: React.FC<TagProductSearchBarProps> = ({
                     </div>
                     <button
                       type="button"
+                      aria-label={alreadySelected ? `Product ${product.title} already tagged` : `Tag ${product.title}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (onSelectProduct) {
+                          onSelectProduct(product);
+                        }
+                        setIsOpenDropdown(false);
+                      }}
                       className="px-2.5 py-1 text-[11px] font-bold bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                     >
                       {alreadySelected ? 'Tagged' : '+ Tag'}

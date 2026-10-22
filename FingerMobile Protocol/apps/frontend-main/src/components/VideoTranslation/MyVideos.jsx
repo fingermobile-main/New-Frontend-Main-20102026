@@ -168,6 +168,9 @@ const MyVideos = () => {
                         video.outputFiles.map((file, index) => (
                           <Button
                             key={index}
+                            type="button"
+                            aria-label={`Download video in ${file.language}`}
+                            onClick={() => window.open(file.url, '_blank')}
                             variant="contained"
                             size="small"
                             startIcon={<DownloadIcon />}

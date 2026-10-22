@@ -54,6 +54,7 @@ export const MiiStoriesBar: React.FC<MiiStoriesBarProps> = ({
   const [isP2PAutoShuffling, setIsP2PAutoShuffling] = useState(true);
   const [viewerIsPaused, setViewerIsPaused] = useState(false);
   const [storyProgress, setStoryProgress] = useState(0);
+  const [replyText, setReplyText] = useState('');
 
   useEffect(() => {
     fetchMiiFeed();
@@ -392,10 +393,21 @@ export const MiiStoriesBar: React.FC<MiiStoriesBarProps> = ({
               </button>
               <input
                 type="text"
+                value={replyText}
+                onChange={(e) => setReplyText(e.target.value)}
                 placeholder="Reply to Mii..."
                 className="flex-1 px-3 py-2 text-xs rounded-full bg-white text-slate-900 placeholder:text-slate-400 border border-white/20 focus:outline-none font-bold border-slate-300 focus:ring-2 focus:ring-indigo-500"
               />
-              <button type="button" aria-label="Send reply" className="px-3 py-2 bg-emerald-500 rounded-full text-white text-xs font-bold hover:bg-emerald-600 transition-colors">
+              <button
+                type="button"
+                aria-label="Send reply"
+                onClick={() => {
+                  if (replyText.trim()) {
+                    setReplyText('');
+                  }
+                }}
+                className="px-3 py-2 bg-emerald-500 rounded-full text-white text-xs font-bold hover:bg-emerald-600 transition-colors"
+              >
                 Send
               </button>
             </div>

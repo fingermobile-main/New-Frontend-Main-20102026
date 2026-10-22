@@ -79,7 +79,9 @@ const TrendsFeed: React.FC<TrendsFeedProps> = ({
     }
   ];
 
-  const trends = (propTrends || defaultTrends).slice(0, limit);
+  const [visibleLimit, setVisibleLimit] = React.useState(limit);
+  const trends = (propTrends || defaultTrends).slice(0, visibleLimit);
+  const handleLoadMore = () => setVisibleLimit((prev) => prev + 5);
 
   const formatNumber = (num: number): string => {
     if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
@@ -144,7 +146,7 @@ const TrendsFeed: React.FC<TrendsFeedProps> = ({
         ))}
       </div>
 
-      <Button type="button" variant="outline" onClick={() => {}} aria-label="Load more trending topics" className="w-full mt-4 border-slate-300 text-slate-800 font-semibold">
+      <Button type="button" variant="outline" onClick={handleLoadMore} aria-label="Load more trending topics" className="w-full mt-4 border-slate-300 text-slate-800 font-semibold">
         Load More Trends
       </Button>
     </div>

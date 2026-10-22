@@ -304,24 +304,12 @@
     "line": 78,
     "column": 14,
     "element": "button",
-    "label": "Join",
+    "label": "Join  community",
     "issue": "button-missing-click-handler",
     "severity": "high",
     "handlerName": "",
     "snippet": "",
     "recommendation": "Define explicit CTA contract or remove element from production UI."
-  },
-  {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/CommunityGroupFeatures.tsx",
-    "line": 496,
-    "column": 8,
-    "element": "button",
-    "label": "Save Group Settings",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Implement real mutation endpoint, authorization check, database transaction, loading state, success state, and error state."
   },
   {
     "file": "FingerMobile Protocol/apps/frontend-main/src/components/ComposerModal.tsx",
@@ -412,7 +400,7 @@
     "line": 434,
     "column": 22,
     "element": "button",
-    "label": "icon label",
+    "label": "Sort by",
     "issue": "button-missing-click-handler",
     "severity": "high",
     "handlerName": "",
@@ -421,7 +409,7 @@
   },
   {
     "file": "FingerMobile Protocol/apps/frontend-main/src/components/DashboardSidebar.tsx",
-    "line": 43,
+    "line": 45,
     "column": 10,
     "element": "Button",
     "label": "",
@@ -430,42 +418,6 @@
     "handlerName": "",
     "snippet": "",
     "recommendation": "Define explicit CTA contract or remove element from production UI."
-  },
-  {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/DashboardSidebar.tsx",
-    "line": 83,
-    "column": 10,
-    "element": "Button",
-    "label": "",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Define explicit CTA contract or remove element from production UI."
-  },
-  {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/DashboardSidebar.tsx",
-    "line": 83,
-    "column": 10,
-    "element": "Button",
-    "label": "",
-    "issue": "missing-accessible-name",
-    "severity": "medium",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Define explicit CTA contract or remove element from production UI."
-  },
-  {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/DiscoveredMembers.tsx",
-    "line": 73,
-    "column": 8,
-    "element": "Button",
-    "label": "View All",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Route to a real page/modal/drawer or remove the control if no destination exists."
   },
   {
     "file": "FingerMobile Protocol/apps/frontend-main/src/components/EnhancedBeatwaveNGPlayer.tsx",
@@ -487,18 +439,6 @@
     "label": "",
     "issue": "missing-accessible-name",
     "severity": "medium",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Define explicit CTA contract or remove element from production UI."
-  },
-  {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/FollowSuggestions.tsx",
-    "line": 97,
-    "column": 8,
-    "element": "button",
-    "label": "See all suggestions →",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
     "handlerName": "",
     "snippet": "",
     "recommendation": "Define explicit CTA contract or remove element from production UI."
@@ -535,18 +475,6 @@
     "label": "",
     "issue": "missing-accessible-name",
     "severity": "medium",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Define explicit CTA contract or remove element from production UI."
-  },
-  {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/ForumPopularTags.tsx",
-    "line": 42,
-    "column": 6,
-    "element": "button",
-    "label": "Show More Tags",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
     "handlerName": "",
     "snippet": "",
     "recommendation": "Define explicit CTA contract or remove element from production UI."
@@ -600,42 +528,6 @@
     "recommendation": "Define explicit CTA contract or remove element from production UI."
   },
   {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/GovernanceDashboard.tsx",
-    "line": 160,
-    "column": 12,
-    "element": "button",
-    "label": "Verify Identity",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Implement real mutation endpoint, authorization check, database transaction, loading state, success state, and error state."
-  },
-  {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/ImageSearchModal.tsx",
-    "line": 103,
-    "column": 20,
-    "element": "Button",
-    "label": "Select",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Define explicit CTA contract or remove element from production UI."
-  },
-  {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/InfoHighway.tsx",
-    "line": 74,
-    "column": 8,
-    "element": "Button",
-    "label": "View All",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Route to a real page/modal/drawer or remove the control if no destination exists."
-  },
-  {
     "file": "FingerMobile Protocol/apps/frontend-main/src/components/InviteCollaboratorsModal.tsx",
     "line": 33,
     "column": 10,
@@ -667,30 +559,6 @@
     "label": "",
     "issue": "missing-accessible-name",
     "severity": "medium",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Define explicit CTA contract or remove element from production UI."
-  },
-  {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/LinkAccountModal.tsx",
-    "line": 126,
-    "column": 22,
-    "element": "Button",
-    "label": "Connect",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Implement real mutation endpoint, authorization check, database transaction, loading state, success state, and error state."
-  },
-  {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/LiveChat.tsx",
-    "line": 110,
-    "column": 8,
-    "element": "button",
-    "label": "⚙️",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
     "handlerName": "",
     "snippet": "",
     "recommendation": "Define explicit CTA contract or remove element from production UI."
@@ -804,37 +672,13 @@
     "recommendation": "Define explicit CTA contract or remove element from production UI."
   },
   {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/MemberSpotlight.tsx",
-    "line": 179,
-    "column": 8,
-    "element": "button",
-    "label": "View All Members →",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Route to a real page/modal/drawer or remove the control if no destination exists."
-  },
-  {
     "file": "FingerMobile Protocol/apps/frontend-main/src/components/MembersList.tsx",
     "line": 94,
     "column": 10,
     "element": "Button",
-    "label": "",
+    "label": "Filter members",
     "issue": "button-missing-click-handler",
     "severity": "high",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Define explicit CTA contract or remove element from production UI."
-  },
-  {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/MembersList.tsx",
-    "line": 94,
-    "column": 10,
-    "element": "Button",
-    "label": "",
-    "issue": "missing-accessible-name",
-    "severity": "medium",
     "handlerName": "",
     "snippet": "",
     "recommendation": "Define explicit CTA contract or remove element from production UI."
@@ -916,7 +760,7 @@
     "line": 398,
     "column": 14,
     "element": "button",
-    "label": "Send",
+    "label": "Send reply",
     "issue": "button-missing-click-handler",
     "severity": "high",
     "handlerName": "",
@@ -934,18 +778,6 @@
     "handlerName": "",
     "snippet": "",
     "recommendation": "Define explicit CTA contract or remove element from production UI."
-  },
-  {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/MusicFeed.tsx",
-    "line": 72,
-    "column": 8,
-    "element": "Button",
-    "label": "View All",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Route to a real page/modal/drawer or remove the control if no destination exists."
   },
   {
     "file": "FingerMobile Protocol/apps/frontend-main/src/components/MusicUploadForm.tsx",
@@ -996,18 +828,6 @@
     "recommendation": "Define explicit CTA contract or remove element from production UI."
   },
   {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/Playlist.tsx",
-    "line": 74,
-    "column": 12,
-    "element": "button",
-    "label": "⏸ ▶️",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Define explicit CTA contract or remove element from production UI."
-  },
-  {
     "file": "FingerMobile Protocol/apps/frontend-main/src/components/PolicyEditorModal.tsx",
     "line": 36,
     "column": 10,
@@ -1045,7 +865,7 @@
   },
   {
     "file": "FingerMobile Protocol/apps/frontend-main/src/components/ProfileEnhancement.tsx",
-    "line": 322,
+    "line": 328,
     "column": 18,
     "element": "a",
     "label": "",
@@ -1056,18 +876,6 @@
     "recommendation": "Define explicit CTA contract or remove element from production UI."
   },
   {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/ProfileEnhancement.tsx",
-    "line": 348,
-    "column": 8,
-    "element": "button",
-    "label": "Save Profile",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Wire to multipart/form-data backend upload endpoint. Persist metadata to PostgreSQL. Remove any localStorage fallback."
-  },
-  {
     "file": "FingerMobile Protocol/apps/frontend-main/src/components/ProtocolCommunication.tsx",
     "line": 542,
     "column": 10,
@@ -1075,18 +883,6 @@
     "label": "",
     "issue": "missing-accessible-name",
     "severity": "medium",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Define explicit CTA contract or remove element from production UI."
-  },
-  {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/PulsatingBalance.tsx",
-    "line": 112,
-    "column": 8,
-    "element": "button",
-    "label": "📊 History",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
     "handlerName": "",
     "snippet": "",
     "recommendation": "Define explicit CTA contract or remove element from production UI."
@@ -1224,52 +1020,16 @@
     "recommendation": "Define explicit CTA contract or remove element from production UI."
   },
   {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/TrendsFeed.tsx",
-    "line": 147,
-    "column": 6,
-    "element": "Button",
-    "label": "Load More Trends",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Define explicit CTA contract or remove element from production UI."
-  },
-  {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/TrendsSlide.tsx",
-    "line": 131,
-    "column": 6,
-    "element": "Button",
-    "label": "View All Trends",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Route to a real page/modal/drawer or remove the control if no destination exists."
-  },
-  {
     "file": "FingerMobile Protocol/apps/frontend-main/src/components/VideoFeed.tsx",
     "line": 108,
     "column": 14,
     "element": "Button",
-    "label": "",
+    "label": "More video options",
     "issue": "button-missing-click-handler",
     "severity": "high",
     "handlerName": "",
     "snippet": "",
-    "recommendation": "Define explicit CTA contract or remove element from production UI."
-  },
-  {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/VideoFeed.tsx",
-    "line": 108,
-    "column": 14,
-    "element": "Button",
-    "label": "",
-    "issue": "missing-accessible-name",
-    "severity": "medium",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Define explicit CTA contract or remove element from production UI."
+    "recommendation": "Wire to multipart/form-data backend upload endpoint. Persist metadata to PostgreSQL. Remove any localStorage fallback."
   },
   {
     "file": "FingerMobile Protocol/apps/frontend-main/src/components/VideoTranslation/MyVideos.jsx",
@@ -1872,30 +1632,6 @@
     "recommendation": "Define explicit CTA contract or remove element from production UI."
   },
   {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/dancia4tv/SubscriptionGate.tsx",
-    "line": 30,
-    "column": 8,
-    "element": "button",
-    "label": "View Upgrade Pricing Options",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Route to a real page/modal/drawer or remove the control if no destination exists."
-  },
-  {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/dashboard/BlogsManagement.tsx",
-    "line": 22,
-    "column": 8,
-    "element": "button",
-    "label": "New Post",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Implement real mutation endpoint, authorization check, database transaction, loading state, success state, and error state."
-  },
-  {
     "file": "FingerMobile Protocol/apps/frontend-main/src/components/dashboard/CbnNfemControllerPanel.tsx",
     "line": 686,
     "column": 14,
@@ -1927,18 +1663,6 @@
     "label": "",
     "issue": "missing-accessible-name",
     "severity": "medium",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Define explicit CTA contract or remove element from production UI."
-  },
-  {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/dashboard/CreatorTools.tsx",
-    "line": 25,
-    "column": 10,
-    "element": "button",
-    "label": "icon name description",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
     "handlerName": "",
     "snippet": "",
     "recommendation": "Define explicit CTA contract or remove element from production UI."
@@ -2035,30 +1759,6 @@
     "label": "",
     "issue": "missing-accessible-name",
     "severity": "medium",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Define explicit CTA contract or remove element from production UI."
-  },
-  {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EditorStudioIntegration.tsx",
-    "line": 16,
-    "column": 8,
-    "element": "button",
-    "label": "🎨 Page Editor",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Implement real mutation endpoint, authorization check, database transaction, loading state, success state, and error state."
-  },
-  {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EditorStudioIntegration.tsx",
-    "line": 20,
-    "column": 8,
-    "element": "button",
-    "label": "📄 Templates",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
     "handlerName": "",
     "snippet": "",
     "recommendation": "Define explicit CTA contract or remove element from production UI."
@@ -2176,19 +1876,7 @@
     "line": 171,
     "column": 12,
     "element": "Button",
-    "label": "Save Preferences",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Implement real mutation endpoint, authorization check, database transaction, loading state, success state, and error state."
-  },
-  {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/dashboard/PayoutHistory.tsx",
-    "line": 55,
-    "column": 8,
-    "element": "button",
-    "label": "Export CSV",
+    "label": "Save notification preferences",
     "issue": "button-missing-click-handler",
     "severity": "high",
     "handlerName": "",
@@ -2242,30 +1930,6 @@
     "handlerName": "",
     "snippet": "",
     "recommendation": "Define explicit CTA contract or remove element from production UI."
-  },
-  {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/dashboard/ShareDashboard.tsx",
-    "line": 15,
-    "column": 8,
-    "element": "button",
-    "label": "Generate Share Link",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Implement real mutation endpoint, authorization check, database transaction, loading state, success state, and error state."
-  },
-  {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/dashboard/ShareDashboard.tsx",
-    "line": 18,
-    "column": 8,
-    "element": "button",
-    "label": "Invite Collaborators",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Implement real mutation endpoint, authorization check, database transaction, loading state, success state, and error state."
   },
   {
     "file": "FingerMobile Protocol/apps/frontend-main/src/components/dashboard/SoundOceanMasterConsole.tsx",
@@ -2376,18 +2040,6 @@
     "recommendation": "Define explicit CTA contract or remove element from production UI."
   },
   {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/dashboard/StercsImageEditor.tsx",
-    "line": 14,
-    "column": 8,
-    "element": "button",
-    "label": "Upload Image",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Wire to multipart/form-data backend upload endpoint. Persist metadata to PostgreSQL. Remove any localStorage fallback."
-  },
-  {
     "file": "FingerMobile Protocol/apps/frontend-main/src/components/dashboard/StercsMediaLibrary.tsx",
     "line": 260,
     "column": 12,
@@ -2398,30 +2050,6 @@
     "handlerName": "",
     "snippet": "",
     "recommendation": "Define explicit CTA contract or remove element from production UI."
-  },
-  {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/dashboard/StercsThemeDesigner.tsx",
-    "line": 316,
-    "column": 18,
-    "element": "button",
-    "label": "Watch Livestream",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Define explicit CTA contract or remove element from production UI."
-  },
-  {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/dashboard/StercsThemeDesigner.tsx",
-    "line": 323,
-    "column": 18,
-    "element": "button",
-    "label": "Export 4K Video",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Wire to multipart/form-data backend upload endpoint. Persist metadata to PostgreSQL. Remove any localStorage fallback."
   },
   {
     "file": "FingerMobile Protocol/apps/frontend-main/src/components/dashboard/StercsVideoEditor.tsx",
@@ -2458,18 +2086,6 @@
     "handlerName": "",
     "snippet": "",
     "recommendation": "Define explicit CTA contract or remove element from production UI."
-  },
-  {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/dashboard/ai/AgenticAiModal.tsx",
-    "line": 33,
-    "column": 10,
-    "element": "button",
-    "label": "Send",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Implement real mutation endpoint, authorization check, database transaction, loading state, success state, and error state."
   },
   {
     "file": "FingerMobile Protocol/apps/frontend-main/src/components/dashboard/badges/AssignBadgeModal.tsx",
@@ -2629,19 +2245,7 @@
   },
   {
     "file": "FingerMobile Protocol/apps/frontend-main/src/components/dashboard/roles/CollaboratorsTable.tsx",
-    "line": 152,
-    "column": 12,
-    "element": "button",
-    "label": "Filter",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Define explicit CTA contract or remove element from production UI."
-  },
-  {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/dashboard/roles/CollaboratorsTable.tsx",
-    "line": 250,
+    "line": 256,
     "column": 20,
     "element": "button",
     "label": "",
@@ -2700,30 +2304,6 @@
     "recommendation": "Define explicit CTA contract or remove element from production UI."
   },
   {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/dashboard/store/ProductEditorModal.tsx",
-    "line": 17,
-    "column": 10,
-    "element": "button",
-    "label": "",
-    "issue": "missing-accessible-name",
-    "severity": "medium",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Define explicit CTA contract or remove element from production UI."
-  },
-  {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/dashboard/store/ProductEditorModal.tsx",
-    "line": 34,
-    "column": 10,
-    "element": "button",
-    "label": "Save Changes",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Implement real mutation endpoint, authorization check, database transaction, loading state, success state, and error state."
-  },
-  {
     "file": "FingerMobile Protocol/apps/frontend-main/src/components/dashboard/stores/TagProductSearchBar.tsx",
     "line": 84,
     "column": 16,
@@ -2741,54 +2321,6 @@
     "column": 20,
     "element": "button",
     "label": "Tagged + Tag",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Define explicit CTA contract or remove element from production UI."
-  },
-  {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/editor/EditorStudio.tsx",
-    "line": 14,
-    "column": 8,
-    "element": "button",
-    "label": "📝 Text Editor",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Implement real mutation endpoint, authorization check, database transaction, loading state, success state, and error state."
-  },
-  {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/editor/EditorStudio.tsx",
-    "line": 18,
-    "column": 8,
-    "element": "button",
-    "label": "🎨 Visual Editor",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Implement real mutation endpoint, authorization check, database transaction, loading state, success state, and error state."
-  },
-  {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/editor/FingerMobileEditorStudio.tsx",
-    "line": 14,
-    "column": 8,
-    "element": "button",
-    "label": "Create New Page",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Implement real mutation endpoint, authorization check, database transaction, loading state, success state, and error state."
-  },
-  {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/editor/FingerMobileEditorStudio.tsx",
-    "line": 17,
-    "column": 8,
-    "element": "button",
-    "label": "Manage Templates",
     "issue": "button-missing-click-handler",
     "severity": "high",
     "handlerName": "",
@@ -3552,30 +3084,6 @@
     "recommendation": "Define explicit CTA contract or remove element from production UI."
   },
   {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/ownit/ExpiringWarrantiesList.tsx",
-    "line": 175,
-    "column": 18,
-    "element": "button",
-    "label": "Extend Warranty",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Define explicit CTA contract or remove element from production UI."
-  },
-  {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/ownit/ExpiringWarrantiesList.tsx",
-    "line": 178,
-    "column": 18,
-    "element": "button",
-    "label": "File Claim",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Wire to multipart/form-data backend upload endpoint. Persist metadata to PostgreSQL. Remove any localStorage fallback."
-  },
-  {
     "file": "FingerMobile Protocol/apps/frontend-main/src/components/ownit/OrderTracker.tsx",
     "line": 104,
     "column": 10,
@@ -3864,30 +3372,6 @@
     "recommendation": "Define explicit CTA contract or remove element from production UI."
   },
   {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/storefront/LowStockAlert.tsx",
-    "line": 261,
-    "column": 18,
-    "element": "button",
-    "label": "View Details",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Route to a real page/modal/drawer or remove the control if no destination exists."
-  },
-  {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/storefront/LowStockAlert.tsx",
-    "line": 265,
-    "column": 18,
-    "element": "button",
-    "label": "Dismiss",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Bind to real local state, router.back(), modal controller, or drawer controller."
-  },
-  {
     "file": "FingerMobile Protocol/apps/frontend-main/src/components/storefront/ProductManager.tsx",
     "line": 249,
     "column": 10,
@@ -4021,7 +3505,7 @@
   },
   {
     "file": "FingerMobile Protocol/apps/frontend-main/src/components/tribut/TributPinDetailModal.tsx",
-    "line": 438,
+    "line": 439,
     "column": 18,
     "element": "button",
     "label": "",
@@ -4033,36 +3517,12 @@
   },
   {
     "file": "FingerMobile Protocol/apps/frontend-main/src/components/tribut/TributPinDetailModal.tsx",
-    "line": 444,
+    "line": 445,
     "column": 18,
     "element": "button",
     "label": "",
     "issue": "missing-accessible-name",
     "severity": "medium",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Define explicit CTA contract or remove element from production UI."
-  },
-  {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/tribut/TributPinDetailModal.tsx",
-    "line": 668,
-    "column": 32,
-    "element": "button",
-    "label": "Reply",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Define explicit CTA contract or remove element from production UI."
-  },
-  {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/tribut/TributPinDetailModal.tsx",
-    "line": 670,
-    "column": 32,
-    "element": "button",
-    "label": "❤️ likes",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
     "handlerName": "",
     "snippet": "",
     "recommendation": "Define explicit CTA contract or remove element from production UI."
@@ -4090,18 +3550,6 @@
     "handlerName": "",
     "snippet": "",
     "recommendation": "Define explicit CTA contract or remove element from production UI."
-  },
-  {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/components/ugc/UGCPublishingTools.tsx",
-    "line": 217,
-    "column": 8,
-    "element": "button",
-    "label": "Save as Draft",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Implement real mutation endpoint, authorization check, database transaction, loading state, success state, and error state."
   },
   {
     "file": "FingerMobile Protocol/apps/frontend-main/src/components/ui/Button.tsx",
@@ -4225,19 +3673,7 @@
   },
   {
     "file": "FingerMobile Protocol/apps/frontend-main/src/layouts/Header.tsx",
-    "line": 70,
-    "column": 8,
-    "element": "button",
-    "label": "View notifications",
-    "issue": "button-missing-click-handler",
-    "severity": "high",
-    "handlerName": "",
-    "snippet": "",
-    "recommendation": "Route to a real page/modal/drawer or remove the control if no destination exists."
-  },
-  {
-    "file": "FingerMobile Protocol/apps/frontend-main/src/layouts/Header.tsx",
-    "line": 81,
+    "line": 83,
     "column": 12,
     "element": "Menu.Button",
     "label": "Open user menu",

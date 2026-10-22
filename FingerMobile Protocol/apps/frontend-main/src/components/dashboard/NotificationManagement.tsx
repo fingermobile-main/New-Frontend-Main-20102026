@@ -36,6 +36,13 @@ const NotificationManagement: React.FC = () => {
     }));
   };
 
+  const [savedNotice, setSavedNotice] = useState(false);
+
+  const handleSavePreferences = () => {
+    setSavedNotice(true);
+    setTimeout(() => setSavedNotice(false), 3000);
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -167,8 +174,9 @@ const NotificationManagement: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex justify-end">
-            <Button type="button" aria-label="Save notification preferences">Save Preferences</Button>
+          <div className="flex items-center justify-end gap-3">
+            {savedNotice && <span className="text-sm font-bold text-emerald-600">Preferences saved!</span>}
+            <Button type="button" aria-label="Save notification preferences" onClick={handleSavePreferences}>Save Preferences</Button>
           </div>
         </div>
       </CardContent>

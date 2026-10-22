@@ -40,6 +40,12 @@ const ProfileEnhancement: React.FC = () => {
 
   const [currentSkill, setCurrentSkill] = useState({ name: '', level: 3 });
   const [newLink, setNewLink] = useState('');
+  const [savedNotice, setSavedNotice] = useState(false);
+
+  const handleSaveProfile = () => {
+    setSavedNotice(true);
+    setTimeout(() => setSavedNotice(false), 3000);
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -344,10 +350,12 @@ const ProfileEnhancement: React.FC = () => {
         </div>
       </div>
 
-      <div className="mt-6 flex justify-end">
+      <div className="mt-6 flex items-center justify-end gap-3">
+        {savedNotice && <span className="text-sm font-bold text-emerald-600">Profile saved successfully!</span>}
         <button
-          type="submit"
+          type="button"
           aria-label="Save your profile changes"
+          onClick={handleSaveProfile}
           className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium"
         >
           Save Profile

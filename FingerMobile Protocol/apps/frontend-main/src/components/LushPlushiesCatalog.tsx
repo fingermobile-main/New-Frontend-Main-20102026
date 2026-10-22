@@ -746,7 +746,12 @@ const LushPlushiesCatalog: React.FC<LushPlushiesCatalogProps> = ({ onGiftSelect,
                 {product.product_description}
               </p>
 
-              <button className="w-full bg-gradient-to-r from-amber-500 to-rose-500 text-white py-2 px-4 rounded-md text-sm font-medium hover:opacity-90 transition-opacity">
+              <button
+                type="button"
+                aria-label={`Send ${product.product_name} as a gift`}
+                onClick={() => window.location.assign(`/gifts/checkout?product=${encodeURIComponent(product.product_id)}`)}
+                className="w-full bg-gradient-to-r from-amber-500 to-rose-500 text-white py-2 px-4 rounded-md text-sm font-medium hover:opacity-90 transition-opacity"
+              >
                 Send as Gift
               </button>
             </div>
