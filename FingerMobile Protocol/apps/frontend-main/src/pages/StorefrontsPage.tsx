@@ -6,7 +6,7 @@ import {
   Store,
   Star,
   Gift,
-  Link,
+  Link as LinkIcon,
   ArrowRight,
   Percent,
   PlusCircle,
@@ -515,8 +515,9 @@ const StorefrontsPage: React.FC = () => {
                             type="button"
                             onClick={() => handleCopyPaylink(store)}
                             className="flex-1 py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs border border-slate-300 flex items-center justify-center gap-1.5 transition-all"
+                            aria-label={`Copy paylink for ${store.name}`}
                           >
-                            <Link className="w-3.5 h-3.5 text-slate-600" />
+                            <LinkIcon className="w-3.5 h-3.5 text-slate-600" />
                             Paylink
                           </button>
                         </div>

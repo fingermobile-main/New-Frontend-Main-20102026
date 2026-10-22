@@ -36,7 +36,7 @@ const EmbedModal: React.FC<EmbedModalProps> = ({
               readOnly={!!embedCode} // Make input read-only if embedCode is provided
             />
           </div>
-          <Button type="submit" size="sm" className="px-3" onClick={onEmbed}>
+          <Button type="button" size="sm" className="px-3" onClick={onEmbed} aria-label="Embed content">
             <RoseIcon className="h-4 w-4" />
           </Button>
         </div>

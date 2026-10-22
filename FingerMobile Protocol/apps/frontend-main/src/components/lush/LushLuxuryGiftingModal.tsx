@@ -368,37 +368,38 @@ export const LushLuxuryGiftingModal: React.FC<LushLuxuryGiftingModalProps> = ({
                 </div>
 
                 {/* Personalized Engraving Note */}
-                <form onSubmit={handleSendGift} id="giftForm" className="space-y-2">
-                  <label className="block text-xs font-bold text-gray-800">
-                    Personalized Engraving / Dedication Note
-                  </label>
-                  <textarea
-                    value={customEngravingNote}
-                    onChange={(e) => setCustomEngravingNote(e.target.value)}
-                    placeholder={`Dear ${member.name}, I wanted to gift you this exceptional piece from ${
-                      selectedItem.store === 'ownit' ? 'OwnIt' : 'Flamingo'
-                    } in honor of your remarkable rating and grace...`}
-                    rows={4}
-                    className="w-full bg-white text-slate-900 border border-gray-300 rounded-xl p-2.5 text-xs focus:ring-1 focus:ring-emerald-500 focus:border-emerald-600 outline-hidden resize-none shadow-2xs font-bold border-slate-300 placeholder:text-slate-400 focus:ring-2"
-                  />
-                </form>
-              </div>
+                <form onSubmit={handleSendGift} id="giftForm" className="space-y-3">
+                  <div className="space-y-2">
+                    <label className="block text-xs font-bold text-gray-800">
+                      Personalized Engraving / Dedication Note
+                    </label>
+                    <textarea
+                      value={customEngravingNote}
+                      onChange={(e) => setCustomEngravingNote(e.target.value)}
+                      placeholder={`Dear ${member.name}, I wanted to gift you this exceptional piece from ${
+                        selectedItem.store === 'ownit' ? 'OwnIt' : 'Flamingo'
+                      } in honor of your remarkable rating and grace...`}
+                      rows={4}
+                      className="w-full bg-white text-slate-900 border border-gray-300 rounded-xl p-2.5 text-xs focus:ring-1 focus:ring-emerald-500 focus:border-emerald-600 outline-hidden resize-none shadow-2xs font-bold border-slate-300 placeholder:text-slate-400 focus:ring-2"
+                    />
+                  </div>
 
-              <div className="pt-3 border-t border-emerald-200/60 mt-3 flex items-center justify-between">
-                <div>
-                  <span className="text-[10px] text-slate-700 font-bold uppercase">Total Escrow</span>
-                  <p className="text-sm font-black text-gray-900">{selectedItem.price} FIC</p>
-                </div>
-                <button
-                  type="submit"
-                  form="giftForm"
-                  disabled={isSending}
-                  className="px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-amber-500 via-rose-500 to-purple-600 hover:opacity-95 shadow-md flex items-center gap-1.5 transition disabled:opacity-50"
-                >
-                  <SparklesIcon className="w-4 h-4" />
-                  <span>{isSending ? 'Sealing...' : 'Send Luxury Gift'}</span>
-                </button>
-              </div>
+                  <div className="pt-3 border-t border-emerald-200/60 mt-3 flex items-center justify-between">
+                    <div>
+                      <span className="text-[10px] text-slate-700 font-bold uppercase">Total Escrow</span>
+                      <p className="text-sm font-black text-gray-900">{selectedItem.price} FIC</p>
+                    </div>
+                    <button
+                      type="submit"
+                      disabled={isSending}
+                      aria-label="Send Luxury Gift"
+                      className="px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-amber-500 via-rose-500 to-purple-600 hover:opacity-95 shadow-md flex items-center gap-1.5 transition disabled:opacity-50"
+                    >
+                      <SparklesIcon className="w-4 h-4" />
+                      <span>{isSending ? 'Sealing...' : 'Send Luxury Gift'}</span>
+                    </button>
+                  </div>
+                </form>
             </div>
           </div>
         )}

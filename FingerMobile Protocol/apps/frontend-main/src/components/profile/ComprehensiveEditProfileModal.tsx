@@ -278,8 +278,8 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
     }));
   };
 
-  const handleFormSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleFormSubmit = async (e?: React.FormEvent) => {
+    e?.preventDefault();
     setInternalSaving(true);
     try {
       await onSave(formData);
@@ -1509,14 +1509,16 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
             <button
               type="button"
               onClick={onClose}
+              aria-label="Cancel"
               className="px-4 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold text-xs transition cursor-pointer"
             >
               Cancel
             </button>
             <button
-              type="submit"
-              form="comprehensive-profile-form"
+              type="button"
+              onClick={handleFormSubmit}
               disabled={activeSaving}
+              aria-label="Save All Changes"
               className="px-5 py-2 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs transition shadow-sm flex items-center gap-2 cursor-pointer disabled:opacity-60"
             >
               <Save className="w-4 h-4" />

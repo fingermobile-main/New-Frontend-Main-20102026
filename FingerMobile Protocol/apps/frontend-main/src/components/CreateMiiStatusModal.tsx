@@ -96,55 +96,57 @@ export const CreateMiiStatusModal: React.FC<CreateMiiStatusModalProps> = ({ isOp
           </button>
         </div>
 
-        <div className="p-4 overflow-y-auto max-h-[60vh]">
-          {errorMessage && (
-            <div className="mb-4 p-3 rounded-xl bg-red-50 text-red-700 text-sm flex items-center gap-2">
-              <AlertCircle className="w-4 h-4" />
-              {errorMessage}
+        <form id="mii-form" onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-hidden">
+          <div className="p-4 overflow-y-auto max-h-[60vh]">
+            {errorMessage && (
+              <div className="mb-4 p-3 rounded-xl bg-red-50 text-red-700 text-sm flex items-center gap-2">
+                <AlertCircle className="w-4 h-4" />
+                {errorMessage}
+              </div>
+            )}
+
+            <div className="mb-4 p-3 rounded-xl bg-emerald-50 text-emerald-800 text-xs flex items-center gap-2">
+              <ShieldAlert className="w-4 h-4" />
+              Disappears in 48 hours. Max 20 cards per status. End-to-end encrypted.
             </div>
-          )}
 
-          <div className="mb-4 p-3 rounded-xl bg-emerald-50 text-emerald-800 text-xs flex items-center gap-2">
-            <ShieldAlert className="w-4 h-4" />
-            Disappears in 48 hours. Max 20 cards per status. End-to-end encrypted.
-          </div>
-
-          <form id="mii-form" onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">Media Cards ({cards.length}/20)</label>
-              <div className="flex space-x-2 overflow-x-auto py-2">
-                {cards.map((card, idx) => (
-                  <div key={idx} className="relative w-20 h-20 flex-shrink-0 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center">
-                    <span className="text-[10px] text-slate-700 truncate px-2">{card.file.name}</span>
-                    <button type="button" onClick={() => removeCard(idx)} className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full p-0.5">
-                      <X className="w-3 h-3" />
-                    </button>
-                  </div>
-                ))}
-                {cards.length < 20 && (
-                  <label className="w-20 h-20 flex-shrink-0 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-xl flex items-center justify-center cursor-pointer hover:border-emerald-500">
-                    <Plus className="w-6 h-6 text-slate-600" />
-                    <input type="file" className="hidden text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" accept="image/*,video/*" onChange={handleFileChange} />
-                  </label>
-                )}
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">Media Cards ({cards.length}/20)</label>
+                <div className="flex space-x-2 overflow-x-auto py-2">
+                  {cards.map((card, idx) => (
+                    <div key={idx} className="relative w-20 h-20 flex-shrink-0 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center">
+                      <span className="text-[10px] text-slate-700 truncate px-2">{card.file.name}</span>
+                      <button type="button" onClick={() => removeCard(idx)} aria-label={`Remove media ${card.file.name}`} className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full p-0.5">
+                        <X className="w-3 h-3" />
+                      </button>
+                    </div>
+                  ))}
+                  {cards.length < 20 && (
+                    <label className="w-20 h-20 flex-shrink-0 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-xl flex items-center justify-center cursor-pointer hover:border-emerald-500">
+                      <Plus className="w-6 h-6 text-slate-600" />
+                      <input type="file" aria-label="Upload media file" className="hidden text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" accept="image/*,video/*" onChange={handleFileChange} />
+                    </label>
+                  )}
+                </div>
               </div>
             </div>
-          </form>
-        </div>
+          </div>
 
-        <div className="p-4 border-t border-slate-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50 flex justify-end gap-3">
-          <button type="button" onClick={onClose} className="px-4 py-2 text-sm font-semibold text-gray-600 hover:text-gray-800">
-            Cancel
-          </button>
-          <button
-            type="submit"
-            form="mii-form"
-            disabled={isSubmitting || cards.length === 0}
-            className="px-5 py-2 text-sm font-bold text-white bg-emerald-600 rounded-xl hover:bg-emerald-700 disabled:opacity-50"
-          >
-            {isSubmitting ? 'Uploading...' : 'Post Mii Status'}
-          </button>
-        </div>
+          <div className="p-4 border-t border-slate-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50 flex justify-end gap-3">
+            <button type="button" onClick={onClose} aria-label="Cancel" className="px-4 py-2 text-sm font-semibold text-gray-600 hover:text-gray-800">
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={isSubmitting || cards.length === 0}
+              aria-label="Post Mii Status"
+              className="px-5 py-2 text-sm font-bold text-white bg-emerald-600 rounded-xl hover:bg-emerald-700 disabled:opacity-50"
+            >
+              {isSubmitting ? 'Uploading...' : 'Post Mii Status'}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );

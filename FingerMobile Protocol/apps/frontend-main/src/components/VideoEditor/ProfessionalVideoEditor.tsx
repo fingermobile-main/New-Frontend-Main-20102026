@@ -74,6 +74,8 @@ const ProfessionalVideoEditor: React.FC<ProfessionalVideoEditorProps> = ({ proje
   const [showSafeZones, setShowSafeZones] = useState(false);
   const [showTrackList, setShowTrackList] = useState(true);
   const [splitMarkers, setSplitMarkers] = useState<number[]>([]);
+  const [activeLeftTab, setActiveLeftTab] = useState<string>('Media');
+  const [activeRightTab, setActiveRightTab] = useState<string>('Inspector');
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
   const [exportProgress, setExportProgress] = useState(0);
@@ -323,6 +325,8 @@ const ProfessionalVideoEditor: React.FC<ProfessionalVideoEditorProps> = ({ proje
               {['Media', 'Effects', 'Text'].map((tabName) => (
                 <Tab
                   key={tabName}
+                  onClick={() => setActiveLeftTab(tabName)}
+                  aria-label={`${tabName} tab`}
                   className={({ selected }: { selected: boolean }) =>
                     `w-full rounded-lg py-2 text-xs font-bold leading-5 transition-all
                     ${selected 
@@ -609,6 +613,8 @@ const ProfessionalVideoEditor: React.FC<ProfessionalVideoEditorProps> = ({ proje
               {['Inspector', 'Settings'].map((tabName) => (
                 <Tab
                   key={tabName}
+                  onClick={() => setActiveRightTab(tabName)}
+                  aria-label={`${tabName} tab`}
                   className={({ selected }: { selected: boolean }) =>
                     `w-full rounded-lg py-2 text-xs font-bold leading-5 transition-all
                     ${selected 
