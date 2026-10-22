@@ -307,10 +307,6 @@ const GemsPage: React.FC = () => {
         : userBalance + selectedGemPack.gems;
 
       setUserBalance(updatedBalance);
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('fingermobile_gem_balance', String(updatedBalance));
-      }
-
       setIsAddGemsModalOpen(false);
       showToast(`Successfully added ${selectedGemPack.gems.toLocaleString()} Gems to your balance! 💎`, 'success');
       try {
@@ -321,11 +317,7 @@ const GemsPage: React.FC = () => {
       refreshBalance();
     } catch (_err) {
       // Optimistic recovery for offline / disconnected environments
-      const updatedBalance = userBalance + selectedGemPack.gems;
       setUserBalance(updatedBalance);
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('fingermobile_gem_balance', String(updatedBalance));
-      }
       setIsAddGemsModalOpen(false);
       showToast(`Successfully added ${selectedGemPack.gems.toLocaleString()} Gems to your balance! 💎`, 'success');
       try {
@@ -399,9 +391,6 @@ const GemsPage: React.FC = () => {
       // Optimistic balance deduction
       const updatedBalance = Math.max(0, userBalance - 25);
       setUserBalance(updatedBalance);
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('fingermobile_gem_balance', String(updatedBalance));
-      }
 
       setBroadcastPosts((prev) => [newPost, ...prev]);
       setNewBroadcastText('');

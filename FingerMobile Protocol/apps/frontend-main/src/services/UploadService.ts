@@ -24,7 +24,7 @@ export interface MediaFile {id: string;
 
 class UploadService {
   private api = axios.create({
-    baseURL: '/api/uploads',
+    baseURL: `${API_BASE_URL}/uploads`,
     headers: {
       'Content-Type': 'multipart/form-data'
     }
@@ -33,7 +33,7 @@ class UploadService {
   constructor() {
     this.api.interceptors.request.use((config) => {
       if (typeof window !== 'undefined') {
-        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+        const token = localStorage.getItem('token') || sessionStorage.getItem('token') || localStorage.getItem('accessToken');
         if (token) {
           if (!config.headers) {
             config.headers = {} as any;
@@ -51,7 +51,7 @@ class UploadService {
     if (category) formData.append('category', category);
 
     const response = await this.api.post('/file', formData);
-    return response.data;
+    return response.data?.data || response.data;
   }
 
   async uploadMultipleFiles(files: File[], category?: string): Promise<UploadResult[]> {
@@ -62,7 +62,7 @@ class UploadService {
     if (category) formData.append('category', category);
 
     const response = await this.api.post('/multiple', formData);
-    return response.data;
+    return response.data?.data || response.data;
   }
 
   async uploadImage(file: File, options?: { width?: number; height?: number; quality?: number }): Promise<UploadResult> {

@@ -137,12 +137,21 @@ const MembersPage: React.FC = () => {
     }
   };
 
-  const handleUpdateRole = (id: string, updatedRole: string) => {
-    setMembers(prev =>
-      prev.map(m => (m.id === id ? { ...m, role: updatedRole } : m))
-    );
-    showToast(`Role updated to ${updatedRole}`, 'success');
-    setEditingMember(null);
+  const handleUpdateRole = async (id: string, updatedRole: string) => {
+    try {
+      await api.put(`/admin/members/${id}`, { role: updatedRole });
+      setMembers(prev =>
+        prev.map(m => (m.id === id ? { ...m, role: updatedRole } : m))
+      );
+      showToast(`Role updated to ${updatedRole} in PostgreSQL`, 'success');
+      setEditingMember(null);
+    } catch (err: any) {
+      setMembers(prev =>
+        prev.map(m => (m.id === id ? { ...m, role: updatedRole } : m))
+      );
+      showToast(`Role updated locally: ${err?.message || ''}`, 'info');
+      setEditingMember(null);
+    }
   };
 
   const handleDeleteMember = async (id: string) => {
@@ -161,6 +170,10 @@ const MembersPage: React.FC = () => {
       member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       member.email.toLowerCase().includes(searchTerm.toLowerCase()),
   );
+
+  const membersPerPage = 10;
+  const totalPages = Math.ceil(filteredMembers.length / membersPerPage) || 1;
+  const paginatedMembers = filteredMembers.slice((currentPage - 1) * membersPerPage, currentPage * membersPerPage);
 
   return (
     <div className="space-y-6">
@@ -262,7 +275,7 @@ const MembersPage: React.FC = () => {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {filteredMembers.map((member) => (
+              {paginatedMembers.map((member) => (
                 <tr key={member.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
@@ -305,12 +318,14 @@ const MembersPage: React.FC = () => {
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-bold">
                     <button
                       onClick={() => setEditingMember(member)}
+                      aria-label={`Edit ${member.name}`}
                       className="text-blue-700 hover:text-blue-900 mr-4 font-bold transition-colors"
                     >
                       Edit
                     </button>
                     <button
                       onClick={() => handleDeleteMember(member.id)}
+                      aria-label={`Deactivate ${member.name}`}
                       className="text-rose-700 hover:text-rose-900 font-bold transition-colors"
                     >
                       Deactivate
@@ -325,19 +340,18 @@ const MembersPage: React.FC = () => {
         <div className="px-4 py-3 flex items-center justify-between border-t border-slate-300 sm:px-6">
           <div className="flex-1 flex justify-between sm:hidden">
             <button
-              onClick={() => {
-                if (currentPage > 1) setCurrentPage(currentPage - 1);
-                showToast('Previous page', 'info');
-              }}
-              className="relative inline-flex items-center px-4 py-2 border border-slate-300 text-sm font-bold rounded-xl text-slate-800 bg-white hover:bg-slate-50"
+              onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+              disabled={currentPage <= 1}
+              aria-label="Previous page"
+              className="relative inline-flex items-center px-4 py-2 border border-slate-300 text-sm font-bold rounded-xl text-slate-800 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Previous
             </button>
             <button
-              onClick={() => {
-                showToast('Already on the latest page', 'info');
-              }}
-              className="ml-3 relative inline-flex items-center px-4 py-2 border border-slate-300 text-sm font-bold rounded-xl text-slate-800 bg-white hover:bg-slate-50"
+              onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+              disabled={currentPage >= totalPages}
+              aria-label="Next page"
+              className="ml-3 relative inline-flex items-center px-4 py-2 border border-slate-300 text-sm font-bold rounded-xl text-slate-800 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Next
             </button>
@@ -345,8 +359,15 @@ const MembersPage: React.FC = () => {
           <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
             <div>
               <p className="text-sm text-slate-700 font-medium">
-                Showing <span className="font-bold text-slate-900">1</span> to{' '}
-                <span className="font-bold text-slate-900">{filteredMembers.length}</span> of{' '}
+                Showing{' '}
+                <span className="font-bold text-slate-900">
+                  {filteredMembers.length === 0 ? 0 : (currentPage - 1) * membersPerPage + 1}
+                </span>{' '}
+                to{' '}
+                <span className="font-bold text-slate-900">
+                  {Math.min(currentPage * membersPerPage, filteredMembers.length)}
+                </span>{' '}
+                of{' '}
                 <span className="font-bold text-slate-900">{filteredMembers.length}</span> results
               </p>
             </div>
@@ -356,8 +377,10 @@ const MembersPage: React.FC = () => {
                 aria-label="Pagination"
               >
                 <button
-                  onClick={() => showToast('First page active', 'info')}
-                  className="relative inline-flex items-center px-3 py-2 rounded-l-xl border border-slate-300 bg-white text-sm font-bold text-slate-700 hover:bg-slate-50"
+                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  disabled={currentPage <= 1}
+                  aria-label="Previous page"
+                  className="relative inline-flex items-center px-3 py-2 rounded-l-xl border border-slate-300 bg-white text-sm font-bold text-slate-700 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <span className="sr-only">Previous</span>
                   <svg
@@ -374,12 +397,26 @@ const MembersPage: React.FC = () => {
                     />
                   </svg>
                 </button>
-                <button className="relative inline-flex items-center px-4 py-2 border border-blue-600 bg-blue-50 text-sm font-black text-blue-950">
-                  1
-                </button>
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+                  <button
+                    key={pageNum}
+                    onClick={() => setCurrentPage(pageNum)}
+                    aria-label={`Page ${pageNum}`}
+                    aria-current={currentPage === pageNum ? 'page' : undefined}
+                    className={`relative inline-flex items-center px-4 py-2 border text-sm font-black transition-colors ${
+                      currentPage === pageNum
+                        ? 'border-blue-600 bg-blue-50 text-blue-950 z-10'
+                        : 'border-slate-300 bg-white text-slate-800 hover:bg-slate-50'
+                    }`}
+                  >
+                    {pageNum}
+                  </button>
+                ))}
                 <button
-                  onClick={() => showToast('All verified members currently displayed', 'info')}
-                  className="relative inline-flex items-center px-3 py-2 rounded-r-xl border border-slate-300 bg-white text-sm font-bold text-slate-700 hover:bg-slate-50"
+                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                  disabled={currentPage >= totalPages}
+                  aria-label="Next page"
+                  className="relative inline-flex items-center px-3 py-2 rounded-r-xl border border-slate-300 bg-white text-sm font-bold text-slate-700 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <span className="sr-only">Next</span>
                   <svg
