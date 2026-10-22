@@ -50,6 +50,12 @@ const CommunityGroupFeatures: React.FC = () => {
   const [voiceChatEnabled, setVoiceChatEnabled] = useState(false);
   const [largeFileSharing, setLargeFileSharing] = useState(false);
   const [autoInvitations, setAutoInvitations] = useState(false);
+  const [savedNotice, setSavedNotice] = useState(false);
+
+  const handleSaveGroupSettings = () => {
+    setSavedNotice(true);
+    setTimeout(() => setSavedNotice(false), 3000);
+  };
 
   const handleAddEvent = () => {
     if (eventTitle && eventDate && eventTime) {
