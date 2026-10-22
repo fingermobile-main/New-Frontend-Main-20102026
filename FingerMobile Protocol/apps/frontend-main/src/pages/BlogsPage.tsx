@@ -550,7 +550,7 @@ const BlogsPage: React.FC = () => {
                   {selectedTag && (
                     <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-amber-100 text-amber-950 border border-amber-300">
                       <span>Tag: {selectedTag}</span>
-                      <button onClick={() => setSelectedTag(null)} className="hover:text-red-700">
+                      <button type="button" onClick={() => setSelectedTag(null)} className="hover:text-red-700">
                         <X className="w-3 h-3" />
                       </button>
                     </div>

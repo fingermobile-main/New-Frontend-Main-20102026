@@ -25,7 +25,7 @@ const TestComponent: React.FC = () => {
       <div data-testid="error">{error || 'null'}</div>
       <div data-testid="courses-count">{courses.length}</div>
       <div data-testid="enrollments-count">{enrollments.length}</div>
-      <button data-testid="fetch-courses" onClick={() => fetchCourses()}>
+      <button type="button" data-testid="fetch-courses" onClick={() => fetchCourses()}>
         Fetch Courses
       </button>
       <button

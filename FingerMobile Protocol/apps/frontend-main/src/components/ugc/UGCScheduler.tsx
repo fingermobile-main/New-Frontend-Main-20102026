@@ -173,7 +173,7 @@ const UGCScheduler: React.FC = () => {
               >
                 Cancel
               </button>
-              <button className="btn-primary" onClick={handleScheduleContent}>
+              <button type="button" className="btn-primary" onClick={handleScheduleContent}>
                 Schedule
               </button>
             </div>

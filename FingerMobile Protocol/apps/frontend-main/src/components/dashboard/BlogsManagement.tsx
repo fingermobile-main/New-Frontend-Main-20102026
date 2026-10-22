@@ -19,7 +19,12 @@ const BlogsManagement: React.FC<BlogsManagementProps> = ({ userId }) => {
           <DocumentTextIcon className="w-6 h-6 text-blue-600" />
           <h3 className="text-lg font-bold text-gray-900">Blog Management</h3>
         </div>
-        <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium">
+        <button
+          type="button"
+          aria-label="Create a new blog post"
+          onClick={() => window.location.assign('/blog/create')}
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium"
+        >
           New Post
         </button>
       </div>

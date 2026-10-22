@@ -609,7 +609,7 @@ export const LushPrivacyControlModal: React.FC<LushPrivacyControlModalProps> = (
                 <div className="lush-brand-icon">🌸</div>
                 <span className="lush-brand-name">Lush Pressies</span>
               </div>
-              <button className="lush-close-btn" onClick={onClose} aria-label="Close">
+              <button type="button" className="lush-close-btn" onClick={onClose} aria-label="Close">
                 <X size={14} />
               </button>
             </div>

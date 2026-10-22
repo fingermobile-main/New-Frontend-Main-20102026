@@ -120,7 +120,7 @@ const MemberLayout: React.FC<MemberLayoutProps> = ({ children, title, subtitle, 
                 </div>
                 <span className="text-lg font-bold text-slate-800">Menu</span>
               </div>
-              <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 text-slate-600 hover:bg-slate-100 rounded-full">
+              <button type="button" onClick={() => setIsMobileMenuOpen(false)} className="p-2 text-slate-600 hover:bg-slate-100 rounded-full">
                 <XMarkIcon className="w-6 h-6" />
               </button>
             </div>

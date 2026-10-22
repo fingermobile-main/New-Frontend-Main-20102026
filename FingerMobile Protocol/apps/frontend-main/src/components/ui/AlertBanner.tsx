@@ -21,7 +21,7 @@ const AlertBanner: React.FC<AlertBannerProps> = ({ type = 'info', message, closa
       <div className="alert-content">
         <span className="alert-message">{message}</span>
         {closable && (
-          <button className="alert-close" onClick={handleClose}>
+          <button type="button" className="alert-close" onClick={handleClose}>
             &times;
           </button>
         )}
