@@ -215,6 +215,7 @@ router.use('/marketing', marketingRoutes);
 router.use('/events', eventsRoutes);
 router.use('/storefront', storefrontRoutes);
 router.use('/storefronts', storefrontRoutes);
+router.use('/commerce', storefrontRoutes);
 router.use('/subscriptions', subscriptionsRoutes);
 router.use('/trends', trendsRoutes);
 router.use('/discover', discoverRoutes);

@@ -281,7 +281,8 @@ const EcommercePage: React.FC = () => {
         sku: newProduct.sku || `SKU-${Date.now().toString().slice(-4)}`,
         status: newProduct.status,
         images: newProduct.images ? [newProduct.images] : ['https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=100&fit=crop'],
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
       };
       setProducts(prev => [createdItem, ...prev]);
       setFilteredProducts(prev => [createdItem, ...prev]);

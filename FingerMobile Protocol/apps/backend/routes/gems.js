@@ -14,14 +14,22 @@ router.get('/', optionalAuth, gemsController.getAll);
 router.get('/balance', optionalAuth, gemsController.getUserBalance);
 router.get('/transactions', authenticate, gemsController.getTransactionHistory);
 router.get('/user/:userId', authenticate, gemsController.getUserGems);
-router.get('/:id', optionalAuth, gemsController.getById);
-
-// Marketplace & Redeem
-router.post('/redeem', authenticate, gemsController.redeemGemItem);
 
 // Broadcast channel updates (50,000 follower requirement check, 24h TTL)
 router.post('/broadcast', optionalAuth, gemsController.createBroadcastUpdate);
 router.get('/broadcast/feed', optionalAuth, gemsController.getBroadcastFeed);
+
+// Auto-Reply Settings & Logs (PostgreSQL Persistent)
+router.get('/auto-reply', optionalAuth, gemsController.getAutoReplySettings);
+router.post('/auto-reply', optionalAuth, gemsController.saveAutoReplySettings);
+router.get('/auto-reply/logs', optionalAuth, gemsController.getAutoReplyLogs);
+router.post('/auto-reply/logs', optionalAuth, gemsController.recordAutoReplyLog);
+
+// Specific ID item lookup (MUST be after specific endpoints)
+router.get('/:id', optionalAuth, gemsController.getById);
+
+// Marketplace & Redeem
+router.post('/redeem', authenticate, gemsController.redeemGemItem);
 
 // Manage gems (admin only)
 router.post('/', authenticate, gemsController.create);

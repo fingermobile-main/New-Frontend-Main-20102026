@@ -14,6 +14,17 @@ import {
   XIcon
 } from '../icons';
 
+interface NavItem {
+  icon: any;
+  label: string;
+  path: string;
+  badge?: string;
+  hasDropdown?: boolean;
+  dropdownOpen?: boolean;
+  toggleDropdown?: () => void;
+  dropdownItems?: { label: string; path: string }[];
+}
+
 interface ForumLeftSidebarProps {
   isOpen: boolean;
   onClose: () => void;
@@ -22,12 +33,13 @@ interface ForumLeftSidebarProps {
 const ForumLeftSidebar: React.FC<ForumLeftSidebarProps> = ({ isOpen, onClose }) => {
   const location = useLocation();
   const [showCommunities, setShowCommunities] = useState(false);
+
   const [showAIStudio, setShowAIStudio] = useState(false);
   const [showShortcuts, setShowShortcuts] = useState(true);
 
   const isActive = (path: string) => location.pathname === path;
 
-  const mainNavItems = [
+  const mainNavItems: NavItem[] = [
     { icon: HomeIcon, label: 'Dashboard', path: '/dashboard' },
     {
       icon: UsersIcon,
@@ -86,39 +98,56 @@ const ForumLeftSidebar: React.FC<ForumLeftSidebarProps> = ({ isOpen, onClose }) 
         <div className="space-y-1">
           {mainNavItems.map((item) => (
             <div key={item.path}>
-              <Link
-                to={item.hasDropdown ? '#' : item.path}
-                onClick={(e) => {
-                  if (item.hasDropdown) {
-                    e.preventDefault();
-                    item.toggleDropdown?.();
-                  }
-                }}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors group ${
-                  isActive(item.path)
-                    ? 'bg-orange-500/20 text-orange-500'
-                    : 'text-gray-300 hover:bg-gray-700 hover:text-white'
-                }`}
-              >
-                <item.icon className="w-6 h-6 flex-shrink-0" />
-                <span className="flex-1 text-sm font-medium">{item.label}</span>
+              {item.hasDropdown ? (
+                <button
+                  type="button"
+                  onClick={() => item.toggleDropdown?.()}
+                  aria-expanded={item.dropdownOpen}
+                  aria-label={`Toggle ${item.label} menu`}
+                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors group text-left ${
+                    isActive(item.path)
+                      ? 'bg-orange-500/20 text-orange-500'
+                      : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                  }`}
+                >
+                  <item.icon className="w-6 h-6 flex-shrink-0" />
+                  <span className="flex-1 text-sm font-medium">{item.label}</span>
 
-                {/* Badge */}
-                {item.badge && (
-                  <span className="px-2 py-0.5 bg-green-500/20 text-green-400 text-xs rounded-full">
-                    {item.badge}
-                  </span>
-                )}
+                  {/* Badge */}
+                  {item.badge && (
+                    <span className="px-2 py-0.5 bg-green-500/20 text-green-400 text-xs rounded-full">
+                      {item.badge}
+                    </span>
+                  )}
 
-                {/* Dropdown Arrow */}
-                {item.hasDropdown && (
+                  {/* Dropdown Arrow */}
                   <ChevronDownIcon
                     className={`w-4 h-4 transition-transform ${
                       item.dropdownOpen ? 'rotate-180' : ''
                     }`}
                   />
-                )}
-              </Link>
+                </button>
+              ) : (
+                <Link
+                  to={item.path}
+                  aria-label={item.label}
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors group ${
+                    isActive(item.path)
+                      ? 'bg-orange-500/20 text-orange-500'
+                      : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                  }`}
+                >
+                  <item.icon className="w-6 h-6 flex-shrink-0" />
+                  <span className="flex-1 text-sm font-medium">{item.label}</span>
+
+                  {/* Badge */}
+                  {item.badge && (
+                    <span className="px-2 py-0.5 bg-green-500/20 text-green-400 text-xs rounded-full">
+                      {item.badge}
+                    </span>
+                  )}
+                </Link>
+              )}
 
               {/* Dropdown Menu */}
               {item.hasDropdown && item.dropdownOpen && (

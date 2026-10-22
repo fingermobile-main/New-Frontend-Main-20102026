@@ -389,7 +389,7 @@ const MonetizationPage: React.FC = () => {
         updatedAt: new Date().toISOString()
       };
       setRevenueStreams(prev => [createdStream, ...prev]);
-      setFilteredRevenueStreams(prev => [createdStream, ...prev]);
+      setFilteredRevenue(prev => [createdStream, ...prev]);
       setShowCreateModal(false);
       // Reset form
       setNewRevenue({

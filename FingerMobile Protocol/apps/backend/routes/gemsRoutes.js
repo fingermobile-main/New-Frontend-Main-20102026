@@ -25,4 +25,10 @@ router.get('/:id', gemsController.getGemItemById);
 router.put('/:id', authenticate, gemsController.updateGemItem);
 router.delete('/:id', authenticate, gemsController.deleteGemItem);
 
+// Auto-Reply Settings & Logs (PostgreSQL Persistent)
+router.get('/auto-reply', gemsController.getAutoReplySettings);
+router.post('/auto-reply', gemsController.saveAutoReplySettings);
+router.get('/auto-reply/logs', gemsController.getAutoReplyLogs);
+router.post('/auto-reply/logs', gemsController.recordAutoReplyLog);
+
 module.exports = router;

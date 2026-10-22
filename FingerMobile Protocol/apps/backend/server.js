@@ -157,22 +157,15 @@ app.use((req, res, next) => {
 
 app.use(express.json({
   limit: '10mb',
-  // Add custom error handling for JSON parsing
-  verify: (req, res, buf, encoding) => {
-    try {
-      JSON.parse(buf);
-    } catch (e) {
-      logger.error('JSON parsing error:', {
-        url: req.url,
-        method: req.method,
-        ip: req.ip,
-        userAgent: req.get('User-Agent'),
-        error: e.message
-      });
-      res.status(400).json({
-        success: false,
-        message: 'Invalid JSON format'
-      });
+  verify: (req, res, buf) => {
+    if (buf && buf.length > 0) {
+      try {
+        JSON.parse(buf.toString());
+      } catch (e) {
+        const err = new Error('Invalid JSON format');
+        err.status = 400;
+        throw err;
+      }
     }
   }
 }));

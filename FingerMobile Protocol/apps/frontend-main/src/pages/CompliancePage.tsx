@@ -419,13 +419,13 @@ const CompliancePage: React.FC = () => {
         jurisdiction: newRequirement.jurisdiction,
         category: newRequirement.category as any,
         priority: newRequirement.priority as any,
+        status: 'active',
         complianceStatus: 'compliant',
         assignedTo: 1,
         assignedToName: newRequirement.assignedToName || 'Admin',
         deadline: newRequirement.deadline || new Date().toISOString(),
         lastAssessment: new Date().toISOString(),
-        nextAssessment: new Date(Date.now() + 90 * 86400000).toISOString(),
-        documents: [],
+        nextReview: new Date(Date.now() + 90 * 86400000).toISOString(),
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
       };

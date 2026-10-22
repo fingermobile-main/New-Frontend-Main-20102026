@@ -35,6 +35,7 @@ const ignoredDirs = new Set([
   "out",
   ".turbo",
   "vendor",
+  ".quarantine",
 ]);
 
 const findings = [];

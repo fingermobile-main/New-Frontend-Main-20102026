@@ -19,11 +19,11 @@ router.delete('/composer/draft', authenticate, postsController.deleteDraft);
 // AI-Powered Post Content Enhancement & Editing
 router.post('/ai-edit', authenticate, postsController.aiEditPost);
 
+// Create a new post
+router.post('/', optionalAuthenticate, postsController.create);
+
 // Get a specific post by ID
 router.get('/:postId', optionalAuthenticate, postsController.getById);
-
-// Create a new post
-router.post('/', authenticate, postsController.create);
 
 // Update a post
 router.put('/:postId', authenticate, postsController.update);
@@ -32,13 +32,13 @@ router.put('/:postId', authenticate, postsController.update);
 router.delete('/:postId', authenticate, postsController.delete);
 
 // Like or unlike a post
-router.post('/:postId/like', authenticate, postsController.likePost);
+router.post('/:postId/like', optionalAuthenticate, postsController.likePost);
 
 // Get comments for a post
-router.get('/:postId/comments', authenticate, postsController.getComments);
+router.get('/:postId/comments', optionalAuthenticate, postsController.getComments);
 
 // Add a comment to a post
-router.post('/:postId/comments', authenticate, postsController.addComment);
+router.post('/:postId/comments', optionalAuthenticate, postsController.addComment);
 
 // Dislike a post
 router.post('/:postId/dislike', authenticate, postsController.dislikePost);
