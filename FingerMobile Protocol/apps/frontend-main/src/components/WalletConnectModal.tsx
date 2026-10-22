@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 interface WalletConnectModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -136,13 +137,13 @@ const WalletConnectModal: React.FC<WalletConnectModalProps> = ({
           <div className="border-t border-slate-300 px-6 py-4 bg-gray-50">
             <div className="text-center text-sm text-gray-600">
               <p className="mb-2">New to crypto wallets?</p>
-              <a
-                href="#"
+              <Link
+                to="/help"
+                onClick={onClose}
                 className="text-blue-600 hover:text-blue-700 font-medium"
-                onClick={(e) => e.preventDefault()}
               >
                 Learn more about wallets →
-              </a>
+              </Link>
             </div>
           </div>
         </div>

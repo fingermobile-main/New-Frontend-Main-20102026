@@ -1,4 +1,5 @@
-import React, {} from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { LayoutDashboard, Settings, Users } from 'lucide-react';
 
 interface DashboardLayoutProps {
@@ -15,18 +16,18 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   const defaultSidebar = (
     <div className="w-64 bg-background border-r p-4">
       <nav className="space-y-2">
-        <a href="#" className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-muted transition-colors">
+        <Link to="/dashboard" className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-muted transition-colors text-slate-800 font-medium">
           <LayoutDashboard className="h-5 w-5" />
           <span>Dashboard</span>
-        </a>
-        <a href="#" className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-muted transition-colors">
+        </Link>
+        <Link to="/dashboard/members" className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-muted transition-colors text-slate-800 font-medium">
           <Users className="h-5 w-5" />
           <span>Users</span>
-        </a>
-        <a href="#" className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-muted transition-colors">
+        </Link>
+        <Link to="/dashboard/settings" className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-muted transition-colors text-slate-800 font-medium">
           <Settings className="h-5 w-5" />
           <span>Settings</span>
-        </a>
+        </Link>
       </nav>
     </div>
   );

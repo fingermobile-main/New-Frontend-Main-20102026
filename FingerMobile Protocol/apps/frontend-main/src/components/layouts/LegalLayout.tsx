@@ -1,4 +1,5 @@
-import React, {} from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { Shield, FileText, Scale } from 'lucide-react';
 
 interface LegalLayoutProps {
@@ -32,18 +33,18 @@ const LegalLayout: React.FC<LegalLayoutProps> = ({ children }) => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between text-sm text-slate-700 font-medium">
             <div className="flex items-center gap-4">
-              <a href="#" className="hover:text-foreground transition-colors">
+              <Link to="/termsofservice" className="hover:text-foreground transition-colors inline-flex items-center">
                 <FileText className="h-4 w-4 inline mr-1" />
                 Terms of Service
-              </a>
-              <a href="#" className="hover:text-foreground transition-colors">
+              </Link>
+              <Link to="/privacypolicy" className="hover:text-foreground transition-colors inline-flex items-center">
                 <Shield className="h-4 w-4 inline mr-1" />
                 Privacy Policy
-              </a>
-              <a href="#" className="hover:text-foreground transition-colors">
+              </Link>
+              <Link to="/cookiepolicy" className="hover:text-foreground transition-colors inline-flex items-center">
                 <Scale className="h-4 w-4 inline mr-1" />
                 Cookie Policy
-              </a>
+              </Link>
             </div>
             <p>&copy; 2026 FingerMobile Protocol. All rights reserved.</p>
           </div>

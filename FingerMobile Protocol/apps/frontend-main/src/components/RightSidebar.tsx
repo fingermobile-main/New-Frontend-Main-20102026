@@ -10,19 +10,19 @@ const RightSidebar: React.FC = () => {
         <h2 className="text-base font-black text-slate-900 mb-3">Trending Topics</h2>
         <ul className="space-y-2">
           <li>
-            <a href="#" className="text-emerald-700 hover:underline font-bold text-xs">#FingerMobile</a>
+            <Link to="/search?q=%23FingerMobile" className="text-emerald-700 hover:underline font-bold text-xs">#FingerMobile</Link>
           </li>
           <li>
-            <a href="#" className="text-emerald-700 hover:underline font-bold text-xs">#TechInnovation</a>
+            <Link to="/search?q=%23TechInnovation" className="text-emerald-700 hover:underline font-bold text-xs">#TechInnovation</Link>
           </li>
           <li>
-            <a href="#" className="text-emerald-700 hover:underline font-bold text-xs">#Blockchain</a>
+            <Link to="/search?q=%23Blockchain" className="text-emerald-700 hover:underline font-bold text-xs">#Blockchain</Link>
           </li>
           <li>
-            <a href="#" className="text-emerald-700 hover:underline font-bold text-xs">#SocialMedia</a>
+            <Link to="/search?q=%23SocialMedia" className="text-emerald-700 hover:underline font-bold text-xs">#SocialMedia</Link>
           </li>
           <li>
-            <a href="#" className="text-emerald-700 hover:underline font-bold text-xs">#DigitalFuture</a>
+            <Link to="/search?q=%23DigitalFuture" className="text-emerald-700 hover:underline font-bold text-xs">#DigitalFuture</Link>
           </li>
         </ul>
       </div>

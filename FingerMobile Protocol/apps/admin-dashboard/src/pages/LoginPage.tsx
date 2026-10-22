@@ -7,6 +7,11 @@ const LoginPage: React.FC = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showResetModal, setShowResetModal] = useState(false);
+  const [resetEmail, setResetEmail] = useState('');
+  const [resetLoading, setResetLoading] = useState(false);
+  const [resetMessage, setResetMessage] = useState('');
+  const [resetSuccess, setResetSuccess] = useState(false);
   
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -96,11 +101,79 @@ const LoginPage: React.FC = () => {
             </div>
 
             <div className="text-sm">
-              <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
+              <button
+                type="button"
+                onClick={() => setShowResetModal(true)}
+                className="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline"
+              >
                 Forgot your password?
-              </a>
+              </button>
             </div>
           </div>
+
+          {showResetModal && (
+            <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+              <div className="bg-white rounded-xl shadow-xl max-w-md w-full p-6 border border-slate-300">
+                <h3 className="text-lg font-bold text-slate-900 mb-2">Reset Password</h3>
+                <p className="text-sm text-slate-600 mb-4">
+                  Enter your email address to receive password reset instructions.
+                </p>
+                {resetMessage && (
+                  <div className={`p-3 rounded-lg text-sm mb-4 ${resetSuccess ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-red-50 text-red-800 border border-red-200'}`}>
+                    {resetMessage}
+                  </div>
+                )}
+                <form
+                  onSubmit={async (e) => {
+                    e.preventDefault();
+                    if (!resetEmail) return;
+                    setResetLoading(true);
+                    setResetMessage('');
+                    try {
+                      const res = await fetch('/api/auth/forgot-password', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email: resetEmail }),
+                      });
+                      const data = await res.json();
+                      setResetSuccess(true);
+                      setResetMessage(data.message || 'Password reset instructions have been sent.');
+                    } catch (err) {
+                      setResetSuccess(false);
+                      setResetMessage('Failed to connect to authentication service.');
+                    } finally {
+                      setResetLoading(false);
+                    }
+                  }}
+                >
+                  <input
+                    type="email"
+                    value={resetEmail}
+                    onChange={(e) => setResetEmail(e.target.value)}
+                    placeholder="admin@example.com"
+                    required
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900 focus:ring-2 focus:ring-indigo-500 mb-4"
+                  />
+                  <div className="flex justify-end gap-2">
+                    <button
+                      type="button"
+                      onClick={() => { setShowResetModal(false); setResetMessage(''); }}
+                      className="px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 rounded-lg"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={resetLoading}
+                      className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg disabled:opacity-50"
+                    >
+                      {resetLoading ? 'Sending...' : 'Send Reset Link'}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
 
           <div>
             <button

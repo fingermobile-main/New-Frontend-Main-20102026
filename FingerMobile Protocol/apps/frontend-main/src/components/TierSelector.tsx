@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 interface TierSelectorProps {
   tiers?: Array<{
     id: string;
@@ -155,9 +156,9 @@ const TierSelector: React.FC<TierSelectorProps> = ({
       {/* Comparison Note */}
       <div className="text-center text-sm text-gray-600 mt-6">
         <p>All plans include a 14-day free trial. No credit card required.</p>
-        <a href="#" className="text-blue-600 hover:text-blue-700 font-medium mt-2 inline-block">
+        <Link to="/subscriptions" className="text-blue-600 hover:text-blue-700 font-medium mt-2 inline-block">
           Compare all features →
-        </a>
+        </Link>
       </div>
     </div>
   );

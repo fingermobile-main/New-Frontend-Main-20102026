@@ -338,9 +338,9 @@ const HallmarkPage: React.FC = () => {
       <footer className="hidden md:block text-center py-4 text-xs text-slate-700 border-t bg-white">
         <p>©2031 FingerMobile Protocol. All rights reserved.</p>
         <nav className="space-x-2 mt-1">
-          <a href="#" className="hover:underline">About</a>
-          <a href="#" className="hover:underline">Terms</a>
-          <a href="#" className="hover:underline">Privacy</a>
+          <Link to="/about" className="hover:underline">About</Link>
+          <Link to="/termsofservice" className="hover:underline">Terms</Link>
+          <Link to="/privacypolicy" className="hover:underline">Privacy</Link>
         </nav>
       </footer>
     </div>

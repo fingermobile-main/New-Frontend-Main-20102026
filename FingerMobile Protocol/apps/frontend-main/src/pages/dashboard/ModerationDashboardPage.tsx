@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useAppContext } from '../../contexts/AppContext';
 import { moderationAdminService, ModerationQueueItem, ModerationStats, UserReportItem } from '../../services/moderationAdminService';
 import { RefreshCw, CheckCircle2, AlertOctagon, XCircle, UserX, Loader2 } from 'lucide-react';
@@ -125,12 +126,46 @@ const ModerationDashboardPage: React.FC = () => {
 
   const flaggedMembers = reports.map((r, idx) => ({
     id: idx + 1,
+    reportId: r.id,
+    targetId: r.target_id,
     name: r.target_id ? `Member #${r.target_id.slice(0, 8)}` : `Member #${idx + 1}`,
     membername: `@user_${r.target_id ? r.target_id.slice(0, 6) : idx + 1}`,
     reports: 1,
     status: r.status === 'resolved' ? 'active' : 'flagged',
     lastActivity: new Date(r.created_at).toLocaleString()
   }));
+
+  const handleWarnMember = async (member: any) => {
+    try {
+      if (member.reportId) {
+        await moderationAdminService.updateReport(member.reportId, {
+          status: 'resolved',
+          resolutionAction: 'warn_user',
+          resolutionNotes: `Official warning issued to ${member.name}`
+        });
+      }
+      showToast?.(`Warning issued to ${member.name}`, 'info');
+      await loadData();
+    } catch (err: any) {
+      showToast?.(err.message || 'Failed to warn member', 'error');
+    }
+  };
+
+  const handleSuspendMember = async (member: any) => {
+    try {
+      if (member.reportId) {
+        await moderationAdminService.updateReport(member.reportId, {
+          status: 'resolved',
+          resolutionAction: 'suspend_user',
+          resolutionNotes: `Member ${member.name} suspended by moderator`
+        });
+      }
+      showToast?.(`Member ${member.name} has been suspended`, 'success');
+      await loadData();
+    } catch (err: any) {
+      showToast?.(err.message || 'Failed to suspend member', 'error');
+    }
+  };
 
   const moderationStats = [
     { name: 'Pending Review', value: String(stats.pending), change: stats.pending > 0 ? `${stats.highPriorityPending} urgent` : 'Clean' },
@@ -410,25 +445,26 @@ const ModerationDashboardPage: React.FC = () => {
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                             {member.lastActivity}
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <a
-                              href="#"
-                              className="text-blue-600 hover:text-blue-900"
+                            <Link
+                              to={`/profile/${encodeURIComponent(member.membername.replace('@', ''))}`}
+                              className="text-blue-600 hover:text-blue-900 font-medium hover:underline"
                             >
                               View
-                            </a>
-                            <a
-                              href="#"
-                              className="ml-4 text-yellow-600 hover:text-yellow-900"
+                            </Link>
+                            <button
+                              type="button"
+                              onClick={() => handleWarnMember(member)}
+                              className="ml-4 text-amber-600 hover:text-amber-900 font-medium hover:underline"
                             >
                               Warn
-                            </a>
-                            <a
-                              href="#"
-                              className="ml-4 text-red-600 hover:text-red-900"
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleSuspendMember(member)}
+                              className="ml-4 text-red-600 hover:text-red-900 font-medium hover:underline"
                             >
                               Suspend
-                            </a>
+                            </button>
                           </td>
                         </tr>
                       ))}

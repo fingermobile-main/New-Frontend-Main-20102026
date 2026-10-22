@@ -1,3 +1,154 @@
+FingerMobile Protocol/apps/admin-dashboard/src/__tests__/authService.test.ts:8:    localStorage.clear();
+FingerMobile Protocol/apps/admin-dashboard/src/__tests__/authService.test.ts:76:      expect(localStorage.getItem('token')).toBe(token);
+FingerMobile Protocol/apps/admin-dashboard/src/__tests__/authService.test.ts:83:      localStorage.setItem('token', token);
+FingerMobile Protocol/apps/admin-dashboard/src/components/GuardianGeminiCommandConsole.tsx:64:    const savedKey = localStorage.getItem('fmp_superadmin_gemini_key') || '';
+FingerMobile Protocol/apps/admin-dashboard/src/components/GuardianGeminiCommandConsole.tsx:81:      localStorage.setItem('fmp_superadmin_gemini_key', val.trim());
+FingerMobile Protocol/apps/admin-dashboard/src/components/GuardianGeminiCommandConsole.tsx:83:      localStorage.removeItem('fmp_superadmin_gemini_key');
+FingerMobile Protocol/apps/admin-dashboard/src/components/GuardianGeminiCommandConsole.tsx:89:    localStorage.removeItem('fmp_superadmin_gemini_key');
+FingerMobile Protocol/apps/admin-dashboard/src/services/ContentCurationService.ts:8:          'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
+FingerMobile Protocol/apps/admin-dashboard/src/services/ContentCurationService.ts:25:          'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
+FingerMobile Protocol/apps/admin-dashboard/src/services/ContentCurationService.ts:42:          'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
+FingerMobile Protocol/apps/admin-dashboard/src/services/SuperAdminService.ts:8:          'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
+FingerMobile Protocol/apps/admin-dashboard/src/services/SuperAdminService.ts:25:          'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
+FingerMobile Protocol/apps/admin-dashboard/src/services/SuperAdminService.ts:42:          'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
+FingerMobile Protocol/apps/admin-dashboard/src/services/SuperAdminService.ts:59:          'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
+FingerMobile Protocol/apps/admin-dashboard/src/services/SuperAdminService.ts:76:          'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
+FingerMobile Protocol/apps/admin-dashboard/src/services/api.ts:12:    const token = localStorage.getItem('token');
+FingerMobile Protocol/apps/admin-dashboard/src/services/api.ts:29:      localStorage.removeItem('token');
+FingerMobile Protocol/apps/admin-dashboard/src/services/api.ts:54:    return localStorage.getItem('token');
+FingerMobile Protocol/apps/admin-dashboard/src/services/authService.ts:63:      localStorage.removeItem('token');
+FingerMobile Protocol/apps/admin-dashboard/src/services/authService.ts:83:      localStorage.setItem('token', token);
+FingerMobile Protocol/apps/admin-dashboard/src/services/authService.ts:89:    const storedToken = typeof localStorage !== 'undefined' ? localStorage.getItem('token') : null;
+FingerMobile Protocol/apps/backend/stercs-editor/components/AIGeneration.tsx:41:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/AIGeneration.tsx:69:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/AIGeneration.tsx:101:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/AIGeneration.tsx:133:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/AIGeneration.tsx:165:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Analytics.tsx:57:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Analytics.tsx:80:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Analytics.tsx:101:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Analytics.tsx:126:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/ApiManager.tsx:78:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/ApiManager.tsx:101:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/ApiManager.tsx:122:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/ApiManager.tsx:147:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/ApiManager.tsx:184:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/ApiManager.tsx:213:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Backup.tsx:62:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Backup.tsx:85:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Backup.tsx:110:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Backup.tsx:149:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Backup.tsx:178:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/BusinessManagement.tsx:87:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/BusinessManagement.tsx:111:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/BusinessManagement.tsx:135:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/BusinessManagement.tsx:162:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/BusinessManagement.tsx:195:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/BusinessManagement.tsx:228:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/BusinessManagement.tsx:257:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Collaboration.tsx:61:            'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Collaboration.tsx:77:            'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Collaboration.tsx:107:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Collaboration.tsx:139:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Collaboration.tsx:162:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Deployment.tsx:58:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Deployment.tsx:81:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Deployment.tsx:106:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Deployment.tsx:141:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Documentation.tsx:41:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Documentation.tsx:64:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Documentation.tsx:89:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Ecommerce.tsx:69:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Ecommerce.tsx:92:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Ecommerce.tsx:113:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Ecommerce.tsx:138:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Ecommerce.tsx:175:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Ecommerce.tsx:202:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Explorer.tsx:38:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Explorer.tsx:84:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/FileManager.tsx:79:          Authorization: `Bearer ${localStorage.getItem('token') || 'fake-token'}`, // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/FileManager.tsx:113:            Authorization: `Bearer ${localStorage.getItem('token') || 'fake-token'}`, // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/FileManager.tsx:137:          Authorization: `Bearer ${localStorage.getItem('token') || 'fake-token'}`, // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/FileManager.tsx:169:          Authorization: `Bearer ${localStorage.getItem('token') || 'fake-token'}`, // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/FileManager.tsx:197:          Authorization: `Bearer ${localStorage.getItem('token') || 'fake-token'}`, // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/FileManager.tsx:225:          Authorization: `Bearer ${localStorage.getItem('token') || 'fake-token'}`, // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/IntegrationManagement.tsx:57:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/IntegrationManagement.tsx:80:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/IntegrationManagement.tsx:115:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/IntegrationManagement.tsx:151:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Logs.tsx:67:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Logs.tsx:97:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/MemberManagement.tsx:51:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/MemberManagement.tsx:75:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/MemberManagement.tsx:102:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/MemberManagement.tsx:135:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/MemberManagement.tsx:167:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/MemberManagement.tsx:191:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/MemberProfile.tsx:77:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/MemberProfile.tsx:105:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/MemberProfile.tsx:134:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/MemberProfile.tsx:155:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/MemberProfile.tsx:184:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/MemberProfile.tsx:220:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Monitoring.tsx:71:            'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Monitoring.tsx:87:            'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Monitoring.tsx:103:            'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Monitoring.tsx:131:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Notifications.tsx:64:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Notifications.tsx:87:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Notifications.tsx:116:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Notifications.tsx:143:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Notifications.tsx:168:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Notifications.tsx:197:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Pages.tsx:56:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Pages.tsx:77:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Pages.tsx:104:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Pages.tsx:137:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Pages.tsx:165:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Performance.tsx:55:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Performance.tsx:78:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Performance.tsx:103:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Performance.tsx:136:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/PlatformThemeSelector.tsx:68:          Authorization: `Bearer ${localStorage.getItem('token') || 'fake-token'}`, // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/PlatformThemeSelector.tsx:90:          Authorization: `Bearer ${localStorage.getItem('token') || 'fake-token'}`, // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/PlatformThemeSelector.tsx:115:          Authorization: `Bearer ${localStorage.getItem('token') || 'fake-token'}`, // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/PlatformThemeSelector.tsx:147:          Authorization: `Bearer ${localStorage.getItem('token') || 'fake-token'}`, // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/PlatformThemeSelector.tsx:201:            Authorization: `Bearer ${localStorage.getItem('token') || 'fake-token'}`, // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/ProjectManagement.tsx:92:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/ProjectManagement.tsx:116:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/ProjectManagement.tsx:138:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/ProjectManagement.tsx:165:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/ProjectManagement.tsx:209:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Reporting.tsx:65:          Authorization: `Bearer ${localStorage.getItem('token') || 'fake-token'}`, // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Reporting.tsx:91:            Authorization: `Bearer ${localStorage.getItem('token') || 'fake-token'}`, // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Reporting.tsx:119:          Authorization: `Bearer ${localStorage.getItem('token') || 'fake-token'}`, // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Reporting.tsx:161:            Authorization: `Bearer ${localStorage.getItem('token') || 'fake-token'}`, // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Search.tsx:74:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Security.tsx:68:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Security.tsx:91:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Security.tsx:112:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Security.tsx:137:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Security.tsx:170:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Security.tsx:211:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Security.tsx:241:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Terminal.tsx:52:          Authorization: `Bearer ${localStorage.getItem('token')}`, // Assuming JWT token
+FingerMobile Protocol/apps/backend/stercs-editor/components/Testing.tsx:66:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Testing.tsx:89:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Testing.tsx:114:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/Testing.tsx:157:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/ThemeSelector.tsx:41:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/ThemeSelector.tsx:71:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/VersionControl.tsx:47:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/VersionControl.tsx:70:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/VersionControl.tsx:93:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/VersionControl.tsx:122:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/VersionControl.tsx:147:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/VersionControl.tsx:176:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/backend/stercs-editor/components/VersionControl.tsx:201:          'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
+FingerMobile Protocol/apps/frontend-main/apps/lumina-gallery/src/services/api.ts:48:  return localStorage.getItem("authToken");
+FingerMobile Protocol/apps/frontend-main/pages/_app.tsx:19:          localStorage.getItem('fingermobile_token') || localStorage.getItem('token');
+FingerMobile Protocol/apps/frontend-main/pages/_app.tsx:26:        if (sessionStorage.getItem('push_notifications_initialized') === 'true') {
+FingerMobile Protocol/apps/frontend-main/pages/_app.tsx:52:        sessionStorage.setItem('push_notifications_initialized', 'true');
 FingerMobile Protocol/apps/frontend-main/src/__tests__/LushPressies.test.tsx:9:    localStorage.clear();
 FingerMobile Protocol/apps/frontend-main/src/__tests__/LushPressies.test.tsx:10:    localStorage.setItem('lush_pressies_consent', 'true');
 FingerMobile Protocol/apps/frontend-main/src/__tests__/LushPressies.test.tsx:11:    localStorage.setItem('lush_pressies_user_pin', '749102');
@@ -8,9 +159,9 @@ FingerMobile Protocol/apps/frontend-main/src/components/ConsentManager.tsx:105: 
 FingerMobile Protocol/apps/frontend-main/src/components/ConsentManager.tsx:106:        localStorage.setItem("cookieConsent", "true");
 FingerMobile Protocol/apps/frontend-main/src/components/CookieConsentBanner.tsx:7:    const consent = localStorage.getItem('cookieConsent');
 FingerMobile Protocol/apps/frontend-main/src/components/CookieConsentBanner.tsx:14:    localStorage.setItem('cookieConsent', 'true');
-FingerMobile Protocol/apps/frontend-main/src/components/CourseCard.tsx:70:      const stored = localStorage.getItem('camus_enrolled_courses');
-FingerMobile Protocol/apps/frontend-main/src/components/CourseCard.tsx:94:      const stored = localStorage.getItem('camus_enrolled_courses');
-FingerMobile Protocol/apps/frontend-main/src/components/CourseCard.tsx:98:        localStorage.setItem('camus_enrolled_courses', JSON.stringify(ids));
+FingerMobile Protocol/apps/frontend-main/src/components/CourseCard.tsx:71:      const stored = localStorage.getItem('camus_enrolled_courses');
+FingerMobile Protocol/apps/frontend-main/src/components/CourseCard.tsx:101:      const stored = localStorage.getItem('camus_enrolled_courses');
+FingerMobile Protocol/apps/frontend-main/src/components/CourseCard.tsx:105:        localStorage.setItem('camus_enrolled_courses', JSON.stringify(ids));
 FingerMobile Protocol/apps/frontend-main/src/components/CreateMiiStatusModal.tsx:28:      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
 FingerMobile Protocol/apps/frontend-main/src/components/CreatePubliciteeShortsModal.tsx:83:      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
 FingerMobile Protocol/apps/frontend-main/src/components/CreatorInfluence/PerksAndRosterComponent.tsx:149:      const token = localStorage.getItem('fingermobile_token') || localStorage.getItem('token');
@@ -52,8 +203,8 @@ FingerMobile Protocol/apps/frontend-main/src/components/common/UniversalProfileC
 FingerMobile Protocol/apps/frontend-main/src/components/common/discovery/UniversalLapidaireModal.tsx:34:      const saved = localStorage.getItem(storageKey);
 FingerMobile Protocol/apps/frontend-main/src/components/common/discovery/UniversalLapidaireModal.tsx:53:      localStorage.setItem(storageKey, JSON.stringify(updated));
 FingerMobile Protocol/apps/frontend-main/src/components/common/discovery/UniversalLapidaireModal.tsx:71:      localStorage.removeItem(storageKey);
-FingerMobile Protocol/apps/frontend-main/src/components/dashboard/CorporateGovernanceConsole.tsx:123:      const savedMembers = localStorage.getItem('fingermobile_master_members_db');
-FingerMobile Protocol/apps/frontend-main/src/components/dashboard/CorporateGovernanceConsole.tsx:372:      localStorage.setItem('fingermobile_master_members_db', JSON.stringify(updatedMembers));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/CorporateGovernanceConsole.tsx:134:        const savedMembers = localStorage.getItem('fingermobile_master_members_db');
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/CorporateGovernanceConsole.tsx:385:      localStorage.setItem('fingermobile_master_members_db', JSON.stringify(updatedMembers));
 FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:88:      const saved = localStorage.getItem('fmp_dynamic_sheet_income_statement');
 FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:98:      const saved = localStorage.getItem('fmp_dynamic_sheet_balance_sheet');
 FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:108:      const saved = localStorage.getItem('fmp_dynamic_sheet_cost_tcc_boq');
@@ -61,37 +212,13 @@ FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFina
 FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:128:      const saved = localStorage.getItem('fmp_dynamic_sheet_capex_opex_dancia');
 FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:179:          localStorage.setItem('fmp_dynamic_sheet_income_statement', JSON.stringify(updated));
 FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:207:          localStorage.setItem('fmp_dynamic_sheet_income_statement', JSON.stringify(updated));
-FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:415:      localStorage.setItem('fmp_dynamic_sheet_income_statement', JSON.stringify(updatedSheet));
-FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:419:      localStorage.setItem('fmp_dynamic_sheet_balance_sheet', JSON.stringify(updatedSheet));
-FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:423:      localStorage.setItem('fmp_dynamic_sheet_cost_tcc_boq', JSON.stringify(updatedSheet));
-FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:427:      localStorage.setItem('fmp_dynamic_sheet_startup_funds', JSON.stringify(updatedSheet));
-FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:431:      localStorage.setItem('fmp_dynamic_sheet_capex_opex_dancia', JSON.stringify(updatedSheet));
-FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:475:      localStorage.setItem('fmp_dynamic_sheet_income_statement', JSON.stringify(updatedSheet));
-FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:479:      localStorage.setItem('fmp_dynamic_sheet_balance_sheet', JSON.stringify(updatedSheet));
-FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:483:      localStorage.setItem('fmp_dynamic_sheet_cost_tcc_boq', JSON.stringify(updatedSheet));
-FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:487:      localStorage.setItem('fmp_dynamic_sheet_startup_funds', JSON.stringify(updatedSheet));
-FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:491:      localStorage.setItem('fmp_dynamic_sheet_capex_opex_dancia', JSON.stringify(updatedSheet));
-FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:530:      localStorage.setItem('fmp_dynamic_sheet_income_statement', JSON.stringify(updatedSheet));
-FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:534:      localStorage.setItem('fmp_dynamic_sheet_balance_sheet', JSON.stringify(updatedSheet));
-FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:538:      localStorage.setItem('fmp_dynamic_sheet_cost_tcc_boq', JSON.stringify(updatedSheet));
-FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:542:      localStorage.setItem('fmp_dynamic_sheet_startup_funds', JSON.stringify(updatedSheet));
-FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:546:      localStorage.setItem('fmp_dynamic_sheet_capex_opex_dancia', JSON.stringify(updatedSheet));
-FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:584:      localStorage.setItem('fmp_dynamic_sheet_income_statement', JSON.stringify(updatedSheet));
-FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:588:      localStorage.setItem('fmp_dynamic_sheet_balance_sheet', JSON.stringify(updatedSheet));
-FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:592:      localStorage.setItem('fmp_dynamic_sheet_cost_tcc_boq', JSON.stringify(updatedSheet));
-FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:596:      localStorage.setItem('fmp_dynamic_sheet_startup_funds', JSON.stringify(updatedSheet));
-FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:600:      localStorage.setItem('fmp_dynamic_sheet_capex_opex_dancia', JSON.stringify(updatedSheet));
-FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:623:        localStorage.setItem('fmp_dynamic_sheet_income_statement', JSON.stringify(DEFAULT_INCOME_STATEMENT));
-FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:626:        localStorage.setItem('fmp_dynamic_sheet_balance_sheet', JSON.stringify(DEFAULT_BALANCE_SHEET));
-FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:629:        localStorage.setItem('fmp_dynamic_sheet_cost_tcc_boq', JSON.stringify(DEFAULT_COST_TCC_BOQ));
-FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:632:        localStorage.setItem('fmp_dynamic_sheet_startup_funds', JSON.stringify(DEFAULT_STARTUP_FUNDS));
-FingerMobile Protocol/apps/frontend-main/src/components/dashboard/EnterpriseFinancialEcosystemConsole.tsx:635:        localStorage.setItem('fmp_dynamic_sheet_capex_opex_dancia', JSON.stringify(DEFAULT_CAPEX_OPEX_DANCIA4TV));
 FingerMobile Protocol/apps/frontend-main/src/components/dashboard/ForumsManagement.tsx:60:      const saved = localStorage.getItem('fm_feed_algorithm_config');
 FingerMobile Protocol/apps/frontend-main/src/components/dashboard/ForumsManagement.tsx:94:        const cached = localStorage.getItem('fm_forum_categories');
 FingerMobile Protocol/apps/frontend-main/src/components/dashboard/ForumsManagement.tsx:126:        localStorage.setItem('fm_forum_categories', JSON.stringify(loadedCats));
-FingerMobile Protocol/apps/frontend-main/src/components/dashboard/ForumsManagement.tsx:141:    localStorage.setItem('fm_feed_algorithm_config', JSON.stringify(newConfig));
-FingerMobile Protocol/apps/frontend-main/src/components/dashboard/ForumsManagement.tsx:198:    localStorage.setItem('fm_forum_categories', JSON.stringify(updated));
-FingerMobile Protocol/apps/frontend-main/src/components/dashboard/ForumsManagement.tsx:206:      localStorage.setItem('fm_forum_categories', JSON.stringify(updated));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/ForumsManagement.tsx:167:    localStorage.setItem('fm_feed_algorithm_config', JSON.stringify(newConfig));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/ForumsManagement.tsx:210:      localStorage.setItem('fm_forum_categories', JSON.stringify(updated));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/ForumsManagement.tsx:244:      localStorage.setItem('fm_forum_categories', JSON.stringify(updated));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/ForumsManagement.tsx:261:      localStorage.setItem('fm_forum_categories', JSON.stringify(updated));
 FingerMobile Protocol/apps/frontend-main/src/components/dashboard/MasterFinancialsConsole.tsx:447:      const stored = localStorage.getItem(STORAGE_KEY_FIC_AUDIT);
 FingerMobile Protocol/apps/frontend-main/src/components/dashboard/MasterFinancialsConsole.tsx:451:      const storedCic = localStorage.getItem(STORAGE_KEY_CIC_LEDGER);
 FingerMobile Protocol/apps/frontend-main/src/components/dashboard/MasterFinancialsConsole.tsx:563:    localStorage.setItem(STORAGE_KEY_FIC_AUDIT, JSON.stringify(updatedLedger));
@@ -100,13 +227,14 @@ FingerMobile Protocol/apps/frontend-main/src/components/dashboard/MasterFinancia
 FingerMobile Protocol/apps/frontend-main/src/components/dashboard/MasterFinancialsConsole.tsx:631:      localStorage.setItem(STORAGE_KEY_MEMBER_PURCHASES, JSON.stringify(existing));
 FingerMobile Protocol/apps/frontend-main/src/components/dashboard/MasterMembersConsole.tsx:358:      const saved = localStorage.getItem('fingermobile_master_members_db');
 FingerMobile Protocol/apps/frontend-main/src/components/dashboard/MasterMembersConsole.tsx:419:      localStorage.setItem('fingermobile_master_members_db', JSON.stringify(updated));
-FingerMobile Protocol/apps/frontend-main/src/components/dashboard/SubscriptionModelsConsole.tsx:361:      const saved = localStorage.getItem(STORAGE_KEY);
-FingerMobile Protocol/apps/frontend-main/src/components/dashboard/SubscriptionModelsConsole.tsx:375:    return localStorage.getItem(ACTIVE_TEST_KEY) || 'sub_platform_free';
-FingerMobile Protocol/apps/frontend-main/src/components/dashboard/SubscriptionModelsConsole.tsx:382:    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-FingerMobile Protocol/apps/frontend-main/src/components/dashboard/SubscriptionModelsConsole.tsx:396:    localStorage.setItem(ACTIVE_TEST_KEY, model.id);
-FingerMobile Protocol/apps/frontend-main/src/components/dashboard/SubscriptionModelsConsole.tsx:397:    localStorage.setItem('user_active_tier_name', model.name);
-FingerMobile Protocol/apps/frontend-main/src/components/dashboard/SubscriptionModelsConsole.tsx:398:    localStorage.setItem('user_active_tier_fic', String(model.monthlyFIC));
-FingerMobile Protocol/apps/frontend-main/src/components/dashboard/SubscriptionModelsConsole.tsx:526:    localStorage.setItem('fingermobile_synced_subscription_pnl_annual_ngn', String(annualTotalNgn));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/SubscriptionModelsConsole.tsx:365:      const saved = localStorage.getItem(STORAGE_KEY);
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/SubscriptionModelsConsole.tsx:379:    return localStorage.getItem(ACTIVE_TEST_KEY) || 'sub_platform_free';
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/SubscriptionModelsConsole.tsx:405:          localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/SubscriptionModelsConsole.tsx:426:    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/SubscriptionModelsConsole.tsx:456:    localStorage.setItem(ACTIVE_TEST_KEY, model.id);
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/SubscriptionModelsConsole.tsx:457:    localStorage.setItem('user_active_tier_name', model.name);
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/SubscriptionModelsConsole.tsx:458:    localStorage.setItem('user_active_tier_fic', String(model.monthlyFIC));
+FingerMobile Protocol/apps/frontend-main/src/components/dashboard/SubscriptionModelsConsole.tsx:585:    localStorage.setItem('fingermobile_synced_subscription_pnl_annual_ngn', String(annualTotalNgn));
 FingerMobile Protocol/apps/frontend-main/src/components/editor/EnhancedEditorStudio.tsx:159:      const token = localStorage.getItem('fingermobile_token') || localStorage.getItem('token');
 FingerMobile Protocol/apps/frontend-main/src/components/forum/CategoryBulletinFeedHeader.tsx:111:      return localStorage.getItem(storageKey) === 'true';
 FingerMobile Protocol/apps/frontend-main/src/components/forum/CategoryBulletinFeedHeader.tsx:202:      localStorage.setItem(storageKey, String(nextState));
@@ -235,7 +363,7 @@ FingerMobile Protocol/apps/frontend-main/src/pages/ForumPage.tsx:962:      local
 FingerMobile Protocol/apps/frontend-main/src/pages/ForumPage.tsx:963:      localStorage.removeItem('fmp_member_profile');
 FingerMobile Protocol/apps/frontend-main/src/pages/ForumPage.tsx:964:      localStorage.removeItem('fmp_comprehensive_profile');
 FingerMobile Protocol/apps/frontend-main/src/pages/ForumPage.tsx:995:      const saved = localStorage.getItem('fmp_mii_stories');
-FingerMobile Protocol/apps/frontend-main/src/pages/ForumPage.tsx:4432:                      localStorage.setItem('fingermobile_mii_stories', JSON.stringify(updated));
+FingerMobile Protocol/apps/frontend-main/src/pages/ForumPage.tsx:4446:                      localStorage.setItem('fingermobile_mii_stories', JSON.stringify(updated));
 FingerMobile Protocol/apps/frontend-main/src/pages/GemsPage.tsx:311:        localStorage.setItem('fingermobile_gem_balance', String(updatedBalance));
 FingerMobile Protocol/apps/frontend-main/src/pages/GemsPage.tsx:327:        localStorage.setItem('fingermobile_gem_balance', String(updatedBalance));
 FingerMobile Protocol/apps/frontend-main/src/pages/GemsPage.tsx:403:        localStorage.setItem('fingermobile_gem_balance', String(updatedBalance));
@@ -275,11 +403,11 @@ FingerMobile Protocol/apps/frontend-main/src/pages/PhotoCreditsPage.tsx:1179:   
 FingerMobile Protocol/apps/frontend-main/src/pages/PhotoCreditsPage.tsx:1202:      localStorage.setItem('fm_photocredits_favorites', JSON.stringify(updated));
 FingerMobile Protocol/apps/frontend-main/src/pages/PubliciteePage.tsx:25:      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
 FingerMobile Protocol/apps/frontend-main/src/pages/PubliciteePage.tsx:43:      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-FingerMobile Protocol/apps/frontend-main/src/pages/TributPage.tsx:111:    const saved = localStorage.getItem('fm_tribut_auto_rotate') || localStorage.getItem('fm_gallery_auto_rotate');
-FingerMobile Protocol/apps/frontend-main/src/pages/TributPage.tsx:116:    const saved = localStorage.getItem('fm_tribut_display_style') || localStorage.getItem('fm_gallery_display_style');
-FingerMobile Protocol/apps/frontend-main/src/pages/TributPage.tsx:157:    localStorage.setItem('fm_tribut_display_style', styleId);
-FingerMobile Protocol/apps/frontend-main/src/pages/TributPage.tsx:158:    localStorage.setItem('fm_tribut_auto_rotate', 'false');
-FingerMobile Protocol/apps/frontend-main/src/pages/TributPage.tsx:167:    localStorage.setItem('fm_tribut_auto_rotate', String(nextVal));
+FingerMobile Protocol/apps/frontend-main/src/pages/TributPage.tsx:177:    const saved = localStorage.getItem('fm_tribut_auto_rotate') || localStorage.getItem('fm_gallery_auto_rotate');
+FingerMobile Protocol/apps/frontend-main/src/pages/TributPage.tsx:182:    const saved = localStorage.getItem('fm_tribut_display_style') || localStorage.getItem('fm_gallery_display_style');
+FingerMobile Protocol/apps/frontend-main/src/pages/TributPage.tsx:223:    localStorage.setItem('fm_tribut_display_style', styleId);
+FingerMobile Protocol/apps/frontend-main/src/pages/TributPage.tsx:224:    localStorage.setItem('fm_tribut_auto_rotate', 'false');
+FingerMobile Protocol/apps/frontend-main/src/pages/TributPage.tsx:233:    localStorage.setItem('fm_tribut_auto_rotate', String(nextVal));
 FingerMobile Protocol/apps/frontend-main/src/pages/UGCDashboardPage.tsx:71:        ? localStorage.getItem('token') || localStorage.getItem('accessToken') || ''
 FingerMobile Protocol/apps/frontend-main/src/pages/auth/LoginPage.tsx:71:        localStorage.setItem('accessToken', token);
 FingerMobile Protocol/apps/frontend-main/src/pages/auth/LoginPage.tsx:72:        localStorage.setItem('fingermobile_token', token);
@@ -459,27 +587,29 @@ FingerMobile Protocol/apps/frontend-main/src/services/enhancedWalletService.ts:4
 FingerMobile Protocol/apps/frontend-main/src/services/enhancedWalletService.ts:456:      localStorage.setItem(STORAGE_KEY_STORE_TXS, JSON.stringify(list));
 FingerMobile Protocol/apps/frontend-main/src/services/exchangeRateService.ts:66:      const stored = localStorage.getItem(STORAGE_KEY_PLATFORM_FIC_RATE);
 FingerMobile Protocol/apps/frontend-main/src/services/exchangeRateService.ts:100:        localStorage.setItem(STORAGE_KEY_PLATFORM_FIC_RATE, newRate.toString());
-FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:161:      if (!localStorage.getItem(DB_KEYS.CONFIG)) {
-FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:173:        localStorage.setItem(DB_KEYS.CONFIG, JSON.stringify(defaultConfig));
-FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:177:      if (!localStorage.getItem(DB_KEYS.BANK_RAILS)) {
-FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:210:        localStorage.setItem(DB_KEYS.BANK_RAILS, JSON.stringify(initialRails));
-FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:230:      if (!localStorage.getItem(metaKey)) {
-FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:240:        localStorage.setItem(metaKey, JSON.stringify(defaultMeta));
-FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:264:    const raw = localStorage.getItem(DB_KEYS.CONFIG);
-FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:288:    localStorage.setItem(DB_KEYS.CONFIG, JSON.stringify(updated));
-FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:305:    const raw = localStorage.getItem(DB_KEYS.BANK_RAILS);
-FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:310:    localStorage.setItem(DB_KEYS.BANK_RAILS, JSON.stringify(rails));
-FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:326:    const raw = localStorage.getItem(`${DB_KEYS.SHEET_METADATA}_${sheetKey}`);
-FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:340:    localStorage.setItem(`${DB_KEYS.SHEET_METADATA}_${meta.sheetKey}`, JSON.stringify(meta));
-FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:347:    const existingRaw = localStorage.getItem(DB_KEYS.AUDIT_LOG);
-FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:355:    localStorage.setItem(DB_KEYS.AUDIT_LOG, JSON.stringify(updated));
-FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:360:    const raw = localStorage.getItem(DB_KEYS.AUDIT_LOG);
-FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:368:    const raw = localStorage.getItem(DB_KEYS.HEARTBEAT_LOG);
-FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:376:    localStorage.setItem(DB_KEYS.HEARTBEAT_LOG, JSON.stringify(updated));
-FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:380:    const raw = localStorage.getItem(DB_KEYS.HEARTBEAT_LOG);
-FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:388:    const raw = localStorage.getItem(DB_KEYS.SWEEPS_LEDGER);
-FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:396:    localStorage.setItem(DB_KEYS.SWEEPS_LEDGER, JSON.stringify(updated));
-FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:401:    const raw = localStorage.getItem(DB_KEYS.SWEEPS_LEDGER);
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:162:      if (!localStorage.getItem(DB_KEYS.CONFIG)) {
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:174:        localStorage.setItem(DB_KEYS.CONFIG, JSON.stringify(defaultConfig));
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:178:      if (!localStorage.getItem(DB_KEYS.BANK_RAILS)) {
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:211:        localStorage.setItem(DB_KEYS.BANK_RAILS, JSON.stringify(initialRails));
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:231:      if (!localStorage.getItem(metaKey)) {
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:241:        localStorage.setItem(metaKey, JSON.stringify(defaultMeta));
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:265:    const raw = localStorage.getItem(DB_KEYS.CONFIG);
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:289:    localStorage.setItem(DB_KEYS.CONFIG, JSON.stringify(updated));
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:306:    const raw = localStorage.getItem(DB_KEYS.BANK_RAILS);
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:311:    localStorage.setItem(DB_KEYS.BANK_RAILS, JSON.stringify(rails));
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:327:    const raw = localStorage.getItem(`${DB_KEYS.SHEET_METADATA}_${sheetKey}`);
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:341:    localStorage.setItem(`${DB_KEYS.SHEET_METADATA}_${meta.sheetKey}`, JSON.stringify(meta));
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:348:    const existingRaw = localStorage.getItem(DB_KEYS.AUDIT_LOG);
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:356:    localStorage.setItem(DB_KEYS.AUDIT_LOG, JSON.stringify(updated));
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:361:    const raw = localStorage.getItem(DB_KEYS.AUDIT_LOG);
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:369:    const raw = localStorage.getItem(DB_KEYS.HEARTBEAT_LOG);
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:377:    localStorage.setItem(DB_KEYS.HEARTBEAT_LOG, JSON.stringify(updated));
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:381:    const raw = localStorage.getItem(DB_KEYS.HEARTBEAT_LOG);
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:389:    const raw = localStorage.getItem(DB_KEYS.SWEEPS_LEDGER);
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:397:    localStorage.setItem(DB_KEYS.SWEEPS_LEDGER, JSON.stringify(updated));
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:402:    const raw = localStorage.getItem(DB_KEYS.SWEEPS_LEDGER);
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:425:      localStorage.setItem(`fmp_dynamic_sheet_${key}`, JSON.stringify(sheetData));
+FingerMobile Protocol/apps/frontend-main/src/services/financialEcosystemDatabase.ts:429:        localStorage.setItem(metaKey, JSON.stringify({ ...currentMeta, ...metadata, sheetKey: key }));
 FingerMobile Protocol/apps/frontend-main/src/services/financialHeartbeatService.ts:50:      const subRaw = localStorage.getItem('fmp_subscription_models');
 FingerMobile Protocol/apps/frontend-main/src/services/gemsService.ts:37:        localStorage.getItem('authToken') ||
 FingerMobile Protocol/apps/frontend-main/src/services/gemsService.ts:38:        localStorage.getItem('accessToken') ||
