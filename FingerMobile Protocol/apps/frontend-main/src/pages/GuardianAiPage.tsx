@@ -132,7 +132,7 @@ const GuardianAiPage: React.FC = () => {
     modelType: 'neural_network'
   });
 
-  const [activeActionMenuId, setActiveActionMenuId] = useState<string | null>(null);
+  const [activeActionMenuId, setActiveActionMenuId] = useState<string | number | null>(null);
 
   const handleDownloadReport = (report: GuardianAIReport) => {
     const reportData = JSON.stringify(report, null, 2);
@@ -140,7 +140,7 @@ const GuardianAiPage: React.FC = () => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `GuardianAI_${report.reportType}_${report.id}.json`;
+    a.download = `GuardianAI_${report.type}_${report.id}.json`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);

@@ -1000,6 +1000,8 @@ const AIGovernancePage: React.FC = () => {
                               <div className="flex space-x-2">
                                 <button 
                                   className="text-blue-600 hover:text-blue-900"
+                                  aria-label={`View incident #${incident.id} details`}
+                                  title="View details"
                                   onClick={() => history.push(`/dashboard/ai-governance/incidents/${incident.id}/details`)}
                                 >
                                   <Eye className="h-4 w-4" />
@@ -1007,16 +1009,25 @@ const AIGovernancePage: React.FC = () => {
                                 {incident.status === 'open' && (
                                   <button 
                                     className="text-green-600 hover:text-green-900"
+                                    aria-label={`Resolve incident #${incident.id}`}
+                                    title="Resolve incident"
                                     onClick={() => {
-                                      // Resolve incident
-                                      console.log('Resolving incident:', incident.id);
+                                      setAiIncidents((prev) =>
+                                        prev.map((inc) =>
+                                          inc.id === incident.id ? { ...inc, status: 'resolved' } : inc
+                                        )
+                                      );
                                     }}
                                   >
                                     <CheckCircle className="h-4 w-4" />
                                   </button>
                                 )}
                                 <div className="relative">
-                                  <button className="text-gray-600 hover:text-gray-900">
+                                  <button
+                                    className="text-gray-600 hover:text-gray-900"
+                                    aria-label={`More actions for incident #${incident.id}`}
+                                    title="More actions"
+                                  >
                                     <MoreHorizontal className="h-4 w-4" />
                                   </button>
                                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden">

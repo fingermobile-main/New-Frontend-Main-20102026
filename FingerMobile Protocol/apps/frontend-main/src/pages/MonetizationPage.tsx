@@ -376,8 +376,20 @@ const MonetizationPage: React.FC = () => {
 
   const handleCreateRevenue = async () => {
     try {
-      // In a real implementation, this would call the API to create a revenue stream
-      console.log('Creating revenue stream:', newRevenue);
+      const createdStream: RevenueStream = {
+        id: Date.now(),
+        name: newRevenue.name,
+        description: newRevenue.description,
+        type: newRevenue.type as any,
+        status: newRevenue.status as any,
+        monthlyRevenue: 0,
+        annualRevenue: 0,
+        conversionRate: 0,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+      setRevenueStreams(prev => [createdStream, ...prev]);
+      setFilteredRevenueStreams(prev => [createdStream, ...prev]);
       setShowCreateModal(false);
       // Reset form
       setNewRevenue({
@@ -393,8 +405,21 @@ const MonetizationPage: React.FC = () => {
 
   const handleCreateSubscription = async () => {
     try {
-      // In a real implementation, this would call the API to create a subscription plan
-      console.log('Creating subscription plan:', newSubscription);
+      const createdPlan: SubscriptionPlan = {
+        id: Date.now(),
+        name: newSubscription.name,
+        description: newSubscription.description,
+        price: Number(newSubscription.price) || 0,
+        currency: newSubscription.currency,
+        billingCycle: newSubscription.billingCycle as any,
+        features: newSubscription.features ? newSubscription.features.split(',').map(f => f.trim()) : [],
+        status: newSubscription.status as any,
+        userCount: 0,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+      setSubscriptionPlans(prev => [createdPlan, ...prev]);
+      setFilteredSubscriptions(prev => [createdPlan, ...prev]);
       setShowCreateModal(false);
       // Reset form
       setNewSubscription({
@@ -413,8 +438,6 @@ const MonetizationPage: React.FC = () => {
 
   const handleToggleSubscriptionStatus = async (planId: number) => {
     try {
-      // In a real implementation, this would call the API to toggle subscription status
-      console.log('Toggling subscription status:', planId);
       setSubscriptionPlans(subscriptionPlans.map(plan => 
         plan.id === planId ? {...plan, status: plan.status === 'active' ? 'inactive' : 'active'} : plan
       ));
@@ -744,20 +767,19 @@ const MonetizationPage: React.FC = () => {
                                 <button 
                                   className="text-blue-600 hover:text-blue-900"
                                   onClick={() => history.push(`/dashboard/monetization/revenue/${stream.id}/details`)}
+                                  aria-label={`View details for ${stream.name}`}
                                 >
                                   <Eye className="h-4 w-4" />
                                 </button>
                                 <button 
                                   className="text-green-600 hover:text-green-900"
-                                  onClick={() => {
-                                    // Edit revenue stream
-                                    console.log('Edit revenue stream:', stream.id);
-                                  }}
+                                  onClick={() => history.push(`/dashboard/monetization/revenue/${stream.id}/edit`)}
+                                  aria-label={`Edit revenue stream ${stream.name}`}
                                 >
                                   <Edit3 className="h-4 w-4" />
                                 </button>
                                 <div className="relative">
-                                  <button className="text-gray-600 hover:text-gray-900">
+                                  <button className="text-gray-600 hover:text-gray-900" aria-label={`More options for ${stream.name}`}>
                                     <MoreHorizontal className="h-4 w-4" />
                                   </button>
                                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden">

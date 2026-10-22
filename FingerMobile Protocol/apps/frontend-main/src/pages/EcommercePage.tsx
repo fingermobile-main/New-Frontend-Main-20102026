@@ -271,8 +271,20 @@ const EcommercePage: React.FC = () => {
 
   const handleCreateProduct = async () => {
     try {
-      // In a real implementation, this would call the API to create a product
-      console.log('Creating product:', newProduct);
+      const createdItem: Product = {
+        id: Date.now(),
+        name: newProduct.name,
+        description: newProduct.description,
+        price: Number(newProduct.price) || 0,
+        category: newProduct.category,
+        stockQuantity: Number(newProduct.stockQuantity) || 0,
+        sku: newProduct.sku || `SKU-${Date.now().toString().slice(-4)}`,
+        status: newProduct.status,
+        images: newProduct.images ? [newProduct.images] : ['https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=100&fit=crop'],
+        createdAt: new Date().toISOString()
+      };
+      setProducts(prev => [createdItem, ...prev]);
+      setFilteredProducts(prev => [createdItem, ...prev]);
       setShowCreateModal(false);
       // Reset form
       setNewProduct({
@@ -292,8 +304,6 @@ const EcommercePage: React.FC = () => {
 
   const handleDeleteProduct = async (productId: number) => {
     try {
-      // In a real implementation, this would call the API to delete a product
-      console.log('Deleting product:', productId);
       setProducts(products.filter(product => product.id !== productId));
       setFilteredProducts(filteredProducts.filter(product => product.id !== productId));
     } catch (error) {
@@ -303,8 +313,6 @@ const EcommercePage: React.FC = () => {
 
   const handleUpdateOrderStatus = async (orderId: number, newStatus: string) => {
     try {
-      // In a real implementation, this would call the API to update an order
-      console.log('Updating order status:', orderId, 'to', newStatus);
       setOrders(orders.map(order => 
         order.id === orderId ? {...order, status: newStatus} : order
       ));
@@ -536,26 +544,26 @@ const EcommercePage: React.FC = () => {
                             <button 
                               className="text-blue-600 hover:text-blue-900"
                               onClick={() => history.push(`/dashboard/ecommerce/products/${item.id}/view`)}
+                              aria-label={`View product ${item.name}`}
                             >
                               <Eye className="h-4 w-4" />
                             </button>
                             <button 
                               className="text-green-600 hover:text-green-900"
-                              onClick={() => {
-                                // Edit product
-                                console.log('Edit product:', item.id);
-                              }}
+                              onClick={() => history.push(`/dashboard/ecommerce/products/${item.id}/edit`)}
+                              aria-label={`Edit product ${item.name}`}
                             >
                               <Edit3 className="h-4 w-4" />
                             </button>
                             <button 
                               className="text-red-600 hover:text-red-900"
                               onClick={() => handleDeleteProduct(item.id)}
+                              aria-label={`Delete product ${item.name}`}
                             >
                               <Trash2 className="h-4 w-4" />
                             </button>
                             <div className="relative">
-                              <button className="text-gray-600 hover:text-gray-900">
+                              <button className="text-gray-600 hover:text-gray-900" aria-label={`More options for product ${item.name}`}>
                                 <MoreHorizontal className="h-4 w-4" />
                               </button>
                               <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden">

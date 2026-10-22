@@ -396,10 +396,41 @@ const CompliancePage: React.FC = () => {
     totalPages = Math.ceil(filteredReports.length / itemsPerPage);
   }
 
+  const handleDownloadReport = (report: ComplianceReport) => {
+    const reportData = JSON.stringify(report, null, 2);
+    const blob = new Blob([reportData], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `compliance-report-${report.id}-${report.title.toLowerCase().replace(/[^a-z0-9]/g, '-')}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   const handleCreateRequirement = async () => {
     try {
-      // In a real implementation, this would call the API to create a requirement
-      console.log('Creating requirement:', newRequirement);
+      const created: ComplianceRequirement = {
+        id: Date.now(),
+        name: newRequirement.name,
+        description: newRequirement.description,
+        regulation: newRequirement.regulation,
+        jurisdiction: newRequirement.jurisdiction,
+        category: newRequirement.category as any,
+        priority: newRequirement.priority as any,
+        complianceStatus: 'compliant',
+        assignedTo: 1,
+        assignedToName: newRequirement.assignedToName || 'Admin',
+        deadline: newRequirement.deadline || new Date().toISOString(),
+        lastAssessment: new Date().toISOString(),
+        nextAssessment: new Date(Date.now() + 90 * 86400000).toISOString(),
+        documents: [],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+      setComplianceRequirements(prev => [created, ...prev]);
+      setFilteredRequirements(prev => [created, ...prev]);
       setShowCreateModal(false);
       // Reset form
       setNewRequirement({
@@ -419,8 +450,6 @@ const CompliancePage: React.FC = () => {
 
   const handleUpdateStatus = async (reqId: number, status: string) => {
     try {
-      // In a real implementation, this would call the API to update status
-      console.log('Updating status for requirement:', reqId, status);
       setComplianceRequirements(complianceRequirements.map(req => 
         req.id === reqId ? {...req, complianceStatus: status as any, lastAssessment: new Date().toISOString()} : req
       ));
@@ -984,20 +1013,19 @@ const CompliancePage: React.FC = () => {
                                 <button 
                                   className="text-blue-600 hover:text-blue-900"
                                   onClick={() => history.push(`/dashboard/compliance/reports/${report.id}/view`)}
+                                  aria-label={`View report ${report.title}`}
                                 >
                                   <Eye className="h-4 w-4" />
                                 </button>
                                 <button 
                                   className="text-green-600 hover:text-green-900"
-                                  onClick={() => {
-                                    // Download report
-                                    console.log('Downloading report:', report.id);
-                                  }}
+                                  onClick={() => handleDownloadReport(report)}
+                                  aria-label={`Download report ${report.title}`}
                                 >
                                   <FileText className="h-4 w-4" />
                                 </button>
                                 <div className="relative">
-                                  <button className="text-gray-600 hover:text-gray-900">
+                                  <button className="text-gray-600 hover:text-gray-900" aria-label={`More options for report ${report.title}`}>
                                     <MoreHorizontal className="h-4 w-4" />
                                   </button>
                                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden">

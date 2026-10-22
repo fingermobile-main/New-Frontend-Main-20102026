@@ -460,13 +460,16 @@ const PlatformServiceOfUsePage: React.FC = () => {
               </h2>
               <nav className="space-y-1 max-h-[60vh] overflow-y-auto pr-1">
                 {sections.map((sec) => (
-                  <a
+                  <button
                     key={sec.id}
-                    href={`#${sec.id}`}
-                    className="block px-3 py-1.5 text-xs rounded-lg text-slate-700 dark:text-slate-300 hover:text-emerald-700 dark:hover:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 transition font-semibold truncate"
+                    type="button"
+                    onClick={() => {
+                      document.getElementById(sec.id)?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                    className="w-full text-left block px-3 py-1.5 text-xs rounded-lg text-slate-700 dark:text-slate-300 hover:text-emerald-700 dark:hover:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 transition font-semibold truncate"
                   >
                     {sec.number}. {sec.title}
-                  </a>
+                  </button>
                 ))}
               </nav>
 

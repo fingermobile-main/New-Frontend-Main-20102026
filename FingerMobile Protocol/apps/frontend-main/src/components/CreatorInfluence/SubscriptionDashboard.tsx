@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useCreatorInfluenceSubscription } from '../../hooks/useCreatorInfluenceSubscription';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -28,6 +29,7 @@ const SubscriptionDashboard: React.FC<SubscriptionDashboardProps> = ({
   _followers,
   _engagementRate
 }) => {
+  const navigate = useNavigate();
   const { member } = useAuth();
 
   // Ensure memberId is properly typed as string
@@ -248,9 +250,7 @@ const SubscriptionDashboard: React.FC<SubscriptionDashboardProps> = ({
             You&apos;re currently on the free tier. Upgrade to unlock premium creator features!
           </p>
           <button
-            onClick={() => {
-              // This would trigger navigation to the subscription page
-            }}
+            onClick={() => navigate('/subscriptions')}
             className="px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             aria-label="Explore subscription plans"
           >

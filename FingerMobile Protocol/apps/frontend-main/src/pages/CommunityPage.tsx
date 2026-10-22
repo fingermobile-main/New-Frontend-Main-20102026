@@ -919,21 +919,28 @@ const CommunityPage: React.FC = () => {
                               <div className="flex space-x-2">
                                 <button
                                   className="text-blue-600 hover:text-blue-900"
+                                  aria-label={`View interaction #${interaction.id} details`}
+                                  title="View details"
                                   onClick={() => history.push(`/dashboard/community/interactions/${interaction.id}/details`)}
                                 >
                                   <Eye className="h-4 w-4" />
                                 </button>
                                 <button
                                   className="text-red-600 hover:text-red-900"
+                                  aria-label={`Delete interaction #${interaction.id}`}
+                                  title="Delete interaction"
                                   onClick={() => {
-                                    // Delete interaction
-                                    console.log('Deleting interaction:', interaction.id);
+                                    setInteractions(prev => prev.filter(i => i.id !== interaction.id));
                                   }}
                                 >
                                   <XCircle className="h-4 w-4" />
                                 </button>
                                 <div className="relative">
-                                  <button className="text-gray-600 hover:text-gray-900">
+                                  <button
+                                    className="text-gray-600 hover:text-gray-900"
+                                    aria-label={`More actions for interaction #${interaction.id}`}
+                                    title="More actions"
+                                  >
                                     <MoreHorizontal className="h-4 w-4" />
                                   </button>
                                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden">

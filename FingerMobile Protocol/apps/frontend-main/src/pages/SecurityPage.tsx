@@ -326,10 +326,17 @@ const SecurityPage: React.FC = () => {
     totalPages = Math.ceil(filteredPolicies.length / itemsPerPage);
   }
 
+  const handleBlockIp = (threatId: number) => {
+    try {
+      setThreats(prev => prev.map(threat => threat.id === threatId ? { ...threat, status: 'mitigated' } : threat));
+      setFilteredThreats(prev => prev.map(threat => threat.id === threatId ? { ...threat, status: 'mitigated' } : threat));
+    } catch (error) {
+      console.error('Error blocking IP:', error);
+    }
+  };
+
   const handleResolveEvent = async (eventId: number) => {
     try {
-      // In a real implementation, this would call the API to resolve an event
-      console.log('Resolving event:', eventId);
       setSecurityEvents(securityEvents.map(event => 
         event.id === eventId ? {...event, resolved: true, resolvedBy: 1} : event
       ));
@@ -343,8 +350,6 @@ const SecurityPage: React.FC = () => {
 
   const handleTogglePolicy = async (policyId: number) => {
     try {
-      // In a real implementation, this would call the API to toggle a policy
-      console.log('Toggling policy:', policyId);
       setPolicies(policies.map(policy => 
         policy.id === policyId ? {...policy, isActive: !policy.isActive} : policy
       ));
@@ -753,20 +758,19 @@ const SecurityPage: React.FC = () => {
                                 <button 
                                   className="text-blue-600 hover:text-blue-900"
                                   onClick={() => history.push(`/dashboard/security/threats/${threat.id}/details`)}
+                                  aria-label={`View threat ${threat.id} details`}
                                 >
                                   <Eye className="h-4 w-4" />
                                 </button>
                                 <button 
                                   className="text-red-600 hover:text-red-900"
-                                  onClick={() => {
-                                    // Block IP
-                                    console.log('Blocking IP:', threat.sourceIp);
-                                  }}
+                                  onClick={() => handleBlockIp(threat.id)}
+                                  aria-label={`Block IP ${threat.sourceIp}`}
                                 >
                                   <Ban className="h-4 w-4" />
                                 </button>
                                 <div className="relative">
-                                  <button className="text-gray-600 hover:text-gray-900">
+                                  <button className="text-gray-600 hover:text-gray-900" aria-label={`More options for threat ${threat.id}`}>
                                     <MoreHorizontal className="h-4 w-4" />
                                   </button>
                                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden">

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import * as React from 'react';
 import { Card, Button, Spinner, Alert, Modal, Form } from "react-bootstrap";
 import loyaltyService from "../../services/loyaltyService";
 

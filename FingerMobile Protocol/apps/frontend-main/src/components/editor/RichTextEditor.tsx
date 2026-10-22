@@ -19,7 +19,7 @@ import {
   AlignCenter,
   AlignRight,
   AlignJustify,
-  Link,
+  Link as LinkIcon,
   Image,
   Video,
   Music,
@@ -612,8 +612,9 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
             onClick={insertLink}
             className="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-indigo-600 dark:text-indigo-400 font-medium"
             title="Insert Link"
+            aria-label="Insert Link"
           >
-            <Link className="w-4 h-4" />
+            <LinkIcon className="w-4 h-4" />
           </button>
           <button
             type="button"

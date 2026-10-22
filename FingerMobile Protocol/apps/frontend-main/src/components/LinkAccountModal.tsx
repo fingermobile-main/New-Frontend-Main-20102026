@@ -1,6 +1,5 @@
-import { Link as RouterLink } from 'react-router-dom';
 import React, { useState } from 'react';
-import { Link, Wallet, CreditCard, Banknote, X } from 'lucide-react';
+import { Link as LinkIcon, Wallet, CreditCard, Banknote, X } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
@@ -76,7 +75,7 @@ const LinkAccountModal: React.FC<LinkAccountModalProps> = ({
       <DialogContent className="max-w-2xl">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-slate-900 font-bold">
-            <Link className="h-5 w-5 text-slate-700" />
+            <LinkIcon className="h-5 w-5 text-slate-700" />
             Link Account
           </DialogTitle>
           <DialogDescription className="text-slate-700">

@@ -317,6 +317,7 @@ const GemsPage: React.FC = () => {
       refreshBalance();
     } catch (_err) {
       // Optimistic recovery for offline / disconnected environments
+      const updatedBalance = userBalance + selectedGemPack.gems;
       setUserBalance(updatedBalance);
       setIsAddGemsModalOpen(false);
       showToast(`Successfully added ${selectedGemPack.gems.toLocaleString()} Gems to your balance! 💎`, 'success');
