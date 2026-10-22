@@ -59,7 +59,7 @@ const BillingPage: React.FC = () => {
   const currentPlan = billingRecords[0]?.plan_name || 'Enterprise Protocol Dedicated';
 
   return (
-    <div className="space-y-6">
+    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
       <div>
         <h1 className="text-2xl font-black text-slate-900 tracking-tight">Billing & Subscriptions</h1>
         <p className="mt-1 text-sm font-medium text-slate-700">Manage protocol infrastructure plans, payment methods, and invoice records</p>

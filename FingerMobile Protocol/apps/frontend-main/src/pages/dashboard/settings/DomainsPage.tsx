@@ -102,7 +102,7 @@ const DomainsPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
       <div>
         <h1 className="text-2xl font-black text-slate-900">Custom Domains & Gateways</h1>
         <p className="text-sm font-medium text-slate-700 mt-1">Manage platform gateway routing, SSL certificates, and custom apex domains.</p>

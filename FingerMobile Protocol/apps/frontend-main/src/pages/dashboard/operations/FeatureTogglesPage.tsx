@@ -126,7 +126,7 @@ const FeatureTogglesPage: React.FC = () => {
   };
 
     return (
-    <div className="space-y-6">
+    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-2xl font-black text-slate-900">Feature Toggles & Operations</h1>
@@ -172,7 +172,7 @@ const FeatureTogglesPage: React.FC = () => {
             </div>
 
             <div className="mt-6 pt-4 border-t border-slate-200 flex items-center justify-between">
-              <span className="text-xs font-bold text-slate-600">Runtime Status</span>
+              <span className="text-xs font-bold text-slate-700">Runtime Status</span>
               <button
                 onClick={() => handleToggle(toggle.id, !toggle.enabled)}
                 className={`px-4 py-1.5 text-xs font-bold rounded-xl transition-colors border ${
