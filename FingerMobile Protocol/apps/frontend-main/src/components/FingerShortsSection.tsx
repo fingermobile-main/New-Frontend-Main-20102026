@@ -4,6 +4,7 @@ import {
   SplitSquareVertical, Gift, ChevronLeft, ChevronRight, Play, Pause, X
 } from 'lucide-react';
 import SendFicModal from './SendFicModal';
+import { useAppContext } from '../contexts/AppContext';
 
 export interface FingerShortCard {
   id: string;
@@ -49,6 +50,25 @@ export const FingerShortsSection: React.FC<FingerShortsSectionProps> = ({
   const [isP2PAutoShuffling, setIsP2PAutoShuffling] = useState(true);
   const [cardProgress, setCardProgress] = useState(0);
   const [viewerPaused, setViewerPaused] = useState(false);
+  const { showToast } = useAppContext();
+  const [likedCardIds, setLikedCardIds] = useState<Record<string, boolean>>({});
+
+  const handleDuet = () => {
+    showToast?.('Duet recorder opening...', 'info');
+    onOpenCreate?.();
+  };
+
+  const handleLike = () => {
+    const card = activeSession?.cards[currentCardIndex];
+    if (!card) return;
+    const isLiked = likedCardIds[card.id];
+    setLikedCardIds((prev) => ({ ...prev, [card.id]: !isLiked }));
+    showToast?.(!isLiked ? 'Story liked!' : 'Story unliked', 'success');
+  };
+
+  const handleComment = () => {
+    showToast?.('Comments coming soon to live stories', 'info');
+  };
 
   useEffect(() => {
     fetchShorts();
@@ -325,6 +345,8 @@ export const FingerShortsSection: React.FC<FingerShortsSectionProps> = ({
                   {viewerPaused ? <Play className="w-3.5 h-3.5 fill-white" /> : <Pause className="w-3.5 h-3.5 fill-white" />}
                 </button>
                 <button
+                  type="button"
+                  aria-label="Close short viewer"
                   onClick={() => setActiveSession(null)}
                   className="w-7 h-7 rounded-full bg-black/60 text-white flex items-center justify-center font-bold hover:bg-black/80 transition"
                 >
@@ -387,19 +409,39 @@ export const FingerShortsSection: React.FC<FingerShortsSectionProps> = ({
               </div>
               <div className="flex items-center space-x-2">
                 <button
+                  type="button"
                   title="Tip Creator"
+                  aria-label="Tip Creator"
                   onClick={() => setShowTipModal(true)}
                   className="p-2 bg-black/60 rounded-full hover:bg-black/90 transition shadow"
                 >
                   <Gift className="w-4 h-4 text-emerald-400" />
                 </button>
-                <button title="Duet" className="p-2 bg-black/60 rounded-full hover:bg-black/90 transition shadow">
+                <button
+                  type="button"
+                  title="Duet"
+                  aria-label="Duet with creator"
+                  onClick={handleDuet}
+                  className="p-2 bg-black/60 rounded-full hover:bg-black/90 transition shadow"
+                >
                   <SplitSquareVertical className="w-4 h-4 text-purple-300" />
                 </button>
-                <button title="Like" className="p-2 bg-black/60 rounded-full hover:bg-black/90 transition shadow">
-                  <Heart className="w-4 h-4 text-red-400" />
+                <button
+                  type="button"
+                  title="Like"
+                  aria-label="Like story card"
+                  onClick={handleLike}
+                  className="p-2 bg-black/60 rounded-full hover:bg-black/90 transition shadow"
+                >
+                  <Heart className={`w-4 h-4 ${activeSession && likedCardIds[activeSession.cards[currentCardIndex]?.id] ? 'fill-red-500 text-red-500' : 'text-red-400'}`} />
                 </button>
-                <button title="Comment" className="p-2 bg-black/60 rounded-full hover:bg-black/90 transition shadow">
+                <button
+                  type="button"
+                  title="Comment"
+                  aria-label="Comment on story card"
+                  onClick={handleComment}
+                  className="p-2 bg-black/60 rounded-full hover:bg-black/90 transition shadow"
+                >
                   <MessageCircle className="w-4 h-4 text-blue-300" />
                 </button>
               </div>

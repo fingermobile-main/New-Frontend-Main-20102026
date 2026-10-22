@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { storefrontService, Storefront, StorefrontAnalyticsDaily } from '../../services/storefrontService';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
@@ -196,7 +197,12 @@ const StorefrontDashboard: React.FC = () => {
             <p className="text-sm mb-4">
               {lowStockCount} products are running low on inventory and need restocking.
             </p>
-            <Button variant="outline">View Low Stock Items</Button>
+            <Link
+              to="/storefront/inventory"
+              className="inline-flex items-center justify-center rounded-md text-sm font-medium border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 transition-colors"
+            >
+              View Low Stock Items
+            </Link>
           </CardContent>
         </Card>
       )}
@@ -227,8 +233,18 @@ const StorefrontDashboard: React.FC = () => {
                   </div>
                 </div>
                 <div className="flex gap-2">
-                  <Button size="sm" variant="outline">Manage Products</Button>
-                  <Button size="sm">View Analytics</Button>
+                  <Link
+                    to={`/storefront/${storefront.id}/products`}
+                    className="inline-flex items-center justify-center rounded-md text-sm font-medium border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-3 transition-colors"
+                  >
+                    Manage Products
+                  </Link>
+                  <Link
+                    to={`/storefront/${storefront.id}/analytics`}
+                    className="inline-flex items-center justify-center rounded-md text-sm font-medium bg-blue-600 text-white hover:bg-blue-700 h-9 px-3 rounded-md shadow-sm transition-colors"
+                  >
+                    View Analytics
+                  </Link>
                 </div>
               </div>
             ))}

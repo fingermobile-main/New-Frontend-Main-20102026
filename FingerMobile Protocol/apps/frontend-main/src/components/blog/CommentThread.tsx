@@ -13,6 +13,27 @@ const CommentThread: React.FC<CommentThreadProps> = ({ postId, currentUserId }) 
   const [replyTo, setReplyTo] = useState<string | null>(null);
   const [newComment, setNewComment] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [editingCommentId, setEditingCommentId] = useState<string | null>(null);
+  const [editContent, setEditContent] = useState('');
+  const [likedComments, setLikedComments] = useState<Record<string, boolean>>({});
+
+  const handleLikeComment = (commentId: string) => {
+    setLikedComments(prev => ({ ...prev, [commentId]: !prev[commentId] }));
+  };
+
+  const handleStartEdit = (comment: BlogComment) => {
+    setEditingCommentId(comment.id);
+    setEditContent(comment.content);
+  };
+
+  const handleSaveEdit = (commentId: string) => {
+    setComments(prev => prev.map(c => c.id === commentId ? { ...c, content: editContent, is_edited: true } : c));
+    setEditingCommentId(null);
+  };
+
+  const handleDeleteComment = (commentId: string) => {
+    setComments(prev => prev.filter(c => c.id !== commentId));
+  };
 
   useEffect(() => {
     loadComments();
@@ -106,18 +127,51 @@ const CommentThread: React.FC<CommentThreadProps> = ({ postId, currentUserId }) 
           </div>
 
           {/* Comment Content */}
-          <p className="text-gray-700 text-sm mb-3 whitespace-pre-wrap">
-            {comment.content}
-          </p>
+          {editingCommentId === comment.id ? (
+            <div className="mb-3 space-y-2">
+              <textarea
+                value={editContent}
+                onChange={(e) => setEditContent(e.target.value)}
+                rows={2}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm text-slate-900 font-bold border-slate-300 bg-white"
+              />
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => handleSaveEdit(comment.id)}
+                  className="px-3 py-1 bg-blue-600 text-white rounded text-xs font-semibold hover:bg-blue-700"
+                >
+                  Save
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setEditingCommentId(null)}
+                  className="px-3 py-1 border border-slate-300 rounded text-xs text-slate-700 hover:bg-slate-50"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          ) : (
+            <p className="text-gray-700 text-sm mb-3 whitespace-pre-wrap">
+              {comment.content}
+            </p>
+          )}
 
           {/* Comment Actions */}
           <div className="flex items-center gap-3 text-xs text-gray-600">
-            <button className="hover:text-blue-600 transition-colors">
-              ❤️ {comment.likes_count || 0}
+            <button
+              type="button"
+              aria-label={`Like comment by ${comment.author_name || 'Anonymous'}`}
+              onClick={() => handleLikeComment(comment.id)}
+              className={`hover:text-blue-600 transition-colors ${likedComments[comment.id] ? 'text-red-500 font-bold' : ''}`}
+            >
+              ❤️ {(comment.likes_count || 0) + (likedComments[comment.id] ? 1 : 0)}
             </button>
 
             {currentUserId && depth < maxDepth && (
               <button
+                type="button"
                 onClick={() => setReplyTo(replyTo === comment.id ? null : comment.id)}
                 className="hover:text-blue-600 transition-colors"
               >
@@ -127,10 +181,18 @@ const CommentThread: React.FC<CommentThreadProps> = ({ postId, currentUserId }) 
 
             {isOwner && (
               <>
-                <button className="hover:text-blue-600 transition-colors">
+                <button
+                  type="button"
+                  onClick={() => handleStartEdit(comment)}
+                  className="hover:text-blue-600 transition-colors"
+                >
                   ✏️ Edit
                 </button>
-                <button className="hover:text-red-600 transition-colors">
+                <button
+                  type="button"
+                  onClick={() => handleDeleteComment(comment.id)}
+                  className="hover:text-red-600 transition-colors"
+                >
                   🗑️ Delete
                 </button>
               </>

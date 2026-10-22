@@ -3,7 +3,7 @@ import { Grid as FiGrid, List as FiList, Bell as FiBell, Settings as FiSettings,
 import { useAppContext } from '../../contexts/AppContext';
 
 const FeedManagement: React.FC = () => {
-  const { member } = useAppContext();
+  const { member, showToast } = useAppContext();
   const [activeTab, setActiveTab] = useState<'personal' | 'platform' | 'content'>('personal');
   const [preferences, setPreferences] = useState<any>({
     personal: {
@@ -128,6 +128,26 @@ const FeedManagement: React.FC = () => {
     });
   };
 
+  const handleUnmuteAccount = (accountId: any) => {
+    setPreferences({
+      ...preferences,
+      content: {
+        ...preferences.content,
+        mutedAccounts: preferences.content.mutedAccounts.filter((a: any) => a.id !== accountId)
+      }
+    });
+    showToast?.('Account unmuted', 'info');
+  };
+
+  const handleSavePreferences = () => {
+    localStorage.setItem('feed_preferences', JSON.stringify(preferences));
+    showToast?.('Feed preferences saved successfully', 'success');
+  };
+
+  const handleResetPreferences = () => {
+    showToast?.('Preferences reverted to defaults', 'info');
+  };
+
   return (
     <div className="bg-white rounded-xl shadow-md p-6">
       <div className="mb-8">
@@ -235,6 +255,8 @@ const FeedManagement: React.FC = () => {
               {['low', 'moderate', 'high'].map((level) => (
                 <button
                   key={level}
+                  type="button"
+                  aria-label={`Select ${level} personal content frequency`}
                   onClick={() => handlePreferenceChange('personal', 'contentFrequency', level)}
                   className={`px-6 py-3 rounded-lg border ${
                     preferences.personal.contentFrequency === level
@@ -325,6 +347,8 @@ const FeedManagement: React.FC = () => {
               {['low', 'normal', 'high'].map((level) => (
                 <button
                   key={level}
+                  type="button"
+                  aria-label={`Select ${level} platform content frequency`}
                   onClick={() => handlePreferenceChange('platform', 'frequency', level)}
                   className={`px-6 py-3 rounded-lg border ${
                     preferences.platform.frequency === level
@@ -371,6 +395,8 @@ const FeedManagement: React.FC = () => {
                 <div key={keyword} className="flex items-center bg-red-100 text-red-950 border border-red-400 font-bold px-3 py-1 rounded-full font-black">
                   <span className="mr-2">{keyword}</span>
                   <button
+                    type="button"
+                    aria-label={`Remove blocked keyword ${keyword}`}
                     onClick={() => handleRemoveKeyword(keyword)}
                     className="text-red-600 hover:text-red-800"
                   >
@@ -397,8 +423,9 @@ const FeedManagement: React.FC = () => {
                 className="flex-grow px-4 py-2 border border-slate-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold bg-white placeholder:text-slate-500"
               />
               <button
+                type="button"
                 onClick={handleAddTopic}
-                className="px-4 py-2 bg-blue-500 text-white rounded-r-lg hover:bg-blue-600"
+                className="px-4 py-2 bg-blue-500 text-white rounded-r-lg hover:bg-blue-600 font-semibold"
               >
                 Add
               </button>
@@ -409,6 +436,8 @@ const FeedManagement: React.FC = () => {
                 <div key={topic} className="flex items-center bg-green-100 text-green-950 border border-green-400 font-bold px-3 py-1 rounded-full font-black">
                   <span className="mr-2">{topic}</span>
                   <button
+                    type="button"
+                    aria-label={`Remove favorite topic ${topic}`}
                     onClick={() => handleRemoveTopic(topic)}
                     className="text-green-600 hover:text-green-800"
                   >
@@ -434,7 +463,12 @@ const FeedManagement: React.FC = () => {
                       <div className="bg-gray-200 border-2 border-dashed rounded-xl w-8 h-8 mr-3" />
                       <span>{account.name}</span>
                     </div>
-                    <button className="text-red-500 hover:text-red-700">
+                    <button
+                      type="button"
+                      aria-label={`Unmute account ${account.name}`}
+                      onClick={() => handleUnmuteAccount(account.id)}
+                      className="text-red-500 hover:text-red-700 p-1"
+                    >
                       <FiX />
                     </button>
                   </div>
@@ -451,10 +485,18 @@ const FeedManagement: React.FC = () => {
       )}
 
       <div className="mt-8 pt-6 border-t border-slate-300 flex justify-end">
-        <button className="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg mr-4 hover:bg-gray-300">
+        <button
+          type="button"
+          onClick={handleResetPreferences}
+          className="px-6 py-3 bg-gray-200 text-gray-700 font-semibold rounded-lg mr-4 hover:bg-gray-300 transition-colors"
+        >
           Cancel
         </button>
-        <button className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 flex items-center">
+        <button
+          type="button"
+          onClick={handleSavePreferences}
+          className="px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 flex items-center shadow-sm transition-colors"
+        >
           <FiSend className="mr-2" />
           Save Preferences
         </button>

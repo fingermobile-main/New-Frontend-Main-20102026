@@ -3,7 +3,8 @@
  * Gaming statistics and achievements dashboard for GameOn
  */
 
-import React, {} from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 interface PlayerStats {
   level: number;
@@ -244,15 +245,24 @@ const GameDashboard: React.FC<GameDashboardProps> = ({
         <div className="bg-white rounded-xl shadow-lg p-6">
           <h3 className="text-lg font-bold text-gray-900 mb-4">Quick Actions</h3>
           <div className="space-y-3">
-            <button className="w-full px-4 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg hover:from-purple-700 hover:to-indigo-700 transition-all font-semibold shadow-md">
+            <Link
+              to="/gaming/matchmaking"
+              className="block text-center w-full px-4 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg hover:from-purple-700 hover:to-indigo-700 transition-all font-semibold shadow-md"
+            >
               Find Match
-            </button>
-            <button className="w-full px-4 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-all font-semibold">
+            </Link>
+            <Link
+              to="/gaming/leaderboard"
+              className="block text-center w-full px-4 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-all font-semibold"
+            >
               View Leaderboard
-            </button>
-            <button className="w-full px-4 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-all font-semibold">
+            </Link>
+            <Link
+              to="/profile"
+              className="block text-center w-full px-4 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-all font-semibold"
+            >
               Edit Profile
-            </button>
+            </Link>
           </div>
         </div>
       </div>
