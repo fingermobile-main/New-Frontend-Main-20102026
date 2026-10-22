@@ -3,8 +3,8 @@
  * FingerMobile Protocol™
  */
 
-process.env.DB_PASSWORD = 'postgres';
-process.env.DB_NAME = 'fingermobile_platform_db';
+process.env.DB_PASSWORD = process.env.DB_PASSWORD || 'password';
+process.env.DB_NAME = process.env.DB_NAME || 'fingermobile_platform_db';
 
 const request = require('supertest');
 const express = require('express');

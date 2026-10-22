@@ -1,14 +1,19 @@
-const db = require('../db');
-const pool = db.pool || db;
+let dbModule;
+try {
+  dbModule = require('../db/db');
+} catch (e) {
+  dbModule = require('../db');
+}
+const getDb = () => (dbModule && (dbModule.identityDb || dbModule.pool)) || dbModule;
 const logger = require('../config/logger');
 
 const getRoles = async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM roles ORDER BY name ASC');
+    const result = await getDb().query('SELECT * FROM roles ORDER BY level DESC');
     res.json({ success: true, roles: result.rows });
   } catch (error) {
     logger.error('Error fetching RBAC roles:', error);
-    res.status(500).json({ success: false, message: 'Server error fetching roles', error: error.message });
+    res.status(500).json({ success: false, message: 'Server error fetching roles' });
   }
 };
 
@@ -24,14 +29,15 @@ const createRole = async (req, res) => {
 
     const slug = roleName.toLowerCase().replace(/[^a-z0-9]+/g, '_');
     const roleId = `role_${slug}`;
-    const result = await pool.query(
-      `INSERT INTO roles (id, slug, name, description, category, is_system_default, assigned_users_count, created_at, updated_at)
-       VALUES ($1, $2, $3, $4, 'GENERAL', $5, 0, NOW(), NOW())
+    const result = await getDb().query(
+      `INSERT INTO roles (id, slug, name, description, category, is_system_default, assigned_users_count, created_at, updated_at, level, is_system)
+       VALUES ($1, $2, $3, $4, 'GENERAL', $5, 0, NOW(), NOW(), $6, $5)
        ON CONFLICT (id) DO UPDATE SET
          description = COALESCE(EXCLUDED.description, roles.description),
+         level = EXCLUDED.level,
          updated_at = NOW()
        RETURNING *`,
-      [roleId, slug, roleName, roleDesc || null, is_system]
+      [roleId, slug, roleName, roleDesc || '', is_system, level]
     );
 
     res.status(201).json({
@@ -56,13 +62,23 @@ const assignRole = async (req, res) => {
     }
 
     // Assign standard user.role first
-    const updateResult = await pool.query(
-      'UPDATE users SET role = $1 WHERE id::text = $2 RETURNING id, username, role',
+    const updateResult = await getDb().query(
+      'UPDATE users SET role = $1 WHERE id = $2 RETURNING id, username, role',
       [role, userId]
     );
 
     if (updateResult.rowCount === 0) {
       return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    // Also update role mapping table member_role_assignments if the role exists
+    const roleResult = await getDb().query('SELECT id FROM roles WHERE name = $1', [role]);
+    if (roleResult.rowCount > 0) {
+      const roleId = roleResult.rows[0].id;
+      await getDb().query(
+        'INSERT INTO member_role_assignments (member_id, role_id) VALUES ($1, $2) ON CONFLICT (member_id, role_id) DO NOTHING',
+        [userId, roleId]
+      );
     }
 
     res.json({ success: true, user: updateResult.rows[0] });
@@ -74,7 +90,7 @@ const assignRole = async (req, res) => {
 
 const getPermissions = async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM permissions ORDER BY module, name');
+    const result = await getDb().query('SELECT * FROM permissions ORDER BY resource_type, action');
     res.json({ success: true, permissions: result.rows });
   } catch (error) {
     logger.error('Error fetching permissions:', error);

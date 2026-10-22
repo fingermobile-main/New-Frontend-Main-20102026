@@ -271,24 +271,32 @@ class CanaryAdsController {
         'search', 'display', 'shopping', 'video', 'app',
         'discovery', 'performance_max', 'smart', 'local_services', 'interstitial'
       ];
-      if (!validTypes.includes(normType)) {
-        normType = 'display';
+
+      if (campaign_type && !validTypes.includes(campaign_type.toLowerCase())) {
+        return res.status(400).json({
+          success: false,
+          error: `Invalid campaign_type: ${campaign_type}. Must be one of: ${validTypes.join(', ')}`
+        });
       }
+
 
       const totalBudgetValue = parseFloat(total_budget || budget || coupon_value || 100);
       const dailyBudgetValue = parseFloat(daily_budget || (totalBudgetValue / 7).toFixed(2));
+
+      const campaignStatus = 'pending_payment';
 
       const insertCamp = await pool.query(
         `INSERT INTO canary_campaigns (
            advertiser_id, title, description, campaign_type, status, daily_budget, total_budget, 
            currency, bid_strategy, targeting, start_date, end_date
-         ) VALUES ($1, $2, $3, $4, 'active', $5, $6, $7, $8, $9, $10, $11)
+         ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
          RETURNING *`,
         [
           advertiser_id,
           campaignTitle,
           description || null,
           normType,
+          campaignStatus,
           dailyBudgetValue,
           totalBudgetValue,
           currency || 'FIC',

@@ -177,7 +177,7 @@ class UGCPrivacyService {
         visibility,
         duration_type,
         expires_at,
-        JSON.stringify(allowed_user_ids),
+        Array.isArray(allowed_user_ids) ? allowed_user_ids : [],
         JSON.stringify(allowed_locations),
         JSON.stringify(excluded_locations),
         gender_target,

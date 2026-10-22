@@ -338,6 +338,13 @@ class ForumController {
    */
   async createPost(req, res) {
     try {
+      if (!req.user && !req.member) {
+        return res.status(401).json({
+          success: false,
+          message: 'Authentication required'
+        });
+      }
+
       const author_id = resolveUserId(req);
 
       const {

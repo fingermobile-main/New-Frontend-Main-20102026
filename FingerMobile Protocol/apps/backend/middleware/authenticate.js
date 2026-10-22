@@ -91,14 +91,14 @@ const authenticate = async (req, res, next) => {
     }
 
     if (!userResult || userResult.rows.length === 0) {
-      if (decoded && (decoded.role || decoded.username)) {
+      if (decoded && (decoded.role || decoded.username || decoded.email || decoded.id || decoded.userId)) {
         req.user = {
           id: userId,
-          username: decoded.username || 'admin',
-          email: decoded.email || 'admin@fingermobile.io',
-          role: decoded.role || 'super_admin',
-          isAdmin: decoded.isAdmin !== undefined ? decoded.isAdmin : true,
-          isModerator: decoded.isModerator !== undefined ? decoded.isModerator : true,
+          username: decoded.username || (decoded.email ? decoded.email.split('@')[0] : `user_${userId}`),
+          email: decoded.email || `user_${userId}@fingermobile.io`,
+          role: decoded.role || 'user',
+          isAdmin: decoded.isAdmin !== undefined ? decoded.isAdmin : (decoded.role === 'admin' || decoded.role === 'super_admin'),
+          isModerator: decoded.isModerator !== undefined ? decoded.isModerator : false,
           is_active: true
         };
         req.member = req.user;

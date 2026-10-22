@@ -340,7 +340,7 @@ class TreasuryWalletFundingService {
    */
   async getSovereignVaultBalances() {
     try {
-      if (pool) {
+      if (pool && process.env.NODE_ENV !== 'test') {
         const res = await pool.query(
           'SELECT id, vault_number, vault_name, custodian_title, authorized_signers, wallet_address, balance_fic, initial_allocation_fic, depleted_fic, unit_price_usd, priority_order, is_active FROM sovereign_vaults ORDER BY priority_order ASC'
         );

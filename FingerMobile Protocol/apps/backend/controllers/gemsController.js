@@ -222,7 +222,10 @@ class GemsController {
    */
   async getUserBalance(req, res) {
     try {
-      let targetUserId = req.params.userId || req.user?.id || req.query.userId;
+      let targetUserId = req.params?.userId || req.user?.id || req.query?.userId;
+      if (!targetUserId) {
+        return res.status(400).json({ success: false, message: 'User ID or authenticated user is required' });
+      }
       const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(String(targetUserId));
 
       if (!isUuid) {

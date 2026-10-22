@@ -186,7 +186,7 @@ class PostcardController {
         SELECT p.*,
                u.username as author_username,
                u.email as author_email,
-               u.avatar as author_avatar
+               u.avatar_url as author_avatar
         FROM postcards p
         JOIN users u ON p.user_id = u.id
         ${whereClause}
@@ -242,7 +242,7 @@ class PostcardController {
       const { rows } = await pool.query(
         `SELECT p.*,
                 u.username as author_username,
-                u.avatar as author_avatar
+                u.avatar_url as author_avatar
          FROM postcards p
          JOIN users u ON p.user_id = u.id
          WHERE p.id = $1`,
