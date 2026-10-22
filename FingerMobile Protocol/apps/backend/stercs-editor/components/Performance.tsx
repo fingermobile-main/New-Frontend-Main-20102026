@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+
 interface PerformanceConfig {
   id: number;
   name: string;
@@ -7,6 +8,7 @@ interface PerformanceConfig {
   settings: any;
   createdAt: string;
   updatedAt: string;
+}
 
 interface PerformanceMetric {
   id: number;
@@ -16,9 +18,11 @@ interface PerformanceMetric {
   unit: string;
   timestamp: string;
   metadata: any;
+}
 
 interface PerformanceProps {
   theme: 'light' | 'dark' | 'blue';
+}
 
 const Performance: React.FC<PerformanceProps> = ({ theme }) => {
   const [activeTab, setActiveTab] = useState<'configs' | 'metrics' | 'dashboard'>('configs');
@@ -53,21 +57,22 @@ const Performance: React.FC<PerformanceProps> = ({ theme }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
 
       if (result.success) {
         setConfigs(result.data);
-       else {
+      } else {
         setError(result.message || 'Failed to fetch performance configs');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-     finally {
+    } finally {
       setLoading(false);
-
+    }
+  };
 
   const fetchMetrics = async () => {
     try {
@@ -76,24 +81,26 @@ const Performance: React.FC<PerformanceProps> = ({ theme }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
 
       if (result.success) {
         setMetrics(result.data);
-       else {
+      } else {
         setError(result.message || 'Failed to fetch performance metrics');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const handleCreateConfig = async () => {
     if (!newConfigName.trim() || !newConfigProjectId) {
       setError('Configuration name and project ID are required');
       return;
+    }
 
     try {
       const response = await fetch('/api/editor/performance/configs', {
@@ -116,17 +123,19 @@ const Performance: React.FC<PerformanceProps> = ({ theme }) => {
         setNewConfigDescription('');
         setNewConfigProjectId('1');
         fetchConfigs(); // Refresh the configs list
-       else {
+      } else {
         setError(result.message || 'Failed to create performance config');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const handleCreateMetric = async () => {
     if (!newMetricConfigId || !newMetricProjectId || !newMetricValue) {
       setError('Configuration ID, Project ID, and Value are required for performance metric');
       return;
+    }
 
     try {
       const response = await fetch('/api/editor/performance/metrics', {
@@ -152,15 +161,17 @@ const Performance: React.FC<PerformanceProps> = ({ theme }) => {
         setNewMetricValue('0');
         setNewMetricUnit('ms');
         fetchMetrics(); // Refresh the metrics list
-       else {
+      } else {
         setError(result.message || 'Failed to create performance metric');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleString();
+  };
 
   const getMetricColor = (type: string) => {
     switch (type) {
@@ -169,6 +180,8 @@ const Performance: React.FC<PerformanceProps> = ({ theme }) => {
       case 'requests_count': return '#8b5cf6';
       case 'memory_usage': return '#f59e0b';
       default: return '#6b7280';
+    }
+  };
 
 
   return (
@@ -582,4 +595,6 @@ const Performance: React.FC<PerformanceProps> = ({ theme }) => {
       )}
     </div>
   );
-export default Performance;
+};
+
+export default Performance;

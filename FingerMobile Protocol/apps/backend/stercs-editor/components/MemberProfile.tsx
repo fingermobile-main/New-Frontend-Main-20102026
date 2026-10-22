@@ -13,6 +13,7 @@ interface MemberProfile {
   themePreference: string;
   createdAt: string;
   updatedAt: string;
+}
 
 interface MemberPreferences {
   theme: string;
@@ -20,15 +21,18 @@ interface MemberPreferences {
   timezone: string;
   notifications: Record<string, boolean>;
   email: string;
+}
 
 interface Activity {
   id: number;
   action: string;
   timestamp: string;
   description?: string;
+}
 
 interface MemberProfileProps {
   theme: 'light' | 'dark' | 'blue';
+}
 
 const MemberProfile: React.FC<MemberProfileProps> = ({ theme }) => {
   const [activeTab, setActiveTab] = useState<'profile' | 'preferences' | 'security' | 'activity'>('profile');
@@ -75,7 +79,7 @@ const MemberProfile: React.FC<MemberProfileProps> = ({ theme }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
@@ -87,14 +91,15 @@ const MemberProfile: React.FC<MemberProfileProps> = ({ theme }) => {
         setPhone(result.data.phone || '');
         setBio(result.data.bio || '');
         setAvatarUrl(result.data.avatarUrl || '');
-       else {
+      } else {
         setError(result.message || 'Failed to fetch profile');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-     finally {
+    } finally {
       setLoading(false);
-
+    }
+  };
 
   const fetchPreferences = async () => {
     try {
@@ -103,7 +108,7 @@ const MemberProfile: React.FC<MemberProfileProps> = ({ theme }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
@@ -118,12 +123,13 @@ const MemberProfile: React.FC<MemberProfileProps> = ({ theme }) => {
           push: true,
           sms: false
         });
-       else {
+      } else {
         setError(result.message || 'Failed to fetch preferences');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const fetchActivity = async () => {
     try {
@@ -132,19 +138,20 @@ const MemberProfile: React.FC<MemberProfileProps> = ({ theme }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
 
       if (result.success) {
         setActivities(result.data);
-       else {
+      } else {
         setError(result.message || 'Failed to fetch activity');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const handleUpdateProfile = async () => {
     try {
@@ -168,12 +175,13 @@ const MemberProfile: React.FC<MemberProfileProps> = ({ theme }) => {
       if (result.success) {
         setProfile(result.data);
         alert('Profile updated successfully!');
-       else {
+      } else {
         setError(result.message || 'Failed to update profile');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const handleUpdatePreferences = async () => {
     try {
@@ -196,21 +204,24 @@ const MemberProfile: React.FC<MemberProfileProps> = ({ theme }) => {
       if (result.success) {
         setPreferences(result.data);
         alert('Preferences updated successfully!');
-       else {
+      } else {
         setError(result.message || 'Failed to update preferences');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const handleChangePassword = async () => {
     if (newPassword !== confirmPassword) {
       setError('New passwords do not match');
       return;
+    }
 
     if (newPassword.length < 8) {
       setError('New password must be at least 8 characters long');
       return;
+    }
 
     try {
       const response = await fetch('/api/editor/member-profile/change-password', {
@@ -232,19 +243,21 @@ const MemberProfile: React.FC<MemberProfileProps> = ({ theme }) => {
         setNewPassword('');
         setConfirmPassword('');
         alert('Password changed successfully!');
-       else {
+      } else {
         setError(result.message || 'Failed to change password');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleString();
+  };
 
   return (
     <div 
-      className=member-profile-panel" 
+      className="member-profile-panel" 
       style={{ 
         width: '100%', 
         height: '100%', 
@@ -785,4 +798,6 @@ const MemberProfile: React.FC<MemberProfileProps> = ({ theme }) => {
       )}
     </div>
   );
-export default MemberProfile;
+};
+
+export default MemberProfile;

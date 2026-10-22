@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+
 interface Page {
   id: string;
   title: string;
@@ -10,9 +11,10 @@ interface Page {
     author: string;
     ogImage: string;
     isPublished: boolean;
-
+  };
   created_at: string;
   updated_at: string;
+}
 
 interface Template {
   id: string;
@@ -24,10 +26,12 @@ interface Template {
   authorId: string;
   createdAt: string;
   updatedAt: string;
+}
 
 interface PagesProps {
   theme: 'light' | 'dark' | 'blue';
   projectId: string;
+}
 
 const Pages: React.FC<PagesProps> = ({ theme, projectId }) => {
   const [pages, setPages] = useState<Page[]>([]);
@@ -54,19 +58,20 @@ const Pages: React.FC<PagesProps> = ({ theme, projectId }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
 
       if (result.success) {
         setPages(result.data);
-       else {
+      } else {
         setError(result.message || 'Failed to fetch pages');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const fetchTemplates = async () => {
     try {
@@ -75,26 +80,28 @@ const Pages: React.FC<PagesProps> = ({ theme, projectId }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
 
       if (result.success) {
         setTemplates(result.data);
-       else {
+      } else {
         setError(result.message || 'Failed to fetch templates');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-     finally {
+    } finally {
       setLoading(false);
-
+    }
+  };
 
   const handleCreatePage = async () => {
     if (!newPageTitle.trim() || !newPageSlug.trim()) {
       setError('Title and slug are required');
       return;
+    }
 
     try {
       const response = await fetch('/api/pages', {
@@ -121,12 +128,13 @@ const Pages: React.FC<PagesProps> = ({ theme, projectId }) => {
         setSelectedTemplate(null);
         setShowNewPageForm(false);
         fetchPages(); // Refresh the pages list
-       else {
+      } else {
         setError(result.message || 'Failed to create page');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const handlePublishToggle = async (pageId: string, isPublished: boolean) => {
     try {
@@ -146,16 +154,18 @@ const Pages: React.FC<PagesProps> = ({ theme, projectId }) => {
         setPages(pages.map(page => 
           page.id === pageId ? { ...page, meta_data: { ...page.meta_data, isPublished: result.data.is_published } } : page
         ));
-       else {
+      } else {
         setError(result.message || 'Failed to update page status');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const handleDeletePage = async (pageId: string) => {
     if (!window.confirm('Are you sure you want to delete this page?')) {
       return;
+    }
 
     try {
       const response = await fetch(`/api/pages/${pageId}`, {
@@ -163,18 +173,20 @@ const Pages: React.FC<PagesProps> = ({ theme, projectId }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
 
       if (result.success) {
         setPages(pages.filter(page => page.id !== pageId));
-       else {
+      } else {
         setError(result.message || 'Failed to delete page');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
+    }
+  };
 
 
   return (
@@ -457,4 +469,6 @@ const Pages: React.FC<PagesProps> = ({ theme, projectId }) => {
       )}
     </div>
   );
-export default Pages;
+};
+
+export default Pages;

@@ -10,12 +10,14 @@ interface Theme {
     accentColor: string;
     borderRadius: string;
     boxShadow: string;
-
+  };
+}
 
 interface ThemeSelectorProps {
   currentTheme: 'light' | 'dark' | 'blue';
   onThemeChange: (themeId: string) => void;
   theme: 'light' | 'dark' | 'blue';
+}
 
 const ThemeSelector: React.FC<ThemeSelectorProps> = ({ currentTheme, onThemeChange, theme }) => {
   const [availableThemes, setAvailableThemes] = useState<Theme[]>([]);
@@ -39,29 +41,32 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({ currentTheme, onThemeChan
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
 
       if (result.success) {
         setAvailableThemes(result.data);
-       else {
+      } else {
         setError(result.message || 'Failed to fetch themes');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-     finally {
+    } finally {
       setLoading(false);
-
+    }
+  };
 
   const handleThemeSelect = (themeId: string) => {
     onThemeChange(themeId);
+  };
 
   const handleCreateCustomTheme = async () => {
     if (!customThemeName.trim()) {
       setError('Theme name is required');
       return;
+    }
 
     try {
       const response = await fetch('/api/themes/custom', {
@@ -80,7 +85,7 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({ currentTheme, onThemeChan
             accentColor: customThemePrimaryColor,
             borderRadius: '6px',
             boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
-
+          }
         })
       });
 
@@ -90,12 +95,13 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({ currentTheme, onThemeChan
         setCustomThemeName('');
         setShowCustomThemeForm(false);
         fetchThemes(); // Refresh the themes list
-       else {
+      } else {
         setError(result.message || 'Failed to create custom theme');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   return (
     <div 
@@ -281,4 +287,6 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({ currentTheme, onThemeChan
       )}
     </div>
   );
+};
+
 export default ThemeSelector;

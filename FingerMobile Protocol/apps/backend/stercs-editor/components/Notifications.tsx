@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+
 interface Notification {
   id: number;
   senderId: number;
@@ -14,9 +15,11 @@ interface Notification {
   metadata: any;
   createdAt: string;
   updatedAt: string;
+}
 
 interface NotificationProps {
   theme: 'light' | 'dark' | 'blue';
+}
 
 const Notifications: React.FC<NotificationProps> = ({ theme }) => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
@@ -62,21 +65,22 @@ const Notifications: React.FC<NotificationProps> = ({ theme }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
 
       if (result.success) {
         setNotifications(result.data);
-       else {
+      } else {
         setError(result.message || 'Failed to fetch notifications');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-     finally {
+    } finally {
       setLoading(false);
-
+    }
+  };
 
   const fetchStats = async () => {
     try {
@@ -85,27 +89,30 @@ const Notifications: React.FC<NotificationProps> = ({ theme }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
 
       if (result.success) {
         setStats(result.data);
-       else {
+      } else {
         setError(result.message || 'Failed to fetch notification stats');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFilters(prev => ({ ...prev, [name]: value }));
+  };
 
   const handleFilterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     fetchNotifications();
+  };
 
   const handleMarkAsRead = async (notificationId: number) => {
     try {
@@ -114,7 +121,7 @@ const Notifications: React.FC<NotificationProps> = ({ theme }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
@@ -127,12 +134,13 @@ const Notifications: React.FC<NotificationProps> = ({ theme }) => {
           )
         );
         fetchStats(); // Refresh stats
-       else {
+      } else {
         setError(result.message || 'Failed to mark notification as read');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const handleMarkAllAsRead = async () => {
     try {
@@ -141,7 +149,7 @@ const Notifications: React.FC<NotificationProps> = ({ theme }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
@@ -152,12 +160,13 @@ const Notifications: React.FC<NotificationProps> = ({ theme }) => {
           prev.map(n => ({ ...n, isRead: true, readAt: new Date().toISOString() }))
         );
         fetchStats(); // Refresh stats
-       else {
+      } else {
         setError(result.message || 'Failed to mark all notifications as read');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const handleDeleteNotification = async (notificationId: number) => {
     try {
@@ -166,7 +175,7 @@ const Notifications: React.FC<NotificationProps> = ({ theme }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
@@ -175,16 +184,18 @@ const Notifications: React.FC<NotificationProps> = ({ theme }) => {
         // Remove the notification from the list
         setNotifications(prev => prev.filter(n => n.id !== notificationId));
         fetchStats(); // Refresh stats
-       else {
+      } else {
         setError(result.message || 'Failed to delete notification');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const handleComposeChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setComposeData(prev => ({ ...prev, [name]: value }));
+  };
 
   const handleSendNotification = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -219,15 +230,17 @@ const Notifications: React.FC<NotificationProps> = ({ theme }) => {
           priority: 'normal'
         });
         alert('Notification sent successfully!');
-       else {
+      } else {
         setError(result.message || 'Failed to send notification');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleString();
+  };
 
   const getTypeColor = (type: string) => {
     switch (type) {
@@ -237,7 +250,8 @@ const Notifications: React.FC<NotificationProps> = ({ theme }) => {
       case 'success': return '#10b981';
       case 'alert': return '#8b5cf6';
       default: return '#6b7280';
-
+    }
+  };
 
   const getPriorityBadge = (priority: string) => {
     switch (priority) {
@@ -281,6 +295,9 @@ const Notifications: React.FC<NotificationProps> = ({ theme }) => {
           color: '#6b7280',
           fontSize: '0.7rem'
         }}>{priority.toUpperCase()}</span>;
+    }
+  };
+
 
 
   return (
@@ -800,4 +817,6 @@ const Notifications: React.FC<NotificationProps> = ({ theme }) => {
       )}
     </div>
   );
-export default Notifications;
+};
+
+export default Notifications;

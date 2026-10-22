@@ -6,6 +6,7 @@ interface TeamMember {
   role: string;
   permissions: string[];
   createdAt: string;
+}
 
 interface Invitation {
   id: number;
@@ -16,9 +17,11 @@ interface Invitation {
   status: string;
   createdAt: string;
   expiresAt: string;
+}
 
 interface MemberManagementProps {
   theme: 'light' | 'dark' | 'blue';
+}
 
 const MemberManagement: React.FC<MemberManagementProps> = ({ theme }) => {
   const [activeTab, setActiveTab] = useState<'members' | 'invitations'>('members');
@@ -49,21 +52,22 @@ const MemberManagement: React.FC<MemberManagementProps> = ({ theme }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
 
       if (result.success) {
         setMembers(result.data);
-       else {
+      } else {
         setError(result.message || 'Failed to fetch members');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-     finally {
+    } finally {
       setLoading(false);
-
+    }
+  };
 
   const fetchInvitations = async () => {
     try {
@@ -73,26 +77,28 @@ const MemberManagement: React.FC<MemberManagementProps> = ({ theme }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
 
       if (result.success) {
         setInvitations(result.data);
-       else {
+      } else {
         setError(result.message || 'Failed to fetch invitations');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-     finally {
+    } finally {
       setLoading(false);
-
+    }
+  };
 
   const handleCreateMember = async () => {
     if (!newMembermembername.trim() || !newMemberEmail.trim()) {
       setError('membername and email are required');
       return;
+    }
 
     try {
       const response = await fetch('/api/member-management/members', {
@@ -115,17 +121,19 @@ const MemberManagement: React.FC<MemberManagementProps> = ({ theme }) => {
         setNewMemberEmail('');
         setNewMemberRole('member');
         fetchMembers(); // Refresh the members list
-       else {
+      } else {
         setError(result.message || 'Failed to create member');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const handleInviteMember = async () => {
     if (!newInviteEmail.trim()) {
       setError('Email is required for invitation');
       return;
+    }
 
     try {
       const response = await fetch('/api/member-management/invitations', {
@@ -148,16 +156,18 @@ const MemberManagement: React.FC<MemberManagementProps> = ({ theme }) => {
         setNewInviteRole('member');
         setNewInviteMessage('');
         fetchInvitations(); // Refresh the invitations list
-       else {
+      } else {
         setError(result.message || 'Failed to send invitation');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const handleRevokeInvitation = async (invitationId: number) => {
     if (!window.confirm('Are you sure you want to revoke this invitation?')) {
       return;
+    }
 
     try {
       const response = await fetch(`/api/member-management/invitations/${invitationId}`, {
@@ -165,23 +175,25 @@ const MemberManagement: React.FC<MemberManagementProps> = ({ theme }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
 
       if (result.success) {
         fetchInvitations(); // Refresh the invitations list
-       else {
+      } else {
         setError(result.message || 'Failed to revoke invitation');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const handleDeleteMember = async (memberId: number) => {
     if (!window.confirm('Are you sure you want to remove this team member? This action cannot be undone.')) {
       return;
+    }
 
     try {
       const response = await fetch(`/api/member-management/members/${memberId}`, {
@@ -189,29 +201,32 @@ const MemberManagement: React.FC<MemberManagementProps> = ({ theme }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
 
       if (result.success) {
         fetchMembers(); // Refresh the members list
-       else {
+      } else {
         setError(result.message || 'Failed to remove member');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString();
+  };
 
   const formatDateTime = (dateString: string) => {
     return new Date(dateString).toLocaleString();
+  };
 
   return (
     <div 
-      className=member-management-panel" 
+      className="member-management-panel" 
       style={{ 
         width: '100%', 
         height: '100%', 
@@ -322,7 +337,7 @@ const MemberManagement: React.FC<MemberManagementProps> = ({ theme }) => {
                   color: theme === 'dark' ? 'white' : '#1f2937'
                 }}
               >
-                <option value=member">Member</option>
+                <option value="member">Member</option>
                 <option value="editor">Editor</option>
                 <option value="admin">Admin</option>
               </select>
@@ -435,7 +450,7 @@ const MemberManagement: React.FC<MemberManagementProps> = ({ theme }) => {
                   color: theme === 'dark' ? 'white' : '#1f2937'
                 }}
               >
-                <option value=member">Member</option>
+                <option value="member">Member</option>
                 <option value="editor">Editor</option>
                 <option value="admin">Admin</option>
               </select>
@@ -530,4 +545,6 @@ const MemberManagement: React.FC<MemberManagementProps> = ({ theme }) => {
       )}
     </div>
   );
+};
+
 export default MemberManagement;

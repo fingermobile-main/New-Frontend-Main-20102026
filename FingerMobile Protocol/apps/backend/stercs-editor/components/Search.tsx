@@ -12,9 +12,11 @@ interface SearchResult {
       isMatch: boolean;
     }>;
   }>;
+}
 
 interface SearchProps {
   theme: 'light' | 'dark' | 'blue';
+}
 
 const Search: React.FC<SearchProps> = ({ theme }) => {
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -41,6 +43,7 @@ const Search: React.FC<SearchProps> = ({ theme }) => {
             setError('Project ID is required for file search');
             setLoading(false);
             return;
+          }
 
           endpoint = `/api/search/files`;
           params = `projectId=${projectId}&searchTerm=${encodeURIComponent(searchTerm)}`;
@@ -50,6 +53,7 @@ const Search: React.FC<SearchProps> = ({ theme }) => {
             setError('Project ID is required for content search');
             setLoading(false);
             return;
+          }
 
           endpoint = `/api/search/content`;
           params = `projectId=${projectId}&searchTerm=${encodeURIComponent(searchTerm)}`;
@@ -66,27 +70,29 @@ const Search: React.FC<SearchProps> = ({ theme }) => {
           setError('Invalid search type');
           setLoading(false);
           return;
+      }
 
       const response = await fetch(`${endpoint}?${params}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
       
       const result = await response.json();
       
       if (result.success) {
         setResults(result.data.results || []);
-       else {
+      } else {
         setError(result.message || 'Search failed');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-     finally {
+    } finally {
       setLoading(false);
-
+    }
+  };
 
   return (
     <div 
@@ -254,4 +260,6 @@ const Search: React.FC<SearchProps> = ({ theme }) => {
       </div>
     </div>
   );
+};
+
 export default Search;

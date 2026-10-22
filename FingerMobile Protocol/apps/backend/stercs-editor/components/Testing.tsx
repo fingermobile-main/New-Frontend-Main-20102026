@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+
 interface TestConfig {
   id: number;
   name: string;
@@ -11,6 +12,7 @@ interface TestConfig {
   schedule: string | null;
   createdAt: string;
   updatedAt: string;
+}
 
 interface TestRun {
   id: number;
@@ -24,9 +26,11 @@ interface TestRun {
   results: any;
   createdAt: string;
   updatedAt: string;
+}
 
 interface TestingProps {
   theme: 'light' | 'dark' | 'blue';
+}
 
 const Testing: React.FC<TestingProps> = ({ theme }) => {
   const [activeTab, setActiveTab] = useState<'configs' | 'runs' | 'results'>('configs');
@@ -64,21 +68,22 @@ const Testing: React.FC<TestingProps> = ({ theme }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
 
       if (result.success) {
         setConfigs(result.data);
-       else {
+      } else {
         setError(result.message || 'Failed to fetch test configs');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-     finally {
+    } finally {
       setLoading(false);
-
+    }
+  };
 
   const fetchTestRuns = async () => {
     try {
@@ -87,24 +92,26 @@ const Testing: React.FC<TestingProps> = ({ theme }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
 
       if (result.success) {
         setTestRuns(result.data);
-       else {
+      } else {
         setError(result.message || 'Failed to fetch test runs');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const handleCreateConfig = async () => {
     if (!newConfigName.trim() || !newConfigProjectId || !newConfigTestType || !newConfigTestFramework) {
       setError('Configuration name, project ID, test type, and test framework are required');
       return;
+    }
 
     try {
       const response = await fetch('/api/editor/testing/configs', {
@@ -137,17 +144,19 @@ const Testing: React.FC<TestingProps> = ({ theme }) => {
         setNewConfigSchedule('');
         setNewConfigTestFiles('');
         fetchConfigs(); // Refresh the configs list
-       else {
+      } else {
         setError(result.message || 'Failed to create test config');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const handleCreateTestRun = async () => {
     if (!newTestRunConfigId || !newTestRunProjectId) {
       setError('Configuration ID and Project ID are required for test run');
       return;
+    }
 
     try {
       const response = await fetch('/api/editor/testing/runs', {
@@ -170,15 +179,17 @@ const Testing: React.FC<TestingProps> = ({ theme }) => {
         setNewTestRunProjectId('1');
         setNewTestRunNotes('');
         fetchTestRuns(); // Refresh the test runs list
-       else {
+      } else {
         setError(result.message || 'Failed to create test run');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleString();
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -188,16 +199,19 @@ const Testing: React.FC<TestingProps> = ({ theme }) => {
       case 'failed': return '#ef4444';
       case 'cancelled': return '#6b7280';
       default: return '#6b7280';
-
+    }
+  };
 
   const getTestTypeIcon = (testType: string) => {
     switch (testType) {
-      case 'unit': return '.UnitTesting';
+      case 'unit': return 'Unit';
       case 'integration': return 'Integration';
       case 'e2e': return 'E2E';
       case 'performance': return 'Performance';
       case 'security': return 'Security';
       default: return testType;
+    }
+  };
 
 
   return (
@@ -732,4 +746,6 @@ const Testing: React.FC<TestingProps> = ({ theme }) => {
       )}
     </div>
   );
-export default Testing;
+};
+
+export default Testing;

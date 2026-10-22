@@ -1,22 +1,27 @@
 import React, {useState, useEffect} from 'react';
+
 interface Commit {
   hash: string;
   author: string;
   email: string;
   message: string;
   date: Date;
+}
 
 interface Branch {
   name: string;
   isCurrent: boolean;
+}
 
 interface Change {
   status: string; // A=Added, M=Modified, D=Deleted
   file: string;
+}
 
 interface VersionControlProps {
   theme: 'light' | 'dark' | 'blue';
   projectId: string;
+}
 
 const VersionControl: React.FC<VersionControlProps> = ({ theme, projectId }) => {
   const [commits, setCommits] = useState<Commit[]>([]);
@@ -45,21 +50,22 @@ const VersionControl: React.FC<VersionControlProps> = ({ theme, projectId }) => 
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
       
       const result = await response.json();
       
       if (result.success) {
         setCommits(result.data.gitCommits || []);
-       else {
+      } else {
         setError(result.message || 'Failed to fetch commit history');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-     finally {
+    } finally {
       setLoading(false);
-
+    }
+  };
 
   const fetchBranches = async () => {
     try {
@@ -68,22 +74,24 @@ const VersionControl: React.FC<VersionControlProps> = ({ theme, projectId }) => 
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
       
       const result = await response.json();
       
       if (result.success) {
         setBranches(result.data.branches || []);
-
-     catch (err) {
+      }
+    } catch (err) {
       console.error('Error fetching branches:', err);
-
+    }
+  };
 
   const handleCommit = async () => {
     if (!commitMessage.trim()) {
       setError('Commit message is required');
       return;
+    }
 
     try {
       const response = await fetch(`/api/version-control/commit/${projectId}`, {
@@ -102,17 +110,19 @@ const VersionControl: React.FC<VersionControlProps> = ({ theme, projectId }) => 
       if (result.success) {
         setCommitMessage('');
         fetchCommitHistory(); // Refresh the commit history
-       else {
+      } else {
         setError(result.message || 'Failed to commit changes');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const handleCreateBranch = async () => {
     if (!newBranchName.trim()) {
       setError('Branch name is required');
       return;
+    }
 
     try {
       const response = await fetch(`/api/version-control/branch/${projectId}`, {
@@ -131,12 +141,13 @@ const VersionControl: React.FC<VersionControlProps> = ({ theme, projectId }) => 
       if (result.success) {
         setNewBranchName('');
         fetchBranches(); // Refresh the branches
-       else {
+      } else {
         setError(result.message || 'Failed to create branch');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const handleSwitchBranch = async (branchName: string) => {
     try {
@@ -156,17 +167,19 @@ const VersionControl: React.FC<VersionControlProps> = ({ theme, projectId }) => 
       if (result.success) {
         fetchBranches(); // Refresh the branches
         fetchCommitHistory(); // Refresh the commit history
-       else {
+      } else {
         setError(result.message || 'Failed to switch branch');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const handleCompareChanges = async () => {
     if (!selectedCommit) {
       setError('Please select a commit to compare');
       return;
+    }
 
     try {
       const response = await fetch(`/api/version-control/compare/${projectId}?baseCommit=${selectedCommit}`, {
@@ -174,7 +187,7 @@ const VersionControl: React.FC<VersionControlProps> = ({ theme, projectId }) => 
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
       
       const result = await response.json();
@@ -182,16 +195,18 @@ const VersionControl: React.FC<VersionControlProps> = ({ theme, projectId }) => 
       if (result.success) {
         setChanges(result.data.changes || []);
         setActiveTab('changes');
-       else {
+      } else {
         setError(result.message || 'Failed to compare changes');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const handleRevertToCommit = async (commitHash: string) => {
     if (!window.confirm(`Are you sure you want to revert to commit ${commitHash.substring(0, 7)}?`)) {
       return;
+    }
 
     try {
       const response = await fetch(`/api/version-control/revert/${projectId}`, {
@@ -209,16 +224,18 @@ const VersionControl: React.FC<VersionControlProps> = ({ theme, projectId }) => 
       
       if (result.success) {
         fetchCommitHistory(); // Refresh the commit history
-       else {
+      } else {
         setError(result.message || 'Failed to revert to commit');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const formatDate = (date: Date | undefined) => {
     if (!date) return '';
     return new Date(date).toLocaleString();
+  };
 
   return (
     <div 
@@ -516,4 +533,6 @@ const VersionControl: React.FC<VersionControlProps> = ({ theme, projectId }) => 
       </div>
     </div>
   );
-export default VersionControl;
+};
+
+export default VersionControl;

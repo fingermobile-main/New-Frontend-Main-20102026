@@ -9,6 +9,7 @@ interface Integration {
   tags: string[];
   createdAt: string;
   updatedAt: string;
+}
 
 interface IntegrationStats {
   totalCalls: number;
@@ -16,9 +17,11 @@ interface IntegrationStats {
   avgResponseTime: number;
   lastCall: string;
   callsToday: number;
+}
 
 interface IntegrationManagementProps {
   theme: 'light' | 'dark' | 'blue';
+}
 
 const IntegrationManagement: React.FC<IntegrationManagementProps> = ({ theme }) => {
   const [activeTab, setActiveTab] = useState<'integrations' | 'settings'>('integrations');
@@ -44,7 +47,7 @@ const IntegrationManagement: React.FC<IntegrationManagementProps> = ({ theme }) 
   useEffect(() => {
     if (selectedIntegration) {
       fetchIntegrationStats(selectedIntegration.id);
-
+    }
   }, [selectedIntegration]);
 
   const fetchIntegrations = async () => {
@@ -55,21 +58,22 @@ const IntegrationManagement: React.FC<IntegrationManagementProps> = ({ theme }) 
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
 
       if (result.success) {
         setIntegrations(result.data);
-       else {
+      } else {
         setError(result.message || 'Failed to fetch integrations');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-     finally {
+    } finally {
       setLoading(false);
-
+    }
+  };
 
   const fetchIntegrationStats = async (integrationId: number) => {
     try {
@@ -78,24 +82,26 @@ const IntegrationManagement: React.FC<IntegrationManagementProps> = ({ theme }) 
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
 
       if (result.success) {
         setIntegrationStats(result.data);
-       else {
+      } else {
         setError(result.message || 'Failed to fetch integration stats');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const handleCreateIntegration = async () => {
     if (!newIntegrationName || !newIntegrationType) {
       setError('Integration name and type are required');
       return;
+    }
 
     try {
       // Try to parse the configuration JSON
@@ -103,10 +109,11 @@ const IntegrationManagement: React.FC<IntegrationManagementProps> = ({ theme }) 
       if (newIntegrationConfig.trim()) {
         try {
           configObj = JSON.parse(newIntegrationConfig);
-         catch (e) {
+        } catch (e) {
           setError('Invalid JSON configuration');
           return;
-
+        }
+      }
 
       const response = await fetch('/api/editor/integrations', {
         method: 'POST',
@@ -135,12 +142,13 @@ const IntegrationManagement: React.FC<IntegrationManagementProps> = ({ theme }) 
         setNewIntegrationEnabled(true);
         setIntegrations([...integrations, result.data]);
         alert('Integration created successfully!');
-       else {
+      } else {
         setError(result.message || 'Failed to create integration');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const handleTestIntegration = async (integrationId: number) => {
     try {
@@ -149,22 +157,24 @@ const IntegrationManagement: React.FC<IntegrationManagementProps> = ({ theme }) 
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
 
       if (result.success) {
         alert(`Integration test successful: ${result.data.message}`);
-       else {
+      } else {
         setError(result.message || 'Integration test failed');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleString();
+  };
 
   const getTypeColor = (type: string) => {
     switch (type) {
@@ -174,6 +184,8 @@ const IntegrationManagement: React.FC<IntegrationManagementProps> = ({ theme }) 
       case 'database': return '#10b981';
       case 'email': return '#f59e0b';
       default: return '#6b7280';
+    }
+  };
 
 
   return (
@@ -631,4 +643,6 @@ const IntegrationManagement: React.FC<IntegrationManagementProps> = ({ theme }) 
       )}
     </div>
   );
+};
+
 export default IntegrationManagement;

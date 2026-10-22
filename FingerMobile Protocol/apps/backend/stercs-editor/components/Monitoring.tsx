@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+
 interface MonitoringRule {
   id: number;
   name: string;
@@ -12,6 +13,7 @@ interface MonitoringRule {
   enabled: boolean;
   createdAt: string;
   updatedAt: string;
+}
 
 interface MonitoringMetric {
   id: number;
@@ -20,6 +22,7 @@ interface MonitoringMetric {
   value: number;
   source: string;
   createdAt: string;
+}
 
 interface MonitoringAlert {
   id: number;
@@ -32,9 +35,11 @@ interface MonitoringAlert {
   status: string;
   createdAt: string;
   updatedAt: string;
+}
 
 interface MonitoringProps {
   theme: 'light' | 'dark' | 'blue';
+}
 
 const Monitoring: React.FC<MonitoringProps> = ({ theme }) => {
   const [activeTab, setActiveTab] = useState<'rules' | 'metrics' | 'alerts'>('rules');
@@ -69,59 +74,61 @@ const Monitoring: React.FC<MonitoringProps> = ({ theme }) => {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+          }
         });
 
         const result = await response.json();
 
         if (result.success) {
           setRules(result.data);
-         else {
+        } else {
           setError(result.message || 'Failed to fetch monitoring rules');
-
+        }
       } else if (activeTab === 'metrics') {
         const response = await fetch('/api/editor/monitoring/metrics', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+          }
         });
 
         const result = await response.json();
 
         if (result.success) {
           setMetrics(result.data);
-         else {
+        } else {
           setError(result.message || 'Failed to fetch metrics');
-
+        }
       } else if (activeTab === 'alerts') {
         const response = await fetch('/api/editor/monitoring/alerts', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+          }
         });
 
         const result = await response.json();
 
         if (result.success) {
           setAlerts(result.data);
-         else {
+        } else {
           setError(result.message || 'Failed to fetch alerts');
-
-
-     catch (err) {
+        }
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-     finally {
+    } finally {
       setLoading(false);
-
+    }
+  };
 
   const handleCreateRule = async () => {
     if (!newRuleName || !newRuleProjectId || !newRuleMetricType || !newRuleCondition || newRuleThreshold === '') {
       setError('Name, Project ID, Metric Type, Condition, and Threshold are required for creating a monitoring rule');
       return;
+    }
 
     try {
       const response = await fetch('/api/editor/monitoring/rules', {
@@ -155,15 +162,17 @@ const Monitoring: React.FC<MonitoringProps> = ({ theme }) => {
         setNewRuleEnabled(true);
         setRules([...rules, result.data]);
         alert('Monitoring rule created successfully!');
-       else {
+      } else {
         setError(result.message || 'Failed to create monitoring rule');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleString();
+  };
 
   const getMetricTypeColor = (type: string) => {
     switch (type) {
@@ -173,7 +182,8 @@ const Monitoring: React.FC<MonitoringProps> = ({ theme }) => {
       case 'memory_usage': return '#8b5cf6';
       case 'disk_usage': return '#10b981';
       default: return '#6b7280';
-
+    }
+  };
 
   const getAlertStatusColor = (status: string) => {
     switch (status) {
@@ -181,6 +191,9 @@ const Monitoring: React.FC<MonitoringProps> = ({ theme }) => {
       case 'acknowledged': return '#f59e0b';
       case 'resolved': return '#10b981';
       default: return '#6b7280';
+    }
+  };
+
 
 
   return (
@@ -340,10 +353,10 @@ const Monitoring: React.FC<MonitoringProps> = ({ theme }) => {
                     color: theme === 'dark' ? 'white' : '#1f2937'
                   }}
                 >
-                  <option value=">">Greater than (>)</option>
-                  <option value="<">Less than (<)</option>
-                  <option value=">=">Greater or equal (>=)</option>
-                  <option value="<=">Less or equal (<=)</option>
+                  <option value=">">Greater than (&gt;)</option>
+                  <option value="<">{'Less than (<)'}</option>
+                  <option value=">=">Greater or equal (&gt;=)</option>
+                  <option value="<=">{'Less or equal (<=)'}</option>
                   <option value="==">Equal (==)</option>
                   <option value="!=">Not equal (!=)</option>
                 </select>
@@ -608,4 +621,6 @@ const Monitoring: React.FC<MonitoringProps> = ({ theme }) => {
       )}
     </div>
   );
-export default Monitoring;
+};
+
+export default Monitoring;
