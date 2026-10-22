@@ -160,6 +160,8 @@ apps/frontend-main/public/build/
 *.sql
 database_dump.sql
 final_verification.sql
+!FingerMobile Protocol/apps/backend/database/**/*.sql
+!FingerMobile Protocol/apps/backend/database/*.sql
 
 # Docker
 .dockerignore

@@ -247,9 +247,9 @@ const PERMISSION_MATRIX: ScreenPermissionMapping[] = [
 
 const DEFAULT_MEMBERS: PlatformMember[] = [
   {
-    id: 'mem-001',
+    id: '11111111-1111-1111-1111-111111111111',
     name: 'Mr. Mbah Israel Obinna',
-    username: 'obinnambah',
+    username: 'fingermobileprotocol',
     email: 'fingermobileprotocol@gmail.com',
     phone: '+2348088855752',
     role: 'SuperAdmin',
@@ -265,7 +265,7 @@ const DEFAULT_MEMBERS: PlatformMember[] = [
     department: 'Platform Founder & Executive Office'
   },
   {
-    id: 'mem-002',
+    id: '44444444-4444-4444-4444-444444444444',
     name: 'Mrs. Mbah Eunice Emonena',
     username: 'eunicembah',
     email: 'eunicembah@gmail.com',
@@ -282,9 +282,9 @@ const DEFAULT_MEMBERS: PlatformMember[] = [
     department: 'Co-Founder & Platform Operations'
   },
   {
-    id: 'mem-003',
+    id: '33333333-3333-3333-3333-333333333333',
     name: 'Mercy Kulem',
-    username: 'mercy_kulem',
+    username: 'gracelink_primary',
     email: 'mercy.kulem@fingermobileprotocol.com',
     phone: '+2348021122334',
     role: 'Manager',
@@ -299,7 +299,7 @@ const DEFAULT_MEMBERS: PlatformMember[] = [
     department: 'Trust, Safety & Governance'
   },
   {
-    id: 'mem-004',
+    id: '00000000-0000-0000-0000-000000000004',
     name: 'Alex Johnson Audio Labs',
     username: 'alex_audio',
     email: 'alex.johnson@fingermobileprotocol.com',
@@ -316,7 +316,7 @@ const DEFAULT_MEMBERS: PlatformMember[] = [
     department: 'BeatwaveNG Sound Lab'
   },
   {
-    id: 'mem-005',
+    id: '00000000-0000-0000-0000-000000000005',
     name: 'Chidiebere Okafor (New Member)',
     username: 'chidi_guest',
     email: 'chidi.okafor@gmail.com',
@@ -333,7 +333,7 @@ const DEFAULT_MEMBERS: PlatformMember[] = [
     department: 'Community Member'
   },
   {
-    id: 'mem-006',
+    id: '00000000-0000-0000-0000-000000000006',
     name: 'Fatima Al-Mansoor (Editor)',
     username: 'fatima_editor',
     email: 'fatima.editor@fingermobileprotocol.com',
@@ -563,7 +563,7 @@ const MasterMembersConsole: React.FC = () => {
     if (!newMemberName.trim() || !newMemberEmail.trim()) return;
 
     const newM: PlatformMember = {
-      id: `mem-${Date.now()}`,
+      id: typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : `00000000-0000-0000-0000-${Date.now().toString().padStart(12, '0')}`,
       name: newMemberName,
       username: newMemberEmail.split('@')[0].toLowerCase(),
       email: newMemberEmail,

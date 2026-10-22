@@ -1,3 +1,12 @@
+## Platform Policy: Zero Error Margin
+- No TypeScript errors
+- No syntax errors
+- No lint errors
+- No problems or warnings whatsoever
+- No trailing spaces
+- No whitespaces at the end of lines
+
+
 # Workspace Rules & Quality Guidelines
 Read, Analyze, Remember, Think, Understand, Build Reason, Build Logic, Think UI, Think UX, Apply, Analyze, Evaluate, Create, Strategize, Plan, and Execute. Think with the end user in mind and always prioritize security, accuracy, and efficiency in your code. 
 
@@ -155,4 +164,21 @@ Design systems document decisions about typography, colors, spacing, and compone
 
 Our website is a revenue driver
 A high-performing business website is a strategic tool that requires continuous monitoring and improvement. Its success depends on strong UX, a commitment to accessibility, a focus on conversion optimization, careful attention to performance, and ongoing dedication to usability. When all these elements work together, the site becomes a growth engine that produces real outcomes.
+
+Before starting development work, verify: Initialized all 15 platform databases specified in POSTGRES_MULTIPLE_DATABASES directly in fingermobile_postgres (including fingermobile_comms, fingermobile_business_db, fingermobile_identity_db, etc.). Both communications_service and business_suite_api reconnected immediately.
+- [ ] Backend server running on `http://localhost:5001`
+- [ ] Frontend server running on `http://localhost:3000`
+- [ ] Platform loads correctly in Chrome
+- [ ] Auto-commit watcher service running
+- [ ] API endpoints accessible
+- [ ] Backend is Connected to PostgreSQL and confirmed persisting data to PostgreSQL
+- [ ] All core features and microservices are fully functional
+- [ ] Remove the client-only localStorage fallback so that when you upload media., Browser sends multipart/form-data to Express backend.
+- [ ] Ensure Frontend and Backend wire up correctly with API Calls and Communication. Make sure all endpoints route correctly.
+- [ ] Always verify and confirm that the Backend Express API Started & Connected to PostgreSQL before proceeding and starting the Frontend.
+
+
+
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/frontend-main/PRODUCTION_DEVELOPMENT_STARTUP_GUIDE.md
 
