@@ -228,7 +228,7 @@ const StoreManagementPage: React.FC = () => {
   );
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
+    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
       <h1 className="text-3xl font-black mb-6 text-slate-900">eCommerce Store Management</h1>
 
       <PlatformOwnershipCard className="mb-6" />
@@ -284,7 +284,7 @@ const StoreManagementPage: React.FC = () => {
                         <span className="font-medium text-gray-900">{product.name}</span>
                       </td>
                       <td className="p-2 font-semibold text-gray-800">{product.price.toLocaleString()}</td>
-                      <td className="p-2 text-gray-600 text-sm">{product.stock}</td>
+                      <td className="p-2 text-slate-700 font-semibold text-sm">{product.stock}</td>
                       <td className="p-2 text-right">
                         <button
                           onClick={() => handleOpenEditor(product)}
@@ -331,7 +331,7 @@ const StoreManagementPage: React.FC = () => {
                 <tbody>
                   {orders.map((order) => (
                     <tr key={order.id} className="border-b last:border-b-0">
-                      <td className="p-2 text-xs font-mono text-gray-600">{order.id.slice(0, 8)}</td>
+                      <td className="p-2 text-xs font-mono text-slate-700 font-medium">{order.id.slice(0, 8)}</td>
                       <td className="p-2 text-xs text-gray-800 font-medium">{order.productName}</td>
                       <td className="p-2 text-xs font-semibold text-gray-900">
                         {order.total.toLocaleString()} FIC
@@ -445,7 +445,7 @@ const StoreManagementPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setIsEditorOpen(false)}
-                  className="flex-1 bg-gray-100 text-gray-700 py-2 rounded-lg font-medium hover:bg-gray-200 transition text-sm"
+                  className="flex-1 bg-slate-100 text-slate-800 border border-slate-300 py-2 rounded-lg font-bold hover:bg-slate-200 transition text-sm"
                 >
                   Cancel
                 </button>
