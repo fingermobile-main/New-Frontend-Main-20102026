@@ -71,7 +71,7 @@ const useScrollPosition = () => {
   return scrollPosition;
 };
 
-const MemoizedComponent = ({ children, isEqual }) => {
+const MemoizedComponent = ({ children }) => {
   return children;
 };
 
@@ -133,7 +133,8 @@ export const useVirtualScroll = (items, itemHeight, viewportHeight) => {
     visibleItems,
     offsetY,
     startIndex,
-    endIndex
+    endIndex,
+    setScrollTop
   };
 };
 
@@ -267,13 +268,7 @@ export const measurePerformance = (name, fn) => {
   const start = performance.now();
   const result = fn();
   const end = performance.now();
-
-  if (process.env.NODE_ENV === 'development') {
-    console.info(`⏱️,
-Performance: ${name} - Execution,
-time: ${(end - start).toFixed(2)} ms`);
-  }
-
+  void (end - start);
   return result;
 };
 

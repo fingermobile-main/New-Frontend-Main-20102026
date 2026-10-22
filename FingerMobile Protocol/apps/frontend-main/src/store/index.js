@@ -1,4 +1,3 @@
-import React from 'react';
 // Main Redux Store Configuration
 import { configureStore } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';

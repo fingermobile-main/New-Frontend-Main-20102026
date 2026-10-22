@@ -61,30 +61,33 @@ const NexusGNNDashboard: React.FC = () => {
     setTimeout(() => setNotification(null), 4000);
   };
 
-  const loadAllData = async () => {
-    setLoading(true);
-    try {
-      const [analyticsData, items, weightsConfig, jobList] = await Promise.all([
-        NexusGNNService.getGraphAnalytics(),
-        NexusGNNService.getLifecycleContent(),
-        NexusGNNService.getAlgorithmWeights(),
-        NexusGNNService.getEmbeddingJobs()
-      ]);
-
-      setAnalytics(analyticsData);
-      setLifecycleItems(items);
-      setWeights(weightsConfig.weights);
-      setThresholds(weightsConfig.thresholds);
-      setJobs(jobList);
-    } catch (err) {
-      console.error('Failed to load NexusGNN dashboard data:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    loadAllData();
+    let isMounted = true;
+    const fetchData = async () => {
+      try {
+        const [analyticsData, items, weightsConfig, jobList] = await Promise.all([
+          NexusGNNService.getGraphAnalytics(),
+          NexusGNNService.getLifecycleContent(),
+          NexusGNNService.getAlgorithmWeights(),
+          NexusGNNService.getEmbeddingJobs()
+        ]);
+        if (!isMounted) return;
+        setAnalytics(analyticsData);
+        setLifecycleItems(items);
+        setWeights(weightsConfig.weights);
+        setThresholds(weightsConfig.thresholds);
+        setJobs(jobList);
+      } catch (err) {
+        console.error('Failed to load NexusGNN dashboard data:', err);
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+
+    fetchData();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const handleSimulate = async () => {

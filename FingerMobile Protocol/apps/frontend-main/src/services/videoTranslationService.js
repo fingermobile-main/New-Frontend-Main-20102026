@@ -15,17 +15,11 @@ const videoTranslationService = {
       const response = await axios.post(`${API_BASE_URL}/video-translation/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
-        },
-        onUploadProgress: (progressEvent) => {
-          // Calculate progress percentage
-          const _progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-          // Could be used for UI updates if needed
         }
       });
 
       return response.data;
     } catch (error) {
-      console.error('Error in uploadVideo function:', error);
       throw error.response?.data || error;
     }
   },

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 // Custom hook for handling responsive design
 // Hook to track screen size and device type
 export const useMediaQuery = () => {

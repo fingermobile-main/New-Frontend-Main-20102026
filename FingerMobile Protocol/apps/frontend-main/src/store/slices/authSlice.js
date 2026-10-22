@@ -119,7 +119,7 @@ export const authSlice = createSlice({name: 'auth',
       .addCase(logoutUser.pending, (state) => {
         state.loading = true;
       })
-      .addCase(logoutUser.fulfilled, (state, _action) => {
+      .addCase(logoutUser.fulfilled, (state) => {
         state.loading = false;
         state.user = null;
         state.token = null;

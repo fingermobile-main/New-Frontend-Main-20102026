@@ -27,7 +27,7 @@ const LoginPage: React.FC = () => {
     try {
       await login({ email, password });
       navigate(from, { replace: true });
-    } catch (err) {
+    } catch {
       setError('Invalid email or password. Please try again.');
     } finally {
       setLoading(false);
@@ -138,7 +138,7 @@ const LoginPage: React.FC = () => {
                       const data = await res.json();
                       setResetSuccess(true);
                       setResetMessage(data.message || 'Password reset instructions have been sent.');
-                    } catch (err) {
+                    } catch {
                       setResetSuccess(false);
                       setResetMessage('Failed to connect to authentication service.');
                     } finally {

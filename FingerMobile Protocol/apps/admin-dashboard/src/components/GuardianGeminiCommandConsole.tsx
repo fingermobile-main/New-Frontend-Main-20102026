@@ -48,7 +48,7 @@ export const GuardianGeminiCommandConsole: React.FC<GuardianGeminiCommandConsole
   );
 
   const [prompt, setPrompt] = useState('');
-  const [apiKey, setApiKey] = useState('');
+  const [apiKey, setApiKey] = useState(() => (typeof window !== 'undefined' ? localStorage.getItem('fmp_superadmin_gemini_key') || '' : ''));
   const [showApiKey, setShowApiKey] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [response, setResponse] = useState<PromptResponse | null>(null);
@@ -58,14 +58,6 @@ export const GuardianGeminiCommandConsole: React.FC<GuardianGeminiCommandConsole
 
   // Auto-growing textarea reference
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-
-  // Load saved API key on mount
-  useEffect(() => {
-    const savedKey = localStorage.getItem('fmp_superadmin_gemini_key') || '';
-    if (savedKey) {
-      setApiKey(savedKey);
-    }
-  }, []);
 
   // Auto-grow textarea height
   useEffect(() => {

@@ -1,5 +1,6 @@
+/* oxlint-disable react/only-export-components */
 import type { ReactNode } from 'react';
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import type { User, LoginCredentials } from '../services/authService';
 import AuthService from '../services/authService';
 
@@ -19,16 +20,11 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    // Initialize auth state from storage when app loads
+  const [user, setUser] = useState<User | null>(() => {
     AuthService.initializeFromStorage();
-    const currentUser = AuthService.getCurrentUser();
-    setUser(currentUser || null);
-    setIsLoading(false);
-  }, []);
+    return AuthService.getCurrentUser() || null;
+  });
+  const [isLoading, setIsLoading] = useState(false);
 
   const login = async (credentials: LoginCredentials) => {
     setIsLoading(true);
