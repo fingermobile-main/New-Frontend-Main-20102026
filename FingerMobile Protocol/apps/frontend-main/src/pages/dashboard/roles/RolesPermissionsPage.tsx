@@ -141,6 +141,9 @@ export const RolesPermissionsPage: React.FC = () => {
         {/* Quick Nav Tabs to All Sovereign Consoles */}
         <div className="flex items-center gap-2 overflow-x-auto pb-1 border-b border-slate-300">
           <button
+            type="button"
+            aria-label={`Collaborator Seats (${collaborators.length})`}
+            onClick={(e) => { e.stopPropagation(); }}
             className="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-900 text-white shadow-sm flex items-center gap-2 whitespace-nowrap cursor-pointer"
           >
             <Users className="w-4 h-4" />

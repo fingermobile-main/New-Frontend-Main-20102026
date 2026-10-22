@@ -741,6 +741,8 @@ export const CanaryAdMakerPage: React.FC = () => {
                     </div>
                     <button
                       type="button"
+                      aria-label={`Preview call to action: ${callToAction}`}
+                      onClick={() => alert(`Call to action: ${callToAction}`)}
                       className="px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 font-bold text-xs"
                     >
                       {callToAction}

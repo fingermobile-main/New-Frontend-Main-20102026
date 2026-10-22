@@ -111,6 +111,18 @@ const ManageMyHallmarkPage: React.FC = () => {
     }
   };
 
+  const handleRemoveMember = async (memberId: string) => {
+    if (!selectedHallmarkId || !window.confirm('Are you sure you want to remove this member?')) return;
+    try {
+      if ((hallmarkService as any).removeMember) {
+        await (hallmarkService as any).removeMember(selectedHallmarkId, memberId);
+      }
+      toast.success('Member removed');
+    } catch {
+      toast.error('Failed to remove member');
+    }
+  };
+
   const handleStartSession = async () => {
     if (!selectedHallmarkId || !sessionTitle.trim()) {
       showToast('Please enter a title for your live session.', 'warning');
@@ -311,6 +323,8 @@ const ManageMyHallmarkPage: React.FC = () => {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                           <button
+                            type="button"
+                            aria-label={`Edit role for member ${member.role || ''}`}
                             onClick={() => {
                               setEditingMember(member);
                               setMemberRole(member.role || '');
@@ -319,7 +333,14 @@ const ManageMyHallmarkPage: React.FC = () => {
                           >
                             Edit
                           </button>
-                          <button className="text-red-600 hover:text-red-900">Remove</button>
+                          <button
+                            type="button"
+                            aria-label={`Remove member ${member.role || ''}`}
+                            onClick={() => handleRemoveMember(member.id)}
+                            className="text-red-600 hover:text-red-900"
+                          >
+                            Remove
+                          </button>
                         </td>
                       </tr>
                     ))}

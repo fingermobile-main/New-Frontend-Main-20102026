@@ -1471,6 +1471,8 @@ export const ProfilePage: React.FC = () => {
                 <>
                   <button
                     type="button"
+                    aria-label="Friends status active"
+                    onClick={() => showToast('Friend connection active', 'info')}
                     className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-900 text-xs font-bold border border-slate-300 shadow-xs transition-all flex items-center gap-1.5"
                   >
                     <Check className="w-4 h-4 text-emerald-600" />

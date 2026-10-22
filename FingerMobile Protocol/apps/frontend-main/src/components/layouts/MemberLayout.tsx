@@ -87,7 +87,12 @@ const MemberLayout: React.FC<MemberLayoutProps> = ({ children, title, subtitle, 
           </div>
 
           <div className="flex items-center gap-4">
-            <button className="relative p-2 text-slate-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-all duration-300">
+            <button
+              type="button"
+              aria-label="View notifications"
+              onClick={() => window.location.assign('/notifications')}
+              className="relative p-2 text-slate-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-all duration-300"
+            >
               <BellIcon className="w-6 h-6" />
               <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-rose-500 border-2 border-slate-50 rounded-full"></span>
             </button>

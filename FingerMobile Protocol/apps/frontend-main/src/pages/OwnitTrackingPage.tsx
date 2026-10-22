@@ -187,7 +187,12 @@ const OwnitTrackingPage: React.FC = () => {
           >
             {refreshing ? 'Refreshing...' : 'Refresh Status'}
           </button>
-          <button style={styles.newPurchaseButton}>
+          <button
+            type="button"
+            aria-label="Create new purchase"
+            onClick={() => window.location.assign('/store')}
+            style={styles.newPurchaseButton}
+          >
             New Purchase
           </button>
         </div>

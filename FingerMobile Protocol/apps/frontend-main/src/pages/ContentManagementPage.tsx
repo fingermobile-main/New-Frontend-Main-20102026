@@ -381,13 +381,20 @@ const ContentManagementPage: React.FC = () => {
                             </>
                           )}
                           <button 
+                            type="button"
+                            aria-label={`Delete content ${item.title}`}
                             className="text-red-600 hover:text-red-900"
                             onClick={() => handleDeleteContent(item.id)}
                           >
                             <Trash2 className="h-4 w-4" />
                           </button>
                           <div className="relative group/actions">
-                            <button className="text-gray-600 hover:text-gray-900">
+                            <button
+                              type="button"
+                              aria-label={`More actions for ${item.title}`}
+                              onClick={(e) => { e.stopPropagation(); }}
+                              className="text-gray-600 hover:text-gray-900"
+                            >
                               <MoreHorizontal className="h-4 w-4" />
                             </button>
                             <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden group-hover/actions:block">

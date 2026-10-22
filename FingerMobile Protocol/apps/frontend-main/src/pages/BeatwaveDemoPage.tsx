@@ -376,7 +376,18 @@ const BeatwaveDemoPage: React.FC = () => {
                     <span className="text-xs text-slate-300 font-medium font-mono">
                       {formatSec(typeof track.duration_seconds === 'number' ? track.duration_seconds : 180)}
                     </span>
-                    <button className="p-2 text-slate-300 hover:text-white rounded-lg">
+                    <button
+                      type="button"
+                      aria-label={currentTrack?.id === track.id && isPlaying ? `Pause ${track.title}` : `Play ${track.title}`}
+                      onClick={() => {
+                        if (currentTrack?.id === track.id) {
+                          handleTogglePlay();
+                        } else {
+                          handlePlayTrack(track);
+                        }
+                      }}
+                      className="p-2 text-slate-300 hover:text-white rounded-lg"
+                    >
                       {currentTrack?.id === track.id && isPlaying ? (
                         <Pause className="w-4 h-4 text-cyan-400" />
                       ) : (

@@ -296,7 +296,12 @@ const VoiceFeedPage: React.FC = () => {
               <p className="text-xs text-slate-800 leading-relaxed font-medium">
                 Record your voice notes or upload lossless audio up to 5 minutes. Distribute across FingerMobile and earn Gems when listeners engage!
               </p>
-              <button className="w-full py-2.5 px-4 bg-teal-800 hover:bg-teal-900 text-white text-xs font-bold rounded-xl shadow transition-colors flex items-center justify-center gap-2">
+              <button
+                type="button"
+                aria-label="Publish audio clip in creator studio"
+                onClick={() => window.location.assign('/voice-feed/create')}
+                className="w-full py-2.5 px-4 bg-teal-800 hover:bg-teal-900 text-white text-xs font-bold rounded-xl shadow transition-colors flex items-center justify-center gap-2"
+              >
                 <Mic className="w-4 h-4" />
                 Publish Audio Clip
               </button>

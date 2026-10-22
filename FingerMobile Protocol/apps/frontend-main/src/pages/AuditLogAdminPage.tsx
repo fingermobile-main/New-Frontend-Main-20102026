@@ -365,10 +365,22 @@ const AuditLogAdminPage: React.FC = () => {
                 <span className="font-medium">{logs.length}</span> results
               </div>
               <div className="flex space-x-2">
-                <button type="button" className="px-3 py-1 border border-gray-300 rounded-lg text-sm disabled:opacity-50" disabled>
+                <button
+                  type="button"
+                  aria-label="Previous page"
+                  onClick={(e) => { e.stopPropagation(); }}
+                  className="px-3 py-1 border border-gray-300 rounded-lg text-sm disabled:opacity-50"
+                  disabled
+                >
                   Previous
                 </button>
-                <button type="button" className="px-3 py-1 border border-gray-300 rounded-lg text-sm disabled:opacity-50" disabled>
+                <button
+                  type="button"
+                  aria-label="Next page"
+                  onClick={(e) => { e.stopPropagation(); }}
+                  className="px-3 py-1 border border-gray-300 rounded-lg text-sm disabled:opacity-50"
+                  disabled
+                >
                   Next
                 </button>
               </div>

@@ -47,6 +47,8 @@ const CommunitiesSection: React.FC = () => {
     }
   ];
 
+  const [joinedList, setJoinedList] = React.useState<number[]>([1, 3]);
+
   return (
     <div className="bg-white rounded-lg shadow-fm-card p-4">
       <div className="flex justify-between items-center mb-4">
@@ -70,7 +72,7 @@ const CommunitiesSection: React.FC = () => {
               </div>
             </div>
 
-            {community.isJoined ? (
+            {joinedList.includes(community.id) ? (
               <span className="text-xs bg-green-100 text-green-950 border border-green-400 font-bold px-2 py-1 rounded-full font-black">
                 Joined
               </span>
@@ -78,6 +80,7 @@ const CommunitiesSection: React.FC = () => {
               <button
                 type="button"
                 aria-label={`Join ${community.name} community`}
+                onClick={() => setJoinedList(prev => [...prev, community.id])}
                 className="text-xs bg-fm-gray-100 text-fm-gray-700 px-3 py-1.5 rounded-full hover:bg-fm-orange hover:text-white transition-colors"
               >
                 Join

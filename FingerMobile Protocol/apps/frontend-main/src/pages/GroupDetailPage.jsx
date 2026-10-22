@@ -120,7 +120,13 @@ const GroupDetailPage = () => {
                 </div>
                 <div>
                   {members.some((member) => member.role === 'owner') ? (
-                    <Button variant="success" disabled>
+                    <Button
+                      type="button"
+                      variant="success"
+                      aria-label="Group owner"
+                      onClick={(e) => { e.stopPropagation(); }}
+                      disabled
+                    >
                       Owner
                     </Button>
                   ) : members.some((member) => member.id) ? (

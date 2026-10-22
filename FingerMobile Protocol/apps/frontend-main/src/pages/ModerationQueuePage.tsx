@@ -88,6 +88,13 @@ const ModerationQueuePage: React.FC = () => {
     }
   };
 
+  const handleFlagForReview = async (itemId: string) => {
+    setQueueItems(prev => prev.map(item => item.id === itemId ? { ...item, status: 'flagged' } : item));
+    if (selectedItem?.id === itemId) {
+      setSelectedItem(null);
+    }
+  };
+
   const filteredItems = queueItems.filter(item => item.status === 'pending');
 
   return (
@@ -212,7 +219,10 @@ const ModerationQueuePage: React.FC = () => {
                         Reject & Remove
                       </Button>
                       <Button
+                        type="button"
                         variant="outline"
+                        aria-label="Flag item for secondary review"
+                        onClick={() => handleFlagForReview(selectedItem.id)}
                         disabled={selectedItem.status !== 'pending'}
                       >
                         Flag for Review

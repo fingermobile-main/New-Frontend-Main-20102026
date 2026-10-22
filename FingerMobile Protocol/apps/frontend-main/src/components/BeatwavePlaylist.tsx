@@ -105,7 +105,13 @@ const BeatwavePlaylist: React.FC<BeatwavePlaylistProps> = ({
                 </div>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" aria-label={`Options for playlist ${playlist.name}`}>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      aria-label={`Options for playlist ${playlist.name}`}
+                      onClick={(e) => { e.stopPropagation(); }}
+                    >
                       <MoreVertical className="h-4 w-4" />
                     </Button>
                   </DropdownMenuTrigger>

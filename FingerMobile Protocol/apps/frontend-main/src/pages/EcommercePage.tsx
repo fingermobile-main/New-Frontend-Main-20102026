@@ -564,7 +564,12 @@ const EcommercePage: React.FC = () => {
                               <Trash2 className="h-4 w-4" />
                             </button>
                             <div className="relative">
-                              <button type="button" className="text-gray-600 hover:text-gray-900" aria-label={`More options for product ${item.name}`}>
+                              <button
+                                type="button"
+                                className="text-gray-600 hover:text-gray-900"
+                                aria-label={`More options for product ${item.name}`}
+                                onClick={(e) => { e.stopPropagation(); }}
+                              >
                                 <MoreHorizontal className="h-4 w-4" />
                               </button>
                               <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden">
@@ -667,13 +672,20 @@ const EcommercePage: React.FC = () => {
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                           <div className="flex space-x-2">
                             <button 
+                              type="button"
                               className="text-blue-600 hover:text-blue-900"
                               onClick={() => history.push(`/dashboard/ecommerce/orders/${order.id}/view`)}
+                              aria-label={`View order ${order.orderNumber}`}
                             >
                               <Eye className="h-4 w-4" />
                             </button>
                             <div className="relative">
-                              <button className="text-gray-600 hover:text-gray-900">
+                              <button
+                                type="button"
+                                className="text-gray-600 hover:text-gray-900"
+                                aria-label={`More options for order ${order.orderNumber}`}
+                                onClick={(e) => { e.stopPropagation(); }}
+                              >
                                 <MoreHorizontal className="h-4 w-4" />
                               </button>
                               <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden">

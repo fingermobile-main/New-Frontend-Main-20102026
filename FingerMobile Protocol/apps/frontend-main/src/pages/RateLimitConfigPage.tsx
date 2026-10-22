@@ -132,6 +132,11 @@ const RateLimitConfigPage: React.FC = () => {
     }
   };
 
+  const handleEditConfig = (config: RateLimitConfig) => {
+    setNewConfig(config);
+    setShowCreateModal(true);
+  };
+
   const formatWindowMs = (ms: number): string => {
     if (ms < 60000) return `${ms / 1000}s`;
     if (ms < 3600000) return `${ms / 60000}m`;
@@ -249,6 +254,8 @@ const RateLimitConfigPage: React.FC = () => {
 
                   <div className="flex items-center space-x-2 ml-4">
                     <button
+                      type="button"
+                      aria-label={config.isActive ? `Disable rate limit ${config.name}` : `Enable rate limit ${config.name}`}
                       onClick={() => handleToggleConfig(config.id)}
                       className={`p-2 rounded-lg transition-colors ${
                         config.isActive
@@ -260,12 +267,17 @@ const RateLimitConfigPage: React.FC = () => {
                       <ArrowPathIcon className="h-5 w-5" />
                     </button>
                     <button
+                      type="button"
+                      aria-label={`Edit rate limit ${config.name}`}
+                      onClick={() => handleEditConfig(config)}
                       className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                       title="Edit"
                     >
                       <PencilIcon className="h-5 w-5" />
                     </button>
                     <button
+                      type="button"
+                      aria-label={`Delete rate limit ${config.name}`}
                       onClick={() => handleDeleteConfig(config.id)}
                       className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                       title="Delete"

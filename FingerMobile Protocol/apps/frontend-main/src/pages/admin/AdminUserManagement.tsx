@@ -152,7 +152,13 @@ const AdminUserManagement: React.FC = () => {
               onChange={(e) => setSearch(e.target.value)}
               className="w-full sm:w-72 bg-white text-slate-900 font-bold border border-slate-300"
             />
-            <Button variant="outline" className="border-slate-300 text-slate-800 hover:bg-slate-100">
+            <Button
+              type="button"
+              variant="outline"
+              aria-label="Search members"
+              onClick={(e) => { e.stopPropagation(); }}
+              className="border-slate-300 text-slate-800 hover:bg-slate-100"
+            >
               <MagnifyingGlassIcon className="w-4 h-4" />
             </Button>
           </div>

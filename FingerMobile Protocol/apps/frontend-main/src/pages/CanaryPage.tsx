@@ -454,7 +454,12 @@ const CanaryPage: React.FC = () => {
               </h2>
               <div className="flex items-center justify-between">
                 <span className="text-2xl font-bold text-gray-900">{ficBalance.toFixed(2)} FIC</span>
-                <button className="text-sm bg-gradient-to-r from-amber-500 to-yellow-600 text-white px-3 py-1.5 rounded-lg hover:from-amber-600 hover:to-yellow-700">
+                <button
+                  type="button"
+                  aria-label="Add FIC funds"
+                  onClick={() => window.location.assign('/wallet/topup')}
+                  className="text-sm bg-gradient-to-r from-amber-500 to-yellow-600 text-white px-3 py-1.5 rounded-lg hover:from-amber-600 hover:to-yellow-700"
+                >
                   Add Funds
                 </button>
               </div>

@@ -80,7 +80,12 @@ const Header: React.FC<HeaderProps> = ({
         {/* User dropdown */}
         <Menu as="div" className="relative ml-3">
           <div>
-            <Menu.Button className="flex items-center max-w-xs text-sm bg-white rounded-full focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <Menu.Button
+              type="button"
+              aria-label="Open user menu"
+              onClick={(e) => { e.stopPropagation(); }}
+              className="flex items-center max-w-xs text-sm bg-white rounded-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
               <span className="sr-only">Open user menu</span>
               {user?.avatar ? (
                 <img

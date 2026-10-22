@@ -1472,7 +1472,12 @@ const SubscriptionPlanCard: React.FC<SubscriptionPlanCardProps> = ({ plan }) => 
         {plan.description || 'Plan details'}
       </p>
       <p className="text-white font-bold mt-2">{plan.price || '$0/month'}</p>
-      <button className="mt-2 w-full py-1 bg-blue-600 text-white font-bold rounded hover:bg-blue-700">
+      <button
+        type="button"
+        aria-label={`Subscribe to ${plan.name || 'plan'}`}
+        onClick={() => window.location.assign(`/subscribe?plan=${encodeURIComponent(plan.id || plan.name || '')}`)}
+        className="mt-2 w-full py-1 bg-blue-600 text-white font-bold rounded hover:bg-blue-700"
+      >
         Subscribe
       </button>
     </div>

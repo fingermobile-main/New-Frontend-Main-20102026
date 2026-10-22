@@ -106,8 +106,11 @@ const GroupsPage = () => {
               </Card.Body>
               <Card.Footer>
                 <Button
+                  type="button"
                   variant="primary"
                   size="sm"
+                  aria-label={`View group ${group.name}`}
+                  onClick={() => window.location.assign(`/groups/${group.id}`)}
                   href={`/groups/${group.id}`}
                 >
                   View Group
