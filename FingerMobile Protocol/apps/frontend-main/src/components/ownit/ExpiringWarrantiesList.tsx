@@ -174,7 +174,7 @@ const ExpiringWarrantiesList: React.FC<ExpiringWarrantiesListProps> = ({
                 <div className="flex gap-2">
                   <button
                     type="button"
-                    aria-label={`Extend warranty for ${product.name || 'this product'}`}
+                    aria-label={`Extend warranty for ${product.product_name || 'this product'}`}
                     onClick={() => window.location.assign(`/ownit/${product.id}/warranty/extend`)}
                     className="flex-1 px-4 py-2 bg-white border-2 border-current rounded-lg hover:bg-opacity-90 transition-colors font-medium"
                   >
@@ -182,7 +182,7 @@ const ExpiringWarrantiesList: React.FC<ExpiringWarrantiesListProps> = ({
                   </button>
                   <button
                     type="button"
-                    aria-label={`File a warranty claim for ${product.name || 'this product'}`}
+                    aria-label={`File a warranty claim for ${product.product_name || 'this product'}`}
                     onClick={() => window.location.assign(`/ownit/${product.id}/warranty/claim`)}
                     className="flex-1 px-4 py-2 bg-current text-white rounded-lg hover:bg-opacity-90 transition-colors font-medium"
                   >

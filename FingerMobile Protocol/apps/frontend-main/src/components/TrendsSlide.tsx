@@ -128,9 +128,13 @@ const TrendsSlide: React.FC<TrendsSlideProps> = ({
         ))}
       </div>
 
-      <Button type="button" variant="outline" asChild className="w-full mt-4 border-slate-300 text-slate-800 hover:bg-slate-50">
-        <a href="/trends">View All Trends</a>
-      </Button>
+      <a
+        href="/trends"
+        aria-label="View all trends"
+        className="block text-center w-full mt-4 py-2 px-4 rounded-md border border-slate-300 text-slate-800 font-semibold hover:bg-slate-50 transition-colors"
+      >
+        View All Trends
+      </a>
     </div>
   );
 };

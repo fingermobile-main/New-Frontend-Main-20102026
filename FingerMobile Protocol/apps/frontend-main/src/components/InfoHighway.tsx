@@ -71,9 +71,13 @@ const InfoHighway: React.FC<InfoHighwayProps> = ({
           <Info className="h-5 w-5 text-slate-700" />
           Information Highway
         </h2>
-        <Button variant="ghost" size="sm" asChild className="text-slate-700 font-semibold hover:text-slate-900">
-          <a href="/info">View All</a>
-        </Button>
+        <a
+          href="/info"
+          aria-label="View all information highway items"
+          className="text-sm font-semibold text-slate-700 hover:text-slate-900 px-3 py-1.5 rounded-md hover:bg-slate-100 transition-colors"
+        >
+          View All
+        </a>
       </div>
 
       <div className="space-y-3">

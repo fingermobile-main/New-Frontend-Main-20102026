@@ -69,9 +69,13 @@ const MusicFeed: React.FC<MusicFeedProps> = ({
           <Music className="h-6 w-6 text-slate-800" />
           Music Feed
         </h2>
-        <Button variant="ghost" size="sm" asChild className="text-slate-800 font-semibold hover:text-slate-900">
-          <Link to="/beatwave">View All</Link>
-        </Button>
+        <Link
+          to="/beatwave"
+          aria-label="View all music tracks"
+          className="text-sm font-semibold text-slate-800 hover:text-slate-900 px-3 py-1.5 rounded-md hover:bg-slate-100 transition-colors"
+        >
+          View All
+        </Link>
       </div>
 
       <div className="space-y-3">

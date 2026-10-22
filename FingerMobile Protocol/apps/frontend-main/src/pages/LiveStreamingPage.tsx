@@ -879,7 +879,7 @@ const LiveStreamingPage: React.FC = () => {
                               <div className="flex space-x-2">
                                 <button
                                   type="button"
-                                  aria-label={`View viewer ${viewer.name} details`}
+                                  aria-label={`View viewer ${viewer.userName} details`}
                                   className="text-blue-600 hover:text-blue-900"
                                   onClick={() => history.push(`/dashboard/streaming/viewers/${viewer.id}/details`)}
                                 >
@@ -888,8 +888,8 @@ const LiveStreamingPage: React.FC = () => {
                                 <div className="relative">
                                   <button
                                     type="button"
-                                    aria-label={`More options for viewer ${viewer.name}`}
-                                    onClick={() => showToast(`Actions for viewer: ${viewer.name}`, 'info')}
+                                    aria-label={`More options for viewer ${viewer.userName}`}
+                                    onClick={() => showToast(`Actions for viewer: ${viewer.userName}`, 'info')}
                                     className="text-gray-600 hover:text-gray-900"
                                   >
                                     <MoreHorizontal className="h-4 w-4" />

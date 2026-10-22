@@ -65,6 +65,7 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
   // New comment input
   const [commentText, setCommentText] = useState('');
   const [activeEmojiPicker, setActiveEmojiPicker] = useState(false);
+  const [likedCommentIds, setLikedCommentIds] = useState<string[]>([]);
 
   const currentIndex = allPins.findIndex((p) => p.id === pin.id);
   const hasPrev = currentIndex > 0;
@@ -667,17 +668,17 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
                               <div className="flex items-center gap-3 pt-1 text-[11px] font-semibold text-slate-600">
                                 <button
                                   type="button"
-                                  aria-label={`Reply to ${comm.author || 'this comment'}`}
-                                  onClick={() => {}}
+                                  aria-label={`Reply to ${comm.authorName || 'this comment'}`}
+                                  onClick={() => setCommentText(`@${comm.authorName} `)}
                                   className="hover:text-purple-700 transition-colors"
                                 >Reply</button>
                                 <span>•</span>
                                 <button
                                   type="button"
                                   aria-label={`Like this comment (${comm.likes} likes)`}
-                                  onClick={() => {}}
+                                  onClick={() => setLikedCommentIds((prev) => prev.includes(comm.id) ? prev.filter(x => x !== comm.id) : [...prev, comm.id])}
                                   className="hover:text-rose-600 transition-colors"
-                                >❤️ {comm.likes}</button>
+                                >❤️ {comm.likes + (likedCommentIds.includes(comm.id) ? 1 : 0)}</button>
                               </div>
                             </div>
                           </div>

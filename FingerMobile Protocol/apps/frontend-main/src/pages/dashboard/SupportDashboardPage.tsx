@@ -177,8 +177,8 @@ const SupportDashboardPage: React.FC = () => {
           <textarea value={reply} onChange={e => setReply(e.target.value)} rows={3} className="w-full p-2.5 border border-slate-300 rounded-lg text-slate-900 font-bold bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 text-sm" placeholder="Type your reply..."></textarea>
           <div className="flex justify-between items-center mt-2.5">
             <div className="flex gap-2">
-              <button type="button" onClick={() => onUpdateStatus(selectedTicket!.id, 'resolved')} type="button" className="px-3 py-1 text-xs font-black bg-emerald-100 text-emerald-950 border border-emerald-400 rounded-full hover:bg-emerald-200 transition-colors">Mark as Resolved</button>
-              <button type="button" onClick={() => onUpdateStatus(selectedTicket!.id, 'closed')} type="button" className="px-3 py-1 text-xs font-black bg-slate-200 text-slate-950 rounded-full hover:bg-slate-300 border border-slate-400 transition-colors">Close Ticket</button>
+              <button type="button" onClick={() => onUpdateStatus(selectedTicket!.id, 'resolved')} aria-label="Mark ticket as resolved" className="px-3 py-1 text-xs font-black bg-emerald-100 text-emerald-950 border border-emerald-400 rounded-full hover:bg-emerald-200 transition-colors">Mark as Resolved</button>
+              <button type="button" onClick={() => onUpdateStatus(selectedTicket!.id, 'closed')} aria-label="Close ticket" className="px-3 py-1 text-xs font-black bg-slate-200 text-slate-950 rounded-full hover:bg-slate-300 border border-slate-400 transition-colors">Close Ticket</button>
             </div>
             <button type="submit" className="px-5 py-2 text-sm font-bold bg-brand-blue text-white rounded-lg hover:bg-blue-700 shadow-sm transition-colors">Send Reply</button>
           </div>
