@@ -675,7 +675,7 @@ const EcommercePage: React.FC = () => {
                               type="button"
                               className="text-blue-600 hover:text-blue-900"
                               onClick={() => history.push(`/dashboard/ecommerce/orders/${order.id}/view`)}
-                              aria-label={`View order ${order.orderNumber}`}
+                              aria-label={`View order ${order.id}`}
                             >
                               <Eye className="h-4 w-4" />
                             </button>
@@ -683,7 +683,7 @@ const EcommercePage: React.FC = () => {
                               <button
                                 type="button"
                                 className="text-gray-600 hover:text-gray-900"
-                                aria-label={`More options for order ${order.orderNumber}`}
+                                aria-label={`More options for order ${order.id}`}
                                 onClick={(e) => { e.stopPropagation(); }}
                               >
                                 <MoreHorizontal className="h-4 w-4" />

@@ -184,8 +184,8 @@ const RecommendationCard: React.FC<RecommendationCardProps> = ({
       {!showFeedback && (
         <button
           type="button"
-          aria-label={`View size chart for ${recommendation.brand || 'product'}`}
-          onClick={() => window.location.assign(`/flamingo/size-charts?brand=${encodeURIComponent(recommendation.brand || '')}`)}
+          aria-label={`View size chart for ${recommendation.brand_name || 'product'}`}
+          onClick={() => window.location.assign(`/flamingo/size-charts?brand=${encodeURIComponent(recommendation.brand_name || '')}`)}
           className="w-full mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
         >
           View Size Chart →

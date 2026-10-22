@@ -889,19 +889,24 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
                 </div>
               </div>
             </div>
-            <a
-              href={post.fileAttachment.url || '#'}
-              download={post.fileAttachment.name}
-              onClick={(e) => {
-                if (!post.fileAttachment?.url) {
-                  e.preventDefault();
-                  notify(`Downloading ${post.fileAttachment?.name}...`, 'info');
-                }
-              }}
-              className="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white text-[11px] font-bold rounded-lg transition ml-2"
-            >
-              Download
-            </a>
+            {post.fileAttachment.url ? (
+              <a
+                href={post.fileAttachment.url}
+                download={post.fileAttachment.name}
+                className="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white text-[11px] font-bold rounded-lg transition ml-2"
+              >
+                Download
+              </a>
+            ) : (
+              <button
+                type="button"
+                aria-label={`Download ${post.fileAttachment.name}`}
+                onClick={() => notify(`Downloading ${post.fileAttachment?.name}...`, 'info')}
+                className="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white text-[11px] font-bold rounded-lg transition ml-2"
+              >
+                Download
+              </button>
+            )}
           </div>
         )}
 

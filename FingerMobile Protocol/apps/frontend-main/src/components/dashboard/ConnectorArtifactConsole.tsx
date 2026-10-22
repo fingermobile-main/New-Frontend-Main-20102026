@@ -1141,7 +1141,7 @@ export const ConnectorArtifactConsole: React.FC = () => {
                   <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-[11px]">
                     <span className="text-slate-300 font-medium">API Documentation:</span>
                     <a
-                      href={connectInfo.documentation_url || '#'}
+                      href={connectInfo.documentation_url || '/docs/connectors'}
                       target="_blank"
                       rel="noreferrer"
                       className="text-indigo-400 hover:underline flex items-center gap-1"

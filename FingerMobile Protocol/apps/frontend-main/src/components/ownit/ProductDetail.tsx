@@ -202,7 +202,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onClose }) => 
             {isWarrantyActive(product) && (
               <button
                 type="button"
-                aria-label={`File warranty claim for ${product.name || 'product'}`}
+                aria-label={`File warranty claim for ${product.title || 'product'}`}
                 onClick={() => window.location.assign(`/ownit/warranty/claim?item=${encodeURIComponent(product.id)}`)}
                 className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
               >

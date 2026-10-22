@@ -32,6 +32,8 @@ const AdBanner: React.FC<AdBannerProps> = ({
     <div className={`relative w-full bg-gradient-to-r from-blue-50 to-purple-50 border border-slate-200 rounded-lg overflow-hidden ${sizeClasses[variant]}`}>
       {onClose && (
         <Button
+          type="button"
+          aria-label="Close ad banner"
           variant="ghost"
           size="icon"
           className="absolute top-2 right-2 h-6 w-6 text-slate-700 hover:text-slate-900"
