@@ -95,7 +95,7 @@ const SwitchProfilePage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mx-auto">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto">
         <div className="flex items-center justify-between mb-8">
           <button
             onClick={() => navigate(-1)}
@@ -121,7 +121,7 @@ const SwitchProfilePage: React.FC = () => {
           </p>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-3 mb-8">
+        <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mb-8">
           {profiles.map((profile) => {
             const isActive = activeId === profile.id;
             const switchingThis = isSwitching === profile.id;
