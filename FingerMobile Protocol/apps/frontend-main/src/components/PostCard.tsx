@@ -706,39 +706,39 @@ const PostCard: React.FC<PostCardProps> = ({
       {showMoreActions && (
         <div className="mt-3 pt-3 border-t border-slate-200 dark:border-gray-800 flex flex-wrap gap-2 items-center animate-fade-in">
           {onOpenGiftModal && (
-            <button onClick={() => onOpenGiftModal(String(post.id))} className="px-3 py-1.5 bg-yellow-50 text-yellow-950 border border-yellow-400 rounded-full hover:bg-yellow-100 transition-colors text-xs font-bold font-black">
+            <button type="button" onClick={() => onOpenGiftModal(String(post.id))} className="px-3 py-1.5 bg-yellow-50 text-yellow-950 border border-yellow-400 rounded-full hover:bg-yellow-100 transition-colors text-xs font-bold font-black">
               🎁 Gift
             </button>
           )}
           {onOpenGiftcardModal && (
-            <button onClick={() => onOpenGiftcardModal(String(post.id))} className="px-3 py-1.5 bg-orange-50 text-orange-950 border border-orange-400 rounded-full hover:bg-orange-100 transition-colors text-xs font-bold font-black">
+            <button type="button" onClick={() => onOpenGiftcardModal(String(post.id))} className="px-3 py-1.5 bg-orange-50 text-orange-950 border border-orange-400 rounded-full hover:bg-orange-100 transition-colors text-xs font-bold font-black">
               💳 Giftcard
             </button>
           )}
           {onOpenGemModal && (
-            <button onClick={() => onOpenGemModal(String(post.id))} className="px-3 py-1.5 bg-teal-50 text-teal-950 border border-teal-400 rounded-full hover:bg-teal-100 transition-colors text-xs font-bold font-black">
+            <button type="button" onClick={() => onOpenGemModal(String(post.id))} className="px-3 py-1.5 bg-teal-50 text-teal-950 border border-teal-400 rounded-full hover:bg-teal-100 transition-colors text-xs font-bold font-black">
               💎 Gem
             </button>
           )}
           {onOpenProductModal && (
-            <button onClick={() => onOpenProductModal(String(post.id))} className="px-3 py-1.5 bg-pink-50 text-pink-950 border border-pink-400 rounded-full hover:bg-pink-100 transition-colors text-xs font-bold font-black">
+            <button type="button" onClick={() => onOpenProductModal(String(post.id))} className="px-3 py-1.5 bg-pink-50 text-pink-950 border border-pink-400 rounded-full hover:bg-pink-100 transition-colors text-xs font-bold font-black">
               🛍️ Product
             </button>
           )}
           {onOpenMarketplaceModal && (
-            <button onClick={() => onOpenMarketplaceModal(String(post.id))} className="px-3 py-1.5 bg-emerald-50 text-emerald-950 border border-emerald-400 rounded-full hover:bg-emerald-100 transition-colors text-xs font-bold   font-black">
+            <button type="button" onClick={() => onOpenMarketplaceModal(String(post.id))} className="px-3 py-1.5 bg-emerald-50 text-emerald-950 border border-emerald-400 rounded-full hover:bg-emerald-100 transition-colors text-xs font-bold   font-black">
               🏪 Storefront
             </button>
           )}
           {onOpenPaylinkModal && (
-            <button onClick={() => onOpenPaylinkModal(String(post.id))} className="px-3 py-1.5 bg-purple-50 text-purple-950 border border-purple-400 rounded-full hover:bg-purple-100 transition-colors text-xs font-bold   font-black">
+            <button type="button" onClick={() => onOpenPaylinkModal(String(post.id))} className="px-3 py-1.5 bg-purple-50 text-purple-950 border border-purple-400 rounded-full hover:bg-purple-100 transition-colors text-xs font-bold   font-black">
               🔗 Paylink
             </button>
           )}
-          <button onClick={() => onTokenize(String(post.id))} className="px-3 py-1.5 bg-indigo-50 text-indigo-950 border border-indigo-400 rounded-full hover:bg-indigo-100 transition-colors text-xs font-bold font-black">
+          <button type="button" onClick={() => onTokenize(String(post.id))} className="px-3 py-1.5 bg-indigo-50 text-indigo-950 border border-indigo-400 rounded-full hover:bg-indigo-100 transition-colors text-xs font-bold font-black">
             Tokenize
           </button>
-          <button onClick={() => onDelete(String(post.id))} className="px-3 py-1.5 bg-red-50 text-red-950 border border-red-400 rounded-full hover:bg-red-100 transition-colors text-xs font-bold font-black">
+          <button type="button" onClick={() => onDelete(String(post.id))} className="px-3 py-1.5 bg-red-50 text-red-950 border border-red-400 rounded-full hover:bg-red-100 transition-colors text-xs font-bold font-black">
             Delete
           </button>
         </div>

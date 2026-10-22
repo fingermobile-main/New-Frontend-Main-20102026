@@ -214,8 +214,8 @@ const UGCPublishingTools: React.FC = () => {
       </div>
 
       <div className="publish-actions">
-        <button className="btn-secondary">Save as Draft</button>
-        <button className="btn-primary" onClick={handleSubmit}>
+        <button type="button" aria-label="Save content as draft" className="btn-secondary">Save as Draft</button>
+        <button type="submit" aria-label="Publish content" onClick={handleSubmit} className="btn-primary">
           Publish
         </button>
       </div>

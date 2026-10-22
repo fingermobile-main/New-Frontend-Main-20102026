@@ -950,7 +950,7 @@ const Dancia4TvPage: React.FC = () => {
             <div className="bg-gray-900 border border-white/10 rounded-3xl p-6 max-w-lg w-full space-y-4 text-white">
               <div className="flex justify-between items-center border-b border-white/10 pb-3">
                 <h3 className="text-xl font-bold">{activeDetailMovie.title}</h3>
-                <button onClick={() => setActiveDetailMovie(null)} className="text-slate-200 hover:text-white">✕</button>
+                <button type="button" onClick={() => setActiveDetailMovie(null)} className="text-slate-200 hover:text-white">✕</button>
               </div>
               <p className="text-xs text-slate-100 font-medium">{activeDetailMovie.synopsis}</p>
               <div className="text-xs space-y-1 text-slate-200 font-medium">
@@ -1491,7 +1491,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ video, playerState, onPause }
         <div className="text-white text-xl mb-2 font-bold">Video Player</div>
         <p className="text-slate-200 font-semibold">{video.title || 'Loading...'}</p>
         {onPause && (
-          <button onClick={onPause} className="mt-2 text-red-400 font-bold hover:text-red-300">Pause</button>
+          <button type="button" onClick={onPause} className="mt-2 text-red-400 font-bold hover:text-red-300">Pause</button>
         )}
       </div>
     </div>

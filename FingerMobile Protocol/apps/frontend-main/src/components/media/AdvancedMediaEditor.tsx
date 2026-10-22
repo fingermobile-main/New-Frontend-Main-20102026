@@ -502,7 +502,7 @@ const AdvancedMediaEditor: React.FC = () => {
                     <track kind="captions" label="English" srcLang="en" />
                   </video>
                   <div className="video-controls">
-                    <button className="control-button" onClick={togglePlayback}>
+                    <button type="button" className="control-button" onClick={togglePlayback}>
                       {videoState.isPlaying ? '⏸️' : '▶️'}
                     </button>
                     <span className="time-display">
@@ -541,7 +541,7 @@ const AdvancedMediaEditor: React.FC = () => {
                     <track kind="captions" label="English" srcLang="en" />
                   </audio>
                   <div className="audio-controls">
-                    <button className="control-button" onClick={togglePlayback}>
+                    <button type="button" className="control-button" onClick={togglePlayback}>
                       {videoState.isPlaying ? '⏸️' : '▶️'}
                     </button>
                     <span className="time-display">
@@ -580,7 +580,7 @@ const AdvancedMediaEditor: React.FC = () => {
                 >
                   📁 New Media
                 </button>
-                <button className="tool-btn" onClick={resetEditor}>
+                <button type="button" className="tool-btn" onClick={resetEditor}>
                   🗑️ Clear
                 </button>
               </div>
@@ -695,7 +695,7 @@ const AdvancedMediaEditor: React.FC = () => {
                 >
                   ↺ Rotate Left
                 </button>
-                <button className="tool-btn" onClick={() => handleRotation(90)}>
+                <button type="button" className="tool-btn" onClick={() => handleRotation(90)}>
                   ↻ Rotate Right
                 </button>
                 <div className="scale-control">
@@ -726,7 +726,7 @@ const AdvancedMediaEditor: React.FC = () => {
                       }))
                       }
                     />
-                    <button className="tool-btn" onClick={addText}>
+                    <button type="button" className="tool-btn" onClick={addText}>
                       ➕ Add Text
                     </button>
                   </div>
@@ -876,7 +876,7 @@ const AdvancedMediaEditor: React.FC = () => {
             </div>
 
             <div className="action-buttons">
-              <button className="btn-secondary" onClick={resetEditor}>
+              <button type="button" className="btn-secondary" onClick={resetEditor}>
                 Cancel
               </button>
               <button

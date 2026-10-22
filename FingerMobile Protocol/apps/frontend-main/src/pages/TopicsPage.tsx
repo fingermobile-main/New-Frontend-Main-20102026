@@ -391,7 +391,7 @@ const TopicsPage: React.FC = () => {
             <div className="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-300 animate-in fade-in zoom-in-95 space-y-4">
               <div className="flex justify-between items-center pb-4 border-b border-slate-200">
                 <h3 className="text-lg font-black text-slate-900">Start New Topic Category</h3>
-                <button onClick={() => setShowCreateModal(false)} className="text-slate-700 hover:text-slate-600">
+                <button type="button" onClick={() => setShowCreateModal(false)} className="text-slate-700 hover:text-slate-600">
                   <XMarkIcon className="w-5 h-5" />
                 </button>
               </div>

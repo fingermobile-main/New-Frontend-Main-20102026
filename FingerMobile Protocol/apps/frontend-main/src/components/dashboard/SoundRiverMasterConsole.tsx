@@ -345,7 +345,7 @@ export const SoundRiverMasterConsole: React.FC = () => {
             {statusMessage.type === 'success' ? <CheckCircle2 className="w-5 h-5" /> : <AlertTriangle className="w-5 h-5" />}
             <span>{statusMessage.text}</span>
           </div>
-          <button onClick={() => setStatusMessage(null)}>
+          <button type="button" onClick={() => setStatusMessage(null)}>
             <X className="w-4 h-4 text-slate-700" />
           </button>
         </div>
@@ -813,7 +813,7 @@ export const SoundRiverMasterConsole: React.FC = () => {
           <div className="bg-white rounded-2xl border border-slate-300 shadow-2xl p-6 max-w-lg w-full space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-black text-slate-900">Upload Podcast Episode</h3>
-              <button onClick={() => setIsPodcastModalOpen(false)}>
+              <button type="button" onClick={() => setIsPodcastModalOpen(false)}>
                 <X className="w-5 h-5 text-slate-700 hover:text-slate-900" />
               </button>
             </div>
@@ -891,7 +891,7 @@ export const SoundRiverMasterConsole: React.FC = () => {
           <div className="bg-white rounded-2xl border border-slate-300 shadow-2xl p-6 max-w-md w-full space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-black text-slate-900">Create Colabo+ Playlist</h3>
-              <button onClick={() => setIsColaboModalOpen(false)}>
+              <button type="button" onClick={() => setIsColaboModalOpen(false)}>
                 <X className="w-5 h-5 text-slate-700 hover:text-slate-900" />
               </button>
             </div>

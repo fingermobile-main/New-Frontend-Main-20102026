@@ -482,7 +482,7 @@ const PrivateMessagesPage: React.FC = () => {
             <div className="bg-white rounded-xl shadow-xl max-w-md w-full p-6">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-bold text-gray-900">Start Private Channel</h3>
-                <button onClick={() => setShowNewModal(false)} className="text-slate-700 hover:text-gray-600 text-xl font-bold">×</button>
+                <button type="button" onClick={() => setShowNewModal(false)} className="text-slate-700 hover:text-gray-600 text-xl font-bold">×</button>
               </div>
               <form onSubmit={handleStartNewChat} className="space-y-4">
                 <div>

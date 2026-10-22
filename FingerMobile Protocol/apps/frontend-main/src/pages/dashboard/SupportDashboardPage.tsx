@@ -166,7 +166,7 @@ const SupportDashboardPage: React.FC = () => {
             <h3 className="font-black text-slate-900 text-base">{selectedTicket?.subject}</h3>
             <p className="text-xs text-slate-700 font-medium mt-0.5">From: {selectedTicket?.member?.name || 'Unknown'}</p>
           </div>
-          <button onClick={() => setSelectedTicket(null)} className="text-slate-600 hover:text-slate-900 text-xl font-bold px-2 py-0.5 rounded-md hover:bg-slate-100">&times;</button>
+          <button type="button" onClick={() => setSelectedTicket(null)} className="text-slate-600 hover:text-slate-900 text-xl font-bold px-2 py-0.5 rounded-md hover:bg-slate-100">&times;</button>
         </div>
       </div>
       <div className="flex-1 p-4 space-y-3 overflow-y-auto flex flex-col">
@@ -177,8 +177,8 @@ const SupportDashboardPage: React.FC = () => {
           <textarea value={reply} onChange={e => setReply(e.target.value)} rows={3} className="w-full p-2.5 border border-slate-300 rounded-lg text-slate-900 font-bold bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 text-sm" placeholder="Type your reply..."></textarea>
           <div className="flex justify-between items-center mt-2.5">
             <div className="flex gap-2">
-              <button onClick={() => onUpdateStatus(selectedTicket!.id, 'resolved')} type="button" className="px-3 py-1 text-xs font-black bg-emerald-100 text-emerald-950 border border-emerald-400 rounded-full hover:bg-emerald-200 transition-colors">Mark as Resolved</button>
-              <button onClick={() => onUpdateStatus(selectedTicket!.id, 'closed')} type="button" className="px-3 py-1 text-xs font-black bg-slate-200 text-slate-950 rounded-full hover:bg-slate-300 border border-slate-400 transition-colors">Close Ticket</button>
+              <button type="button" onClick={() => onUpdateStatus(selectedTicket!.id, 'resolved')} type="button" className="px-3 py-1 text-xs font-black bg-emerald-100 text-emerald-950 border border-emerald-400 rounded-full hover:bg-emerald-200 transition-colors">Mark as Resolved</button>
+              <button type="button" onClick={() => onUpdateStatus(selectedTicket!.id, 'closed')} type="button" className="px-3 py-1 text-xs font-black bg-slate-200 text-slate-950 rounded-full hover:bg-slate-300 border border-slate-400 transition-colors">Close Ticket</button>
             </div>
             <button type="submit" className="px-5 py-2 text-sm font-bold bg-brand-blue text-white rounded-lg hover:bg-blue-700 shadow-sm transition-colors">Send Reply</button>
           </div>
@@ -188,7 +188,7 @@ const SupportDashboardPage: React.FC = () => {
   );
 
   const TicketListItem: React.FC<{ ticket: SupportTicket }> = ({ ticket }) => (
-    <button onClick={() => setSelectedTicket(ticket)} className="w-full text-left p-3 rounded-lg hover:bg-slate-100 border border-transparent hover:border-slate-200 transition-colors">
+    <button type="button" onClick={() => setSelectedTicket(ticket)} className="w-full text-left p-3 rounded-lg hover:bg-slate-100 border border-transparent hover:border-slate-200 transition-colors">
       <div className="flex justify-between items-center">
         <p className="font-bold text-slate-900 truncate text-sm">{ticket.subject}</p>
         <span className="text-xs text-slate-600 font-semibold flex-shrink-0 ml-2">{ticket.lastUpdated}</span>

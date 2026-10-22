@@ -45,9 +45,9 @@ const NotificationPage = () => {
               <p>{notification.content}</p>
               <div className="notification-actions">
                 {!notification.read && (
-                  <button onClick={() => markAsRead(notification.id)}>Mark as Read</button>
+                  <button type="button" onClick={() => markAsRead(notification.id)}>Mark as Read</button>
                 )}
-                <button onClick={() => deleteNotification(notification.id)}>Delete</button>
+                <button type="button" onClick={() => deleteNotification(notification.id)}>Delete</button>
               </div>
             </div>
           ))

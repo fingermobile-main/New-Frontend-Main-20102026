@@ -436,7 +436,7 @@ export const UsersPermissionConsolePage: React.FC = () => {
                   <Briefcase className="w-5 h-5 text-blue-600" />
                   Assign Back Office Role
                 </h3>
-                <button onClick={() => setActiveModal(null)} className="text-slate-500 hover:text-slate-900 font-bold">✕</button>
+                <button type="button" onClick={() => setActiveModal(null)} className="text-slate-500 hover:text-slate-900 font-bold">✕</button>
               </div>
 
               <div>
@@ -494,7 +494,7 @@ export const UsersPermissionConsolePage: React.FC = () => {
                   <Award className="w-5 h-5 text-amber-600" />
                   Bestow Distinguished Council Rank
                 </h3>
-                <button onClick={() => setActiveModal(null)} className="text-slate-500 hover:text-slate-900 font-bold">✕</button>
+                <button type="button" onClick={() => setActiveModal(null)} className="text-slate-500 hover:text-slate-900 font-bold">✕</button>
               </div>
 
               <div>
@@ -552,7 +552,7 @@ export const UsersPermissionConsolePage: React.FC = () => {
                   <ShieldAlert className="w-5 h-5 text-rose-600" />
                   Grant Moderator Scope
                 </h3>
-                <button onClick={() => setActiveModal(null)} className="text-slate-500 hover:text-slate-900 font-bold">✕</button>
+                <button type="button" onClick={() => setActiveModal(null)} className="text-slate-500 hover:text-slate-900 font-bold">✕</button>
               </div>
 
               <div>
@@ -609,7 +609,7 @@ export const UsersPermissionConsolePage: React.FC = () => {
                   <Sliders className="w-5 h-5 text-purple-600" />
                   Update Account Role & Tier
                 </h3>
-                <button onClick={() => setActiveModal(null)} className="text-slate-500 hover:text-slate-900 font-bold">✕</button>
+                <button type="button" onClick={() => setActiveModal(null)} className="text-slate-500 hover:text-slate-900 font-bold">✕</button>
               </div>
 
               <div>

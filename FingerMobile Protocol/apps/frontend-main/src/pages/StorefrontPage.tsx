@@ -1167,7 +1167,7 @@ const StorefrontPage: React.FC = () => {
             <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-4">
               <div className="flex justify-between items-center pb-2 border-b border-slate-800">
                 <h3 className="text-lg font-bold text-white">Add Product, Goods or Service</h3>
-                <button onClick={() => setShowProductModal(false)} className="text-slate-300 font-medium hover:text-white">✕</button>
+                <button type="button" onClick={() => setShowProductModal(false)} className="text-slate-300 font-medium hover:text-white">✕</button>
               </div>
 
               <form onSubmit={handleCreateProduct} className="space-y-3 text-xs">
@@ -1276,7 +1276,7 @@ const StorefrontPage: React.FC = () => {
             <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-sm w-full p-6 shadow-2xl space-y-4">
               <div className="flex justify-between items-center">
                 <h3 className="font-bold text-white text-base">Restock: {selectedProduct.name}</h3>
-                <button onClick={() => setShowRestockModal(false)} className="text-slate-300 font-medium hover:text-white">✕</button>
+                <button type="button" onClick={() => setShowRestockModal(false)} className="text-slate-300 font-medium hover:text-white">✕</button>
               </div>
 
               <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 text-xs">
@@ -1311,7 +1311,7 @@ const StorefrontPage: React.FC = () => {
             <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-4">
               <div className="flex justify-between items-center pb-2 border-b border-slate-800">
                 <h3 className="text-lg font-bold text-white">Edit Listing: {editingProduct.name}</h3>
-                <button onClick={() => setShowEditModal(false)} className="text-slate-300 font-medium hover:text-white">✕</button>
+                <button type="button" onClick={() => setShowEditModal(false)} className="text-slate-300 font-medium hover:text-white">✕</button>
               </div>
 
               <form onSubmit={handleUpdateProduct} className="space-y-3 text-xs">
@@ -1440,7 +1440,7 @@ const StorefrontPage: React.FC = () => {
                 <Bot className="w-5 h-5 text-cyan-400" />
                 <h3 className="font-bold text-white text-base">Storefront AI Copilot</h3>
               </div>
-              <button onClick={() => setShowAiCopilot(false)} className="text-slate-300 font-medium hover:text-white">✕</button>
+              <button type="button" onClick={() => setShowAiCopilot(false)} className="text-slate-300 font-medium hover:text-white">✕</button>
             </div>
 
             <div className="flex-1 overflow-y-auto py-4 space-y-3">

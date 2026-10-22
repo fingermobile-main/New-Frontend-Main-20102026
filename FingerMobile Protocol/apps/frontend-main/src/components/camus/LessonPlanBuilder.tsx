@@ -331,7 +331,7 @@ export const LessonPlanBuilder: React.FC = () => {
             <CheckCircle2 className="w-4 h-4 text-emerald-700" />
             {saveStatus}
           </span>
-          <button onClick={() => setSaveStatus(null)} className="text-emerald-800 font-bold">×</button>
+          <button type="button" onClick={() => setSaveStatus(null)} className="text-emerald-800 font-bold">×</button>
         </div>
       )}
 

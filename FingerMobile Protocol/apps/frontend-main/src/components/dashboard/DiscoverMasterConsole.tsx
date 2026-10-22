@@ -412,7 +412,7 @@ export const DiscoverMasterConsole: React.FC = () => {
             {statusMessage.type === 'success' ? <CheckCircle2 className="w-5 h-5" /> : <AlertTriangle className="w-5 h-5" />}
             <span>{statusMessage.text}</span>
           </div>
-          <button onClick={() => setStatusMessage(null)} className="text-slate-700 hover:text-slate-900">
+          <button type="button" onClick={() => setStatusMessage(null)} className="text-slate-700 hover:text-slate-900">
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -1121,7 +1121,7 @@ export const DiscoverMasterConsole: React.FC = () => {
               <h3 className="text-lg font-black text-slate-900">
                 {editingTopic ? 'Edit Topic Category' : 'Register New Topic'}
               </h3>
-              <button onClick={() => setIsTopicModalOpen(false)} className="text-slate-700 hover:text-slate-900">
+              <button type="button" onClick={() => setIsTopicModalOpen(false)} className="text-slate-700 hover:text-slate-900">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -1196,7 +1196,7 @@ export const DiscoverMasterConsole: React.FC = () => {
           <div className="bg-white rounded-2xl border border-slate-300 shadow-2xl p-6 max-w-md w-full space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-black text-slate-900">Register Tracked Hashtag</h3>
-              <button onClick={() => setIsHashtagModalOpen(false)} className="text-slate-700 hover:text-slate-900">
+              <button type="button" onClick={() => setIsHashtagModalOpen(false)} className="text-slate-700 hover:text-slate-900">
                 <X className="w-5 h-5" />
               </button>
             </div>

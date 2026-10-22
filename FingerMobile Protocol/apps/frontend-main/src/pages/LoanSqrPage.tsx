@@ -1655,7 +1655,7 @@ export const LoanSqrPage: React.FC = () => {
           <div className="bg-slate-900 border border-slate-800 w-full max-w-md rounded-2xl p-6 shadow-2xl space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-base font-bold text-white">Repay Loan {repayingLoan.loan_number}</h3>
-              <button onClick={() => setRepayingLoan(null)} className="text-slate-300 font-medium hover:text-white">
+              <button type="button" onClick={() => setRepayingLoan(null)} className="text-slate-300 font-medium hover:text-white">
                 <XMarkIcon className="w-5 h-5" />
               </button>
             </div>
@@ -1712,7 +1712,7 @@ export const LoanSqrPage: React.FC = () => {
           <div className="bg-slate-900 border border-slate-800 w-full max-w-md rounded-2xl p-6 shadow-2xl space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-base font-bold text-white">Simulate POS Batch Settlement</h3>
-              <button onClick={() => setShowPosSimModal(false)} className="text-slate-300 font-medium hover:text-white">
+              <button type="button" onClick={() => setShowPosSimModal(false)} className="text-slate-300 font-medium hover:text-white">
                 <XMarkIcon className="w-5 h-5" />
               </button>
             </div>

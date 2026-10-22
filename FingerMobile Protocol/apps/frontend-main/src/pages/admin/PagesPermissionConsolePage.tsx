@@ -331,7 +331,7 @@ export const PagesPermissionConsolePage: React.FC = () => {
                   <Lock className="w-5 h-5 text-orange-600" />
                   Edit Security Rules: {editingPage.title}
                 </h3>
-                <button onClick={() => setEditingPage(null)} className="text-slate-500 hover:text-slate-900 font-bold">✕</button>
+                <button type="button" onClick={() => setEditingPage(null)} className="text-slate-500 hover:text-slate-900 font-bold">✕</button>
               </div>
 
               <div className="space-y-3">

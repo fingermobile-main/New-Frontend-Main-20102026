@@ -39,7 +39,7 @@ const AIContentAssistant: React.FC<AIContentAssistantProps> = ({
           <h3 className="text-lg font-bold text-gray-900">AI Content Assistant</h3>
         </div>
         {onClose && (
-          <button onClick={onClose} aria-label="Close" className="text-slate-700 hover:text-gray-600">
+          <button type="button" onClick={onClose} aria-label="Close" className="text-slate-700 hover:text-gray-600">
             <XMarkIcon className="w-5 h-5" />
           </button>
         )}

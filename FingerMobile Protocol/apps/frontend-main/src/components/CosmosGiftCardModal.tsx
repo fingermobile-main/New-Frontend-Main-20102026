@@ -32,7 +32,7 @@ const CosmosGiftCardModal: React.FC<CosmosGiftCardModalProps> = ({
       <div className="bg-white rounded-xl shadow-2xl max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between p-6 border-b border-slate-300">
           <h2 className="text-xl font-bold text-gray-900">Send Gift Card</h2>
-          <button onClick={onClose} aria-label="Close" className="text-slate-700 hover:text-gray-600">
+          <button type="button" onClick={onClose} aria-label="Close" className="text-slate-700 hover:text-gray-600">
             <XMarkIcon className="w-6 h-6" />
           </button>
         </div>

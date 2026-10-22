@@ -279,7 +279,7 @@ const JobsPage: React.FC = () => {
                   <h2 className="text-2xl font-bold text-gray-900">Apply for Position</h2>
                   <p className="text-sm text-gray-600">{applyingJob.title} at {applyingJob.company}</p>
                 </div>
-                <button onClick={() => setApplyingJob(null)} className="text-slate-700 hover:text-gray-600 text-xl font-bold">
+                <button type="button" onClick={() => setApplyingJob(null)} className="text-slate-700 hover:text-gray-600 text-xl font-bold">
                   &times;
                 </button>
               </div>
@@ -342,7 +342,7 @@ const JobsPage: React.FC = () => {
             <div className="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
               <div className="flex justify-between items-start mb-4">
                 <h2 className="text-2xl font-bold text-gray-900">Post New Job Vacancy</h2>
-                <button onClick={() => setIsPosting(false)} className="text-slate-700 hover:text-gray-600 text-xl font-bold">
+                <button type="button" onClick={() => setIsPosting(false)} className="text-slate-700 hover:text-gray-600 text-xl font-bold">
                   &times;
                 </button>
               </div>

@@ -221,7 +221,7 @@ const MonetizationDashboard: React.FC = () => {
           <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-300">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-bold text-slate-900">Request Creator Bank Payout</h3>
-              <button onClick={() => setShowWithdrawModal(false)} className="text-slate-500 hover:text-slate-900">
+              <button type="button" onClick={() => setShowWithdrawModal(false)} className="text-slate-500 hover:text-slate-900">
                 <XCircle className="w-5 h-5" />
               </button>
             </div>

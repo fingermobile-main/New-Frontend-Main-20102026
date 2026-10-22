@@ -33,7 +33,7 @@ const LyricsModal: React.FC<LyricsModalProps> = ({
             <h2 className="text-xl font-bold text-gray-900">{songTitle}</h2>
             <p className="text-sm text-slate-700">Lyrics Editor</p>
           </div>
-          <button onClick={onClose} className="text-slate-700 hover:text-gray-600">
+          <button type="button" onClick={onClose} className="text-slate-700 hover:text-gray-600">
             <XMarkIcon className="w-6 h-6" />
           </button>
         </div>

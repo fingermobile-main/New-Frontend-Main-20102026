@@ -495,7 +495,7 @@ const GameOnPage: React.FC = () => {
             <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-200">
               <div className="flex justify-between items-center pb-4 border-b border-slate-200">
                 <h3 className="text-lg font-black text-gray-900">Make Match Prediction</h3>
-                <button onClick={() => setSelectedMatch(null)} className="text-slate-700 hover:text-gray-600">
+                <button type="button" onClick={() => setSelectedMatch(null)} className="text-slate-700 hover:text-gray-600">
                   <XMarkIcon className="w-5 h-5" />
                 </button>
               </div>

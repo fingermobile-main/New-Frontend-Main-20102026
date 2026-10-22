@@ -102,7 +102,7 @@ const ContentAdminDashboardPage: React.FC = () => {
               <span className="text-emerald-800 text-lg">✓</span>
               <span>{reportGenerated}</span>
             </div>
-            <button onClick={() => setReportGenerated(null)} className="text-emerald-900 font-black text-sm">✕</button>
+            <button type="button" onClick={() => setReportGenerated(null)} className="text-emerald-900 font-black text-sm">✕</button>
           </div>
         )}
 
@@ -144,7 +144,7 @@ const ContentAdminDashboardPage: React.FC = () => {
           <div className="mb-6 bg-white border border-slate-300 rounded-2xl p-5 shadow-lg animate-in fade-in duration-200">
             <div className="flex items-center justify-between pb-3 border-b border-slate-200">
               <h3 className="font-black text-slate-900 text-sm uppercase tracking-wider">Active Admin Notifications (3)</h3>
-              <button onClick={() => setNotificationsOpen(false)} className="text-xs font-bold text-slate-600 hover:text-slate-900">Close</button>
+              <button type="button" onClick={() => setNotificationsOpen(false)} className="text-xs font-bold text-slate-600 hover:text-slate-900">Close</button>
             </div>
             <div className="divide-y divide-slate-100 text-xs mt-2">
               <div className="py-2.5 flex items-start gap-2">

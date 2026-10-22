@@ -89,7 +89,7 @@ const ManageMyGroupPage = () => {
             <textarea id="groupRules" value={rules} onChange={e => setRules(e.target.value)} rows={5} className="w-full p-2.5 border rounded-xl text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-blue-600 placeholder:text-slate-400 text-sm" />
           </div>
           <div className="pt-4 border-t border-slate-200 flex justify-end">
-            <button onClick={handleSaveChanges} disabled={isSaving} className="px-6 py-2.5 font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-sm transition-colors disabled:bg-slate-400 cursor-pointer text-sm">
+            <button type="button" onClick={handleSaveChanges} disabled={isSaving} className="px-6 py-2.5 font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-sm transition-colors disabled:bg-slate-400 cursor-pointer text-sm">
               {isSaving ? 'Saving...' : 'Save Changes'}
             </button>
           </div>

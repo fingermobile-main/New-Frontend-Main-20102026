@@ -11,9 +11,15 @@ const StercsImageEditor: React.FC<StercsImageEditorProps> = () => {
         <h3 className="text-lg font-bold text-gray-900">Image Editor</h3>
       </div>
       <div className="space-y-3">
-        <button className="w-full px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
+        <button
+          type="button"
+          aria-label="Upload an image to edit"
+          onClick={() => document.getElementById('stercs-img-upload')?.click()}
+          className="w-full px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+        >
           Upload Image
         </button>
+        <input id="stercs-img-upload" type="file" accept="image/*" className="hidden" />
         <div className="p-4 bg-gray-50 rounded-lg text-center">
           <p className="text-sm text-slate-700">Image preview area</p>
         </div>

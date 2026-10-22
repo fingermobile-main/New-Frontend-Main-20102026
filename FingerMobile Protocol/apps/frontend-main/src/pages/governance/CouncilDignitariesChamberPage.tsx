@@ -115,7 +115,7 @@ export const CouncilDignitariesChamberPage: React.FC = () => {
               <CheckCircle className="w-5 h-5 text-emerald-800" />
               <span>{voteToast}</span>
             </div>
-            <button onClick={() => setVoteToast(null)} className="text-emerald-900 font-black">✕</button>
+            <button type="button" onClick={() => setVoteToast(null)} className="text-emerald-900 font-black">✕</button>
           </div>
         )}
 

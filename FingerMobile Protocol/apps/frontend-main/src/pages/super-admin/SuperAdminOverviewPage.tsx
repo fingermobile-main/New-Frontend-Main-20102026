@@ -109,7 +109,7 @@ AI Sentinel | FingerMobileTM STERCS System
           <span className="text-xs">{alert.timestamp}</span>
         </div>
         <div className="text-right mt-2">
-          <button onClick={() => handleResolveGuardianAlert(alert.id)} className="text-xs font-semibold bg-white/10 hover:bg-white/20 px-3 py-1 rounded-full">Mark as Resolved</button>
+          <button type="button" onClick={() => handleResolveGuardianAlert(alert.id)} className="text-xs font-semibold bg-white/10 hover:bg-white/20 px-3 py-1 rounded-full">Mark as Resolved</button>
         </div>
       </div>
     );

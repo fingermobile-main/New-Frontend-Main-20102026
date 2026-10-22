@@ -380,7 +380,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
             <CheckCircle className="w-4 h-4 text-emerald-400" />
             {toastMessage}
           </span>
-          <button onClick={() => setToastMessage(null)} className="text-slate-300 hover:text-white">
+          <button type="button" onClick={() => setToastMessage(null)} className="text-slate-300 hover:text-white">
             <X className="w-4 h-4" />
           </button>
         </div>

@@ -21,7 +21,7 @@ const EnhancedModals: React.FC<EnhancedModalsProps> = ({
       <div className="bg-white rounded-xl shadow-2xl max-w-lg w-full mx-4 p-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-bold text-gray-900">{title}</h2>
-          <button onClick={onClose} className="text-slate-700 hover:text-gray-600">
+          <button type="button" onClick={onClose} className="text-slate-700 hover:text-gray-600">
             <XMarkIcon className="w-6 h-6" />
           </button>
         </div>

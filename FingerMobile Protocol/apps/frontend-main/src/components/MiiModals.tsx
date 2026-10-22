@@ -164,7 +164,7 @@ export const MiiPinExchangeModal: React.FC<PinExchangeModalProps> = ({
             <Lock className="w-5 h-5" />
             <h3 className="font-bold text-lg">Mii™ Secure Contact & PIN Protocol</h3>
           </div>
-          <button onClick={onClose} className="p-1 rounded-full hover:bg-white/20 transition-colors">
+          <button type="button" onClick={onClose} className="p-1 rounded-full hover:bg-white/20 transition-colors">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -426,7 +426,7 @@ export const MiiFingerOrbitModal: React.FC<FingerOrbitModalProps> = ({
             <Folder className="w-5 h-5" />
             <h3 className="font-bold text-lg">FingerOrbit™ UGC Folders</h3>
           </div>
-          <button onClick={onClose} className="p-1 rounded-full hover:bg-white/20 transition-colors">
+          <button type="button" onClick={onClose} className="p-1 rounded-full hover:bg-white/20 transition-colors">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -580,7 +580,7 @@ export const MiiMiniStoreModal: React.FC<MiniStoreModalProps> = ({
             <ShoppingBag className="w-5 h-5" />
             <h3 className="font-bold text-lg">Mii™ MiniStore: Two (2) Page Catalogue</h3>
           </div>
-          <button onClick={onClose} className="p-1 rounded-full hover:bg-white/20 transition-colors">
+          <button type="button" onClick={onClose} className="p-1 rounded-full hover:bg-white/20 transition-colors">
             <X className="w-5 h-5" />
           </button>
         </div>

@@ -207,7 +207,7 @@ const StercsCurationDashboard: React.FC = () => {
                         <td className="py-4 text-slate-800 font-semibold">{item.category || 'General'}</td>
                         <td className="py-4 font-black text-emerald-700 font-mono">${item.price || '0.00'}</td>
                         <td className="py-4 text-right">
-                          <button onClick={() => handleDelete(item.id)} className="text-rose-950 hover:bg-rose-200 font-bold text-sm bg-rose-100 border border-rose-300 px-3 py-1 rounded-lg cursor-pointer transition">Delete</button>
+                          <button type="button" onClick={() => handleDelete(item.id)} className="text-rose-950 hover:bg-rose-200 font-bold text-sm bg-rose-100 border border-rose-300 px-3 py-1 rounded-lg cursor-pointer transition">Delete</button>
                         </td>
                       </tr>
                     ))

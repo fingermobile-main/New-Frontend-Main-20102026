@@ -93,7 +93,7 @@ export const RolesPermissionsPage: React.FC = () => {
               <CheckCircle className="w-5 h-5 text-emerald-800" />
               <span>{upgradeSuccess}</span>
             </div>
-            <button onClick={() => setUpgradeSuccess(null)} className="text-emerald-900 font-black">✕</button>
+            <button type="button" onClick={() => setUpgradeSuccess(null)} className="text-emerald-900 font-black">✕</button>
           </div>
         )}
 

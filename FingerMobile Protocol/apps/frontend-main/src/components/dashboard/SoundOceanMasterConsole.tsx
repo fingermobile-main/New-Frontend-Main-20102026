@@ -315,7 +315,7 @@ export const SoundOceanMasterConsole: React.FC = () => {
             {statusMessage.type === 'success' ? <CheckCircle2 className="w-5 h-5" /> : <AlertTriangle className="w-5 h-5" />}
             <span>{statusMessage.text}</span>
           </div>
-          <button onClick={() => setStatusMessage(null)}>
+          <button type="button" onClick={() => setStatusMessage(null)}>
             <X className="w-4 h-4 text-slate-700" />
           </button>
         </div>
@@ -776,7 +776,7 @@ export const SoundOceanMasterConsole: React.FC = () => {
           <div className="bg-white rounded-2xl border border-slate-300 shadow-2xl p-6 max-w-md w-full space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-black text-slate-900">Generate 5-Seat Sovereign Crew Pass</h3>
-              <button onClick={() => setIsCrewModalOpen(false)}>
+              <button type="button" onClick={() => setIsCrewModalOpen(false)}>
                 <X className="w-5 h-5 text-slate-700 hover:text-slate-900" />
               </button>
             </div>

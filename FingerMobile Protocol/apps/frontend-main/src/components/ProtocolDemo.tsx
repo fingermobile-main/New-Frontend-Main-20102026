@@ -38,10 +38,10 @@ const ProtocolDemo: React.FC = () => {
       </div>
 
       <div className="controls">
-        <button onClick={handleConnect} disabled={isConnected}>
+        <button type="button" onClick={handleConnect} disabled={isConnected}>
           Connect
         </button>
-        <button onClick={handleDisconnect} disabled={!isConnected} style={{ marginLeft: '10px' }}>
+        <button type="button" onClick={handleDisconnect} disabled={!isConnected} style={{ marginLeft: '10px' }}>
           Disconnect
         </button>
       </div>
@@ -54,7 +54,7 @@ const ProtocolDemo: React.FC = () => {
           placeholder="Type your message..."
           disabled={!isConnected}
         />
-        <button onClick={handleSendMessage} disabled={!isConnected || !inputMessage.trim()}>
+        <button type="button" onClick={handleSendMessage} disabled={!isConnected || !inputMessage.trim()}>
           Send
         </button>
       </div>

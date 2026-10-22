@@ -993,7 +993,7 @@ const OwnitPage: React.FC = () => {
                   <span className="text-[10px] font-mono uppercase text-amber-400">Sovereign Escrow</span>
                   <h3 className="text-lg font-bold text-white mt-1">{selectedProductForEscrow.name}</h3>
                 </div>
-                <button onClick={() => setSelectedProductForEscrow(null)} className="text-stone-400 hover:text-white">✕</button>
+                <button type="button" onClick={() => setSelectedProductForEscrow(null)} className="text-stone-400 hover:text-white">✕</button>
               </div>
 
               <div className="p-4 rounded-2xl bg-black border border-stone-800 text-xs space-y-2">

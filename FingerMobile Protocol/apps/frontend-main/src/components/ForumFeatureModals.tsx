@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 // ─── Shared helpers ───────────────────────────────────────────────────────────
 const CloseBtn: React.FC<{ onClick: () => void }> = ({ onClick }) => (
-  <button onClick={onClick} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors">
+  <button type="button" onClick={onClick} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors">
     <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
     </svg>
@@ -282,7 +282,7 @@ export const CreateRoomModal: React.FC<CreateRoomModalProps> = ({ isOpen, onClos
         </div>
       </div>
       <div className="p-4 border-t border-gray-100 dark:border-gray-700 flex items-center justify-between">
-        <button onClick={onClose} className="px-4 py-2 text-sm text-gray-500 hover:text-gray-900 dark:hover:text-white transition">Cancel</button>
+        <button type="button" onClick={onClose} className="px-4 py-2 text-sm text-gray-500 hover:text-gray-900 dark:hover:text-white transition">Cancel</button>
         <button
           onClick={handleCreate}
           disabled={creating || !roomName.trim()}

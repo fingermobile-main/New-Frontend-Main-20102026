@@ -79,7 +79,7 @@ const GemPublicPage: React.FC = () => {
           <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-300 text-center max-w-2xl mx-auto">
             <h2 className="text-2xl font-black text-slate-900">{gem.name || 'Gem'}</h2>
             <p className="text-slate-700 font-medium my-4">{gem.rules || 'No rules defined.'}</p>
-            <button onClick={handleJoinCommunity} disabled={!canAffordJoinFee} className="w-full py-3 font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-sm transition-colors disabled:bg-slate-400 cursor-pointer">
+            <button type="button" onClick={handleJoinCommunity} disabled={!canAffordJoinFee} className="w-full py-3 font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-sm transition-colors disabled:bg-slate-400 cursor-pointer">
               {(gem.settings?.joinFee || 0) > 0 ? `Join for ${gem.settings?.joinFee} FIC` : 'Join for Free'}
             </button>
           </div>

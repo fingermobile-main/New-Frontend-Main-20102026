@@ -438,7 +438,7 @@ export const FullScreenMediaViewerModal: React.FC<FullScreenMediaViewerModalProp
               <span className="text-xs font-bold text-amber-300 flex items-center gap-1.5 uppercase">
                 <Camera className="w-3.5 h-3.5 text-amber-400" /> Hardware EXIF
               </span>
-              <button onClick={() => setShowMetadataPanel(false)} className="text-slate-400 hover:text-white">
+              <button type="button" onClick={() => setShowMetadataPanel(false)} className="text-slate-400 hover:text-white">
                 <X className="w-3.5 h-3.5" />
               </button>
             </div>

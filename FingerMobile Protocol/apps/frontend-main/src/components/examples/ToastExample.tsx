@@ -96,7 +96,7 @@ const MyComponent = () => {
   };
   
   return (
-    <button onClick={handleSubmit}>Submit</button>
+    <button type="button" onClick={handleSubmit}>Submit</button>
   );
 };`}
         </pre>

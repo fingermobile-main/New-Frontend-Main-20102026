@@ -309,7 +309,7 @@ const SeadsPage: React.FC = () => {
             <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 animate-in fade-in zoom-in-95">
               <div className="flex justify-between items-center pb-4 border-b border-slate-200">
                 <h3 className="text-lg font-black text-gray-900">Back Initiative</h3>
-                <button onClick={() => setBackingProject(null)} className="text-slate-700 hover:text-gray-600">
+                <button type="button" onClick={() => setBackingProject(null)} className="text-slate-700 hover:text-gray-600">
                   <XMarkIcon className="w-5 h-5" />
                 </button>
               </div>
@@ -374,7 +374,7 @@ const SeadsPage: React.FC = () => {
             <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 animate-in fade-in zoom-in-95">
               <div className="flex justify-between items-center pb-4 border-b border-slate-200">
                 <h3 className="text-lg font-black text-gray-900">Launch New Seads Initiative</h3>
-                <button onClick={() => setShowCreateModal(false)} className="text-slate-700 hover:text-gray-600">
+                <button type="button" onClick={() => setShowCreateModal(false)} className="text-slate-700 hover:text-gray-600">
                   <XMarkIcon className="w-5 h-5" />
                 </button>
               </div>

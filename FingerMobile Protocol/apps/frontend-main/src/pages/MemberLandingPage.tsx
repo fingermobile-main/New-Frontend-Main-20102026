@@ -24,7 +24,7 @@ const MemberLandingPage: React.FC = () => {
     return (
       <MainLayout>
         <div className="p-4 sm:p-6 lg:p-8 text-center text-red-500">
-          Error loading member dashboard: {error} <button onClick={refreshData} className="ml-2 px-3 py-1 bg-red-500 text-white rounded">Retry</button>
+          Error loading member dashboard: {error} <button type="button" onClick={refreshData} className="ml-2 px-3 py-1 bg-red-500 text-white rounded">Retry</button>
         </div>
       </MainLayout>
     );

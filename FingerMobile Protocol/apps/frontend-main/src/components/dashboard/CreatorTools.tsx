@@ -24,6 +24,9 @@ const CreatorTools: React.FC<CreatorToolsProps> = ({ userId }) => {
         {tools.map((tool) => (
           <button
             key={tool.id}
+            type="button"
+            aria-label={`Open ${tool.name}`}
+            onClick={() => window.location.assign(`/stercs?tool=${tool.id}`)}
             className="p-4 border border-slate-300 rounded-lg hover:border-blue-400 hover:bg-blue-50 transition-all text-left group"
           >
             <div className="text-3xl mb-2">{tool.icon}</div>

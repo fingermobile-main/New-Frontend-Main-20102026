@@ -35,7 +35,7 @@ const ImageUploadModal: React.FC<ImageUploadModalProps> = ({
       <div className="bg-white rounded-xl shadow-2xl max-w-md w-full mx-4 p-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-bold text-gray-900">Upload Image</h2>
-          <button onClick={onClose} className="text-slate-700 hover:text-gray-600">
+          <button type="button" onClick={onClose} className="text-slate-700 hover:text-gray-600">
             <XMarkIcon className="w-6 h-6" />
           </button>
         </div>
@@ -51,7 +51,7 @@ const ImageUploadModal: React.FC<ImageUploadModalProps> = ({
           {selectedFile && (
             <p className="text-sm text-gray-600">Selected: {selectedFile.name}</p>
           )}
-          <button onClick={handleUpload} disabled={!selectedFile} className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors">
+          <button type="button" onClick={handleUpload} disabled={!selectedFile} className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors">
             Upload
           </button>
         </div>

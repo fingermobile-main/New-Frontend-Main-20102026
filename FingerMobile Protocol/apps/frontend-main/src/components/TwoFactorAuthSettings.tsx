@@ -21,7 +21,7 @@ const TwoFactorAuthSettings: React.FC<TwoFactorAuthSettingsProps> = ({ member, o
       <h2>Two-Factor Authentication Settings</h2>
       <p>Status: {member.twoFactorEnabled ? 'Enabled' : 'Disabled'}</p>
       <p>Method: {member.twoFactorMethod || 'Not set'}</p>
-      <button onClick={() => setShowSetup(!showSetup)}>
+      <button type="button" onClick={() => setShowSetup(!showSetup)}>
         {showSetup ? 'Hide Setup' : 'Show Setup'}
       </button>
       {showSetup && (

@@ -562,7 +562,7 @@ const MarketplacePage: React.FC = () => {
               {error && (
                 <div className="mb-6 p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-200 text-xs flex items-center justify-between">
                   <span>{error}</span>
-                  <button onClick={() => setError(null)} className="text-amber-400 font-bold ml-3 hover:underline">Dismiss</button>
+                  <button type="button" onClick={() => setError(null)} className="text-amber-400 font-bold ml-3 hover:underline">Dismiss</button>
                 </div>
               )}
               {loading ? (

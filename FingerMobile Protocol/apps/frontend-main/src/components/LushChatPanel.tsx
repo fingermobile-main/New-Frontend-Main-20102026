@@ -95,7 +95,7 @@ export const LushChatPanel: React.FC<LushChatPanelProps> = ({
             </div>
           </div>
           {onClose && (
-            <button onClick={onClose} className="text-slate-700 hover:text-gray-600 text-xs font-bold px-2 py-1 rounded-lg hover:bg-gray-100">
+            <button type="button" onClick={onClose} className="text-slate-700 hover:text-gray-600 text-xs font-bold px-2 py-1 rounded-lg hover:bg-gray-100">
               ✕
             </button>
           )}

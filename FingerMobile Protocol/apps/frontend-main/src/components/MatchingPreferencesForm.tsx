@@ -237,12 +237,12 @@ export const MatchingPreferencesForm: React.FC<Props> = ({ onSave, onClose, isOp
             {step === 0 ? 'Cancel' : '← Back'}
           </button>
           {step < STEPS.length - 1 ? (
-            <button onClick={() => setStep((s) => s + 1)}
+            <button type="button" onClick={() => setStep((s) => s + 1)}
               style={{ flex: 2, padding: '12px 0', borderRadius: 12, border: 'none', background: 'linear-gradient(135deg, #7c3aed, #ec4899)', color: '#fff', cursor: 'pointer', fontFamily: 'Inter, sans-serif', fontSize: 14, fontWeight: 700 }}>
               Continue →
             </button>
           ) : (
-            <button onClick={save} disabled={saving}
+            <button type="button" onClick={save} disabled={saving}
               style={{ flex: 2, padding: '12px 0', borderRadius: 12, border: 'none', background: 'linear-gradient(135deg, #7c3aed, #ec4899)', color: '#fff', cursor: 'pointer', fontFamily: 'Inter, sans-serif', fontSize: 14, fontWeight: 700, opacity: saving ? 0.7 : 1 }}>
               {saving ? 'Saving…' : '✓ Save Preferences'}
             </button>

@@ -44,7 +44,7 @@ const ShareModal: React.FC<ShareModalProps> = ({
         >
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-lg font-semibold text-gray-900">Share</h3>
-            <button onClick={onClose} className="text-slate-700 hover:text-gray-600">
+            <button type="button" onClick={onClose} className="text-slate-700 hover:text-gray-600">
               ✕
             </button>
           </div>

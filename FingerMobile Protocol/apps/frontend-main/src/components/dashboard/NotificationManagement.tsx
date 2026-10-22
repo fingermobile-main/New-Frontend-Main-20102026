@@ -168,7 +168,7 @@ const NotificationManagement: React.FC = () => {
           </div>
 
           <div className="flex justify-end">
-            <Button>Save Preferences</Button>
+            <Button type="button" aria-label="Save notification preferences">Save Preferences</Button>
           </div>
         </div>
       </CardContent>

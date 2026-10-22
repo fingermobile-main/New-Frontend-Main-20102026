@@ -91,7 +91,7 @@ export const CreateMiiStatusModal: React.FC<CreateMiiStatusModalProps> = ({ isOp
             </div>
             <h2 className="text-lg font-bold text-gray-900 dark:text-white">Create Mii™ Status</h2>
           </div>
-          <button onClick={onClose} className="text-slate-700 hover:bg-gray-100 dark:hover:bg-gray-800 p-1.5 rounded-full">
+          <button type="button" onClick={onClose} className="text-slate-700 hover:bg-gray-100 dark:hover:bg-gray-800 p-1.5 rounded-full">
             <X className="w-5 h-5" />
           </button>
         </div>

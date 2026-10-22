@@ -4482,7 +4482,7 @@ export const ForumPage: React.FC = () => {
                   <span className="text-[10px] text-slate-300 font-medium font-mono">{selectedMii.expiresIn}</span>
                 </div>
               </div>
-              <button onClick={() => setSelectedMii(null)} className="p-1 rounded-full bg-white/10 hover:bg-white/20">✕</button>
+              <button type="button" onClick={() => setSelectedMii(null)} className="p-1 rounded-full bg-white/10 hover:bg-white/20">✕</button>
             </div>
             <div className="p-2 flex items-center justify-center bg-black/60 max-h-[60vh] overflow-hidden">
               <img src={selectedMii.mediaUrl} alt={selectedMii.author} className="max-h-full max-w-full rounded-xl object-contain" />
