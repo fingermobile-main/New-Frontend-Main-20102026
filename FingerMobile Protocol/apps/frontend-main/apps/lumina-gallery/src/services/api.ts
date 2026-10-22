@@ -1,30 +1,30 @@
 // api.ts - Lumina Gallery API Service
 // Updated to integrate with backend FFmpeg processing
-import { MediaMetadata } from "../utils/mediaProcessing";;
+import { MediaMetadata } from "../utils/mediaProcessing";
 
-const API_BASE_URL = process.env.REACT_APP_LUMINA_API_URL || ",
-http://,
-localhost:5040/api/lumina";
+const API_BASE_URL = process.env.REACT_APP_LUMINA_API_URL || "http://localhost:5040/api/lumina";
 
-export interface MediaAsset {id: string;,
-  userId: string;,
-  originalFileName: string;,
-  originalMimeType: string;,
-  originalFileSize: number;,
-  processedUrl: string;,
-  thumbnailUrl: string;,
+export interface MediaAsset {
+  id: string;
+  userId: string;
+  originalFileName: string;
+  originalMimeType: string;
+  originalFileSize: number;
+  processedUrl: string;
+  thumbnailUrl: string;
   metadata: MediaMetadata;
   title?: string;
-  description?: string;,
-  color: string;,
-  stage: string;,
+  description?: string;
+  color: string;
+  stage: string;
   ficReward: number;
-  isUserContent?: boolean;,
-  createdAt: Date;,
+  isUserContent?: boolean;
+  createdAt: Date;
   updatedAt: Date;
 }
 
-export interface UploadRequest {file: File;,
+export interface UploadRequest {
+  file: File;
   userId: string;
   title?: string;
   description?: string;
@@ -40,18 +40,17 @@ export interface TranscodeOptions {
   videoBitrate?: string;
 }
 
-export interface TranscodeRequest {assetId: string;,
+export interface TranscodeRequest {
+  assetId: string;
   options: TranscodeOptions;
 }
 
-const getAuthToken = (): string | (null) => {
+const getAuthToken = (): string | null => {
   return localStorage.getItem("authToken");
 };
 
-const getHeaders = (,
-contentType: string = "application/json"): (HeadersInit) => {
-  const,
-headers: HeadersInit = { "Content-Type": contentType };
+const getHeaders = (contentType: string = "application/json"): HeadersInit => {
+  const headers: HeadersInit = { "Content-Type": contentType };
   const token = getAuthToken();
   if (token) {
     headers["Authorization"] = `Bearer ${token}`;
@@ -60,11 +59,9 @@ headers: HeadersInit = { "Content-Type": contentType };
 };
 
 class MediaApiService {
-  private,
-baseUrl: string;
+  private baseUrl: string;
 
-  constructor(,
-baseUrl: string = API_BASE_URL) {
+  constructor(baseUrl: string = API_BASE_URL) {
     this.baseUrl = baseUrl;
   }
 
@@ -84,63 +81,49 @@ baseUrl: string = API_BASE_URL) {
   }
 
   /**
-   * Upload media file to backend with FFmpeg processing
+   * Upload a media file
    */
-  async uploadMedia(,
-request: UploadRequest): Promise<MediaAsset> {
+  async uploadMedia(request: UploadRequest): Promise<MediaAsset> {
     const formData = new FormData();
-    formData.append('media', request.file);
+    formData.append('file', request.file);
+    formData.append('userId', request.userId);
     if (request.title) formData.append('title', request.title);
     if (request.description) formData.append('description', request.description);
     if (request.tags) formData.append('tags', JSON.stringify(request.tags));
 
-    try {
-      const response = await fetch(`${this.baseUrl}/upload`, {method: 'POST',
-  headers: getHeaders(),
-  body: formData
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || 'Upload failed');
-      }
-
-      const result = await response.json();
-      return {
-        ...result.data,
-userId: request.userId,
-color: "#FFD700",
-stage: "U1",
-ficReward: 0.05,
-createdAt: new Date(),
-updatedAt: new Date()
-      };
-    } catch (error) {
-      console.error('Error uploading media:', error);
-      throw error;
+    const token = getAuthToken();
+    const headers: HeadersInit = {};
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
     }
+
+    const response = await fetch(`${this.baseUrl}/upload`, {
+      method: 'POST',
+      headers,
+      body: formData
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Upload failed');
+    }
+
+    const result = await response.json();
+    return result.data;
   }
 
   /**
-   * Get user's media assets from backend
+   * Get user assets
    */
-  async getUserAssets(,
-userId: string,
-page: number = 1,
-limit: number = 10): Promise<MediaAsset[]> {
+  async getUserAssets(userId: string): Promise<MediaAsset[]> {
     try {
-      const response = await fetch(
-        `${this.baseUrl}/my-assets?page=${page}&limit=${limit}`,
-        {headers: getHeaders() }
-      );
+      const response = await fetch(`${this.baseUrl}/user/${userId}/assets`, {
+        headers: getHeaders()
+      });
 
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || 'Failed to fetch assets');
-      }
-
+      if (!response.ok) return [];
       const result = await response.json();
-      return result.data?.assets || [];
+      return result.data || [];
     } catch (error) {
       console.error('Error fetching user assets:', error);
       return [];
@@ -148,19 +131,19 @@ limit: number = 10): Promise<MediaAsset[]> {
   }
 
   /**
-   * Get specific media file
+   * Get single asset by ID
    */
-  async getMediaFile(,
-fileId: string): Promise<MediaAsset | null> {
+  async getAsset(assetId: string): Promise<MediaAsset | null> {
     try {
-      const response = await fetch(`${this.baseUrl}/files/${fileId}`, {headers: getHeaders()
+      const response = await fetch(`${this.baseUrl}/assets/${assetId}`, {
+        headers: getHeaders()
       });
 
       if (!response.ok) return null;
       const result = await response.json();
       return result.data;
     } catch (error) {
-      console.error('Error fetching media file:', error);
+      console.error('Error fetching asset:', error);
       return null;
     }
   }
@@ -168,17 +151,16 @@ fileId: string): Promise<MediaAsset | null> {
   /**
    * Request FFmpeg transcoding
    */
-  async transcodeMedia(,
-request: TranscodeRequest): Promise<{jobId: string;,
-  status: string }> {
+  async transcodeMedia(request: TranscodeRequest): Promise<{ jobId: string; status: string }> {
     try {
-      const response = await fetch(`${this.baseUrl}/transcode`, {method: 'POST',
-  headers: getHeaders(),
-  body: JSON.stringify({,
-  fileId: request.assetId,
-  format: request.options.format || 'mp4',
-  quality: request.options.quality || 'high',
-  resolution: request.options.resolution
+      const response = await fetch(`${this.baseUrl}/transcode`, {
+        method: 'POST',
+        headers: getHeaders(),
+        body: JSON.stringify({
+          fileId: request.assetId,
+          format: request.options.format || 'mp4',
+          quality: request.options.quality || 'high',
+          resolution: request.options.resolution
         })
       });
 
@@ -198,16 +180,12 @@ request: TranscodeRequest): Promise<{jobId: string;,
   /**
    * Apply FFmpeg filter to media
    */
-  async applyFilter(,
-fileId: string,
-filter: string,
-intensity: number = 1.0): Promise<any> {
+  async applyFilter(fileId: string, filter: string, intensity: number = 1.0): Promise<any> {
     try {
-      const response = await fetch(`${this.baseUrl}/apply-filter`, {method: 'POST',
-  headers: getHeaders(),
-  body: JSON.stringify({ fileId,
-  filter,
-  intensity })
+      const response = await fetch(`${this.baseUrl}/apply-filter`, {
+        method: 'POST',
+        headers: getHeaders(),
+        body: JSON.stringify({ fileId, filter, intensity })
       });
 
       if (!response.ok) {
@@ -225,11 +203,11 @@ intensity: number = 1.0): Promise<any> {
   /**
    * Generate thumbnail using FFmpeg
    */
-  async generateThumbnail(,
-fileId: string): Promise<string> {
+  async generateThumbnail(fileId: string): Promise<string> {
     try {
-      const response = await fetch(`${this.baseUrl}/files/${fileId}/thumbnail`, {method: 'POST',
-  headers: getHeaders()
+      const response = await fetch(`${this.baseUrl}/files/${fileId}/thumbnail`, {
+        method: 'POST',
+        headers: getHeaders()
       });
 
       if (!response.ok) {
@@ -248,11 +226,11 @@ fileId: string): Promise<string> {
   /**
    * Delete media asset
    */
-  async deleteAsset(,
-fileId: string): Promise<boolean> {
+  async deleteAsset(fileId: string): Promise<boolean> {
     try {
-      const response = await fetch(`${this.baseUrl}/files/${fileId}`, {method: 'DELETE',
-  headers: getHeaders()
+      const response = await fetch(`${this.baseUrl}/files/${fileId}`, {
+        method: 'DELETE',
+        headers: getHeaders()
       });
 
       if (!response.ok) {
@@ -270,10 +248,10 @@ fileId: string): Promise<boolean> {
   /**
    * Get FFmpeg job status
    */
-  async getJobStatus(,
-jobId: string): Promise<any> {
+  async getJobStatus(jobId: string): Promise<any> {
     try {
-      const response = await fetch(`${this.baseUrl}/jobs/${jobId}`, {headers: getHeaders()
+      const response = await fetch(`${this.baseUrl}/jobs/${jobId}`, {
+        headers: getHeaders()
       });
 
       if (!response.ok) {
@@ -291,18 +269,15 @@ jobId: string): Promise<any> {
   /**
    * Claim FIC reward
    */
-  async claimReward(,
-userId: string,
-artworkId: number): Promise<any> {
+  async claimReward(userId: string, artworkId: number): Promise<any> {
     try {
-      const response = await fetch(`${this.baseUrl}/claim-reward`, {method: 'POST',
-  headers: getHeaders(),
-  body: JSON.stringify({ userId,
-  artworkId })
+      const response = await fetch(`${this.baseUrl}/claim-reward`, {
+        method: 'POST',
+        headers: getHeaders(),
+        body: JSON.stringify({ userId, artworkId })
       });
 
-      if (!response.ok) throw new Error(`HTTP error!,
-status: ${response.status}`);
+      if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
       return await response.json();
     } catch (error) {
       console.error('Error claiming reward:', error);
@@ -313,15 +288,20 @@ status: ${response.status}`);
   /**
    * Get user balance
    */
-  async getUserBalance(,
-userId: string): Promise<{userId: string;,
-  balance: number }> {
+  async getUserBalance(userId: string): Promise<{ userId: string; balance: number }> {
     try {
-      const response = await fetch(`${this.baseUrl}/user/${userId}/balance`, {headers: getHeaders()
+      const response = await fetch(`${this.baseUrl}/user/${userId}/balance`, {
+        headers: getHeaders()
       });
 
-      if (!response.ok) throw new Error(`HTTP error!,
-status: ${response.status}`);
+      if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching user balance:', error);
+      return { userId, balance: 0 };
+    }
+  }
+
   /**
    * Get P2P matching collectors and bids for an artwork
    */

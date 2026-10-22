@@ -4,21 +4,21 @@
  */
 
 // Types for media processing
-export interface MediaFile {id: string;,
-  file: File;,
-  previewUrl: string;,
-  type: 'image' | 'video';,
+export interface MediaFile {
+  id: string;
+  file: File;
+  previewUrl: string;
+  type: 'image' | 'video';
   metadata: MediaMetadata;
 }
 
-export interface MediaMetadata {fileName: string;,
-  fileSize: number;,
+export interface MediaMetadata {
+  fileName: string;
+  fileSize: number;
   mimeType: string;
-  dimensions?: {,
-  width: number;,
-  height: number };
-  duration?: number; // For videos,
-createdAt: Date;
+  dimensions?: { width: number; height: number };
+  duration?: number;
+  createdAt: Date;
 }
 
 export interface ProcessingOptions {
@@ -26,29 +26,23 @@ export interface ProcessingOptions {
   maxHeight?: number;
   quality?: number; // For images (0-1)
   format?: 'jpeg' | 'png' | 'webp' | 'mp4' | 'webm'; // Desired output format
-  thumbnailSize?: {width: number;,
-  height: number };
+  thumbnailSize?: { width: number; height: number };
 }
 
 /**
  * Validates media file type and size
  */
-export const validateMediaFile = (,
-file: File,
-allowedTypes: string[] = [],
-maxSizeMB: number = 10): (boolean) => {
+export const validateMediaFile = (file: File, allowedTypes: string[] = [], maxSizeMB: number = 10): boolean => {
   // Check file type
   if (allowedTypes.length > 0 && !allowedTypes.some(type => file.type.startsWith(type))) {
-    console.error(`Invalid file,
-type: ${file.type}`);
+    console.error(`Invalid file type: ${file.type}`);
     return false;
   }
 
   // Check file size
   const maxSizeBytes = maxSizeMB * 1024 * 1024;
   if (file.size > maxSizeBytes) {
-    console.error(`File size exceeds,
-limit: ${file.size} > ${maxSizeBytes} bytes`);
+    console.error(`File size exceeds limit: ${file.size} > ${maxSizeBytes} bytes`);
     return false;
   }
 
@@ -58,8 +52,7 @@ limit: ${file.size} > ${maxSizeBytes} bytes`);
 /**
  * Generates a thumbnail from an image or video file
  */
-export const generateThumbnail = (,
-file: File): Promise<string> => {
+export const generateThumbnail = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     
@@ -146,11 +139,9 @@ file: File): Promise<string> => {
 /**
  * Gets metadata from media file
  */
-export const extractMediaMetadata = (,
-file: File): Promise<MediaMetadata> => {
+export const extractMediaMetadata = (file: File): Promise<MediaMetadata> => {
   return new Promise((resolve) => {
-    const,
-metadata: MediaMetadata = {fileName: file.name,
+    const metadata: MediaMetadata = {fileName: file.name,
   fileSize: file.size,
   mimeType: file.type,
   createdAt: new Date()
@@ -197,9 +188,7 @@ metadata: MediaMetadata = {fileName: file.name,
 /**
  * Compresses an image file to reduce size
  */
-export const compressImage = (,
-file: File,
-options: ProcessingOptions = {}): Promise<Blob> => {
+export const compressImage = (file: File, options: ProcessingOptions = {}): Promise<Blob> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     
@@ -240,8 +229,7 @@ options: ProcessingOptions = {}): Promise<Blob> => {
                          format === 'png' ? 'image/png' : 'image/webp';
         
         // Determine quality
-        const quality = options.quality !== undefined ? options.,
-quality : 0.8;
+        const quality = options.quality !== undefined ? options.quality : 0.8;
         
         canvas.toBlob(
           (blob) => {
@@ -272,8 +260,7 @@ quality : 0.8;
 /**
  * Creates a MediaFile object with preview and metadata
  */
-export const createMediaFile = async (,
-file: File): Promise<MediaFile> => {
+export const createMediaFile = async (file: File): Promise<MediaFile> => {
   const previewUrl = URL.createObjectURL(file);
   const metadata = await extractMediaMetadata(file);
   
@@ -289,7 +276,6 @@ type: file.type.startsWith('image/') ? 'image' :
 /**
  * Releases the preview URL to free up memory
  */
-export const releaseMediaFile = (,
-mediaFile: MediaFile) => {
+export const releaseMediaFile = (mediaFile: MediaFile) => {
   URL.revokeObjectURL(mediaFile.previewUrl);
 };

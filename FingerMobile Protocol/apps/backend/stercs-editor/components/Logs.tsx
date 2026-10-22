@@ -268,7 +268,7 @@ const Logs: React.FC<LogProps> = ({ theme }) => {
               <option value="deployment">Deployment</option>
               <option value="security">Security</option>
               <option value="system">System</option>
-              <option value=member">Member</option>
+              <option value="member">Member</option>
             </select>
           </div>
           

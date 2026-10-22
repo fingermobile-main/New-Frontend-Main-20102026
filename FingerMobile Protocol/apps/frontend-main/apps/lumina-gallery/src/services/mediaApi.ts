@@ -1,5 +1,5 @@
-import { MediaMetadata } from "../utils/mediaProcessing";;
-import { mediaApiService } from "./api";;
+import { MediaMetadata } from "../utils/mediaProcessing";
+import { mediaApiService } from "./api";
 
 // Re-export everything from the new API service for backward compatibility
 export * from "./api";
@@ -9,8 +9,7 @@ class LegacyMediaApiService {
   /**
    * Upload a media file to the server
    */
-  async uploadMedia(,
-request: {file: File,
+  async uploadMedia(request: {file: File,
   userId: string,
   title?: string,
   description?: string,
@@ -21,8 +20,7 @@ request: {file: File,
   /**
    * Request transcoding of a media asset using FFmpeg
    */
-  async transcodeMedia(,
-request: {assetId: string,
+  async transcodeMedia(request: {assetId: string,
   options: any }): Promise<any> {
     return mediaApiService.transcodeMedia(request);
   }
@@ -30,8 +28,7 @@ request: {assetId: string,
   /**
    * Generate a thumbnail for a media asset
    */
-  async generateThumbnail(,
-request: {assetId: string,
+  async generateThumbnail(request: {assetId: string,
   width?: number,
   height?: number,
   format?: 'jpg' | 'png' | 'webp' }): Promise<string> {
@@ -41,8 +38,7 @@ request: {assetId: string,
   /**
    * Get a list of media assets for a user
    */
-  async getUserAssets(,
-userId: string,
+  async getUserAssets(userId: string,
 page: number = 1,
 limit: number = 10): Promise<{assets: any[],
   totalCount: number }> {
@@ -55,8 +51,7 @@ totalCount: assets.length };
   /**
    * Delete a media asset
    */
-  async deleteAsset(,
-assetId: string): Promise<boolean> {
+  async deleteAsset(assetId: string): Promise<boolean> {
     // Implementation would go here
     console.log(`Asset ${assetId} marked for deletion`);
     return true;
@@ -65,8 +60,7 @@ assetId: string): Promise<boolean> {
   /**
    * Update metadata for a media asset
    */
-  async updateAssetMetadata(,
-assetId: string,
+  async updateAssetMetadata(assetId: string,
 metadata: Partial<any>): Promise<any> {
     // Implementation would go here
     return {id: assetId,

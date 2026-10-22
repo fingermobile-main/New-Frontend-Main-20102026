@@ -461,7 +461,7 @@ Member
                 onChange={(e) => setInvitePermissions(e.target.value)}
                 placeholder="e.g., read, write, delete"
                 style={{
-                  width: '100%',Member
+                  width: '100%',
                   padding: '0.5rem',
                   border: '1px solid #d1d5db',
                   borderRadius: '4px',

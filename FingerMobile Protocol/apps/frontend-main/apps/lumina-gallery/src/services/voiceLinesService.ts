@@ -3,15 +3,14 @@
  * Implements 52 African Nigerian Igbo/Yoruba accent voice lines
  */
 
-interface VoiceLine {id: string;,
-  text: string;,
-  category: string;,
+interface VoiceLine {id: string;
+  text: string;
+  category: string;
   accent: string;
 }
 
 class VoiceLinesService {
-  private,
-voiceLines: VoiceLine[] = [];
+  private voiceLines: VoiceLine[] = [];
 
   constructor() {
     this.initializeVoiceLines();
@@ -85,8 +84,7 @@ voiceLines: VoiceLine[] = [];
   category: 'greeting',
   accent: 'yoruba' },
       {id: 'greet-008',
-  text: "Kedu ka ọ dị! Life good,
-  let's enjoy am!",
+  text: "Kedu ka ọ dị! Life good, let's enjoy am!",
   category: 'greeting',
   accent: 'ibo' },
       {id: 'greet-009',
@@ -102,8 +100,7 @@ voiceLines: VoiceLine[] = [];
   category: 'greeting',
   accent: 'yoruba' },
       {id: 'greet-012',
-  text: "Daalụ nnoo! How far chop,
-  how far work?",
+  text: "Daalụ nnoo! How far chop, how far work?",
   category: 'greeting',
   accent: 'ibo' }
     );
@@ -111,8 +108,7 @@ voiceLines: VoiceLine[] = [];
     // Funding & Requests (4)
     this.voiceLines.push(
       {id: 'fund-001',
-  text: "Brother,
-  small money go make big money! Support us!",
+  text: "Brother, small money go make big money! Support us!",
   category: 'funding',
   accent: 'yoruba' },
       {id: 'fund-002',
@@ -257,8 +253,7 @@ voiceLines: VoiceLine[] = [];
   /**
    * Get a random voice line by category
    */
-  getRandomVoiceLineByCategory(,
-category: string): VoiceLine | null {
+  getRandomVoiceLineByCategory(category: string): VoiceLine | null {
     const categoryLines = this.voiceLines.filter(line => line.category === category);
     if (categoryLines.length === 0) {
       return null;
@@ -279,8 +274,7 @@ category: string): VoiceLine | null {
   /**
    * Get all voice lines by category
    */
-  getVoiceLinesByCategory(,
-category: string): VoiceLine[] {
+  getVoiceLinesByCategory(category: string): VoiceLine[] {
     return this.voiceLines.filter(line => line.category === category);
   }
 
@@ -304,8 +298,7 @@ category: string): VoiceLine[] {
   /**
    * Play a voice line using the Web Speech API with safe asynchronous checking
    */
-  async playVoiceLine(,
-text: string,
+  async playVoiceLine(text: string,
 lang: string = 'en-NG'): Promise<void> {
     return new Promise((resolve, reject) => {
       if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
@@ -340,8 +333,7 @@ lang: string = 'en-NG'): Promise<void> {
   /**
    * Trigger a voice line by category
    */
-  async triggerVoiceLineByCategory(,
-category: string): Promise<void> {
+  async triggerVoiceLineByCategory(category: string): Promise<void> {
     const voiceLine = this.getRandomVoiceLineByCategory(category);
     if (voiceLine) {
       try {
@@ -363,8 +355,7 @@ category: string): Promise<void> {
    * Get count by category
    */
   getCountByCategory(): Record<string, number> {
-    const,
-counts: Record<string, number> = {};
+    const counts: Record<string, number> = {};
     
     this.voiceLines.forEach((line) => {
       counts[line.category] = (counts[line.category] || 0) + 1;
