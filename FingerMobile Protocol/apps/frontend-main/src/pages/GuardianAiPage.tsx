@@ -132,6 +132,21 @@ const GuardianAiPage: React.FC = () => {
     modelType: 'neural_network'
   });
 
+  const [activeActionMenuId, setActiveActionMenuId] = useState<string | null>(null);
+
+  const handleDownloadReport = (report: GuardianAIReport) => {
+    const reportData = JSON.stringify(report, null, 2);
+    const blob = new Blob([reportData], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `GuardianAI_${report.reportType}_${report.id}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   const navigate = useNavigate();
   const history = { push: (path: string) => navigate(path), replace: (path: string) => navigate(path, { replace: true }) };
 
@@ -896,41 +911,53 @@ const GuardianAiPage: React.FC = () => {
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                               <div className="flex space-x-2">
                                 <button 
+                                  aria-label="View system details"
+                                  title="View System Details"
                                   className="text-blue-600 hover:text-blue-900"
                                   onClick={() => history.push(`/dashboard/guardian/systems/${system.id}/details`)}
                                 >
                                   <Eye className="h-4 w-4" />
                                 </button>
                                 <button 
+                                  aria-label="Train system model"
+                                  title="Train System Model"
                                   className="text-green-600 hover:text-green-900"
                                   onClick={() => handleTrainSystem(system.id)}
                                 >
                                   <Zap className="h-4 w-4" />
                                 </button>
                                 <div className="relative">
-                                  <button className="text-gray-600 hover:text-gray-900">
+                                  <button 
+                                    type="button"
+                                    aria-label={`More actions for system ${system.name}`}
+                                    title="More Actions"
+                                    onClick={() => setActiveActionMenuId(activeActionMenuId === system.id ? null : system.id)}
+                                    className="text-gray-600 hover:text-gray-900"
+                                  >
                                     <MoreHorizontal className="h-4 w-4" />
                                   </button>
-                                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden">
-                                    <button 
-                                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                                      onClick={() => history.push(`/dashboard/guardian/systems/${system.id}/config`)}
-                                    >
-                                      Configuration
-                                    </button>
-                                    <button 
-                                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                                      onClick={() => history.push(`/dashboard/guardian/systems/${system.id}/performance`)}
-                                    >
-                                      Performance
-                                    </button>
-                                    <button 
-                                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                                      onClick={() => history.push(`/dashboard/guardian/systems/${system.id}/training`)}
-                                    >
-                                      Training Data
-                                    </button>
-                                  </div>
+                                  {activeActionMenuId === system.id && (
+                                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20 border border-slate-200">
+                                      <button 
+                                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                                        onClick={() => { setActiveActionMenuId(null); history.push(`/dashboard/guardian/systems/${system.id}/config`); }}
+                                      >
+                                        Configuration
+                                      </button>
+                                      <button 
+                                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                                        onClick={() => { setActiveActionMenuId(null); history.push(`/dashboard/guardian/systems/${system.id}/performance`); }}
+                                      >
+                                        Performance
+                                      </button>
+                                      <button 
+                                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                                        onClick={() => { setActiveActionMenuId(null); history.push(`/dashboard/guardian/systems/${system.id}/training`); }}
+                                      >
+                                        Training Data
+                                      </button>
+                                    </div>
+                                  )}
                                 </div>
                               </div>
                             </td>
@@ -1017,35 +1044,45 @@ const GuardianAiPage: React.FC = () => {
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                               <div className="flex space-x-2">
                                 <button 
+                                  aria-label="View event details"
+                                  title="View Event Details"
                                   className="text-blue-600 hover:text-blue-900"
                                   onClick={() => history.push(`/dashboard/guardian/events/${event.id}/details`)}
                                 >
                                   <Eye className="h-4 w-4" />
                                 </button>
                                 <div className="relative">
-                                  <button className="text-gray-600 hover:text-gray-900">
+                                  <button 
+                                    type="button"
+                                    aria-label={`More actions for event ${event.id}`}
+                                    title="More Actions"
+                                    onClick={() => setActiveActionMenuId(activeActionMenuId === event.id ? null : event.id)}
+                                    className="text-gray-600 hover:text-gray-900"
+                                  >
                                     <MoreHorizontal className="h-4 w-4" />
                                   </button>
-                                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden">
-                                    <button 
-                                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                                      onClick={() => history.push(`/dashboard/guardian/events/${event.id}/responses`)}
-                                    >
-                                      View Responses
-                                    </button>
-                                    <button 
-                                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                                      onClick={() => history.push(`/dashboard/guardian/events/${event.id}/metadata`)}
-                                    >
-                                      Metadata
-                                    </button>
-                                    <button 
-                                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                                      onClick={() => history.push(`/dashboard/guardian/events/${event.id}/related`)}
-                                    >
-                                      Related Events
-                                    </button>
-                                  </div>
+                                  {activeActionMenuId === event.id && (
+                                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20 border border-slate-200">
+                                      <button 
+                                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                                        onClick={() => { setActiveActionMenuId(null); history.push(`/dashboard/guardian/events/${event.id}/responses`); }}
+                                      >
+                                        View Responses
+                                      </button>
+                                      <button 
+                                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                                        onClick={() => { setActiveActionMenuId(null); history.push(`/dashboard/guardian/events/${event.id}/metadata`); }}
+                                      >
+                                        Metadata
+                                      </button>
+                                      <button 
+                                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                                        onClick={() => { setActiveActionMenuId(null); history.push(`/dashboard/guardian/events/${event.id}/related`); }}
+                                      >
+                                        Related Events
+                                      </button>
+                                    </div>
+                                  )}
                                 </div>
                               </div>
                             </td>
@@ -1123,29 +1160,39 @@ const GuardianAiPage: React.FC = () => {
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                               <div className="flex space-x-2">
                                 <button 
+                                  aria-label="View response details"
+                                  title="View Response Details"
                                   className="text-blue-600 hover:text-blue-900"
                                   onClick={() => history.push(`/dashboard/guardian/responses/${response.id}/details`)}
                                 >
                                   <Eye className="h-4 w-4" />
                                 </button>
                                 <div className="relative">
-                                  <button className="text-gray-600 hover:text-gray-900">
+                                  <button 
+                                    type="button"
+                                    aria-label={`More actions for response ${response.id}`}
+                                    title="More Actions"
+                                    onClick={() => setActiveActionMenuId(activeActionMenuId === response.id ? null : response.id)}
+                                    className="text-gray-600 hover:text-gray-900"
+                                  >
                                     <MoreHorizontal className="h-4 w-4" />
                                   </button>
-                                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden">
-                                    <button 
-                                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                                      onClick={() => history.push(`/dashboard/guardian/responses/${response.id}/audit`)}
-                                    >
-                                      Audit Trail
-                                    </button>
-                                    <button 
-                                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                                      onClick={() => history.push(`/dashboard/guardian/responses/${response.id}/effectiveness`)}
-                                    >
-                                      Effectiveness Review
-                                    </button>
-                                  </div>
+                                  {activeActionMenuId === response.id && (
+                                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20 border border-slate-200">
+                                      <button 
+                                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                                        onClick={() => { setActiveActionMenuId(null); history.push(`/dashboard/guardian/responses/${response.id}/audit`); }}
+                                      >
+                                        Audit Trail
+                                      </button>
+                                      <button 
+                                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                                        onClick={() => { setActiveActionMenuId(null); history.push(`/dashboard/guardian/responses/${response.id}/effectiveness`); }}
+                                      >
+                                        Effectiveness Review
+                                      </button>
+                                    </div>
+                                  )}
                                 </div>
                               </div>
                             </td>
@@ -1224,44 +1271,53 @@ const GuardianAiPage: React.FC = () => {
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                               <div className="flex space-x-2">
                                 <button 
+                                  aria-label="View report details"
+                                  title="View Report Details"
                                   className="text-blue-600 hover:text-blue-900"
                                   onClick={() => history.push(`/dashboard/guardian/reports/${report.id}/view`)}
                                 >
                                   <Eye className="h-4 w-4" />
                                 </button>
                                 <button 
+                                  aria-label={`Download report ${report.title}`}
+                                  title="Download Report"
                                   className="text-green-600 hover:text-green-900"
-                                  onClick={() => {
-                                    // Download report
-                                    console.log('Downloading report:', report.id);
-                                  }}
+                                  onClick={() => handleDownloadReport(report)}
                                 >
                                   <FileText className="h-4 w-4" />
                                 </button>
                                 <div className="relative">
-                                  <button className="text-gray-600 hover:text-gray-900">
+                                  <button 
+                                    type="button"
+                                    aria-label={`More actions for report ${report.id}`}
+                                    title="More Actions"
+                                    onClick={() => setActiveActionMenuId(activeActionMenuId === report.id ? null : report.id)}
+                                    className="text-gray-600 hover:text-gray-900"
+                                  >
                                     <MoreHorizontal className="h-4 w-4" />
                                   </button>
-                                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden">
-                                    <button 
-                                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                                      onClick={() => history.push(`/dashboard/guardian/reports/${report.id}/edit`)}
-                                    >
-                                      Edit Report
-                                    </button>
-                                    <button 
-                                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                                      onClick={() => history.push(`/dashboard/guardian/reports/${report.id}/recipients`)}
-                                    >
-                                      Manage Recipients
-                                    </button>
-                                    <button 
-                                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                                      onClick={() => history.push(`/dashboard/guardian/reports/${report.id}/approval`)}
-                                    >
-                                      Approval Workflow
-                                    </button>
-                                  </div>
+                                  {activeActionMenuId === report.id && (
+                                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20 border border-slate-200">
+                                      <button 
+                                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                                        onClick={() => { setActiveActionMenuId(null); history.push(`/dashboard/guardian/reports/${report.id}/edit`); }}
+                                      >
+                                        Edit Report
+                                      </button>
+                                      <button 
+                                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                                        onClick={() => { setActiveActionMenuId(null); history.push(`/dashboard/guardian/reports/${report.id}/recipients`); }}
+                                      >
+                                        Manage Recipients
+                                      </button>
+                                      <button 
+                                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                                        onClick={() => { setActiveActionMenuId(null); history.push(`/dashboard/guardian/reports/${report.id}/approval`); }}
+                                      >
+                                        Approval Workflow
+                                      </button>
+                                    </div>
+                                  )}
                                 </div>
                               </div>
                             </td>
@@ -1457,6 +1513,7 @@ const GuardianAiPage: React.FC = () => {
                   {[...Array(totalPages)].map((_, i) => (
                     <button
                       key={i + 1}
+                      aria-label={`Page ${i + 1}`}
                       onClick={() => setCurrentPage(i + 1)}
                       className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
                         currentPage === i + 1
@@ -1493,6 +1550,8 @@ const GuardianAiPage: React.FC = () => {
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-medium text-gray-900">Create New Guardian AI System</h3>
                 <button 
+                  aria-label="Close modal"
+                  title="Close"
                   className="text-slate-700 hover:text-gray-700"
                   onClick={() => setShowCreateModal(false)}
                 >

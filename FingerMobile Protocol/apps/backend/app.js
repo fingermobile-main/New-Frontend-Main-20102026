@@ -708,6 +708,7 @@ app.use('/api/registration-lock', registrationLockRoutes);
 app.use('/api/search-elasticsearch', searchElasticsearchRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/storefront', storefrontRoutes);
+app.use('/api/commerce', storefrontRoutes);
 app.use('/api/supervi-achievements', superviAchievementsRoutes);
 app.use('/api/supervi-leaderboards', superviLeaderboardsRoutes);
 app.use('/api/tms', tmsRoutes);

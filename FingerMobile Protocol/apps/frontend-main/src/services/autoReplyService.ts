@@ -7,6 +7,8 @@ import {
 } from '../components/gems/types';
 import { DEFAULT_AUTO_REPLY_SETTINGS } from '../components/gems/defaultAutoReplyData';
 
+import api from './api';
+
 export interface AutoReplyExecutionLog {
   id: string;
   timestamp: string;
@@ -20,44 +22,52 @@ export interface AutoReplyExecutionLog {
 }
 
 class AutoReplyService {
-  private storageKey = 'fingermobile_autoreply_settings';
-  private logsKey = 'fingermobile_autoreply_logs';
   private settings: AutoReplySettings = DEFAULT_AUTO_REPLY_SETTINGS;
   private logs: AutoReplyExecutionLog[] = [];
+  private isLoadedFromBackend: boolean = false;
 
   constructor() {
-    this.loadFromStorage();
+    this.syncFromBackend();
   }
 
-  private loadFromStorage() {
-    if (typeof window === 'undefined') return;
+  public async syncFromBackend(): Promise<AutoReplySettings> {
     try {
-      const saved = localStorage.getItem(this.storageKey);
-      if (saved) {
-        this.settings = { ...DEFAULT_AUTO_REPLY_SETTINGS, ...JSON.parse(saved) };
+      const res = await api.get('/gems/auto-reply');
+      if (res.data?.success && res.data.settings) {
+        this.settings = { ...DEFAULT_AUTO_REPLY_SETTINGS, ...res.data.settings };
       }
-      const savedLogs = localStorage.getItem(this.logsKey);
-      if (savedLogs) {
-        this.logs = JSON.parse(savedLogs);
+      this.isLoadedFromBackend = true;
+      const logsRes = await api.get('/gems/auto-reply/logs').catch(() => null);
+      if (logsRes?.data?.success && Array.isArray(logsRes.data.logs)) {
+        this.logs = logsRes.data.logs.map((l: any) => ({
+          id: String(l.id),
+          timestamp: l.created_at,
+          recipientId: l.user_id,
+          recipientName: l.recipient_name,
+          sourceContext: l.source_context,
+          triggerType: l.trigger_type,
+          renderedText: l.rendered_text
+        }));
       }
-    } catch (e) {
-      console.warn('Failed to load auto-reply settings from storage', e);
+    } catch (_e) {
+      // Graceful fallback to default in-memory settings
     }
-  }
-
-  public getSettings(): AutoReplySettings {
-    this.loadFromStorage();
     return this.settings;
   }
 
-  public saveSettings(newSettings: AutoReplySettings): void {
+  public getSettings(): AutoReplySettings {
+    if (!this.isLoadedFromBackend) {
+      this.syncFromBackend().catch(() => {});
+    }
+    return this.settings;
+  }
+
+  public async saveSettings(newSettings: AutoReplySettings): Promise<void> {
     this.settings = newSettings;
-    if (typeof window !== 'undefined') {
-      try {
-        localStorage.setItem(this.storageKey, JSON.stringify(newSettings));
-      } catch (e) {
-        console.warn('Failed to save auto-reply settings to storage', e);
-      }
+    try {
+      await api.post('/gems/auto-reply', { settings: newSettings });
+    } catch (e) {
+      console.warn('Failed to persist auto-reply settings to backend:', e);
     }
   }
 
@@ -207,17 +217,15 @@ class AutoReplyService {
     };
     this.logs.unshift(newLog);
     if (this.logs.length > 100) this.logs = this.logs.slice(0, 100);
-    if (typeof window !== 'undefined') {
-      try {
-        localStorage.setItem(this.logsKey, JSON.stringify(this.logs));
-      } catch (e) {
-        // non-fatal
-      }
-    }
+    api.post('/gems/auto-reply/logs', {
+      recipientName: log.recipientName,
+      sourceContext: log.sourceContext,
+      triggerType: log.triggerType,
+      renderedText: log.renderedText
+    }).catch(() => {});
   }
 
   public getExecutionLogs(): AutoReplyExecutionLog[] {
-    this.loadFromStorage();
     return this.logs;
   }
 }

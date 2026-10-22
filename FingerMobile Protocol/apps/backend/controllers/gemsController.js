@@ -37,6 +37,10 @@ class GemsController {
     this.update = this.updateGemItem;
     this.delete = this.deleteGemItem;
     this.processTransaction = this.transferGems;
+    this.getAutoReplySettings = this.getAutoReplySettings.bind(this);
+    this.saveAutoReplySettings = this.saveAutoReplySettings.bind(this);
+    this.getAutoReplyLogs = this.getAutoReplyLogs.bind(this);
+    this.recordAutoReplyLog = this.recordAutoReplyLog.bind(this);
   }
 
   /**
@@ -566,6 +570,81 @@ class GemsController {
     } catch (error) {
       logErr('Error in GemsController.purchaseGems:', error);
       res.status(500).json({ success: false, message: 'Failed to complete gem purchase' });
+    }
+  }
+
+  /**
+   * GET /api/gems/auto-reply
+   */
+  async getAutoReplySettings(req, res) {
+    try {
+      const result = await getPool().query('SELECT settings FROM auto_reply_settings WHERE id = $1', ['default']);
+      if (result.rows.length === 0) {
+        return res.status(200).json({ success: true, settings: null });
+      }
+      res.status(200).json({ success: true, settings: result.rows[0].settings });
+    } catch (error) {
+      logErr('Error in GemsController.getAutoReplySettings:', error);
+      res.status(500).json({ success: false, message: 'Failed to retrieve auto-reply settings' });
+    }
+  }
+
+  /**
+   * POST /api/gems/auto-reply
+   */
+  async saveAutoReplySettings(req, res) {
+    try {
+      const { settings } = req.body;
+      const sql = `
+        INSERT INTO auto_reply_settings (id, settings, updated_at)
+        VALUES ('default', $1, NOW())
+        ON CONFLICT (id) DO UPDATE SET
+          settings = EXCLUDED.settings,
+          updated_at = NOW()
+        RETURNING *
+      `;
+      const result = await getPool().query(sql, [JSON.stringify(settings || {})]);
+      res.status(200).json({ success: true, settings: result.rows[0].settings });
+    } catch (error) {
+      logErr('Error in GemsController.saveAutoReplySettings:', error);
+      res.status(500).json({ success: false, message: 'Failed to persist auto-reply settings' });
+    }
+  }
+
+  /**
+   * GET /api/gems/auto-reply/logs
+   */
+  async getAutoReplyLogs(req, res) {
+    try {
+      const result = await getPool().query('SELECT * FROM auto_reply_logs ORDER BY created_at DESC LIMIT 50');
+      res.status(200).json({ success: true, logs: result.rows });
+    } catch (error) {
+      logErr('Error in GemsController.getAutoReplyLogs:', error);
+      res.status(500).json({ success: false, message: 'Failed to retrieve auto-reply logs' });
+    }
+  }
+
+  /**
+   * POST /api/gems/auto-reply/logs
+   */
+  async recordAutoReplyLog(req, res) {
+    try {
+      const { recipientName, sourceContext, triggerType, renderedText } = req.body;
+      const sql = `
+        INSERT INTO auto_reply_logs (recipient_name, source_context, trigger_type, rendered_text)
+        VALUES ($1, $2, $3, $4)
+        RETURNING *
+      `;
+      const result = await getPool().query(sql, [
+        recipientName || 'Member',
+        sourceContext || 'general',
+        triggerType || 'quick_reply',
+        renderedText || ''
+      ]);
+      res.status(201).json({ success: true, log: result.rows[0] });
+    } catch (error) {
+      logErr('Error in GemsController.recordAutoReplyLog:', error);
+      res.status(500).json({ success: false, message: 'Failed to record auto-reply log' });
     }
   }
 }
