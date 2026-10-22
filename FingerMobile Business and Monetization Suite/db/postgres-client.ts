@@ -1,5 +1,5 @@
 import pkg from 'pg';
-const { Pool } = pkg;
+const Pool = (pkg as any).Pool || (pkg as any).default?.Pool || pkg;
 
 /**
  * PostgreSQL Database Client
@@ -7,11 +7,11 @@ const { Pool } = pkg;
  */
 
 const pool = new Pool({
-  host: process.env.DB_HOST || 'localhost',
-  port: parseInt(process.env.DB_PORT || '5432'),
-  database: process.env.DB_NAME || 'fingermobile_monetization_db',
+  host: process.env.DB_HOST || '127.0.0.1',
+  port: parseInt(process.env.DB_PORT || '5433'),
+  database: process.env.DB_NAME || 'fingermobile_business_db',
   user: process.env.DB_USER || 'postgres',
-  password: process.env.DB_PASSWORD || 'postgres',
+  password: process.env.DB_PASSWORD || process.env.DB_PASS || 'password',
   max: 20, // Maximum number of clients in the pool
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 2000,

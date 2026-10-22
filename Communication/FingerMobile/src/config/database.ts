@@ -2,9 +2,9 @@ import { Sequelize } from 'sequelize';
 
 const dbName = process.env.DB_NAME || 'fingermobile_comms';
 const dbUser = process.env.DB_USER || 'postgres';
-const dbPassword = process.env.DB_PASS || 'postgres';
-const dbHost = process.env.DB_HOST || 'localhost';
-const dbPort = parseInt(process.env.DB_PORT || '5432');
+const dbPassword = process.env.DB_PASS || process.env.DB_PASSWORD || 'password';
+const dbHost = process.env.DB_HOST && process.env.DB_HOST !== 'fingermobile-postgres' ? process.env.DB_HOST : '127.0.0.1';
+const dbPort = parseInt(process.env.DB_PORT || '5433');
 
 export const sequelize = new Sequelize(dbName, dbUser, dbPassword, {
   host: dbHost,

@@ -194,18 +194,6 @@ const AdvancedLuminaScene: React.FC<AdvancedLuminaSceneProps> = ({ onArtworkClic
 
   // Animation loop
   useFrame((state) => {
-    if (groupRef.current) {
-      // Update time uniform for shaders
-      frameRefs.current.forEach((ref, i) => {
-        if (ref.mesh) {
-          // Update shader uniforms for animation
-          const time = state.clock.getElapsedTime();
-          
-          // Animate frames vertically and with slight rotation
-          const yPos = Math.sin(time * 0.5 + i) * 0.08;
-          
-          
-  useFrame((state) => {
     if (!groupRef.current) return;
     const time = state.clock.getElapsedTime();
 

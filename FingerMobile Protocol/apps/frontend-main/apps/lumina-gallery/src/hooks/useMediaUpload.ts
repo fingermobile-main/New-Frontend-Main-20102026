@@ -1,25 +1,25 @@
-import { useState, useCallback, useRef } from 'react';;
-import { MediaFile, createMediaFile } from '../utils/mediaProcessing';;
+import { useState, useCallback, useRef } from 'react';
+import { MediaFile, createMediaFile } from '../utils/mediaProcessing';
 
-interface UseMediaUploadReturn {uploading: boolean;,
-  progress: number;,
-  error: string | null;,
-  uploadedFiles: MediaFile[];,
-  uploadFiles: (,
-  files: FileList | File[]) => Promise<void>;,
+interface UseMediaUploadReturn {
+  uploading: boolean;
+  progress: number;
+  error: string | null;
+  uploadedFiles: MediaFile[];
+  uploadFiles: (files: FileList | File[]) => Promise<void>;
   reset: () => void;
 }
 
-const useMediaUpload = (,
-apiEndpoint: string = '/api/lumina/upload'): (UseMediaUploadReturn) => {
+const useMediaUpload = (
+  apiEndpoint: string = '/api/lumina/upload'
+): UseMediaUploadReturn => {
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [uploadedFiles, setUploadedFiles] = useState<MediaFile[]>([]);
   const uploadTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  const uploadFiles = useCallback(async (,
-files: FileList | File[]) => {
+  const uploadFiles = useCallback(async (files: FileList | File[]) => {
     if (files.length === 0) return;
 
     setUploading(true);
@@ -52,8 +52,7 @@ files: FileList | File[]) => {
           }
         });
 
-        // In a real implementation, we'd use the actual API endpoint
-        // For now, we'll simulate the upload
+        // Simulate upload
         await new Promise((resolve) => {
           if (uploadTimerRef.current) {
             clearTimeout(uploadTimerRef.current);
@@ -62,31 +61,12 @@ files: FileList | File[]) => {
             setProgress(((i + 1) / filesArray.length) * 100);
             uploadTimerRef.current = null;
             resolve(true);
-          }, 500 + Math.random() * 1000); // Random delay to simulate network
+          }, 500 + Math.random() * 1000);
         });
       }
-
-      // In a real implementation, we would send the files to the backend
-      // const response = await fetch(apiEndpoint, {
-      //,
-method: 'POST',
-      //,
-body: formData,
-      // });
-      //
-      // if (!response.ok) {
-      //   throw new Error(`Upload,
-failed: ${response.statusText}`);
-      // }
-      //
-      // const,
-result:[] = await response.json();
-      // setUploadedFiles(result);
-
     } catch (err) {
       console.error('Upload error:', err);
-      setError(err instanceof Error ? err.,
-message : 'Upload failed');
+      setError(err instanceof Error ? err.message : 'Upload failed');
     } finally {
       setUploading(false);
     }
@@ -98,7 +78,7 @@ message : 'Upload failed');
       clearTimeout(uploadTimerRef.current);
       uploadTimerRef.current = null;
     }
-    
+
     setUploadedFiles([]);
     setError(null);
     setUploading(false);
