@@ -52,7 +52,6 @@ export const withCache = (WrappedComponent, options = {}) => {
           loading: false
         });
       } catch (error) {
-        console.error(`Error loading data for ${cacheKey}:`, error);
         this.setState({
           error,
           loading: false
