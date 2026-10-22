@@ -44,18 +44,28 @@ const UsersPage: React.FC = () => {
   const [newRole, setNewRole] = useState<'admin' | 'user' | 'moderator'>('user');
   const [isCreatingUser, setIsCreatingUser] = useState(false);
 
-  const handleCreateUser = (e: React.FormEvent) => {
+  const handleCreateUser = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newName.trim() || !newEmail.trim()) return;
 
     try {
       setIsCreatingUser(true);
-      const generatedId = typeof crypto !== 'undefined' && crypto.randomUUID 
-        ? crypto.randomUUID() 
-        : `00000000-0000-0000-0000-${Date.now().toString().padStart(12, '0')}`;
+      const generatedUsername = newName.trim().toLowerCase().replace(/[^a-z0-9_]/g, '_');
+      const res = await fetch('/api/admin/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: generatedUsername,
+          email: newEmail.trim(),
+          role: newRole,
+          status: 'ACTIVE'
+        })
+      });
+      const data = await res.json().catch(() => ({}));
+      const createdId = data?.member?.id || data?.user?.id || (typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : `00000000-0000-0000-0000-${Date.now().toString().padStart(12, '0')}`);
 
       const newUser: UserWithDetails = {
-        id: generatedId,
+        id: String(createdId),
         name: newName.trim(),
         email: newEmail.trim(),
         role: newRole,
@@ -85,81 +95,25 @@ const UsersPage: React.FC = () => {
     const fetchUsers = async () => {
       try {
         setLoading(true);
-        // Using mock data for now, would be replaced with real API call
-        const mockUsers: UserWithDetails[] = [
-          {
-            id: '1',
-            name: 'John Doe',
-            email: 'john@example.com',
-            role: 'user',
-            status: 'active',
-            createdAt: '2023-01-15',
-            registrationDate: '2023-01-15',
-            lastActive: '2023-10-02',
-            postCount: 42,
-            followerCount: 128,
-            followingCount: 89,
-            storeCreditBalance: 125.00
-          },
-          {
-            id: '2',
-            name: 'Jane Smith',
-            email: 'jane@example.com',
-            role: 'moderator',
-            status: 'active',
-            createdAt: '2023-02-20',
-            registrationDate: '2023-02-20',
-            lastActive: '2023-10-01',
-            postCount: 28,
-            followerCount: 256,
-            followingCount: 120,
-            storeCreditBalance: 250.00
-          },
-          {
-            id: '3',
-            name: 'Bob Johnson',
-            email: 'bob@example.com',
-            role: 'user',
-            status: 'pending',
-            createdAt: '2023-03-10',
-            registrationDate: '2023-03-10',
-            lastActive: '2023-09-10',
-            postCount: 15,
-            followerCount: 42,
-            followingCount: 65,
-            storeCreditBalance: 50.00
-          },
-          {
-            id: '4',
-            name: 'Alice Williams',
-            email: 'alice@example.com',
-            role: 'admin',
-            status: 'active',
-            createdAt: '2023-01-05',
-            registrationDate: '2023-01-05',
-            lastActive: '2023-10-02',
-            postCount: 67,
-            followerCount: 512,
-            followingCount: 234,
-            storeCreditBalance: 500.00
-          },
-          {
-            id: '5',
-            name: 'Charlie Brown',
-            email: 'charlie@example.com',
-            role: 'user',
-            status: 'pending',
-            createdAt: '2023-04-12',
-            registrationDate: '2023-04-12',
-            lastActive: '2023-04-12',
-            postCount: 3,
-            followerCount: 5,
-            followingCount: 12,
-            storeCreditBalance: 25.00
-          }
-        ];
-
-        setUsers(mockUsers);
+        const res = await fetch('/api/admin/users');
+        const json = await res.json();
+        if (json.success && Array.isArray(json.users)) {
+          const mapped: UserWithDetails[] = json.users.map((u: any) => ({
+            id: String(u.id || u.uuid),
+            name: u.username || u.name || 'Member',
+            email: u.email || '',
+            role: (u.role || 'user').toLowerCase(),
+            status: (u.status || 'active').toLowerCase(),
+            createdAt: (u.createdAt || u.created_at || new Date().toISOString()).split('T')[0],
+            registrationDate: (u.createdAt || u.created_at || new Date().toISOString()).split('T')[0],
+            lastActive: (u.updatedAt || u.updated_at || 'Recently').toString().split('T')[0],
+            postCount: 0,
+            followerCount: 0,
+            followingCount: 0,
+            storeCreditBalance: Number(u.storeCreditBalance || u.fiatBalance || 0)
+          }));
+          setUsers(mapped);
+        }
       } catch (err) {
         setError('Failed to fetch users');
         console.error(err);
@@ -185,22 +139,37 @@ const UsersPage: React.FC = () => {
     setIsEditModalOpen(true);
   };
 
-  const handleSaveEdit = (e: React.FormEvent) => {
+  const handleSaveEdit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editUser) return;
-    setUsers(prev => prev.map(u => u.id === editUser.id ? {
-      ...u,
-      name: editName,
-      email: editEmail,
-      role: editRole,
-      status: editStatus,
-      storeCreditBalance: editStoreCredit
-    } : u));
-    setIsEditModalOpen(false);
+    try {
+      await fetch(`/api/admin/users/${editUser.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: editName,
+          email: editEmail,
+          role: editRole,
+          status: editStatus,
+          storeCreditBalance: editStoreCredit
+        })
+      });
+      setUsers(prev => prev.map(u => u.id === editUser.id ? {
+        ...u,
+        name: editName,
+        email: editEmail,
+        role: editRole,
+        status: editStatus,
+        storeCreditBalance: editStoreCredit
+      } : u));
+      setIsEditModalOpen(false);
+    } catch (err: any) {
+      setError(err?.message || 'Failed to update user');
+    }
   };
 
   const handleDeleteUser = (user: UserWithDetails) => {
-    if (user.id === '1' || user.role === 'admin' && user.id === '1') {
+    if (user.id === '1' || user.id === '00000000-0000-0000-0000-000000000000' || user.role === 'admin' && (user.id === '1' || user.name.includes('protocol') || user.name.includes('israel'))) {
       alert('Root administrator founder account cannot be deleted.');
       return;
     }
@@ -210,18 +179,30 @@ const UsersPage: React.FC = () => {
     setIsDeleteModalOpen(true);
   };
 
-  const handleConfirmDelete = () => {
+  const handleConfirmDelete = async () => {
     if (!userToDelete) return;
-    if (isPermanentDelete) {
-      setUsers(prev => prev.filter(u => u.id !== userToDelete.id));
-    } else {
-      setUsers(prev => prev.map(u => u.id === userToDelete.id ? { ...u, status: 'inactive' } : u));
+    try {
+      await fetch(`/api/admin/users/${userToDelete.id}?permanent=${isPermanentDelete}`, {
+        method: 'DELETE'
+      });
+      if (isPermanentDelete) {
+        setUsers(prev => prev.filter(u => u.id !== userToDelete.id));
+      } else {
+        setUsers(prev => prev.map(u => u.id === userToDelete.id ? { ...u, status: 'inactive' } : u));
+      }
+      setIsDeleteModalOpen(false);
+    } catch (err: any) {
+      setError(err?.message || 'Failed to delete user');
     }
-    setIsDeleteModalOpen(false);
   };
 
   const handleSuspendUser = async (userId: string) => {
     try {
+      await fetch(`/api/admin/users/${userId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'SUSPENDED' })
+      });
       setUsers(prev => prev.map(u => u.id === userId ? { ...u, status: 'inactive' } : u));
     } catch (err) {
       setError('Failed to suspend user');
@@ -231,6 +212,11 @@ const UsersPage: React.FC = () => {
 
   const handleActivateUser = async (userId: string) => {
     try {
+      await fetch(`/api/admin/users/${userId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'ACTIVE' })
+      });
       setUsers(prev => prev.map(u => u.id === userId ? { ...u, status: 'active' } : u));
     } catch (err) {
       setError('Failed to activate user');

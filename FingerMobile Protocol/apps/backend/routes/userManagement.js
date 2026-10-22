@@ -11,6 +11,10 @@ const optionalAuth = (req, res, next) => {
   return next();
 };
 
+const adminController = require('../controllers/adminController.js');
+
+router.get('/', optionalAuth, (req, res) => adminController.getUsers(req, res));
+router.get('/list', optionalAuth, (req, res) => adminController.getUsers(req, res));
 router.get('/profile', optionalAuth, controller.getProfile);
 router.get('/profile/:userId', optionalAuth, controller.getProfile);
 router.put('/profile', optionalAuth, controller.updateProfile);

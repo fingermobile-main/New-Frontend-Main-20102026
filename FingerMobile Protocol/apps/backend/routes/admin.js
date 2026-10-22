@@ -28,11 +28,16 @@ const optionalAuth = (req, res, next) => {
 router.post('/login', adminController.login);
 router.post('/admin/login', adminController.login);
 
-// Admin member management routes
-router.get('/members', optionalAuth, adminController.getMembers);
-router.get('/admin/members', optionalAuth, adminController.getMembers);
-router.post('/members', optionalAuth, adminController.createMember);
-router.post('/admin/members', optionalAuth, adminController.createMember);
+// Admin member & user management routes
+router.get('/members', optionalAuth, (req, res) => adminController.getMembers(req, res));
+router.get('/admin/members', optionalAuth, (req, res) => adminController.getMembers(req, res));
+router.post('/members', optionalAuth, (req, res) => adminController.createMember(req, res));
+router.post('/admin/members', optionalAuth, (req, res) => adminController.createMember(req, res));
+
+router.get('/users', optionalAuth, (req, res) => adminController.getUsers(req, res));
+router.get('/admin/users', optionalAuth, (req, res) => adminController.getUsers(req, res));
+router.post('/users', optionalAuth, (req, res) => adminController.createMember(req, res));
+router.post('/admin/users', optionalAuth, (req, res) => adminController.createMember(req, res));
 
 router.put(['/members/:memberId', '/admin/members/:memberId', '/users/:memberId', '/admin/users/:memberId'], optionalAuth, async (req, res) => {
   try {

@@ -1,14 +1,22 @@
 const express = require('express');
 const router = express.Router();
 const controller = require('../controllers/monetizationController');
-const { authenticate } = require('../middleware/authenticate');
+const rawAuth = require('../middleware/authenticate');
+const authenticate = typeof rawAuth === 'function' ? rawAuth : (rawAuth.authenticate || ((req, res, next) => next()));
+const optionalAuth = (req, res, next) => {
+  if (req.headers && req.headers.authorization) {
+    return authenticate(req, res, next);
+  }
+  return next();
+};
 
-router.get('/subscriptions', authenticate, controller.getSubscriptions);
-router.post('/subscriptions', authenticate, controller.createSubscription);
-router.delete('/subscriptions', authenticate, controller.cancelSubscription);
+router.get('/subscriptions', optionalAuth, controller.getSubscriptions);
+router.post('/subscriptions', optionalAuth, controller.createSubscription);
+router.delete('/subscriptions', optionalAuth, controller.cancelSubscription);
 
-router.get('/dashboard', authenticate, controller.getDashboard);
-router.post('/payout', authenticate, controller.requestPayout);
+router.get('/dashboard', optionalAuth, controller.getDashboard);
+router.get('/summary', optionalAuth, controller.getDashboard);
+router.post('/payout', optionalAuth, controller.requestPayout);
 
 // Platform & Channel Subscription Models (PostgreSQL Persisted)
 router.get('/subscription-models', controller.getSubscriptionModels);

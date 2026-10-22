@@ -25,6 +25,7 @@ router.delete('/sessions', optionalAuth, security.revokeAllSessions);
 
 // Audit & Events
 router.get('/audit-log', optionalAuth, security.getAuditLog);
+router.get('/audit-logs', optionalAuth, security.getAuditLog);
 router.get('/events', optionalAuth, security.getAuditLog);
 
 // Alerts & Incidents
