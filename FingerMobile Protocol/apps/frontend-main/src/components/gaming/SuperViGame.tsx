@@ -199,8 +199,8 @@ export const SuperViGame: React.FC<SuperViGameProps> = ({ memberId, onExit, onAn
   // Chaser Proximity Tracking (0m = caught, 15m = safe, <4m = danger warning)
   const [chaserDistance, setChaserDistance] = useState<number>(14);
 
-  // Active Powerup State (Jetpack, Magnet, Shield)
-  const [activePowerup, setActivePowerup] = useState<'jetpack' | 'magnet' | 'shield' | null>(null);
+  // Active Powerup State (Jetpack, Magnet, Shield, Multiplier, Freeze)
+  const [activePowerup, setActivePowerup] = useState<'jetpack' | 'magnet' | 'shield' | 'multiplier' | 'freeze' | null>(null);
   const [powerupTime, setPowerupTime] = useState<number>(0);
 
   // Daily Challenge Letter Hunt: L - I - O - N
@@ -790,8 +790,8 @@ export const SuperViGame: React.FC<SuperViGameProps> = ({ memberId, onExit, onAn
     }, 7000);
   };
 
-  // Activate In-Game Powerups (Jetpack, Magnet, Shield)
-  const activatePowerup = (type: 'jetpack' | 'magnet' | 'shield') => {
+  // Activate In-Game Powerups (Jetpack, Magnet, Shield, Multiplier, Freeze)
+  const activatePowerup = (type: 'jetpack' | 'magnet' | 'shield' | 'multiplier' | 'freeze') => {
     setActivePowerup(type);
     setPowerupTime(9.0);
 
@@ -806,6 +806,14 @@ export const SuperViGame: React.FC<SuperViGameProps> = ({ memberId, onExit, onAn
     } else if (type === 'shield') {
       audioEngine.playVoiceLine('awesome');
       showToast('🛡️ Ancestral Shield Equipped! Immune to 1 collision.', 'success');
+    } else if (type === 'multiplier') {
+      setSpeedMultiplier((m) => m * 2);
+      audioEngine.playVoiceLine('great_combo');
+      showToast('⚡ 2x Score Multiplier Surge Active!', 'success');
+    } else if (type === 'freeze') {
+      setChaserDistance((d) => Math.min(15, d + 4));
+      audioEngine.playVoiceLine('stunning');
+      showToast('❄️ Harmattan Time Freeze! Chaser slowed down!', 'info');
     }
   };
 
