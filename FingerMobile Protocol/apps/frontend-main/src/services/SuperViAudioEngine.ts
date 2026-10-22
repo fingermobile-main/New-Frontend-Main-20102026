@@ -11,7 +11,14 @@ export type AfricanVoiceLine =
   | 'wahala'
   | 'owo_ni_koko'
   | 'gbaski'
-  | 'blessings';
+  | 'blessings'
+  | 'see_gobe'
+  | 'madt_o'
+  | 'sweet'
+  | 'boom'
+  | 'gem_found'
+  | 'awesome'
+  | 'thumbs_up';
 
 class SuperViAudioEngine {
   private static instance: SuperViAudioEngine;
@@ -24,7 +31,18 @@ class SuperViAudioEngine {
     small_combo: '/audio/african/small-combo.mp3',
     great_combo: '/audio/african/great-combo.mp3',
     colossal_combo: '/audio/african/colossal-combo.mp3',
-    stunning: '/audio/african/stunning.mp3'
+    stunning: '/audio/african/stunning.mp3',
+    wahala: '/audio/african/wahala-dey.mp3',
+    owo_ni_koko: '/audio/african/owo-ni-koko.mp3',
+    gbaski: '/audio/african/oomo-gbaski.mp3',
+    blessings: '/audio/african/blessings-blessings.mp3',
+    see_gobe: '/audio/african/see-gobe.mp3',
+    madt_o: '/audio/african/madt-o.mp3',
+    sweet: '/audio/african/sweet.mp3',
+    boom: '/audio/african/boom.mp3',
+    gem_found: '/audio/african/gem-found.mp3',
+    awesome: '/audio/african/awesome.mp3',
+    thumbs_up: '/audio/african/thumbs-up.mp3'
   };
 
   private constructor() {
@@ -122,7 +140,14 @@ class SuperViAudioEngine {
       wahala: 'Wahala dey!',
       owo_ni_koko: 'Owo ni Koko!',
       gbaski: 'Omo you gbaski!',
-      blessings: 'Blessings! Blessings!'
+      blessings: 'Blessings! Blessings!',
+      see_gobe: 'See gobe!',
+      madt_o: 'Madt o!',
+      sweet: 'Sweet move!',
+      boom: 'Boom!',
+      gem_found: 'Gem found!',
+      awesome: 'Awesome!',
+      thumbs_up: 'Thumbs up!'
     };
 
     const text = phrases[type] || 'SuperVi!';
@@ -144,7 +169,7 @@ class SuperViAudioEngine {
   /**
    * High performance synthesized Web Audio sound FX
    */
-  public playSoundEffect(effect: 'JUMP' | 'SLIDE' | 'COIN' | 'POWERUP' | 'CRASH' | 'SWIPE'): void {
+  public playSoundEffect(effect: 'JUMP' | 'SLIDE' | 'COIN' | 'POWERUP' | 'CRASH' | 'SWIPE' | 'JETPACK' | 'MAGNET' | 'FRUIT' | 'PORTAL' | 'CHASER_ROAR'): void {
     if (this.isMuted) return;
     const ctx = this.getAudioContext();
     if (!ctx) return;
@@ -216,6 +241,58 @@ class SuperViAudioEngine {
         osc.stop(now + 0.35);
         this.triggerHaptic('HEAVY');
         break;
+
+      case 'JETPACK':
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(160, now);
+        osc.frequency.exponentialRampToValueAtTime(720, now + 0.4);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+        osc.start(now);
+        osc.stop(now + 0.4);
+        break;
+
+      case 'MAGNET':
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(520, now);
+        osc.frequency.linearRampToValueAtTime(680, now + 0.2);
+        gain.gain.setValueAtTime(0.25, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+        osc.start(now);
+        osc.stop(now + 0.2);
+        break;
+
+      case 'FRUIT':
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(660, now);
+        osc.frequency.setValueAtTime(990, now + 0.08);
+        osc.frequency.setValueAtTime(1320, now + 0.16);
+        gain.gain.setValueAtTime(0.3, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.24);
+        osc.start(now);
+        osc.stop(now + 0.24);
+        break;
+
+      case 'PORTAL':
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(200, now);
+        osc.frequency.exponentialRampToValueAtTime(1800, now + 0.5);
+        gain.gain.setValueAtTime(0.35, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
+        osc.start(now);
+        osc.stop(now + 0.5);
+        break;
+
+      case 'CHASER_ROAR':
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(90, now);
+        osc.frequency.exponentialRampToValueAtTime(50, now + 0.45);
+        gain.gain.setValueAtTime(0.4, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+        osc.start(now);
+        osc.stop(now + 0.45);
+        this.triggerHaptic('HEAVY');
+        break;
     }
   }
 
@@ -237,6 +314,26 @@ class SuperViAudioEngine {
 
   public playSwipe(): void {
     this.playSoundEffect('SWIPE');
+  }
+
+  public playJetpack(): void {
+    this.playSoundEffect('JETPACK');
+  }
+
+  public playMagnet(): void {
+    this.playSoundEffect('MAGNET');
+  }
+
+  public playFruit(): void {
+    this.playSoundEffect('FRUIT');
+  }
+
+  public playPortal(): void {
+    this.playSoundEffect('PORTAL');
+  }
+
+  public playChaserRoar(): void {
+    this.playSoundEffect('CHASER_ROAR');
   }
 
   /**

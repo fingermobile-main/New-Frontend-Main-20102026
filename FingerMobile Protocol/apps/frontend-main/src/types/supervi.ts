@@ -75,14 +75,77 @@ export interface GameObstacle {
   cleared: boolean;
 }
 
+export type GameMode = 'RUNNER' | 'CHASER';
+
+export type FruitType =
+  | 'kolanut'
+  | 'roast_chicken'
+  | 'sugarcane'
+  | 'agbalumo'
+  | 'guava'
+  | 'watermelon'
+  | 'apple'
+  | 'banana'
+  | 'orange'
+  | 'pineapple'
+  | 'feather';
+
+export type KeyTier =
+  | 'walk_way'
+  | 'door_way'
+  | 'pathway'
+  | 'gateway'
+  | 'lions_gate';
+
+export type EnergyLevel =
+  | 'Emenike'
+  | 'Prime'
+  | 'Sungo'
+  | 'Igwe'
+  | 'Snow'
+  | 'Iwangee'
+  | 'Eke'
+  | 'Afo'
+  | 'Okorie'
+  | 'Nkwo';
+
+export type PortalType = 'CERN' | 'ILUMINA' | 'ILUMINATA';
+
 export interface CollectibleItem {
   id: string;
   lane: LaneIndex;
-  type: 'FRUIT' | 'COIN' | 'POWERUP' | 'LETTER';
+  type: 'FRUIT' | 'COIN' | 'POWERUP' | 'LETTER' | 'FEATHER' | 'EFFIGY' | 'KEY';
   letter?: string;
+  fruitType?: FruitType;
+  keyTier?: KeyTier;
   powerupType?: 'jetpack' | 'magnet' | 'multiplier' | 'shield' | 'freeze';
   z: number;
   collected: boolean;
+}
+
+export interface SuperViMission {
+  id: string;
+  title: string;
+  description: string;
+  category: 'PRESENT' | 'NEW' | 'PROPOSED' | 'MULTIPLAYER';
+  target: number;
+  progress: number;
+  completed: boolean;
+  rewardCoins: number;
+  rewardFic: number;
+  rewardBooster?: string;
+}
+
+export interface PostcardAnalytics {
+  score: number;
+  giftsAcquired: number;
+  ficEarned: number;
+  playDurationSeconds: number;
+  distanceCovered: number;
+  distanceToGoal: number;
+  timeLeftSeconds: number;
+  permanentBoosts: number;
+  scoreMultiplier: number;
 }
 
 export type ComboTier = 'NONE' | 'SMALL' | 'GREAT' | 'COLOSSAL';
