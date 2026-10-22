@@ -987,9 +987,13 @@ const StercsDashboardPage: React.FC = () => {
               <div className="bg-white rounded-lg p-5 border border-slate-300 shadow-2xs">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-sm font-bold text-slate-900 tracking-tight">Sovereign Enclave Health</h3>
-                  <span className="text-xs text-blue-700 font-bold hover:underline cursor-pointer">
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab('controls')}
+                    className="text-xs text-blue-700 font-bold hover:underline"
+                  >
                     Inspect 1,280 Nodes
-                  </span>
+                  </button>
                 </div>
                 <div className="flex flex-col items-center justify-center py-2">
                   {/* SVG Semicircle Dial */}

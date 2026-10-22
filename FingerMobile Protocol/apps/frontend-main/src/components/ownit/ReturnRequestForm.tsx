@@ -37,6 +37,16 @@ const ReturnRequestForm: React.FC<ReturnRequestFormProps> = ({
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const fileNames = Array.from(e.target.files).map(f => f.name);
+      setFormData(prev => ({
+        ...prev,
+        photos: [...prev.photos, ...fileNames].slice(0, 5)
+      }));
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -183,15 +193,30 @@ const ReturnRequestForm: React.FC<ReturnRequestFormProps> = ({
           </div>
         </div>
 
-        {/* Photo Upload Placeholder */}
+        {/* Photo Upload */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="return-photos" className="block text-sm font-medium text-gray-700 mb-1">
             Photos (Optional)
           </label>
-          <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-blue-500 transition-colors cursor-pointer">
-            <p className="text-sm text-gray-600">Click to upload photos</p>
-            <p className="text-xs text-slate-700 mt-1">Max 5 photos showing the issue</p>
-          </div>
+          <label
+            htmlFor="return-photos"
+            className="block border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-blue-500 transition-colors cursor-pointer"
+          >
+            <input
+              type="file"
+              id="return-photos"
+              multiple
+              accept="image/*"
+              onChange={handlePhotoUpload}
+              className="hidden"
+            />
+            <p className="text-sm text-gray-600 font-medium">Click to upload photos</p>
+            <p className="text-xs text-slate-700 mt-1">
+              {formData.photos.length > 0
+                ? `${formData.photos.length} photo(s) selected: ${formData.photos.join(', ')}`
+                : 'Max 5 photos showing the issue'}
+            </p>
+          </label>
         </div>
 
         {/* Action Buttons */}

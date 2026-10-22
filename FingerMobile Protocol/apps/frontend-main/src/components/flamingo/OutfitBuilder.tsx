@@ -274,13 +274,17 @@ const OutfitBuilder: React.FC<OutfitBuilderProps> = ({
                   key={color}
                   className="relative group"
                 >
-                  <div
-                    className="w-10 h-10 rounded-full border-2 border-gray-300 cursor-pointer"
+                  <button
+                    type="button"
+                    onClick={() => removeColor(color)}
+                    aria-label={`Remove color ${color}`}
+                    className="w-10 h-10 rounded-full border-2 border-gray-300 cursor-pointer hover:scale-105 transition-transform"
                     style={{ backgroundColor: color }}
                   />
                   <button
                     type="button"
                     onClick={() => removeColor(color)}
+                    aria-label={`Remove color ${color}`}
                     className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white rounded-full text-xs opacity-0 group-hover:opacity-100 transition-opacity"
                   >
                     ×

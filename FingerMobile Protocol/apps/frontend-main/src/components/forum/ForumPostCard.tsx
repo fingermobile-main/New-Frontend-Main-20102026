@@ -640,7 +640,17 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
             />
             <div>
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="font-black text-slate-900 dark:text-white text-sm sm:text-[15px] hover:underline cursor-pointer">
+                <span
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => navigate(`/profile/${post.authorId || post.authorHandle}`)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      navigate(`/profile/${post.authorId || post.authorHandle}`);
+                    }
+                  }}
+                  className="font-black text-slate-900 dark:text-white text-sm sm:text-[15px] hover:underline cursor-pointer"
+                >
                   {post.authorName}
                 </span>
                 {post.isVerified && <CheckCircleSolidIcon className="w-4 h-4 text-orange-600" />}

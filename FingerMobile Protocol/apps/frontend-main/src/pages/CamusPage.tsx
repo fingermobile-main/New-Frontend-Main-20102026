@@ -28,6 +28,7 @@ import {
   ShieldCheck,
   FileText,
   Play,
+  Pause,
   RotateCcw,
   BadgeCheck,
   Send,
@@ -323,6 +324,7 @@ export const CamusPage: React.FC = () => {
   const [lessonPlaybackSpeed, setLessonPlaybackSpeed] = useState<string>('1.0x');
   const [lessonCopilotPrompt, setLessonCopilotPrompt] = useState<string>('');
   const [lessonCopilotResponse, setLessonCopilotResponse] = useState<string | null>(null);
+  const [isPlayingVideo, setIsPlayingVideo] = useState<boolean>(false);
 
   // Fresh Applicant / Corporate Fast-Track State
   const [isApplicantModalOpen, setIsApplicantModalOpen] = useState<boolean>(false);
@@ -2077,9 +2079,14 @@ export const CamusPage: React.FC = () => {
                   {/* Masterclass Video & Microlesson Player */}
                   <div className="w-full aspect-video bg-slate-950 rounded-2xl overflow-hidden relative flex flex-col items-center justify-center text-white border border-slate-800 shadow-xl group">
                     
-                    <div className="w-16 h-16 rounded-full bg-blue-600 flex items-center justify-center text-white hover:scale-110 transition-transform cursor-pointer shadow-lg shadow-blue-600/30">
-                      <Play className="w-7 h-7 ml-1" />
-                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setIsPlayingVideo(!isPlayingVideo)}
+                      aria-label={isPlayingVideo ? "Pause microlesson video" : "Play microlesson video"}
+                      className="w-16 h-16 rounded-full bg-blue-600 flex items-center justify-center text-white hover:scale-110 transition-transform cursor-pointer shadow-lg shadow-blue-600/30"
+                    >
+                      {isPlayingVideo ? <Pause className="w-7 h-7" /> : <Play className="w-7 h-7 ml-1" />}
+                    </button>
 
                     <p className="text-xs font-bold text-slate-300 mt-4 tracking-wide">
                       Camus High-Definition Stream (1080p 60fps)

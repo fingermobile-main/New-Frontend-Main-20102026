@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 interface Hallmark {
@@ -56,7 +57,11 @@ const HallmarksWidget: React.FC = () => {
           </div>
         ) : (
           (Array.isArray(hallmarks) ? hallmarks : DEFAULT_HALLMARKS).map((hallmark) => (
-            <div key={hallmark.id} className="flex items-center py-3 group cursor-pointer">
+            <Link
+              to="/settings/badges"
+              key={hallmark.id}
+              className="flex items-center py-3 group hover:opacity-90 transition-opacity"
+            >
               <div className={`w-10 h-10 rounded-full bg-gradient-to-r ${hallmark.icon} flex items-center justify-center mr-4 group-hover:scale-110 transition-transform`}>
                 <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
@@ -65,7 +70,7 @@ const HallmarksWidget: React.FC = () => {
               <span className="text-base font-semibold text-slate-800 dark:text-gray-200 group-hover:text-slate-950 dark:group-hover:text-white transition-colors">
                 {hallmark.name}
               </span>
-            </div>
+            </Link>
           ))
         )}
       </div>

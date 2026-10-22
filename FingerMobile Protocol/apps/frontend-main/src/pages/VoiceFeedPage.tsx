@@ -65,6 +65,21 @@ const VoiceFeedPage: React.FC = () => {
     return `${m}:${s < 10 ? '0' : ''}${s}`;
   };
 
+  const handleLike = (id: string) => {
+    setPosts(prev => prev.map(p => p.id === id ? { ...p, likes_count: (p.likes_count || 0) + 1 } : p));
+  };
+
+  const handleComment = (id: string) => {
+    setPosts(prev => prev.map(p => p.id === id ? { ...p, comments_count: (p.comments_count || 0) + 1 } : p));
+  };
+
+  const handleShare = async (id: string) => {
+    if (navigator?.clipboard) {
+      await navigator.clipboard.writeText(`${window.location.origin}/voice-feed#${id}`);
+      alert('Voice clip link copied to clipboard!');
+    }
+  };
+
   const categories = [
     { id: 'all', label: 'All Audio Clips' },
     { id: 'inspiration', label: 'Inspiration' },
@@ -210,21 +225,33 @@ const VoiceFeedPage: React.FC = () => {
                   {/* Actions & Stats */}
                   <div className="flex items-center justify-between pt-2 text-xs font-semibold text-slate-700">
                     <div className="flex items-center gap-6">
-                      <span className="flex items-center gap-1.5 hover:text-rose-600 cursor-pointer">
+                      <button
+                        type="button"
+                        onClick={() => handleLike(post.id)}
+                        className="flex items-center gap-1.5 hover:text-rose-600 transition-colors"
+                      >
                         <Heart className="w-4 h-4" />
                         {post.likes_count} Likes
-                      </span>
-                      <span className="flex items-center gap-1.5 hover:text-teal-600 cursor-pointer">
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleComment(post.id)}
+                        className="flex items-center gap-1.5 hover:text-teal-600 transition-colors"
+                      >
                         <MessageSquare className="w-4 h-4" />
                         {post.comments_count} Comments
-                      </span>
+                      </button>
                       <span className="flex items-center gap-1.5 text-slate-600">
                         <Volume2 className="w-4 h-4" />
                         {post.plays_count} Plays
                       </span>
                     </div>
 
-                    <button className="flex items-center gap-1 text-slate-700 hover:text-slate-900">
+                    <button
+                      type="button"
+                      onClick={() => handleShare(post.id)}
+                      className="flex items-center gap-1 text-slate-700 hover:text-slate-900 transition-colors"
+                    >
                       <Share2 className="w-4 h-4" />
                       Share
                     </button>

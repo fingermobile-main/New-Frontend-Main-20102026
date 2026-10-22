@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import MainLayout from '../components/layout/MainLayout';
 import PlatformOwnershipCard from '../components/dashboard/PlatformOwnershipCard';
 import {
@@ -69,7 +70,7 @@ const ContentCommunityDashboardPage: React.FC = () => {
                 <FireIcon className="w-6 h-6 text-orange-500" />
                  Trending Discussions
               </h2>
-              <button className="text-sm font-bold text-fuchsia-600 hover:text-fuchsia-700">View All</button>
+              <Link to="/communities" className="text-sm font-bold text-fuchsia-600 hover:text-fuchsia-700">View All</Link>
             </div>
 
             <div className="flex-1 space-y-4">
@@ -79,14 +80,18 @@ const ContentCommunityDashboardPage: React.FC = () => {
                 { title: 'Introductions: Welcome to the new members!', replies: 156, likes: 432, community: 'General' },
                 { title: 'Weekly technical analysis and market overview', replies: 112, likes: 320, community: 'Trading' }
               ].map((topic, i) => (
-                <div key={i} className="p-4 bg-slate-50/50 rounded-2xl border border-slate-100 hover:bg-slate-50 transition-colors cursor-pointer group">
+                <Link
+                  to="/communities"
+                  key={i}
+                  className="block p-4 bg-slate-50/50 rounded-2xl border border-slate-100 hover:bg-slate-50 transition-colors group"
+                >
                   <h3 className="font-bold text-slate-900 group-hover:text-fuchsia-600 transition-colors mb-2">{topic.title}</h3>
                   <div className="flex items-center gap-4 text-xs font-medium text-slate-700">
                     <span className="bg-white px-2 py-1 rounded-md border border-slate-200">{topic.community}</span>
                     <span className="flex items-center gap-1"><ChatBubbleLeftRightIcon className="w-3.5 h-3.5" /> {topic.replies}</span>
                     <span className="flex items-center gap-1"><HeartIcon className="w-3.5 h-3.5" /> {topic.likes}</span>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>

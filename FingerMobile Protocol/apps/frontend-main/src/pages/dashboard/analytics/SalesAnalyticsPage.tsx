@@ -44,11 +44,14 @@ const SalesAnalyticsPage: React.FC = () => {
             key={item.month}
             className="flex-1 flex flex-col items-center justify-end h-full"
           >
-            <div
-              className="w-full bg-blue-600 rounded-t-md hover:bg-blue-700 transition-colors cursor-pointer"
+            <button
+              type="button"
+              aria-label={`${item.month}: ${item.revenue.toLocaleString()} FIC`}
+              className="w-full bg-blue-600 rounded-t-md hover:bg-blue-700 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400"
               style={{ height: `${Math.max(10, (item.revenue / maxRevenue) * 100)}%` }}
               title={`${item.revenue.toLocaleString()} FIC`}
-            ></div>
+              onClick={() => {}}
+            />
             <span className="text-xs font-bold text-slate-800 mt-2">{item.month}</span>
           </div>
         ))}

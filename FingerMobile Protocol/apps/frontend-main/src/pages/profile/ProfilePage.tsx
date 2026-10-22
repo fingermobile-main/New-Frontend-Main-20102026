@@ -1693,12 +1693,20 @@ export const ProfilePage: React.FC = () => {
                   {avatarQueue.map((item, idx) => (
                     <div
                       key={item.id}
+                      onClick={() => isOwner && handleRotateAvatarNow(item)}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          if (isOwner) handleRotateAvatarNow(item);
+                        }
+                      }}
                       className={`group/item relative aspect-square rounded-2xl overflow-hidden border-2 cursor-pointer transition-transform hover:scale-105 shadow-xs ${
                         item.isActive ? 'border-emerald-600 ring-2 ring-emerald-400/50' : 'border-slate-300 opacity-80'
                       }`}
                       title={`${item.label} (${item.format.toUpperCase()})`}
                     >
-                      <div className="w-full h-full" onClick={() => isOwner && handleRotateAvatarNow(item)}>
+                      <div className="w-full h-full">
                         {isVideoMedia(item.url) ? (
                           <video src={item.url} autoPlay loop muted playsInline className="w-full h-full object-cover" />
                         ) : (

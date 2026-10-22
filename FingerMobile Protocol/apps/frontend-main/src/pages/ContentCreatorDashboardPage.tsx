@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import MainLayout from '../components/layout/MainLayout';
 import PlatformOwnershipCard from '../components/dashboard/PlatformOwnershipCard';
 import {
@@ -12,6 +13,8 @@ import {
 } from '../icons';
 
 const ContentCreatorDashboardPage: React.FC = () => {
+  const navigate = useNavigate();
+  const [filter, setFilter] = useState<'All' | 'Videos' | 'Articles'>('All');
   return (
     <MainLayout pageTitle="Creator Studio">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
@@ -74,9 +77,27 @@ const ContentCreatorDashboardPage: React.FC = () => {
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-bold text-slate-900">Recent Content</h2>
                 <div className="flex gap-2">
-                  <button className="px-3 py-1.5 bg-emerald-50 text-emerald-700 text-sm font-bold rounded-lg border border-emerald-100">All</button>
-                  <button className="px-3 py-1.5 bg-slate-50 text-slate-600 hover:bg-slate-100 text-sm font-bold rounded-lg border border-slate-200 transition-colors">Videos</button>
-                  <button className="px-3 py-1.5 bg-slate-50 text-slate-600 hover:bg-slate-100 text-sm font-bold rounded-lg border border-slate-200 transition-colors">Articles</button>
+                  <button
+                    type="button"
+                    onClick={() => setFilter('All')}
+                    className={`px-3 py-1.5 text-sm font-bold rounded-lg border transition-colors ${filter === 'All' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-200'}`}
+                  >
+                    All
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setFilter('Videos')}
+                    className={`px-3 py-1.5 text-sm font-bold rounded-lg border transition-colors ${filter === 'Videos' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-200'}`}
+                  >
+                    Videos
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setFilter('Articles')}
+                    className={`px-3 py-1.5 text-sm font-bold rounded-lg border transition-colors ${filter === 'Articles' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-200'}`}
+                  >
+                    Articles
+                  </button>
                 </div>
               </div>
 
@@ -86,8 +107,14 @@ const ContentCreatorDashboardPage: React.FC = () => {
                   { title: 'Top 5 DeFi strategies for beginners', type: 'Article', views: '8.2K', likes: '512', date: '5 days ago', icon: <DocumentTextIcon className="w-5 h-5 text-amber-500" />, color: 'amber' },
                   { title: 'Why I switched to decentralized social media', type: 'Video', views: '24.1K', likes: '1.2K', date: '1 week ago', icon: <VideoCameraIcon className="w-5 h-5 text-indigo-500" />, color: 'indigo' },
                   { title: 'Understanding Zero-Knowledge Proofs', type: 'Article', views: '5.6K', likes: '345', date: '2 weeks ago', icon: <DocumentTextIcon className="w-5 h-5 text-amber-500" />, color: 'amber' }
-                ].map((content, i) => (
-                  <div key={i} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-slate-50/50 rounded-2xl border border-slate-100 hover:bg-slate-50 transition-colors group cursor-pointer">
+                ]
+                  .filter((c) => filter === 'All' || (filter === 'Videos' && c.type === 'Video') || (filter === 'Articles' && c.type === 'Article'))
+                  .map((content, i) => (
+                  <Link
+                    key={i}
+                    to={content.type === 'Video' ? '/dancia4tv' : '/blogs'}
+                    className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-slate-50/50 rounded-2xl border border-slate-100 hover:bg-slate-50 transition-colors group"
+                  >
                     <div className="flex items-start gap-4 mb-3 sm:mb-0">
                       <div className={`w-10 h-10 bg-${content.color}-50 rounded-xl flex items-center justify-center shrink-0`}>
                         {content.icon}
@@ -104,11 +131,20 @@ const ContentCreatorDashboardPage: React.FC = () => {
                       <div className="flex items-center gap-1.5">
                         <HeartIcon className="w-4 h-4 text-slate-600" /> {content.likes}
                       </div>
-                      <button className="p-2 text-slate-700 hover:text-emerald-600 transition-colors">
+                      <button
+                        type="button"
+                        aria-label={`View detailed metrics for ${content.title}`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          navigate('/earnings/analytics');
+                        }}
+                        className="p-2 text-slate-700 hover:text-emerald-600 transition-colors"
+                      >
                         <ChartBarIcon className="w-5 h-5" />
                       </button>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             </div>

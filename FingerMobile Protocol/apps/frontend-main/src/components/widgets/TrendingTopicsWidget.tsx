@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { trendService, Trend } from '../../services/TrendService';
 import { Gift } from 'lucide-react';
 import SendFicModal from '../SendFicModal';
@@ -55,14 +56,18 @@ const TrendingTopicsWidget: React.FC = () => {
         ) : (
           topics.map((topic, index) => (
             <div key={index} className="flex justify-between items-center group">
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer group-hover:text-orange-500 transition-colors">
+              <Link
+                to={`/trends?tag=${encodeURIComponent(topic.hashtag.replace('#', ''))}`}
+                className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-orange-500 transition-colors"
+              >
                 {topic.hashtag}
-              </span>
+              </Link>
               <div className="flex items-center space-x-3">
                 <span className="text-xs text-slate-700 dark:text-slate-300 font-medium">
                   {formatPosts(topic.posts)} posts
                 </span>
                 <button
+                  type="button"
                   onClick={() => setShowTipModal(true)}
                   className="hidden group-hover:flex items-center gap-1 text-[10px] bg-orange-100 text-orange-600 dark:bg-orange-900 dark:text-orange-300 px-2 py-1 rounded transition-colors"
                   title="Boost Trend"
@@ -74,9 +79,12 @@ const TrendingTopicsWidget: React.FC = () => {
           ))
         )}
       </div>
-      <button className="mt-4 w-full text-center text-sm text-orange-600 font-semibold hover:underline">
+      <Link
+        to="/trends"
+        className="block mt-4 w-full text-center text-sm text-orange-600 font-semibold hover:underline"
+      >
         Show More
-      </button>
+      </Link>
 
       {showTipModal && (
         <SendFicModal

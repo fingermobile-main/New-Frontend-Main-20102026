@@ -43,11 +43,30 @@ const CourseContentPage: React.FC = () => {
     }
   }, [courseId]);
 
+  const handleSelectModule = (mod: any) => {
+    if (!content) return;
+    setContent({
+      ...content,
+      modules: content.modules.map((m: any) => ({ ...m, active: m.id === mod.id })),
+      currentModule: {
+        title: mod.title,
+        description: `Now studying ${mod.title}. Complete lessons and practical exercises below to earn your verified certificate credit.`,
+        videoUrl: content.currentModule?.videoUrl || 'placeholder'
+      }
+    });
+  };
+
   return (
     <MainLayout pageTitle="Course Content">
       <div className="course-content-page p-4 sm:p-6 lg:p-8 w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto">
         <header className="mb-8">
-          <button onClick={() => navigate(-1)} className="text-blue-600 font-bold mb-4 hover:underline">&larr; Back to Course Detail</button>
+          <button
+            type="button"
+            onClick={() => navigate(-1)}
+            className="text-blue-600 font-bold mb-4 hover:underline"
+          >
+            &larr; Back to Course Detail
+          </button>
           <h1 className="text-3xl font-black text-slate-900 tracking-tight">{content?.title || `Course ${courseId}`}</h1>
           <p className="text-slate-700 font-medium mt-2">Welcome to the course learning environment.</p>
         </header>
@@ -62,8 +81,14 @@ const CourseContentPage: React.FC = () => {
               <h2 className="font-semibold text-lg mb-4">Modules</h2>
               <ul className="space-y-2">
                 {content?.modules?.map((mod: any) => (
-                  <li key={mod.id} className={`p-2 rounded cursor-pointer font-medium ${mod.active ? 'bg-blue-50 text-blue-700' : 'hover:bg-gray-50 text-gray-700'}`}>
-                    {mod.title}
+                  <li key={mod.id}>
+                    <button
+                      type="button"
+                      onClick={() => handleSelectModule(mod)}
+                      className={`w-full text-left p-2 rounded font-medium transition-colors ${mod.active ? 'bg-blue-50 text-blue-700 font-bold' : 'hover:bg-gray-50 text-gray-700'}`}
+                    >
+                      {mod.title}
+                    </button>
                   </li>
                 ))}
               </ul>

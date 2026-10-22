@@ -29,11 +29,14 @@ const BarChart: React.FC<{ data: { name: string; views: number }[] }> = ({
           key={item.name}
           className="flex-1 flex flex-col items-center justify-end h-full"
         >
-          <div
-            className="w-full bg-blue-600 rounded-t-md hover:bg-blue-700 transition-colors cursor-pointer"
+          <button
+            type="button"
+            aria-label={`${item.name}: ${item.views.toLocaleString()} views`}
+            className="w-full bg-blue-600 rounded-t-md hover:bg-blue-700 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400"
             style={{ height: `${(item.views / maxViews) * 100}%` }}
             title={`${item.views.toLocaleString()} views`}
-          ></div>
+            onClick={() => {}}
+          />
           <span className="text-xs font-bold text-slate-800 mt-2">{item.name}</span>
         </div>
       ))}

@@ -1,4 +1,5 @@
-import React, {} from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout';
 import GovernanceDashboard from '../components/GovernanceDashboard';
 import PlatformOwnershipCard from '../components/dashboard/PlatformOwnershipCard';
@@ -45,7 +46,11 @@ const GovernancePage: React.FC = () => {
               bg: 'bg-amber-500/5'
             }
           ].map((policy, i) => (
-            <div key={i} className={`p-8 rounded-[2rem] border border-white/5 ${policy.bg} space-y-4 group hover:scale-[1.02] transition-transform cursor-pointer`}>
+            <Link
+              to="/compliance"
+              key={i}
+              className={`p-8 rounded-[2rem] border border-white/5 ${policy.bg} space-y-4 group hover:scale-[1.02] transition-transform block`}
+            >
               <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center mb-2">
                 {policy.icon}
               </div>
@@ -55,7 +60,7 @@ const GovernancePage: React.FC = () => {
                 <span>Read Full Document</span>
                 <Info size={14} className="ml-2" />
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 
@@ -63,12 +68,18 @@ const GovernancePage: React.FC = () => {
         <div className="p-10 bg-gradient-to-r from-blue-600 to-indigo-700 rounded-[3rem] text-center space-y-6 shadow-2xl shadow-blue-900/40">
           <h2 className="text-3xl font-black text-white tracking-tighter">Secure. Harmonized. FingerMobile.</h2>
           <div className="flex flex-wrap justify-center gap-4">
-            <button className="px-8 py-3 bg-white text-blue-600 font-bold rounded-2xl hover:bg-white/90 transition-all shadow-lg">
-                    Contact Compliance Officer
-            </button>
-            <button className="px-8 py-3 bg-black/20 text-white font-bold rounded-2xl hover:bg-black/30 transition-all border border-white/10">
-                    Report an AI Anomaly
-            </button>
+            <Link
+              to="/compliance"
+              className="px-8 py-3 bg-white text-blue-600 font-bold rounded-2xl hover:bg-white/90 transition-all shadow-lg inline-block"
+            >
+              Contact Compliance Officer
+            </Link>
+            <Link
+              to="/feedback"
+              className="px-8 py-3 bg-black/20 text-white font-bold rounded-2xl hover:bg-black/30 transition-all border border-white/10 inline-block"
+            >
+              Report an AI Anomaly
+            </Link>
           </div>
         </div>
 

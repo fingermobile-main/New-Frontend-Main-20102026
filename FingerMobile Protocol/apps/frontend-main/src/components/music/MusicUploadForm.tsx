@@ -109,7 +109,10 @@ const MusicUploadForm: React.FC<MusicUploadFormProps> = ({
           <div className="space-y-2">
             <Label>Audio File</Label>
             {!file ? (
-              <div className="border-2 border-dashed rounded-lg p-8 text-center hover:border-primary transition-colors cursor-pointer">
+              <label
+                htmlFor="audio-file"
+                className="block border-2 border-dashed rounded-lg p-8 text-center hover:border-primary transition-colors cursor-pointer"
+              >
                 <input
                   type="file"
                   accept="audio/*"
@@ -117,14 +120,12 @@ const MusicUploadForm: React.FC<MusicUploadFormProps> = ({
                   className="hidden"
                   id="audio-file"
                 />
-                <label htmlFor="audio-file" className="cursor-pointer">
-                  <Upload className="h-12 w-12 mx-auto mb-4 text-slate-500" />
-                  <p className="text-sm font-medium">Click to upload or drag and drop</p>
-                  <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mt-1">
-                    MP3, WAV, FLAC up to 50MB
-                  </p>
-                </label>
-              </div>
+                <Upload className="h-12 w-12 mx-auto mb-4 text-slate-500" />
+                <p className="text-sm font-medium">Click to upload or drag and drop</p>
+                <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mt-1">
+                  MP3, WAV, FLAC up to 50MB
+                </p>
+              </label>
             ) : (
               <div className="flex items-center gap-3 p-4 border rounded-lg bg-green-50">
                 <FileAudio className="h-8 w-8 text-green-600" />

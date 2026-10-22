@@ -701,9 +701,13 @@ const BeatwaveNGPage: React.FC = () => {
                   <h3 className="text-xl font-black text-white">Daily Flow Mixes</h3>
                   <p className="text-xs text-slate-300 font-medium">Personalized algorithmic playlists tailored to your current frequency</p>
                 </div>
-                <span className="text-xs text-emerald-400 font-semibold cursor-pointer hover:underline">
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('all-playlists')}
+                  className="text-xs text-emerald-400 font-semibold hover:underline"
+                >
                   See All Mixes
-                </span>
+                </button>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">

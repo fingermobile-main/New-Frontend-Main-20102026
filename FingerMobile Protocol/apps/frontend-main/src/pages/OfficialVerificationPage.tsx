@@ -71,7 +71,7 @@ const OfficialVerificationPage: React.FC = () => {
             <div>
               <h2 className="text-xl font-bold mb-4">Select Entity Type</h2>
               <div className="space-y-4">
-                <div className="p-4 border rounded-lg cursor-pointer bg-indigo-50 border-indigo-500">
+                <div className="p-4 border rounded-lg bg-indigo-50 border-indigo-500">
                   <div className="flex items-center justify-between">
                     <div>
                       <h3 className="font-semibold text-gray-900">Enterprise / Company</h3>

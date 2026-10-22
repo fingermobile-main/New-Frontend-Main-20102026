@@ -56,6 +56,7 @@ const SentientControlPage: React.FC = () => {
   const [baseline, setBaseline] = useState<BehavioralBaseline | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [selectedConversationId, setSelectedConversationId] = useState<string | null>(null);
 
   // Fetch sentient telemetry on mount
   useEffect(() => {
@@ -403,7 +404,15 @@ const SentientControlPage: React.FC = () => {
   const ConversationCard: React.FC<{ conversation: Conversation }> = ({
     conversation
   }) => (
-    <div className="p-4 rounded-lg border border-gray-700 bg-gray-800 hover:bg-gray-700/50 cursor-pointer">
+    <button
+      type="button"
+      onClick={() => setSelectedConversationId(conversation.id)}
+      className={`w-full text-left p-4 rounded-lg border transition-colors ${
+        selectedConversationId === conversation.id
+          ? 'border-brand-blue bg-gray-700/80 ring-1 ring-brand-blue'
+          : 'border-gray-700 bg-gray-800 hover:bg-gray-700/50'
+      }`}
+    >
       <div className="flex justify-between">
         <h3 className="font-bold text-white">{conversation.member}</h3>
         <div className="text-xs text-slate-300 font-medium">{conversation.timestamp}</div>
@@ -416,7 +425,7 @@ const SentientControlPage: React.FC = () => {
           {conversation.unread}
         </div>
       )}
-    </div>
+    </button>
   );
 
   return (

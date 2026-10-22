@@ -4147,9 +4147,19 @@ Status: VALIDATED & PERMANENTLY RECORDED
                           </span>
                         </td>
                         <td className="py-3.5 px-4 text-right font-mono text-[11px] text-slate-400">
-                          <span title={tx.txHash} className="hover:text-emerald-300 cursor-pointer">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (navigator?.clipboard) {
+                                navigator.clipboard.writeText(tx.txHash);
+                              }
+                            }}
+                            title={`Click to copy: ${tx.txHash}`}
+                            aria-label={`Copy transaction hash ${tx.txHash}`}
+                            className="hover:text-emerald-300 cursor-pointer font-mono text-[11px] text-slate-400"
+                          >
                             {tx.txHash.substring(0, 8)}...{tx.txHash.substring(tx.txHash.length - 6)}
-                          </span>
+                          </button>
                         </td>
                       </tr>
                     ))}
