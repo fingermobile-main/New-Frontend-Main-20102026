@@ -46,6 +46,7 @@ const StercsVideoEditor: React.FC = () => {
     { id: 'o1', name: 'Protocol Watermark Badge', startSec: 2, durationSec: 26, color: 'bg-amber-600' }
   ]);
 
+  const [selectedClipId, setSelectedClipId] = useState<string | null>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
@@ -288,23 +289,29 @@ const StercsVideoEditor: React.FC = () => {
             <div className="w-3 h-3 bg-red-500 rounded-full -ml-[5px] -top-1 absolute" />
           </div>
 
-          {/* Track 1: Video Track */}
+            {/* Track 1: Video Track */}
           <div className="flex items-center space-x-3">
             <span className="w-20 text-xs font-bold text-slate-200 flex items-center">
               <VideoCameraIcon className="w-3.5 h-3.5 mr-1 text-blue-400" /> Video
             </span>
             <div className="flex-1 h-12 bg-slate-900 rounded-xl relative overflow-hidden border border-slate-800">
               {videoClips.map((clip) => (
-                <div
+                <button
+                  type="button"
                   key={clip.id}
-                  className={`absolute top-1 bottom-1 ${clip.color} rounded-lg px-2 flex items-center text-xs font-semibold text-white shadow truncate cursor-pointer hover:brightness-110`}
+                  onClick={() => {
+                    setSelectedClipId(clip.id);
+                    setPlayheadSec(clip.startSec);
+                  }}
+                  aria-label={`Select clip ${clip.name}`}
+                  className={`absolute top-1 bottom-1 ${clip.color} ${selectedClipId === clip.id ? 'ring-2 ring-white' : ''} rounded-lg px-2 flex items-center text-xs font-semibold text-white shadow truncate cursor-pointer hover:brightness-110 text-left`}
                   style={{
                     left: `${(clip.startSec / totalDurationSec) * 100}%`,
                     width: `${(clip.durationSec / totalDurationSec) * 100}%`
                   }}
                 >
                   {clip.name}
-                </div>
+                </button>
               ))}
             </div>
           </div>
@@ -316,16 +323,22 @@ const StercsVideoEditor: React.FC = () => {
             </span>
             <div className="flex-1 h-12 bg-slate-900 rounded-xl relative overflow-hidden border border-slate-800">
               {audioClips.map((clip) => (
-                <div
+                <button
+                  type="button"
                   key={clip.id}
-                  className={`absolute top-1 bottom-1 ${clip.color} rounded-lg px-2 flex items-center text-xs font-semibold text-white shadow truncate cursor-pointer hover:brightness-110`}
+                  onClick={() => {
+                    setSelectedClipId(clip.id);
+                    setPlayheadSec(clip.startSec);
+                  }}
+                  aria-label={`Select audio clip ${clip.name}`}
+                  className={`absolute top-1 bottom-1 ${clip.color} ${selectedClipId === clip.id ? 'ring-2 ring-white' : ''} rounded-lg px-2 flex items-center text-xs font-semibold text-white shadow truncate cursor-pointer hover:brightness-110 text-left`}
                   style={{
                     left: `${(clip.startSec / totalDurationSec) * 100}%`,
                     width: `${(clip.durationSec / totalDurationSec) * 100}%`
                   }}
                 >
                   {clip.name}
-                </div>
+                </button>
               ))}
             </div>
           </div>
@@ -337,16 +350,22 @@ const StercsVideoEditor: React.FC = () => {
             </span>
             <div className="flex-1 h-12 bg-slate-900 rounded-xl relative overflow-hidden border border-slate-800">
               {overlayClips.map((clip) => (
-                <div
+                <button
+                  type="button"
                   key={clip.id}
-                  className={`absolute top-1 bottom-1 ${clip.color} rounded-lg px-2 flex items-center text-xs font-semibold text-white shadow truncate cursor-pointer hover:brightness-110`}
+                  onClick={() => {
+                    setSelectedClipId(clip.id);
+                    setPlayheadSec(clip.startSec);
+                  }}
+                  aria-label={`Select overlay clip ${clip.name}`}
+                  className={`absolute top-1 bottom-1 ${clip.color} ${selectedClipId === clip.id ? 'ring-2 ring-white' : ''} rounded-lg px-2 flex items-center text-xs font-semibold text-white shadow truncate cursor-pointer hover:brightness-110 text-left`}
                   style={{
                     left: `${(clip.startSec / totalDurationSec) * 100}%`,
                     width: `${(clip.durationSec / totalDurationSec) * 100}%`
                   }}
                 >
                   {clip.name}
-                </div>
+                </button>
               ))}
             </div>
           </div>

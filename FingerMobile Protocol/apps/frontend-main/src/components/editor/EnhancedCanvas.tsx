@@ -26,22 +26,24 @@ const EnhancedCanvas: React.FC<EnhancedCanvasProps> = ({
           </div>
 
           <div className="grid grid-cols-1 gap-4">
-            <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-400 transition-colors cursor-pointer">
-              <p className="text-slate-700 mb-2">Drop components here to build your page</p>
+            <div className="border-2 border-dashed border-slate-300 rounded-lg p-8 text-center hover:border-blue-400 transition-colors">
+              <p className="text-slate-800 font-semibold mb-2">Drop components here to build your page</p>
               <p className="text-sm text-slate-700">Support for drag-and-drop component placement</p>
             </div>
           </div>
 
           <div className="mt-6 flex justify-end space-x-3">
             <button
+              type="button"
               onClick={onPreview}
-              className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+              className="px-4 py-2 bg-gray-100 text-gray-800 font-medium rounded-lg hover:bg-gray-200 transition-colors"
             >
               Preview
             </button>
             <button
+              type="button"
               onClick={onSave}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              className="px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
             >
               Save Changes
             </button>

@@ -1,4 +1,5 @@
-import React, {} from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { CogIcon } from '@heroicons/react/24/outline';
 
 interface SettingsPanelProps {}
@@ -11,18 +12,27 @@ const SettingsPanel: React.FC<SettingsPanelProps> = () => {
         <h3 className="text-lg font-bold text-gray-900">Settings</h3>
       </div>
       <div className="space-y-3">
-        <div className="p-3 border border-slate-300 rounded-lg hover:bg-gray-50 cursor-pointer">
+        <Link
+          to="/settings"
+          className="block p-3 border border-slate-300 rounded-lg hover:bg-gray-50 transition-colors"
+        >
           <p className="font-medium text-gray-900">Profile Settings</p>
           <p className="text-sm text-slate-700 mt-1">Manage your account information</p>
-        </div>
-        <div className="p-3 border border-slate-300 rounded-lg hover:bg-gray-50 cursor-pointer">
+        </Link>
+        <Link
+          to="/security"
+          className="block p-3 border border-slate-300 rounded-lg hover:bg-gray-50 transition-colors"
+        >
           <p className="font-medium text-gray-900">Privacy & Security</p>
           <p className="text-sm text-slate-700 mt-1">Control your privacy preferences</p>
-        </div>
-        <div className="p-3 border border-slate-300 rounded-lg hover:bg-gray-50 cursor-pointer">
+        </Link>
+        <Link
+          to="/notifications"
+          className="block p-3 border border-slate-300 rounded-lg hover:bg-gray-50 transition-colors"
+        >
           <p className="font-medium text-gray-900">Notifications</p>
           <p className="text-sm text-slate-700 mt-1">Configure notification settings</p>
-        </div>
+        </Link>
       </div>
     </div>
   );

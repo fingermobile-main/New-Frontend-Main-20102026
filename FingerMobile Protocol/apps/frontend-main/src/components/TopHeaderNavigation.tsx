@@ -7,7 +7,7 @@ import { useAuth } from '../contexts/AuthContext';
 const TopHeaderNavigation: React.FC = () => {
   const location = useLocation();
   const { notificationsCount } = useAppContext();
-  const { member } = useAuth();
+  const { member, logout } = useAuth();
 
   // Updated navigation based on the design document
   const platformNav = [
@@ -60,6 +60,8 @@ const TopHeaderNavigation: React.FC = () => {
             {/* Column 1 (Left) - Logo & Brand */}
             <div className="flex items-center justify-start space-x-3">
               <button
+                type="button"
+                aria-label="Open mobile navigation menu"
                 className="md:hidden text-white focus:outline-none"
                 onClick={() => setIsMobileMenuOpen(true)}
               >
@@ -98,16 +100,23 @@ const TopHeaderNavigation: React.FC = () => {
             {/* Column 3 (Right) - User Actions */}
             <div className="flex items-center justify-end space-x-4">
               {/* Create Post Button */}
-              <button className="bg-white text-gray-800 px-4 py-1.5 rounded-full text-sm font-medium hover:bg-gray-100 transition-colors hidden md:block">
+              <Link
+                to="/createpost"
+                className="bg-white text-gray-800 px-4 py-1.5 rounded-full text-sm font-medium hover:bg-gray-100 transition-colors hidden md:block"
+              >
                 📝 Post
-              </button>
+              </Link>
 
               {/* Earnings with submenu */}
               <div className="relative group">
                 <button
+                  type="button"
+                  aria-haspopup="true"
+                  aria-expanded={activeSubmenu === 'earnings'}
                   className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-3 py-1.5 rounded-full text-sm flex items-center hover:opacity-90 transition-opacity"
                   onMouseEnter={() => setActiveSubmenu('earnings')}
                   onMouseLeave={() => setActiveSubmenu(null)}
+                  onClick={() => setActiveSubmenu(activeSubmenu === 'earnings' ? null : 'earnings')}
                 >
                   <span className="mr-1">💰</span> Earnings
                 </button>
@@ -132,22 +141,30 @@ const TopHeaderNavigation: React.FC = () => {
               </div>
 
               {/* Notifications */}
-              <button className="relative p-1 text-white hover:text-gray-200" aria-label="Button"><svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-              </svg>
-              {notificationsCount > 0 && (
-                <span className="absolute -top-1 -right-1 h-4 w-4 text-white text-xs rounded-full flex items-center justify-center" style={{ backgroundColor: '#FD5900' }}>
-                  {notificationsCount}
-                </span>
-              )}
-              </button>
+              <Link
+                to="/notifications"
+                className="relative p-1 text-white hover:text-gray-200"
+                aria-label="View notifications"
+              >
+                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                </svg>
+                {notificationsCount > 0 && (
+                  <span className="absolute -top-1 -right-1 h-4 w-4 text-white text-xs rounded-full flex items-center justify-center" style={{ backgroundColor: '#FD5900' }}>
+                    {notificationsCount}
+                  </span>
+                )}
+              </Link>
 
               {/* Avatar */}
               <div className="relative group">
-                <div className="w-10 h-10 rounded-full bg-white bg-opacity-20 flex items-center justify-center font-bold text-slate-700 cursor-pointer">
-                  // @ts-expect-error: auto-fixed by agent
+                <Link
+                  to="/profile"
+                  aria-label="View user profile"
+                  className="w-10 h-10 rounded-full bg-white bg-opacity-20 flex items-center justify-center font-bold text-white hover:bg-opacity-30 transition-all cursor-pointer"
+                >
                   {(member as any)?.name?.charAt(0) || 'U'}
-                </div>
+                </Link>
                 <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-400 rounded-full border-2 border-white"></span>
 
                 {/* Profile submenu */}
@@ -157,7 +174,13 @@ const TopHeaderNavigation: React.FC = () => {
                   <Link to="/help" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Help & Support</Link>
                   <Link to="/feedback" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Give Feedback</Link>
                   <hr className="my-2" />
-                  <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</button>
+                  <button
+                    type="button"
+                    onClick={() => logout()}
+                    className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    Logout
+                  </button>
                 </div>
               </div>
             </div>
@@ -209,7 +232,12 @@ const TopHeaderNavigation: React.FC = () => {
                 />
                 <span className="font-bold text-gray-900 text-lg">FingerMobile</span>
               </div>
-              <button onClick={() => setIsMobileMenuOpen(false)} className="text-slate-700 hover:text-gray-700">
+              <button
+                type="button"
+                aria-label="Close mobile navigation menu"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-slate-700 hover:text-gray-700"
+              >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>

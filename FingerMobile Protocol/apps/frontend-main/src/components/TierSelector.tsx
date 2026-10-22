@@ -136,14 +136,16 @@ const TierSelector: React.FC<TierSelectorProps> = ({
 
               {/* Select Button */}
               <button
+                type="button"
                 onClick={(e) => {
                   e.stopPropagation();
                   handleSelect(tier.id);
                 }}
-                className={`w-full px-4 py-3 rounded-lg font-medium transition-all ${
+                aria-label={`${isSelected ? 'Selected' : 'Select'} ${tier.name} tier`}
+                className={`w-full px-4 py-3 rounded-lg font-bold transition-all ${
                   isSelected
-                    ? colorClasses.button + ' text-slate-700'
-                    : 'bg-white border-2 border-gray-300 text-gray-700 hover:border-gray-400'
+                    ? colorClasses.button + ' text-white shadow-sm'
+                    : 'bg-white border-2 border-slate-300 text-slate-800 hover:border-slate-400 hover:bg-slate-50'
                 }`}
               >
                 {isSelected ? '✓ Selected' : 'Select Plan'}
