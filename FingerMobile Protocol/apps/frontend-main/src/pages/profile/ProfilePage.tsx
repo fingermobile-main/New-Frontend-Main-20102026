@@ -1215,7 +1215,7 @@ export const ProfilePage: React.FC = () => {
 
       {/* RELATIONSHIP ROLE SIMULATOR / CHARTER TESTER TOOLBAR */}
       <div className="bg-slate-900 text-white px-4 py-2 border-b border-slate-800 text-xs">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+        <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
           <div className="flex items-center gap-2">
             <Sliders className="w-4 h-4 text-orange-400" />
             <span className="font-bold text-slate-200">Charter Relationship & Privacy Simulator:</span>
@@ -1288,7 +1288,7 @@ export const ProfilePage: React.FC = () => {
 
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/75 via-transparent to-black/30 pointer-events-none" />
 
-        <div className="absolute top-4 left-4 right-4 max-w-7xl mx-auto flex items-center justify-between z-10">
+        <div className="absolute top-4 left-4 right-4 w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto flex items-center justify-between z-10">
           <button
             type="button"
             onClick={() => navigate(-1)}
@@ -1333,7 +1333,7 @@ export const ProfilePage: React.FC = () => {
       </div>
 
       {/* 2. PROFILE HEADER SUMMARY CARD */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-24 sm:-mt-28 relative z-20">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 -mt-24 sm:-mt-28 relative z-20">
         <div className="bg-white rounded-3xl border border-slate-300 p-6 sm:p-8 shadow-xl">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5 text-center sm:text-left">
@@ -1552,7 +1552,7 @@ export const ProfilePage: React.FC = () => {
       </div>
 
       {/* 3. CONNECTIONS - MEMBER DISCOVERY CAROUSEL (Section 3 of Charter) */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 mt-6">
         <PeopleYouMayKnowCarousel
           title="Connections"
           initialRecommendations={recommendations.length > 0 ? recommendations : undefined}
@@ -1570,7 +1570,7 @@ export const ProfilePage: React.FC = () => {
       </div>
 
       {/* 4. CHARTER SPLIT LAYOUT: LEFT CONTEXT SIDEBAR & RIGHT MAIN CONTENT */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 mt-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
           {/* ======================================================== */}

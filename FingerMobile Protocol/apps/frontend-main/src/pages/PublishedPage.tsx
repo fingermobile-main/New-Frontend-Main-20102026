@@ -93,27 +93,29 @@ const PublishedPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-4">
-      <article className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
-        <header className="mb-6 pb-6 border-b border-slate-300 dark:border-gray-700">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white">{page.title}</h1>
-          <div className="mt-4 text-sm text-slate-700 dark:text-slate-300 font-medium">
-            Published: {new Date(page.publishedAt || page.updatedAt).toLocaleDateString()}
-          </div>
-        </header>
-
-        <div className="prose prose-gray dark:prose-invert max-w-none">
-          {page.contentBlocks.map(block => (
-            <div key={block.id}>
-              {renderContentBlock(block)}
+    <div className="min-h-screen bg-slate-50 py-8 px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto space-y-6">
+        <article className="bg-white rounded-3xl border border-slate-300 shadow-sm p-6 sm:p-10">
+          <header className="mb-6 pb-6 border-b border-slate-300">
+            <h1 className="text-4xl font-black text-slate-900 tracking-tight">{page.title}</h1>
+            <div className="mt-4 text-sm font-bold text-slate-700">
+              Published: {new Date(page.publishedAt || page.updatedAt).toLocaleDateString()}
             </div>
-          ))}
-        </div>
+          </header>
 
-        <footer className="mt-8 pt-6 border-t border-slate-300 dark:border-gray-700 text-sm text-slate-700 dark:text-slate-300 font-medium">
-          Last updated: {new Date(page.updatedAt).toLocaleDateString()}
-        </footer>
-      </article>
+          <div className="prose prose-slate max-w-none">
+            {page.contentBlocks.map(block => (
+              <div key={block.id}>
+                {renderContentBlock(block)}
+              </div>
+            ))}
+          </div>
+
+          <footer className="mt-8 pt-6 border-t border-slate-300 text-sm font-bold text-slate-700">
+            Last updated: {new Date(page.updatedAt).toLocaleDateString()}
+          </footer>
+        </article>
+      </div>
     </div>
   );
 };

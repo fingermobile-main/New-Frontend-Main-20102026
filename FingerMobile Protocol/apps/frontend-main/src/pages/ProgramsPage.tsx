@@ -285,7 +285,7 @@ const ProgramsPage: React.FC = () => {
   return (
     <MainLayout>
       <div className="min-h-screen bg-slate-50 py-8 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto space-y-8">
+        <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto space-y-8">
 
           {/* ==================== 1. MISSION HERO BANNER ==================== */}
           <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white shadow-2xl border border-slate-800 p-8 sm:p-10">
