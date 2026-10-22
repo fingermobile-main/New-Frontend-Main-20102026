@@ -320,6 +320,18 @@ const StercsControlCenter: React.FC = () => {
     setVoiceSettings({ ...voiceLineServiceInstance.getSettings() });
   };
 
+  const handleUtteranceRateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const rate = parseFloat(e.target.value);
+    voiceLineServiceInstance.setUtteranceRate(rate);
+    setVoiceSettings({ ...voiceLineServiceInstance.getSettings() });
+  };
+
+  const handleAudioPlaybackRateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const rate = parseFloat(e.target.value);
+    voiceLineServiceInstance.setAudioPlaybackRate(rate);
+    setVoiceSettings({ ...voiceLineServiceInstance.getSettings() });
+  };
+
   const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const vol = parseFloat(e.target.value);
     voiceLineServiceInstance.setVolume(vol);
@@ -858,37 +870,64 @@ const StercsControlCenter: React.FC = () => {
                   Global Voice Lines Cadence, Volume & Studio Console
                 </h4>
                 <p className="mt-0.5 text-xs text-purple-900">
-                  Calibrate natural African voice line tempo, sound level, and microservice integration. Default calibrated to 0.85x for relaxed, resonant cadence.
+                  Calibrate natural African voice line tempo, sound level, and microservice integration. Utterance speech is calibrated to a relaxed 0.60x cadence, while recorded audio media plays at its uploaded 1.00x rate unless adjusted.
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            {/* Playback Tempo Controller */}
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+            {/* Spoken Speech Synthesis (TTS) Utterance Cadence Controller */}
             <div className="rounded-xl border border-slate-300 bg-white p-5 shadow-sm">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-black uppercase text-slate-900">Voice Line Playback Tempo</span>
+                <span className="text-xs font-black uppercase text-slate-900">Spoken Utterance Cadence</span>
                 <span className="rounded bg-slate-900 px-2 py-0.5 text-xs font-black text-emerald-400">
-                  {(voiceSettings.playbackRate ?? 0.85).toFixed(2)}x
+                  {(voiceSettings.utteranceRate ?? 0.60).toFixed(2)}x
                 </span>
               </div>
               <p className="mt-1 text-[11px] text-slate-700">
-                Calibrated speed range from 0.50x (slowest) to 1.50x (fastest). Baseline standard is 0.85x.
+                Independent speech synthesis tempo (0.30x to 1.50x). Baseline standard is 0.60x.
+              </p>
+              <input
+                type="range"
+                min="0.3"
+                max="1.5"
+                step="0.05"
+                value={voiceSettings.utteranceRate ?? 0.60}
+                onChange={handleUtteranceRateChange}
+                className="mt-4 w-full accent-slate-900"
+              />
+              <div className="mt-2 flex justify-between text-[10px] font-bold text-slate-600">
+                <span>0.30x (Slow)</span>
+                <span className="text-emerald-700 font-black">0.60x (Spoken Standard)</span>
+                <span>1.50x (Fast)</span>
+              </div>
+            </div>
+
+            {/* Media Audio Playback Rate Controller (Uploaded Audio) */}
+            <div className="rounded-xl border border-slate-300 bg-white p-5 shadow-sm">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-black uppercase text-slate-900">Audio Media Playback Rate</span>
+                <span className="rounded bg-slate-900 px-2 py-0.5 text-xs font-black text-cyan-400">
+                  {(voiceSettings.audioPlaybackRate ?? 1.0).toFixed(2)}x
+                </span>
+              </div>
+              <p className="mt-1 text-[11px] text-slate-700">
+                Preserves recorded/uploaded media original speed (1.00x) unless modified by author/user.
               </p>
               <input
                 type="range"
                 min="0.5"
-                max="1.5"
+                max="2.0"
                 step="0.05"
-                value={voiceSettings.playbackRate ?? 0.85}
-                onChange={handleTempoChange}
-                className="mt-4 w-full accent-slate-900"
+                value={voiceSettings.audioPlaybackRate ?? 1.0}
+                onChange={handleAudioPlaybackRateChange}
+                className="mt-4 w-full accent-cyan-700"
               />
               <div className="mt-2 flex justify-between text-[10px] font-bold text-slate-600">
-                <span>0.50x (Slow)</span>
-                <span className="text-emerald-700 font-black">0.85x (Calibrated Standard)</span>
-                <span>1.50x (Fast)</span>
+                <span>0.50x (0.5x)</span>
+                <span className="text-cyan-800 font-black">1.00x (Natural Media)</span>
+                <span>2.00x (2.0x)</span>
               </div>
             </div>
 

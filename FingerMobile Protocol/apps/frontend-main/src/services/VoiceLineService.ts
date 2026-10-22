@@ -61,7 +61,9 @@ export interface VoiceLineLogPayload {
 
 export interface VoiceLineSettings {
   volume: number; // 0.0 to 1.0 (default 0.35)
-  playbackRate: number; // 0.5 to 1.5 (calibrated to 0.70 for relaxed, natural African vocal cadence)
+  audioPlaybackRate: number; // Media audio playback speed: defaults to 1.0 (natural uploaded media rate) unless explicitly changed by author/user
+  utteranceRate: number; // Speech synthesis (TTS) utterance cadence: independent from media audio, calibrated to 0.60 for deliberate spoken cadence
+  playbackRate?: number; // Backward compatibility alias mapping to audioPlaybackRate
   enabled: boolean; // Global master toggle
   microservices: {
     forum: boolean;
@@ -78,7 +80,9 @@ const SETTINGS_STORAGE_KEY = 'fingermobile_voiceline_settings';
 
 const DEFAULT_SETTINGS: VoiceLineSettings = {
   volume: 0.35, // 35% device/system speaker volume
-  playbackRate: 0.70, // Calibrated relaxed playback tempo (0.70x)
+  audioPlaybackRate: 1.0, // Preserves natural uploaded media playback rate at 1.0x unless modified by user/author
+  utteranceRate: 0.60, // Dedicated spoken speech synthesis / TTS utterance rate (0.60x)
+  playbackRate: 1.0,
   enabled: true,
   microservices: {
     forum: true,
@@ -174,9 +178,18 @@ class VoiceLineService {
         const stored = localStorage.getItem(SETTINGS_STORAGE_KEY);
         if (stored) {
           const parsed = JSON.parse(stored);
+          const resolvedAudioRate =
+            typeof parsed.audioPlaybackRate === 'number'
+              ? parsed.audioPlaybackRate
+              : (typeof parsed.playbackRate === 'number' ? parsed.playbackRate : DEFAULT_SETTINGS.audioPlaybackRate);
+          const resolvedUtteranceRate =
+            typeof parsed.utteranceRate === 'number' ? parsed.utteranceRate : DEFAULT_SETTINGS.utteranceRate;
+
           this.settings = {
             volume: typeof parsed.volume === 'number' ? parsed.volume : DEFAULT_SETTINGS.volume,
-            playbackRate: typeof parsed.playbackRate === 'number' ? parsed.playbackRate : DEFAULT_SETTINGS.playbackRate,
+            audioPlaybackRate: resolvedAudioRate,
+            utteranceRate: resolvedUtteranceRate,
+            playbackRate: resolvedAudioRate,
             enabled: typeof parsed.enabled === 'boolean' ? parsed.enabled : DEFAULT_SETTINGS.enabled,
             microservices: {
               ...DEFAULT_SETTINGS.microservices,
@@ -197,9 +210,16 @@ class VoiceLineService {
    * Persists voice line preferences
    */
   public saveSettings(newSettings: Partial<VoiceLineSettings>): VoiceLineSettings {
+    const updatedAudioRate =
+      newSettings.audioPlaybackRate !== undefined
+        ? newSettings.audioPlaybackRate
+        : (newSettings.playbackRate !== undefined ? newSettings.playbackRate : this.settings.audioPlaybackRate);
+
     this.settings = {
       ...this.settings,
       ...newSettings,
+      audioPlaybackRate: updatedAudioRate,
+      playbackRate: updatedAudioRate,
       microservices: {
         ...this.settings.microservices,
         ...(newSettings.microservices || {})
@@ -232,13 +252,38 @@ class VoiceLineService {
     this.setVoiceLineVolume(volume);
   }
 
+  /**
+   * Media Audio Playback Rate:
+   * Preserves natural recording/uploaded media speed (1.0x) unless explicitly configured by user/author.
+   */
+  public getAudioPlaybackRate(): number {
+    return this.settings.audioPlaybackRate ?? 1.0;
+  }
+
+  public setAudioPlaybackRate(rate: number): void {
+    const clampedRate = Math.max(0.5, Math.min(2.0, rate));
+    this.saveSettings({ audioPlaybackRate: clampedRate, playbackRate: clampedRate });
+  }
+
+  /**
+   * Web Speech Synthesis (TTS) Utterance Cadence:
+   * Calibrated separately from uploaded media, calibrated to 0.60 for deliberate spoken cadence.
+   */
+  public getUtteranceRate(): number {
+    return this.settings.utteranceRate ?? 0.60;
+  }
+
+  public setUtteranceRate(rate: number): void {
+    const clampedRate = Math.max(0.3, Math.min(1.5, rate));
+    this.saveSettings({ utteranceRate: clampedRate });
+  }
+
   public getPlaybackRate(): number {
-    return this.settings.playbackRate || 0.70;
+    return this.getAudioPlaybackRate();
   }
 
   public setPlaybackRate(rate: number): void {
-    const clampedRate = Math.max(0.5, Math.min(1.5, rate));
-    this.saveSettings({ playbackRate: clampedRate });
+    this.setAudioPlaybackRate(rate);
   }
 
   public isMicroserviceVoiceLineEnabled(microservice: string): boolean {
@@ -456,7 +501,7 @@ class VoiceLineService {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.volume = volume;
-      utterance.rate = this.settings.playbackRate || 0.70;
+      utterance.rate = this.getUtteranceRate();
       utterance.pitch = 1.0;
 
       // Select natural English voice if present
@@ -549,7 +594,8 @@ class VoiceLineService {
       try {
         const audio = new Audio(matchingLine.audioUrl);
         audio.volume = volume;
-        audio.playbackRate = this.settings.playbackRate || 0.70;
+        // Preserves the natural recorded/uploaded media rate (1.0x) unless explicitly changed by user/author
+        audio.playbackRate = this.getAudioPlaybackRate();
         const playPromise = audio.play();
         if (playPromise !== undefined) {
           await playPromise;

@@ -5,6 +5,7 @@
  */
 
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import {
   SparklesIcon,
@@ -663,8 +664,8 @@ export const UniversalProfileCard: React.FC<UniversalProfileCardProps> = ({
       {/* ======================================================================= */}
       {/* 3. INTERACTIVE MEMBER PROFILE EDIT MODAL                                */}
       {/* ======================================================================= */}
-      {isEditModalOpen && (
-        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+      {isEditModalOpen && typeof document !== 'undefined' && createPortal(
+        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[9999] flex items-center justify-center p-4">
           <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800 animate-in zoom-in-95 duration-150 flex flex-col max-h-[90vh]">
             {/* Modal Header */}
             <div className="p-4 bg-gradient-to-r from-emerald-600 via-teal-600 to-[#DC582A] text-white flex items-center justify-between">
@@ -875,7 +876,8 @@ export const UniversalProfileCard: React.FC<UniversalProfileCardProps> = ({
               </div>
             </form>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
