@@ -82,12 +82,15 @@ export const MediaUploadAndEditorModal: React.FC<MediaUploadAndEditorModalProps>
   const [videoTrimStart, setVideoTrimStart] = useState(0);
   const [videoTrimEnd, setVideoTrimEnd] = useState(60);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   if (!isOpen) return null;
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      setSelectedFile(file);
       const objectUrl = URL.createObjectURL(file);
       setMediaUrl(objectUrl);
       if (!caption) setCaption(file.name.replace(/\.[^/.]+$/, ''));
@@ -110,15 +113,46 @@ export const MediaUploadAndEditorModal: React.FC<MediaUploadAndEditorModalProps>
     }
   };
 
-  const handleSave = () => {
-    if (!mediaUrl.trim()) {
+  const handleSave = async () => {
+    if (!mediaUrl.trim() && !selectedFile) {
       alert('Please select or upload media first.');
       return;
     }
 
+    let finalUrl = mediaUrl;
+    let finalId = `media-${Date.now()}`;
+
+    if (selectedFile) {
+      setIsUploading(true);
+      try {
+        const formData = new FormData();
+        formData.append('file', selectedFile);
+        const token = typeof window !== 'undefined'
+          ? localStorage.getItem('token') || localStorage.getItem('accessToken') || ''
+          : '';
+
+        const res = await fetch('/api/uploads', {
+          method: 'POST',
+          headers: {
+            ...(token ? { Authorization: `Bearer ${token}` } : {})
+          },
+          body: formData
+        });
+        const result = await res.json();
+        if (result.success && result.data?.url) {
+          finalUrl = result.data.url;
+          finalId = result.data.id || finalId;
+        }
+      } catch (err) {
+        console.warn('Direct upload error, falling back to local reference:', err);
+      } finally {
+        setIsUploading(false);
+      }
+    }
+
     const processed: ProcessedMedia = {
-      id: `media-${Date.now()}`,
-      url: mediaUrl,
+      id: finalId,
+      url: finalUrl,
       type: activeMediaType,
       name: caption || `${activeMediaType}-${Date.now()}`,
       caption,

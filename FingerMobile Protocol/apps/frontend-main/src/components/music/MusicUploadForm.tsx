@@ -50,29 +50,55 @@ const MusicUploadForm: React.FC<MusicUploadFormProps> = ({
     if (!file || !title.trim() || !artist.trim()) return;
 
     setIsUploading(true);
+    setUploadProgress(20);
 
-    // Simulate upload progress
-    const interval = setInterval(() => {
-      setUploadProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          return 100;
-        }
-        return prev + 10;
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('title', title.trim());
+      formData.append('artist', artist.trim());
+      formData.append('album', album.trim());
+      formData.append('genre', genre);
+      formData.append('description', description);
+
+      const token = typeof window !== 'undefined'
+        ? localStorage.getItem('token') || localStorage.getItem('accessToken') || ''
+        : '';
+
+      setUploadProgress(50);
+      const res = await fetch('/api/uploads', {
+        method: 'POST',
+        headers: {
+          ...(token ? { Authorization: `Bearer ${token}` } : {})
+        },
+        body: formData
       });
-    }, 300);
 
-    // Simulate API call
-    setTimeout(() => {
-      clearInterval(interval);
+      const result = await res.json();
       setUploadProgress(100);
-      onUpload?.(file, { title, artist, album, genre, description });
+
+      onUpload?.(file, {
+        title: title.trim(),
+        artist: artist.trim(),
+        album: album.trim(),
+        genre,
+        description,
+        url: result.data?.url,
+        id: result.data?.id
+      });
 
       setTimeout(() => {
         resetForm();
         onClose();
-      }, 1000);
-    }, 3000);
+      }, 600);
+    } catch (err) {
+      console.error('Audio upload error:', err);
+      onUpload?.(file, { title: title.trim(), artist: artist.trim(), album: album.trim(), genre, description });
+      resetForm();
+      onClose();
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   const resetForm = () => {

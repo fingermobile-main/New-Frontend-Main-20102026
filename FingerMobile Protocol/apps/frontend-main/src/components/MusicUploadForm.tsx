@@ -24,8 +24,39 @@ const MusicUploadForm: React.FC<MusicUploadFormProps> = ({ onUpload }) => {
 
     setIsUploading(true);
     try {
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      onUpload?.(file, { title, artist, genre });
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('title', title.trim());
+      formData.append('artist', artist.trim());
+      formData.append('genre', genre);
+
+      const token = typeof window !== 'undefined'
+        ? localStorage.getItem('token') || localStorage.getItem('accessToken') || ''
+        : '';
+
+      const res = await fetch('/api/uploads', {
+        method: 'POST',
+        headers: {
+          ...(token ? { Authorization: `Bearer ${token}` } : {})
+        },
+        body: formData
+      });
+
+      const result = await res.json();
+      onUpload?.(file, {
+        title: title.trim(),
+        artist: artist.trim(),
+        genre,
+        url: result.data?.url,
+        id: result.data?.id
+      });
+      setFile(null);
+      setTitle('');
+      setArtist('');
+      setGenre('');
+    } catch (err) {
+      console.error('Audio upload error:', err);
+      onUpload?.(file, { title: title.trim(), artist: artist.trim(), genre });
       setFile(null);
       setTitle('');
       setArtist('');

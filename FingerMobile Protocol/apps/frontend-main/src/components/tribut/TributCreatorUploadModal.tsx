@@ -230,10 +230,17 @@ export const TributCreatorUploadModal: React.FC<TributCreatorUploadModalProps> =
         formData.append('deviceType', detectedDevice.type);
         formData.append('devicePlatform', detectedDevice.platform);
 
-        const uploadRes = await fetch('/api/tribut/upload', {
+        let uploadRes = await fetch('/api/tribut/upload', {
           method: 'POST',
           body: formData
         });
+
+        if (!uploadRes.ok) {
+          uploadRes = await fetch('/api/uploads', {
+            method: 'POST',
+            body: formData
+          });
+        }
 
         if (uploadRes.ok) {
           const uploadJson = await uploadRes.json();
