@@ -51,7 +51,7 @@ async function initializeIdentityTables() {
 
     CREATE TABLE IF NOT EXISTS account_inactivity_log (
       id SERIAL PRIMARY KEY,
-      user_id INTEGER UNIQUE REFERENCES users(id) ON DELETE CASCADE,
+      user_id UUID UNIQUE REFERENCES users(id) ON DELETE CASCADE,
       last_login_date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
       status VARCHAR(50) DEFAULT 'active',
       freeze_date TIMESTAMP WITH TIME ZONE,
@@ -68,7 +68,7 @@ async function initializeIdentityTables() {
   await identityDb.query(`
     CREATE TABLE IF NOT EXISTS user_sessions (
       id SERIAL PRIMARY KEY,
-      user_id INT REFERENCES users(id) ON DELETE CASCADE,
+      user_id UUID REFERENCES users(id) ON DELETE CASCADE,
       session_token VARCHAR(255) UNIQUE NOT NULL,
       ip_address INET,
       user_agent TEXT,
@@ -82,7 +82,7 @@ async function initializeIdentityTables() {
   await identityDb.query(`
     CREATE TABLE IF NOT EXISTS refresh_tokens (
       id SERIAL PRIMARY KEY,
-      user_id INT REFERENCES users(id) ON DELETE CASCADE,
+      user_id UUID REFERENCES users(id) ON DELETE CASCADE,
       token VARCHAR(255) UNIQUE NOT NULL,
       expires_at TIMESTAMP WITH TIME ZONE,
       created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
@@ -94,8 +94,8 @@ async function initializeIdentityTables() {
   await identityDb.query(`
     CREATE TABLE IF NOT EXISTS user_friendships (
       id SERIAL PRIMARY KEY,
-      user_id INT REFERENCES users(id) ON DELETE CASCADE,
-      friend_id INT REFERENCES users(id) ON DELETE CASCADE,
+      user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+      friend_id UUID REFERENCES users(id) ON DELETE CASCADE,
       status VARCHAR(20) DEFAULT 'pending', -- pending, accepted, blocked
       created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
       updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
@@ -146,8 +146,8 @@ async function initializeIdentityTables() {
   await identityDb.query(`
     CREATE TABLE IF NOT EXISTS follows (
       id SERIAL PRIMARY KEY,
-      follower_id INT REFERENCES users(id) ON DELETE CASCADE,
-      following_id INT REFERENCES users(id) ON DELETE CASCADE,
+      follower_id UUID REFERENCES users(id) ON DELETE CASCADE,
+      following_id UUID REFERENCES users(id) ON DELETE CASCADE,
       created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
       UNIQUE(follower_id, following_id)
     );
@@ -169,7 +169,7 @@ async function initializeIdentityTables() {
       description TEXT,
       category VARCHAR(100),
       is_active BOOLEAN DEFAULT true,
-      creator_id INT REFERENCES users(id) ON DELETE CASCADE,
+      creator_id UUID REFERENCES users(id) ON DELETE CASCADE,
       created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
       updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
     );
@@ -191,7 +191,7 @@ async function initializeIdentityTables() {
       title VARCHAR(255) NOT NULL,
       content TEXT NOT NULL,
       forum_id INTEGER REFERENCES forums(id) ON DELETE CASCADE,
-      author_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+      author_id UUID REFERENCES users(id) ON DELETE CASCADE,
       is_active BOOLEAN DEFAULT true,
       likes_count INTEGER DEFAULT 0,
       replies_count INTEGER DEFAULT 0,
@@ -217,7 +217,7 @@ async function initializeIdentityTables() {
       description TEXT,
       category VARCHAR(100),
       is_public BOOLEAN DEFAULT true,
-      creator_id INT REFERENCES users(id) ON DELETE CASCADE,
+      creator_id UUID REFERENCES users(id) ON DELETE CASCADE,
       members_count INTEGER DEFAULT 1,
       created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
       updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
@@ -241,7 +241,7 @@ async function initializeIdentityTables() {
       description TEXT,
       price DECIMAL(10, 2) NOT NULL,
       stock_quantity INTEGER DEFAULT 0,
-      creator_id INT REFERENCES users(id) ON DELETE CASCADE,
+      creator_id UUID REFERENCES users(id) ON DELETE CASCADE,
       category VARCHAR(100),
       images TEXT[],
       is_active BOOLEAN DEFAULT true,
@@ -251,21 +251,12 @@ async function initializeIdentityTables() {
     );
   `);
 
-  // Create indexes for products table
-  // The schema has changed, so we don't index the old columns to avoid errors during init
-  // await identityDb.query(`
-  //   CREATE INDEX IF NOT EXISTS idx_products_category ON products(category);
-  //   CREATE INDEX IF NOT EXISTS idx_products_creator_id ON products(creator_id);
-  //   CREATE INDEX IF NOT EXISTS idx_products_is_active ON products(is_active);
-  //   CREATE INDEX IF NOT EXISTS idx_products_platform_type ON products(platform_type);
-  // `);
-
   // Create product reviews table
   await identityDb.query(`
     CREATE TABLE IF NOT EXISTS product_reviews (
       id SERIAL PRIMARY KEY,
-      product_id INT REFERENCES products(id) ON DELETE CASCADE,
-      user_id INT REFERENCES users(id) ON DELETE CASCADE,
+      product_id UUID REFERENCES products(id) ON DELETE CASCADE,
+      user_id UUID REFERENCES users(id) ON DELETE CASCADE,
       rating INTEGER CHECK (rating >= 1 AND rating <= 5),
       review_text TEXT,
       created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
@@ -457,7 +448,7 @@ async function initializeIdentityTables() {
   await contentDb.query(`
     CREATE TABLE IF NOT EXISTS shares (
       id SERIAL PRIMARY KEY,
-      post_id INTEGER REFERENCES posts(id) ON DELETE CASCADE,
+      post_id UUID REFERENCES posts(id) ON DELETE CASCADE,
       user_id UUID NOT NULL,
       created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
     );
@@ -475,7 +466,7 @@ async function initializeIdentityTables() {
   await contentDb.query(`
     CREATE TABLE IF NOT EXISTS bookmarks (
       id SERIAL PRIMARY KEY,
-      post_id INTEGER REFERENCES posts(id) ON DELETE CASCADE,
+      post_id UUID REFERENCES posts(id) ON DELETE CASCADE,
       user_id UUID NOT NULL,
       created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
       UNIQUE(post_id, user_id)
@@ -698,7 +689,7 @@ async function initializeIdentityTables() {
   await identityDb.query(`
     CREATE TABLE IF NOT EXISTS user_preferences (
       id SERIAL PRIMARY KEY,
-      user_id INT UNIQUE REFERENCES users(id) ON DELETE CASCADE,
+      user_id UUID UNIQUE REFERENCES users(id) ON DELETE CASCADE,
       email_notifications BOOLEAN DEFAULT true,
       push_notifications BOOLEAN DEFAULT true,
       sms_notifications BOOLEAN DEFAULT false,
@@ -838,7 +829,7 @@ async function initializeIdentityTables() {
   await contentDb.query(`
     CREATE TABLE IF NOT EXISTS blogs (
       id SERIAL PRIMARY KEY,
-      owner_id INT REFERENCES users(id),
+      owner_id UUID REFERENCES users(id),
       name VARCHAR(255) NOT NULL,
       slug VARCHAR(255) UNIQUE NOT NULL,
       description TEXT,
@@ -887,7 +878,7 @@ async function initializeIdentityTables() {
   await contentDb.query(`
     CREATE TABLE IF NOT EXISTS blog_posts (
       id SERIAL PRIMARY KEY,
-      author_id INT REFERENCES users(id),
+      author_id UUID REFERENCES users(id),
       blog_id INTEGER REFERENCES blogs(id) ON DELETE CASCADE,
       category_id INTEGER REFERENCES blog_categories(id),
       title VARCHAR(500) NOT NULL,
@@ -930,7 +921,7 @@ async function initializeIdentityTables() {
     CREATE TABLE IF NOT EXISTS blog_post_likes (
       id SERIAL PRIMARY KEY,
       post_id UUID REFERENCES blog_posts(id) ON DELETE CASCADE,
-      user_id INT REFERENCES users(id),
+      user_id UUID REFERENCES users(id),
       created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
       UNIQUE(post_id, user_id)
     );
@@ -949,7 +940,7 @@ async function initializeIdentityTables() {
     CREATE TABLE IF NOT EXISTS blog_post_views (
       id SERIAL PRIMARY KEY,
       post_id UUID REFERENCES blog_posts(id) ON DELETE CASCADE,
-      user_id INT REFERENCES users(id),
+      user_id UUID REFERENCES users(id),
       ip_address INET,
       viewed_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
       session_id VARCHAR(255)
@@ -970,7 +961,7 @@ async function initializeIdentityTables() {
   await identityDb.query(`
     CREATE TABLE IF NOT EXISTS gems_balances (
       id SERIAL PRIMARY KEY,
-      member_id INT REFERENCES users(id) ON DELETE CASCADE,
+      member_id UUID REFERENCES users(id) ON DELETE CASCADE,
       total_gems DECIMAL(10, 2) DEFAULT 0.00,
       created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
       updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
@@ -990,7 +981,7 @@ async function initializeIdentityTables() {
   await identityDb.query(`
     CREATE TABLE IF NOT EXISTS gems_history (
       id SERIAL PRIMARY KEY,
-      member_id INT REFERENCES users(id) ON DELETE CASCADE,
+      member_id UUID REFERENCES users(id) ON DELETE CASCADE,
       amount DECIMAL(10, 2) NOT NULL,
       type VARCHAR(50) NOT NULL CHECK (type IN ('proof_of_play', 'curation', 'social_amplification', 'streak_bonus', 'other', 'earned', 'spent', 'transferred', 'gifted')),
       source_id UUID,
@@ -1014,7 +1005,7 @@ async function initializeIdentityTables() {
   await identityDb.query(`
     CREATE TABLE IF NOT EXISTS mii_avatars (
       id SERIAL PRIMARY KEY,
-      user_id INT REFERENCES users(id) ON DELETE CASCADE,
+      user_id UUID REFERENCES users(id) ON DELETE CASCADE,
       name VARCHAR(255) NOT NULL,
       base_template VARCHAR(100),
       customization JSONB DEFAULT '{}',
@@ -1113,10 +1104,10 @@ async function initializeIdentityTables() {
   await identityDb.query(`
     CREATE TABLE IF NOT EXISTS user_hallmarks (
       id SERIAL PRIMARY KEY,
-      user_id INT REFERENCES users(id) ON DELETE CASCADE,
+      user_id UUID REFERENCES users(id) ON DELETE CASCADE,
       hallmark_id INTEGER REFERENCES hallmarks(id) ON DELETE CASCADE,
       awarded_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-      awarded_by INT REFERENCES users(id), -- Could be system user or admin
+      awarded_by UUID REFERENCES users(id), -- Could be system user or admin
       reason TEXT,
       UNIQUE(user_id, hallmark_id)
     );
@@ -1463,7 +1454,7 @@ async function initializeContentTables() {
     await contentDb.query(`
       CREATE TABLE IF NOT EXISTS stercs_pages (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-        project_id UUID REFERENCES stercs_projects(id) ON DELETE CASCADE,
+        project_id INT REFERENCES stercs_projects(id) ON DELETE CASCADE,
         title VARCHAR(255) NOT NULL,
         slug VARCHAR(255) NOT NULL UNIQUE,
         meta_data JSONB,
@@ -1679,7 +1670,7 @@ async function initializeStercsTables() {
     await identityDb.query(`
       CREATE TABLE IF NOT EXISTS stercs_pages (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-        project_id UUID NOT NULL REFERENCES stercs_projects(id) ON DELETE CASCADE,
+        project_id INT NOT NULL REFERENCES stercs_projects(id) ON DELETE CASCADE,
         title VARCHAR(255) NOT NULL,
         slug VARCHAR(255) NOT NULL,
         content JSONB,

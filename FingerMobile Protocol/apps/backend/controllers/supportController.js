@@ -30,7 +30,7 @@ const SupportController = {
             WHERE m.ticket_id = t.id
           ) as messages
         FROM support_tickets t
-        LEFT JOIN users u ON (t.user_id::text = u.uuid::text OR t.user_id::text = u.id::text)
+        LEFT JOIN users u ON t.user_id::text = u.id::text
       `;
 
       if (status && status !== 'all') {
@@ -125,7 +125,7 @@ const SupportController = {
       const ticketRes = await pool.query(
         `SELECT t.*, COALESCE(u.username, u.first_name, 'Member') as member_name, u.email as member_email
          FROM support_tickets t
-         LEFT JOIN users u ON (t.user_id::text = u.uuid::text OR t.user_id::text = u.id::text)
+         LEFT JOIN users u ON t.user_id::text = u.id::text
          WHERE t.id = $1`,
         [id]
       );
