@@ -269,24 +269,24 @@ const StorefrontDetailPage: React.FC = () => {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
+    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
       <PageHeader
         title={storefront.name}
         description="Verified creator storefront on FingerMobile Protocol"
       />
 
-      <div className="bg-white rounded-2xl shadow-md overflow-hidden border border-slate-300">
+      <div className="bg-white rounded-3xl shadow-sm overflow-hidden border border-slate-300">
         {/* Storefront Banner */}
-        <div className="h-64 sm:h-80 bg-gray-200 relative">
+        <div className="h-64 sm:h-80 bg-slate-900 relative">
           <img
             src={storefront.coverImageUrl}
             alt={storefront.name}
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent"></div>
           <div className="absolute bottom-6 left-6 right-6">
-            <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">{storefront.name}</h1>
-            <p className="text-slate-700 mt-2 max-w-2xl text-sm sm:text-base">{storefront.description}</p>
+            <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight">{storefront.name}</h1>
+            <p className="text-slate-200 font-medium mt-2 max-w-2xl text-sm sm:text-base leading-relaxed">{storefront.description}</p>
           </div>
         </div>
 

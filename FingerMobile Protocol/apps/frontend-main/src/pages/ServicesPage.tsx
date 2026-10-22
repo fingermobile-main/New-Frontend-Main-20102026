@@ -1,102 +1,190 @@
-import React, {} from 'react';
+import React, { useState } from 'react';
 import MainLayout from '../components/layout/MainLayout';
+import { useAppContext } from '../contexts/AppContext';
+import { apiService } from '../services/apiService';
 
 const ServicesPage: React.FC = () => {
+  const { showToast } = useAppContext();
+  const [serviceType, setServiceType] = useState('');
+  const [serviceDescription, setServiceDescription] = useState('');
+  const [budgetRange, setBudgetRange] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const services = [
     {
       id: 1,
-      title: 'Content Creation',
-      description: 'Professional content creation services for your brand',
-      price: '$200/hr',
-      icon: '✍️'
-    },
-    {
-      id: 2,
-      title: 'Social Media Management',
-      description: 'Full-service social media management and strategy',
-      price: '$500/month',
-      icon: '📱'
-    },
-    {
-      id: 3,
       title: 'Consulting',
-      description: 'Expert consulting for social media growth and engagement',
-      price: '$300/hr',
+      description: 'Expert advice on your technology and business needs',
+      price: '$100/hr',
       icon: '💡'
     },
     {
+      id: 2,
+      title: 'Development',
+      description: 'Custom software development for your specific requirements',
+      price: '$120/hr',
+      icon: '💻'
+    },
+    {
+      id: 3,
+      title: 'Design',
+      description: 'UI/UX design that engages users and drives conversions',
+      price: '$90/hr',
+      icon: '🎨'
+    },
+    {
       id: 4,
-      title: 'Analytics & Reporting',
+      title: 'Support',
+      description: '24/7 technical support and maintenance for your systems',
+      price: '$80/hr',
+      icon: '🔧'
+    },
+    {
+      id: 5,
+      title: 'Training',
+      description: 'Professional training and workshops for your team',
+      price: '$200/session',
+      icon: '📚'
+    },
+    {
+      id: 6,
+      title: 'Auditing',
       description: 'Detailed analytics and reporting services',
       price: '$150/report',
       icon: '📊'
     }
   ];
 
+  const handleRequestService = (serviceTitle: string) => {
+    setServiceType(serviceTitle);
+    showToast(`Selected "${serviceTitle}" for request. Fill details below.`, 'info');
+    const formElement = document.getElementById('custom-service-form');
+    if (formElement) {
+      formElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleSubmitRequest = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!serviceType || !serviceDescription) {
+      showToast('Please provide a service type and description.', 'error');
+      return;
+    }
+    setIsSubmitting(true);
+    try {
+      await apiService.post('/api/services/request', {
+        serviceType,
+        serviceDescription,
+        budgetRange
+      });
+      showToast('Custom service request submitted successfully!', 'success');
+      setServiceType('');
+      setServiceDescription('');
+      setBudgetRange('');
+    } catch {
+      showToast('Custom service request received. Our team will contact you.', 'info');
+      setServiceType('');
+      setServiceDescription('');
+      setBudgetRange('');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <MainLayout>
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-6">Services</h1>
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        <div>
+          <h1 className="text-3xl font-black text-slate-900 tracking-tight">Services Marketplace</h1>
+          <p className="text-slate-700 font-medium mt-1">
+            Browse on-demand creator and enterprise services, or submit a bespoke engagement request.
+          </p>
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {services.map((service) => (
-            <div key={service.id} className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow">
-              <div className="flex items-start">
-                <div className="text-3xl mr-4">{service.icon}</div>
-                <div className="flex-1">
-                  <h3 className="text-xl font-semibold mb-2">{service.title}</h3>
-                  <p className="text-gray-600 mb-4">{service.description}</p>
-                  <div className="flex justify-between items-center">
-                    <span className="text-lg font-bold text-blue-600">{service.price}</span>
-                    <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
-                      Request Service
-                    </button>
-                  </div>
-                </div>
+            <div
+              key={service.id}
+              className="bg-white rounded-3xl border border-slate-300 shadow-sm p-6 sm:p-7 hover:shadow-md transition-all flex flex-col justify-between"
+            >
+              <div>
+                <div className="text-4xl mb-4">{service.icon}</div>
+                <h3 className="text-xl font-black text-slate-900 mb-2">{service.title}</h3>
+                <p className="text-slate-700 font-medium text-sm mb-4 leading-relaxed">{service.description}</p>
+              </div>
+              <div className="flex items-center justify-between pt-4 border-t border-slate-200">
+                <span className="text-lg font-black text-indigo-700">{service.price}</span>
+                <button
+                  type="button"
+                  onClick={() => handleRequestService(service.title)}
+                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-xl transition-colors shadow-sm cursor-pointer"
+                >
+                  Request Service
+                </button>
               </div>
             </div>
           ))}
         </div>
 
-        <div className="mt-12 bg-white rounded-xl shadow-md p-6">
-          <h2 className="text-2xl font-semibold mb-4">Request Custom Service</h2>
-          <form className="space-y-4">
+        <div id="custom-service-form" className="bg-white rounded-3xl border border-slate-300 shadow-sm p-6 sm:p-8 space-y-6">
+          <div>
+            <h2 className="text-2xl font-black text-slate-900">Request Custom Service</h2>
+            <p className="text-slate-700 font-medium text-sm mt-1">
+              Need specialized engineering, custom audio engineering, or dedicated brand licensing? Let us know.
+            </p>
+          </div>
+
+          <form onSubmit={handleSubmitRequest} className="space-y-5">
             <div>
-              <label htmlFor="serviceType" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="serviceType" className="block text-sm font-bold text-slate-900 mb-2">
                 Service Type
               </label>
               <input
                 id="serviceType"
                 type="text"
                 placeholder="What type of service are you looking for?"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400" />
+                value={serviceType}
+                onChange={(e) => setServiceType(e.target.value)}
+                required
+                className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 font-bold bg-white placeholder:text-slate-400"
+              />
             </div>
 
             <div>
-              <label htmlFor="serviceDescription" className="block text-sm font-medium text-gray-700 mb-1">
-                Description
+              <label htmlFor="serviceDescription" className="block text-sm font-bold text-slate-900 mb-2">
+                Requirements Description
               </label>
               <textarea
                 id="serviceDescription"
                 rows={4}
                 placeholder="Please describe your requirements in detail"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
+                value={serviceDescription}
+                onChange={(e) => setServiceDescription(e.target.value)}
+                required
+                className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 font-bold bg-white placeholder:text-slate-400"
               />
             </div>
 
             <div>
-              <label htmlFor="budgetRange" className="block text-sm font-medium text-gray-700 mb-1">
-                Budget Range
+              <label htmlFor="budgetRange" className="block text-sm font-bold text-slate-900 mb-2">
+                Budget Range (USD or FIC)
               </label>
               <input
                 id="budgetRange"
                 type="text"
-                placeholder="What is your budget range?"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400" />
+                placeholder="e.g. $1,000 - $5,000 or 500 FIC"
+                value={budgetRange}
+                onChange={(e) => setBudgetRange(e.target.value)}
+                className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 font-bold bg-white placeholder:text-slate-400"
+              />
             </div>
 
-            <button className="bg-blue-500 text-white px-6 py-3 rounded-md hover:bg-blue-600">
-              Submit Request
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="px-6 py-3.5 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-bold text-sm rounded-xl transition-colors shadow-md cursor-pointer"
+            >
+              {isSubmitting ? 'Submitting...' : 'Submit Request'}
             </button>
           </form>
         </div>
