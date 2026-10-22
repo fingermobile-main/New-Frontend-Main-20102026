@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import { Link } from 'react-router-dom';
 
 import { useAppContext } from '../contexts/AppContext';
 import { logError } from '../utils/errorLogger';
@@ -190,12 +190,12 @@ const AboutUsPage: React.FC = () => {
               </h2>
               <div className="flex items-center justify-between">
                 <span className="text-2xl font-bold text-gray-900">{ficBalance.toFixed(2)} FIC</span>
-                <button
-                  type="button"
-                  className="text-sm bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-3 py-1.5 rounded-lg hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                <Link
+                  to="/wallet"
+                  className="text-sm bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-3 py-1.5 rounded-lg hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm"
                 >
                   Add Funds
-                </button>
+                </Link>
               </div>
             </div>
 
@@ -204,6 +204,7 @@ const AboutUsPage: React.FC = () => {
               <div className="space-y-3">
                 <button
                   type="button"
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                   className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-blue-50 hover:to-indigo-50 transition-colors flex items-center focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <InformationCircleIcon className="h-5 w-5 text-blue-600 mr-3" />
@@ -211,12 +212,14 @@ const AboutUsPage: React.FC = () => {
                 </button>
                 <button
                   type="button"
+                  onClick={() => showToast('FingerMobile executive and core contributor directory', 'info')}
                   className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-blue-50 hover:to-indigo-50 transition-colors flex items-center focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   Leadership Team
                 </button>
                 <button
                   type="button"
+                  onClick={() => showToast('FingerMobile brand assets and media kit prepared', 'success')}
                   className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-blue-50 hover:to-indigo-50 transition-colors flex items-center focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   Press Kit

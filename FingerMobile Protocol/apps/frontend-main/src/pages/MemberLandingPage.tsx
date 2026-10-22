@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import React, {} from 'react';
 
 import { useAuth } from '../contexts/AuthContext';
@@ -85,32 +85,32 @@ const MemberLandingPage: React.FC = () => {
 
         {/* Quick Actions */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div
-            className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer"
-            onClick={() => navigate('/create-post')} role="button" tabIndex={0}
+          <Link
+            to="/create-post"
+            className="block bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow border border-slate-200"
           >
-            <h3 className="text-lg sm:text-xl font-semibold mb-2">Create Post</h3>
-            <p className="text-sm sm:text-base text-gray-600 mb-4">Share your thoughts with the community</p>
-            <button className="text-blue-500 font-medium text-sm sm:text-base">Create Now</button>
-          </div>
+            <h3 className="text-lg sm:text-xl font-semibold mb-2 text-slate-900">Create Post</h3>
+            <p className="text-sm sm:text-base text-slate-700 mb-4">Share your thoughts with the community</p>
+            <span className="text-blue-600 font-medium text-sm sm:text-base inline-flex items-center">Create Now &rarr;</span>
+          </Link>
 
-          <div
-            className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer"
-            onClick={() => navigate('/groups')} role="button" tabIndex={0}
+          <Link
+            to="/groups"
+            className="block bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow border border-slate-200"
           >
-            <h3 className="text-lg sm:text-xl font-semibold mb-2">Join Groups</h3>
-            <p className="text-sm sm:text-base text-gray-600 mb-4">Connect with like-minded people</p>
-            <button className="text-blue-500 font-medium text-sm sm:text-base">Explore Groups</button>
-          </div>
+            <h3 className="text-lg sm:text-xl font-semibold mb-2 text-slate-900">Join Groups</h3>
+            <p className="text-sm sm:text-base text-slate-700 mb-4">Connect with like-minded people</p>
+            <span className="text-blue-600 font-medium text-sm sm:text-base inline-flex items-center">Explore Groups &rarr;</span>
+          </Link>
 
-          <div
-            className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer"
-            onClick={() => navigate('/marketplace')} role="button" tabIndex={0}
+          <Link
+            to="/marketplace"
+            className="block bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow border border-slate-200"
           >
-            <h3 className="text-lg sm:text-xl font-semibold mb-2">Marketplace</h3>
-            <p className="text-sm sm:text-base text-gray-600 mb-4">Buy and sell with community members</p>
-            <button className="text-blue-500 font-medium text-sm sm:text-base">Visit Marketplace</button>
-          </div>
+            <h3 className="text-lg sm:text-xl font-semibold mb-2 text-slate-900">Marketplace</h3>
+            <p className="text-sm sm:text-base text-slate-700 mb-4">Buy and sell with community members</p>
+            <span className="text-blue-600 font-medium text-sm sm:text-base inline-flex items-center">Visit Marketplace &rarr;</span>
+          </Link>
         </div>
 
         {/* Forum Categories */}

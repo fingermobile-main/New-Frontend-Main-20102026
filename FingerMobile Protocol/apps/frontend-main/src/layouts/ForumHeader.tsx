@@ -123,6 +123,7 @@ const ForumHeader: React.FC<ForumHeaderProps> = ({
               <Link
                 key={item.path}
                 to={item.path}
+                aria-label={item.label}
                 className={`relative p-2 rounded-lg transition-colors group ${
                   item.active
                     ? 'text-orange-500'
@@ -139,6 +140,8 @@ const ForumHeader: React.FC<ForumHeaderProps> = ({
 
             {/* See More Trigger */}
             <button
+              type="button"
+              aria-label="Toggle navigation drawer"
               onClick={() => setShowMoreNav(!showMoreNav)}
               className="p-2 text-gray-300 hover:text-white hover:bg-gray-700 rounded-lg transition-colors"
             >
@@ -148,7 +151,12 @@ const ForumHeader: React.FC<ForumHeaderProps> = ({
         </div>
 
         {/* Mobile Search Icon */}
-        <button className="md:hidden p-2 hover:bg-gray-700 rounded-lg">
+        <button
+          type="button"
+          aria-label="Search forum"
+          onClick={() => navigate('/search')}
+          className="md:hidden p-2 hover:bg-gray-700 rounded-lg"
+        >
           <SearchIcon className="w-6 h-6 text-white" />
         </button>
 
@@ -167,8 +175,12 @@ const ForumHeader: React.FC<ForumHeaderProps> = ({
           </Link>
 
           {/* Earnings Display */}
-          <div className="hidden md:flex items-center gap-2 bg-[#3a3b3c] px-3 py-1.5 rounded-lg cursor-pointer hover:bg-gray-700 transition-colors"
-            onClick={() => setShowEarnings(!showEarnings)} role="button" tabIndex={0}>
+          <button
+            type="button"
+            aria-label="Toggle earnings balance visibility"
+            className="hidden md:flex items-center gap-2 bg-[#3a3b3c] px-3 py-1.5 rounded-lg cursor-pointer hover:bg-gray-700 transition-colors border-0 text-left"
+            onClick={() => setShowEarnings(!showEarnings)}
+          >
             <WalletIcon className="w-5 h-5 text-green-500" />
             <div className="text-xs">
               {showEarnings ? (
@@ -185,16 +197,22 @@ const ForumHeader: React.FC<ForumHeaderProps> = ({
             ) : (
               <EyeIcon className="w-4 h-4 text-slate-600" />
             )}
-          </div>
+          </button>
 
           {/* Utility Icons */}
           <div className="flex items-center gap-1">
-            <button className="p-2 hover:bg-gray-700 rounded-lg transition-colors relative">
+            <Link
+              to="/messages"
+              aria-label="View messages"
+              className="p-2 hover:bg-gray-700 rounded-lg transition-colors relative block"
+            >
               <ChatBubbleIcon className="w-6 h-6 text-slate-600 hover:text-white" />
               <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-            </button>
+            </Link>
 
             <button
+              type="button"
+              aria-label="Toggle notifications menu"
               onClick={onRightMenuToggle}
               className="p-2 hover:bg-gray-700 rounded-lg transition-colors relative"
             >
@@ -205,9 +223,13 @@ const ForumHeader: React.FC<ForumHeaderProps> = ({
             </button>
 
             {/* Profile Dropdown */}
-            <button className="ml-2 w-9 h-9 rounded-full bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center text-white font-semibold hover:opacity-90 transition-opacity">
+            <Link
+              to="/profile"
+              aria-label="View user profile"
+              className="ml-2 w-9 h-9 rounded-full bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center text-white font-semibold hover:opacity-90 transition-opacity"
+            >
               U
-            </button>
+            </Link>
           </div>
         </div>
 

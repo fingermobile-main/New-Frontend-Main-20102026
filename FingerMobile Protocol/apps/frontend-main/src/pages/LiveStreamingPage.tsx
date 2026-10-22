@@ -29,6 +29,7 @@ import {
   XCircle
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useAppContext } from '../contexts/AppContext';
 
 interface Stream {
   id: number;
@@ -101,6 +102,7 @@ const LiveStreamingPage: React.FC = () => {
     isPublic: true
   });
 
+  const { showToast } = useAppContext();
   const navigate = useNavigate();
   const history = { push: (path: string) => navigate(path), replace: (path: string) => navigate(path, { replace: true }) };
 
@@ -739,6 +741,8 @@ const LiveStreamingPage: React.FC = () => {
                               <div className="flex space-x-2">
                                 {stream.status === 'live' ? (
                                   <button
+                                    type="button"
+                                    aria-label={`End live stream ${stream.title}`}
                                     className="text-red-600 hover:text-red-900"
                                     onClick={() => handleEndStream(stream.id)}
                                   >
@@ -746,6 +750,8 @@ const LiveStreamingPage: React.FC = () => {
                                   </button>
                                 ) : stream.status === 'scheduled' ? (
                                   <button
+                                    type="button"
+                                    aria-label={`Start scheduled stream ${stream.title}`}
                                     className="text-green-600 hover:text-green-900"
                                     onClick={() => handleStartStream(stream.id)}
                                   >
@@ -753,6 +759,8 @@ const LiveStreamingPage: React.FC = () => {
                                   </button>
                                 ) : (
                                   <button
+                                    type="button"
+                                    aria-label={`Start stream ${stream.title}`}
                                     className="text-green-600 hover:text-green-900"
                                     onClick={() => handleStartStream(stream.id)}
                                   >
@@ -760,13 +768,20 @@ const LiveStreamingPage: React.FC = () => {
                                   </button>
                                 )}
                                 <button
+                                  type="button"
+                                  aria-label={`View stream ${stream.title} details`}
                                   className="text-blue-600 hover:text-blue-900"
                                   onClick={() => history.push(`/dashboard/streaming/streams/${stream.id}/details`)}
                                 >
                                   <Eye className="h-4 w-4" />
                                 </button>
                                 <div className="relative">
-                                  <button className="text-gray-600 hover:text-gray-900">
+                                  <button
+                                    type="button"
+                                    aria-label={`More options for stream ${stream.title}`}
+                                    onClick={() => showToast(`Actions for stream: ${stream.title}`, 'info')}
+                                    className="text-gray-600 hover:text-gray-900"
+                                  >
                                     <MoreHorizontal className="h-4 w-4" />
                                   </button>
                                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden">
@@ -863,13 +878,20 @@ const LiveStreamingPage: React.FC = () => {
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                               <div className="flex space-x-2">
                                 <button
+                                  type="button"
+                                  aria-label={`View viewer ${viewer.name} details`}
                                   className="text-blue-600 hover:text-blue-900"
                                   onClick={() => history.push(`/dashboard/streaming/viewers/${viewer.id}/details`)}
                                 >
                                   <Eye className="h-4 w-4" />
                                 </button>
                                 <div className="relative">
-                                  <button className="text-gray-600 hover:text-gray-900">
+                                  <button
+                                    type="button"
+                                    aria-label={`More options for viewer ${viewer.name}`}
+                                    onClick={() => showToast(`Actions for viewer: ${viewer.name}`, 'info')}
+                                    className="text-gray-600 hover:text-gray-900"
+                                  >
                                     <MoreHorizontal className="h-4 w-4" />
                                   </button>
                                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden">
@@ -955,13 +977,20 @@ const LiveStreamingPage: React.FC = () => {
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                               <div className="flex space-x-2">
                                 <button
+                                  type="button"
+                                  aria-label={`View interaction #${interaction.id} details`}
                                   className="text-blue-600 hover:text-blue-900"
                                   onClick={() => history.push(`/dashboard/streaming/interactions/${interaction.id}/details`)}
                                 >
                                   <Eye className="h-4 w-4" />
                                 </button>
                                 <div className="relative">
-                                  <button className="text-gray-600 hover:text-gray-900">
+                                  <button
+                                    type="button"
+                                    aria-label={`More options for interaction #${interaction.id}`}
+                                    onClick={() => showToast(`Actions for interaction #${interaction.id}`, 'info')}
+                                    className="text-gray-600 hover:text-gray-900"
+                                  >
                                     <MoreHorizontal className="h-4 w-4" />
                                   </button>
                                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden">
@@ -1220,6 +1249,8 @@ const LiveStreamingPage: React.FC = () => {
                   {[...Array(totalPages)].map((_, i) => (
                     <button
                       key={i + 1}
+                      type="button"
+                      aria-label={`Go to page ${i + 1}`}
                       onClick={() => setCurrentPage(i + 1)}
                       className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
                         currentPage === i + 1
@@ -1256,6 +1287,8 @@ const LiveStreamingPage: React.FC = () => {
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-medium text-gray-900">Create New Stream</h3>
                 <button
+                  type="button"
+                  aria-label="Close modal"
                   className="text-slate-700 hover:text-gray-700"
                   onClick={() => setShowCreateModal(false)}
                 >

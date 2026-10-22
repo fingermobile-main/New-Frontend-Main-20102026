@@ -28,6 +28,7 @@ import {
   PinIcon
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useAppContext } from '../contexts/AppContext';
 
 interface CommunityGroup {
   id: number;
@@ -95,6 +96,7 @@ const CommunityPage: React.FC = () => {
     privacy: 'public' as 'public' | 'private' | 'restricted'
   });
 
+  const { showToast } = useAppContext();
   const navigate = useNavigate();
   const history = { push: (path: string) => navigate(path), replace: (path: string) => navigate(path, { replace: true }) };
 
@@ -685,6 +687,8 @@ const CommunityPage: React.FC = () => {
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                               <div className="flex space-x-2">
                                 <button
+                                  type="button"
+                                  aria-label={`View group ${group.name} details`}
                                   className="text-blue-600 hover:text-blue-900"
                                   onClick={() => history.push(`/dashboard/community/groups/${group.id}/details`)}
                                 >
@@ -692,6 +696,8 @@ const CommunityPage: React.FC = () => {
                                 </button>
                                 {group.status === 'active' ? (
                                   <button
+                                    type="button"
+                                    aria-label={`Suspend group ${group.name}`}
                                     className="text-red-600 hover:text-red-900"
                                     onClick={() => handleSuspendGroup(group.id)}
                                   >
@@ -699,6 +705,8 @@ const CommunityPage: React.FC = () => {
                                   </button>
                                 ) : (
                                   <button
+                                    type="button"
+                                    aria-label={`Activate group ${group.name}`}
                                     className="text-green-600 hover:text-green-900"
                                     onClick={() => handleActivateGroup(group.id)}
                                   >
@@ -706,7 +714,12 @@ const CommunityPage: React.FC = () => {
                                   </button>
                                 )}
                                 <div className="relative">
-                                  <button className="text-gray-600 hover:text-gray-900">
+                                  <button
+                                    type="button"
+                                    aria-label={`More options for group ${group.name}`}
+                                    onClick={() => showToast(`Actions for group: ${group.name}`, 'info')}
+                                    className="text-gray-600 hover:text-gray-900"
+                                  >
                                     <MoreHorizontal className="h-4 w-4" />
                                   </button>
                                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden">
@@ -806,13 +819,20 @@ const CommunityPage: React.FC = () => {
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                               <div className="flex space-x-2">
                                 <button
+                                  type="button"
+                                  aria-label={`View thread ${thread.title}`}
                                   className="text-blue-600 hover:text-blue-900"
                                   onClick={() => history.push(`/dashboard/community/threads/${thread.id}/view`)}
                                 >
                                   <Eye className="h-4 w-4" />
                                 </button>
                                 <div className="relative">
-                                  <button className="text-gray-600 hover:text-gray-900">
+                                  <button
+                                    type="button"
+                                    aria-label={`More options for thread ${thread.title}`}
+                                    onClick={() => showToast(`Actions for thread: ${thread.title}`, 'info')}
+                                    className="text-gray-600 hover:text-gray-900"
+                                  >
                                     <MoreHorizontal className="h-4 w-4" />
                                   </button>
                                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden">
@@ -937,6 +957,8 @@ const CommunityPage: React.FC = () => {
                                 </button>
                                 <div className="relative">
                                   <button
+                                    type="button"
+                                    onClick={() => showToast(`Actions for interaction #${interaction.id}`, 'info')}
                                     className="text-gray-600 hover:text-gray-900"
                                     aria-label={`More actions for interaction #${interaction.id}`}
                                     title="More actions"
@@ -1166,6 +1188,8 @@ const CommunityPage: React.FC = () => {
                   {[...Array(totalPages)].map((_, i) => (
                     <button
                       key={i + 1}
+                      type="button"
+                      aria-label={`Go to page ${i + 1}`}
                       onClick={() => setCurrentPage(i + 1)}
                       className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
                         currentPage === i + 1
@@ -1202,6 +1226,8 @@ const CommunityPage: React.FC = () => {
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-medium text-gray-900">Create New Community Group</h3>
                 <button
+                  type="button"
+                  aria-label="Close modal"
                   className="text-slate-700 hover:text-gray-700"
                   onClick={() => setShowCreateModal(false)}
                 >

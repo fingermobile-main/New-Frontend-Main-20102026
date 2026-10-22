@@ -25,6 +25,7 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useAppContext } from '../contexts/AppContext';
 import PlatformOwnershipCard from '../components/dashboard/PlatformOwnershipCard';
 
 interface AIDecision {
@@ -97,6 +98,7 @@ const AIGovernancePage: React.FC = () => {
     rules: []
   });
 
+  const { showToast } = useAppContext();
   const navigate = useNavigate();
   const history = { push: (path: string) => navigate(path), replace: (path: string) => navigate(path, { replace: true }) };
 
@@ -774,6 +776,8 @@ const AIGovernancePage: React.FC = () => {
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                               <div className="flex space-x-2">
                                 <button 
+                                  type="button"
+                                  aria-label={`View decision ${decision.id} details`}
                                   className="text-blue-600 hover:text-blue-900"
                                   onClick={() => history.push(`/dashboard/ai-governance/decisions/${decision.id}/details`)}
                                 >
@@ -781,6 +785,8 @@ const AIGovernancePage: React.FC = () => {
                                 </button>
                                 {decision.status === 'pending' && (
                                   <button 
+                                    type="button"
+                                    aria-label={`Approve decision ${decision.id}`}
                                     className="text-green-600 hover:text-green-900"
                                     onClick={() => {
                                       // Approve decision
@@ -791,7 +797,12 @@ const AIGovernancePage: React.FC = () => {
                                   </button>
                                 )}
                                 <div className="relative">
-                                  <button className="text-gray-600 hover:text-gray-900">
+                                  <button
+                                    type="button"
+                                    aria-label={`More options for decision ${decision.id}`}
+                                    onClick={() => showToast(`Actions for decision #${decision.id}`, 'info')}
+                                    className="text-gray-600 hover:text-gray-900"
+                                  >
                                     <MoreHorizontal className="h-4 w-4" />
                                   </button>
                                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden">
@@ -885,19 +896,28 @@ const AIGovernancePage: React.FC = () => {
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                               <div className="flex space-x-2">
                                 <button 
+                                  type="button"
+                                  aria-label={`View policy ${policy.name} details`}
                                   className="text-blue-600 hover:text-blue-900"
                                   onClick={() => history.push(`/dashboard/ai-governance/policies/${policy.id}/details`)}
                                 >
                                   <Eye className="h-4 w-4" />
                                 </button>
                                 <button 
+                                  type="button"
+                                  aria-label={policy.isActive ? `Deactivate policy ${policy.name}` : `Activate policy ${policy.name}`}
                                   className={`${policy.isActive ? 'text-red-600 hover:text-red-900' : 'text-green-600 hover:text-green-900'}`}
                                   onClick={() => handleTogglePolicy(policy.id)}
                                 >
                                   {policy.isActive ? <XCircle className="h-4 w-4" /> : <CheckCircle className="h-4 w-4" />}
                                 </button>
                                 <div className="relative">
-                                  <button className="text-gray-600 hover:text-gray-900">
+                                  <button
+                                    type="button"
+                                    aria-label={`More options for policy ${policy.name}`}
+                                    onClick={() => showToast(`Actions for policy: ${policy.name}`, 'info')}
+                                    className="text-gray-600 hover:text-gray-900"
+                                  >
                                     <MoreHorizontal className="h-4 w-4" />
                                   </button>
                                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden">
@@ -1024,6 +1044,8 @@ const AIGovernancePage: React.FC = () => {
                                 )}
                                 <div className="relative">
                                   <button
+                                    type="button"
+                                    onClick={() => showToast(`Actions for incident #${incident.id}`, 'info')}
                                     className="text-gray-600 hover:text-gray-900"
                                     aria-label={`More actions for incident #${incident.id}`}
                                     title="More actions"
@@ -1330,6 +1352,8 @@ const AIGovernancePage: React.FC = () => {
                   {[...Array(totalPages)].map((_, i) => (
                     <button
                       key={i + 1}
+                      type="button"
+                      aria-label={`Go to page ${i + 1}`}
                       onClick={() => setCurrentPage(i + 1)}
                       className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
                         currentPage === i + 1
@@ -1371,6 +1395,8 @@ const AIGovernancePage: React.FC = () => {
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-medium text-gray-900">Create New AI Policy</h3>
                 <button 
+                  type="button"
+                  aria-label="Close modal"
                   className="text-slate-700 hover:text-gray-700"
                   onClick={() => setShowCreateModal(false)}
                 >
