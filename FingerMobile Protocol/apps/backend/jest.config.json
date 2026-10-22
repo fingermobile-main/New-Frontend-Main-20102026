@@ -16,7 +16,7 @@
   ],
   "moduleFileExtensions": ["ts", "js", "json"],
   "transform": {
-    "^.+\\.ts$": "ts-jest"
+    "^.+\\.ts$": ["ts-jest", { "isolatedModules": true }]
   },
   "setupFilesAfterEnv": ["<rootDir>/jest.setup.js"],
   "verbose": true,
