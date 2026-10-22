@@ -385,6 +385,8 @@ const ContentPage: React.FC = () => {
                 {editingItem ? 'Edit Content Item' : 'Create New Content'}
               </h3>
               <button
+                type="button"
+                aria-label="Close modal"
                 onClick={() => {
                   setIsCreateOpen(false);
                   setEditingItem(null);

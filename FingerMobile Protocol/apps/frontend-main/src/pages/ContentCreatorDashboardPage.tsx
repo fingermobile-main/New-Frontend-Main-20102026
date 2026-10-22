@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import MainLayout from '../components/layout/MainLayout';
 import PlatformOwnershipCard from '../components/dashboard/PlatformOwnershipCard';
+import { useAppContext } from '../contexts/AppContext';
 import {
   PencilIcon,
   VideoCameraIcon,
@@ -14,6 +15,7 @@ import {
 
 const ContentCreatorDashboardPage: React.FC = () => {
   const navigate = useNavigate();
+  const { showToast } = useAppContext();
   const [filter, setFilter] = useState<'All' | 'Videos' | 'Articles'>('All');
   return (
     <MainLayout pageTitle="Creator Studio">
@@ -35,13 +37,20 @@ const ContentCreatorDashboardPage: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-3 relative z-10">
-            <button className="px-5 py-3 bg-white text-slate-700 font-bold rounded-xl border border-slate-200 hover:bg-slate-50 transition-colors shadow-sm">
+            <button
+              type="button"
+              onClick={() => showToast('Displaying 3 saved unpublished drafts', 'info')}
+              className="px-5 py-3 bg-white text-slate-700 font-bold rounded-xl border border-slate-200 hover:bg-slate-50 transition-colors shadow-sm"
+            >
                Drafts (3)
             </button>
-            <button className="px-5 py-3 bg-gradient-to-r from-emerald-500 to-cyan-600 text-white font-bold rounded-xl hover:from-emerald-600 hover:to-cyan-700 transition-colors shadow-md flex items-center gap-2">
+            <Link
+              to="/createpost"
+              className="px-5 py-3 bg-gradient-to-r from-emerald-500 to-cyan-600 text-white font-bold rounded-xl hover:from-emerald-600 hover:to-cyan-700 transition-colors shadow-md flex items-center gap-2"
+            >
               <PencilIcon className="w-5 h-5" />
                Create Content
-            </button>
+            </Link>
           </div>
         </div>
 
@@ -163,12 +172,18 @@ const ContentCreatorDashboardPage: React.FC = () => {
               </div>
 
               <div className="space-y-3 relative z-10">
-                <button className="w-full py-3.5 bg-white text-emerald-700 font-bold rounded-xl hover:bg-emerald-50 transition-colors shadow-lg shadow-emerald-900/20 active:scale-[0.98]">
+                <Link
+                  to="/wallet"
+                  className="block text-center w-full py-3.5 bg-white text-emerald-700 font-bold rounded-xl hover:bg-emerald-50 transition-colors shadow-lg shadow-emerald-900/20 active:scale-[0.98]"
+                >
                      Withdraw Funds
-                </button>
-                <button className="w-full py-3.5 bg-transparent text-white font-bold rounded-xl border border-white/30 hover:bg-white/10 transition-colors">
+                </Link>
+                <Link
+                  to="/earnings"
+                  className="block text-center w-full py-3.5 bg-transparent text-white font-bold rounded-xl border border-white/30 hover:bg-white/10 transition-colors"
+                >
                      View Earnings History
-                </button>
+                </Link>
               </div>
             </div>
 

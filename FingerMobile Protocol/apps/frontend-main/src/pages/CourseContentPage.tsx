@@ -56,6 +56,22 @@ const CourseContentPage: React.FC = () => {
     });
   };
 
+  const handlePreviousModule = () => {
+    if (!content?.modules) return;
+    const currentIndex = content.modules.findIndex((m: any) => m.active);
+    if (currentIndex > 0) {
+      handleSelectModule(content.modules[currentIndex - 1]);
+    }
+  };
+
+  const handleNextModule = () => {
+    if (!content?.modules) return;
+    const currentIndex = content.modules.findIndex((m: any) => m.active);
+    if (currentIndex < content.modules.length - 1) {
+      handleSelectModule(content.modules[currentIndex + 1]);
+    }
+  };
+
   return (
     <MainLayout pageTitle="Course Content">
       <div className="course-content-page p-4 sm:p-6 lg:p-8 w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto">
@@ -112,8 +128,22 @@ const CourseContentPage: React.FC = () => {
               </div>
 
               <div className="mt-8 pt-6 border-t border-slate-300 flex justify-between">
-                <button className="px-4 py-2 border border-gray-300 rounded text-gray-600 hover:bg-gray-50" disabled>Previous</button>
-                <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 font-medium shadow-sm transition-colors">Next Module</button>
+                <button
+                  type="button"
+                  onClick={handlePreviousModule}
+                  disabled={!content?.modules || content.modules.findIndex((m: any) => m.active) <= 0}
+                  className="px-4 py-2 border border-gray-300 rounded text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Previous
+                </button>
+                <button
+                  type="button"
+                  onClick={handleNextModule}
+                  disabled={!content?.modules || content.modules.findIndex((m: any) => m.active) >= content.modules.length - 1}
+                  className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 font-medium shadow-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Next Module
+                </button>
               </div>
             </main>
           </div>

@@ -55,6 +55,16 @@ const AnalyticsPage: React.FC = () => {
   const navigate = useNavigate();
   const history = { push: (path: string) => navigate(path), replace: (path: string) => navigate(path, { replace: true }) };
 
+  const handleExportData = (format: string) => {
+    const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(analyticsData, null, 2));
+    const downloadAnchor = document.createElement('a');
+    downloadAnchor.setAttribute('href', dataStr);
+    downloadAnchor.setAttribute('download', `platform-analytics-${format}-${Date.now()}.json`);
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
+  };
+
   // Simulate loading analytics data
   useEffect(() => {
     const fetchAnalytics = async () => {
@@ -229,7 +239,11 @@ const AnalyticsPage: React.FC = () => {
                 <option value="90d">Last 90 days</option>
                 <option value="year">This year</option>
               </select>
-              <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center">
+              <button
+                type="button"
+                onClick={() => handleExportData('summary')}
+                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center shadow-sm"
+              >
                 <Download className="h-4 w-4 mr-1" />
                 Export Report
               </button>
@@ -745,13 +759,25 @@ const AnalyticsPage: React.FC = () => {
                     <h4 className="font-medium text-gray-900 mb-2">Export Options</h4>
                     <p className="text-sm text-gray-600 mb-4">Download analytics data in various formats</p>
                     <div className="flex space-x-2">
-                      <button className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm">
+                      <button
+                        type="button"
+                        onClick={() => handleExportData('csv')}
+                        className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm shadow-sm"
+                      >
                         CSV
                       </button>
-                      <button className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">
+                      <button
+                        type="button"
+                        onClick={() => handleExportData('excel')}
+                        className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm shadow-sm"
+                      >
                         Excel
                       </button>
-                      <button className="bg-purple-500 hover:bg-purple-600 text-white px-3 py-1 rounded text-sm">
+                      <button
+                        type="button"
+                        onClick={() => handleExportData('pdf')}
+                        className="bg-purple-500 hover:bg-purple-600 text-white px-3 py-1 rounded text-sm shadow-sm"
+                      >
                         PDF
                       </button>
                     </div>

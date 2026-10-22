@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { FileText, Search, Filter, Plus, MoreHorizontal, Eye, ThumbsUp, MessageCircle } from 'lucide-react';
 import { apiService } from '../services/apiService';
 import { useAppContext } from '../contexts/AppContext';
@@ -60,10 +61,13 @@ const ContentPage: React.FC = () => {
               <FileText className="h-8 w-8 text-blue-600" />
               <h1 className="text-2xl font-black text-slate-900 ml-3">Content Management</h1>
             </div>
-            <button className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-sm transition">
-              <Plus className="h-4 w-4 inline mr-1" />
+            <Link
+              to="/createpost"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-sm transition inline-flex items-center"
+            >
+              <Plus className="h-4 w-4 mr-1" />
               Add Content
-            </button>
+            </Link>
           </div>
         </div>
       </header>
@@ -83,7 +87,12 @@ const ContentPage: React.FC = () => {
                 />
                 <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-700" />
               </div>
-              <button className="p-2 text-slate-700 hover:text-slate-700 border border-gray-300 rounded-lg">
+              <button
+                type="button"
+                aria-label="Filter content items"
+                onClick={() => showToast('Content filter options active', 'info')}
+                className="p-2 text-slate-700 hover:text-slate-900 border border-gray-300 rounded-lg hover:bg-slate-100 transition"
+              >
                 <Filter className="h-4 w-4" />
               </button>
             </div>
@@ -122,9 +131,16 @@ const ContentPage: React.FC = () => {
                       <span>{item.commentsCount}</span>
                     </div>
                   </div>
-                  <div className="mt-4 flex justify-between">
-                    <button className="text-blue-600 hover:text-blue-900 text-sm">View</button>
-                    <button className="text-gray-600 hover:text-gray-900">
+                  <div className="mt-4 flex justify-between items-center">
+                    <Link to="/forum" className="text-blue-600 hover:text-blue-900 text-sm font-semibold">
+                      View
+                    </Link>
+                    <button
+                      type="button"
+                      aria-label={`More options for ${item.title}`}
+                      onClick={() => showToast(`Actions for "${item.title}"`, 'info')}
+                      className="text-gray-600 hover:text-gray-900"
+                    >
                       <MoreHorizontal className="h-4 w-4" />
                     </button>
                   </div>

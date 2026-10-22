@@ -63,6 +63,20 @@ const ModerationDashboardPage: React.FC = () => {
     avgReviewTimeSeconds: 42
   });
   const [reports, setReports] = useState<UserReportItem[]>(FALLBACK_REPORTS);
+  const [aiFiltering, setAiFiltering] = useState(true);
+  const [keywordFiltering, setKeywordFiltering] = useState(false);
+  const [emailNotifications, setEmailNotifications] = useState(true);
+
+  const handleExportFlagged = () => {
+    const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(flaggedMembers, null, 2));
+    const downloadAnchor = document.createElement('a');
+    downloadAnchor.setAttribute('href', dataStr);
+    downloadAnchor.setAttribute('download', `flagged-members-${Date.now()}.json`);
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
+    showToast?.('Flagged members export downloaded', 'success');
+  };
 
   const loadData = async () => {
     try {
@@ -375,7 +389,11 @@ const ModerationDashboardPage: React.FC = () => {
                   <h3 className="text-lg font-medium text-gray-900">
                     Flagged Members
                   </h3>
-                  <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm">
+                  <button
+                    type="button"
+                    onClick={handleExportFlagged}
+                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm shadow-sm"
+                  >
                     Export List
                   </button>
                 </div>
@@ -561,12 +579,19 @@ const ModerationDashboardPage: React.FC = () => {
                         </div>
                         <button
                           type="button"
-                          className="relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none bg-blue-600"
+                          role="switch"
+                          aria-checked={aiFiltering}
+                          aria-label="Toggle AI Content Filtering"
+                          onClick={() => {
+                            setAiFiltering(!aiFiltering);
+                            showToast?.(`AI Content Filtering ${!aiFiltering ? 'enabled' : 'disabled'}`, 'info');
+                          }}
+                          className={`relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none ${aiFiltering ? 'bg-blue-600' : 'bg-gray-300'}`}
                         >
-                          <span className="sr-only">Use setting</span>
+                          <span className="sr-only">Toggle AI Content Filtering</span>
                           <span
                             aria-hidden="true"
-                            className="pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200 translate-x-5"
+                            className={`pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200 ${aiFiltering ? 'translate-x-5' : 'translate-x-0'}`}
                           />
                         </button>
                       </div>
@@ -582,12 +607,19 @@ const ModerationDashboardPage: React.FC = () => {
                         </div>
                         <button
                           type="button"
-                          className="relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none bg-gray-200 border text-gray-950 border-gray-400 font-black"
+                          role="switch"
+                          aria-checked={keywordFiltering}
+                          aria-label="Toggle Keyword Filtering"
+                          onClick={() => {
+                            setKeywordFiltering(!keywordFiltering);
+                            showToast?.(`Keyword Filtering ${!keywordFiltering ? 'enabled' : 'disabled'}`, 'info');
+                          }}
+                          className={`relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none ${keywordFiltering ? 'bg-blue-600' : 'bg-gray-300'}`}
                         >
-                          <span className="sr-only">Use setting</span>
+                          <span className="sr-only">Toggle Keyword Filtering</span>
                           <span
                             aria-hidden="true"
-                            className="pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200 translate-x-0"
+                            className={`pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200 ${keywordFiltering ? 'translate-x-5' : 'translate-x-0'}`}
                           />
                         </button>
                       </div>
@@ -610,12 +642,19 @@ const ModerationDashboardPage: React.FC = () => {
                         </div>
                         <button
                           type="button"
-                          className="relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none bg-blue-600"
+                          role="switch"
+                          aria-checked={emailNotifications}
+                          aria-label="Toggle Email Notifications"
+                          onClick={() => {
+                            setEmailNotifications(!emailNotifications);
+                            showToast?.(`Email Notifications ${!emailNotifications ? 'enabled' : 'disabled'}`, 'info');
+                          }}
+                          className={`relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none ${emailNotifications ? 'bg-blue-600' : 'bg-gray-300'}`}
                         >
-                          <span className="sr-only">Use setting</span>
+                          <span className="sr-only">Toggle Email Notifications</span>
                           <span
                             aria-hidden="true"
-                            className="pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200 translate-x-5"
+                            className={`pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200 ${emailNotifications ? 'translate-x-5' : 'translate-x-0'}`}
                           />
                         </button>
                       </div>

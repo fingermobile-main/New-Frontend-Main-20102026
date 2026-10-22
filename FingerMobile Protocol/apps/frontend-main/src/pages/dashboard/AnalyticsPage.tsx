@@ -100,6 +100,8 @@ const AnalyticsPage: React.FC = () => {
             {(['24h', '7d', '30d', '90d'] as const).map((range) => (
               <button
                 key={range}
+                type="button"
+                aria-label={`Filter time range ${range}`}
                 onClick={() => setTimeRange(range)}
                 className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${
                   timeRange === range

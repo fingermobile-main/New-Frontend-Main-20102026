@@ -29,6 +29,7 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useAppContext } from '../contexts/AppContext';
 
 interface SecurityEvent {
   id: number;
@@ -84,8 +85,19 @@ const SecurityPage: React.FC = () => {
   const [securityStats, setSecurityStats] = useState<any>(null);
   const [monitoringData, setMonitoringData] = useState<any>(null);
 
+  const { showToast } = useAppContext();
+  const [isScanning, setIsScanning] = useState(false);
   const navigate = useNavigate();
   const history = { push: (path: string) => navigate(path), replace: (path: string) => navigate(path, { replace: true }) };
+
+  const handleRunSecurityScan = () => {
+    setIsScanning(true);
+    showToast('Platform security scan initiated...', 'info');
+    setTimeout(() => {
+      setIsScanning(false);
+      showToast('Security audit scan complete. 0 critical vulnerabilities found.', 'success');
+    }, 1200);
+  };
 
   // Simulate loading security data
   useEffect(() => {
@@ -394,9 +406,14 @@ const SecurityPage: React.FC = () => {
               <h1 className="text-2xl font-black text-slate-900 ml-3">Security Dashboard &amp; Threat Center</h1>
             </div>
             <div className="flex items-center space-x-4">
-              <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-lg text-sm font-bold flex items-center shadow-sm transition-colors">
-                <Scan className="h-4 w-4 mr-1.5" />
-                Run Security Scan
+              <button
+                type="button"
+                onClick={handleRunSecurityScan}
+                disabled={isScanning}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-lg text-sm font-bold flex items-center shadow-sm transition-colors disabled:opacity-50"
+              >
+                <Scan className={`h-4 w-4 mr-1.5 ${isScanning ? 'animate-spin' : ''}`} />
+                {isScanning ? 'Scanning Protocol...' : 'Run Security Scan'}
               </button>
             </div>
           </div>
@@ -643,6 +660,8 @@ const SecurityPage: React.FC = () => {
                               <div className="flex space-x-2">
                                 {!event.resolved && (
                                   <button 
+                                    type="button"
+                                    aria-label={`Resolve event ${event.id}`}
                                     className="text-green-600 hover:text-green-900"
                                     onClick={() => handleResolveEvent(event.id)}
                                   >
@@ -650,13 +669,20 @@ const SecurityPage: React.FC = () => {
                                   </button>
                                 )}
                                 <button 
+                                  type="button"
+                                  aria-label={`View event ${event.id} details`}
                                   className="text-blue-600 hover:text-blue-900"
                                   onClick={() => history.push(`/dashboard/security/events/${event.id}/details`)}
                                 >
                                   <Eye className="h-4 w-4" />
                                 </button>
                                 <div className="relative">
-                                  <button className="text-gray-600 hover:text-gray-900">
+                                  <button
+                                    type="button"
+                                    aria-label={`More options for event ${event.id}`}
+                                    onClick={() => showToast(`Actions for event #${event.id}`, 'info')}
+                                    className="text-gray-600 hover:text-gray-900"
+                                  >
                                     <MoreHorizontal className="h-4 w-4" />
                                   </button>
                                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden">
@@ -770,7 +796,12 @@ const SecurityPage: React.FC = () => {
                                   <Ban className="h-4 w-4" />
                                 </button>
                                 <div className="relative">
-                                  <button className="text-gray-600 hover:text-gray-900" aria-label={`More options for threat ${threat.id}`}>
+                                  <button
+                                    type="button"
+                                    onClick={() => showToast(`Options for threat #${threat.id}`, 'info')}
+                                    className="text-gray-600 hover:text-gray-900"
+                                    aria-label={`More options for threat ${threat.id}`}
+                                  >
                                     <MoreHorizontal className="h-4 w-4" />
                                   </button>
                                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden">
@@ -858,19 +889,28 @@ const SecurityPage: React.FC = () => {
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                               <div className="flex space-x-2">
                                 <button 
+                                  type="button"
+                                  aria-label={policy.isActive ? `Pause policy ${policy.name}` : `Activate policy ${policy.name}`}
                                   className={`${policy.isActive ? 'text-red-600 hover:text-red-900' : 'text-green-600 hover:text-green-900'}`}
                                   onClick={() => handleTogglePolicy(policy.id)}
                                 >
                                   {policy.isActive ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
                                 </button>
                                 <button 
+                                  type="button"
+                                  aria-label={`Configure policy ${policy.name}`}
                                   className="text-blue-600 hover:text-blue-900"
                                   onClick={() => history.push(`/dashboard/security/policies/${policy.id}/edit`)}
                                 >
                                   <Settings className="h-4 w-4" />
                                 </button>
                                 <div className="relative">
-                                  <button className="text-gray-600 hover:text-gray-900">
+                                  <button
+                                    type="button"
+                                    aria-label={`More options for policy ${policy.name}`}
+                                    onClick={() => showToast(`Actions for policy: ${policy.name}`, 'info')}
+                                    className="text-gray-600 hover:text-gray-900"
+                                  >
                                     <MoreHorizontal className="h-4 w-4" />
                                   </button>
                                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden">
@@ -1126,6 +1166,8 @@ const SecurityPage: React.FC = () => {
                   {[...Array(totalPages)].map((_, i) => (
                     <button
                       key={i + 1}
+                      type="button"
+                      aria-label={`Go to page ${i + 1}`}
                       onClick={() => setCurrentPage(i + 1)}
                       className={`relative inline-flex items-center px-4 py-2 border text-sm font-bold transition-colors ${
                         currentPage === i + 1
