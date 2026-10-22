@@ -312,8 +312,8 @@ lang: string = 'en-NG'): Promise<void> {
         
         if (voice) utterance.voice = voice;
         utterance.lang = lang;
-        utterance.rate = 0.9; 
-        utterance.pitch = 0.8; 
+        utterance.rate = 0.72;
+        utterance.pitch = 0.8;
         
         utterance.onend = () => resolve();
         utterance.onerror = (event) => reject(event);

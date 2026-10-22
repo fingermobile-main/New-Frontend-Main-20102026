@@ -61,7 +61,7 @@ export interface VoiceLineLogPayload {
 
 export interface VoiceLineSettings {
   volume: number; // 0.0 to 1.0 (default 0.35)
-  playbackRate: number; // 0.5 to 1.5 (calibrated to 0.85 for relaxed, natural African vocal cadence)
+  playbackRate: number; // 0.5 to 1.5 (calibrated to 0.70 for relaxed, natural African vocal cadence)
   enabled: boolean; // Global master toggle
   microservices: {
     forum: boolean;
@@ -78,7 +78,7 @@ const SETTINGS_STORAGE_KEY = 'fingermobile_voiceline_settings';
 
 const DEFAULT_SETTINGS: VoiceLineSettings = {
   volume: 0.35, // 35% device/system speaker volume
-  playbackRate: 0.85, // Calibrated relaxed playback tempo (0.85x)
+  playbackRate: 0.70, // Calibrated relaxed playback tempo (0.70x)
   enabled: true,
   microservices: {
     forum: true,
@@ -233,7 +233,7 @@ class VoiceLineService {
   }
 
   public getPlaybackRate(): number {
-    return this.settings.playbackRate || 0.85;
+    return this.settings.playbackRate || 0.70;
   }
 
   public setPlaybackRate(rate: number): void {
@@ -456,7 +456,7 @@ class VoiceLineService {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.volume = volume;
-      utterance.rate = this.settings.playbackRate || 0.85;
+      utterance.rate = this.settings.playbackRate || 0.70;
       utterance.pitch = 1.0;
 
       // Select natural English voice if present
@@ -549,7 +549,7 @@ class VoiceLineService {
       try {
         const audio = new Audio(matchingLine.audioUrl);
         audio.volume = volume;
-        audio.playbackRate = this.settings.playbackRate || 0.85;
+        audio.playbackRate = this.settings.playbackRate || 0.70;
         const playPromise = audio.play();
         if (playPromise !== undefined) {
           await playPromise;
