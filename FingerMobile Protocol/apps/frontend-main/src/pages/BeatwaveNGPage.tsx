@@ -39,6 +39,7 @@ import { SongsTab } from '../components/beatwaveng/SongsTab';
 import { AlbumsTab } from '../components/beatwaveng/AlbumsTab';
 import { PlaylistsTab } from '../components/beatwaveng/PlaylistsTab';
 import { UniversalDiscoveryHub } from '../components/common/discovery/UniversalDiscoveryHub';
+import BeatwaveTastePreferencesModal from '../components/beatwaveng/BeatwaveTastePreferencesModal';
 
 type NavigationTab =
   | 'listen-now'
@@ -94,6 +95,9 @@ const BeatwaveNGPage: React.FC = () => {
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [showCreatePlaylistModal, setShowCreatePlaylistModal] = useState(false);
   const [showDeviceModal, setShowDeviceModal] = useState(false);
+  const [showTasteModal, setShowTasteModal] = useState(() => {
+    return localStorage.getItem('beatwave_taste_onboarded') !== 'true';
+  });
   const [newPlaylistName, setNewPlaylistName] = useState('');
   const [newPlaylistDesc, setNewPlaylistDesc] = useState('');
 
@@ -622,6 +626,16 @@ const BeatwaveNGPage: React.FC = () => {
                 <option value="Standard" className="bg-slate-900">Standard 128kbps</option>
               </select>
             </div>
+
+            <button
+              type="button"
+              onClick={() => setShowTasteModal(true)}
+              className="px-3 py-1.5 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/40 text-emerald-300 font-bold text-xs flex items-center gap-1.5 transition cursor-pointer"
+              title="Personalize your Favorite Music Genres & Artists (Optional)"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Taste Profile</span>
+            </button>
 
             <div className="px-3 py-1.5 rounded-xl bg-slate-900 border border-amber-500/30 text-xs font-mono font-bold text-amber-300">
               🪙 {(ficBalance ?? 0).toLocaleString()} FIC
@@ -1385,6 +1399,13 @@ const BeatwaveNGPage: React.FC = () => {
       <AudioDeviceSelectorModal
         isOpen={showDeviceModal}
         onClose={() => setShowDeviceModal(false)}
+      />
+
+      {/* Beatwave Taste Preferences Modal (Optional Choices) */}
+      <BeatwaveTastePreferencesModal
+        isOpen={showTasteModal}
+        onClose={() => setShowTasteModal(false)}
+        availableTracks={tracks}
       />
     </div>
   );

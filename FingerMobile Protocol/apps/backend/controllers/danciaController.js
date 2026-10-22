@@ -180,10 +180,14 @@ exports.getGenres = async (req, res) => {
          AND (expires_at IS NULL OR expires_at > NOW())
        ORDER BY genre ASC`
     );
-    const genres = result.rows.map((r) => r.genre);
-    // Combine with standard platform genres if needed
-    const defaultGenres = ['Afrobeats', 'Highlife', 'Amapiano', 'Hip Hop', 'Reggae', 'Gospel', 'RnB', 'Jazz'];
-    const merged = Array.from(new Set([...defaultGenres, ...genres]));
+    const genres = result.rows.map((r) => r.genre).filter(Boolean);
+    // Curated Video-Only categories from Dancia-4Tv video library & broadcast standards
+    const defaultVideoGenres = [
+      'Action', 'Comedy', 'Drama', 'Thriller', 'Nollywood',
+      'Documentary', 'Science Fiction', 'Adventure', 'Dance',
+      'Animation', 'Series & Dramas', 'Cultural'
+    ];
+    const merged = Array.from(new Set([...genres, ...defaultVideoGenres]));
     res.json(merged);
   } catch (error) {
     logger.error('Error fetching Dancia-4Tv genres:', error);

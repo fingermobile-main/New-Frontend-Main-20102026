@@ -83,11 +83,12 @@ const Dancia4TvPage: React.FC = () => {
   } = useDancia4TvData();
   const { showToast } = useAppContext();
 
-  const [showGenreSelection, setShowGenreSelection] = useState(true);
-  const [showArtistSelection, setShowArtistSelection] = useState(false);
-  const [showAgeVerification, setShowAgeVerification] = useState(false);
-  const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
-  const [selectedArtists, setSelectedArtists] = useState<string[]>([]);
+  const [showAgeVerification, setShowAgeVerification] = useState<boolean>(() => {
+    return (
+      localStorage.getItem('dancia4tv_age_verified') !== 'true' &&
+      localStorage.getItem('dancia4tv_onboarding_completed') !== 'true'
+    );
+  });
   const [activeTab, setActiveTab] = useState<
     'home' | 'browse' | 'subscriptions' | 'my-library' | 'discover' | 'lapidaire'
   >('home');
@@ -186,44 +187,6 @@ const Dancia4TvPage: React.FC = () => {
     fetchData();
   }, [currentMember]);
 
-  // Check if member has completed onboarding
-  useEffect(() => {
-    if (currentMember) {
-      // Check if member has completed onboarding (selected genres and artists)
-      // This would typically come from member profile data
-      if (selectedGenres.length >= 6 && selectedArtists.length >= 10) {
-        setShowGenreSelection(false);
-        setShowArtistSelection(false);
-        setShowAgeVerification(false);
-      } else {
-        // Show onboarding if not completed
-        const hasCompletedOnboarding = localStorage.getItem(
-          'dancia4tv_onboarding_completed',
-        );
-        if (!hasCompletedOnboarding) {
-          setShowAgeVerification(true);
-        }
-      }
-    }
-  }, [currentMember, selectedGenres.length, selectedArtists.length]);
-
-  const handleGenreSelection = (genres: string[]) => {
-    setSelectedGenres(genres);
-    if (genres.length >= 6) {
-      setShowGenreSelection(false);
-      setShowArtistSelection(true);
-    }
-  };
-
-  const handleArtistSelection = (artists: string[]) => {
-    setSelectedArtists(artists);
-    if (artists.length >= 10) {
-      setShowArtistSelection(false);
-      // Mark onboarding as completed
-      localStorage.setItem('dancia4tv_onboarding_completed', 'true');
-    }
-  };
-
   const handleAgeVerification = (year: number, month: number) => {
     const currentDate = new Date();
     const birthDate = new Date(year, month - 1);
@@ -231,13 +194,13 @@ const Dancia4TvPage: React.FC = () => {
 
     if (ageInYears >= 22) {
       setShowAgeVerification(false);
+      localStorage.setItem('dancia4tv_age_verified', 'true');
+      localStorage.setItem('dancia4tv_onboarding_completed', 'true');
     } else {
-      // Handle age restriction
       showToast(
         'Dancia-4Tv is only suitable for persons 22 years and above',
         'error',
       );
-      // Redirect or show error page
     }
   };
 
@@ -346,23 +309,6 @@ const Dancia4TvPage: React.FC = () => {
         {/* Age Verification Modal */}
         {showAgeVerification && (
           <AgeVerificationModalLocal onVerify={handleAgeVerification} />
-        )}
-
-        {/* Genre Selection Modal */}
-        {showGenreSelection && (
-          <GenreSelectionModalLocal
-            genres={danciaGenres.length > 0 ? danciaGenres : genres}
-            onSelectGenres={handleGenreSelection}
-            selectedGenres={selectedGenres}
-          />
-        )}
-
-        {/* Artist Selection Modal */}
-        {showArtistSelection && (
-          <ArtistSelectionModalLocal
-            onSelectArtists={handleArtistSelection}
-            selectedArtists={selectedArtists}
-          />
         )}
 
         {/* Top Secondary Tabs: Home / Browse / Subscriptions / My Library / Discover / Lapidaire */}
@@ -1229,138 +1175,6 @@ const AgeVerificationModalLocal: React.FC<{
   );
 };
 
-const GenreSelectionModalLocal: React.FC<{
-  genres: string[];
-  onSelectGenres: (_genres: string[]) => void;
-  selectedGenres: string[];
-}> = ({ genres, onSelectGenres, selectedGenres }) => {
-  const [localSelectedGenres, setLocalSelectedGenres] = useState<string[]>(selectedGenres);
-
-  useEffect(() => {
-    setLocalSelectedGenres(selectedGenres);
-  }, [selectedGenres]);
-
-  const toggleGenre = (genre: string) => {
-    setLocalSelectedGenres(prev => {
-      if (prev.includes(genre)) {
-        return prev.filter((g) => g !== genre);
-      } else {
-        if (prev.length < 12) {
-          return [...prev, genre];
-        }
-        return prev;
-      }
-    });
-  };
-
-  const handleSave = () => {
-    onSelectGenres(localSelectedGenres);
-  };
-
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
-      <div className="bg-gray-800 p-6 rounded-lg w-full max-w-md">
-        <h3 className="text-xl font-bold text-white mb-4">
-          Select Your Favorite Genres
-        </h3>
-        <div className="grid grid-cols-2 gap-2 max-h-60 overflow-y-auto">
-          {genres.map((genre) => (
-            <div key={genre} className="flex items-center">
-              <input
-                type="checkbox"
-                id={genre}
-                checked={localSelectedGenres.includes(genre)}
-                onChange={() => toggleGenre(genre)}
-                className="mr-2"
-              />
-              <label htmlFor={genre} className="text-gray-300">
-                {genre}
-              </label>
-            </div>
-          ))}
-        </div>
-        <div className="mt-4 flex justify-end">
-          <button
-            onClick={handleSave}
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
-            disabled={localSelectedGenres.length === 0}
-          >
-            Save ({localSelectedGenres.length}/12)
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const ArtistSelectionModalLocal: React.FC<{
-  onSelectArtists: (_artists: string[]) => void;
-  selectedArtists: string[];
-}> = ({ onSelectArtists, selectedArtists }) => {
-  const artists = [
-    'Wizkid',
-    'Davido',
-    'Burna Boy',
-    'Tiwa Savage',
-    'Tekno',
-    'Mr Eazi',
-    'Yemi Alade',
-    'Flavour',
-    'P-Square',
-    '2Baba',
-    'Olamide',
-    'Wande Coal',
-    'Dbanj',
-    'Don Jazzy',
-    'Timaya'
-  ];
-
-  const toggleArtist = (artist: string) => {
-    if (selectedArtists.includes(artist)) {
-      onSelectArtists(selectedArtists.filter((a) => a !== artist));
-    } else {
-      if (selectedArtists.length < 15) {
-        onSelectArtists([...selectedArtists, artist]);
-      }
-    }
-  };
-
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
-      <div className="bg-gray-800 p-6 rounded-lg w-full max-w-md">
-        <h3 className="text-xl font-bold text-white mb-4">Select Artists</h3>
-        <p className="text-gray-300 mb-4">
-          Choose your favorite artists to personalize recommendations.
-        </p>
-        <div className="grid grid-cols-2 gap-2 max-h-60 overflow-y-auto mb-4">
-          {artists.map((artist) => (
-            <div key={artist} className="flex items-center">
-              <input
-                type="checkbox"
-                id={artist}
-                checked={selectedArtists.includes(artist)}
-                onChange={() => toggleArtist(artist)}
-                className="mr-2"
-              />
-              <label htmlFor={artist} className="text-gray-300">
-                {artist}
-              </label>
-            </div>
-          ))}
-        </div>
-        <div className="flex justify-end">
-          <button
-            onClick={() => onSelectArtists(selectedArtists)}
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-          >
-            Continue
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
 // Define placeholder components for missing ones
 interface VideoRecommendationsProps {
   videos: any[];
@@ -1506,8 +1320,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ video, playerState, onPause }
 // Export all helper components
 export {
   AgeVerificationModalLocal,
-  GenreSelectionModalLocal,
-  ArtistSelectionModalLocal,
   VideoRecommendations,
   VideoFeed,
   TrendingVideosSection,
