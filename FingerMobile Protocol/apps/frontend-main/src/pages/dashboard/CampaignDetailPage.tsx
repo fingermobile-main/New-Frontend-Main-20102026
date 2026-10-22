@@ -89,7 +89,7 @@ const DashboardCampaignDetailPage: React.FC = () => {
   const campaignTitle = analytics.campaign?.title || analytics.campaign?.name || 'Campaign Details';
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 space-y-6 max-w-7xl mx-auto">
+    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
       <NavLink
         to="/dashboard/campaigns"
         className="text-xs font-bold text-blue-600 hover:text-blue-800 inline-flex items-center gap-1 hover:underline cursor-pointer"
