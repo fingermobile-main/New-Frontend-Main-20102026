@@ -147,7 +147,7 @@ const LoyaltyRewardsPage: React.FC = () => {
     : 100;
 
   return (
-    <div className="space-y-6">
+    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto space-y-6">
       <div>
         <h2 className="text-2xl font-black text-slate-900">Loyalty Rewards</h2>
         <p className="mt-1 text-sm font-medium text-slate-700">Earn points and unlock exclusive platform benefits</p>

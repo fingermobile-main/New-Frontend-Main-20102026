@@ -93,7 +93,7 @@ const GiftCardsPage: React.FC = () => {
     : (giftCards || []).filter((card: GiftCard) => card.status === 'active' || card.status === 'used' || card.status === 'expired');
 
   return (
-    <div className="space-y-6">
+    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto space-y-6">
       <div>
         <h2 className="text-2xl font-black text-slate-900">Gift Cards</h2>
         <p className="mt-1 text-sm font-medium text-slate-700">Buy, send, or redeem gift cards securely</p>
@@ -106,7 +106,7 @@ const GiftCardsPage: React.FC = () => {
             className={`py-4 px-1 border-b-2 font-bold text-sm transition-colors ${
               activeTab === 'your-cards'
                 ? 'border-brand-blue text-brand-blue'
-                : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300'
+                : 'border-transparent text-slate-700 hover:text-slate-900 hover:border-slate-300'
             }`}
           >
             Your Gift Cards
@@ -116,7 +116,7 @@ const GiftCardsPage: React.FC = () => {
             className={`py-4 px-1 border-b-2 font-bold text-sm transition-colors ${
               activeTab === 'buy'
                 ? 'border-brand-blue text-brand-blue'
-                : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300'
+                : 'border-transparent text-slate-700 hover:text-slate-900 hover:border-slate-300'
             }`}
           >
             Buy Gift Cards
@@ -126,7 +126,7 @@ const GiftCardsPage: React.FC = () => {
             className={`py-4 px-1 border-b-2 font-bold text-sm transition-colors ${
               activeTab === 'redeem'
                 ? 'border-brand-blue text-brand-blue'
-                : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300'
+                : 'border-transparent text-slate-700 hover:text-slate-900 hover:border-slate-300'
             }`}
           >
             Redeem Gift Card

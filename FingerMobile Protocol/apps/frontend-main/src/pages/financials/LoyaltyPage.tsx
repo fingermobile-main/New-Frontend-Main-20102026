@@ -184,7 +184,7 @@ const LoyaltyPage: React.FC = () => {
   return (
     <MainLayout>
       <div className="p-6 lg:p-8 bg-[#F5F9F6] min-h-screen text-slate-900">
-        <div className="max-w-4xl mx-auto space-y-8">
+        <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto space-y-8">
 
           {/* Main Tier Overview Banner */}
           <div className="bg-white p-8 rounded-3xl border border-slate-300 shadow-sm text-center relative overflow-hidden">
