@@ -144,17 +144,22 @@ const ManageMyHallmarkPage: React.FC = () => {
   const selectedHallmark = hallmarks.find(h => h.id === selectedHallmarkId);
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">Manage My Hallmark</h1>
+    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-black text-slate-900">Manage Sovereign Hallmark</h1>
+          <p className="text-sm font-semibold text-slate-700 mt-1">Configure mega-community parameters, live voice sessions, member roles, and tags</p>
+        </div>
+      </div>
 
-      {loading && <div>Loading...</div>}
-      {error && <div className="text-red-500 mb-4">{error}</div>}
+      {loading && <div className="text-center py-8 text-slate-700 font-medium">Loading hallmarks...</div>}
+      {error && <div className="p-4 bg-rose-50 border border-rose-300 text-rose-900 rounded-xl font-bold mb-4">{error}</div>}
 
       {!loading && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow p-6">
-              <h2 className="text-xl font-semibold mb-4">Select Hallmark</h2>
+            <div className="bg-white rounded-2xl shadow-sm border border-slate-300 p-6">
+              <h2 className="text-xl font-black text-slate-900 mb-4">Select Hallmark</h2>
 
               <select
                 value={selectedHallmarkId}

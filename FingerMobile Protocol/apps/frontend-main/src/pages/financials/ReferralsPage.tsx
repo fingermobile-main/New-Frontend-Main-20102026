@@ -58,7 +58,7 @@ const ReferralsPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-8 text-slate-900">
+    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto space-y-8 text-slate-900">
       <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-300 shadow-sm">
         <div className="flex items-start gap-4">
           <div className="p-3.5 rounded-2xl bg-blue-500/10 border border-blue-400/40 text-blue-700 flex-shrink-0">

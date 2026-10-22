@@ -64,22 +64,22 @@ const GemPublicPage: React.FC = () => {
   };
 
   const CommunityHeader = () => (
-    <div className="bg-white border-b p-6 text-center">
-      <img src={gem.logoUrl || ''} alt={gem.name || 'Gem'} className="w-24 h-24 rounded-full border-4 border-white mx-auto mb-2 bg-white object-cover"  />
-      <h1 className="text-3xl font-bold">{gem.name || 'Unnamed Gem'}</h1>
-      <p className="text-sm text-slate-700">Created by @{typeof gem.owner === 'string' ? 'unknown' : gem.owner?.membername || 'unknown'}</p>
+    <div className="bg-white border-b border-slate-300 p-6 text-center">
+      <img src={gem.logoUrl || ''} alt={gem.name || 'Gem'} className="w-24 h-24 rounded-full border-4 border-slate-200 mx-auto mb-2 bg-white object-cover shadow-sm"  />
+      <h1 className="text-3xl font-black text-slate-900">{gem.name || 'Unnamed Gem'}</h1>
+      <p className="text-sm font-semibold text-slate-700">Created by @{typeof gem.owner === 'string' ? 'unknown' : gem.owner?.membername || 'unknown'}</p>
     </div>
   );
 
   if (!isMember && !isOwner) {
     return (
-      <div className="flex-1 bg-gray-50 min-h-screen">
+      <div className="flex-1 bg-slate-50 min-h-screen">
         <CommunityHeader />
-        <div className="p-6 lg:p-8 max-w-2xl mx-auto">
-          <div className="bg-white p-8 rounded-xl shadow-md text-center">
-            <h2 className="text-xl font-bold">{gem.name || 'Gem'}</h2>
-            <p className="text-gray-600 my-4">{gem.rules || 'No rules defined.'}</p>
-            <button onClick={handleJoinCommunity} disabled={!canAffordJoinFee} className="w-full py-3 font-semibold bg-brand-blue text-white rounded-lg disabled:bg-gray-400">
+        <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-4 sm:p-6 lg:p-8">
+          <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-300 text-center max-w-2xl mx-auto">
+            <h2 className="text-2xl font-black text-slate-900">{gem.name || 'Gem'}</h2>
+            <p className="text-slate-700 font-medium my-4">{gem.rules || 'No rules defined.'}</p>
+            <button onClick={handleJoinCommunity} disabled={!canAffordJoinFee} className="w-full py-3 font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-sm transition-colors disabled:bg-slate-400 cursor-pointer">
               {(gem.settings?.joinFee || 0) > 0 ? `Join for ${gem.settings?.joinFee} FIC` : 'Join for Free'}
             </button>
           </div>
@@ -89,21 +89,21 @@ const GemPublicPage: React.FC = () => {
   }
 
   return (
-    <div className="flex-1 bg-gray-100 min-h-screen">
+    <div className="flex-1 bg-slate-50 min-h-screen">
       <CommunityHeader />
-      <div className="p-6 lg:p-8">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-4 sm:p-6 lg:p-8">
         {isLive && (
-          <div className="max-w-2xl mx-auto mb-6 bg-gradient-to-r from-purple-500 to-indigo-600 text-white p-4 rounded-lg flex justify-between items-center shadow-lg">
+          <div className="max-w-3xl mx-auto mb-6 bg-gradient-to-r from-purple-600 to-indigo-600 text-white p-4 rounded-2xl flex justify-between items-center shadow-md">
             <div className="flex items-center gap-3">
               <LiveIcon className="w-6 h-6 animate-pulse" />
               <div>
-                <h3 className="font-bold">Voice Session Live</h3>
+                <h3 className="font-black text-white">Voice Session Live</h3>
                 <p className="text-sm opacity-90">{typeof gem.owner === 'object' && gem.owner?.name ? `${gem.owner.name} is live now!` : 'Someone is live now!'}</p>
               </div>
             </div>
           </div>
         )}
-        <div className="max-w-2xl mx-auto space-y-6">
+        <div className="max-w-3xl mx-auto space-y-6">
           {featuredPosts.map((post: Post) => (
             <PostCard key={post.id} post={post} />
           ))}

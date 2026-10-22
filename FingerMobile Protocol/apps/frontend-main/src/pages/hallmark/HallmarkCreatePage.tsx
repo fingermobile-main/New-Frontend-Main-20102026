@@ -63,13 +63,13 @@ const HallmarkCreatePage: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 bg-gray-50 min-h-screen">
+    <div className="flex-1 bg-slate-50 min-h-screen">
       <PageHeader
-        title="Create Your Hallmark"
-        description="Build and brand your own community space."
+        title="Create Sovereign Hallmark"
+        description="Build, brand, and charter your own mega-community space (up to 5,000,000 members)."
       />
-      <div className="p-6 lg:p-8">
-        <form onSubmit={handleSubmit} className="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md space-y-6">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+        <form onSubmit={handleSubmit} className="max-w-3xl mx-auto bg-white p-8 rounded-2xl shadow-sm border border-slate-300 space-y-6">
           <div>
             <h3 className="font-bold text-lg border-b pb-2 mb-4">1. Branding</h3>
             <label htmlFor="communityName" className="block text-sm font-medium">Community Name</label>
