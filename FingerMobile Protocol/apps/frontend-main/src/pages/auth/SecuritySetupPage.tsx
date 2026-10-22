@@ -94,7 +94,7 @@ const SecuritySetupPage = () => {
                   <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">Use fingerprint or face ID to sign in</p>
                 </div>
               </div>
-              <button
+              <button type="button" aria-label="Action"
                 onClick={() => setEnableBiometrics(!enableBiometrics)}
                 className={`relative inline-flex h-6 w-11 items-center rounded-full ${
                   enableBiometrics ? 'bg-indigo-600' : 'bg-gray-300 dark:bg-gray-600'
@@ -138,7 +138,7 @@ const SecuritySetupPage = () => {
               <h3 className="font-semibold text-gray-900 dark:text-white text-sm">Enable Two-Factor Authentication</h3>
               <p className="text-xs text-slate-700 dark:text-slate-300 font-medium">Require an extra security code during login</p>
             </div>
-            <button
+            <button aria-label="Action"
               type="button"
               onClick={() => setEnableTwoFactor(!enableTwoFactor)}
               className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
@@ -166,7 +166,7 @@ const SecuritySetupPage = () => {
                   <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">Receive codes via SMS</p>
                 </div>
               </div>
-              <button
+              <button type="button" aria-label="Confirm"
                 onClick={() => setTwoFactorMethod('sms')}
                 className={`h-4 w-4 rounded-full border flex items-center justify-center ${
                   twoFactorMethod === 'sms'
@@ -192,7 +192,7 @@ const SecuritySetupPage = () => {
                   <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">Use Google Authenticator or similar</p>
                 </div>
               </div>
-              <button
+              <button type="button" aria-label="Confirm"
                 onClick={() => setTwoFactorMethod('app')}
                 className={`h-4 w-4 rounded-full border flex items-center justify-center ${
                   twoFactorMethod === 'app'

@@ -101,7 +101,7 @@ const OrderTracker: React.FC<OrderTrackerProps> = ({ userId }) => {
       {/* Filter Tabs */}
       <div className="flex gap-2 overflow-x-auto pb-2">
         {['all', 'pending', 'processing', 'shipped', 'delivered', 'cancelled'].map((status) => (
-          <button
+          <button type="button" aria-label="Action"
             key={status}
             onClick={() => setFilterStatus(status)}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${

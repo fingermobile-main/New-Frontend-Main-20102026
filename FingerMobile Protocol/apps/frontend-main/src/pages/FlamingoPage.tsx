@@ -940,7 +940,7 @@ export const FlamingoPageContent: React.FC = () => {
                       className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                     />
                     {products[0].runway_video_url && (
-                      <button
+                      <button type="button" aria-label="Play"
                         onClick={() => setActiveRunwayVideo(products[0])}
                         className="absolute inset-0 m-auto w-12 h-12 bg-pink-600/90 hover:bg-pink-500 text-white rounded-full flex items-center justify-center shadow-lg transition"
                       >
@@ -986,7 +986,7 @@ export const FlamingoPageContent: React.FC = () => {
                   className="w-full pl-11 pr-10 py-2.5 bg-slate-900 border border-slate-800 focus:border-pink-500 rounded-xl text-sm text-white placeholder:text-slate-300 font-medium outline-none transition"
                 />
                 {searchQuery && (
-                  <button
+                  <button type="button" aria-label="Close"
                     onClick={() => setSearchQuery('')}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-300 font-medium hover:text-white"
                   >
@@ -1401,7 +1401,7 @@ export const FlamingoPageContent: React.FC = () => {
                     Runway Walk: {activeRunwayVideo.name}
                   </span>
                 </div>
-                <button
+                <button type="button" aria-label="Close"
                   onClick={() => setActiveRunwayVideo(null)}
                   className="p-1 text-slate-300 font-medium hover:text-white"
                 >
@@ -1458,7 +1458,7 @@ export const FlamingoPageContent: React.FC = () => {
                     Garment Provenance & Craftsmanship
                   </h3>
                 </div>
-                <button
+                <button type="button" aria-label="Close"
                   onClick={() => setActiveInspectProduct(null)}
                   className="text-slate-300 font-medium hover:text-white"
                 >
@@ -1522,7 +1522,7 @@ export const FlamingoPageContent: React.FC = () => {
                     Body Measurement Matrix & Size Predictor
                   </h3>
                 </div>
-                <button
+                <button type="button" aria-label="Close"
                   onClick={() => setShowSizeMatrixModal(false)}
                   className="text-slate-300 font-medium hover:text-white"
                 >
@@ -1662,7 +1662,7 @@ export const FlamingoPageContent: React.FC = () => {
                     Assemble Runway Ensemble
                   </h3>
                 </div>
-                <button
+                <button type="button" aria-label="Close"
                   onClick={() => setShowOutfitBuilderModal(false)}
                   className="text-slate-300 font-medium hover:text-white"
                 >
@@ -1768,7 +1768,7 @@ export const FlamingoPageContent: React.FC = () => {
                     </span>
                   </div>
                 </div>
-                <button
+                <button type="button" aria-label="Close"
                   onClick={() => setShowAiStylistDrawer(false)}
                   className="p-1 text-slate-300 font-medium hover:text-white"
                 >
@@ -1827,7 +1827,7 @@ export const FlamingoPageContent: React.FC = () => {
                   placeholder="Ask for fashion fit advice, fabric specs..."
                   className="flex-1 px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white outline-none focus:border-pink-500"
                 />
-                <button
+                <button type="button" aria-label="Send"
                   onClick={() => handleSendStylistQuery()}
                   className="p-2 bg-pink-600 hover:bg-pink-500 text-white rounded-xl transition"
                 >
@@ -1849,7 +1849,7 @@ export const FlamingoPageContent: React.FC = () => {
                     Private Discreet Bag
                   </h3>
                 </div>
-                <button
+                <button type="button" aria-label="Close"
                   onClick={() => setShowCartDrawer(false)}
                   className="p-1 text-slate-300 font-medium hover:text-white"
                 >
@@ -1885,7 +1885,7 @@ export const FlamingoPageContent: React.FC = () => {
                         </div>
                       </div>
 
-                      <button
+                      <button type="button" aria-label="Close"
                         onClick={() => {
                           setCart(prev => prev.filter((_, i) => i !== idx));
                           showToast('Item removed from private bag', 'info');

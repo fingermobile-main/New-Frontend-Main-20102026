@@ -314,7 +314,7 @@ export const PlaylistsTab: React.FC<PlaylistsTabProps> = ({
                     className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                   />
                   <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-                    <button
+                    <button type="button" aria-label="Play"
                       onClick={() => handlePlayPlaylist(pl)}
                       className="w-12 h-12 rounded-full bg-emerald-500 text-slate-950 flex items-center justify-center shadow-xl transition transform hover:scale-110 active:scale-95"
                     >
@@ -364,7 +364,7 @@ export const PlaylistsTab: React.FC<PlaylistsTabProps> = ({
                     className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                   />
                   <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-                    <button
+                    <button type="button" aria-label="Play"
                       onClick={() => handlePlayPlaylist(pl)}
                       className="w-12 h-12 rounded-full bg-emerald-500 text-slate-950 flex items-center justify-center shadow-xl transition transform hover:scale-110 active:scale-95"
                     >
@@ -414,7 +414,7 @@ export const PlaylistsTab: React.FC<PlaylistsTabProps> = ({
             role="dialog"
             aria-modal="true"
           >
-            <button
+            <button type="button" aria-label="Close"
               onClick={() => setSelectedPlaylistModal(null)}
               className="absolute top-4 right-4 p-2 rounded-full bg-slate-800 text-slate-300 hover:text-white transition"
             >

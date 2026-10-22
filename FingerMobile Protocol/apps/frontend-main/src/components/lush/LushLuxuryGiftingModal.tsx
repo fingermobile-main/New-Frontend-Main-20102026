@@ -189,7 +189,7 @@ export const LushLuxuryGiftingModal: React.FC<LushLuxuryGiftingModalProps> = ({
               </p>
             </div>
           </div>
-          <button
+          <button type="button" aria-label="Close"
             onClick={onClose}
             className="p-1.5 rounded-full hover:bg-gray-100 text-slate-700 hover:text-gray-700 transition"
           >

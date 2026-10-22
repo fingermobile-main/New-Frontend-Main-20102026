@@ -220,7 +220,7 @@ export const ColaboTab: React.FC = () => {
                     className="p-3 rounded-2xl bg-slate-950/80 border border-slate-800 hover:border-emerald-500/40 flex items-center justify-between gap-3 transition-all"
                   >
                     <div className="flex items-center gap-3 min-w-0">
-                      <button
+                      <button type="button" aria-label="Pause"
                         onClick={() => playTrack(track, selectedSession.tracks)}
                         className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all ${
                           isCurrentPlaying

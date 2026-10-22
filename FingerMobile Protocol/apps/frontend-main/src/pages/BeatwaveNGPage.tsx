@@ -675,7 +675,7 @@ const BeatwaveNGPage: React.FC = () => {
                         <p className="text-xs text-slate-300 font-medium">{item.artist}</p>
                       </div>
 
-                      <button
+                      <button type="button" aria-label="Pause"
                         onClick={(e) => {
                           e.stopPropagation();
                           handlePlay(item);
@@ -999,7 +999,7 @@ const BeatwaveNGPage: React.FC = () => {
                     </div>
 
                     <div className="flex items-center gap-2">
-                      <button
+                      <button type="button" aria-label="Pause"
                         onClick={(e) => {
                           e.stopPropagation();
                           handlePlay(track);

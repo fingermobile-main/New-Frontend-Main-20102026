@@ -137,7 +137,7 @@ export const PhotoCreditsCommentsModal: React.FC<PhotoCreditsCommentsModalProps>
               </p>
             </div>
           </div>
-          <button
+          <button type="button" aria-label="Close"
             onClick={onClose}
             className="p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition-colors"
           >

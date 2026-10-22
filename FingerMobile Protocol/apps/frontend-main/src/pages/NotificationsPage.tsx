@@ -174,14 +174,14 @@ const NotificationsPage: React.FC = () => {
                     </div>
                     <div className="flex-shrink-0 flex space-x-2">
                       {!notification.isRead && (
-                        <button
+                        <button type="button" aria-label="Confirm"
                           onClick={() => markAsRead(notification.id)}
                           className="inline-flex items-center p-1 text-sm font-medium text-slate-700 hover:text-gray-700"
                         >
                           <CheckIcon className="h-4 w-4" />
                         </button>
                       )}
-                      <button
+                      <button type="button" aria-label="Delete"
                         onClick={() => deleteNotification(notification.id)}
                         className="inline-flex items-center p-1 text-sm font-medium text-slate-700 hover:text-red-700"
                       >

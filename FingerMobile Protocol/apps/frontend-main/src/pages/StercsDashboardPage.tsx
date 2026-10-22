@@ -1765,7 +1765,7 @@ const StercsDashboardPage: React.FC = () => {
                 <Bot className="w-5 h-5 text-purple-400" />
                 <h3 className="font-bold text-sm text-white">Automated Generative & Agentic AI Engine</h3>
               </div>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setIsAiAgentModalOpen(false)}
                 className="text-slate-300 hover:text-white p-1 rounded transition-colors"
               >
@@ -1850,7 +1850,7 @@ const StercsDashboardPage: React.FC = () => {
                 <Briefcase className="w-5 h-5 text-emerald-300" />
                 <h3 className="font-bold text-sm text-white">ERP & CRM Enterprise Autonomous Bridge</h3>
               </div>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setIsErpModalOpen(false)}
                 className="text-emerald-200 hover:text-white p-1 rounded transition-colors"
               >
@@ -1923,7 +1923,7 @@ const StercsDashboardPage: React.FC = () => {
                 <Users className="w-5 h-5 text-blue-400" />
                 <h3 className="font-bold text-sm text-white">19 Corporate Departmental Leadership Structure</h3>
               </div>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setIsRolesModalOpen(false)}
                 className="text-slate-300 hover:text-white p-1 rounded transition-colors"
               >
@@ -1988,7 +1988,7 @@ const StercsDashboardPage: React.FC = () => {
                   <span className="text-xs text-slate-700 font-medium">{selectedModuleForDrawer.category}</span>
                 </div>
               </div>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setSelectedModuleForDrawer(null)}
                 className="text-slate-600 hover:text-slate-900 p-1 rounded transition-colors"
               >
@@ -2057,7 +2057,7 @@ const StercsDashboardPage: React.FC = () => {
                 <h3 className="font-bold text-sm text-white">Edit Policy Rule: {selectedPolicyForModal.id}</h3>
                 <p className="text-xs text-slate-300 font-medium">Configure sovereign threshold and compliance severity</p>
               </div>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setSelectedPolicyForModal(null)}
                 className="text-slate-300 hover:text-white p-1 rounded transition-colors"
               >
@@ -2142,7 +2142,7 @@ const StercsDashboardPage: React.FC = () => {
         <div className="fixed bottom-6 right-6 z-50 bg-slate-900 text-white text-xs font-medium px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 border border-slate-700 animate-in fade-in slide-in-from-bottom-3 duration-200">
           <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
           <span>{toastMessage}</span>
-          <button
+          <button type="button" aria-label="Close"
             onClick={() => setToastMessage(null)}
             className="text-slate-300 hover:text-white ml-2"
           >

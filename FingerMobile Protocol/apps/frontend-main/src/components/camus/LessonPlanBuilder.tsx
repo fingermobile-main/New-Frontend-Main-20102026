@@ -500,7 +500,7 @@ export const LessonPlanBuilder: React.FC = () => {
                     className="flex-1 px-3 py-2 text-xs text-slate-900 font-bold bg-white border border-slate-300 rounded-xl"
                   />
                   {plan.learningObjectives.length > 1 && (
-                    <button
+                    <button type="button" aria-label="Delete"
                       onClick={() => handleRemoveObjective(idx)}
                       className="p-2 text-red-600 hover:bg-red-50 rounded-lg"
                     >
@@ -562,7 +562,7 @@ export const LessonPlanBuilder: React.FC = () => {
                         <span className="text-slate-700 font-bold">min</span>
                       </div>
                       {plan.phases.length > 1 && (
-                        <button
+                        <button type="button" aria-label="Delete"
                           onClick={() => handleRemovePhase(pIdx)}
                           className="p-1.5 text-red-600 hover:bg-red-50 rounded-lg"
                         >

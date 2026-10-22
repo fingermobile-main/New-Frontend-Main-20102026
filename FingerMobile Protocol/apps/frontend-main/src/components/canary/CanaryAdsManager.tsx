@@ -249,7 +249,7 @@ export const CanaryAdsManager: React.FC<CanaryAdsManagerProps> = ({
           >
             Check Out Photo Credits →
           </button>
-          <button
+          <button aria-label="Close"
             type="button"
             onClick={() => {
               setIsDismissed(true);

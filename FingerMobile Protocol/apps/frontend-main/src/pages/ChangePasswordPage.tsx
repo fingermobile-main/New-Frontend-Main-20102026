@@ -115,7 +115,7 @@ const ChangePasswordPage: React.FC = () => {
                     errors.currentPassword ? 'border-red-500' : 'border-slate-300'
                   }`}
                 />
-                <button
+                <button aria-label="Action"
                   type="button"
                   onClick={() => setShowCurrentPassword(!showCurrentPassword)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-700"
@@ -141,7 +141,7 @@ const ChangePasswordPage: React.FC = () => {
                     errors.newPassword ? 'border-red-500' : 'border-slate-300'
                   }`}
                 />
-                <button
+                <button aria-label="Action"
                   type="button"
                   onClick={() => setShowNewPassword(!showNewPassword)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-700"
@@ -167,7 +167,7 @@ const ChangePasswordPage: React.FC = () => {
                     errors.confirmPassword ? 'border-red-500' : 'border-slate-300'
                   }`}
                 />
-                <button
+                <button aria-label="Action"
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-700"

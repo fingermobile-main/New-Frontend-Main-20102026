@@ -210,7 +210,7 @@ export const MatchingPreferencesForm: React.FC<Props> = ({ onSave, onClose, isOp
                 <p style={{ margin: 0, fontWeight: 600, fontSize: 15 }}>Incognito Mode</p>
                 <p style={{ margin: '4px 0 0', fontSize: 12, color: '#64748b' }}>Browse without appearing in others' discover queues</p>
               </div>
-              <button
+              <button type="button" aria-label="Action"
                 onClick={() => setForm((p) => ({ ...p, is_incognito: !p.is_incognito }))}
                 style={{
                   width: 48, height: 28, borderRadius: 14, border: 'none', cursor: 'pointer',

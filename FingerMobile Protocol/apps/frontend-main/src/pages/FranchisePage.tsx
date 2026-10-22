@@ -774,7 +774,7 @@ const FranchisePage: React.FC = () => {
                   </span>
                   <h3 className="text-xl font-black text-gray-900 mt-1">{inspectingFranchise.name}</h3>
                 </div>
-                <button
+                <button type="button" aria-label="Close"
                   onClick={() => setInspectingFranchise(null)}
                   className="text-slate-700 hover:text-gray-600"
                 >

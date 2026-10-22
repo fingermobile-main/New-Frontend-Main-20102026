@@ -169,35 +169,35 @@ const Whiteboard: React.FC<WhiteboardProps> = ({ roomId, onSave, onClear }) => {
       <CardContent>
         <div className="space-y-4">
           <div className="flex flex-wrap gap-2 p-2 border rounded-lg bg-muted/30">
-            <Button
+            <Button type="button" aria-label="Edit"
               variant={tool === 'pen' ? 'default' : 'outline'}
               size="sm"
               onClick={() => setTool('pen')}
             >
               <Pencil className="h-4 w-4" />
             </Button>
-            <Button
+            <Button type="button" aria-label="Erase"
               variant={tool === 'eraser' ? 'default' : 'outline'}
               size="sm"
               onClick={() => setTool('eraser')}
             >
               <Eraser className="h-4 w-4" />
             </Button>
-            <Button
+            <Button type="button" aria-label="Rectangle tool"
               variant={tool === 'rectangle' ? 'default' : 'outline'}
               size="sm"
               onClick={() => setTool('rectangle')}
             >
               <Square className="h-4 w-4" />
             </Button>
-            <Button
+            <Button type="button" aria-label="Circle tool"
               variant={tool === 'circle' ? 'default' : 'outline'}
               size="sm"
               onClick={() => setTool('circle')}
             >
               <Circle className="h-4 w-4" />
             </Button>
-            <Button
+            <Button type="button" aria-label="Text tool"
               variant={tool === 'text' ? 'default' : 'outline'}
               size="sm"
               onClick={() => setTool('text')}

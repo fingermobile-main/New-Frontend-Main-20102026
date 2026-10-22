@@ -1415,7 +1415,7 @@ const StercsPage: React.FC = () => {
                   </button>
 
                   {[...Array(totalPages)].map((_, i) => (
-                    <button
+                    <button type="button" aria-label="Navigate page"
                       key={i + 1}
                       onClick={() => setCurrentPage(i + 1)}
                       className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
@@ -1457,7 +1457,7 @@ const StercsPage: React.FC = () => {
             <div className="mt-3">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-medium text-gray-900">Create New STERCS Module</h3>
-                <button
+                <button type="button" aria-label="Close"
                   className="text-slate-700 hover:text-gray-700"
                   onClick={() => setShowCreateModal(false)}
                 >
@@ -1611,7 +1611,7 @@ const StercsPage: React.FC = () => {
                 </div>
                 <p className="text-xs text-slate-300 font-medium mt-1">Cryptographic verification digest & runtime attributes</p>
               </div>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setSelectedInspectorItem(null)}
                 className="text-slate-300 hover:text-white p-1 rounded-lg"
               >
@@ -1719,7 +1719,7 @@ const StercsPage: React.FC = () => {
         <div className="fixed bottom-6 right-6 z-50 bg-slate-900 text-white text-xs font-medium px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 border border-slate-700 animate-in fade-in slide-in-from-bottom-3 duration-200">
           <BadgeCheck className="w-4 h-4 text-emerald-400 shrink-0" />
           <span>{toastMessage}</span>
-          <button
+          <button type="button" aria-label="Close"
             onClick={() => setToastMessage(null)}
             className="text-slate-300 hover:text-white ml-2"
           >

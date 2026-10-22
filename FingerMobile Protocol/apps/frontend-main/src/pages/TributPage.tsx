@@ -1224,7 +1224,7 @@ export const TributPage: React.FC = () => {
                       The Five Primary Algorithmic Pillars
                     </h3>
                   </div>
-                  <button
+                  <button type="button" aria-label="Close"
                     onClick={() => setShowPillarsModal(false)}
                     className="p-1.5 rounded-lg text-slate-700 hover:text-slate-700"
                   >
@@ -1278,7 +1278,7 @@ export const TributPage: React.FC = () => {
                     <h3 className="text-lg font-black text-slate-900">Save to Project Board</h3>
                     <p className="text-xs text-slate-600">Select where to save "{showSaveToBoardModal.title}".</p>
                   </div>
-                  <button
+                  <button type="button" aria-label="Close"
                     onClick={() => setShowSaveToBoardModal(null)}
                     className="p-1 rounded-lg text-slate-700 hover:text-slate-700"
                   >

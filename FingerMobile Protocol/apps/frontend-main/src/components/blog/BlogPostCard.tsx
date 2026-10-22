@@ -130,7 +130,7 @@ const BlogPostCard: React.FC<BlogPostCardProps> = ({
 
         {/* Action Buttons */}
         <div className="flex gap-2">
-          <Button
+          <Button type="button" aria-label="Like"
             size="sm"
             variant="ghost"
             onClick={() => onLike?.(post.id)}
@@ -138,7 +138,7 @@ const BlogPostCard: React.FC<BlogPostCardProps> = ({
           >
             <Heart className="h-4 w-4" />
           </Button>
-          <Button
+          <Button type="button" aria-label="Share"
             size="sm"
             variant="ghost"
             onClick={() => onShare?.(post.id)}
@@ -146,7 +146,7 @@ const BlogPostCard: React.FC<BlogPostCardProps> = ({
           >
             <Share2 className="h-4 w-4" />
           </Button>
-          <Button
+          <Button type="button" aria-label="Bookmark"
             size="sm"
             variant="ghost"
             onClick={() => onSave?.(post.id)}

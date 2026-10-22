@@ -1006,7 +1006,7 @@ export const MasterWidgetConsole: React.FC = () => {
                       </td>
 
                       <td className="py-3 px-4">
-                        <button
+                        <button aria-label="Action"
                           type="button"
                           onClick={() => handleToggleStatus(w.id, w.status)}
                           className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border transition ${

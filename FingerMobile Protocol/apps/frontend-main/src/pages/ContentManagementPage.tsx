@@ -352,13 +352,13 @@ const ContentManagementPage: React.FC = () => {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <div className="flex space-x-2">
-                          <button 
+                          <button type="button" aria-label="View details" 
                             className="text-blue-600 hover:text-blue-900"
                             onClick={() => navigate(`/dashboard/content/${item.id}/view`)}
                           >
                             <Eye className="h-4 w-4" />
                           </button>
-                          <button 
+                          <button type="button" aria-label="Edit" 
                             className="text-green-600 hover:text-green-900"
                             onClick={() => navigate(`/dashboard/content/${item.id}/edit`)}
                           >
@@ -366,13 +366,13 @@ const ContentManagementPage: React.FC = () => {
                           </button>
                           {item.status === 'pending' && (
                             <>
-                              <button 
+                              <button type="button" aria-label="Confirm" 
                                 className="text-green-600 hover:text-green-900"
                                 onClick={() => handleApproveContent(item.id)}
                               >
                                 <CheckCircle className="h-4 w-4" />
                               </button>
-                              <button 
+                              <button type="button" aria-label="Close" 
                                 className="text-red-600 hover:text-red-900"
                                 onClick={() => handleRejectContent(item.id)}
                               >
@@ -466,7 +466,7 @@ const ContentManagementPage: React.FC = () => {
                     </button>
                     
                     {[...Array(totalPages)].map((_, i) => (
-                      <button
+                      <button type="button" aria-label="Navigate page"
                         key={i + 1}
                         onClick={() => setCurrentPage(i + 1)}
                         className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
@@ -509,7 +509,7 @@ const ContentManagementPage: React.FC = () => {
             <div className="mt-3">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-medium text-gray-900">Create New Content</h3>
-                <button 
+                <button type="button" aria-label="Close" 
                   className="text-slate-700 hover:text-gray-700"
                   onClick={() => setShowCreateModal(false)}
                 >

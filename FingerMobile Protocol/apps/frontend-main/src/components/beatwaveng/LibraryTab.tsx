@@ -204,7 +204,7 @@ export const LibraryTab: React.FC = () => {
                   </span>
                 )}
 
-                <button
+                <button type="button" aria-label="Play"
                   onClick={() => playTrack(tracks[0])}
                   className="absolute bottom-3 right-3 w-12 h-12 rounded-full bg-emerald-500 text-black flex items-center justify-center shadow-lg transition-transform hover:scale-110 active:scale-95"
                 >
@@ -254,7 +254,7 @@ export const LibraryTab: React.FC = () => {
                 className="p-3.5 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-emerald-500/40 flex items-center justify-between gap-4 transition-all"
               >
                 <div className="flex items-center gap-3.5 min-w-0">
-                  <button
+                  <button type="button" aria-label="Pause"
                     onClick={() => playTrack(track, likedTracks)}
                     className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${
                       isCurrentPlaying
@@ -284,7 +284,7 @@ export const LibraryTab: React.FC = () => {
                   <span className="text-xs font-mono text-slate-300 font-medium">
                     {formatTime(track.duration)}
                   </span>
-                  <button
+                  <button type="button" aria-label="Like"
                     onClick={() => likeTrack(track.id)}
                     className="text-rose-500 p-1.5 hover:scale-110 transition-transform"
                   >

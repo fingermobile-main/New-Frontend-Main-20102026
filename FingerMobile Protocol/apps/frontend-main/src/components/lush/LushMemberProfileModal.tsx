@@ -59,7 +59,7 @@ export const LushMemberProfileModal: React.FC<LushMemberProfileModalProps> = ({
               <SparklesIcon className="w-3.5 h-3.5 text-amber-300" />
               {member.compatibilityScore}% Compatibility
             </span>
-            <button
+            <button type="button" aria-label="Close"
               onClick={onClose}
               className="p-1.5 rounded-full bg-black/40 text-white hover:bg-black/60 transition"
             >

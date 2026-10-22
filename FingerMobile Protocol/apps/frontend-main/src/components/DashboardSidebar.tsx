@@ -42,7 +42,7 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
       <div className="flex flex-col h-full">
         {/* Toggle Button */}
         <div className="p-4 border-b">
-          <Button
+          <Button type="button" aria-label="Next"
             variant="ghost"
             size="icon"
             onClick={onToggle}

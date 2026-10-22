@@ -183,7 +183,7 @@ const VoiceFeedPage: React.FC = () => {
 
                   {/* Audio Player Bar */}
                   <div className="bg-slate-100 rounded-xl p-4 flex items-center gap-4 border border-slate-200">
-                    <button
+                    <button type="button" aria-label="Pause"
                       onClick={() => togglePlay(post.id)}
                       className={`w-11 h-11 rounded-full flex items-center justify-center transition-transform active:scale-95 shadow ${
                         currentlyPlayingId === post.id

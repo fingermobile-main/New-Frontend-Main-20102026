@@ -377,7 +377,7 @@ const CacheManagementPage: React.FC = () => {
                               {new Date(cacheKey.lastAccessed).toLocaleTimeString()}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm">
-                              <button
+                              <button type="button" aria-label="Delete"
                                 onClick={() => handleDeleteKey(cacheKey.key)}
                                 className="text-red-600 hover:text-red-800"
                               >

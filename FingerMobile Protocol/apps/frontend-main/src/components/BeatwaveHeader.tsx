@@ -57,7 +57,7 @@ const BeatwaveHeader: React.FC<BeatwaveHeaderProps> = ({
                 </span>
               )}
             </Button>
-            <Button variant="ghost" size="icon" onClick={onProfile} className="text-slate-700 hover:text-slate-900">
+            <Button type="button" aria-label="Profile" variant="ghost" size="icon" onClick={onProfile} className="text-slate-700 hover:text-slate-900">
               <User className="h-5 w-5" />
             </Button>
           </div>

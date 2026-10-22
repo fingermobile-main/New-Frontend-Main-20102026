@@ -599,7 +599,7 @@ const CataloguePage: React.FC = () => {
                   </span>
                   <h3 className="text-xl font-black text-gray-900 mt-1">{selectedAsset.title}</h3>
                 </div>
-                <button
+                <button type="button" aria-label="Close"
                   onClick={() => setSelectedAsset(null)}
                   className="p-1 rounded-full text-slate-700 hover:text-gray-600 hover:bg-gray-100"
                 >
@@ -701,7 +701,7 @@ const CataloguePage: React.FC = () => {
                   <ShieldCheckIcon className="w-6 h-6 text-indigo-600" />
                   <h3 className="text-lg font-black text-gray-900">Secure Creative License</h3>
                 </div>
-                <button
+                <button type="button" aria-label="Close"
                   onClick={() => setPurchasingAsset(null)}
                   className="text-slate-700 hover:text-gray-600"
                 >

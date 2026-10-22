@@ -246,7 +246,7 @@ const ProductManager: React.FC<ProductManagerProps> = ({ storeId }) => {
       {/* Filter Tabs */}
       <div className="flex gap-2">
         {['all', 'active', 'draft', 'archived'].map((status) => (
-          <button
+          <button type="button" aria-label="Action"
             key={status}
             onClick={() => setFilterStatus(status)}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${

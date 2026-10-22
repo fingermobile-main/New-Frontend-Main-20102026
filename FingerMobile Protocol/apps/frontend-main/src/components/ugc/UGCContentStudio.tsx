@@ -512,7 +512,7 @@ const UGCContentStudio: React.FC<UGCContentStudioProps> = ({
           <div className="bg-white rounded-xl border border-slate-300 shadow-2xl max-w-md w-full p-6 space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-base font-black text-slate-900">Edit Content Title</h3>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setEditingItem(null)}
                 className="text-slate-500 hover:text-slate-900"
               >
@@ -552,7 +552,7 @@ const UGCContentStudio: React.FC<UGCContentStudioProps> = ({
           <div className="bg-white rounded-xl border border-slate-300 shadow-2xl max-w-md w-full p-6 space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-base font-black text-slate-900">Schedule Content Release</h3>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setSchedulingItem(null)}
                 className="text-slate-500 hover:text-slate-900"
               >

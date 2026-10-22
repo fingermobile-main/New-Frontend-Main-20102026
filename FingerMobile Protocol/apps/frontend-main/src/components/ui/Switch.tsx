@@ -7,7 +7,7 @@ interface SwitchProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>
 
 const Switch: React.FC<SwitchProps> = ({ checked, onCheckedChange, className, ...props }) => {
   return (
-    <button
+    <button aria-label="Action"
       type="button"
       role="switch"
       aria-checked={checked}

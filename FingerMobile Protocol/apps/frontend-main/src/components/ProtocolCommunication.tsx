@@ -539,7 +539,7 @@ const ProtocolCommunication: React.FC<ProtocolCommunicationProps> = ({
             />
           </div>
 
-          <button
+          <button type="button" aria-label="Send"
             onClick={handleSendMessage}
             disabled={!newMessage.trim()}
             className={`ml-2 p-2 rounded-full ${

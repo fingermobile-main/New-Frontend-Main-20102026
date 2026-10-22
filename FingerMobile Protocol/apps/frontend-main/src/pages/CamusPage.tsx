@@ -684,7 +684,7 @@ export const CamusPage: React.FC = () => {
                         <span className="font-bold text-blue-900 flex items-center gap-1.5">
                           <Bot className="w-4 h-4 text-blue-700" /> Camus Intelligence Insight:
                         </span>
-                        <button
+                        <button type="button" aria-label="Close"
                           onClick={() => setAiCopilotAnswer(null)}
                           className="text-slate-500 hover:text-slate-800"
                         >
@@ -1724,7 +1724,7 @@ export const CamusPage: React.FC = () => {
                     <p className="text-xs text-slate-700">Course Syllabus & Microlesson Breakdown</p>
                   </div>
                 </div>
-                <button
+                <button type="button" aria-label="Close"
                   onClick={() => setIsSyllabusModalOpen(false)}
                   className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg"
                 >
@@ -1821,7 +1821,7 @@ export const CamusPage: React.FC = () => {
                     <p className="text-xs text-slate-700">Immediate matriculation, seat provisioning & grant accreditation</p>
                   </div>
                 </div>
-                <button
+                <button type="button" aria-label="Close"
                   onClick={() => setIsApplicantModalOpen(false)}
                   className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg"
                 >
@@ -2043,7 +2043,7 @@ export const CamusPage: React.FC = () => {
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <button
+                  <button type="button" aria-label="Close"
                     onClick={() => setIsStudyDeskOpen(false)}
                     className="p-2 text-slate-500 hover:text-slate-800 rounded-xl hover:bg-slate-100"
                   >
@@ -2334,7 +2334,7 @@ export const CamusPage: React.FC = () => {
                     <p className="text-xs text-slate-700">Author: {readingResource.author} · {readingResource.pages} Pages</p>
                   </div>
                 </div>
-                <button
+                <button type="button" aria-label="Close"
                   onClick={() => setReadingResource(null)}
                   className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg"
                 >

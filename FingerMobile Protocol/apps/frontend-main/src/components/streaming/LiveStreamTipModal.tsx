@@ -80,7 +80,7 @@ const LiveStreamTipModal: React.FC<LiveStreamTipModalProps> = ({
       <div className="bg-white rounded-3xl w-full max-w-md overflow-hidden shadow-2xl border border-slate-200 animate-fade-in">
         {/* Modal Header */}
         <div className="bg-gradient-to-r from-yellow-500 via-amber-500 to-orange-500 p-6 text-white relative">
-          <button
+          <button aria-label="Close"
             type="button"
             onClick={onClose}
             className="absolute top-4 right-4 p-1.5 rounded-full bg-white/20 hover:bg-white/30 text-slate-700"

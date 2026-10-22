@@ -150,7 +150,7 @@ const InvestorRelationsPage: React.FC = () => {
             <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 animate-in fade-in zoom-in-95">
               <div className="flex justify-between items-center pb-4 border-b border-slate-200">
                 <h3 className="text-lg font-black text-gray-900">Publish Regulatory Disclosure</h3>
-                <button type="button" onClick={() => setShowFilingModal(false)} className="text-slate-700 hover:text-gray-600">
+                <button aria-label="Close" type="button" onClick={() => setShowFilingModal(false)} className="text-slate-700 hover:text-gray-600">
                   <XMarkIcon className="w-5 h-5" />
                 </button>
               </div>

@@ -163,7 +163,7 @@ export const LapidaireQuestionModal: React.FC<LapidaireQuestionModalProps> = ({
               </p>
             </div>
           </div>
-          <button
+          <button type="button" aria-label="Close"
             onClick={onClose}
             className="p-1 text-slate-700 hover:text-gray-600 rounded-lg"
           >

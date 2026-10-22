@@ -300,7 +300,7 @@ export const LeadershipBoardConsole: React.FC = () => {
             {statusMessage.type === 'success' ? <CheckCircle2 className="w-5 h-5" /> : <AlertTriangle className="w-5 h-5" />}
             <span>{statusMessage.text}</span>
           </div>
-          <button type="button" onClick={() => setStatusMessage(null)}>
+          <button aria-label="Close" type="button" onClick={() => setStatusMessage(null)}>
             <X className="w-4 h-4 text-slate-700" />
           </button>
         </div>
@@ -445,7 +445,7 @@ export const LeadershipBoardConsole: React.FC = () => {
                       </div>
 
                       <div className="flex items-center gap-1">
-                        <button
+                        <button type="button" aria-label="Edit"
                           onClick={() => {
                             setEditingEntry(entry);
                             setSelectedLeaderboardId(lb.id);
@@ -460,7 +460,7 @@ export const LeadershipBoardConsole: React.FC = () => {
                         >
                           <Edit3 className="w-3.5 h-3.5" />
                         </button>
-                        <button
+                        <button type="button" aria-label="Delete"
                           onClick={() => handleDeleteEntry(entry.id)}
                           className="p-1 rounded hover:bg-rose-50 text-rose-700"
                         >
@@ -484,7 +484,7 @@ export const LeadershipBoardConsole: React.FC = () => {
               <h3 className="text-lg font-black text-slate-900">
                 {editingEntry ? 'Edit Leaderboard Member' : 'Add Ranked Member'}
               </h3>
-              <button type="button" onClick={() => setIsEntryModalOpen(false)}>
+              <button aria-label="Close" type="button" onClick={() => setIsEntryModalOpen(false)}>
                 <X className="w-5 h-5 text-slate-700 hover:text-slate-900" />
               </button>
             </div>

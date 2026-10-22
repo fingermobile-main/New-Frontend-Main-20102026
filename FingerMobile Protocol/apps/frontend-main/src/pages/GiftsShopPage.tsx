@@ -199,7 +199,7 @@ export const GiftsShopPage: React.FC = () => {
                   Confirm Gift Exchange
                 </h3>
               </div>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setSelectedProduct(null)}
                 className="p-1 rounded-full text-slate-700 hover:text-gray-600 hover:bg-gray-100 transition"
               >

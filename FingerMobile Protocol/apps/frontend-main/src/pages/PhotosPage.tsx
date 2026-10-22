@@ -573,7 +573,7 @@ const PhotosPage: React.FC = () => {
                   </div>
                 </div>
 
-                <button
+                <button aria-label="Close"
                   type="button"
                   onClick={() => setSelectedPhoto(null)}
                   className="p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors"
@@ -660,7 +660,7 @@ const PhotosPage: React.FC = () => {
                   <Camera className="w-5 h-5 text-orange-600" />
                   <h2 className="text-lg font-black text-slate-900">Curate New Photograph</h2>
                 </div>
-                <button
+                <button aria-label="Close"
                   type="button"
                   onClick={() => setShowUploadModal(false)}
                   className="p-1.5 rounded-xl text-slate-600 hover:text-slate-900"

@@ -436,13 +436,13 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
               {/* Left & Right floating carousel arrows if multi-image */}
               {mediaList.length > 1 && (
                 <>
-                  <button
+                  <button type="button" aria-label="Previous"
                     onClick={() => setActiveMediaIndex((prev) => (prev > 0 ? prev - 1 : mediaList.length - 1))}
                     className="absolute left-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-slate-900/70 hover:bg-slate-900 text-white backdrop-blur-sm border border-slate-700 transition"
                   >
                     <ChevronLeftIcon className="w-5 h-5" />
                   </button>
-                  <button
+                  <button type="button" aria-label="Next"
                     onClick={() => setActiveMediaIndex((prev) => (prev < mediaList.length - 1 ? prev + 1 : 0))}
                     className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-slate-900/70 hover:bg-slate-900 text-white backdrop-blur-sm border border-slate-700 transition"
                   >

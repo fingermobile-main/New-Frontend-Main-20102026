@@ -729,7 +729,7 @@ export const ContentModeratorDashboardPage: React.FC = () => {
                   <ShieldCheck className="w-6 h-6 text-amber-500" />
                   <h3 className="text-lg font-bold text-slate-900 dark:text-white">Flagged Incident Dossier</h3>
                 </div>
-                <button
+                <button type="button" aria-label="Close"
                   onClick={() => setSelectedItem(null)}
                   className="p-1 rounded-full text-slate-700 hover:text-slate-600 dark:hover:text-slate-200"
                 >

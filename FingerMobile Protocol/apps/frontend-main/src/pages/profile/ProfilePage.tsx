@@ -2465,7 +2465,7 @@ export const ProfilePage: React.FC = () => {
                 <KeyRound className="w-5 h-5 text-orange-600" />
                 <h3 className="text-base font-black text-slate-900">PIN Exchange & Handshake</h3>
               </div>
-              <button
+              <button aria-label="Close"
                 type="button"
                 onClick={() => setIsHandshakeModalOpen(false)}
                 className="text-slate-600 hover:text-slate-800"

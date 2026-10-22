@@ -345,7 +345,7 @@ export const SoundRiverMasterConsole: React.FC = () => {
             {statusMessage.type === 'success' ? <CheckCircle2 className="w-5 h-5" /> : <AlertTriangle className="w-5 h-5" />}
             <span>{statusMessage.text}</span>
           </div>
-          <button type="button" onClick={() => setStatusMessage(null)}>
+          <button aria-label="Close" type="button" onClick={() => setStatusMessage(null)}>
             <X className="w-4 h-4 text-slate-700" />
           </button>
         </div>
@@ -633,7 +633,7 @@ export const SoundRiverMasterConsole: React.FC = () => {
                     <tr key={t.id} className="hover:bg-slate-50 transition-colors">
                       <td className="py-3.5 px-4">
                         <div className="flex items-center gap-3">
-                          <button
+                          <button type="button" aria-label="Pause"
                             onClick={() => setPlayingTrackId(playingTrackId === t.id ? null : t.id)}
                             className="p-2 rounded-full bg-cyan-100 text-cyan-950 border border-cyan-400 hover:bg-cyan-200"
                           >
@@ -657,7 +657,7 @@ export const SoundRiverMasterConsole: React.FC = () => {
                         {Math.floor(t.duration / 60)}:{String(t.duration % 60).padStart(2, '0')}
                       </td>
                       <td className="py-3.5 px-4 text-right">
-                        <button
+                        <button type="button" aria-label="Delete"
                           onClick={() => handleDeleteTrack(t.id)}
                           className="p-1.5 rounded-lg border border-slate-300 hover:bg-rose-50 text-rose-700 hover:text-rose-900"
                         >
@@ -813,7 +813,7 @@ export const SoundRiverMasterConsole: React.FC = () => {
           <div className="bg-white rounded-2xl border border-slate-300 shadow-2xl p-6 max-w-lg w-full space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-black text-slate-900">Upload Podcast Episode</h3>
-              <button type="button" onClick={() => setIsPodcastModalOpen(false)}>
+              <button aria-label="Close" type="button" onClick={() => setIsPodcastModalOpen(false)}>
                 <X className="w-5 h-5 text-slate-700 hover:text-slate-900" />
               </button>
             </div>
@@ -891,7 +891,7 @@ export const SoundRiverMasterConsole: React.FC = () => {
           <div className="bg-white rounded-2xl border border-slate-300 shadow-2xl p-6 max-w-md w-full space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-black text-slate-900">Create Colabo+ Playlist</h3>
-              <button type="button" onClick={() => setIsColaboModalOpen(false)}>
+              <button aria-label="Close" type="button" onClick={() => setIsColaboModalOpen(false)}>
                 <X className="w-5 h-5 text-slate-700 hover:text-slate-900" />
               </button>
             </div>

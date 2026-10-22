@@ -661,7 +661,7 @@ const EventsPage: React.FC = () => {
                   </span>
                   <h3 className="text-lg font-black text-gray-900 mt-1">{ticketCheckoutEvent.title}</h3>
                 </div>
-                <button
+                <button type="button" aria-label="Close"
                   onClick={() => setTicketCheckoutEvent(null)}
                   className="text-slate-700 hover:text-gray-600"
                 >
@@ -725,7 +725,7 @@ const EventsPage: React.FC = () => {
                   <GiftIcon className="w-6 h-6 text-purple-600" />
                   <h3 className="text-lg font-black text-gray-900">Gift Event Ticket</h3>
                 </div>
-                <button type="button" onClick={() => setGiftTicketEvent(null)} className="text-slate-700 hover:text-gray-600">
+                <button aria-label="Close" type="button" onClick={() => setGiftTicketEvent(null)} className="text-slate-700 hover:text-gray-600">
                   <XMarkIcon className="w-5 h-5" />
                 </button>
               </div>
@@ -777,7 +777,7 @@ const EventsPage: React.FC = () => {
                   <LinkIcon className="w-6 h-6 text-emerald-600" />
                   <h3 className="text-lg font-black text-gray-900">Create Ticket Paylink</h3>
                 </div>
-                <button type="button" onClick={() => setPaylinkEvent(null)} className="text-slate-700 hover:text-gray-600">
+                <button aria-label="Close" type="button" onClick={() => setPaylinkEvent(null)} className="text-slate-700 hover:text-gray-600">
                   <XMarkIcon className="w-5 h-5" />
                 </button>
               </div>
@@ -830,7 +830,7 @@ const EventsPage: React.FC = () => {
                   </span>
                   <h3 className="text-xl font-black text-gray-900 mt-1">{selectedEventForDetails.title}</h3>
                 </div>
-                <button type="button" onClick={() => setSelectedEventForDetails(null)} className="text-slate-700 hover:text-gray-600">
+                <button aria-label="Close" type="button" onClick={() => setSelectedEventForDetails(null)} className="text-slate-700 hover:text-gray-600">
                   <XMarkIcon className="w-5 h-5" />
                 </button>
               </div>
@@ -906,7 +906,7 @@ const EventsPage: React.FC = () => {
                   <h3 className="text-xl font-black text-gray-900">Host Community Event</h3>
                   <p className="text-xs text-slate-700 mt-0.5">Publish your conference, live stage or virtual meetup</p>
                 </div>
-                <button type="button" onClick={() => setIsHostModalOpen(false)} className="text-slate-700 hover:text-gray-600">
+                <button aria-label="Close" type="button" onClick={() => setIsHostModalOpen(false)} className="text-slate-700 hover:text-gray-600">
                   <XMarkIcon className="w-5 h-5" />
                 </button>
               </div>

@@ -889,7 +889,7 @@ const MessagesPage: React.FC = () => {
                   <CurrencyDollarIcon className="w-5 h-5 text-emerald-600" />
                   <h3 className="text-sm font-black text-slate-900">Send Direct Paylink in Chat</h3>
                 </div>
-                <button
+                <button aria-label="Close"
                   type="button"
                   onClick={() => setShowSendPaylinkModal(false)}
                   className="p-1 rounded-lg text-slate-600 hover:text-slate-900"
@@ -937,7 +937,7 @@ const MessagesPage: React.FC = () => {
             <div className="bg-white rounded-3xl border border-slate-300 max-w-md w-full p-6 shadow-2xl space-y-4">
               <div className="flex items-center justify-between border-b border-slate-200 pb-3">
                 <h3 className="text-sm font-black text-slate-900">Start New Sovereign Chat</h3>
-                <button
+                <button aria-label="Close"
                   type="button"
                   onClick={() => setShowNewChatModal(false)}
                   className="p-1 rounded-lg text-slate-600 hover:text-slate-900"

@@ -111,7 +111,7 @@ const LinkAccountModal: React.FC<LinkAccountModalProps> = ({
                         <Badge variant="default" className="bg-green-500">
                           Connected
                         </Badge>
-                        <Button
+                        <Button type="button" aria-label="Close"
                           variant="ghost"
                           size="sm"
                           onClick={(e) => {

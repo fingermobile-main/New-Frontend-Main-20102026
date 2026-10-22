@@ -115,7 +115,7 @@ const Calendar: React.FC<CalendarProps> = ({
         ))}
 
         {days.map((day, index) => (
-          <div
+          <div aria-label="Close modal"
             key={index}
             onClick={() => handleDayClick(day)} role="button" tabIndex={0}
             className={`h-8 w-8 rounded-full text-center text-sm p-0 flex items-center justify-center ${

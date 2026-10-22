@@ -257,7 +257,7 @@ const StercsMediaLibrary: React.FC = () => {
       {selectedAsset && (
         <div className="fixed inset-0 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 z-50">
           <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-lg w-full shadow-2xl relative">
-            <button
+            <button type="button" aria-label="Close"
               onClick={() => setSelectedAsset(null)}
               className="absolute top-4 right-4 p-2 text-slate-300 hover:text-white rounded-full bg-slate-800"
             >

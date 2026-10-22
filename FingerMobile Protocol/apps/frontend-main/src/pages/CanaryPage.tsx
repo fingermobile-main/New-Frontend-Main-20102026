@@ -407,7 +407,7 @@ const CanaryPage: React.FC = () => {
             <div className="mb-6 border-b border-gray-200">
               <nav className="flex space-x-8" aria-label="Tabs">
                 {['active', 'resolved', 'all'].map((tab) => (
-                  <button
+                  <button type="button" aria-label="Action"
                     key={tab}
                     onClick={() => setActiveTab(tab)}
                     className={`

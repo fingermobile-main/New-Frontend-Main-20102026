@@ -2120,7 +2120,7 @@ const WalletPage: React.FC = () => {
                             *999*0514108422*{fundAmountNgn}#
                           </span>
                         </div>
-                        <button
+                        <button aria-label="Copy"
                           type="button"
                           onClick={() => {
                             navigator.clipboard.writeText(`*999*0514108422*${fundAmountNgn}#`);

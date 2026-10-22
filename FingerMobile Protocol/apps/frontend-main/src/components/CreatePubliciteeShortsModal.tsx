@@ -189,7 +189,7 @@ export const CreatePubliciteeShortsModal: React.FC<CreatePubliciteeShortsModalPr
             <h2 className="text-xl font-bold text-gray-900 dark:text-white">Create New Post</h2>
             <p className="text-xs text-slate-700 dark:text-slate-300 font-medium">Choose between Publicitee (Reels) or FingerShorts (Stories)</p>
           </div>
-          <button
+          <button type="button" aria-label="Close"
             onClick={onClose}
             className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 text-gray-950 dark:text-gray-300 flex items-center justify-center transition-colors border border-gray-400 font-black"
           >

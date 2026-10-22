@@ -149,7 +149,7 @@ export const CanaryAdPlacementWidget: React.FC<CanaryAdPlacementWidgetProps> = (
         <div className="flex items-center justify-between mt-3">
           <div className="flex gap-1.5">
             {cards.map((_, idx) => (
-              <button
+              <button aria-label="Action"
                 key={idx}
                 type="button"
                 onClick={() => setActiveCardIndex(idx)}

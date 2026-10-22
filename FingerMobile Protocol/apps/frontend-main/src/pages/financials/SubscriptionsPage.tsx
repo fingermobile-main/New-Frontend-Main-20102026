@@ -1278,7 +1278,7 @@ export const SubscriptionsPage: React.FC = () => {
           {editingCard && (
             <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center z-[99999] p-4 overflow-y-auto">
               <div className="bg-white border border-slate-300 rounded-3xl p-6 sm:p-8 max-w-xl w-full shadow-2xl relative my-8 text-slate-900">
-                <button
+                <button aria-label="Close"
                   type="button"
                   onClick={closeEditorModal}
                   className="absolute top-5 right-5 p-2 text-slate-600 hover:text-slate-900 rounded-xl hover:bg-slate-100 transition cursor-pointer"
@@ -1400,7 +1400,7 @@ export const SubscriptionsPage: React.FC = () => {
                             }}
                             className="flex-1 bg-white text-slate-900 font-bold focus:outline-none text-xs border border-slate-300 rounded focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                           />
-                          <button
+                          <button aria-label="Delete"
                             type="button"
                             onClick={() => {
                               const updatedFeatures = editForm.features.filter((_, idx) => idx !== i);
@@ -1486,7 +1486,7 @@ export const SubscriptionsPage: React.FC = () => {
           {selectedPlanForUpgrade && (
             <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center z-[99999] p-4">
               <div className="bg-white border border-slate-300 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl relative text-slate-900">
-                <button
+                <button aria-label="Close"
                   type="button"
                   onClick={() => setSelectedPlanForUpgrade(null)}
                   className="absolute top-4 right-4 p-2 text-slate-600 hover:text-slate-900 rounded-xl hover:bg-slate-100 cursor-pointer"

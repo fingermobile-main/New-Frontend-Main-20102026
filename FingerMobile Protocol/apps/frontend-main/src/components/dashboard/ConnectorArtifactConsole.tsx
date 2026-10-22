@@ -979,7 +979,7 @@ export const ConnectorArtifactConsole: React.FC = () => {
                   <span className="text-xs text-indigo-300 font-mono">{selectedAction.id}</span>
                 </div>
               </div>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setActionModalOpen(false)}
                 className="p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition-colors"
               >
@@ -1090,7 +1090,7 @@ export const ConnectorArtifactConsole: React.FC = () => {
                   <span className="text-xs text-slate-300 font-medium">{authModalConnector}</span>
                 </div>
               </div>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setAuthModalConnector(null)}
                 className="p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition-colors"
               >

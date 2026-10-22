@@ -307,7 +307,7 @@ export const LushChatPanel: React.FC<LushChatPanelProps> = ({
                 className="flex-1 px-4 py-2 text-xs rounded-xl border border-emerald-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white text-slate-900 font-bold border-slate-300 placeholder:text-slate-400"
               />
 
-              <button
+              <button aria-label="Send"
                 type="submit"
                 disabled={!inputBody.trim() && !mediaUrlInput.trim()}
                 className="p-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 disabled:opacity-40 text-white font-medium shadow-xs transition-colors"

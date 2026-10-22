@@ -1025,13 +1025,13 @@ export const SuperViGame: React.FC<SuperViGameProps> = ({ memberId, onExit }) =>
         <div className="absolute bottom-6 left-0 right-0 z-30 px-6 flex items-center justify-between pointer-events-none sm:hidden">
           {/* Left / Right Buttons */}
           <div className="flex items-center gap-3 pointer-events-auto">
-            <button
+            <button type="button" aria-label="Previous"
               onClick={() => switchLane('LEFT')}
               className="w-14 h-14 rounded-2xl bg-white/90 text-slate-900 border-2 border-slate-300 shadow-xl flex items-center justify-center font-black active:scale-90 transition-transform"
             >
               <ArrowLeft className="w-7 h-7" />
             </button>
-            <button
+            <button type="button" aria-label="Next"
               onClick={() => switchLane('RIGHT')}
               className="w-14 h-14 rounded-2xl bg-white/90 text-slate-900 border-2 border-slate-300 shadow-xl flex items-center justify-center font-black active:scale-90 transition-transform"
             >
@@ -1041,13 +1041,13 @@ export const SuperViGame: React.FC<SuperViGameProps> = ({ memberId, onExit }) =>
 
           {/* Jump / Slide Buttons */}
           <div className="flex items-center gap-3 pointer-events-auto">
-            <button
+            <button type="button" aria-label="Move down"
               onClick={performSlide}
               className="w-14 h-14 rounded-2xl bg-white/90 text-slate-900 border-2 border-slate-300 shadow-xl flex items-center justify-center font-black active:scale-90 transition-transform"
             >
               <ArrowDown className="w-7 h-7" />
             </button>
-            <button
+            <button type="button" aria-label="Move up"
               onClick={() => performJump(false)}
               className="w-14 h-14 rounded-2xl bg-amber-400 text-slate-950 border-2 border-amber-200 shadow-xl flex items-center justify-center font-black active:scale-90 transition-transform"
             >

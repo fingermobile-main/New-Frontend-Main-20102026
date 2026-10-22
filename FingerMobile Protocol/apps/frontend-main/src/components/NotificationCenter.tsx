@@ -104,7 +104,7 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({
                       {notification.title}
                     </h4>
                     {!notification.read && (
-                      <Button
+                      <Button type="button" aria-label="Confirm"
                         variant="ghost"
                         size="icon"
                         className="h-6 w-6 text-slate-700 hover:text-slate-900"
@@ -117,7 +117,7 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({
                   <p className="text-xs text-slate-700 font-medium mt-1">{notification.message}</p>
                   <div className="flex items-center justify-between mt-2">
                     <span className="text-xs text-slate-600 font-medium">{notification.timestamp}</span>
-                    <Button
+                    <Button type="button" aria-label="Close"
                       variant="ghost"
                       size="icon"
                       className="h-6 w-6 text-slate-700 hover:text-slate-900"

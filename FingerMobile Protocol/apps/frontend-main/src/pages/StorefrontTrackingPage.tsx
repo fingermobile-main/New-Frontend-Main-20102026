@@ -630,7 +630,7 @@ export const StorefrontTrackingPage: React.FC = () => {
                 <Package className="w-5 h-5 text-blue-400" />
                 <h3 className="font-bold text-sm text-white">Dispatch New Merchant Shipment</h3>
               </div>
-              <button
+              <button aria-label="Close"
                 type="button"
                 onClick={() => setIsDispatchModalOpen(false)}
                 className="text-slate-300 hover:text-white p-1 rounded"
@@ -717,7 +717,7 @@ export const StorefrontTrackingPage: React.FC = () => {
                 <Truck className="w-5 h-5 text-emerald-400" />
                 <h3 className="font-bold text-sm text-white">Log Transit Milestone</h3>
               </div>
-              <button
+              <button aria-label="Close"
                 type="button"
                 onClick={() => setIsUpdateStatusModalOpen(false)}
                 className="text-slate-300 hover:text-white p-1 rounded"

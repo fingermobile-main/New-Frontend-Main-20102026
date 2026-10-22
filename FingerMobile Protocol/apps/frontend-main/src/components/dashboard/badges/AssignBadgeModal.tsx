@@ -85,7 +85,7 @@ export const AssignBadgeModal: React.FC<AssignBadgeModalProps> = ({
               Award <strong className="text-slate-900 dark:text-white font-black">{badge.name}</strong> to community members.
             </p>
           </div>
-          <button
+          <button type="button" aria-label="Close"
             onClick={onClose}
             className="p-2 text-slate-500 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
           >

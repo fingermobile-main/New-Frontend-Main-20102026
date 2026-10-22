@@ -293,7 +293,7 @@ export const ReelsSection: React.FC<ReelsSectionProps> = ({ isOwner, onToast }) 
                 </div>
 
                 <div className="flex items-center justify-between pt-1 border-t border-white/20 text-xs font-bold">
-                  <button
+                  <button aria-label="Like"
                     type="button"
                     onClick={() => handleLikeReel(reel.id)}
                     className="flex items-center gap-1 hover:text-red-400 transition-colors"
@@ -358,7 +358,7 @@ export const ReelsSection: React.FC<ReelsSectionProps> = ({ isOwner, onToast }) 
                 <Film className="w-5 h-5 text-orange-600" />
                 <h3 className="text-base font-black text-slate-900">Create Sovereign Reel (Max 30s)</h3>
               </div>
-              <button
+              <button aria-label="Close"
                 type="button"
                 onClick={() => setIsCreateModalOpen(false)}
                 className="text-slate-500 hover:text-slate-900"

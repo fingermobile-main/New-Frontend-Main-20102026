@@ -223,7 +223,7 @@ export const MemberTributProjectsModal: React.FC<MemberTributProjectsModalProps>
                       />
 
                       {/* Top Save badge */}
-                      <button
+                      <button type="button" aria-label="Bookmark"
                         onClick={(e) => onToggleSavePin(p, e)}
                         className={`absolute top-2.5 right-2.5 p-1.5 rounded-lg backdrop-blur-md transition ${
                           isSaved ? 'bg-red-600 text-white' : 'bg-black/60 hover:bg-red-600 text-white'

@@ -506,7 +506,7 @@ const BlogsPage: React.FC = () => {
                       className="w-full bg-white text-slate-900 pl-10 pr-10 py-2.5 rounded-xl text-xs font-bold border border-slate-300 focus:outline-none focus:ring-2 focus:ring-orange-500 placeholder:text-slate-400"
                     />
                     {searchTerm && (
-                      <button
+                      <button type="button" aria-label="Close"
                         onClick={() => setSearchTerm('')}
                         className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-600 hover:text-slate-900"
                       >
@@ -550,7 +550,7 @@ const BlogsPage: React.FC = () => {
                   {selectedTag && (
                     <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-amber-100 text-amber-950 border border-amber-300">
                       <span>Tag: {selectedTag}</span>
-                      <button type="button" onClick={() => setSelectedTag(null)} className="hover:text-red-700">
+                      <button aria-label="Close" type="button" onClick={() => setSelectedTag(null)} className="hover:text-red-700">
                         <X className="w-3 h-3" />
                       </button>
                     </div>
@@ -1074,7 +1074,7 @@ const BlogsPage: React.FC = () => {
                 </div>
               </div>
 
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setReaderPost(null)}
                 className="p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-200 transition"
               >

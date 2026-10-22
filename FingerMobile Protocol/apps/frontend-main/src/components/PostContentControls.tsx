@@ -237,7 +237,7 @@ export const PostContentControls: React.FC<PostContentControlsProps> = ({
           <div className="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 space-y-4">
             <div className="flex justify-between items-center">
               <h3 className="font-bold text-gray-900">Privacy & Access Settings</h3>
-              <button
+              <button type="button" aria-label="Action"
                 onClick={() => setIsPrivacyModalOpen(false)}
                 className="text-slate-700 hover:text-gray-600"
               >

@@ -87,7 +87,7 @@ const Navigation: React.FC<NavigationProps> = ({
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center">
-            <Button
+            <Button type="button" aria-label="Close"
               variant="ghost"
               size="icon"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}

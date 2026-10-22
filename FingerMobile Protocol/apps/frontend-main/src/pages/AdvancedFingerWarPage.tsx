@@ -446,7 +446,7 @@ const AdvancedFingerWarPage: React.FC = () => {
                 <h3 className="text-base font-black text-slate-900">Sovereign Grandmaster Ladder</h3>
                 <p className="text-xs text-slate-700 font-medium">Rankings refresh every 2 hours with automated smart contract payouts</p>
               </div>
-              <button
+              <button aria-label="Refresh"
                 type="button"
                 onClick={() => showToast?.('Refreshed live combat ratings', 'info')}
                 className="p-2 rounded-xl border border-slate-300 hover:bg-slate-100 text-slate-700"

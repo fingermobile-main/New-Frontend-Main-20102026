@@ -315,7 +315,7 @@ export const SoundOceanMasterConsole: React.FC = () => {
             {statusMessage.type === 'success' ? <CheckCircle2 className="w-5 h-5" /> : <AlertTriangle className="w-5 h-5" />}
             <span>{statusMessage.text}</span>
           </div>
-          <button type="button" onClick={() => setStatusMessage(null)}>
+          <button aria-label="Close" type="button" onClick={() => setStatusMessage(null)}>
             <X className="w-4 h-4 text-slate-700" />
           </button>
         </div>
@@ -459,7 +459,7 @@ export const SoundOceanMasterConsole: React.FC = () => {
                     <td className="py-3.5 px-4 font-bold text-emerald-900">{m.royaltyCreatorSplitPct}% to Creator</td>
                     <td className="py-3.5 px-4 font-mono text-xs text-purple-900 font-bold">{m.seshatSeal}</td>
                     <td className="py-3.5 px-4 text-right">
-                      <button
+                      <button type="button" aria-label="Delete"
                         onClick={() => handleDeleteMaster(m.id)}
                         className="p-1.5 rounded-lg border border-slate-300 hover:bg-rose-50 text-rose-700 hover:text-rose-900"
                       >
@@ -776,7 +776,7 @@ export const SoundOceanMasterConsole: React.FC = () => {
           <div className="bg-white rounded-2xl border border-slate-300 shadow-2xl p-6 max-w-md w-full space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-black text-slate-900">Generate 5-Seat Sovereign Crew Pass</h3>
-              <button type="button" onClick={() => setIsCrewModalOpen(false)}>
+              <button aria-label="Close" type="button" onClick={() => setIsCrewModalOpen(false)}>
                 <X className="w-5 h-5 text-slate-700 hover:text-slate-900" />
               </button>
             </div>

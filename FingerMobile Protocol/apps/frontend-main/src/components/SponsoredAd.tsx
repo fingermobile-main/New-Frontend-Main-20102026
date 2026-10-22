@@ -26,7 +26,7 @@ const SponsoredAd: React.FC<SponsoredAdProps> = ({
     return (
       <div className="relative w-full bg-gradient-to-r from-primary/10 via-primary/5 to-transparent border-l-4 border-primary p-4 rounded-r-lg border-y border-r border-slate-200">
         {onClose && (
-          <Button
+          <Button type="button" aria-label="Close"
             variant="ghost"
             size="icon"
             className="absolute top-2 right-2 h-6 w-6 text-slate-700 hover:text-slate-900"
@@ -58,7 +58,7 @@ const SponsoredAd: React.FC<SponsoredAdProps> = ({
     return (
       <div className="relative bg-white border border-slate-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow">
         {onClose && (
-          <Button
+          <Button type="button" aria-label="Close"
             variant="ghost"
             size="icon"
             className="absolute top-2 right-2 h-6 w-6 z-10 text-slate-700 hover:text-slate-900"
@@ -92,7 +92,7 @@ const SponsoredAd: React.FC<SponsoredAdProps> = ({
   return (
     <div className="relative flex items-start gap-3 p-3 bg-slate-50 rounded-lg border border-slate-200">
       {onClose && (
-        <Button
+        <Button type="button" aria-label="Close"
           variant="ghost"
           size="icon"
           className="absolute top-1 right-1 h-5 w-5 text-slate-700 hover:text-slate-900"

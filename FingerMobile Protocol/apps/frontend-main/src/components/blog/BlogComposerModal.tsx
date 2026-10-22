@@ -201,7 +201,7 @@ export const BlogComposerModal: React.FC<BlogComposerModalProps> = ({
                 <Settings className="w-3.5 h-3.5" />
                 <span>Section 2 Settings</span>
               </button>
-              <button
+              <button aria-label="Close"
                 type="button"
                 onClick={onClose}
                 className="p-2 text-slate-700 hover:text-slate-600 dark:hover:text-slate-200 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800"

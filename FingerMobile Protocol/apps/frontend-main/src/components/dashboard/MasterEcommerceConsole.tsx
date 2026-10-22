@@ -962,7 +962,7 @@ const MasterEcommerceConsole: React.FC = () => {
               <h3 className="font-black text-sm text-slate-900 dark:text-white">
                 Restock Flagship Inventory
               </h3>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setIsRestockModalOpen(false)}
                 className="text-slate-700 hover:text-slate-600"
               >

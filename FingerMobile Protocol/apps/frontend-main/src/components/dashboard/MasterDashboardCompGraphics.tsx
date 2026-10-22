@@ -197,7 +197,7 @@ export const RealtimeTelemetrySparklineCard: React.FC<{
         {/* Tier Toggles */}
         <div className="flex items-center gap-1 bg-slate-800 p-1 rounded-xl">
           {(['p50', 'p95', 'p99'] as const).map((tier) => (
-            <button
+            <button aria-label="Action"
               key={tier}
               type="button"
               onClick={() => setActiveTier(tier)}
@@ -629,7 +629,7 @@ export const ConsoleDetailModal: React.FC<{
             <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mt-1">{item.purpose}</p>
           </div>
 
-          <button
+          <button aria-label="Close"
             type="button"
             onClick={onClose}
             className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition"

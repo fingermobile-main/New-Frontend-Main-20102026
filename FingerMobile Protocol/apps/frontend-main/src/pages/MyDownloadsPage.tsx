@@ -545,7 +545,7 @@ const MyDownloadsPage: React.FC = () => {
                   {isPlayingAudio ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
                   <span>{isPlayingAudio ? 'Pause' : 'Resume'}</span>
                 </button>
-                <button
+                <button aria-label="Close"
                   type="button"
                   onClick={() => {
                     setActivePlaybackId(null);
@@ -830,7 +830,7 @@ const MyDownloadsPage: React.FC = () => {
                     <p className="text-xs text-slate-700 font-medium">Standalone Sovereign Player App (In Development)</p>
                   </div>
                 </div>
-                <button
+                <button aria-label="Close"
                   type="button"
                   onClick={() => setShowStandAlonePlayerModal(false)}
                   className="p-1 rounded-lg text-slate-600 hover:text-slate-900"

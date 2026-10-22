@@ -151,7 +151,7 @@ export const UniversalHeader: React.FC<UniversalHeaderProps> = ({ pageTitle }) =
                   </span>
                   <span className="font-extrabold text-sm text-white">Canary™ Navigation</span>
                 </div>
-                <button
+                <button aria-label="Close"
                   type="button"
                   onClick={() => setIsBurgerOpen(false)}
                   className="p-1 rounded-md text-slate-300 hover:text-white hover:bg-slate-800"

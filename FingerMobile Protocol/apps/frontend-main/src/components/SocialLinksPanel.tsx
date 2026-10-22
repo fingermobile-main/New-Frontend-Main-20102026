@@ -253,13 +253,13 @@ const SocialLinksPanel: React.FC = () => {
                     </div>
                   </div>
                   <div className="flex space-x-2">
-                    <button
+                    <button type="button" aria-label="Edit"
                       onClick={() => startEditing(link)}
                       className="inline-flex items-center p-1.5 text-sm font-medium text-gray-700 hover:text-gray-900 rounded-full hover:bg-gray-100"
                     >
                       <PencilIcon className="h-4 w-4" />
                     </button>
-                    <button
+                    <button type="button" aria-label="Delete"
                       onClick={() => handleDeleteLink(link.id)}
                       className="inline-flex items-center p-1.5 text-sm font-medium text-red-700 hover:text-red-900 rounded-full hover:bg-red-50"
                     >

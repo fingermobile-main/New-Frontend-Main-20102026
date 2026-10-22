@@ -4510,7 +4510,7 @@ export const ForumPage: React.FC = () => {
                 <span className="text-xs font-bold truncate max-w-md">{selectedLightboxImage.title}</span>
                 <span className="text-[10px] text-slate-300 font-medium font-mono">by {selectedLightboxImage.author}</span>
               </div>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setSelectedLightboxImage(null)}
                 className="p-1 rounded-full bg-white/10 hover:bg-white/20 text-slate-700 transition cursor-pointer"
               >

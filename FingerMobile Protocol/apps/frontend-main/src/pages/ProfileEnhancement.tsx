@@ -204,7 +204,7 @@ const ProfileEnhancement: React.FC = () => {
                 {certifications.map((cert) => (
                   <div key={cert} className="flex items-center justify-between p-3 bg-gray-50 border border-slate-300 rounded-lg text-xs font-medium text-gray-800">
                     <span>{cert}</span>
-                    <button
+                    <button aria-label="Delete"
                       type="button"
                       onClick={() => removeCert(cert)}
                       className="text-red-500 hover:text-red-700"

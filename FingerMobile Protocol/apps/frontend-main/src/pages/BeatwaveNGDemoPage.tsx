@@ -297,7 +297,7 @@ const BeatwaveNGDemoPage: React.FC = () => {
                 <p className="text-xs font-bold text-white">3D Spatial Head-Tracking</p>
                 <p className="text-[11px] text-slate-300 font-medium">Binaural 360-degree soundstage emulation</p>
               </div>
-              <button
+              <button type="button" aria-label="Action"
                 onClick={() => {
                   setSpatialAudio((prev) => !prev);
                   showToast?.(`Spatial audio ${!spatialAudio ? 'enabled' : 'disabled'}`, 'info');

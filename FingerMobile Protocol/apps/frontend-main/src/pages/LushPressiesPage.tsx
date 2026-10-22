@@ -852,7 +852,7 @@ export const LushPressiesPage: React.FC = () => {
                   Lush Plushies Luxury Gift Catalog
                 </h2>
               </div>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setShowCatalogModal(false)}
                 className="p-1.5 rounded-full hover:bg-gray-100 text-slate-700 transition"
               >
@@ -955,7 +955,7 @@ export const LushPressiesPage: React.FC = () => {
                   Lush Gamification, Streaks & Leaderboard
                 </h2>
               </div>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setShowGamificationModal(false)}
                 className="p-1.5 rounded-full hover:bg-gray-100 text-slate-700 transition"
               >
@@ -978,7 +978,7 @@ export const LushPressiesPage: React.FC = () => {
                   Member Activity Heatmap & Peak Hours
                 </h2>
               </div>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setShowHeatmapModal(false)}
                 className="p-1.5 rounded-full hover:bg-gray-100 text-slate-700 transition"
               >
@@ -1001,7 +1001,7 @@ export const LushPressiesPage: React.FC = () => {
                   5-Month Commitment Milestone
                 </h2>
               </div>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setShowCommitModal(false)}
                 className="p-1.5 rounded-full hover:bg-gray-100 text-slate-700 transition"
               >

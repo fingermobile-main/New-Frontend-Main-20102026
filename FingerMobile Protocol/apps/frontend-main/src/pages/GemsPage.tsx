@@ -1309,7 +1309,7 @@ const GemsPage: React.FC = () => {
                         <p className="text-xs text-slate-300 font-medium">Safe haven for sensitive discussions</p>
                       </div>
                     </div>
-                    <button
+                    <button aria-label="Action"
                       type="button"
                       onClick={() => {
                         setAnonymousPostingEnabled(!anonymousPostingEnabled);
@@ -1504,7 +1504,7 @@ const GemsPage: React.FC = () => {
                   </p>
                 </div>
               </div>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setIsAddGemsModalOpen(false)}
                 className="p-2 rounded-xl text-slate-300 font-medium hover:text-white hover:bg-slate-800 transition"
               >

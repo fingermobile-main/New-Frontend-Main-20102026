@@ -556,7 +556,7 @@ const MediaEditorModal: React.FC<MediaEditorModalProps> = ({
             >
               Reset
             </button>
-            <button
+            <button aria-label="Close"
               type="button"
               onClick={onClose}
               className="p-1.5 text-slate-300 hover:text-white rounded-xl hover:bg-slate-800 transition"
@@ -600,7 +600,7 @@ const MediaEditorModal: React.FC<MediaEditorModalProps> = ({
                     playsInline
                   />
                   {/* Video Play overlay button */}
-                  <button
+                  <button aria-label="Pause"
                     type="button"
                     onClick={handleToggleVideoPlay}
                     className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/20 transition group"
@@ -638,7 +638,7 @@ const MediaEditorModal: React.FC<MediaEditorModalProps> = ({
             {/* Video Controls Bar if Video */}
             {mediaType === 'video' && (
               <div className="w-full max-w-md mt-4 p-2.5 bg-slate-900/90 rounded-2xl border border-slate-800 flex items-center gap-3">
-                <button
+                <button aria-label="Pause"
                   type="button"
                   onClick={handleToggleVideoPlay}
                   className="p-2 rounded-xl bg-indigo-600 text-white hover:bg-indigo-500 transition shadow-md"
@@ -670,7 +670,7 @@ const MediaEditorModal: React.FC<MediaEditorModalProps> = ({
                   </div>
                 </div>
 
-                <button
+                <button aria-label="Toggle mute"
                   type="button"
                   onClick={() => setIsVideoMuted(!isVideoMuted)}
                   className="p-1.5 rounded-xl bg-slate-800 text-slate-300 hover:text-white"

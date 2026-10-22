@@ -230,7 +230,7 @@ const ManageMyHallmarkPage: React.FC = () => {
                       {tags && tags.length > 0 ? tags.map((tag, index) => (
                         <div key={index} className="bg-blue-100 text-blue-950 border border-blue-400 font-bold px-3 py-1 rounded-full flex items-center font-black">
                           {tag}
-                          <button
+                          <button type="button" aria-label="Close"
                             onClick={() => handleRemoveTag(index)}
                             className="ml-2 text-blue-800 hover:text-blue-900"
                           >
@@ -240,7 +240,7 @@ const ManageMyHallmarkPage: React.FC = () => {
                       )) : (selectedHallmark.tags || []).map((tag: string, index: number) => (
                         <div key={index} className="bg-blue-100 text-blue-950 border border-blue-400 font-bold px-3 py-1 rounded-full flex items-center font-black">
                           {tag}
-                          <button
+                          <button type="button" aria-label="Close"
                             onClick={() => handleRemoveTag(index)}
                             className="ml-2 text-blue-800 hover:text-blue-900"
                           >

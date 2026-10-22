@@ -81,7 +81,7 @@ export const TagProductSearchBar: React.FC<TagProductSearchBarProps> = ({
               </span>
               <span className="text-amber-400 font-mono text-[11px]">{p.price} FIC</span>
               {onRemoveProduct && (
-                <button
+                <button aria-label="Close"
                   type="button"
                   onClick={() => onRemoveProduct(p.id)}
                   className="hover:text-red-400 ml-1"

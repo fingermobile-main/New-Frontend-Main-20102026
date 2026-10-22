@@ -529,7 +529,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                           className="px-3 py-1 rounded-full bg-slate-100 text-slate-950 font-bold text-xs border border-slate-400 flex items-center gap-1.5 font-black"
                         >
                           <span>{sub}</span>
-                          <button
+                          <button aria-label="Close"
                             type="button"
                             onClick={() => removeChip('subcategories', idx)}
                             className="text-slate-700 hover:text-rose-600"
@@ -709,7 +709,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                           className="px-3 py-1 rounded-full bg-slate-100 text-slate-950 font-bold text-xs border border-slate-400 flex items-center gap-1.5 font-black"
                         >
                           <span>{lang}</span>
-                          <button
+                          <button aria-label="Close"
                             type="button"
                             onClick={() => removeChip('languages', idx)}
                             className="text-slate-700 hover:text-rose-600"
@@ -775,7 +775,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                           className="px-3.5 py-1.5 rounded-2xl bg-amber-50 text-amber-950 font-bold text-xs border border-amber-300 flex items-center gap-2"
                         >
                           <span>{h}</span>
-                          <button
+                          <button aria-label="Close"
                             type="button"
                             onClick={() => removeChip('hobbies', idx)}
                             className="text-amber-700 hover:text-rose-600"
@@ -841,7 +841,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                           className="px-3.5 py-1.5 rounded-2xl bg-sky-50 text-sky-950 font-bold text-xs border border-sky-300 flex items-center gap-2"
                         >
                           <span>{it}</span>
-                          <button
+                          <button aria-label="Close"
                             type="button"
                             onClick={() => removeChip('interests', idx)}
                             className="text-sky-700 hover:text-rose-600"
@@ -908,7 +908,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                         >
                           <MapPin className="w-3 h-3 text-emerald-700" />
                           <span>{tr}</span>
-                          <button
+                          <button aria-label="Close"
                             type="button"
                             onClick={() => removeChip('travel_summits', idx)}
                             className="text-emerald-700 hover:text-rose-600"
@@ -1067,7 +1067,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                         >
                           <GraduationCap className="w-3.5 h-3.5 text-purple-700" />
                           <span>{cert}</span>
-                          <button
+                          <button aria-label="Close"
                             type="button"
                             onClick={() => removeChip('certifications', idx)}
                             className="text-purple-700 hover:text-rose-600"
@@ -1136,7 +1136,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                             Role: {comm.role} • {comm.members} Members
                           </span>
                         </div>
-                        <button
+                        <button aria-label="Delete"
                           type="button"
                           onClick={() =>
                             setFormData((prev) => ({
@@ -1306,7 +1306,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                             Rate: {off.rate} • Status: {off.status}
                           </span>
                         </div>
-                        <button
+                        <button aria-label="Delete"
                           type="button"
                           onClick={() =>
                             setFormData((prev) => ({

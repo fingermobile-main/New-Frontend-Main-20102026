@@ -38,7 +38,7 @@ const Dropdown: React.FC<DropdownProps> = ({
         <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
       )}
 
-      <button
+      <button aria-label="Expand options"
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white text-left flex items-center justify-between"

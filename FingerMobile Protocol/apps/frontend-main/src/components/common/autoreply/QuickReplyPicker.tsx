@@ -71,7 +71,7 @@ export const QuickReplyPicker: React.FC<QuickReplyPickerProps> = ({
                   <p className="text-[10px] text-slate-300">Insert pre-saved response</p>
                 </div>
               </div>
-              <button
+              <button aria-label="Close"
                 type="button"
                 onClick={() => setIsOpen(false)}
                 className="text-slate-300 hover:text-white p-1 rounded-lg"

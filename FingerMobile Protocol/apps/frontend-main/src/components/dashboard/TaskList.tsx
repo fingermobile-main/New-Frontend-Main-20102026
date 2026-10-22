@@ -91,7 +91,7 @@ const TaskList: React.FC<TaskListProps> = ({
               className="flex items-start gap-3 p-3 border border-slate-300 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer"
               onClick={() => onTaskClick?.(task.id)} role="button" tabIndex={0}
             >
-              <button
+              <button type="button" aria-label="Action"
                 onClick={(e) => {
                   e.stopPropagation();
                   onCompleteTask?.(task.id);

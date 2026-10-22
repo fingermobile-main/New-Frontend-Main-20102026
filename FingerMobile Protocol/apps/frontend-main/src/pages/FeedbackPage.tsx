@@ -110,7 +110,7 @@ const FeedbackPage: React.FC = () => {
                   <div className="bg-white border-2 border-slate-200/60 rounded-2xl p-4 flex items-center justify-between shadow-sm">
                     <div className="flex gap-2">
                       {[1, 2, 3, 4, 5].map((star) => (
-                        <button
+                        <button aria-label="Action"
                           key={star}
                           type="button"
                           onClick={() => handleRatingClick(star)}

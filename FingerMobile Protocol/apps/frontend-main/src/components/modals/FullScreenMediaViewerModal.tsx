@@ -385,7 +385,7 @@ export const FullScreenMediaViewerModal: React.FC<FullScreenMediaViewerModalProp
               {/* Video Floating Controls */}
               <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between p-2.5 rounded-xl bg-black/70 backdrop-blur-md border border-slate-700/80 z-20">
                 <div className="flex items-center gap-3">
-                  <button
+                  <button type="button" aria-label="Pause"
                     onClick={() => {
                       if (!videoRef.current) return;
                       if (isVideoPlaying) {
@@ -401,7 +401,7 @@ export const FullScreenMediaViewerModal: React.FC<FullScreenMediaViewerModalProp
                     {isVideoPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 fill-white" />}
                   </button>
 
-                  <button
+                  <button type="button" aria-label="Toggle mute"
                     onClick={() => {
                       if (!videoRef.current) return;
                       videoRef.current.muted = !isVideoMuted;
@@ -438,7 +438,7 @@ export const FullScreenMediaViewerModal: React.FC<FullScreenMediaViewerModalProp
               <span className="text-xs font-bold text-amber-300 flex items-center gap-1.5 uppercase">
                 <Camera className="w-3.5 h-3.5 text-amber-400" /> Hardware EXIF
               </span>
-              <button type="button" onClick={() => setShowMetadataPanel(false)} className="text-slate-400 hover:text-white">
+              <button aria-label="Close" type="button" onClick={() => setShowMetadataPanel(false)} className="text-slate-400 hover:text-white">
                 <X className="w-3.5 h-3.5" />
               </button>
             </div>
@@ -474,7 +474,7 @@ export const FullScreenMediaViewerModal: React.FC<FullScreenMediaViewerModalProp
         <div className="flex items-center justify-between flex-wrap gap-3 max-w-7xl mx-auto px-2">
           {/* Left: Like, Save to Gallery, Bookmark, Favorite, Share */}
           <div className="flex items-center gap-2">
-            <button
+            <button type="button" aria-label="Like"
               onClick={() => onLike?.(activeItem)}
               className={`px-3 py-2 rounded-xl border text-xs font-bold transition flex items-center gap-1.5 ${
                 activeItem.hasLiked

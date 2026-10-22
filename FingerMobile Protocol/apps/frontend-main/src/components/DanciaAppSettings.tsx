@@ -92,7 +92,7 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         <main className="flex-grow flex flex-col min-w-0">
           <header className="p-8 border-b border-white/5 flex justify-between items-center bg-white/[0.02]">
             <h3 className="text-lg font-black text-white uppercase tracking-tight">{activeTab} Settings</h3>
-            <button type="button" onClick={onClose} className="p-2.5 bg-white/5 hover:bg-white/10 rounded-xl text-slate-700 hover:text-slate-700 transition-all">
+            <button aria-label="Close" type="button" onClick={onClose} className="p-2.5 bg-white/5 hover:bg-white/10 rounded-xl text-slate-700 hover:text-slate-700 transition-all">
               <X size={20} />
             </button>
           </header>
@@ -241,7 +241,7 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                       <label htmlFor="subtitleBackgroundColor" className="text-xs font-bold text-slate-800 block mb-3">Background Color</label>
                       <div className="flex space-x-3">
                         {['black', 'white'].map(color => (
-                          <button
+                          <button type="button" aria-label="Select option"
                             key={color}
                             onClick={() => handleSelect('subtitleBackgroundColor', color)}
                             className={`w-10 h-10 rounded-lg border-2 transition-all ${
@@ -258,7 +258,7 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                       <label htmlFor="subtitleOutlineColor" className="text-xs font-bold text-slate-800 block mb-3">Outline Color</label>
                       <div className="flex space-x-3">
                         {['white', 'black', 'yellow', 'red'].map(color => (
-                          <button
+                          <button type="button" aria-label="Select option"
                             key={color}
                             onClick={() => handleSelect('subtitleOutlineColor', color)}
                             className={`w-10 h-10 rounded-lg border-2 transition-all ${

@@ -292,7 +292,7 @@ export const GemAutoReplyManager: React.FC<GemAutoReplyManagerProps> = ({
 
               <div className="flex items-center gap-2">
                 <span className="text-xs text-slate-300 font-semibold">Enabled</span>
-                <button
+                <button aria-label="Action"
                   type="button"
                   onClick={() =>
                     setCurrentSettings({
@@ -546,7 +546,7 @@ export const GemAutoReplyManager: React.FC<GemAutoReplyManagerProps> = ({
 
             <div className="flex items-center gap-2">
               <span className="text-xs text-slate-300 font-semibold">Enabled</span>
-              <button
+              <button aria-label="Action"
                 type="button"
                 onClick={() =>
                   setCurrentSettings({
@@ -671,7 +671,7 @@ export const GemAutoReplyManager: React.FC<GemAutoReplyManagerProps> = ({
 
             <div className="flex items-center gap-2">
               <span className="text-xs text-slate-300 font-semibold">Enabled</span>
-              <button
+              <button aria-label="Action"
                 type="button"
                 onClick={() =>
                   setCurrentSettings({

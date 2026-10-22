@@ -434,7 +434,7 @@ const TrendsPage: React.FC = () => {
                       </div>
 
                       <div className="flex items-center gap-4 text-xs font-semibold text-slate-700">
-                        <button
+                        <button type="button" aria-label="Like"
                           onClick={() => handleToggleLike(trend.id)}
                           className={`flex items-center gap-1.5 transition-colors ${
                             isLiked ? 'text-red-600 font-bold' : 'hover:text-red-500'

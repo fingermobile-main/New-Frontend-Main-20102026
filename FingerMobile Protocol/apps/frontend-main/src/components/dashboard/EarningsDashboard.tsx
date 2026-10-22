@@ -59,7 +59,7 @@ const EarningsDashboard: React.FC = () => {
         <h2 className="text-2xl font-bold text-gray-800">Earnings Dashboard</h2>
         <div className="flex space-x-2">
           {(['week', 'month', 'quarter', 'year'] as const).map(range => (
-            <button
+            <button type="button" aria-label="Action"
               key={range}
               onClick={() => setTimeRange(range)}
               className={`px-3 py-1 rounded-md text-sm font-medium ${

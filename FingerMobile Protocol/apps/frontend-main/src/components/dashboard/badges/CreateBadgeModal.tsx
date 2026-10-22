@@ -135,7 +135,7 @@ export const CreateBadgeModal: React.FC<CreateBadgeModalProps> = ({
               Reward member milestones and grant exclusive privileges.
             </p>
           </div>
-          <button
+          <button type="button" aria-label="Close"
             onClick={onClose}
             className="p-2 text-slate-500 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
           >

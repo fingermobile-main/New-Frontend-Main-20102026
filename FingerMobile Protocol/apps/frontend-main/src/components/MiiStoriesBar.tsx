@@ -324,7 +324,7 @@ export const MiiStoriesBar: React.FC<MiiStoriesBarProps> = ({
                 >
                   {viewerIsPaused ? <Play className="w-3.5 h-3.5" /> : <Pause className="w-3.5 h-3.5" />}
                 </button>
-                <button
+                <button type="button" aria-label="Close"
                   onClick={() => setActiveStoryIndex(null)}
                   className="w-7 h-7 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-black/70 transition"
                 >
@@ -356,14 +356,14 @@ export const MiiStoriesBar: React.FC<MiiStoriesBarProps> = ({
               </div>
 
               {/* Slide Navigation Arrows */}
-              <button
+              <button aria-label="Previous"
                 type="button"
                 onClick={handlePrevStory}
                 className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/60 hover:bg-black/80 text-white border border-white/20 backdrop-blur-md transition shadow-lg"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
-              <button
+              <button aria-label="Next"
                 type="button"
                 onClick={handleNextStory}
                 className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/60 hover:bg-black/80 text-white border border-white/20 backdrop-blur-md transition shadow-lg"

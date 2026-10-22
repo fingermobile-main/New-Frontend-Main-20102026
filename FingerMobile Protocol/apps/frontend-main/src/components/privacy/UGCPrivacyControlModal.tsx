@@ -199,7 +199,7 @@ export const UGCPrivacyControlModal: React.FC<UGCPrivacyControlModalProps> = ({
               <p style={{ margin: '2px 0 0', color: '#9ca3af', fontSize: '12px' }}>Configure who can interact with your {contentType}</p>
             </div>
           </div>
-          <button type="button" onClick={onClose} style={{ background: 'none', border: 'none', color: '#9ca3af', cursor: 'pointer', padding: '4px' }}>
+          <button aria-label="Close" type="button" onClick={onClose} style={{ background: 'none', border: 'none', color: '#9ca3af', cursor: 'pointer', padding: '4px' }}>
             <X size={20} />
           </button>
         </div>

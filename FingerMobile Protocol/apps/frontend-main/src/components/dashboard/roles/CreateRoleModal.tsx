@@ -79,7 +79,7 @@ export const CreateRoleModal: React.FC<CreateRoleModalProps> = ({
               Define granular permissions and operational scope for this custom role.
             </p>
           </div>
-          <button
+          <button type="button" aria-label="Close"
             onClick={onClose}
             className="p-2 text-slate-700 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
           >

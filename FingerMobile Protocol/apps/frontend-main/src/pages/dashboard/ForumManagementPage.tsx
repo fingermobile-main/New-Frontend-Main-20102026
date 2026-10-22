@@ -80,7 +80,7 @@ const ForumManagementPage: React.FC = () => {
             <h3 className="font-black text-xl text-slate-900">
               {editingCategory ? 'Edit Forum Category' : 'Create New Category'}
             </h3>
-            <button
+            <button aria-label="Close"
               type="button"
               onClick={() => setIsModalOpen(false)}
               className="p-1 text-slate-500 hover:text-slate-800 rounded-lg cursor-pointer"

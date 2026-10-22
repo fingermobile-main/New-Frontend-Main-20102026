@@ -91,10 +91,10 @@ const BeatwavePlayer: React.FC<BeatwavePlayerProps> = ({
 
         {/* Controls */}
         <div className="flex items-center justify-center gap-4">
-          <Button variant="ghost" size="icon" onClick={onPrevious}>
+          <Button type="button" aria-label="Previous track" variant="ghost" size="icon" onClick={onPrevious}>
             <SkipBack className="h-5 w-5" />
           </Button>
-          <Button
+          <Button type="button" aria-label="Pause"
             size="icon"
             className="h-12 w-12 rounded-full"
             onClick={onPlayPause}
@@ -105,7 +105,7 @@ const BeatwavePlayer: React.FC<BeatwavePlayerProps> = ({
               <Play className="h-6 w-6" />
             )}
           </Button>
-          <Button variant="ghost" size="icon" onClick={onNext}>
+          <Button type="button" aria-label="Next track" variant="ghost" size="icon" onClick={onNext}>
             <SkipForward className="h-5 w-5" />
           </Button>
         </div>

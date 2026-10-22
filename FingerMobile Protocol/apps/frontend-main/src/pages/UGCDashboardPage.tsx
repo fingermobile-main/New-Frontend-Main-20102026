@@ -303,7 +303,7 @@ const UGCDashboardPage: React.FC = () => {
                   Upload Media to PostgreSQL Ledger
                 </h3>
               </div>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setIsUploadModalOpen(false)}
                 className="text-slate-500 hover:text-slate-900"
               >

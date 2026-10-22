@@ -533,7 +533,7 @@ export const MiiStoriesBar: React.FC<MiiStoriesBarProps> = ({
                 <SparklesIcon className="w-5 h-5 text-amber-500" />
                 <h3 className="text-sm font-bold text-slate-900">Publish Mii™®©℠ Moment</h3>
               </div>
-              <button
+              <button aria-label="Close"
                 type="button"
                 onClick={() => setIsMiiCreatorOpen(false)}
                 className="text-slate-500 hover:text-slate-800"

@@ -1214,7 +1214,7 @@ export const LoanSqrPage: React.FC = () => {
       {showApplyModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md overflow-y-auto">
           <div className="bg-slate-900 border border-slate-800 w-full max-w-2xl rounded-2xl p-6 sm:p-8 shadow-2xl relative my-8">
-            <button
+            <button type="button" aria-label="Close"
               onClick={() => setShowApplyModal(false)}
               className="absolute top-4 right-4 text-slate-300 font-medium hover:text-white p-1"
             >
@@ -1655,7 +1655,7 @@ export const LoanSqrPage: React.FC = () => {
           <div className="bg-slate-900 border border-slate-800 w-full max-w-md rounded-2xl p-6 shadow-2xl space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-base font-bold text-white">Repay Loan {repayingLoan.loan_number}</h3>
-              <button type="button" onClick={() => setRepayingLoan(null)} className="text-slate-300 font-medium hover:text-white">
+              <button aria-label="Close" type="button" onClick={() => setRepayingLoan(null)} className="text-slate-300 font-medium hover:text-white">
                 <XMarkIcon className="w-5 h-5" />
               </button>
             </div>
@@ -1712,7 +1712,7 @@ export const LoanSqrPage: React.FC = () => {
           <div className="bg-slate-900 border border-slate-800 w-full max-w-md rounded-2xl p-6 shadow-2xl space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-base font-bold text-white">Simulate POS Batch Settlement</h3>
-              <button type="button" onClick={() => setShowPosSimModal(false)} className="text-slate-300 font-medium hover:text-white">
+              <button aria-label="Close" type="button" onClick={() => setShowPosSimModal(false)} className="text-slate-300 font-medium hover:text-white">
                 <XMarkIcon className="w-5 h-5" />
               </button>
             </div>

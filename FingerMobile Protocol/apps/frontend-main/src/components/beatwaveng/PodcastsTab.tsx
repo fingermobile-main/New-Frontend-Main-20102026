@@ -147,7 +147,7 @@ export const PodcastsTab: React.FC = () => {
                   </span>
                 </div>
 
-                <button
+                <button type="button" aria-label="Pause"
                   onClick={() => handlePlayPodcast(pod)}
                   className="absolute bottom-3 right-3 w-12 h-12 rounded-full bg-teal-500 hover:bg-teal-400 text-black flex items-center justify-center shadow-lg shadow-teal-500/40 transition-transform hover:scale-110 active:scale-95"
                 >

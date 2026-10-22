@@ -377,7 +377,7 @@ export const StorefrontVettingCatalogConsole: React.FC = () => {
                 <h3 className="text-base font-bold text-slate-900">Vetting & Censorship Inspection</h3>
                 <p className="text-xs text-slate-600 font-mono mt-0.5">{selectedProductForVetting.name}</p>
               </div>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setSelectedProductForVetting(null)}
                 className="text-slate-400 hover:text-slate-600"
               >

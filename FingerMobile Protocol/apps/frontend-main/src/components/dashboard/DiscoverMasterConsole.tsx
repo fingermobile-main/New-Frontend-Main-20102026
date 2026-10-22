@@ -412,7 +412,7 @@ export const DiscoverMasterConsole: React.FC = () => {
             {statusMessage.type === 'success' ? <CheckCircle2 className="w-5 h-5" /> : <AlertTriangle className="w-5 h-5" />}
             <span>{statusMessage.text}</span>
           </div>
-          <button type="button" onClick={() => setStatusMessage(null)} className="text-slate-700 hover:text-slate-900">
+          <button aria-label="Close" type="button" onClick={() => setStatusMessage(null)} className="text-slate-700 hover:text-slate-900">
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -689,7 +689,7 @@ export const DiscoverMasterConsole: React.FC = () => {
                     </td>
                     <td className="py-3.5 px-4 text-right">
                       <div className="flex items-center justify-end gap-2">
-                        <button
+                        <button type="button" aria-label="Edit"
                           onClick={() => {
                             setEditingTopic(topic);
                             setTopicName(topic.name);
@@ -702,7 +702,7 @@ export const DiscoverMasterConsole: React.FC = () => {
                         >
                           <Edit3 className="w-4 h-4" />
                         </button>
-                        <button
+                        <button type="button" aria-label="Delete"
                           onClick={() => handleDeleteTopic(topic.id)}
                           className="p-1.5 rounded-lg border border-slate-300 hover:bg-rose-50 text-rose-700 hover:text-rose-900"
                         >
@@ -770,7 +770,7 @@ export const DiscoverMasterConsole: React.FC = () => {
                       )}
                     </td>
                     <td className="py-3.5 px-4 text-right">
-                      <button
+                      <button type="button" aria-label="Delete"
                         onClick={() => handleDeleteHashtag(h.tag)}
                         className="p-1.5 rounded-lg border border-slate-300 hover:bg-rose-50 text-rose-700 hover:text-rose-900"
                       >
@@ -973,7 +973,7 @@ export const DiscoverMasterConsole: React.FC = () => {
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <button
+                    <button type="button" aria-label="Delete"
                       onClick={() => handleDeleteContent(item.id)}
                       className="p-2 rounded-lg border border-slate-300 hover:bg-rose-50 text-rose-700 hover:text-rose-900"
                     >
@@ -1121,7 +1121,7 @@ export const DiscoverMasterConsole: React.FC = () => {
               <h3 className="text-lg font-black text-slate-900">
                 {editingTopic ? 'Edit Topic Category' : 'Register New Topic'}
               </h3>
-              <button type="button" onClick={() => setIsTopicModalOpen(false)} className="text-slate-700 hover:text-slate-900">
+              <button aria-label="Close" type="button" onClick={() => setIsTopicModalOpen(false)} className="text-slate-700 hover:text-slate-900">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -1196,7 +1196,7 @@ export const DiscoverMasterConsole: React.FC = () => {
           <div className="bg-white rounded-2xl border border-slate-300 shadow-2xl p-6 max-w-md w-full space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-black text-slate-900">Register Tracked Hashtag</h3>
-              <button type="button" onClick={() => setIsHashtagModalOpen(false)} className="text-slate-700 hover:text-slate-900">
+              <button aria-label="Close" type="button" onClick={() => setIsHashtagModalOpen(false)} className="text-slate-700 hover:text-slate-900">
                 <X className="w-5 h-5" />
               </button>
             </div>

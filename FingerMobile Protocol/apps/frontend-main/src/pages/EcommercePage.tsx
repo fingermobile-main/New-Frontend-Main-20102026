@@ -857,7 +857,7 @@ const EcommercePage: React.FC = () => {
                   </button>
                   
                   {[...Array(totalPages)].map((_, i) => (
-                    <button
+                    <button type="button" aria-label="Navigate page"
                       key={i + 1}
                       onClick={() => setCurrentPage(i + 1)}
                       className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
@@ -894,7 +894,7 @@ const EcommercePage: React.FC = () => {
             <div className="mt-3">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-medium text-gray-900">Add New Product</h3>
-                <button 
+                <button type="button" aria-label="Close" 
                   className="text-slate-700 hover:text-gray-700"
                   onClick={() => setShowCreateModal(false)}
                 >

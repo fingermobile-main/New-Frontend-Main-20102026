@@ -296,7 +296,7 @@ const CreateHallmarkModal: React.FC<CreateHallmarkModalProps> = ({
               Public account for businesses, creators, brands, and organizations to scale unlimited audiences.
             </p>
           </div>
-          <button
+          <button type="button" aria-label="Close"
             onClick={handleClose}
             className="p-2 rounded-full text-slate-700 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition"
           >

@@ -30,7 +30,7 @@ const EnhancedEvents: React.FC<EnhancedEventsProps> = ({ userId }) => {
         <h3 className="text-lg font-bold text-gray-900 mb-4">Events</h3>
         <div className="flex space-x-2">
           {(['upcoming', 'past', 'my'] as const).map((tab) => (
-            <button
+            <button type="button" aria-label="Action"
               key={tab}
               onClick={() => setActiveTab(tab)}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${

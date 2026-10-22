@@ -152,7 +152,7 @@ export const LiveMotionFaceVerificationModal: React.FC<Props> = ({
             </div>
           </div>
 
-          <button
+          <button type="button" aria-label="Close"
             onClick={onClose}
             className="p-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 transition-colors"
           >

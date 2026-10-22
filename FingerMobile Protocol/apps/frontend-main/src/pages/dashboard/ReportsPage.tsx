@@ -409,7 +409,7 @@ const ReportsPage: React.FC = () => {
           <div className="bg-white rounded-2xl max-w-lg w-full border border-slate-300 shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
             <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
               <h3 className="text-lg font-black text-slate-900">Report Preview</h3>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setPreviewReport(null)}
                 className="p-1 text-slate-500 hover:text-slate-800 rounded-lg cursor-pointer"
               >

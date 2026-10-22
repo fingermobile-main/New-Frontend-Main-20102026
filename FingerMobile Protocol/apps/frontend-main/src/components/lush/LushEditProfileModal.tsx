@@ -131,7 +131,7 @@ export const LushEditProfileModal: React.FC<LushEditProfileModalProps> = ({
               </p>
             </div>
           </div>
-          <button
+          <button type="button" aria-label="Close"
             onClick={onClose}
             className="p-1.5 rounded-full hover:bg-gray-100 text-slate-700 hover:text-gray-700 transition"
           >
@@ -222,7 +222,7 @@ export const LushEditProfileModal: React.FC<LushEditProfileModalProps> = ({
               </span>
               <div className="grid grid-cols-4 gap-2">
                 {PRESET_COVERS.map((covUrl, i) => (
-                  <button
+                  <button aria-label="Modal action"
                     key={i}
                     type="button"
                     onClick={() => setCoverImage(covUrl)}

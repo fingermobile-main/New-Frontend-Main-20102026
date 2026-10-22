@@ -683,7 +683,7 @@ export const CbnNfemControllerPanel: React.FC = () => {
                   Simulate Interbank Order Book Trade
                 </h3>
               </div>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setIsTradeModalOpen(false)}
                 className="text-zinc-300 hover:text-white"
               >

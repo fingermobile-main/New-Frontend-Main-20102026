@@ -107,7 +107,7 @@ export const GuardianConsentBridgeModal: React.FC<GuardianConsentBridgeModalProp
               <p className="text-[11px] text-slate-300 font-medium">Nigeria Data Protection Act (NDPA 2023 Section 31)</p>
             </div>
           </div>
-          <button
+          <button aria-label="Close"
             type="button"
             onClick={onClose}
             className="text-slate-300 hover:text-white p-1 rounded-lg"

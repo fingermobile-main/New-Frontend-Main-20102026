@@ -72,7 +72,7 @@ export const BlogCommentModal: React.FC<CommentModalProps> = ({
               {postTitle || 'Community Blog Article'}
             </p>
           </div>
-          <button type="button" onClick={onClose} className="p-1.5 rounded-full text-slate-700 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800">
+          <button aria-label="Close" type="button" onClick={onClose} className="p-1.5 rounded-full text-slate-700 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800">
             <XIcon className="w-5 h-5" />
           </button>
         </div>
@@ -170,7 +170,7 @@ export const BlogSendGiftModal: React.FC<SendGiftModalProps> = ({
               Reward @{authorName || 'Author'} for &quot;{postTitle || 'Article'}&quot;
             </p>
           </div>
-          <button type="button" onClick={onClose} className="p-1.5 rounded-full text-slate-700 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800">
+          <button aria-label="Close" type="button" onClick={onClose} className="p-1.5 rounded-full text-slate-700 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800">
             <XIcon className="w-5 h-5" />
           </button>
         </div>
@@ -285,7 +285,7 @@ export const BlogPaylinkModal: React.FC<PaylinkModalProps> = ({
               For: {postTitle || 'Editorial Content'}
             </p>
           </div>
-          <button type="button" onClick={onClose} className="p-1.5 rounded-full text-slate-700 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800">
+          <button aria-label="Close" type="button" onClick={onClose} className="p-1.5 rounded-full text-slate-700 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800">
             <XIcon className="w-5 h-5" />
           </button>
         </div>
@@ -390,7 +390,7 @@ export const BlogTokenizeModal: React.FC<TokenizeModalProps> = ({
               Mint as Sovereign Proof-of-Achievement NFT
             </p>
           </div>
-          <button type="button" onClick={onClose} className="p-1.5 rounded-full text-slate-700 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800">
+          <button aria-label="Close" type="button" onClick={onClose} className="p-1.5 rounded-full text-slate-700 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800">
             <XIcon className="w-5 h-5" />
           </button>
         </div>

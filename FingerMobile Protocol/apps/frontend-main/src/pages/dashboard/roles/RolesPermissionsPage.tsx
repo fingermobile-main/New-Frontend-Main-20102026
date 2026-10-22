@@ -206,7 +206,7 @@ export const RolesPermissionsPage: React.FC = () => {
                   <CreditCard className="w-5 h-5 text-blue-700" />
                   <h3 className="text-lg font-black text-slate-900">Upgrade Collaborator Seats</h3>
                 </div>
-                <button
+                <button type="button" aria-label="Close"
                   onClick={() => setIsUpgradeModalOpen(false)}
                   className="text-slate-500 hover:text-slate-900 font-bold"
                 >

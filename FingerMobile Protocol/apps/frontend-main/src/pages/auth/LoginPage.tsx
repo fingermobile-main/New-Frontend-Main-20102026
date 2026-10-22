@@ -463,7 +463,7 @@ const LoginPage = () => {
                   } rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white`}
                   placeholder="Enter your password"
                 />
-                <button
+                <button aria-label="Hide"
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute inset-y-0 right-0 pr-3 flex items-center"

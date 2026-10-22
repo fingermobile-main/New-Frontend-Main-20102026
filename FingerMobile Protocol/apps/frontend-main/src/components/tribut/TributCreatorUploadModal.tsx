@@ -398,7 +398,7 @@ export const TributCreatorUploadModal: React.FC<TributCreatorUploadModalProps> =
               Create & Upload Media / Pin to Tribut
             </h2>
           </div>
-          <button
+          <button type="button" aria-label="Close"
             onClick={onClose}
             className="p-1.5 rounded-lg text-slate-500 hover:text-slate-800 hover:bg-slate-200 transition"
           >

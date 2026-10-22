@@ -74,7 +74,7 @@ const MemberLayout: React.FC<MemberLayoutProps> = ({ children, title, subtitle, 
         {/* Sticky Header */}
         <header className="sticky top-0 z-30 flex items-center justify-between px-4 md:px-8 py-4 bg-slate-50/80 backdrop-blur-xl border-b border-slate-200/50">
           <div className="flex items-center gap-4">
-            <button
+            <button type="button" aria-label="Toggle menu"
               onClick={() => setIsMobileMenuOpen(true)}
               className="md:hidden p-2 text-[#ff6b00] hover:bg-orange-50 rounded-full transition-colors"
             >
@@ -125,7 +125,7 @@ const MemberLayout: React.FC<MemberLayoutProps> = ({ children, title, subtitle, 
                 </div>
                 <span className="text-lg font-bold text-slate-800">Menu</span>
               </div>
-              <button type="button" onClick={() => setIsMobileMenuOpen(false)} className="p-2 text-slate-600 hover:bg-slate-100 rounded-full">
+              <button aria-label="Close" type="button" onClick={() => setIsMobileMenuOpen(false)} className="p-2 text-slate-600 hover:bg-slate-100 rounded-full">
                 <XMarkIcon className="w-6 h-6" />
               </button>
             </div>

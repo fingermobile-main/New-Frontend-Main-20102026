@@ -71,7 +71,7 @@ export const PostSettingsPanel: React.FC<PostSettingsPanelProps> = ({
       {/* Set Below as Default checkbox */}
       <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
         <div className="flex items-center gap-2">
-          <button
+          <button aria-label="Rectangle tool"
             type="button"
             onClick={() => update({ isDefaultPreference: !settings.isDefaultPreference })}
             className="text-orange-500 hover:text-orange-600 transition"

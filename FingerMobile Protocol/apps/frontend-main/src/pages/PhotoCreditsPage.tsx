@@ -2853,7 +2853,7 @@ Status: VALIDATED & PERMANENTLY RECORDED
                               <span>{photo.likes}</span>
                             </button>
 
-                            <button
+                            <button type="button" aria-label="Chat"
                               onClick={() => setSelectedItemForComments(photo)}
                               className="px-3 py-1.5 rounded-xl bg-slate-950 text-slate-200 border border-slate-800 hover:text-sky-300 font-bold flex items-center gap-1.5 transition"
                             >
@@ -2861,7 +2861,7 @@ Status: VALIDATED & PERMANENTLY RECORDED
                               <span>{photo.comments || 3}</span>
                             </button>
 
-                            <button
+                            <button type="button" aria-label="Favorites"
                               onClick={() => handleToggleSaveToGallery(photo)}
                               className={`px-3 py-1.5 rounded-xl border font-bold flex items-center gap-1.5 transition ${
                                 savedGalleryIds.includes(photo.id)
@@ -2873,7 +2873,7 @@ Status: VALIDATED & PERMANENTLY RECORDED
                               <span>{(photo.saves || 0) + (savedGalleryIds.includes(photo.id) ? 1 : 0)}</span>
                             </button>
 
-                            <button
+                            <button type="button" aria-label="Bookmark"
                               onClick={() => handleToggleBookmark(photo)}
                               className={`p-2 rounded-xl border transition ${
                                 bookmarkedIds.includes(photo.id) || photo.isBookmarked
@@ -2884,7 +2884,7 @@ Status: VALIDATED & PERMANENTLY RECORDED
                               <Bookmark className={`w-4 h-4 ${bookmarkedIds.includes(photo.id) || photo.isBookmarked ? 'fill-amber-400' : ''}`} />
                             </button>
 
-                            <button
+                            <button type="button" aria-label="Rate"
                               onClick={() => handleToggleFavorite(photo)}
                               className={`p-2 rounded-xl border transition ${
                                 favoriteIds.includes(photo.id) || photo.isFavorite
@@ -5116,7 +5116,7 @@ Status:          COMPLETED & ANCHORED
                 >
                   Cancel
                 </button>
-                <button
+                <button aria-label="Action"
                   type="submit"
                   disabled={isUploading}
                   className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-amber-600 hover:from-emerald-500 hover:to-amber-500 disabled:opacity-50 text-white text-xs font-bold uppercase tracking-wider shadow-lg shadow-amber-600/30 transition-all flex items-center justify-center gap-2"

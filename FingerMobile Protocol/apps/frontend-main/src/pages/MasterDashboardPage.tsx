@@ -1149,7 +1149,7 @@ const MasterDashboardPage: React.FC = () => {
                   <span className="text-[9px] font-mono px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold border border-emerald-500/30">
                     {benchmarkTelemetry ? `${benchmarkTelemetry.executionTimeMs.toFixed(1)}ms` : 'B-Tree'}
                   </span>
-                  <button
+                  <button type="button" aria-label="Close"
                     onClick={() => setConsoleSearchTerm('')}
                     className="text-slate-700 hover:text-slate-600 dark:hover:text-slate-200 p-0.5"
                   >
@@ -2407,7 +2407,7 @@ const MasterDashboardPage: React.FC = () => {
         <div className="fixed bottom-6 right-6 z-50 bg-slate-900 text-white text-sm font-medium px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 border border-slate-700 animate-in fade-in slide-in-from-bottom-3 duration-200">
           <Check className="w-4 h-4 text-emerald-400 shrink-0" />
           <span>{toastMessage.text}</span>
-          <button
+          <button type="button" aria-label="Close"
             onClick={() => setToastMessage(null)}
             className="text-slate-300 hover:text-white ml-2"
           >
@@ -3045,7 +3045,7 @@ const MasterDashboardPage: React.FC = () => {
                   Active alerts requiring administrator attention
                 </p>
               </div>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setIsNotificationsModalOpen(false)}
                 className="text-slate-700 hover:text-gray-600 p-1 rounded-lg"
               >
@@ -3110,7 +3110,7 @@ const MasterDashboardPage: React.FC = () => {
                   Direct system dispatches and gateway events
                 </p>
               </div>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setIsMessagesModalOpen(false)}
                 className="text-slate-700 hover:text-gray-600 p-1 rounded-lg"
               >
@@ -3172,7 +3172,7 @@ const MasterDashboardPage: React.FC = () => {
                   Configure route, description, and status
                 </p>
               </div>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setSelectedSectionForEdit(null)}
                 className="text-slate-700 hover:text-gray-600 p-1 rounded-lg"
               >
@@ -3280,7 +3280,7 @@ const MasterDashboardPage: React.FC = () => {
                   Register a new module to the Master Dashboard
                 </p>
               </div>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setIsAddSectionModalOpen(false)}
                 className="text-slate-700 hover:text-gray-600 p-1 rounded-lg"
               >

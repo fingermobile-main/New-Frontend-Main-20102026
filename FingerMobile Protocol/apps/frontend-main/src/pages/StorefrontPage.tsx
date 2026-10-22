@@ -1467,7 +1467,7 @@ const StorefrontPage: React.FC = () => {
                 placeholder="Ask pricing, copy, or stock advice..."
                 className="flex-1 px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-blue-500"
               />
-              <button
+              <button type="button" aria-label="Send"
                 onClick={handleSendCopilotQuery}
                 className="p-2.5 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-500"
               >

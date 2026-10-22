@@ -33,7 +33,7 @@ const PolicyEditorModal: React.FC<PolicyEditorModalProps> = ({
             <h2 className="text-xl font-bold text-gray-900">Edit {policyType}</h2>
             <p className="text-sm text-slate-700">Policy Editor</p>
           </div>
-          <button type="button" onClick={onClose} className="text-slate-700 hover:text-gray-600">
+          <button aria-label="Close" type="button" onClick={onClose} className="text-slate-700 hover:text-gray-600">
             <XMarkIcon className="w-6 h-6" />
           </button>
         </div>

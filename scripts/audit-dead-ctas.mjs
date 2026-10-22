@@ -124,9 +124,27 @@ function attrStringValue(attr) {
     }
 
     if (expr?.type === "ConditionalExpression") {
-      const c = expr.consequent?.type === "StringLiteral" ? expr.consequent.value : "";
-      const a = expr.alternate?.type === "StringLiteral" ? expr.alternate.value : "";
+      const c = expr.consequent?.type === "StringLiteral" ? expr.consequent.value : (expr.consequent?.name || "");
+      const a = expr.alternate?.type === "StringLiteral" ? expr.alternate.value : (expr.alternate?.name || "");
       return (c || a) ? `${c} ${a}`.trim() : null;
+    }
+
+    if (expr?.type === "LogicalExpression") {
+      const left = expr.left?.type === "StringLiteral" ? expr.left.value : (expr.left?.name || "");
+      const right = expr.right?.type === "StringLiteral" ? expr.right.value : (expr.right?.name || "");
+      return (left || right) ? `${left || right}`.trim() : null;
+    }
+
+    if (expr?.type === "Identifier" && expr.name) {
+      return expr.name;
+    }
+
+    if (expr?.type === "MemberExpression" && expr.property?.name) {
+      return expr.property.name;
+    }
+
+    if (expr?.type === "CallExpression") {
+      return "dynamic-label";
     }
 
     if (expr?.type === "TemplateLiteral") {
@@ -268,11 +286,20 @@ function getTextFromChildren(children = []) {
 
       if (expr?.type === "ConditionalExpression") {
         if (expr.consequent?.type === "StringLiteral") parts.push(expr.consequent.value);
+        else if (expr.consequent?.type === "JSXElement" || expr.consequent?.type === "JSXFragment") {
+          parts.push(getTextFromChildren(expr.consequent.type === "JSXFragment" ? expr.consequent.children : [expr.consequent]));
+        }
         if (expr.alternate?.type === "StringLiteral") parts.push(expr.alternate.value);
+        else if (expr.alternate?.type === "JSXElement" || expr.alternate?.type === "JSXFragment") {
+          parts.push(getTextFromChildren(expr.alternate.type === "JSXFragment" ? expr.alternate.children : [expr.alternate]));
+        }
       }
 
       if (expr?.type === "LogicalExpression") {
         if (expr.right?.type === "StringLiteral") parts.push(expr.right.value);
+        else if (expr.right?.type === "JSXElement" || expr.right?.type === "JSXFragment") {
+          parts.push(getTextFromChildren(expr.right.type === "JSXFragment" ? expr.right.children : [expr.right]));
+        }
       }
 
       if (expr?.type === "MemberExpression") {
@@ -282,6 +309,11 @@ function getTextFromChildren(children = []) {
       if (expr?.type === "Identifier") {
         parts.push(expr.name);
       }
+    }
+
+    if (child.type === "JSXFragment") {
+      const innerText = getTextFromChildren(child.children);
+      if (innerText) parts.push(innerText);
     }
 
     if (child.type === "JSXElement") {

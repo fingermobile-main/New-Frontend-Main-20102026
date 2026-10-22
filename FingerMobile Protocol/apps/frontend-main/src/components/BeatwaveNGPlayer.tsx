@@ -450,7 +450,7 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
                 </div>
               </div>
 
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setShowEqModal(false)}
                 className="p-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 transition-colors"
               >
@@ -546,7 +546,7 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
               <Mic2 className="text-emerald-400" size={20} />
               <h3 className="font-black text-white text-base">Live Synchronized Lyrics</h3>
             </div>
-            <button
+            <button type="button" aria-label="Close"
               onClick={() => setShowLyricsDrawer(false)}
               className="p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors"
             >
@@ -606,7 +606,7 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
               <h3 className="font-black text-white text-base">Up Next Queue</h3>
               <span className="text-xs text-slate-300">({queue.length} tracks)</span>
             </div>
-            <button
+            <button type="button" aria-label="Close"
               onClick={() => setShowQueueDrawer(false)}
               className="p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors"
             >

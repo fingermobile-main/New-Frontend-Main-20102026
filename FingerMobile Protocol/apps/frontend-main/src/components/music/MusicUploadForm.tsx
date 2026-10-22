@@ -136,7 +136,7 @@ const MusicUploadForm: React.FC<MusicUploadFormProps> = ({
                   </p>
                 </div>
                 <CheckCircle2 className="h-5 w-5 text-green-600" />
-                <Button variant="ghost" size="icon" onClick={() => setFile(null)}>
+                <Button type="button" aria-label="Close" variant="ghost" size="icon" onClick={() => setFile(null)}>
                   <X className="h-4 w-4" />
                 </Button>
               </div>

@@ -1672,7 +1672,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                         placeholder="Send chat message..."
                         className="flex-1 p-2 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white focus:outline-none focus:border-indigo-500"
                       />
-                      <button
+                      <button aria-label="Send"
                         type="submit"
                         className="p-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl"
                       >
@@ -2274,7 +2274,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                     </p>
                   </div>
                 </div>
-                <button
+                <button aria-label="Close"
                   type="button"
                   onClick={() => setIsUpgradeModalOpen(false)}
                   className="p-2 text-slate-300 hover:text-white rounded-xl hover:bg-gray-800"

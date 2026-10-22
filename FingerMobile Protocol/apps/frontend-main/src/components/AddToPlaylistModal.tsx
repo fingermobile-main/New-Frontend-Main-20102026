@@ -121,7 +121,7 @@ const AddToPlaylistModal: React.FC<AddToPlaylistModalProps> = ({
                   autoFocus
                 />
                 <Button onClick={handleCreatePlaylist}>Create</Button>
-                <Button variant="ghost" size="icon" onClick={() => setShowCreateForm(false)}>
+                <Button type="button" aria-label="Close" variant="ghost" size="icon" onClick={() => setShowCreateForm(false)}>
                   <X className="h-4 w-4" />
                 </Button>
               </div>

@@ -380,7 +380,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
             <CheckCircle className="w-4 h-4 text-emerald-400" />
             {toastMessage}
           </span>
-          <button type="button" onClick={() => setToastMessage(null)} className="text-slate-300 hover:text-white">
+          <button aria-label="Close" type="button" onClick={() => setToastMessage(null)} className="text-slate-300 hover:text-white">
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -992,7 +992,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
                   </p>
                 </div>
               </div>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setIsUpdateDetailsOpen(false)}
                 className="p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition"
               >
@@ -1122,7 +1122,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
                   <p className="text-[11px] text-slate-300 font-medium">Permanent account & data purge</p>
                 </div>
               </div>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setIsDeleteAccountOpen(false)}
                 className="p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition"
               >
@@ -1218,7 +1218,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
                   <p className="text-[11px] text-slate-300 font-medium">Marketplace & Storefront purchasing</p>
                 </div>
               </div>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setIsSpendModalOpen(false)}
                 className="p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition"
               >

@@ -248,7 +248,7 @@ export const PagesPermissionConsolePage: React.FC = () => {
                       <td className="py-3.5 px-4">
                         <div className="font-extrabold text-slate-900 flex items-center gap-1.5">
                           {p.title}
-                          <a href={p.path} target="_blank" rel="noreferrer" className="text-slate-400 hover:text-slate-700">
+                          <a aria-label="Open external link" href={p.path} target="_blank" rel="noreferrer" className="text-slate-400 hover:text-slate-700">
                             <ExternalLink className="w-3 h-3" />
                           </a>
                         </div>

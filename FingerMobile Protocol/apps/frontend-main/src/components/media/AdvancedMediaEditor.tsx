@@ -732,7 +732,7 @@ const AdvancedMediaEditor: React.FC = () => {
                   </div>
                   <div className="layers-list">
                     {layers.map((layer, index) => (
-                      <div
+                      <div aria-label="Close modal"
                         key={layer.id}
                         className={`layer-item ${selectedLayer === index ? 'selected' : ''}`}
                         onClick={() => setSelectedLayer(index)} role="button" tabIndex={0}

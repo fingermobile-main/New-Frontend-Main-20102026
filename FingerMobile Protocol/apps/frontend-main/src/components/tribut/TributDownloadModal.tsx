@@ -133,7 +133,7 @@ export const TributDownloadModal: React.FC<TributDownloadModalProps> = ({
               Target: <strong>{activeTargetName}</strong>
             </p>
           </div>
-          <button
+          <button type="button" aria-label="Close"
             onClick={onClose}
             className="p-1.5 rounded-lg text-slate-700 hover:text-slate-700 hover:bg-slate-200"
           >

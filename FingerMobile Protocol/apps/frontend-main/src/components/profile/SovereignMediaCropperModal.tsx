@@ -566,7 +566,7 @@ export const SovereignMediaCropperModal: React.FC<SovereignMediaCropperModalProp
               </button>
             </div>
 
-            <button
+            <button aria-label="Close"
               type="button"
               onClick={onClose}
               className="text-slate-600 hover:text-slate-900 p-1.5 rounded-xl hover:bg-slate-100 transition-colors"
@@ -865,7 +865,7 @@ export const SovereignMediaCropperModal: React.FC<SovereignMediaCropperModalProp
                     {isCircleMask && (
                       <div className="absolute inset-0 pointer-events-none ring-4 ring-white/90 rounded-full scale-95 shadow-[0_0_0_9999px_rgba(15,23,42,0.4)]" />
                     )}
-                    <button
+                    <button aria-label="Pause"
                       type="button"
                       onClick={() => {
                         if (!videoRef.current) return;

@@ -51,7 +51,7 @@ const StorefrontHeader: React.FC<StorefrontHeaderProps> = ({
 
           {/* Actions */}
           <div className="flex items-center gap-2">
-            <Button variant="outline" size="icon" onClick={onFilterClick} className="border-slate-300 text-slate-700">
+            <Button type="button" aria-label="Filter" variant="outline" size="icon" onClick={onFilterClick} className="border-slate-300 text-slate-700">
               <Filter className="h-5 w-5 text-slate-700" />
             </Button>
             <Button variant="outline" size="icon" onClick={onCartClick} className="relative border-slate-300 text-slate-700">

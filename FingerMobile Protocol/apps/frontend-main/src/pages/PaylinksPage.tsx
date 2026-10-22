@@ -446,7 +446,7 @@ const PaylinksPage: React.FC = () => {
                   <CurrencyDollarIcon className="w-5 h-5 text-orange-600" />
                   <h3 className="text-base font-black text-slate-900">Generate New Paylink</h3>
                 </div>
-                <button
+                <button aria-label="Close"
                   type="button"
                   onClick={() => setShowCreateModal(false)}
                   className="p-1 rounded-lg text-slate-600 hover:text-slate-900"
@@ -555,7 +555,7 @@ const PaylinksPage: React.FC = () => {
             <div className="bg-white rounded-3xl border border-slate-300 max-w-sm w-full p-6 shadow-2xl text-center space-y-4">
               <div className="flex items-center justify-between border-b border-slate-200 pb-3">
                 <h3 className="text-sm font-black text-slate-900 truncate">{showQrModal.title}</h3>
-                <button
+                <button aria-label="Close"
                   type="button"
                   onClick={() => setShowQrModal(null)}
                   className="p-1 rounded-lg text-slate-600 hover:text-slate-900"
@@ -600,7 +600,7 @@ const PaylinksPage: React.FC = () => {
             <div className="bg-white rounded-3xl border border-slate-300 max-w-sm w-full p-6 shadow-2xl space-y-4">
               <div className="flex items-center justify-between border-b border-slate-200 pb-3">
                 <h3 className="text-sm font-black text-slate-900">Sovereign Direct Checkout</h3>
-                <button
+                <button aria-label="Close"
                   type="button"
                   onClick={() => setShowGiftModal(null)}
                   className="p-1 rounded-lg text-slate-600 hover:text-slate-900"

@@ -253,7 +253,7 @@ export const CollaboratorsTable: React.FC<CollaboratorsTableProps> = ({
 
                   {/* Actions Dropdown */}
                   <td className="py-3.5 px-4 text-right relative">
-                    <button
+                    <button type="button" aria-label="More options"
                       onClick={() => setActiveMenuId(activeMenuId === collab.id ? null : collab.id)}
                       className="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
                     >

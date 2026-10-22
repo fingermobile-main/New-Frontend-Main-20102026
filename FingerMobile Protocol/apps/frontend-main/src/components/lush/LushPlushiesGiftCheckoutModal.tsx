@@ -138,7 +138,7 @@ export const LushPlushiesGiftCheckoutModal: React.FC<LushPlushiesGiftCheckoutMod
               </p>
             </div>
           </div>
-          <button
+          <button type="button" aria-label="Close"
             onClick={onClose}
             className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-slate-800 text-slate-700 hover:text-gray-600 transition"
           >

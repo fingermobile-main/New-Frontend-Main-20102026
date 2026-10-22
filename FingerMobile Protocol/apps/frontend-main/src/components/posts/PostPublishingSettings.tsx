@@ -116,7 +116,7 @@ const PostPublishingSettings = () => {
               <label className="block text-sm font-medium text-gray-700 mb-2">Privacy & Audience</label>
               <div className="grid grid-cols-2 gap-3">
                 {['publicGroup', 'privateGroup', 'followers', 'everyone'].map((option) => (
-                  <button
+                  <button type="button" aria-label="Action"
                     key={option}
                     onClick={() => updateSettings({ privacy: option as any })}
                     className={`px-3 py-2 text-xs font-medium rounded-md border ${
@@ -149,7 +149,7 @@ const PostPublishingSettings = () => {
                 <span className="text-sm font-medium text-gray-900">Share to Mii©®™</span>
                 <span className="text-sm text-slate-700">Automatically cross-post to Mii platform</span>
               </span>
-              <button
+              <button type="button" aria-label="Action"
                 onClick={() => updateSettings({ shareToMi: !settings.shareToMi })}
                 className={`${
                   settings.shareToMi ? 'bg-brand-blue' : 'bg-gray-200'
@@ -172,7 +172,7 @@ const PostPublishingSettings = () => {
                 <span className="text-sm font-medium text-gray-900">Enable Monetization</span>
                 <span className="text-sm text-slate-700">Earn from your content through subscriptions or tips</span>
               </span>
-              <button
+              <button type="button" aria-label="Action"
                 onClick={handleToggleMonetization}
                 className={`${
                   settings.monetization.enabled ? 'bg-brand-blue' : 'bg-gray-200'
@@ -212,7 +212,7 @@ const PostPublishingSettings = () => {
                 <span className="text-sm font-medium text-gray-900">Broadcast Mode</span>
                 <span className="text-sm text-slate-700">Push notification to all eligible members</span>
               </span>
-              <button
+              <button type="button" aria-label="Action"
                 onClick={() => updateSettings({
                   broadcast: { ...settings.broadcast, enabled: !settings.broadcast.enabled }
                 })}
@@ -233,7 +233,7 @@ const PostPublishingSettings = () => {
                 <span className="text-sm font-medium text-gray-900">Invite Collaborators</span>
                 <span className="text-sm text-slate-700">Tag other creators for co-authored posts</span>
               </span>
-              <button
+              <button type="button" aria-label="Action"
                 onClick={() => updateSettings({
                   collaboration: { ...settings.collaboration, enabled: !settings.collaboration.enabled }
                 })}

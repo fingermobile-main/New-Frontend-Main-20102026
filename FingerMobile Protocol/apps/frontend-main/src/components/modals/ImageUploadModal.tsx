@@ -35,7 +35,7 @@ const ImageUploadModal: React.FC<ImageUploadModalProps> = ({
       <div className="bg-white rounded-xl shadow-2xl max-w-md w-full mx-4 p-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-bold text-gray-900">Upload Image</h2>
-          <button type="button" onClick={onClose} className="text-slate-700 hover:text-gray-600">
+          <button aria-label="Close" type="button" onClick={onClose} className="text-slate-700 hover:text-gray-600">
             <XMarkIcon className="w-6 h-6" />
           </button>
         </div>

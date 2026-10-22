@@ -291,7 +291,7 @@ export const AlbumsTab: React.FC = () => {
             role="dialog"
             aria-modal="true"
           >
-            <button
+            <button type="button" aria-label="Close"
               onClick={() => setSelectedAlbum(null)}
               className="absolute top-4 right-4 p-2 rounded-full bg-slate-800 text-slate-300 hover:text-white transition"
             >
@@ -345,7 +345,7 @@ export const AlbumsTab: React.FC = () => {
                       <span className="w-5 text-center font-mono text-xs text-slate-500 group-hover:hidden">
                         {track.number}
                       </span>
-                      <button
+                      <button type="button" aria-label="Play"
                         onClick={() => handlePlayTrack(track, selectedAlbum)}
                         className="w-5 h-5 rounded-md bg-emerald-500 text-slate-950 hidden group-hover:flex items-center justify-center transition"
                       >

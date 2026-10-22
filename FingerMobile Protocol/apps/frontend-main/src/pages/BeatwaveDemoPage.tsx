@@ -270,7 +270,7 @@ const BeatwaveDemoPage: React.FC = () => {
 
             {/* Player Controls */}
             <div className="flex items-center justify-center space-x-6 mb-6">
-              <button
+              <button type="button" aria-label="Previous track"
                 onClick={() => {
                   const idx = tracks.findIndex((t) => t.id === currentTrack?.id);
                   if (idx > 0) handlePlayTrack(tracks[idx - 1]);
@@ -280,14 +280,14 @@ const BeatwaveDemoPage: React.FC = () => {
                 <SkipBack className="w-6 h-6" />
               </button>
 
-              <button
+              <button type="button" aria-label="Pause"
                 onClick={handleTogglePlay}
                 className="p-5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white rounded-full shadow-lg shadow-cyan-500/25 transition-all transform active:scale-95"
               >
                 {isPlaying ? <Pause className="w-7 h-7" /> : <Play className="w-7 h-7 ml-0.5" />}
               </button>
 
-              <button
+              <button type="button" aria-label="Next track"
                 onClick={() => {
                   const idx = tracks.findIndex((t) => t.id === currentTrack?.id);
                   if (idx >= 0 && idx < tracks.length - 1) handlePlayTrack(tracks[idx + 1]);

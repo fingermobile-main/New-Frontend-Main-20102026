@@ -595,7 +595,7 @@ const PostCard: React.FC<PostCardProps> = ({
       {/* Primary Engagement Actions (Upvote, Downvote, Like, Dislike, Comment, Share, Bookmark, Message, Report) */}
       <div className="flex flex-wrap gap-2 items-center">
         {onLike && (
-          <button
+          <button type="button" aria-label="Like"
             onClick={() => onLike(String(post.id))}
             className={`flex items-center space-x-1.5 px-3 py-1.5 border rounded-full transition-all text-xs font-bold ${
               post.isLiked

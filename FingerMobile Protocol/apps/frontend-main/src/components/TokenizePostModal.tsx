@@ -53,7 +53,7 @@ const TokenizePostModal: React.FC<TokenizePostModalProps> = ({
         <div className="p-6">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-xl font-bold">Tokenize Post</h3>
-            <button
+            <button type="button" aria-label="Close"
               onClick={onClose}
               className="text-slate-700 hover:text-gray-700"
             >

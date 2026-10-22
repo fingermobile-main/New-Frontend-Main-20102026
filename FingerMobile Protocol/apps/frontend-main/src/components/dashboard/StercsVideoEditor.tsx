@@ -194,7 +194,7 @@ const StercsVideoEditor: React.FC = () => {
             </div>
 
             {/* Big Center Play Button Overlay */}
-            <button
+            <button type="button" aria-label="Pause"
               onClick={() => setIsPlaying((p) => !p)}
               className="w-16 h-16 rounded-full bg-red-600/80 hover:bg-red-600 text-white backdrop-blur-md flex items-center justify-center shadow-2xl transition-all transform active:scale-95 z-10"
             >

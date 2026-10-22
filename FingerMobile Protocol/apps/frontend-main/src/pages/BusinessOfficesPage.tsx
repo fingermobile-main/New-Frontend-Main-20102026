@@ -883,7 +883,7 @@ export const BusinessOfficesPage: React.FC = () => {
           {selectedOffice && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
               <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-lg p-6 shadow-2xl relative">
-                <button
+                <button aria-label="Close"
                   type="button"
                   onClick={() => setSelectedOffice(null)}
                   className="absolute top-4 right-4 p-2 text-slate-300 font-medium hover:text-white rounded-lg hover:bg-slate-800"

@@ -469,7 +469,7 @@ export const UniversalSearchModal: React.FC<UniversalSearchModalProps> = ({ isOp
             className="w-full bg-transparent text-slate-900 dark:text-white placeholder:text-slate-400 text-base focus:outline-none font-medium font-bold border border-slate-300 rounded focus:ring-2 focus:ring-indigo-500"
           />
           {query ? (
-            <button
+            <button type="button" aria-label="Close"
               onClick={() => setQuery('')}
               className="p-1 rounded-full text-slate-700 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-200/50 dark:hover:bg-slate-800 transition"
             >

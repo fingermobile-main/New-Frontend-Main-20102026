@@ -531,7 +531,7 @@ export const ArtistsTab: React.FC = () => {
             role="dialog"
             aria-modal="true"
           >
-            <button
+            <button type="button" aria-label="Close"
               onClick={() => setSelectedArtistModal(null)}
               className="absolute top-4 right-4 p-2 rounded-full bg-slate-800 text-slate-300 hover:text-white transition"
             >
@@ -575,7 +575,7 @@ export const ArtistsTab: React.FC = () => {
                     </div>
                     <div className="flex items-center gap-3">
                       <span className="text-[11px] font-mono text-slate-300">{formatTime(t.duration)}</span>
-                      <button
+                      <button type="button" aria-label="Play"
                         onClick={() => handlePlayArtistTrack(t, selectedArtistModal)}
                         className="p-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition"
                       >

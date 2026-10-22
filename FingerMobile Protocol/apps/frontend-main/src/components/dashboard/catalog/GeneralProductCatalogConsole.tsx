@@ -656,7 +656,7 @@ export const GeneralProductCatalogConsole: React.FC = () => {
                 <Package className="w-5 h-5 text-emerald-600" />
                 <h3 className="text-lg font-bold text-slate-900">Ingest New Product or Service</h3>
               </div>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setIsCreateModalOpen(false)}
                 className="text-slate-400 hover:text-slate-600"
               >
@@ -846,7 +846,7 @@ export const GeneralProductCatalogConsole: React.FC = () => {
                 <h3 className="text-base font-bold text-slate-900">Curate Store Channels</h3>
                 <p className="text-xs text-slate-600 font-mono mt-0.5">{selectedProductForCuration.name}</p>
               </div>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setSelectedProductForCuration(null)}
                 className="text-slate-400 hover:text-slate-600"
               >
@@ -915,7 +915,7 @@ export const GeneralProductCatalogConsole: React.FC = () => {
           <div className="bg-white border border-slate-300 rounded-2xl shadow-2xl max-w-sm w-full p-6">
             <div className="flex items-center justify-between pb-3 border-b border-slate-200">
               <h3 className="text-base font-bold text-slate-900">Restock Product Units</h3>
-              <button type="button" onClick={() => setSelectedProductForRestock(null)} className="text-slate-400 hover:text-slate-600">
+              <button aria-label="Close" type="button" onClick={() => setSelectedProductForRestock(null)} className="text-slate-400 hover:text-slate-600">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -984,7 +984,7 @@ export const GeneralProductCatalogConsole: React.FC = () => {
                 <h3 className="text-base font-bold text-slate-900">Media Assets & Video Showcases</h3>
                 <p className="text-xs text-slate-600 font-mono mt-0.5">{previewMediaModalProduct.name}</p>
               </div>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setPreviewMediaModalProduct(null)}
                 className="text-slate-400 hover:text-slate-600"
               >

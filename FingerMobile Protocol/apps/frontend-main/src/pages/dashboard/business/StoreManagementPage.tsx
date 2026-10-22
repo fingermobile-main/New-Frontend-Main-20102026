@@ -367,7 +367,7 @@ const StoreManagementPage: React.FC = () => {
       {isEditorOpen && (
         <div className="fixed inset-0 z-50 overflow-y-auto bg-black/50 flex items-center justify-center p-4">
           <div className="bg-white rounded-xl max-w-md w-full p-6 shadow-xl relative">
-            <button
+            <button type="button" aria-label="Close"
               onClick={() => setIsEditorOpen(false)}
               className="absolute top-4 right-4 text-slate-700 hover:text-gray-600"
             >

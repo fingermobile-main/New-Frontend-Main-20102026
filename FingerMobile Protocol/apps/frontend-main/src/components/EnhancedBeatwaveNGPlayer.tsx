@@ -97,7 +97,7 @@ const EnhancedBeatwaveNGPlayer: React.FC<EnhancedBeatwaveNGPlayerProps> = ({
         </div>
 
         <div className="flex items-center justify-between">
-          <button
+          <button type="button" aria-label="Pause"
             onClick={togglePlay}
             className="w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-colors"
           >

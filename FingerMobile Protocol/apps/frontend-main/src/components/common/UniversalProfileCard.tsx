@@ -675,7 +675,7 @@ export const UniversalProfileCard: React.FC<UniversalProfileCardProps> = ({
                   <p className="text-[10px] text-emerald-100">Live customization • Instant persistent sync</p>
                 </div>
               </div>
-              <button
+              <button aria-label="Close"
                 type="button"
                 onClick={() => setIsEditModalOpen(false)}
                 className="p-1.5 rounded-full bg-white/20 hover:bg-white/30 text-slate-700 transition"

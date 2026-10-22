@@ -88,7 +88,7 @@ const ContentCalendarPage: React.FC = () => {
 
       <div className="bg-white p-6 rounded-2xl shadow-xs border border-slate-300">
         <div className="flex justify-between items-center mb-6 pb-4 border-b border-slate-200">
-          <button
+          <button type="button" aria-label="Previous"
             onClick={() => changeMonth(-1)}
             className="p-2 rounded-xl border border-slate-300 hover:bg-slate-100 text-slate-800 transition-colors"
           >
@@ -100,7 +100,7 @@ const ContentCalendarPage: React.FC = () => {
               year: 'numeric'
             })}
           </h2>
-          <button
+          <button type="button" aria-label="Next"
             onClick={() => changeMonth(1)}
             className="p-2 rounded-xl border border-slate-300 hover:bg-slate-100 text-slate-800 transition-colors"
           >

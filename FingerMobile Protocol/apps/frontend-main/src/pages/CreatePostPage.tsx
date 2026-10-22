@@ -546,7 +546,7 @@ const CreatePostPage: React.FC = () => {
                             className="flex-1 px-3 py-1.5 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                           />
                           {pollOptions.length > 2 && (
-                            <button
+                            <button aria-label="Close"
                               type="button"
                               onClick={() => handleRemovePollOption(idx)}
                               className="p-1 text-slate-700 hover:text-rose-500"

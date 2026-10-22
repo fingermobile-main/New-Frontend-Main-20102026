@@ -337,7 +337,7 @@ const PortfolioPage: React.FC = () => {
                       <MapPinIcon className="w-3.5 h-3.5 text-slate-700" />
                       {creatorProfile.location}
                     </span>
-                    <a
+                    <a aria-label="Visit website"
                       href={creatorProfile.website}
                       target="_blank"
                       rel="noreferrer"
@@ -513,7 +513,7 @@ const PortfolioPage: React.FC = () => {
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
 
-                      <button
+                      <button type="button" aria-label="Like"
                         onClick={() => handleToggleLikePhoto(ph.id)}
                         className={`absolute top-3 right-3 p-2 rounded-full backdrop-blur-md transition-all ${
                           isLiked ? 'bg-rose-500 text-white' : 'bg-black/40 text-white hover:bg-black/70'
@@ -552,7 +552,7 @@ const PortfolioPage: React.FC = () => {
                     className="bg-white p-5 rounded-2xl border border-slate-300 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:border-indigo-300 transition-colors"
                   >
                     <div className="flex items-center gap-4">
-                      <button
+                      <button type="button" aria-label="Pause"
                         onClick={() => handleToggleAudio(au)}
                         className={`p-3.5 rounded-2xl transition-transform hover:scale-105 ${
                           isPlaying
@@ -639,7 +639,7 @@ const PortfolioPage: React.FC = () => {
                   <BriefcaseIcon className="w-6 h-6 text-indigo-600" />
                   <h3 className="text-lg font-black text-gray-900">Commission {creatorProfile.name}</h3>
                 </div>
-                <button
+                <button type="button" aria-label="Close"
                   onClick={() => setIsCommissionModalOpen(false)}
                   className="text-slate-700 hover:text-gray-600"
                 >

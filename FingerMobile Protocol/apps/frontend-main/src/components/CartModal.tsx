@@ -55,7 +55,7 @@ const CartModal: React.FC<CartModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
       {/* Backdrop */}
-      <div
+      <div aria-label="Close modal"
         className="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
         onClick={onClose} role="button" tabIndex={0}
       />

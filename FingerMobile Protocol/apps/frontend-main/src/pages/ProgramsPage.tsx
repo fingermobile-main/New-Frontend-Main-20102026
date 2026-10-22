@@ -454,7 +454,7 @@ const ProgramsPage: React.FC = () => {
                     className="w-full pl-10 pr-4 py-2.5 rounded-xl text-slate-900 font-bold border border-slate-300 bg-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
                   />
                   {courseSearch && (
-                    <button
+                    <button type="button" aria-label="Close"
                       onClick={() => setCourseSearch('')}
                       className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-700 hover:text-slate-600"
                     >
@@ -1232,7 +1232,7 @@ const ProgramsPage: React.FC = () => {
                       Tracking 5,000 citizens across all 6 geopolitical zones of the Federal Republic of Nigeria.
                     </p>
                   </div>
-                  <button
+                  <button type="button" aria-label="Close"
                     onClick={() => setShowStateCohortModal(false)}
                     className="p-2 rounded-xl text-slate-700 hover:text-slate-700 hover:bg-slate-200 transition"
                   >
@@ -1319,7 +1319,7 @@ const ProgramsPage: React.FC = () => {
                       Subscribe to {selectedCourseForSubscription.title}
                     </h3>
                   </div>
-                  <button
+                  <button type="button" aria-label="Close"
                     onClick={() => setSelectedCourseForSubscription(null)}
                     className="p-1.5 rounded-lg text-slate-700 hover:text-slate-700 hover:bg-slate-100"
                   >
@@ -1433,7 +1433,7 @@ const ProgramsPage: React.FC = () => {
                       {selectedCourseForSyllabus.title}
                     </h3>
                   </div>
-                  <button
+                  <button type="button" aria-label="Close"
                     onClick={() => setSelectedCourseForSyllabus(null)}
                     className="p-2 rounded-xl text-slate-700 hover:text-slate-700 hover:bg-slate-200 transition"
                   >
@@ -1535,7 +1535,7 @@ const ProgramsPage: React.FC = () => {
                       </div>
                     </div>
 
-                    <button
+                    <button type="button" aria-label="Close"
                       onClick={() => setActiveTakingAssessment(null)}
                       className="p-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 transition"
                     >
@@ -1773,7 +1773,7 @@ const ProgramsPage: React.FC = () => {
                       <p className="text-xs text-slate-300 font-medium">Federal Republic of Nigeria • Decentralized E-Learning Directorate</p>
                     </div>
                   </div>
-                  <button
+                  <button type="button" aria-label="Close"
                     onClick={() => setShowTranscriptModal(false)}
                     className="p-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 transition"
                   >
@@ -1897,7 +1897,7 @@ const ProgramsPage: React.FC = () => {
                       Settle Invoice {selectedInvoiceToPay.invoiceNumber}
                     </h3>
                   </div>
-                  <button
+                  <button type="button" aria-label="Close"
                     onClick={() => setSelectedInvoiceToPay(null)}
                     className="p-1.5 rounded-lg text-slate-700 hover:text-slate-700"
                   >

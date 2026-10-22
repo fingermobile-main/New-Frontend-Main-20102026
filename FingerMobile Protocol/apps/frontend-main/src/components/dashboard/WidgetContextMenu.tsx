@@ -12,7 +12,7 @@ const WidgetContextMenu: React.FC<WidgetContextMenuProps> = ({ onEdit, onDelete,
 
   return (
     <div className="relative">
-      <button
+      <button type="button" aria-label="More options"
         onClick={() => setIsOpen(!isOpen)}
         className="p-1 hover:bg-gray-100 rounded"
       >

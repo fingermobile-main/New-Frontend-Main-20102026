@@ -545,7 +545,7 @@ const UserManagementPage: React.FC = () => {
                   </p>
                 </div>
                 <div className="flex items-center gap-1">
-                  <button
+                  <button aria-label="Previous"
                     type="button"
                     onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                     disabled={currentPage === 1}
@@ -554,7 +554,7 @@ const UserManagementPage: React.FC = () => {
                     <ChevronLeft className="h-4 w-4" />
                   </button>
                   {[...Array(totalPages)].map((_, i) => (
-                    <button
+                    <button aria-label="Navigate page"
                       key={i + 1}
                       type="button"
                       onClick={() => setCurrentPage(i + 1)}
@@ -567,7 +567,7 @@ const UserManagementPage: React.FC = () => {
                       {i + 1}
                     </button>
                   ))}
-                  <button
+                  <button aria-label="Next"
                     type="button"
                     onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                     disabled={currentPage === totalPages}
@@ -608,7 +608,7 @@ const UserManagementPage: React.FC = () => {
                   </p>
                 </div>
               </div>
-              <button
+              <button aria-label="Close"
                 type="button"
                 className="text-slate-600 hover:text-slate-900 p-1.5 rounded-lg hover:bg-slate-100 transition-colors"
                 onClick={() => setSelectedUserForActivity(null)}
@@ -752,7 +752,7 @@ const UserManagementPage: React.FC = () => {
           <div className="relative mx-auto p-6 border border-slate-300 w-full max-w-md shadow-2xl rounded-xl bg-white">
             <div className="flex justify-between items-center pb-4 border-b border-slate-200">
               <h3 className="text-lg font-bold text-slate-900">Provision Member Account</h3>
-              <button
+              <button aria-label="Close"
                 type="button"
                 className="text-slate-600 hover:text-slate-900 p-1 rounded"
                 onClick={() => setShowCreateModal(false)}

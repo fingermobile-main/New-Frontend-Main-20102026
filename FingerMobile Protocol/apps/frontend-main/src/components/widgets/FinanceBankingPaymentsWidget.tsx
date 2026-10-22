@@ -345,7 +345,7 @@ export const FinanceBankingPaymentsWidget: React.FC<WidgetProps> = ({
                   <div className="text-[11px] font-bold text-slate-700 uppercase">Primary SWIFT Code</div>
                   <div className="flex items-center justify-between mt-1">
                     <span className="text-sm font-black text-slate-900 font-mono">{selectedRail.swiftCode}</span>
-                    <button
+                    <button type="button" aria-label="Confirm"
                       onClick={() => handleCopy(selectedRail.swiftCode, 'swiftCode')}
                       className="text-slate-500 hover:text-emerald-700"
                     >
@@ -360,7 +360,7 @@ export const FinanceBankingPaymentsWidget: React.FC<WidgetProps> = ({
                     <span className="text-sm font-black text-slate-900 font-mono">
                       {selectedRail.secondarySwift || 'FCMBNGLAWEB'}
                     </span>
-                    <button
+                    <button type="button" aria-label="Confirm"
                       onClick={() => handleCopy(selectedRail.secondarySwift || 'FCMBNGLAWEB', 'secSwift')}
                       className="text-slate-500 hover:text-emerald-700"
                     >
@@ -376,7 +376,7 @@ export const FinanceBankingPaymentsWidget: React.FC<WidgetProps> = ({
                       <span className="text-xs font-black text-slate-900 font-mono truncate mr-2" title={selectedRail.iban}>
                         {selectedRail.iban}
                       </span>
-                      <button
+                      <button type="button" aria-label="Confirm"
                         onClick={() => handleCopy(selectedRail.iban!, 'iban')}
                         className="text-slate-500 hover:text-emerald-700"
                       >
@@ -412,7 +412,7 @@ export const FinanceBankingPaymentsWidget: React.FC<WidgetProps> = ({
                       <span className="text-slate-600 font-semibold block">Correspondent SWIFT:</span>
                       <div className="flex items-center space-x-1">
                         <span className="font-mono font-bold text-slate-900">{selectedRail.correspondentBank.swiftCode}</span>
-                        <button
+                        <button type="button" aria-label="Confirm"
                           onClick={() => handleCopy(selectedRail.correspondentBank!.swiftCode, 'corrSwift')}
                           className="text-slate-500 hover:text-emerald-700"
                         >
@@ -424,7 +424,7 @@ export const FinanceBankingPaymentsWidget: React.FC<WidgetProps> = ({
                       <span className="text-slate-600 font-semibold block">FCMB Account with Correspondent:</span>
                       <div className="flex items-center space-x-1">
                         <span className="font-mono font-bold text-slate-900">{selectedRail.correspondentBank.accountNumber}</span>
-                        <button
+                        <button type="button" aria-label="Confirm"
                           onClick={() => handleCopy(selectedRail.correspondentBank!.accountNumber, 'corrAcc')}
                           className="text-slate-500 hover:text-emerald-700"
                         >

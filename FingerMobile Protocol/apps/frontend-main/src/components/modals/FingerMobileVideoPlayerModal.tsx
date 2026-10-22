@@ -112,7 +112,7 @@ export const FingerMobileVideoPlayerModal: React.FC<VideoPlayerModalProps> = ({
           />
 
           {/* Quick Play/Pause Center Overlay */}
-          <button
+          <button type="button" aria-label="Pause"
             onClick={togglePlay}
             className="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/40 transition-colors group"
           >
@@ -124,13 +124,13 @@ export const FingerMobileVideoPlayerModal: React.FC<VideoPlayerModalProps> = ({
           {/* Bottom Floating Video Controls */}
           <div className="absolute bottom-3 left-3 right-3 p-3 rounded-2xl bg-slate-950/85 backdrop-blur-md border border-slate-800 flex items-center justify-between text-white text-xs">
             <div className="flex items-center gap-3">
-              <button
+              <button type="button" aria-label="Pause"
                 onClick={togglePlay}
                 className="p-1.5 rounded-lg bg-amber-500 text-slate-950 font-bold hover:bg-amber-400"
               >
                 {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
               </button>
-              <button
+              <button type="button" aria-label="Toggle mute"
                 onClick={toggleMute}
                 className="p-1.5 rounded-lg bg-slate-800 text-slate-200 hover:bg-slate-700"
               >

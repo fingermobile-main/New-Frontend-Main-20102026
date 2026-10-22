@@ -42,13 +42,13 @@ const BeatwaveFooter: React.FC<BeatwaveFooterProps> = ({
         <div className="flex items-center justify-between gap-4">
           {/* Playback Controls */}
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" onClick={onShuffle} className="text-slate-700 hover:text-slate-900">
+            <Button type="button" aria-label="Shuffle" variant="ghost" size="icon" onClick={onShuffle} className="text-slate-700 hover:text-slate-900">
               <Shuffle className="h-4 w-4" />
             </Button>
-            <Button variant="ghost" size="icon" onClick={onPrevious} className="text-slate-700 hover:text-slate-900">
+            <Button type="button" aria-label="Previous track" variant="ghost" size="icon" onClick={onPrevious} className="text-slate-700 hover:text-slate-900">
               <SkipBack className="h-5 w-5" />
             </Button>
-            <Button
+            <Button type="button" aria-label="Pause"
               size="icon"
               className="h-10 w-10 rounded-full bg-slate-900 text-white hover:bg-slate-800"
               onClick={onPlayPause}
@@ -59,10 +59,10 @@ const BeatwaveFooter: React.FC<BeatwaveFooterProps> = ({
                 <Play className="h-5 w-5" />
               )}
             </Button>
-            <Button variant="ghost" size="icon" onClick={onNext} className="text-slate-700 hover:text-slate-900">
+            <Button type="button" aria-label="Next track" variant="ghost" size="icon" onClick={onNext} className="text-slate-700 hover:text-slate-900">
               <SkipForward className="h-5 w-5" />
             </Button>
-            <Button variant="ghost" size="icon" onClick={onRepeat} className="text-slate-700 hover:text-slate-900">
+            <Button type="button" aria-label="Repeat" variant="ghost" size="icon" onClick={onRepeat} className="text-slate-700 hover:text-slate-900">
               <Repeat className="h-4 w-4" />
             </Button>
           </div>
