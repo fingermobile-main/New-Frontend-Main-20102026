@@ -71,7 +71,12 @@ const Playlist: React.FC<PlaylistProps> = ({
             {item.duration && (
               <span className="text-xs text-slate-700 ml-2">{item.duration}</span>
             )}
-            <button className="ml-4 p-2 text-brand-blue hover:bg-blue-100 rounded-full">
+            <button
+              type="button"
+              aria-label={currentIndex === index ? `Pause ${item.title}` : `Play ${item.title}`}
+              onClick={(e) => { e.stopPropagation(); handlePlay(item, index); }}
+              className="ml-4 p-2 text-brand-blue hover:bg-blue-100 rounded-full transition-colors"
+            >
               {currentIndex === index ? '⏸' : '▶️'}
             </button>
           </li>

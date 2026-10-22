@@ -94,7 +94,11 @@ const FollowSuggestions: React.FC<FollowSuggestionsProps> = ({
 
       {/* Footer */}
       <div className="border-t border-slate-300 px-4 py-3 bg-gray-50">
-        <button className="text-sm text-blue-600 hover:text-blue-700 font-medium">
+        <button
+          type="button"
+          onClick={() => window.location.assign('/members')}
+          className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+        >
           See all suggestions →
         </button>
       </div>

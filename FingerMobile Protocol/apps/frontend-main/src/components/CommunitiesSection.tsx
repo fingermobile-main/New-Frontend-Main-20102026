@@ -75,7 +75,11 @@ const CommunitiesSection: React.FC = () => {
                 Joined
               </span>
             ) : (
-              <button className="text-xs bg-fm-gray-100 text-fm-gray-700 px-3 py-1.5 rounded-full hover:bg-fm-orange hover:text-white transition-colors">
+              <button
+                type="button"
+                aria-label={`Join ${community.name} community`}
+                className="text-xs bg-fm-gray-100 text-fm-gray-700 px-3 py-1.5 rounded-full hover:bg-fm-orange hover:text-white transition-colors"
+              >
                 Join
               </button>
             )}
