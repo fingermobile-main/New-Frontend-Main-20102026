@@ -12,6 +12,7 @@ interface MenubarMenuProps {
 interface MenubarTriggerProps {
   children: React.ReactNode;
   className?: string;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 interface MenubarContentProps {
@@ -46,9 +47,11 @@ const MenubarMenu: React.FC<MenubarMenuProps> = ({ children }) => {
   return <>{children}</>;
 };
 
-const MenubarTrigger: React.FC<MenubarTriggerProps> = ({ children, className = '' }) => {
+const MenubarTrigger: React.FC<MenubarTriggerProps> = ({ children, className = '', onClick }) => {
   return (
     <button
+      type="button"
+      onClick={onClick || ((e) => { e.stopPropagation(); })}
       className={`flex cursor-default select-none items-center rounded-sm px-3 py-1.5 text-sm font-medium outline-none focus:bg-accent focus:text-accent-foreground data-[state=open]:bg-accent data-[state=open]:text-accent-foreground ${className}`}
       role="menuitem"
     >

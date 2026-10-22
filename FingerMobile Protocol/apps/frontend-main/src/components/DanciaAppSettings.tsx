@@ -19,6 +19,7 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const [pinInput, setPinInput] = React.useState('');
   const [pinConfirm, setPinConfirm] = React.useState('');
   const [showPinDialog, setShowPinDialog] = React.useState(false);
+  const [selectedSort, setSelectedSort] = React.useState('name-az');
 
   const tabs = [
     { id: 'media', label: 'Media Library', icon: <HardDrive size={18} /> },
@@ -430,22 +431,23 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                       { id: 'size', label: 'File Size', icon: <HardDrive size={18} /> },
                       { id: 'date-added', label: 'Date Added', icon: <Clock size={18} /> },
                       { id: 'plays', label: 'Play Count', icon: <Play size={18} /> }
-                    ].map((sort, idx) => (
+                    ].map((sort) => (
                       <button
                         key={sort.id}
                         type="button"
                         aria-label={`Sort by ${sort.label}`}
+                        onClick={() => setSelectedSort(sort.id)}
                         className={`flex items-center justify-between p-6 bg-white/5 border rounded-2xl transition-all hover:bg-white/[0.07] ${
-                          idx === 0 ? 'border-blue-500 bg-blue-500/10' : 'border-white/5'
+                          selectedSort === sort.id ? 'border-blue-500 bg-blue-500/10' : 'border-white/5'
                         }`}
                       >
                         <div className="flex items-center space-x-4">
-                          <div className={idx === 0 ? 'text-blue-500' : 'text-slate-300 font-medium'}>
+                          <div className={selectedSort === sort.id ? 'text-blue-500' : 'text-slate-300 font-medium'}>
                             {sort.icon}
                           </div>
                           <span className="text-sm font-bold text-slate-700 uppercase tracking-tight">{sort.label}</span>
                         </div>
-                        {idx === 0 && <Check size={18} className="text-blue-500" />}
+                        {selectedSort === sort.id && <Check size={18} className="text-blue-500" />}
                       </button>
                     ))}
                   </div>

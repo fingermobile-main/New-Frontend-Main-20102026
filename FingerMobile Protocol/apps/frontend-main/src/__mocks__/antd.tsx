@@ -11,6 +11,8 @@ const Button: React.FC<{
 }> = ({ children, ...props }) => {
   return (
     <button
+      type="button"
+      onClick={props.onClick}
       {...(props as React.ButtonHTMLAttributes<HTMLButtonElement>)}
       className={`ant-btn ${props.type ? `ant-btn-${props.type}` : ''} ${props.className || ''}`}
     >
