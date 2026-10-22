@@ -10,16 +10,16 @@ const TermsOfServicePage = () => {
     children
   }) => (
     <section className="mb-8">
-      <h3 className="text-xl font-bold text-gray-800 border-b border-gray-300 pb-2 mb-4">
+      <h3 className="text-xl font-black text-slate-900 border-b border-slate-200 pb-2 mb-4">
         {title}
       </h3>
-      <div className="prose prose-sm max-w-none text-gray-600">{children}</div>
+      <div className="text-slate-700 font-medium text-sm leading-relaxed space-y-2">{children}</div>
     </section>
   );
 
   return (
     <LegalLayout>
-      <div className="bg-white rounded-xl shadow-sm p-6 lg:p-8">
+      <div className="bg-white rounded-3xl shadow-sm p-6 lg:p-10 border border-slate-300">
         <LegalDocumentBanner
           slug="terms-of-service"
           defaultTitle="FingerMobile Terms of Service"
@@ -28,18 +28,18 @@ const TermsOfServicePage = () => {
         />
 
         <div className="flex items-center gap-4 mb-6">
-          <DocumentIcon className="w-10 h-10 text-brand-blue" />
+          <DocumentIcon className="w-10 h-10 text-indigo-600" />
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">
+            <h1 className="text-3xl font-black text-slate-900">
               Terms of Service
             </h1>
-            <p className="text-gray-600">
+            <p className="text-slate-700 font-medium text-sm mt-1">
               Please read these terms carefully before using our services.
             </p>
           </div>
         </div>
 
-        <div className="prose max-w-none">
+        <div>
           <Section title="Acceptance of Terms">
             <p>
               By accessing or using the FingerMobile platform and services, you
@@ -150,14 +150,14 @@ const TermsOfServicePage = () => {
             <p>
               If you have any questions about these Terms, please contact us at:
             </p>
-            <div className="mt-3 p-4 bg-gray-50 rounded-lg border">
-              <p className="font-medium">FingerMobile Protocol™ Legal Department</p>
-              <p>Email: info@fingermobileprotocol.com / fingermobileprotocol@gmail.com</p>
-              <p>Official Website: https://fingermobileprotocol.com</p>
+            <div className="mt-3 p-5 bg-slate-50 rounded-2xl border border-slate-300 space-y-1">
+              <p className="font-bold text-slate-900">FingerMobile Protocol™ Legal Department</p>
+              <p className="text-slate-700 font-medium text-xs">Email: <span className="font-bold text-blue-700">info@fingermobileprotocol.com</span> / fingermobileprotocol@gmail.com</p>
+              <p className="text-slate-700 font-medium text-xs">Official Website: <a href="https://fingermobileprotocol.com" target="_blank" rel="noopener noreferrer" className="text-blue-700 underline font-semibold">https://fingermobileprotocol.com</a></p>
             </div>
           </Section>
 
-          <div className="mt-8 pt-6 border-t border-gray-300 text-sm text-slate-700">
+          <div className="mt-8 pt-6 border-t border-slate-200 text-xs font-semibold text-slate-600">
             <p>Last Updated: December 20, 2025</p>
           </div>
         </div>

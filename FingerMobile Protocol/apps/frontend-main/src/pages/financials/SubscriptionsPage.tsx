@@ -664,7 +664,7 @@ export const SubscriptionsPage: React.FC = () => {
   return (
     <MainLayout pageTitle="Platform Subscriptions & Sovereign Passes">
       <div className="min-h-screen bg-slate-50 text-slate-900 py-8 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto space-y-8">
+        <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto space-y-8">
           {/* Header */}
           <div className="bg-white border border-slate-300 rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
