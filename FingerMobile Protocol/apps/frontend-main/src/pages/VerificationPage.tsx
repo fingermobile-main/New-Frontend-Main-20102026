@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
 import MainLayout from '../components/layout/MainLayout';
 import { ShieldCheckIcon, PhoneIcon, MailIcon, UserCircleIcon, ArrowRightIcon } from '../icons';
@@ -76,24 +77,28 @@ const VerificationPage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="text-center mb-10">
-          <div className="mx-auto bg-gradient-to-r from-blue-600 to-indigo-600 p-3 w-16 h-16 rounded-full flex items-center justify-center">
-            <ShieldCheckIcon className="h-8 w-8 text-white" />
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        <div className="bg-white border border-slate-300 rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="flex items-center">
+            <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-3.5 rounded-2xl shadow-md text-white">
+              <ShieldCheckIcon className="h-8 w-8" />
+            </div>
+            <div className="ml-4">
+              <h1 className="text-3xl font-black text-slate-900 tracking-tight">Account Verification</h1>
+              <p className="text-slate-700 font-medium text-sm mt-1">
+                Verify your sovereign identity via mobile SMS or encrypted email to activate all node features and higher limits
+              </p>
+            </div>
           </div>
-          <h1 className="mt-4 text-3xl font-bold text-gray-900">Account Verification</h1>
-          <p className="mt-2 text-gray-600 max-w-2xl mx-auto">
-            Verify your account to unlock all platform features and enhance security
-          </p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-200">
+        <div className="bg-white rounded-3xl shadow-sm overflow-hidden border border-slate-300">
           <div className="p-1 bg-gradient-to-r from-blue-500 to-indigo-500"></div>
 
           <div className="p-6 md:p-8">
             <div className="flex flex-col md:flex-row gap-8">
               <div className="md:w-1/2">
-                <h2 className="text-xl font-bold text-gray-900 mb-6">Secure Verification</h2>
+                <h2 className="text-xl font-black text-slate-900 mb-6">Secure Verification</h2>
 
                 <div className="space-y-4">
                   <div>
@@ -198,60 +203,68 @@ const VerificationPage: React.FC = () => {
                         <button
                           onClick={handleSubmitCode}
                           disabled={isLoading}
-                          className="w-full mt-4 px-4 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg hover:from-green-700 hover:to-emerald-700 disabled:opacity-50"
+                          className="w-full mt-4 px-4 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold rounded-xl hover:from-emerald-700 hover:to-teal-700 disabled:opacity-50 shadow-md cursor-pointer"
                         >
                           {isLoading ? 'Verifying...' : 'Verify Account'}
                         </button>
 
                         <div className="mt-4 text-center">
-                          <button className="text-sm text-blue-600 hover:text-blue-800">
+                          <button
+                            type="button"
+                            onClick={handleSendCode}
+                            disabled={isLoading}
+                            className="text-xs text-blue-700 hover:text-blue-900 font-bold underline cursor-pointer disabled:opacity-50"
+                          >
                             Resend Code
                           </button>
                         </div>
                       </div>
                     </div>
 
-                    <div className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-xl p-6 border border-amber-100">
-                      <h3 className="font-bold text-gray-900 mb-2">Why Verify?</h3>
-                      <ul className="space-y-2 text-sm text-gray-600">
+                    <div className="bg-amber-50 rounded-2xl p-6 border border-amber-300">
+                      <h3 className="font-bold text-slate-900 mb-2">Why Verify?</h3>
+                      <ul className="space-y-2 text-xs font-semibold text-slate-800">
                         <li className="flex items-start">
-                          <span className="text-amber-500 mr-2">✓</span>
-                          <span>Access to premium features</span>
+                          <span className="text-amber-600 font-black mr-2">✓</span>
+                          <span>Access to sovereign creator monetization features</span>
                         </li>
                         <li className="flex items-start">
-                          <span className="text-amber-500 mr-2">✓</span>
-                          <span>Higher transaction limits</span>
+                          <span className="text-amber-600 font-black mr-2">✓</span>
+                          <span>Higher transaction limits and instant offboarding</span>
                         </li>
                         <li className="flex items-start">
-                          <span className="text-amber-500 mr-2">✓</span>
-                          <span>Enhanced security</span>
+                          <span className="text-amber-600 font-black mr-2">✓</span>
+                          <span>Enhanced cryptographic biometric protection</span>
                         </li>
                         <li className="flex items-start">
-                          <span className="text-amber-500 mr-2">✓</span>
-                          <span>Faster customer support</span>
+                          <span className="text-amber-600 font-black mr-2">✓</span>
+                          <span>Priority technical support SLA response</span>
                         </li>
                       </ul>
                     </div>
                   </div>
                 ) : (
-                  <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-8 text-center border border-green-100">
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 mb-4 border text-green-950 border-green-400 font-black">
-                      <ShieldCheckIcon className="h-8 w-8 text-green-600" />
+                  <div className="bg-emerald-50 rounded-2xl p-8 text-center border border-emerald-300">
+                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-100 mb-4 border text-emerald-950 border-emerald-400 font-black">
+                      <ShieldCheckIcon className="h-8 w-8 text-emerald-700" />
                     </div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">Account Verified!</h3>
-                    <p className="text-gray-600 mb-6">
-                      Your account has been successfully verified. You can now access all platform features.
+                    <h3 className="text-xl font-black text-slate-900 mb-2">Account Verified!</h3>
+                    <p className="text-slate-700 font-medium text-sm mb-6">
+                      Your sovereign identity has been successfully verified across all platform nodes.
                     </p>
-                    <div className="flex flex-col sm:flex-row gap-3">
+                    <div className="flex flex-col sm:flex-row justify-center gap-3">
                       <button
                         onClick={resetVerification}
-                        className="px-4 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700"
+                        className="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-bold text-sm hover:from-blue-700 hover:to-indigo-700 shadow-sm cursor-pointer"
                       >
                         Verify Another Method
                       </button>
-                      <button className="px-4 py-2.5 bg-white border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50">
+                      <Link
+                        to="/dashboard"
+                        className="px-5 py-2.5 bg-white border border-slate-300 text-slate-800 rounded-xl font-bold text-sm hover:bg-slate-50 shadow-sm inline-flex items-center justify-center cursor-pointer"
+                      >
                         Go to Dashboard
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 )}
@@ -260,20 +273,23 @@ const VerificationPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="mt-8 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100">
-          <div className="flex items-start">
-            <div className="bg-blue-100 p-2 rounded-lg mr-4">
-              <UserCircleIcon className="h-6 w-6 text-blue-600" />
+        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-300 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div className="flex items-center">
+            <div className="bg-blue-50 border border-blue-200 p-3 rounded-2xl mr-4 text-blue-700">
+              <UserCircleIcon className="h-7 w-7" />
             </div>
             <div>
-              <h3 className="font-bold text-gray-900">Your FIC Balance</h3>
-              <div className="flex items-center justify-between mt-1">
-                <span className="text-2xl font-bold text-gray-900">{ficBalance.toFixed(2)} FIC</span>
-                <button className="text-sm bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-3 py-1.5 rounded-lg hover:from-blue-700 hover:to-indigo-700">
-                  Add Funds
-                </button>
-              </div>
+              <h3 className="font-bold text-slate-900 text-base">Your FIC Balance</h3>
+              <p className="text-2xl font-black text-slate-900 mt-0.5">{ficBalance.toFixed(2)} <span className="text-xs font-bold text-slate-600">FIC</span></p>
             </div>
+          </div>
+          <div>
+            <Link
+              to="/fic/funding"
+              className="inline-flex items-center px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-xl shadow-md transition-colors cursor-pointer"
+            >
+              Add Funds
+            </Link>
           </div>
         </div>
       </div>

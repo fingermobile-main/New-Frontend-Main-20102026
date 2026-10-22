@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
 import apiService from '../services/apiService';
 
@@ -20,6 +21,7 @@ interface EarningSummary {
 }
 
 const MemberEarningPage: React.FC = () => {
+  const navigate = useNavigate();
   const { showToast, ficBalance } = useAppContext();
   const [earningSummary, setEarningSummary] = useState<EarningSummary>({
     totalEarnings: 1250.75,
@@ -231,8 +233,8 @@ const MemberEarningPage: React.FC = () => {
               <p className="text-2xl font-black text-blue-900 mt-1">{ficBalance.toFixed(2)} FIC</p>
             </div>
             <button
-              onClick={() => window.location.href = '/wallet'}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg font-bold text-xs hover:bg-blue-700"
+              onClick={() => navigate('/wallet')}
+              className="px-4 py-2 bg-blue-600 text-white rounded-xl font-bold text-xs hover:bg-blue-700 shadow-sm cursor-pointer"
             >
               Withdraw / Transfer
             </button>
@@ -245,21 +247,21 @@ const MemberEarningPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8 space-y-6">
+    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Creator Earnings Dashboard</h1>
-          <p className="text-xs text-slate-700 font-medium mt-1">Manage service offerings, track payouts, and monitor sales</p>
+          <h1 className="text-3xl font-black text-slate-900">Creator Earnings Dashboard</h1>
+          <p className="text-xs text-slate-700 font-semibold mt-1">Manage service offerings, track payouts, and monitor sales</p>
         </div>
         <div className="flex gap-2">
           {(['dashboard', 'services', 'analytics', 'wallet'] as const).map(tab => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold capitalize transition ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold capitalize transition cursor-pointer ${
                 activeTab === tab
                   ? 'bg-blue-600 text-white shadow-sm'
-                  : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'
+                  : 'bg-white text-slate-700 border border-slate-300 hover:bg-slate-50'
               }`}
             >
               {tab}

@@ -757,7 +757,7 @@ const WalletPage: React.FC = () => {
   return (
     <MainLayout pageTitle="Wallet">
       <div className="bg-slate-50 min-h-screen text-gray-900 pb-16">
-        <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
 
           {/* Top Header & Sovereign Protocol Notice */}
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-white p-6 rounded-3xl border border-slate-200/80 shadow-xs">
