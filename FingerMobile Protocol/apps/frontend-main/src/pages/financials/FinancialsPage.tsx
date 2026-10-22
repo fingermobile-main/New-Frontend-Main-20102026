@@ -28,7 +28,7 @@ const FinancialsPage = () => {
   return (
     <div className="min-h-full space-y-6">
       <div className="border-b border-slate-300 bg-white sticky top-0 z-10 shadow-xs">
-        <div className="p-6 lg:px-8 space-y-4">
+        <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-4 sm:p-6 lg:p-8 space-y-4">
           <div className="flex items-center gap-4">
             <FinancialsIcon className="w-10 h-10 text-blue-600" />
             <div>
@@ -40,7 +40,7 @@ const FinancialsPage = () => {
           {/* Sovereign Platform Ownership Proof */}
           <PlatformOwnershipCard />
         </div>
-        <div className="px-6 lg:px-8">
+        <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8">
           <nav className="-mb-px flex space-x-8 overflow-x-auto">
             {navLinks.map(link => (
               <ReactRouterDOM.NavLink
@@ -56,7 +56,7 @@ const FinancialsPage = () => {
         </div>
       </div>
 
-      <div className="p-6 lg:px-8">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-4 sm:p-6 lg:p-8">
         <Outlet />
       </div>
     </div>

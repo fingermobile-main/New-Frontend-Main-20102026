@@ -183,7 +183,7 @@ const FicVaultPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto space-y-8">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto space-y-8">
         {/* Sovereign Platform Ownership Proof */}
         <PlatformOwnershipCard />
 
