@@ -210,11 +210,18 @@ class BlogsController {
         seo_description
       } = req.body;
 
+      if (!req.user && !req.member) {
+        return res.status(401).json({
+          success: false,
+          message: 'Authentication required'
+        });
+      }
+
       let author_id = req.user?.id || req.user?.userId || req.member?.id;
       const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(String(author_id));
       if (!isUuid) {
         const userRes = await getPool().query('SELECT id FROM users ORDER BY created_at ASC LIMIT 1');
-        author_id = userRes.rows[0]?.id || '00000000-0000-0000-0000-000000000001';
+        author_id = userRes.rows[0]?.id || author_id || '00000000-0000-0000-0000-000000000001';
       }
 
       if (!title || !content) {

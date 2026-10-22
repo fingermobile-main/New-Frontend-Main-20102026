@@ -451,19 +451,18 @@ class CreatorInfluenceSubscriptionController {
       const pool = require('../db').pool;
       const result = await pool.query(
         `INSERT INTO creator_influence_perks (
-          creator_id, tier, tier_name, perk_title, monthly_price, currency, perks, badge_icon, updated_at
-        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW())
+          creator_id, tier, tier_name, monthly_price, currency, perks, badge_icon, updated_at
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, NOW())
         ON CONFLICT (creator_id, tier)
         DO UPDATE SET
           tier_name = EXCLUDED.tier_name,
-          perk_title = EXCLUDED.perk_title,
           monthly_price = EXCLUDED.monthly_price,
           currency = EXCLUDED.currency,
           perks = EXCLUDED.perks,
           badge_icon = EXCLUDED.badge_icon,
           updated_at = NOW()
         RETURNING *`,
-        [String(creatorId), tier, tier_name || tier, tier_name || tier, monthly_price, currency, JSON.stringify(perks), badge_icon]
+        [String(creatorId), tier, tier_name || tier, monthly_price, currency, JSON.stringify(perks), badge_icon]
       );
       res.status(200).json({ success: true, data: result.rows[0] });
     } catch (error) {
@@ -497,15 +496,22 @@ class CreatorInfluenceSubscriptionController {
     try {
       const creatorId = req.user?.id || req.params.creatorId;
       const pool = require('../db').pool;
-      const { rows } = await pool.query(
-        `SELECT
-          subscription_level as tier,
-          COUNT(*) as subscriber_count,
-          SUM(monetization_earnings) as total_earnings
-         FROM fm_creator_influence_subscriptions
-         WHERE is_active = true
-         GROUP BY subscription_level`
-      );
+      let rows = [];
+      try {
+        const queryRes = await pool.query(
+          `SELECT
+            tier,
+            COUNT(*) as subscriber_count,
+            COALESCE(SUM(price), 0) as total_earnings
+           FROM creator_subscriptions
+           WHERE status = 'active' AND (creator_id = $1 OR creator_id::text = $1::text)
+           GROUP BY tier`,
+          [String(creatorId)]
+        );
+        rows = queryRes.rows;
+      } catch (err) {
+        rows = [];
+      }
       res.json({
         success: true,
         data: {

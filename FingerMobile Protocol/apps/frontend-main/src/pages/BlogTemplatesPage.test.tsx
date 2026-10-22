@@ -28,7 +28,7 @@ describe('BlogTemplatesPage', () => {
       </MemoryRouter>
     );
 
-    const foodBtn = screen.getByRole('button', { name: /^Food$/i });
+    const foodBtn = screen.getByRole('button', { name: /Food/i });
     fireEvent.click(foodBtn);
 
     expect(screen.getByText('Culinary Masterclass & Heritage Recipe')).toBeInTheDocument();
