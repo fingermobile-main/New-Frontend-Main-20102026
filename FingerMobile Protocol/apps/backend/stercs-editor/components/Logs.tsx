@@ -51,7 +51,7 @@ const Logs: React.FC<LogProps> = ({ theme }) => {
     try {
       setLoading(true);
       const params = new URLSearchParams();
-      
+
       if (filters.projectId) params.append('projectId', filters.projectId);
       if (filters.level) params.append('level', filters.level);
       if (filters.category) params.append('category', filters.category);
@@ -85,7 +85,7 @@ const Logs: React.FC<LogProps> = ({ theme }) => {
   const fetchStats = async () => {
     try {
       const params = new URLSearchParams();
-      
+
       if (filters.projectId) params.append('projectId', filters.projectId);
       if (filters.startDate) params.append('startDate', filters.startDate);
       if (filters.endDate) params.append('endDate', filters.endDate);
@@ -149,12 +149,12 @@ const Logs: React.FC<LogProps> = ({ theme }) => {
   };
 
   return (
-    <div 
-      className="logs-panel" 
-      style={{ 
-        width: '100%', 
-        height: '100%', 
-        display: 'flex', 
+    <div
+      className="logs-panel"
+      style={{
+        width: '100%',
+        height: '100%',
+        display: 'flex',
         flexDirection: 'column',
         backgroundColor: theme === 'dark' ? '#1f2937' : theme === 'blue' ? '#dbeafe' : '#e5e7eb',
         color: theme === 'dark' ? 'white' : '#1f2937',
@@ -162,10 +162,10 @@ const Logs: React.FC<LogProps> = ({ theme }) => {
       }}
     >
       <h3 style={{ margin: '0 0 1rem 0' }}>Logging & Audit Trail</h3>
-      
+
       {error && (
-        <div style={{ 
-          padding: '0.75rem', 
+        <div style={{
+          padding: '0.75rem',
           color: '#ef4444',
           backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : '#f3f4f6',
           borderRadius: '4px',
@@ -174,10 +174,10 @@ const Logs: React.FC<LogProps> = ({ theme }) => {
           Error: {error}
         </div>
       )}
-      
+
       <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
         {(['logs', 'stats'] as const).map((tab) => (
-          <button
+          <button aria-label={tab}
             key={tab}
             onClick={() => setActiveTab(tab)}
             style={{
@@ -196,8 +196,8 @@ const Logs: React.FC<LogProps> = ({ theme }) => {
       </div>
 
       {/* Filters */}
-      <div style={{ 
-        padding: '1rem', 
+      <div style={{
+        padding: '1rem',
         backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
         border: '1px solid #d1d5db',
         borderRadius: '4px',
@@ -222,7 +222,7 @@ const Logs: React.FC<LogProps> = ({ theme }) => {
               }}
             />
           </div>
-          
+
           <div>
             <label style={{ display: 'block', marginBottom: '0.25rem', fontSize: '0.875rem' }}>Level</label>
             <select
@@ -247,7 +247,7 @@ const Logs: React.FC<LogProps> = ({ theme }) => {
               <option value="security">Security</option>
             </select>
           </div>
-          
+
           <div>
             <label style={{ display: 'block', marginBottom: '0.25rem', fontSize: '0.875rem' }}>Category</label>
             <select
@@ -271,7 +271,7 @@ const Logs: React.FC<LogProps> = ({ theme }) => {
               <option value="member">Member</option>
             </select>
           </div>
-          
+
           <div>
             <label style={{ display: 'block', marginBottom: '0.25rem', fontSize: '0.875rem' }}>Start Date</label>
             <input
@@ -289,7 +289,7 @@ const Logs: React.FC<LogProps> = ({ theme }) => {
               }}
             />
           </div>
-          
+
           <div>
             <label style={{ display: 'block', marginBottom: '0.25rem', fontSize: '0.875rem' }}>End Date</label>
             <input
@@ -307,7 +307,7 @@ const Logs: React.FC<LogProps> = ({ theme }) => {
               }}
             />
           </div>
-          
+
           <div style={{ display: 'flex', alignItems: 'end' }}>
             <button
               type="submit"
@@ -343,10 +343,10 @@ const Logs: React.FC<LogProps> = ({ theme }) => {
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {logs.map(log => (
-                <div 
+                <div
                   key={log.id}
-                  style={{ 
-                    padding: '0.75rem', 
+                  style={{
+                    padding: '0.75rem',
                     backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
                     border: '1px solid #d1d5db',
                     borderRadius: '4px'
@@ -358,24 +358,24 @@ const Logs: React.FC<LogProps> = ({ theme }) => {
                       <div style={{ fontWeight: 'bold' }}>
                         {log.action}
                       </div>
-                      <div style={{ 
-                        padding: '0.125rem 0.5rem', 
-                        borderRadius: '4px', 
-                        backgroundColor: 
-                          log.level === 'error' ? '#fee2e2' : 
-                          log.level === 'warning' ? '#fef3c7' : 
-                          log.level === 'info' ? '#dbeafe' : 
+                      <div style={{
+                        padding: '0.125rem 0.5rem',
+                        borderRadius: '4px',
+                        backgroundColor:
+                          log.level === 'error' ? '#fee2e2' :
+                          log.level === 'warning' ? '#fef3c7' :
+                          log.level === 'info' ? '#dbeafe' :
                           log.level === 'debug' ? '#ede9fe' :
                           log.level === 'critical' ? '#fee2e2' :
-                          log.level === 'security' ? '#dcfce7' : 
+                          log.level === 'security' ? '#dcfce7' :
                           '#e5e7eb',
-                        color: 
-                          log.level === 'error' ? '#7f1d1d' : 
-                          log.level === 'warning' ? '#d97706' : 
-                          log.level === 'info' ? '#2563eb' : 
+                        color:
+                          log.level === 'error' ? '#7f1d1d' :
+                          log.level === 'warning' ? '#d97706' :
+                          log.level === 'info' ? '#2563eb' :
                           log.level === 'debug' ? '#7e22ce' :
                           log.level === 'critical' ? '#7f1d1d' :
-                          log.level === 'security' ? '#065f46' : 
+                          log.level === 'security' ? '#065f46' :
                           '#6b7280',
                     MemberfontSize: '0.75rem'
                       }}>
@@ -386,11 +386,11 @@ const Logs: React.FC<LogProps> = ({ theme }) => {
                       {formatDate(log.createdAt)}
                     </div>
                   </div>
-                  
+
                   <div style={{ fontSize: '0.8rem', color: '#6b7280', marginBottom: '0.25rem' }}>
                     Member: {log.memberName} • Project: {log.projectId}
                   </div>
-                  
+
                   {log.details && (
                     <div style={{ fontSize: '0.8rem', backgroundColor: '#f3f4f6', padding: '0.5rem', borderRadius: '4px' }}>
                       <strong>Details:</strong> {log.details}
@@ -406,36 +406,36 @@ const Logs: React.FC<LogProps> = ({ theme }) => {
       {!loading && activeTab === 'stats' && stats && (
         <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh- 300px)' }}>
           <h4>Log Statistics</h4>
-          
+
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '1rem', marginBottom: '1rem' }}>
             <div style={{ padding: '1rem', backgroundColor: '#dbeafe', borderRadius: '4px', textAlign: 'center' }}>
               <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#3b82f6' }}>{stats.totalLogs}</div>
               <div style={{ fontSize: '0.8rem', color: '#6b7280' }}>Total Logs</div>
             </div>
-            
+
             <div style={{ padding: '1rem', backgroundColor: '#fee2e2', borderRadius: '4px', textAlign: 'center' }}>
               <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#dc2626' }}>{stats.errorCount}</div>
               <div style={{ fontSize: '0.8rem', color: '#6b7280' }}>Errors</div>
             </div>
-            
+
             <div style={{ padding: '1rem', backgroundColor: '#fef3c7', borderRadius: '4px', textAlign: 'center' }}>
               <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#d97706' }}>{stats.warningCount}</div>
               <div style={{ fontSize: '0.8rem', color: '#6b7280' }}>Warnings</div>
             </div>
-            
+
             <div style={{ padding: '1rem', backgroundColor: '#dcfce7', borderRadius: '4px', textAlign: 'center' }}>
               <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#059669' }}>{stats.securityCount}</div>
               <div style={{ fontSize: '0.8rem', color: '#6b7280' }}>Security</div>
             </div>
-            
+
             <div style={{ padding: '1rem', backgroundColor: '#ede9fe', borderRadius: '4px', textAlign: 'center' }}>
               <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#7e22ce' }}>{stats.criticalCount}</div>
               <div style={{ fontSize: '0.8rem', color: '#6b7280' }}>Critical</div>
             </div>
           </div>
-          
-          <div style={{ 
-            padding: '1rem', 
+
+          <div style={{
+            padding: '1rem',
             backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
             border: '1px solid #d1d5db',
             borderRadius: '4px'
@@ -453,13 +453,13 @@ const Logs: React.FC<LogProps> = ({ theme }) => {
                 <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
                   <div style={{ width: '80px', fontSize: '0.8rem', color: '#6b7280' }}>{item.level}:</div>
                   <div style={{ flex: 1 }}>
-                    <div 
-                      style={{ 
-                        height: '20px', 
-                        backgroundColor: item.color, 
+                    <div
+                      style={{
+                        height: '20px',
+                        backgroundColor: item.color,
                         width: `${(item.count / (stats.totalLogs || 1)) * 100}%`,
                         maxWidth: '100%'
-                      }} 
+                      }}
                     />
                   </div>
                   <div style={{ width: '40px', textAlign: 'right', fontSize: '0.8rem' }}>{item.count}</div>

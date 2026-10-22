@@ -35,7 +35,7 @@ const Collaboration: React.FC<CollaborationProps> = ({ theme }) => {
   const [invitations, setInvitations] = useState<Invitation[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  
+
   // Form states for inviting members
   const [inviteEmail, setInviteEmail] = useState<string>('');
   const [inviteRole, setInviteRole] = useState<string>('viewer');
@@ -52,7 +52,7 @@ const Collaboration: React.FC<CollaborationProps> = ({ theme }) => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      
+
       if (activeTab === 'collaborators') {
         const response = await fetch('/api/editor/collaboration/project/1', { // In a real app, this would be the actual project ID
           method: 'GET',
@@ -190,12 +190,12 @@ Member
   };
 
   return (
-    <div 
-      className="collaboration-panel" 
-      style={{ 
-        width: '100%', 
-        height: '100%', 
-        display: 'flex', 
+    <div
+      className="collaboration-panel"
+      style={{
+        width: '100%',
+        height: '100%',
+        display: 'flex',
         flexDirection: 'column',
         backgroundColor: theme === 'dark' ? '#1f2937' : theme === 'blue' ? '#dbeafe' : '#e5e7eb',
         color: theme === 'dark' ? 'white' : '#1f2937',
@@ -203,10 +203,10 @@ Member
       }}
     >
       <h3 style={{ margin: '0 0 1rem 0' }}>Collaboration</h3>
-      
+
       {error && (
-        <div style={{ 
-          padding: '0.75rem', 
+        <div style={{
+          padding: '0.75rem',
           color: '#ef4444',
           backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : '#f3f4f6',
           borderRadius: '4px',
@@ -215,10 +215,10 @@ Member
           Error: {error}
         </div>
       )}
-      
+
       <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
         {(['collaborators', 'invitations', 'invite'] as const).map((tab) => (
-          <button
+          <button aria-label={tab}
             key={tab}
             onClick={() => setActiveTab(tab)}
             style={{
@@ -252,10 +252,10 @@ Member
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {collaborators.map(collab => (
-                <div 
+                <div
                   key={collab.id}
-                  style={{ 
-                    padding: '0.75rem', 
+                  style={{
+                    padding: '0.75rem',
                     backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
                     border: '1px solid #d1d5db',
                     borderRadius: '4px'
@@ -270,26 +270,26 @@ Member
                         {collab.email}
                       </div>
                     </div>
-                    <div style={{ 
-                      padding: '0.25rem 0.5rem', 
-                      borderRadius: '4px', 
-                      backgroundColor: 
-                        collab.role === 'admin' ? '#fee2e2' : 
-                        collab.role === 'editor' ? '#fef3c7' : 
+                    <div style={{
+                      padding: '0.25rem 0.5rem',
+                      borderRadius: '4px',
+                      backgroundColor:
+                        collab.role === 'admin' ? '#fee2e2' :
+                        collab.role === 'editor' ? '#fef3c7' :
                         '#d1fae5',
-                      color: 
-                        collab.role === 'admin' ? '#7f1d1d' : 
-                        collab.role === 'editor' ? '#d97706' : 
+                      color:
+                        collab.role === 'admin' ? '#7f1d1d' :
+                        collab.role === 'editor' ? '#d97706' :
                         '#065f46'
                     }}>
                       {collab.role.toUpperCase()}
                     </div>
                   </div>
-                  
+
                   <div style={{ fontSize: '0.8rem', color: '#6b7280', marginBottom: '0.25rem' }}>
                     Joined: {formatDate(collab.joinedAt)} • Updated: {formatDate(collab.updatedAt)}
                   </div>
-                  
+
                   {collab.permissions && collab.permissions.length > 0 && (
                     <div style={{ fontSize: '0.8rem' }}>
                       <span style={{ fontWeight: 'bold' }}>Permissions:</span> {collab.permissions.join(', ')}
@@ -312,10 +312,10 @@ Member
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {invitations.map(invitation => (
-                <div 
+                <div
                   key={invitation.id}
-                  style={{ 
-                    padding: '0.75rem', 
+                  style={{
+                    padding: '0.75rem',
                     backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
                     border: '1px solid #d1d5db',
                     borderRadius: '4px'
@@ -329,16 +329,16 @@ Member
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.5rem' }}>
                     <div>
-                      <div style={{ 
-                        padding: '0.25rem 0.5rem', 
-                        borderRadius: '4px', 
-                        backgroundColor: 
-                          invitation.role === 'admin' ? '#fee2e2' : 
-                          invitation.role === 'editor' ? '#fef3c7' : 
+                      <div style={{
+                        padding: '0.25rem 0.5rem',
+                        borderRadius: '4px',
+                        backgroundColor:
+                          invitation.role === 'admin' ? '#fee2e2' :
+                          invitation.role === 'editor' ? '#fef3c7' :
                           '#d1fae5',
-                        color: 
-                          invitation.role === 'admin' ? '#7f1d1d' : 
-                          invitation.role === 'editor' ? '#d97706' : 
+                        color:
+                          invitation.role === 'admin' ? '#7f1d1d' :
+                          invitation.role === 'editor' ? '#d97706' :
                           '#065f46'
                       }}>
                         {invitation.role.toUpperCase()}
@@ -387,8 +387,8 @@ Member
 
       {activeTab === 'invite' && (
         <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh- 200px)' }}>
-          <div style={{ 
-            padding: '1rem', 
+          <div style={{
+            padding: '1rem',
             backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
             border: '1px solid #d1d5db',
             borderRadius: '4px',
@@ -412,7 +412,7 @@ Member
                 }}
               />
             </div>
-            
+
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '0.75rem' }}>
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem' }}>Project ID</label>
@@ -431,7 +431,7 @@ Member
                   }}
                 />
               </div>
-              
+
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem' }}>Role</label>
                 <select
@@ -452,7 +452,7 @@ Member
                 </select>
               </div>
             </div>
-            
+
             <div style={{ marginBottom: '0.75rem' }}>
               <label style={{ display: 'block', marginBottom: '0.25rem' }}>Permissions (comma separated)</label>
               <input
@@ -470,7 +470,7 @@ Member
                 }}
               />
             </div>
-            
+
             <button
               onClick={handleInviteMember}
               style={{
@@ -486,9 +486,9 @@ Member
               Send Invitation
             </button>
           </div>
-          
-          <div style={{ 
-            padding: '1rem', 
+
+          <div style={{
+            padding: '1rem',
             backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
             border: '1px solid #d1d5db',
             borderRadius: '4px'
@@ -501,14 +501,14 @@ Member
                   Can view the project but cannot make changes.
                 </div>
               </div>
-              
+
               <div style={{ marginBottom: '1rem' }}>
                 <div style={{ fontWeight: 'bold', color: '#f59e0b', marginBottom: '0.25rem' }}>Editor</div>
                 <div style={{ fontSize: '0.9rem', color: theme === 'dark' ? '#d1d5db' : '#4b5563' }}>
                   Can view and edit the project, but cannot manage collaborators or project settings.
                 </div>
               </div>
-              
+
               <div style={{ marginBottom: '1rem' }}>
                 <div style={{ fontWeight: 'bold', color: '#ef4444', marginBottom: '0.25rem' }}>Admin</div>
                 <div style={{ fontSize: '0.9rem', color: theme === 'dark' ? '#d1d5db' : '#4b5563' }}>

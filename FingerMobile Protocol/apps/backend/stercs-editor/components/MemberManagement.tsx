@@ -29,7 +29,7 @@ const MemberManagement: React.FC<MemberManagementProps> = ({ theme }) => {
   const [invitations, setInvitations] = useState<Invitation[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  
+
   // Form states
   const [newMembermembername, setNewMembermembername] = useState<string>('');
   const [newMemberEmail, setNewMemberEmail] = useState<string>('');
@@ -225,12 +225,12 @@ const MemberManagement: React.FC<MemberManagementProps> = ({ theme }) => {
   };
 
   return (
-    <div 
-      className="member-management-panel" 
-      style={{ 
-        width: '100%', 
-        height: '100%', 
-        display: 'flex', 
+    <div
+      className="member-management-panel"
+      style={{
+        width: '100%',
+        height: '100%',
+        display: 'flex',
         flexDirection: 'column',
         backgroundColor: theme === 'dark' ? '#1f2937' : theme === 'blue' ? '#dbeafe' : '#e5e7eb',
         color: theme === 'dark' ? 'white' : '#1f2937',
@@ -238,10 +238,10 @@ const MemberManagement: React.FC<MemberManagementProps> = ({ theme }) => {
       }}
     >
       <h3 style={{ margin: '0 0 1rem 0' }}>Member Management</h3>
-      
+
       {error && (
-        <div style={{ 
-          padding: '0.75rem', 
+        <div style={{
+          padding: '0.75rem',
           color: '#ef4444',
           backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : '#f3f4f6',
           borderRadius: '4px',
@@ -250,10 +250,10 @@ const MemberManagement: React.FC<MemberManagementProps> = ({ theme }) => {
           Error: {error}
         </div>
       )}
-      
+
       <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
         {(['members', 'invitations'] as const).map((tab) => (
-          <button
+          <button aria-label={tab}
             key={tab}
             onClick={() => setActiveTab(tab)}
             style={{
@@ -279,8 +279,8 @@ const MemberManagement: React.FC<MemberManagementProps> = ({ theme }) => {
 
       {!loading && activeTab === 'members' && (
         <div>
-          <div style={{ 
-            padding: '1rem', 
+          <div style={{
+            padding: '1rem',
             backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
             border: '1px solid #d1d5db',
             borderRadius: '4px',
@@ -304,7 +304,7 @@ const MemberManagement: React.FC<MemberManagementProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <div style={{ marginBottom: '0.75rem' }}>
               <label style={{ display: 'block', marginBottom: '0.25rem' }}>Email</label>
               <input
@@ -322,7 +322,7 @@ const MemberManagement: React.FC<MemberManagementProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <div style={{ marginBottom: '0.75rem' }}>
               <label style={{ display: 'block', marginBottom: '0.25rem' }}>Role</label>
               <select
@@ -342,7 +342,7 @@ const MemberManagement: React.FC<MemberManagementProps> = ({ theme }) => {
                 <option value="admin">Admin</option>
               </select>
             </div>
-            
+
             <button
               onClick={handleCreateMember}
               style={{
@@ -358,7 +358,7 @@ const MemberManagement: React.FC<MemberManagementProps> = ({ theme }) => {
               Add Member
             </button>
           </div>
-          
+
           <h4>Team Members</h4>
           {members.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '1rem', color: '#9ca3af' }}>
@@ -367,10 +367,10 @@ const MemberManagement: React.FC<MemberManagementProps> = ({ theme }) => {
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {members.map(member => (
-                <div 
+                <div
                   key={member.id}
-                  style={{ 
-                    padding: '0.75rem', 
+                  style={{
+                    padding: '0.75rem',
                     backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
                     border: '1px solid #d1d5db',
                     borderRadius: '4px',
@@ -410,8 +410,8 @@ const MemberManagement: React.FC<MemberManagementProps> = ({ theme }) => {
 
       {!loading && activeTab === 'invitations' && (
         <div>
-          <div style={{ 
-            padding: '1rem', 
+          <div style={{
+            padding: '1rem',
             backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
             border: '1px solid #d1d5db',
             borderRadius: '4px',
@@ -435,7 +435,7 @@ const MemberManagement: React.FC<MemberManagementProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <div style={{ marginBottom: '0.75rem' }}>
               <label style={{ display: 'block', marginBottom: '0.25rem' }}>Role</label>
               <select
@@ -455,7 +455,7 @@ const MemberManagement: React.FC<MemberManagementProps> = ({ theme }) => {
                 <option value="admin">Admin</option>
               </select>
             </div>
-            
+
             <div style={{ marginBottom: '0.75rem' }}>
               <label style={{ display: 'block', marginBottom: '0.25rem' }}>Message (Optional)</label>
               <textarea
@@ -473,7 +473,7 @@ const MemberManagement: React.FC<MemberManagementProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <button
               onClick={handleInviteMember}
               style={{
@@ -489,7 +489,7 @@ const MemberManagement: React.FC<MemberManagementProps> = ({ theme }) => {
               Send Invitation
             </button>
           </div>
-          
+
           <h4>Pending Invitations</h4>
           {invitations.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '1rem', color: '#9ca3af' }}>
@@ -498,10 +498,10 @@ const MemberManagement: React.FC<MemberManagementProps> = ({ theme }) => {
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {invitations.map(invitation => (
-                <div 
+                <div
                   key={invitation.id}
-                  style={{ 
-                    padding: '0.75rem', 
+                  style={{
+                    padding: '0.75rem',
                     backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
                     border: '1px solid #d1d5db',
                     borderRadius: '4px',

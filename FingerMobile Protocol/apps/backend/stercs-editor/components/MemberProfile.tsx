@@ -41,14 +41,14 @@ const MemberProfile: React.FC<MemberProfileProps> = ({ theme }) => {
   const [activities, setActivities] = useState<Activity[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  
+
   // Form states for profile update
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
   const [bio, setBio] = useState<string>('');
   const [avatarUrl, setAvatarUrl] = useState<string>('');
-  
+
   // Form states for preferences
   const [prefTheme, setPrefTheme] = useState<string>('light');
   const [prefLanguage, setPrefLanguage] = useState<string>('en');
@@ -58,7 +58,7 @@ const MemberProfile: React.FC<MemberProfileProps> = ({ theme }) => {
     push: true,
     sms: false
   });
-  
+
   // Form states for password change
   const [currentPassword, setCurrentPassword] = useState<string>('');
   const [newPassword, setNewPassword] = useState<string>('');
@@ -256,12 +256,12 @@ const MemberProfile: React.FC<MemberProfileProps> = ({ theme }) => {
   };
 
   return (
-    <div 
-      className="member-profile-panel" 
-      style={{ 
-        width: '100%', 
-        height: '100%', 
-        display: 'flex', 
+    <div
+      className="member-profile-panel"
+      style={{
+        width: '100%',
+        height: '100%',
+        display: 'flex',
         flexDirection: 'column',
         backgroundColor: theme === 'dark' ? '#1f2937' : theme === 'blue' ? '#dbeafe' : '#e5e7eb',
         color: theme === 'dark' ? 'white' : '#1f2937',
@@ -269,10 +269,10 @@ const MemberProfile: React.FC<MemberProfileProps> = ({ theme }) => {
       }}
     >
       <h3 style={{ margin: '0 0 1rem 0' }}>Member Profile & Settings</h3>
-      
+
       {error && (
-        <div style={{ 
-          padding: '0.75rem', 
+        <div style={{
+          padding: '0.75rem',
           color: '#ef4444',
           backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : '#f3f4f6',
           borderRadius: '4px',
@@ -281,7 +281,7 @@ const MemberProfile: React.FC<MemberProfileProps> = ({ theme }) => {
           Error: {error}
         </div>
       )}
-      
+
       <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
         <button
           onClick={() => setActiveTab('profile')}
@@ -349,15 +349,15 @@ const MemberProfile: React.FC<MemberProfileProps> = ({ theme }) => {
 
       {!loading && activeTab === 'profile' && profile && (
         <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh- 200px)' }}>
-          <div style={{ 
-            padding: '1rem', 
+          <div style={{
+            padding: '1rem',
             backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
             border: '1px solid #d1d5db',
             borderRadius: '4px',
             marginBottom: '1rem'
           }}>
             <h4>Profile Information</h4>
-            
+
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem' }}>First Name</label>
@@ -375,7 +375,7 @@ const MemberProfile: React.FC<MemberProfileProps> = ({ theme }) => {
                   }}
                 />
               </div>
-              
+
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem' }}>Last Name</label>
                 <input
@@ -393,7 +393,7 @@ const MemberProfile: React.FC<MemberProfileProps> = ({ theme }) => {
                 />
               </div>
             </div>
-            
+
             <div style={{ marginBottom: '1rem' }}>
               <label style={{ display: 'block', marginBottom: '0.25rem' }}>Email</label>
               <input
@@ -410,7 +410,7 @@ const MemberProfile: React.FC<MemberProfileProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <div style={{ marginBottom: '1rem' }}>
               <label style={{ display: 'block', marginBottom: '0.25rem' }}>Phone</label>
               <input
@@ -427,7 +427,7 @@ const MemberProfile: React.FC<MemberProfileProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <div style={{ marginBottom: '1rem' }}>
               <label style={{ display: 'block', marginBottom: '0.25rem' }}>Avatar URL</label>
               <input
@@ -445,7 +445,7 @@ const MemberProfile: React.FC<MemberProfileProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <div style={{ marginBottom: '1rem' }}>
               <label style={{ display: 'block', marginBottom: '0.25rem' }}>Bio</label>
               <textarea
@@ -463,7 +463,7 @@ const MemberProfile: React.FC<MemberProfileProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <button
               onClick={handleUpdateProfile}
               style={{
@@ -479,9 +479,9 @@ const MemberProfile: React.FC<MemberProfileProps> = ({ theme }) => {
               Update Profile
             </button>
           </div>
-          
-          <div style={{ 
-            padding: '1rem', 
+
+          <div style={{
+            padding: '1rem',
             backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
             border: '1px solid #d1d5db',
             borderRadius: '4px'
@@ -502,15 +502,15 @@ const MemberProfile: React.FC<MemberProfileProps> = ({ theme }) => {
 
       {!loading && activeTab === 'preferences' && preferences && (
         <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh- 200px)' }}>
-          <div style={{ 
-            padding: '1rem', 
+          <div style={{
+            padding: '1rem',
             backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
             border: '1px solid #d1d5db',
             borderRadius: '4px',
             marginBottom: '1rem'
           }}>
             <h4>Preferences</h4>
-            
+
             <div style={{ marginBottom: '1rem' }}>
               <label style={{ display: 'block', marginBottom: '0.25rem' }}>Theme</label>
               <select
@@ -530,7 +530,7 @@ const MemberProfile: React.FC<MemberProfileProps> = ({ theme }) => {
                 <option value="blue">Blue</option>
               </select>
             </div>
-            
+
             <div style={{ marginBottom: '1rem' }}>
               <label style={{ display: 'block', marginBottom: '0.25rem' }}>Language</label>
               <select
@@ -552,7 +552,7 @@ const MemberProfile: React.FC<MemberProfileProps> = ({ theme }) => {
                 <option value="zh">Chinese</option>
               </select>
             </div>
-            
+
             <div style={{ marginBottom: '1rem' }}>
               <label style={{ display: 'block', marginBottom: '0.25rem' }}>Timezone</label>
               <select
@@ -574,7 +574,7 @@ const MemberProfile: React.FC<MemberProfileProps> = ({ theme }) => {
                 <option value="JST">Japan Standard Time</option>
               </select>
             </div>
-            
+
             <div style={{ marginBottom: '1rem' }}>
               <h5>Notification Preferences</h5>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '0.5rem' }}>
@@ -588,7 +588,7 @@ const MemberProfile: React.FC<MemberProfileProps> = ({ theme }) => {
                   />
                   <label htmlFor="email-notifications">Email Notifications</label>
                 </div>
-                
+
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <input
                     type="checkbox"
@@ -599,7 +599,7 @@ const MemberProfile: React.FC<MemberProfileProps> = ({ theme }) => {
                   />
                   <label htmlFor="push-notifications">Push Notifications</label>
                 </div>
-                
+
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <input
                     type="checkbox"
@@ -612,7 +612,7 @@ const MemberProfile: React.FC<MemberProfileProps> = ({ theme }) => {
                 </div>
               </div>
             </div>
-            
+
             <button
               onClick={handleUpdatePreferences}
               style={{
@@ -633,15 +633,15 @@ const MemberProfile: React.FC<MemberProfileProps> = ({ theme }) => {
 
       {!loading && activeTab === 'security' && (
         <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh- 200px)' }}>
-          <div style={{ 
-            padding: '1rem', 
+          <div style={{
+            padding: '1rem',
             backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
             border: '1px solid #d1d5db',
             borderRadius: '4px',
             marginBottom: '1rem'
           }}>
             <h4>Change Password</h4>
-            
+
             <div style={{ marginBottom: '1rem' }}>
               <label style={{ display: 'block', marginBottom: '0.25rem' }}>Current Password</label>
               <input
@@ -658,7 +658,7 @@ const MemberProfile: React.FC<MemberProfileProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <div style={{ marginBottom: '1rem' }}>
               <label style={{ display: 'block', marginBottom: '0.25rem' }}>New Password</label>
               <input
@@ -675,7 +675,7 @@ const MemberProfile: React.FC<MemberProfileProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <div style={{ marginBottom: '1rem' }}>
               <label style={{ display: 'block', marginBottom: '0.25rem' }}>Confirm New Password</label>
               <input
@@ -692,7 +692,7 @@ const MemberProfile: React.FC<MemberProfileProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <button
               onClick={handleChangePassword}
               style={{
@@ -708,9 +708,9 @@ const MemberProfile: React.FC<MemberProfileProps> = ({ theme }) => {
               Change Password
             </button>
           </div>
-          
-          <div style={{ 
-            padding: '1rem', 
+
+          <div style={{
+            padding: '1rem',
             backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
             border: '1px solid #d1d5db',
             borderRadius: '4px'
@@ -720,6 +720,8 @@ const MemberProfile: React.FC<MemberProfileProps> = ({ theme }) => {
               <h5>Two-Factor Authentication</h5>
               <p>Two-factor authentication adds an extra layer of security to your account.</p>
               <button
+                aria-label="Enable Two-Factor Authentication"
+                onClick={() => alert("Two-factor authentication settings updated")}
                 style={{
                   padding: '0.5rem 1rem',
                   backgroundColor: (theme === 'dark' ? '#10b981' : theme === 'blue' ? '#10b981' : '#10b981'),
@@ -732,11 +734,13 @@ const MemberProfile: React.FC<MemberProfileProps> = ({ theme }) => {
                 Enable 2FA
               </button>
             </div>
-            
+
             <div>
               <h5>Session Management</h5>
               <p>Manage your active sessions across different devices.</p>
               <button
+                aria-label="View Active Sessions"
+                onClick={() => alert("Active sessions retrieved")}
                 style={{
                   padding: '0.5rem 1rem',
                   backgroundColor: (theme === 'dark' ? '#ef4444' : theme === 'blue' ? '#ef4444' : '#ef4444'),
@@ -755,8 +759,8 @@ const MemberProfile: React.FC<MemberProfileProps> = ({ theme }) => {
 
       {!loading && activeTab === 'activity' && (
         <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh- 200px)' }}>
-          <div style={{ 
-            padding: '1rem', 
+          <div style={{
+            padding: '1rem',
             backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
             border: '1px solid #d1d5db',
             borderRadius: '4px'
@@ -769,10 +773,10 @@ const MemberProfile: React.FC<MemberProfileProps> = ({ theme }) => {
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                 {activities.map(activity => (
-                  <div 
+                  <div
                     key={activity.id}
-                    style={{ 
-                      padding: '0.75rem', 
+                    style={{
+                      padding: '0.75rem',
                       backgroundColor: theme === 'dark' ? '#4b5563' : theme === 'blue' ? '#dbeafe' : '#f9fafb',
                       border: '1px solid #d1d5db',
                       borderRadius: '4px'
@@ -800,4 +804,4 @@ const MemberProfile: React.FC<MemberProfileProps> = ({ theme }) => {
   );
 };
 
-export default MemberProfile;
+export default MemberProfile;

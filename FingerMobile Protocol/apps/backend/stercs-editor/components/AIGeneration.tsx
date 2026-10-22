@@ -193,12 +193,12 @@ const AIGeneration: React.FC<AIGenerationProps> = ({ theme }) => {
 
 
   return (
-    <div 
-      className="ai-generation-panel" 
-      style={{ 
-        width: '100%', 
-        height: '100%', 
-        display: 'flex', 
+    <div
+      className="ai-generation-panel"
+      style={{
+        width: '100%',
+        height: '100%',
+        display: 'flex',
         flexDirection: 'column',
         backgroundColor: theme === 'dark' ? '#1f2937' : theme === 'blue' ? '#dbeafe' : '#e5e7eb',
         color: theme === 'dark' ? 'white' : '#1f2937',
@@ -206,10 +206,10 @@ const AIGeneration: React.FC<AIGenerationProps> = ({ theme }) => {
       }}
     >
       <h3 style={{ margin: '0 0 1rem 0' }}>AI Generation Tools</h3>
-      
+
       {error && (
-        <div style={{ 
-          padding: '0.75rem', 
+        <div style={{
+          padding: '0.75rem',
           color: '#ef4444',
           backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : '#f3f4f6',
           borderRadius: '4px',
@@ -218,10 +218,10 @@ const AIGeneration: React.FC<AIGenerationProps> = ({ theme }) => {
           Error: {error}
         </div>
       )}
-      
+
       <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
         {(['text', 'image', 'code', 'sitemap', 'history'] as const).map((tab) => (
-          <button
+          <button aria-label={tab}
             key={tab}
             onClick={() => setActiveTab(tab)}
             style={{
@@ -264,7 +264,7 @@ const AIGeneration: React.FC<AIGenerationProps> = ({ theme }) => {
               }}
             />
           </div>
-          
+
           <button
             onClick={handleGenerateText}
             style={{
@@ -280,10 +280,10 @@ const AIGeneration: React.FC<AIGenerationProps> = ({ theme }) => {
           >
             Generate Text
           </button>
-          
+
           {generatedText && (
-            <div style={{ 
-              padding: '1rem', 
+            <div style={{
+              padding: '1rem',
               backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
               border: '1px solid #d1d5db',
               borderRadius: '4px',
@@ -315,7 +315,7 @@ const AIGeneration: React.FC<AIGenerationProps> = ({ theme }) => {
               }}
             />
           </div>
-          
+
           <button
             onClick={handleGenerateImage}
             style={{
@@ -331,10 +331,10 @@ const AIGeneration: React.FC<AIGenerationProps> = ({ theme }) => {
           >
             Generate Image
           </button>
-          
+
           {generatedImage && (
-            <div style={{ 
-              padding: '1rem', 
+            <div style={{
+              padding: '1rem',
               backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
               border: '1px solid #d1d5db',
               borderRadius: '4px',
@@ -342,15 +342,15 @@ const AIGeneration: React.FC<AIGenerationProps> = ({ theme }) => {
               textAlign: 'center'
             }}>
               <h4>Generated Image:</h4>
-              <img 
-                src={generatedImage} 
-                alt="Generated content" 
-                style={{ 
-                  maxWidth: '100%', 
+              <img
+                src={generatedImage}
+                alt="Generated content"
+                style={{
+                  maxWidth: '100%',
                   maxHeight: '400px',
                   border: '1px solid #d1d5db',
                   borderRadius: '4px'
-                }} 
+                }}
               />
             </div>
           )}
@@ -377,7 +377,7 @@ const AIGeneration: React.FC<AIGenerationProps> = ({ theme }) => {
               }}
             />
           </div>
-          
+
           <button
             onClick={handleGetCodeSuggestions}
             style={{
@@ -393,10 +393,10 @@ const AIGeneration: React.FC<AIGenerationProps> = ({ theme }) => {
           >
             Get Code Suggestions
           </button>
-          
+
           {codeSuggestions.length > 0 && (
-            <div style={{ 
-              padding: '1rem', 
+            <div style={{
+              padding: '1rem',
               backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
               border: '1px solid #d1d5db',
               borderRadius: '4px',
@@ -406,10 +406,10 @@ const AIGeneration: React.FC<AIGenerationProps> = ({ theme }) => {
               <ul style={{ paddingLeft: '1.5rem' }}>
                 {codeSuggestions.map((suggestion, index) => (
                   <li key={index} style={{ marginBottom: '0.5rem' }}>
-                    <span style={{ 
-                      fontWeight: 'bold', 
-                      color: suggestion.priority === 'high' ? '#ef4444' : 
-                             suggestion.priority === 'medium' ? '#f59e0b' : '#10b981' 
+                    <span style={{
+                      fontWeight: 'bold',
+                      color: suggestion.priority === 'high' ? '#ef4444' :
+                             suggestion.priority === 'medium' ? '#f59e0b' : '#10b981'
                     }}>
                       {suggestion.type.toUpperCase()}:
                     </span> {suggestion.message}
@@ -440,7 +440,7 @@ const AIGeneration: React.FC<AIGenerationProps> = ({ theme }) => {
               }}
             />
           </div>
-          
+
           <button
             onClick={handleGenerateSitemap}
             style={{
@@ -456,10 +456,10 @@ const AIGeneration: React.FC<AIGenerationProps> = ({ theme }) => {
           >
             Generate Sitemap
           </button>
-          
+
           {sitemap && (
-            <div style={{ 
-              padding: '1rem', 
+            <div style={{
+              padding: '1rem',
               backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
               border: '1px solid #d1d5db',
               borderRadius: '4px',
@@ -490,10 +490,10 @@ const AIGeneration: React.FC<AIGenerationProps> = ({ theme }) => {
           ) : (
             <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
               {history.map((item, index) => (
-                <div 
-                  key={index} 
-                  style={{ 
-                    padding: '0.75rem', 
+                <div
+                  key={index}
+                  style={{
+                    padding: '0.75rem',
                     marginBottom: '0.5rem',
                     backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
                     border: '1px solid #d1d5db',

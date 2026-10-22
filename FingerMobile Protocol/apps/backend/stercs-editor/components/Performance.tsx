@@ -30,12 +30,12 @@ const Performance: React.FC<PerformanceProps> = ({ theme }) => {
   const [metrics, setMetrics] = useState<PerformanceMetric[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  
+
   // Form states for performance configs
   const [newConfigName, setNewConfigName] = useState<string>('');
   const [newConfigDescription, setNewConfigDescription] = useState<string>('');
   const [newConfigProjectId, setNewConfigProjectId] = useState<string>('1');
-  
+
   // Form states for metrics
   const [newMetricConfigId, setNewMetricConfigId] = useState<string>('');
   const [newMetricProjectId, setNewMetricProjectId] = useState<string>('1');
@@ -185,12 +185,12 @@ const Performance: React.FC<PerformanceProps> = ({ theme }) => {
 
 
   return (
-    <div 
-      className="performance-panel" 
-      style={{ 
-        width: '100%', 
-        height: '100%', 
-        display: 'flex', 
+    <div
+      className="performance-panel"
+      style={{
+        width: '100%',
+        height: '100%',
+        display: 'flex',
         flexDirection: 'column',
         backgroundColor: theme === 'dark' ? '#1f2937' : theme === 'blue' ? '#dbeafe' : '#e5e7eb',
         color: theme === 'dark' ? 'white' : '#1f2937',
@@ -198,10 +198,10 @@ const Performance: React.FC<PerformanceProps> = ({ theme }) => {
       }}
     >
       <h3 style={{ margin: '0 0 1rem 0' }}>Performance Monitoring</h3>
-      
+
       {error && (
-        <div style={{ 
-          padding: '0.75rem', 
+        <div style={{
+          padding: '0.75rem',
           color: '#ef4444',
           backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : '#f3f4f6',
           borderRadius: '4px',
@@ -210,10 +210,10 @@ const Performance: React.FC<PerformanceProps> = ({ theme }) => {
           Error: {error}
         </div>
       )}
-      
+
       <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
         {(['configs', 'metrics', 'dashboard'] as const).map((tab) => (
-          <button
+          <button aria-label={tab}
             key={tab}
             onClick={() => setActiveTab(tab)}
             style={{
@@ -239,8 +239,8 @@ const Performance: React.FC<PerformanceProps> = ({ theme }) => {
 
       {!loading && activeTab === 'configs' && (
         <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh- 200px)' }}>
-          <div style={{ 
-            padding: '1rem', 
+          <div style={{
+            padding: '1rem',
             backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
             border: '1px solid #d1d5db',
             borderRadius: '4px',
@@ -264,7 +264,7 @@ const Performance: React.FC<PerformanceProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <div style={{ marginBottom: '0.75rem' }}>
               <label style={{ display: 'block', marginBottom: '0.25rem' }}>Description</label>
               <textarea
@@ -282,7 +282,7 @@ const Performance: React.FC<PerformanceProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '0.75rem', marginBottom: '0.75rem' }}>
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem' }}>Project ID</label>
@@ -302,7 +302,7 @@ const Performance: React.FC<PerformanceProps> = ({ theme }) => {
                 />
               </div>
             </div>
-            
+
             <button
               onClick={handleCreateConfig}
               style={{
@@ -318,7 +318,7 @@ const Performance: React.FC<PerformanceProps> = ({ theme }) => {
               Create Configuration
             </button>
           </div>
-          
+
           <h4>Your Performance Configurations</h4>
           {configs.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '1rem', color: '#9ca3af' }}>
@@ -327,10 +327,10 @@ const Performance: React.FC<PerformanceProps> = ({ theme }) => {
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {configs.map(config => (
-                <div 
+                <div
                   key={config.id}
-                  style={{ 
-                    padding: '0.75rem', 
+                  style={{
+                    padding: '0.75rem',
                     backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
                     border: '1px solid #d1d5db',
                     borderRadius: '4px'
@@ -359,8 +359,8 @@ const Performance: React.FC<PerformanceProps> = ({ theme }) => {
 
       {!loading && activeTab === 'metrics' && (
         <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh- 200px)' }}>
-          <div style={{ 
-            padding: '1rem', 
+          <div style={{
+            padding: '1rem',
             backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
             border: '1px solid #d1d5db',
             borderRadius: '4px',
@@ -390,7 +390,7 @@ const Performance: React.FC<PerformanceProps> = ({ theme }) => {
                   ))}
                 </select>
               </div>
-              
+
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem' }}>Project ID</label>
                 <input
@@ -409,7 +409,7 @@ const Performance: React.FC<PerformanceProps> = ({ theme }) => {
                 />
               </div>
             </div>
-            
+
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.75rem', marginBottom: '0.75rem' }}>
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem' }}>Metric Type</label>
@@ -433,7 +433,7 @@ const Performance: React.FC<PerformanceProps> = ({ theme }) => {
                   <option value="fps">Frame Rate</option>
                 </select>
               </div>
-              
+
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem' }}>Value</label>
                 <input
@@ -451,7 +451,7 @@ const Performance: React.FC<PerformanceProps> = ({ theme }) => {
                   }}
                 />
               </div>
-              
+
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem' }}>Unit</label>
                 <select
@@ -475,7 +475,7 @@ const Performance: React.FC<PerformanceProps> = ({ theme }) => {
                 </select>
               </div>
             </div>
-            
+
             <button
               onClick={handleCreateMetric}
               style={{
@@ -491,7 +491,7 @@ const Performance: React.FC<PerformanceProps> = ({ theme }) => {
               Record Metric
             </button>
           </div>
-          
+
           <h4>Recent Performance Metrics</h4>
           {metrics.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '1rem', color: '#9ca3af' }}>
@@ -500,10 +500,10 @@ const Performance: React.FC<PerformanceProps> = ({ theme }) => {
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {metrics.map(metric => (
-                <div 
+                <div
                   key={metric.id}
-                  style={{ 
-                    padding: '0.75rem', 
+                  style={{
+                    padding: '0.75rem',
                     backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
                     border: '1px solid #d1d5db',
                     borderRadius: '4px'
@@ -522,7 +522,7 @@ const Performance: React.FC<PerformanceProps> = ({ theme }) => {
                       {formatDate(metric.timestamp)}
                     </div>
                   </div>
-                  
+
                   {metric.metadata && Object.keys(metric.metadata).length > 0 && (
                     <div style={{ fontSize: '0.8rem', backgroundColor: '#f3f4f6', padding: '0.5rem', borderRadius: '4px' }}>
                       <strong>Metadata:</strong> {JSON.stringify(metric.metadata)}
@@ -538,8 +538,8 @@ const Performance: React.FC<PerformanceProps> = ({ theme }) => {
       {!loading && activeTab === 'dashboard' && (
         <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh- 200px)' }}>
           <h4>Performance Dashboard</h4>
-          <div style={{ 
-            padding: '1rem', 
+          <div style={{
+            padding: '1rem',
             backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
             border: '1px solid #d1d5db',
             borderRadius: '4px',
@@ -564,9 +564,9 @@ const Performance: React.FC<PerformanceProps> = ({ theme }) => {
               </div>
             </div>
           </div>
-          
-          <div style={{ 
-            padding: '1rem', 
+
+          <div style={{
+            padding: '1rem',
             backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
             border: '1px solid #d1d5db',
             borderRadius: '4px'
@@ -575,13 +575,13 @@ const Performance: React.FC<PerformanceProps> = ({ theme }) => {
             <div style={{ height: '200px', display: 'flex', alignItems: 'flex-end', justifyContent: 'space-around', padding: '1rem 0' }}>
               {[0.8, 0.9, 0.7, 0.85, 0.75, 0.89, 0.82].map((value, index) => (
                 <div key={index} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                  <div 
-                    style={{ 
-                      width: '20px', 
-                      height: `${value * 200}px`, 
-                      backgroundColor: '#3b82f6', 
-                      marginBottom: '0.5rem' 
-                    }} 
+                  <div
+                    style={{
+                      width: '20px',
+                      height: `${value * 200}px`,
+                      backgroundColor: '#3b82f6',
+                      marginBottom: '0.5rem'
+                    }}
                   />
                   <div style={{ fontSize: '0.7rem', color: '#6b7280' }}>Day {index+1}</div>
                 </div>
@@ -597,4 +597,4 @@ const Performance: React.FC<PerformanceProps> = ({ theme }) => {
   );
 };
 
-export default Performance;
+export default Performance;

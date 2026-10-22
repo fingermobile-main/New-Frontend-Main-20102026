@@ -51,7 +51,7 @@ const ProjectManagement: React.FC<ProjectManagementProps> = ({ theme }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedProject, setSelectedProject] = useState<number | null>(null);
-  
+
   // Form states for creating projects
   const [newProjectName, setNewProjectName] = useState<string>('');
   const [newProjectDescription, setNewProjectDescription] = useState<string>('');
@@ -60,7 +60,7 @@ const ProjectManagement: React.FC<ProjectManagementProps> = ({ theme }) => {
   const [newProjectStartDate, setNewProjectStartDate] = useState<string>('');
   const [newProjectEndDate, setNewProjectEndDate] = useState<string>('');
   const [newProjectTags, setNewProjectTags] = useState<string>('');
-  
+
   // Form states for creating tasks
   const [newTaskTitle, setNewTaskTitle] = useState<string>('');
   const [newTaskDescription, setNewTaskDescription] = useState<string>('');
@@ -267,12 +267,12 @@ const ProjectManagement: React.FC<ProjectManagementProps> = ({ theme }) => {
   };
 
   return (
-    <div 
-      className="project-management-panel" 
-      style={{ 
-        width: '100%', 
-        height: '100%', 
-        display: 'flex', 
+    <div
+      className="project-management-panel"
+      style={{
+        width: '100%',
+        height: '100%',
+        display: 'flex',
         flexDirection: 'column',
         backgroundColor: theme === 'dark' ? '#1f2937' : theme === 'blue' ? '#dbeafe' : '#e5e7eb',
         color: theme === 'dark' ? 'white' : '#1f2937',
@@ -280,10 +280,10 @@ const ProjectManagement: React.FC<ProjectManagementProps> = ({ theme }) => {
       }}
     >
       <h3 style={{ margin: '0 0 1rem 0' }}>Project Management</h3>
-      
+
       {error && (
-        <div style={{ 
-          padding: '0.75rem', 
+        <div style={{
+          padding: '0.75rem',
           color: '#ef4444',
           backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : '#f3f4f6',
           borderRadius: '4px',
@@ -292,10 +292,10 @@ const ProjectManagement: React.FC<ProjectManagementProps> = ({ theme }) => {
           Error: {error}
         </div>
       )}
-      
+
       <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
         {(['projects', 'tasks', 'stats'] as const).map((tab) => (
-          <button
+          <button aria-label={tab}
             key={tab}
             onClick={() => setActiveTab(tab)}
             style={{
@@ -321,8 +321,8 @@ const ProjectManagement: React.FC<ProjectManagementProps> = ({ theme }) => {
 
       {!loading && activeTab === 'projects' && (
         <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh- 200px)' }}>
-          <div style={{ 
-            padding: '1rem', 
+          <div style={{
+            padding: '1rem',
             backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
             border: '1px solid #d1d5db',
             borderRadius: '4px',
@@ -346,7 +346,7 @@ const ProjectManagement: React.FC<ProjectManagementProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <div style={{ marginBottom: '0.75rem' }}>
               <label style={{ display: 'block', marginBottom: '0.25rem' }}>Description</label>
               <textarea
@@ -364,7 +364,7 @@ const ProjectManagement: React.FC<ProjectManagementProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '0.75rem' }}>
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem' }}>Status</label>
@@ -386,7 +386,7 @@ const ProjectManagement: React.FC<ProjectManagementProps> = ({ theme }) => {
                   <option value="cancelled">Cancelled</option>
                 </select>
               </div>
-              
+
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem' }}>Priority</label>
                 <select
@@ -408,7 +408,7 @@ const ProjectManagement: React.FC<ProjectManagementProps> = ({ theme }) => {
                 </select>
               </div>
             </div>
-            
+
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '0.75rem' }}>
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem' }}>Start Date</label>
@@ -426,7 +426,7 @@ const ProjectManagement: React.FC<ProjectManagementProps> = ({ theme }) => {
                   }}
                 />
               </div>
-              
+
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem' }}>End Date</label>
                 <input
@@ -444,7 +444,7 @@ const ProjectManagement: React.FC<ProjectManagementProps> = ({ theme }) => {
                 />
               </div>
             </div>
-            
+
             <div style={{ marginBottom: '0.75rem' }}>
               <label style={{ display: 'block', marginBottom: '0.25rem' }}>Tags (comma separated)</label>
               <input
@@ -462,7 +462,7 @@ const ProjectManagement: React.FC<ProjectManagementProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <button
               onClick={handleCreateProject}
               style={{
@@ -478,7 +478,7 @@ const ProjectManagement: React.FC<ProjectManagementProps> = ({ theme }) => {
               Create Project
             </button>
           </div>
-          
+
           <h4>Your Projects</h4>
           {projects.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '1rem', color: '#9ca3af' }}>
@@ -487,10 +487,10 @@ const ProjectManagement: React.FC<ProjectManagementProps> = ({ theme }) => {
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {projects.map(project => (
-                <div 
+                <div
                   key={project.id}
-                  style={{ 
-                    padding: '0.75rem', 
+                  style={{
+                    padding: '0.75rem',
                     backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
                     border: '1px solid #d1d5db',
                     borderRadius: '4px'
@@ -541,40 +541,40 @@ const ProjectManagement: React.FC<ProjectManagementProps> = ({ theme }) => {
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
                     <div>
-                      <span style={{ 
-                        padding: '0.25rem 0.5rem', 
-                        borderRadius: '4px', 
-                        backgroundColor: 
-                          project.status === 'active' ? '#dbeafe' : 
-                          project.status === 'completed' ? '#d1fae5' : 
-                          project.status === 'on_hold' ? '#fef3c7' : 
-                          project.status === 'cancelled' ? '#fee2e2' : 
+                      <span style={{
+                        padding: '0.25rem 0.5rem',
+                        borderRadius: '4px',
+                        backgroundColor:
+                          project.status === 'active' ? '#dbeafe' :
+                          project.status === 'completed' ? '#d1fae5' :
+                          project.status === 'on_hold' ? '#fef3c7' :
+                          project.status === 'cancelled' ? '#fee2e2' :
                           '#e5e7eb',
-                        color: 
-                          project.status === 'active' ? '#1e40af' : 
-                          project.status === 'completed' ? '#065f46' : 
-                          project.status === 'on_hold' ? '#d97706' : 
-                          project.status === 'cancelled' ? '#7f1d1d' : 
+                        color:
+                          project.status === 'active' ? '#1e40af' :
+                          project.status === 'completed' ? '#065f46' :
+                          project.status === 'on_hold' ? '#d97706' :
+                          project.status === 'cancelled' ? '#7f1d1d' :
                           '#6b7280',
                         fontWeight: 'bold',
                         marginRight: '0.5rem'
                       }}>
                         {project.status}
                       </span>
-                      <span style={{ 
-                        padding: '0.25rem 0.5rem', 
-                        borderRadius: '4px', 
-                        backgroundColor: 
-                          project.priority === 'critical' ? '#fee2e2' : 
-                          project.priority === 'high' ? '#ffedd5' : 
-                          project.priority === 'medium' ? '#fef3c7' : 
-                          project.priority === 'low' ? '#d1fae5' : 
+                      <span style={{
+                        padding: '0.25rem 0.5rem',
+                        borderRadius: '4px',
+                        backgroundColor:
+                          project.priority === 'critical' ? '#fee2e2' :
+                          project.priority === 'high' ? '#ffedd5' :
+                          project.priority === 'medium' ? '#fef3c7' :
+                          project.priority === 'low' ? '#d1fae5' :
                           '#e5e7eb',
-                        color: 
-                          project.priority === 'critical' ? '#7f1d1d' : 
-                          project.priority === 'high' ? '#c2410c' : 
-                          project.priority === 'medium' ? '#d97706' : 
-                          project.priority === 'low' ? '#065f46' : 
+                        color:
+                          project.priority === 'critical' ? '#7f1d1d' :
+                          project.priority === 'high' ? '#c2410c' :
+                          project.priority === 'medium' ? '#d97706' :
+                          project.priority === 'low' ? '#065f46' :
                           '#6b7280',
                         fontWeight: 'bold'
                       }}>
@@ -596,16 +596,16 @@ const ProjectManagement: React.FC<ProjectManagementProps> = ({ theme }) => {
                   {project.tags && project.tags.length > 0 && (
                     <div style={{ marginTop: '0.5rem' }}>
                       {project.tags.map((tag, index) => (
-                        <span 
+                        <span
                           key={index}
-                          style={{ 
-                            display: 'inline-block', 
-                            padding: '0.25rem 0.5rem', 
-                            marginRight: '0.25rem', 
+                          style={{
+                            display: 'inline-block',
+                            padding: '0.25rem 0.5rem',
+                            marginRight: '0.25rem',
                             marginBottom: '0.25rem',
-                            backgroundColor: theme === 'dark' ? '#4b5563' : '#e5e7eb', 
-                            borderRadius: '4px', 
-                            fontSize: '0.75rem' 
+                            backgroundColor: theme === 'dark' ? '#4b5563' : '#e5e7eb',
+                            borderRadius: '4px',
+                            fontSize: '0.75rem'
                           }}
                         >
                           {tag}
@@ -624,8 +624,8 @@ const ProjectManagement: React.FC<ProjectManagementProps> = ({ theme }) => {
         <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh- 200px)' }}>
           {selectedProject ? (
             <>
-              <div style={{ 
-                padding: '1rem', 
+              <div style={{
+                padding: '1rem',
                 backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
                 border: '1px solid #d1d5db',
                 borderRadius: '4px',
@@ -649,7 +649,7 @@ const ProjectManagement: React.FC<ProjectManagementProps> = ({ theme }) => {
                     }}
                   />
                 </div>
-                
+
                 <div style={{ marginBottom: '0.75rem' }}>
                   <label style={{ display: 'block', marginBottom: '0.25rem' }}>Description</label>
                   <textarea
@@ -667,7 +667,7 @@ const ProjectManagement: React.FC<ProjectManagementProps> = ({ theme }) => {
                     }}
                   />
                 </div>
-                
+
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '0.75rem' }}>
                   <div>
                     <label style={{ display: 'block', marginBottom: '0.25rem' }}>Status</label>
@@ -690,7 +690,7 @@ const ProjectManagement: React.FC<ProjectManagementProps> = ({ theme }) => {
                       <option value="cancelled">Cancelled</option>
                     </select>
                   </div>
-                  
+
                   <div>
                     <label style={{ display: 'block', marginBottom: '0.25rem' }}>Priority</label>
                     <select
@@ -712,7 +712,7 @@ const ProjectManagement: React.FC<ProjectManagementProps> = ({ theme }) => {
                     </select>
                   </div>
                 </div>
-                
+
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '0.75rem' }}>
                   <div>
                     <label style={{ display: 'block', marginBottom: '0.25rem' }}>Assignee ID</label>
@@ -731,7 +731,7 @@ const ProjectManagement: React.FC<ProjectManagementProps> = ({ theme }) => {
                       }}
                     />
                   </div>
-                  
+
                   <div>
                     <label style={{ display: 'block', marginBottom: '0.25rem' }}>Due Date</label>
                     <input
@@ -749,7 +749,7 @@ const ProjectManagement: React.FC<ProjectManagementProps> = ({ theme }) => {
                     />
                   </div>
                 </div>
-                
+
                 <div style={{ marginBottom: '0.75rem' }}>
                   <label style={{ display: 'block', marginBottom: '0.25rem' }}>Tags (comma separated)</label>
                   <input
@@ -767,7 +767,7 @@ const ProjectManagement: React.FC<ProjectManagementProps> = ({ theme }) => {
                     }}
                   />
                 </div>
-                
+
                 <button
                   onClick={handleCreateTask}
                   style={{
@@ -783,7 +783,7 @@ const ProjectManagement: React.FC<ProjectManagementProps> = ({ theme }) => {
                   Create Task
                 </button>
               </div>
-              
+
               <h4>Tasks for Project: {projects.find(p => p.id === selectedProject)?.name}</h4>
               {tasks.length === 0 ? (
                 <div style={{ textAlign: 'center', padding: '1rem', color: '#9ca3af' }}>
@@ -792,10 +792,10 @@ const ProjectManagement: React.FC<ProjectManagementProps> = ({ theme }) => {
               ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                   {tasks.map(task => (
-                    <div 
+                    <div
                       key={task.id}
-                      style={{ 
-                        padding: '0.75rem', 
+                      style={{
+                        padding: '0.75rem',
                         backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
                         border: '1px solid #d1d5db',
                         borderRadius: '4px'
@@ -808,42 +808,42 @@ const ProjectManagement: React.FC<ProjectManagementProps> = ({ theme }) => {
                           </div>
                         </div>
                         <div style={{ display: 'flex', gap: '0.25rem' }}>
-                          <span style={{ 
-                            padding: '0.25rem 0.5rem', 
-                            borderRadius: '4px', 
-                            backgroundColor: 
-                              task.status === 'completed' ? '#d1fae5' : 
-                              task.status === 'in_progress' ? '#fef3c7' : 
-                              task.status === 'pending' ? '#dbeafe' : 
-                              task.status === 'on_hold' ? '#e0e7ff' : 
-                              task.status === 'cancelled' ? '#fee2e2' : 
+                          <span style={{
+                            padding: '0.25rem 0.5rem',
+                            borderRadius: '4px',
+                            backgroundColor:
+                              task.status === 'completed' ? '#d1fae5' :
+                              task.status === 'in_progress' ? '#fef3c7' :
+                              task.status === 'pending' ? '#dbeafe' :
+                              task.status === 'on_hold' ? '#e0e7ff' :
+                              task.status === 'cancelled' ? '#fee2e2' :
                               '#e5e7eb',
-                            color: 
-                              task.status === 'completed' ? '#065f46' : 
-                              task.status === 'in_progress' ? '#d97706' : 
-                              task.status === 'pending' ? '#1e40af' : 
-                              task.status === 'on_hold' ? '#4f46e5' : 
-                              task.status === 'cancelled' ? '#7f1d1d' : 
+                            color:
+                              task.status === 'completed' ? '#065f46' :
+                              task.status === 'in_progress' ? '#d97706' :
+                              task.status === 'pending' ? '#1e40af' :
+                              task.status === 'on_hold' ? '#4f46e5' :
+                              task.status === 'cancelled' ? '#7f1d1d' :
                               '#6b7280',
                             fontWeight: 'bold',
                             fontSize: '0.75rem'
                           }}>
                             {task.status}
                           </span>
-                          <span style={{ 
-                            padding: '0.25rem 0.5rem', 
-                            borderRadius: '4px', 
-                            backgroundColor: 
-                              task.priority === 'critical' ? '#fee2e2' : 
-                              task.priority === 'high' ? '#ffedd5' : 
-                              task.priority === 'medium' ? '#fef3c7' : 
-                              task.priority === 'low' ? '#d1fae5' : 
+                          <span style={{
+                            padding: '0.25rem 0.5rem',
+                            borderRadius: '4px',
+                            backgroundColor:
+                              task.priority === 'critical' ? '#fee2e2' :
+                              task.priority === 'high' ? '#ffedd5' :
+                              task.priority === 'medium' ? '#fef3c7' :
+                              task.priority === 'low' ? '#d1fae5' :
                               '#e5e7eb',
-                            color: 
-                              task.priority === 'critical' ? '#7f1d1d' : 
-                              task.priority === 'high' ? '#c2410c' : 
-                              task.priority === 'medium' ? '#d97706' : 
-                              task.priority === 'low' ? '#065f46' : 
+                            color:
+                              task.priority === 'critical' ? '#7f1d1d' :
+                              task.priority === 'high' ? '#c2410c' :
+                              task.priority === 'medium' ? '#d97706' :
+                              task.priority === 'low' ? '#065f46' :
                               '#6b7280',
                             fontWeight: 'bold',
                             fontSize: '0.75rem'
@@ -868,15 +868,15 @@ const ProjectManagement: React.FC<ProjectManagementProps> = ({ theme }) => {
                       {task.tags && task.tags.length > 0 && (
                         <div>
                           {task.tags.map((tag, index) => (
-                            <span 
+                            <span
                               key={index}
-                              style={{ 
-                                display: 'inline-block', 
-                                padding: '0.15rem 0.4rem', 
-                                marginRight: '0.25rem', 
-                                backgroundColor: theme === 'dark' ? '#4b5563' : '#e5e7eb', 
-                                borderRadius: '4px', 
-                                fontSize: '0.7rem' 
+                              style={{
+                                display: 'inline-block',
+                                padding: '0.15rem 0.4rem',
+                                marginRight: '0.25rem',
+                                backgroundColor: theme === 'dark' ? '#4b5563' : '#e5e7eb',
+                                borderRadius: '4px',
+                                fontSize: '0.7rem'
                               }}
                             >
                               {tag}
@@ -901,8 +901,8 @@ const ProjectManagement: React.FC<ProjectManagementProps> = ({ theme }) => {
         <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh- 200px)' }}>
           {selectedProject && stats ? (
             <>
-              <div style={{ 
-                padding: '1rem', 
+              <div style={{
+                padding: '1rem',
                 backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
                 border: '1px solid #d1d5db',
                 borderRadius: '4px',
@@ -916,21 +916,21 @@ const ProjectManagement: React.FC<ProjectManagementProps> = ({ theme }) => {
                     </div>
                     <div style={{ color: '#6b7280' }}>Total Tasks</div>
                   </div>
-                  
+
                   <div style={{ textAlign: 'center', padding: '1rem', backgroundColor: '#d1fae5', borderRadius: '4px' }}>
                     <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#10b981' }}>
                       {stats.completedTasks}
                     </div>
                     <div style={{ color: '#6b7280' }}>Completed</div>
                   </div>
-                  
+
                   <div style={{ textAlign: 'center', padding: '1rem', backgroundColor: '#fef3c7', borderRadius: '4px' }}>
                     <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#f59e0b' }}>
                       {stats.inProgressTasks}
                     </div>
                     <div style={{ color: '#6b7280' }}>In Progress</div>
                   </div>
-                  
+
                   <div style={{ textAlign: 'center', padding: '1rem', backgroundColor: '#ddd6fe', borderRadius: '4px' }}>
                     <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#8b5cf6' }}>
                       {stats.pendingTasks}
@@ -938,7 +938,7 @@ const ProjectManagement: React.FC<ProjectManagementProps> = ({ theme }) => {
                     <div style={{ color: '#6b7280' }}>Pending</div>
                   </div>
                 </div>
-                
+
                 <div style={{ marginTop: '1rem' }}>
                   <h5>Priority Distribution</h5>
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: '1rem', marginTop: '0.5rem' }}>
@@ -948,14 +948,14 @@ const ProjectManagement: React.FC<ProjectManagementProps> = ({ theme }) => {
                       </div>
                       <div style={{ color: '#6b7280', fontSize: '0.9rem' }}>Low Priority</div>
                     </div>
-                    
+
                     <div style={{ textAlign: 'center', padding: '0.75rem', backgroundColor: '#fef3c7', borderRadius: '4px' }}>
                       <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#d97706' }}>
                         {stats.mediumPriorityTasks}
                       </div>
                       <div style={{ color: '#6b7280', fontSize: '0.9rem' }}>Medium Priority</div>
                     </div>
-                    
+
                     <div style={{ textAlign: 'center', padding: '0.75rem', backgroundColor: '#fee2e2', borderRadius: '4px' }}>
                       <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#b91c1c' }}>
                         {stats.highPriorityTasks}
@@ -965,9 +965,9 @@ const ProjectManagement: React.FC<ProjectManagementProps> = ({ theme }) => {
                   </div>
                 </div>
               </div>
-              
-              <div style={{ 
-                padding: '1rem', 
+
+              <div style={{
+                padding: '1rem',
                 backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
                 border: '1px solid #d1d5db',
                 borderRadius: '4px'
@@ -979,28 +979,28 @@ const ProjectManagement: React.FC<ProjectManagementProps> = ({ theme }) => {
                     <span>{stats.totalTasks > 0 ? Math.round((stats.completedTasks / stats.totalTasks) * 100) : 0}%</span>
                   </div>
                   <div style={{ height: '20px', backgroundColor: '#e5e7eb', borderRadius: '10px', overflow: 'hidden' }}>
-                    <div 
-                      style={{ 
-                        height: '100%', 
-                        width: `${stats.totalTasks > 0 ? (stats.completedTasks / stats.totalTasks) * 100 : 0}%`, 
+                    <div
+                      style={{
+                        height: '100%',
+                        width: `${stats.totalTasks > 0 ? (stats.completedTasks / stats.totalTasks) * 100 : 0}%`,
                         backgroundColor: '#10b981',
                         transition: 'width 0.3s ease'
-                      }} 
+                      }}
                     />
                   </div>
-                  
+
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', marginTop: '1rem' }}>
                     <span>Tasks In Progress</span>
                     <span>{stats.totalTasks > 0 ? Math.round((stats.inProgressTasks / stats.totalTasks) * 100) : 0}%</span>
                   </div>
                   <div style={{ height: '20px', backgroundColor: '#e5e7eb', borderRadius: '10px', overflow: 'hidden' }}>
-                    <div 
-                      style={{ 
-                        height: '100%', 
-                        width: `${stats.totalTasks > 0 ? (stats.inProgressTasks / stats.totalTasks) * 100 : 0}%`, 
+                    <div
+                      style={{
+                        height: '100%',
+                        width: `${stats.totalTasks > 0 ? (stats.inProgressTasks / stats.totalTasks) * 100 : 0}%`,
                         backgroundColor: '#f59e0b',
                         transition: 'width 0.3s ease'
-                      }} 
+                      }}
                     />
                   </div>
                 </div>

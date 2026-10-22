@@ -50,7 +50,7 @@ const BusinessManagement: React.FC<BusinessManagementProps> = ({ theme }) => {
   const [selectedGoal, setSelectedGoal] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  
+
   // Form states
   const [newProjectName, setNewProjectName] = useState<string>('');
   const [newProjectDescription, setNewProjectDescription] = useState<string>('');
@@ -276,7 +276,7 @@ const BusinessManagement: React.FC<BusinessManagementProps> = ({ theme }) => {
 
       if (result.success) {
         // Update the milestone in the local state
-        setMilestones(milestones.map(m => 
+        setMilestones(milestones.map(m =>
           m.id === milestoneId ? { ...m, completed: !completed } : m
         ));
       } else {
@@ -293,12 +293,12 @@ const BusinessManagement: React.FC<BusinessManagementProps> = ({ theme }) => {
   };
 
   return (
-    <div 
-      className="business-management-panel" 
-      style={{ 
-        width: '100%', 
-        height: '100%', 
-        display: 'flex', 
+    <div
+      className="business-management-panel"
+      style={{
+        width: '100%',
+        height: '100%',
+        display: 'flex',
         flexDirection: 'column',
         backgroundColor: theme === 'dark' ? '#1f2937' : theme === 'blue' ? '#dbeafe' : '#e5e7eb',
         color: theme === 'dark' ? 'white' : '#1f2937',
@@ -306,10 +306,10 @@ const BusinessManagement: React.FC<BusinessManagementProps> = ({ theme }) => {
       }}
     >
       <h3 style={{ margin: '0 0 1rem 0' }}>Business Management Tools</h3>
-      
+
       {error && (
-        <div style={{ 
-          padding: '0.75rem', 
+        <div style={{
+          padding: '0.75rem',
           color: '#ef4444',
           backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : '#f3f4f6',
           borderRadius: '4px',
@@ -318,11 +318,12 @@ const BusinessManagement: React.FC<BusinessManagementProps> = ({ theme }) => {
           Error: {error}
         </div>
       )}
-      
+
       <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
         {(['projects', 'goals', 'milestones'] as const).map((tab) => (
           <button
             key={tab}
+            aria-label={tab}
             onClick={() => {
               setActiveTab(tab);
               if (tab === 'projects') {
@@ -363,8 +364,8 @@ const BusinessManagement: React.FC<BusinessManagementProps> = ({ theme }) => {
 
       {!loading && activeTab === 'projects' && (
         <div>
-          <div style={{ 
-            padding: '1rem', 
+          <div style={{
+            padding: '1rem',
             backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
             border: '1px solid #d1d5db',
             borderRadius: '4px',
@@ -388,7 +389,7 @@ const BusinessManagement: React.FC<BusinessManagementProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <div style={{ marginBottom: '0.75rem' }}>
               <label style={{ display: 'block', marginBottom: '0.25rem' }}>Industry</label>
               <input
@@ -406,7 +407,7 @@ const BusinessManagement: React.FC<BusinessManagementProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <div style={{ marginBottom: '0.75rem' }}>
               <label style={{ display: 'block', marginBottom: '0.25rem' }}>Description</label>
               <textarea
@@ -424,7 +425,7 @@ const BusinessManagement: React.FC<BusinessManagementProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <button
               onClick={handleCreateProject}
               style={{
@@ -440,7 +441,7 @@ const BusinessManagement: React.FC<BusinessManagementProps> = ({ theme }) => {
               Create Project
             </button>
           </div>
-          
+
           <h4>Your Projects</h4>
           {projects.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '1rem', color: '#9ca3af' }}>
@@ -449,14 +450,14 @@ const BusinessManagement: React.FC<BusinessManagementProps> = ({ theme }) => {
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {projects.map(project => (
-                <div 
+                <div
                   key={project.id}
                   onClick={() => {
                     setSelectedProject(project.id);
                     setActiveTab('goals');
                   }}
-                  style={{ 
-                    padding: '0.75rem', 
+                  style={{
+                    padding: '0.75rem',
                     backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
                     border: '1px solid #d1d5db',
                     borderRadius: '4px',
@@ -483,8 +484,8 @@ const BusinessManagement: React.FC<BusinessManagementProps> = ({ theme }) => {
 
       {!loading && activeTab === 'goals' && (
         <div>
-          <div style={{ 
-            padding: '1rem', 
+          <div style={{
+            padding: '1rem',
             backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
             border: '1px solid #d1d5db',
             borderRadius: '4px',
@@ -508,7 +509,7 @@ const BusinessManagement: React.FC<BusinessManagementProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <div style={{ marginBottom: '0.75rem' }}>
               <label style={{ display: 'block', marginBottom: '0.25rem' }}>Description</label>
               <textarea
@@ -526,7 +527,7 @@ const BusinessManagement: React.FC<BusinessManagementProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <div style={{ marginBottom: '0.75rem' }}>
               <label style={{ display: 'block', marginBottom: '0.25rem' }}>Target Value</label>
               <input
@@ -544,7 +545,7 @@ const BusinessManagement: React.FC<BusinessManagementProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <button
               onClick={handleCreateGoal}
               style={{
@@ -560,7 +561,7 @@ const BusinessManagement: React.FC<BusinessManagementProps> = ({ theme }) => {
               Create Goal
             </button>
           </div>
-          
+
           <h4>Goals for {projects.find(p => p.id === selectedProject)?.name || 'Selected Project'}</h4>
           {goals.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '1rem', color: '#9ca3af' }}>
@@ -569,14 +570,14 @@ const BusinessManagement: React.FC<BusinessManagementProps> = ({ theme }) => {
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {goals.map(goal => (
-                <div 
+                <div
                   key={goal.id}
                   onClick={() => {
                     setSelectedGoal(goal.id);
                     setActiveTab('milestones');
                   }}
-                  style={{ 
-                    padding: '0.75rem', 
+                  style={{
+                    padding: '0.75rem',
                     backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
                     border: '1px solid #d1d5db',
                     borderRadius: '4px',
@@ -603,8 +604,8 @@ const BusinessManagement: React.FC<BusinessManagementProps> = ({ theme }) => {
 
       {!loading && activeTab === 'milestones' && (
         <div>
-          <div style={{ 
-            padding: '1rem', 
+          <div style={{
+            padding: '1rem',
             backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
             border: '1px solid #d1d5db',
             borderRadius: '4px',
@@ -628,7 +629,7 @@ const BusinessManagement: React.FC<BusinessManagementProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <div style={{ marginBottom: '0.75rem' }}>
               <label style={{ display: 'block', marginBottom: '0.25rem' }}>Description</label>
               <textarea
@@ -646,7 +647,7 @@ const BusinessManagement: React.FC<BusinessManagementProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <div style={{ marginBottom: '0.75rem' }}>
               <label style={{ display: 'block', marginBottom: '0.25rem' }}>Target Date</label>
               <input
@@ -663,7 +664,7 @@ const BusinessManagement: React.FC<BusinessManagementProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <button
               onClick={handleCreateMilestone}
               style={{
@@ -679,7 +680,7 @@ const BusinessManagement: React.FC<BusinessManagementProps> = ({ theme }) => {
               Create Milestone
             </button>
           </div>
-          
+
           <h4>Milestones for {goals.find(g => g.id === selectedGoal)?.title || 'Selected Goal'}</h4>
           {milestones.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '1rem', color: '#9ca3af' }}>
@@ -688,10 +689,10 @@ const BusinessManagement: React.FC<BusinessManagementProps> = ({ theme }) => {
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {milestones.map(milestone => (
-                <div 
+                <div
                   key={milestone.id}
-                  style={{ 
-                    padding: '0.75rem', 
+                  style={{
+                    padding: '0.75rem',
                     backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
                     border: '1px solid #d1d5db',
                     borderRadius: '4px',

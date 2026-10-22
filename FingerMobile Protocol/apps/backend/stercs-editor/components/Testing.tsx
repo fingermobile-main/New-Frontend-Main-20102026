@@ -38,7 +38,7 @@ const Testing: React.FC<TestingProps> = ({ theme }) => {
   const [testRuns, setTestRuns] = useState<TestRun[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  
+
   // Form states for test configs
   const [newConfigName, setNewConfigName] = useState<string>('');
   const [newConfigDescription, setNewConfigDescription] = useState<string>('');
@@ -48,7 +48,7 @@ const Testing: React.FC<TestingProps> = ({ theme }) => {
   const [newConfigEnvironment, setNewConfigEnvironment] = useState<string>('development');
   const [newConfigSchedule, setNewConfigSchedule] = useState<string>('');
   const [newConfigTestFiles, setNewConfigTestFiles] = useState<string>('');
-  
+
   // Form states for test runs
   const [newTestRunConfigId, setNewTestRunConfigId] = useState<string>('');
   const [newTestRunProjectId, setNewTestRunProjectId] = useState<string>('1');
@@ -215,12 +215,12 @@ const Testing: React.FC<TestingProps> = ({ theme }) => {
 
 
   return (
-    <div 
-      className="testing-panel" 
-      style={{ 
-        width: '100%', 
-        height: '100%', 
-        display: 'flex', 
+    <div
+      className="testing-panel"
+      style={{
+        width: '100%',
+        height: '100%',
+        display: 'flex',
         flexDirection: 'column',
         backgroundColor: theme === 'dark' ? '#1f2937' : theme === 'blue' ? '#dbeafe' : '#e5e7eb',
         color: theme === 'dark' ? 'white' : '#1f2937',
@@ -228,10 +228,10 @@ const Testing: React.FC<TestingProps> = ({ theme }) => {
       }}
     >
       <h3 style={{ margin: '0 0 1rem 0' }}>Testing Framework</h3>
-      
+
       {error && (
-        <div style={{ 
-          padding: '0.75rem', 
+        <div style={{
+          padding: '0.75rem',
           color: '#ef4444',
           backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : '#f3f4f6',
           borderRadius: '4px',
@@ -240,10 +240,10 @@ const Testing: React.FC<TestingProps> = ({ theme }) => {
           Error: {error}
         </div>
       )}
-      
+
       <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
         {(['configs', 'runs', 'results'] as const).map((tab) => (
-          <button
+          <button aria-label={tab}
             key={tab}
             onClick={() => setActiveTab(tab)}
             style={{
@@ -269,8 +269,8 @@ const Testing: React.FC<TestingProps> = ({ theme }) => {
 
       {!loading && activeTab === 'configs' && (
         <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh- 200px)' }}>
-          <div style={{ 
-            padding: '1rem', 
+          <div style={{
+            padding: '1rem',
             backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
             border: '1px solid #d1d5db',
             borderRadius: '4px',
@@ -294,7 +294,7 @@ const Testing: React.FC<TestingProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <div style={{ marginBottom: '0.75rem' }}>
               <label style={{ display: 'block', marginBottom: '0.25rem' }}>Description</label>
               <textarea
@@ -312,7 +312,7 @@ const Testing: React.FC<TestingProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '0.75rem' }}>
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem' }}>Project ID</label>
@@ -331,7 +331,7 @@ const Testing: React.FC<TestingProps> = ({ theme }) => {
                   }}
                 />
               </div>
-              
+
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem' }}>Test Type</label>
                 <select
@@ -354,7 +354,7 @@ const Testing: React.FC<TestingProps> = ({ theme }) => {
                 </select>
               </div>
             </div>
-            
+
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '0.75rem' }}>
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem' }}>Test Framework</label>
@@ -379,7 +379,7 @@ const Testing: React.FC<TestingProps> = ({ theme }) => {
                   <option value="pytest">PyTest</option>
                 </select>
               </div>
-              
+
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem' }}>Environment</label>
                 <select
@@ -400,7 +400,7 @@ const Testing: React.FC<TestingProps> = ({ theme }) => {
                 </select>
               </div>
             </div>
-            
+
             <div style={{ marginBottom: '0.75rem' }}>
               <label style={{ display: 'block', marginBottom: '0.25rem' }}>Test Files (comma separated)</label>
               <input
@@ -418,7 +418,7 @@ const Testing: React.FC<TestingProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <div style={{ marginBottom: '0.75rem' }}>
               <label style={{ display: 'block', marginBottom: '0.25rem' }}>Schedule (cron expression, optional)</label>
               <input
@@ -436,7 +436,7 @@ const Testing: React.FC<TestingProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <button
               onClick={handleCreateConfig}
               style={{
@@ -452,7 +452,7 @@ const Testing: React.FC<TestingProps> = ({ theme }) => {
               Create Configuration
             </button>
           </div>
-          
+
           <h4>Your Test Configurations</h4>
           {configs.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '1rem', color: '#9ca3af' }}>
@@ -461,10 +461,10 @@ const Testing: React.FC<TestingProps> = ({ theme }) => {
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {configs.map(config => (
-                <div 
+                <div
                   key={config.id}
-                  style={{ 
-                    padding: '0.75rem', 
+                  style={{
+                    padding: '0.75rem',
                     backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
                     border: '1px solid #d1d5db',
                     borderRadius: '4px'
@@ -508,8 +508,8 @@ const Testing: React.FC<TestingProps> = ({ theme }) => {
 
       {!loading && activeTab === 'runs' && (
         <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh- 200px)' }}>
-          <div style={{ 
-            padding: '1rem', 
+          <div style={{
+            padding: '1rem',
             backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
             border: '1px solid #d1d5db',
             borderRadius: '4px',
@@ -539,7 +539,7 @@ const Testing: React.FC<TestingProps> = ({ theme }) => {
                   ))}
                 </select>
               </div>
-              
+
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem' }}>Project ID</label>
                 <input
@@ -558,7 +558,7 @@ const Testing: React.FC<TestingProps> = ({ theme }) => {
                 />
               </div>
             </div>
-            
+
             <div style={{ marginBottom: '0.75rem' }}>
               <label style={{ display: 'block', marginBottom: '0.25rem' }}>Notes (Optional)</label>
               <textarea
@@ -576,7 +576,7 @@ const Testing: React.FC<TestingProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <button
               onClick={handleCreateTestRun}
               style={{
@@ -592,7 +592,7 @@ const Testing: React.FC<TestingProps> = ({ theme }) => {
               Run Tests
             </button>
           </div>
-          
+
           <h4>Recent Test Runs</h4>
           {testRuns.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '1rem', color: '#9ca3af' }}>
@@ -601,10 +601,10 @@ const Testing: React.FC<TestingProps> = ({ theme }) => {
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {testRuns.map(testRun => (
-                <div 
+                <div
                   key={testRun.id}
-                  style={{ 
-                    padding: '0.75rem', 
+                  style={{
+                    padding: '0.75rem',
                     backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
                     border: '1px solid #d1d5db',
                     borderRadius: '4px'
@@ -619,36 +619,36 @@ const Testing: React.FC<TestingProps> = ({ theme }) => {
                         Type: {getTestTypeIcon(testRun.testType)} • Project: {testRun.projectId}
                       </div>
                     </div>
-                    <div style={{ 
-                      padding: '0.25rem 0.5rem', 
-                      borderRadius: '4px', 
-                      backgroundColor: 
-                        testRun.status === 'completed' ? '#d1fae5' : 
-                        testRun.status === 'running' ? '#fef3c7' : 
-                        testRun.status === 'pending' ? '#dbeafe' : 
-                        testRun.status === 'cancelled' ? '#e5e7eb' : 
+                    <div style={{
+                      padding: '0.25rem 0.5rem',
+                      borderRadius: '4px',
+                      backgroundColor:
+                        testRun.status === 'completed' ? '#d1fae5' :
+                        testRun.status === 'running' ? '#fef3c7' :
+                        testRun.status === 'pending' ? '#dbeafe' :
+                        testRun.status === 'cancelled' ? '#e5e7eb' :
                         '#fee2e2',
-                      color: 
-                        testRun.status === 'completed' ? '#065f46' : 
-                        testRun.status === 'running' ? '#d97706' : 
-                        testRun.status === 'pending' ? '#2563eb' : 
-                        testRun.status === 'cancelled' ? '#6b7280' : 
+                      color:
+                        testRun.status === 'completed' ? '#065f46' :
+                        testRun.status === 'running' ? '#d97706' :
+                        testRun.status === 'pending' ? '#2563eb' :
+                        testRun.status === 'cancelled' ? '#6b7280' :
                         '#7f1d1d'
                     }}>
                       {testRun.status.toUpperCase()}
                     </div>
                   </div>
-                  
+
                   <div style={{ fontSize: '0.8rem', color: '#6b7280', marginBottom: '0.25rem' }}>
                     Created: {formatDate(testRun.createdAt)} • Updated: {formatDate(testRun.updatedAt)}
                   </div>
-                  
+
                   {testRun.notes && (
                     <div style={{ fontSize: '0.8rem', marginBottom: '0.25rem' }}>
                       <strong>Notes:</strong> {testRun.notes}
                     </div>
                   )}
-                  
+
                   {testRun.results && (
                     <div style={{ fontSize: '0.8rem', backgroundColor: '#f3f4f6', padding: '0.5rem', borderRadius: '4px', marginBottom: '0.25rem' }}>
                       <div><strong>Results:</strong></div>
@@ -666,8 +666,8 @@ const Testing: React.FC<TestingProps> = ({ theme }) => {
 
       {!loading && activeTab === 'results' && (
         <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh- 200px)' }}>
-          <div style={{ 
-            padding: '1rem', 
+          <div style={{
+            padding: '1rem',
             backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
             border: '1px solid #d1d5db',
             borderRadius: '4px',
@@ -677,7 +677,7 @@ const Testing: React.FC<TestingProps> = ({ theme }) => {
             <p style={{ marginBottom: '1rem', color: theme === 'dark' ? '#d1d5db' : '#4b5563' }}>
               View detailed test results and metrics for your test runs.
             </p>
-            
+
             {testRuns.filter(tr => tr.status === 'completed' && tr.results).length === 0 ? (
               <div style={{ textAlign: 'center', padding: '1rem', color: '#9ca3af' }}>
                 No completed test runs with results available.
@@ -689,10 +689,10 @@ const Testing: React.FC<TestingProps> = ({ theme }) => {
                   {testRuns
                     .filter(tr => tr.status === 'completed' && tr.results)
                     .map(testRun => (
-                      <div 
+                      <div
                         key={testRun.id}
-                        style={{ 
-                          padding: '0.75rem', 
+                        style={{
+                          padding: '0.75rem',
                           backgroundColor: theme === 'dark' ? '#4b5563' : theme === 'blue' ? '#dbeafe' : '#f9fafb',
                           border: '1px solid #d1d5db',
                           borderRadius: '4px'
@@ -701,7 +701,7 @@ const Testing: React.FC<TestingProps> = ({ theme }) => {
                         <div style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>
                           {testRun.configName} - {formatDate(testRun.createdAt)}
                         </div>
-                        
+
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.5rem', marginBottom: '0.5rem' }}>
                           <div style={{ textAlign: 'center', padding: '0.5rem', backgroundColor: '#dbeafe', borderRadius: '4px' }}>
                             <div style={{ fontSize: '1.2rem', fontWeight: 'bold', color: '#2563eb' }}>
@@ -709,21 +709,21 @@ const Testing: React.FC<TestingProps> = ({ theme }) => {
                             </div>
                             <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>Total Tests</div>
                           </div>
-                          
+
                           <div style={{ textAlign: 'center', padding: '0.5rem', backgroundColor: '#dcfce7', borderRadius: '4px' }}>
                             <div style={{ fontSize: '1.2rem', fontWeight: 'bold', color: '#065f46' }}>
                               {testRun.results.passedTests}
                             </div>
                             <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>Passed</div>
                           </div>
-                          
+
                           <div style={{ textAlign: 'center', padding: '0.5rem', backgroundColor: '#fee2e2', borderRadius: '4px' }}>
                             <div style={{ fontSize: '1.2rem', fontWeight: 'bold', color: '#7f1d1d' }}>
                               {testRun.results.failedTests}
                             </div>
                             <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>Failed</div>
                           </div>
-                          
+
                           <div style={{ textAlign: 'center', padding: '0.5rem', backgroundColor: '#fef3c7', borderRadius: '4px' }}>
                             <div style={{ fontSize: '1.2rem', fontWeight: 'bold', color: '#d97706' }}>
                               {testRun.results.executionTime}ms
@@ -731,7 +731,7 @@ const Testing: React.FC<TestingProps> = ({ theme }) => {
                             <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>Execution Time</div>
                           </div>
                         </div>
-                        
+
                         <div style={{ marginTop: '0.5rem', fontSize: '0.8rem' }}>
                           <div><strong>Framework:</strong> {testRun.testFramework}</div>
                           <div><strong>Environment:</strong> {testRun.configId && configs.find(c => c.id === testRun.configId)?.environment}</div>
@@ -748,4 +748,4 @@ const Testing: React.FC<TestingProps> = ({ theme }) => {
   );
 };
 
-export default Testing;
+export default Testing;

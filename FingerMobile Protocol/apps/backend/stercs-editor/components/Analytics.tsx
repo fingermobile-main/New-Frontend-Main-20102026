@@ -39,7 +39,7 @@ const Analytics: React.FC<AnalyticsProps> = ({ theme }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedProjectId, setSelectedProjectId] = useState<string>('1'); // Default to project 1
-  
+
   // Form states for dashboard creation
   const [newDashboardName, setNewDashboardName] = useState<string>('');
   const [newDashboardDescription, setNewDashboardDescription] = useState<string>('');
@@ -164,12 +164,12 @@ const Analytics: React.FC<AnalyticsProps> = ({ theme }) => {
   };
 
   return (
-    <div 
-      className="analytics-panel" 
-      style={{ 
-        width: '100%', 
-        height: '100%', 
-        display: 'flex', 
+    <div
+      className="analytics-panel"
+      style={{
+        width: '100%',
+        height: '100%',
+        display: 'flex',
         flexDirection: 'column',
         backgroundColor: theme === 'dark' ? '#1f2937' : theme === 'blue' ? '#dbeafe' : '#e5e7eb',
         color: theme === 'dark' ? 'white' : '#1f2937',
@@ -177,7 +177,7 @@ const Analytics: React.FC<AnalyticsProps> = ({ theme }) => {
       }}
     >
       <h3 style={{ margin: '0 0 1rem 0' }}>Analytics & Reporting</h3>
-      
+
       <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
         <label style={{ marginRight: '0.5rem' }}>Project:</label>
         <select
@@ -196,10 +196,10 @@ const Analytics: React.FC<AnalyticsProps> = ({ theme }) => {
           <option value="3">Portfolio Site</option>
         </select>
       </div>
-      
+
       {error && (
-        <div style={{ 
-          padding: '0.75rem', 
+        <div style={{
+          padding: '0.75rem',
           color: '#ef4444',
           backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : '#f3f4f6',
           borderRadius: '4px',
@@ -208,11 +208,12 @@ const Analytics: React.FC<AnalyticsProps> = ({ theme }) => {
           Error: {error}
         </div>
       )}
-      
+
       <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
         {(['overview', 'events', 'dashboards'] as const).map((tab) => (
           <button
             key={tab}
+            aria-label={tab}
             onClick={() => setActiveTab(tab)}
             style={{
               padding: '0.5rem 1rem',
@@ -238,8 +239,8 @@ const Analytics: React.FC<AnalyticsProps> = ({ theme }) => {
       {!loading && activeTab === 'overview' && summary && (
         <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh- 200px)' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem', marginBottom: '1rem' }}>
-            <div style={{ 
-              padding: '1rem', 
+            <div style={{
+              padding: '1rem',
               backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
               border: '1px solid #d1d5db',
               borderRadius: '4px',
@@ -250,8 +251,8 @@ const Analytics: React.FC<AnalyticsProps> = ({ theme }) => {
                 {summary.totalPageViews}
               </div>
             </div>
-            <div style={{ 
-              padding: '1rem', 
+            <div style={{
+              padding: '1rem',
               backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
               border: '1px solid #d1d5db',
               borderRadius: '4px',
@@ -263,10 +264,10 @@ const Analytics: React.FC<AnalyticsProps> = ({ theme }) => {
               </div>
             </div>
           </div>
-          
+
           <div style={{ marginBottom: '1rem' }}>
             <h4 style={{ margin: '0 0 0.5rem 0', color: theme === 'dark' ? 'white' : '#1f2937' }}>Top Pages</h4>
-            <div style={{ 
+            <div style={{
               backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
               border: '1px solid #d1d5db',
               borderRadius: '4px',
@@ -287,10 +288,10 @@ const Analytics: React.FC<AnalyticsProps> = ({ theme }) => {
               )}
             </div>
           </div>
-          
+
           <div style={{ marginBottom: '1rem' }}>
             <h4 style={{ margin: '0 0 0.5rem 0', color: theme === 'dark' ? 'white' : '#1f2937' }}>Events by Type</h4>
-            <div style={{ 
+            <div style={{
               backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
               border: '1px solid #d1d5db',
               borderRadius: '4px',
@@ -311,10 +312,10 @@ const Analytics: React.FC<AnalyticsProps> = ({ theme }) => {
               )}
             </div>
           </div>
-          
+
           <div>
             <h4 style={{ margin: '0 0 0.5rem 0', color: theme === 'dark' ? 'white' : '#1f2937' }}>Page Views by Date (Last 30 Days)</h4>
-            <div style={{ 
+            <div style={{
               backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
               border: '1px solid #d1d5db',
               borderRadius: '4px',
@@ -324,7 +325,7 @@ const Analytics: React.FC<AnalyticsProps> = ({ theme }) => {
                 <ul style={{ margin: 0, padding: 0, listStyle: 'none' }}>
                   {summary.eventsByDate.map((day, index) => (
                     <li key={index} style={{ padding: '0.5rem 0', borderBottom: index < summary.eventsByDate.length- 1 ? '1px solid #e5e7eb' : 'none' }}>
-                      <span style={{ fontWeight: 'bold', display: 'inline-block', width: '100px' }}>{day.date}</span> 
+                      <span style={{ fontWeight: 'bold', display: 'inline-block', width: '100px' }}>{day.date}</span>
                       <span>{day.count} views</span>
                     </li>
                   ))}
@@ -342,7 +343,7 @@ const Analytics: React.FC<AnalyticsProps> = ({ theme }) => {
       {!loading && activeTab === 'events' && (
         <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh- 200px)' }}>
           <h4 style={{ margin: '0 0 0.5rem 0', color: theme === 'dark' ? 'white' : '#1f2937' }}>Recent Analytics Events</h4>
-          <div style={{ 
+          <div style={{
             backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
             border: '1px solid #d1d5db',
             borderRadius: '4px',
@@ -380,8 +381,8 @@ const Analytics: React.FC<AnalyticsProps> = ({ theme }) => {
 
       {!loading && activeTab === 'dashboards' && (
         <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh- 200px)' }}>
-          <div style={{ 
-            padding: '1rem', 
+          <div style={{
+            padding: '1rem',
             backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
             border: '1px solid #d1d5db',
             borderRadius: '4px',
@@ -405,7 +406,7 @@ const Analytics: React.FC<AnalyticsProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <div style={{ marginBottom: '0.75rem' }}>
               <label style={{ display: 'block', marginBottom: '0.25rem' }}>Description (Optional)</label>
               <textarea
@@ -423,7 +424,7 @@ const Analytics: React.FC<AnalyticsProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <button
               onClick={handleCreateDashboard}
               style={{
@@ -439,7 +440,7 @@ const Analytics: React.FC<AnalyticsProps> = ({ theme }) => {
               Create Dashboard
             </button>
           </div>
-          
+
           <h4>Your Dashboards</h4>
           {dashboards.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '1rem', color: '#9ca3af' }}>
@@ -448,10 +449,10 @@ const Analytics: React.FC<AnalyticsProps> = ({ theme }) => {
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {dashboards.map(dashboard => (
-                <div 
+                <div
                   key={dashboard.id}
-                  style={{ 
-                    padding: '0.75rem', 
+                  style={{
+                    padding: '0.75rem',
                     backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
                     border: '1px solid #d1d5db',
                     borderRadius: '4px'
@@ -470,6 +471,8 @@ const Analytics: React.FC<AnalyticsProps> = ({ theme }) => {
                   )}
                   <div style={{ marginTop: '0.5rem', display: 'flex', gap: '0.5rem' }}>
                     <button
+                      aria-label={`View ${dashboard.name}`}
+                      onClick={() => setActiveTab('overview')}
                       style={{
                         padding: '0.25rem 0.5rem',
                         backgroundColor: (theme === 'dark' ? '#3b82f6' : theme === 'blue' ? '#3b82f6' : '#3b82f6'),
@@ -483,6 +486,11 @@ const Analytics: React.FC<AnalyticsProps> = ({ theme }) => {
                       View
                     </button>
                     <button
+                      aria-label={`Edit ${dashboard.name}`}
+                      onClick={() => {
+                        setNewDashboardName(dashboard.name);
+                        setNewDashboardDescription(dashboard.description || '');
+                      }}
                       style={{
                         padding: '0.25rem 0.5rem',
                         backgroundColor: (theme === 'dark' ? '#6b7280' : theme === 'blue' ? '#6b7280' : '#6b7280'),

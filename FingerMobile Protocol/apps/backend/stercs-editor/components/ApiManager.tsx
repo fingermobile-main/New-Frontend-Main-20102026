@@ -42,14 +42,14 @@ const ApiManager: React.FC<ApiManagerProps> = ({ theme }) => {
   const [error, setError] = useState<string | null>(null);
   const [selectedApi, setSelectedApi] = useState<number | null>(null);
   const [selectedEndpoint, setSelectedEndpoint] = useState<number | null>(null);
-  
+
   // Form states for APIs
   const [newApiName, setNewApiName] = useState<string>('');
   const [newApiDescription, setNewApiDescription] = useState<string>('');
   const [newApiProjectId, setNewApiProjectId] = useState<string>('1');
   const [newApiBaseUrl, setNewApiBaseUrl] = useState<string>('');
   const [newApiAuthType, setNewApiAuthType] = useState<string>('none');
-  
+
   // Form states for endpoints
   const [newEndpointPath, setNewEndpointPath] = useState<string>('');
   const [newEndpointMethod, setNewEndpointMethod] = useState<string>('GET');
@@ -262,12 +262,12 @@ const ApiManager: React.FC<ApiManagerProps> = ({ theme }) => {
   };
 
   return (
-    <div 
-      className="api-manager-panel" 
-      style={{ 
-        width: '100%', 
-        height: '100%', 
-        display: 'flex', 
+    <div
+      className="api-manager-panel"
+      style={{
+        width: '100%',
+        height: '100%',
+        display: 'flex',
         flexDirection: 'column',
         backgroundColor: theme === 'dark' ? '#1f2937' : theme === 'blue' ? '#dbeafe' : '#e5e7eb',
         color: theme === 'dark' ? 'white' : '#1f2937',
@@ -275,10 +275,10 @@ const ApiManager: React.FC<ApiManagerProps> = ({ theme }) => {
       }}
     >
       <h3 style={{ margin: '0 0 1rem 0' }}>API Management</h3>
-      
+
       {error && (
-        <div style={{ 
-          padding: '0.75rem', 
+        <div style={{
+          padding: '0.75rem',
           color: '#ef4444',
           backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : '#f3f4f6',
           borderRadius: '4px',
@@ -287,10 +287,10 @@ const ApiManager: React.FC<ApiManagerProps> = ({ theme }) => {
           Error: {error}
         </div>
       )}
-      
+
       <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
         {(['apis', 'endpoints', 'tests'] as const).map((tab) => (
-          <button
+          <button aria-label={tab}
             key={tab}
             onClick={() => setActiveTab(tab)}
             style={{
@@ -316,8 +316,8 @@ const ApiManager: React.FC<ApiManagerProps> = ({ theme }) => {
 
       {!loading && activeTab === 'apis' && (
         <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh- 200px)' }}>
-          <div style={{ 
-            padding: '1rem', 
+          <div style={{
+            padding: '1rem',
             backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
             border: '1px solid #d1d5db',
             borderRadius: '4px',
@@ -341,7 +341,7 @@ const ApiManager: React.FC<ApiManagerProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <div style={{ marginBottom: '0.75rem' }}>
               <label style={{ display: 'block', marginBottom: '0.25rem' }}>Description</label>
               <textarea
@@ -359,7 +359,7 @@ const ApiManager: React.FC<ApiManagerProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '0.75rem' }}>
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem' }}>Project ID</label>
@@ -378,7 +378,7 @@ const ApiManager: React.FC<ApiManagerProps> = ({ theme }) => {
                   }}
                 />
               </div>
-              
+
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem' }}>Authentication Type</label>
                 <select
@@ -400,7 +400,7 @@ const ApiManager: React.FC<ApiManagerProps> = ({ theme }) => {
                 </select>
               </div>
             </div>
-            
+
             <div style={{ marginBottom: '0.75rem' }}>
               <label style={{ display: 'block', marginBottom: '0.25rem' }}>Base URL</label>
               <input
@@ -418,7 +418,7 @@ const ApiManager: React.FC<ApiManagerProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <button
               onClick={handleCreateApi}
               style={{
@@ -434,7 +434,7 @@ const ApiManager: React.FC<ApiManagerProps> = ({ theme }) => {
               Create API
             </button>
           </div>
-          
+
           <h4>Your APIs</h4>
           {apis.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '1rem', color: '#9ca3af' }}>
@@ -443,10 +443,10 @@ const ApiManager: React.FC<ApiManagerProps> = ({ theme }) => {
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {apis.map(api => (
-                <div 
+                <div
                   key={api.id}
-                  style={{ 
-                    padding: '0.75rem', 
+                  style={{
+                    padding: '0.75rem',
                     backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
                     border: '1px solid #d1d5db',
                     borderRadius: '4px'
@@ -499,8 +499,8 @@ const ApiManager: React.FC<ApiManagerProps> = ({ theme }) => {
 
       {!loading && activeTab === 'endpoints' && (
         <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh- 200px)' }}>
-          <div style={{ 
-            padding: '1rem', 
+          <div style={{
+            padding: '1rem',
             backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
             border: '1px solid #d1d5db',
             borderRadius: '4px',
@@ -529,7 +529,7 @@ const ApiManager: React.FC<ApiManagerProps> = ({ theme }) => {
                 ))}
               </select>
             </div>
-            
+
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '0.75rem' }}>
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem' }}>Method</label>
@@ -552,7 +552,7 @@ const ApiManager: React.FC<ApiManagerProps> = ({ theme }) => {
                   <option value="PATCH">PATCH</option>
                 </select>
               </div>
-              
+
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem' }}>Path</label>
                 <input
@@ -571,7 +571,7 @@ const ApiManager: React.FC<ApiManagerProps> = ({ theme }) => {
                 />
               </div>
             </div>
-            
+
             <div style={{ marginBottom: '0.75rem' }}>
               <label style={{ display: 'block', marginBottom: '0.25rem' }}>Description</label>
               <textarea
@@ -589,7 +589,7 @@ const ApiManager: React.FC<ApiManagerProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <button
               onClick={handleCreateEndpoint}
               disabled={!selectedApi}
@@ -606,7 +606,7 @@ const ApiManager: React.FC<ApiManagerProps> = ({ theme }) => {
               Create Endpoint
             </button>
           </div>
-          
+
           <h4>API Endpoints</h4>
           {endpoints.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '1rem', color: '#9ca3af' }}>
@@ -615,10 +615,10 @@ const ApiManager: React.FC<ApiManagerProps> = ({ theme }) => {
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {endpoints.map(endpoint => (
-                <div 
+                <div
                   key={endpoint.id}
-                  style={{ 
-                    padding: '0.75rem', 
+                  style={{
+                    padding: '0.75rem',
                     backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
                     border: '1px solid #d1d5db',
                     borderRadius: '4px'
@@ -627,22 +627,22 @@ const ApiManager: React.FC<ApiManagerProps> = ({ theme }) => {
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
                     <div>
                       <div style={{ fontWeight: 'bold' }}>
-                        <span style={{ 
-                          padding: '0.25rem 0.5rem', 
-                          borderRadius: '4px', 
-                          backgroundColor: 
-                            endpoint.method === 'GET' ? '#d1fae5' : 
-                            endpoint.method === 'POST' ? '#dbeafe' : 
-                            endpoint.method === 'PUT' ? '#fef3c7' : 
-                            endpoint.method === 'DELETE' ? '#fee2e2' : 
-                            endpoint.method === 'PATCH' ? '#e0e7ff' : 
+                        <span style={{
+                          padding: '0.25rem 0.5rem',
+                          borderRadius: '4px',
+                          backgroundColor:
+                            endpoint.method === 'GET' ? '#d1fae5' :
+                            endpoint.method === 'POST' ? '#dbeafe' :
+                            endpoint.method === 'PUT' ? '#fef3c7' :
+                            endpoint.method === 'DELETE' ? '#fee2e2' :
+                            endpoint.method === 'PATCH' ? '#e0e7ff' :
                             '#e5e7eb',
-                          color: 
-                            endpoint.method === 'GET' ? '#065f46' : 
-                            endpoint.method === 'POST' ? '#1e40af' : 
-                            endpoint.method === 'PUT' ? '#d97706' : 
-                            endpoint.method === 'DELETE' ? '#7f1d1d' : 
-                            endpoint.method === 'PATCH' ? '#4f46e5' : 
+                          color:
+                            endpoint.method === 'GET' ? '#065f46' :
+                            endpoint.method === 'POST' ? '#1e40af' :
+                            endpoint.method === 'PUT' ? '#d97706' :
+                            endpoint.method === 'DELETE' ? '#7f1d1d' :
+                            endpoint.method === 'PATCH' ? '#4f46e5' :
                             '#6b7280',
                           fontWeight: 'bold',
                           marginRight: '0.5rem'
@@ -703,8 +703,8 @@ const ApiManager: React.FC<ApiManagerProps> = ({ theme }) => {
 
       {activeTab === 'tests' && (
         <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh- 200px)' }}>
-          <div style={{ 
-            padding: '1rem', 
+          <div style={{
+            padding: '1rem',
             backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
             border: '1px solid #d1d5db',
             borderRadius: '4px',
@@ -715,7 +715,7 @@ const ApiManager: React.FC<ApiManagerProps> = ({ theme }) => {
               View test results for your API endpoints.
             </p>
           </div>
-          
+
           {testResults.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '1rem', color: '#9ca3af' }}>
               No test results available. Test an endpoint to see results here!
@@ -723,10 +723,10 @@ const ApiManager: React.FC<ApiManagerProps> = ({ theme }) => {
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {testResults.map(test => (
-                <div 
+                <div
                   key={test.id}
-                  style={{ 
-                    padding: '0.75rem', 
+                  style={{
+                    padding: '0.75rem',
                     backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
                     border: '1px solid #d1d5db',
                     borderRadius: '4px'
@@ -735,20 +735,20 @@ const ApiManager: React.FC<ApiManagerProps> = ({ theme }) => {
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
                     <div>
                       <div style={{ fontWeight: 'bold' }}>
-                        Status: 
-                        <span style={{ 
+                        Status:
+                        <span style={{
                           marginLeft: '0.5rem',
-                          padding: '0.25rem 0.5rem', 
-                          borderRadius: '4px', 
-                          backgroundColor: 
-                            test.statusCode >= 200 && test.statusCode < 300 ? '#d1fae5' : 
-                            test.statusCode >= 300 && test.statusCode < 400 ? '#fef3c7' : 
-                            test.statusCode >= 400 ? '#fee2e2' : 
+                          padding: '0.25rem 0.5rem',
+                          borderRadius: '4px',
+                          backgroundColor:
+                            test.statusCode >= 200 && test.statusCode < 300 ? '#d1fae5' :
+                            test.statusCode >= 300 && test.statusCode < 400 ? '#fef3c7' :
+                            test.statusCode >= 400 ? '#fee2e2' :
                             '#e5e7eb',
-                          color: 
-                            test.statusCode >= 200 && test.statusCode < 300 ? '#065f46' : 
-                            test.statusCode >= 300 && test.statusCode < 400 ? '#d97706' : 
-                            test.statusCode >= 400 ? '#7f1d1d' : 
+                          color:
+                            test.statusCode >= 200 && test.statusCode < 300 ? '#065f46' :
+                            test.statusCode >= 300 && test.statusCode < 400 ? '#d97706' :
+                            test.statusCode >= 400 ? '#7f1d1d' :
                             '#6b7280',
                           fontWeight: 'bold'
                         }}>

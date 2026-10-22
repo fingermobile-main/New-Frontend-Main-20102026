@@ -110,12 +110,12 @@ const Documentation: React.FC<DocumentationProps> = ({ theme }) => {
 
 
   return (
-    <div 
-      className="documentation-panel" 
-      style={{ 
-        width: '100%', 
-        height: '100%', 
-        display: 'flex', 
+    <div
+      className="documentation-panel"
+      style={{
+        width: '100%',
+        height: '100%',
+        display: 'flex',
         flexDirection: 'column',
         backgroundColor: theme === 'dark' ? '#1f2937' : theme === 'blue' ? '#dbeafe' : '#e5e7eb',
         color: theme === 'dark' ? 'white' : '#1f2937',
@@ -123,10 +123,10 @@ const Documentation: React.FC<DocumentationProps> = ({ theme }) => {
       }}
     >
       <h3 style={{ margin: '0 0 1rem 0' }}>Documentation & Help</h3>
-      
+
       {error && (
-        <div style={{ 
-          padding: '0.75rem', 
+        <div style={{
+          padding: '0.75rem',
           color: '#ef4444',
           backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : '#f3f4f6',
           borderRadius: '4px',
@@ -135,10 +135,10 @@ const Documentation: React.FC<DocumentationProps> = ({ theme }) => {
           Error: {error}
         </div>
       )}
-      
+
       <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
         {(['quick-start', 'components', 'api', 'tutorials', 'search'] as const).map((tab) => (
-          <button
+          <button aria-label={tab}
             key={tab}
             onClick={() => setActiveTab(tab)}
             style={{
@@ -166,11 +166,11 @@ const Documentation: React.FC<DocumentationProps> = ({ theme }) => {
         <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh- 200px)' }}>
           <h4>STERCS Editor Quick Start Guide</h4>
           {quickStartGuide.map((section, index) => (
-            <div 
-              key={index} 
-              style={{ 
-                marginBottom: '1.5rem', 
-                padding: '1rem', 
+            <div
+              key={index}
+              style={{
+                marginBottom: '1.5rem',
+                padding: '1rem',
                 backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
                 border: '1px solid #d1d5db',
                 borderRadius: '4px'
@@ -189,11 +189,11 @@ const Documentation: React.FC<DocumentationProps> = ({ theme }) => {
         <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh- 200px)' }}>
           <h4>Component Reference Guide</h4>
           {componentReference.map((component, index) => (
-            <div 
-              key={index} 
-              style={{ 
-                marginBottom: '1.5rem', 
-                padding: '1rem', 
+            <div
+              key={index}
+              style={{
+                marginBottom: '1.5rem',
+                padding: '1rem',
                 backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
                 border: '1px solid #d1d5db',
                 borderRadius: '4px'
@@ -205,20 +205,20 @@ const Documentation: React.FC<DocumentationProps> = ({ theme }) => {
               <p style={{ margin: '0 0 1rem 0', color: theme === 'dark' ? '#d1d5db' : '#4b5563' }}>
                 {component.description}
               </p>
-              
+
               <h6 style={{ margin: '0 0 0.5rem 0', color: theme === 'dark' ? 'white' : '#1f2937' }}>Properties:</h6>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                 {component.props.map((prop, propIndex) => (
-                  <div 
-                    key={propIndex} 
-                    style={{ 
-                      padding: '0.5rem', 
+                  <div
+                    key={propIndex}
+                    style={{
+                      padding: '0.5rem',
                       backgroundColor: theme === 'dark' ? '#4b5563' : theme === 'blue' ? '#dbeafe' : '#f9fafb',
                       borderRadius: '4px'
                     }}
                   >
                     <div style={{ fontWeight: 'bold', marginBottom: '0.25rem' }}>
-                      {prop.name}: <span style={{ color: '#3b82f6', fontWeight: 'normal' }}>{prop.type}</span> 
+                      {prop.name}: <span style={{ color: '#3b82f6', fontWeight: 'normal' }}>{prop.type}</span>
                       {prop.default && <span style={{ color: '#6b7280', fontSize: '0.875rem', fontStyle: 'italic' }}> (default: {prop.default})</span>}
                     </div>
                     <div style={{ fontSize: '0.875rem', color: theme === 'dark' ? '#d1d5db' : '#6b7280' }}>
@@ -234,8 +234,8 @@ const Documentation: React.FC<DocumentationProps> = ({ theme }) => {
 
       {!loading && activeTab === 'search' && (
         <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh- 200px)' }}>
-          <div style={{ 
-            padding: '1rem', 
+          <div style={{
+            padding: '1rem',
             backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
             border: '1px solid #d1d5db',
             borderRadius: '4px',
@@ -272,16 +272,16 @@ const Documentation: React.FC<DocumentationProps> = ({ theme }) => {
               </button>
             </div>
           </div>
-          
+
           {searchResults.length > 0 ? (
             <div>
               <h4>Search Results</h4>
               {searchResults.map((result, index) => (
-                <div 
-                  key={index} 
-                  style={{ 
-                    marginBottom: '1rem', 
-                    padding: '1rem', 
+                <div
+                  key={index}
+                  style={{
+                    marginBottom: '1rem',
+                    padding: '1rem',
                     backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
                     border: '1px solid #d1d5db',
                     borderRadius: '4px'
@@ -310,8 +310,8 @@ const Documentation: React.FC<DocumentationProps> = ({ theme }) => {
 
       {!loading && (activeTab === 'api' || activeTab === 'tutorials') && (
         <div style={{ textAlign: 'center', padding: '2rem', color: '#9ca3af' }}>
-          {activeTab === 'api' 
-            ? 'API documentation will be displayed here' 
+          {activeTab === 'api'
+            ? 'API documentation will be displayed here'
             : 'Tutorials will be displayed here'}
           <p style={{ marginTop: '1rem' }}>This section is coming soon in a future update.</p>
         </div>

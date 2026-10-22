@@ -48,7 +48,7 @@ const Monitoring: React.FC<MonitoringProps> = ({ theme }) => {
   const [alerts, setAlerts] = useState<MonitoringAlert[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  
+
   // Form states for creating rules
   const [newRuleName, setNewRuleName] = useState<string>('');
   const [newRuleDescription, setNewRuleDescription] = useState<string>('');
@@ -67,7 +67,7 @@ const Monitoring: React.FC<MonitoringProps> = ({ theme }) => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      
+
       if (activeTab === 'rules') {
         const response = await fetch('/api/editor/monitoring/rules', {
           method: 'GET',
@@ -197,12 +197,12 @@ const Monitoring: React.FC<MonitoringProps> = ({ theme }) => {
 
 
   return (
-    <div 
-      className="monitoring-panel" 
-      style={{ 
-        width: '100%', 
-        height: '100%', 
-        display: 'flex', 
+    <div
+      className="monitoring-panel"
+      style={{
+        width: '100%',
+        height: '100%',
+        display: 'flex',
         flexDirection: 'column',
         backgroundColor: theme === 'dark' ? '#1f2937' : theme === 'blue' ? '#dbeafe' : '#e5e7eb',
         color: theme === 'dark' ? 'white' : '#1f2937',
@@ -210,10 +210,10 @@ const Monitoring: React.FC<MonitoringProps> = ({ theme }) => {
       }}
     >
       <h3 style={{ margin: '0 0 1rem 0' }}>Monitoring & Alerts</h3>
-      
+
       {error && (
-        <div style={{ 
-          padding: '0.75rem', 
+        <div style={{
+          padding: '0.75rem',
           color: '#ef4444',
           backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : '#f3f4f6',
           borderRadius: '4px',
@@ -222,10 +222,10 @@ const Monitoring: React.FC<MonitoringProps> = ({ theme }) => {
           Error: {error}
         </div>
       )}
-      
+
       <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
         {(['rules', 'metrics', 'alerts'] as const).map((tab) => (
-          <button
+          <button aria-label={tab}
             key={tab}
             onClick={() => setActiveTab(tab)}
             style={{
@@ -251,8 +251,8 @@ const Monitoring: React.FC<MonitoringProps> = ({ theme }) => {
 
       {!loading && activeTab === 'rules' && (
         <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh- 200px)' }}>
-          <div style={{ 
-            padding: '1rem', 
+          <div style={{
+            padding: '1rem',
             backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
             border: '1px solid #d1d5db',
             borderRadius: '4px',
@@ -276,7 +276,7 @@ const Monitoring: React.FC<MonitoringProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <div style={{ marginBottom: '0.75rem' }}>
               <label style={{ display: 'block', marginBottom: '0.25rem' }}>Description</label>
               <textarea
@@ -294,7 +294,7 @@ const Monitoring: React.FC<MonitoringProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '0.75rem' }}>
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem' }}>Project ID</label>
@@ -313,7 +313,7 @@ const Monitoring: React.FC<MonitoringProps> = ({ theme }) => {
                   }}
                 />
               </div>
-              
+
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem' }}>Metric Type</label>
                 <select
@@ -337,7 +337,7 @@ const Monitoring: React.FC<MonitoringProps> = ({ theme }) => {
                 </select>
               </div>
             </div>
-            
+
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.75rem', marginBottom: '0.75rem' }}>
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem' }}>Condition</label>
@@ -361,7 +361,7 @@ const Monitoring: React.FC<MonitoringProps> = ({ theme }) => {
                   <option value="!=">Not equal (!=)</option>
                 </select>
               </div>
-              
+
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem' }}>Threshold</label>
                 <input
@@ -379,7 +379,7 @@ const Monitoring: React.FC<MonitoringProps> = ({ theme }) => {
                   }}
                 />
               </div>
-              
+
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem' }}>Evaluation Window (s)</label>
                 <input
@@ -398,7 +398,7 @@ const Monitoring: React.FC<MonitoringProps> = ({ theme }) => {
                 />
               </div>
             </div>
-            
+
             <div style={{ display: 'flex', alignItems: 'center', marginBottom: '0.75rem' }}>
               <input
                 type="checkbox"
@@ -409,7 +409,7 @@ const Monitoring: React.FC<MonitoringProps> = ({ theme }) => {
               />
               <label htmlFor="enabled">Enabled</label>
             </div>
-            
+
             <button
               onClick={handleCreateRule}
               style={{
@@ -425,7 +425,7 @@ const Monitoring: React.FC<MonitoringProps> = ({ theme }) => {
               Create Rule
             </button>
           </div>
-          
+
           <h4>Monitoring Rules</h4>
           {rules.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '1rem', color: '#9ca3af' }}>
@@ -434,10 +434,10 @@ const Monitoring: React.FC<MonitoringProps> = ({ theme }) => {
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {rules.map(rule => (
-                <div 
+                <div
                   key={rule.id}
-                  style={{ 
-                    padding: '0.75rem', 
+                  style={{
+                    padding: '0.75rem',
                     backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
                     border: '1px solid #d1d5db',
                     borderRadius: '4px'
@@ -449,9 +449,9 @@ const Monitoring: React.FC<MonitoringProps> = ({ theme }) => {
                         {rule.name}
                       </div>
                     </div>
-                    <div style={{ 
-                      padding: '0.25rem 0.5rem', 
-                      borderRadius: '4px', 
+                    <div style={{
+                      padding: '0.25rem 0.5rem',
+                      borderRadius: '4px',
                       backgroundColor: rule.enabled ? '#d1fae5' : '#fee2e2',
                       color: rule.enabled ? '#065f46' : '#7f1d1d'
                     }}>
@@ -489,10 +489,10 @@ const Monitoring: React.FC<MonitoringProps> = ({ theme }) => {
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {metrics.slice(0, 20).map(metric => (
-                <div 
+                <div
                   key={metric.id}
-                  style={{ 
-                    padding: '0.75rem', 
+                  style={{
+                    padding: '0.75rem',
                     backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
                     border: '1px solid #d1d5db',
                     borderRadius: '4px'
@@ -501,22 +501,22 @@ const Monitoring: React.FC<MonitoringProps> = ({ theme }) => {
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
                     <div>
                       <div style={{ fontWeight: 'bold' }}>
-                        <span style={{ 
-                          padding: '0.25rem 0.5rem', 
-                          borderRadius: '4px', 
-                          backgroundColor: 
-                            metric.metricType === 'response_time' ? '#dbeafe' : 
-                            metric.metricType === 'error_rate' ? '#fee2e2' : 
-                            metric.metricType === 'cpu_usage' ? '#fef3c7' : 
-                            metric.metricType === 'memory_usage' ? '#e0e7ff' : 
-                            metric.metricType === 'disk_usage' ? '#d1fae5' : 
+                        <span style={{
+                          padding: '0.25rem 0.5rem',
+                          borderRadius: '4px',
+                          backgroundColor:
+                            metric.metricType === 'response_time' ? '#dbeafe' :
+                            metric.metricType === 'error_rate' ? '#fee2e2' :
+                            metric.metricType === 'cpu_usage' ? '#fef3c7' :
+                            metric.metricType === 'memory_usage' ? '#e0e7ff' :
+                            metric.metricType === 'disk_usage' ? '#d1fae5' :
                             '#e5e7eb',
-                          color: 
-                            metric.metricType === 'response_time' ? '#1e40af' : 
-                            metric.metricType === 'error_rate' ? '#7f1d1d' : 
-                            metric.metricType === 'cpu_usage' ? '#d97706' : 
-                            metric.metricType === 'memory_usage' ? '#4f46e5' : 
-                            metric.metricType === 'disk_usage' ? '#065f46' : 
+                          color:
+                            metric.metricType === 'response_time' ? '#1e40af' :
+                            metric.metricType === 'error_rate' ? '#7f1d1d' :
+                            metric.metricType === 'cpu_usage' ? '#d97706' :
+                            metric.metricType === 'memory_usage' ? '#4f46e5' :
+                            metric.metricType === 'disk_usage' ? '#065f46' :
                             '#6b7280',
                           fontWeight: 'bold',
                           marginRight: '0.5rem'
@@ -550,10 +550,10 @@ const Monitoring: React.FC<MonitoringProps> = ({ theme }) => {
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {alerts.slice(0, 20).map(alert => (
-                <div 
+                <div
                   key={alert.id}
-                  style={{ 
-                    padding: '0.75rem', 
+                  style={{
+                    padding: '0.75rem',
                     backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
                     border: '1px solid #d1d5db',
                     borderRadius: '4px'
@@ -562,22 +562,22 @@ const Monitoring: React.FC<MonitoringProps> = ({ theme }) => {
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
                     <div>
                       <div style={{ fontWeight: 'bold' }}>
-                        <span style={{ 
-                          padding: '0.25rem 0.5rem', 
-                          borderRadius: '4px', 
-                          backgroundColor: 
-                            alert.metricType === 'response_time' ? '#dbeafe' : 
-                            alert.metricType === 'error_rate' ? '#fee2e2' : 
-                            alert.metricType === 'cpu_usage' ? '#fef3c7' : 
-                            alert.metricType === 'memory_usage' ? '#e0e7ff' : 
-                            alert.metricType === 'disk_usage' ? '#d1fae5' : 
+                        <span style={{
+                          padding: '0.25rem 0.5rem',
+                          borderRadius: '4px',
+                          backgroundColor:
+                            alert.metricType === 'response_time' ? '#dbeafe' :
+                            alert.metricType === 'error_rate' ? '#fee2e2' :
+                            alert.metricType === 'cpu_usage' ? '#fef3c7' :
+                            alert.metricType === 'memory_usage' ? '#e0e7ff' :
+                            alert.metricType === 'disk_usage' ? '#d1fae5' :
                             '#e5e7eb',
-                          color: 
-                            alert.metricType === 'response_time' ? '#1e40af' : 
-                            alert.metricType === 'error_rate' ? '#7f1d1d' : 
-                            alert.metricType === 'cpu_usage' ? '#d97706' : 
-                            alert.metricType === 'memory_usage' ? '#4f46e5' : 
-                            alert.metricType === 'disk_usage' ? '#065f46' : 
+                          color:
+                            alert.metricType === 'response_time' ? '#1e40af' :
+                            alert.metricType === 'error_rate' ? '#7f1d1d' :
+                            alert.metricType === 'cpu_usage' ? '#d97706' :
+                            alert.metricType === 'memory_usage' ? '#4f46e5' :
+                            alert.metricType === 'disk_usage' ? '#065f46' :
                             '#6b7280',
                           fontWeight: 'bold',
                           marginRight: '0.5rem'
@@ -587,18 +587,18 @@ const Monitoring: React.FC<MonitoringProps> = ({ theme }) => {
                         Alert #{alert.id}
                       </div>
                     </div>
-                    <div style={{ 
-                      padding: '0.25rem 0.5rem', 
-                      borderRadius: '4px', 
-                      backgroundColor: 
-                        alert.status === 'triggered' ? '#fee2e2' : 
-                        alert.status === 'acknowledged' ? '#fef3c7' : 
-                        alert.status === 'resolved' ? '#d1fae5' : 
+                    <div style={{
+                      padding: '0.25rem 0.5rem',
+                      borderRadius: '4px',
+                      backgroundColor:
+                        alert.status === 'triggered' ? '#fee2e2' :
+                        alert.status === 'acknowledged' ? '#fef3c7' :
+                        alert.status === 'resolved' ? '#d1fae5' :
                         '#e5e7eb',
-                      color: 
-                        alert.status === 'triggered' ? '#7f1d1d' : 
-                        alert.status === 'acknowledged' ? '#d97706' : 
-                        alert.status === 'resolved' ? '#065f46' : 
+                      color:
+                        alert.status === 'triggered' ? '#7f1d1d' :
+                        alert.status === 'acknowledged' ? '#d97706' :
+                        alert.status === 'resolved' ? '#065f46' :
                         '#6b7280'
                     }}>
                       {alert.status}
@@ -623,4 +623,4 @@ const Monitoring: React.FC<MonitoringProps> = ({ theme }) => {
   );
 };
 
-export default Monitoring;
+export default Monitoring;

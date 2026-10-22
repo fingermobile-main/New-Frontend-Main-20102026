@@ -42,7 +42,7 @@ const Security: React.FC<SecurityProps> = ({ theme }) => {
   const [securityEvents, setSecurityEvents] = useState<SecurityEvent[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  
+
   // Form states
   const [newPolicyName, setNewPolicyName] = useState<string>('');
   const [newPolicyDescription, setNewPolicyDescription] = useState<string>('');
@@ -230,7 +230,7 @@ const Security: React.FC<SecurityProps> = ({ theme }) => {
       const result = await response.json();
 
       if (result.success) {
-        setPolicies(policies.map(p => 
+        setPolicies(policies.map(p =>
           p.id === policyId ? { ...p, enabled: !currentEnabled } : p
         ));
       } else {
@@ -261,7 +261,7 @@ const Security: React.FC<SecurityProps> = ({ theme }) => {
       const result = await response.json();
 
       if (result.success) {
-        setFirewallRules(firewallRules.map(r => 
+        setFirewallRules(firewallRules.map(r =>
           r.id === ruleId ? { ...r, enabled: !currentEnabled } : r
         ));
       } else {
@@ -288,12 +288,12 @@ const Security: React.FC<SecurityProps> = ({ theme }) => {
 
 
   return (
-    <div 
-      className="security-panel" 
-      style={{ 
-        width: '100%', 
-        height: '100%', 
-        display: 'flex', 
+    <div
+      className="security-panel"
+      style={{
+        width: '100%',
+        height: '100%',
+        display: 'flex',
         flexDirection: 'column',
         backgroundColor: theme === 'dark' ? '#1f2937' : theme === 'blue' ? '#dbeafe' : '#e5e7eb',
         color: theme === 'dark' ? 'white' : '#1f2937',
@@ -301,10 +301,10 @@ const Security: React.FC<SecurityProps> = ({ theme }) => {
       }}
     >
       <h3 style={{ margin: '0 0 1rem 0' }}>Security Management</h3>
-      
+
       {error && (
-        <div style={{ 
-          padding: '0.75rem', 
+        <div style={{
+          padding: '0.75rem',
           color: '#ef4444',
           backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : '#f3f4f6',
           borderRadius: '4px',
@@ -313,10 +313,10 @@ const Security: React.FC<SecurityProps> = ({ theme }) => {
           Error: {error}
         </div>
       )}
-      
+
       <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
         {(['policies', 'firewall', 'events'] as const).map((tab) => (
-          <button
+          <button aria-label={tab}
             key={tab}
             onClick={() => setActiveTab(tab)}
             style={{
@@ -342,8 +342,8 @@ const Security: React.FC<SecurityProps> = ({ theme }) => {
 
       {!loading && activeTab === 'policies' && (
         <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh- 200px)' }}>
-          <div style={{ 
-            padding: '1rem', 
+          <div style={{
+            padding: '1rem',
             backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
             border: '1px solid #d1d5db',
             borderRadius: '4px',
@@ -367,7 +367,7 @@ const Security: React.FC<SecurityProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <div style={{ marginBottom: '0.75rem' }}>
               <label style={{ display: 'block', marginBottom: '0.25rem' }}>Description</label>
               <textarea
@@ -385,7 +385,7 @@ const Security: React.FC<SecurityProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <div style={{ display: 'flex', alignItems: 'center', marginBottom: '0.75rem' }}>
               <input
                 type="checkbox"
@@ -398,7 +398,7 @@ const Security: React.FC<SecurityProps> = ({ theme }) => {
                 Enabled
               </label>
             </div>
-            
+
             <button
               onClick={handleCreatePolicy}
               style={{
@@ -414,7 +414,7 @@ const Security: React.FC<SecurityProps> = ({ theme }) => {
               Create Policy
             </button>
           </div>
-          
+
           <h4>Your Security Policies</h4>
           {policies.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '1rem', color: '#9ca3af' }}>
@@ -423,10 +423,10 @@ const Security: React.FC<SecurityProps> = ({ theme }) => {
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {policies.map(policy => (
-                <div 
+                <div
                   key={policy.id}
-                  style={{ 
-                    padding: '0.75rem', 
+                  style={{
+                    padding: '0.75rem',
                     backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
                     border: '1px solid #d1d5db',
                     borderRadius: '4px',
@@ -449,9 +449,9 @@ const Security: React.FC<SecurityProps> = ({ theme }) => {
                     )}
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <span style={{ 
-                      padding: '0.25rem 0.5rem', 
-                      borderRadius: '4px', 
+                    <span style={{
+                      padding: '0.25rem 0.5rem',
+                      borderRadius: '4px',
                       backgroundColor: policy.enabled ? '#d1fae5' : '#fee2e2',
                       color: policy.enabled ? '#065f46' : '#7f1d1d'
                     }}>
@@ -481,8 +481,8 @@ const Security: React.FC<SecurityProps> = ({ theme }) => {
 
       {!loading && activeTab === 'firewall' && (
         <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh- 200px)' }}>
-          <div style={{ 
-            padding: '1rem', 
+          <div style={{
+            padding: '1rem',
             backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
             border: '1px solid #d1d5db',
             borderRadius: '4px',
@@ -506,7 +506,7 @@ const Security: React.FC<SecurityProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <div style={{ marginBottom: '0.75rem' }}>
               <label style={{ display: 'block', marginBottom: '0.25rem' }}>Description</label>
               <textarea
@@ -524,7 +524,7 @@ const Security: React.FC<SecurityProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '0.75rem' }}>
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem' }}>Source IP</label>
@@ -543,7 +543,7 @@ const Security: React.FC<SecurityProps> = ({ theme }) => {
                   }}
                 />
               </div>
-              
+
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem' }}>Destination IP (Optional)</label>
                 <input
@@ -562,7 +562,7 @@ const Security: React.FC<SecurityProps> = ({ theme }) => {
                 />
               </div>
             </div>
-            
+
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '0.75rem' }}>
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem' }}>Protocol</label>
@@ -584,7 +584,7 @@ const Security: React.FC<SecurityProps> = ({ theme }) => {
                   <option value="icmp">ICMP</option>
                 </select>
               </div>
-              
+
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem' }}>Port (Optional)</label>
                 <input
@@ -603,7 +603,7 @@ const Security: React.FC<SecurityProps> = ({ theme }) => {
                 />
               </div>
             </div>
-            
+
             <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '0.75rem' }}>
               <div style={{ flex: 1 }}>
                 <label style={{ display: 'block', marginBottom: '0.25rem' }}>Action</label>
@@ -624,7 +624,7 @@ const Security: React.FC<SecurityProps> = ({ theme }) => {
                 </select>
               </div>
             </div>
-            
+
             <button
               onClick={handleCreateFirewallRule}
               style={{
@@ -640,7 +640,7 @@ const Security: React.FC<SecurityProps> = ({ theme }) => {
               Create Firewall Rule
             </button>
           </div>
-          
+
           <h4>Your Firewall Rules</h4>
           {firewallRules.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '1rem', color: '#9ca3af' }}>
@@ -649,10 +649,10 @@ const Security: React.FC<SecurityProps> = ({ theme }) => {
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {firewallRules.map(rule => (
-                <div 
+                <div
                   key={rule.id}
-                  style={{ 
-                    padding: '0.75rem', 
+                  style={{
+                    padding: '0.75rem',
                     backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
                     border: '1px solid #d1d5db',
                     borderRadius: '4px',
@@ -666,7 +666,7 @@ const Security: React.FC<SecurityProps> = ({ theme }) => {
                       {rule.name} <span style={{ fontSize: '0.8rem', fontWeight: 'normal' }}>({rule.action.toUpperCase()})</span>
                     </div>
                     <div style={{ fontSize: '0.8rem', color: '#6b7280' }}>
-                      {rule.sourceIp} → {rule.destinationIp || 'Any IP'} • {rule.protocol.toUpperCase()} 
+                      {rule.sourceIp} → {rule.destinationIp || 'Any IP'} • {rule.protocol.toUpperCase()}
                       {rule.port ? `:${rule.port}` : ''}
                     </div>
                     <div style={{ fontSize: '0.8rem', color: '#6b7280', marginTop: '0.25rem' }}>
@@ -679,9 +679,9 @@ const Security: React.FC<SecurityProps> = ({ theme }) => {
                     )}
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <span style={{ 
-                      padding: '0.25rem 0.5rem', 
-                      borderRadius: '4px', 
+                    <span style={{
+                      padding: '0.25rem 0.5rem',
+                      borderRadius: '4px',
                       backgroundColor: rule.enabled ? '#d1fae5' : '#fee2e2',
                       color: rule.enabled ? '#065f46' : '#7f1d1d'
                     }}>
@@ -719,10 +719,10 @@ const Security: React.FC<SecurityProps> = ({ theme }) => {
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {securityEvents.map(event => (
-                <div 
+                <div
                   key={event.id}
-                  style={{ 
-                    padding: '0.75rem', 
+                  style={{
+                    padding: '0.75rem',
                     backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
                     border: '1px solid #d1d5db',
                     borderRadius: '4px'

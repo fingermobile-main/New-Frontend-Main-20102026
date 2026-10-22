@@ -33,7 +33,7 @@ const Notifications: React.FC<NotificationProps> = ({ theme }) => {
     isRead: '',
     projectId: ''
   });
-  
+
   // Compose form state
   const [composeData, setComposeData] = useState({
     recipientId: '',
@@ -54,7 +54,7 @@ const Notifications: React.FC<NotificationProps> = ({ theme }) => {
     try {
       setLoading(true);
       const params = new URLSearchParams();
-      
+
       if (filters.type) params.append('type', filters.type);
       if (filters.priority) params.append('priority', filters.priority);
       if (filters.isRead) params.append('readStatus', filters.isRead);
@@ -128,8 +128,8 @@ const Notifications: React.FC<NotificationProps> = ({ theme }) => {
 
       if (result.success) {
         // Update the notification in the list
-        setNotifications(prev => 
-          prev.map(n => 
+        setNotifications(prev =>
+          prev.map(n =>
             n.id === notificationId ? { ...n, isRead: true, readAt: new Date().toISOString() } : n
           )
         );
@@ -156,7 +156,7 @@ const Notifications: React.FC<NotificationProps> = ({ theme }) => {
 
       if (result.success) {
         // Update all notifications as read
-        setNotifications(prev => 
+        setNotifications(prev =>
           prev.map(n => ({ ...n, isRead: true, readAt: new Date().toISOString() }))
         );
         fetchStats(); // Refresh stats
@@ -199,7 +199,7 @@ const Notifications: React.FC<NotificationProps> = ({ theme }) => {
 
   const handleSendNotification = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     try {
       const response = await fetch('/api/editor/notifications', {
         method: 'POST',
@@ -255,43 +255,43 @@ const Notifications: React.FC<NotificationProps> = ({ theme }) => {
 
   const getPriorityBadge = (priority: string) => {
     switch (priority) {
-      case 'critical': 
-        return <span style={{ 
-          padding: '0.125rem 0.25rem', 
-          borderRadius: '4px', 
-          backgroundColor: '#fee2e2', 
+      case 'critical':
+        return <span style={{
+          padding: '0.125rem 0.25rem',
+          borderRadius: '4px',
+          backgroundColor: '#fee2e2',
           color: '#7f1d1d',
           fontSize: '0.7rem'
         }}>CRITICAL</span>;
-      case 'high': 
-        return <span style={{ 
-          padding: '0.125rem 0.25rem', 
-          borderRadius: '4px', 
-          backgroundColor: '#fef3c7', 
+      case 'high':
+        return <span style={{
+          padding: '0.125rem 0.25rem',
+          borderRadius: '4px',
+          backgroundColor: '#fef3c7',
           color: '#d97706',
           fontSize: '0.7rem'
         }}>HIGH</span>;
-      case 'normal': 
-        return <span style={{ 
-          padding: '0.125rem 0.25rem', 
-          borderRadius: '4px', 
-          backgroundColor: '#dbeafe', 
+      case 'normal':
+        return <span style={{
+          padding: '0.125rem 0.25rem',
+          borderRadius: '4px',
+          backgroundColor: '#dbeafe',
           color: '#2563eb',
           fontSize: '0.7rem'
         }}>NORMAL</span>;
-      case 'low': 
-        return <span style={{ 
-          padding: '0.125rem 0.25rem', 
-          borderRadius: '4px', 
-          backgroundColor: '#dcfce7', 
+      case 'low':
+        return <span style={{
+          padding: '0.125rem 0.25rem',
+          borderRadius: '4px',
+          backgroundColor: '#dcfce7',
           color: '#065f46',
           fontSize: '0.7rem'
         }}>LOW</span>;
-      default: 
-        return <span style={{ 
-          padding: '0.125rem 0.25rem', 
-          borderRadius: '4px', 
-          backgroundColor: '#e5e7eb', 
+      default:
+        return <span style={{
+          padding: '0.125rem 0.25rem',
+          borderRadius: '4px',
+          backgroundColor: '#e5e7eb',
           color: '#6b7280',
           fontSize: '0.7rem'
         }}>{priority.toUpperCase()}</span>;
@@ -301,12 +301,12 @@ const Notifications: React.FC<NotificationProps> = ({ theme }) => {
 
 
   return (
-    <div 
-      className="notifications-panel" 
-      style={{ 
-        width: '100%', 
-        height: '100%', 
-        display: 'flex', 
+    <div
+      className="notifications-panel"
+      style={{
+        width: '100%',
+        height: '100%',
+        display: 'flex',
         flexDirection: 'column',
         backgroundColor: theme === 'dark' ? '#1f2937' : theme === 'blue' ? '#dbeafe' : '#e5e7eb',
         color: theme === 'dark' ? 'white' : '#1f2937',
@@ -314,10 +314,10 @@ const Notifications: React.FC<NotificationProps> = ({ theme }) => {
       }}
     >
       <h3 style={{ margin: '0 0 1rem 0' }}>Notifications</h3>
-      
+
       {error && (
-        <div style={{ 
-          padding: '0.75rem', 
+        <div style={{
+          padding: '0.75rem',
           color: '#ef4444',
           backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : '#f3f4f6',
           borderRadius: '4px',
@@ -326,10 +326,10 @@ const Notifications: React.FC<NotificationProps> = ({ theme }) => {
           Error: {error}
         </div>
       )}
-      
+
       <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
         {(['inbox', 'compose', 'stats'] as const).map((tab) => (
-          <button
+          <button aria-label={tab}
             key={tab}
             onClick={() => setActiveTab(tab)}
             style={{
@@ -356,8 +356,8 @@ const Notifications: React.FC<NotificationProps> = ({ theme }) => {
       {!loading && activeTab === 'inbox' && (
         <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh- 200px)' }}>
           {/* Filters */}
-          <div style={{ 
-            padding: '1rem', 
+          <div style={{
+            padding: '1rem',
             backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
             border: '1px solid #d1d5db',
             borderRadius: '4px',
@@ -387,7 +387,7 @@ const Notifications: React.FC<NotificationProps> = ({ theme }) => {
                   <option value="success">Success</option>
                 </select>
               </div>
-              
+
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem', fontSize: '0.875rem' }}>Priority</label>
                 <select
@@ -410,7 +410,7 @@ const Notifications: React.FC<NotificationProps> = ({ theme }) => {
                   <option value="critical">Critical</option>
                 </select>
               </div>
-              
+
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem', fontSize: '0.875rem' }}>Read Status</label>
                 <select
@@ -431,7 +431,7 @@ const Notifications: React.FC<NotificationProps> = ({ theme }) => {
                   <option value="false">Unread</option>
                 </select>
               </div>
-              
+
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem', fontSize: '0.875rem' }}>Project ID</label>
                 <input
@@ -450,7 +450,7 @@ const Notifications: React.FC<NotificationProps> = ({ theme }) => {
                   }}
                 />
               </div>
-              
+
               <div style={{ display: 'flex', alignItems: 'end' }}>
                 <button
                   type="submit"
@@ -468,7 +468,7 @@ const Notifications: React.FC<NotificationProps> = ({ theme }) => {
                 </button>
               </div>
             </form>
-            
+
             <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '0.75rem' }}>
               <button
                 onClick={handleMarkAllAsRead}
@@ -498,7 +498,7 @@ const Notifications: React.FC<NotificationProps> = ({ theme }) => {
               </div>
             )}
           </div>
-          
+
           {notifications.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '1rem', color: '#9ca3af' }}>
               No notifications found.
@@ -506,11 +506,11 @@ const Notifications: React.FC<NotificationProps> = ({ theme }) => {
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {notifications.map(notification => (
-                <div 
+                <div
                   key={notification.id}
-                  style={{ 
-                    padding: '0.75rem', 
-                    backgroundColor: notification.isRead 
+                  style={{
+                    padding: '0.75rem',
+                    backgroundColor: notification.isRead
                       ? (theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white')
                       : (theme === 'dark' ? '#2d3748' : theme === 'blue' ? '#bfdbfe' : '#dbeafe'),
                     border: '1px solid #d1d5db',
@@ -519,19 +519,19 @@ const Notifications: React.FC<NotificationProps> = ({ theme }) => {
                   }}
                 >
                   {!notification.isRead && (
-                    <div 
-                      style={{ 
-                        position: 'absolute', 
-                        top: '0.5rem', 
-                        right: '0.5rem', 
-                        width: '8px', 
-                        height: '8px', 
-                        borderRadius: '50%', 
-                        backgroundColor: '#3b82f6' 
-                      }} 
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: '0.5rem',
+                        right: '0.5rem',
+                        width: '8px',
+                        height: '8px',
+                        borderRadius: '50%',
+                        backgroundColor: '#3b82f6'
+                      }}
                     />
                   )}
-                  
+
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.25rem' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                       <div style={{ fontWeight: 'bold', color: getTypeColor(notification.type) }}>
@@ -543,16 +543,16 @@ const Notifications: React.FC<NotificationProps> = ({ theme }) => {
                       {formatDate(notification.createdAt)}
                     </div>
                   </div>
-                  
+
                   <div style={{ fontSize: '0.875rem', marginBottom: '0.5rem', color: theme === 'dark' ? '#d1d5db' : '#4b5563' }}>
                     {notification.message}
                   </div>
-                  
+
                   <div style={{ fontSize: '0.75rem', color: '#6b7280', marginBottom: '0.5rem' }}>
-                    {notification.sendermembername ? `From: ${notification.sendermembername}` : 'From: System'} 
+                    {notification.sendermembername ? `From: ${notification.sendermembername}` : 'From: System'}
                     {notification.projectId && ` • Project: ${notification.projectId}`}
                   </div>
-                  
+
                   <div style={{ display: 'flex', gap: '0.5rem' }}>
                     {!notification.isRead && (
                       <button
@@ -595,8 +595,8 @@ const Notifications: React.FC<NotificationProps> = ({ theme }) => {
       {activeTab === 'compose' && (
         <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh- 200px)' }}>
           <h4>Send New Notification</h4>
-          <div style={{ 
-            padding: '1rem', 
+          <div style={{
+            padding: '1rem',
             backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
             border: '1px solid #d1d5db',
             borderRadius: '4px'
@@ -621,7 +621,7 @@ const Notifications: React.FC<NotificationProps> = ({ theme }) => {
                   }}
                 />
               </div>
-              
+
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem' }}>Project ID (Optional)</label>
                 <input
@@ -640,7 +640,7 @@ const Notifications: React.FC<NotificationProps> = ({ theme }) => {
                   }}
                 />
               </div>
-              
+
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem' }}>Title</label>
                 <input
@@ -660,7 +660,7 @@ const Notifications: React.FC<NotificationProps> = ({ theme }) => {
                   }}
                 />
               </div>
-              
+
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem' }}>Message</label>
                 <textarea
@@ -680,7 +680,7 @@ const Notifications: React.FC<NotificationProps> = ({ theme }) => {
                   }}
                 />
               </div>
-              
+
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                 <div>
                   <label style={{ display: 'block', marginBottom: '0.25rem' }}>Type</label>
@@ -704,7 +704,7 @@ const Notifications: React.FC<NotificationProps> = ({ theme }) => {
                     <option value="success">Success</option>
                   </select>
                 </div>
-                
+
                 <div>
                   <label style={{ display: 'block', marginBottom: '0.25rem' }}>Priority</label>
                   <select
@@ -727,7 +727,7 @@ const Notifications: React.FC<NotificationProps> = ({ theme }) => {
                   </select>
                 </div>
               </div>
-              
+
               <button
                 type="submit"
                 style={{
@@ -749,41 +749,41 @@ const Notifications: React.FC<NotificationProps> = ({ theme }) => {
       {!loading && activeTab === 'stats' && stats && (
         <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh- 200px)' }}>
           <h4>Notification Statistics</h4>
-          
+
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '1rem', marginBottom: '1rem' }}>
             <div style={{ padding: '1rem', backgroundColor: '#dbeafe', borderRadius: '4px', textAlign: 'center' }}>
               <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#3b82f6' }}>{stats.total_notifications}</div>
               <div style={{ fontSize: '0.8rem', color: '#6b7280' }}>Total</div>
             </div>
-            
+
             <div style={{ padding: '1rem', backgroundColor: '#fef3c7', borderRadius: '4px', textAlign: 'center' }}>
               <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#f59e0b' }}>{stats.unread_count}</div>
               <div style={{ fontSize: '0.8rem', color: '#6b7280' }}>Unread</div>
             </div>
-            
+
             <div style={{ padding: '1rem', backgroundColor: '#dcfce7', borderRadius: '4px', textAlign: 'center' }}>
               <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#10b981' }}>{stats.info_count}</div>
               <div style={{ fontSize: '0.8rem', color: '#6b7280' }}>Info</div>
             </div>
-            
+
             <div style={{ padding: '1rem', backgroundColor: '#fef2f2', borderRadius: '4px', textAlign: 'center' }}>
               <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#ef4444' }}>{stats.error_count}</div>
               <div style={{ fontSize: '0.8rem', color: '#6b7280' }}>Errors</div>
             </div>
-            
+
             <div style={{ padding: '1rem', backgroundColor: '#ede9fe', borderRadius: '4px', textAlign: 'center' }}>
               <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#8b5cf6' }}>{stats.alert_count}</div>
               <div style={{ fontSize: '0.8rem', color: '#6b7280' }}>Alerts</div>
             </div>
-            
+
             <div style={{ padding: '1rem', backgroundColor: '#fffbeb', borderRadius: '4px', textAlign: 'center' }}>
               <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#f59e0b' }}>{stats.warning_count}</div>
               <div style={{ fontSize: '0.8rem', color: '#6b7280' }}>Warnings</div>
             </div>
           </div>
-          
-          <div style={{ 
-            padding: '1rem', 
+
+          <div style={{
+            padding: '1rem',
             backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
             border: '1px solid #d1d5db',
             borderRadius: '4px'
@@ -799,13 +799,13 @@ const Notifications: React.FC<NotificationProps> = ({ theme }) => {
                 <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
                   <div style={{ width: '80px', fontSize: '0.8rem', color: '#6b7280' }}>{item.type}:</div>
                   <div style={{ flex: 1 }}>
-                    <div 
-                      style={{ 
-                        height: '20px', 
-                        backgroundColor: item.color, 
+                    <div
+                      style={{
+                        height: '20px',
+                        backgroundColor: item.color,
                         width: `${(item.count / (stats.total_notifications || 1)) * 100}%`,
                         maxWidth: '100%'
-                      }} 
+                      }}
                     />
                   </div>
                   <div style={{ width: '40px', textAlign: 'right', fontSize: '0.8rem' }}>{item.count}</div>
@@ -819,4 +819,4 @@ const Notifications: React.FC<NotificationProps> = ({ theme }) => {
   );
 };
 
-export default Notifications;
+export default Notifications;

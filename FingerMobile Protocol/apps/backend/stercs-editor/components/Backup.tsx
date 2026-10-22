@@ -35,7 +35,7 @@ const Backup: React.FC<BackupProps> = ({ theme }) => {
   const [backups, setBackups] = useState<Backup[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  
+
   // Form states for backup configs
   const [newConfigName, setNewConfigName] = useState<string>('');
   const [newConfigDescription, setNewConfigDescription] = useState<string>('');
@@ -43,7 +43,7 @@ const Backup: React.FC<BackupProps> = ({ theme }) => {
   const [newConfigSchedule, setNewConfigSchedule] = useState<string>('manual');
   const [newConfigRetentionDays, setNewConfigRetentionDays] = useState<string>('30');
   const [newConfigStorageLocation, setNewConfigStorageLocation] = useState<string>('local');
-  
+
   // Form states for backups
   const [newBackupConfigId, setNewBackupConfigId] = useState<string>('');
   const [newBackupProjectId, setNewBackupProjectId] = useState<string>('1');
@@ -222,12 +222,12 @@ const Backup: React.FC<BackupProps> = ({ theme }) => {
   };
 
   return (
-    <div 
-      className="backup-panel" 
-      style={{ 
-        width: '100%', 
-        height: '100%', 
-        display: 'flex', 
+    <div
+      className="backup-panel"
+      style={{
+        width: '100%',
+        height: '100%',
+        display: 'flex',
         flexDirection: 'column',
         backgroundColor: theme === 'dark' ? '#1f2937' : theme === 'blue' ? '#dbeafe' : '#e5e7eb',
         color: theme === 'dark' ? 'white' : '#1f2937',
@@ -235,10 +235,10 @@ const Backup: React.FC<BackupProps> = ({ theme }) => {
       }}
     >
       <h3 style={{ margin: '0 0 1rem 0' }}>Backup Management</h3>
-      
+
       {error && (
-        <div style={{ 
-          padding: '0.75rem', 
+        <div style={{
+          padding: '0.75rem',
           color: '#ef4444',
           backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : '#f3f4f6',
           borderRadius: '4px',
@@ -247,10 +247,10 @@ const Backup: React.FC<BackupProps> = ({ theme }) => {
           Error: {error}
         </div>
       )}
-      
+
       <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
         {(['configs', 'backups', 'restore'] as const).map((tab) => (
-          <button
+          <button aria-label={tab}
             key={tab}
             onClick={() => setActiveTab(tab)}
             style={{
@@ -276,8 +276,8 @@ const Backup: React.FC<BackupProps> = ({ theme }) => {
 
       {!loading && activeTab === 'configs' && (
         <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh- 200px)' }}>
-          <div style={{ 
-            padding: '1rem', 
+          <div style={{
+            padding: '1rem',
             backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
             border: '1px solid #d1d5db',
             borderRadius: '4px',
@@ -301,7 +301,7 @@ const Backup: React.FC<BackupProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <div style={{ marginBottom: '0.75rem' }}>
               <label style={{ display: 'block', marginBottom: '0.25rem' }}>Description</label>
               <textarea
@@ -319,7 +319,7 @@ const Backup: React.FC<BackupProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '0.75rem' }}>
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem' }}>Project ID</label>
@@ -338,7 +338,7 @@ const Backup: React.FC<BackupProps> = ({ theme }) => {
                   }}
                 />
               </div>
-              
+
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem' }}>Schedule</label>
                 <select
@@ -360,7 +360,7 @@ const Backup: React.FC<BackupProps> = ({ theme }) => {
                 </select>
               </div>
             </div>
-            
+
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '0.75rem' }}>
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem' }}>Retention Days</label>
@@ -379,7 +379,7 @@ const Backup: React.FC<BackupProps> = ({ theme }) => {
                   }}
                 />
               </div>
-              
+
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem' }}>Storage Location</label>
                 <select
@@ -401,7 +401,7 @@ const Backup: React.FC<BackupProps> = ({ theme }) => {
                 </select>
               </div>
             </div>
-            
+
             <button
               onClick={handleCreateConfig}
               style={{
@@ -417,7 +417,7 @@ const Backup: React.FC<BackupProps> = ({ theme }) => {
               Create Configuration
             </button>
           </div>
-          
+
           <h4>Your Backup Configurations</h4>
           {configs.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '1rem', color: '#9ca3af' }}>
@@ -426,10 +426,10 @@ const Backup: React.FC<BackupProps> = ({ theme }) => {
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {configs.map(config => (
-                <div 
+                <div
                   key={config.id}
-                  style={{ 
-                    padding: '0.75rem', 
+                  style={{
+                    padding: '0.75rem',
                     backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
                     border: '1px solid #d1d5db',
                     borderRadius: '4px'
@@ -458,8 +458,8 @@ const Backup: React.FC<BackupProps> = ({ theme }) => {
 
       {!loading && activeTab === 'backups' && (
         <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh- 200px)' }}>
-          <div style={{ 
-            padding: '1rem', 
+          <div style={{
+            padding: '1rem',
             backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
             border: '1px solid #d1d5db',
             borderRadius: '4px',
@@ -489,7 +489,7 @@ const Backup: React.FC<BackupProps> = ({ theme }) => {
                   ))}
                 </select>
               </div>
-              
+
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem' }}>Project ID</label>
                 <input
@@ -508,7 +508,7 @@ const Backup: React.FC<BackupProps> = ({ theme }) => {
                 />
               </div>
             </div>
-            
+
             <div style={{ marginBottom: '0.75rem' }}>
               <label style={{ display: 'block', marginBottom: '0.25rem' }}>Notes (Optional)</label>
               <textarea
@@ -526,7 +526,7 @@ const Backup: React.FC<BackupProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <button
               onClick={handleCreateBackup}
               style={{
@@ -542,7 +542,7 @@ const Backup: React.FC<BackupProps> = ({ theme }) => {
               Create Backup
             </button>
           </div>
-          
+
           <h4>Your Backups</h4>
           {backups.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '1rem', color: '#9ca3af' }}>
@@ -551,10 +551,10 @@ const Backup: React.FC<BackupProps> = ({ theme }) => {
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {backups.map(backup => (
-                <div 
+                <div
                   key={backup.id}
-                  style={{ 
-                    padding: '0.75rem', 
+                  style={{
+                    padding: '0.75rem',
                     backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
                     border: '1px solid #d1d5db',
                     borderRadius: '4px'
@@ -569,44 +569,44 @@ const Backup: React.FC<BackupProps> = ({ theme }) => {
                         Project: {backup.projectId} • ID: {backup.id}
                       </div>
                     </div>
-                    <div style={{ 
-                      padding: '0.25rem 0.5rem', 
-                      borderRadius: '4px', 
-                      backgroundColor: 
-                        backup.status === 'completed' ? '#d1fae5' : 
-                        backup.status === 'in_progress' ? '#fef3c7' : 
-                        backup.status === 'pending' ? '#dbeafe' : 
+                    <div style={{
+                      padding: '0.25rem 0.5rem',
+                      borderRadius: '4px',
+                      backgroundColor:
+                        backup.status === 'completed' ? '#d1fae5' :
+                        backup.status === 'in_progress' ? '#fef3c7' :
+                        backup.status === 'pending' ? '#dbeafe' :
                         '#fee2e2',
-                      color: 
-                        backup.status === 'completed' ? '#065f46' : 
-                        backup.status === 'in_progress' ? '#d97706' : 
-                        backup.status === 'pending' ? '#2563eb' : 
+                      color:
+                        backup.status === 'completed' ? '#065f46' :
+                        backup.status === 'in_progress' ? '#d97706' :
+                        backup.status === 'pending' ? '#2563eb' :
                         '#7f1d1d'
                     }}>
                       {backup.status.replace('_', ' ').toUpperCase()}
                     </div>
                   </div>
-                  
+
                   <div style={{ fontSize: '0.8rem', color: '#6b7280', marginBottom: '0.25rem' }}>
                     Created: {formatDate(backup.createdAt)} • Updated: {formatDate(backup.updatedAt)}
                   </div>
-                  
+
                   {backup.notes && (
                     <div style={{ fontSize: '0.8rem', marginBottom: '0.25rem' }}>
                       <strong>Notes:</strong> {backup.notes}
                     </div>
                   )}
-                  
+
                   {backup.details && (
                     <div style={{ fontSize: '0.8rem', backgroundColor: '#f3f4f6', padding: '0.5rem', borderRadius: '4px', marginBottom: '0.25rem' }}>
                       <strong>Details:</strong> {backup.details}
                     </div>
                   )}
-                  
+
                   <div style={{ fontSize: '0.8rem', color: '#6b7280' }}>
                     <strong>File:</strong> {backup.filePath} • <strong>Size:</strong> {formatFileSize(backup.fileSize)}
                   </div>
-                  
+
                   <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
                     <button
                       onClick={() => handleRestoreBackup(backup.id)}
@@ -632,8 +632,8 @@ const Backup: React.FC<BackupProps> = ({ theme }) => {
 
       {!loading && activeTab === 'restore' && (
         <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh- 200px)' }}>
-          <div style={{ 
-            padding: '1rem', 
+          <div style={{
+            padding: '1rem',
             backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
             border: '1px solid #d1d5db',
             borderRadius: '4px',
@@ -643,13 +643,13 @@ const Backup: React.FC<BackupProps> = ({ theme }) => {
             <p style={{ marginBottom: '1rem', color: theme === 'dark' ? '#d1d5db' : '#4b5563' }}>
               Select a backup to restore your project to a previous state. This will overwrite the current project files.
             </p>
-            
+
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {backups.filter(b => b.status === 'completed').map(backup => (
-                <div 
+                <div
                   key={backup.id}
-                  style={{ 
-                    padding: '0.75rem', 
+                  style={{
+                    padding: '0.75rem',
                     backgroundColor: theme === 'dark' ? '#4b5563' : theme === 'blue' ? '#dbeafe' : '#f9fafb',
                     border: '1px solid #d1d5db',
                     borderRadius: '4px',
@@ -682,7 +682,7 @@ const Backup: React.FC<BackupProps> = ({ theme }) => {
                 </div>
               ))}
             </div>
-            
+
             {backups.filter(b => b.status === 'completed').length === 0 && (
               <div style={{ textAlign: 'center', padding: '1rem', color: '#9ca3af' }}>
                 No completed backups available for restoration.

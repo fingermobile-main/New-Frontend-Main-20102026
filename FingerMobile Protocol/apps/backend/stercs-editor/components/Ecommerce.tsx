@@ -46,7 +46,7 @@ const Ecommerce: React.FC<EcommerceProps> = ({ theme }) => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  
+
   // Form states
   const [newProductName, setNewProductName] = useState<string>('');
   const [newProductDescription, setNewProductDescription] = useState<string>('');
@@ -219,7 +219,7 @@ const Ecommerce: React.FC<EcommerceProps> = ({ theme }) => {
 
       if (result.success) {
         // Update the order in the local state
-        setOrders(orders.map(order => 
+        setOrders(orders.map(order =>
           order.id === orderId ? { ...order, status: newStatus } : order
         ));
       } else {
@@ -242,12 +242,12 @@ const Ecommerce: React.FC<EcommerceProps> = ({ theme }) => {
   };
 
   return (
-    <div 
-      className="ecommerce-panel" 
-      style={{ 
-        width: '100%', 
-        height: '100%', 
-        display: 'flex', 
+    <div
+      className="ecommerce-panel"
+      style={{
+        width: '100%',
+        height: '100%',
+        display: 'flex',
         flexDirection: 'column',
         backgroundColor: theme === 'dark' ? '#1f2937' : theme === 'blue' ? '#dbeafe' : '#e5e7eb',
         color: theme === 'dark' ? 'white' : '#1f2937',
@@ -255,10 +255,10 @@ const Ecommerce: React.FC<EcommerceProps> = ({ theme }) => {
       }}
     >
       <h3 style={{ margin: '0 0 1rem 0' }}>E-commerce Management</h3>
-      
+
       {error && (
-        <div style={{ 
-          padding: '0.75rem', 
+        <div style={{
+          padding: '0.75rem',
           color: '#ef4444',
           backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : '#f3f4f6',
           borderRadius: '4px',
@@ -267,10 +267,10 @@ const Ecommerce: React.FC<EcommerceProps> = ({ theme }) => {
           Error: {error}
         </div>
       )}
-      
+
       <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
         {(['products', 'categories', 'orders'] as const).map((tab) => (
-          <button
+          <button aria-label={tab}
             key={tab}
             onClick={() => setActiveTab(tab)}
             style={{
@@ -296,8 +296,8 @@ const Ecommerce: React.FC<EcommerceProps> = ({ theme }) => {
 
       {!loading && activeTab === 'products' && (
         <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh- 200px)' }}>
-          <div style={{ 
-            padding: '1rem', 
+          <div style={{
+            padding: '1rem',
             backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
             border: '1px solid #d1d5db',
             borderRadius: '4px',
@@ -321,7 +321,7 @@ const Ecommerce: React.FC<EcommerceProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <div style={{ marginBottom: '0.75rem' }}>
               <label style={{ display: 'block', marginBottom: '0.25rem' }}>Description</label>
               <textarea
@@ -339,7 +339,7 @@ const Ecommerce: React.FC<EcommerceProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '0.75rem' }}>
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem' }}>Price ($)</label>
@@ -358,7 +358,7 @@ const Ecommerce: React.FC<EcommerceProps> = ({ theme }) => {
                   }}
                 />
               </div>
-              
+
               <div>
                 <label style={{ display: 'block', marginBottom: '0.25rem' }}>Inventory</label>
                 <input
@@ -377,7 +377,7 @@ const Ecommerce: React.FC<EcommerceProps> = ({ theme }) => {
                 />
               </div>
             </div>
-            
+
             <div style={{ marginBottom: '0.75rem' }}>
               <label style={{ display: 'block', marginBottom: '0.25rem' }}>Category</label>
               <select
@@ -400,7 +400,7 @@ const Ecommerce: React.FC<EcommerceProps> = ({ theme }) => {
                 <option value="general">General</option>
               </select>
             </div>
-            
+
             <button
               onClick={handleCreateProduct}
               style={{
@@ -416,7 +416,7 @@ const Ecommerce: React.FC<EcommerceProps> = ({ theme }) => {
               Add Product
             </button>
           </div>
-          
+
           <h4>Your Products</h4>
           {products.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '1rem', color: '#9ca3af' }}>
@@ -425,10 +425,10 @@ const Ecommerce: React.FC<EcommerceProps> = ({ theme }) => {
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '1rem' }}>
               {products.map(product => (
-                <div 
+                <div
                   key={product.id}
-                  style={{ 
-                    padding: '0.75rem', 
+                  style={{
+                    padding: '0.75rem',
                     backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
                     border: '1px solid #d1d5db',
                     borderRadius: '4px'
@@ -460,8 +460,8 @@ const Ecommerce: React.FC<EcommerceProps> = ({ theme }) => {
 
       {!loading && activeTab === 'categories' && (
         <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh- 200px)' }}>
-          <div style={{ 
-            padding: '1rem', 
+          <div style={{
+            padding: '1rem',
             backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
             border: '1px solid #d1d5db',
             borderRadius: '4px',
@@ -485,7 +485,7 @@ const Ecommerce: React.FC<EcommerceProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <div style={{ marginBottom: '0.75rem' }}>
               <label style={{ display: 'block', marginBottom: '0.25rem' }}>Description</label>
               <textarea
@@ -503,7 +503,7 @@ const Ecommerce: React.FC<EcommerceProps> = ({ theme }) => {
                 }}
               />
             </div>
-            
+
             <button
               onClick={handleCreateCategory}
               style={{
@@ -519,7 +519,7 @@ const Ecommerce: React.FC<EcommerceProps> = ({ theme }) => {
               Add Category
             </button>
           </div>
-          
+
           <h4>Your Categories</h4>
           {categories.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '1rem', color: '#9ca3af' }}>
@@ -528,10 +528,10 @@ const Ecommerce: React.FC<EcommerceProps> = ({ theme }) => {
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {categories.map(category => (
-                <div 
+                <div
                   key={category.id}
-                  style={{ 
-                    padding: '0.75rem', 
+                  style={{
+                    padding: '0.75rem',
                     backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
                     border: '1px solid #d1d5db',
                     borderRadius: '4px'
@@ -563,10 +563,10 @@ const Ecommerce: React.FC<EcommerceProps> = ({ theme }) => {
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {orders.map(order => (
-                <div 
+                <div
                   key={order.id}
-                  style={{ 
-                    padding: '0.75rem', 
+                  style={{
+                    padding: '0.75rem',
                     backgroundColor: theme === 'dark' ? '#374151' : theme === 'blue' ? '#eff6ff' : 'white',
                     border: '1px solid #d1d5db',
                     borderRadius: '4px'
@@ -581,30 +581,30 @@ const Ecommerce: React.FC<EcommerceProps> = ({ theme }) => {
                         {formatDate(order.createdAt)} • {formatCurrency(order.totalAmount, order.currency)}
                       </div>
                     </div>
-                    <div style={{ 
-                      padding: '0.25rem 0.5rem', 
-                      borderRadius: '4px', 
-                      backgroundColor: 
-                        order.status === 'pending' ? '#fef3c7' : 
-                        order.status === 'processing' ? '#dbeafe' : 
-                        order.status === 'shipped' ? '#d1fae5' : 
-                        order.status === 'delivered' ? '#bbf7d0' : 
+                    <div style={{
+                      padding: '0.25rem 0.5rem',
+                      borderRadius: '4px',
+                      backgroundColor:
+                        order.status === 'pending' ? '#fef3c7' :
+                        order.status === 'processing' ? '#dbeafe' :
+                        order.status === 'shipped' ? '#d1fae5' :
+                        order.status === 'delivered' ? '#bbf7d0' :
                         '#fecaca',
-                      color: 
-                        order.status === 'pending' ? '#d97706' : 
-                        order.status === 'processing' ? '#2563eb' : 
-                        order.status === 'shipped' ? '#059669' : 
-                        order.status === 'delivered' ? '#16a34a' : 
+                      color:
+                        order.status === 'pending' ? '#d97706' :
+                        order.status === 'processing' ? '#2563eb' :
+                        order.status === 'shipped' ? '#059669' :
+                        order.status === 'delivered' ? '#16a34a' :
                         '#dc2626'
                     }}>
                       {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
                     </div>
                   </div>
-                  
+
                   <div style={{ fontSize: '0.8rem', color: '#6b7280', marginBottom: '0.5rem' }}>
                     Items: {order.items.length}
                   </div>
-                  
+
                   <div style={{ display: 'flex', gap: '0.5rem' }}>
                     {order.status !== 'delivered' && (
                       <button
