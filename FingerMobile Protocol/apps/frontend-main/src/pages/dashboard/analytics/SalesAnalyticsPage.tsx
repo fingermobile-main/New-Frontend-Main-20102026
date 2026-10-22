@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useAppContext } from '../../../contexts/AppContext';
 import StatCard from '../../../components/StatCard';
-import { Product } from '../../../types';
 import { PlatformOwnershipCard } from '../../../components/ownership/PlatformOwnershipCard';
 
 const FALLBACK_SALES_ANALYTICS = {

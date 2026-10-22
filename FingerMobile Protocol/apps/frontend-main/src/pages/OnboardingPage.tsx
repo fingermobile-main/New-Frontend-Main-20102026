@@ -93,6 +93,7 @@ const OnboardingPage: React.FC = () => {
   const [selectedTier, setSelectedTier] = useState<CreatorTier>('TIER_3');
   const [inviteToken, setInviteToken] = useState<string>('');
   const [availabilityData, setAvailabilityData] = useState<CountryAvailabilityData | null>(null);
+  const [tierFeedback, setTierFeedback] = useState<{ status: string; message: string } | null>(null);
   const [isSubmittingCreator, setIsSubmittingCreator] = useState<boolean>(false);
   const [showOtherMethods, setShowOtherMethods] = useState<boolean>(false);
 
@@ -137,7 +138,7 @@ const OnboardingPage: React.FC = () => {
             }
           }
         })
-        .catch(console.error);
+        .catch(() => {});
     }
   }, [tempData.defaultIpLocation, mapInstance]);
 
@@ -150,9 +151,7 @@ const OnboardingPage: React.FC = () => {
           setAvailabilityData(res.data.data);
         }
       })
-      .catch(err => {
-        console.warn('Could not fetch live creator availability (using fallback):', err?.message);
-      });
+      .catch(() => {});
   }, [tempData.countryCode, state.progress?.currentStep]);
 
   // Initialize onboarding when component mounts
@@ -166,9 +165,8 @@ const OnboardingPage: React.FC = () => {
           const parsed = JSON.parse(storedUser);
           initializeOnboarding(parsed.id || 'current_user', parsed);
           return;
-        } catch (e) {
-          // eslint-disable-next-line no-console
-          console.warn('Could not parse stored user:', e);
+        } catch {
+          // Handled gracefully
         }
       }
       initializeOnboarding('new_user', {});
@@ -359,7 +357,6 @@ const OnboardingPage: React.FC = () => {
         });
       }
     } catch (err: any) {
-      console.warn('Backend creator signup error (fallback to local progress):', err?.response?.data || err?.message);
       const errMsg = err?.response?.data?.message || 'Regional quota registration completed.';
       setTierFeedback({
         status: 'ACTIVE',
@@ -460,7 +457,6 @@ const OnboardingPage: React.FC = () => {
     }
 
     const currentStepId = state.progress.currentStep;
-    console.log('RENDER CURRENT STEP:', { currentStepId, steps: state.steps });
 
     switch (currentStepId) {
     case 'welcome':
@@ -1743,8 +1739,8 @@ const OnboardingPage: React.FC = () => {
                 </div>
               </div>
 
-              <Button className="w-full" onClick={handleCreatorVerification}>
-                  Submit Documents
+              <Button className="w-full" onClick={handleCreatorVerification} disabled={isSubmittingCreator}>
+                  {isSubmittingCreator ? 'Submitting Documents...' : 'Submit Documents'}
               </Button>
 
               <div className="flex justify-between">

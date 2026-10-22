@@ -764,7 +764,7 @@ const CreatorDashboard: React.FC = () => {
                   {geographicReach.map((geo) => (
                     <div key={geo.country} className="p-3 bg-white dark:bg-gray-900 rounded-lg border border-slate-300">
                       <p className="text-xs text-slate-600 font-bold">{geo.country}</p>
-                      <p className="text-lg font-bold text-slate-900 dark:text-white">{geo.percentage}%</p>
+                      <p className="text-lg font-bold text-slate-900 dark:text-white">{geo.reach}%</p>
                     </div>
                   ))}
                 </div>

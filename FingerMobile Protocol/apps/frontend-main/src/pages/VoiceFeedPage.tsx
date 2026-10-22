@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import MainLayout from '../components/layout/MainLayout';
 import { 
   Mic, Play, Pause, Heart, MessageSquare, Volume2, 
-  Share2, Tag, TrendingUp, Sparkles, Filter, Clock
+  Share2, TrendingUp, Sparkles, Filter, Clock
 } from 'lucide-react';
 
 interface VoicePost {
@@ -45,8 +45,8 @@ const VoiceFeedPage: React.FC = () => {
         if (trendData.success && Array.isArray(trendData.data)) {
           setTrending(trendData.data);
         }
-      } catch (err) {
-        console.error('Failed to load voicefeed data:', err);
+      } catch {
+        // Fallback handled gracefully
       } finally {
         setLoading(false);
       }

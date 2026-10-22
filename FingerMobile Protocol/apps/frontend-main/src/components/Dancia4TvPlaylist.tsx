@@ -52,12 +52,19 @@ const Dancia4TvPlaylist: React.FC = () => {
           const isFav = !!favorites[video.id];
 
           return (
-            <button
+            <div
               key={video.id}
-              type="button"
+              role="button"
+              tabIndex={0}
               onClick={() => setSelectedVideoId(video.id)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  setSelectedVideoId(video.id);
+                }
+              }}
               aria-label={`Play ${video.title}`}
-              className={`w-full text-left group flex items-center p-3 rounded-2xl transition-all border ${
+              className={`w-full text-left group flex items-center p-3 rounded-2xl transition-all border cursor-pointer ${
                 isSelected
                   ? 'bg-blue-600/15 border-blue-500/40 text-white'
                   : 'hover:bg-white/5 border-transparent hover:border-white/5 text-slate-200'
@@ -109,7 +116,7 @@ const Dancia4TvPlaylist: React.FC = () => {
                   <MoreVertical size={16} />
                 </button>
               </div>
-            </button>
+            </div>
           );
         })}
       </div>

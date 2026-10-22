@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import MainLayout from '../components/layout/MainLayout';
 import { useAppContext } from '../contexts/AppContext';
@@ -24,40 +24,24 @@ import {
   CheckCircle2,
   Download,
   ExternalLink,
-  ChevronRight,
   ShieldCheck,
-  FileText,
   Play,
   Pause,
   RotateCcw,
   BadgeCheck,
-  Send,
   HelpCircle,
-  Code,
-  Layers,
   Cpu,
   Flame,
   ArrowRight,
-  Filter,
-  Check,
   X,
   Bot,
   Zap,
   Target,
   BookMarked,
-  BarChart3,
-  Star,
-  Compass,
   RefreshCw,
   Building2,
-  Briefcase,
   LayoutGrid,
-  CheckCircle,
-  Volume2,
-  Maximize2,
-  Share2,
-  Printer,
-  ChevronDown
+  Printer
 } from 'lucide-react';
 
 const DEFAULT_OPEN_RESOURCES: CamusOpenResource[] = [
@@ -295,7 +279,7 @@ export const CamusPage: React.FC = () => {
   const [oerCategory, setOerCategory] = useState<string>('all');
   const [oerSearchQuery, setOerSearchQuery] = useState<string>('');
   const [enrollments, setEnrollments] = useState<CamusEnrollment[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [, setLoading] = useState<boolean>(true);
 
   // Filters & search
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -305,7 +289,6 @@ export const CamusPage: React.FC = () => {
   const [selectedPathway, setSelectedPathway] = useState<string>('all');
 
   // Camus Intelligence Tutor State
-  const [aiCopilotQuery, setAiCopilotQuery] = useState<string>('');
   const [aiCopilotAnswer, setAiCopilotAnswer] = useState<string | null>(null);
   const [aiCopilotLoading, setAiCopilotLoading] = useState<boolean>(false);
 
@@ -471,7 +454,6 @@ export const CamusPage: React.FC = () => {
 
   // Camus Intelligence Question Simulator
   const handleAskCamusAI = (queryText: string) => {
-    setAiCopilotQuery(queryText);
     setAiCopilotLoading(true);
     setTimeout(() => {
       let response = '';
@@ -2306,7 +2288,7 @@ export const CamusPage: React.FC = () => {
                           }}
                           className="w-full mt-2 py-2 rounded-xl text-xs font-black text-white bg-purple-700 hover:bg-purple-800 transition-colors shadow-xs"
                         >
-                          Submit Quiz Answers
+                          {quizSubmitted ? 'Retake & Resubmit Quiz Answers' : 'Submit Quiz Answers'}
                         </button>
                       </div>
                     </div>

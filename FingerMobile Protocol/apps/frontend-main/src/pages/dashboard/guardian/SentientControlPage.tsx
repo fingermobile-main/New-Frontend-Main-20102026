@@ -10,7 +10,7 @@ import {
   PauseIcon,
   StopIcon
 } from '../../../components/icons';
-import { sentientService, BehavioralAnalysis, BehavioralBaseline } from '../../../services/sentientService';
+import { sentientService, BehavioralBaseline } from '../../../services/sentientService';
 import PlatformOwnershipCard from '../../../components/dashboard/PlatformOwnershipCard';
 
 interface Process {
@@ -82,7 +82,6 @@ const SentientControlPage: React.FC = () => {
       if (configsData) setConfigs(configsData);
     } catch (err: any) {
       setError(err.message || 'Failed to fetch sentient telemetry');
-      console.error('Error fetching sentient data:', err);
     } finally {
       setLoading(false);
     }
@@ -98,7 +97,6 @@ const SentientControlPage: React.FC = () => {
       setBaseline(data);
     } catch (err: any) {
       setError(err.message || 'Failed to fetch baseline');
-      console.error('Error fetching baseline:', err);
     } finally {
       setLoading(false);
     }
@@ -273,8 +271,8 @@ const SentientControlPage: React.FC = () => {
     const nextStatus = current?.status === 'active' ? 'paused' : 'active';
     try {
       await sentientService.toggleKillSwitch(processId, nextStatus === 'paused').catch(() => null);
-    } catch (e) {
-      console.error('Failed to toggle kill switch for process:', e);
+    } catch {
+      // Toggle handled gracefully
     }
     setCognitiveProcesses((processes) =>
       processes.map((process) =>
@@ -293,8 +291,8 @@ const SentientControlPage: React.FC = () => {
     setIsProcessing(nextState);
     try {
       await sentientService.toggleKillSwitch(undefined, !nextState).catch(() => null);
-    } catch (e) {
-      console.error('Failed to toggle global kill switch:', e);
+    } catch {
+      // Toggle handled gracefully
     }
     setCognitiveProcesses((processes) =>
       processes.map((process) => ({
@@ -406,7 +404,10 @@ const SentientControlPage: React.FC = () => {
   }) => (
     <button
       type="button"
-      onClick={() => setSelectedConversationId(conversation.id)}
+      onClick={() => {
+        setSelectedConversationId(conversation.id);
+        fetchBaseline(conversation.member);
+      }}
       className={`w-full text-left p-4 rounded-lg border transition-colors ${
         selectedConversationId === conversation.id
           ? 'border-brand-blue bg-gray-700/80 ring-1 ring-brand-blue'
@@ -446,6 +447,17 @@ const SentientControlPage: React.FC = () => {
               <p className="text-sm text-slate-300 font-medium">
                 Cognitive Processing & Insight Generation System
               </p>
+              <div className="flex items-center gap-2 mt-1">
+                <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-bold ${engineStatus?.active !== false ? 'bg-emerald-900/60 text-emerald-300 border border-emerald-500' : 'bg-gray-800 text-gray-300 border border-gray-700'}`}>
+                  {engineStatus?.active !== false ? 'Engine Active' : 'Engine Idle'}
+                </span>
+                {configs.length > 0 && (
+                  <span className="text-xs text-slate-400 font-medium">({configs.length} models active)</span>
+                )}
+                {baseline && (
+                  <span className="text-xs text-purple-300 font-medium">Baseline synced: {baseline.member_id}</span>
+                )}
+              </div>
             </div>
           </div>
         </div>
