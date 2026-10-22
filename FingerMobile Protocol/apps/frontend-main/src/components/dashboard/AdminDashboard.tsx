@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 interface AdminDashboardProps {
   adminId: string;
 }
@@ -148,49 +149,67 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ adminId }) => {
 
       {/* Quick Actions */}
       <div className="bg-white border border-slate-300 rounded-lg p-6">
-        <h3 className="font-semibold text-gray-900 mb-4">Quick Actions</h3>
+        <h3 className="font-bold text-slate-900 mb-4">Quick Actions</h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <button className="p-4 border-2 border-slate-300 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all">
+          <Link
+            to="/admin/rbac"
+            className="p-4 border-2 border-slate-300 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all text-center block"
+          >
             <div className="text-2xl mb-2">👤</div>
-            <div className="font-medium text-sm">Manage Users</div>
-          </button>
+            <div className="font-bold text-sm text-slate-900">Manage Users</div>
+          </Link>
 
-          <button className="p-4 border-2 border-slate-300 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all">
+          <Link
+            to="/analytics"
+            className="p-4 border-2 border-slate-300 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all text-center block"
+          >
             <div className="text-2xl mb-2">📊</div>
-            <div className="font-medium text-sm">View Reports</div>
-          </button>
+            <div className="font-bold text-sm text-slate-900">View Reports</div>
+          </Link>
 
-          <button className="p-4 border-2 border-slate-300 rounded-lg hover:border-orange-500 hover:bg-orange-50 transition-all">
+          <Link
+            to="/moderation"
+            className="p-4 border-2 border-slate-300 rounded-lg hover:border-orange-500 hover:bg-orange-50 transition-all text-center block"
+          >
             <div className="text-2xl mb-2">🚩</div>
-            <div className="font-medium text-sm">Moderation Queue</div>
-          </button>
+            <div className="font-bold text-sm text-slate-900">Moderation Queue</div>
+          </Link>
 
-          <button className="p-4 border-2 border-slate-300 rounded-lg hover:border-green-500 hover:bg-green-50 transition-all">
+          <Link
+            to="/settings"
+            className="p-4 border-2 border-slate-300 rounded-lg hover:border-green-500 hover:bg-green-50 transition-all text-center block"
+          >
             <div className="text-2xl mb-2">⚙️</div>
-            <div className="font-medium text-sm">System Settings</div>
-          </button>
+            <div className="font-bold text-sm text-slate-900">System Settings</div>
+          </Link>
         </div>
       </div>
 
       {/* Alerts & Notifications */}
       {(stats.content.flagged > 0 || stats.system.errors > 0) && (
         <div className="bg-red-50 border-2 border-red-200 rounded-lg p-4">
-          <h3 className="font-semibold text-red-900 mb-3">⚠️ Action Required</h3>
+          <h3 className="font-bold text-red-950 mb-3">⚠️ Action Required</h3>
           <div className="space-y-2">
             {stats.content.flagged > 0 && (
               <div className="flex items-center justify-between">
-                <span className="text-red-800">{stats.content.flagged} posts flagged for review</span>
-                <button className="px-3 py-1 bg-red-600 text-white rounded-lg text-sm hover:bg-red-700">
+                <span className="text-red-900 font-medium">{stats.content.flagged} posts flagged for review</span>
+                <Link
+                  to="/moderation"
+                  className="px-3 py-1 bg-red-600 text-white rounded-lg text-sm font-bold hover:bg-red-700 inline-block"
+                >
                   Review Now
-                </button>
+                </Link>
               </div>
             )}
             {stats.system.errors > 0 && (
               <div className="flex items-center justify-between">
-                <span className="text-red-800">{stats.system.errors} system errors detected</span>
-                <button className="px-3 py-1 bg-red-600 text-white rounded-lg text-sm hover:bg-red-700">
+                <span className="text-red-900 font-medium">{stats.system.errors} system errors detected</span>
+                <Link
+                  to="/security"
+                  className="px-3 py-1 bg-red-600 text-white rounded-lg text-sm font-bold hover:bg-red-700 inline-block"
+                >
                   View Logs
-                </button>
+                </Link>
               </div>
             )}
           </div>

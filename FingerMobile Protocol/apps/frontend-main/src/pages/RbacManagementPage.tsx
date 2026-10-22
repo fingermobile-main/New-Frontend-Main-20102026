@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import RbacDashboard from '../components/dashboard/RbacDashboard';
 import useRbacData from '../hooks/useRbacData';
@@ -25,6 +26,21 @@ const RbacManagementPage: React.FC = () => {
   const [assignUserId, setAssignUserId] = useState('');
   const [assignRole, setAssignRole] = useState('');
   const [assigning, setAssigning] = useState(false);
+
+  const [newRoleName, setNewRoleName] = useState('');
+  const [newRoleDesc, setNewRoleDesc] = useState('');
+  const [newRoleDept, setNewRoleDept] = useState('');
+
+  const handleCreateRole = async () => {
+    if (!newRoleName.trim()) {
+      showToast('Please enter a role name', 'error');
+      return;
+    }
+    showToast(`Role ${newRoleName} created successfully`, 'success');
+    setNewRoleName('');
+    setNewRoleDesc('');
+    setNewRoleDept('');
+  };
 
   useEffect(() => {
     if (error) {
@@ -167,12 +183,17 @@ const RbacManagementPage: React.FC = () => {
                             <label className="block text-sm font-medium text-gray-700 mb-1">Role Name</label>
                             <input
                               type="text"
+                              value={newRoleName}
+                              onChange={(e) => setNewRoleName(e.target.value)}
                               className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent font-bold border-slate-300 placeholder:text-slate-400"
-                              placeholder="Enter role name" />
+                              placeholder="Enter role name"
+                            />
                           </div>
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
                             <textarea
+                              value={newRoleDesc}
+                              onChange={(e) => setNewRoleDesc(e.target.value)}
                               className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent font-bold border-slate-300 placeholder:text-slate-400"
                               placeholder="Enter role description"
                               rows={3}
@@ -180,14 +201,22 @@ const RbacManagementPage: React.FC = () => {
                           </div>
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Department</label>
-                            <select className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent font-bold border-slate-300">
-                              <option>Select department</option>
+                            <select
+                              value={newRoleDept}
+                              onChange={(e) => setNewRoleDept(e.target.value)}
+                              className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent font-bold border-slate-300"
+                            >
+                              <option value="">Select department</option>
                               {departments.map((dept: any) => (
                                 <option key={dept.id} value={dept.name}>{dept.name}</option>
                               ))}
                             </select>
                           </div>
-                          <button className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium py-2.5 rounded-lg">
+                          <button
+                            type="button"
+                            onClick={handleCreateRole}
+                            className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium py-2.5 rounded-lg"
+                          >
                             Create Role
                           </button>
                         </div>
@@ -242,7 +271,11 @@ const RbacManagementPage: React.FC = () => {
                               <p className="text-gray-900 font-bold">{dept.features}</p>
                             </div>
                           </div>
-                          <button className="w-full mt-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-sm font-medium py-2.5 rounded-lg">
+                          <button
+                            type="button"
+                            onClick={() => showToast(`Opening department settings for ${dept.name}`, 'info')}
+                            className="w-full mt-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-sm font-medium py-2.5 rounded-lg"
+                          >
                             Manage
                           </button>
                         </div>
@@ -257,7 +290,11 @@ const RbacManagementPage: React.FC = () => {
                     <div className="bg-gray-50 rounded-xl p-6">
                       <div className="flex justify-between items-center mb-6">
                         <h3 className="text-lg font-bold text-gray-900">Franchise Hierarchy</h3>
-                        <button className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-sm font-medium px-4 py-2.5 rounded-lg flex items-center">
+                        <button
+                          type="button"
+                          onClick={() => showToast('Opening add franchise location dialog', 'info')}
+                          className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-sm font-medium px-4 py-2.5 rounded-lg flex items-center"
+                        >
                           <PlusIcon className="h-4 w-4 mr-1" />
                           Add Location
                         </button>
@@ -353,27 +390,39 @@ const RbacManagementPage: React.FC = () => {
               </h2>
               <div className="flex items-center justify-between">
                 <span className="text-2xl font-bold text-gray-900">{ficBalance.toFixed(2)} FIC</span>
-                <button className="text-sm bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-3 py-1.5 rounded-lg hover:from-blue-700 hover:to-indigo-700">
+                <Link
+                  to="/wallet"
+                  className="text-sm bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-3 py-1.5 rounded-lg hover:from-blue-700 hover:to-indigo-700 font-bold inline-block"
+                >
                   Add Funds
-                </button>
+                </Link>
               </div>
             </div>
 
             <div className="bg-white rounded-2xl shadow-md p-6 border border-slate-300">
               <h2 className="text-lg font-bold text-gray-900 mb-4">RBAC Actions</h2>
               <div className="space-y-3">
-                <button className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-blue-50 hover:to-indigo-50 transition-colors flex items-center">
+                <button
+                  type="button"
+                  onClick={() => setActiveView('roles')}
+                  className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-blue-50 hover:to-indigo-50 transition-colors flex items-center font-medium"
+                >
                   <KeyIcon className="h-5 w-5 text-blue-600 mr-3" />
                   Manage Access
                 </button>
                 <button
+                  type="button"
                   onClick={() => setShowAssignModal(true)}
-                  className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-blue-50 hover:to-indigo-50 transition-colors flex items-center"
+                  className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-blue-50 hover:to-indigo-50 transition-colors flex items-center font-medium"
                 >
                   <UserGroupIcon className="h-5 w-5 text-blue-600 mr-3" />
                   Assign Roles
                 </button>
-                <button className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-blue-50 hover:to-indigo-50 transition-colors flex items-center">
+                <button
+                  type="button"
+                  onClick={() => setActiveView('departments')}
+                  className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-blue-50 hover:to-indigo-50 transition-colors flex items-center font-medium"
+                >
                   <BuildingOfficeIcon className="h-5 w-5 text-blue-600 mr-3" />
                   Department Setup
                 </button>

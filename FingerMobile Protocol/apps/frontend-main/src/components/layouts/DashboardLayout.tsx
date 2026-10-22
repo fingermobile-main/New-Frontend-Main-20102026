@@ -14,18 +14,18 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   header
 }) => {
   const defaultSidebar = (
-    <div className="w-64 bg-background border-r p-4">
+    <div className="w-64 bg-background border-r border-slate-200 p-4">
       <nav className="space-y-2">
-        <Link to="/dashboard" className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-muted transition-colors text-slate-800 font-medium">
-          <LayoutDashboard className="h-5 w-5" />
+        <Link to="/dashboard" className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-100 transition-colors text-slate-800 font-medium">
+          <LayoutDashboard className="h-5 w-5 text-slate-700" />
           <span>Dashboard</span>
         </Link>
-        <Link to="/dashboard/members" className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-muted transition-colors text-slate-800 font-medium">
-          <Users className="h-5 w-5" />
+        <Link to="/dashboard/members" className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-100 transition-colors text-slate-800 font-medium">
+          <Users className="h-5 w-5 text-slate-700" />
           <span>Users</span>
         </Link>
-        <Link to="/dashboard/settings" className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-muted transition-colors text-slate-800 font-medium">
-          <Settings className="h-5 w-5" />
+        <Link to="/dashboard/settings" className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-100 transition-colors text-slate-800 font-medium">
+          <Settings className="h-5 w-5 text-slate-700" />
           <span>Settings</span>
         </Link>
       </nav>
@@ -33,10 +33,10 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   );
 
   const defaultHeader = (
-    <header className="h-16 border-b bg-background px-6 flex items-center justify-between">
-      <h1 className="text-xl font-semibold">Dashboard</h1>
+    <header className="h-16 border-b border-slate-200 bg-background px-6 flex items-center justify-between">
+      <h1 className="text-xl font-black text-slate-900">Dashboard</h1>
       <div className="flex items-center gap-4">
-        <span className="text-sm text-slate-700 font-medium">Welcome back</span>
+        <span className="text-sm text-slate-700 font-semibold">Welcome back</span>
       </div>
     </header>
   );

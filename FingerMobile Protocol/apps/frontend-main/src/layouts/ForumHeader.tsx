@@ -156,11 +156,15 @@ const ForumHeader: React.FC<ForumHeaderProps> = ({
         <div className="flex items-center gap-3 flex-shrink-0">
 
           {/* HD Media Ad Space (30 seconds) */}
-          <div className="hidden lg:block w-32 h-10 bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity">
+          <Link
+            to="/canaryads"
+            className="hidden lg:block w-32 h-10 bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg overflow-hidden hover:opacity-90 transition-opacity"
+            aria-label="Visit Canary Ads"
+          >
             <div className="w-full h-full flex items-center justify-center text-xs font-semibold text-white">
               AD SPACE
             </div>
-          </div>
+          </Link>
 
           {/* Earnings Display */}
           <div className="hidden md:flex items-center gap-2 bg-[#3a3b3c] px-3 py-1.5 rounded-lg cursor-pointer hover:bg-gray-700 transition-colors"

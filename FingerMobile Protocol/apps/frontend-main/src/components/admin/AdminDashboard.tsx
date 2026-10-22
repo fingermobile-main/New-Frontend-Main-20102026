@@ -805,7 +805,12 @@ const AdminDashboard: React.FC = () => {
           <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-300">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-bold text-slate-900">Add Administrator Account</h3>
-              <button onClick={() => setShowMemberModal(false)} className="text-slate-500 hover:text-slate-900">
+              <button
+                type="button"
+                aria-label="Close add administrator modal"
+                onClick={() => setShowMemberModal(false)}
+                className="text-slate-500 hover:text-slate-900"
+              >
                 <XCircle className="w-5 h-5" />
               </button>
             </div>
@@ -872,7 +877,12 @@ const AdminDashboard: React.FC = () => {
           <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-300">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-bold text-slate-900">Create Dynamic Site Page</h3>
-              <button onClick={() => setShowPageModal(false)} className="text-slate-500 hover:text-slate-900">
+              <button
+                type="button"
+                aria-label="Close create page modal"
+                onClick={() => setShowPageModal(false)}
+                className="text-slate-500 hover:text-slate-900"
+              >
                 <XCircle className="w-5 h-5" />
               </button>
             </div>
@@ -926,7 +936,12 @@ const AdminDashboard: React.FC = () => {
           <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-300">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-bold text-slate-900">Add Regional Franchise Hub</h3>
-              <button onClick={() => setShowFranchiseModal(false)} className="text-slate-500 hover:text-slate-900">
+              <button
+                type="button"
+                aria-label="Close add franchise modal"
+                onClick={() => setShowFranchiseModal(false)}
+                className="text-slate-500 hover:text-slate-900"
+              >
                 <XCircle className="w-5 h-5" />
               </button>
             </div>

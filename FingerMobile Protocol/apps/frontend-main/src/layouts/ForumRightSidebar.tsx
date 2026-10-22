@@ -108,10 +108,14 @@ const ForumRightSidebar: React.FC<ForumRightSidebarProps> = ({ isOpen, onClose }
           </div>
           <div className="space-y-2">
             {notifications.map((notif) => (
-              <div key={notif.id} className="p-3 bg-gray-800/50 rounded-lg hover:bg-gray-800 transition-colors cursor-pointer">
+              <Link
+                to="/notifications"
+                key={notif.id}
+                className="block p-3 bg-gray-800/50 rounded-lg hover:bg-gray-800 transition-colors"
+              >
                 <p className="text-sm text-gray-300">{notif.text}</p>
                 <span className="text-xs text-slate-700 font-medium mt-1 block">{notif.time}</span>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -124,6 +128,7 @@ const ForumRightSidebar: React.FC<ForumRightSidebarProps> = ({ isOpen, onClose }
               <h3 className="text-sm font-semibold text-gray-300">Earnings</h3>
             </div>
             <button
+              type="button"
               onClick={() => setShowEarnings(!showEarnings)}
               className="text-xs text-gray-300 font-medium hover:text-white"
             >
@@ -162,6 +167,7 @@ const ForumRightSidebar: React.FC<ForumRightSidebarProps> = ({ isOpen, onClose }
         {/* Events */}
         <div>
           <button
+            type="button"
             onClick={() => setShowEvents(!showEvents)}
             className="flex items-center justify-between w-full mb-3"
           >
@@ -179,13 +185,17 @@ const ForumRightSidebar: React.FC<ForumRightSidebarProps> = ({ isOpen, onClose }
           {showEvents && (
             <div className="space-y-2">
               {events.map((event) => (
-                <div key={event.id} className="p-3 bg-gray-800/50 rounded-lg hover:bg-gray-800 transition-colors cursor-pointer">
+                <Link
+                  to="/events"
+                  key={event.id}
+                  className="block p-3 bg-gray-800/50 rounded-lg hover:bg-gray-800 transition-colors"
+                >
                   <h4 className="text-sm font-medium text-white mb-1">{event.title}</h4>
                   <div className="flex items-center justify-between text-xs text-gray-300 font-medium">
                     <span>{event.date}</span>
                     <span>{event.attendees} attending</span>
                   </div>
-                </div>
+                </Link>
               ))}
               <Link
                 to="/events"
@@ -244,13 +254,17 @@ const ForumRightSidebar: React.FC<ForumRightSidebarProps> = ({ isOpen, onClose }
           </div>
           <div className="space-y-2">
             {onlineFriends.map((friend) => (
-              <div key={friend.id} className="flex items-center gap-3 p-2 hover:bg-gray-800 rounded-lg transition-colors cursor-pointer">
+              <Link
+                to={`/messages?friend=${encodeURIComponent(friend.name)}`}
+                key={friend.id}
+                className="flex items-center gap-3 p-2 hover:bg-gray-800 rounded-lg transition-colors"
+              >
                 <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${friend.color} flex items-center justify-center text-white text-xs font-semibold`}>
                   {friend.avatar}
                 </div>
                 <span className="text-sm text-gray-300">{friend.name}</span>
                 <div className="w-2 h-2 bg-green-500 rounded-full ml-auto"></div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
