@@ -1,7 +1,7 @@
-import React, {} from 'react';
+import React from 'react';
 import {
   Grid, List, LayoutGrid, Heart, SortAsc,
-  Layers, Music, Video as VideoIcon
+  Music, Video as VideoIcon
 } from 'lucide-react';
 
 export type DisplayMode = 'grid' | 'list' | 'mosaic';
@@ -9,7 +9,7 @@ export type SortCriteria = 'name' | 'number' | 'size';
 
 interface DisplaySettingsProps {
   currentMode: DisplayMode;
-  onModeChange: (mode: DisplayMode) => void;
+  onModeChange: (_mode: DisplayMode) => void;
   showFavoritesOnly?: boolean;
   onToggleFavorites?: () => void;
   groupVideos?: boolean;
@@ -17,7 +17,7 @@ interface DisplaySettingsProps {
   groupAudio?: boolean;
   onToggleGroupAudio?: () => void;
   sortCriteria?: SortCriteria;
-  onSortChange?: (criteria: SortCriteria) => void;
+  onSortChange?: (_criteria: SortCriteria) => void;
 }
 
 const DisplaySettings: React.FC<DisplaySettingsProps> = ({

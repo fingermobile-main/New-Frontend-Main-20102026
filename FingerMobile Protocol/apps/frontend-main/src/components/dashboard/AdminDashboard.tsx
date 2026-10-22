@@ -7,6 +7,7 @@ interface AdminDashboardProps {
 const AdminDashboard: React.FC<AdminDashboardProps> = ({ adminId }) => {
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<any | null>(null);
+  const [, setError] = useState<string | null>(null);
 
   useEffect(() => {
     loadDashboard();
@@ -15,6 +16,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ adminId }) => {
   const loadDashboard = async () => {
     try {
       setLoading(true);
+      setError(null);
       // Mock data - replace with actual API call
       const mockData = {
         users: {
@@ -43,7 +45,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ adminId }) => {
       };
       setStats(mockData);
     } catch (err) {
-      console.error('Failed to load admin dashboard:', err);
+      setError(err instanceof Error ? err.message : 'Failed to load admin dashboard');
     } finally {
       setLoading(false);
     }

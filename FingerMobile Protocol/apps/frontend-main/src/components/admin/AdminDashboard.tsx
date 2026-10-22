@@ -6,21 +6,14 @@ import {
   AdminMember,
   PlatformUser,
   SitePage,
-  SiteMenu,
   FranchiseOrg
 } from '../../services/adminOperationsService';
 import { useAppContext } from '../../contexts/AppContext';
 import {
   Activity,
-  AlertTriangle,
-  ArrowUpRight,
-  CheckCircle,
-  Database,
   DollarSign,
-  Edit,
   Globe,
   Layers,
-  Lock,
   Plus,
   RefreshCw,
   Search,
@@ -30,11 +23,9 @@ import {
   ShieldAlert,
   ShieldCheck,
   Trash2,
-  UserCheck,
   UserPlus,
   Users,
-  XCircle,
-  Zap
+  XCircle
 } from 'lucide-react';
 
 const AdminDashboard: React.FC = () => {

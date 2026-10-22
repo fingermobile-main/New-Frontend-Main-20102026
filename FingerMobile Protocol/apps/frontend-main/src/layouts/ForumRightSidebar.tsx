@@ -14,11 +14,11 @@ import {
 } from '../icons';
 
 interface ForumRightSidebarProps {
-  isOpen: boolean;
-  onClose: () => void;
+  isOpen?: boolean;
+  onClose?: () => void;
 }
 
-const ForumRightSidebar: React.FC<ForumRightSidebarProps> = ({ isOpen, onClose }) => {
+const ForumRightSidebar: React.FC<ForumRightSidebarProps> = ({ isOpen = true, onClose }) => {
   const [showEarnings, setShowEarnings] = useState(true);
   const [showEvents, setShowEvents] = useState(true);
 
@@ -67,12 +67,12 @@ const ForumRightSidebar: React.FC<ForumRightSidebarProps> = ({ isOpen, onClose }
   ];
 
   return (
-    <div className="h-full flex flex-col bg-[#242526]">
+    <div className={`h-full flex flex-col bg-[#242526] ${isOpen ? 'flex' : 'hidden lg:flex'}`}>
 
       {/* Mobile Close Button */}
       <div className="lg:hidden flex items-center justify-between p-4 border-b border-gray-700">
         <span className="text-lg font-semibold text-white">Sidebar</span>
-        <button onClick={onClose} className="p-2 hover:bg-gray-700 rounded-lg">
+        <button type="button" onClick={() => onClose?.()} className="p-2 hover:bg-gray-700 rounded-lg" aria-label="Close sidebar">
           <XIcon className="w-6 h-6 text-slate-600" />
         </button>
       </div>

@@ -3,7 +3,7 @@ import { flamingoService, FlamingoOutfit } from '../../services/flamingoService'
 
 interface OutfitBuilderProps {
   userId: string;
-  onSave?: (outfit: FlamingoOutfit) => void;
+  onSave?: (_outfit: FlamingoOutfit) => void;
   onCancel?: () => void;
 }
 
@@ -64,6 +64,7 @@ const OutfitBuilder: React.FC<OutfitBuilderProps> = ({
 
       // Filter out empty strings to match FlamingoOutfit interface
       const outfitData = {
+        user_id: userId,
         ...formData,
         occasion: formData.occasion || undefined,
         season: formData.season || undefined
@@ -74,9 +75,8 @@ const OutfitBuilder: React.FC<OutfitBuilderProps> = ({
       if (onSave && outfit) {
         onSave(outfit);
       }
-    } catch (err) {
+    } catch {
       setError('Failed to create outfit. Please try again.');
-      console.error(err);
     } finally {
       setSubmitting(false);
     }

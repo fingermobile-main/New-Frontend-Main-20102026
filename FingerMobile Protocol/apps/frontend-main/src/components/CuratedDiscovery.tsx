@@ -20,10 +20,10 @@ const CuratedDiscovery: React.FC<CuratedDiscoveryProps> = ({
   items: propItems,
   limit = 5
 }) => {
-  const [items, setItems] = React.useState<DiscoveryItem[]>(propItems || []);
+  const [items, setItems] = useState<DiscoveryItem[]>(propItems || []);
 
   // Mock data if no items provided
-  React.useEffect(() => {
+  useEffect(() => {
     if (!propItems || propItems.length === 0) {
       setItems([
         {

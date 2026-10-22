@@ -11,13 +11,11 @@ import {
   PhotoIcon,
   DocumentTextIcon,
   ArrowTrendingUpIcon,
-  ClockIcon,
   MapPinIcon,
   CurrencyDollarIcon,
   PlusIcon,
   CalendarDaysIcon
 } from '../../components/icons';
-import * as creatorService from '../../services/creatorService';
 
 // Define TypeScript interfaces
 interface CreatorMetric {
@@ -127,7 +125,7 @@ const CreatorDashboard: React.FC = () => {
   const [scheduledContent, setScheduledContent] = useState<CreatorScheduledContent[]>([]);
   const [detailedMetrics, setDetailedMetrics] = useState<CreatorDetailedMetric[]>([]);
   const [ageDistribution, setAgeDistribution] = useState<CreatorAgeDistribution[]>([]);
-  const [genderSplit, setGenderSplit] = useState<{ male: number; female: number }>({ male: 55, female: 45 });
+  const [genderSplit] = useState<{ male: number; female: number }>({ male: 55, female: 45 });
   const [topInterests, setTopInterests] = useState<CreatorTopInterest[]>([]);
   const [geographicReach, setGeographicReach] = useState<CreatorGeographicReach[]>([]);
   const [earnings, setEarnings] = useState<CreatorEarnings | null>(null);
@@ -226,8 +224,8 @@ const CreatorDashboard: React.FC = () => {
           { day: 'Sunday', time: '11:00 AM', engagement: 'High' }
         ]);
       }
-    } catch (error) {
-      console.error('Error fetching data:', error);
+    } catch {
+      // Fallback to default state handled gracefully
     } finally {
       setLoading(false);
     }
@@ -761,6 +759,16 @@ const CreatorDashboard: React.FC = () => {
                   <p className="text-slate-700 dark:text-slate-300 font-medium">Interactive world map visualization</p>
                 </div>
               </div>
+              {geographicReach.length > 0 && (
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4">
+                  {geographicReach.map((geo) => (
+                    <div key={geo.country} className="p-3 bg-white dark:bg-gray-900 rounded-lg border border-slate-300">
+                      <p className="text-xs text-slate-600 font-bold">{geo.country}</p>
+                      <p className="text-lg font-bold text-slate-900 dark:text-white">{geo.percentage}%</p>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         )}

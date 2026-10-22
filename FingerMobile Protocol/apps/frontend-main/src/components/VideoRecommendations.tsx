@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { PlayIcon, PauseIcon } from '@heroicons/react/24/solid';
+import { PlayIcon } from '@heroicons/react/24/solid';
 
 interface VideoRecommendationsProps {
   userId?: string;
@@ -8,9 +8,9 @@ interface VideoRecommendationsProps {
 }
 
 const VideoRecommendations: React.FC<VideoRecommendationsProps> = ({ userId, limit = 5 }) => {
-  const [videos, setVideos] = React.useState<any[]>([]);
+  const [videos, setVideos] = useState<any[]>([]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setVideos([
       { id: '1', title: 'Getting Started with React', creator: 'CodeMaster', views: '12K', duration: '15:30' },
       { id: '2', title: 'Advanced TypeScript Patterns', creator: 'TypeGuru', views: '8.5K', duration: '22:45' },

@@ -7,9 +7,9 @@ interface EnhancedForumProps {
 }
 
 const EnhancedForum: React.FC<EnhancedForumProps> = ({ categoryId }) => {
-  const [threads, setThreads] = React.useState<any[]>([]);
+  const [threads, setThreads] = useState<any[]>([]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setThreads([
       { id: '1', title: 'Best practices for React performance?', author: 'DevMaster', replies: 23, likes: 45, created: '2 days ago' },
       { id: '2', title: 'How to handle authentication in Next.js?', author: 'WebDev101', replies: 18, likes: 32, created: '3 days ago' },
