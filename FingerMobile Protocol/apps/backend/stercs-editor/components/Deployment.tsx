@@ -8,6 +8,7 @@ interface DeploymentConfig {
   projectId: number;
   createdAt: string;
   updatedAt: string;
+}
 
 interface Deployment {
   id: number;
@@ -20,9 +21,11 @@ interface Deployment {
   details: string;
   createdAt: string;
   updatedAt: string;
+}
 
 interface DeploymentProps {
   theme: 'light' | 'dark' | 'blue';
+}
 
 const Deployment: React.FC<DeploymentProps> = ({ theme }) => {
   const [activeTab, setActiveTab] = useState<'configs' | 'deployments'>('configs');

@@ -6,9 +6,11 @@ interface GenerationHistoryItem {
   result: any;
   usageData: any;
   createdAt: string;
+}
 
 interface AIGenerationProps {
   theme: 'light' | 'dark' | 'blue';
+}
 
 const AIGeneration: React.FC<AIGenerationProps> = ({ theme }) => {
   const [activeTab, setActiveTab] = useState<'text' | 'image' | 'code' | 'sitemap' | 'history'>('text');

@@ -9,6 +9,7 @@ interface BackupConfig {
   storageLocation: string;
   createdAt: string;
   updatedAt: string;
+}
 
 interface Backup {
   id: number;
@@ -22,9 +23,11 @@ interface Backup {
   fileSize: number;
   createdAt: string;
   updatedAt: string;
+}
 
 interface BackupProps {
   theme: 'light' | 'dark' | 'blue';
+}
 
 const Backup: React.FC<BackupProps> = ({ theme }) => {
   const [activeTab, setActiveTab] = useState<'configs' | 'backups' | 'restore'>('configs');

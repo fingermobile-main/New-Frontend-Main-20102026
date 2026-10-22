@@ -10,6 +10,7 @@ interface BusinessProject {
   status: string;
   createdAt: string;
   updatedAt: string;
+}
 
 interface BusinessGoal {
   id: string;
@@ -23,6 +24,7 @@ interface BusinessGoal {
   status: string;
   createdAt: string;
   updatedAt: string;
+}
 
 interface BusinessMilestone {
   id: string;
@@ -33,9 +35,11 @@ interface BusinessMilestone {
   completed: boolean;
   createdAt: string;
   updatedAt: string;
+}
 
 interface BusinessManagementProps {
   theme: 'light' | 'dark' | 'blue';
+}
 
 const BusinessManagement: React.FC<BusinessManagementProps> = ({ theme }) => {
   const [activeTab, setActiveTab] = useState<'projects' | 'goals' | 'milestones'>('projects');

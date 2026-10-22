@@ -7,6 +7,7 @@ interface AnalyticsEvent {
   eventType: string;
   eventData: any;
   createdAt: string;
+}
 
 interface AnalyticsDashboard {
   id: number;
@@ -16,6 +17,7 @@ interface AnalyticsDashboard {
   filters: any;
   createdAt: string;
   updatedAt: string;
+}
 
 interface AnalyticsSummary {
   totalPageViews: number;
@@ -23,9 +25,11 @@ interface AnalyticsSummary {
   topPages: Array<{ pageId: number; viewCount: number }>;
   eventsByType: Array<{ eventType: string; count: number }>;
   eventsByDate: Array<{ date: string; count: number }>;
+}
 
 interface AnalyticsProps {
   theme: 'light' | 'dark' | 'blue';
+}
 
 const Analytics: React.FC<AnalyticsProps> = ({ theme }) => {
   const [activeTab, setActiveTab] = useState<'overview' | 'events' | 'dashboards'>('overview');

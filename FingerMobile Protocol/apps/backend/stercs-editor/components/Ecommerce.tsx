@@ -12,6 +12,7 @@ interface Product {
   attributes: any;
   createdAt: string;
   updatedAt: string;
+}
 
 interface Category {
   id: number;
@@ -19,6 +20,7 @@ interface Category {
   description?: string;
   parentCategoryId: number | null;
   createdAt: string;
+}
 
 interface Order {
   id: number;
@@ -31,9 +33,11 @@ interface Order {
   status: string;
   createdAt: string;
   updatedAt: string;
+}
 
 interface EcommerceProps {
   theme: 'light' | 'dark' | 'blue';
+}
 
 const Ecommerce: React.FC<EcommerceProps> = ({ theme }) => {
   const [activeTab, setActiveTab] = useState<'products' | 'categories' | 'orders'>('products');

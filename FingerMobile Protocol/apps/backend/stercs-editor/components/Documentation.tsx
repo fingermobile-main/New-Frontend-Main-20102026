@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 interface DocumentationSection {
   title: string;
   content: string;
+}
 
 interface ComponentReference {
   name: string;
@@ -12,9 +13,11 @@ interface ComponentReference {
     default: string;
     description?: string;
   }>;
+}
 
 interface DocumentationProps {
   theme: 'light' | 'dark' | 'blue';
+}
 
 const Documentation: React.FC<DocumentationProps> = ({ theme }) => {
   const [activeTab, setActiveTab] = useState<'quick-start' | 'components' | 'api' | 'tutorials' | 'search'>('quick-start');

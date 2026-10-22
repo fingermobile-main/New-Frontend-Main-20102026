@@ -424,40 +424,6 @@ const MiiPage: React.FC = () => {
     runSecurityScan();
   }, []);
 
-  // Initialize VoiceLineService
-  useEffect(() => {
-    const initVoiceService = async () => {
-      try {
-        await VoiceLineService.initialize();
-        console.log('VoiceLineService initialized in MiiPage');
-      } catch (error) {
-        console.error('Failed to initialize VoiceLineService:', error);
-      }
-    };
-
-    initVoiceService();
-  }, []);
-
-  // Voice line functions
-  const playVoiceLine = async (text: string) => {
-    try {
-      await VoiceLineService.playVoiceLine(text);
-    } catch (error) {
-      console.error('Error playing voice line:', error);
-    }
-  };
-
-  const playVoiceLineByCategory = async (category: VoiceLineCategory) => {
-    try {
-      const voiceLine = VoiceLineService.getRandomVoiceLineByCategory(category);
-      if (voiceLine) {
-        await VoiceLineService.playVoiceLine(voiceLine.text);
-      }
-    } catch (error) {
-      console.error('Error playing voice line by category:', error);
-    }
-  };
-
   // Play voice line based on specific events
   const triggerVoiceLine = async (eventType: string) => {
     switch (eventType) {

@@ -9,6 +9,7 @@ interface Api {
   authType: string;
   createdAt: string;
   updatedAt: string;
+}
 
 interface Endpoint {
   id: number;
@@ -18,6 +19,7 @@ interface Endpoint {
   description?: string;
   createdAt: string;
   updatedAt: string;
+}
 
 interface TestResult {
   id: number;
@@ -25,9 +27,11 @@ interface TestResult {
   statusCode: number;
   responseTime: number;
   createdAt: string;
+}
 
 interface ApiManagerProps {
   theme: 'light' | 'dark' | 'blue';
+}
 
 const ApiManager: React.FC<ApiManagerProps> = ({ theme }) => {
   const [activeTab, setActiveTab] = useState<'apis' | 'endpoints' | 'tests'>('apis');

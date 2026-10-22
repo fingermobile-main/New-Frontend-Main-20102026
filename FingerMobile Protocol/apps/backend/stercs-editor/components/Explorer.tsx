@@ -6,11 +6,13 @@ interface FileItem {
   size?: number;
   modified?: Date;
   created?: Date;
+}
 
 interface ExplorerProps {
   theme: 'light' | 'dark' | 'blue';
   projectId: string;
   onFileSelect?: (path: string) => void;
+}
 
 const Explorer: React.FC<ExplorerProps> = ({ theme, projectId, onFileSelect }) => {
   const [currentPath, setCurrentPath] = useState<string>('');
