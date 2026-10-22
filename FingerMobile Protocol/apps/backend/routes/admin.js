@@ -70,7 +70,7 @@ router.put(['/members/:memberId', '/admin/members/:memberId', '/users/:memberId'
            email = COALESCE($3, email),
            account_status = COALESCE($4, account_status),
            updated_at = CURRENT_TIMESTAMP
-       WHERE id::text = $5 OR uuid::text = $5 OR username = $5
+       WHERE id::text = $5 OR username = $5
        RETURNING id, username, email, role, account_status, gem_balance, updated_at`,
       [role, username, email, effectiveStatus, memberId]
     );
@@ -120,7 +120,7 @@ router.delete(['/members/:memberId', '/admin/members/:memberId', '/users/:member
 
     // Lookup user first to verify existence and root flag
     const checkUser = await pool.query(
-      `SELECT id, username, email, role FROM users WHERE id::text = $1 OR uuid::text = $1 OR username = $1`,
+      `SELECT id, username, email, role FROM users WHERE id::text = $1 OR username = $1`,
       [memberId]
     );
 
@@ -186,7 +186,7 @@ router.post(['/users/:userId/strike', '/admin/users/:userId/strike'], optionalAu
     const result = await pool.query(
       `UPDATE users
        SET account_status = 'FLAGGED', updated_at = CURRENT_TIMESTAMP
-       WHERE id::text = $1 OR uuid::text = $1 OR username = $1
+       WHERE id::text = $1 OR username = $1
        RETURNING id, username, email, account_status`,
       [userId]
     );
@@ -206,7 +206,7 @@ router.post(['/users/:userId/refund', '/admin/users/:userId/refund'], optionalAu
     const result = await pool.query(
       `UPDATE users
        SET gem_balance = COALESCE(gem_balance, 0) + $2, updated_at = CURRENT_TIMESTAMP
-       WHERE id::text = $1 OR uuid::text = $1 OR username = $1
+       WHERE id::text = $1 OR username = $1
        RETURNING id, username, email, gem_balance`,
       [userId, amount]
     );
@@ -225,7 +225,7 @@ router.post(['/users/:userId/ban', '/admin/users/:userId/ban'], optionalAuth, as
     const result = await pool.query(
       `UPDATE users
        SET account_status = 'BANNED', is_active = FALSE, updated_at = CURRENT_TIMESTAMP
-       WHERE id::text = $1 OR uuid::text = $1 OR username = $1
+       WHERE id::text = $1 OR username = $1
        RETURNING id, username, email, account_status`,
       [userId]
     );
@@ -245,7 +245,7 @@ router.post(['/users/:userId/credits', '/admin/users/:userId/credits'], optional
     const result = await pool.query(
       `UPDATE users
        SET gem_balance = COALESCE(gem_balance, 0) + $2, updated_at = CURRENT_TIMESTAMP
-       WHERE id::text = $1 OR uuid::text = $1 OR username = $1
+       WHERE id::text = $1 OR username = $1
        RETURNING id, username, email, gem_balance`,
       [userId, amount]
     );

@@ -426,24 +426,22 @@ const MasterMembersConsole: React.FC = () => {
   useEffect(() => {
     const fetchApiUsers = async () => {
       try {
-        const res = await api.get('/admin/users');
-        const userList = Array.isArray(res.data)
-          ? res.data
-          : (res.data?.users || res.data?.data || []);
+        const res = await api.get('/admin/members');
+        const userList = res.data?.members || res.data?.users || (Array.isArray(res.data) ? res.data : []);
 
         if (Array.isArray(userList) && userList.length > 0) {
           const apiMapped: PlatformMember[] = userList.map((u: any, idx: number) => ({
-            id: `api-user-${u.id || idx}`,
+            id: String(u.id || idx),
             name: u.name || u.username || 'Platform Member',
             username: u.username || `user_${u.id}`,
             email: u.email || `${u.username}@fingermobileprotocol.com`,
             phone: u.phone || '+2348000000000',
-            role: (u.role === 'admin' ? 'Admin' : 'Guest'),
-            status: u.is_active === false ? 'Suspended' : 'Active',
+            role: (u.role === 'admin' ? 'SuperAdmin' : u.role === 'creator' ? 'Creator Pro' : 'Guest') as PredefinedRole,
+            status: (u.account_status === 'SUSPENDED' || u.is_active === false) ? 'Suspended' : (u.account_status === 'FROZEN' ? 'Frozen' : 'Active'),
             kycTier: 'Tier 1',
             biometricVerified: Boolean(u.biometric_verified),
-            ficBalance: Number(u.fic_balance) || 100,
-            walletAddress: `0x${u.id || idx}E...WALLET`,
+            ficBalance: Number(u.gem_balance || u.fic_balance) || 100,
+            walletAddress: `0x${String(u.id || idx).substring(0, 6)}...WALLET`,
             joinedDate: u.created_at ? new Date(u.created_at).toISOString().split('T')[0] : '2026-10-01',
             lastActive: 'Active'
           }));
@@ -495,7 +493,7 @@ const MasterMembersConsole: React.FC = () => {
     setIsEditRoleModalOpen(false);
 
     try {
-      await api.put(`/admin/members/${selectedMember.id}`, { role: newRole });
+      await api.put(`/admin/members/${selectedMember.id || selectedMember.username}`, { role: newRole });
     } catch {
       // Fallback
     }
@@ -514,7 +512,7 @@ const MasterMembersConsole: React.FC = () => {
     showToast(`Instant Offboard executed for ${member.name}. Access revoked immediately.`);
 
     try {
-      await api.put(`/admin/members/${member.id}`, { role: 'Guest', status: 'Suspended' });
+      await api.put(`/admin/members/${member.id || member.username}`, { role: 'Guest', status: 'Suspended' });
     } catch {
       // Fallback
     }
@@ -534,7 +532,7 @@ const MasterMembersConsole: React.FC = () => {
     showToast(`Account for ${member.name} is now ${nextStatus}`);
 
     try {
-      await api.put(`/admin/members/${member.id}`, { status: nextStatus });
+      await api.put(`/admin/members/${member.id || member.username}`, { status: nextStatus });
     } catch {
       // Fallback
     }
@@ -710,7 +708,7 @@ const MasterMembersConsole: React.FC = () => {
 
     setIsDeleting(true);
     try {
-      await api.delete(`/admin/members/${selectedMember.id}?permanent=${isPermanentDelete}`);
+      await api.delete(`/admin/members/${selectedMember.id || selectedMember.username}?permanent=${isPermanentDelete}`);
     } catch {
       // Fallback
     } finally {

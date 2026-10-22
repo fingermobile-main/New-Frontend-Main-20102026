@@ -10,16 +10,16 @@ const PrivacyPolicyPage = () => {
     children
   }) => (
     <section className="mb-8">
-      <h3 className="text-xl font-bold text-gray-800 border-b border-gray-300 pb-2 mb-4">
+      <h3 className="text-xl font-black text-slate-900 border-b border-slate-300 pb-2 mb-4">
         {title}
       </h3>
-      <div className="prose prose-sm max-w-none text-gray-600">{children}</div>
+      <div className="prose prose-sm max-w-none text-slate-700 leading-relaxed">{children}</div>
     </section>
   );
 
   return (
     <LegalLayout>
-      <div className="bg-white rounded-xl shadow-sm p-6 lg:p-8">
+      <div className="bg-white rounded-3xl shadow-sm border border-slate-300 p-6 lg:p-10">
         <LegalDocumentBanner
           slug="privacy-policy"
           defaultTitle="FingerMobile Privacy Policy"
@@ -30,8 +30,8 @@ const PrivacyPolicyPage = () => {
         <div className="flex items-center gap-4 mb-6">
           <PolicyIcon className="w-10 h-10 text-brand-blue" />
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Privacy Policy</h1>
-            <p className="text-gray-600">Your privacy is important to us.</p>
+            <h1 className="text-3xl font-black text-slate-900 tracking-tight">Privacy Policy</h1>
+            <p className="text-slate-700 font-medium">Your privacy is important to us.</p>
           </div>
         </div>
 

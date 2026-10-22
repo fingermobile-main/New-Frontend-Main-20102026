@@ -92,6 +92,7 @@ const EventsPage = lazy(() => import('../pages/EventsPage'));
 
 // Module 6: Audio, Streaming & Rich Media
 const BeatwaveNGPage = lazy(() => import('../pages/BeatwaveNGPage'));
+const BeatwaveNGDemoPage = lazy(() => import('../pages/BeatwaveNGDemoPage'));
 const AiPlaylistPage = lazy(() => import('../pages/music/AiPlaylistPage'));
 const AdvancedVoicePage = lazy(() => import('../pages/AdvancedVoicePage'));
 const VoiceFeedPage = lazy(() => import('../pages/VoiceFeedPage'));
@@ -137,6 +138,7 @@ const LoanSqrPage = lazy(() => import('../pages/LoanSqrPage'));
 // Module 9: E-Learning, Education & Programs
 const ELearningPage = lazy(() => import('../pages/ELearningPage'));
 const CourseDetailPage = lazy(() => import('../pages/CourseDetailPage'));
+const CourseContentPage = lazy(() => import('../pages/CourseContentPage'));
 const MyLearningPage = lazy(() => import('../pages/MyLearningPage'));
 const LmsPage = lazy(() => import('../pages/LmsPage'));
 const ProgramsPage = lazy(() => import('../pages/ProgramsPage'));
@@ -432,6 +434,8 @@ export const routes: RouteObject[] = [
           { path: '/academy', element: <ELearningPage /> },
           { path: '/course/:id', element: <CourseDetailPage /> },
           { path: '/coursedetail', element: <CourseDetailPage /> },
+          { path: '/course/:courseId/content', element: <CourseContentPage /> },
+          { path: '/coursecontent', element: <CourseContentPage /> },
           { path: '/programs', element: <ProgramsPage /> },
           { path: '/jobs', element: <JobsPage /> },
           { path: '/communities', element: <CommunitiesPage /> },
@@ -695,6 +699,8 @@ export const routes: RouteObject[] = [
               { path: '/voicefeed', element: <VoiceFeedPage /> },
               { path: '/voice-feed', element: <VoiceFeedPage /> },
               { path: '/beatwaveng', element: <BeatwaveNGPage /> },
+              { path: '/beatwavengdemo', element: <BeatwaveNGDemoPage /> },
+              { path: '/beatwave/demo', element: redirectTo('/beatwavengdemo') },
               { path: '/aiplaylist', element: <AiPlaylistPage /> },
               { path: '/advancedfingerwar', element: <AdvancedFingerWarPage /> },
               { path: '/gameon', element: <GameOnPage /> },

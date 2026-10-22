@@ -215,24 +215,35 @@ const PostDetailPage: React.FC = () => {
   }
 
   return (
-    <div className="max-w-2xl mx-auto p-4">
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
-        <PostCard
-          post={post}
-          onLike={handleLike}
-        />
+    <div className="min-h-screen bg-slate-50 py-8 px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto space-y-6">
+        <div className="flex items-center justify-between">
+          <button
+            onClick={() => window.history.back()}
+            className="inline-flex items-center gap-2 text-sm font-bold text-slate-800 hover:text-indigo-600 transition-colors"
+          >
+            <span>&larr;</span> Back to Feed
+          </button>
+        </div>
 
-        {/* Comment Section */}
-        <div className="p-4 border-t border-slate-300 dark:border-gray-700">
-          <CommentSection
-            comments={comments}
-            newComment={newComment}
-            setNewComment={setNewComment}
-            onSubmitComment={handleAddComment}
-            ficBalance={ficBalance}
-            onTriggerSpecialEffect={() => {}}
-            handleAiAssist={handleAiAssistWrapper}
+        <div className="bg-white rounded-3xl shadow-sm border border-slate-300 overflow-hidden">
+          <PostCard
+            post={post}
+            onLike={handleLike}
           />
+
+          {/* Comment Section */}
+          <div className="p-6 border-t border-slate-300">
+            <CommentSection
+              comments={comments}
+              newComment={newComment}
+              setNewComment={setNewComment}
+              onSubmitComment={handleAddComment}
+              ficBalance={ficBalance}
+              onTriggerSpecialEffect={() => {}}
+              handleAiAssist={handleAiAssistWrapper}
+            />
+          </div>
         </div>
       </div>
     </div>

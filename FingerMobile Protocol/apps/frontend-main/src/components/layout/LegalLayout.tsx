@@ -7,7 +7,7 @@ interface LegalLayoutProps {
 
 const LegalLayout: React.FC<LegalLayoutProps> = ({ children, className }) => {
   return (
-    <div className={className || 'container mx-auto px-4 py-8'}>
+    <div className={className || 'w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8'}>
       {children}
     </div>
   );
