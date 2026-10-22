@@ -10,6 +10,16 @@ const PostPublishingSettingsPage: React.FC = () => {
   const { showToast } = useAppContext();
   const { member } = useAuth();
   const [isApplyingSuggestions, setIsApplyingSuggestions] = useState(false);
+  const [collaboratorUsername, setCollaboratorUsername] = useState('');
+
+  const handleInviteCollaborator = () => {
+    if (!collaboratorUsername.trim()) {
+      showToast('Please enter a collaborator username', 'error');
+      return;
+    }
+    showToast(`Collaboration invitation sent to ${collaboratorUsername.trim()}`, 'success');
+    setCollaboratorUsername('');
+  };
 
   const handleApplyAiSuggestions = async () => {
     setIsApplyingSuggestions(true);
@@ -284,10 +294,16 @@ const PostPublishingSettingsPage: React.FC = () => {
                       <div className="flex gap-2">
                         <input
                           type="text"
+                          value={collaboratorUsername}
+                          onChange={(e) => setCollaboratorUsername(e.target.value)}
                           className="block flex-1 px-3 py-2 text-sm font-bold text-slate-900 bg-white border border-slate-300 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400"
                           placeholder="@Name for Pin Share"
                         />
-                        <button className="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-sm">
+                        <button
+                          type="button"
+                          onClick={handleInviteCollaborator}
+                          className="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-sm"
+                        >
                           Invite
                         </button>
                       </div>

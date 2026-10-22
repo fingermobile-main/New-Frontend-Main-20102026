@@ -192,7 +192,7 @@ const SentientControlPage: React.FC = () => {
   ];
 
   // Mock data for conversations
-  const conversations: Conversation[] = [
+  const [conversations, setConversations] = useState<Conversation[]>([
     {
       id: 'conv-1',
       member: 'Admin Member',
@@ -222,7 +222,7 @@ const SentientControlPage: React.FC = () => {
       timestamp: '2023-06-15 11:05:33',
       unread: 0
     }
-  ];
+  ]);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -515,6 +515,8 @@ const SentientControlPage: React.FC = () => {
                 </h2>
                 <div className="flex gap-2">
                   <button
+                    type="button"
+                    aria-label={isProcessing ? "Pause all cognitive processes" : "Start all cognitive processes"}
                     className="text-sm bg-gray-800 hover:bg-gray-700 text-white px-3 py-1 rounded flex items-center gap-2"
                     onClick={toggleAllProcesses}
                   >
@@ -530,7 +532,25 @@ const SentientControlPage: React.FC = () => {
                       </>
                     )}
                   </button>
-                  <button className="text-sm bg-brand-blue hover:bg-blue-700 text-white px-3 py-1 rounded">
+                  <button
+                    type="button"
+                    aria-label="Start New Process"
+                    onClick={() => {
+                      const newId = `cp-${Date.now()}`;
+                      const newP: Process = {
+                        id: newId,
+                        name: 'Real-time Autonomous Policy Audit',
+                        status: 'active',
+                        progress: 10,
+                        priority: 'high',
+                        startTime: new Date().toLocaleTimeString(),
+                        estimatedCompletion: 'In 30m'
+                      };
+                      setCognitiveProcesses(prev => [newP, ...prev]);
+                      setSelectedProcess(newId);
+                    }}
+                    className="text-sm bg-brand-blue hover:bg-blue-700 text-white px-3 py-1 rounded"
+                  >
                     Start New Process
                   </button>
                 </div>
@@ -633,6 +653,8 @@ const SentientControlPage: React.FC = () => {
                       </h4>
                       <div className="space-y-3">
                         <button
+                          type="button"
+                          aria-label="Toggle process active state"
                           className="w-full text-left px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg text-sm flex items-center gap-2"
                           onClick={() => toggleProcess(selectedProcess)}
                         >
@@ -650,15 +672,42 @@ const SentientControlPage: React.FC = () => {
                               </>
                             )}
                         </button>
-                        <button className="w-full text-left px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg text-sm flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setCognitiveProcesses(prev => prev.map(p => {
+                              if (p.id === selectedProcess) {
+                                const nextPri: Record<Process['priority'], Process['priority']> = {
+                                  high: 'low',
+                                  medium: 'high',
+                                  low: 'medium'
+                                };
+                                return { ...p, priority: nextPri[p.priority] };
+                              }
+                              return p;
+                            }));
+                          }}
+                          className="w-full text-left px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg text-sm flex items-center gap-2"
+                        >
                           <ChartPieIcon className="w-4 h-4" />
                           Adjust Priority
                         </button>
-                        <button className="w-full text-left px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg text-sm flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setActiveTab('insights')}
+                          className="w-full text-left px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg text-sm flex items-center gap-2"
+                        >
                           <DocumentTextIcon className="w-4 h-4" />
                           View Detailed Logs
                         </button>
-                        <button className="w-full text-left px-4 py-2 bg-red-900/30 hover:bg-red-900/50 rounded-lg text-sm text-red-300 flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setCognitiveProcesses(prev => prev.filter(p => p.id !== selectedProcess));
+                            setSelectedProcess(null);
+                          }}
+                          className="w-full text-left px-4 py-2 bg-red-900/30 hover:bg-red-900/50 rounded-lg text-sm text-red-300 flex items-center gap-2"
+                        >
                           <StopIcon className="w-4 h-4" />
                           Terminate Process
                         </button>
@@ -684,7 +733,12 @@ const SentientControlPage: React.FC = () => {
                   >
                     Refresh Data
                   </button>
-                  <button className="text-sm bg-brand-blue hover:bg-blue-700 text-white px-3 py-1 rounded">
+                  <button
+                    type="button"
+                    onClick={fetchAnomalies}
+                    disabled={loading}
+                    className="text-sm bg-brand-blue hover:bg-blue-700 text-white px-3 py-1 rounded disabled:opacity-50"
+                  >
                     Generate New Insights
                   </button>
                 </div>
@@ -763,7 +817,21 @@ const SentientControlPage: React.FC = () => {
                 <h2 className="text-xl font-bold text-white">
                   AI Conversations
                 </h2>
-                <button className="text-sm bg-brand-blue hover:bg-blue-700 text-white px-3 py-1 rounded">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const newConv: Conversation = {
+                      id: `conv-${Date.now()}`,
+                      member: 'New Security Audit Session',
+                      lastMessage: 'Awaiting cognitive baseline calibration...',
+                      timestamp: 'Just now',
+                      unread: 1
+                    };
+                    setConversations(prev => [newConv, ...prev]);
+                    setSelectedConversationId(newConv.id);
+                  }}
+                  className="text-sm bg-brand-blue hover:bg-blue-700 text-white px-3 py-1 rounded"
+                >
                   New Conversation
                 </button>
               </div>

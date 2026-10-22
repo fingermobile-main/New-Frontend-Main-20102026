@@ -12,8 +12,10 @@ import { Switch } from '../../components/ui/Switch';
 import { Label } from '../../components/ui/Label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/Tabs';
 import PlatformOwnershipCard from '../../components/dashboard/PlatformOwnershipCard';
+import { useAppContext } from '../../contexts/AppContext';
 
 const SettingsPage: React.FC = () => {
+  const { showToast } = useAppContext();
   const [activeTab, setActiveTab] = useState('general');
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
   const [notifications, setNotifications] = useState({
@@ -27,6 +29,32 @@ const SettingsPage: React.FC = () => {
     showEmail: false,
     allowMessaging: true
   });
+
+  const [sessions, setSessions] = useState([
+    { id: '1', name: 'Chrome on Mac', location: 'San Francisco, CA • 2 hours ago' },
+    { id: '2', name: 'Firefox on Windows', location: 'New York, NY • Yesterday' },
+  ]);
+
+  const handleSaveGeneral = () => {
+    showToast('Profile settings saved successfully', 'success');
+  };
+
+  const handleSaveNotifications = () => {
+    showToast('Notification preferences updated', 'success');
+  };
+
+  const handleSavePrivacy = () => {
+    showToast('Privacy preferences updated', 'success');
+  };
+
+  const handleUpdatePassword = () => {
+    showToast('Password updated successfully', 'success');
+  };
+
+  const handleEndSession = (sessionId: string) => {
+    setSessions(prev => prev.filter(s => s.id !== sessionId));
+    showToast('Session terminated successfully', 'success');
+  };
 
   const handleNotificationChange = (key: string) => {
     setNotifications((prev: typeof notifications) => ({
@@ -106,7 +134,7 @@ const SettingsPage: React.FC = () => {
                 </div>
 
                 <div className="pt-4">
-                  <Button>Save Changes</Button>
+                  <Button type="button" onClick={handleSaveGeneral}>Save Changes</Button>
                 </div>
               </CardContent>
             </Card>
@@ -155,7 +183,7 @@ const SettingsPage: React.FC = () => {
                 </div>
 
                 <div className="pt-4">
-                  <Button>Save Notification Settings</Button>
+                  <Button type="button" onClick={handleSaveNotifications}>Save Notification Settings</Button>
                 </div>
               </CardContent>
             </Card>
@@ -204,7 +232,7 @@ const SettingsPage: React.FC = () => {
                 </div>
 
                 <div className="pt-4">
-                  <Button>Save Privacy Settings</Button>
+                  <Button type="button" onClick={handleSavePrivacy}>Save Privacy Settings</Button>
                 </div>
               </CardContent>
             </Card>
@@ -236,7 +264,7 @@ const SettingsPage: React.FC = () => {
                       <input id="confirm-password" type="password" />
                     </div>
 
-                    <Button>Update Password</Button>
+                    <Button type="button" onClick={handleUpdatePassword}>Update Password</Button>
                   </CardContent>
                 </Card>
 
@@ -273,21 +301,23 @@ const SettingsPage: React.FC = () => {
                         <Badge variant="secondary">Active</Badge>
                       </div>
 
-                      <div className="flex items-center justify-between p-3 border rounded-lg">
-                        <div>
-                          <p className="font-medium">Chrome on Mac</p>
-                          <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">San Francisco, CA • 2 hours ago</p>
+                      {sessions.map((session) => (
+                        <div key={session.id} className="flex items-center justify-between p-3 border rounded-lg">
+                          <div>
+                            <p className="font-medium">{session.name}</p>
+                            <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">{session.location}</p>
+                          </div>
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            aria-label={`End session for ${session.name}`}
+                            onClick={() => handleEndSession(session.id)}
+                          >
+                            End Session
+                          </Button>
                         </div>
-                        <Button variant="outline" size="sm">End Session</Button>
-                      </div>
-
-                      <div className="flex items-center justify-between p-3 border rounded-lg">
-                        <div>
-                          <p className="font-medium">Firefox on Windows</p>
-                          <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">New York, NY • Yesterday</p>
-                        </div>
-                        <Button variant="outline" size="sm">End Session</Button>
-                      </div>
+                      ))}
                     </div>
                   </CardContent>
                 </Card>

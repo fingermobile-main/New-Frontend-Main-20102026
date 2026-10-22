@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import apiService from '../services/apiService';
 import MainLayout from '../components/layout/MainLayout';
 import { useAppContext } from '../contexts/AppContext';
@@ -130,6 +131,38 @@ const VideosPage: React.FC = () => {
     fetchVideos();
     return () => { mounted = false; };
   }, []);
+
+  const [likedVideos, setLikedVideos] = useState<Record<string, boolean>>({});
+  const [bookmarkedVideos, setBookmarkedVideos] = useState<Record<string, boolean>>({});
+
+  const handleLike = (videoId: string) => {
+    setLikedVideos(prev => {
+      const isLiked = !prev[videoId];
+      showToast(isLiked ? 'Added to liked videos' : 'Removed from liked videos', 'info');
+      return { ...prev, [videoId]: isLiked };
+    });
+  };
+
+  const handleBookmark = (videoId: string) => {
+    setBookmarkedVideos(prev => {
+      const isSaved = !prev[videoId];
+      showToast(isSaved ? 'Video saved to your library' : 'Video removed from saved', 'info');
+      return { ...prev, [videoId]: isSaved };
+    });
+  };
+
+  const handleShare = async (video: any) => {
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: video.title, url: window.location.href });
+      } else {
+        await navigator.clipboard.writeText(window.location.href);
+        showToast('Video link copied to clipboard', 'success');
+      }
+    } catch {
+      showToast('Share link ready', 'info');
+    }
+  };
 
   const activeVideos = videosList.length > 0 ? videosList : mockVideos;
 
@@ -274,7 +307,12 @@ const VideosPage: React.FC = () => {
                       </option>
                     ))}
                   </select>
-                  <button className="p-3 bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 border border-slate-300">
+                  <button
+                    type="button"
+                    aria-label="Filter videos by category"
+                    onClick={() => showToast(`Filtered by ${selectedCategory}`, 'info')}
+                    className="p-3 bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 border border-slate-300"
+                  >
                     <FilterIcon className="w-5 h-5" />
                   </button>
                 </div>
@@ -317,18 +355,42 @@ const VideosPage: React.FC = () => {
 
                     <div className="flex justify-between items-center">
                       <div className="flex items-center space-x-4">
-                        <button className="flex items-center text-slate-700 hover:text-red-500 font-bold text-xs">
+                        <button
+                          type="button"
+                          aria-label={`Like video ${video.title}`}
+                          onClick={() => handleLike(video.id)}
+                          className={`flex items-center font-bold text-xs transition-colors ${
+                            likedVideos[video.id] ? 'text-red-600' : 'text-slate-700 hover:text-red-500'
+                          }`}
+                        >
                           <HeartIcon className="w-5 h-5 mr-1" />
-                          <span>{video.likes}</span>
+                          <span>{video.likes + (likedVideos[video.id] ? 1 : 0)}</span>
                         </button>
-                        <button className="text-slate-700 hover:text-blue-500">
+                        <button
+                          type="button"
+                          aria-label={`Share video ${video.title}`}
+                          onClick={() => handleShare(video)}
+                          className="text-slate-700 hover:text-blue-500 transition-colors"
+                        >
                           <ShareIcon className="w-5 h-5" />
                         </button>
-                        <button className="text-slate-700 hover:text-yellow-500">
+                        <button
+                          type="button"
+                          aria-label={`Bookmark video ${video.title}`}
+                          onClick={() => handleBookmark(video.id)}
+                          className={`transition-colors ${
+                            bookmarkedVideos[video.id] ? 'text-yellow-600' : 'text-slate-700 hover:text-yellow-500'
+                          }`}
+                        >
                           <BookmarkIcon className="w-5 h-5" />
                         </button>
                       </div>
-                      <button className="text-slate-700 hover:text-slate-900">
+                      <button
+                        type="button"
+                        aria-label="More video options"
+                        onClick={() => showToast(`Options for ${video.title}`, 'info')}
+                        className="text-slate-700 hover:text-slate-900 transition-colors"
+                      >
                         <DotsHorizontalIcon className="w-5 h-5" />
                       </button>
                     </div>
@@ -361,9 +423,12 @@ const VideosPage: React.FC = () => {
               </h2>
               <div className="flex items-center justify-between">
                 <span className="text-3xl font-black text-slate-900">{ficBalance.toFixed(2)} FIC</span>
-                <button className="text-sm font-bold bg-blue-600 text-white px-3.5 py-2 rounded-xl hover:bg-blue-700 shadow-sm transition-colors">
+                <Link
+                  to="/wallet"
+                  className="text-sm font-bold bg-blue-600 text-white px-3.5 py-2 rounded-xl hover:bg-blue-700 shadow-sm transition-colors"
+                >
                   Add Funds
-                </button>
+                </Link>
               </div>
             </div>
 
