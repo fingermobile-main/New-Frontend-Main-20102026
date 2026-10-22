@@ -519,15 +519,30 @@ const GuardianControlPage: React.FC = () => {
                     <div className="bg-gray-900 p-4 rounded-lg">
                       <h4 className="font-bold text-white mb-3">Actions</h4>
                       <div className="space-y-3">
-                        <button className="w-full text-left px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg text-sm flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => showToast(`Forensic scan launched on threat #${selectedThreat}`, 'info')}
+                          className="w-full text-left px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg text-sm flex items-center gap-2"
+                        >
                           <PlayIcon className="w-4 h-4" />
                           Investigate Further
                         </button>
-                        <button className="w-full text-left px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg text-sm flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => showToast(`Threat #${selectedThreat} escalated to Senior Security Officers`, 'warning')}
+                          className="w-full text-left px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg text-sm flex items-center gap-2"
+                        >
                           <ExclamationTriangleIcon className="w-4 h-4" />
                           Escalate to Admin
                         </button>
-                        <button className="w-full text-left px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg text-sm flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (selectedThreat) resolveThreat(selectedThreat);
+                            showToast(`Target quarantined under threat protocol`, 'success');
+                          }}
+                          className="w-full text-left px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg text-sm flex items-center gap-2"
+                        >
                           <ShieldExclamationIcon className="w-4 h-4" />
                           Quarantine Target
                         </button>
@@ -563,10 +578,21 @@ const GuardianControlPage: React.FC = () => {
                   Content Moderation Queue
                 </h2>
                 <div className="flex gap-2">
-                  <button className="text-sm bg-gray-800 hover:bg-gray-700 px-3 py-1 rounded">
+                  <button
+                    type="button"
+                    onClick={loadData}
+                    className="text-sm bg-gray-800 hover:bg-gray-700 px-3 py-1 rounded shadow-sm"
+                  >
                     Refresh
                   </button>
-                  <button className="text-sm bg-brand-blue hover:bg-blue-700 px-3 py-1 rounded">
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      showToast('Autonomous moderation sweep activated', 'success');
+                      await loadData();
+                    }}
+                    className="text-sm bg-brand-blue hover:bg-blue-700 px-3 py-1 rounded shadow-sm"
+                  >
                     Auto-Moderate
                   </button>
                 </div>

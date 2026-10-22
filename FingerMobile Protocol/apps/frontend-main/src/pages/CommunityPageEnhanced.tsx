@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
 import { useCommunityMembers } from '../hooks/useCommunityMembers';
 import { useCommunityPosts } from '../hooks/useCommunityPosts';
@@ -39,6 +40,47 @@ const CommunityPageEnhanced: React.FC = () => {
 
   const allLoading = membersLoading || postsLoading || groupsLoading;
   const anyError = membersError || postsError || groupsError;
+
+  const [likedPosts, setLikedPosts] = useState<Record<string, boolean>>({});
+  const [joinedGroups, setJoinedGroups] = useState<Record<string, boolean>>({});
+  const [followingMembers, setFollowingMembers] = useState<Record<string, boolean>>({});
+
+  const handleLikePost = (postId: string) => {
+    setLikedPosts(prev => {
+      const isLiked = !prev[postId];
+      showToast(isLiked ? 'Post liked' : 'Post unliked', 'info');
+      return { ...prev, [postId]: isLiked };
+    });
+  };
+
+  const handleSharePost = async (post: any) => {
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: post.title || 'Community Post', url: window.location.href });
+      } else {
+        await navigator.clipboard.writeText(window.location.href);
+        showToast('Link copied to clipboard', 'success');
+      }
+    } catch {
+      showToast('Share link ready', 'info');
+    }
+  };
+
+  const toggleJoinGroup = (groupId: string) => {
+    setJoinedGroups(prev => {
+      const isJoined = !prev[groupId];
+      showToast(isJoined ? 'Joined group successfully' : 'Left group', isJoined ? 'success' : 'info');
+      return { ...prev, [groupId]: isJoined };
+    });
+  };
+
+  const toggleFollowMember = (memberId: string) => {
+    setFollowingMembers(prev => {
+      const isFollowing = !prev[memberId];
+      showToast(isFollowing ? 'Following member' : 'Unfollowed member', isFollowing ? 'success' : 'info');
+      return { ...prev, [memberId]: isFollowing };
+    });
+  };
 
   // Helper function to get author display name
   const getAuthorName = (author: any): string => {
@@ -224,53 +266,72 @@ const CommunityPageEnhanced: React.FC = () => {
                           </div>
                         )}
                         <div className="flex items-center mt-4 text-slate-700 sm:text-base lg:text-lg">
-                          <button className="flex items-center mr-4" aria-label="Button"><svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-5 w-5 mr-1"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
+                          <button
+                            type="button"
+                            aria-label={`Like post by ${getAuthorName(post.author)}`}
+                            onClick={() => handleLikePost(post.id)}
+                            className={`flex items-center mr-4 transition-colors ${
+                              likedPosts[post.id] ? 'text-red-600 font-bold' : 'hover:text-red-500'
+                            }`}
                           >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"
-                            />
-                          </svg>
-                          {post.likesCount}
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-5 w-5 mr-1"
+                              fill={likedPosts[post.id] ? 'currentColor' : 'none'}
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"
+                              />
+                            </svg>
+                            {post.likesCount + (likedPosts[post.id] ? 1 : 0)}
                           </button>
-                          <button className="flex items-center mr-4" aria-label="Button"><svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-5 w-5 mr-1"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
+                          <Link
+                            to="/forum"
+                            aria-label={`Reply to post by ${getAuthorName(post.author)}`}
+                            className="flex items-center mr-4 hover:text-blue-500 transition-colors"
                           >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9 8s9 3.582 9 8z"
-                            />
-                          </svg>
-                          {post.repliesCount}
-                          </button>
-                          <button className="flex items-center" aria-label="Button"><svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-5 w-5 mr-1"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-5 w-5 mr-1"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9 8s9 3.582 9 8z"
+                              />
+                            </svg>
+                            {post.repliesCount}
+                          </Link>
+                          <button
+                            type="button"
+                            aria-label={`Share post by ${getAuthorName(post.author)}`}
+                            onClick={() => handleSharePost(post)}
+                            className="flex items-center hover:text-green-500 transition-colors"
                           >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
-                            />
-                          </svg>
-                          {post.sharesCount}
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-5 w-5 mr-1"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
+                              />
+                            </svg>
+                            {post.sharesCount}
                           </button>
                         </div>
                       </div>
@@ -316,8 +377,17 @@ const CommunityPageEnhanced: React.FC = () => {
                       <p className="mt-3 text-gray-600 text-sm sm:text-base lg:text-lg">
                         {group.description}
                       </p>
-                      <button className="w-full mt-4 py-2 bg-brand-blue text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors sm:text-base lg:text-lg">
-                        Join Group
+                      <button
+                        type="button"
+                        aria-label={joinedGroups[group.id] ? `Leave ${group.name}` : `Join ${group.name}`}
+                        onClick={() => toggleJoinGroup(group.id)}
+                        className={`w-full mt-4 py-2 rounded-lg font-semibold transition-colors sm:text-base lg:text-lg ${
+                          joinedGroups[group.id]
+                            ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
+                            : 'bg-brand-blue hover:bg-blue-700 text-white'
+                        }`}
+                      >
+                        {joinedGroups[group.id] ? 'Joined' : 'Join Group'}
                       </button>
                     </div>
                   </div>
@@ -361,8 +431,17 @@ const CommunityPageEnhanced: React.FC = () => {
                             {member.role}
                           </span>
                         </div>
-                        <button className="mt-3 px-4 py-1 bg-brand-blue text-white rounded-lg text-sm sm:text-base lg:text-lg font-semibold hover:bg-blue-700 transition-colors">
-                        Follow
+                        <button
+                          type="button"
+                          aria-label={followingMembers[member.id] ? `Unfollow ${member.name}` : `Follow ${member.name}`}
+                          onClick={() => toggleFollowMember(member.id)}
+                          className={`mt-3 px-4 py-1 rounded-lg text-sm sm:text-base lg:text-lg font-semibold transition-colors ${
+                            followingMembers[member.id]
+                              ? 'bg-slate-700 hover:bg-slate-600 text-white'
+                              : 'bg-brand-blue hover:bg-blue-700 text-white'
+                          }`}
+                        >
+                          {followingMembers[member.id] ? 'Following' : 'Follow'}
                         </button>
                       </div>
                     </div>

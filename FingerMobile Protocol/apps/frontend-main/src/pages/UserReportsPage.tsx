@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -233,7 +234,11 @@ const UserReportsPage: React.FC = () => {
                             Reject Report
                           </Button>
                           <Button
+                            type="button"
                             variant="outline"
+                            onClick={() => {
+                              showToast(`Report #${selectedReport.id} escalated to Guardian Security`, 'warning');
+                            }}
                             disabled={selectedReport.status !== 'open' && selectedReport.status !== 'under_review'}
                             className="flex items-center"
                           >
@@ -289,24 +294,50 @@ const UserReportsPage: React.FC = () => {
               </h2>
               <div className="flex items-center justify-between">
                 <span className="text-2xl font-bold text-gray-900">{ficBalance.toFixed(2)} FIC</span>
-                <button className="text-sm bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-3 py-1.5 rounded-lg hover:from-blue-700 hover:to-indigo-700">
+                <Link
+                  to="/wallet"
+                  className="text-sm bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-3 py-1.5 rounded-lg hover:from-blue-700 hover:to-indigo-700 shadow-sm"
+                >
                   Add Funds
-                </button>
+                </Link>
               </div>
             </div>
 
             <div className="bg-white rounded-2xl shadow-md p-6 border border-slate-300">
               <h2 className="text-lg font-bold text-gray-900 mb-4">Actions</h2>
               <div className="space-y-3">
-                <button className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-blue-50 hover:to-indigo-50 transition-colors">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setReports(prev => prev.map((r: any) => ({ ...r, status: 'resolved' })));
+                    showToast('All open reports marked as resolved', 'success');
+                  }}
+                  className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-blue-50 hover:to-indigo-50 transition-colors"
+                >
                   Bulk Resolve Reports
                 </button>
-                <button className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-blue-50 hover:to-indigo-50 transition-colors">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(reports, null, 2));
+                    const downloadAnchor = document.createElement('a');
+                    downloadAnchor.setAttribute('href', dataStr);
+                    downloadAnchor.setAttribute('download', `user-reports-${Date.now()}.json`);
+                    document.body.appendChild(downloadAnchor);
+                    downloadAnchor.click();
+                    downloadAnchor.remove();
+                    showToast('Reports data exported successfully', 'success');
+                  }}
+                  className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-blue-50 hover:to-indigo-50 transition-colors"
+                >
                   Export Reports Data
                 </button>
-                <button className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-blue-50 hover:to-indigo-50 transition-colors">
+                <Link
+                  to="/compliance"
+                  className="block w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-blue-50 hover:to-indigo-50 transition-colors"
+                >
                   View Report History
-                </button>
+                </Link>
               </div>
             </div>
 

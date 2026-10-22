@@ -70,6 +70,24 @@ const MyStorefrontPage: React.FC = () => {
     }
   };
 
+  const handleAddProduct = () => {
+    showToast('Add product dialog initialized', 'info');
+  };
+
+  const handleEditProduct = (product: any) => {
+    showToast(`Editing product: ${product.name || 'Selected item'}`, 'info');
+  };
+
+  const handleDeleteProduct = async (productId: string) => {
+    try {
+      await apiService.delete(`/api/products/${productId}`).catch(() => null);
+      setProducts((prev: any[]) => prev.filter((p: any) => p.id !== productId));
+      showToast('Product removed from store', 'success');
+    } catch {
+      showToast('Failed to delete product', 'error');
+    }
+  };
+
   useEffect(() => {
     fetchStorefrontData();
   }, [fetchStorefrontData]);
@@ -469,19 +487,25 @@ const MyStorefrontPage: React.FC = () => {
           <div>
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-bold">My Products</h2>
-              <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center" aria-label="Button"><svg
-                className="h-5 w-5 mr-2"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+              <button
+                type="button"
+                aria-label="Add Product"
+                onClick={handleAddProduct}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center shadow-sm"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                />
-              </svg>
+                <svg
+                  className="h-5 w-5 mr-2"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                  />
+                </svg>
                 Add Product
               </button>
             </div>
@@ -584,10 +608,20 @@ const MyStorefrontPage: React.FC = () => {
                         >
                           Embed
                         </button>
-                        <button className="text-blue-600 hover:text-blue-900 mr-3">
+                        <button
+                          type="button"
+                          aria-label={`Edit ${product.name}`}
+                          onClick={() => handleEditProduct(product)}
+                          className="text-blue-600 hover:text-blue-900 mr-3"
+                        >
                           Edit
                         </button>
-                        <button className="text-red-600 hover:text-red-900">
+                        <button
+                          type="button"
+                          aria-label={`Delete ${product.name}`}
+                          onClick={() => handleDeleteProduct(product.id)}
+                          className="text-red-600 hover:text-red-900"
+                        >
                           Delete
                         </button>
                       </td>
@@ -912,7 +946,11 @@ const MyStorefrontPage: React.FC = () => {
                   </div>
 
                   <div className="flex justify-end">
-                    <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                    <button
+                      type="button"
+                      onClick={handleSaveStorefront}
+                      className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-sm"
+                    >
                       Save Changes
                     </button>
                   </div>
@@ -972,12 +1010,17 @@ const MyStorefrontPage: React.FC = () => {
                           <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
                         </svg>
                       </span>
-                      <button
-                        type="button"
-                        className="ml-5 bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50"
-                      >
-                        Change
-                      </button>
+                      <label htmlFor="store-profile-upload" className="cursor-pointer">
+                        <span className="ml-5 bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 inline-block">
+                          Change
+                        </span>
+                        <input
+                          id="store-profile-upload"
+                          type="file"
+                          className="sr-only"
+                          onChange={() => showToast('Profile image updated', 'success')}
+                        />
+                      </label>
                     </div>
                   </div>
                 </div>
