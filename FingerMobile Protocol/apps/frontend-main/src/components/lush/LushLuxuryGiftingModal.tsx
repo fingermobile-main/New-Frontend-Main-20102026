@@ -368,7 +368,7 @@ export const LushLuxuryGiftingModal: React.FC<LushLuxuryGiftingModalProps> = ({
                 </div>
 
                 {/* Personalized Engraving Note */}
-                <form onSubmit={handleSendGift} id="giftForm" className="space-y-3">
+                <form onSubmit={handleSendGift} id="giftForm" className="pt-3 border-t border-emerald-200/60 mt-3 space-y-3">
                   <div className="space-y-2">
                     <label className="block text-xs font-bold text-gray-800">
                       Personalized Engraving / Dedication Note
@@ -384,7 +384,7 @@ export const LushLuxuryGiftingModal: React.FC<LushLuxuryGiftingModalProps> = ({
                     />
                   </div>
 
-                  <div className="pt-3 border-t border-emerald-200/60 mt-3 flex items-center justify-between">
+                  <div className="flex items-center justify-between">
                     <div>
                       <span className="text-[10px] text-slate-700 font-bold uppercase">Total Escrow</span>
                       <p className="text-sm font-black text-gray-900">{selectedItem.price} FIC</p>
@@ -400,6 +400,7 @@ export const LushLuxuryGiftingModal: React.FC<LushLuxuryGiftingModalProps> = ({
                     </button>
                   </div>
                 </form>
+              </div>
             </div>
           </div>
         )}
