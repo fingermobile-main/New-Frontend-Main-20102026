@@ -35,8 +35,8 @@ const TrendsFeedPage: React.FC<TrendsFeedPageProps> = ({
   showToast: propsShowToast = () => {}
 }) => {
   // eslint-disable-next-line no-unused-vars
-  // eslint-disable-next-line no-unused-vars
   const { openModal, showToast: contextShowToast, ficBalance } = useAppContext();
+  const showToast = contextShowToast || propsShowToast;
   const [posts, setLocalPosts] = useState<PostType[]>(propsPosts);
 
   useEffect(() => {

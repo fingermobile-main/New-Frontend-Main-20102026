@@ -1,10 +1,42 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import './DPODashboard.css';
 
 const DPODashboard = () => {
   const [complianceData, setComplianceData] = useState(null);
   const [pendingReviews, setPendingReviews] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedReview, setSelectedReview] = useState(null);
+
+  const handleApproveReview = async (reviewId) => {
+    try {
+      await fetch(`/api/moderation/review/${reviewId}/approve`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      setPendingReviews(prev => prev.filter((r, idx) => (r.id || idx) !== reviewId));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleRejectReview = async (reviewId) => {
+    try {
+      await fetch(`/api/moderation/review/${reviewId}/reject`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      setPendingReviews(prev => prev.filter((r, idx) => (r.id || idx) !== reviewId));
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   useEffect(() => {
     // Fetch compliance data
@@ -109,13 +141,13 @@ const DPODashboard = () => {
         <div className="metric-card underage-users">
           <h3>Underage Users</h3>
           <div className="count-display">{complianceData.underageUsers}</div>
-          <button className="btn-secondary">View Compliance</button>
+          <Link to="/compliance" className="btn-secondary">View Compliance</Link>
         </div>
 
         <div className="metric-card data-exports">
           <h3>Data Export Requests</h3>
           <div className="count-display">{complianceData.dataExportRequests}</div>
-          <button className="btn-secondary">Manage</button>
+          <Link to="/settings" className="btn-secondary">Manage</Link>
         </div>
       </div>
 
@@ -164,9 +196,27 @@ const DPODashboard = () => {
                 </div>
                 <p>{review.contentPreview}</p>
                 <div className="review-actions">
-                  <button className="btn-approve">Approve</button>
-                  <button className="btn-reject">Reject</button>
-                  <button className="btn-details">View Details</button>
+                  <button
+                    type="button"
+                    onClick={() => handleApproveReview(review.id || index)}
+                    className="btn-approve"
+                  >
+                    Approve
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleRejectReview(review.id || index)}
+                    className="btn-reject"
+                  >
+                    Reject
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedReview(review)}
+                    className="btn-details"
+                  >
+                    View Details
+                  </button>
                 </div>
               </div>
             ))}

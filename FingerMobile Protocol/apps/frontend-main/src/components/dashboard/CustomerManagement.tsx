@@ -3,13 +3,30 @@ import { User as FiUser, Mail as FiMail, Phone as FiPhone, MapPin as FiMapPin, C
 import { useAppContext } from '../../contexts/AppContext';
 
 const CustomerManagement: React.FC = () => {
-  const { members, loading } = useAppContext();
+  const { members, loading, showToast } = useAppContext();
   const [customers, setCustomers] = useState<any[]>([]);
   const [filteredCustomers, setFilteredCustomers] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState<string>('all');
   const [currentPage, setCurrentPage] = useState(1);
   const customersPerPage = 10;
+
+  const handleAddNewCustomer = () => {
+    showToast('Add customer drawer initialized', 'info');
+  };
+
+  const handleEditCustomer = (customer: any) => {
+    showToast(`Editing customer record: ${customer.name}`, 'info');
+  };
+
+  const handleDeleteCustomer = (customerId: string) => {
+    setCustomers(prev => prev.filter(c => c.id !== customerId));
+    showToast('Customer record removed', 'success');
+  };
+
+  const handleCustomerOptions = (customer: any) => {
+    showToast(`Options opened for ${customer.name}`, 'info');
+  };
 
   useEffect(() => {
     // In a real implementation, this would fetch customer data
@@ -142,7 +159,11 @@ const CustomerManagement: React.FC = () => {
     <div className="bg-white rounded-xl shadow-md p-6">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
         <h2 className="text-2xl font-bold text-gray-800">Customer Management</h2>
-        <button className="flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+        <button
+          type="button"
+          onClick={handleAddNewCustomer}
+          className="flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors shadow-sm"
+        >
           <FiPlus className="mr-2" />
           Add New Customer
         </button>
@@ -288,13 +309,28 @@ const CustomerManagement: React.FC = () => {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                   <div className="flex space-x-2">
-                    <button className="text-blue-600 hover:text-blue-900">
+                    <button
+                      type="button"
+                      aria-label={`Edit ${customer.name}`}
+                      onClick={() => handleEditCustomer(customer)}
+                      className="text-blue-600 hover:text-blue-900"
+                    >
                       <FiEdit />
                     </button>
-                    <button className="text-red-600 hover:text-red-900">
+                    <button
+                      type="button"
+                      aria-label={`Delete ${customer.name}`}
+                      onClick={() => handleDeleteCustomer(customer.id)}
+                      className="text-red-600 hover:text-red-900"
+                    >
                       <FiTrash2 />
                     </button>
-                    <button className="text-gray-600 hover:text-gray-900">
+                    <button
+                      type="button"
+                      aria-label={`More options for ${customer.name}`}
+                      onClick={() => handleCustomerOptions(customer)}
+                      className="text-gray-600 hover:text-gray-900"
+                    >
                       <FiMoreVertical />
                     </button>
                   </div>

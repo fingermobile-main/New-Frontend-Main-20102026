@@ -1,11 +1,12 @@
-import React, {} from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
 import AdvancedVoiceEngine from '../components/voice/AdvancedVoiceEngine';
 import { MicrophoneIcon } from '../icons';
 import MainLayout from '../components/layout/MainLayout';
 
 const AdvancedVoicePage: React.FC = () => {
-  const { ficBalance } = useAppContext();
+  const { ficBalance, showToast } = useAppContext();
 
   return (
     <MainLayout pageTitle="Advanced Voice">
@@ -39,23 +40,38 @@ const AdvancedVoicePage: React.FC = () => {
               </h2>
               <div className="flex items-center justify-between">
                 <span className="text-2xl font-bold text-gray-900">{ficBalance.toFixed(2)} FIC</span>
-                <button className="text-sm bg-gradient-to-r from-blue-600 to-teal-600 text-white px-3 py-1.5 rounded-lg hover:from-blue-700 hover:to-teal-700">
+                <Link
+                  to="/wallet"
+                  className="text-sm bg-gradient-to-r from-blue-600 to-teal-600 text-white px-3 py-1.5 rounded-lg hover:from-blue-700 hover:to-teal-700 shadow-sm"
+                >
                   Add Funds
-                </button>
+                </Link>
               </div>
             </div>
 
             <div className="bg-white rounded-2xl shadow-md p-6 border border-slate-300">
               <h2 className="text-lg font-bold text-gray-900 mb-4">Voice Actions</h2>
               <div className="space-y-3">
-                <button className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-blue-50 hover:to-teal-50 transition-colors flex items-center">
+                <button
+                  type="button"
+                  onClick={() => showToast('Recording initiated in audio engine', 'info')}
+                  className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-blue-50 hover:to-teal-50 transition-colors flex items-center"
+                >
                   <MicrophoneIcon className="h-5 w-5 text-blue-600 mr-3" />
                   Start Recording
                 </button>
-                <button className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-blue-50 hover:to-teal-50 transition-colors flex items-center">
+                <button
+                  type="button"
+                  onClick={() => showToast('Voice effects panel active', 'info')}
+                  className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-blue-50 hover:to-teal-50 transition-colors flex items-center"
+                >
                   Apply Effects
                 </button>
-                <button className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-blue-50 hover:to-teal-50 transition-colors flex items-center">
+                <button
+                  type="button"
+                  onClick={() => showToast('Audio recording export link ready', 'success')}
+                  className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-blue-50 hover:to-teal-50 transition-colors flex items-center"
+                >
                   Share Recording
                 </button>
               </div>

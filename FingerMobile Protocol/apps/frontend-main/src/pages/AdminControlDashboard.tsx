@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 // AdminControlDashboard.tsx
 // Enhanced administrative control dashboard for FingerMobile platform
@@ -487,6 +488,8 @@ const AdminControlDashboard: React.FC = () => {
                               {member.isActive ? 'Deactivate' : 'Activate'}
                             </button>
                             <button
+                              type="button"
+                              aria-label={`Edit member ${member.name || member.id}`}
                               onClick={() => {
                                 setEditingMember(member);
                                 setShowEditMemberModal(true);
@@ -496,6 +499,8 @@ const AdminControlDashboard: React.FC = () => {
                               <PencilIcon className="h-4 w-4" />
                             </button>
                             <button
+                              type="button"
+                              aria-label={`Delete member ${member.name || member.id}`}
                               onClick={() => handleDeleteMember(member.id)}
                               className="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded text-red-700 bg-red-100 hover:bg-red-200"
                             >
@@ -562,27 +567,40 @@ const AdminControlDashboard: React.FC = () => {
               </h2>
               <div className="flex items-center justify-between">
                 <span className="text-2xl font-bold text-gray-900">{ficBalance?.toFixed(2) ?? '0.00'} FIC</span>
-                <button className="text-sm bg-gradient-to-r from-red-600 to-orange-600 text-white px-3 py-1.5 rounded-lg hover:from-red-700 hover:to-orange-700">
+                <Link
+                  to="/wallet"
+                  className="text-sm bg-gradient-to-r from-red-600 to-orange-600 text-white px-3 py-1.5 rounded-lg hover:from-red-700 hover:to-orange-700 shadow-sm"
+                >
                   Add Funds
-                </button>
+                </Link>
               </div>
             </div>
 
             <div className="bg-white rounded-2xl shadow-md p-6 border border-slate-300">
               <h2 className="text-lg font-bold text-gray-900 mb-4">Admin Actions</h2>
               <div className="space-y-3">
-                <button className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-red-50 hover:to-orange-50 transition-colors flex items-center">
+                <Link
+                  to="/guardian"
+                  className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-red-50 hover:to-orange-50 transition-colors flex items-center"
+                >
                   <ShieldCheckIcon className="h-5 w-5 text-red-600 mr-3" />
                   Security Checks
-                </button>
-                <button className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-red-50 hover:to-orange-50 transition-colors flex items-center">
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => window.scrollTo({ top: 300, behavior: 'smooth' })}
+                  className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-red-50 hover:to-orange-50 transition-colors flex items-center"
+                >
                   <UserGroupIcon className="h-5 w-5 text-red-600 mr-3" />
                   User Management
                 </button>
-                <button className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-red-50 hover:to-orange-50 transition-colors flex items-center">
+                <Link
+                  to="/reports"
+                  className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-red-50 hover:to-orange-50 transition-colors flex items-center"
+                >
                   <ChartBarIcon className="h-5 w-5 text-red-600 mr-3" />
                   System Reports
-                </button>
+                </Link>
               </div>
             </div>
 
@@ -622,6 +640,8 @@ const AdminControlDashboard: React.FC = () => {
                   Add New Member
                 </h3>
                 <button
+                  type="button"
+                  aria-label="Close add member modal"
                   onClick={() => setShowAddMemberModal(false)}
                   className="text-slate-700 hover:text-gray-700"
                 >
@@ -691,6 +711,8 @@ const AdminControlDashboard: React.FC = () => {
                   Edit Member
                 </h3>
                 <button
+                  type="button"
+                  aria-label="Close edit member modal"
                   onClick={() => setShowEditMemberModal(false)}
                   className="text-slate-700 hover:text-gray-700"
                 >
