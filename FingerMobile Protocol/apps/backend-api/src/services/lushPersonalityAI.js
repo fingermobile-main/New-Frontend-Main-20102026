@@ -343,7 +343,7 @@ class LushPersonalityAI {
       'that', "that'll", 'these', 'those', 'am', 'is', 'are', 'was', 'were',
       'be', 'been', 'being', 'have', 'has', 'had', 'having', 'do', 'does',
       'did', 'doing', 'a', 'will', 'would', 'should', 'can', 'could', 'ought',
-      'i'm', 'you've', 'he\'s', 'she\'s', 'we\'ve', 'they\'ve', 'i\'ve',
+      'i\'m', 'you\'ve', 'he\'s', 'she\'s', 'we\'ve', 'they\'ve', 'i\'ve',
       'i\'d', 'you\'d', 'he\'d', 'she\'d', 'we\'d', 'they\'d', 'i\'ll',
       'you\'ll', 'he\'ll', 'she\'ll', 'we\'ll', 'they\'ll', 'isn\'t',
       'aren\'t', 'wasn\'t', 'weren\'t', 'haven\'t', 'hasn\'t', 'hadn\'t',

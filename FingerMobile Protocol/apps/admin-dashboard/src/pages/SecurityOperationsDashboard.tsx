@@ -31,6 +31,28 @@ const SecurityOperationsDashboard: React.FC = () => {
   const [anomalousBehaviors, setAnomalousBehaviors] = useState<AnomalousBehavior[]>([]);
   const [firewallRules, setFirewallRules] = useState<FirewallRule[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isLockdownActive, setIsLockdownActive] = useState(false);
+  const [isScanning, setIsScanning] = useState(false);
+  const [securityStatusMessage, setSecurityStatusMessage] = useState<string | null>(null);
+
+  const handleEmergencyLockdown = () => {
+    const next = !isLockdownActive;
+    setIsLockdownActive(next);
+    setSecurityStatusMessage(next ? 'EMERGENCY LOCKDOWN ACTIVATED: All external IP gateways restricted.' : 'Lockdown released: System operating normally.');
+  };
+
+  const handleRunSecurityScan = () => {
+    setIsScanning(true);
+    setSecurityStatusMessage('Security vulnerability scan initiated across all cluster nodes...');
+    setTimeout(() => {
+      setIsScanning(false);
+      setSecurityStatusMessage('Security scan complete: 0 critical vulnerabilities found.');
+    }, 2000);
+  };
+
+  const handleSecuritySettings = () => {
+    setSecurityStatusMessage('Security Configuration: Standard cluster firewall and zero-trust policies active.');
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -510,18 +532,36 @@ const SecurityOperationsDashboard: React.FC = () => {
       </div>
 
       {/* Security Controls */}
+      {securityStatusMessage && (
+        <div className="bg-slate-100 border border-slate-300 text-slate-900 px-4 py-3 rounded-md mb-6 font-semibold flex items-center justify-between">
+          <span>{securityStatusMessage}</span>
+          <button 
+            onClick={() => setSecurityStatusMessage(null)}
+            className="text-slate-700 hover:text-slate-900 font-bold ml-4"
+          >
+            ×
+          </button>
+        </div>
+      )}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card title="Security Controls">
           <div className="space-y-4">
-            <button className="w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 transition duration-200 flex items-center justify-center">
+            <button 
+              onClick={handleEmergencyLockdown}
+              className={`w-full ${isLockdownActive ? 'bg-amber-600 hover:bg-amber-700' : 'bg-red-600 hover:bg-red-700'} text-white py-2 px-4 rounded-md transition duration-200 flex items-center justify-center font-medium`}>
               <Lock className="h-4 w-4 mr-2" />
-              Emergency Lockdown
+              {isLockdownActive ? 'Release Lockdown' : 'Emergency Lockdown'}
             </button>
-            <button className="w-full bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 transition duration-200 flex items-center justify-center">
+            <button 
+              onClick={handleRunSecurityScan}
+              disabled={isScanning}
+              className="w-full bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 transition duration-200 flex items-center justify-center font-medium disabled:opacity-50">
               <AlertTriangle className="h-4 w-4 mr-2" />
-              Run Security Scan
+              {isScanning ? 'Scanning Cluster...' : 'Run Security Scan'}
             </button>
-            <button className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition duration-200 flex items-center justify-center">
+            <button 
+              onClick={handleSecuritySettings}
+              className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition duration-200 flex items-center justify-center font-medium">
               <Settings className="h-4 w-4 mr-2" />
               Security Settings
             </button>

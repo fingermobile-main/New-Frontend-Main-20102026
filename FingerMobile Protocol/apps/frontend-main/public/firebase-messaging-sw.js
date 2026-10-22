@@ -2,13 +2,12 @@
 /* global importScripts, firebase, clients */
 
 // Import the Firebase libraries
-importScripts(',
-https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js');
-importScripts(',
-https://www.gstatic.com/firebasejs/9.23.0/firebase-messaging-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/9.23.0/firebase-messaging-compat.js');
 
 // Initialize Firebase
-firebase.initializeApp({apiKey: process.env.API_KEY || 'your_api_key_here',
+firebase.initializeApp({
+  apiKey: process.env.API_KEY || 'your_api_key_here',
   authDomain: 'YOUR_AUTH_DOMAIN',
   projectId: 'YOUR_PROJECT_ID',
   storageBucket: 'YOUR_STORAGE_BUCKET',
@@ -23,9 +22,10 @@ messaging.onBackgroundMessage((payload) => {
   console.log('[firebase-messaging-sw.js] Received background message ', payload);
 
   const notificationTitle = payload.notification?.title || 'New Notification';
-  const notificationOptions = {body: payload.notification?.body || 'You have a new notification',
-  icon: '/firebase-logo.png',
-  badge: '/badge.png'
+  const notificationOptions = {
+    body: payload.notification?.body || 'You have a new notification',
+    icon: '/firebase-logo.png',
+    badge: '/badge.png'
   };
 
   self.registration.showNotification(notificationTitle, notificationOptions);
@@ -38,7 +38,7 @@ self.addEventListener('notificationclick', (event) => {
 
   // This looks to see if the current is already open and focuses if it is
   event.waitUntil(
-    clients.matchAll({type: 'window' }).then((clientList) => {
+    clients.matchAll({ type: 'window' }).then((clientList) => {
       for (let i = 0; i < clientList.length; i++) {
         const client = clientList[i];
         if (client.url && 'focus' in client) {

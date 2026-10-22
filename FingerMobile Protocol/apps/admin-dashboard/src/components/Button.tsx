@@ -12,6 +12,8 @@ export const Button: React.FC<ButtonProps> = ({
   size = 'md',
   fullWidth = false,
   className = '',
+  onClick,
+  type = 'button',
   ...props
 }) => {
   const baseClasses = 'inline-flex items-center justify-center font-medium rounded-md border focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors';
@@ -35,6 +37,8 @@ export const Button: React.FC<ButtonProps> = ({
   
   return (
     <button
+      type={type}
+      onClick={onClick}
       className={classes}
       {...props}
     >

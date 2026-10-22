@@ -319,7 +319,7 @@ const FileManager: React.FC<FileManagerProps> = ({ theme }) => {
 
       <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
         {(['files', 'folders', 'stats'] as const).map((tab) => (
-          <button
+          <button type="button" aria-label="Action"
             key={tab}
             onClick={() => setActiveTab(tab)}
             style={{

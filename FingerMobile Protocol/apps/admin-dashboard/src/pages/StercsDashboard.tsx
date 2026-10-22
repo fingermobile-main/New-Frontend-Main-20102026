@@ -70,6 +70,49 @@ const StercsDashboard: React.FC = () => {
   const [inactivityMetrics, setInactivityMetrics] = useState<InactivityMetric[]>([]);
   const [loading, setLoading] = useState(true);
   const [_error, setError] = useState<string | null>(null);
+  const [stercsFeedback, setStercsFeedback] = useState<string | null>(null);
+
+  const handleReviewCaps = () => {
+    setStercsFeedback('Reviewing account spend caps: 1,420 accounts evaluated against platform velocity thresholds.');
+  };
+
+  const handleCapSettings = () => {
+    setStercsFeedback('Cap Settings opened: Global daily spend limit set to ₦5,000,000 / $10,000.');
+  };
+
+  const handleCapAnalytics = () => {
+    setStercsFeedback('Cap Analytics generated: 98.4% of transactions within standard safety thresholds.');
+  };
+
+  const handleReviewInactive = () => {
+    setStercsFeedback('Inactive account audit: 24 accounts identified dormant for > 180 days.');
+  };
+
+  const handleUnpaidLiabilities = () => {
+    setStercsFeedback('Liability report: Total unsettled claims ₦450,000; collections queued.');
+  };
+
+  const handleManageFreezes = () => {
+    setStercsFeedback('Account freezes console: 2 accounts currently locked pending KYC re-verification.');
+  };
+
+  const handleBlockIpRange = () => {
+    const range = prompt('Enter IP CIDR range to block (e.g. 192.168.1.0/24):');
+    if (range) {
+      setStercsFeedback(`IP range ${range} successfully added to STERCS firewall blacklist.`);
+    }
+  };
+
+  const handleQuarantineAccount = () => {
+    const account = prompt('Enter Account ID or Email to quarantine:');
+    if (account) {
+      setStercsFeedback(`Account "${account}" quarantined: Session revoked, permissions restricted.`);
+    }
+  };
+
+  const handleSecuritySettings = () => {
+    setStercsFeedback('STERCS Security Policy: Hardware key 2FA and DEFCON level 4 monitoring active.');
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -491,19 +534,38 @@ const StercsDashboard: React.FC = () => {
         </div>
       </div>
 
+      {/* Feedback Banner */}
+      {stercsFeedback && (
+        <div className="bg-slate-100 border border-slate-300 text-slate-900 px-4 py-3 rounded-md mb-6 font-semibold flex items-center justify-between">
+          <span>{stercsFeedback}</span>
+          <button 
+            onClick={() => setStercsFeedback(null)}
+            className="text-slate-700 hover:text-slate-900 font-bold ml-4"
+          >
+            ×
+          </button>
+        </div>
+      )}
+
       {/* Spend Cap and Inactivity Controls */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card title="Spend Cap Controls">
           <div className="space-y-4">
-            <button className="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition duration-200 flex items-center justify-center">
+            <button 
+              onClick={handleReviewCaps}
+              className="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition duration-200 flex items-center justify-center font-medium">
               <DollarSign className="h-4 w-4 mr-2" />
               Review Caps
             </button>
-            <button className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-200 flex items-center justify-center">
+            <button 
+              onClick={handleCapSettings}
+              className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-200 flex items-center justify-center font-medium">
               <Settings className="h-4 w-4 mr-2" />
               Cap Settings
             </button>
-            <button className="w-full bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition duration-200 flex items-center justify-center">
+            <button 
+              onClick={handleCapAnalytics}
+              className="w-full bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition duration-200 flex items-center justify-center font-medium">
               <Activity className="h-4 w-4 mr-2" />
               Cap Analytics
             </button>
@@ -511,15 +573,21 @@ const StercsDashboard: React.FC = () => {
         </Card>
         <Card title="Account Inactivity">
           <div className="space-y-4">
-            <button className="w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 transition duration-200 flex items-center justify-center">
+            <button 
+              onClick={handleReviewInactive}
+              className="w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 transition duration-200 flex items-center justify-center font-medium">
               <UserMinus className="h-4 w-4 mr-2" />
               Review Inactive
             </button>
-            <button className="w-full bg-amber-500 text-white py-2 px-4 rounded-md hover:bg-amber-600 transition duration-200 flex items-center justify-center">
+            <button 
+              onClick={handleUnpaidLiabilities}
+              className="w-full bg-amber-500 text-white py-2 px-4 rounded-md hover:bg-amber-600 transition duration-200 flex items-center justify-center font-medium">
               <DollarSign className="h-4 w-4 mr-2" />
               Unpaid Liabilities
             </button>
-            <button className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition duration-200 flex items-center justify-center">
+            <button 
+              onClick={handleManageFreezes}
+              className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition duration-200 flex items-center justify-center font-medium">
               <Lock className="h-4 w-4 mr-2" />
               Manage Freezes
             </button>
@@ -551,15 +619,21 @@ const StercsDashboard: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card title="Security Controls">
           <div className="space-y-4">
-            <button className="w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 transition duration-200 flex items-center justify-center">
+            <button 
+              onClick={handleBlockIpRange}
+              className="w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 transition duration-200 flex items-center justify-center font-medium">
               <Lock className="h-4 w-4 mr-2" />
               Block IP Range
             </button>
-            <button className="w-full bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 transition duration-200 flex items-center justify-center">
+            <button 
+              onClick={handleQuarantineAccount}
+              className="w-full bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 transition duration-200 flex items-center justify-center font-medium">
               <AlertTriangle className="h-4 w-4 mr-2" />
               Quarantine Account
             </button>
-            <button className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition duration-200 flex items-center justify-center">
+            <button 
+              onClick={handleSecuritySettings}
+              className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition duration-200 flex items-center justify-center font-medium">
               <Settings className="h-4 w-4 mr-2" />
               Security Settings
             </button>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import MetricCard from '../components/MetricCard';
 import Card from '../components/Card';
 import DataTable from '../components/DataTable';
@@ -30,6 +31,7 @@ interface ReportSummary {
 }
 
 const DashboardHome: React.FC = () => {
+  const navigate = useNavigate();
   const [dashboardStats, setDashboardStats] = useState<any>(null);
   const [recentActivities, setRecentActivities] = useState<RecentActivity[]>([]);
   const [recentReports, setRecentReports] = useState<ReportSummary[]>([]);
@@ -245,7 +247,9 @@ const DashboardHome: React.FC = () => {
               <span className="font-medium">{dashboardStats?.newPostsToday || 0}</span>
             </div>
             <div className="pt-2">
-              <button className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition duration-200">
+              <button 
+                onClick={() => navigate('/analytics')}
+                className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition duration-200">
                 View Content Analytics
               </button>
             </div>
@@ -266,7 +270,9 @@ const DashboardHome: React.FC = () => {
               <span className="font-medium">{dashboardStats?.monthlyActiveUsers || 0}</span>
             </div>
             <div className="pt-2">
-              <button className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition duration-200">
+              <button 
+                onClick={() => navigate('/users')}
+                className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition duration-200">
                 View User Analytics
               </button>
             </div>
@@ -287,7 +293,9 @@ const DashboardHome: React.FC = () => {
               <span className="font-medium">1.8%</span>
             </div>
             <div className="pt-2">
-              <button className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition duration-200">
+              <button 
+                onClick={() => navigate('/monetization')}
+                className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition duration-200">
                 View Monetization Analytics
               </button>
             </div>

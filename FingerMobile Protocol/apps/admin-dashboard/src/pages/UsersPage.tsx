@@ -38,6 +38,49 @@ const UsersPage: React.FC = () => {
   const [deleteConfirmText, setDeleteConfirmText] = useState('');
   const [isPermanentDelete, setIsPermanentDelete] = useState(true);
 
+  // Create User State
+  const [newName, setNewName] = useState('');
+  const [newEmail, setNewEmail] = useState('');
+  const [newRole, setNewRole] = useState<'admin' | 'user' | 'moderator'>('user');
+  const [isCreatingUser, setIsCreatingUser] = useState(false);
+
+  const handleCreateUser = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newName.trim() || !newEmail.trim()) return;
+
+    try {
+      setIsCreatingUser(true);
+      const generatedId = typeof crypto !== 'undefined' && crypto.randomUUID 
+        ? crypto.randomUUID() 
+        : `00000000-0000-0000-0000-${Date.now().toString().padStart(12, '0')}`;
+
+      const newUser: UserWithDetails = {
+        id: generatedId,
+        name: newName.trim(),
+        email: newEmail.trim(),
+        role: newRole,
+        status: 'active',
+        createdAt: new Date().toISOString().split('T')[0],
+        registrationDate: new Date().toISOString().split('T')[0],
+        lastActive: 'Just now',
+        postCount: 0,
+        followerCount: 0,
+        followingCount: 0,
+        storeCreditBalance: 0
+      };
+
+      setUsers(prev => [newUser, ...prev]);
+      setShowCreateModal(false);
+      setNewName('');
+      setNewEmail('');
+      setNewRole('user');
+    } catch (err: any) {
+      setError(err?.message || 'Failed to create user');
+    } finally {
+      setIsCreatingUser(false);
+    }
+  };
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -398,7 +441,7 @@ const UsersPage: React.FC = () => {
             <div className="mt-3 text-center">
               <h3 className="text-lg leading-6 font-medium text-gray-900">Create New User</h3>
               <div className="mt-2 px-7 py-3">
-                <form className="space-y-4">
+                <form onSubmit={handleCreateUser} className="space-y-4">
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium text-gray-700">
                       Full Name
@@ -407,6 +450,9 @@ const UsersPage: React.FC = () => {
                       type="text"
                       name="name"
                       id="name"
+                      value={newName}
+                      onChange={(e) => setNewName(e.target.value)}
+                      required
                       className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                     />
                   </div>
@@ -418,6 +464,9 @@ const UsersPage: React.FC = () => {
                       type="email"
                       name="email"
                       id="email"
+                      value={newEmail}
+                      onChange={(e) => setNewEmail(e.target.value)}
+                      required
                       className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
                     />
                   </div>
@@ -428,6 +477,8 @@ const UsersPage: React.FC = () => {
                     <select
                       id="role"
                       name="role"
+                      value={newRole}
+                      onChange={(e) => setNewRole(e.target.value as any)}
                       className="mt-1 block w-full bg-white border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-slate-900 font-bold border-slate-300 focus:ring-2"
                     >
                       <option value="user">User</option>
@@ -445,9 +496,10 @@ const UsersPage: React.FC = () => {
                     </button>
                     <button
                       type="submit"
-                      className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+                      disabled={isCreatingUser}
+                      className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:opacity-50"
                     >
-                      Create User
+                      {isCreatingUser ? 'Creating...' : 'Create User'}
                     </button>
                   </div>
                 </form>

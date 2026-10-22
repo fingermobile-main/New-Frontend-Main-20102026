@@ -88,7 +88,7 @@ const DetailModal: React.FC<DetailModalProps> = ({ artwork, onClose, onClaimRewa
         id="modal-content"
       >
         {/* Close Button */}
-        <button 
+        <button type="button" aria-label="Close" 
           id="close-modal" 
           className="absolute top-4 right-4 z-50 p-3 rounded-full bg-black/40 hover:bg-yellow-400/20 text-white transition-colors border border-white/10"
           onClick={onClose}

@@ -235,7 +235,7 @@ const App: React.FC = () => {
           <div className="max-w-4xl mx-auto">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-xl font-bold text-neon-gold font-orbitron">UPLOAD MEDIA</h3>
-              <button 
+              <button type="button" aria-label="Action" 
                 onClick={() => setShowUploadPanel(false)}
                 className="text-gray-400 hover:text-white transition-colors"
               >

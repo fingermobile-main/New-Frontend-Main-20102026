@@ -84,7 +84,7 @@ const MediaPreview: React.FC<MediaPreviewProps> = ({
       )}
 
       {mediaFile.type === 'video' && (
-        <button
+        <button type="button" aria-label="Play or pause"
           className={`absolute inset-0 flex items-center justify-center w-full h-full ${
             isPlaying ? 'hidden' : 'opacity-0 group-hover:opacity-100'
           } transition-opacity bg-black/30`}
