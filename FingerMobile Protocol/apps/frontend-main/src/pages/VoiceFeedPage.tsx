@@ -66,11 +66,11 @@ const VoiceFeedPage: React.FC = () => {
   };
 
   const handleLike = (id: string) => {
-    setPosts(prev => prev.map(p => p.id === id ? { ...p, likes_count: (p.likes_count || 0) + 1 } : p));
+    setPosts(prev => prev.map(p => p.id === id ? { ...p, likes_count: (Number(p.likes_count) || 0) + 1 } : p));
   };
 
   const handleComment = (id: string) => {
-    setPosts(prev => prev.map(p => p.id === id ? { ...p, comments_count: (p.comments_count || 0) + 1 } : p));
+    setPosts(prev => prev.map(p => p.id === id ? { ...p, comments_count: (Number(p.comments_count) || 0) + 1 } : p));
   };
 
   const handleShare = async (id: string) => {

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { ChatBubbleLeftIcon, HeartIcon } from '@heroicons/react/24/outline';
 
 interface EnhancedForumProps {
@@ -21,18 +22,26 @@ const EnhancedForum: React.FC<EnhancedForumProps> = ({ categoryId }) => {
     <div className="bg-white rounded-xl shadow-sm border border-slate-300">
       <div className="p-6 border-b border-slate-300 flex items-center justify-between">
         <h3 className="text-lg font-bold text-gray-900">Community Forum</h3>
-        <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium">
+        <Link
+          to="/forum?action=new"
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium inline-flex items-center"
+        >
           New Thread
-        </button>
+        </Link>
       </div>
 
       <div className="divide-y divide-gray-200 max-h-96 overflow-y-auto">
         {threads.map((thread) => (
-          <div key={thread.id} className="p-4 hover:bg-gray-50 transition-colors cursor-pointer">
-            <h4 className="font-medium text-gray-900 mb-2 hover:text-blue-600 transition-colors">{thread.title}</h4>
+          <Link
+            key={thread.id}
+            to={`/forum?thread=${thread.id}`}
+            aria-label={`View thread: ${thread.title}`}
+            className="block p-4 hover:bg-gray-50 transition-colors"
+          >
+            <h4 className="font-semibold text-gray-900 mb-2 hover:text-blue-600 transition-colors">{thread.title}</h4>
             <div className="flex items-center justify-between text-sm text-slate-700">
               <div className="flex items-center gap-3">
-                <span className="font-medium text-gray-700">{thread.author}</span>
+                <span className="font-medium text-slate-800">{thread.author}</span>
                 <span>{thread.created}</span>
               </div>
               <div className="flex items-center gap-3">
@@ -46,7 +55,7 @@ const EnhancedForum: React.FC<EnhancedForumProps> = ({ categoryId }) => {
                 </span>
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

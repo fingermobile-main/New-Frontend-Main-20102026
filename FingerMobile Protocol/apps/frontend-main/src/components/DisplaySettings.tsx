@@ -43,6 +43,8 @@ const DisplaySettings: React.FC<DisplaySettingsProps> = ({
         ].map(mode => (
           <button
             key={mode.id}
+            type="button"
+            aria-label={mode.title}
             onClick={() => onModeChange(mode.id as DisplayMode)}
             className={`p-2.5 rounded-lg transition-all ${currentMode === mode.id ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40' : 'text-slate-300 font-medium hover:text-white'}`}
             title={mode.title}
@@ -57,6 +59,8 @@ const DisplaySettings: React.FC<DisplaySettingsProps> = ({
       {/* Filters & Grouping */}
       <div className="flex items-center space-x-1">
         <button
+          type="button"
+          aria-label="Show Favorites Only"
           onClick={onToggleFavorites}
           className={`p-2.5 rounded-xl transition-all ${showFavoritesOnly ? 'bg-red-500/20 text-red-500 border border-red-500/30' : 'text-slate-300 font-medium hover:text-white bg-white/5 border border-transparent'}`}
           title="Show Favorites Only"
@@ -65,6 +69,8 @@ const DisplaySettings: React.FC<DisplaySettingsProps> = ({
         </button>
 
         <button
+          type="button"
+          aria-label="Group Videos"
           onClick={onToggleGroupVideos}
           className={`p-2.5 rounded-xl transition-all ${groupVideos ? 'bg-indigo-500/20 text-indigo-400 border border-indigo-500/30' : 'text-slate-300 font-medium hover:text-white bg-white/5 border border-transparent'}`}
           title="Group Videos"
@@ -73,6 +79,8 @@ const DisplaySettings: React.FC<DisplaySettingsProps> = ({
         </button>
 
         <button
+          type="button"
+          aria-label="Group Audio Files"
           onClick={onToggleGroupAudio}
           className={`p-2.5 rounded-xl transition-all ${groupAudio ? 'bg-amber-500/20 text-amber-500 border border-amber-500/30' : 'text-slate-300 font-medium hover:text-white bg-white/5 border border-transparent'}`}
           title="Group Audio Files"
@@ -84,18 +92,20 @@ const DisplaySettings: React.FC<DisplaySettingsProps> = ({
       <div className="w-px h-6 bg-white/10 hidden md:block" />
 
       {/* Sort Select */}
-      <div className="flex items-center space-x-2 bg-white/5 px-3 py-1 rounded-xl group hover:bg-white/10 transition-all cursor-pointer">
-        <SortAsc size={14} className="text-slate-700" />
+      <label htmlFor="sort-criteria" className="flex items-center space-x-2 bg-white/5 px-3 py-1 rounded-xl group hover:bg-white/10 transition-all cursor-pointer">
+        <SortAsc size={14} className="text-slate-300 group-hover:text-white" />
         <select
+          id="sort-criteria"
+          aria-label="Sort criteria"
           value={sortCriteria}
           onChange={(e) => onSortChange?.(e.target.value as SortCriteria)}
-          className="bg-transparent border-none text-[10px] font-black text-slate-900 focus:ring-0 uppercase tracking-widest cursor-pointer font-bold border border-slate-300 rounded"
+          className="bg-transparent border-none text-[10px] font-black text-slate-100 focus:ring-0 uppercase tracking-widest cursor-pointer font-bold border border-slate-700 rounded"
         >
-          <option value="name">Name A-Z</option>
-          <option value="number">Track No.</option>
-          <option value="size">File Size</option>
+          <option value="name" className="bg-gray-900 text-white">Name A-Z</option>
+          <option value="number" className="bg-gray-900 text-white">Track No.</option>
+          <option value="size" className="bg-gray-900 text-white">File Size</option>
         </select>
-      </div>
+      </label>
     </div>
   );
 };

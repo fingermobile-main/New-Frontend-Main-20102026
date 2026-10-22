@@ -93,8 +93,8 @@ const OnboardingPage: React.FC = () => {
   const [selectedTier, setSelectedTier] = useState<CreatorTier>('TIER_3');
   const [inviteToken, setInviteToken] = useState<string>('');
   const [availabilityData, setAvailabilityData] = useState<CountryAvailabilityData | null>(null);
-  const [tierFeedback, setTierFeedback] = useState<{ status: string; message: string } | null>(null);
   const [isSubmittingCreator, setIsSubmittingCreator] = useState<boolean>(false);
+  const [showOtherMethods, setShowOtherMethods] = useState<boolean>(false);
 
   // Preload onboarding background assets to ensure zero flash on screen transitions
   useEffect(() => {
@@ -883,17 +883,30 @@ const OnboardingPage: React.FC = () => {
                 </div>
 
                 <div className="pt-2">
-                  <Button variant="outline" className="w-full">
-                      Other Login Methods
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full text-slate-800 font-bold"
+                    onClick={() => setShowOtherMethods(!showOtherMethods)}
+                  >
+                    {showOtherMethods ? 'Hide Other Login Methods' : 'Other Login Methods'}
                   </Button>
-                  <div className="grid grid-cols-3 gap-2 mt-3">
-                    <Button variant="outline" size="sm">Apple</Button>
-                    <Button variant="outline" size="sm">Google</Button>
-                    <Button variant="outline" size="sm">Facebook</Button>
-                    <Button variant="outline" size="sm">TikTok</Button>
-                    <Button variant="outline" size="sm">Instagram</Button>
-                    <Button variant="outline" size="sm">LinkedIn</Button>
-                  </div>
+                  {showOtherMethods && (
+                    <div className="grid grid-cols-3 gap-2 mt-3">
+                      {(['Apple', 'Google', 'Facebook', 'TikTok', 'Instagram', 'LinkedIn'] as const).map((provider) => (
+                        <Button
+                          key={provider}
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={handleRegistration}
+                          className="text-slate-800 font-bold hover:bg-slate-50"
+                        >
+                          {provider}
+                        </Button>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
 

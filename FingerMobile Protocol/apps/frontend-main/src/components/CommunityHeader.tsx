@@ -19,6 +19,9 @@ const CommunityHeader: React.FC<CommunityHeaderProps> = ({
   onLeave
 }) => {
   const [showDropdown, setShowDropdown] = useState(false);
+  const [activeTab, setActiveTab] = useState<'posts' | 'members' | 'events' | 'discussions' | 'analytics'>('posts');
+  const [isPinned, setIsPinned] = useState(false);
+  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
 
   return (
     <div className="bg-white border-b border-slate-300">
@@ -57,9 +60,9 @@ const CommunityHeader: React.FC<CommunityHeaderProps> = ({
             <div className="flex-1 pt-16">
               <div className="flex items-start justify-between">
                 <div>
-                  <h1 className="text-3xl font-bold text-gray-900">{communityName}</h1>
-                  <p className="text-gray-600 mt-1 flex items-center gap-2">
-                    <span className="text-green-600">●</span>
+                  <h1 className="text-3xl font-bold text-slate-900">{communityName}</h1>
+                  <p className="text-slate-700 mt-1 flex items-center gap-2 font-medium">
+                    <span className="text-emerald-600 font-bold">●</span>
                     {memberCount.toLocaleString()} members online
                   </p>
                 </div>
@@ -69,20 +72,22 @@ const CommunityHeader: React.FC<CommunityHeaderProps> = ({
                   {isJoined ? (
                     <>
                       <button
+                        type="button"
                         onClick={onLeave}
-                        className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors font-medium"
+                        className="px-4 py-2 bg-slate-200 text-slate-800 rounded-lg hover:bg-slate-300 transition-colors font-bold"
                       >
                         Leave
                       </button>
 
                       <div className="relative">
                         <button
+                          type="button"
                           onClick={() => setShowDropdown(!showDropdown)}
                           onKeyDown={(e) => {
                             if (e.key === 'Escape') setShowDropdown(false);
                           }}
-                          className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
-                          aria-label="More options"
+                          className="px-4 py-2 bg-slate-200 text-slate-800 rounded-lg hover:bg-slate-300 transition-colors font-bold"
+                          aria-label="More community options"
                           aria-haspopup="true"
                           aria-expanded={showDropdown}
                         >
@@ -91,28 +96,42 @@ const CommunityHeader: React.FC<CommunityHeaderProps> = ({
 
                         {showDropdown && (
                           <div
-                            className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-slate-300 py-2 z-10"
+                            className="absolute right-0 mt-2 w-52 bg-white rounded-lg shadow-lg border border-slate-300 py-2 z-10"
                             role="menu"
                             aria-orientation="vertical"
                           >
                             <button
-                              className="w-full px-4 py-2 text-left hover:bg-gray-50 text-sm"
+                              type="button"
+                              onClick={() => {
+                                setNotificationsEnabled(!notificationsEnabled);
+                                setShowDropdown(false);
+                              }}
+                              className="w-full px-4 py-2 text-left hover:bg-slate-50 text-sm font-semibold text-slate-800 flex items-center justify-between"
                               role="menuitem"
-                              tabIndex={0}
                             >
-                              🔔 Notification Settings
+                              <span>🔔 Notifications</span>
+                              <span className="text-xs text-slate-500">{notificationsEnabled ? 'On' : 'Off'}</span>
                             </button>
                             <button
-                              className="w-full px-4 py-2 text-left hover:bg-gray-50 text-sm"
+                              type="button"
+                              onClick={() => {
+                                setIsPinned(!isPinned);
+                                setShowDropdown(false);
+                              }}
+                              className="w-full px-4 py-2 text-left hover:bg-slate-50 text-sm font-semibold text-slate-800 flex items-center justify-between"
                               role="menuitem"
-                              tabIndex={0}
                             >
-                              📌 Pin to Sidebar
+                              <span>📌 Pin to Sidebar</span>
+                              {isPinned && <span className="text-xs text-blue-600 font-bold">Pinned</span>}
                             </button>
                             <button
-                              className="w-full px-4 py-2 text-left hover:bg-gray-50 text-sm"
+                              type="button"
+                              onClick={() => {
+                                alert(`Reporting community ${communityName}`);
+                                setShowDropdown(false);
+                              }}
+                              className="w-full px-4 py-2 text-left hover:bg-red-50 text-sm font-semibold text-red-700"
                               role="menuitem"
-                              tabIndex={0}
                             >
                               🚩 Report Community
                             </button>
@@ -122,8 +141,9 @@ const CommunityHeader: React.FC<CommunityHeaderProps> = ({
                     </>
                   ) : (
                     <button
+                      type="button"
                       onClick={onJoin}
-                      className="px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all font-medium"
+                      className="px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all font-bold shadow-sm"
                     >
                       Join Community
                     </button>
@@ -133,18 +153,18 @@ const CommunityHeader: React.FC<CommunityHeaderProps> = ({
 
               {/* Description */}
               {description && (
-                <p className="text-gray-700 mt-3 max-w-3xl">{description}</p>
+                <p className="text-slate-700 mt-3 max-w-3xl font-medium">{description}</p>
               )}
 
               {/* Tags */}
               <div className="flex items-center gap-2 mt-3">
-                <span className="px-3 py-1 bg-purple-100 text-purple-950 border border-purple-400 font-bold rounded-full text-sm font-medium font-black">
+                <span className="px-3 py-1 bg-purple-100 text-purple-950 border border-purple-400 font-bold rounded-full text-sm">
                   #technology
                 </span>
-                <span className="px-3 py-1 bg-blue-100 text-blue-950 border border-blue-400 font-bold rounded-full text-sm font-medium font-black">
+                <span className="px-3 py-1 bg-blue-100 text-blue-950 border border-blue-400 font-bold rounded-full text-sm">
                   #community
                 </span>
-                <span className="px-3 py-1 bg-green-100 text-green-950 border border-green-400 font-bold rounded-full text-sm font-medium font-black">
+                <span className="px-3 py-1 bg-green-100 text-green-950 border border-green-400 font-bold rounded-full text-sm">
                   #learning
                 </span>
               </div>
@@ -154,21 +174,26 @@ const CommunityHeader: React.FC<CommunityHeaderProps> = ({
 
         {/* Navigation Tabs */}
         <div className="flex items-center gap-1 border-t border-slate-300">
-          <button className="px-4 py-3 border-b-2 border-purple-600 text-purple-600 font-medium">
-            📝 Posts
-          </button>
-          <button className="px-4 py-3 text-gray-600 hover:text-gray-900 font-medium">
-            👥 Members
-          </button>
-          <button className="px-4 py-3 text-gray-600 hover:text-gray-900 font-medium">
-            📅 Events
-          </button>
-          <button className="px-4 py-3 text-gray-600 hover:text-gray-900 font-medium">
-            💬 Discussions
-          </button>
-          <button className="px-4 py-3 text-gray-600 hover:text-gray-900 font-medium">
-            📊 Analytics
-          </button>
+          {[
+            { id: 'posts', label: '📝 Posts' },
+            { id: 'members', label: '👥 Members' },
+            { id: 'events', label: '📅 Events' },
+            { id: 'discussions', label: '💬 Discussions' },
+            { id: 'analytics', label: '📊 Analytics' }
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              type="button"
+              onClick={() => setActiveTab(tab.id as typeof activeTab)}
+              className={`px-4 py-3 font-bold text-sm transition-colors ${
+                activeTab === tab.id
+                  ? 'border-b-2 border-purple-600 text-purple-700'
+                  : 'text-slate-700 hover:text-slate-900'
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
         </div>
       </div>
     </div>

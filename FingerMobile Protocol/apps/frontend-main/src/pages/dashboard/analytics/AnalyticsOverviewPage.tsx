@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ChartBarIcon, MembersIcon, EyeIcon } from '../../../components/icons';
 import { PlatformOwnershipCard } from '../../../components/ownership/PlatformOwnershipCard';
 
@@ -21,6 +21,7 @@ const engagementData = [
 const BarChart: React.FC<{ data: { name: string; views: number }[] }> = ({
   data
 }) => {
+  const [selectedBar, setSelectedBar] = useState<string | null>(null);
   const maxViews = Math.max(...data.map((d) => d.views));
   return (
     <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 h-64 flex items-end justify-around gap-2">
@@ -32,10 +33,12 @@ const BarChart: React.FC<{ data: { name: string; views: number }[] }> = ({
           <button
             type="button"
             aria-label={`${item.name}: ${item.views.toLocaleString()} views`}
-            className="w-full bg-blue-600 rounded-t-md hover:bg-blue-700 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className={`w-full rounded-t-md transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400 ${
+              selectedBar === item.name ? 'bg-blue-800 ring-2 ring-blue-500' : 'bg-blue-600 hover:bg-blue-700'
+            }`}
             style={{ height: `${(item.views / maxViews) * 100}%` }}
             title={`${item.views.toLocaleString()} views`}
-            onClick={() => {}}
+            onClick={() => setSelectedBar(selectedBar === item.name ? null : item.name)}
           />
           <span className="text-xs font-bold text-slate-800 mt-2">{item.name}</span>
         </div>

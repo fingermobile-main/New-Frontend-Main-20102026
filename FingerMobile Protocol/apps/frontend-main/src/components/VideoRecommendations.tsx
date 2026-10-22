@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { PlayIcon, PauseIcon } from '@heroicons/react/24/solid';
 
 interface VideoRecommendationsProps {
@@ -27,7 +28,12 @@ const VideoRecommendations: React.FC<VideoRecommendationsProps> = ({ userId, lim
 
       <div className="divide-y divide-gray-200 max-h-96 overflow-y-auto">
         {videos.slice(0, limit).map((video) => (
-          <div key={video.id} className="p-4 hover:bg-gray-50 transition-colors cursor-pointer group">
+          <Link
+            key={video.id}
+            to={`/dancia4tv?video=${video.id}`}
+            aria-label={`Watch ${video.title} by ${video.creator}`}
+            className="block p-4 hover:bg-gray-50 transition-colors group"
+          >
             <div className="flex gap-3">
               <div className="flex-shrink-0 w-24 h-16 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg flex items-center justify-center group-hover:opacity-90 transition-opacity">
                 <PlayIcon className="w-8 h-8 text-white" />
@@ -44,7 +50,7 @@ const VideoRecommendations: React.FC<VideoRecommendationsProps> = ({ userId, lim
                 </div>
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

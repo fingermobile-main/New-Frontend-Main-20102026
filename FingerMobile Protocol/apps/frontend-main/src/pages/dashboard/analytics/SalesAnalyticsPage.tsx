@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAppContext } from '../../../contexts/AppContext';
 import StatCard from '../../../components/StatCard';
 import { Product } from '../../../types';
@@ -36,6 +36,7 @@ const SalesAnalyticsPage: React.FC = () => {
   const BarChart: React.FC<{ data: { month: string; revenue: number }[] }> = ({
     data
   }) => {
+    const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
     const maxRevenue = Math.max(...data.map((d) => d.revenue), 1);
     return (
       <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 h-64 flex items-end justify-around gap-2">
@@ -47,10 +48,12 @@ const SalesAnalyticsPage: React.FC = () => {
             <button
               type="button"
               aria-label={`${item.month}: ${item.revenue.toLocaleString()} FIC`}
-              className="w-full bg-blue-600 rounded-t-md hover:bg-blue-700 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className={`w-full rounded-t-md transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400 ${
+                selectedMonth === item.month ? 'bg-blue-800 ring-2 ring-blue-500' : 'bg-blue-600 hover:bg-blue-700'
+              }`}
               style={{ height: `${Math.max(10, (item.revenue / maxRevenue) * 100)}%` }}
               title={`${item.revenue.toLocaleString()} FIC`}
-              onClick={() => {}}
+              onClick={() => setSelectedMonth(selectedMonth === item.month ? null : item.month)}
             />
             <span className="text-xs font-bold text-slate-800 mt-2">{item.month}</span>
           </div>

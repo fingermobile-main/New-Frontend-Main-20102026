@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   ChartBarIcon,
   UserGroupIcon,
@@ -98,6 +99,29 @@ interface CreatorBestPostingTime {
 const CreatorDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [timeRange, setTimeRange] = useState('7d');
+  const [perfRange, setPerfRange] = useState<'1D' | '1W' | '1M'>('1W');
+  const [likedItems, setLikedItems] = useState<Record<number, boolean>>({});
+  const [contentList, setContentList] = useState<number[]>([1, 2, 3, 4, 5, 6]);
+  const [isScheduling, setIsScheduling] = useState(false);
+
+  const toggleLikeItem = (id: number) => {
+    setLikedItems(prev => ({ ...prev, [id]: !prev[id] }));
+  };
+
+  const handleDeleteItem = (id: number) => {
+    setContentList(prev => prev.filter(item => item !== id));
+  };
+
+  const handleExport = (type: string) => {
+    const blob = new Blob([JSON.stringify({ type, exportedAt: new Date().toISOString() }, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `creator-${type}-${Date.now()}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   const [creatorMetrics, setCreatorMetrics] = useState<CreatorMetric[]>([]);
   const [contentPerformance, setContentPerformance] = useState<CreatorContentPerformance[]>([]);
   const [scheduledContent, setScheduledContent] = useState<CreatorScheduledContent[]>([]);
@@ -264,10 +288,13 @@ const CreatorDashboard: React.FC = () => {
             <option value="30d">Last 30 Days</option>
             <option value="90d">Last 90 Days</option>
           </select>
-          <button className="flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-sm font-medium text-white">
+          <Link
+            to="/createpost"
+            className="flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-sm font-medium text-white"
+          >
             <PlusIcon className="w-4 h-4 mr-2" />
             Create Content
-          </button>
+          </Link>
         </div>
       </div>
 
@@ -283,6 +310,7 @@ const CreatorDashboard: React.FC = () => {
         ].map((tab) => (
           <button
             key={tab.id}
+            type="button"
             className={`flex items-center px-3 py-2 sm:px-6 sm:py-4 text-xs sm:text-sm font-medium ${
               activeTab === tab.id
                 ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400'
@@ -328,7 +356,13 @@ const CreatorDashboard: React.FC = () => {
               <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-slate-300 dark:border-gray-700">
                 <div className="flex justify-between items-center mb-6">
                   <h3 className="text-lg font-bold">Top Performing Content</h3>
-                  <button className="text-sm text-blue-600 dark:text-blue-400">View All</button>
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab('content')}
+                    className="text-sm text-blue-600 dark:text-blue-400 font-medium hover:underline"
+                  >
+                    View All
+                  </button>
                 </div>
                 <div className="space-y-4">
                   {contentPerformance.map((content) => (
@@ -372,7 +406,13 @@ const CreatorDashboard: React.FC = () => {
               <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-slate-300 dark:border-gray-700">
                 <div className="flex justify-between items-center mb-6">
                   <h3 className="text-lg font-bold">Scheduled Content</h3>
-                  <button className="text-sm text-blue-600 dark:text-blue-400">View All</button>
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab('schedule')}
+                    className="text-sm text-blue-600 dark:text-blue-400 font-medium hover:underline"
+                  >
+                    View All
+                  </button>
                 </div>
                 <div className="space-y-4">
                   {scheduledContent.map((content) => (
@@ -387,7 +427,11 @@ const CreatorDashboard: React.FC = () => {
                     </div>
                   ))}
 
-                  <button className="w-full mt-4 py-3 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg text-slate-700 dark:text-slate-300 font-medium hover:border-gray-400 dark:hover:border-gray-500 hover:text-slate-900 dark:hover:text-white flex items-center justify-center">
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab('schedule')}
+                    className="w-full mt-4 py-3 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg text-slate-700 dark:text-slate-300 font-medium hover:border-gray-400 dark:hover:border-gray-500 hover:text-slate-900 dark:hover:text-white flex items-center justify-center"
+                  >
                     <PlusIcon className="w-5 h-5 mr-2" />
                     Schedule New Content
                   </button>
@@ -400,13 +444,37 @@ const CreatorDashboard: React.FC = () => {
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-lg font-bold">Performance Overview</h3>
                 <div className="flex space-x-2">
-                  <button className="px-3 py-1 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg text-sm">
+                  <button
+                    type="button"
+                    onClick={() => setPerfRange('1D')}
+                    className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
+                      perfRange === '1D'
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-slate-800 dark:text-slate-200'
+                    }`}
+                  >
                     1D
                   </button>
-                  <button className="px-3 py-1 bg-blue-600 hover:bg-blue-700 rounded-lg text-sm text-white">
+                  <button
+                    type="button"
+                    onClick={() => setPerfRange('1W')}
+                    className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
+                      perfRange === '1W'
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-slate-800 dark:text-slate-200'
+                    }`}
+                  >
                     1W
                   </button>
-                  <button className="px-3 py-1 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg text-sm">
+                  <button
+                    type="button"
+                    onClick={() => setPerfRange('1M')}
+                    className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
+                      perfRange === '1M'
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-slate-800 dark:text-slate-200'
+                    }`}
+                  >
                     1M
                   </button>
                 </div>
@@ -433,18 +501,30 @@ const CreatorDashboard: React.FC = () => {
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-lg font-bold">Content Studio</h3>
               <div className="flex space-x-2">
-                <button className="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg text-sm font-medium">
+                <label
+                  htmlFor="creator-import-media"
+                  className="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg text-sm font-medium cursor-pointer inline-flex items-center"
+                >
                   Import Media
-                </button>
-                <button className="flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-sm font-medium text-white">
+                  <input
+                    id="creator-import-media"
+                    type="file"
+                    className="hidden"
+                    onChange={() => {}}
+                  />
+                </label>
+                <Link
+                  to="/createpost"
+                  className="flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-sm font-medium text-white"
+                >
                   <PlusIcon className="w-4 h-4 mr-2" />
                   Create New
-                </button>
+                </Link>
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[1, 2, 3, 4, 5, 6].map((item) => (
+              {contentList.map((item) => (
                 <div key={item} className="bg-white dark:bg-gray-800 rounded-xl border border-slate-300 dark:border-gray-700 overflow-hidden">
                   <div className="h-40 bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
                     {item % 3 === 1 ? (
@@ -462,12 +542,27 @@ const CreatorDashboard: React.FC = () => {
                         <div className="text-sm text-slate-700 dark:text-slate-300 font-medium mt-1">Created 2 days ago</div>
                       </div>
                       <div className="flex space-x-1">
-                        <button className="p-1.5 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg">
+                        <button
+                          type="button"
+                          aria-label={likedItems[item] ? "Unlike content item" : "Like content item"}
+                          onClick={() => toggleLikeItem(item)}
+                          className={`p-1.5 rounded-lg transition-colors ${
+                            likedItems[item]
+                              ? 'bg-red-100 text-red-600'
+                              : 'bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-slate-700 dark:text-slate-300'
+                          }`}
+                        >
                           <HeartIcon className="w-4 h-4" />
                         </button>
-                        <button className="p-1.5 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg" aria-label="Button"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                        </svg>
+                        <button
+                          type="button"
+                          aria-label="Delete content item"
+                          onClick={() => handleDeleteItem(item)}
+                          className="p-1.5 bg-gray-200 dark:bg-gray-700 hover:bg-red-100 hover:text-red-600 dark:hover:bg-gray-600 rounded-lg text-slate-700 dark:text-slate-300 transition-colors"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                          </svg>
                         </button>
                       </div>
                     </div>
@@ -494,7 +589,11 @@ const CreatorDashboard: React.FC = () => {
                   <option>By Date</option>
                   <option>By Engagement</option>
                 </select>
-                <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-sm font-medium text-white">
+                <button
+                  type="button"
+                  onClick={() => handleExport('report')}
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-sm font-medium text-white"
+                >
                   Export Report
                 </button>
               </div>
@@ -578,7 +677,11 @@ const CreatorDashboard: React.FC = () => {
           <div>
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-lg font-bold">Audience Insights</h3>
-              <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-sm font-medium text-white">
+              <button
+                type="button"
+                onClick={() => handleExport('audience')}
+                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-sm font-medium text-white"
+              >
                 Export Data
               </button>
             </div>
@@ -676,9 +779,12 @@ const CreatorDashboard: React.FC = () => {
                   <option value="30d">Last 30 Days</option>
                   <option value="90d">Last 90 Days</option>
                 </select>
-                <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-sm font-medium text-white">
+                <Link
+                  to="/wallet"
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-sm font-medium text-white inline-flex items-center"
+                >
                   Withdraw Earnings
-                </button>
+                </Link>
               </div>
             </div>
 
@@ -785,9 +891,15 @@ const CreatorDashboard: React.FC = () => {
           <div>
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-lg font-bold">Content Scheduler</h3>
-              <button className="flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-sm font-medium text-white">
-                <PlusIcon className="w-4 h-4 mr-2" />
-                Schedule New Content
+              <button
+                type="button"
+                onClick={() => setIsScheduling(prev => !prev)}
+                className={`flex items-center px-4 py-2 rounded-lg text-sm font-medium text-white transition-colors ${
+                  isScheduling ? 'bg-blue-800' : 'bg-blue-600 hover:bg-blue-700'
+                }`}
+              >
+                <PlusIcon className={`w-4 h-4 mr-2 ${isScheduling ? 'rotate-45' : ''} transition-transform`} />
+                {isScheduling ? 'Close Scheduler' : 'Schedule New Content'}
               </button>
             </div>
 

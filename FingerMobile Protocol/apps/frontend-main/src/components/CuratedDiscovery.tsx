@@ -88,9 +88,10 @@ const CuratedDiscovery: React.FC<CuratedDiscoveryProps> = ({
   return (
     <div className="space-y-3">
       {items.slice(0, limit).map((item) => (
-        <div
+        <Link
           key={item.id}
-          className="flex items-start space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer group"
+          to={item.type === 'trend' || item.type === 'hashtag' ? '/trends' : item.type === 'member' ? '/network' : '/explore'}
+          className="flex items-start space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors group block"
         >
           <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full flex items-center justify-center text-xl">
             {getIcon(item.type)}
@@ -103,12 +104,15 @@ const CuratedDiscovery: React.FC<CuratedDiscoveryProps> = ({
               {getSubtitle(item)}
             </p>
           </div>
-        </div>
+        </Link>
       ))}
 
-      <button className="w-full mt-4 px-4 py-2 text-sm text-blue-600 hover:bg-blue-50 rounded-lg transition-colors font-medium">
+      <Link
+        to="/trends"
+        className="block text-center w-full mt-4 px-4 py-2 text-sm text-blue-600 hover:bg-blue-50 rounded-lg transition-colors font-medium"
+      >
         View All Discoveries →
-      </button>
+      </Link>
     </div>
   );
 };
