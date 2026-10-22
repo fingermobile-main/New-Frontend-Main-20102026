@@ -39,7 +39,12 @@ const ForumPopularTags: React.FC<ForumPopularTagsProps> = ({ onTagClick }) => {
         ))}
       </div>
 
-      <button className="w-full mt-4 py-2 text-sm text-brand-blue hover:text-blue-700 font-bold transition-colors">
+      <button
+        type="button"
+        aria-label="Show more forum tags"
+        onClick={() => window.location.assign('/trends')}
+        className="w-full mt-4 py-2 text-sm text-brand-blue hover:text-blue-700 font-bold transition-colors"
+      >
         Show More Tags
       </button>
     </div>

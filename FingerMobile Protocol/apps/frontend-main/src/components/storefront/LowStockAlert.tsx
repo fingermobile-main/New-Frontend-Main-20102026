@@ -11,6 +11,7 @@ const LowStockAlert: React.FC<LowStockAlertProps> = ({ storeId, onRestock }) => 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [restocking, setRestocking] = useState<string | null>(null);
+  const [dismissedItems, setDismissedItems] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     loadLowStockItems();
@@ -258,11 +259,21 @@ const LowStockAlert: React.FC<LowStockAlertProps> = ({ storeId, onRestock }) => 
                     </button>
                   )}
 
-                  <button className="px-4 py-2 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors font-medium">
+                  <button
+                    type="button"
+                    aria-label={`View details for ${item.product_name}`}
+                    onClick={() => window.location.assign(`/store/${storeId}/inventory/${item.id}`)}
+                    className="px-4 py-2 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors font-medium"
+                  >
                     View Details
                   </button>
 
-                  <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium">
+                  <button
+                    type="button"
+                    aria-label={`Dismiss low stock alert for ${item.product_name}`}
+                    onClick={() => setDismissedItems(prev => new Set([...prev, item.id]))}
+                    className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"
+                  >
                     Dismiss
                   </button>
                 </div>

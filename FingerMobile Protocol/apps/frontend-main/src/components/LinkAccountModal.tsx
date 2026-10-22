@@ -123,7 +123,14 @@ const LinkAccountModal: React.FC<LinkAccountModalProps> = ({
                         </Button>
                       </div>
                     ) : (
-                      <Button variant="outline" size="sm" className="border-slate-300 text-slate-800 font-semibold">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        aria-label={`Connect ${account.name} account`}
+                        onClick={() => onLinkAccount?.(account.id)}
+                        className="border-slate-300 text-slate-800 font-semibold"
+                      >
                         Connect
                       </Button>
                     )}

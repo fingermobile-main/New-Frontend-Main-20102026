@@ -69,6 +69,8 @@ const Header: React.FC<HeaderProps> = ({
       <div className="flex items-center">
         <button
           type="button"
+          aria-label="View notifications"
+          onClick={() => window.location.assign('/notifications')}
           className="p-1 text-slate-700 rounded-full hover:text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
         >
           <span className="sr-only">View notifications</span>

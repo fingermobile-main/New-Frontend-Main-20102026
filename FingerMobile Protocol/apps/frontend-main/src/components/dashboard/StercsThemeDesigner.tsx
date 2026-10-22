@@ -315,13 +315,17 @@ const StercsThemeDesigner: React.FC = () => {
                 <div className="mt-4 flex items-center space-x-3">
                   <button
                     type="button"
-                    className="px-4 py-2 rounded-xl text-xs font-bold text-slate-950 shadow-md"
+                    aria-label="Watch Livestream"
+                    onClick={() => window.location.assign('/live')}
+                    className="px-4 py-2 rounded-xl text-xs font-bold text-slate-950 shadow-md hover:opacity-90 transition-opacity"
                     style={{ backgroundColor: accentColor }}
                   >
                     Watch Livestream
                   </button>
                   <button
                     type="button"
+                    aria-label="Export 4K Video"
+                    onClick={() => window.location.assign('/stercs')}
                     className="px-4 py-2 rounded-xl text-xs font-bold bg-black/30 hover:bg-black/40 text-white backdrop-blur-md"
                   >
                     Export 4K Video

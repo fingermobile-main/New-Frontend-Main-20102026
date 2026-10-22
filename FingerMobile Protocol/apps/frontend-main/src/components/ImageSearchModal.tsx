@@ -100,7 +100,7 @@ const ImageSearchModal: React.FC<ImageSearchModalProps> = ({
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                   />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
-                    <Button size="sm">Select</Button>
+                    <Button type="button" size="sm" aria-label={`Select image ${index + 1}`} onClick={() => onImageSelect?.(imageUrl)}>Select</Button>
                   </div>
                 </div>
               ))}

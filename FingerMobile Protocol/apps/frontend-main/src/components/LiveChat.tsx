@@ -107,7 +107,7 @@ const LiveChat: React.FC<LiveChatProps> = ({
             {messages.length} online
           </span>
         </div>
-        <button className="text-white hover:bg-white/20 rounded-full p-2 transition-colors">
+        <button type="button" aria-label="Chat settings" onClick={() => {}} className="text-white hover:bg-white/20 rounded-full p-2 transition-colors">
           ⚙️
         </button>
       </div>

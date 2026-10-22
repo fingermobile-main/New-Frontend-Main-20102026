@@ -128,8 +128,8 @@ const TrendsSlide: React.FC<TrendsSlideProps> = ({
         ))}
       </div>
 
-      <Button variant="outline" className="w-full mt-4 border-slate-300 text-slate-800 hover:bg-slate-50">
-        View All Trends
+      <Button type="button" variant="outline" asChild className="w-full mt-4 border-slate-300 text-slate-800 hover:bg-slate-50">
+        <a href="/trends">View All Trends</a>
       </Button>
     </div>
   );

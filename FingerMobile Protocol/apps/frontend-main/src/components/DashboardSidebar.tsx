@@ -1,7 +1,8 @@
-import React, {} from 'react';
+import React, { useCallback } from 'react';
 import { Home, LayoutDashboard, Users, Settings, LogOut, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface NavItem {
   id: string;
@@ -24,6 +25,7 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
   activeItem = 'home',
   onItemClick
 }) => {
+  const { logout } = useAuth();
   const navItems: NavItem[] = [
     { id: 'home', label: 'Home', icon: <Home className="h-5 w-5" /> },
     { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard className="h-5 w-5" /> },
@@ -81,7 +83,10 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
         {/* Logout */}
         <div className="p-2 border-t">
           <Button
+            type="button"
             variant="ghost"
+            aria-label="Log out of your account"
+            onClick={logout}
             className={`w-full justify-start ${collapsed ? 'px-2' : 'px-4'}`}
           >
             <LogOut className="h-5 w-5" />

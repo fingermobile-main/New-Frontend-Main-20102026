@@ -345,7 +345,11 @@ const ProfileEnhancement: React.FC = () => {
       </div>
 
       <div className="mt-6 flex justify-end">
-        <button className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium">
+        <button
+          type="submit"
+          aria-label="Save your profile changes"
+          className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium"
+        >
           Save Profile
         </button>
       </div>

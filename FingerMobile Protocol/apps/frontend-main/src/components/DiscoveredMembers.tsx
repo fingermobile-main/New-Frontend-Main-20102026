@@ -1,9 +1,10 @@
-import React, {} from 'react';
+import React from 'react';
 import { Users, UserPlus, MapPin, Briefcase } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/Avatar';
+import { Link } from 'react-router-dom';
 
 interface Member {
   id: string;
@@ -70,8 +71,8 @@ const DiscoveredMembers: React.FC<DiscoveredMembersProps> = ({
           <Users className="h-5 w-5 text-slate-700" />
           Discover Members
         </h2>
-        <Button variant="ghost" size="sm" className="text-slate-700 font-semibold hover:text-slate-900">
-          View All
+        <Button variant="ghost" size="sm" asChild className="text-slate-700 font-semibold hover:text-slate-900">
+          <Link to="/members">View All</Link>
         </Button>
       </div>
 

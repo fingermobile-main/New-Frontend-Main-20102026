@@ -109,7 +109,12 @@ const PulsatingBalance: React.FC<PulsatingBalanceProps> = ({
           Withdraw
         </button>
 
-        <button className="px-3 py-2 bg-blue-100 text-blue-950 border border-blue-400 font-bold rounded-lg hover:bg-blue-200 transition-colors text-sm font-medium">
+        <button
+          type="button"
+          aria-label="View balance history"
+          onClick={() => window.location.assign('/wallet/history')}
+          className="px-3 py-2 bg-blue-100 text-blue-950 border border-blue-400 font-bold rounded-lg hover:bg-blue-200 transition-colors text-sm"
+        >
           📊 History
         </button>
       </div>

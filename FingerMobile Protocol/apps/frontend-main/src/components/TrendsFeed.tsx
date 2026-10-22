@@ -144,7 +144,7 @@ const TrendsFeed: React.FC<TrendsFeedProps> = ({
         ))}
       </div>
 
-      <Button variant="outline" className="w-full mt-4 border-slate-300 text-slate-800 font-semibold">
+      <Button type="button" variant="outline" onClick={() => {}} aria-label="Load more trending topics" className="w-full mt-4 border-slate-300 text-slate-800 font-semibold">
         Load More Trends
       </Button>
     </div>

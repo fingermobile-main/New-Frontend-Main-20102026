@@ -564,7 +564,7 @@ const EcommercePage: React.FC = () => {
                               <Trash2 className="h-4 w-4" />
                             </button>
                             <div className="relative">
-                              <button className="text-gray-600 hover:text-gray-900" aria-label={`More options for product ${item.name}`}>
+                              <button type="button" className="text-gray-600 hover:text-gray-900" aria-label={`More options for product ${item.name}`}>
                                 <MoreHorizontal className="h-4 w-4" />
                               </button>
                               <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden">

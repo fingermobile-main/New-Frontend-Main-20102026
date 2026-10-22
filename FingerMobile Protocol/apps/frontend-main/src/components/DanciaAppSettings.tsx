@@ -433,6 +433,8 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     ].map((sort, idx) => (
                       <button
                         key={sort.id}
+                        type="button"
+                        aria-label={`Sort by ${sort.label}`}
                         className={`flex items-center justify-between p-6 bg-white/5 border rounded-2xl transition-all hover:bg-white/[0.07] ${
                           idx === 0 ? 'border-blue-500 bg-blue-500/10' : 'border-white/5'
                         }`}

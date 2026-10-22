@@ -176,7 +176,12 @@ const MemberSpotlight: React.FC<MemberSpotlightProps> = ({
 
       {/* Footer */}
       <div className="border-t border-slate-300 px-6 py-3 bg-gray-50">
-        <button className="text-sm text-purple-600 hover:text-purple-700 font-medium">
+        <button
+          type="button"
+          aria-label="View all member spotlights"
+          onClick={() => window.location.assign('/members')}
+          className="text-sm text-purple-600 hover:text-purple-700 font-medium"
+        >
           View All Members →
         </button>
       </div>

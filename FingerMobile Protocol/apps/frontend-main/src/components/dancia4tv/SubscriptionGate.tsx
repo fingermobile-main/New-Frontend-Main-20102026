@@ -27,7 +27,12 @@ export const SubscriptionGate: React.FC<SubscriptionGateProps> = ({
       <div className="subscription-upsell-card">
         <h3>Premium Content Protected</h3>
         <p>This premium video stream requires an active <strong>{requiredPlanType}</strong> package tier.</p>
-        <button className="upgrade-btn">View Upgrade Pricing Options</button>
+        <button
+          type="button"
+          aria-label="View upgrade pricing options for premium content"
+          onClick={() => window.location.assign('/pricing')}
+          className="upgrade-btn"
+        >View Upgrade Pricing Options</button>
       </div>
     );
   }

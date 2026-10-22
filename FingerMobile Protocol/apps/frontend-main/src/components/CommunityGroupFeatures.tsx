@@ -493,7 +493,11 @@ const CommunityGroupFeatures: React.FC = () => {
       </div>
 
       <div className="mt-6 flex justify-end">
-        <button className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <button
+          type="submit"
+          aria-label="Save your group settings"
+          className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        >
           Save Group Settings
         </button>
       </div>

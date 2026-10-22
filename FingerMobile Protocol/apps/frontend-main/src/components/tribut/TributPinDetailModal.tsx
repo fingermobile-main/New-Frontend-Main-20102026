@@ -665,9 +665,19 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
                                 </span>
                               )}
                               <div className="flex items-center gap-3 pt-1 text-[11px] font-semibold text-slate-600">
-                                <button className="hover:text-purple-700">Reply</button>
+                                <button
+                                  type="button"
+                                  aria-label={`Reply to ${comm.author || 'this comment'}`}
+                                  onClick={() => {}}
+                                  className="hover:text-purple-700 transition-colors"
+                                >Reply</button>
                                 <span>•</span>
-                                <button className="hover:text-rose-600">❤️ {comm.likes}</button>
+                                <button
+                                  type="button"
+                                  aria-label={`Like this comment (${comm.likes} likes)`}
+                                  onClick={() => {}}
+                                  className="hover:text-rose-600 transition-colors"
+                                >❤️ {comm.likes}</button>
                               </div>
                             </div>
                           </div>

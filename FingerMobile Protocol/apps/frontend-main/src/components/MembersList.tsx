@@ -91,7 +91,7 @@ const MembersList: React.FC<MembersListProps> = ({
               className="pl-10"
             />
           </div>
-          <Button variant="outline" size="icon" className="border-slate-300 text-slate-700">
+          <Button type="button" variant="outline" size="icon" aria-label="Filter members" className="border-slate-300 text-slate-700">
             <Filter className="h-4 w-4" />
           </Button>
         </div>
