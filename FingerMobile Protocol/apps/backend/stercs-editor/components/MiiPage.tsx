@@ -1,4 +1,4 @@
-import React, { useState, useEffect, memberef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import VoiceLineService from '../../../src/services/VoiceLineService';
 import { VoiceLineCategory } from '../../../src/services/VoiceLineService';
 
@@ -374,7 +374,7 @@ const MiiPage: React.FC = () => {
     engagement_rate: 0
   });
   
-  const fileInputRef = memberef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Initialize VoiceLineService
   useEffect(() => {
@@ -459,84 +459,6 @@ const MiiPage: React.FC = () => {
     }
   };
 
-  const fetchMemberProfile = async () => {
-    try {
-      // In a real app, this would fetch from an API
-      // For now, we'll create a mock member profile
-      const mockProfile: EnhancedMemberProfile = {
-        id: 'member-123',
-        name: 'John Doe',
-        avatar: 'https://via.placeholder.com/150',
-        bio: 'FingerMobile enthusiast and content creator.',
-        followers: 1200,
-        following: 350,
-        miiUpdates: [],
-        folders: [],
-        contacts: [],
-        miiPin: '12345',
-        hasExchangedPins: true,
-        monetizedFolders: [],
-        trustedContacts: ['member-456'],
-        onlineStatus: 'online',
-        canViewMyStatus: true,
-        canViewMyActivity: true,
-        canViewMyMii: true,
-        readReceiptsEnabled: true,
-        account_security_level: 'high',
-        two_factor_enabled: true,
-        last_security_scan: new Date(),
-        ai_insights: {
-          best_content_types: ['video', 'image'],
-          optimal_posting_times: ['10 AM', '3 PM', '8 PM'],
-          audience_growth_trend: 'increasing',
-          engagement_rate: 0.05
-        }
-      };
-      setMemberProfile(mockProfile);
-    } catch (error) {
-      console.error('Error fetching member profile:', error);
-    }
-  };
-
-  const fetchMessages = async () => {
-    try {
-      // In a real app, this would fetch from an API
-      // For now, we'll create mock messages
-      const mockMessages: AIEnhcancedMCPMessage[] = [
-        {
-          id: 'msg-1',
-          senderId: 'member-456',
-          recipientId: 'member-123',
-          content: 'Hey, how are you?',
-          timestamp: new Date(Date.now() - 60000), // 1 minute ago
-          type: 'secure',
-          status: 'read',
-          isEncrypted: true,
-          is_disappearing: false,
-          sentiment_analysis: { sentiment: 'positive', confidence: 0.9 },
-          smart_reply_suggestions: ['I am good, thanks!', 'What about you?'],
-          auto_response_enabled: false
-        },
-        {
-          id: 'msg-2',
-          senderId: 'member-123',
-          recipientId: 'member-456',
-          content: 'I am doing great!',
-          timestamp: new Date(Date.now() - 30000), // 30 seconds ago
-          type: 'secure',
-          status: 'delivered',
-          isEncrypted: true,
-          is_disappearing: false,
-          sentiment_analysis: { sentiment: 'positive', confidence: 0.85 },
-          smart_reply_suggestions: ['Glad to hear!', 'Anything new?'],
-          auto_response_enabled: false
-        }
-      ];
-      setMessages(mockMessages);
-    } catch (error) {
-      console.error('Error fetching messages:', error);
-    }
-  };
 
   // Missing functions that need to be added
   const fetchGroups = async () => {
@@ -732,48 +654,6 @@ const MiiPage: React.FC = () => {
     }
   };
 
-  const handleCreateFolder = () => {
-    if (!newFolderName.trim()) {
-      alert('Folder name cannot be empty.');
-      return;
-    }
-
-    if (memberProfile) {
-      const newFolder: EnhancedMiiFolder = {
-        id: `folder-${Date.now()}`,
-        name: newFolderName as 'Video' | 'Image', // Assuming newFolderName will be 'Video' or 'Image'
-        type: newFolderPrivacy,
-        privacy_setting: newFolderPrivacy,
-        pricing_model: {
-          type: newFolderPricingType,
-          amount: newFolderPricingAmount,
-          currency: 'USD', // Default currency
-        },
-        content: [],
-        can_download: true, // Default
-        is_tokenized: false, // Default
-        requires_pin: false, // Default
-        ai_suggested_members: [],
-        optimal_posting_members: [],
-        audience_demographics: {
-          age_groups: {},
-          interests: [],
-          location: []
-        }
-      };
-
-      setMemberProfile(prevProfile => {
-        if (!prevProfile) return null;
-        return {
-          ...prevProfile,
-          folders: [...prevProfile.folders, newFolder]
-        };
-      });
-      setNewFolderName('');
-      setShowFolderModal(false);
-      triggerVoiceLine('achievement'); // Trigger voice line on folder creation
-    }
-  };
 
   const handleCreateFingerOrbitFolder = () => {
     if (!newFolderName.trim()) {
@@ -962,55 +842,7 @@ const MiiPage: React.FC = () => {
               triggerVoiceLine('achievement'); // Trigger voice line on successful pin exchange
             }
           };
-      // In a real app, this would send a purchase request to the API
-      console.log(`Purchasing ${itemType} (ID: ${itemId}) for ${amount}`);
-      // Simulate a successful purchase
-      alert(`Successfully purchased ${itemType}!`);
-      triggerVoiceLine('earnings'); // Trigger voice line on successful purchase
-    } catch (error) {
-      console.error('Error during purchase:', error);
-      alert('Purchase failed. Please try again.');
-    }
-  };
 
-  const fetchAnalytics = async () => {
-    try {
-      // In a real app, this would fetch from an API
-      // For now, we'll create mock analytics
-      const mockAnalytics = {
-        mediaAnalytics: [
-          { type: 'image', total_items: 25, total_views: 5000, total_revenue: 123.45 },
-          { type: 'video', total_items: 10, total_views: 2000, total_revenue: 67.89 },
-          { type: 'audio', total_items: 5, total_views: 500, total_revenue: 34.56 }
-        ]
-      };
-      
-      setAnalytics(mockAnalytics);
-    } catch (error) {
-      console.error('Error fetching analytics:', error);
-    }
-  };
-Member
-  const fetchMediaAccessList = async () => {
-    try {
-      // In a real app, this would fetch from an API
-      // For now, we'll create mock access list
-      const mockAccessList = [
-        {
-          id: 'access-1',
-          media_id: 'fob-1',
-          owner_name: 'Jane Smith',
-          folder_name: 'Exclusive Photos',
-          granted_at: new Date(Date.now() - 86400000), // 1 day ago
-          expiry_date: new Date(Date.now() + 2592000000) // 30 days from now
-        }
-      ];
-      
-      setMediaAccessList(mockAccessList);
-    } catch (error) {
-      console.error('Error fetching media access list:', error);
-    }
-  };
 
   const fetchMemberProfile = async () => {
     try {

@@ -59,21 +59,22 @@ const Deployment: React.FC<DeploymentProps> = ({ theme }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
 
       if (result.success) {
         setConfigs(result.data);
-       else {
+      } else {
         setError(result.message || 'Failed to fetch deployment configs');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-     finally {
+    } finally {
       setLoading(false);
-
+    }
+  };
 
   const fetchDeployments = async () => {
     try {
@@ -82,24 +83,26 @@ const Deployment: React.FC<DeploymentProps> = ({ theme }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
 
       if (result.success) {
         setDeployments(result.data);
-       else {
+      } else {
         setError(result.message || 'Failed to fetch deployments');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const handleCreateConfig = async () => {
     if (!newConfigName.trim() || !newConfigProvider || !newConfigProjectId) {
       setError('Configuration name, provider, and project ID are required');
       return;
+    }
 
     try {
       const response = await fetch('/api/editor/deployment/configs', {
@@ -124,17 +127,19 @@ const Deployment: React.FC<DeploymentProps> = ({ theme }) => {
         setNewConfigProvider('vercel');
         setNewConfigProjectId('1');
         fetchConfigs(); // Refresh the configs list
-       else {
+      } else {
         setError(result.message || 'Failed to create deployment config');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const handleCreateDeployment = async () => {
     if (!newDeploymentConfigId || !newDeploymentProjectId) {
       setError('Configuration ID and Project ID are required for deployment');
       return;
+    }
 
     try {
       const response = await fetch('/api/editor/deployment', {
@@ -157,15 +162,17 @@ const Deployment: React.FC<DeploymentProps> = ({ theme }) => {
         setNewDeploymentProjectId('1');
         setNewDeploymentNotes('');
         fetchDeployments(); // Refresh the deployments list
-       else {
+      } else {
         setError(result.message || 'Failed to create deployment');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleString();
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -174,6 +181,8 @@ const Deployment: React.FC<DeploymentProps> = ({ theme }) => {
       case 'pending': return '#3b82f6';
       case 'failed': return '#ef4444';
       default: return '#6b7280';
+    }
+  };
 
 
   return (
@@ -526,4 +535,6 @@ const Deployment: React.FC<DeploymentProps> = ({ theme }) => {
       )}
     </div>
   );
+};
+
 export default Deployment;

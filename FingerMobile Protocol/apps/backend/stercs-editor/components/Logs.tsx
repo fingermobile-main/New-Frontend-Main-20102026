@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 interface LogEntry {
   id: number;
   memberId: number;
-  membermembername: string;
+  memberName: string;
   projectId: number;
   action: string;
   details: string;
@@ -388,7 +388,7 @@ const Logs: React.FC<LogProps> = ({ theme }) => {
                   </div>
                   
                   <div style={{ fontSize: '0.8rem', color: '#6b7280', marginBottom: '0.25rem' }}>
-                    Member: {log.membermembername} • Project: {log.projectId}
+                    Member: {log.memberName} • Project: {log.projectId}
                   </div>
                   
                   {log.details && (

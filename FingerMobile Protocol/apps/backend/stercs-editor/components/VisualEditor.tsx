@@ -1,4 +1,4 @@
-import React, { useState, memberef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Terminal from './Terminal';
 import Explorer from './Explorer';
 import Search from './Search';
@@ -26,7 +26,7 @@ import Monitoring from './Monitoring';
 import ProjectManagement from './ProjectManagement';
 import Reporting from './Reporting';
 import IntegrationManagement from './IntegrationManagement';
-import memberProfile from 'memberProfile';
+import MemberProfile from './MemberProfile';
 
 interface ComponentType {
   id: string;
@@ -49,10 +49,10 @@ const VisualEditor: React.FC = () => {
   const [canvasElements, setCanvasElements] = useState<CanvasElement[]>([]);
   const [draggedComponent, setDraggedComponent] = useState<string | null>(null);
   const [isPreviewMode, setIsPreviewMode] = useState<boolean>(false);
-  const [theme, setTheme] = useState<'light' | 'dark' | 'blue'>('light');membermember
-  const [isTerminalOmember setIsTerminalOpen] = useState<boolean>(false);
+  const [theme, setTheme] = useState<'light' | 'dark' | 'blue'>('light');
+  const [isTerminalOpen, setIsTerminalOpen] = useState<boolean>(false);
   const [activePanel, setActivePanel] = useState<'explorer' | 'search' | 'version-control' | 'theme' | 'pages' | 'platform-theme' | 'ai-generation' | 'business-management' | 'member-management' | 'analytics' | 'ecommerce' | 'security' | 'documentation' | 'deployment' | 'performance' | 'backup' | 'logs' | 'notifications' | 'testing' | 'files' | 'collaboration' | 'apis' | 'monitoring' | 'project-management' | 'reporting' | 'integrations' | 'member-profile' | null>(null);
-  const canvasRef = memberef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLDivElement>(null);
 
   // Available components for the drag-and-drop interface
   const availableComponents: ComponentType[] = [
@@ -352,18 +352,18 @@ const VisualEditor: React.FC = () => {
             <button 
               onClick={() => setActivePanel(activePanel === 'business-management' ? null : 'business-management')}
               className="toolbar-btn"
-              style={{membermember
+              style={{
                 padding: '0.5rem',
                 backgroundColor: activePanel === 'business-management' ? (theme === 'dark' ? '#374151' : theme === 'blue' ? '#3b82f6' : '#d1d5db') : (theme === 'dark' ? '#4b5563' : theme === 'blue' ? '#93c5fd' : '#e5e7eb'),
                 color: theme === 'dark' ? 'white' : '#1f2937',
-                border: 'none',member
+                border: 'none',
                 borderRadius: '4px',
                 cursor: 'pointer'
               }}
             >
               Business Tools
             </button>
-            <bMembern 
+            <button 
               onClick={() => setActivePanel(activePanel === 'member-management' ? null : 'member-management')}
               className="toolbar-btn"
               style={{
@@ -604,11 +604,11 @@ const VisualEditor: React.FC = () => {
             <button 
               onClick={() => setActivePanel(activePanel === 'integrations' ? null : 'integrations')}
               className="toolbar-btn"
-              style={{membermember
+              style={{
                 padding: '0.5rem',
                 backgroundColor: activePanel === 'integrations' ? (theme === 'dark' ? '#374151' : theme === 'blue' ? '#3b82f6' : '#d1d5db') : (theme === 'dark' ? '#4b5563' : theme === 'blue' ? '#93c5fd' : '#e5e7eb'),
                 color: theme === 'dark' ? 'white' : '#1f2937',
-                border: 'none',member
+                border: 'none',
                 borderRadius: '4px',
                 cursor: 'pointer'
               }}
@@ -682,7 +682,7 @@ const VisualEditor: React.FC = () => {
               padding: '0.5rem 1rem',
               backgroundColor: isTerminalOpen ? '#10b981' : '#6b7280',
               color: 'white',
-              border: 'none',MemberMember
+              border: 'none',
               borderRadius: '4px',
               cursor: 'pointer',
               marginLeft: '0.5rem'
@@ -729,7 +729,7 @@ const VisualEditor: React.FC = () => {
             {activePanel === 'platform-theme' && (
               <PlatformThemeSelector 
                 theme={theme} 
-              />member
+              />
             )}
             {activePanel === 'ai-generation' && (
               <AIGeneration 
@@ -819,8 +819,8 @@ const VisualEditor: React.FC = () => {
             {activePanel === 'project-management' && (
               <ProjectManagement 
                 theme={theme} 
-              />member
-            )}Member
+              />
+            )}
             {activePanel === 'reporting' && (
               <Reporting 
                 theme={theme} 
@@ -868,7 +868,7 @@ const VisualEditor: React.FC = () => {
                   borderRadius: '4px',
                   cursor: 'grab',
                   color: theme === 'dark' ? 'white' : '#1f2937',
-                  memberselect: 'none'
+                  userSelect: 'none'
                 }}
               >
                 {component.name}

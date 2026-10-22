@@ -1,4 +1,4 @@
-import React, { useState, useEffect, memberef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 interface FileItem {
   id: number;
@@ -43,12 +43,12 @@ const FileManager: React.FC<FileManagerProps> = ({ theme }) => {
   const [stats, setStats] = useState<FileStats | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [currentFolder, memberCurrentFolder] = useState<number | null>(null);
+  const [currentFolder, setCurrentFolder] = useState<number | null>(null);
   const [newFolderName, setNewFolderName] = useState<string>('');
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [fileTypeFilter, setFileTypeFilter] = useState<string>('');
 
-  const fileInputRef = memberef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Fetch data on initial load
   useEffect(() => {

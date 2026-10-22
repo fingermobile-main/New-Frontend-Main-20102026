@@ -63,13 +63,13 @@ const ApiManager: React.FC<ApiManagerProps> = ({ theme }) => {
   useEffect(() => {
     if (selectedApi) {
       fetchEndpoints(selectedApi);
-
+    }
   }, [selectedApi]);
 
   useEffect(() => {
     if (selectedEndpoint) {
       fetchTestResults(selectedEndpoint);
-
+    }
   }, [selectedEndpoint]);
 
   const fetchApis = async () => {
@@ -80,21 +80,22 @@ const ApiManager: React.FC<ApiManagerProps> = ({ theme }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
 
       if (result.success) {
         setApis(result.data);
-       else {
+      } else {
         setError(result.message || 'Failed to fetch APIs');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-     finally {
+    } finally {
       setLoading(false);
-
+    }
+  };
 
   const fetchEndpoints = async (apiId: number) => {
     try {
@@ -103,19 +104,20 @@ const ApiManager: React.FC<ApiManagerProps> = ({ theme }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
 
       if (result.success) {
         setEndpoints(result.data);
-       else {
+      } else {
         setError(result.message || 'Failed to fetch endpoints');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const fetchTestResults = async (endpointId: number) => {
     try {
@@ -124,24 +126,26 @@ const ApiManager: React.FC<ApiManagerProps> = ({ theme }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
 
       if (result.success) {
         setTestResults(result.data);
-       else {
+      } else {
         setError(result.message || 'Failed to fetch test results');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const handleCreateApi = async () => {
     if (!newApiName || !newApiProjectId || !newApiBaseUrl) {
       setError('API name, project ID, and base URL are required');
       return;
+    }
 
     try {
       const response = await fetch('/api/editor/apis', {
@@ -168,17 +172,19 @@ const ApiManager: React.FC<ApiManagerProps> = ({ theme }) => {
         setNewApiBaseUrl('');
         setNewApiAuthType('none');
         fetchApis(); // Refresh the APIs list
-       else {
+      } else {
         setError(result.message || 'Failed to create API');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const handleCreateEndpoint = async () => {
     if (!selectedApi || !newEndpointPath || !newEndpointMethod) {
       setError('API, path, and method are required for endpoint creation');
       return;
+    }
 
     try {
       const response = await fetch(`/api/editor/apis/${selectedApi}/endpoints`, {
@@ -201,12 +207,13 @@ const ApiManager: React.FC<ApiManagerProps> = ({ theme }) => {
         setNewEndpointMethod('GET');
         setNewEndpointDescription('');
         fetchEndpoints(selectedApi); // Refresh the endpoints list
-       else {
+      } else {
         setError(result.message || 'Failed to create endpoint');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const handleTestEndpoint = async (endpointId: number) => {
     try {
@@ -224,15 +231,17 @@ const ApiManager: React.FC<ApiManagerProps> = ({ theme }) => {
       if (result.success) {
         fetchTestResults(endpointId); // Refresh test results
         alert(`Test successful! Status: ${result.data.statusCode}, Response time: ${result.data.responseTime}ms`);
-       else {
+      } else {
         setError(result.message || 'Failed to test endpoint');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleString();
+  };
 
   const getMethodColor = (method: string) => {
     switch (method.toUpperCase()) {
@@ -242,13 +251,15 @@ const ApiManager: React.FC<ApiManagerProps> = ({ theme }) => {
       case 'DELETE': return '#ef4444';
       case 'PATCH': return '#8b5cf6';
       default: return '#6b7280';
-
+    }
+  };
 
   const getStatusColor = (statusCode: number) => {
     if (statusCode >= 200 && statusCode < 300) return '#10b981';
     if (statusCode >= 300 && statusCode < 400) return '#f59e0b';
     if (statusCode >= 400) return '#ef4444';
     return '#6b7280';
+  };
 
   return (
     <div 
@@ -760,4 +771,6 @@ const ApiManager: React.FC<ApiManagerProps> = ({ theme }) => {
       )}
     </div>
   );
+};
+
 export default ApiManager;

@@ -42,21 +42,22 @@ const Documentation: React.FC<DocumentationProps> = ({ theme }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
 
       if (result.success) {
         setQuickStartGuide(result.data.sections);
-       else {
+      } else {
         setError(result.message || 'Failed to fetch quick start guide');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-     finally {
+    } finally {
       setLoading(false);
-
+    }
+  };
 
   const fetchComponentReference = async () => {
     try {
@@ -65,24 +66,26 @@ const Documentation: React.FC<DocumentationProps> = ({ theme }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
 
       if (result.success) {
         setComponentReference(result.data.components);
-       else {
+      } else {
         setError(result.message || 'Failed to fetch component reference');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const handleSearch = async () => {
     if (!searchQuery.trim()) {
       setSearchResults([]);
       return;
+    }
 
     try {
       const response = await fetch(`/api/editor/documentation/search/${searchQuery}`, {
@@ -90,18 +93,20 @@ const Documentation: React.FC<DocumentationProps> = ({ theme }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
 
       if (result.success) {
         setSearchResults(result.data);
-       else {
+      } else {
         setError(result.message || 'Failed to search documentation');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
+    }
+  };
 
 
   return (
@@ -313,4 +318,6 @@ const Documentation: React.FC<DocumentationProps> = ({ theme }) => {
       )}
     </div>
   );
+};
+
 export default Documentation;

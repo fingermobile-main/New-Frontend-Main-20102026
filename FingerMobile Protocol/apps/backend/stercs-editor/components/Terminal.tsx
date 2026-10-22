@@ -1,4 +1,4 @@
-import React, { useState, useEffect, memberef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 interface CommandHistoryItem {
   id: string;
@@ -14,10 +14,10 @@ const Terminal: React.FC = () => {
     [],
   );
   const [historyIndex, setHistoryIndex] = useState<number>(-1);
-  const [isTerminalOpememberetIsTerminalOpen] = useState<boolean>(false);
-  const [isLoading, memberIsLoading] = useState<boolean>(false);
-  const terminalRef = memberef<HTMLDivElement>(null);
-  const inputRef = memberef<HTMLInputElement>(null);
+  const [isTerminalOpen, setIsTerminalOpen] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const terminalRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   // Scroll to bottom of terminal when output changes
   useEffect(() => {

@@ -30,7 +30,7 @@ const AIGeneration: React.FC<AIGenerationProps> = ({ theme }) => {
   useEffect(() => {
     if (activeTab === 'history') {
       fetchHistory();
-
+    }
   }, [activeTab]);
 
   const fetchHistory = async () => {
@@ -41,26 +41,28 @@ const AIGeneration: React.FC<AIGenerationProps> = ({ theme }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
 
       if (result.success) {
         setHistory(result.data);
-       else {
+      } else {
         setError(result.message || 'Failed to fetch history');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-     finally {
+    } finally {
       setLoading(false);
-
+    }
+  };
 
   const handleGenerateText = async () => {
     if (!prompt.trim()) {
       setError('Prompt is required');
       return;
+    }
 
     try {
       setLoading(true);
@@ -80,19 +82,21 @@ const AIGeneration: React.FC<AIGenerationProps> = ({ theme }) => {
 
       if (result.success) {
         setGeneratedText(result.data.content);
-       else {
+      } else {
         setError(result.message || 'Failed to generate text');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-     finally {
+    } finally {
       setLoading(false);
-
+    }
+  };
 
   const handleGenerateImage = async () => {
     if (!imagePrompt.trim()) {
       setError('Image prompt is required');
       return;
+    }
 
     try {
       setLoading(true);
@@ -112,19 +116,21 @@ const AIGeneration: React.FC<AIGenerationProps> = ({ theme }) => {
 
       if (result.success) {
         setGeneratedImage(result.data.imageUrl);
-       else {
+      } else {
         setError(result.message || 'Failed to generate image');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-     finally {
+    } finally {
       setLoading(false);
-
+    }
+  };
 
   const handleGetCodeSuggestions = async () => {
     if (!codeInput.trim()) {
       setError('Code is required');
       return;
+    }
 
     try {
       setLoading(true);
@@ -144,19 +150,21 @@ const AIGeneration: React.FC<AIGenerationProps> = ({ theme }) => {
 
       if (result.success) {
         setCodeSuggestions(result.data.suggestions);
-       else {
+      } else {
         setError(result.message || 'Failed to get code suggestions');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-     finally {
+    } finally {
       setLoading(false);
-
+    }
+  };
 
   const handleGenerateSitemap = async () => {
     if (!projectId.trim()) {
       setError('Project ID is required');
       return;
+    }
 
     try {
       setLoading(true);
@@ -173,13 +181,15 @@ const AIGeneration: React.FC<AIGenerationProps> = ({ theme }) => {
 
       if (result.success) {
         setSitemap(result.data.sitemap);
-       else {
+      } else {
         setError(result.message || 'Failed to generate sitemap');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-     finally {
+    } finally {
       setLoading(false);
+    }
+  };
 
 
   return (
@@ -507,4 +517,6 @@ const AIGeneration: React.FC<AIGenerationProps> = ({ theme }) => {
       )}
     </div>
   );
+};
+
 export default AIGeneration;

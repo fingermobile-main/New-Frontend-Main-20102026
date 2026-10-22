@@ -59,21 +59,22 @@ const Analytics: React.FC<AnalyticsProps> = ({ theme }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
 
       if (result.success) {
         setSummary(result.data);
-       else {
+      } else {
         setError(result.message || 'Failed to fetch analytics summary');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-     finally {
+    } finally {
       setLoading(false);
-
+    }
+  };
 
   const fetchAnalyticsEvents = async () => {
     try {
@@ -82,19 +83,20 @@ const Analytics: React.FC<AnalyticsProps> = ({ theme }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
 
       if (result.success) {
         setEvents(result.data);
-       else {
+      } else {
         setError(result.message || 'Failed to fetch analytics events');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const fetchDashboards = async () => {
     try {
@@ -103,24 +105,26 @@ const Analytics: React.FC<AnalyticsProps> = ({ theme }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
 
       if (result.success) {
         setDashboards(result.data);
-       else {
+      } else {
         setError(result.message || 'Failed to fetch dashboards');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const handleCreateDashboard = async () => {
     if (!newDashboardName.trim()) {
       setError('Dashboard name is required');
       return;
+    }
 
     try {
       const response = await fetch('/api/analytics/dashboards', {
@@ -143,18 +147,21 @@ const Analytics: React.FC<AnalyticsProps> = ({ theme }) => {
         setNewDashboardName('');
         setNewDashboardDescription('');
         fetchDashboards(); // Refresh the dashboards list
-       else {
+      } else {
         setError(result.message || 'Failed to create dashboard');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString();
+  };
 
   const formatDateTime = (dateString: string) => {
     return new Date(dateString).toLocaleString();
+  };
 
   return (
     <div 
@@ -465,7 +472,7 @@ const Analytics: React.FC<AnalyticsProps> = ({ theme }) => {
                     <button
                       style={{
                         padding: '0.25rem 0.5rem',
-                        backgroundColor: (theme === 'dark' ? '#3b82f6' : theme === 'blue' : '#3b82f6'),
+                        backgroundColor: (theme === 'dark' ? '#3b82f6' : theme === 'blue' ? '#3b82f6' : '#3b82f6'),
                         color: 'white',
                         border: 'none',
                         borderRadius: '4px',
@@ -478,7 +485,7 @@ const Analytics: React.FC<AnalyticsProps> = ({ theme }) => {
                     <button
                       style={{
                         padding: '0.25rem 0.5rem',
-                        backgroundColor: (theme === 'dark' ? '#6b7280' : theme === 'blue' : '#6b7280'),
+                        backgroundColor: (theme === 'dark' ? '#6b7280' : theme === 'blue' ? '#6b7280' : '#6b7280'),
                         color: 'white',
                         border: 'none',
                         borderRadius: '4px',
@@ -497,4 +504,6 @@ const Analytics: React.FC<AnalyticsProps> = ({ theme }) => {
       )}
     </div>
   );
+};
+
 export default Analytics;

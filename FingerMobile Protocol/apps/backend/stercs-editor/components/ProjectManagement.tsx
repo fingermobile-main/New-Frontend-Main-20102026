@@ -720,7 +720,7 @@ const ProjectManagement: React.FC<ProjectManagementProps> = ({ theme }) => {
                       type="number"
                       value={newTaskAssigneeId}
                       onChange={(e) => setNewTaskAssigneeId(e.target.value)}
-                      placeholder=Member ID"
+                      placeholder="Member ID"
                       style={{
                         width: '100%',
                         padding: '0.5rem',
@@ -839,7 +839,7 @@ const ProjectManagement: React.FC<ProjectManagementProps> = ({ theme }) => {
                               task.priority === 'medium' ? '#fef3c7' : 
                               task.priority === 'low' ? '#d1fae5' : 
                               '#e5e7eb',
-                            color: Member
+                            color: 
                               task.priority === 'critical' ? '#7f1d1d' : 
                               task.priority === 'high' ? '#c2410c' : 
                               task.priority === 'medium' ? '#d97706' : 

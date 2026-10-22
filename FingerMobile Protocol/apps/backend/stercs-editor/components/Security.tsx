@@ -7,6 +7,7 @@ interface SecurityPolicy {
   enabled: boolean;
   createdAt: string;
   updatedAt: string;
+}
 
 interface FirewallRule {
   id: number;
@@ -20,6 +21,7 @@ interface FirewallRule {
   enabled: boolean;
   createdAt: string;
   updatedAt: string;
+}
 
 interface SecurityEvent {
   id: number;
@@ -27,9 +29,11 @@ interface SecurityEvent {
   eventData: any;
   severity: string;
   createdAt: string;
+}
 
 interface SecurityProps {
   theme: 'light' | 'dark' | 'blue';
+}
 
 const Security: React.FC<SecurityProps> = ({ theme }) => {
   const [activeTab, setActiveTab] = useState<'policies' | 'firewall' | 'events'>('policies');
@@ -66,21 +70,22 @@ const Security: React.FC<SecurityProps> = ({ theme }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
 
       if (result.success) {
         setPolicies(result.data);
-       else {
+      } else {
         setError(result.message || 'Failed to fetch policies');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-     finally {
+    } finally {
       setLoading(false);
-
+    }
+  };
 
   const fetchFirewallRules = async () => {
     try {
@@ -89,19 +94,20 @@ const Security: React.FC<SecurityProps> = ({ theme }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
 
       if (result.success) {
         setFirewallRules(result.data);
-       else {
+      } else {
         setError(result.message || 'Failed to fetch firewall rules');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const fetchSecurityEvents = async () => {
     try {
@@ -110,24 +116,26 @@ const Security: React.FC<SecurityProps> = ({ theme }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
 
       if (result.success) {
         setSecurityEvents(result.data);
-       else {
+      } else {
         setError(result.message || 'Failed to fetch security events');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const handleCreatePolicy = async () => {
     if (!newPolicyName.trim()) {
       setError('Policy name is required');
       return;
+    }
 
     try {
       const response = await fetch('/api/security/policies', {
@@ -150,17 +158,19 @@ const Security: React.FC<SecurityProps> = ({ theme }) => {
         setNewPolicyDescription('');
         setNewPolicyEnabled(true);
         fetchPolicies(); // Refresh the policies list
-       else {
+      } else {
         setError(result.message || 'Failed to create policy');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const handleCreateFirewallRule = async () => {
     if (!newRuleName.trim() || !newRuleSourceIp.trim() || !newRuleAction.trim()) {
       setError('Rule name, source IP, and action are required');
       return;
+    }
 
     try {
       const response = await fetch('/api/security/firewall-rules', {
@@ -192,12 +202,13 @@ const Security: React.FC<SecurityProps> = ({ theme }) => {
         setNewRulePort('');
         setNewRuleAction('allow');
         fetchFirewallRules(); // Refresh the firewall rules list
-       else {
+      } else {
         setError(result.message || 'Failed to create firewall rule');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const togglePolicy = async (policyId: number, currentEnabled: boolean) => {
     const policy = policies.find(p => p.id === policyId);
@@ -222,12 +233,13 @@ const Security: React.FC<SecurityProps> = ({ theme }) => {
         setPolicies(policies.map(p => 
           p.id === policyId ? { ...p, enabled: !currentEnabled } : p
         ));
-       else {
+      } else {
         setError(result.message || 'Failed to update policy');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const toggleFirewallRule = async (ruleId: number, currentEnabled: boolean) => {
     const rule = firewallRules.find(r => r.id === ruleId);
@@ -252,15 +264,17 @@ const Security: React.FC<SecurityProps> = ({ theme }) => {
         setFirewallRules(firewallRules.map(r => 
           r.id === ruleId ? { ...r, enabled: !currentEnabled } : r
         ));
-       else {
+      } else {
         setError(result.message || 'Failed to update firewall rule');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleString();
+  };
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {
@@ -269,6 +283,8 @@ const Security: React.FC<SecurityProps> = ({ theme }) => {
       case 'medium': return '#eab308';
       case 'low': return '#22c55e';
       default: return '#6b7280';
+    }
+  };
 
 
   return (
@@ -445,7 +461,7 @@ const Security: React.FC<SecurityProps> = ({ theme }) => {
                       onClick={() => togglePolicy(policy.id, policy.enabled)}
                       style={{
                         padding: '0.25rem 0.5rem',
-                        backgroundColor: (theme === 'dark' ? '#6b7280' : theme === 'blue' : '#6b7280'),
+                        backgroundColor: (theme === 'dark' ? '#6b7280' : theme === 'blue' ? '#6b7280' : '#6b7280'),
                         color: 'white',
                         border: 'none',
                         borderRadius: '4px',
@@ -675,7 +691,7 @@ const Security: React.FC<SecurityProps> = ({ theme }) => {
                       onClick={() => toggleFirewallRule(rule.id, rule.enabled)}
                       style={{
                         padding: '0.25rem 0.5rem',
-                        backgroundColor: (theme === 'dark' ? '#6b7280' : theme === 'blue' : '#6b7280'),
+                        backgroundColor: (theme === 'dark' ? '#6b7280' : theme === 'blue' ? '#6b7280' : '#6b7280'),
                         color: 'white',
                         border: 'none',
                         borderRadius: '4px',
@@ -736,4 +752,6 @@ const Security: React.FC<SecurityProps> = ({ theme }) => {
       )}
     </div>
   );
+};
+
 export default Security;

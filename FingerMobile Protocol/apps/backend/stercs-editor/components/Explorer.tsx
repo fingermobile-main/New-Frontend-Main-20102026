@@ -38,45 +38,49 @@ const Explorer: React.FC<ExplorerProps> = ({ theme, projectId, onFileSelect }) =
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
       
       const result = await response.json();
       
       if (result.success) {
         setItems(result.data.items);
-       else {
+      } else {
         setError(result.message || 'Failed to fetch project files');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-     finally {
+    } finally {
       setLoading(false);
-
+    }
+  };
 
   const handleItemClick = (item: FileItem) => {
     if (item.isDirectory) {
       // Navigate into directory
       const newPath = currentPath ? `${currentPath}/${item.name}` : item.name;
       setCurrentPath(newPath);
-     else {
+    } else {
       // File clicked - trigger callback
       if (onFileSelect) {
         onFileSelect(item.path);
-
-
+      }
+    }
+  };
 
   const handleNavigateUp = () => {
     if (currentPath) {
       const pathParts = currentPath.split('/');
       pathParts.pop(); // Remove last part
       setCurrentPath(pathParts.join('/'));
-
+    }
+  };
 
   const handleCreateItem = async () => {
     if (!newItemName.trim()) {
       setError('Item name is required');
       return;
+    }
 
     try {
       const response = await fetch(`/api/explorer/project/${projectId}/create`, {
@@ -98,16 +102,18 @@ const Explorer: React.FC<ExplorerProps> = ({ theme, projectId, onFileSelect }) =
         setNewItemName('');
         setShowNewForm(false);
         fetchProjectFiles(); // Refresh the view
-       else {
+      } else {
         setError(result.message || 'Failed to create item');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const formatDate = (date: Date | undefined) => {
     if (!date) return '';
     return new Date(date).toLocaleString();
+  };
 
   return (
     <div 
@@ -301,4 +307,6 @@ const Explorer: React.FC<ExplorerProps> = ({ theme, projectId, onFileSelect }) =
       )}
     </div>
   );
+};
+
 export default Explorer;

@@ -63,21 +63,22 @@ const Backup: React.FC<BackupProps> = ({ theme }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
 
       if (result.success) {
         setConfigs(result.data);
-       else {
+      } else {
         setError(result.message || 'Failed to fetch backup configs');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-     finally {
+    } finally {
       setLoading(false);
-
+    }
+  };
 
   const fetchBackups = async () => {
     try {
@@ -86,24 +87,26 @@ const Backup: React.FC<BackupProps> = ({ theme }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
 
       if (result.success) {
         setBackups(result.data);
-       else {
+      } else {
         setError(result.message || 'Failed to fetch backups');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const handleCreateConfig = async () => {
     if (!newConfigName.trim() || !newConfigProjectId) {
       setError('Configuration name and project ID are required');
       return;
+    }
 
     try {
       const response = await fetch('/api/editor/backup/configs', {
@@ -132,17 +135,19 @@ const Backup: React.FC<BackupProps> = ({ theme }) => {
         setNewConfigRetentionDays('30');
         setNewConfigStorageLocation('local');
         fetchConfigs(); // Refresh the configs list
-       else {
+      } else {
         setError(result.message || 'Failed to create backup config');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const handleCreateBackup = async () => {
     if (!newBackupConfigId || !newBackupProjectId) {
       setError('Configuration ID and Project ID are required for backup');
       return;
+    }
 
     try {
       const response = await fetch('/api/editor/backup', {
@@ -165,12 +170,13 @@ const Backup: React.FC<BackupProps> = ({ theme }) => {
         setNewBackupProjectId('1');
         setNewBackupNotes('');
         fetchBackups(); // Refresh the backups list
-       else {
+      } else {
         setError(result.message || 'Failed to create backup');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const handleRestoreBackup = async (backupId: number) => {
     try {
@@ -179,22 +185,24 @@ const Backup: React.FC<BackupProps> = ({ theme }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
 
       if (result.success) {
         alert('Backup restored successfully');
-       else {
+      } else {
         setError(result.message || 'Failed to restore backup');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleString();
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -203,13 +211,15 @@ const Backup: React.FC<BackupProps> = ({ theme }) => {
       case 'pending': return '#3b82f6';
       case 'failed': return '#ef4444';
       default: return '#6b7280';
-
+    }
+  };
 
   const formatFileSize = (bytes: number | null) => {
     if (!bytes) return 'N/A';
     if (bytes < 1024) return bytes + ' B';
     else if (bytes < 1048576) return (bytes / 1024).toFixed(2) + ' KB';
     else return (bytes / 1048576).toFixed(2) + ' MB';
+  };
 
   return (
     <div 
@@ -683,4 +693,6 @@ const Backup: React.FC<BackupProps> = ({ theme }) => {
       )}
     </div>
   );
+};
+
 export default Backup;

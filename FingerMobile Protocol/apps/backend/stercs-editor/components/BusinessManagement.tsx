@@ -71,14 +71,14 @@ const BusinessManagement: React.FC<BusinessManagementProps> = ({ theme }) => {
   useEffect(() => {
     if (selectedProject) {
       fetchGoals(selectedProject);
-
+    }
   }, [selectedProject]);
 
   // Fetch milestones when a goal is selected
   useEffect(() => {
     if (selectedGoal) {
       fetchMilestones(selectedGoal);
-
+    }
   }, [selectedGoal]);
 
   const fetchProjects = async () => {
@@ -89,21 +89,22 @@ const BusinessManagement: React.FC<BusinessManagementProps> = ({ theme }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
 
       if (result.success) {
         setProjects(result.data);
-       else {
+      } else {
         setError(result.message || 'Failed to fetch projects');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-     finally {
+    } finally {
       setLoading(false);
-
+    }
+  };
 
   const fetchGoals = async (projectId: string) => {
     try {
@@ -113,21 +114,22 @@ const BusinessManagement: React.FC<BusinessManagementProps> = ({ theme }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
 
       if (result.success) {
         setGoals(result.data);
-       else {
+      } else {
         setError(result.message || 'Failed to fetch goals');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-     finally {
+    } finally {
       setLoading(false);
-
+    }
+  };
 
   const fetchMilestones = async (goalId: string) => {
     try {
@@ -137,26 +139,28 @@ const BusinessManagement: React.FC<BusinessManagementProps> = ({ theme }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
 
       if (result.success) {
         setMilestones(result.data);
-       else {
+      } else {
         setError(result.message || 'Failed to fetch milestones');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-     finally {
+    } finally {
       setLoading(false);
-
+    }
+  };
 
   const handleCreateProject = async () => {
     if (!newProjectName.trim() || !newProjectIndustry.trim()) {
       setError('Project name and industry are required');
       return;
+    }
 
     try {
       const response = await fetch('/api/business-management/projects', {
@@ -179,17 +183,19 @@ const BusinessManagement: React.FC<BusinessManagementProps> = ({ theme }) => {
         setNewProjectDescription('');
         setNewProjectIndustry('');
         fetchProjects(); // Refresh the projects list
-       else {
+      } else {
         setError(result.message || 'Failed to create project');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const handleCreateGoal = async () => {
     if (!selectedProject || !newGoalTitle.trim()) {
       setError('Project must be selected and goal title is required');
       return;
+    }
 
     try {
       const response = await fetch(`/api/business-management/projects/${selectedProject}/goals`, {
@@ -212,17 +218,19 @@ const BusinessManagement: React.FC<BusinessManagementProps> = ({ theme }) => {
         setNewGoalDescription('');
         setNewGoalTargetValue(0);
         fetchGoals(selectedProject); // Refresh the goals list
-       else {
+      } else {
         setError(result.message || 'Failed to create goal');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const handleCreateMilestone = async () => {
     if (!selectedGoal || !newMilestoneTitle.trim()) {
       setError('Goal must be selected and milestone title is required');
       return;
+    }
 
     try {
       const response = await fetch(`/api/business-management/goals/${selectedGoal}/milestones`, {
@@ -245,12 +253,13 @@ const BusinessManagement: React.FC<BusinessManagementProps> = ({ theme }) => {
         setNewMilestoneDescription('');
         setNewMilestoneTargetDate('');
         fetchMilestones(selectedGoal); // Refresh the milestones list
-       else {
+      } else {
         setError(result.message || 'Failed to create milestone');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const handleToggleMilestone = async (milestoneId: string, completed: boolean) => {
     try {
@@ -270,16 +279,18 @@ const BusinessManagement: React.FC<BusinessManagementProps> = ({ theme }) => {
         setMilestones(milestones.map(m => 
           m.id === milestoneId ? { ...m, completed: !completed } : m
         ));
-       else {
+      } else {
         setError(result.message || 'Failed to update milestone');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const formatDate = (dateString: string | null) => {
     if (!dateString) return 'No date set';
     return new Date(dateString).toLocaleDateString();
+  };
 
   return (
     <div 
@@ -321,13 +332,13 @@ const BusinessManagement: React.FC<BusinessManagementProps> = ({ theme }) => {
                 // If switching to goals but no project is selected, default to first project
                 if (projects.length > 0) {
                   setSelectedProject(projects[0].id);
-
+                }
               } else if (tab === 'milestones' && !selectedGoal) {
                 // If switching to milestones but no goal is selected, default to first goal
                 if (goals.length > 0) {
                   setSelectedGoal(goals[0].id);
-
-
+                }
+              }
             }}
             style={{
               padding: '0.5rem 1rem',
@@ -715,4 +726,6 @@ const BusinessManagement: React.FC<BusinessManagementProps> = ({ theme }) => {
       )}
     </div>
   );
+};
+
 export default BusinessManagement;

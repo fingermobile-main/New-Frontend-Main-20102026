@@ -71,21 +71,22 @@ const Ecommerce: React.FC<EcommerceProps> = ({ theme }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
 
       if (result.success) {
         setProducts(result.data);
-       else {
+      } else {
         setError(result.message || 'Failed to fetch products');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-     finally {
+    } finally {
       setLoading(false);
-
+    }
+  };
 
   const fetchCategories = async () => {
     try {
@@ -94,19 +95,20 @@ const Ecommerce: React.FC<EcommerceProps> = ({ theme }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
 
       if (result.success) {
         setCategories(result.data);
-       else {
+      } else {
         setError(result.message || 'Failed to fetch categories');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const fetchOrders = async () => {
     try {
@@ -115,24 +117,26 @@ const Ecommerce: React.FC<EcommerceProps> = ({ theme }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token') || 'fake-token'}` // In real app, use proper auth
-
+        }
       });
 
       const result = await response.json();
 
       if (result.success) {
         setOrders(result.data);
-       else {
+      } else {
         setError(result.message || 'Failed to fetch orders');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const handleCreateProduct = async () => {
     if (!newProductName.trim() || !newProductPrice) {
       setError('Product name and price are required');
       return;
+    }
 
     try {
       const response = await fetch('/api/ecommerce/products', {
@@ -159,17 +163,19 @@ const Ecommerce: React.FC<EcommerceProps> = ({ theme }) => {
         setNewProductCategory('general');
         setNewProductInventory(0);
         fetchProducts(); // Refresh the products list
-       else {
+      } else {
         setError(result.message || 'Failed to create product');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const handleCreateCategory = async () => {
     if (!newCategoryName.trim()) {
       setError('Category name is required');
       return;
+    }
 
     try {
       const response = await fetch('/api/ecommerce/categories', {
@@ -190,12 +196,13 @@ const Ecommerce: React.FC<EcommerceProps> = ({ theme }) => {
         setNewCategoryName('');
         setNewCategoryDescription('');
         fetchCategories(); // Refresh the categories list
-       else {
+      } else {
         setError(result.message || 'Failed to create category');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const handleUpdateOrderStatus = async (orderId: number, newStatus: string) => {
     try {
@@ -215,21 +222,24 @@ const Ecommerce: React.FC<EcommerceProps> = ({ theme }) => {
         setOrders(orders.map(order => 
           order.id === orderId ? { ...order, status: newStatus } : order
         ));
-       else {
+      } else {
         setError(result.message || 'Failed to update order status');
-
-     catch (err) {
+      }
+    } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-
+    }
+  };
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString();
+  };
 
   const formatCurrency = (amount: number, currency: string = 'USD') => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: currency
     }).format(amount);
+  };
 
   return (
     <div 
@@ -637,4 +647,6 @@ const Ecommerce: React.FC<EcommerceProps> = ({ theme }) => {
       )}
     </div>
   );
+};
+
 export default Ecommerce;
