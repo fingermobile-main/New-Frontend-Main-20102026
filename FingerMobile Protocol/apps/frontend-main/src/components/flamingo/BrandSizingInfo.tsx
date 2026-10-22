@@ -215,8 +215,8 @@ const BrandSizingInfo: React.FC<BrandSizingInfoProps> = ({ brandName }) => {
               </div>
               <button
                 type="button"
-                aria-label={`View size chart for ${selectedSizing.brand}`}
-                onClick={() => window.location.assign(`/flamingo/size-charts?brand=${encodeURIComponent(selectedSizing.brand)}`)}
+                aria-label={`View size chart for ${selectedSizing.brand_name}`}
+                onClick={() => window.location.assign(`/flamingo/size-charts?brand=${encodeURIComponent(selectedSizing.brand_name)}`)}
                 className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium text-sm"
               >
                 View Size Chart →
