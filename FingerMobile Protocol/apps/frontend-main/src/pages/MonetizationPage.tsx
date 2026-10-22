@@ -26,6 +26,7 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useAppContext } from '../contexts/AppContext';
 
 interface RevenueStream {
   id: number;
@@ -102,6 +103,7 @@ const MonetizationPage: React.FC = () => {
     status: 'active' as 'active' | 'inactive' | 'trial'
   });
 
+  const { showToast } = useAppContext();
   const navigate = useNavigate();
   const history = { push: (path: string) => navigate(path), replace: (path: string) => navigate(path, { replace: true }) };
 
@@ -779,7 +781,12 @@ const MonetizationPage: React.FC = () => {
                                   <Edit3 className="h-4 w-4" />
                                 </button>
                                 <div className="relative">
-                                  <button className="text-gray-600 hover:text-gray-900" aria-label={`More options for ${stream.name}`}>
+                                  <button
+                                    type="button"
+                                    onClick={() => showToast(`Actions for revenue stream: ${stream.name}`, 'info')}
+                                    className="text-gray-600 hover:text-gray-900"
+                                    aria-label={`More options for ${stream.name}`}
+                                  >
                                     <MoreHorizontal className="h-4 w-4" />
                                   </button>
                                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden">
@@ -883,19 +890,28 @@ const MonetizationPage: React.FC = () => {
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                               <div className="flex space-x-2">
                                 <button 
+                                  type="button"
+                                  aria-label={`View subscription plan ${plan.name} details`}
                                   className="text-blue-600 hover:text-blue-900"
                                   onClick={() => history.push(`/dashboard/monetization/subscriptions/${plan.id}/details`)}
                                 >
                                   <Eye className="h-4 w-4" />
                                 </button>
                                 <button 
+                                  type="button"
+                                  aria-label={`Toggle subscription plan ${plan.name} status`}
                                   className={`${plan.status === 'active' ? 'text-red-600 hover:text-red-900' : 'text-green-600 hover:text-green-900'}`}
                                   onClick={() => handleToggleSubscriptionStatus(plan.id)}
                                 >
                                   {plan.status === 'active' ? <XCircle className="h-4 w-4" /> : <CheckCircle className="h-4 w-4" />}
                                 </button>
                                 <div className="relative">
-                                  <button className="text-gray-600 hover:text-gray-900">
+                                  <button
+                                    type="button"
+                                    aria-label={`More options for plan ${plan.name}`}
+                                    onClick={() => showToast(`Actions for plan: ${plan.name}`, 'info')}
+                                    className="text-gray-600 hover:text-gray-900"
+                                  >
                                     <MoreHorizontal className="h-4 w-4" />
                                   </button>
                                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden">
@@ -1004,13 +1020,20 @@ const MonetizationPage: React.FC = () => {
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                               <div className="flex space-x-2">
                                 <button 
+                                  type="button"
+                                  aria-label={`View transaction #${transaction.id} details`}
                                   className="text-blue-600 hover:text-blue-900"
                                   onClick={() => history.push(`/dashboard/monetization/transactions/${transaction.id}/details`)}
                                 >
                                   <Eye className="h-4 w-4" />
                                 </button>
                                 <div className="relative">
-                                  <button className="text-gray-600 hover:text-gray-900">
+                                  <button
+                                    type="button"
+                                    aria-label={`More options for transaction #${transaction.id}`}
+                                    onClick={() => showToast(`Actions for transaction #${transaction.id}`, 'info')}
+                                    className="text-gray-600 hover:text-gray-900"
+                                  >
                                     <MoreHorizontal className="h-4 w-4" />
                                   </button>
                                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden">
@@ -1278,6 +1301,8 @@ const MonetizationPage: React.FC = () => {
                   {[...Array(totalPages)].map((_, i) => (
                     <button
                       key={i + 1}
+                      type="button"
+                      aria-label={`Go to page ${i + 1}`}
                       onClick={() => setCurrentPage(i + 1)}
                       className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
                         currentPage === i + 1
@@ -1316,6 +1341,8 @@ const MonetizationPage: React.FC = () => {
                   {modalType === 'revenue' ? 'Create New Revenue Stream' : 'Create New Subscription Plan'}
                 </h3>
                 <button 
+                  type="button"
+                  aria-label="Close modal"
                   className="text-slate-700 hover:text-gray-700"
                   onClick={() => setShowCreateModal(false)}
                 >
