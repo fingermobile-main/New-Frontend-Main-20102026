@@ -471,9 +471,11 @@ class ExtendedMLService {
         let dot = 0, normA = 0, normB = 0;
         const len = Math.min(userEmb.length, cEmb.length);
         for (let i = 0; i < len; i++) {
-          dot += userEmb[i] * cEmb[i];
-          normA += userEmb[i] * userEmb[i];
-          normB += cEmb[i] * cEmb[i];
+          const u = userEmb[i] ?? 0;
+          const v = cEmb[i] ?? 0;
+          dot += u * v;
+          normA += u * u;
+          normB += v * v;
         }
         normA = Math.sqrt(normA);
         normB = Math.sqrt(normB);

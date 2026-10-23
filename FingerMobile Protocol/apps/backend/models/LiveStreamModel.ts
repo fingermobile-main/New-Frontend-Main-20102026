@@ -1856,4 +1856,5 @@ LiveStream.init(
   }
 );
 
-export { LiveStream, LiveStreamAttributes, LiveStreamCreationAttributes };
+export { LiveStream };
+export type { LiveStreamAttributes, LiveStreamCreationAttributes };

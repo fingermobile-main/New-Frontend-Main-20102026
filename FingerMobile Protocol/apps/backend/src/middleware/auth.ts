@@ -1,4 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
+import jwt from 'jsonwebtoken';
+import { pool } from '../../db';
+import { logError, ErrorType } from '../utils/errorLogger';
 
 
 // Assuming we have a type definition for our member

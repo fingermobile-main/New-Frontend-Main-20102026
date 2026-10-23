@@ -14,7 +14,7 @@ interface TransactionReceipt {
 
 class Web3PaymentService {
   private provider: ethers.JsonRpcProvider;
-  private ficContract: ethers.Contract;
+  private ficContract: any;
   private contractABI: ethers.InterfaceAbi;
   private contractAddress: string;
 

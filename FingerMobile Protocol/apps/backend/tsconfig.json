@@ -60,6 +60,12 @@
     "dist",
     "build",
     ".next",
-    "ARCHIVES"
+    "ARCHIVES",
+    "__tests__",
+    "tests",
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    "**/*.test.js",
+    "**/*.spec.js"
   ]
 }

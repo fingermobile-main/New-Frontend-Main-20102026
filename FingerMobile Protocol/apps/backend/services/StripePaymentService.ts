@@ -45,7 +45,7 @@ class StripePaymentService {
       return {
         success: true,
         paymentIntentId: paymentIntent.id,
-        clientSecret: paymentIntent.client_secret,
+        clientSecret: paymentIntent.client_secret || undefined,
       };
     } catch (error: any) {
       logger.error('Error creating Stripe payment intent:', error);

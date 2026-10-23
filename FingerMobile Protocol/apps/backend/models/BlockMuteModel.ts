@@ -59,4 +59,5 @@ export const initializeBlockMute = () => {
   );
 };
 
-export { BlockMute, BlockMuteAttributes, BlockMuteCreationAttributes };
+export { BlockMute };
+export type { BlockMuteAttributes, BlockMuteCreationAttributes };

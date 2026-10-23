@@ -47,7 +47,7 @@ module.exports = {
    * @param {Object} data - Notification payload data
    * @returns {Promise<Object|null>} Notification result or null
    */
-  sendNotification: async (userId, workflowKey, data = {}) => {
+  sendNotification: async (userId: string, workflowKey: string, data: any = {}) => {
     if (!KNOCK_CONFIG.enabled) {
       logger.info('⚠️  Knock.com notifications not enabled');
       return null;

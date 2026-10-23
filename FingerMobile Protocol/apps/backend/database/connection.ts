@@ -1,6 +1,8 @@
 import { Sequelize } from 'sequelize';
-import { setSequelize } from '../utils/modelInitializer';
+import { setSequelize, getSequelize } from '../utils/modelInitializer';
 import logger from '../utils/logger';
+
+export { getSequelize };
 
 logger.info('[database/connection] Module loading...');
 

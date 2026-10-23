@@ -493,7 +493,7 @@ class MLRecommendationService {
     
     // Assign random variant if not exists
     const variants = ['control', 'ml_v1', 'ml_v2', 'hybrid'];
-    const variant = variants[Math.floor(Math.random() * variants.length)];
+    const variant = variants[Math.floor(Math.random() * variants.length)] || 'control';
     
     await this.db.query(
       `INSERT INTO user_ab_tests (user_id, ab_test_variantant, assigned_at)

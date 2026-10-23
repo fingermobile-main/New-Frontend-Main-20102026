@@ -185,6 +185,9 @@ class OpenAIService {
       });
 
       const result = response.results[0];
+      if (!result) {
+        throw new Error('No moderation results returned');
+      }
 
       return {
         flagged: result.flagged,

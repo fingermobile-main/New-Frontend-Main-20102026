@@ -16,8 +16,8 @@ const logger = require('./utils/logger');
 // Import models
 const { sequelize } = require('./database/connection');
 // const ForumCategory = require('./models/forumCategory');
-const Blog = require('./models/blog');
-const Group = require('./models/group');
+const Blog = require('./models/Blog');
+const Group = require('./models/Group');
 // const { Forum, Topic } = require('./models/forum');
 // const User = require('./models/user'); // Assuming user model exists
 
