@@ -20,7 +20,7 @@ interface ArtworkData {
 }
 
 interface AdvancedLuminaSceneProps {
-  onArtworkClick?: (artwork: ArtworkData) => void;
+  onArtworkClick?: (_artwork: ArtworkData) => void;
   userMedia?: MediaFile[];
 }
 
@@ -151,7 +151,7 @@ const AdvancedLuminaScene: React.FC<AdvancedLuminaSceneProps> = ({ onArtworkClic
         video.crossOrigin = 'anonymous';
         video.loop = true;
         video.muted = true;
-        video.play().catch(err => console.debug("Video autoplay deferred for interaction:", err));
+        video.play().catch(() => {});
         videoMap.set(item.id, video);
       }
     });

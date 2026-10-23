@@ -58,7 +58,6 @@ interface StoredMemberProfile {
   pinNumber: string;
 }
 
-const STORAGE_KEY = 'fmp_member_profile';
 
 const DEFAULT_COVERS = [
   { label: 'Login Background', url: '/assets/branding/backgrounds/FingerMobile Login screen Background image.webp' },

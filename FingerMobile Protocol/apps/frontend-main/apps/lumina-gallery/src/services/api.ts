@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 // api.ts - Lumina Gallery API Service
 // Updated to integrate with backend FFmpeg processing
 import { MediaMetadata } from "../utils/mediaProcessing";

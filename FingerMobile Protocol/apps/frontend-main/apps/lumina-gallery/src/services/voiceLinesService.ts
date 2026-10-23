@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /**
  * Voice Lines Service for Lumina Gallery Game
  * Implements 52 African Nigerian Igbo/Yoruba accent voice lines

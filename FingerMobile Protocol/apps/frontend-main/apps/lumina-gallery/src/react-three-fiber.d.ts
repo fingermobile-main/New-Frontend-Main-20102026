@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Object3DNode } from '@react-three/fiber';
 import * as THREE from 'three';
 

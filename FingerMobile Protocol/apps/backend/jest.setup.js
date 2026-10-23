@@ -26,5 +26,6 @@ try {
   const logger = require('./utils/logger');
   logger.info('✅ Jest test environment initialized');
 } catch (error) {
+  // eslint-disable-next-line no-console
   console.error('Logger initialization error in jest.setup.js:', error);
 }

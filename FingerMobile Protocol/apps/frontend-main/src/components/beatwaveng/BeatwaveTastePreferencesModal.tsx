@@ -8,14 +8,14 @@
 
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { Sparkles, Check, X, Music, Users, Radio, Disc } from 'lucide-react';
+import { Sparkles, Check, X, Music, Users } from 'lucide-react';
 import { CURATED_70_GENRES, Track } from '../../contexts/BeatwaveNGContext';
 
 export interface BeatwaveTastePreferencesModalProps {
   isOpen: boolean;
   onClose: () => void;
   availableTracks?: Track[];
-  onSavePreferences?: (genres: string[], artists: string[]) => void;
+  onSavePreferences?: (_genres: string[], _artists: string[]) => void;
 }
 
 const STORAGE_KEY_ONBOARDED = 'beatwave_taste_onboarded';

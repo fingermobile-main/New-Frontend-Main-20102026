@@ -6,7 +6,7 @@ interface UseMediaUploadReturn {
   progress: number;
   error: string | null;
   uploadedFiles: MediaFile[];
-  uploadFiles: (files: FileList | File[]) => Promise<void>;
+  uploadFiles: (_files: FileList | File[]) => Promise<void>;
   reset: () => void;
 }
 
@@ -65,6 +65,7 @@ const useMediaUpload = (
         });
       }
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error('Upload error:', err);
       setError(err instanceof Error ? err.message : 'Upload failed');
     } finally {

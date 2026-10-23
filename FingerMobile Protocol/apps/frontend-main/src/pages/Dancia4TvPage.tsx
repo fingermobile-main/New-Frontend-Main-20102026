@@ -73,7 +73,6 @@ const Dancia4TvPage: React.FC = () => {
     currentVideo,
     subscriptionPlans,
     playerState,
-    genres,
     movieTypes,
     pauseVideo,
     filterByMovieType,
@@ -98,7 +97,6 @@ const Dancia4TvPage: React.FC = () => {
   const [danciaSubscriptionPlans, setDanciaSubscriptionPlans] = useState<
     SubscriptionPlan[]
   >([]);
-  const [danciaGenres, setDanciaGenres] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -141,15 +139,6 @@ const Dancia4TvPage: React.FC = () => {
           : (plansResponse?.plans || plansResponse?.data || []);
         if (pList.length > 0) {
           setDanciaSubscriptionPlans(pList);
-        }
-
-        // Fetch genres
-        const genresResponse: any = await apiService.request<any>('/api/dancia/genres').catch(() => null);
-        const gList = Array.isArray(genresResponse)
-          ? genresResponse
-          : (genresResponse?.genres || genresResponse?.data || []);
-        if (gList.length > 0) {
-          setDanciaGenres(gList);
         }
 
         // Fetch member-specific data if logged in

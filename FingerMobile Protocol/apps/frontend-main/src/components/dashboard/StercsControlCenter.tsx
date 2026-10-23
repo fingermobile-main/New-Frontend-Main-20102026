@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import {
   ShieldCheckIcon,
-  ShieldExclamationIcon,
   ExclamationTriangleIcon,
   SignalIcon,
   GlobeAmericasIcon,
@@ -314,11 +313,6 @@ const StercsControlCenter: React.FC = () => {
     );
   };
 
-  const handleTempoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const rate = parseFloat(e.target.value);
-    voiceLineServiceInstance.setPlaybackRate(rate);
-    setVoiceSettings({ ...voiceLineServiceInstance.getSettings() });
-  };
 
   const handleUtteranceRateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const rate = parseFloat(e.target.value);
