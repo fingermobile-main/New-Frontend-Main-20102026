@@ -110,6 +110,7 @@ import MasterSystemInfraConsole from '../components/dashboard/MasterSystemInfraC
 import MasterCreationCatalogConsole from '../components/dashboard/MasterCreationCatalogConsole';
 import MasterSecurityDefConConsole from '../components/dashboard/MasterSecurityDefConConsole';
 import MasterCreatorMonetizationConsole from '../components/dashboard/MasterCreatorMonetizationConsole';
+import MasterContentModerationConsole from '../components/dashboard/MasterContentModerationConsole';
 
 interface Section {
   id: string;
@@ -2532,6 +2533,7 @@ const MasterDashboardPage: React.FC = () => {
               { id: 'creation-catalog-console', label: 'Creation, Widgets & Screen Catalog (Phase 4)', badge: 'Screens / Rails / Subs' },
               { id: 'security-defcon-console', label: 'Security & DefCon Threats (Phase 5)', badge: 'Enclaves / Vaults / DefCon-1' },
               { id: 'creator-monetization-console', label: 'Creator Studio & Monetization (Phase 6)', badge: 'Tiers / Ads / Royalties' },
+              { id: 'content-moderation-console', label: 'Content Moderation & Ethics (Phase 7)', badge: 'NLP Sieve / Strikes / Jury' },
               { id: 'beatwaveng-console', label: 'BeatwaveNG Audio Console', badge: 'Live Sync' },
               { id: 'discover-console', label: 'Discover Master Console', badge: 'Topics & Swarms' },
               { id: 'soundriver-console', label: 'SoundRiver Master Console', badge: '320kbps Stream' },
@@ -2841,6 +2843,13 @@ const MasterDashboardPage: React.FC = () => {
             {activeTab === 'creator-monetization-console' && (
               <div className="space-y-6">
                 <MasterCreatorMonetizationConsole />
+              </div>
+            )}
+
+            {/* Dedicated Content Moderation, Trust, Safety & Ethics Console Tab (Phase 7) */}
+            {activeTab === 'content-moderation-console' && (
+              <div className="space-y-6">
+                <MasterContentModerationConsole />
               </div>
             )}
 

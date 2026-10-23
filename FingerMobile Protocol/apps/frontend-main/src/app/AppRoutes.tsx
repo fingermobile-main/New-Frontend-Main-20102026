@@ -223,6 +223,7 @@ const SystemInfraMasterConsolePage = lazy(() => import('../pages/admin/SystemInf
 const CreationCatalogMasterConsolePage = lazy(() => import('../pages/admin/CreationCatalogMasterConsolePage'));
 const SecurityDefConMasterConsolePage = lazy(() => import('../pages/admin/SecurityDefConMasterConsolePage'));
 const CreatorMonetizationMasterConsolePage = lazy(() => import('../pages/admin/CreatorMonetizationMasterConsolePage'));
+const ContentModerationMasterConsolePage = lazy(() => import('../pages/admin/ContentModerationMasterConsolePage'));
 const ContentAdminDashboardPage = lazy(() => import('../pages/ContentAdminDashboardPage'));
 const MemberManagementPage = lazy(() => import('../pages/admin/MemberManagementPage'));
 
@@ -541,6 +542,11 @@ export const routes: RouteObject[] = [
           { path: '/creator-console', element: <CreatorMonetizationMasterConsolePage /> },
           { path: '/creator-monetization-console', element: <CreatorMonetizationMasterConsolePage /> },
           { path: '/dashboard/creator-monetization', element: <CreatorMonetizationMasterConsolePage /> },
+          { path: '/admin/moderation-console', element: <ContentModerationMasterConsolePage /> },
+          { path: '/admin/content-moderation-console', element: <ContentModerationMasterConsolePage /> },
+          { path: '/moderation-console', element: <ContentModerationMasterConsolePage /> },
+          { path: '/content-moderation-console', element: <ContentModerationMasterConsolePage /> },
+          { path: '/dashboard/content-moderation', element: <ContentModerationMasterConsolePage /> },
           { path: '/businessorganizations', element: <BusinessOrganizationsConsolePage /> },
           { path: '/admin/content', element: <ContentAdminDashboardPage /> },
           { path: '/contentadmindashboard', element: <ContentAdminDashboardPage /> },
@@ -552,8 +558,15 @@ export const routes: RouteObject[] = [
           { path: '/guardian/seo', element: redirectTo('/masterdashboard?tab=seo') },
           { path: '/financials', element: redirectTo('/masterdashboard?tab=financials') },
           { path: '/discover-console', element: redirectTo('/masterdashboard?tab=discover-console') },
+          { path: '/admin/discover-console', element: redirectTo('/masterdashboard?tab=discover-console') },
           { path: '/soundriver-console', element: redirectTo('/masterdashboard?tab=soundriver-console') },
           { path: '/soundocean-console', element: redirectTo('/masterdashboard?tab=soundocean-console') },
+          { path: '/admin/beatwaveng-console', element: redirectTo('/masterdashboard?tab=beatwaveng-console') },
+          { path: '/beatwaveng-console', element: redirectTo('/masterdashboard?tab=beatwaveng-console') },
+          { path: '/admin/dancia4tv-console', element: redirectTo('/masterdashboard?tab=dancia4tv-console') },
+          { path: '/dancia4tv-console', element: redirectTo('/masterdashboard?tab=dancia4tv-console') },
+          { path: '/admin/ecommerce-console', element: redirectTo('/masterdashboard?tab=ecommerce') },
+          { path: '/ecommerce-console', element: redirectTo('/masterdashboard?tab=ecommerce') },
           { path: '/leaderboards-console', element: redirectTo('/masterdashboard?tab=leaderboards-console') },
           { path: '/leadershipboard-console', element: redirectTo('/masterdashboard?tab=leaderboards-console') },
           { path: '/stercs-dashboard', element: <StercsDashboardPage /> },

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import userProfileSyncService, { ComprehensiveUserProfile } from '../services/UserProfileSyncService';
 import {
   Shield,
+  ShieldAlert,
   ShieldCheck,
   Zap,
   Activity,
@@ -405,6 +406,21 @@ const StercsDashboardPage: React.FC = () => {
       route: '/admin/creator-console',
       trend: [12, 12, 12, 12, 12, 12, 12],
       requests24h: '1.8M'
+    },
+    {
+      id: 'content-moderation-console',
+      title: 'Content Moderation, Trust & Safety Console',
+      category: 'Security',
+      icon: ShieldAlert,
+      description: 'Autonomous management of Heuristic AI Flagging, Strike Ledgers, Youth Persona Shield & Appeals Tribunal',
+      status: 'online',
+      version: 'v1.0.0-live',
+      lastUpdated: 'Live sync',
+      responseTime: 8,
+      healthScore: 99.96,
+      route: '/admin/moderation-console',
+      trend: [8, 8, 9, 8, 8, 8, 8],
+      requests24h: '1.7M'
     },
     {
       id: 'stercs-curation',

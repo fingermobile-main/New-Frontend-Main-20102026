@@ -96,6 +96,14 @@ Every dashboard and console within the FingerMobile ecosystem is indexed under u
 | **MasterCreationCatalogConsole.tsx** | `/admin/catalog-console`<br>`/creation-catalog-console` | Screen Catalog & Rotational Rails | Autonomous Screen Catalog, Rotational Rails (2h widgets), Subscriptions matrix & SEO indexing |
 | **MasterSecurityDefConConsole.tsx** | `/admin/security-console`<br>`/security-defcon-console` | Security & Hardware Enclaves | Camus Hardware Enclaves, Threat Heuristics, DDoS Mitigation, Cryptographic Vaults & DefCon-1 Isolation |
 | **MasterCreatorMonetizationConsole.tsx** | `/admin/creator-console`<br>`/creator-monetization-console` | Creator Studio & Monetization | Creator tiers (Silver/Gold/Diamond), AfriAds auctions, live gifting, staking yield & micro-royalties |
+| **MasterContentModerationConsole.tsx** | `/admin/moderation-console`<br>`/content-moderation-console` | Trust, Safety & Ethics | Heuristic AI flagging, quarantine strike ledger, minor/child shield, appeals tribunal & copyright ID |
+| **MasterBeatwaveNGConsole.tsx** | `/admin/beatwaveng-console`<br>`/beatwaveng-console` | Audio Streaming & Stems | Master tracks, stem isolation, BPM detection, royalty splits, SoundRiver 320kbps & SoundOcean 24b/192k FLAC vaults |
+| **MasterDancia4TvConsole.tsx** | `/admin/dancia4tv-console`<br>`/dancia4tv-console` | Linear Broadcast & VOD | Video feeds, Electronic Program Guides (EPG), stream moderation, temporal drops & HLS latency tuning |
+| **DiscoverMasterConsole.tsx** | `/admin/discover-console`<br>`/discover-console` | Swarm Discovery & Trends | Dynamic topic clusters, viral swarm heuristics, personalized feed scoring & regional cultural feeds |
+| **MasterEcommerceConsole.tsx** | `/admin/ecommerce-console`<br>`/ecommerce-console` | E-Commerce & Retail Ops | 90+ SKU marketplace catalog, inventory allocation, dynamic price tiers, discount rules & checkout policies |
+| **EnhancedRbacDashboard.tsx** | `/admin/rbac-console`<br>`/pagespermission` | Sovereign Permissions | Granular page & route permissions, API key scoping, user role assignments & multi-tenant access control |
+| **EnterpriseFinancialEcosystemConsole.tsx** | `/enterprise-console`<br>`/financial-ecosystem` | Institutional Treasury | Multi-tenant corporate treasury, franchise liquidity pools, institutional B2B billing & settlement clearinghouses |
+| **DatabaseIntegrationDashboard.tsx** | `/admin/database-integration`<br>`/admin/monitoring` | Multi-DB Mesh & SOC | Connection telemetry across all 15 PostgreSQL databases, Redis Pub/Sub latency, microservice health probes & audit logs |
 
 ---
 
