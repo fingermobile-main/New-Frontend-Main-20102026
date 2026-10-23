@@ -143,17 +143,33 @@ src/services/authService.ts
 
 
 src/services/apiService.ts
-When an external PC navigates to http://192.168.1.5:3000, the frontend dynamically detects window.location.hostname (192.168.1.5) and issues API calls to http://192.168.1.5:5001/api.
+When an external PC navigates to http://192.168.1.15:3000, the frontend dynamically detects window.location.hostname (192.168.1.15) and issues API calls to http://192.168.1.15:5001/api.
 
-Verification & Health Status
-Service / Test	Target URL	Result
-Backend Express Health	http://192.168.1.5:5001/api/health	{"success":true,"message":"API is running smoothly"}
-LAN CORS Preflight	OPTIONS http://192.168.1.5:5001/api/auth/login	HTTP 200, Access-Control-Allow-Origin: http://192.168.1.5:3000
-Backdoor Password Test	POST http://192.168.1.5:5001/api/auth/login (mastercontrol123)	HTTP 401, {"success":false,"message":"Invalid password"}
-Frontend LAN Access	http://192.168.1.5:3000	HTTP 200 OK
-Clean Login Page DOM	http://localhost:3000/login	Pills removed, input fields and sign-in button active
-External Device Connection Instructions
+### Verification & Health Status (Fresh Test Ready)
+| Service / Test | Target URL | Result |
+| :--- | :--- | :--- |
+| **Backend Express Health** | `http://192.168.1.15:5001/api/health` | `{"success":true,"message":"API is running smoothly"}` |
+| **Backend Express Local** | `http://localhost:5001/api/health` | `{"success":true,"message":"API is running smoothly"}` |
+| **LAN CORS Preflight** | `OPTIONS http://192.168.1.15:5001/api/auth/login` | `HTTP 200, Access-Control-Allow-Origin: http://192.168.1.15:3000` |
+| **Authentic Password Login** | `POST http://192.168.1.15:5001/api/auth/login` | `HTTP 200, {"success":true,"message":"Login successful", ...}` |
+| **Invalid Password Rejection** | `POST http://192.168.1.15:5001/api/auth/login (wrong)` | `HTTP 401, {"success":false,"message":"Invalid password"}` |
+| **Frontend LAN Access** | `http://192.168.1.15:3000/login` | `HTTP 200 OK` |
+| **Frontend Local Access** | `http://localhost:3000/login` | `HTTP 200 OK` |
+| **PostgreSQL Database** | Port `5433` (`fingermobile_platform_db`) | 7 Authentic Accounts Only (Clean State) |
+| **Auto-Commit Watcher** | Background Process | Actively Tracking & Committing |
+
+### Active Platform Accounts in Database (Ready for Testing)
+1. **`ObinnaMbah`** (`obinnambah@fingermobileprotocol.com`) — `superadmin`
+2. **`eunicembah`** (`eunicembah@gmail.com`) — `Admin`
+3. **`fingermobileprotocol`** (`fingermobileprotocol@gmail.com`) — `primary admin`
+4. **`gracelink_primary`** (`gracelinkbustech@gmail.com`) — `superadmin`
+5. **`philipatiks`** (`philipatiks@yahoo.com`) — `cfo`
+6. **`dearmercii`** (`dearmercii@gmail.com`) — `Member`
+7. **`mercykulem11`** (`mercykulem11@gmail.com`) — `Member`
+
+### External Device Connection Instructions
 Any PC, tablet, or smartphone connected to the same Wi-Fi network can immediately access:
 
-Web App: http://192.168.1.5:3000/login
-API Health: http://192.168.1.5:5001/api/health
+- **Web App**: `http://192.168.1.15:3000/login`
+- **Registration**: `http://192.168.1.15:3000/register`
+- **API Health**: `http://192.168.1.15:5001/api/health`
