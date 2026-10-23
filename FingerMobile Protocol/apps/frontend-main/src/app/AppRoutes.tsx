@@ -214,6 +214,7 @@ const PagesPermissionConsolePage = lazy(() => import('../pages/admin/PagesPermis
 const ContentCreatorsConsolePage = lazy(() => import('../pages/admin/ContentCreatorsConsolePage'));
 const BusinessOrganizationsConsolePage = lazy(() => import('../pages/admin/BusinessOrganizationsConsolePage'));
 const CommunitiesMasterConsolePage = lazy(() => import('../pages/admin/CommunitiesMasterConsolePage'));
+const MediaStreamingMasterConsolePage = lazy(() => import('../pages/admin/MediaStreamingMasterConsolePage'));
 const ContentAdminDashboardPage = lazy(() => import('../pages/ContentAdminDashboardPage'));
 const MemberManagementPage = lazy(() => import('../pages/admin/MemberManagementPage'));
 
@@ -487,6 +488,11 @@ export const routes: RouteObject[] = [
           { path: '/admin/communities-console', element: <CommunitiesMasterConsolePage /> },
           { path: '/communities-console', element: <CommunitiesMasterConsolePage /> },
           { path: '/dashboard/communities', element: <CommunitiesMasterConsolePage /> },
+          { path: '/admin/media-console', element: <MediaStreamingMasterConsolePage /> },
+          { path: '/admin/streaming-console', element: <MediaStreamingMasterConsolePage /> },
+          { path: '/media-console', element: <MediaStreamingMasterConsolePage /> },
+          { path: '/streaming-console', element: <MediaStreamingMasterConsolePage /> },
+          { path: '/dashboard/streaming', element: <MediaStreamingMasterConsolePage /> },
           { path: '/businessorganizations', element: <BusinessOrganizationsConsolePage /> },
           { path: '/admin/content', element: <ContentAdminDashboardPage /> },
           { path: '/contentadmindashboard', element: <ContentAdminDashboardPage /> },

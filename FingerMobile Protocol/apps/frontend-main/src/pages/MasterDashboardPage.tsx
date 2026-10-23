@@ -101,6 +101,7 @@ import ScreenCatalogManagementConsole from '../components/dashboard/ScreenCatalo
 import StercsControlCenter from '../components/dashboard/StercsControlCenter';
 import UnifiedCommerceCatalogHub from '../components/dashboard/catalog/UnifiedCommerceCatalogHub';
 import MasterCommunitiesConsole from '../components/dashboard/MasterCommunitiesConsole';
+import MasterStreamingMediaConsole from '../components/dashboard/MasterStreamingMediaConsole';
 
 interface Section {
   id: string;
@@ -2514,6 +2515,7 @@ const MasterDashboardPage: React.FC = () => {
               { id: 'community-identity', label: 'Community & Identity', badge: '9' },
               { id: 'communities-console', label: 'Communities Consoles (11 Domains)', badge: 'Autonomous' },
               { id: 'media-discovery', label: 'Media & Discovery', badge: '10' },
+              { id: 'media-streaming-console', label: 'Streaming & Media Consoles', badge: 'Beatwave / Dancia / Video' },
               { id: 'beatwaveng-console', label: 'BeatwaveNG Audio Console', badge: 'Live Sync' },
               { id: 'discover-console', label: 'Discover Master Console', badge: 'Topics & Swarms' },
               { id: 'soundriver-console', label: 'SoundRiver Master Console', badge: '320kbps Stream' },
@@ -2762,6 +2764,13 @@ const MasterDashboardPage: React.FC = () => {
                 'Media & Discovery Consoles',
                 'Media intelligence (Mi), trending topics, discovery recommendations, video platforms (FingerLux, Dancia-4Tv, VideoBox), audio (BeatwaveNG), user-owned digital assets (OwnIt, PhotoCredits), and portfolios (Tribut).'
               )}
+
+            {/* Dedicated Streaming & Media Consoles Tab (BeatwaveNG, Dancia-4Tv, VideoBox) */}
+            {activeTab === 'media-streaming-console' && (
+              <div className="space-y-6">
+                <MasterStreamingMediaConsole />
+              </div>
+            )}
 
             {/* Dedicated Master BeatwaveNG Audio Console Tab */}
             {activeTab === 'beatwaveng-console' && (

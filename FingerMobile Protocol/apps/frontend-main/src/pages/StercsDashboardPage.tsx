@@ -33,7 +33,10 @@ import {
   Workflow,
   X,
   Play,
-  MessageSquare
+  MessageSquare,
+  Music,
+  Tv,
+  Video
 } from 'lucide-react';
 import dashboardService from '../services/dashboardService';
 import { SystemMetric } from '../types/dashboard';
@@ -263,6 +266,21 @@ const StercsDashboardPage: React.FC = () => {
       route: '/admin/communities-console',
       trend: [25, 28, 30, 27, 29, 28, 28],
       requests24h: '1.5M'
+    },
+    {
+      id: 'media-streaming-console',
+      title: 'Autonomous Media & Streaming Console',
+      category: 'Creation',
+      icon: Music,
+      description: 'Micromanagement of BeatwaveNG audio master stems & BPM, Dancia-4Tv HLS broadcasts, and VideoBox showcases',
+      status: 'online',
+      version: 'v1.0.0-live',
+      lastUpdated: 'Live sync',
+      responseTime: 32,
+      healthScore: 99.8,
+      route: '/admin/media-console',
+      trend: [30, 32, 34, 31, 33, 32, 32],
+      requests24h: '3.2M'
     },
     {
       id: 'stercs-curation',
