@@ -330,6 +330,21 @@ const StercsDashboardPage: React.FC = () => {
       requests24h: '7.8M'
     },
     {
+      id: 'corporate-governance-console',
+      title: 'Corporate Governance, Legal & Statutory Console',
+      category: 'Governance',
+      icon: Shield,
+      description: 'Autonomous administration of 18 board portfolios, committee chambers, DPO/NDPR, AML/CFT, ethics & CBN statutory licensing',
+      status: 'online',
+      version: 'v1.0.0-live',
+      lastUpdated: 'Live sync',
+      responseTime: 24,
+      healthScore: 99.9,
+      route: '/admin/governance-console',
+      trend: [22, 24, 23, 25, 24, 24, 24],
+      requests24h: '3.4M'
+    },
+    {
       id: 'stercs-curation',
       title: 'STERCS Curation Engine',
       category: 'Intelligence',
