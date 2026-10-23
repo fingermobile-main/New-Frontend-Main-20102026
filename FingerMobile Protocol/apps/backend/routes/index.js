@@ -119,6 +119,7 @@ const communitiesConsoleRoutes = require('./communities-console');
 const mediaStreamingConsoleRoutes = require('./media-streaming-console');
 const commerceLuxuryConsoleRoutes = require('./commerce-luxury-console');
 const financialTreasuryConsoleRoutes = require('./financial-treasury-console');
+const gamingSuperViConsoleRoutes = require('./gaming-supervi-console');
 
 // Mount individual route modules under their respective paths
 router.use('/communities-console', communitiesConsoleRoutes);
@@ -128,6 +129,8 @@ router.use('/commerce-luxury-console', commerceLuxuryConsoleRoutes);
 router.use('/commerce-console', commerceLuxuryConsoleRoutes);
 router.use('/financial-treasury-console', financialTreasuryConsoleRoutes);
 router.use('/treasury-console', financialTreasuryConsoleRoutes);
+router.use('/gaming-supervi-console', gamingSuperViConsoleRoutes);
+router.use('/gaming-console', gamingSuperViConsoleRoutes);
 router.use('/admin', adminRoutes);
 router.use('/operations', operationsRoutes);
 router.use('/monetization', monetizationRoutes);

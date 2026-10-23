@@ -104,6 +104,7 @@ import MasterCommunitiesConsole from '../components/dashboard/MasterCommunitiesC
 import MasterStreamingMediaConsole from '../components/dashboard/MasterStreamingMediaConsole';
 import MasterCommerceLuxuryConsole from '../components/dashboard/MasterCommerceLuxuryConsole';
 import UnifiedFinancialTreasuryConsole from '../components/dashboard/UnifiedFinancialTreasuryConsole';
+import MasterGamingSuperViConsole from '../components/dashboard/MasterGamingSuperViConsole';
 
 interface Section {
   id: string;
@@ -2520,6 +2521,7 @@ const MasterDashboardPage: React.FC = () => {
               { id: 'media-streaming-console', label: 'Streaming & Media Consoles', badge: 'Beatwave / Dancia / Video' },
               { id: 'commerce-luxury-console', label: 'Commerce & Luxury Consoles', badge: 'Marketplace / Luxury' },
               { id: 'financial-treasury-console', label: 'Treasury & Escrows Console (Option C)', badge: 'Escrows / Prize Pools' },
+              { id: 'gaming-supervi-console', label: 'SuperVi & Gaming Operations', badge: 'Physics / Heroes / Bounties' },
               { id: 'beatwaveng-console', label: 'BeatwaveNG Audio Console', badge: 'Live Sync' },
               { id: 'discover-console', label: 'Discover Master Console', badge: 'Topics & Swarms' },
               { id: 'soundriver-console', label: 'SoundRiver Master Console', badge: '320kbps Stream' },
@@ -2787,6 +2789,13 @@ const MasterDashboardPage: React.FC = () => {
             {activeTab === 'financial-treasury-console' && (
               <div className="space-y-6">
                 <UnifiedFinancialTreasuryConsole />
+              </div>
+            )}
+
+            {/* Dedicated SuperVi & Gaming Operations Console Tab (Phase 1) */}
+            {activeTab === 'gaming-supervi-console' && (
+              <div className="space-y-6">
+                <MasterGamingSuperViConsole />
               </div>
             )}
 

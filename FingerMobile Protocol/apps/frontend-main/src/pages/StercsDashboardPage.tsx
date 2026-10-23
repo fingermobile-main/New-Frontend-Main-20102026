@@ -51,7 +51,7 @@ import PlatformOwnershipCard from '../components/dashboard/PlatformOwnershipCard
 interface StercsModule {
   id: string;
   title: string;
-  category: 'Security' | 'Creation' | 'Governance' | 'Intelligence' | 'Commerce';
+  category: 'Security' | 'Creation' | 'Governance' | 'Intelligence' | 'Commerce' | 'Gaming';
   icon: React.ComponentType<any>;
   description: string;
   status: 'online' | 'optimal' | 'syncing' | 'maintenance' | 'warning';
@@ -313,6 +313,21 @@ const StercsDashboardPage: React.FC = () => {
       route: '/admin/treasury-console',
       trend: [24, 26, 25, 27, 26, 26, 26],
       requests24h: '5.6M'
+    },
+    {
+      id: 'gaming-supervi-console',
+      title: 'Autonomous Gaming & SuperVi Console',
+      category: 'Gaming',
+      icon: Gamepad2,
+      description: 'Endless runner physics, characters, powerups, daily challenges, leaderboards, and African voice stems',
+      status: 'online',
+      version: 'v1.0.0-live',
+      lastUpdated: 'Live sync',
+      responseTime: 22,
+      healthScore: 99.9,
+      route: '/admin/gaming-console',
+      trend: [20, 22, 21, 23, 22, 22, 22],
+      requests24h: '7.8M'
     },
     {
       id: 'stercs-curation',
@@ -612,6 +627,8 @@ const StercsDashboardPage: React.FC = () => {
       return 'bg-blue-100 text-blue-950 border border-blue-300 font-bold';
     case 'Commerce':
       return 'bg-emerald-100 text-emerald-950 border border-emerald-300 font-bold';
+    case 'Gaming':
+      return 'bg-amber-100 text-amber-950 border border-amber-300 font-bold';
     default:
       return 'bg-amber-100 text-amber-950 border border-amber-300 font-bold';
     }
