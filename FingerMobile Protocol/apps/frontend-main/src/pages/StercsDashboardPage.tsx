@@ -39,7 +39,8 @@ import {
   Video,
   ShoppingBag,
   Gamepad2,
-  Cpu
+  Cpu,
+  Layout
 } from 'lucide-react';
 import dashboardService from '../services/dashboardService';
 import { SystemMetric } from '../types/dashboard';
@@ -359,6 +360,21 @@ const StercsDashboardPage: React.FC = () => {
       route: '/admin/infra-console',
       trend: [4, 5, 4, 4, 4, 4, 4],
       requests24h: '748K'
+    },
+    {
+      id: 'creation-catalog-console',
+      title: 'Creation, Widgets & Screen Catalog Console',
+      category: 'Creation',
+      icon: Layout,
+      description: 'Autonomous management of Screen Catalog, Rotational Rails (2h widgets), Subscriptions, SEO & Dynamic Media Ingestion',
+      status: 'online',
+      version: 'v1.0.0-live',
+      lastUpdated: 'Live sync',
+      responseTime: 18,
+      healthScore: 99.97,
+      route: '/admin/catalog-console',
+      trend: [18, 19, 18, 18, 18, 18, 18],
+      requests24h: '4.2M'
     },
     {
       id: 'stercs-curation',
