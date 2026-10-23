@@ -111,6 +111,7 @@ import MasterCreationCatalogConsole from '../components/dashboard/MasterCreation
 import MasterSecurityDefConConsole from '../components/dashboard/MasterSecurityDefConConsole';
 import MasterCreatorMonetizationConsole from '../components/dashboard/MasterCreatorMonetizationConsole';
 import MasterContentModerationConsole from '../components/dashboard/MasterContentModerationConsole';
+import MasterRbacPermissionsConsole from '../components/dashboard/MasterRbacPermissionsConsole';
 
 interface Section {
   id: string;
@@ -2534,6 +2535,7 @@ const MasterDashboardPage: React.FC = () => {
               { id: 'security-defcon-console', label: 'Security & DefCon Threats (Phase 5)', badge: 'Enclaves / Vaults / DefCon-1' },
               { id: 'creator-monetization-console', label: 'Creator Studio & Monetization (Phase 6)', badge: 'Tiers / Ads / Royalties' },
               { id: 'content-moderation-console', label: 'Content Moderation & Ethics (Phase 7)', badge: 'NLP Sieve / Strikes / Jury' },
+              { id: 'rbac-permissions-console', label: 'Members & RBAC Citadel (Phase 8)', badge: 'Matrix / Gates / Council' },
               { id: 'beatwaveng-console', label: 'BeatwaveNG Audio Console', badge: 'Live Sync' },
               { id: 'discover-console', label: 'Discover Master Console', badge: 'Topics & Swarms' },
               { id: 'soundriver-console', label: 'SoundRiver Master Console', badge: '320kbps Stream' },
@@ -2850,6 +2852,13 @@ const MasterDashboardPage: React.FC = () => {
             {activeTab === 'content-moderation-console' && (
               <div className="space-y-6">
                 <MasterContentModerationConsole />
+              </div>
+            )}
+
+            {/* Dedicated Members, RBAC Permissions & Organization Citadel Console Tab (Phase 8) */}
+            {activeTab === 'rbac-permissions-console' && (
+              <div className="space-y-6">
+                <MasterRbacPermissionsConsole />
               </div>
             )}
 

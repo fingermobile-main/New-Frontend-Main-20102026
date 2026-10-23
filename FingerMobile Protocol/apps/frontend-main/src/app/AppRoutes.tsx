@@ -224,6 +224,7 @@ const CreationCatalogMasterConsolePage = lazy(() => import('../pages/admin/Creat
 const SecurityDefConMasterConsolePage = lazy(() => import('../pages/admin/SecurityDefConMasterConsolePage'));
 const CreatorMonetizationMasterConsolePage = lazy(() => import('../pages/admin/CreatorMonetizationMasterConsolePage'));
 const ContentModerationMasterConsolePage = lazy(() => import('../pages/admin/ContentModerationMasterConsolePage'));
+const RbacPermissionsMasterConsolePage = lazy(() => import('../pages/admin/RbacPermissionsMasterConsolePage'));
 const ContentAdminDashboardPage = lazy(() => import('../pages/ContentAdminDashboardPage'));
 const MemberManagementPage = lazy(() => import('../pages/admin/MemberManagementPage'));
 
@@ -547,6 +548,11 @@ export const routes: RouteObject[] = [
           { path: '/moderation-console', element: <ContentModerationMasterConsolePage /> },
           { path: '/content-moderation-console', element: <ContentModerationMasterConsolePage /> },
           { path: '/dashboard/content-moderation', element: <ContentModerationMasterConsolePage /> },
+          { path: '/admin/rbac-console', element: <RbacPermissionsMasterConsolePage /> },
+          { path: '/admin/rbac-permissions-console', element: <RbacPermissionsMasterConsolePage /> },
+          { path: '/rbac-console', element: <RbacPermissionsMasterConsolePage /> },
+          { path: '/rbac-permissions-console', element: <RbacPermissionsMasterConsolePage /> },
+          { path: '/dashboard/rbac-permissions', element: <RbacPermissionsMasterConsolePage /> },
           { path: '/businessorganizations', element: <BusinessOrganizationsConsolePage /> },
           { path: '/admin/content', element: <ContentAdminDashboardPage /> },
           { path: '/contentadmindashboard', element: <ContentAdminDashboardPage /> },

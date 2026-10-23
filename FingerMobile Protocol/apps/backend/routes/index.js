@@ -126,6 +126,7 @@ const creationCatalogConsoleRoutes = require('./creation-catalog-console');
 const securityDefConConsoleRoutes = require('./security-defcon-console');
 const creatorMonetizationConsoleRoutes = require('./creator-monetization-console');
 const contentModerationConsoleRoutes = require('./content-moderation-console');
+const rbacPermissionsConsoleRoutes = require('./rbac-permissions-console');
 
 // Mount individual route modules under their respective paths
 router.use('/communities-console', communitiesConsoleRoutes);
@@ -149,6 +150,9 @@ router.use('/creator-monetization-console', creatorMonetizationConsoleRoutes);
 router.use('/creator-console', creatorMonetizationConsoleRoutes);
 router.use('/content-moderation-console', contentModerationConsoleRoutes);
 router.use('/moderation-console', contentModerationConsoleRoutes);
+router.use('/rbac-permissions-console', rbacPermissionsConsoleRoutes);
+router.use('/rbac-console', rbacPermissionsConsoleRoutes);
+router.use('/members-console', rbacPermissionsConsoleRoutes);
 router.use('/admin', adminRoutes);
 router.use('/operations', operationsRoutes);
 router.use('/monetization', monetizationRoutes);

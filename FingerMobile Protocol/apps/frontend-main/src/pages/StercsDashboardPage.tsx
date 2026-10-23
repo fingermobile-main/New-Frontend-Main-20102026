@@ -423,6 +423,21 @@ const StercsDashboardPage: React.FC = () => {
       requests24h: '1.7M'
     },
     {
+      id: 'rbac-permissions-console',
+      title: 'Members, RBAC Permissions & Citadel Console',
+      category: 'Governance',
+      icon: Users,
+      description: 'Autonomous management of Sovereign Roles, Route Gates, Merchant Citadel KYC, Dignitaries Council & Sessions',
+      status: 'online',
+      version: 'v1.0.0-live',
+      lastUpdated: 'Live sync',
+      responseTime: 4,
+      healthScore: 99.99,
+      route: '/admin/rbac-console',
+      trend: [4, 4, 4, 4, 4, 4, 4],
+      requests24h: '980K'
+    },
+    {
       id: 'stercs-curation',
       title: 'STERCS Curation Engine',
       category: 'Intelligence',
