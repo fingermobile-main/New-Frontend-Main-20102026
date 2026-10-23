@@ -6,10 +6,9 @@ const logger = require('../config/logger');
 async function autoInitDatabase() {
   const dbDir = path.join(__dirname);
   logger.info('[autoInit] Starting robust SQL initialization (file-based retry loop)...');
-
   try {
     const files = fs.readdirSync(dbDir);
-    const sqlFiles = files.filter(f => f.endsWith('.sql'));
+    const sqlFiles = files.filter(f => f.endsWith('.sql') && !f.toLowerCase().includes('seed_test'));
 
     // Sort so critical tables and schemas run first, then seeds
     sqlFiles.sort((a, b) => {
