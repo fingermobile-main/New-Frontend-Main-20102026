@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { DrawerMenuContainer } from '../components/layout/DrawerMenu/DrawerMenuContainer';
 import { MemberProfileMenuTrigger } from '../components/layout/MemberProfileMenuTrigger';
+import { RouteLoadingSpinner } from '../components/RouteLoadingSpinner';
 import { useAuth } from '../contexts/AuthContext';
 
 /**
@@ -92,7 +93,9 @@ export const RootPlatformLayout: React.FC = () => {
       )}
 
       {/* Page Content */}
-      <Outlet />
+      <Suspense fallback={<RouteLoadingSpinner />}>
+        <Outlet />
+      </Suspense>
     </div>
   );
 };

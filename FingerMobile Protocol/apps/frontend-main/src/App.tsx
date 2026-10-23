@@ -6,6 +6,8 @@ import UniversalSearchModal from './components/common/UniversalSearchModal';
 import { VoiceLineReactionOverlay } from './components/shared/VoiceLineReactionOverlay';
 import ConsentManager from './components/ConsentManager';
 
+import ErrorBoundary from './components/ErrorBoundary';
+
 function App() {
   const [isSearchOpen, setIsSearchOpen] = React.useState(false);
 
@@ -42,7 +44,9 @@ function App() {
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
           <span>Search (Cmd+K)</span>
         </button>
-        <RouterProvider router={router} />
+        <ErrorBoundary>
+          <RouterProvider router={router} />
+        </ErrorBoundary>
       </div>
     </GlobalProviders>
   );

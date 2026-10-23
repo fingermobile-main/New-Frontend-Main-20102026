@@ -1,4 +1,5 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
+import { useRouteError } from 'react-router-dom';
 
 interface Props {
   children: ReactNode;
@@ -10,62 +11,84 @@ interface State {
   error: Error | null;
 }
 
-class ErrorBoundary extends Component<Props, State> {
+export class ErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = { hasError: false, error: null };
   }
 
   static getDerivedStateFromError(error: Error): State {
-    // Update state so the next render will show the fallback UI.
     return { hasError: true, error };
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    // You can also log the error to an error reporting service
     console.error('Error caught by boundary:', error, errorInfo);
 
-    // In a real application, you might want to send this error to a logging service
-    // Example: logErrorToService(error, errorInfo);
+    const isChunkError =
+      error.name === 'ChunkLoadError' ||
+      error.message?.includes('Loading chunk') ||
+      error.message?.includes('dynamically imported module') ||
+      error.message?.includes('failed to fetch');
+
+    if (isChunkError && typeof window !== 'undefined') {
+      const reloadKey = `chunk_reload_${window.location.pathname}`;
+      if (!sessionStorage.getItem(reloadKey)) {
+        sessionStorage.setItem(reloadKey, 'true');
+        window.location.reload();
+      }
+    }
   }
+
+  handleRefresh = () => {
+    if (typeof window !== 'undefined') {
+      sessionStorage.clear();
+      window.location.reload();
+    }
+  };
 
   render() {
     if (this.state.hasError) {
-      // You can render any custom fallback UI
       if (this.props.fallback) {
         return this.props.fallback;
       }
 
       return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-red-50 to-red-100 p-4">
-          <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-xl text-center">
-            <div className="mx-auto h-12 w-12 text-red-500">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        <div className="min-h-screen flex items-center justify-center bg-slate-100 p-6">
+          <div className="max-w-md w-full bg-white border border-slate-300 rounded-2xl p-8 shadow-xl text-center">
+            <div className="mx-auto h-12 w-12 text-amber-600 mb-4 flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
               </svg>
             </div>
             <div>
-              <h2 className="mt-6 text-center text-2xl font-extrabold text-gray-900">
-                Something went wrong
+              <h2 className="text-2xl font-black text-slate-900 tracking-tight">
+                Platform Update Detected
               </h2>
-              <p className="mt-2 text-center text-sm text-gray-600">
-                An error occurred while loading this page. Please try refreshing or contact support.
+              <p className="mt-2 text-sm text-slate-700 font-medium">
+                A platform component or code bundle was refreshed. Click below to load the latest version.
               </p>
               {this.state.error && (
-                <div className="mt-4 p-4 bg-red-50 rounded-md text-left">
-                  <p className="text-sm text-red-700 font-mono break-words">
-                    {this.state.error.toString()}
+                <div className="mt-4 p-3 bg-slate-50 border border-slate-200 rounded-md text-left">
+                  <p className="text-xs text-slate-700 font-mono break-words">
+                    {this.state.error.message || this.state.error.toString()}
                   </p>
                 </div>
               )}
             </div>
-            <div className="mt-6">
+            <div className="mt-6 flex flex-col gap-3">
               <button
-                onClick={() => window.location.reload()}
-                className="w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                type="button"
+                onClick={this.handleRefresh}
+                className="w-full py-3 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg shadow-sm transition-colors focus:outline-none"
               >
-                Refresh Page
+                Refresh Platform
               </button>
+              <a
+                href="/"
+                className="w-full py-2 px-4 border border-slate-300 text-slate-800 font-bold rounded-lg hover:bg-slate-50 transition-colors inline-block"
+              >
+                Return to Dashboard
+              </a>
             </div>
           </div>
         </div>
@@ -75,5 +98,72 @@ class ErrorBoundary extends Component<Props, State> {
     return this.props.children;
   }
 }
+
+export const RouteErrorBoundary: React.FC = () => {
+  const error = useRouteError() as Error | null;
+
+  React.useEffect(() => {
+    const isChunkError =
+      error?.name === 'ChunkLoadError' ||
+      error?.message?.includes('Loading chunk') ||
+      error?.message?.includes('dynamically imported module') ||
+      error?.message?.includes('failed to fetch');
+
+    if (isChunkError && typeof window !== 'undefined') {
+      const reloadKey = `chunk_reload_${window.location.pathname}`;
+      if (!sessionStorage.getItem(reloadKey)) {
+        sessionStorage.setItem(reloadKey, 'true');
+        window.location.reload();
+      }
+    }
+  }, [error]);
+
+  const handleRefresh = () => {
+    if (typeof window !== 'undefined') {
+      sessionStorage.clear();
+      window.location.reload();
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-slate-100 p-6">
+      <div className="max-w-md w-full bg-white border border-slate-300 rounded-2xl p-8 shadow-xl text-center">
+        <div className="mx-auto h-12 w-12 text-amber-600 mb-4 flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+        </div>
+        <h2 className="text-2xl font-black text-slate-900 tracking-tight">
+          Platform Update Detected
+        </h2>
+        <p className="mt-2 text-sm text-slate-700 font-medium">
+          A platform component or code bundle was refreshed. Click below to load the latest version.
+        </p>
+        {error && (
+          <div className="mt-4 p-3 bg-slate-50 border border-slate-200 rounded-md text-left">
+            <p className="text-xs text-slate-700 font-mono break-words">
+              {error.message || error.toString()}
+            </p>
+          </div>
+        )}
+        <div className="mt-6 flex flex-col gap-3">
+          <button
+            type="button"
+            onClick={handleRefresh}
+            className="w-full py-3 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg shadow-sm transition-colors focus:outline-none"
+          >
+            Refresh Platform
+          </button>
+          <a
+            href="/"
+            className="w-full py-2 px-4 border border-slate-300 text-slate-800 font-bold rounded-lg hover:bg-slate-50 transition-colors inline-block"
+          >
+            Return to Dashboard
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default ErrorBoundary;

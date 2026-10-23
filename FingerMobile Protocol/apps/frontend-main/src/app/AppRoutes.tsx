@@ -8,6 +8,7 @@ import { WorkspaceLayout } from '../layouts/WorkspaceLayout';
 import { AdminLayout } from '../layouts/AdminLayout';
 import { AuthLayout } from '../layouts/AuthLayout';
 import { ReaderLayout } from '../layouts/ReaderLayout';
+import { RouteErrorBoundary } from '../components/ErrorBoundary';
 
 // Guard Rails
 import { RequireAuth } from './guards/RequireAuth';
@@ -295,6 +296,7 @@ export const routes: RouteObject[] = [
   // ---------------------------------------------------------------------------
   {
     element: <AuthLayout />,
+    errorElement: <RouteErrorBoundary />,
     children: [
       { path: '/login', element: <LoginPage /> },
       { path: '/register', element: <RegisterPage /> },
@@ -318,6 +320,7 @@ export const routes: RouteObject[] = [
 
   {
     element: <RootPlatformLayout />,
+    errorElement: <RouteErrorBoundary />,
     children: [
       // ---------------------------------------------------------------------------
       // READER SCAFFOLD (S5) - Documentation & Legal Texts (Publicly Accessible)
