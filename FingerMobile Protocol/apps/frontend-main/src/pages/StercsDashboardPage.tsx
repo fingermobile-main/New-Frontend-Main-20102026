@@ -38,7 +38,8 @@ import {
   Tv,
   Video,
   ShoppingBag,
-  Gamepad2
+  Gamepad2,
+  Cpu
 } from 'lucide-react';
 import dashboardService from '../services/dashboardService';
 import { SystemMetric } from '../types/dashboard';
@@ -343,6 +344,21 @@ const StercsDashboardPage: React.FC = () => {
       route: '/admin/governance-console',
       trend: [22, 24, 23, 25, 24, 24, 24],
       requests24h: '3.4M'
+    },
+    {
+      id: 'system-infra-console',
+      title: 'Systems Infrastructure, AI Engine & Dev Console',
+      category: 'Intelligence',
+      icon: Cpu,
+      description: 'Autonomous administration of STERCS Sentient Core, Guardian AI DefCon, NexusGNN, BullMQ Queues & PostgreSQL Mesh',
+      status: 'online',
+      version: 'v1.0.0-live',
+      lastUpdated: 'Live sync',
+      responseTime: 4,
+      healthScore: 99.97,
+      route: '/admin/infra-console',
+      trend: [4, 5, 4, 4, 4, 4, 4],
+      requests24h: '748K'
     },
     {
       id: 'stercs-curation',
