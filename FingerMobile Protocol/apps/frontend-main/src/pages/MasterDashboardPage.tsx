@@ -112,6 +112,9 @@ import MasterSecurityDefConConsole from '../components/dashboard/MasterSecurityD
 import MasterCreatorMonetizationConsole from '../components/dashboard/MasterCreatorMonetizationConsole';
 import MasterContentModerationConsole from '../components/dashboard/MasterContentModerationConsole';
 import MasterRbacPermissionsConsole from '../components/dashboard/MasterRbacPermissionsConsole';
+import { MasterStercsEditorConsole } from '../components/dashboard/MasterStercsEditorConsole';
+import { MasterCamusEnclaveConsole } from '../components/dashboard/MasterCamusEnclaveConsole';
+import { MasterAnalyticsTelemetryConsole } from '../components/dashboard/MasterAnalyticsTelemetryConsole';
 
 interface Section {
   id: string;
@@ -2536,6 +2539,9 @@ const MasterDashboardPage: React.FC = () => {
               { id: 'creator-monetization-console', label: 'Creator Studio & Monetization (Phase 6)', badge: 'Tiers / Ads / Royalties' },
               { id: 'content-moderation-console', label: 'Content Moderation & Ethics (Phase 7)', badge: 'NLP Sieve / Strikes / Jury' },
               { id: 'rbac-permissions-console', label: 'Members & RBAC Citadel (Phase 8)', badge: 'Matrix / Gates / Council' },
+              { id: 'stercs-editor-console', label: 'STERCS Editor & Scripting (Phase 9)', badge: 'DSL v2.4 / Shaders' },
+              { id: 'camus-enclave-console', label: 'Camus Hardware Enclaves (Phase 10)', badge: 'HSM / Zero-Trust' },
+              { id: 'analytics-telemetry-console', label: 'Analytics & Telemetry (Phase 11)', badge: 'QPS / P99 / Mesh' },
               { id: 'beatwaveng-console', label: 'BeatwaveNG Audio Console', badge: 'Live Sync' },
               { id: 'discover-console', label: 'Discover Master Console', badge: 'Topics & Swarms' },
               { id: 'soundriver-console', label: 'SoundRiver Master Console', badge: '320kbps Stream' },
@@ -2859,6 +2865,27 @@ const MasterDashboardPage: React.FC = () => {
             {activeTab === 'rbac-permissions-console' && (
               <div className="space-y-6">
                 <MasterRbacPermissionsConsole />
+              </div>
+            )}
+
+            {/* Dedicated STERCS Editor & Motion Scripting Console Tab (Phase 9) */}
+            {activeTab === 'stercs-editor-console' && (
+              <div className="space-y-6">
+                <MasterStercsEditorConsole />
+              </div>
+            )}
+
+            {/* Dedicated Camus Hardware Enclaves Console Tab (Phase 10) */}
+            {activeTab === 'camus-enclave-console' && (
+              <div className="space-y-6">
+                <MasterCamusEnclaveConsole />
+              </div>
+            )}
+
+            {/* Dedicated Analytics & Telemetry Console Tab (Phase 11) */}
+            {activeTab === 'analytics-telemetry-console' && (
+              <div className="space-y-6">
+                <MasterAnalyticsTelemetryConsole />
               </div>
             )}
 

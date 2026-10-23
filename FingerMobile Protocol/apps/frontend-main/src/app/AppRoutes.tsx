@@ -225,6 +225,9 @@ const SecurityDefConMasterConsolePage = lazy(() => import('../pages/admin/Securi
 const CreatorMonetizationMasterConsolePage = lazy(() => import('../pages/admin/CreatorMonetizationMasterConsolePage'));
 const ContentModerationMasterConsolePage = lazy(() => import('../pages/admin/ContentModerationMasterConsolePage'));
 const RbacPermissionsMasterConsolePage = lazy(() => import('../pages/admin/RbacPermissionsMasterConsolePage'));
+const StercsEditorMasterConsolePage = lazy(() => import('../pages/admin/StercsEditorMasterConsolePage'));
+const CamusEnclaveMasterConsolePage = lazy(() => import('../pages/admin/CamusEnclaveMasterConsolePage'));
+const AnalyticsTelemetryMasterConsolePage = lazy(() => import('../pages/admin/AnalyticsTelemetryMasterConsolePage'));
 const ContentAdminDashboardPage = lazy(() => import('../pages/ContentAdminDashboardPage'));
 const MemberManagementPage = lazy(() => import('../pages/admin/MemberManagementPage'));
 
@@ -553,6 +556,21 @@ export const routes: RouteObject[] = [
           { path: '/rbac-console', element: <RbacPermissionsMasterConsolePage /> },
           { path: '/rbac-permissions-console', element: <RbacPermissionsMasterConsolePage /> },
           { path: '/dashboard/rbac-permissions', element: <RbacPermissionsMasterConsolePage /> },
+          { path: '/admin/stercs-editor-console', element: <StercsEditorMasterConsolePage /> },
+          { path: '/admin/editor-console', element: <StercsEditorMasterConsolePage /> },
+          { path: '/stercs-editor-console', element: <StercsEditorMasterConsolePage /> },
+          { path: '/editor-console', element: <StercsEditorMasterConsolePage /> },
+          { path: '/dashboard/stercs-editor', element: <StercsEditorMasterConsolePage /> },
+          { path: '/admin/camus-enclave-console', element: <CamusEnclaveMasterConsolePage /> },
+          { path: '/admin/enclave-console', element: <CamusEnclaveMasterConsolePage /> },
+          { path: '/camus-enclave-console', element: <CamusEnclaveMasterConsolePage /> },
+          { path: '/enclave-console', element: <CamusEnclaveMasterConsolePage /> },
+          { path: '/dashboard/camus-enclave', element: <CamusEnclaveMasterConsolePage /> },
+          { path: '/admin/analytics-telemetry-console', element: <AnalyticsTelemetryMasterConsolePage /> },
+          { path: '/admin/telemetry-console', element: <AnalyticsTelemetryMasterConsolePage /> },
+          { path: '/analytics-telemetry-console', element: <AnalyticsTelemetryMasterConsolePage /> },
+          { path: '/telemetry-console', element: <AnalyticsTelemetryMasterConsolePage /> },
+          { path: '/dashboard/analytics-telemetry', element: <AnalyticsTelemetryMasterConsolePage /> },
           { path: '/businessorganizations', element: <BusinessOrganizationsConsolePage /> },
           { path: '/admin/content', element: <ContentAdminDashboardPage /> },
           { path: '/contentadmindashboard', element: <ContentAdminDashboardPage /> },

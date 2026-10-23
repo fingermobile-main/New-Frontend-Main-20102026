@@ -1,4 +1,4 @@
-import { AfricanVoiceLine } from '../utils/SuperViAudioEngine';
+import { AfricanVoiceLine } from '../services/SuperViAudioEngine';
 
 export interface CamusEnclaveConsoleItem {
   id: string;
