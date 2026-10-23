@@ -36,7 +36,8 @@ import {
   MessageSquare,
   Music,
   Tv,
-  Video
+  Video,
+  ShoppingBag
 } from 'lucide-react';
 import dashboardService from '../services/dashboardService';
 import { SystemMetric } from '../types/dashboard';
@@ -49,7 +50,7 @@ import PlatformOwnershipCard from '../components/dashboard/PlatformOwnershipCard
 interface StercsModule {
   id: string;
   title: string;
-  category: 'Security' | 'Creation' | 'Governance' | 'Intelligence';
+  category: 'Security' | 'Creation' | 'Governance' | 'Intelligence' | 'Commerce';
   icon: React.ComponentType<any>;
   description: string;
   status: 'online' | 'optimal' | 'syncing' | 'maintenance' | 'warning';
@@ -281,6 +282,21 @@ const StercsDashboardPage: React.FC = () => {
       route: '/admin/media-console',
       trend: [30, 32, 34, 31, 33, 32, 32],
       requests24h: '3.2M'
+    },
+    {
+      id: 'commerce-luxury-console',
+      title: 'Autonomous Commerce & Luxury Console',
+      category: 'Commerce',
+      icon: ShoppingBag,
+      description: 'Total micromanagement of 6 commerce & luxury domains: Marketplace, Storefront, Flamingo, OwnIt, FingerLux, Tribut',
+      status: 'online',
+      version: 'v1.0.0-live',
+      lastUpdated: 'Live sync',
+      responseTime: 30,
+      healthScore: 99.9,
+      route: '/admin/commerce-console',
+      trend: [28, 30, 31, 29, 32, 30, 30],
+      requests24h: '2.8M'
     },
     {
       id: 'stercs-curation',
@@ -578,6 +594,8 @@ const StercsDashboardPage: React.FC = () => {
       return 'bg-purple-100 text-purple-950 border border-purple-300 font-bold';
     case 'Intelligence':
       return 'bg-blue-100 text-blue-950 border border-blue-300 font-bold';
+    case 'Commerce':
+      return 'bg-emerald-100 text-emerald-950 border border-emerald-300 font-bold';
     default:
       return 'bg-amber-100 text-amber-950 border border-amber-300 font-bold';
     }

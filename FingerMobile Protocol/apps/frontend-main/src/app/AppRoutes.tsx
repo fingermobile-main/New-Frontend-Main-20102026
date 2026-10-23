@@ -215,6 +215,7 @@ const ContentCreatorsConsolePage = lazy(() => import('../pages/admin/ContentCrea
 const BusinessOrganizationsConsolePage = lazy(() => import('../pages/admin/BusinessOrganizationsConsolePage'));
 const CommunitiesMasterConsolePage = lazy(() => import('../pages/admin/CommunitiesMasterConsolePage'));
 const MediaStreamingMasterConsolePage = lazy(() => import('../pages/admin/MediaStreamingMasterConsolePage'));
+const CommerceLuxuryMasterConsolePage = lazy(() => import('../pages/admin/CommerceLuxuryMasterConsolePage'));
 const ContentAdminDashboardPage = lazy(() => import('../pages/ContentAdminDashboardPage'));
 const MemberManagementPage = lazy(() => import('../pages/admin/MemberManagementPage'));
 
@@ -493,6 +494,11 @@ export const routes: RouteObject[] = [
           { path: '/media-console', element: <MediaStreamingMasterConsolePage /> },
           { path: '/streaming-console', element: <MediaStreamingMasterConsolePage /> },
           { path: '/dashboard/streaming', element: <MediaStreamingMasterConsolePage /> },
+          { path: '/admin/commerce-console', element: <CommerceLuxuryMasterConsolePage /> },
+          { path: '/admin/luxury-console', element: <CommerceLuxuryMasterConsolePage /> },
+          { path: '/commerce-console', element: <CommerceLuxuryMasterConsolePage /> },
+          { path: '/luxury-console', element: <CommerceLuxuryMasterConsolePage /> },
+          { path: '/dashboard/commerce', element: <CommerceLuxuryMasterConsolePage /> },
           { path: '/businessorganizations', element: <BusinessOrganizationsConsolePage /> },
           { path: '/admin/content', element: <ContentAdminDashboardPage /> },
           { path: '/contentadmindashboard', element: <ContentAdminDashboardPage /> },

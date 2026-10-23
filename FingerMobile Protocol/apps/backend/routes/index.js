@@ -117,11 +117,14 @@ const auditLogsRoutes = require('./audit-log-admin');
 const securityRoutes = require('./security');
 const communitiesConsoleRoutes = require('./communities-console');
 const mediaStreamingConsoleRoutes = require('./media-streaming-console');
+const commerceLuxuryConsoleRoutes = require('./commerce-luxury-console');
 
 // Mount individual route modules under their respective paths
 router.use('/communities-console', communitiesConsoleRoutes);
 router.use('/media-streaming-console', mediaStreamingConsoleRoutes);
 router.use('/media-console', mediaStreamingConsoleRoutes);
+router.use('/commerce-luxury-console', commerceLuxuryConsoleRoutes);
+router.use('/commerce-console', commerceLuxuryConsoleRoutes);
 router.use('/admin', adminRoutes);
 router.use('/operations', operationsRoutes);
 router.use('/monetization', monetizationRoutes);

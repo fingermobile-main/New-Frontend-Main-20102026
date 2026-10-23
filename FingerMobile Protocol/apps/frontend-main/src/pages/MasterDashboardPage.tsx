@@ -102,6 +102,7 @@ import StercsControlCenter from '../components/dashboard/StercsControlCenter';
 import UnifiedCommerceCatalogHub from '../components/dashboard/catalog/UnifiedCommerceCatalogHub';
 import MasterCommunitiesConsole from '../components/dashboard/MasterCommunitiesConsole';
 import MasterStreamingMediaConsole from '../components/dashboard/MasterStreamingMediaConsole';
+import MasterCommerceLuxuryConsole from '../components/dashboard/MasterCommerceLuxuryConsole';
 
 interface Section {
   id: string;
@@ -2516,6 +2517,7 @@ const MasterDashboardPage: React.FC = () => {
               { id: 'communities-console', label: 'Communities Consoles (11 Domains)', badge: 'Autonomous' },
               { id: 'media-discovery', label: 'Media & Discovery', badge: '10' },
               { id: 'media-streaming-console', label: 'Streaming & Media Consoles', badge: 'Beatwave / Dancia / Video' },
+              { id: 'commerce-luxury-console', label: 'Commerce & Luxury Consoles', badge: 'Marketplace / Luxury' },
               { id: 'beatwaveng-console', label: 'BeatwaveNG Audio Console', badge: 'Live Sync' },
               { id: 'discover-console', label: 'Discover Master Console', badge: 'Topics & Swarms' },
               { id: 'soundriver-console', label: 'SoundRiver Master Console', badge: '320kbps Stream' },
@@ -2769,6 +2771,13 @@ const MasterDashboardPage: React.FC = () => {
             {activeTab === 'media-streaming-console' && (
               <div className="space-y-6">
                 <MasterStreamingMediaConsole />
+              </div>
+            )}
+
+            {/* Dedicated Commerce & Luxury Consoles Tab (Marketplace, Storefront, Flamingo, OwnIt, FingerLux, Tribut) */}
+            {activeTab === 'commerce-luxury-console' && (
+              <div className="space-y-6">
+                <MasterCommerceLuxuryConsole />
               </div>
             )}
 
