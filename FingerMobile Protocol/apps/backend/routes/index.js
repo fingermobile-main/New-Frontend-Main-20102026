@@ -127,6 +127,9 @@ const securityDefConConsoleRoutes = require('./security-defcon-console');
 const creatorMonetizationConsoleRoutes = require('./creator-monetization-console');
 const contentModerationConsoleRoutes = require('./content-moderation-console');
 const rbacPermissionsConsoleRoutes = require('./rbac-permissions-console');
+const stercsEditorConsoleRoutes = require('./stercs-editor-console');
+const camusEnclaveConsoleRoutes = require('./camus-enclave-console');
+const analyticsTelemetryConsoleRoutes = require('./analytics-telemetry-console');
 
 // Mount individual route modules under their respective paths
 router.use('/communities-console', communitiesConsoleRoutes);
@@ -153,6 +156,12 @@ router.use('/moderation-console', contentModerationConsoleRoutes);
 router.use('/rbac-permissions-console', rbacPermissionsConsoleRoutes);
 router.use('/rbac-console', rbacPermissionsConsoleRoutes);
 router.use('/members-console', rbacPermissionsConsoleRoutes);
+router.use('/stercs-editor-console', stercsEditorConsoleRoutes);
+router.use('/editor-console', stercsEditorConsoleRoutes);
+router.use('/camus-enclave-console', camusEnclaveConsoleRoutes);
+router.use('/enclave-console', camusEnclaveConsoleRoutes);
+router.use('/analytics-telemetry-console', analyticsTelemetryConsoleRoutes);
+router.use('/telemetry-console', analyticsTelemetryConsoleRoutes);
 router.use('/admin', adminRoutes);
 router.use('/operations', operationsRoutes);
 router.use('/monetization', monetizationRoutes);
