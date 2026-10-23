@@ -26,24 +26,6 @@ module.exports = {
         publicPath: '/',
       };
 
-      if (!webpackConfig.optimization) {
-        webpackConfig.optimization = {};
-      }
-      webpackConfig.optimization.splitChunks = {
-        ...(webpackConfig.optimization.splitChunks || {}),
-        chunks: 'all',
-        cacheGroups: {
-          ...(webpackConfig.optimization.splitChunks?.cacheGroups || {}),
-          lucide: {
-            test: /[\\/]node_modules[\\/]lucide-react[\\/]/,
-            name: 'vendor-lucide',
-            chunks: 'all',
-            priority: 20,
-            enforce: true,
-          },
-        },
-      };
-
       webpackConfig.resolve.fallback = {
         ...(webpackConfig.resolve.fallback || {}),
         path: false,
@@ -59,19 +41,14 @@ module.exports = {
       return webpackConfig;
     }
   },
-  devServer: (devServerConfig) => {
-    devServerConfig.port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
-    devServerConfig.host = '0.0.0.0';
-    devServerConfig.allowedHosts = 'all';
-    devServerConfig.headers = {
+  devServer: {
+    port: process.env.PORT ? parseInt(process.env.PORT, 10) : 3000,
+    host: '0.0.0.0',
+    allowedHosts: 'all',
+    headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
       'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization',
-    };
-    devServerConfig.historyApiFallback = {
-      disableDotRule: true,
-      index: '/',
-    };
-    return devServerConfig;
+    },
   }
 };
