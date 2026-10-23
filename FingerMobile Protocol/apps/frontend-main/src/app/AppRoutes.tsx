@@ -213,6 +213,7 @@ const UsersPermissionConsolePage = lazy(() => import('../pages/admin/UsersPermis
 const PagesPermissionConsolePage = lazy(() => import('../pages/admin/PagesPermissionConsolePage'));
 const ContentCreatorsConsolePage = lazy(() => import('../pages/admin/ContentCreatorsConsolePage'));
 const BusinessOrganizationsConsolePage = lazy(() => import('../pages/admin/BusinessOrganizationsConsolePage'));
+const CommunitiesMasterConsolePage = lazy(() => import('../pages/admin/CommunitiesMasterConsolePage'));
 const ContentAdminDashboardPage = lazy(() => import('../pages/ContentAdminDashboardPage'));
 const MemberManagementPage = lazy(() => import('../pages/admin/MemberManagementPage'));
 
@@ -483,6 +484,9 @@ export const routes: RouteObject[] = [
           { path: '/contentcreators', element: <ContentCreatorsConsolePage /> },
           { path: '/admin/business-console', element: <BusinessOrganizationsConsolePage /> },
           { path: '/business-console', element: <BusinessOrganizationsConsolePage /> },
+          { path: '/admin/communities-console', element: <CommunitiesMasterConsolePage /> },
+          { path: '/communities-console', element: <CommunitiesMasterConsolePage /> },
+          { path: '/dashboard/communities', element: <CommunitiesMasterConsolePage /> },
           { path: '/businessorganizations', element: <BusinessOrganizationsConsolePage /> },
           { path: '/admin/content', element: <ContentAdminDashboardPage /> },
           { path: '/contentadmindashboard', element: <ContentAdminDashboardPage /> },

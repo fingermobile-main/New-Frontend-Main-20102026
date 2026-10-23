@@ -100,6 +100,7 @@ import { guardianSearchIndexer, SearchBenchmarkResult } from '../services/Guardi
 import ScreenCatalogManagementConsole from '../components/dashboard/ScreenCatalogManagementConsole';
 import StercsControlCenter from '../components/dashboard/StercsControlCenter';
 import UnifiedCommerceCatalogHub from '../components/dashboard/catalog/UnifiedCommerceCatalogHub';
+import MasterCommunitiesConsole from '../components/dashboard/MasterCommunitiesConsole';
 
 interface Section {
   id: string;
@@ -2511,6 +2512,7 @@ const MasterDashboardPage: React.FC = () => {
               { id: 'subscriptions', label: 'Subscription Models & Free Tier', badge: 'Active' },
               { id: 'seo', label: 'Guardian AI SEO & Indexing', badge: '100% Auto' },
               { id: 'community-identity', label: 'Community & Identity', badge: '9' },
+              { id: 'communities-console', label: 'Communities Consoles (11 Domains)', badge: 'Autonomous' },
               { id: 'media-discovery', label: 'Media & Discovery', badge: '10' },
               { id: 'beatwaveng-console', label: 'BeatwaveNG Audio Console', badge: 'Live Sync' },
               { id: 'discover-console', label: 'Discover Master Console', badge: 'Topics & Swarms' },
@@ -2746,6 +2748,13 @@ const MasterDashboardPage: React.FC = () => {
                 'Community & Identity Consoles',
                 'Member identity, sub-communities, public profile customization, contact relationship hubs, and editorial long-form content.'
               )}
+
+            {/* Dedicated Autonomous Communities Console Tab (11 Services) */}
+            {activeTab === 'communities-console' && (
+              <div className="space-y-6">
+                <MasterCommunitiesConsole />
+              </div>
+            )}
 
             {activeTab === 'media-discovery' &&
               renderConsoleGroupContent(

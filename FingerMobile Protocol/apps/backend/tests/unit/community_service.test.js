@@ -6,7 +6,7 @@
 const { describe, it, beforeEach } = require('mocha');
 const { expect } = require('chai');
 const sinon = require('sinon');
-const CommunityService = require('../../services/CommunityService');
+const CommunityService = require('../../services/communityService');
 
 describe('CommunityService', () => {
   let mockPool;

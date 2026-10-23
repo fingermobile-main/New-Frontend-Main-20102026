@@ -32,7 +32,8 @@ import {
   Building,
   Workflow,
   X,
-  Play
+  Play,
+  MessageSquare
 } from 'lucide-react';
 import dashboardService from '../services/dashboardService';
 import { SystemMetric } from '../types/dashboard';
@@ -247,6 +248,21 @@ const StercsDashboardPage: React.FC = () => {
       route: '/guardian-protection',
       trend: [60, 58, 54, 52, 49, 53, 50],
       requests24h: '12.1M'
+    },
+    {
+      id: 'communities-console',
+      title: 'Autonomous Communities Console',
+      category: 'Governance',
+      icon: MessageSquare,
+      description: 'Total micromanagement of 11 community domains: Forum, Mii, FingerShorts, Groups, Gems, Blogs, Hallmarks, Discover, Discovery, Tribute, Trends',
+      status: 'online',
+      version: 'v1.0.0-live',
+      lastUpdated: 'Live sync',
+      responseTime: 28,
+      healthScore: 99.9,
+      route: '/admin/communities-console',
+      trend: [25, 28, 30, 27, 29, 28, 28],
+      requests24h: '1.5M'
     },
     {
       id: 'stercs-curation',

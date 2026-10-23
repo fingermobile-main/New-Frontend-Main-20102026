@@ -115,8 +115,10 @@ const uploadsRoutes = require('./uploads');
 const mediaRoutes = require('./media');
 const auditLogsRoutes = require('./audit-log-admin');
 const securityRoutes = require('./security');
+const communitiesConsoleRoutes = require('./communities-console');
 
 // Mount individual route modules under their respective paths
+router.use('/communities-console', communitiesConsoleRoutes);
 router.use('/admin', adminRoutes);
 router.use('/operations', operationsRoutes);
 router.use('/monetization', monetizationRoutes);

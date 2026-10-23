@@ -1,5 +1,3 @@
-/* global describe, test, expect, beforeEach, afterEach */
-
 import { describe, expect, beforeEach, afterEach } from '@jest/globals';
 import mediaEditingService from '../../services/mediaEditingService';
 
