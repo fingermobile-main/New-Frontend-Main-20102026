@@ -377,6 +377,21 @@ const StercsDashboardPage: React.FC = () => {
       requests24h: '4.2M'
     },
     {
+      id: 'security-defcon-console',
+      title: 'Security, DefCon Threats & Camus Enclaves Console',
+      category: 'Security',
+      icon: Shield,
+      description: 'Autonomous management of Camus Hardware Enclaves, Threat Heuristics, DDoS Mitigation, Key Vaults & DefCon Containment',
+      status: 'online',
+      version: 'v1.0.0-live',
+      lastUpdated: 'Live sync',
+      responseTime: 2,
+      healthScore: 99.99,
+      route: '/admin/security-console',
+      trend: [2, 2, 2, 2, 2, 2, 2],
+      requests24h: '763K'
+    },
+    {
       id: 'stercs-curation',
       title: 'STERCS Curation Engine',
       category: 'Intelligence',

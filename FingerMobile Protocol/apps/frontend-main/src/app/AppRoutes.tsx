@@ -221,6 +221,7 @@ const GamingSuperViMasterConsolePage = lazy(() => import('../pages/admin/GamingS
 const CorporateGovernanceMasterConsolePage = lazy(() => import('../pages/admin/CorporateGovernanceMasterConsolePage'));
 const SystemInfraMasterConsolePage = lazy(() => import('../pages/admin/SystemInfraMasterConsolePage'));
 const CreationCatalogMasterConsolePage = lazy(() => import('../pages/admin/CreationCatalogMasterConsolePage'));
+const SecurityDefConMasterConsolePage = lazy(() => import('../pages/admin/SecurityDefConMasterConsolePage'));
 const ContentAdminDashboardPage = lazy(() => import('../pages/ContentAdminDashboardPage'));
 const MemberManagementPage = lazy(() => import('../pages/admin/MemberManagementPage'));
 
@@ -529,6 +530,11 @@ export const routes: RouteObject[] = [
           { path: '/catalog-console', element: <CreationCatalogMasterConsolePage /> },
           { path: '/creation-catalog-console', element: <CreationCatalogMasterConsolePage /> },
           { path: '/dashboard/screen-catalog', element: <CreationCatalogMasterConsolePage /> },
+          { path: '/admin/security-console', element: <SecurityDefConMasterConsolePage /> },
+          { path: '/admin/security-defcon-console', element: <SecurityDefConMasterConsolePage /> },
+          { path: '/security-console', element: <SecurityDefConMasterConsolePage /> },
+          { path: '/security-defcon-console', element: <SecurityDefConMasterConsolePage /> },
+          { path: '/dashboard/security-defcon', element: <SecurityDefConMasterConsolePage /> },
           { path: '/businessorganizations', element: <BusinessOrganizationsConsolePage /> },
           { path: '/admin/content', element: <ContentAdminDashboardPage /> },
           { path: '/contentadmindashboard', element: <ContentAdminDashboardPage /> },

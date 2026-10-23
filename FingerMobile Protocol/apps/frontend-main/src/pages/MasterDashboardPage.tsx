@@ -108,6 +108,7 @@ import MasterGamingSuperViConsole from '../components/dashboard/MasterGamingSupe
 import MasterCorporateGovernanceConsole from '../components/dashboard/MasterCorporateGovernanceConsole';
 import MasterSystemInfraConsole from '../components/dashboard/MasterSystemInfraConsole';
 import MasterCreationCatalogConsole from '../components/dashboard/MasterCreationCatalogConsole';
+import MasterSecurityDefConConsole from '../components/dashboard/MasterSecurityDefConConsole';
 
 interface Section {
   id: string;
@@ -2528,6 +2529,7 @@ const MasterDashboardPage: React.FC = () => {
               { id: 'corporate-governance-console', label: 'Corporate Governance & Legal (Phase 2)', badge: 'Board / NDPR / AML' },
               { id: 'system-infra-console', label: 'Systems Engineering & Cloud Infra (Phase 3)', badge: 'STERCS / AI / 748k TPS' },
               { id: 'creation-catalog-console', label: 'Creation, Widgets & Screen Catalog (Phase 4)', badge: 'Screens / Rails / Subs' },
+              { id: 'security-defcon-console', label: 'Security & DefCon Threats (Phase 5)', badge: 'Enclaves / Vaults / DefCon-1' },
               { id: 'beatwaveng-console', label: 'BeatwaveNG Audio Console', badge: 'Live Sync' },
               { id: 'discover-console', label: 'Discover Master Console', badge: 'Topics & Swarms' },
               { id: 'soundriver-console', label: 'SoundRiver Master Console', badge: '320kbps Stream' },
@@ -2823,6 +2825,13 @@ const MasterDashboardPage: React.FC = () => {
             {activeTab === 'creation-catalog-console' && (
               <div className="space-y-6">
                 <MasterCreationCatalogConsole />
+              </div>
+            )}
+
+            {/* Dedicated Security, DefCon Threats & Hardware Enclaves Console Tab (Phase 5) */}
+            {activeTab === 'security-defcon-console' && (
+              <div className="space-y-6">
+                <MasterSecurityDefConConsole />
               </div>
             )}
 
