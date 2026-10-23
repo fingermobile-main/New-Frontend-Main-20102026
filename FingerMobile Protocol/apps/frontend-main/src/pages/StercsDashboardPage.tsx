@@ -37,7 +37,8 @@ import {
   Music,
   Tv,
   Video,
-  ShoppingBag
+  ShoppingBag,
+  Gamepad2
 } from 'lucide-react';
 import dashboardService from '../services/dashboardService';
 import { SystemMetric } from '../types/dashboard';
