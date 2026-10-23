@@ -81,7 +81,7 @@ class LoanSqrController {
     try {
       const { id } = req.params;
       const isNum = !isNaN(Number(id));
-      const query = isNum 
+      const query = isNum
         ? 'SELECT * FROM loansqr_products WHERE id = $1'
         : 'SELECT * FROM loansqr_products WHERE slug = $1';
 
@@ -518,8 +518,8 @@ class LoanSqrController {
 
       res.status(200).json({
         success: true,
-        message: isRepaid 
-          ? 'Loan fully repaid! Your credit score and limit have been upgraded.' 
+        message: isRepaid
+          ? 'Loan fully repaid! Your credit score and limit have been upgraded.'
           : `Repayment of ${repayAmount.toLocaleString()} NGN processed successfully.`,
         reference: ref,
         loan: updatedLoan.rows[0],
@@ -631,7 +631,7 @@ class LoanSqrController {
       const a = appsAgg.rows[0];
       const p = posAgg.rows[0];
 
-      const approvalRate = a.total_applications > 0 
+      const approvalRate = a.total_applications > 0
         ? Math.round((parseInt(a.approved_apps, 10) / parseInt(a.total_applications, 10)) * 100)
         : 95;
 

@@ -12,7 +12,7 @@ cron.schedule('0 2 * * *', async () => {
     logger.error('Error during account inactivity checks:', error);
   }
 }, {
-  timezone: "UTC"
+  timezone: 'UTC'
 });
 
 // Schedule liability reconciliation checks to run twice daily (morning and evening)
@@ -25,7 +25,7 @@ cron.schedule('0 6,18 * * *', async () => {
     logger.error('Error during liability reconciliation:', error);
   }
 }, {
-  timezone: "UTC"
+  timezone: 'UTC'
 });
 
 logger.info('Cron jobs scheduled successfully');

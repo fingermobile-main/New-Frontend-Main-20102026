@@ -1,7 +1,7 @@
 /**
  * FingerMobile Protocol - Corporate Governance Service
  * Blueprint Reference: FingerMobile corporate governance and structure 14102026.md
- * 
+ *
  * Manages 18 Executive Leadership Roles, Sub-Offices, Allocated Resources (Human, Tech, Capital),
  * Technical Delegated Authority (DoA) Matrix, Cross-Functional RACI, SoD Safeguards,
  * and Member RBAC Credentialing & Portfolio Assignment.
@@ -118,7 +118,7 @@ class CorporateGovernanceService {
             rolesAndResponsibilities: 'Evaluates credit lines, conducts counterpart due diligence, and manages asset recoveries.',
             resources: {
               humanTalent: 'Commercial credit underwriters, debt workout specialists, asset recovery attorneys',
-              techTools: "Credit scoring engines (Moody's / FICO), credit bureau real-time API feeds",
+              techTools: 'Credit scoring engines (Moody\'s / FICO), credit bureau real-time API feeds',
               capitalBudget: 'Credit intelligence feeds, collateral valuation retainers'
             }
           },
@@ -1498,9 +1498,9 @@ class CorporateGovernanceService {
           status = EXCLUDED.status,
           updated_at = CURRENT_TIMESTAMP
       `, [newRole.id, newRole.roleNumber, newRole.raciCode, newRole.title, newRole.department, newRole.designatedOfficer, newRole.clearanceLevel, newRole.primaryMandate, JSON.stringify(newRole), newRole.status])
-      .catch(err => {
-        if (logger && logger.warn) logger.warn(`[CorporateGovernance] Failed to persist role ${newRole.id} to DB:`, err.message);
-      });
+        .catch(err => {
+          if (logger && logger.warn) logger.warn(`[CorporateGovernance] Failed to persist role ${newRole.id} to DB:`, err.message);
+        });
     } catch {
       // non-blocking
     }
@@ -1545,9 +1545,9 @@ class CorporateGovernanceService {
           status = EXCLUDED.status,
           updated_at = CURRENT_TIMESTAMP
       `, [updated.id, updated.roleNumber, updated.raciCode, updated.title, updated.department, updated.designatedOfficer, updated.clearanceLevel, updated.primaryMandate, JSON.stringify(updated), updated.status])
-      .catch(err => {
-        if (logger && logger.warn) logger.warn(`[CorporateGovernance] Failed to persist role update ${updated.id} to DB:`, err.message);
-      });
+        .catch(err => {
+          if (logger && logger.warn) logger.warn(`[CorporateGovernance] Failed to persist role update ${updated.id} to DB:`, err.message);
+        });
     } catch {
       // non-blocking
     }
@@ -1655,7 +1655,7 @@ class CorporateGovernanceService {
       'Admin-1'
     ];
 
-    const isAuthorized = authorizedRootAdmins.some(auth => 
+    const isAuthorized = authorizedRootAdmins.some(auth =>
       String(assignedBy).toLowerCase().includes(auth.toLowerCase())
     );
 
@@ -1715,9 +1715,9 @@ class CorporateGovernanceService {
           status = 'ACTIVE',
           assigned_at = CURRENT_TIMESTAMP
       `, [memberId, assignmentRecord.memberName, assignmentRecord.memberEmail, role.id, subOfficeId || null, assignedBy, assignmentRecord.appointmentCredentialId])
-      .catch(err => {
-        if (logger && logger.warn) logger.warn(`[CorporateGovernance] Failed to persist member assignment to DB:`, err.message);
-      });
+        .catch(err => {
+          if (logger && logger.warn) logger.warn('[CorporateGovernance] Failed to persist member assignment to DB:', err.message);
+        });
     } catch {
       // non-blocking
     }

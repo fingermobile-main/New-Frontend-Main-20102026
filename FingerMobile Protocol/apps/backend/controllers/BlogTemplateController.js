@@ -225,8 +225,8 @@ class BlogTemplateController {
       const headingsArr = Array.isArray(headings)
         ? headings
         : (typeof headings === 'string'
-            ? headings.split('\n').map(h => h.trim()).filter(Boolean)
-            : ['Introduction', 'Core Overview', 'Execution Plan', 'Conclusion']);
+          ? headings.split('\n').map(h => h.trim()).filter(Boolean)
+          : ['Introduction', 'Core Overview', 'Execution Plan', 'Conclusion']);
 
       const jsonLd = jsonLdSnippet || {
         '@context': 'https://schema.org',

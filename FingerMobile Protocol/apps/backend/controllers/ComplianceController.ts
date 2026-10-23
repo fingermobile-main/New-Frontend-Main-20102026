@@ -448,7 +448,7 @@ class ComplianceController {
     try {
       const { id } = req.params;
       
-      const requirement = MockComplianceRequirementModel.findByPk(parseInt(id));
+      const requirement = MockComplianceRequirementModel.findByPk(parseInt(id as string));
       if (!requirement) {
         res.status(404).json({
           success: false,
@@ -527,7 +527,7 @@ class ComplianceController {
       const { id } = req.params;
       const { name, description, regulation, jurisdiction, category, priority, deadline, assignedTo, assignedToName, status, complianceStatus } = req.body;
 
-      const requirement = MockComplianceRequirementModel.findByPk(parseInt(id));
+      const requirement = MockComplianceRequirementModel.findByPk(parseInt(id as string));
       if (!requirement) {
         res.status(404).json({
           success: false,
@@ -549,7 +549,7 @@ class ComplianceController {
       if (status) updateData.status = status;
       if (complianceStatus) updateData.complianceStatus = complianceStatus;
 
-      MockComplianceRequirementModel.update(updateData, { where: { id: parseInt(id) } });
+      MockComplianceRequirementModel.update(updateData, { where: { id: parseInt(id as string) } });
 
       res.json({
         success: true,
@@ -582,7 +582,7 @@ class ComplianceController {
       const whereClause: any = {};
       
       if (requirementId) {
-        whereClause.requirementId = parseInt(requirementId);
+        whereClause.requirementId = parseInt(requirementId as string);
       }
       
       if (status) {
@@ -590,7 +590,7 @@ class ComplianceController {
       }
       
       if (auditorId) {
-        whereClause.auditorId = parseInt(auditorId);
+        whereClause.auditorId = parseInt(auditorId as string);
       }
 
       const { count, rows } = MockComplianceAuditModel.findAll({
@@ -747,7 +747,7 @@ class ComplianceController {
       const { id } = req.params;
       const { complianceStatus, notes } = req.body;
 
-      const requirement = MockComplianceRequirementModel.findByPk(parseInt(id));
+      const requirement = MockComplianceRequirementModel.findByPk(parseInt(id as string));
       if (!requirement) {
         res.status(404).json({
           success: false,
@@ -760,7 +760,7 @@ class ComplianceController {
         complianceStatus: complianceStatus,
         lastAssessment: new Date(),
         ...(notes && { notes })
-      }, { where: { id: parseInt(id) } });
+      }, { where: { id: parseInt(id as string) } });
 
       res.json({
         success: true,

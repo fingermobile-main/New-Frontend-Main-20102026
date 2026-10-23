@@ -91,7 +91,7 @@ class CommunitiesConsoleController {
       const { rows } = await identityDb.query(query, params);
 
       // Total count query
-      let countQuery = `SELECT COUNT(*) as total FROM communities_console_items WHERE service_key = $1`;
+      let countQuery = 'SELECT COUNT(*) as total FROM communities_console_items WHERE service_key = $1';
       const countParams = [serviceKey];
       if (status && status !== 'all') {
         countParams.push(status);
@@ -150,7 +150,7 @@ class CommunitiesConsoleController {
 
       // Compute display order (highest + 1)
       const orderRes = await identityDb.query(
-        `SELECT COALESCE(MAX(display_order), 0) + 1 AS next_order FROM communities_console_items WHERE service_key = $1;`,
+        'SELECT COALESCE(MAX(display_order), 0) + 1 AS next_order FROM communities_console_items WHERE service_key = $1;',
         [serviceKey]
       );
       const display_order = orderRes.rows[0]?.next_order || 1;
@@ -215,7 +215,7 @@ class CommunitiesConsoleController {
       } = req.body;
 
       const currentRes = await identityDb.query(
-        `SELECT * FROM communities_console_items WHERE id = $1 AND service_key = $2;`,
+        'SELECT * FROM communities_console_items WHERE id = $1 AND service_key = $2;',
         [id, serviceKey]
       );
       if (currentRes.rows.length === 0) {
@@ -275,7 +275,7 @@ class CommunitiesConsoleController {
     try {
       const { serviceKey, id } = req.params;
       const result = await identityDb.query(
-        `DELETE FROM communities_console_items WHERE id = $1 AND service_key = $2 RETURNING id;`,
+        'DELETE FROM communities_console_items WHERE id = $1 AND service_key = $2 RETURNING id;',
         [id, serviceKey]
       );
       if (result.rows.length === 0) {
@@ -304,7 +304,7 @@ class CommunitiesConsoleController {
       await identityDb.query('BEGIN');
       for (const item of orders) {
         await identityDb.query(
-          `UPDATE communities_console_items SET display_order = $1, updated_at = NOW() WHERE id = $2 AND service_key = $3;`,
+          'UPDATE communities_console_items SET display_order = $1, updated_at = NOW() WHERE id = $2 AND service_key = $3;',
           [item.display_order, item.id, serviceKey]
         );
       }
@@ -326,7 +326,7 @@ class CommunitiesConsoleController {
     try {
       const { serviceKey, id } = req.params;
       const currentRes = await identityDb.query(
-        `SELECT status FROM communities_console_items WHERE id = $1 AND service_key = $2;`,
+        'SELECT status FROM communities_console_items WHERE id = $1 AND service_key = $2;',
         [id, serviceKey]
       );
       if (currentRes.rows.length === 0) {
@@ -337,7 +337,7 @@ class CommunitiesConsoleController {
       const nextStatus = currentStatus === 'frozen' ? 'active' : 'frozen';
 
       const updateRes = await identityDb.query(
-        `UPDATE communities_console_items SET status = $1, updated_at = NOW() WHERE id = $2 AND service_key = $3 RETURNING *;`,
+        'UPDATE communities_console_items SET status = $1, updated_at = NOW() WHERE id = $2 AND service_key = $3 RETURNING *;',
         [nextStatus, id, serviceKey]
       );
 
@@ -437,7 +437,7 @@ class CommunitiesConsoleController {
   async getSpawnedConsoles(req, res) {
     try {
       const { rows } = await identityDb.query(
-        `SELECT * FROM communities_console_spawns ORDER BY created_at DESC;`
+        'SELECT * FROM communities_console_spawns ORDER BY created_at DESC;'
       );
       return res.json({ success: true, consoles: rows });
     } catch (err) {

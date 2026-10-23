@@ -73,7 +73,7 @@ class TributController {
         });
       } else if (req.body.base64Data) {
         // Base64 fallback
-        const matches = req.body.base64Data.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+        const matches = req.body.base64Data.match(/^data:([^;]+);base64,(.+)$/);
         if (!matches || matches.length !== 3) {
           return res.status(400).json({ success: false, message: 'Invalid base64 payload' });
         }
@@ -307,7 +307,7 @@ class TributController {
   async getPins(req, res) {
     try {
       const { category, deviceType, pinnedOnly } = req.query;
-      let query = `SELECT * FROM tribut_posts WHERE status NOT IN ('deleted', 'suspended', 'frozen', 'archived')`;
+      let query = 'SELECT * FROM tribut_posts WHERE status NOT IN (\'deleted\', \'suspended\', \'frozen\', \'archived\')';
       const params = [];
 
       if (category && category !== 'all') {
@@ -319,10 +319,10 @@ class TributController {
         query += ` AND device_type = $${params.length}`;
       }
       if (pinnedOnly === 'true') {
-        query += ` AND (is_pinned_to_tribut = true OR is_pinned_to_gallery = true)`;
+        query += ' AND (is_pinned_to_tribut = true OR is_pinned_to_gallery = true)';
       }
 
-      query += ` ORDER BY created_at DESC LIMIT 100;`;
+      query += ' ORDER BY created_at DESC LIMIT 100;';
 
       const result = await pool.query(query, params);
       return res.status(200).json({
@@ -347,7 +347,7 @@ class TributController {
   async getUploads(req, res) {
     try {
       const { deviceType, status = 'active', limit = 50 } = req.query;
-      let query = `SELECT * FROM tribut_media_uploads WHERE status NOT IN ('deleted', 'suspended', 'frozen', 'archived')`;
+      let query = 'SELECT * FROM tribut_media_uploads WHERE status NOT IN (\'deleted\', \'suspended\', \'frozen\', \'archived\')';
       const params = [];
 
       if (deviceType && deviceType !== 'all') {
@@ -420,13 +420,13 @@ class TributController {
 
       // Mark status as deleted in tribut_posts
       const resultPosts = await pool.query(
-        `UPDATE tribut_posts SET status = 'deleted', updated_at = NOW() WHERE id = ANY($1::uuid[]) RETURNING id;`,
+        'UPDATE tribut_posts SET status = \'deleted\', updated_at = NOW() WHERE id = ANY($1::uuid[]) RETURNING id;',
         [ids]
       );
 
       // Also mark in tribut_media_uploads if linked
       await pool.query(
-        `UPDATE tribut_media_uploads SET status = 'deleted', updated_at = NOW() WHERE tribut_post_id = ANY($1::uuid[]) OR id = ANY($1::uuid[]);`,
+        'UPDATE tribut_media_uploads SET status = \'deleted\', updated_at = NOW() WHERE tribut_post_id = ANY($1::uuid[]) OR id = ANY($1::uuid[]);',
         [ids]
       );
 
@@ -454,7 +454,7 @@ class TributController {
     try {
       const { id } = req.params;
       const result = await pool.query(
-        `UPDATE tribut_posts SET status = 'deleted', updated_at = NOW() WHERE id = $1 RETURNING *;`,
+        'UPDATE tribut_posts SET status = \'deleted\', updated_at = NOW() WHERE id = $1 RETURNING *;',
         [id]
       );
       if (result.rows.length === 0) {
@@ -462,7 +462,7 @@ class TributController {
       }
 
       await pool.query(
-        `UPDATE tribut_media_uploads SET status = 'deleted', updated_at = NOW() WHERE tribut_post_id = $1 OR id = $1;`,
+        'UPDATE tribut_media_uploads SET status = \'deleted\', updated_at = NOW() WHERE tribut_post_id = $1 OR id = $1;',
         [id]
       );
 

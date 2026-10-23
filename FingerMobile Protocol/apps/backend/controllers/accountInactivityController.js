@@ -7,7 +7,7 @@ class AccountInactivityController {
   async getStatus(req, res) {
     try {
       const userId = req.user.id;
-      
+
       const result = await db.query(`
         SELECT u.account_status, u.last_login_at,
                ail.status as inactivity_status, ail.last_login_date, 
@@ -25,7 +25,7 @@ class AccountInactivityController {
       }
 
       const userData = result.rows[0];
-      
+
       res.status(200).json({
         success: true,
         data: {
@@ -50,7 +50,7 @@ class AccountInactivityController {
   async forceReactivate(req, res) {
     try {
       const { userId } = req.params;
-      
+
       // Check if user is admin
       if (!req.user.isAdmin) {
         return res.status(403).json({
@@ -60,7 +60,7 @@ class AccountInactivityController {
       }
 
       const reactivated = await accountInactivityService.reactivateAccount(userId);
-      
+
       if (reactivated) {
         res.status(200).json({
           success: true,
@@ -85,9 +85,9 @@ class AccountInactivityController {
   async updateLastLogin(req, res) {
     try {
       const userId = req.user.id;
-      
+
       const updatedRecord = await accountInactivityService.updateUserLastLogin(userId);
-      
+
       res.status(200).json({
         success: true,
         data: updatedRecord,
@@ -114,7 +114,7 @@ class AccountInactivityController {
       }
 
       await accountInactivityService.checkInactiveAccounts();
-      
+
       res.status(200).json({
         success: true,
         message: 'Inactivity check triggered successfully'

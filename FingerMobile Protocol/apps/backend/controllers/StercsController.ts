@@ -599,7 +599,7 @@ class StercsController {
     try {
       const { id } = req.params;
       
-      const module = MockStercsModuleModel.findByPk(parseInt(id));
+      const module = MockStercsModuleModel.findByPk(parseInt(id as string));
       if (!module) {
         res.status(404).json({
           success: false,
@@ -678,7 +678,7 @@ class StercsController {
       const { id } = req.params;
       const { name, description, version, status, category, priority, dependencies, environment, config } = req.body;
 
-      const module = MockStercsModuleModel.findByPk(parseInt(id));
+      const module = MockStercsModuleModel.findByPk(parseInt(id as string));
       if (!module) {
         res.status(404).json({
           success: false,
@@ -698,7 +698,7 @@ class StercsController {
       if (environment) updateData.environment = environment;
       if (config) updateData.config = config;
 
-      MockStercsModuleModel.update(updateData, { where: { id: parseInt(id) } });
+      MockStercsModuleModel.update(updateData, { where: { id: parseInt(id as string) } });
 
       res.json({
         success: true,
@@ -732,7 +732,7 @@ class StercsController {
       const whereClause: any = {};
       
       if (moduleId) {
-        whereClause.moduleId = parseInt(moduleId);
+        whereClause.moduleId = parseInt(moduleId as string);
       }
       
       if (type) {
@@ -795,7 +795,7 @@ class StercsController {
       const whereClause: any = {};
       
       if (policyId) {
-        whereClause.policyId = parseInt(policyId);
+        whereClause.policyId = parseInt(policyId as string);
       }
       
       if (category) {
@@ -857,7 +857,7 @@ class StercsController {
       const whereClause: any = {};
       
       if (controlId) {
-        whereClause.controlId = parseInt(controlId);
+        whereClause.controlId = parseInt(controlId as string);
       }
       
       if (status) {
@@ -865,7 +865,7 @@ class StercsController {
       }
       
       if (auditorId) {
-        whereClause.auditorId = parseInt(auditorId);
+        whereClause.auditorId = parseInt(auditorId as string);
       }
 
       const { count, rows } = MockStercsAuditModel.findAll({
@@ -956,7 +956,7 @@ class StercsController {
     try {
       const { id } = req.params;
 
-      const module = MockStercsModuleModel.findByPk(parseInt(id));
+      const module = MockStercsModuleModel.findByPk(parseInt(id as string));
       if (!module) {
         res.status(404).json({
           success: false,
@@ -971,7 +971,7 @@ class StercsController {
       MockStercsModuleModel.update({ 
         lastDeployed: new Date(),
         status: 'active' // Assuming successful deployment activates the module
-      }, { where: { id: parseInt(id) } });
+      }, { where: { id: parseInt(id as string) } });
 
       res.json({
         success: true,
@@ -997,7 +997,7 @@ class StercsController {
       const { id } = req.params;
       const { result, details } = req.body;
 
-      const control = MockStercsControlModel.findByPk(parseInt(id));
+      const control = MockStercsControlModel.findByPk(parseInt(id as string));
       if (!control) {
         res.status(404).json({
           success: false,

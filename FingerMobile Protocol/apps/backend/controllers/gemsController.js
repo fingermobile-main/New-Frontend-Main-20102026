@@ -537,15 +537,15 @@ class GemsController {
         } else {
           // If no user exists, create default system user
           const insertUser = await getPool().query(
-            "INSERT INTO users (id, username, email, gem_balance) VALUES ($1, 'member_sovereign', 'member@fingermobileprotocol.com', $2) RETURNING gem_balance",
+            'INSERT INTO users (id, username, email, gem_balance) VALUES ($1, \'member_sovereign\', \'member@fingermobileprotocol.com\', $2) RETURNING gem_balance',
             [userId, parsedAmount]
           );
           updateResult = insertUser;
         }
       }
 
-      const newBalance = updateResult.rows.length > 0 
-        ? parseInt(updateResult.rows[0].gem_balance, 10) 
+      const newBalance = updateResult.rows.length > 0
+        ? parseInt(updateResult.rows[0].gem_balance, 10)
         : parsedAmount;
 
       // Record transaction

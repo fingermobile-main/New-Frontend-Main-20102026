@@ -360,7 +360,7 @@ class CommunityController {
     try {
       const { id } = req.params;
       
-      const group = MockCommunityGroupModel.findByPk(parseInt(id));
+      const group = MockCommunityGroupModel.findByPk(parseInt(id as string));
       if (!group) {
         res.status(404).json({
           success: false,
@@ -434,7 +434,7 @@ class CommunityController {
       const { id } = req.params;
       const { name, description, privacy, status } = req.body;
 
-      const group = MockCommunityGroupModel.findByPk(parseInt(id));
+      const group = MockCommunityGroupModel.findByPk(parseInt(id as string));
       if (!group) {
         res.status(404).json({
           success: false,
@@ -449,7 +449,7 @@ class CommunityController {
       if (privacy) updateData.privacy = privacy;
       if (status) updateData.status = status;
 
-      MockCommunityGroupModel.update(updateData, { where: { id: parseInt(id) } });
+      MockCommunityGroupModel.update(updateData, { where: { id: parseInt(id as string) } });
 
       res.json({
         success: true,
@@ -474,7 +474,7 @@ class CommunityController {
     try {
       const { id } = req.params;
 
-      const group = MockCommunityGroupModel.findByPk(parseInt(id));
+      const group = MockCommunityGroupModel.findByPk(parseInt(id as string));
       if (!group) {
         res.status(404).json({
           success: false,
@@ -483,7 +483,7 @@ class CommunityController {
         return;
       }
 
-      await MockCommunityGroupModel.destroy({ where: { id: parseInt(id) } });
+      await MockCommunityGroupModel.destroy({ where: { id: parseInt(id as string) } });
 
       res.json({
         success: true,
@@ -514,11 +514,11 @@ class CommunityController {
       const whereClause: any = {};
       
       if (groupId) {
-        whereClause.groupId = parseInt(groupId);
+        whereClause.groupId = parseInt(groupId as string);
       }
       
       if (authorId) {
-        whereClause.authorId = parseInt(authorId);
+        whereClause.authorId = parseInt(authorId as string);
       }
 
       const { count, rows } = MockForumThreadModel.findAll({
@@ -569,7 +569,7 @@ class CommunityController {
       const whereClause: any = {};
       
       if (userId) {
-        whereClause.userId = parseInt(userId);
+        whereClause.userId = parseInt(userId as string);
       }
       
       if (type) {
@@ -581,7 +581,7 @@ class CommunityController {
       }
       
       if (targetId) {
-        whereClause.targetId = parseInt(targetId);
+        whereClause.targetId = parseInt(targetId as string);
       }
 
       const { count, rows } = MockCommunityInteractionModel.findAll({
@@ -716,7 +716,7 @@ class CommunityController {
     try {
       const { id } = req.params;
 
-      const group = MockCommunityGroupModel.findByPk(parseInt(id));
+      const group = MockCommunityGroupModel.findByPk(parseInt(id as string));
       if (!group) {
         res.status(404).json({
           success: false,
@@ -725,7 +725,7 @@ class CommunityController {
         return;
       }
 
-      MockCommunityGroupModel.update({ status: 'suspended' }, { where: { id: parseInt(id) } });
+      MockCommunityGroupModel.update({ status: 'suspended' }, { where: { id: parseInt(id as string) } });
 
       res.json({
         success: true,
@@ -750,7 +750,7 @@ class CommunityController {
     try {
       const { id } = req.params;
 
-      const group = MockCommunityGroupModel.findByPk(parseInt(id));
+      const group = MockCommunityGroupModel.findByPk(parseInt(id as string));
       if (!group) {
         res.status(404).json({
           success: false,
@@ -759,7 +759,7 @@ class CommunityController {
         return;
       }
 
-      MockCommunityGroupModel.update({ status: 'active' }, { where: { id: parseInt(id) } });
+      MockCommunityGroupModel.update({ status: 'active' }, { where: { id: parseInt(id as string) } });
 
       res.json({
         success: true,

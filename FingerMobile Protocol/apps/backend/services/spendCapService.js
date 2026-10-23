@@ -25,7 +25,7 @@ class SpendCapService {
       }
 
       const cap = result.rows[0];
-      
+
       // Check if we need to reset the monthly spending
       if (this.shouldResetMonthlySpending(cap.reset_date)) {
         await this.resetMonthlySpending(userId);
@@ -60,7 +60,7 @@ class SpendCapService {
     try {
       const cap = await this.getSpendCap(userId);
       const resetDate = cap.reset_date || this.getNextResetDate();
-      
+
       let result;
       if (cap) {
         result = await db.query(`
@@ -88,7 +88,7 @@ class SpendCapService {
   async recordSpending(userId, amount) {
     try {
       const cap = await this.getSpendCap(userId);
-      
+
       // If no cap is set, allow spending
       if (cap.monthly_cap_amount === null) {
         await this.incrementMonthlySpending(userId, amount);
@@ -96,10 +96,10 @@ class SpendCapService {
       }
 
       const newTotal = parseFloat(cap.current_month_spending) + parseFloat(amount);
-      
+
       if (newTotal > parseFloat(cap.monthly_cap_amount)) {
-        return { 
-          success: false, 
+        return {
+          success: false,
           message: 'Monthly spending cap exceeded',
           currentSpending: cap.current_month_spending,
           capAmount: cap.monthly_cap_amount,
@@ -108,8 +108,8 @@ class SpendCapService {
       }
 
       await this.incrementMonthlySpending(userId, amount);
-      return { 
-        success: true, 
+      return {
+        success: true,
         message: 'Spending recorded successfully',
         remaining: cap.monthly_cap_amount - newTotal
       };

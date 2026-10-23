@@ -639,7 +639,7 @@ class CamusController {
   // ==========================================
   // ACADEMIC TELEMETRY & STATS
   // ==========================================
-  getTelemetry = (req, res) => {
+  getTelemetry(req, res) {
     try {
       const activeStudentsCount = 14290 + this.store.applicants.length;
       const enrolledCount = this.store.enrollments.length;
@@ -662,7 +662,7 @@ class CamusController {
     } catch (err) {
       res.status(500).json({ success: false, message: err.message });
     }
-  };
+  }
 
   getStats = (req, res) => {
     this.getTelemetry(req, res);
@@ -707,25 +707,25 @@ class CamusController {
 
       // Sorting
       switch (sortBy) {
-        case 'price_asc':
-          list.sort((a, b) => a.price - b.price);
-          break;
-        case 'price_desc':
-          list.sort((a, b) => b.price - a.price);
-          break;
-        case 'rating':
-          list.sort((a, b) => b.rating - a.rating);
-          break;
-        case 'students':
-          list.sort((a, b) => b.students - a.students);
-          break;
-        case 'newest':
-          list.reverse();
-          break;
-        case 'popular':
-        default:
-          list.sort((a, b) => (b.rating * b.students) - (a.rating * a.students));
-          break;
+      case 'price_asc':
+        list.sort((a, b) => a.price - b.price);
+        break;
+      case 'price_desc':
+        list.sort((a, b) => b.price - a.price);
+        break;
+      case 'rating':
+        list.sort((a, b) => b.rating - a.rating);
+        break;
+      case 'students':
+        list.sort((a, b) => b.students - a.students);
+        break;
+      case 'newest':
+        list.reverse();
+        break;
+      case 'popular':
+      default:
+        list.sort((a, b) => (b.rating * b.students) - (a.rating * a.students));
+        break;
       }
 
       const pageNum = parseInt(page);

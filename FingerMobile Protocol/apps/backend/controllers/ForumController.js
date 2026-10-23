@@ -7,6 +7,7 @@
 const logger = require('../utils/logger');
 const forumService = require('../services/forumService');
 const { contentDb, socialDb, pool } = require('../db');
+const ForumThread = require('../models/ForumThread');
 
 const isUuid = (val) => typeof val === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(val);
 
@@ -146,7 +147,7 @@ class ForumController {
           likesRes.rows.forEach(r => userLikedSet.add(r.post_id));
 
           const bookmarksRes = await contentDb.query(
-            "SELECT content_id as post_id FROM bookmarks WHERE user_id::text = $1::text AND content_type = 'post' AND content_id = ANY($2::uuid[])",
+            'SELECT content_id as post_id FROM bookmarks WHERE user_id::text = $1::text AND content_type = \'post\' AND content_id = ANY($2::uuid[])',
             [currentUserId, postIds]
           );
           bookmarksRes.rows.forEach(r => userBookmarkedSet.add(r.post_id));
@@ -1401,7 +1402,7 @@ class ForumController {
       });
     }
   }
-  
+
   /**
    * POST /api/forums/posts/:postId/save
    * Save a post for a user in PostgreSQL bookmarks table
@@ -1528,24 +1529,24 @@ class ForumController {
       const { activityType } = req.body;
 
       if (!activityType) {
-        return res.status(400).json({ 
-          success: false, 
-          message: 'Activity type is required' 
+        return res.status(400).json({
+          success: false,
+          message: 'Activity type is required'
         });
       }
 
       // Check if activity type is valid
       const validActivityTypes = [
-        '😊 Happy', '😢 Sad', '🤩 Excited', '😴 Sleepy', 
+        '😊 Happy', '😢 Sad', '🤩 Excited', '😴 Sleepy',
         '🎵 Listening to music', '🎮 Gaming', '📚 Studying',
         '💼 Working', '🏋️‍♂️ Exercising', '🌴 Relaxing'
       ];
-      
+
       if (!validActivityTypes.includes(activityType)) {
-        return res.status(400).json({ 
-          success: false, 
-          message: 'Invalid activity type', 
-          error: 'Activity type must be one of the predefined options' 
+        return res.status(400).json({
+          success: false,
+          message: 'Invalid activity type',
+          error: 'Activity type must be one of the predefined options'
         });
       }
 
@@ -1558,22 +1559,22 @@ class ForumController {
       });
 
       if (!updatedThread) {
-        return res.status(404).json({ 
-          success: false, 
-          message: 'Thread not found' 
+        return res.status(404).json({
+          success: false,
+          message: 'Thread not found'
         });
       }
 
-      res.status(200).json({ 
-        success: true, 
-        data: { thread: updatedThread }, 
-        message: 'Activity type updated successfully' 
+      res.status(200).json({
+        success: true,
+        data: { thread: updatedThread },
+        message: 'Activity type updated successfully'
       });
     } catch (error) {
-      res.status(500).json({ 
-        success: false, 
-        message: 'Failed to update activity type', 
-        error: error.message 
+      res.status(500).json({
+        success: false,
+        message: 'Failed to update activity type',
+        error: error.message
       });
     }
   }
@@ -1668,10 +1669,10 @@ class ForumController {
       });
     } catch (error) {
       logger.error('Error creating video room:', error);
-      res.status(500).json({ 
-        success: false, 
-        message: 'Failed to create video room', 
-        error: error.message 
+      res.status(500).json({
+        success: false,
+        message: 'Failed to create video room',
+        error: error.message
       });
     }
   }
@@ -1704,7 +1705,7 @@ class ForumController {
       } catch (dbErr) {
         // Fallback with minimal columns if some columns are omitted
         result = await (pool || contentDb).query(
-          `INSERT INTO forum_categories (name, description) VALUES ($1, $2) RETURNING *`,
+          'INSERT INTO forum_categories (name, description) VALUES ($1, $2) RETURNING *',
           [name, description || '']
         );
       }
@@ -1899,7 +1900,7 @@ class ForumController {
       return res.status(500).json({ success: false, error: 'Failed to persist algorithm configuration' });
     }
   }
-};
+}
 
 module.exports = new ForumController();
 

@@ -14,7 +14,7 @@ class SuperViGameController {
   async getCharacters(req, res) {
     try {
       const result = await pool.query(
-        `SELECT * FROM supervi_characters ORDER BY created_at ASC`
+        'SELECT * FROM supervi_characters ORDER BY created_at ASC'
       );
 
       return res.json({

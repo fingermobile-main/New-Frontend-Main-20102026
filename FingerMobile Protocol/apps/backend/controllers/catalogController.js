@@ -457,7 +457,7 @@ class CatalogController {
   async getStorefrontCatalog(req, res) {
     try {
       const { vetting } = req.query;
-      let query = `SELECT * FROM general_product_catalog WHERE 'storefront' = ANY(curated_stores)`;
+      let query = 'SELECT * FROM general_product_catalog WHERE \'storefront\' = ANY(curated_stores)';
       const params = [];
 
       if (vetting && vetting !== 'all') {

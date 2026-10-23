@@ -103,6 +103,7 @@ import UnifiedCommerceCatalogHub from '../components/dashboard/catalog/UnifiedCo
 import MasterCommunitiesConsole from '../components/dashboard/MasterCommunitiesConsole';
 import MasterStreamingMediaConsole from '../components/dashboard/MasterStreamingMediaConsole';
 import MasterCommerceLuxuryConsole from '../components/dashboard/MasterCommerceLuxuryConsole';
+import UnifiedFinancialTreasuryConsole from '../components/dashboard/UnifiedFinancialTreasuryConsole';
 
 interface Section {
   id: string;
@@ -2518,6 +2519,7 @@ const MasterDashboardPage: React.FC = () => {
               { id: 'media-discovery', label: 'Media & Discovery', badge: '10' },
               { id: 'media-streaming-console', label: 'Streaming & Media Consoles', badge: 'Beatwave / Dancia / Video' },
               { id: 'commerce-luxury-console', label: 'Commerce & Luxury Consoles', badge: 'Marketplace / Luxury' },
+              { id: 'financial-treasury-console', label: 'Treasury & Escrows Console (Option C)', badge: 'Escrows / Prize Pools' },
               { id: 'beatwaveng-console', label: 'BeatwaveNG Audio Console', badge: 'Live Sync' },
               { id: 'discover-console', label: 'Discover Master Console', badge: 'Topics & Swarms' },
               { id: 'soundriver-console', label: 'SoundRiver Master Console', badge: '320kbps Stream' },
@@ -2778,6 +2780,13 @@ const MasterDashboardPage: React.FC = () => {
             {activeTab === 'commerce-luxury-console' && (
               <div className="space-y-6">
                 <MasterCommerceLuxuryConsole />
+              </div>
+            )}
+
+            {/* Dedicated Financials & Treasury Consoles Tab (Option C) */}
+            {activeTab === 'financial-treasury-console' && (
+              <div className="space-y-6">
+                <UnifiedFinancialTreasuryConsole />
               </div>
             )}
 

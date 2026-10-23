@@ -64,7 +64,7 @@ class NexusGNNHooks {
 
       const isFunctional = ['save', 'click', 'checkout', 'like'].includes(actionType);
       const edgeType = isFunctional ? 'high_intent_functional' : 'high_friction_social';
-      
+
       const weightMap = {
         save: 0.9,
         checkout: 1.0,
@@ -84,11 +84,11 @@ class NexusGNNHooks {
       let idx = 1;
 
       if (actionType === 'save') {
-        updateFields.push(`total_saves = COALESCE(total_saves, 0) + 1`);
+        updateFields.push('total_saves = COALESCE(total_saves, 0) + 1');
       } else if (actionType === 'share') {
-        updateFields.push(`total_shares = COALESCE(total_shares, 0) + 1`);
+        updateFields.push('total_shares = COALESCE(total_shares, 0) + 1');
       } else if (actionType === 'click' || actionType === 'view') {
-        updateFields.push(`total_impressions = COALESCE(total_impressions, 0) + 1`);
+        updateFields.push('total_impressions = COALESCE(total_impressions, 0) + 1');
       }
 
       if (updateFields.length > 0) {
@@ -116,7 +116,7 @@ class NexusGNNHooks {
       // 1. Calculate approximate sentiment from text (positive vs negative keyword score)
       const positiveWords = ['great', 'awesome', 'helpful', 'love', 'amazing', 'excellent', 'valuable', 'insightful', 'inspired', 'beautiful'];
       const negativeWords = ['terrible', 'bad', 'useless', 'clickbait', 'hate', 'boring', 'awful', 'waste', 'misleading', 'worst'];
-      
+
       const lower = (commentText || '').toLowerCase();
       let posCount = 0;
       let negCount = 0;

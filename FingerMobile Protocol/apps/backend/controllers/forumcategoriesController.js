@@ -186,8 +186,8 @@ class ForumCategoriesController {
    * Get all forum categories with statistics
    */
   async getAll(req, res) {
+    const { limit = 50, offset = 0 } = req.query || {};
     try {
-      const { limit = 50, offset = 0 } = req.query;
 
       if (pool && pool.query) {
         try {

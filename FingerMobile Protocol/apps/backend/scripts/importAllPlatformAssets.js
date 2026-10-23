@@ -261,14 +261,14 @@ async function run() {
           is_verified = EXCLUDED.is_verified,
           onboarding_completed = true
       `, [uuid, username, email, firstName, lastName, bio, avatarUrl, coverUrl, phone, dateOfBirth, isApproved])
-      .catch(e => {
+        .catch(e => {
         // Ignore duplicate username constraint by trying with unique suffix
-        if (e.code === '23505') {
-          return pool.query(`
+          if (e.code === '23505') {
+            return pool.query(`
             UPDATE users SET first_name = $1, last_name = $2, avatar_url = $3, bio = $4 WHERE email = $5
           `, [firstName, lastName, avatarUrl, bio, email]);
-        }
-      });
+          }
+        });
 
       mCount++;
     }

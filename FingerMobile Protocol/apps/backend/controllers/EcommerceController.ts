@@ -259,7 +259,7 @@ class EcommerceController {
     try {
       const { id } = req.params;
       
-      const product = MockProductModel.findByPk(parseInt(id));
+      const product = MockProductModel.findByPk(parseInt(id as string));
       if (!product) {
         res.status(404).json({
           success: false,
@@ -338,7 +338,7 @@ class EcommerceController {
         name, description, price, category, stockQuantity, status
       } = req.body;
 
-      const product = MockProductModel.findByPk(parseInt(id));
+      const product = MockProductModel.findByPk(parseInt(id as string));
       if (!product) {
         res.status(404).json({
           success: false,
@@ -355,7 +355,7 @@ class EcommerceController {
       if (stockQuantity !== undefined) updateData.stockQuantity = stockQuantity;
       if (status) updateData.status = status;
 
-      MockProductModel.update(updateData, { where: { id: parseInt(id) } });
+      MockProductModel.update(updateData, { where: { id: parseInt(id as string) } });
 
       res.json({
         success: true,
@@ -380,7 +380,7 @@ class EcommerceController {
     try {
       const { id } = req.params;
 
-      const product = MockProductModel.findByPk(parseInt(id));
+      const product = MockProductModel.findByPk(parseInt(id as string));
       if (!product) {
         res.status(404).json({
           success: false,
@@ -389,7 +389,7 @@ class EcommerceController {
         return;
       }
 
-      await MockProductModel.destroy({ where: { id: parseInt(id) } });
+      await MockProductModel.destroy({ where: { id: parseInt(id as string) } });
 
       res.json({
         success: true,
@@ -424,7 +424,7 @@ class EcommerceController {
       }
       
       if (userId) {
-        whereClause.userId = parseInt(userId);
+        whereClause.userId = parseInt(userId as string);
       }
 
       const { count, rows } = MockOrderModel.findAll({
@@ -466,7 +466,7 @@ class EcommerceController {
     try {
       const { id } = req.params;
       
-      const order = MockOrderModel.findByPk(parseInt(id));
+      const order = MockOrderModel.findByPk(parseInt(id as string));
       if (!order) {
         res.status(404).json({
           success: false,
@@ -499,7 +499,7 @@ class EcommerceController {
       const { id } = req.params;
       const { status } = req.body;
 
-      const order = MockOrderModel.findByPk(parseInt(id));
+      const order = MockOrderModel.findByPk(parseInt(id as string));
       if (!order) {
         res.status(404).json({
           success: false,
@@ -511,7 +511,7 @@ class EcommerceController {
       const updateData: Partial<Order> = {};
       if (status) updateData.status = status;
 
-      MockOrderModel.update(updateData, { where: { id: parseInt(id) } });
+      MockOrderModel.update(updateData, { where: { id: parseInt(id as string) } });
 
       res.json({
         success: true,
@@ -536,7 +536,7 @@ class EcommerceController {
     try {
       const { id } = req.params;
 
-      const order = MockOrderModel.findByPk(parseInt(id));
+      const order = MockOrderModel.findByPk(parseInt(id as string));
       if (!order) {
         res.status(404).json({
           success: false,
@@ -545,7 +545,7 @@ class EcommerceController {
         return;
       }
 
-      MockOrderModel.update({ status: 'processing' }, { where: { id: parseInt(id) } });
+      MockOrderModel.update({ status: 'processing' }, { where: { id: parseInt(id as string) } });
 
       res.json({
         success: true,
@@ -570,7 +570,7 @@ class EcommerceController {
     try {
       const { id } = req.params;
 
-      const order = MockOrderModel.findByPk(parseInt(id));
+      const order = MockOrderModel.findByPk(parseInt(id as string));
       if (!order) {
         res.status(404).json({
           success: false,
@@ -579,7 +579,7 @@ class EcommerceController {
         return;
       }
 
-      MockOrderModel.update({ status: 'fulfilled' }, { where: { id: parseInt(id) } });
+      MockOrderModel.update({ status: 'fulfilled' }, { where: { id: parseInt(id as string) } });
 
       res.json({
         success: true,

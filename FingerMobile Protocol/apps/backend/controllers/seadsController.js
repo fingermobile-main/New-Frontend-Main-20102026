@@ -260,10 +260,10 @@ class SeadsController {
       `;
       const params = [];
       if (category && category !== 'all') {
-        query += ` WHERE p.category = $1`;
+        query += ' WHERE p.category = $1';
         params.push(category);
       }
-      query += ` GROUP BY p.id, u.username ORDER BY p.created_at DESC`;
+      query += ' GROUP BY p.id, u.username ORDER BY p.created_at DESC';
       const result = await pool.query(query, params);
       res.json({
         success: true,

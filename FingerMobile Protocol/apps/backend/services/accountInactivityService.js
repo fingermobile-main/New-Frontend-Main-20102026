@@ -135,7 +135,7 @@ class AccountInactivityService {
       for (const user of result.rows) {
         // Calculate notification schedule
         const daysSinceFreeze = Math.floor((now - new Date(user.freeze_date)) / (1000 * 60 * 60 * 24));
-        
+
         let shouldNotify = false;
         if (daysSinceFreeze <= 21) { // First 3 weeks: 3 times per week
           // Notify every 2.33 days (approx 3 times per week)
@@ -224,7 +224,7 @@ class AccountInactivityService {
         // Attempt to reconcile using available funds (wallet first, then payment methods)
         try {
           const reconciliationResult = await paymentService.autoReconcileWithAvailableFunds(userId, amount);
-          
+
           await db.query(`
             UPDATE account_inactivity_log 
             SET liability_paid = TRUE, liability_amount = 0
@@ -240,7 +240,7 @@ class AccountInactivityService {
           });
         } catch (paymentError) {
           logger.error(`Error auto-reconciling liability for user ${userId}:`, paymentError);
-          
+
           // Send notification about failed payment attempt
           await notificationService.sendNotification({
             userId: userId,
@@ -307,7 +307,7 @@ class AccountInactivityService {
       // This is a simplified version - in reality, you'd need to delete from multiple tables
       // respecting foreign key constraints
       await db.query('DELETE FROM users WHERE id = $1', [userId]);
-      
+
       logger.info(`Permanently deleted user data for ${userId}`);
     } catch (error) {
       logger.error('Error permanently deleting user data:', error);

@@ -299,6 +299,21 @@ const StercsDashboardPage: React.FC = () => {
       requests24h: '2.8M'
     },
     {
+      id: 'financial-treasury-console',
+      title: 'Autonomous Financials & Treasury Console',
+      category: 'Governance',
+      icon: DollarSign,
+      description: 'Master wallet escrows, protocol fee minting, automated SuperVi tournament prize pools, and forensic audits',
+      status: 'online',
+      version: 'v1.0.0-live',
+      lastUpdated: 'Live sync',
+      responseTime: 26,
+      healthScore: 99.9,
+      route: '/admin/treasury-console',
+      trend: [24, 26, 25, 27, 26, 26, 26],
+      requests24h: '5.6M'
+    },
+    {
       id: 'stercs-curation',
       title: 'STERCS Curation Engine',
       category: 'Intelligence',
@@ -1509,8 +1524,8 @@ const StercsDashboardPage: React.FC = () => {
                       type="button"
                       onClick={() => handleToggleFlag(item.id)}
                       className={`px-3 py-1 rounded text-xs font-bold uppercase border transition-colors ${
-                        item.active 
-                          ? 'bg-emerald-100 text-emerald-950 border-emerald-400 hover:bg-emerald-200' 
+                        item.active
+                          ? 'bg-emerald-100 text-emerald-950 border-emerald-400 hover:bg-emerald-200'
                           : 'bg-slate-200 text-slate-800 border-slate-300 hover:bg-slate-300'
                       }`}
                     >

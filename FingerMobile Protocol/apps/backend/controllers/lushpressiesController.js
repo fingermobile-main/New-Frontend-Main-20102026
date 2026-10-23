@@ -2498,7 +2498,7 @@ class LushpressiesController {
       let userId = req.user?.id || req.query?.userId;
       if (!userId) {
         const fallbackRes = await pool.query(
-          `SELECT id FROM users ORDER BY (id = '00000000-0000-0000-0000-000000000001') DESC, created_at ASC LIMIT 1`
+          'SELECT id FROM users ORDER BY (id = \'00000000-0000-0000-0000-000000000001\') DESC, created_at ASC LIMIT 1'
         );
         userId = fallbackRes.rows[0]?.id;
       }
@@ -2553,7 +2553,7 @@ class LushpressiesController {
       let userId = req.user?.id || req.body?.userId;
       if (!userId) {
         const fallbackRes = await pool.query(
-          `SELECT id FROM users ORDER BY (id = '00000000-0000-0000-0000-000000000001') DESC, created_at ASC LIMIT 1`
+          'SELECT id FROM users ORDER BY (id = \'00000000-0000-0000-0000-000000000001\') DESC, created_at ASC LIMIT 1'
         );
         userId = fallbackRes.rows[0]?.id;
       }

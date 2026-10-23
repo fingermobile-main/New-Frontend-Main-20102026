@@ -1,7 +1,7 @@
 /**
  * NexusGNN Graph Neural Network Engine
  * PinSage-MetaGNN Fusion for H-BiSocial Graphs
- * 
+ *
  * Implements:
  * - 256-dimensional multimodal embedding computation
  * - Random-walk neighborhood aggregation & graph convolutions
@@ -23,7 +23,7 @@ class GNNEngine {
 
   /**
    * Normalize a vector to unit length (L2 norm)
-   * @param {number[]} vector 
+   * @param {number[]} vector
    * @returns {number[]} Unit vector
    */
   normalize(vector) {
@@ -38,8 +38,8 @@ class GNNEngine {
 
   /**
    * Calculate cosine similarity between two vectors
-   * @param {number[]} vecA 
-   * @param {number[]} vecB 
+   * @param {number[]} vecA
+   * @param {number[]} vecB
    * @returns {number} Value in [0, 1]
    */
   cosineSimilarity(vecA, vecB) {
@@ -63,8 +63,8 @@ class GNNEngine {
 
   /**
    * Deterministic pseudo-random feature generator from string seeds (for repeatable node base features)
-   * @param {string} seedStr 
-   * @param {number} dim 
+   * @param {string} seedStr
+   * @param {number} dim
    * @returns {number[]}
    */
   generateSeedVector(seedStr, dim) {
@@ -83,19 +83,19 @@ class GNNEngine {
 
   /**
    * Generate multimodal initial feature vector for an entity
-   * @param {object} node 
+   * @param {object} node
    * @returns {{ visual: number[], semantic: number[], fused: number[] }}
    */
   extractInitialFeatures(node) {
     const meta = typeof node.metadata === 'string' ? JSON.parse(node.metadata || '{}') : (node.metadata || {});
     const seed = `${node.node_type}_${node.entity_id}_${meta.category || meta.role || ''}`;
-    
+
     // Semantic features (NLP/keywords/category representation)
     const semantic = this.generateSeedVector(`semantic_${seed}`, SEMANTIC_DIMENSION);
-    
+
     // Visual features (Style/color/image visual representation)
     const visual = this.generateSeedVector(`visual_${seed}`, VISUAL_DIMENSION);
-    
+
     // Concatenate into 256D multimodal base representation
     const fused = this.normalize([...visual, ...semantic]);
     return { visual, semantic, fused };
@@ -277,8 +277,8 @@ class GNNEngine {
 
   /**
    * Get precomputed embedding for a node or compute on the fly
-   * @param {string} entityId 
-   * @param {string} entityType 
+   * @param {string} entityId
+   * @param {string} entityType
    * @returns {Promise<number[]>}
    */
   async getEntityEmbedding(entityId, entityType = 'user') {

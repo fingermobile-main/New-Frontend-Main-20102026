@@ -284,7 +284,7 @@ const sovereignRbacController = {
 
       const params = [];
       if (search) {
-        query += ` WHERE LOWER(u.email) LIKE $1 OR LOWER(u.username) LIKE $1 OR LOWER(u.display_name) LIKE $1 `;
+        query += ' WHERE LOWER(u.email) LIKE $1 OR LOWER(u.username) LIKE $1 OR LOWER(u.display_name) LIKE $1 ';
         params.push(search);
       }
 
@@ -325,7 +325,7 @@ const sovereignRbacController = {
 
       const [totalCount, activeCount, tierStats] = await Promise.all([
         db.query('SELECT COUNT(*) FROM creator_profiles'),
-        db.query("SELECT COUNT(*) FROM creator_profiles WHERE status = 'ACTIVE'"),
+        db.query('SELECT COUNT(*) FROM creator_profiles WHERE status = \'ACTIVE\''),
         db.query('SELECT tier, COUNT(*) as count FROM creator_profiles GROUP BY tier')
       ]);
 

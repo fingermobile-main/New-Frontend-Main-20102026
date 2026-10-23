@@ -38,19 +38,6 @@ class ElearningController {
     }
   }
 
-  async createCourse(req, res) {
-    try {
-      const instructorId = req.user?.id || 'default-instructor';
-      const { title, description, category, price } = req.body;
-      const result = await getPool().query(
-        'INSERT INTO elearning_courses (title, description, category, price, instructor_id, created_at) VALUES ($1, $2, $3, $4, $5, NOW()) RETURNING *',
-        [title, description, category, price, instructorId]
-      );
-      return res.status(201).json({ success: true, data: result.rows?.[0] || { id: 'new-course-id', title } });
-    } catch (err) {
-      return res.status(500).json({ success: false, message: err.message });
-    }
-  }
 
   async enrollInCourse(req, res) {
     try {

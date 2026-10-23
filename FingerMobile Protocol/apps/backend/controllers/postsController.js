@@ -691,7 +691,7 @@ class PostsController {
 
       try {
         const { rows } = await contentDb.query(
-          `SELECT * FROM user_composer_drafts WHERE user_id = $1 LIMIT 1`,
+          'SELECT * FROM user_composer_drafts WHERE user_id = $1 LIMIT 1',
           [userId]
         );
         return res.json({
@@ -809,7 +809,7 @@ class PostsController {
       }
 
       try {
-        await contentDb.query(`DELETE FROM user_composer_drafts WHERE user_id = $1`, [userId]);
+        await contentDb.query('DELETE FROM user_composer_drafts WHERE user_id = $1', [userId]);
       } catch (dbErr) {
         logger.warn('Delete composer draft fallback:', dbErr.message);
       }

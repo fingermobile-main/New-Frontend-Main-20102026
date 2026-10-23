@@ -142,7 +142,7 @@ class EmailService {
         data,
         headers: {
           'X-Entity-Ref-ID': `fmp_${Date.now()}_${Math.random().toString(36).substring(7)}`,
-          'List-Unsubscribe': `<mailto:unsubscribe@fingermobileprotocol.com>, <https://fingermobileprotocol.com/unsubscribe>`
+          'List-Unsubscribe': '<mailto:unsubscribe@fingermobileprotocol.com>, <https://fingermobileprotocol.com/unsubscribe>'
         }
       };
 
@@ -381,7 +381,7 @@ class EmailService {
     } else if (segment === 'premium') {
       query += ' AND is_premium = true';
     } else if (segment === 'admins') {
-      query += " AND role IN ('admin', 'superadmin')";
+      query += ' AND role IN (\'admin\', \'superadmin\')';
     }
     query += ' LIMIT 1000'; // Safety boundary
 

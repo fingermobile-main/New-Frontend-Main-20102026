@@ -57,7 +57,7 @@ class MemberProfilesController {
       } catch (queryErr) {
         logger.warn('Detailed profile query fallback:', queryErr.message);
         const fallbackRes = await db.query(
-          `SELECT id, username, email, avatar_url, bio, location, website FROM users WHERE id = $1`,
+          'SELECT id, username, email, avatar_url, bio, location, website FROM users WHERE id = $1',
           [userId]
         );
         if (fallbackRes.rows.length > 0) {
@@ -507,7 +507,7 @@ class MemberProfilesController {
   async getAccountSettings(req, res) {
     const userId = req.params.id || req.user?.id;
     try {
-      const userRes = await db.query(`SELECT id, username, email, preferences FROM users WHERE id = $1`, [userId]);
+      const userRes = await db.query('SELECT id, username, email, preferences FROM users WHERE id = $1', [userId]);
       const user = userRes.rows[0] || {};
       res.json({
         success: true,
@@ -530,7 +530,7 @@ class MemberProfilesController {
     const settings = req.body;
     try {
       await db.query(
-        `UPDATE users SET preferences = COALESCE(preferences, '{}'::jsonb) || $1::jsonb, updated_at = NOW() WHERE id = $2`,
+        'UPDATE users SET preferences = COALESCE(preferences, \'{}\'::jsonb) || $1::jsonb, updated_at = NOW() WHERE id = $2',
         [JSON.stringify(settings), userId]
       );
       res.json({ success: true, message: 'Account settings updated', data: settings });

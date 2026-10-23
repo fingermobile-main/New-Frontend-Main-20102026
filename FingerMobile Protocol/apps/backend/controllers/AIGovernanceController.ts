@@ -18,6 +18,7 @@ interface AIDecision {
   reviewerId?: number;
   reviewNotes?: string;
   status: 'pending' | 'approved' | 'rejected' | 'archived';
+  updatedAt?: Date;
 }
 
 interface AIPolicy {
@@ -344,7 +345,7 @@ class AIGovernanceController {
       }
       
       if (userId) {
-        whereClause.userId = parseInt(userId);
+        whereClause.userId = parseInt(userId as string);
       }
       
       if (policyApplied) {
@@ -390,7 +391,7 @@ class AIGovernanceController {
     try {
       const { id } = req.params;
       
-      const decision = MockAIDecisionModel.findByPk(parseInt(id));
+      const decision = MockAIDecisionModel.findByPk(parseInt(id as string));
       if (!decision) {
         res.status(404).json({
           success: false,
@@ -423,7 +424,7 @@ class AIGovernanceController {
       const { id } = req.params;
       const { status, reviewNotes } = req.body;
 
-      const decision = MockAIDecisionModel.findByPk(parseInt(id));
+      const decision = MockAIDecisionModel.findByPk(parseInt(id as string));
       if (!decision) {
         res.status(404).json({
           success: false,
@@ -436,7 +437,7 @@ class AIGovernanceController {
         status: status,
         reviewerId: req.user?.id,
         reviewNotes: reviewNotes
-      }, { where: { id: parseInt(id) } });
+      }, { where: { id: parseInt(id as string) } });
 
       res.json({
         success: true,
@@ -519,7 +520,7 @@ class AIGovernanceController {
     try {
       const { id } = req.params;
       
-      const policy = MockAIPolicyModel.findByPk(parseInt(id));
+      const policy = MockAIPolicyModel.findByPk(parseInt(id as string));
       if (!policy) {
         res.status(404).json({
           success: false,
@@ -594,7 +595,7 @@ class AIGovernanceController {
       const { id } = req.params;
       const { name, description, category, rules, isActive } = req.body;
 
-      const policy = MockAIPolicyModel.findByPk(parseInt(id));
+      const policy = MockAIPolicyModel.findByPk(parseInt(id as string));
       if (!policy) {
         res.status(404).json({
           success: false,
@@ -610,7 +611,7 @@ class AIGovernanceController {
       if (rules) updateData.rules = rules;
       if (isActive !== undefined) updateData.isActive = isActive;
 
-      MockAIPolicyModel.update(updateData, { where: { id: parseInt(id) } });
+      MockAIPolicyModel.update(updateData, { where: { id: parseInt(id as string) } });
 
       res.json({
         success: true,
@@ -745,7 +746,7 @@ class AIGovernanceController {
     try {
       const { id } = req.params;
 
-      const policy = MockAIPolicyModel.findByPk(parseInt(id));
+      const policy = MockAIPolicyModel.findByPk(parseInt(id as string));
       if (!policy) {
         res.status(404).json({
           success: false,
@@ -754,7 +755,7 @@ class AIGovernanceController {
         return;
       }
 
-      MockAIPolicyModel.update({ isActive: !policy.isActive }, { where: { id: parseInt(id) } });
+      MockAIPolicyModel.update({ isActive: !policy.isActive }, { where: { id: parseInt(id as string) } });
 
       res.json({
         success: true,
@@ -780,7 +781,7 @@ class AIGovernanceController {
       const { id } = req.params;
       const { resolutionNotes } = req.body;
 
-      const incident = MockAIIncidentModel.findByPk(parseInt(id));
+      const incident = MockAIIncidentModel.findByPk(parseInt(id as string));
       if (!incident) {
         res.status(404).json({
           success: false,

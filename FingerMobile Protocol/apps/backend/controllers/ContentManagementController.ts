@@ -178,7 +178,7 @@ class ContentManagementController {
     try {
       const { id } = req.params;
       
-      const content = MockContentModel.findByPk(parseInt(id));
+      const content = MockContentModel.findByPk(parseInt(id as string));
       if (!content) {
         res.status(404).json({
           success: false,
@@ -256,7 +256,7 @@ class ContentManagementController {
         title, description, content, status, category, tags
       } = req.body;
 
-      const contentItem = MockContentModel.findByPk(parseInt(id));
+      const contentItem = MockContentModel.findByPk(parseInt(id as string));
       if (!contentItem) {
         res.status(404).json({
           success: false,
@@ -273,7 +273,7 @@ class ContentManagementController {
       if (category) updateData.category = category;
       if (tags) updateData.tags = tags;
 
-      MockContentModel.update(updateData, { where: { id: parseInt(id) } });
+      MockContentModel.update(updateData, { where: { id: parseInt(id as string) } });
 
       res.json({
         success: true,
@@ -298,7 +298,7 @@ class ContentManagementController {
     try {
       const { id } = req.params;
 
-      const contentItem = MockContentModel.findByPk(parseInt(id));
+      const contentItem = MockContentModel.findByPk(parseInt(id as string));
       if (!contentItem) {
         res.status(404).json({
           success: false,
@@ -307,7 +307,7 @@ class ContentManagementController {
         return;
       }
 
-      await MockContentModel.destroy({ where: { id: parseInt(id) } });
+      await MockContentModel.destroy({ where: { id: parseInt(id as string) } });
 
       res.json({
         success: true,
@@ -331,7 +331,7 @@ class ContentManagementController {
     try {
       const { id } = req.params;
 
-      const contentItem = MockContentModel.findByPk(parseInt(id));
+      const contentItem = MockContentModel.findByPk(parseInt(id as string));
       if (!contentItem) {
         res.status(404).json({
           success: false,
@@ -340,7 +340,7 @@ class ContentManagementController {
         return;
       }
 
-      MockContentModel.update({ status: 'published' }, { where: { id: parseInt(id) } });
+      MockContentModel.update({ status: 'published' }, { where: { id: parseInt(id as string) } });
 
       res.json({
         success: true,
@@ -365,7 +365,7 @@ class ContentManagementController {
     try {
       const { id } = req.params;
 
-      const contentItem = MockContentModel.findByPk(parseInt(id));
+      const contentItem = MockContentModel.findByPk(parseInt(id as string));
       if (!contentItem) {
         res.status(404).json({
           success: false,
@@ -374,7 +374,7 @@ class ContentManagementController {
         return;
       }
 
-      MockContentModel.update({ status: 'rejected' }, { where: { id: parseInt(id) } });
+      MockContentModel.update({ status: 'rejected' }, { where: { id: parseInt(id as string) } });
 
       res.json({
         success: true,

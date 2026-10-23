@@ -383,7 +383,7 @@ class MonetizationController {
     try {
       const { id } = req.params;
       
-      const stream = MockRevenueStreamModel.findByPk(parseInt(id));
+      const stream = MockRevenueStreamModel.findByPk(parseInt(id as string));
       if (!stream) {
         res.status(404).json({
           success: false,
@@ -456,7 +456,7 @@ class MonetizationController {
       const { id } = req.params;
       const { name, description, type, status } = req.body;
 
-      const stream = MockRevenueStreamModel.findByPk(parseInt(id));
+      const stream = MockRevenueStreamModel.findByPk(parseInt(id as string));
       if (!stream) {
         res.status(404).json({
           success: false,
@@ -471,7 +471,7 @@ class MonetizationController {
       if (type) updateData.type = type;
       if (status) updateData.status = status;
 
-      MockRevenueStreamModel.update(updateData, { where: { id: parseInt(id) } });
+      MockRevenueStreamModel.update(updateData, { where: { id: parseInt(id as string) } });
 
       res.json({
         success: true,
@@ -549,7 +549,7 @@ class MonetizationController {
     try {
       const { id } = req.params;
       
-      const plan = MockSubscriptionPlanModel.findByPk(parseInt(id));
+      const plan = MockSubscriptionPlanModel.findByPk(parseInt(id as string));
       if (!plan) {
         res.status(404).json({
           success: false,
@@ -625,7 +625,7 @@ class MonetizationController {
       const { id } = req.params;
       const { name, description, price, currency, billingCycle, features, status } = req.body;
 
-      const plan = MockSubscriptionPlanModel.findByPk(parseInt(id));
+      const plan = MockSubscriptionPlanModel.findByPk(parseInt(id as string));
       if (!plan) {
         res.status(404).json({
           success: false,
@@ -643,7 +643,7 @@ class MonetizationController {
       if (features) updateData.features = features;
       if (status) updateData.status = status;
 
-      MockSubscriptionPlanModel.update(updateData, { where: { id: parseInt(id) } });
+      MockSubscriptionPlanModel.update(updateData, { where: { id: parseInt(id as string) } });
 
       res.json({
         success: true,
@@ -676,7 +676,7 @@ class MonetizationController {
       const whereClause: any = {};
       
       if (userId) {
-        whereClause.userId = parseInt(userId);
+        whereClause.userId = parseInt(userId as string);
       }
       
       if (status) {
@@ -726,7 +726,7 @@ class MonetizationController {
     try {
       const { id } = req.params;
       
-      const transaction = MockTransactionModel.findByPk(parseInt(id));
+      const transaction = MockTransactionModel.findByPk(parseInt(id as string));
       if (!transaction) {
         res.status(404).json({
           success: false,
@@ -854,7 +854,7 @@ class MonetizationController {
     try {
       const { id } = req.params;
 
-      const plan = MockSubscriptionPlanModel.findByPk(parseInt(id));
+      const plan = MockSubscriptionPlanModel.findByPk(parseInt(id as string));
       if (!plan) {
         res.status(404).json({
           success: false,
@@ -863,7 +863,7 @@ class MonetizationController {
         return;
       }
 
-      MockSubscriptionPlanModel.update({ status: plan.status === 'active' ? 'inactive' : 'active' }, { where: { id: parseInt(id) } });
+      MockSubscriptionPlanModel.update({ status: plan.status === 'active' ? 'inactive' : 'active' }, { where: { id: parseInt(id as string) } });
 
       res.json({
         success: true,

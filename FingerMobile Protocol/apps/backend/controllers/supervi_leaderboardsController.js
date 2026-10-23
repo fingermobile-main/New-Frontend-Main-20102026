@@ -50,9 +50,9 @@ class SuperviLeaderboardsController {
 
       let timeFilter = '';
       if (timeframe === 'week') {
-        timeFilter = "AND r.created_at >= NOW() - INTERVAL '7 days'";
+        timeFilter = 'AND r.created_at >= NOW() - INTERVAL \'7 days\'';
       } else if (timeframe === 'month') {
-        timeFilter = "AND r.created_at >= NOW() - INTERVAL '30 days'";
+        timeFilter = 'AND r.created_at >= NOW() - INTERVAL \'30 days\'';
       }
 
       const parsedLimit = Math.max(1, Math.min(200, parseInt(limit, 10) || 50));

@@ -5,7 +5,7 @@ import User from '../models/UserModel';
 // Mock data models for security
 interface SecurityEvent {
   id: number;
-  userId: number;
+  userId: number | null;
   action: string;
   severity: 'low' | 'medium' | 'high' | 'critical';
   ipAddress: string;
@@ -295,7 +295,7 @@ class SecurityController {
       }
       
       if (userId) {
-        whereClause.userId = parseInt(userId);
+        whereClause.userId = parseInt(userId as string);
       }
 
       const { count, rows } = MockSecurityEventModel.findAll({
@@ -337,7 +337,7 @@ class SecurityController {
     try {
       const { id } = req.params;
       
-      const event = MockSecurityEventModel.findByPk(parseInt(id));
+      const event = MockSecurityEventModel.findByPk(parseInt(id as string));
       if (!event) {
         res.status(404).json({
           success: false,
@@ -370,7 +370,7 @@ class SecurityController {
       const { id } = req.params;
       const { resolutionNotes } = req.body;
 
-      const event = MockSecurityEventModel.findByPk(parseInt(id));
+      const event = MockSecurityEventModel.findByPk(parseInt(id as string));
       if (!event) {
         res.status(404).json({
           success: false,
@@ -383,7 +383,7 @@ class SecurityController {
         resolved: true, 
         resolvedBy: req.user?.id, 
         resolutionNotes: resolutionNotes || 'Event resolved by administrator' 
-      }, { where: { id: parseInt(id) } });
+      }, { where: { id: parseInt(id as string) } });
 
       res.json({
         success: true,
@@ -514,7 +514,7 @@ class SecurityController {
     try {
       const { id } = req.params;
 
-      const policy = MockSecurityPolicyModel.findByPk(parseInt(id));
+      const policy = MockSecurityPolicyModel.findByPk(parseInt(id as string));
       if (!policy) {
         res.status(404).json({
           success: false,
@@ -523,7 +523,7 @@ class SecurityController {
         return;
       }
 
-      MockSecurityPolicyModel.update({ isActive: !policy.isActive }, { where: { id: parseInt(id) } });
+      MockSecurityPolicyModel.update({ isActive: !policy.isActive }, { where: { id: parseInt(id as string) } });
 
       res.json({
         success: true,

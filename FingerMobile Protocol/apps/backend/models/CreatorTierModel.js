@@ -355,7 +355,7 @@ class CreatorTierModel {
       await client.query('BEGIN');
 
       const oldStateRes = await client.query(
-        `SELECT * FROM regional_creator_tier_rules WHERE country_code = $1 AND tier = $2 FOR UPDATE`,
+        'SELECT * FROM regional_creator_tier_rules WHERE country_code = $1 AND tier = $2 FOR UPDATE',
         [code, targetTier]
       );
 

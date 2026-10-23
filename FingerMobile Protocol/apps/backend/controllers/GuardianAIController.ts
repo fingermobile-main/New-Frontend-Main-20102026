@@ -564,7 +564,7 @@ class GuardianAIController {
     try {
       const { id } = req.params;
       
-      const system = MockGuardianAISystemModel.findByPk(parseInt(id));
+      const system = MockGuardianAISystemModel.findByPk(parseInt(id as string));
       if (!system) {
         res.status(404).json({
           success: false,
@@ -644,7 +644,7 @@ class GuardianAIController {
       const { id } = req.params;
       const { name, description, version, status, category, priority, confidenceThreshold, sensitivityLevel, modelType, parameters } = req.body;
 
-      const system = MockGuardianAISystemModel.findByPk(parseInt(id));
+      const system = MockGuardianAISystemModel.findByPk(parseInt(id as string));
       if (!system) {
         res.status(404).json({
           success: false,
@@ -665,7 +665,7 @@ class GuardianAIController {
       if (modelType) updateData.modelType = modelType;
       if (parameters) updateData.parameters = parameters;
 
-      MockGuardianAISystemModel.update(updateData, { where: { id: parseInt(id) } });
+      MockGuardianAISystemModel.update(updateData, { where: { id: parseInt(id as string) } });
 
       res.json({
         success: true,
@@ -699,7 +699,7 @@ class GuardianAIController {
       const whereClause: any = {};
       
       if (systemId) {
-        whereClause.systemId = parseInt(systemId);
+        whereClause.systemId = parseInt(systemId as string);
       }
       
       if (eventType) {
@@ -761,7 +761,7 @@ class GuardianAIController {
       const whereClause: any = {};
       
       if (eventId) {
-        whereClause.eventId = parseInt(eventId);
+        whereClause.eventId = parseInt(eventId as string);
       }
       
       if (action) {
@@ -917,7 +917,7 @@ class GuardianAIController {
       const { id } = req.params;
       const { status, resolutionNotes } = req.body;
 
-      const event = MockGuardianAIEventModel.findByPk(parseInt(id));
+      const event = MockGuardianAIEventModel.findByPk(parseInt(id as string));
       if (!event) {
         res.status(404).json({
           success: false,
@@ -952,7 +952,7 @@ class GuardianAIController {
     try {
       const { id } = req.params;
 
-      const system = MockGuardianAISystemModel.findByPk(parseInt(id));
+      const system = MockGuardianAISystemModel.findByPk(parseInt(id as string));
       if (!system) {
         res.status(404).json({
           success: false,
@@ -967,7 +967,7 @@ class GuardianAIController {
       MockGuardianAISystemModel.update({ 
         status: 'training',
         lastTrained: new Date()
-      }, { where: { id: parseInt(id) } });
+      }, { where: { id: parseInt(id as string) } });
 
       res.json({
         success: true,

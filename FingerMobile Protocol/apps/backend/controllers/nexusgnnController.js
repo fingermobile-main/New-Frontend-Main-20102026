@@ -297,10 +297,10 @@ class NexusGNNController {
       if (phase) {
         query += ' WHERE ncl.current_phase = $1';
         params.push(phase);
-        query += ` ORDER BY ncl.updated_at DESC LIMIT $2`;
+        query += ' ORDER BY ncl.updated_at DESC LIMIT $2';
         params.push(parseInt(limit));
       } else {
-        query += ` ORDER BY ncl.updated_at DESC LIMIT $1`;
+        query += ' ORDER BY ncl.updated_at DESC LIMIT $1';
         params.push(parseInt(limit));
       }
 

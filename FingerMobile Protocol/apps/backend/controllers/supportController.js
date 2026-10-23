@@ -247,8 +247,8 @@ const SupportController = {
   async getStats(req, res) {
     try {
       const totalRes = await pool.query('SELECT COUNT(*) as count FROM support_tickets');
-      const openRes = await pool.query("SELECT COUNT(*) as count FROM support_tickets WHERE status IN ('open', 'new', 'in_progress')");
-      const resolvedRes = await pool.query("SELECT COUNT(*) as count FROM support_tickets WHERE status IN ('resolved', 'closed')");
+      const openRes = await pool.query('SELECT COUNT(*) as count FROM support_tickets WHERE status IN (\'open\', \'new\', \'in_progress\')');
+      const resolvedRes = await pool.query('SELECT COUNT(*) as count FROM support_tickets WHERE status IN (\'resolved\', \'closed\')');
 
       return res.json({
         success: true,

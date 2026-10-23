@@ -110,10 +110,10 @@ class LiveSpaceController {
       res.json(result);
     } catch (error) {
       logger.error('Error ending video room:', error);
-      res.status(500).json({ 
-        success: false, 
-        message: 'Failed to end video room', 
-        error: error.message 
+      res.status(500).json({
+        success: false,
+        message: 'Failed to end video room',
+        error: error.message
       });
     }
   }

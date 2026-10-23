@@ -239,7 +239,7 @@ function sanitizeSqlContent(rawSql) {
   sql = sql.replace(/WHERE\s+expires_at\s*>\s*NOW\(\)/gi, '');
 
   // 6. Fix generated column with timezone interval
-  sql = sql.replace(/GENERATED\s+ALWAYS\s+AS\s*\([^)]*\)\s*STORED/gi, "DEFAULT (NOW() + INTERVAL '90 days')");
+  sql = sql.replace(/GENERATED\s+ALWAYS\s+AS\s*\([^)]*\)\s*STORED/gi, 'DEFAULT (NOW() + INTERVAL \'90 days\')');
 
   // 7. Fix MySQL-style inline INDEX inside CREATE TABLE
   sql = sql.replace(/,\s*INDEX\s+([a-zA-Z0-9_]+)\s+ON\s+([a-zA-Z0-9_]+)\s*\([^)]*\)/gi, '');
@@ -317,7 +317,7 @@ async function runMigrations(options = { dryRun: false }) {
 
     const pending = migrationFiles.filter(m => !applied.has(m.name));
 
-    console.log(`\n📊 Migration Status Summary:`);
+    console.log('\n📊 Migration Status Summary:');
     console.log(`   - Total migration/schema files: ${migrationFiles.length}`);
     console.log(`   - Previously applied: ${applied.size}`);
     console.log(`   - Pending to apply: ${pending.length}\n`);
@@ -424,7 +424,7 @@ function performStaticAnalysis() {
   const migrations = fs.existsSync(MIGRATIONS_DIR) ? fs.readdirSync(MIGRATIONS_DIR).filter(f => f.endsWith('.sql')) : [];
   const coreSchemas = fs.existsSync(DATABASE_DIR) ? fs.readdirSync(DATABASE_DIR).filter(f => f.endsWith('.sql')) : [];
 
-  console.log(`\n📂 [Database Inventory & Migration Registry]`);
+  console.log('\n📂 [Database Inventory & Migration Registry]');
   console.log(`   - Migration scripts in database/migrations/: ${migrations.length} files`);
   console.log(`   - Core schemas in database/: ${coreSchemas.length} files`);
   console.log(`   - Total SQL schema definitions: ${migrations.length + coreSchemas.length}`);

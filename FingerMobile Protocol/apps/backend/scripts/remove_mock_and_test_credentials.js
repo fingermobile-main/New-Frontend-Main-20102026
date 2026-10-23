@@ -113,7 +113,7 @@ async function purgeMockAccounts() {
 
     // 3. Delete from users table
     const deleteUsersRes = await client.query(
-      `DELETE FROM users WHERE id = ANY($1::uuid[]) RETURNING id, email, username`,
+      'DELETE FROM users WHERE id = ANY($1::uuid[]) RETURNING id, email, username',
       [userIds]
     );
 

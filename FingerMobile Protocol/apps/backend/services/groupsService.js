@@ -19,7 +19,7 @@ class GroupsService {
       const limit = Math.min(parseInt(pagination.limit, 10) || 20, 100);
       const offset = (page - 1) * limit;
 
-      let whereClause = "WHERE g.moderation_status = 'active'";
+      let whereClause = 'WHERE g.moderation_status = \'active\'';
       const params = [];
 
       if (filters.search) {
@@ -284,7 +284,7 @@ class GroupsService {
       }
 
       await pool.query(
-        "UPDATE groups SET moderation_status = 'archived', updated_at = NOW() WHERE id = $1",
+        'UPDATE groups SET moderation_status = \'archived\', updated_at = NOW() WHERE id = $1',
         [groupId]
       );
 
@@ -318,7 +318,7 @@ class GroupsService {
       }
 
       await pool.query(
-        "INSERT INTO group_members (group_id, user_id, role, joined_at) VALUES ($1, $2, 'member', NOW())",
+        'INSERT INTO group_members (group_id, user_id, role, joined_at) VALUES ($1, $2, \'member\', NOW())',
         [groupId, String(userId)]
       );
 

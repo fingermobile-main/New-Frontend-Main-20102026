@@ -104,7 +104,7 @@ async function initializeIdentityTables() {
   `);
 
   // Create indexes for better performance
-  try { 
+  try {
     await identityDb.query(`
     CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
     CREATE INDEX IF NOT EXISTS idx_users_username ON users(username);
@@ -112,7 +112,7 @@ async function initializeIdentityTables() {
     CREATE INDEX IF NOT EXISTS idx_refresh_tokens_user_id ON refresh_tokens(user_id);
     CREATE INDEX IF NOT EXISTS idx_user_friendships_user_id ON user_friendships(user_id);
     CREATE INDEX IF NOT EXISTS idx_user_friendships_friend_id ON user_friendships(friend_id);
-  `); 
+  `);
   } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
 
   // Add role column if it doesn't exist (for existing installations)
@@ -154,11 +154,11 @@ async function initializeIdentityTables() {
   `);
 
   // Create indexes for follows table
-  try { 
+  try {
     await identityDb.query(`
     CREATE INDEX IF NOT EXISTS idx_follows_follower_id ON follows(follower_id);
     CREATE INDEX IF NOT EXISTS idx_follows_following_id ON follows(following_id);
-  `); 
+  `);
   } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
 
   // Create forums table
@@ -176,12 +176,12 @@ async function initializeIdentityTables() {
   `);
 
   // Create indexes for forums table
-  try { 
+  try {
     await identityDb.query(`
     CREATE INDEX IF NOT EXISTS idx_forums_category ON forums(category);
     CREATE INDEX IF NOT EXISTS idx_forums_creator_id ON forums(creator_id);
     CREATE INDEX IF NOT EXISTS idx_forums_is_active ON forums(is_active);
-  `); 
+  `);
   } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
 
   // Create posts table
@@ -201,12 +201,12 @@ async function initializeIdentityTables() {
   `);
 
   // Create indexes for posts table
-  try { 
+  try {
     await identityDb.query(`
     CREATE INDEX IF NOT EXISTS idx_posts_forum_id ON posts(forum_id);
     CREATE INDEX IF NOT EXISTS idx_posts_author_id ON posts(author_id);
     CREATE INDEX IF NOT EXISTS idx_posts_is_active ON posts(is_active);
-  `); 
+  `);
   } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
 
   // Create groups table
@@ -225,12 +225,12 @@ async function initializeIdentityTables() {
   `);
 
   // Create indexes for groups table
-  try { 
+  try {
     await identityDb.query(`
     CREATE INDEX IF NOT EXISTS idx_groups_category ON groups(category);
     CREATE INDEX IF NOT EXISTS idx_groups_creator_id ON groups(creator_id);
     CREATE INDEX IF NOT EXISTS idx_groups_is_public ON groups(is_public);
-  `); 
+  `);
   } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
 
   // Create products table for marketplace
@@ -265,11 +265,11 @@ async function initializeIdentityTables() {
   `);
 
   // Create indexes for product reviews table
-  try { 
+  try {
     await identityDb.query(`
     CREATE INDEX IF NOT EXISTS idx_product_reviews_product_id ON product_reviews(product_id);
     CREATE INDEX IF NOT EXISTS idx_product_reviews_user_id ON product_reviews(user_id);
-  `); 
+  `);
   } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
 
   // Create forum categories table
@@ -284,10 +284,10 @@ async function initializeIdentityTables() {
   `);
 
   // Create indexes for forum categories table
-  try { 
+  try {
     await socialDb.query(`
     CREATE INDEX IF NOT EXISTS idx_forum_categories_name ON forum_categories(name);
-  `); 
+  `);
   } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
 
   // Create forums table
@@ -308,11 +308,11 @@ async function initializeIdentityTables() {
 
   // Create indexes for forums table (schema might have been modified by tier1_modules_schema.sql)
   try {
-    try { 
-    await socialDb.query(`
+    try {
+      await socialDb.query(`
       CREATE INDEX IF NOT EXISTS idx_forums_created_by ON forums(created_by);
-    `); 
-  } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
+    `);
+    } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
   } catch(e) {
     logger.warn('Could not create forum indexes due to schema drift: ' + e.message);
   }
@@ -336,14 +336,14 @@ async function initializeIdentityTables() {
 
   // Create indexes for forum threads table (schema might have been modified)
   try {
-    try { 
-    await socialDb.query(`
+    try {
+      await socialDb.query(`
       CREATE INDEX IF NOT EXISTS idx_forum_threads_forum_id ON forum_threads(forum_id);
       CREATE INDEX IF NOT EXISTS idx_forum_threads_author_id ON forum_threads(author_id);
       CREATE INDEX IF NOT EXISTS idx_forum_threads_is_sticky ON forum_threads(is_sticky);
       CREATE INDEX IF NOT EXISTS idx_forum_threads_created_at ON forum_threads(created_at);
-    `); 
-  } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
+    `);
+    } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
   } catch(e) {
     logger.warn('Could not create forum_threads indexes due to schema drift: ' + e.message);
   }
@@ -361,12 +361,12 @@ async function initializeIdentityTables() {
   `);
 
   // Create indexes for forum posts table
-  try { 
+  try {
     await socialDb.query(`
     CREATE INDEX IF NOT EXISTS idx_forum_posts_thread_id ON forum_posts(thread_id);
     CREATE INDEX IF NOT EXISTS idx_forum_posts_author_id ON forum_posts(author_id);
     CREATE INDEX IF NOT EXISTS idx_forum_posts_created_at ON forum_posts(created_at);
-  `); 
+  `);
   } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
 
   // Create posts table
@@ -390,7 +390,7 @@ async function initializeIdentityTables() {
   `);
 
   // Create indexes for posts table
-  try { 
+  try {
     await contentDb.query(`
     CREATE INDEX IF NOT EXISTS idx_posts_author_id ON posts(author_id);
     CREATE INDEX IF NOT EXISTS idx_posts_type ON posts(type);
@@ -398,7 +398,7 @@ async function initializeIdentityTables() {
     CREATE INDEX IF NOT EXISTS idx_posts_status ON posts(status);
     CREATE INDEX IF NOT EXISTS idx_posts_created_at ON posts(created_at);
     CREATE INDEX IF NOT EXISTS idx_posts_hashtags ON posts USING GIN(hashtags);
-  `); 
+  `);
   } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
 
   // Create post likes table
@@ -413,11 +413,11 @@ async function initializeIdentityTables() {
   `);
 
   // Create indexes for post likes table
-  try { 
+  try {
     await contentDb.query(`
     CREATE INDEX IF NOT EXISTS idx_post_likes_post_id ON post_likes(post_id);
     CREATE INDEX IF NOT EXISTS idx_post_likes_user_id ON post_likes(user_id);
-  `); 
+  `);
   } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
 
   // Create comments table
@@ -435,13 +435,13 @@ async function initializeIdentityTables() {
   `);
 
   // Create indexes for comments table
-  try { 
+  try {
     await contentDb.query(`
     CREATE INDEX IF NOT EXISTS idx_comments_post_id ON comments(post_id);
     CREATE INDEX IF NOT EXISTS idx_comments_author_id ON comments(author_id);
     CREATE INDEX IF NOT EXISTS idx_comments_parent_id ON comments(parent_id);
     CREATE INDEX IF NOT EXISTS idx_comments_created_at ON comments(created_at);
-  `); 
+  `);
   } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
 
   // Create shares table
@@ -455,11 +455,11 @@ async function initializeIdentityTables() {
   `);
 
   // Create indexes for shares table
-  try { 
+  try {
     await contentDb.query(`
     CREATE INDEX IF NOT EXISTS idx_shares_post_id ON shares(post_id);
     CREATE INDEX IF NOT EXISTS idx_shares_user_id ON shares(user_id);
-  `); 
+  `);
   } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
 
   // Create bookmarks table
@@ -474,11 +474,11 @@ async function initializeIdentityTables() {
   `);
 
   // Create indexes for bookmarks table
-  try { 
+  try {
     await contentDb.query(`
     CREATE INDEX IF NOT EXISTS idx_bookmarks_post_id ON bookmarks(post_id);
     CREATE INDEX IF NOT EXISTS idx_bookmarks_user_id ON bookmarks(user_id);
-  `); 
+  `);
   } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
 
   // Create members table (referenced in forums controller)
@@ -503,12 +503,12 @@ async function initializeIdentityTables() {
   `);
 
   // Create indexes for members table
-  try { 
+  try {
     await socialDb.query(`
     CREATE INDEX IF NOT EXISTS idx_members_user_id ON members(user_id);
     CREATE INDEX IF NOT EXISTS idx_members_membername ON members(membername);
     CREATE INDEX IF NOT EXISTS idx_members_display_name ON members(display_name);
-  `); 
+  `);
   } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
 
   // Create wishlist table for marketplace functionality
@@ -523,11 +523,11 @@ async function initializeIdentityTables() {
   `);
 
   // Create indexes for wishlist table
-  try { 
+  try {
     await financialDb.query(`
     CREATE INDEX IF NOT EXISTS idx_wishlists_user_id ON wishlists(user_id);
     CREATE INDEX IF NOT EXISTS idx_wishlists_product_id ON wishlists(product_id);
-  `); 
+  `);
   } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
 
   // Create shopping cart table for marketplace functionality
@@ -543,11 +543,11 @@ async function initializeIdentityTables() {
   `);
 
   // Create indexes for shopping cart table
-  try { 
+  try {
     await financialDb.query(`
     CREATE INDEX IF NOT EXISTS idx_shopping_cart_user_id ON shopping_cart(user_id);
     CREATE INDEX IF NOT EXISTS idx_shopping_cart_product_id ON shopping_cart(product_id);
-  `); 
+  `);
   } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
 
   // Create orders table for marketplace functionality
@@ -570,13 +570,13 @@ async function initializeIdentityTables() {
   `);
 
   // Create indexes for orders table
-  try { 
+  try {
     await financialDb.query(`
     CREATE INDEX IF NOT EXISTS idx_orders_user_id ON orders(user_id);
     CREATE INDEX IF NOT EXISTS idx_orders_order_number ON orders(order_number);
     CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(status);
     CREATE INDEX IF NOT EXISTS idx_orders_created_at ON orders(created_at);
-  `); 
+  `);
   } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
 
   // Create order items table for marketplace functionality
@@ -592,11 +592,11 @@ async function initializeIdentityTables() {
   `);
 
   // Create indexes for order items table
-  try { 
+  try {
     await financialDb.query(`
     CREATE INDEX IF NOT EXISTS idx_order_items_order_id ON order_items(order_id);
     CREATE INDEX IF NOT EXISTS idx_order_items_product_id ON order_items(product_id);
-  `); 
+  `);
   } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
 
   // Create notifications table
@@ -614,12 +614,12 @@ async function initializeIdentityTables() {
   `);
 
   // Create indexes for notifications table
-  try { 
+  try {
     await communicationDb.query(`
     CREATE INDEX IF NOT EXISTS idx_notifications_user_id ON notifications(user_id);
     CREATE INDEX IF NOT EXISTS idx_notifications_is_read ON notifications(is_read);
     CREATE INDEX IF NOT EXISTS idx_notifications_created_at ON notifications(created_at);
-  `); 
+  `);
   } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
 
   // Create messages table
@@ -677,12 +677,12 @@ async function initializeIdentityTables() {
   `);
 
   // Create indexes for conversations tables
-  try { 
+  try {
     await communicationDb.query(`
     CREATE INDEX IF NOT EXISTS idx_conversations_created_at ON conversations(created_at);
     CREATE INDEX IF NOT EXISTS idx_conversation_participants_conv ON conversation_participants(conversation_id);
     CREATE INDEX IF NOT EXISTS idx_conversation_participants_user ON conversation_participants(user_id);
-  `); 
+  `);
   } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
 
   // Create user preferences table
@@ -703,10 +703,10 @@ async function initializeIdentityTables() {
   `);
 
   // Create indexes for user preferences table
-  try { 
+  try {
     await identityDb.query(`
     CREATE INDEX IF NOT EXISTS idx_user_preferences_user_id ON user_preferences(user_id);
-  `); 
+  `);
   } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
 
   // Create user activity log table
@@ -725,12 +725,12 @@ async function initializeIdentityTables() {
   `);
 
   // Create indexes for user activity log table
-  try { 
+  try {
     await securityDb.query(`
     CREATE INDEX IF NOT EXISTS idx_user_activity_user_id ON user_activity_log(user_id);
     CREATE INDEX IF NOT EXISTS idx_user_activity_action ON user_activity_log(action);
     CREATE INDEX IF NOT EXISTS idx_user_activity_created_at ON user_activity_log(created_at);
-  `); 
+  `);
   } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
 
   // Create media assets table
@@ -754,13 +754,13 @@ async function initializeIdentityTables() {
   `);
 
   // Create indexes for media assets table
-  try { 
+  try {
     await contentDb.query(`
     CREATE INDEX IF NOT EXISTS idx_media_assets_user_id ON media_assets(user_id);
     CREATE INDEX IF NOT EXISTS idx_media_assets_mime_type ON media_assets(mime_type);
     CREATE INDEX IF NOT EXISTS idx_media_assets_asset_type ON media_assets(asset_type);
     CREATE INDEX IF NOT EXISTS idx_media_assets_created_at ON media_assets(created_at);
-  `); 
+  `);
   } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
 
   // Create FingerMobile Brand Emojis Registry table
@@ -798,10 +798,10 @@ async function initializeIdentityTables() {
   `);
 
   // Create indexes for content tags table
-  try { 
+  try {
     await contentDb.query(`
     CREATE INDEX IF NOT EXISTS idx_content_tags_name ON content_tags(name);
-  `); 
+  `);
   } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
 
   // Create content_tag_mappings table (junction table for tags and content)
@@ -817,12 +817,12 @@ async function initializeIdentityTables() {
   `);
 
   // Create indexes for content_tag_mappings table
-  try { 
+  try {
     await contentDb.query(`
     CREATE INDEX IF NOT EXISTS idx_content_tag_mappings_content_type ON content_tag_mappings(content_type);
     CREATE INDEX IF NOT EXISTS idx_content_tag_mappings_content_id ON content_tag_mappings(content_id);
     CREATE INDEX IF NOT EXISTS idx_content_tag_mappings_tag_id ON content_tag_mappings(tag_id);
-  `); 
+  `);
   } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
 
   // Create blogs table
@@ -842,12 +842,12 @@ async function initializeIdentityTables() {
   `);
 
   // Create indexes for blogs table
-  try { 
+  try {
     await contentDb.query(`
     CREATE INDEX IF NOT EXISTS idx_blogs_owner_id ON blogs(owner_id);
     CREATE INDEX IF NOT EXISTS idx_blogs_slug ON blogs(slug);
     CREATE INDEX IF NOT EXISTS idx_blogs_created_at ON blogs(created_at);
-  `); 
+  `);
   } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
 
   // Create blog_categories table
@@ -867,11 +867,11 @@ async function initializeIdentityTables() {
   `);
 
   // Create indexes for blog_categories table
-  try { 
+  try {
     await contentDb.query(`
     CREATE INDEX IF NOT EXISTS idx_blog_categories_blog_id ON blog_categories(blog_id);
     CREATE INDEX IF NOT EXISTS idx_blog_categories_slug ON blog_categories(slug);
-  `); 
+  `);
   } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
 
   // Create blog_posts table
@@ -903,7 +903,7 @@ async function initializeIdentityTables() {
   `);
 
   // Create indexes for blog_posts table
-  try { 
+  try {
     await contentDb.query(`
     CREATE INDEX IF NOT EXISTS idx_blog_posts_author_id ON blog_posts(author_id);
     CREATE INDEX IF NOT EXISTS idx_blog_posts_blog_id ON blog_posts(blog_id);
@@ -913,7 +913,7 @@ async function initializeIdentityTables() {
     CREATE INDEX IF NOT EXISTS idx_blog_posts_created_at ON blog_posts(created_at);
     CREATE INDEX IF NOT EXISTS idx_blog_posts_published_at ON blog_posts(published_at);
     CREATE INDEX IF NOT EXISTS idx_blog_posts_is_featured ON blog_posts(is_featured);
-  `); 
+  `);
   } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
 
   // Create blog_post_likes table
@@ -928,11 +928,11 @@ async function initializeIdentityTables() {
   `);
 
   // Create indexes for blog_post_likes table
-  try { 
+  try {
     await contentDb.query(`
     CREATE INDEX IF NOT EXISTS idx_blog_post_likes_post_id ON blog_post_likes(post_id);
     CREATE INDEX IF NOT EXISTS idx_blog_post_likes_user_id ON blog_post_likes(user_id);
-  `); 
+  `);
   } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
 
   // Create blog_post_views table (for tracking unique views)
@@ -948,13 +948,13 @@ async function initializeIdentityTables() {
   `);
 
   // Create indexes for blog_post_views table
-  try { 
+  try {
     await contentDb.query(`
     CREATE INDEX IF NOT EXISTS idx_blog_post_views_post_id ON blog_post_views(post_id);
     CREATE INDEX IF NOT EXISTS idx_blog_post_views_user_id ON blog_post_views(user_id);
     CREATE INDEX IF NOT EXISTS idx_blog_post_views_ip_address ON blog_post_views(ip_address);
     CREATE INDEX IF NOT EXISTS idx_blog_post_views_viewed_at ON blog_post_views(viewed_at);
-  `); 
+  `);
   } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
 
   // Create gems_balances table
@@ -970,11 +970,11 @@ async function initializeIdentityTables() {
   `);
 
   // Create indexes for gems_balances table
-  try { 
+  try {
     await identityDb.query(`
     CREATE INDEX IF NOT EXISTS idx_gems_balances_member_id ON gems_balances(member_id);
     CREATE INDEX IF NOT EXISTS idx_gems_balances_total_gems ON gems_balances(total_gems);
-  `); 
+  `);
   } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
 
   // Create gems_history table
@@ -992,13 +992,13 @@ async function initializeIdentityTables() {
   `);
 
   // Create indexes for gems_history table
-  try { 
+  try {
     await identityDb.query(`
     CREATE INDEX IF NOT EXISTS idx_gems_history_member_id ON gems_history(member_id);
     CREATE INDEX IF NOT EXISTS idx_gems_history_type ON gems_history(type);
     CREATE INDEX IF NOT EXISTS idx_gems_history_source_id ON gems_history(source_id);
     CREATE INDEX IF NOT EXISTS idx_gems_history_created_at ON gems_history(created_at);
-  `); 
+  `);
   } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
 
   // Create mii_avatars table
@@ -1016,12 +1016,12 @@ async function initializeIdentityTables() {
   `);
 
   // Create indexes for mii_avatars table
-  try { 
+  try {
     await identityDb.query(`
     CREATE INDEX IF NOT EXISTS idx_mii_avatars_user_id ON mii_avatars(user_id);
     CREATE INDEX IF NOT EXISTS idx_mii_avatars_is_active ON mii_avatars(is_active);
     CREATE INDEX IF NOT EXISTS idx_mii_avatars_created_at ON mii_avatars(created_at);
-  `); 
+  `);
   } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
 
   // Create mii_templates table
@@ -1041,12 +1041,12 @@ async function initializeIdentityTables() {
   `);
 
   // Create indexes for mii_templates table
-  try { 
+  try {
     await identityDb.query(`
     CREATE INDEX IF NOT EXISTS idx_mii_templates_category ON mii_templates(category);
     CREATE INDEX IF NOT EXISTS idx_mii_templates_is_available ON mii_templates(is_available);
     CREATE INDEX IF NOT EXISTS idx_mii_templates_popularity ON mii_templates(popularity);
-  `); 
+  `);
   } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
 
   // Create mii_items table
@@ -1067,13 +1067,13 @@ async function initializeIdentityTables() {
   `);
 
   // Create indexes for mii_items table
-  try { 
+  try {
     await identityDb.query(`
     CREATE INDEX IF NOT EXISTS idx_mii_items_category ON mii_items(category);
     CREATE INDEX IF NOT EXISTS idx_mii_items_rarity ON mii_items(rarity);
     CREATE INDEX IF NOT EXISTS idx_mii_items_is_available ON mii_items(is_available);
     CREATE INDEX IF NOT EXISTS idx_mii_items_price ON mii_items(price);
-  `); 
+  `);
   } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
 
   // Create hallmarks table
@@ -1092,12 +1092,12 @@ async function initializeIdentityTables() {
   `);
 
   // Create indexes for hallmarks table
-  try { 
+  try {
     await identityDb.query(`
     CREATE INDEX IF NOT EXISTS idx_hallmarks_category ON hallmarks(category);
     CREATE INDEX IF NOT EXISTS idx_hallmarks_rarity ON hallmarks(rarity);
     CREATE INDEX IF NOT EXISTS idx_hallmarks_created_at ON hallmarks(created_at);
-  `); 
+  `);
   } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
 
   // Create user_hallmarks table (junction table for user-hallmark relationships)
@@ -1114,12 +1114,12 @@ async function initializeIdentityTables() {
   `);
 
   // Create indexes for user_hallmarks table
-  try { 
+  try {
     await identityDb.query(`
     CREATE INDEX IF NOT EXISTS idx_user_hallmarks_user_id ON user_hallmarks(user_id);
     CREATE INDEX IF NOT EXISTS idx_user_hallmarks_hallmark_id ON user_hallmarks(hallmark_id);
     CREATE INDEX IF NOT EXISTS idx_user_hallmarks_awarded_at ON user_hallmarks(awarded_at);
-  `); 
+  `);
   } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
 
 }
@@ -1187,7 +1187,7 @@ async function initializeMonetizationTables() {
   `);
 
   // Indexes for Performance
-  try { 
+  try {
     await monetizationDb.query(`
     CREATE INDEX IF NOT EXISTS idx_fic_wallets_user_id ON fic_wallets(user_id);
     CREATE INDEX IF NOT EXISTS idx_fic_wallets_address ON fic_wallets(wallet_address);
@@ -1196,7 +1196,7 @@ async function initializeMonetizationTables() {
     CREATE INDEX IF NOT EXISTS idx_fic_exchange_rates_pair ON fic_exchange_rates(base_currency, target_currency);
     CREATE INDEX IF NOT EXISTS idx_monetization_events_user_id ON monetization_events(user_id);
     CREATE INDEX IF NOT EXISTS idx_monetization_events_type ON monetization_events(event_type);
-  `); 
+  `);
   } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
 
   // Trigger for Updating Timestamps
@@ -1266,14 +1266,14 @@ async function initializeSecurityTables() {
     `);
 
     // Create STERCS CommandBank Compound Indices for Time-Series & Forensic Queries
-    try { 
-    await securityDb.query(`
+    try {
+      await securityDb.query(`
       CREATE INDEX IF NOT EXISTS idx_audit_service_actor_time ON audit_logs (service, user_id, created_at);
       CREATE INDEX IF NOT EXISTS idx_audit_zone_action_time ON audit_logs (zone, action, created_at);
       CREATE INDEX IF NOT EXISTS idx_audit_created_at ON audit_logs (created_at DESC);
       CREATE INDEX IF NOT EXISTS idx_audit_event_category ON audit_logs (event_category);
-    `); 
-  } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
+    `);
+    } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
 
     logger.info('✅ Security tables created with STERCS CommandBank schema');
   } catch (error) {
@@ -1302,12 +1302,12 @@ async function initializeCommunicationTables() {
     `);
 
     // Create indexes for performance
-    try { 
-    await communicationDb.query(`
+    try {
+      await communicationDb.query(`
       CREATE INDEX IF NOT EXISTS idx_sender_certificates_member ON sender_certificates(member_id);
       CREATE INDEX IF NOT EXISTS idx_sender_certificates_expires ON sender_certificates(expires_at);
-    `); 
-  } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
+    `);
+    } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
 
     // Create sealed_messages table for sealed sender protocol
     await communicationDb.query(`
@@ -1323,13 +1323,13 @@ async function initializeCommunicationTables() {
     `);
 
     // Create indexes for performance
-    try { 
-    await communicationDb.query(`
+    try {
+      await communicationDb.query(`
       CREATE INDEX IF NOT EXISTS idx_sealed_messages_member ON sealed_messages(member_id);
       CREATE INDEX IF NOT EXISTS idx_sealed_messages_recipient ON sealed_messages(recipient_id);
       CREATE INDEX IF NOT EXISTS idx_sealed_messages_created ON sealed_messages(created_at DESC);
-    `); 
-  } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
+    `);
+    } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
 
     logger.info('✅ Communication tables created');
   } catch (error) {
@@ -1581,8 +1581,8 @@ async function initializeSocialTables() {
     `);
 
     // Create indexes for performance
-    try { 
-    await socialDb.query(`
+    try {
+      await socialDb.query(`
       CREATE INDEX IF NOT EXISTS idx_forums_category ON forums(category_id);
       CREATE INDEX IF NOT EXISTS idx_forums_created_by ON forums(created_by);
       CREATE INDEX IF NOT EXISTS idx_forum_threads_forum ON forum_threads(forum_id);
@@ -1593,8 +1593,8 @@ async function initializeSocialTables() {
       CREATE INDEX IF NOT EXISTS idx_products_creator ON products(creator_id);
       CREATE INDEX IF NOT EXISTS idx_orders_product ON orders(product_id);
       CREATE INDEX IF NOT EXISTS idx_orders_buyer ON orders(buyer_id);
-    `); 
-  } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
+    `);
+    } catch (e) { logger.warn('Index creation skipped due to schema drift: ' + e.message); }
 
     logger.info('✅ Social tables created');
   } catch (error) {

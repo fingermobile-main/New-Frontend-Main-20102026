@@ -52,8 +52,8 @@ class NexusGNNQueue {
 
   /**
    * Worker executing the embedding job
-   * @param {string} jobId 
-   * @param {string[]} nodeIds 
+   * @param {string} jobId
+   * @param {string[]} nodeIds
    */
   async processNextJob(jobId, nodeIds) {
     const job = this.jobs.get(jobId);
@@ -90,7 +90,7 @@ class NexusGNNQueue {
 
   /**
    * Get specific job details
-   * @param {string} jobId 
+   * @param {string} jobId
    * @returns {object|null}
    */
   getJob(jobId) {

@@ -32,6 +32,7 @@ import { FIC_DIGITAL_NOTARIZATION_CERTIFICATE } from '../../constants/digitalNot
 import { DigitalNotarizationModal } from '../legal/DigitalNotarizationModal';
 import { CbnNfemControllerPanel } from './CbnNfemControllerPanel';
 import EnterpriseFinancialEcosystemConsole from './EnterpriseFinancialEcosystemConsole';
+import UnifiedFinancialTreasuryConsole from './UnifiedFinancialTreasuryConsole';
 import apiService from '../../services/apiService';
 import {
   PLATFORM_OWNERSHIP,
@@ -110,6 +111,7 @@ export const MasterFinancialsConsole: React.FC = () => {
 
   // Active Sub-Tab configuration
   const validSubTabs = [
+    'autonomous-treasury-control',
     'financial-ecosystem',
     'treasury',
     'inspectorate',
@@ -854,6 +856,7 @@ export const MasterFinancialsConsole: React.FC = () => {
       <div className="border-b border-zinc-800">
         <nav className="flex space-x-4 overflow-x-auto pb-1 text-xs sm:text-sm font-medium">
           {[
+            { id: 'autonomous-treasury-control', label: 'Autonomous Treasury Control (Option C)', icon: Landmark },
             { id: 'financial-ecosystem', label: 'Financial Ecosystem & Ratios (Fidelity Bank)', icon: Landmark },
             { id: 'treasury', label: 'Treasury Reserves & Liquidity', icon: Building2 },
             { id: 'inspectorate', label: 'Mint Inspectorate & Charter', icon: Award },
@@ -885,6 +888,15 @@ export const MasterFinancialsConsole: React.FC = () => {
           })}
         </nav>
       </div>
+
+      {/* ========================================================================= */}
+      {/* PREMIER SUB-TAB: AUTONOMOUS TREASURY CONTROL (OPTION C)                   */}
+      {/* ========================================================================= */}
+      {activeSubTab === 'autonomous-treasury-control' && (
+        <div className="space-y-6">
+          <UnifiedFinancialTreasuryConsole />
+        </div>
+      )}
 
       {/* ========================================================================= */}
       {/* SUB-TAB 0: ENTERPRISE FINANCIAL ECOSYSTEM, FIDELITY RAILS & RATIOS         */}

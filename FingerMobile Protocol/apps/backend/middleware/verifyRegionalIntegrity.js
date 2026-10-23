@@ -38,9 +38,9 @@ function verifyRegionalIntegrityMiddleware(req, res, next) {
 
     // 1. Derive IP country from reverse proxy / CDN / Cloudflare header
     const headerCountry = (
-      req.headers['cf-ipcountry'] || 
-      req.headers['x-country-code'] || 
-      req.headers['x-geoip-country'] || 
+      req.headers['cf-ipcountry'] ||
+      req.headers['x-country-code'] ||
+      req.headers['x-geoip-country'] ||
       ''
     ).toString().toUpperCase();
 

@@ -7,14 +7,14 @@ class SpendCapController {
     try {
       const userId = req.user.id;
       const cap = await spendCapService.getSpendCap(userId);
-      
+
       res.status(200).json({
         success: true,
         data: {
           monthlyCap: cap.monthly_cap_amount,
           currentSpending: cap.current_month_spending,
           resetDate: cap.reset_date,
-          remaining: cap.monthly_cap_amount ? 
+          remaining: cap.monthly_cap_amount ?
             (cap.monthly_cap_amount - cap.current_month_spending) : null
         }
       });
@@ -44,7 +44,7 @@ class SpendCapController {
       }
 
       const updatedCap = await spendCapService.updateSpendCap(userId, capAmount);
-      
+
       res.status(200).json({
         success: true,
         data: {
@@ -78,7 +78,7 @@ class SpendCapController {
       }
 
       const result = await spendCapService.recordSpending(userId, amount);
-      
+
       if (result.success) {
         res.status(200).json({
           success: true,
@@ -111,9 +111,9 @@ class SpendCapController {
   async removeCap(req, res) {
     try {
       const userId = req.user.id;
-      
+
       const updatedCap = await spendCapService.updateSpendCap(userId, null);
-      
+
       res.status(200).json({
         success: true,
         data: {

@@ -12,7 +12,7 @@ async function seedMii() {
   const client = await pool.connect();
   try {
     console.log('Seeding Mii platform ecosystem...');
-    
+
     // 1. Get 2 user IDs
     const usersRes = await client.query('SELECT id, username FROM users LIMIT 3');
     if (usersRes.rows.length === 0) {

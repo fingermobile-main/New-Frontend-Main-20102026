@@ -8,10 +8,10 @@ exports.censorUser = async (req, res) => {
     const { userId, action, reason } = req.body;
     // action: 'suspend', 'ban', 'mute'
     if (!userId || !action) return res.status(400).json({ success: false, message: 'Missing parameters' });
-    
+
     // Implementation would update user status in DB
     // e.g., await User.update({ status: action, censorReason: reason }, { where: { id: userId } });
-    
+
     res.status(200).json({ success: true, message: `User ${userId} successfully ${action}ed.` });
   } catch (error) {
     logger.error('Error censoring user:', error);
@@ -34,10 +34,10 @@ exports.manageContent = async (req, res) => {
     const { contentId, contentType, action } = req.body;
     // action: 'delete', 'archive'
     // contentType: 'post', 'comment', 'ugc'
-    
+
     // Implementation would delete or archive content based on contentType
     // e.g., await Post.update({ status: action }, { where: { id: contentId } });
-    
+
     res.status(200).json({ success: true, message: `Content ${contentId} successfully ${action}d.` });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Internal Server Error' });
@@ -48,7 +48,7 @@ exports.manageRoles = async (req, res) => {
   try {
     const { userId, role } = req.body;
     // role: 'Mandate', 'Moderator', 'Creative'
-    
+
     // Implementation would assign specific role to user
     res.status(200).json({ success: true, message: `User ${userId} assigned role ${role}.` });
   } catch (error) {
@@ -60,7 +60,7 @@ exports.manageMicroservice = async (req, res) => {
   try {
     const { serviceName, action } = req.body;
     // action: 'start', 'kill', 'suspend'
-    
+
     if (!['start', 'kill', 'suspend'].includes(action)) {
       return res.status(400).json({ success: false, message: 'Invalid action' });
     }
@@ -74,10 +74,10 @@ exports.manageMicroservice = async (req, res) => {
     };
 
     logger.info(`SuperAdmin executing microservice action: ${commandMap[action]}`);
-    
-    res.status(200).json({ 
-      success: true, 
-      message: `Microservice '${serviceName}' received '${action}' command.` 
+
+    res.status(200).json({
+      success: true,
+      message: `Microservice '${serviceName}' received '${action}' command.`
     });
   } catch (error) {
     logger.error('Error managing microservice:', error);
@@ -96,7 +96,7 @@ exports.curateProduct = async (req, res) => {
     // Implementation interacting with specific platform models
     const Product = require('../models/Product');
     logger.info(`SuperAdmin curateProduct: action=${action}, platform=${platform}, productId=${productId}`);
-    
+
     if (action === 'create') {
       const newProduct = await Product.create({
         name: productData.name,
@@ -132,7 +132,7 @@ exports.curateMedia = async (req, res) => {
     if (!action || !platform) return res.status(400).json({ success: false, message: 'Missing parameters' });
 
     logger.info(`SuperAdmin curateMedia: action=${action}, platform=${platform}, mediaId=${mediaId}`);
-    
+
     let Model;
     let createPayload = {};
     if (platform === 'Camus') {
@@ -187,7 +187,7 @@ exports.manageAds = async (req, res) => {
   try {
     const { action, adId, adData } = req.body;
     // action: 'create', 'update', 'delete', 'schedule', 'approve'
-    
+
     if (!action) return res.status(400).json({ success: false, message: 'Missing action' });
 
     const Advertisement = require('../models/Advertisement');
@@ -279,11 +279,11 @@ exports.getStats = async (req, res) => {
   try {
     const User = require('../models/User'); // fallback to User.js if UserModel is not correct
     const Post = require('../models/Post');
-    
+
     // Attempting real counts
     const totalUsersCount = await User.count().catch(() => 24500);
     const activeContentCount = await Post.count().catch(() => 142800);
-    
+
     const stats = {
       totalUsers: { value: totalUsersCount >= 1000 ? (totalUsersCount/1000).toFixed(1) + 'K' : totalUsersCount.toString(), trend: '+12%', isPositive: true },
       activeContent: { value: activeContentCount >= 1000 ? (activeContentCount/1000).toFixed(1) + 'K' : activeContentCount.toString(), trend: '+8.4%', isPositive: true },
@@ -299,7 +299,7 @@ exports.getStats = async (req, res) => {
         { id: '3', title: 'Suspended user account', user: 'Moderator', time: '5 hours ago' }
       ]
     };
-    
+
     res.status(200).json(stats);
   } catch (error) {
     logger.error('Error fetching admin stats:', error);

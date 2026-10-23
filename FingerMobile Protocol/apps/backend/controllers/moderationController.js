@@ -542,18 +542,18 @@ class ModerationController {
     }
   }
 
-  async getAll(req, res) { 
+  async getAll(req, res) {
     return this.getReports(req, res);
   }
-  async getById(req, res) { 
+  async getById(req, res) {
     const { reportId } = req.params;
     const result = await pool.query('SELECT * FROM user_reports WHERE id = $1', [reportId]);
     res.json({ success: true, data: result.rows[0] || null });
   }
-  async create(req, res) { 
+  async create(req, res) {
     return this.createReport(req, res);
   }
-  async update(req, res) { 
+  async update(req, res) {
     return this.updateReport(req, res);
   }
 }
