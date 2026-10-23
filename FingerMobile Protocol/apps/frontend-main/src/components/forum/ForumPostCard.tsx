@@ -1088,7 +1088,7 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
                 <button
                   type="button"
                   onClick={() => {
-                    const p = post.taggedProduct?.platform.toLowerCase();
+                    const p = (post.taggedProduct?.platform || 'marketplace').toLowerCase();
                     navigate(`/${p}`);
                   }}
                   className="px-2.5 py-1 text-[10px] font-bold bg-slate-900 hover:bg-slate-800 text-white rounded-lg transition shadow-xs"

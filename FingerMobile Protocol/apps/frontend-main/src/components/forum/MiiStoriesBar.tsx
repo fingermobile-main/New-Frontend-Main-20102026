@@ -220,10 +220,11 @@ export const MiiStoriesBar: React.FC<MiiStoriesBarProps> = ({
 
   const handlePublishMii = () => {
     const media = miiMediaUrl.trim() || currentUserAvatar || 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800';
+    const safeName = currentUserName || 'User';
     const newMii: MiiItem = {
       id: `mii-${Date.now()}`,
-      author: currentUserName.split(' ')[0] || 'You',
-      handle: `@${currentUserName.toLowerCase().replace(/\s+/g, '')}`,
+      author: safeName.split(' ')[0] || 'You',
+      handle: `@${safeName.toLowerCase().replace(/\s+/g, '')}`,
       avatar: currentUserAvatar,
       mediaUrl: media,
       expiresIn: '48h left',
