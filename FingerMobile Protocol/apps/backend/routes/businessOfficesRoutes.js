@@ -34,7 +34,7 @@ router.post('/book', async (req, res) => {
 router.get('/bookings', async (req, res) => {
   try {
     const result = await pool.query(
-      `SELECT * FROM corporate_office_bookings ORDER BY created_at DESC LIMIT 50`
+      'SELECT * FROM corporate_office_bookings ORDER BY created_at DESC LIMIT 50'
     );
     res.json({
       success: true,

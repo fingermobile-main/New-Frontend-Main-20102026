@@ -201,7 +201,7 @@ router.post('/matches', optionalAuth, async (req, res) => {
     const { wager = 25, match_format = 'best_of_3', opponent = 'Open Lobby Challenge' } = req.body;
     const player1 = req.user?.username || req.user?.name || 'You';
     const matchId = `wm-${Date.now()}`;
-    
+
     try {
       await pool.query(`
         INSERT INTO fingerwars_matches (id, match_format, status)

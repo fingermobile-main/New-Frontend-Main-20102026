@@ -321,10 +321,10 @@ router.get('/', optionalAuth, async (req, res) => {
     if (type) {
       query += ' WHERE file_type = $1';
       params.push(type);
-      query += ` ORDER BY created_at DESC LIMIT $2 OFFSET $3`;
+      query += ' ORDER BY created_at DESC LIMIT $2 OFFSET $3';
       params.push(limit, offset);
     } else {
-      query += ` ORDER BY created_at DESC LIMIT $1 OFFSET $2`;
+      query += ' ORDER BY created_at DESC LIMIT $1 OFFSET $2';
       params.push(limit, offset);
     }
 

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const communityController = require('../controllers/communityController.js');
+const communityController = require('../controllers/CommunityController.js');
 const rawAuth = require('../middleware/auth');
 const authenticate = typeof rawAuth === 'function' ? rawAuth : (rawAuth.authenticate || ((req, res, next) => next()));
 

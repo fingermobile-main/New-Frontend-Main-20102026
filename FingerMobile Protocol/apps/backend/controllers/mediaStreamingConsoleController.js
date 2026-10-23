@@ -204,13 +204,13 @@ class MediaStreamingConsoleController {
         return res.status(400).json({ success: false, error: 'Title is required' });
       }
 
-      const generatedSlug = slug && slug.trim() 
+      const generatedSlug = slug && slug.trim()
         ? slug.trim().toLowerCase().replace(/[^a-z0-9-]/g, '-')
         : title.trim().toLowerCase().replace(/[^a-z0-9-]/g, '-');
 
       // Calculate next display_order
       const orderRes = await identityDb.query(
-        `SELECT COALESCE(MAX(display_order), 0) + 1 as next_order FROM media_streaming_console_items WHERE service_key = $1;`,
+        'SELECT COALESCE(MAX(display_order), 0) + 1 as next_order FROM media_streaming_console_items WHERE service_key = $1;',
         [serviceKey]
       );
       const nextOrder = parseInt(orderRes.rows[0]?.next_order || 1, 10);
@@ -395,7 +395,7 @@ class MediaStreamingConsoleController {
     try {
       const { serviceKey, id } = req.params;
       const deleteRes = await identityDb.query(
-        `DELETE FROM media_streaming_console_items WHERE id = $1 AND service_key = $2 RETURNING id, title;`,
+        'DELETE FROM media_streaming_console_items WHERE id = $1 AND service_key = $2 RETURNING id, title;',
         [id, serviceKey]
       );
 
@@ -429,7 +429,7 @@ class MediaStreamingConsoleController {
       await identityDb.query('BEGIN');
       for (const item of orders) {
         await identityDb.query(
-          `UPDATE media_streaming_console_items SET display_order = $1, updated_at = NOW() WHERE id = $2 AND service_key = $3;`,
+          'UPDATE media_streaming_console_items SET display_order = $1, updated_at = NOW() WHERE id = $2 AND service_key = $3;',
           [item.display_order, item.id, serviceKey]
         );
       }
@@ -451,7 +451,7 @@ class MediaStreamingConsoleController {
     try {
       const { serviceKey, id } = req.params;
       const currentRes = await identityDb.query(
-        `SELECT status FROM media_streaming_console_items WHERE id = $1 AND service_key = $2;`,
+        'SELECT status FROM media_streaming_console_items WHERE id = $1 AND service_key = $2;',
         [id, serviceKey]
       );
       if (currentRes.rows.length === 0) {
@@ -462,7 +462,7 @@ class MediaStreamingConsoleController {
       const nextStatus = currentStatus === 'active' ? 'frozen' : 'active';
 
       const updateRes = await identityDb.query(
-        `UPDATE media_streaming_console_items SET status = $1, updated_at = NOW() WHERE id = $2 AND service_key = $3 RETURNING *;`,
+        'UPDATE media_streaming_console_items SET status = $1, updated_at = NOW() WHERE id = $2 AND service_key = $3 RETURNING *;',
         [nextStatus, id, serviceKey]
       );
 
@@ -552,7 +552,7 @@ class MediaStreamingConsoleController {
   async listSpawnedConsoles(req, res) {
     try {
       const { rows } = await identityDb.query(
-        `SELECT * FROM media_streaming_console_spawns ORDER BY created_at DESC;`
+        'SELECT * FROM media_streaming_console_spawns ORDER BY created_at DESC;'
       );
       return res.json({ success: true, count: rows.length, consoles: rows });
     } catch (err) {

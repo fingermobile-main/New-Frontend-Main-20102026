@@ -2,7 +2,7 @@ const express = require('express');
 const logger = require('../../utils/logger');
 const router = express.Router();
 const { requireAdmin } = require('../../middleware/authenticate');
-const ApiService = require('../services/ApiService');
+const ApiService = require('../services/apiService');
 
 // Apply admin authentication to all API routes
 router.use(requireAdmin);

@@ -14,8 +14,8 @@ const router = express.Router();
 router.get(['/audit/car-report', '/car-report'], async (req, res) => {
   try {
     const [breachRes, activeKillswitchRes] = await Promise.all([
-      pool.query("SELECT COUNT(*) as count FROM dpo_breach_reports WHERE containment_status != 'remediated'"),
-      pool.query("SELECT COUNT(*) as count FROM security_alerts WHERE severity = 'critical' AND status = 'active'").catch(() => ({ rows: [{ count: 0 }] }))
+      pool.query('SELECT COUNT(*) as count FROM dpo_breach_reports WHERE containment_status != \'remediated\''),
+      pool.query('SELECT COUNT(*) as count FROM security_alerts WHERE severity = \'critical\' AND status = \'active\'').catch(() => ({ rows: [{ count: 0 }] }))
     ]);
 
     const activeBreaches = parseInt(breachRes.rows[0]?.count || 0, 10);

@@ -99,7 +99,7 @@ router.get('/status/:userId', async (req, res) => {
 router.get('/pending', async (req, res) => {
   try {
     const result = await getPool().query(
-      "SELECT * FROM kyb_records WHERE status = 'PENDING' ORDER BY submitted_at ASC"
+      'SELECT * FROM kyb_records WHERE status = \'PENDING\' ORDER BY submitted_at ASC'
     );
     res.json({ success: true, data: result.rows, count: result.rows.length });
   } catch (error) {

@@ -42,13 +42,13 @@ router.post('/admin/users', optionalAuth, (req, res) => adminController.createMe
 router.put(['/members/:memberId', '/admin/members/:memberId', '/users/:memberId', '/admin/users/:memberId'], optionalAuth, async (req, res) => {
   try {
     const { memberId } = req.params;
-    const { 
-      name, 
-      username, 
-      email, 
-      phone, 
-      role, 
-      status, 
+    const {
+      name,
+      username,
+      email,
+      phone,
+      role,
+      status,
       account_status,
       department,
       storeCreditBalance,
@@ -125,7 +125,7 @@ router.delete(['/members/:memberId', '/admin/members/:memberId', '/users/:member
 
     // Lookup user first to verify existence and root flag
     const checkUser = await pool.query(
-      `SELECT id, username, email, role FROM users WHERE id::text = $1 OR username = $1`,
+      'SELECT id, username, email, role FROM users WHERE id::text = $1 OR username = $1',
       [memberId]
     );
 
@@ -145,12 +145,12 @@ router.delete(['/members/:memberId', '/admin/members/:memberId', '/users/:member
 
     if (isPermanent) {
       // Cascade delete related records to avoid FK violations
-      await pool.query(`DELETE FROM member_role_assignments WHERE member_id = $1`, [targetUser.id]).catch(() => {});
-      await pool.query(`DELETE FROM store_credit_transactions WHERE wallet_id IN (SELECT id FROM enhanced_wallets WHERE user_id = $1)`, [targetUser.id]).catch(() => {});
-      await pool.query(`DELETE FROM earning_distributions WHERE wallet_id IN (SELECT id FROM enhanced_wallets WHERE user_id = $1)`, [targetUser.id]).catch(() => {});
-      await pool.query(`DELETE FROM stake_investments WHERE wallet_id IN (SELECT id FROM enhanced_wallets WHERE user_id = $1)`, [targetUser.id]).catch(() => {});
-      await pool.query(`DELETE FROM enhanced_wallets WHERE user_id = $1`, [targetUser.id]).catch(() => {});
-      await pool.query(`DELETE FROM users WHERE id = $1`, [targetUser.id]);
+      await pool.query('DELETE FROM member_role_assignments WHERE member_id = $1', [targetUser.id]).catch(() => {});
+      await pool.query('DELETE FROM store_credit_transactions WHERE wallet_id IN (SELECT id FROM enhanced_wallets WHERE user_id = $1)', [targetUser.id]).catch(() => {});
+      await pool.query('DELETE FROM earning_distributions WHERE wallet_id IN (SELECT id FROM enhanced_wallets WHERE user_id = $1)', [targetUser.id]).catch(() => {});
+      await pool.query('DELETE FROM stake_investments WHERE wallet_id IN (SELECT id FROM enhanced_wallets WHERE user_id = $1)', [targetUser.id]).catch(() => {});
+      await pool.query('DELETE FROM enhanced_wallets WHERE user_id = $1', [targetUser.id]).catch(() => {});
+      await pool.query('DELETE FROM users WHERE id = $1', [targetUser.id]);
 
       return res.json({
         success: true,

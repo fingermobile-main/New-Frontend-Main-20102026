@@ -95,8 +95,8 @@ async function run() {
         category, status, visibility, goods_type, images, created_at, updated_at
       )
       VALUES 
-        ($1, 'Master Stem Pack Vol. 1', 'master-stem-pack-1-' || substring(md5(random()::text) from 1 for 6), 'Studio-recorded 24-bit 96kHz lossless multitrack stems.', 45.00, 'USD', 'Music & Audio', 'active', 'visible', 'digital', '[\"https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80\"]'::jsonb, NOW(), NOW()),
-        ($1, 'Lofi Chillhop Soundbank', 'lofi-chillhop-soundbank-' || substring(md5(random()::text) from 1 for 6), 'Tape-saturated drum samples and custom Serum presets.', 25.00, 'USD', 'Music & Audio', 'active', 'visible', 'digital', '[\"https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800&q=80\"]'::jsonb, NOW(), NOW())
+        ($1, 'Master Stem Pack Vol. 1', 'master-stem-pack-1-' || substring(md5(random()::text) from 1 for 6), 'Studio-recorded 24-bit 96kHz lossless multitrack stems.', 45.00, 'USD', 'Music & Audio', 'active', 'visible', 'digital', '["https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80"]'::jsonb, NOW(), NOW()),
+        ($1, 'Lofi Chillhop Soundbank', 'lofi-chillhop-soundbank-' || substring(md5(random()::text) from 1 for 6), 'Tape-saturated drum samples and custom Serum presets.', 25.00, 'USD', 'Music & Audio', 'active', 'visible', 'digital', '["https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800&q=80"]'::jsonb, NOW(), NOW())
       ON CONFLICT DO NOTHING;
     `, [storeId]);
   }

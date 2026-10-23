@@ -62,7 +62,7 @@ async function seedBeatwave() {
       );
     }
     // Update artist sequence
-    await pool.query("SELECT setval('beatwave_artists_id_seq', (SELECT MAX(id) FROM beatwave_artists))");
+    await pool.query('SELECT setval(\'beatwave_artists_id_seq\', (SELECT MAX(id) FROM beatwave_artists))');
     console.log(`Seeded ${artists.length} Beatwave artists.`);
 
     // 2. Tracks
@@ -214,7 +214,7 @@ async function seedBeatwave() {
       );
     }
     // Update track sequence
-    await pool.query("SELECT setval('beatwave_tracks_id_seq', (SELECT MAX(id) FROM beatwave_tracks))");
+    await pool.query('SELECT setval(\'beatwave_tracks_id_seq\', (SELECT MAX(id) FROM beatwave_tracks))');
     console.log(`Seeded ${tracks.length} Beatwave tracks.`);
 
     // 3. Podcasts

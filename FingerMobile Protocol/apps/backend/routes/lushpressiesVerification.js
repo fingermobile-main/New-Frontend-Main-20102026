@@ -102,7 +102,7 @@ router.get('/status/:userId', async (req, res) => {
     const { userId } = req.params;
 
     const userRes = await pool.query(
-      `SELECT id, username, email_verified, phone_verified FROM users WHERE id = $1`,
+      'SELECT id, username, email_verified, phone_verified FROM users WHERE id = $1',
       [userId]
     );
 
@@ -111,7 +111,7 @@ router.get('/status/:userId', async (req, res) => {
     }
 
     const verificationRecord = await pool.query(
-      `SELECT * FROM lush_verifications WHERE user_id = $1 ORDER BY created_at DESC LIMIT 1`,
+      'SELECT * FROM lush_verifications WHERE user_id = $1 ORDER BY created_at DESC LIMIT 1',
       [userId]
     );
 

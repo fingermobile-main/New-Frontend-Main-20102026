@@ -17,12 +17,12 @@ async function run() {
   try {
     await client.query('BEGIN');
 
-    const rolex = await client.query("SELECT id FROM fingerlux_brands WHERE slug = 'rolex' LIMIT 1");
-    const hermes = await client.query("SELECT id FROM fingerlux_brands WHERE slug = 'hermes' LIMIT 1");
-    const chanel = await client.query("SELECT id FROM fingerlux_brands WHERE slug = 'chanel' LIMIT 1");
+    const rolex = await client.query('SELECT id FROM fingerlux_brands WHERE slug = \'rolex\' LIMIT 1');
+    const hermes = await client.query('SELECT id FROM fingerlux_brands WHERE slug = \'hermes\' LIMIT 1');
+    const chanel = await client.query('SELECT id FROM fingerlux_brands WHERE slug = \'chanel\' LIMIT 1');
 
-    const watches = await client.query("SELECT id FROM fingerlux_categories WHERE slug = 'watches' LIMIT 1");
-    const handbags = await client.query("SELECT id FROM fingerlux_categories WHERE slug = 'handbags' LIMIT 1");
+    const watches = await client.query('SELECT id FROM fingerlux_categories WHERE slug = \'watches\' LIMIT 1');
+    const handbags = await client.query('SELECT id FROM fingerlux_categories WHERE slug = \'handbags\' LIMIT 1');
 
     const userRes = await client.query('SELECT id FROM users LIMIT 1');
     const sellerId = userRes.rows[0]?.id || '00000000-0000-0000-0000-000000000000';

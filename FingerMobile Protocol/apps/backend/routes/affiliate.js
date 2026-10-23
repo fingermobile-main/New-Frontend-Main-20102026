@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
 
     // Check existing affiliate profile for this user
     let affRes = await getPool().query('SELECT * FROM affiliates WHERE user_id = $1', [userId]);
-    
+
     // Auto-create affiliate record if not exists for demo/first access
     if (affRes.rows.length === 0) {
       const code = `AFF-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;

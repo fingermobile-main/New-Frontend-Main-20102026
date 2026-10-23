@@ -355,7 +355,7 @@ class LiveStreamingController {
       }
       
       if (userId) {
-        whereClause.userId = parseInt(userId);
+        whereClause.userId = parseInt(userId as string);
       }
 
       const { count, rows } = MockStreamModel.findAll({
@@ -397,7 +397,7 @@ class LiveStreamingController {
     try {
       const { id } = req.params;
       
-      const stream = MockStreamModel.findByPk(parseInt(id));
+      const stream = MockStreamModel.findByPk(parseInt(id as string));
       if (!stream) {
         res.status(404).json({
           success: false,
@@ -472,7 +472,7 @@ class LiveStreamingController {
       const { id } = req.params;
       const { title, description, status, category, isPublic, isRecorded } = req.body;
 
-      const stream = MockStreamModel.findByPk(parseInt(id));
+      const stream = MockStreamModel.findByPk(parseInt(id as string));
       if (!stream) {
         res.status(404).json({
           success: false,
@@ -489,7 +489,7 @@ class LiveStreamingController {
       if (isPublic !== undefined) updateData.isPublic = isPublic;
       if (isRecorded !== undefined) updateData.isRecorded = isRecorded;
 
-      MockStreamModel.update(updateData, { where: { id: parseInt(id) } });
+      MockStreamModel.update(updateData, { where: { id: parseInt(id as string) } });
 
       res.json({
         success: true,
@@ -514,7 +514,7 @@ class LiveStreamingController {
     try {
       const { id } = req.params;
 
-      const stream = MockStreamModel.findByPk(parseInt(id));
+      const stream = MockStreamModel.findByPk(parseInt(id as string));
       if (!stream) {
         res.status(404).json({
           success: false,
@@ -555,11 +555,11 @@ class LiveStreamingController {
       const whereClause: any = {};
       
       if (streamId) {
-        whereClause.streamId = parseInt(streamId);
+        whereClause.streamId = parseInt(streamId as string);
       }
       
       if (userId) {
-        whereClause.userId = parseInt(userId);
+        whereClause.userId = parseInt(userId as string);
       }
 
       const { count, rows } = MockStreamViewerModel.findAll({
@@ -609,7 +609,7 @@ class LiveStreamingController {
       const whereClause: any = {};
       
       if (streamId) {
-        whereClause.streamId = parseInt(streamId);
+        whereClause.streamId = parseInt(streamId as string);
       }
       
       if (type) {
@@ -617,7 +617,7 @@ class LiveStreamingController {
       }
       
       if (userId) {
-        whereClause.userId = parseInt(userId);
+        whereClause.userId = parseInt(userId as string);
       }
 
       const { count, rows } = MockStreamInteractionModel.findAll({
@@ -716,7 +716,7 @@ class LiveStreamingController {
     try {
       const { id } = req.params;
 
-      const stream = MockStreamModel.findByPk(parseInt(id));
+      const stream = MockStreamModel.findByPk(parseInt(id as string));
       if (!stream) {
         res.status(404).json({
           success: false,
@@ -729,7 +729,7 @@ class LiveStreamingController {
         status: 'live', 
         startTime: new Date(), 
         viewerCount: 0 
-      }, { where: { id: parseInt(id) } });
+      }, { where: { id: parseInt(id as string) } });
 
       res.json({
         success: true,
@@ -754,7 +754,7 @@ class LiveStreamingController {
     try {
       const { id } = req.params;
 
-      const stream = MockStreamModel.findByPk(parseInt(id));
+      const stream = MockStreamModel.findByPk(parseInt(id as string));
       if (!stream) {
         res.status(404).json({
           success: false,
@@ -767,7 +767,7 @@ class LiveStreamingController {
         status: 'ended', 
         endTime: new Date(),
         duration: Math.floor((Date.now() - stream.startTime.getTime()) / 1000)
-      }, { where: { id: parseInt(id) } });
+      }, { where: { id: parseInt(id as string) } });
 
       res.json({
         success: true,
@@ -792,7 +792,7 @@ class LiveStreamingController {
     try {
       const { id } = req.params;
 
-      const stream = MockStreamModel.findByPk(parseInt(id));
+      const stream = MockStreamModel.findByPk(parseInt(id as string));
       if (!stream) {
         res.status(404).json({
           success: false,
@@ -803,7 +803,7 @@ class LiveStreamingController {
 
       MockStreamModel.update({ 
         isRecorded: !stream.isRecorded 
-      }, { where: { id: parseInt(id) } });
+      }, { where: { id: parseInt(id as string) } });
 
       res.json({
         success: true,

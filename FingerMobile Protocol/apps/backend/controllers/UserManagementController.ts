@@ -87,7 +87,7 @@ class UserManagementController {
    */
   async getUserById(req: Request, res: Response): Promise<void> {
     try {
-      const { id } = req.params;
+      const id = Number(req.params.id);
       
       const user = await User.findByPk(id, {
         attributes: [
@@ -200,7 +200,7 @@ class UserManagementController {
    */
   async updateUser(req: Request, res: Response): Promise<void> {
     try {
-      const { id } = req.params;
+      const id = Number(req.params.id);
       const {
         email, firstName, lastName, username, phone, role, status,
         fiatBalance, cryptoBalance, aiCredits, cesScore, strikes
@@ -310,7 +310,7 @@ class UserManagementController {
    */
   async deleteUser(req: Request, res: Response): Promise<void> {
     try {
-      const { id } = req.params;
+      const id = Number(req.params.id);
 
       const user = await User.findByPk(id);
       if (!user) {
@@ -352,7 +352,7 @@ class UserManagementController {
    */
   async assignRole(req: Request, res: Response): Promise<void> {
     try {
-      const { id } = req.params;
+      const id = Number(req.params.id);
       const { role } = req.body;
 
       if (!role) {
@@ -404,7 +404,7 @@ class UserManagementController {
    */
   async getUserActivity(req: Request, res: Response): Promise<void> {
     try {
-      const { id } = req.params;
+      const id = Number(req.params.id);
       
       // Log the activity
       await UserActivityService.logActivity(
@@ -414,7 +414,7 @@ class UserManagementController {
         req
       );
 
-      const activities = await UserActivityService.getUserActivities(parseInt(id), 50);
+      const activities = await UserActivityService.getUserActivities(id, 50);
       
       res.json({
         success: true,
@@ -440,7 +440,7 @@ class UserManagementController {
    */
   async resetPassword(req: Request, res: Response): Promise<void> {
     try {
-      const { id } = req.params;
+      const id = Number(req.params.id);
       const { newPassword } = req.body;
 
       if (!newPassword) {
