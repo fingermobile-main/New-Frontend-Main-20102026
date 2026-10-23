@@ -95,6 +95,7 @@ Every dashboard and console within the FingerMobile ecosystem is indexed under u
 | **MasterSystemInfraConsole.tsx** | `/admin/infra-console`<br>`/system-infra-console` | Systems Engineering & Cloud | STERCS Control Core, Guardian AI DefCon, 15 DB mesh, 748k TPS load balancing & containers |
 | **MasterCreationCatalogConsole.tsx** | `/admin/catalog-console`<br>`/creation-catalog-console` | Screen Catalog & Rotational Rails | Autonomous Screen Catalog, Rotational Rails (2h widgets), Subscriptions matrix & SEO indexing |
 | **MasterSecurityDefConConsole.tsx** | `/admin/security-console`<br>`/security-defcon-console` | Security & Hardware Enclaves | Camus Hardware Enclaves, Threat Heuristics, DDoS Mitigation, Cryptographic Vaults & DefCon-1 Isolation |
+| **MasterCreatorMonetizationConsole.tsx** | `/admin/creator-console`<br>`/creator-monetization-console` | Creator Studio & Monetization | Creator tiers (Silver/Gold/Diamond), AfriAds auctions, live gifting, staking yield & micro-royalties |
 
 ---
 

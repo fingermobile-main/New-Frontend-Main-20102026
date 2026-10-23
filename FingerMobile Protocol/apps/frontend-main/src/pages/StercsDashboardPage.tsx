@@ -392,6 +392,21 @@ const StercsDashboardPage: React.FC = () => {
       requests24h: '763K'
     },
     {
+      id: 'creator-monetization-console',
+      title: 'Creator Studio & Monetization Engine Console',
+      category: 'Commerce',
+      icon: DollarSign,
+      description: 'Autonomous management of Creator Tiers, Ad Splits, Live Gifting Vaults, FIC Staking & Micro-Royalties',
+      status: 'online',
+      version: 'v1.0.0-live',
+      lastUpdated: 'Live sync',
+      responseTime: 12,
+      healthScore: 99.98,
+      route: '/admin/creator-console',
+      trend: [12, 12, 12, 12, 12, 12, 12],
+      requests24h: '1.8M'
+    },
+    {
       id: 'stercs-curation',
       title: 'STERCS Curation Engine',
       category: 'Intelligence',

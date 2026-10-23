@@ -222,6 +222,7 @@ const CorporateGovernanceMasterConsolePage = lazy(() => import('../pages/admin/C
 const SystemInfraMasterConsolePage = lazy(() => import('../pages/admin/SystemInfraMasterConsolePage'));
 const CreationCatalogMasterConsolePage = lazy(() => import('../pages/admin/CreationCatalogMasterConsolePage'));
 const SecurityDefConMasterConsolePage = lazy(() => import('../pages/admin/SecurityDefConMasterConsolePage'));
+const CreatorMonetizationMasterConsolePage = lazy(() => import('../pages/admin/CreatorMonetizationMasterConsolePage'));
 const ContentAdminDashboardPage = lazy(() => import('../pages/ContentAdminDashboardPage'));
 const MemberManagementPage = lazy(() => import('../pages/admin/MemberManagementPage'));
 
@@ -535,6 +536,11 @@ export const routes: RouteObject[] = [
           { path: '/security-console', element: <SecurityDefConMasterConsolePage /> },
           { path: '/security-defcon-console', element: <SecurityDefConMasterConsolePage /> },
           { path: '/dashboard/security-defcon', element: <SecurityDefConMasterConsolePage /> },
+          { path: '/admin/creator-console', element: <CreatorMonetizationMasterConsolePage /> },
+          { path: '/admin/creator-monetization-console', element: <CreatorMonetizationMasterConsolePage /> },
+          { path: '/creator-console', element: <CreatorMonetizationMasterConsolePage /> },
+          { path: '/creator-monetization-console', element: <CreatorMonetizationMasterConsolePage /> },
+          { path: '/dashboard/creator-monetization', element: <CreatorMonetizationMasterConsolePage /> },
           { path: '/businessorganizations', element: <BusinessOrganizationsConsolePage /> },
           { path: '/admin/content', element: <ContentAdminDashboardPage /> },
           { path: '/contentadmindashboard', element: <ContentAdminDashboardPage /> },

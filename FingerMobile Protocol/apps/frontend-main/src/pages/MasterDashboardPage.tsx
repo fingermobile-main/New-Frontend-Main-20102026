@@ -109,6 +109,7 @@ import MasterCorporateGovernanceConsole from '../components/dashboard/MasterCorp
 import MasterSystemInfraConsole from '../components/dashboard/MasterSystemInfraConsole';
 import MasterCreationCatalogConsole from '../components/dashboard/MasterCreationCatalogConsole';
 import MasterSecurityDefConConsole from '../components/dashboard/MasterSecurityDefConConsole';
+import MasterCreatorMonetizationConsole from '../components/dashboard/MasterCreatorMonetizationConsole';
 
 interface Section {
   id: string;
@@ -2530,6 +2531,7 @@ const MasterDashboardPage: React.FC = () => {
               { id: 'system-infra-console', label: 'Systems Engineering & Cloud Infra (Phase 3)', badge: 'STERCS / AI / 748k TPS' },
               { id: 'creation-catalog-console', label: 'Creation, Widgets & Screen Catalog (Phase 4)', badge: 'Screens / Rails / Subs' },
               { id: 'security-defcon-console', label: 'Security & DefCon Threats (Phase 5)', badge: 'Enclaves / Vaults / DefCon-1' },
+              { id: 'creator-monetization-console', label: 'Creator Studio & Monetization (Phase 6)', badge: 'Tiers / Ads / Royalties' },
               { id: 'beatwaveng-console', label: 'BeatwaveNG Audio Console', badge: 'Live Sync' },
               { id: 'discover-console', label: 'Discover Master Console', badge: 'Topics & Swarms' },
               { id: 'soundriver-console', label: 'SoundRiver Master Console', badge: '320kbps Stream' },
@@ -2832,6 +2834,13 @@ const MasterDashboardPage: React.FC = () => {
             {activeTab === 'security-defcon-console' && (
               <div className="space-y-6">
                 <MasterSecurityDefConConsole />
+              </div>
+            )}
+
+            {/* Dedicated Creator Studio, Monetization & Payouts Engine Console Tab (Phase 6) */}
+            {activeTab === 'creator-monetization-console' && (
+              <div className="space-y-6">
+                <MasterCreatorMonetizationConsole />
               </div>
             )}
 

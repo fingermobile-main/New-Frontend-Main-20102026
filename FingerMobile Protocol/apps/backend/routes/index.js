@@ -124,6 +124,7 @@ const corporateGovernanceConsoleRoutes = require('./corporate-governance-console
 const systemInfraConsoleRoutes = require('./system-infra-console');
 const creationCatalogConsoleRoutes = require('./creation-catalog-console');
 const securityDefConConsoleRoutes = require('./security-defcon-console');
+const creatorMonetizationConsoleRoutes = require('./creator-monetization-console');
 
 // Mount individual route modules under their respective paths
 router.use('/communities-console', communitiesConsoleRoutes);
@@ -143,6 +144,8 @@ router.use('/creation-catalog-console', creationCatalogConsoleRoutes);
 router.use('/catalog-console', creationCatalogConsoleRoutes);
 router.use('/security-defcon-console', securityDefConConsoleRoutes);
 router.use('/security-console', securityDefConConsoleRoutes);
+router.use('/creator-monetization-console', creatorMonetizationConsoleRoutes);
+router.use('/creator-console', creatorMonetizationConsoleRoutes);
 router.use('/admin', adminRoutes);
 router.use('/operations', operationsRoutes);
 router.use('/monetization', monetizationRoutes);
