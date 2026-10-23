@@ -713,7 +713,7 @@ export const StructuredAboutSection: React.FC<StructuredAboutSectionProps> = ({
                 <div className="flex items-center justify-between py-1.5 border-b border-slate-100">
                   <span className="font-bold text-slate-600">Contact Email:</span>
                   {isOwner || isFriend ? (
-                    <span className="font-mono font-black text-slate-900">{profileData.contact_email || 'founder@fingermobileprotocol.com'}</span>
+                    <span className="font-mono font-black text-slate-900">{profileData.contact_email || 'obinnambah@fingermobileprotocol.com'}</span>
                   ) : (
                     <span className="text-slate-700 italic flex items-center gap-1">
                       <Lock className="w-3.5 h-3.5" /> Restricted to Verified Friends

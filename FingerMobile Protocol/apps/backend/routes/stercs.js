@@ -341,7 +341,7 @@ router.get('/stats', async (req, res) => {
 const DISPATCH_EMAILS = [
   'obinnambah100@gmail.com',
   'gracelinkbustech@gmail.com',
-  'founder@fingermobileprotocol.com',
+  'obinnambah@fingermobileprotocol.com',
   'eunicembah@gmail.com',
   'philipatiks@yahoo.com'
 ];

@@ -209,7 +209,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
       { name: 'Lossless Multi-Track Stem Mastering', rate: '800 FIC', status: 'Available' }
     ],
 
-    contact_email: initialProfile.contact_email || 'founder@fingermobileprotocol.com',
+    contact_email: initialProfile.contact_email || 'obinnambah@fingermobileprotocol.com',
     phone: initialProfile.phone || '+234 800 SOVEREIGN',
     node_address: initialProfile.node_address || 'finger://node.fingermobileprotocol.com/israelobinna',
 
@@ -1403,7 +1403,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                         type="email"
                         value={formData.contact_email}
                         onChange={(e) => setFormData({ ...formData, contact_email: e.target.value })}
-                        placeholder="founder@fingermobileprotocol.com"
+                        placeholder="obinnambah@fingermobileprotocol.com"
                         className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                     </div>

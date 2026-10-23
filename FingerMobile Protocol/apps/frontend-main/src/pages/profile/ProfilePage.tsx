@@ -1626,7 +1626,7 @@ export const ProfilePage: React.FC = () => {
                 {isOwner || isFriend ? (
                   <div className="flex items-center gap-2.5 text-slate-800">
                     <Mail className="w-4 h-4 text-slate-600 shrink-0" />
-                    <span className="truncate">founder@fingermobileprotocol.com</span>
+                    <span className="truncate">obinnambah@fingermobileprotocol.com</span>
                   </div>
                 ) : (
                   <div className="flex items-center gap-2.5 text-slate-600 italic text-[11px]">
@@ -2018,7 +2018,7 @@ export const ProfilePage: React.FC = () => {
                   workplace: profile.workplace || 'GraceLink Business Technologies Limited',
                   category: profile.category || 'Creator Level 5 / Sovereign Architect',
                   birthday: '1992-06-18',
-                  contact_email: 'founder@fingermobileprotocol.com',
+                  contact_email: 'obinnambah@fingermobileprotocol.com',
                   pronouns: 'he / him'
                 }}
                 onUpdateField={(k, v) => {

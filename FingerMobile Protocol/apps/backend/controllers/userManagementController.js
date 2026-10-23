@@ -6,8 +6,8 @@ const logger = require('../utils/logger');
 const fallbackMemoryProfile = {
   id: '00000000-0000-0000-0000-000000000001',
   name: 'Israel Obinna Mbah',
-  username: 'israelobinna',
-  email: 'founder@fingermobileprotocol.com',
+  username: 'ObinnaMbah',
+  email: 'obinnambah@fingermobileprotocol.com',
   phone: '+234 801 234 5678',
   bio: 'CEO & CTO, Founder | FingerMobile Protocol™ Sovereign Ecosystem Architect. Building decentralized cryptographic media protocols.',
   avatarUrl: '/assets/branding/mbah_israel_obinna.jpeg',

@@ -492,7 +492,7 @@ const StercsControlCenter: React.FC = () => {
                     DEFCON 1 ACTIVE: MAXIMUM EMERGENCY PROTOCOLS ENGAGED (PRO-MTS)
                   </h4>
                   <p className="mt-1 text-xs text-rose-900">
-                    Automated encrypted dispatch sent to sovereign response ring: <span className="font-mono text-rose-950 font-bold">obinnambah100@gmail.com, gracelinkbustech@gmail.com, founder@fingermobileprotocol.com, eunicembah@gmail.com, philipatiks@yahoo.com</span>.
+                    Automated encrypted dispatch sent to sovereign response ring: <span className="font-mono text-rose-950 font-bold">obinnambah100@gmail.com, gracelinkbustech@gmail.com, obinnambah@fingermobileprotocol.com, eunicembah@gmail.com, philipatiks@yahoo.com</span>.
                   </p>
                   <p className="mt-1 text-xs font-bold text-rose-950">
                     Awaiting Prompt AI 6-Digit Numeric Token dispatched to SuperAdmin mobile GSM numbers.

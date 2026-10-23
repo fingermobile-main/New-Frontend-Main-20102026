@@ -25,7 +25,7 @@ const memoryDb = {
       workplace: 'GraceLink Business Technologies Limited',
       category: 'Sovereign Protocol Architect & Founder',
       birthday: '1992-06-18',
-      contact_email: 'founder@fingermobileprotocol.com',
+      contact_email: 'obinnambah@fingermobileprotocol.com',
       pronouns: 'he/him',
       is_verified: true,
       reputation_score: 985,
@@ -399,7 +399,7 @@ const memoryDb = {
     contact_info: {
       title: 'Contact Info',
       category_group: 'Communication',
-      email: 'founder@fingermobileprotocol.com',
+      email: 'obinnambah@fingermobileprotocol.com',
       phone: '+234 800 SOVEREIGN',
       node_address: 'finger://node.fingermobileprotocol.com/israelobinna',
       audience: 'friends'

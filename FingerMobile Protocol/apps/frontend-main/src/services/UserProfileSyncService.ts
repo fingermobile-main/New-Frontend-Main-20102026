@@ -108,11 +108,11 @@ const STORAGE_KEY_USER = 'user';
 export const SUPERADMIN_PROFILE: ComprehensiveUserProfile = {
   id: '00000000-0000-0000-0000-000000000001',
   name: 'Israel Obinna Mbah',
-  username: 'israelobinna',
+  username: 'ObinnaMbah',
   headline: 'CEO & CTO, Founder | FingerMobile Protocol™ Sovereign Ecosystem Architect',
   bio: 'Curating luxury African contemporary art & exploring meaningful connections.',
   gender: 'Male',
-  email: 'founder@fingermobileprotocol.com',
+  email: 'obinnambah@fingermobileprotocol.com',
   recoveryEmail: 'recovery.guardian@fingermobileprotocol.com',
   phone: '+234 801 234 5678',
   birthday: '1992-06-18',
@@ -349,9 +349,10 @@ class UserProfileSyncService {
       // Check if user is explicitly the SuperAdmin Founder
       const isSuperAdmin = Boolean(
         userData &&
-        (userData.username === 'israelobinna' ||
+        (userData.username === 'ObinnaMbah' ||
+         userData.username === 'israelobinna' ||
          userData.email === 'fingermobileprotocol@gmail.com' ||
-         userData.email === 'founder@fingermobileprotocol.com') &&
+         userData.email === 'obinnambah@fingermobileprotocol.com') &&
         (String(userData.role || '').toLowerCase() === 'superadmin' || String(userData.role || '').toLowerCase() === 'founder')
       );
 
@@ -388,7 +389,7 @@ class UserProfileSyncService {
       if (storedComp) {
         try {
           compData = JSON.parse(storedComp);
-          if (!isSuperAdmin && (compData.username === 'israelobinna' || compData.name === 'Israel Obinna Mbah' || compData.email === 'founder@fingermobileprotocol.com')) {
+          if (!isSuperAdmin && (compData.username === 'ObinnaMbah' || compData.username === 'israelobinna' || compData.name === 'Israel Obinna Mbah' || compData.email === 'obinnambah@fingermobileprotocol.com')) {
             compData = {};
           }
         } catch (_e) {

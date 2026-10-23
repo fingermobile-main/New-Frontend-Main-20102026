@@ -7,8 +7,7 @@ export const PRIMARY_ADMIN_EMAILS = [
   'fingermobileprotocol@gmail.com',
   'obinnambah100@gmail.com',
   'gracelinkbustech@gmail.com',
-  'founder@fingermobileprotocol.com',
-  'system@fingermobileprotocol.com'
+  'obinnambah@fingermobileprotocol.com'
 ].map((e) => e.toLowerCase());
 
 export const SECONDARY_ADMIN_EMAILS = [

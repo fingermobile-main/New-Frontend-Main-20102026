@@ -52,17 +52,7 @@ async function seedUsers() {
   const client = await pool.connect();
   let count = 0;
 
-  // First, create the system user if it doesn't exist
-  try {
-    await client.query(`
-      INSERT INTO users (id, email, password_hash, username, full_name, role)
-      VALUES ($1, $2, $3, $4, $5, $6)
-      ON CONFLICT (id) DO NOTHING
-    `, ['00000000-0000-0000-0000-000000000000', 'system@fingermobileprotocol.com', 'hash', 'system', 'System User', 'admin']);
-    logger.info('Created/ensured system user exists');
-  } catch (e) {
-    logger.error('Error inserting system user', e.message);
-  }
+  // System user insert disabled to prevent mock credentials
 
   for (const row of result.data) {
     try {
@@ -212,17 +202,7 @@ async function seedDatabase() {
 
     if (systemUserCheck.rows.length === 0) {
       logger.info('Creating system user...');
-      await pool.query(`
-        INSERT INTO users (id, email, full_name, is_verified, created_at, updated_at) 
-        VALUES ($1, $2, $3, $4, NOW(), NOW())
-        ON CONFLICT (id) DO NOTHING`,
-      [
-        systemUserId,
-        'system@fingermobileprotocol.com',
-        'System User',
-        true
-      ]
-      );
+      // System user insert disabled to prevent mock credentials
       logger.info('System user created successfully.');
     } else {
       logger.info('System user already exists.');
