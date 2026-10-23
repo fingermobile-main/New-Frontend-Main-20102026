@@ -104,20 +104,53 @@ app.use(helmet({
   }
 }));
 
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  'http://localhost:3000',
+  'http://127.0.0.1:3000',
+  'http://localhost:5173',
+  'http://localhost:3001',
+  'http://localhost:3002',
+  'http://localhost:8000',
+].filter(Boolean);
+
+const isAllowedLanOrLocalOrigin = (origin) => {
+  if (!origin) return true; // Allow curl, mobile apps, Postman, server-to-server
+  try {
+    const parsed = new URL(origin);
+    const host = parsed.hostname;
+    // Allow localhost, loopback, and local mDNS
+    if (host === 'localhost' || host === '127.0.0.1' || host === '::1' || host.endsWith('.local')) {
+      return true;
+    }
+    // Allow RFC 1918 Private IPv4 Networks (192.168.0.0/16, 10.0.0.0/8, 172.16.0.0/12)
+    if (
+      /^192\.168\.\d{1,3}\.\d{1,3}$/.test(host) ||
+      /^10\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(host) ||
+      /^172\.(1[6-9]|2\d|3[0-1])\.\d{1,3}\.\d{1,3}$/.test(host)
+    ) {
+      return true;
+    }
+    return allowedOrigins.includes(origin);
+  } catch (_e) {
+    return false;
+  }
+};
+
 app.use(
   cors({
-    origin: [
-      process.env.FRONTEND_URL || 'http://localhost:3000',
-      'http://localhost:3000',
-      'http://localhost:5173',
-      'http://localhost:3001',
-      'http://localhost:3002',
-      // Add production domains here
-    ].filter(url => url && validator.isURL(url, { protocols: ['http', 'https'], require_protocol: true, require_tld: false })), // Validate URLs
+    origin: (origin, callback) => {
+      if (isAllowedLanOrLocalOrigin(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error(`Origin ${origin} not allowed by CORS`));
+      }
+    },
     credentials: true,
     optionsSuccessStatus: 200
   })
 );
+
 
 // Rate limiting - Enhanced with more specific limits
 const generalLimiter = rateLimit({
@@ -439,9 +472,9 @@ async function startServer() {
       logger.warn('⚠️ Could not start branding rotation scheduler:', bErr.message);
     }
 
-    // Start listening
-    server.listen(PORT, () => {
-      logger.info(`🚀 Server running on port ${PORT}`);
+    // Start listening on 0.0.0.0 for full local and LAN accessibility
+    server.listen(PORT, '0.0.0.0', () => {
+      logger.info(`🚀 Server running on http://0.0.0.0:${PORT} (LAN accessible via host IP)`);
       logger.info(`📡 Environment: ${process.env.NODE_ENV || 'development'}`);
       logger.info(`🔌 WebSocket: ${process.env.ENABLE_WEBSOCKET !== 'false' ? 'enabled' : 'disabled'}`);
       logger.info(`💾 Auto Backup: ${process.env.ENABLE_AUTO_BACKUP !== 'false' ? 'enabled' : 'disabled'}`);

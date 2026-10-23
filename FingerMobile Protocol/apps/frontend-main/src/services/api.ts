@@ -12,7 +12,8 @@ const getApiBaseUrl = () => {
   if (typeof window !== 'undefined' && window.location.port === '8000') {
     return '/api';
   }
-  return 'http://localhost:5001/api';
+  const host = typeof window !== 'undefined' && window.location.hostname ? window.location.hostname : 'localhost';
+  return `http://${host}:5001/api`;
 };
 
 const API_BASE_URL = getApiBaseUrl();

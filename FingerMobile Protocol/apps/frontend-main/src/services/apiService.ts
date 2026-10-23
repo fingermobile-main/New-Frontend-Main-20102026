@@ -2,12 +2,18 @@
 import logger from '../utils/logger';
 import axios from 'axios';
 
+const getBaseUrl = () => {
+  if (process.env.REACT_APP_API_URL) return process.env.REACT_APP_API_URL;
+  const host = typeof window !== 'undefined' && window.location.hostname ? window.location.hostname : 'localhost';
+  return `http://${host}:5001/api`;
+};
+
 export class ApiServiceClass {
   private axiosInstance: any;
 
   constructor() {
     this.axiosInstance = axios.create({
-      baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5001/api',
+      baseURL: getBaseUrl(),
       headers: {
         'Content-Type': 'application/json'
       }

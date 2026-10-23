@@ -34,154 +34,16 @@ function getSmsService() {
 const { identityDb } = require('../db/db');
 const pool = identityDb;
 
-// In-Memory Dev User Store for local testing / offline database fallback
-const devUsersStore = [
-  {
-    id: 'usr_founder_obinna',
-    username: 'israelobinna',
-    first_name: 'Israel Obinna',
-    last_name: 'Mbah',
-    email: 'fingermobileprotocol@gmail.com',
-    alternate_emails: ['obinnambah100@gmail.com', 'gracelinkbustech@gmail.com', 'fingermobileprotocol@gmail.com'],
-    phone: '+2348088855752',
-    alternate_phones: ['+2347033304670'],
-    nin: '225-3324-4384',
-    biometry: 'Live/Motion facial ID',
-    jurisdiction: 'Nigeria (NG) & Global Sovereign Network',
-    role: 'SuperAdmin',
-    title: 'Founder and Owner',
-    designation: 'Founder & Owner | SuperAdmin & Master Control',
-    access_level: 'Absolute Full Access to MasterDashboard and Stercs Dashboard',
-    password_hash: bcrypt.hashSync('mastercontrol123', 10),
-    email_verified: true,
-    phone_verified: true,
-    two_factor_enabled: false,
-    onboarding_completed: true,
-  },
-  {
-    id: 'usr_cofounder_eunice',
-    username: 'eunicembah',
-    first_name: 'Eunice Emonena',
-    last_name: 'Mbah',
-    email: 'eunicembah@gmail.com',
-    alternate_emails: ['philipatiks@yahoo.com'],
-    phone: '+234-803-392-4846',
-    alternate_phones: ['+234-808-892-1787'],
-    nin: '774-3558-2138',
-    biometry: 'Live/Motion facial ID',
-    jurisdiction: 'Nigeria (NG) & Global Sovereign Network',
-    role: 'Admin',
-    title: 'Co-Founder',
-    designation: 'Co-Founder | Admin-1 & Master Control',
-    access_level: 'RBC (Limited) Access to MasterDashboard and Stercs Dashboard (Permitted to Most Pages Granted by SuperAdmin)',
-    password_hash: bcrypt.hashSync('mastercontrol123', 10),
-    email_verified: true,
-    phone_verified: true,
-    two_factor_enabled: false,
-    onboarding_completed: true,
-  },
-  {
-    id: 'usr_superadmin',
-    username: 'superadmin',
-    first_name: 'Super',
-    last_name: 'Admin',
-    email: 'superadmin@fingermobileprotocol.com',
-    phone: '+2348011110000',
-    role: 'SuperAdmin',
-    password_hash: bcrypt.hashSync('superadmin123', 10),
-    email_verified: true,
-    phone_verified: true,
-    two_factor_enabled: false,
-    onboarding_completed: true,
-  },
-  {
-    id: 'usr_admin',
-    username: 'admin',
-    first_name: 'System',
-    last_name: 'Admin',
-    email: 'admin@fingermobileprotocol.com',
-    phone: '+2348011112222',
-    role: 'Admin',
-    password_hash: bcrypt.hashSync('admin123', 10),
-    email_verified: true,
-    phone_verified: true,
-    two_factor_enabled: false,
-    onboarding_completed: true,
-  },
-  {
-    id: 'usr_moderator',
-    username: 'moderator',
-    first_name: 'Community',
-    last_name: 'Moderator',
-    email: 'moderator@fingermobileprotocol.com',
-    phone: '+2348033334444',
-    role: 'Moderator',
-    password_hash: bcrypt.hashSync('moderator123', 10),
-    email_verified: true,
-    phone_verified: true,
-    two_factor_enabled: false,
-    onboarding_completed: true,
-  },
-  {
-    id: 'usr_creator',
-    username: 'creator',
-    first_name: 'Luxury',
-    last_name: 'Creator',
-    email: 'creator@fingermobileprotocol.com',
-    phone: '+2348077776666',
-    role: 'Creator',
-    password_hash: bcrypt.hashSync('creator123', 10),
-    email_verified: true,
-    phone_verified: true,
-    two_factor_enabled: false,
-    onboarding_completed: true,
-  },
-  {
-    id: 'usr_test',
-    username: 'testuser',
-    first_name: 'Alexandria',
-    last_name: 'Chen',
-    email: 'user@fingermobileprotocol.com',
-    phone: '+2348099998888',
-    role: 'Member',
-    password_hash: bcrypt.hashSync('user123', 10),
-    email_verified: true,
-    phone_verified: true,
-    two_factor_enabled: false,
-    onboarding_completed: true,
-  },
-  {
-    id: 'usr_visitor',
-    username: 'visitor',
-    first_name: 'Public',
-    last_name: 'Visitor',
-    email: 'visitor@fingermobileprotocol.com',
-    phone: '+2348012345678',
-    role: 'Visitor',
-    password_hash: bcrypt.hashSync('visitor123', 10),
-    email_verified: true,
-    phone_verified: true,
-    two_factor_enabled: false,
-    onboarding_completed: true,
-  },
-  {
-    id: 'usr_merchant',
-    username: 'merchant',
-    first_name: 'Premier',
-    last_name: 'Merchant',
-    email: 'merchant@fingermobileprotocol.com',
-    phone: '+2348055554444',
-    role: 'Merchant',
-    password_hash: bcrypt.hashSync('merchant123', 10),
-    email_verified: true,
-    phone_verified: true,
-    two_factor_enabled: false,
-    onboarding_completed: true,
-  }
-];
+const { getDemoUsers } = require('../config/demoUsers');
+
+const isDemoCredentialsEnabled = () => process.env.ENABLE_DEMO_CREDENTIALS === 'true';
+
+// In-Memory Dev User Store (only active when ENABLE_DEMO_CREDENTIALS=true)
+const devUsersStore = isDemoCredentialsEnabled() ? getDemoUsers() : [];
+
 
 function findDevUser(identifier) {
-  if (!identifier) return null;
+  if (!isDemoCredentialsEnabled() || !identifier) return null;
   const cleanDigits = identifier.replace(/[^0-9]/g, '');
   const nationalSuffix = cleanDigits.length >= 10 ? cleanDigits.slice(-10) : '';
   const trimmed = identifier.trim().toLowerCase();
@@ -372,7 +234,14 @@ router.post('/register', async (req, res) => {
           // Ignore rollback failure if transaction already terminated
         }
       }
-      getLogger().warn('⚠️ Database query failed during register, using dev fallback:', dbErr.message);
+      getLogger().warn('⚠️ Database query failed during register:', dbErr.message);
+
+      if (!isDemoCredentialsEnabled()) {
+        return res.status(500).json({
+          success: false,
+          message: 'Account registration failed due to database connectivity issue. Please try again.'
+        });
+      }
 
       // Check dev store for duplicate
       const existingDev = devUsersStore.find(
@@ -480,7 +349,7 @@ router.post('/verify-email', async (req, res) => {
 
     // Find valid verification code - ⚠️ FIX: Added purpose column filter and test code bypass support
     const normalizedEmailCode = code.trim().toUpperCase();
-    let isEmailCodeValid = (normalizedEmailCode === '123456' || normalizedEmailCode === '000000');
+    let isEmailCodeValid = isDemoCredentialsEnabled() && (normalizedEmailCode === '123456' || normalizedEmailCode === '000000');
 
     const verificationRecord = await pool.query(
       `SELECT * FROM verification_codes 
@@ -559,7 +428,7 @@ router.post('/verify-phone', async (req, res) => {
 
     // Find valid verification code - ⚠️ FIX: Added purpose column filter and normalize code
     const normalizedPhoneCode = code.trim().toUpperCase();
-    let isPhoneCodeValid = (normalizedPhoneCode === '123456' || normalizedPhoneCode === '000000');
+    let isPhoneCodeValid = isDemoCredentialsEnabled() && (normalizedPhoneCode === '123456' || normalizedPhoneCode === '000000');
 
     const verificationRecord = await pool.query(
       `SELECT * FROM verification_codes 
@@ -621,7 +490,7 @@ router.post('/setup-2fa', async (req, res) => {
     }
 
     // Verify TOTP code using speakeasy with test fallback
-    const isValid = (totpCode.trim() === '123456' || totpCode.trim() === '000000') || speakeasy.totp.verify({
+    const isValid = (isDemoCredentialsEnabled() && (totpCode.trim() === '123456' || totpCode.trim() === '000000')) || speakeasy.totp.verify({
       secret: secret,
       encoding: 'base32',
       token: totpCode.trim(),
@@ -715,7 +584,7 @@ router.post('/login', async (req, res) => {
     }
 
     // Check in-memory dev store if not found in DB
-    if (!userData) {
+    if (!userData && isDemoCredentialsEnabled()) {
       const devMatch = findDevUser(trimmedId);
       if (devMatch) {
         userData = devMatch;
@@ -728,9 +597,9 @@ router.post('/login', async (req, res) => {
       });
     }
 
-    // Verify password with bcrypt (and fallback for dev demo accounts)
+    // Verify password with bcrypt (and fallback for dev demo accounts if enabled)
     let isValidPassword = await bcrypt.compare(password, userData.password_hash);
-    if (!isValidPassword) {
+    if (!isValidPassword && isDemoCredentialsEnabled()) {
       if (
         password === 'mastercontrol123' ||
         password === 'superadmin123' ||
@@ -876,7 +745,7 @@ router.post('/verify-2fa-login', async (req, res) => {
       getLogger().warn('⚠️ Database query failed during verify-2fa-login, checking dev store:', dbErr.message);
     }
 
-    if (!userRow) {
+    if (!userRow && isDemoCredentialsEnabled()) {
       const devMatch = devUsersStore.find(u => u.id === userId);
       if (devMatch) {
         userRow = {
@@ -896,7 +765,7 @@ router.post('/verify-2fa-login', async (req, res) => {
     }
 
     // Verify TOTP code with test fallback
-    const isValid = (totpCode.trim() === '123456' || totpCode.trim() === '000000') || speakeasy.totp.verify({
+    const isValid = (isDemoCredentialsEnabled() && (totpCode.trim() === '123456' || totpCode.trim() === '000000')) || speakeasy.totp.verify({
       secret: userRow.two_factor_secret,
       encoding: 'base32',
       token: totpCode.trim(),
