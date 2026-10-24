@@ -317,6 +317,12 @@ const profileCharterRoutes = require('./routes/profileCharterRoutes');
 app.use('/api/v1/profiles', profileCharterRoutes);
 app.use('/api/profiles/charter', profileCharterRoutes);
 
+// Privacy Consent & CMP Routes (NDPA 2023, GDPR, EU AI Act)
+const userConsentRoutes = require('./routes/userConsentRoutes');
+app.use('/api/v1/users', userConsentRoutes);
+app.use('/v1/users', userConsentRoutes);
+app.use('/api/users', userConsentRoutes);
+
 // OAuth2 Routes (no /api prefix for compatibility with Passport redirects)
 app.use('/auth', sensitiveLimiter, oauth2Routes);
 
