@@ -41,7 +41,9 @@ import {
   ShoppingBag,
   Gamepad2,
   Cpu,
-  Layout
+  Layout,
+  GraduationCap,
+  Flame
 } from 'lucide-react';
 import dashboardService from '../services/dashboardService';
 import { SystemMetric } from '../types/dashboard';
@@ -438,6 +440,36 @@ const StercsDashboardPage: React.FC = () => {
       requests24h: '980K'
     },
     {
+      id: 'elearning-nysc-console',
+      title: 'E-Learning & NYSC EduTech Console',
+      category: 'Creation',
+      icon: GraduationCap,
+      description: 'Autonomous management of SAED Curriculum, Web3 Tech tracks, Smart Contracts, Accreditation, Verifiable Credentials & Live Cohorts',
+      status: 'online',
+      version: 'v1.0.0-live',
+      lastUpdated: 'Live sync',
+      responseTime: 11,
+      healthScore: 99.97,
+      route: '/admin/elearning-console',
+      trend: [11, 12, 11, 10, 11, 11, 11],
+      requests24h: '1.4M'
+    },
+    {
+      id: 'mii-stories-console',
+      title: 'Mii Ephemeral 48h Stories Console',
+      category: 'Creation',
+      icon: Flame,
+      description: 'Autonomous management of 48h TTL Ephemeral Stories, 6-Digit PIN Mutual Handshakes, Vanishing Purge & Orbit Spawners',
+      status: 'online',
+      version: 'v1.0.0-live',
+      lastUpdated: 'Live sync',
+      responseTime: 7,
+      healthScore: 99.98,
+      route: '/admin/mii-console',
+      trend: [7, 7, 8, 7, 6, 7, 7],
+      requests24h: '2.3M'
+    },
+    {
       id: 'stercs-editor-console',
       title: 'STERCS Editor & Motion Scripting Console',
       category: 'Creation',
@@ -481,6 +513,51 @@ const StercsDashboardPage: React.FC = () => {
       route: '/admin/analytics-telemetry-console',
       trend: [8, 8, 7, 8, 8, 8, 8],
       requests24h: '8.4M'
+    },
+    {
+      id: 'member-retention-console',
+      title: 'Member Retention & Activity Operations Console',
+      category: 'Governance',
+      icon: Users,
+      description: 'Cohort Lifecycle Loops, Churn Predictive Radar, Reactivation Engines & Streak Rewards',
+      status: 'online',
+      version: 'v1.0.0-live',
+      lastUpdated: 'Live sync',
+      responseTime: 6,
+      healthScore: 99.98,
+      route: '/admin/member-retention-console',
+      trend: [6, 6, 5, 6, 6, 6, 6],
+      requests24h: '2.4M'
+    },
+    {
+      id: 'marketing-campaign-console',
+      title: 'Marketing, Ads & Campaign Engine Console',
+      category: 'Commerce',
+      icon: ShoppingBag,
+      description: 'AfriAds Multi-Channel DSP, Real-Time Bid Ceilings, Promo Rails & Sponsored Placements',
+      status: 'online',
+      version: 'v1.0.0-live',
+      lastUpdated: 'Live sync',
+      responseTime: 12,
+      healthScore: 99.95,
+      route: '/admin/marketing-campaign-console',
+      trend: [12, 11, 12, 12, 11, 12, 12],
+      requests24h: '5.6M'
+    },
+    {
+      id: 'investor-relations-console',
+      title: 'Investor Relations & Capitalization Console',
+      category: 'Commerce',
+      icon: DollarSign,
+      description: 'Cap Table Management, Series A Preferred Rounds, Sovereign Wealth Allotments & Dividends',
+      status: 'online',
+      version: 'v1.0.0-live',
+      lastUpdated: 'Live sync',
+      responseTime: 4,
+      healthScore: 100.0,
+      route: '/admin/investor-relations-console',
+      trend: [4, 4, 4, 4, 4, 4, 4],
+      requests24h: '1.8M'
     },
     {
       id: 'stercs-curation',
