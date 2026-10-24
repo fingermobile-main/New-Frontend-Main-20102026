@@ -148,6 +148,7 @@ const soundOceanConsoleRoutes = require('./sound-ocean-console');
 const soundRiverConsoleRoutes = require('./sound-river-console');
 const luminaGalleryConsoleRoutes = require('./lumina-gallery-console');
 const subscriptionModelsConsoleRoutes = require('./subscription-models-console');
+const userConsentRoutes = require('./userConsentRoutes');
 
 // Mount individual route modules under their respective paths
 router.use('/communities-console', communitiesConsoleRoutes);
@@ -269,6 +270,8 @@ router.use('/forums', forumRoutes);
 router.use('/forum', forumRoutes);
 router.use('/forum-categories', forumcategoriesRoutes);
 router.use('/creators', creatorRulesRoutes);
+router.use('/v1/users', userConsentRoutes);
+router.use('/users', userConsentRoutes);
 router.use('/users', userRoutes);
 router.use('/catalog', catalogRoutes);
 router.use('/products', productRoutes);
@@ -407,13 +410,9 @@ router.get('/health', (req, res) => {
   });
 });
 
-// Catch-all for undefined routes
-router.use('*', (req, res) => {
-  res.status(404).json({
-    success: false,
-    message: 'Route not found',
-    path: req.originalUrl
-  });
+// Fall-through for routes handled by external routers or application-level handlers
+router.use('*', (req, res, next) => {
+  next();
 });
 
 module.exports = router;

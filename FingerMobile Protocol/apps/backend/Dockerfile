@@ -47,6 +47,10 @@ RUN mkdir -p uploads/media uploads/temp logs backups && \
     ln -sf /app/controllers/luminaController.js /app/controllers/LuminaController.js 2>/dev/null || true && \
     ln -sf /app/controllers/commentsController.js /app/controllers/CommentsController.js 2>/dev/null || true && \
     ln -sf /app/controllers/trendsController.js /app/controllers/TrendsController.js 2>/dev/null || true && \
+    ln -sf /app/routes/contentmanagement.js /app/routes/contentManagement.js 2>/dev/null || true && \
+    ln -sf /app/models/User.js /app/models/user.js 2>/dev/null || true && \
+    ln -sf /app/models/Forum.js /app/models/forum.js 2>/dev/null || true && \
+    ln -sf /app/models/ForumCategory.js /app/models/forumCategory.js 2>/dev/null || true && \
     chown -R nodejs:nodejs /app
 
 # Switch to non-root user

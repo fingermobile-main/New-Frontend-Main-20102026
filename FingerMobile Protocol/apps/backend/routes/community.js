@@ -1,5 +1,5 @@
 const express = require('express');
-const communityController = require('../controllers/CommunityController.js');
+const communityController = require('../controllers/communityController.js');
 const { authenticate } = require('../middleware/authenticate');
 const router = express.Router();
 
