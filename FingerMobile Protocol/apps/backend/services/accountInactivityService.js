@@ -317,23 +317,33 @@ class AccountInactivityService {
 
   // Start the inactivity check job
   startInactivityCheckJob() {
+    if (process.env.NODE_ENV === 'test') {
+      return;
+    }
+
     // Run the inactivity check daily
-    setInterval(async () => {
+    const intervalTimer = setInterval(async () => {
       try {
         await this.checkInactiveAccounts();
       } catch (error) {
         logger.error('Error in inactivity check job:', error);
       }
     }, this.inactivityCheckInterval);
+    if (intervalTimer && typeof intervalTimer.unref === 'function') {
+      intervalTimer.unref();
+    }
 
     // Run initial check
-    setTimeout(async () => {
+    const timeoutTimer = setTimeout(async () => {
       try {
         await this.checkInactiveAccounts();
       } catch (error) {
         logger.error('Error in initial inactivity check:', error);
       }
     }, 5000); // Run after 5 seconds to let the system start up
+    if (timeoutTimer && typeof timeoutTimer.unref === 'function') {
+      timeoutTimer.unref();
+    }
   }
 
   // Reactivate account after login

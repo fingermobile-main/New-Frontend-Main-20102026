@@ -12,9 +12,7 @@ import {
   SparklesIcon,
   ArrowUpTrayIcon,
   XMarkIcon,
-  MusicalNoteIcon,
   SignalIcon,
-  SpeakerWaveIcon,
   ArrowsRightLeftIcon
 } from '@heroicons/react/24/outline';
 import {
@@ -87,8 +85,7 @@ export const MasterSoundRiverConsole: React.FC = () => {
       setOverview(overviewData);
       setItems(itemsData);
       setSpawns(spawnsData);
-    } catch (err: any) {
-      console.error('Failed to load SoundRiver console data:', err);
+    } catch (_err: any) {
       showToast('Error syncing with SoundRiver stream plane', 'wahala');
     } finally {
       setLoading(false);
@@ -940,6 +937,20 @@ export const MasterSoundRiverConsole: React.FC = () => {
                   onChange={e => setSpawnSlug(e.target.value)}
                   className="w-full text-slate-900 font-bold border border-slate-300 bg-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
                 />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-800 uppercase mb-1">Target Category</label>
+                <select
+                  value={spawnCategory}
+                  onChange={e => setSpawnCategory(e.target.value)}
+                  className="w-full text-slate-900 font-bold border border-slate-300 bg-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+                >
+                  <option value="Live Beatwave Feeder">Live Beatwave Feeder</option>
+                  <option value="Audiophile 192k Stream">Audiophile 192k Stream</option>
+                  <option value="Sonic River Broadcast">Sonic River Broadcast</option>
+                  <option value="Mobile Low-Latency Relay">Mobile Low-Latency Relay</option>
+                </select>
               </div>
 
               <div>
