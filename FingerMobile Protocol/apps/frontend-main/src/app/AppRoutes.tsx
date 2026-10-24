@@ -243,6 +243,9 @@ const LoansQrMasterConsolePage = lazy(() => import('../pages/admin/LoansQrMaster
 const TrendsSwarmMasterConsolePage = lazy(() => import('../pages/admin/TrendsSwarmMasterConsolePage'));
 const CommunicationsVoipMasterConsolePage = lazy(() => import('../pages/admin/CommunicationsVoipMasterConsolePage'));
 const LuminaGalleryMasterConsolePage = lazy(() => import('../pages/admin/LuminaGalleryMasterConsolePage'));
+const SoundOceanMasterConsolePage = lazy(() => import('../pages/admin/SoundOceanMasterConsolePage'));
+const SoundRiverMasterConsolePage = lazy(() => import('../pages/admin/SoundRiverMasterConsolePage'));
+const SubscriptionModelsMasterConsolePage = lazy(() => import('../pages/admin/SubscriptionModelsMasterConsolePage'));
 const ContentAdminDashboardPage = lazy(() => import('../pages/ContentAdminDashboardPage'));
 const MemberManagementPage = lazy(() => import('../pages/admin/MemberManagementPage'));
 
@@ -685,10 +688,20 @@ export const routes: RouteObject[] = [
           { path: '/guardian/seo', element: redirectTo('/masterdashboard?tab=seo') },
           { path: '/financials', element: redirectTo('/masterdashboard?tab=financials') },
           { path: '/discover-console', element: redirectTo('/masterdashboard?tab=discover-console') },
-          { path: '/admin/discover-console', element: redirectTo('/masterdashboard?tab=discover-console') },
-          { path: '/soundriver-console', element: redirectTo('/masterdashboard?tab=soundriver-console') },
-          { path: '/soundocean-console', element: redirectTo('/masterdashboard?tab=soundocean-console') },
-          { path: '/admin/beatwaveng-console', element: redirectTo('/masterdashboard?tab=beatwaveng-console') },
+          { path: '/admin/sound-ocean-console', element: <SoundOceanMasterConsolePage /> },
+          { path: '/admin/soundocean-console', element: <SoundOceanMasterConsolePage /> },
+          { path: '/sound-ocean-console', element: <SoundOceanMasterConsolePage /> },
+          { path: '/soundocean-console', element: <SoundOceanMasterConsolePage /> },
+          { path: '/dashboard/sound-ocean', element: <SoundOceanMasterConsolePage /> },
+          { path: '/admin/sound-river-console', element: <SoundRiverMasterConsolePage /> },
+          { path: '/admin/soundriver-console', element: <SoundRiverMasterConsolePage /> },
+          { path: '/sound-river-console', element: <SoundRiverMasterConsolePage /> },
+          { path: '/soundriver-console', element: <SoundRiverMasterConsolePage /> },
+          { path: '/dashboard/sound-river', element: <SoundRiverMasterConsolePage /> },
+          { path: '/admin/subscription-models-console', element: <SubscriptionModelsMasterConsolePage /> },
+          { path: '/admin/subscriptions-console', element: <SubscriptionModelsMasterConsolePage /> },
+          { path: '/subscription-models-console', element: <SubscriptionModelsMasterConsolePage /> },
+          { path: '/dashboard/subscription-models', element: <SubscriptionModelsMasterConsolePage /> },
           { path: '/beatwaveng-console', element: redirectTo('/masterdashboard?tab=beatwaveng-console') },
           { path: '/admin/dancia4tv-console', element: redirectTo('/masterdashboard?tab=dancia4tv-console') },
           { path: '/dancia4tv-console', element: redirectTo('/masterdashboard?tab=dancia4tv-console') },

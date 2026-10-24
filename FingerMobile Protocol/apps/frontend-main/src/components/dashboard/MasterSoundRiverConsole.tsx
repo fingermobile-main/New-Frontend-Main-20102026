@@ -1032,3 +1032,5 @@ export const MasterSoundRiverConsole: React.FC = () => {
     </div>
   );
 };
+
+export default MasterSoundRiverConsole;

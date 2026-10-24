@@ -1076,3 +1076,5 @@ export const MasterSoundOceanConsole: React.FC = () => {
     </div>
   );
 };
+
+export default MasterSoundOceanConsole;

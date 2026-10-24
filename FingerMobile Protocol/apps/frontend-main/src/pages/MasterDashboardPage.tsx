@@ -130,6 +130,8 @@ import MasterLoansQrConsole from '../components/dashboard/MasterLoansQrConsole';
 import MasterTrendsSwarmConsole from '../components/dashboard/MasterTrendsSwarmConsole';
 import MasterCommunicationsVoipConsole from '../components/dashboard/MasterCommunicationsVoipConsole';
 import MasterLuminaGalleryConsole from '../components/dashboard/MasterLuminaGalleryConsole';
+import MasterSoundOceanConsole from '../components/dashboard/MasterSoundOceanConsole';
+import MasterSoundRiverConsole from '../components/dashboard/MasterSoundRiverConsole';
 
 interface Section {
   id: string;
@@ -3035,14 +3037,14 @@ const MasterDashboardPage: React.FC = () => {
             {/* Dedicated SoundRiver Master Console Tab */}
             {activeTab === 'soundriver-console' && (
               <div className="space-y-6">
-                <SoundRiverMasterConsole />
+                <MasterSoundRiverConsole />
               </div>
             )}
 
             {/* Dedicated SoundOcean Master Console Tab */}
             {activeTab === 'soundocean-console' && (
               <div className="space-y-6">
-                <SoundOceanMasterConsole />
+                <MasterSoundOceanConsole />
               </div>
             )}
 
@@ -3105,7 +3107,7 @@ const MasterDashboardPage: React.FC = () => {
             )}
 
             {/* Dedicated Subscription Models & Free Tier Sandbox Tab */}
-            {activeTab === 'subscriptions' && (
+            {(activeTab === 'subscriptions' || activeTab === 'subscription-models-console') && (
               <div className="space-y-6">
                 <SubscriptionModelsConsole sourceDashboard="MasterDashboard" />
               </div>
