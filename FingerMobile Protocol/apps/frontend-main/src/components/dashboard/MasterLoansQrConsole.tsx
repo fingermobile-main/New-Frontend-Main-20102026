@@ -1,15 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {
-  CreditCard,
   Percent,
-  ShieldCheck,
   PauseCircle,
   PlayCircle,
   Plus,
   RefreshCw,
   Search,
   Upload,
-  AlertTriangle,
   ArrowUp,
   ArrowDown,
   Edit,
@@ -108,7 +105,6 @@ export const MasterLoansQrConsole: React.FC = () => {
       setItems(itemsData);
       setSpawns(spawnsData);
     } catch (err: any) {
-      console.error('Failed to load LoansQR data:', err);
       showNotification(err.message || 'Error syncing with PostgreSQL', 'error', 'wahala');
     } finally {
       setIsLoading(false);

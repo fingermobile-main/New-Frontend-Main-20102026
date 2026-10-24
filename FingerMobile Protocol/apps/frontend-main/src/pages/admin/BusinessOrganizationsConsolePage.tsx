@@ -10,9 +10,7 @@ import { Link } from 'react-router-dom';
 import {
   Building2,
   ShieldCheck,
-  Award,
   Search,
-  Filter,
   RefreshCw,
   CheckCircle,
   XCircle,
@@ -20,22 +18,17 @@ import {
   ChevronRight,
   ExternalLink,
   Users,
-  Lock,
-  Layers,
   Coins,
-  DollarSign,
   Palette,
-  Briefcase,
   FileCheck2,
-  Sliders,
-  Sparkles
+  Sliders
 } from 'lucide-react';
 import sovereignRbacApi, { OrganizationProfile } from '../../services/sovereignRbacApi';
 import { usePlatformPrivilege } from '../../components/common/ExecutiveOnlyContent';
 import PlatformOwnershipCard from '../../components/dashboard/PlatformOwnershipCard';
 
 export const BusinessOrganizationsConsolePage: React.FC = () => {
-  const { isExecutive } = usePlatformPrivilege();
+  usePlatformPrivilege();
   const [businesses, setBusinesses] = useState<OrganizationProfile[]>([]);
   const [stats, setStats] = useState<{ total: number; verified: number }>({
     total: 0,
@@ -64,8 +57,8 @@ export const BusinessOrganizationsConsolePage: React.FC = () => {
       const data = await sovereignRbacApi.getBusinessDirectory();
       setBusinesses(data.businesses);
       setStats(data.stats);
-    } catch (err) {
-      console.error('Failed to load business directory:', err);
+    } catch (_err) {
+      // API fallback
     } finally {
       setLoading(false);
     }
@@ -337,7 +330,13 @@ export const BusinessOrganizationsConsolePage: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200 text-xs">
-                {filteredBusinesses.length === 0 ? (
+                {loading ? (
+                  <tr>
+                    <td colSpan={6} className="py-8 text-center text-slate-700 font-semibold">
+                      Loading business organizations directory...
+                    </td>
+                  </tr>
+                ) : filteredBusinesses.length === 0 ? (
                   <tr>
                     <td colSpan={6} className="py-8 text-center text-slate-700 font-semibold">
                       No Business Organizations match the selected filters.

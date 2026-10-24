@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Card';
-import { Badge } from '../../components/ui/Badge';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
 import { MagnifyingGlassIcon, UserMinusIcon, ExclamationTriangleIcon, CurrencyDollarIcon, BanknotesIcon } from '@heroicons/react/24/outline';
@@ -74,8 +73,7 @@ const AdminUserManagement: React.FC = () => {
       } else {
         setUsers(FALLBACK_USERS);
       }
-    } catch (err: any) {
-      console.warn('API unavailable, falling back to default users:', err);
+    } catch (_err: any) {
       setUsers(FALLBACK_USERS);
     } finally {
       setLoading(false);
@@ -164,7 +162,11 @@ const AdminUserManagement: React.FC = () => {
           </div>
         </div>
 
-        {filteredUsers.length === 0 ? (
+        {loading ? (
+          <div className="bg-white border border-slate-300 rounded-2xl p-12 text-center shadow-sm">
+            <p className="text-slate-700 font-semibold text-sm">Loading member accounts...</p>
+          </div>
+        ) : filteredUsers.length === 0 ? (
           <div className="bg-white border border-slate-300 rounded-2xl p-12 text-center shadow-sm">
             <p className="text-slate-700 font-semibold text-sm">No members found matching "{search}".</p>
           </div>

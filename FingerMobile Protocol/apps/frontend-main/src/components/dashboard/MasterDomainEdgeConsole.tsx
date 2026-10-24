@@ -12,7 +12,6 @@ import {
   SparklesIcon,
   ArrowUpTrayIcon,
   XMarkIcon,
-  ShieldCheckIcon,
   ServerStackIcon
 } from '@heroicons/react/24/outline';
 import {
@@ -84,8 +83,7 @@ export const MasterDomainEdgeConsole: React.FC = () => {
       setOverview(overviewData);
       setItems(itemsData);
       setSpawns(spawnsData);
-    } catch (err: any) {
-      console.error('Failed to load Domain Edge console data:', err);
+    } catch (_err: any) {
       showToast('Error syncing with Edge Network control plane', 'wahala');
     } finally {
       setLoading(false);

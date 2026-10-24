@@ -9,10 +9,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Palette,
-  Sparkles,
   Users,
   Search,
-  Filter,
   RefreshCw,
   CheckCircle,
   XCircle,
@@ -21,12 +19,8 @@ import {
   ExternalLink,
   ShieldCheck,
   Building2,
-  Lock,
-  Layers,
   Coins,
   DollarSign,
-  TrendingUp,
-  Award,
   Sliders
 } from 'lucide-react';
 import sovereignRbacApi, { CreatorProfile } from '../../services/sovereignRbacApi';
@@ -34,7 +28,7 @@ import { usePlatformPrivilege } from '../../components/common/ExecutiveOnlyConte
 import PlatformOwnershipCard from '../../components/dashboard/PlatformOwnershipCard';
 
 export const ContentCreatorsConsolePage: React.FC = () => {
-  const { isExecutive } = usePlatformPrivilege();
+  usePlatformPrivilege();
   const [creators, setCreators] = useState<CreatorProfile[]>([]);
   const [stats, setStats] = useState<{ total: number; active: number; tiers: any[] }>({
     total: 0,
@@ -62,8 +56,8 @@ export const ContentCreatorsConsolePage: React.FC = () => {
       const data = await sovereignRbacApi.getCreatorsDirectory();
       setCreators(data.creators);
       setStats(data.stats);
-    } catch (err) {
-      console.error('Failed to load creators directory:', err);
+    } catch (_err) {
+      // API fallback
     } finally {
       setLoading(false);
     }
@@ -327,7 +321,13 @@ export const ContentCreatorsConsolePage: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200 text-xs">
-                {filteredCreators.length === 0 ? (
+                {loading ? (
+                  <tr>
+                    <td colSpan={6} className="py-8 text-center text-slate-700 font-semibold">
+                      Loading content creators directory...
+                    </td>
+                  </tr>
+                ) : filteredCreators.length === 0 ? (
                   <tr>
                     <td colSpan={6} className="py-8 text-center text-slate-700 font-semibold">
                       No Content Creators match the selected filters.

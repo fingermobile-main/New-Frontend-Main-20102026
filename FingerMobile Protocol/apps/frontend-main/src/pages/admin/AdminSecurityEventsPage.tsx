@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAppContext } from '../../contexts/AppContext';
 import { guardianService, GuardianLog } from '../../services/guardianService';
-import { RefreshCw, ShieldAlert, ShieldCheck, Search, Filter, AlertTriangle } from 'lucide-react';
+import { RefreshCw, ShieldAlert, Search } from 'lucide-react';
 import PlatformOwnershipCard from '../../components/dashboard/PlatformOwnershipCard';
 
 interface SecurityEvent {
@@ -60,14 +60,12 @@ const AdminSecurityEventsPage: React.FC = () => {
   const { showToast } = useAppContext();
   const [securityEvents, setSecurityEvents] = useState<SecurityEvent[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [severityFilter, setSeverityFilter] = useState<'all' | 'high' | 'medium' | 'low'>('all');
 
   const fetchSecurityEvents = async () => {
     try {
       setLoading(true);
-      setError(null);
       const logs = await guardianService.getLogs(50);
       if (Array.isArray(logs) && logs.length > 0) {
         const mapped: SecurityEvent[] = logs.map((log: GuardianLog) => ({
@@ -82,8 +80,7 @@ const AdminSecurityEventsPage: React.FC = () => {
       } else {
         setSecurityEvents(FALLBACK_SECURITY_EVENTS);
       }
-    } catch (err: any) {
-      console.warn('Using fallback security events due to API response:', err);
+    } catch (_err: any) {
       setSecurityEvents(FALLBACK_SECURITY_EVENTS);
     } finally {
       setLoading(false);

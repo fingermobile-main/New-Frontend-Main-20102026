@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useAppContext } from '../../contexts/AppContext';
-import { useAuth } from '../../contexts/AuthContext';
 import api from '../../services/api';
 import PlatformOwnershipCard from '../../components/dashboard/PlatformOwnershipCard';
-import { Users, UserPlus, Trash2, Shield, RefreshCw } from 'lucide-react';
+import { Users, UserPlus, RefreshCw } from 'lucide-react';
 
 interface Member {
   id: string;
@@ -41,10 +40,8 @@ const FALLBACK_MEMBERS: Member[] = [
 
 const MemberManagementPage: React.FC = () => {
   const { showToast } = useAppContext();
-  const { state } = useAuth();
   const [members, setMembers] = useState<Member[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
 
   const fetchMembers = async () => {
     try {
@@ -65,9 +62,7 @@ const MemberManagementPage: React.FC = () => {
       } else {
         setMembers(FALLBACK_MEMBERS);
       }
-      setError(null);
-    } catch (err: any) {
-      console.warn('Using fallback member roster:', err);
+    } catch (_err: any) {
       setMembers(FALLBACK_MEMBERS);
     } finally {
       setLoading(false);

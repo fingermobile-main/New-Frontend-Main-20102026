@@ -24,8 +24,7 @@ export const CanaryAdsManagementPage: React.FC = () => {
       } else {
         setSelectedCreative(null);
       }
-    } catch (err: any) {
-      console.error('Error fetching admin queue:', err);
+    } catch (_err: any) {
       showToast('Failed to load review queue', 'error');
     } finally {
       setLoading(false);

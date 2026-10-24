@@ -13,15 +13,11 @@ import {
   ArrowDown,
   Edit,
   Trash2,
-  Share2,
   MapPin,
   CheckCircle2,
-  Sparkles,
   Zap,
-  Globe,
   Cpu,
-  Eye,
-  MessageSquare
+  Eye
 } from 'lucide-react';
 import {
   TrendSwarmItem,
@@ -106,7 +102,6 @@ export const MasterTrendsSwarmConsole: React.FC = () => {
       setItems(itemsData);
       setSpawns(spawnsData);
     } catch (err: any) {
-      console.error('Failed to load Trends & Swarms data:', err);
       showNotification(err.message || 'Error syncing with PostgreSQL', 'error', 'wahala');
     } finally {
       setIsLoading(false);

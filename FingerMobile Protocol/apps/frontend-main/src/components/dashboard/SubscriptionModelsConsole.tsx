@@ -4,13 +4,9 @@ import {
   Edit3,
   Plus,
   Trash2,
-  CheckCircle,
-  Save,
-  Check,
   Search,
   Layers,
   ArrowRight,
-  ExternalLink,
   PlayCircle,
   Database,
   ArrowUp,
@@ -151,8 +147,7 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
       setOverview(overviewData);
       setItems(itemsData);
       setSpawns(spawnsData);
-    } catch (err: any) {
-      console.error('Failed to load subscription models from PostgreSQL:', err);
+    } catch (_err: any) {
       showToast('Error syncing with PostgreSQL Monetization DB', 'wahala');
     } finally {
       setLoading(false);
@@ -305,8 +300,7 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
       setIsUploadModalOpen(false);
       setUploadFile(null);
       showToast(`Asset "${res.filename}" uploaded direct to Express backend!`, 'sweet');
-    } catch (err: any) {
-      console.error('Direct asset upload failed:', err);
+    } catch (_err: any) {
       showToast('Upload to backend failed', 'see_gobe');
     } finally {
       setUploading(false);
@@ -575,6 +569,16 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
             <span>Free Tiers Only</span>
           </button>
 
+          <select
+            value={selectedStatus}
+            onChange={e => setSelectedStatus(e.target.value)}
+            className="text-xs font-extrabold text-slate-900 bg-white border border-slate-300 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="all">All Statuses</option>
+            <option value="active">Active Only</option>
+            <option value="frozen">Frozen Only</option>
+          </select>
+
           <div className="relative">
             <Search className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
@@ -608,7 +612,13 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
           </span>
         </div>
 
-        {filteredItems.length === 0 ? (
+        {loading ? (
+          <div className="p-12 text-center">
+            <Database className="w-12 h-12 text-blue-500 mx-auto mb-3 animate-pulse" />
+            <h3 className="text-base font-bold text-slate-900">Loading subscription models...</h3>
+            <p className="text-xs text-slate-700 mt-1">Connecting to PostgreSQL Monetization DB.</p>
+          </div>
+        ) : filteredItems.length === 0 ? (
           <div className="p-12 text-center">
             <Database className="w-12 h-12 text-slate-400 mx-auto mb-3" />
             <h3 className="text-base font-bold text-slate-900">No subscription models matching criteria</h3>

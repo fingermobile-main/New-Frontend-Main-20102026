@@ -12,7 +12,6 @@ import {
   SparklesIcon,
   ArrowUpTrayIcon,
   XMarkIcon,
-  FireIcon,
   GiftIcon
 } from '@heroicons/react/24/outline';
 import {
@@ -84,8 +83,7 @@ export const MasterGamificationRewardsConsole: React.FC = () => {
       setOverview(overviewData);
       setItems(itemsData);
       setSpawns(spawnsData);
-    } catch (err: any) {
-      console.error('Failed to load Gamification & Rewards console data:', err);
+    } catch (_err: any) {
       showToast('Error syncing with Rewards Citadel plane', 'wahala');
     } finally {
       setLoading(false);

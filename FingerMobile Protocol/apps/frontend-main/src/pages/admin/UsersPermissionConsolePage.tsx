@@ -9,22 +9,14 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Users,
-  ShieldCheck,
   ShieldAlert,
   Crown,
   Award,
   Briefcase,
   Search,
-  Filter,
-  CheckCircle,
-  XCircle,
-  UserCheck,
   Lock,
   ChevronRight,
   RefreshCw,
-  Plus,
-  ArrowRight,
-  AlertTriangle,
   Sparkles,
   Palette,
   Building2,
@@ -39,7 +31,7 @@ import { usePlatformPrivilege } from '../../components/common/ExecutiveOnlyConte
 import PlatformOwnershipCard from '../../components/dashboard/PlatformOwnershipCard';
 
 export const UsersPermissionConsolePage: React.FC = () => {
-  const { isPrimaryAdmin, isCfo, isExecutive, roleTier } = usePlatformPrivilege();
+  usePlatformPrivilege();
   const [users, setUsers] = useState<UserPermissionSummary[]>([]);
   const [staffRoles, setStaffRoles] = useState<StaffRole[]>([]);
   const [distRanks, setDistRanks] = useState<DistinguishedRank[]>([]);
@@ -78,8 +70,8 @@ export const UsersPermissionConsolePage: React.FC = () => {
       setDistRanks(distData.ranks);
       if (staffData.roles.length > 0) setSelectedStaffRole(staffData.roles[0].id);
       if (distData.ranks.length > 0) setSelectedDistRank(distData.ranks[0].id);
-    } catch (err) {
-      console.error('Failed to load users permission matrix:', err);
+    } catch (_err) {
+      // API fallback
     } finally {
       setLoading(false);
     }

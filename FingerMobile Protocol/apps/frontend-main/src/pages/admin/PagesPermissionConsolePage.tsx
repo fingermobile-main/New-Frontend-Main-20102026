@@ -8,16 +8,10 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Lock,
-  Unlock,
-  Shield,
-  ShieldAlert,
   Search,
-  Filter,
   RefreshCw,
   Edit,
   Save,
-  CheckCircle,
-  AlertTriangle,
   ChevronRight,
   ExternalLink,
   Layers,
@@ -33,7 +27,7 @@ import { usePlatformPrivilege } from '../../components/common/ExecutiveOnlyConte
 import PlatformOwnershipCard from '../../components/dashboard/PlatformOwnershipCard';
 
 export const PagesPermissionConsolePage: React.FC = () => {
-  const { isExecutive } = usePlatformPrivilege();
+  usePlatformPrivilege();
   const [pages, setPages] = useState<PageDirectoryEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -51,8 +45,8 @@ export const PagesPermissionConsolePage: React.FC = () => {
     try {
       const data = await sovereignRbacApi.getPages(categoryFilter, tierFilter, search);
       setPages(data);
-    } catch (err) {
-      console.error('Failed to load pages directory:', err);
+    } catch (_err) {
+      // API fallback
     } finally {
       setLoading(false);
     }
@@ -240,7 +234,20 @@ export const PagesPermissionConsolePage: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200 text-xs">
-                {pages.map((p) => {
+                {loading ? (
+                  <tr>
+                    <td colSpan={7} className="py-8 text-center text-slate-700 font-semibold">
+                      Loading pages permission directory...
+                    </td>
+                  </tr>
+                ) : pages.length === 0 ? (
+                  <tr>
+                    <td colSpan={7} className="py-8 text-center text-slate-700 font-semibold">
+                      No pages found matching the selected filters.
+                    </td>
+                  </tr>
+                ) : (
+                  pages.map((p) => {
                   const isMaintenance = p.is_maintenance_locked;
 
                   return (
@@ -316,7 +323,7 @@ export const PagesPermissionConsolePage: React.FC = () => {
                       </td>
                     </tr>
                   );
-                })}
+                }))}
               </tbody>
             </table>
           </div>

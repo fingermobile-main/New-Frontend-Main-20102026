@@ -34,8 +34,8 @@ export const DPODashboardPage: React.FC = () => {
           setCircuitBreakerOpen(true);
         }
       }
-    } catch (err) {
-      console.warn('Vault DPO API unavailable, using fallback metrics', err);
+    } catch (_err) {
+      // API unavailable, using fallback metrics
     }
   };
 
@@ -220,9 +220,10 @@ export const DPODashboardPage: React.FC = () => {
 
               <button
                 type="submit"
-                className="w-full py-3 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-black text-xs transition-colors shadow-lg"
+                disabled={loadingAction}
+                className="w-full py-3 rounded-xl bg-rose-600 hover:bg-rose-500 disabled:opacity-50 text-white font-black text-xs transition-colors shadow-lg"
               >
-                🚨 Engage Statutory Kill-Switch
+                {loadingAction ? 'Processing...' : '🚨 Engage Statutory Kill-Switch'}
               </button>
             </form>
 
@@ -258,10 +259,11 @@ export const DPODashboardPage: React.FC = () => {
 
               <button
                 type="button"
+                disabled={loadingAction}
                 onClick={handleRecovery}
-                className="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs transition-colors shadow-lg"
+                className="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-black text-xs transition-colors shadow-lg"
               >
-                Apply Recovery Ramp ({recoveryPercent}%) →
+                {loadingAction ? 'Applying Ramp...' : `Apply Recovery Ramp (${recoveryPercent}%) →`}
               </button>
             </div>
           </div>
