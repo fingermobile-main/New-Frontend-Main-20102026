@@ -26,8 +26,25 @@ const DANCIA_ENTITIES: MediaEntityDefinition[] = [
           { value: 'community_upload', label: 'Community upload' },
         ],
       },
-      { key: 'stream_url', label: 'Media URL', required: true },
-      { key: 'thumbnail_url', label: 'Thumbnail URL' },
+      {
+        key: 'stream_url',
+        label: 'Upload video file',
+        type: 'file',
+        required: true,
+        uploadField: 'media',
+        uploadResponseKey: 'media_url',
+        accept: 'video/mp4,video/webm,video/quicktime,.mp4,.webm,.mov',
+        hint: 'Upload an MP4, WebM, or MOV file (up to 150 MB). URL is auto-populated after upload.',
+      },
+      {
+        key: 'thumbnail_url',
+        label: 'Upload thumbnail image',
+        type: 'file',
+        uploadField: 'thumbnail',
+        uploadResponseKey: 'thumbnail_url',
+        accept: 'image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp',
+        hint: 'Upload a JPEG, PNG, or WebP thumbnail image.',
+      },
       { key: 'duration_seconds', label: 'Duration (seconds)', type: 'number' },
       { key: 'resolution', label: 'Resolution' },
       { key: 'iarc_rating', label: 'Content rating' },
@@ -56,7 +73,15 @@ const DANCIA_ENTITIES: MediaEntityDefinition[] = [
       { key: 'title', label: 'Program title', required: true },
       { key: 'description', label: 'Description', type: 'textarea' },
       { key: 'genre', label: 'Genre' },
-      { key: 'thumbnail_url', label: 'Thumbnail URL' },
+      {
+        key: 'thumbnail_url',
+        label: 'Upload program thumbnail',
+        type: 'file',
+        uploadField: 'thumbnail',
+        uploadResponseKey: 'thumbnail_url',
+        accept: 'image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp',
+        hint: 'Upload a thumbnail image for this program.',
+      },
       { key: 'duration_seconds', label: 'Duration (seconds)', type: 'number' },
       { key: 'admin_notes', label: 'Management notes', type: 'textarea' },
     ],
@@ -103,7 +128,7 @@ export const MasterDancia4TvConsole: React.FC = () => (
   <MediaCatalogManagementConsole
     ecosystem="dancia"
     title="Dancia-4Tv Ecosystem Management"
-    description="Manage persisted video, channel, program, schedule, and subscription-plan catalogs with audited lifecycle and moderation controls."
+    description="Upload and manage video content, channels, programs, schedules, and subscription plans. Videos are uploaded as multipart/form-data directly to the backend and published live instantly."
     entities={DANCIA_ENTITIES}
   />
 );

@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import axios from 'axios';
 import { api } from '../../services/api';
 
 export type MediaEcosystem = 'beatwave' | 'dancia';
 type MediaAction = 'publish' | 'freeze' | 'block' | 'suspend' | 'restore' | 'flag' | 'warn';
-type FieldType = 'text' | 'textarea' | 'number' | 'boolean' | 'json' | 'datetime-local' | 'select';
+type FieldType = 'text' | 'textarea' | 'number' | 'boolean' | 'json' | 'datetime-local' | 'select' | 'file';
 
 export interface MediaField {
   key: string;
@@ -13,6 +13,12 @@ export interface MediaField {
   required?: boolean;
   hint?: string;
   options?: Array<{ value: string; label: string }>;
+  /** For file fields: which multipart field name to send ('media' | 'thumbnail' | 'document') */
+  uploadField?: 'media' | 'thumbnail' | 'document';
+  /** For file fields: which URL key in the upload response maps back to this field */
+  uploadResponseKey?: string;
+  /** File types accepted, e.g. "video/*,audio/*,.mp4,.mp3" */
+  accept?: string;
 }
 
 export interface MediaEntityDefinition {
@@ -58,6 +64,14 @@ const statusClass = (status: string) => {
   return classes[status] || classes.draft;
 };
 
+interface UploadState {
+  fieldKey: string;
+  filename: string;
+  progress: number;
+  done: boolean;
+  error: string;
+}
+
 const MediaCatalogManagementConsole: React.FC<MediaCatalogManagementConsoleProps> = ({
   ecosystem,
   title,
@@ -79,6 +93,8 @@ const MediaCatalogManagementConsole: React.FC<MediaCatalogManagementConsoleProps
   const [formOpen, setFormOpen] = useState(false);
   const [editingRecord, setEditingRecord] = useState<MediaRecord | null>(null);
   const [formValues, setFormValues] = useState<Record<string, string>>({});
+  const [uploads, setUploads] = useState<Record<string, UploadState>>({});
+  const fileInputRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
   const entity = useMemo(
     () => entities.find(item => item.key === activeEntity) || entities[0],
@@ -141,9 +157,24 @@ const MediaCatalogManagementConsole: React.FC<MediaCatalogManagementConsoleProps
     void loadData();
   }, [loadData]);
 
+  const buildInitialFormValues = useCallback((source?: MediaRecord): Record<string, string> => {
+    return Object.fromEntries(entity.fields.map(field => {
+      if (field.type === 'file') return [field.key, ''];
+      if (!source) {
+        return [field.key, field.type === 'json' ? (field.key === 'features' || field.key === 'tags' ? '[]' : '{}') : ''];
+      }
+      const value = source[field.key];
+      if (field.type === 'datetime-local' && typeof value === 'string') {
+        return [field.key, value ? new Date(value).toISOString().slice(0, 16) : ''];
+      }
+      return [field.key, stringifyValue(value)];
+    }));
+  }, [entity]);
+
   const openCreate = () => {
     setEditingRecord(null);
-    setFormValues(Object.fromEntries(entity.fields.map(field => [field.key, field.type === 'json' ? (field.key === 'features' || field.key === 'tags' ? '[]' : '{}') : ''])));
+    setFormValues(buildInitialFormValues());
+    setUploads({});
     setFormOpen(true);
     setErrorMessage('');
     setSuccessMessage('');
@@ -151,16 +182,66 @@ const MediaCatalogManagementConsole: React.FC<MediaCatalogManagementConsoleProps
 
   const openEdit = (record: MediaRecord) => {
     setEditingRecord(record);
-    setFormValues(Object.fromEntries(entity.fields.map(field => {
-      const value = record[field.key];
-      if (field.type === 'datetime-local' && typeof value === 'string') {
-        return [field.key, value ? new Date(value).toISOString().slice(0, 16) : ''];
-      }
-      return [field.key, stringifyValue(value)];
-    })));
+    setFormValues(buildInitialFormValues(record));
+    setUploads({});
     setFormOpen(true);
     setErrorMessage('');
     setSuccessMessage('');
+  };
+
+  /** Upload a single file for a given field, return the resolved URL */
+  const uploadFile = async (field: MediaField, file: File): Promise<string> => {
+    const uploadFieldName = field.uploadField || 'media';
+    const responseKey = field.uploadResponseKey || 'media_url';
+
+    setUploads(prev => ({
+      ...prev,
+      [field.key]: { fieldKey: field.key, filename: file.name, progress: 0, done: false, error: '' },
+    }));
+
+    const formData = new FormData();
+    formData.append(uploadFieldName, file);
+
+    const response = await api.post('/master-dashboard/ecosystems/upload', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+      onUploadProgress: (event) => {
+        const percent = event.total ? Math.round((event.loaded / event.total) * 100) : 0;
+        setUploads(prev => ({
+          ...prev,
+          [field.key]: { ...prev[field.key], progress: percent },
+        }));
+      },
+    });
+
+    const url = String(response.data.data[responseKey] || '');
+    setUploads(prev => ({
+      ...prev,
+      [field.key]: { ...prev[field.key], progress: 100, done: true },
+    }));
+    return url;
+  };
+
+  const handleFileChange = async (field: MediaField, file: File | null) => {
+    if (!file) return;
+    setErrorMessage('');
+    setSuccessMessage('');
+    setUploads(prev => ({
+      ...prev,
+      [field.key]: { fieldKey: field.key, filename: file.name, progress: 0, done: false, error: '' },
+    }));
+    try {
+      const url = await uploadFile(field, file);
+      // Auto-populate the URL field with the returned served URL
+      setFormValues(prev => ({ ...prev, [field.key]: url }));
+      setSuccessMessage(`"${file.name}" uploaded successfully. URL auto-populated.`);
+    } catch (error) {
+      const msg = getErrorMessage(error);
+      setUploads(prev => ({
+        ...prev,
+        [field.key]: { ...prev[field.key], done: true, error: msg },
+      }));
+      setErrorMessage(`Upload failed for ${field.label}: ${msg}`);
+    }
   };
 
   const saveRecord = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -173,6 +254,13 @@ const MediaCatalogManagementConsole: React.FC<MediaCatalogManagementConsoleProps
     const payload: Record<string, unknown> = {};
     try {
       for (const field of entity.fields) {
+        if (field.type === 'file') {
+          // The URL was already auto-populated into formValues after upload; skip raw file
+          const url = formValues[field.key]?.trim();
+          if (field.required && !url) throw new Error(`${field.label} is required — please upload a file first.`);
+          if (url) payload[field.key] = url;
+          continue;
+        }
         const value = formValues[field.key] ?? '';
         if (field.required && !value.trim()) throw new Error(`${field.label} is required.`);
         if (!value.trim() && !field.required) continue;
@@ -201,10 +289,10 @@ const MediaCatalogManagementConsole: React.FC<MediaCatalogManagementConsoleProps
     try {
       if (editingRecord) {
         await api.put(`/master-dashboard/ecosystems/${ecosystem}/${entity.key}/${encodeURIComponent(String(editingRecord.id))}`, payload);
-        setSuccessMessage(`${entity.label} record updated.`);
+        setSuccessMessage(`${entity.label} record updated and saved to database.`);
       } else {
         await api.post(`/master-dashboard/ecosystems/${ecosystem}/${entity.key}`, payload);
-        setSuccessMessage(`${entity.label} record created as a draft.`);
+        setSuccessMessage(`${entity.label} record created as draft. Use Publish to make it live immediately.`);
       }
       setFormOpen(false);
       setEditingRecord(null);
@@ -225,7 +313,13 @@ const MediaCatalogManagementConsole: React.FC<MediaCatalogManagementConsoleProps
         `/master-dashboard/ecosystems/${ecosystem}/${entity.key}/${encodeURIComponent(String(record.id))}/lifecycle`,
         { action, ...extra }
       );
-      setSuccessMessage(`${String(record.title || record.name || 'Record')} ${action === 'flag' ? 'risk flag updated' : action === 'warn' ? 'warning recorded' : `${action} action completed`}.`);
+      setSuccessMessage(
+        action === 'publish'
+          ? `"${String(record.title || record.name || 'Record')}" is now LIVE.`
+          : action === 'flag' ? 'Risk flag updated.' : action === 'warn'
+          ? 'Warning recorded.'
+          : `${action} action completed.`
+      );
       await loadData();
     } catch (error) {
       setErrorMessage(`Unable to complete ${action}: ${getErrorMessage(error)}`);
@@ -235,7 +329,7 @@ const MediaCatalogManagementConsole: React.FC<MediaCatalogManagementConsoleProps
   const archiveRecord = async (record: MediaRecord) => {
     if (!entity) return;
     const label = String(record.title || record.name || record.id);
-    if (!window.confirm(`Archive “${label}”? The record and its audit history will be retained.`)) return;
+    if (!window.confirm(`Archive "${label}"? The record and its audit history will be retained.`)) return;
     setErrorMessage('');
     setSuccessMessage('');
     try {
@@ -255,8 +349,8 @@ const MediaCatalogManagementConsole: React.FC<MediaCatalogManagementConsoleProps
         <div>
           <h2 id={`${ecosystem}-catalog-title`} className="text-xl font-bold text-slate-900">{title}</h2>
           <p className="mt-1 text-sm text-slate-700">{description}</p>
-          <p className="mt-2 rounded-md border border-amber-400 bg-amber-50 px-3 py-2 text-sm font-semibold text-amber-950">
-            Catalog actions are stored in PostgreSQL and audited. “Archive” retains data; publication controls visibility. Media URLs are managed as metadata—this console does not upload or copy media files.
+          <p className="mt-2 rounded-md border border-emerald-400 bg-emerald-50 px-3 py-2 text-sm font-semibold text-emerald-950">
+            ✅ Sovereign media pipeline active — file uploads send <code>multipart/form-data</code> directly to the Express backend, persist to PostgreSQL-linked storage, and go live instantly on Publish.
           </p>
         </div>
         <div className="flex flex-wrap gap-2" role="tablist" aria-label={`${title} catalog types`}>
@@ -335,9 +429,54 @@ const MediaCatalogManagementConsole: React.FC<MediaCatalogManagementConsoleProps
           </div>
           <div className="grid gap-4 md:grid-cols-2">
             {entity.fields.map(field => (
-              <label key={field.key} className={`space-y-1 text-sm font-bold text-slate-800 ${field.type === 'textarea' || field.type === 'json' ? 'md:col-span-2' : ''}`}>
+              <label key={field.key} className={`space-y-1 text-sm font-bold text-slate-800 ${field.type === 'textarea' || field.type === 'json' || field.type === 'file' ? 'md:col-span-2' : ''}`}>
                 {field.label}
-                {field.type === 'textarea' || field.type === 'json' ? (
+                {field.required && <span className="ml-1 text-red-600">*</span>}
+
+                {field.type === 'file' ? (
+                  <div className="space-y-2">
+                    {/* Native file picker */}
+                    <div className="flex items-center gap-3">
+                      <input
+                        ref={el => { fileInputRefs.current[field.key] = el; }}
+                        type="file"
+                        id={`file-${ecosystem}-${entity.key}-${field.key}`}
+                        accept={field.accept || '*/*'}
+                        onChange={event => void handleFileChange(field, event.target.files?.[0] ?? null)}
+                        className="block w-full rounded-md border border-slate-300 bg-white text-sm font-bold text-slate-900 file:mr-3 file:rounded-md file:border-0 file:bg-indigo-700 file:px-3 file:py-1.5 file:text-sm file:font-extrabold file:text-white hover:file:bg-indigo-800 focus:ring-2 focus:ring-indigo-500"
+                      />
+                    </div>
+                    {/* Upload progress */}
+                    {uploads[field.key] && !uploads[field.key].error && (
+                      <div className="space-y-1">
+                        <div className="flex items-center justify-between text-xs text-slate-700">
+                          <span className="truncate font-semibold">{uploads[field.key].filename}</span>
+                          <span className="ml-2 shrink-0 font-bold">{uploads[field.key].progress}%</span>
+                        </div>
+                        <div className="h-2 overflow-hidden rounded-full border border-slate-300 bg-slate-100">
+                          <div
+                            className={`h-full rounded-full transition-all duration-300 ${uploads[field.key].done ? 'bg-emerald-500' : 'bg-indigo-600'}`}
+                            style={{ width: `${uploads[field.key].progress}%` }}
+                          />
+                        </div>
+                        {uploads[field.key].done && (
+                          <p className="text-xs font-bold text-emerald-800">✅ Upload complete — URL auto-populated below</p>
+                        )}
+                      </div>
+                    )}
+                    {/* Auto-populated URL field (editable fallback) */}
+                    <div>
+                      <p className="mb-1 text-xs font-semibold text-slate-600">Served URL (auto-populated after upload, or paste directly):</p>
+                      <input
+                        type="text"
+                        value={formValues[field.key] ?? ''}
+                        onChange={event => setFormValues(values => ({ ...values, [field.key]: event.target.value }))}
+                        placeholder="https://…"
+                        className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 font-mono text-sm font-bold text-slate-900 placeholder:text-slate-500 focus:ring-2 focus:ring-indigo-500"
+                      />
+                    </div>
+                  </div>
+                ) : field.type === 'textarea' || field.type === 'json' ? (
                   <textarea
                     required={field.required}
                     rows={field.type === 'json' ? 5 : 3}
@@ -378,9 +517,9 @@ const MediaCatalogManagementConsole: React.FC<MediaCatalogManagementConsoleProps
               </label>
             ))}
           </div>
-          <div className="flex justify-end gap-2">
+          <div className="flex flex-wrap justify-end gap-2">
             <button type="button" onClick={() => setFormOpen(false)} className="rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-bold text-slate-800">Cancel</button>
-            <button type="submit" disabled={saving} className="rounded-md border border-indigo-700 bg-indigo-700 px-4 py-2 text-sm font-extrabold text-white disabled:opacity-60">{saving ? 'Saving…' : 'Save as draft'}</button>
+            <button type="submit" disabled={saving} className="rounded-md border border-slate-500 bg-slate-700 px-4 py-2 text-sm font-extrabold text-white disabled:opacity-60">{saving ? 'Saving…' : 'Save as draft'}</button>
           </div>
         </form>
       )}
@@ -455,7 +594,15 @@ const MediaCatalogManagementConsole: React.FC<MediaCatalogManagementConsoleProps
                         ) : (
                           <>
                             {status !== 'frozen' && status !== 'blocked' && status !== 'suspended' && <button type="button" onClick={() => openEdit(record)} className="rounded border border-slate-300 bg-white px-2.5 py-1 text-xs font-bold text-slate-800">Edit</button>}
-                            {status !== 'active' && !['frozen', 'blocked', 'suspended'].includes(status) && <button type="button" onClick={() => void runAction(record, 'publish')} className="rounded border border-emerald-400 bg-emerald-100 px-2.5 py-1 text-xs font-black text-emerald-950">Publish</button>}
+                            {status !== 'active' && !['frozen', 'blocked', 'suspended'].includes(status) && (
+                              <button
+                                type="button"
+                                onClick={() => void runAction(record, 'publish')}
+                                className="rounded border border-emerald-400 bg-emerald-600 px-2.5 py-1 text-xs font-black text-white hover:bg-emerald-700"
+                              >
+                                🚀 Publish Live
+                              </button>
+                            )}
                             {status === 'frozen' || status === 'blocked' || status === 'suspended'
                               ? <button type="button" onClick={() => void runAction(record, 'restore')} className="rounded border border-blue-400 bg-blue-100 px-2.5 py-1 text-xs font-black text-blue-950">Restore</button>
                               : <>

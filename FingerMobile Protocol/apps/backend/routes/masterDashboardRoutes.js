@@ -3,6 +3,7 @@ const MasterDashboardController = require('../controllers/MasterDashboardControl
 const MediaEcosystemManagementController = require('../controllers/MediaEcosystemManagementController');
 const PlatformDomainManagementController = require('../controllers/PlatformDomainManagementController');
 const requireMasterDashboardAccess = require('../middleware/requireMasterDashboardAccess');
+const consoleUpload = require('../middleware/consoleUpload');
 
 const router = express.Router();
 
@@ -46,6 +47,45 @@ router.post('/ecosystems/:ecosystem/:entity', requireRootAccess, MediaEcosystemM
 router.put('/ecosystems/:ecosystem/:entity/:id', requireRootAccess, MediaEcosystemManagementController.updateEntity);
 router.patch('/ecosystems/:ecosystem/:entity/:id/lifecycle', requireRootAccess, MediaEcosystemManagementController.transitionEntity);
 router.delete('/ecosystems/:ecosystem/:entity/:id', requireRootAccess, MediaEcosystemManagementController.archiveEntity);
+
+// Sovereign multipart media ingestion — browser sends multipart/form-data, backend persists to disk and returns served URL
+router.post('/ecosystems/upload', requireRootAccess, consoleUpload.fields([
+  { name: 'media', maxCount: 1 },
+  { name: 'thumbnail', maxCount: 1 },
+  { name: 'document', maxCount: 1 },
+]), (req, res) => {
+  try {
+    const files = req.files || {};
+    const result = {};
+    const baseUrl = `${req.protocol}://${req.get('host')}`;
+
+    if (files.media && files.media[0]) {
+      const f = files.media[0];
+      const subDir = f.mimetype.startsWith('audio/') ? 'audio' : f.mimetype.startsWith('video/') ? 'media' : 'images';
+      result.media_url = `${baseUrl}/uploads/${subDir}/${f.filename}`;
+      result.media_filename = f.originalname;
+      result.media_size_bytes = f.size;
+      result.media_mimetype = f.mimetype;
+    }
+    if (files.thumbnail && files.thumbnail[0]) {
+      const f = files.thumbnail[0];
+      result.thumbnail_url = `${baseUrl}/uploads/images/${f.filename}`;
+    }
+    if (files.document && files.document[0]) {
+      const f = files.document[0];
+      result.document_url = `${baseUrl}/uploads/documents/${f.filename}`;
+      result.document_filename = f.originalname;
+    }
+
+    if (Object.keys(result).length === 0) {
+      return res.status(400).json({ success: false, message: 'No files received. Send at least one of: media, thumbnail, document.' });
+    }
+
+    return res.json({ success: true, data: result });
+  } catch (err) {
+    return res.status(500).json({ success: false, message: err.message || 'Upload failed.' });
+  }
+});
 
 // Database-backed management for community, media, discovery, and creator domains.
 router.get('/domains', requireRootAccess, PlatformDomainManagementController.getDefinitions);
