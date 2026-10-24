@@ -35,6 +35,8 @@ export interface CommsVoipRoomItem {
   updated_at: string;
 }
 
+export type CommsVoipItem = CommsVoipRoomItem;
+
 export interface CommsVoipOverview {
   total_rooms: number;
   active_rooms: number;
@@ -63,6 +65,8 @@ export interface CommsVoipSpawnedConsole {
   created_at: string;
 }
 
+export type CommsVoipSpawn = CommsVoipSpawnedConsole;
+
 export interface CreateVoipRoomPayload {
   room_name: string;
   room_code: string;
@@ -73,6 +77,8 @@ export interface CreateVoipRoomPayload {
   recording_enabled?: boolean;
   emergency_broadcast_priority?: boolean;
 }
+
+export type CreateCommsVoipPayload = CreateVoipRoomPayload;
 
 export interface UpdateVoipRoomPayload {
   room_name?: string;

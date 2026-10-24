@@ -45,7 +45,8 @@ import {
   GraduationCap,
   Flame,
   Landmark,
-  TrendingUp
+  TrendingUp,
+  PhoneCall
 } from 'lucide-react';
 import dashboardService from '../services/dashboardService';
 import { SystemMetric } from '../types/dashboard';
@@ -680,6 +681,21 @@ const StercsDashboardPage: React.FC = () => {
       route: '/admin/trends-console',
       trend: [6, 6, 6, 6, 5, 6, 6],
       requests24h: '7.8M'
+    },
+    {
+      id: 'comms-voip-console',
+      title: 'Communications, WebRTC & VoIP Master Console',
+      category: 'Security',
+      icon: PhoneCall,
+      description: 'Autonomous management of WebRTC P2P Mesh, STUN/TURN Relays, Codec Bitrates & DefCon Emergency Broadcast Killswitch',
+      status: 'online',
+      version: 'v1.0.0-live',
+      lastUpdated: 'Live sync',
+      responseTime: 11,
+      healthScore: 99.99,
+      route: '/admin/comms-voip-console',
+      trend: [12, 11, 10, 11, 12, 11, 11],
+      requests24h: '12.4M'
     },
     {
       id: 'stercs-curation',

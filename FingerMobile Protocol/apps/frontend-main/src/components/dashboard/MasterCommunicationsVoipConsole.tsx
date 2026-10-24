@@ -99,7 +99,7 @@ export const MasterCommunicationsVoipConsole: React.FC = () => {
       setItems(itemsData);
       setSpawns(spawnsData);
 
-      const hasDefcon = itemsData.some(i => i.status === 'defcon_disabled');
+      const hasDefcon = itemsData.some((i: CommsVoipRoomItem) => i.status === 'defcon_disabled');
       setIsDefconEngaged(hasDefcon);
     } catch (err: unknown) {
       const errorMsg = err instanceof Error ? err.message : 'Network / DB Error';

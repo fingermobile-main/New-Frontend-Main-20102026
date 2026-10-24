@@ -8,8 +8,11 @@ import api from './api';
 import {
   CommsVoipOverview,
   CommsVoipRoomItem,
+  CommsVoipItem,
   CommsVoipSpawnedConsole,
+  CommsVoipSpawn,
   CreateVoipRoomPayload,
+  CreateCommsVoipPayload,
   UpdateVoipRoomPayload
 } from '../types/commsVoipConsole';
 
