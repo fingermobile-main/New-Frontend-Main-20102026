@@ -44,7 +44,8 @@ import {
   Layout,
   GraduationCap,
   Flame,
-  Landmark
+  Landmark,
+  TrendingUp
 } from 'lucide-react';
 import dashboardService from '../services/dashboardService';
 import { SystemMetric } from '../types/dashboard';
@@ -619,6 +620,21 @@ const StercsDashboardPage: React.FC = () => {
       route: '/admin/loansqr-console',
       trend: [9, 9, 8, 9, 9, 9, 9],
       requests24h: '3.7M'
+    },
+    {
+      id: 'trends-swarm-console',
+      title: 'Trends & Swarms Discovery Microservice Console',
+      category: 'Intelligence',
+      icon: TrendingUp,
+      description: 'Autonomous management of Virality Decay Sliders, Regional Swarms, Keyword Blacklists & GNN Cluster Weights',
+      status: 'online',
+      version: 'v1.0.0-live',
+      lastUpdated: 'Live sync',
+      responseTime: 6,
+      healthScore: 99.99,
+      route: '/admin/trends-console',
+      trend: [6, 6, 6, 6, 5, 6, 6],
+      requests24h: '7.8M'
     },
     {
       id: 'stercs-curation',
