@@ -19,7 +19,15 @@
     "@typescript-eslint"
   ],
   "rules": {
-    "no-unused-vars": "warn",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "ignoreRestSiblings": true
+      }
+    ],
     "no-console": "warn",
     "semi": "off",
     "quotes": "off",
@@ -34,7 +42,9 @@
   "ignorePatterns": [
     "node_modules/",
     "dist/",
+    "build/",
     "backups/",
-    "*.test.js"
+    "*.test.js",
+    "*.d.ts"
   ]
 }

@@ -320,9 +320,9 @@ exports.seedNextTrackFromOcean = async (req, res) => {
     const params = [];
     if (genre) {
       params.push(genre);
-      oceanQuery += ` AND genre = $1`;
+      oceanQuery += ' AND genre = $1';
     }
-    oceanQuery += ` ORDER BY RANDOM() LIMIT 1`;
+    oceanQuery += ' ORDER BY RANDOM() LIMIT 1';
 
     const oceanRes = await pool.query(oceanQuery, params);
     if (oceanRes.rows.length === 0) {
@@ -344,7 +344,7 @@ exports.seedNextTrackFromOcean = async (req, res) => {
     `, [track.id, track.title, track.artist, track.audio_url, id]);
 
     // Increment play count in sound_ocean
-    await pool.query(`UPDATE sound_ocean_library_items SET play_count = play_count + 1 WHERE id = $1`, [track.id]);
+    await pool.query('UPDATE sound_ocean_library_items SET play_count = play_count + 1 WHERE id = $1', [track.id]);
 
     res.json({
       success: true,

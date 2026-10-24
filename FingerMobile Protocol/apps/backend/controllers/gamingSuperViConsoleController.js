@@ -75,7 +75,7 @@ exports.getOverview = async (req, res) => {
       GROUP BY domain
     `);
 
-    const spawnsCount = await pool.query(`SELECT COUNT(*) as count FROM gaming_supervi_console_spawns`);
+    const spawnsCount = await pool.query('SELECT COUNT(*) as count FROM gaming_supervi_console_spawns');
 
     return res.status(200).json({
       success: true,

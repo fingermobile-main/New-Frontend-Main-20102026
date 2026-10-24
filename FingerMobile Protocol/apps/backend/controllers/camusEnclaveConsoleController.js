@@ -63,7 +63,7 @@ exports.getOverview = async (req, res) => {
       ORDER BY count DESC
     `);
 
-    const spawnsCount = await pool.query(`SELECT COUNT(*) as total FROM camus_enclave_console_spawns`);
+    const spawnsCount = await pool.query('SELECT COUNT(*) as total FROM camus_enclave_console_spawns');
 
     return res.json({
       success: true,
@@ -83,7 +83,7 @@ exports.getOverview = async (req, res) => {
 exports.getItems = async (req, res) => {
   try {
     const { category, status, search } = req.query;
-    let query = `SELECT * FROM camus_enclave_console_items WHERE 1=1`;
+    let query = 'SELECT * FROM camus_enclave_console_items WHERE 1=1';
     const params = [];
 
     if (category && category !== 'ALL') {
@@ -101,7 +101,7 @@ exports.getItems = async (req, res) => {
       query += ` AND (name ILIKE $${params.length} OR code ILIKE $${params.length} OR hsm_slot ILIKE $${params.length})`;
     }
 
-    query += ` ORDER BY display_order ASC, created_at ASC`;
+    query += ' ORDER BY display_order ASC, created_at ASC';
 
     const result = await pool.query(query, params);
     return res.json({ success: true, items: result.rows });
@@ -114,7 +114,7 @@ exports.getItems = async (req, res) => {
 exports.getItemById = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await pool.query(`SELECT * FROM camus_enclave_console_items WHERE id = $1`, [id]);
+    const result = await pool.query('SELECT * FROM camus_enclave_console_items WHERE id = $1', [id]);
     if (result.rows.length === 0) {
       return res.status(404).json({ success: false, message: 'Item not found' });
     }
@@ -142,7 +142,7 @@ exports.createItem = async (req, res) => {
 
     const id = `CAM-${Date.now().toString(36).toUpperCase()}`;
 
-    const orderRes = await pool.query(`SELECT COALESCE(MAX(display_order), 0) + 1 as next_order FROM camus_enclave_console_items`);
+    const orderRes = await pool.query('SELECT COALESCE(MAX(display_order), 0) + 1 as next_order FROM camus_enclave_console_items');
     const display_order = orderRes.rows[0].next_order;
 
     const insertResult = await pool.query(`
@@ -208,7 +208,7 @@ exports.updateItem = async (req, res) => {
 exports.deleteItem = async (req, res) => {
   try {
     const { id } = req.params;
-    const deleteResult = await pool.query(`DELETE FROM camus_enclave_console_items WHERE id = $1 RETURNING id`, [id]);
+    const deleteResult = await pool.query('DELETE FROM camus_enclave_console_items WHERE id = $1 RETURNING id', [id]);
     if (deleteResult.rows.length === 0) {
       return res.status(404).json({ success: false, message: 'Item not found' });
     }
@@ -221,7 +221,7 @@ exports.deleteItem = async (req, res) => {
 exports.toggleFreeze = async (req, res) => {
   try {
     const { id } = req.params;
-    const itemRes = await pool.query(`SELECT status FROM camus_enclave_console_items WHERE id = $1`, [id]);
+    const itemRes = await pool.query('SELECT status FROM camus_enclave_console_items WHERE id = $1', [id]);
     if (itemRes.rows.length === 0) {
       return res.status(404).json({ success: false, message: 'Item not found' });
     }
@@ -252,8 +252,8 @@ exports.reorderItems = async (req, res) => {
 
     await client.query('BEGIN');
 
-    const sourceRes = await client.query(`SELECT id, display_order FROM camus_enclave_console_items WHERE id = $1`, [sourceId]);
-    const targetRes = await client.query(`SELECT id, display_order FROM camus_enclave_console_items WHERE id = $1`, [targetId]);
+    const sourceRes = await client.query('SELECT id, display_order FROM camus_enclave_console_items WHERE id = $1', [sourceId]);
+    const targetRes = await client.query('SELECT id, display_order FROM camus_enclave_console_items WHERE id = $1', [targetId]);
 
     if (sourceRes.rows.length === 0 || targetRes.rows.length === 0) {
       await client.query('ROLLBACK');
@@ -263,12 +263,12 @@ exports.reorderItems = async (req, res) => {
     const sourceOrder = sourceRes.rows[0].display_order;
     const targetOrder = targetRes.rows[0].display_order;
 
-    await client.query(`UPDATE camus_enclave_console_items SET display_order = $2, updated_at = NOW() WHERE id = $1`, [sourceId, targetOrder]);
-    await client.query(`UPDATE camus_enclave_console_items SET display_order = $2, updated_at = NOW() WHERE id = $1`, [targetId, sourceOrder]);
+    await client.query('UPDATE camus_enclave_console_items SET display_order = $2, updated_at = NOW() WHERE id = $1', [sourceId, targetOrder]);
+    await client.query('UPDATE camus_enclave_console_items SET display_order = $2, updated_at = NOW() WHERE id = $1', [targetId, sourceOrder]);
 
     await client.query('COMMIT');
 
-    const allItems = await client.query(`SELECT * FROM camus_enclave_console_items ORDER BY display_order ASC`);
+    const allItems = await client.query('SELECT * FROM camus_enclave_console_items ORDER BY display_order ASC');
     return res.json({ success: true, items: allItems.rows });
   } catch (err) {
     await client.query('ROLLBACK');
@@ -307,7 +307,7 @@ exports.uploadAsset = async (req, res) => {
 
 exports.getSpawns = async (req, res) => {
   try {
-    const result = await pool.query(`SELECT * FROM camus_enclave_console_spawns ORDER BY created_at DESC`);
+    const result = await pool.query('SELECT * FROM camus_enclave_console_spawns ORDER BY created_at DESC');
     return res.json({ success: true, spawns: result.rows });
   } catch (err) {
     return res.status(500).json({ success: false, message: err.message });

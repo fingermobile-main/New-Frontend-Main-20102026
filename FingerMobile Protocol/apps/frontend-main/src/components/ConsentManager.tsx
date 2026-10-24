@@ -12,7 +12,7 @@ export type ConsentFlags = {
 export type ConsentProps = {
   apiBaseUrl?: string;
   accessToken?: string;
-  onConsentChange?: (flags: ConsentFlags) => void;
+  onConsentChange?: (_flags: ConsentFlags) => void;
   className?: string;
   showSettingsByDefault?: boolean;
 };

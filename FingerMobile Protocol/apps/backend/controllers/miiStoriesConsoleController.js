@@ -424,12 +424,12 @@ exports.defconPurge = async (req, res) => {
 
     let deleteQuery = '';
     if (scope === 'flagged_only') {
-      deleteQuery = "DELETE FROM mii_stories_console_items WHERE is_censored = true OR moderation_status = 'banned' RETURNING id;";
+      deleteQuery = 'DELETE FROM mii_stories_console_items WHERE is_censored = true OR moderation_status = \'banned\' RETURNING id;';
     } else if (scope === 'total_vanish') {
-      deleteQuery = "DELETE FROM mii_stories_console_items RETURNING id;";
+      deleteQuery = 'DELETE FROM mii_stories_console_items RETURNING id;';
     } else {
       // default: expired only
-      deleteQuery = "DELETE FROM mii_stories_console_items WHERE expires_at <= CURRENT_TIMESTAMP RETURNING id;";
+      deleteQuery = 'DELETE FROM mii_stories_console_items WHERE expires_at <= CURRENT_TIMESTAMP RETURNING id;';
     }
 
     const purgeResult = await pool.query(deleteQuery);

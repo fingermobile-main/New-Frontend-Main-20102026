@@ -142,12 +142,12 @@ const userConsentController = {
       const userId = req.user?.id || req.query.user_id || 'anonymous_user';
 
       const consentResult = await pool.query(
-        `SELECT * FROM platform_user_consents WHERE user_id = $1 LIMIT 1;`,
+        'SELECT * FROM platform_user_consents WHERE user_id = $1 LIMIT 1;',
         [userId]
       );
 
       const auditResult = await pool.query(
-        `SELECT * FROM platform_consent_audit_logs WHERE user_id = $1 ORDER BY created_at DESC LIMIT 50;`,
+        'SELECT * FROM platform_consent_audit_logs WHERE user_id = $1 ORDER BY created_at DESC LIMIT 50;',
         [userId]
       );
 

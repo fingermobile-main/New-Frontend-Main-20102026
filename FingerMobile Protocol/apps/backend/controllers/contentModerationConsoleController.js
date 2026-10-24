@@ -83,7 +83,7 @@ exports.getOverview = async (req, res) => {
       ORDER BY domain_cases DESC
     `);
 
-    const spawnsCount = await pool.query(`SELECT COUNT(*) as total FROM content_moderation_console_spawns`);
+    const spawnsCount = await pool.query('SELECT COUNT(*) as total FROM content_moderation_console_spawns');
 
     return res.json({
       success: true,
@@ -272,7 +272,7 @@ exports.updateItem = async (req, res) => {
       return res.status(400).json({ success: false, message: 'No fields provided to update' });
     }
 
-    fields.push(`updated_at = NOW()`);
+    fields.push('updated_at = NOW()');
     values.push(id);
 
     const updateQuery = `

@@ -292,7 +292,13 @@ export const UsersPermissionConsolePage: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200 text-xs">
-                {filteredUsers.length === 0 ? (
+                {loading ? (
+                  <tr>
+                    <td colSpan={6} className="py-8 text-center text-slate-700 font-semibold">
+                      Loading users permission matrix...
+                    </td>
+                  </tr>
+                ) : filteredUsers.length === 0 ? (
                   <tr>
                     <td colSpan={6} className="py-8 text-center text-slate-700 font-semibold">
                       No members found matching the selected group filter.

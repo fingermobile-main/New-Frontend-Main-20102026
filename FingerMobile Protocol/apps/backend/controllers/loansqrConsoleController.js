@@ -434,7 +434,7 @@ exports.toggleMoratoriumHold = async (req, res) => {
 
     if (scope && scope !== 'all') {
       params.push(scope);
-      query += ` WHERE category = $2 RETURNING id;`;
+      query += ' WHERE category = $2 RETURNING id;';
     } else {
       query += ' RETURNING id;';
     }

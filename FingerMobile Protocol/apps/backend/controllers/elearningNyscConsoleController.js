@@ -81,7 +81,7 @@ exports.getOverview = async (req, res) => {
       ORDER BY count DESC
     `);
 
-    const spawnsCount = await pool.query(`SELECT COUNT(*) as total FROM elearning_nysc_console_spawns`);
+    const spawnsCount = await pool.query('SELECT COUNT(*) as total FROM elearning_nysc_console_spawns');
 
     return res.json({
       success: true,

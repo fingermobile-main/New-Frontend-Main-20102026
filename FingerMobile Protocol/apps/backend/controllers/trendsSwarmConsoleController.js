@@ -413,7 +413,7 @@ exports.toggleViralityClamp = async (req, res) => {
 
     if (category && category !== 'all') {
       params.push(category);
-      updateQuery += ` WHERE category = $1 RETURNING id;`;
+      updateQuery += ' WHERE category = $1 RETURNING id;';
     } else {
       updateQuery += ' RETURNING id;';
     }
