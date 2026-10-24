@@ -112,9 +112,18 @@ import MasterSecurityDefConConsole from '../components/dashboard/MasterSecurityD
 import MasterCreatorMonetizationConsole from '../components/dashboard/MasterCreatorMonetizationConsole';
 import MasterContentModerationConsole from '../components/dashboard/MasterContentModerationConsole';
 import MasterRbacPermissionsConsole from '../components/dashboard/MasterRbacPermissionsConsole';
+import MasterElearningNyscConsole from '../components/dashboard/MasterElearningNyscConsole';
+import MasterMiiStoriesConsole from '../components/dashboard/MasterMiiStoriesConsole';
 import { MasterStercsEditorConsole } from '../components/dashboard/MasterStercsEditorConsole';
 import { MasterCamusEnclaveConsole } from '../components/dashboard/MasterCamusEnclaveConsole';
 import { MasterAnalyticsTelemetryConsole } from '../components/dashboard/MasterAnalyticsTelemetryConsole';
+import { MasterMemberRetentionConsole } from '../components/dashboard/MasterMemberRetentionConsole';
+import { MasterMarketingCampaignConsole } from '../components/dashboard/MasterMarketingCampaignConsole';
+import { MasterInvestorRelationsConsole } from '../components/dashboard/MasterInvestorRelationsConsole';
+import { MasterFranchiseHubsConsole } from '../components/dashboard/MasterFranchiseHubsConsole';
+import { MasterEmailCommsConsole } from '../components/dashboard/MasterEmailCommsConsole';
+import { MasterSupportCareConsole } from '../components/dashboard/MasterSupportCareConsole';
+import MasterLoansQrConsole from '../components/dashboard/MasterLoansQrConsole';
 
 interface Section {
   id: string;
@@ -2539,9 +2548,15 @@ const MasterDashboardPage: React.FC = () => {
               { id: 'creator-monetization-console', label: 'Creator Studio & Monetization (Phase 6)', badge: 'Tiers / Ads / Royalties' },
               { id: 'content-moderation-console', label: 'Content Moderation & Ethics (Phase 7)', badge: 'NLP Sieve / Strikes / Jury' },
               { id: 'rbac-permissions-console', label: 'Members & RBAC Citadel (Phase 8)', badge: 'Matrix / Gates / Council' },
+              { id: 'elearning-nysc-console', label: 'E-Learning & NYSC EduTech', badge: 'SAED / Web3 / Certs' },
+              { id: 'mii-stories-console', label: 'Mii Ephemeral 48h Stories (Phase 10)', badge: '48h TTL / PIN Handshake' },
               { id: 'stercs-editor-console', label: 'STERCS Editor & Scripting (Phase 9)', badge: 'DSL v2.4 / Shaders' },
               { id: 'camus-enclave-console', label: 'Camus Hardware Enclaves (Phase 10)', badge: 'HSM / Zero-Trust' },
               { id: 'analytics-telemetry-console', label: 'Analytics & Telemetry (Phase 11)', badge: 'QPS / P99 / Mesh' },
+              { id: 'member-retention-console', label: 'Member Retention & Churn (Phase 12)', badge: 'Cohorts / Loops' },
+              { id: 'marketing-campaign-console', label: 'Marketing & Ads Engine (Phase 13)', badge: 'AfriAds / DSP' },
+              { id: 'investor-relations-console', label: 'Investor Relations & Capital (Phase 14)', badge: 'Cap Table / Yield' },
+              { id: 'loansqr-console', label: 'LoansQR Micro-Lending (Phase 11)', badge: 'Underwrite / Escrow / APR' },
               { id: 'beatwaveng-console', label: 'BeatwaveNG Audio Console', badge: 'Live Sync' },
               { id: 'discover-console', label: 'Discover Master Console', badge: 'Topics & Swarms' },
               { id: 'soundriver-console', label: 'SoundRiver Master Console', badge: '320kbps Stream' },
@@ -2868,6 +2883,20 @@ const MasterDashboardPage: React.FC = () => {
               </div>
             )}
 
+            {/* Dedicated E-Learning & NYSC EduTech Console Tab (Phase 9) */}
+            {activeTab === 'elearning-nysc-console' && (
+              <div className="space-y-6">
+                <MasterElearningNyscConsole />
+              </div>
+            )}
+
+            {/* Dedicated Mii Ephemeral 48h Stories Console Tab (Phase 10) */}
+            {activeTab === 'mii-stories-console' && (
+              <div className="space-y-6">
+                <MasterMiiStoriesConsole />
+              </div>
+            )}
+
             {/* Dedicated STERCS Editor & Motion Scripting Console Tab (Phase 9) */}
             {activeTab === 'stercs-editor-console' && (
               <div className="space-y-6">
@@ -2886,6 +2915,55 @@ const MasterDashboardPage: React.FC = () => {
             {activeTab === 'analytics-telemetry-console' && (
               <div className="space-y-6">
                 <MasterAnalyticsTelemetryConsole />
+              </div>
+            )}
+
+            {/* Dedicated Member Retention & Activity Operations Console Tab (Phase 12) */}
+            {activeTab === 'member-retention-console' && (
+              <div className="space-y-6">
+                <MasterMemberRetentionConsole />
+              </div>
+            )}
+
+            {/* Dedicated Marketing, Ads & Campaign Engine Console Tab (Phase 13) */}
+            {activeTab === 'marketing-campaign-console' && (
+              <div className="space-y-6">
+                <MasterMarketingCampaignConsole />
+              </div>
+            )}
+
+            {/* Dedicated Investor Relations & Capitalization Console Tab (Phase 14) */}
+            {activeTab === 'investor-relations-console' && (
+              <div className="space-y-6">
+                <MasterInvestorRelationsConsole />
+              </div>
+            )}
+
+            {/* Dedicated Franchise & Regional Hubs Console Tab (Phase 15) */}
+            {activeTab === 'franchise-hubs-console' && (
+              <div className="space-y-6">
+                <MasterFranchiseHubsConsole />
+              </div>
+            )}
+
+            {/* Dedicated Email, Push & Comms Delivery Console Tab (Phase 16) */}
+            {activeTab === 'email-comms-console' && (
+              <div className="space-y-6">
+                <MasterEmailCommsConsole />
+              </div>
+            )}
+
+            {/* Dedicated Support, SLA & Customer Care Console Tab (Phase 17) */}
+            {activeTab === 'support-care-console' && (
+              <div className="space-y-6">
+                <MasterSupportCareConsole />
+              </div>
+            )}
+
+            {/* Dedicated LoansQR Micro-Lending Console Tab (Phase 11) */}
+            {activeTab === 'loansqr-console' && (
+              <div className="space-y-6">
+                <MasterLoansQrConsole />
               </div>
             )}
 

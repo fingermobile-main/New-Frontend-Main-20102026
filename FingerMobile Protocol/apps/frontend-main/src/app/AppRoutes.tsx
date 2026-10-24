@@ -225,9 +225,18 @@ const SecurityDefConMasterConsolePage = lazy(() => import('../pages/admin/Securi
 const CreatorMonetizationMasterConsolePage = lazy(() => import('../pages/admin/CreatorMonetizationMasterConsolePage'));
 const ContentModerationMasterConsolePage = lazy(() => import('../pages/admin/ContentModerationMasterConsolePage'));
 const RbacPermissionsMasterConsolePage = lazy(() => import('../pages/admin/RbacPermissionsMasterConsolePage'));
+const ElearningNyscMasterConsolePage = lazy(() => import('../pages/admin/ElearningNyscMasterConsolePage'));
+const MiiStoriesMasterConsolePage = lazy(() => import('../pages/admin/MiiStoriesMasterConsolePage'));
 const StercsEditorMasterConsolePage = lazy(() => import('../pages/admin/StercsEditorMasterConsolePage'));
 const CamusEnclaveMasterConsolePage = lazy(() => import('../pages/admin/CamusEnclaveMasterConsolePage'));
 const AnalyticsTelemetryMasterConsolePage = lazy(() => import('../pages/admin/AnalyticsTelemetryMasterConsolePage'));
+const MemberRetentionMasterConsolePage = lazy(() => import('../pages/admin/MemberRetentionMasterConsolePage'));
+const MarketingCampaignMasterConsolePage = lazy(() => import('../pages/admin/MarketingCampaignMasterConsolePage'));
+const InvestorRelationsMasterConsolePage = lazy(() => import('../pages/admin/InvestorRelationsMasterConsolePage'));
+const FranchiseHubsMasterConsolePage = lazy(() => import('../pages/admin/FranchiseHubsMasterConsolePage'));
+const EmailCommsMasterConsolePage = lazy(() => import('../pages/admin/EmailCommsMasterConsolePage'));
+const SupportCareMasterConsolePage = lazy(() => import('../pages/admin/SupportCareMasterConsolePage'));
+const LoansQrMasterConsolePage = lazy(() => import('../pages/admin/LoansQrMasterConsolePage'));
 const ContentAdminDashboardPage = lazy(() => import('../pages/ContentAdminDashboardPage'));
 const MemberManagementPage = lazy(() => import('../pages/admin/MemberManagementPage'));
 
@@ -556,6 +565,16 @@ export const routes: RouteObject[] = [
           { path: '/rbac-console', element: <RbacPermissionsMasterConsolePage /> },
           { path: '/rbac-permissions-console', element: <RbacPermissionsMasterConsolePage /> },
           { path: '/dashboard/rbac-permissions', element: <RbacPermissionsMasterConsolePage /> },
+          { path: '/admin/elearning-console', element: <ElearningNyscMasterConsolePage /> },
+          { path: '/admin/elearning-nysc-console', element: <ElearningNyscMasterConsolePage /> },
+          { path: '/elearning-console', element: <ElearningNyscMasterConsolePage /> },
+          { path: '/elearning-nysc-console', element: <ElearningNyscMasterConsolePage /> },
+          { path: '/dashboard/elearning-nysc', element: <ElearningNyscMasterConsolePage /> },
+          { path: '/admin/mii-stories-console', element: <MiiStoriesMasterConsolePage /> },
+          { path: '/admin/mii-console', element: <MiiStoriesMasterConsolePage /> },
+          { path: '/mii-stories-console', element: <MiiStoriesMasterConsolePage /> },
+          { path: '/mii-console', element: <MiiStoriesMasterConsolePage /> },
+          { path: '/dashboard/mii-stories', element: <MiiStoriesMasterConsolePage /> },
           { path: '/admin/stercs-editor-console', element: <StercsEditorMasterConsolePage /> },
           { path: '/admin/editor-console', element: <StercsEditorMasterConsolePage /> },
           { path: '/stercs-editor-console', element: <StercsEditorMasterConsolePage /> },
@@ -571,6 +590,48 @@ export const routes: RouteObject[] = [
           { path: '/analytics-telemetry-console', element: <AnalyticsTelemetryMasterConsolePage /> },
           { path: '/telemetry-console', element: <AnalyticsTelemetryMasterConsolePage /> },
           { path: '/dashboard/analytics-telemetry', element: <AnalyticsTelemetryMasterConsolePage /> },
+          { path: '/admin/member-retention-console', element: <MemberRetentionMasterConsolePage /> },
+          { path: '/admin/retention-console', element: <MemberRetentionMasterConsolePage /> },
+          { path: '/member-retention-console', element: <MemberRetentionMasterConsolePage /> },
+          { path: '/retention-console', element: <MemberRetentionMasterConsolePage /> },
+          { path: '/dashboard/member-retention', element: <MemberRetentionMasterConsolePage /> },
+          { path: '/admin/marketing-campaign-console', element: <MarketingCampaignMasterConsolePage /> },
+          { path: '/admin/marketing-console', element: <MarketingCampaignMasterConsolePage /> },
+          { path: '/admin/ads-console', element: <MarketingCampaignMasterConsolePage /> },
+          { path: '/marketing-campaign-console', element: <MarketingCampaignMasterConsolePage /> },
+          { path: '/marketing-console', element: <MarketingCampaignMasterConsolePage /> },
+          { path: '/dashboard/marketing-campaign', element: <MarketingCampaignMasterConsolePage /> },
+          { path: '/admin/investor-relations-console', element: <InvestorRelationsMasterConsolePage /> },
+          { path: '/admin/investor-console', element: <InvestorRelationsMasterConsolePage /> },
+          { path: '/admin/capital-console', element: <InvestorRelationsMasterConsolePage /> },
+          { path: '/investor-relations-console', element: <InvestorRelationsMasterConsolePage /> },
+          { path: '/investor-console', element: <InvestorRelationsMasterConsolePage /> },
+          { path: '/dashboard/investor-relations', element: <InvestorRelationsMasterConsolePage /> },
+          { path: '/admin/franchise-hubs-console', element: <FranchiseHubsMasterConsolePage /> },
+          { path: '/admin/franchise-console', element: <FranchiseHubsMasterConsolePage /> },
+          { path: '/admin/hubs-console', element: <FranchiseHubsMasterConsolePage /> },
+          { path: '/franchise-hubs-console', element: <FranchiseHubsMasterConsolePage /> },
+          { path: '/franchise-console', element: <FranchiseHubsMasterConsolePage /> },
+          { path: '/dashboard/franchise-hubs', element: <FranchiseHubsMasterConsolePage /> },
+          { path: '/admin/email-comms-console', element: <EmailCommsMasterConsolePage /> },
+          { path: '/admin/email-console', element: <EmailCommsMasterConsolePage /> },
+          { path: '/admin/comms-console', element: <EmailCommsMasterConsolePage /> },
+          { path: '/email-comms-console', element: <EmailCommsMasterConsolePage /> },
+          { path: '/email-console', element: <EmailCommsMasterConsolePage /> },
+          { path: '/dashboard/email-comms', element: <EmailCommsMasterConsolePage /> },
+          { path: '/admin/support-care-console', element: <SupportCareMasterConsolePage /> },
+          { path: '/admin/support-console', element: <SupportCareMasterConsolePage /> },
+          { path: '/admin/care-console', element: <SupportCareMasterConsolePage /> },
+          { path: '/support-care-console', element: <SupportCareMasterConsolePage /> },
+          { path: '/support-console', element: <SupportCareMasterConsolePage /> },
+          { path: '/dashboard/support-care', element: <SupportCareMasterConsolePage /> },
+          { path: '/admin/loansqr-console', element: <LoansQrMasterConsolePage /> },
+          { path: '/admin/loans-console', element: <LoansQrMasterConsolePage /> },
+          { path: '/admin/lending-console', element: <LoansQrMasterConsolePage /> },
+          { path: '/loansqr-console', element: <LoansQrMasterConsolePage /> },
+          { path: '/loans-console', element: <LoansQrMasterConsolePage /> },
+          { path: '/lending-console', element: <LoansQrMasterConsolePage /> },
+          { path: '/dashboard/loansqr', element: <LoansQrMasterConsolePage /> },
           { path: '/businessorganizations', element: <BusinessOrganizationsConsolePage /> },
           { path: '/admin/content', element: <ContentAdminDashboardPage /> },
           { path: '/contentadmindashboard', element: <ContentAdminDashboardPage /> },

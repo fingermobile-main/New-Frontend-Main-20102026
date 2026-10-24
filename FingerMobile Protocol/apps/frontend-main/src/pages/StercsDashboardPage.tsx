@@ -43,7 +43,8 @@ import {
   Cpu,
   Layout,
   GraduationCap,
-  Flame
+  Flame,
+  Landmark
 } from 'lucide-react';
 import dashboardService from '../services/dashboardService';
 import { SystemMetric } from '../types/dashboard';
@@ -558,6 +559,66 @@ const StercsDashboardPage: React.FC = () => {
       route: '/admin/investor-relations-console',
       trend: [4, 4, 4, 4, 4, 4, 4],
       requests24h: '1.8M'
+    },
+    {
+      id: 'franchise-hubs-console',
+      title: 'Franchise & Regional Hubs Management Console',
+      category: 'Commerce',
+      icon: Building,
+      description: 'Regional Licensing, Territorial Geo-Zones, Merchant Accreditation & Localized Payout Rails',
+      status: 'online',
+      version: 'v1.0.0-live',
+      lastUpdated: 'Live sync',
+      responseTime: 8,
+      healthScore: 99.98,
+      route: '/admin/franchise-hubs-console',
+      trend: [8, 8, 7, 8, 8, 8, 8],
+      requests24h: '3.1M'
+    },
+    {
+      id: 'email-comms-console',
+      title: 'Email, Push & Communications Delivery Console',
+      category: 'Intelligence',
+      icon: MessageSquare,
+      description: 'SMTP Relays, African Telco SMS Gateways, Real-Time Push Notification Pipes & MJML Transpiler',
+      status: 'online',
+      version: 'v1.0.0-live',
+      lastUpdated: 'Live sync',
+      responseTime: 5,
+      healthScore: 99.99,
+      route: '/admin/email-comms-console',
+      trend: [5, 5, 5, 5, 5, 5, 5],
+      requests24h: '6.4M'
+    },
+    {
+      id: 'support-care-console',
+      title: 'Support, SLA & Customer Care Operations Console',
+      category: 'Governance',
+      icon: Users,
+      description: 'Multi-Tier Escalation Triage, SLA Breach Compensations, VIP Merchant Dispute Chambers & CSAT',
+      status: 'online',
+      version: 'v1.0.0-live',
+      lastUpdated: 'Live sync',
+      responseTime: 4,
+      healthScore: 99.97,
+      route: '/admin/support-care-console',
+      trend: [4, 4, 3, 4, 4, 4, 4],
+      requests24h: '1.9M'
+    },
+    {
+      id: 'loansqr-console',
+      title: 'LoansQR Micro-Lending & Underwriting Console',
+      category: 'Commerce',
+      icon: Landmark,
+      description: 'Autonomous management of Underwriting Matrix, Risk Score Tiers, Multi-Sig Escrow Vaults & Debt Moratorium Protocol',
+      status: 'online',
+      version: 'v1.0.0-live',
+      lastUpdated: 'Live sync',
+      responseTime: 9,
+      healthScore: 99.99,
+      route: '/admin/loansqr-console',
+      trend: [9, 9, 8, 9, 9, 9, 9],
+      requests24h: '3.7M'
     },
     {
       id: 'stercs-curation',
