@@ -62,7 +62,7 @@ export const MasterGamificationRewardsConsole: React.FC = () => {
   const showToast = (msg: string, voice?: AfricanVoiceLine) => {
     setToastMessage(msg);
     if (voice) {
-      audioEngine.playVoice(voice);
+      audioEngine.playVoiceLine(voice);
     }
     setTimeout(() => {
       setToastMessage(null);

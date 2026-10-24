@@ -123,7 +123,11 @@ import { MasterInvestorRelationsConsole } from '../components/dashboard/MasterIn
 import { MasterFranchiseHubsConsole } from '../components/dashboard/MasterFranchiseHubsConsole';
 import { MasterEmailCommsConsole } from '../components/dashboard/MasterEmailCommsConsole';
 import { MasterSupportCareConsole } from '../components/dashboard/MasterSupportCareConsole';
+import { MasterSoundSonicConsole } from '../components/dashboard/MasterSoundSonicConsole';
+import { MasterDomainEdgeConsole } from '../components/dashboard/MasterDomainEdgeConsole';
+import { MasterGamificationRewardsConsole } from '../components/dashboard/MasterGamificationRewardsConsole';
 import MasterLoansQrConsole from '../components/dashboard/MasterLoansQrConsole';
+import MasterTrendsSwarmConsole from '../components/dashboard/MasterTrendsSwarmConsole';
 
 interface Section {
   id: string;
@@ -2557,6 +2561,7 @@ const MasterDashboardPage: React.FC = () => {
               { id: 'marketing-campaign-console', label: 'Marketing & Ads Engine (Phase 13)', badge: 'AfriAds / DSP' },
               { id: 'investor-relations-console', label: 'Investor Relations & Capital (Phase 14)', badge: 'Cap Table / Yield' },
               { id: 'loansqr-console', label: 'LoansQR Micro-Lending (Phase 11)', badge: 'Underwrite / Escrow / APR' },
+              { id: 'trends-swarm-console', label: 'Trends & Swarms (Phase 12)', badge: 'Virality / NLP / GNN' },
               { id: 'beatwaveng-console', label: 'BeatwaveNG Audio Console', badge: 'Live Sync' },
               { id: 'discover-console', label: 'Discover Master Console', badge: 'Topics & Swarms' },
               { id: 'soundriver-console', label: 'SoundRiver Master Console', badge: '320kbps Stream' },
@@ -2960,10 +2965,38 @@ const MasterDashboardPage: React.FC = () => {
               </div>
             )}
 
+            {/* Dedicated Sound & Sonic Engineering Console Tab (Batch 4) */}
+            {activeTab === 'sound-sonic-console' && (
+              <div className="space-y-6">
+                <MasterSoundSonicConsole />
+              </div>
+            )}
+
+            {/* Dedicated Domain & Edge Network Console Tab (Batch 4) */}
+            {activeTab === 'domain-edge-console' && (
+              <div className="space-y-6">
+                <MasterDomainEdgeConsole />
+              </div>
+            )}
+
+            {/* Dedicated Gamification & Rewards Console Tab (Batch 4) */}
+            {activeTab === 'gamification-rewards-console' && (
+              <div className="space-y-6">
+                <MasterGamificationRewardsConsole />
+              </div>
+            )}
+
             {/* Dedicated LoansQR Micro-Lending Console Tab (Phase 11) */}
             {activeTab === 'loansqr-console' && (
               <div className="space-y-6">
                 <MasterLoansQrConsole />
+              </div>
+            )}
+
+            {/* Dedicated Trends & Swarms Discovery Console Tab (Phase 12) */}
+            {activeTab === 'trends-swarm-console' && (
+              <div className="space-y-6">
+                <MasterTrendsSwarmConsole />
               </div>
             )}
 

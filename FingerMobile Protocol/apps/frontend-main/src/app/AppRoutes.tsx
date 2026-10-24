@@ -236,7 +236,12 @@ const InvestorRelationsMasterConsolePage = lazy(() => import('../pages/admin/Inv
 const FranchiseHubsMasterConsolePage = lazy(() => import('../pages/admin/FranchiseHubsMasterConsolePage'));
 const EmailCommsMasterConsolePage = lazy(() => import('../pages/admin/EmailCommsMasterConsolePage'));
 const SupportCareMasterConsolePage = lazy(() => import('../pages/admin/SupportCareMasterConsolePage'));
+const SoundSonicMasterConsolePage = lazy(() => import('../pages/admin/SoundSonicMasterConsolePage'));
+const DomainEdgeMasterConsolePage = lazy(() => import('../pages/admin/DomainEdgeMasterConsolePage'));
+const GamificationRewardsMasterConsolePage = lazy(() => import('../pages/admin/GamificationRewardsMasterConsolePage'));
 const LoansQrMasterConsolePage = lazy(() => import('../pages/admin/LoansQrMasterConsolePage'));
+const TrendsSwarmMasterConsolePage = lazy(() => import('../pages/admin/TrendsSwarmMasterConsolePage'));
+const CommunicationsVoipMasterConsolePage = lazy(() => import('../pages/admin/CommunicationsVoipMasterConsolePage'));
 const ContentAdminDashboardPage = lazy(() => import('../pages/ContentAdminDashboardPage'));
 const MemberManagementPage = lazy(() => import('../pages/admin/MemberManagementPage'));
 
@@ -625,6 +630,21 @@ export const routes: RouteObject[] = [
           { path: '/support-care-console', element: <SupportCareMasterConsolePage /> },
           { path: '/support-console', element: <SupportCareMasterConsolePage /> },
           { path: '/dashboard/support-care', element: <SupportCareMasterConsolePage /> },
+          { path: '/admin/sound-sonic-console', element: <SoundSonicMasterConsolePage /> },
+          { path: '/admin/sound-console', element: <SoundSonicMasterConsolePage /> },
+          { path: '/admin/sonic-console', element: <SoundSonicMasterConsolePage /> },
+          { path: '/sound-sonic-console', element: <SoundSonicMasterConsolePage /> },
+          { path: '/dashboard/sound-sonic', element: <SoundSonicMasterConsolePage /> },
+          { path: '/admin/domain-edge-console', element: <DomainEdgeMasterConsolePage /> },
+          { path: '/admin/domain-console', element: <DomainEdgeMasterConsolePage /> },
+          { path: '/admin/edge-console', element: <DomainEdgeMasterConsolePage /> },
+          { path: '/domain-edge-console', element: <DomainEdgeMasterConsolePage /> },
+          { path: '/dashboard/domain-edge', element: <DomainEdgeMasterConsolePage /> },
+          { path: '/admin/gamification-rewards-console', element: <GamificationRewardsMasterConsolePage /> },
+          { path: '/admin/gamification-console', element: <GamificationRewardsMasterConsolePage /> },
+          { path: '/admin/rewards-console', element: <GamificationRewardsMasterConsolePage /> },
+          { path: '/gamification-rewards-console', element: <GamificationRewardsMasterConsolePage /> },
+          { path: '/dashboard/gamification-rewards', element: <GamificationRewardsMasterConsolePage /> },
           { path: '/admin/loansqr-console', element: <LoansQrMasterConsolePage /> },
           { path: '/admin/loans-console', element: <LoansQrMasterConsolePage /> },
           { path: '/admin/lending-console', element: <LoansQrMasterConsolePage /> },
@@ -632,6 +652,20 @@ export const routes: RouteObject[] = [
           { path: '/loans-console', element: <LoansQrMasterConsolePage /> },
           { path: '/lending-console', element: <LoansQrMasterConsolePage /> },
           { path: '/dashboard/loansqr', element: <LoansQrMasterConsolePage /> },
+          { path: '/admin/trends-swarm-console', element: <TrendsSwarmMasterConsolePage /> },
+          { path: '/admin/trends-console', element: <TrendsSwarmMasterConsolePage /> },
+          { path: '/admin/swarm-console', element: <TrendsSwarmMasterConsolePage /> },
+          { path: '/trends-swarm-console', element: <TrendsSwarmMasterConsolePage /> },
+          { path: '/trends-console', element: <TrendsSwarmMasterConsolePage /> },
+          { path: '/swarm-console', element: <TrendsSwarmMasterConsolePage /> },
+          { path: '/dashboard/trends-swarm', element: <TrendsSwarmMasterConsolePage /> },
+          { path: '/admin/comms-voip-console', element: <CommunicationsVoipMasterConsolePage /> },
+          { path: '/admin/voip-console', element: <CommunicationsVoipMasterConsolePage /> },
+          { path: '/admin/webrtc-console', element: <CommunicationsVoipMasterConsolePage /> },
+          { path: '/comms-voip-console', element: <CommunicationsVoipMasterConsolePage /> },
+          { path: '/voip-console', element: <CommunicationsVoipMasterConsolePage /> },
+          { path: '/webrtc-console', element: <CommunicationsVoipMasterConsolePage /> },
+          { path: '/dashboard/comms-voip', element: <CommunicationsVoipMasterConsolePage /> },
           { path: '/businessorganizations', element: <BusinessOrganizationsConsolePage /> },
           { path: '/admin/content', element: <ContentAdminDashboardPage /> },
           { path: '/contentadmindashboard', element: <ContentAdminDashboardPage /> },

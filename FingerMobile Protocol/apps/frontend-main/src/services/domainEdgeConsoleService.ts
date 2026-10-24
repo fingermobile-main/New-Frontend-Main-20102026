@@ -72,5 +72,9 @@ export const domainEdgeConsoleService = {
   async createSpawn(payload: { sub_console_name: string; slug: string; endpoint: string; category?: string }): Promise<DomainEdgeSpawn> {
     const res = await axios.post(`${API_BASE}/spawns`, payload);
     return res.data.data;
+  },
+
+  async spawnSubConsole(payload: { sub_console_name: string; slug: string; endpoint: string; category?: string }): Promise<DomainEdgeSpawn> {
+    return this.createSpawn(payload);
   }
 };
