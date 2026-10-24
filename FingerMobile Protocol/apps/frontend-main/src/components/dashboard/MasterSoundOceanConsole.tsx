@@ -12,8 +12,6 @@ import {
   SparklesIcon,
   ArrowUpTrayIcon,
   XMarkIcon,
-  MusicalNoteIcon,
-  ShieldCheckIcon,
   FolderArrowDownIcon
 } from '@heroicons/react/24/outline';
 import {
@@ -91,8 +89,7 @@ export const MasterSoundOceanConsole: React.FC = () => {
       setOverview(overviewData);
       setItems(itemsData);
       setSpawns(spawnsData);
-    } catch (err: any) {
-      console.error('Failed to load SoundOcean console data:', err);
+    } catch (_err: any) {
       showToast('Error syncing with SoundOcean library plane', 'wahala');
     } finally {
       setLoading(false);
@@ -984,6 +981,20 @@ export const MasterSoundOceanConsole: React.FC = () => {
                   onChange={e => setSpawnSlug(e.target.value)}
                   className="w-full text-slate-900 font-bold border border-slate-300 bg-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
                 />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-800 uppercase mb-1">Target Category</label>
+                <select
+                  value={spawnCategory}
+                  onChange={e => setSpawnCategory(e.target.value)}
+                  className="w-full text-slate-900 font-bold border border-slate-300 bg-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                >
+                  <option value="Master Stems">Master Stems</option>
+                  <option value="Raw Stems">Raw Stems</option>
+                  <option value="Samples & Loops">Samples & Loops</option>
+                  <option value="Dolby Atmos Bed">Dolby Atmos Bed</option>
+                </select>
               </div>
 
               <div>

@@ -13,8 +13,6 @@ import {
   ArrowUpTrayIcon,
   XMarkIcon,
   ShieldCheckIcon,
-  TagIcon,
-  CurrencyDollarIcon,
   SwatchIcon
 } from '@heroicons/react/24/outline';
 import {
@@ -86,8 +84,7 @@ export const MasterLuminaGalleryConsole: React.FC = () => {
       setOverview(overviewData);
       setItems(itemsData);
       setSpawns(spawnsData);
-    } catch (err: any) {
-      console.error('Failed to load Lumina Gallery console data:', err);
+    } catch {
       showToast('Error syncing with Lumina Gallery provenance plane', 'wahala');
     } finally {
       setLoading(false);
@@ -225,8 +222,7 @@ export const MasterLuminaGalleryConsole: React.FC = () => {
       setSelectedItemForUpload(null);
       showToast('Collectible asset uploaded direct to Express backend!', 'sweet');
       loadData();
-    } catch (err: any) {
-      console.error('Direct asset upload failed:', err);
+    } catch {
       showToast('Upload to backend failed', 'see_gobe');
     } finally {
       setUploading(false);
