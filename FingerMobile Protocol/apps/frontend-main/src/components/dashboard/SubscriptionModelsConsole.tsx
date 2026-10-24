@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Sparkles,
   Edit3,
   Plus,
   Trash2,
   CheckCircle,
-  RotateCcw,
   Save,
   Check,
   Search,
@@ -13,301 +12,26 @@ import {
   ArrowRight,
   ExternalLink,
   PlayCircle,
-  Copy,
-  Files,
-  CheckSquare,
-  Square,
-  FolderInput,
-  TrendingUp,
   Database,
-  RefreshCw
+  ArrowUp,
+  ArrowDown,
+  Pause,
+  Play,
+  Upload,
+  X,
+  TrendingUp,
+  ShieldCheck,
+  Cpu
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { api } from '../../services/api';
-
-
-export interface EditableSubscriptionModel {
-  id: string;
-  category: 'platform' | 'creator_channel' | 'gems_broadcast' | 'content_paywall';
-  name: string;
-  badge: string;
-  description: string;
-  monthlyFIC: number;
-  monthlyNaira: number;
-  billingCycle: 'monthly' | 'weekly' | 'annual' | 'per_item';
-  isFreeTier: boolean;
-  freeTrialDays: number;
-  features: string[];
-  targetPage: string;
-  pageRoute: string;
-  isPopular?: boolean;
-  status: 'active' | 'draft' | 'archived';
-  subscriberCount?: number;
-}
-
-const STORAGE_KEY = 'fingermobile_curated_subscription_models';
-const ACTIVE_TEST_KEY = 'fingermobile_active_test_subscription';
-
-export const CURATED_DEFAULT_MODELS: EditableSubscriptionModel[] = [
-  // 1. Core Platform Membership Plans (/subscriptions)
-  {
-    id: 'sub_platform_free',
-    category: 'platform',
-    name: 'Sovereign Explorer (Free Tier)',
-    badge: 'Free Forever',
-    description: 'Basic social discovery, standard P2P encrypted messaging, and free entry-level vault.',
-    monthlyFIC: 0,
-    monthlyNaira: 0,
-    billingCycle: 'monthly',
-    isFreeTier: true,
-    freeTrialDays: 365,
-    features: [
-      'Basic Social Posting & Discovery Feeds',
-      'Encrypted P2P Sovereign Messaging',
-      '10 GB Local Media Vault Quota',
-      'Standard Video & Music Streaming',
-      'Community Directory Access'
-    ],
-    targetPage: 'Subscriptions Page',
-    pageRoute: '/subscriptions',
-    status: 'active',
-    subscriberCount: 14250
-  },
-  {
-    id: 'sub_platform_rising',
-    category: 'platform',
-    name: 'Rising Creator',
-    badge: 'Starter Pack',
-    description: 'Designed for emerging artists, streamers, and photographers entering monetization.',
-    monthlyFIC: 1,
-    monthlyNaira: 100,
-    billingCycle: 'monthly',
-    isFreeTier: false,
-    freeTrialDays: 7,
-    features: [
-      'Verified Creator Badge',
-      'AI Hashtag & Caption Optimizer',
-      'Basic Analytics & Follower Graphs',
-      'Creator Storefront Setup (5.0% fee)',
-      'Audio Stem Downloads (5/mo)'
-    ],
-    targetPage: 'Subscriptions Page',
-    pageRoute: '/subscriptions',
-    status: 'active',
-    subscriberCount: 3820
-  },
-  {
-    id: 'sub_platform_growth',
-    category: 'platform',
-    name: 'Growth Creator',
-    badge: 'Visibility Pack',
-    description: 'Boost discoverability by 500% across the global feed and unlock 4K streaming.',
-    monthlyFIC: 5,
-    monthlyNaira: 500,
-    billingCycle: 'monthly',
-    isFreeTier: false,
-    freeTrialDays: 14,
-    isPopular: true,
-    features: [
-      '5x Algorithm Recommendation Priority',
-      '4K HDR Livestreaming on Dancia-4Tv',
-      'Affiliate Storefront & Paylink Tools',
-      'Lower Storefront Commission (3.5%)',
-      'Unlimited Audio Stem Downloads',
-      'Priority Support Queue'
-    ],
-    targetPage: 'Subscriptions Page',
-    pageRoute: '/subscriptions',
-    status: 'active',
-    subscriberCount: 8940
-  },
-  {
-    id: 'sub_platform_pro',
-    category: 'platform',
-    name: 'Professional Creator',
-    badge: 'Monetization Pro',
-    description: 'For full-time independent creators with active follower communities and product sales.',
-    monthlyFIC: 20,
-    monthlyNaira: 2000,
-    billingCycle: 'monthly',
-    isFreeTier: false,
-    freeTrialDays: 14,
-    features: [
-      'Gold Verified Sovereign Checkmark',
-      'Ad Revenue Sharing (70/30 split)',
-      'Custom Channel Subscription Creator',
-      'Lowest Storefront Commission (2.0%)',
-      '7-Day Accelerated Escrow Releases',
-      'AI Video Enhancement & Mastering'
-    ],
-    targetPage: 'Subscriptions Page',
-    pageRoute: '/subscriptions',
-    status: 'active',
-    subscriberCount: 2150
-  },
-  {
-    id: 'sub_platform_enterprise',
-    category: 'platform',
-    name: 'Enterprise / Sovereign',
-    badge: 'Media Network',
-    description: 'For media companies, record labels, and sovereign franchise operators.',
-    monthlyFIC: 100,
-    monthlyNaira: 10000,
-    billingCycle: 'monthly',
-    isFreeTier: false,
-    freeTrialDays: 30,
-    features: [
-      'Platinum Sovereign Network Badge',
-      'Ultra-Low Storefront Fee (0.75%)',
-      'Ultra-Fast 3-Day Escrow Payouts',
-      'Dedicated Account Executive',
-      'Custom Domain Routing & API Access',
-      'White-Label Telemetry Dashboards'
-    ],
-    targetPage: 'Subscriptions Page',
-    pageRoute: '/subscriptions',
-    status: 'active',
-    subscriberCount: 420
-  },
-
-  // 2. Creator Channel Memberships (/monetization)
-  {
-    id: 'sub_creator_free_supporter',
-    category: 'creator_channel',
-    name: 'Free Community Supporter',
-    badge: 'Supporter Tier',
-    description: 'Complimentary tier for channel followers to participate in community chats.',
-    monthlyFIC: 0,
-    monthlyNaira: 0,
-    billingCycle: 'monthly',
-    isFreeTier: true,
-    freeTrialDays: 365,
-    features: [
-      'Public Video & Community Post Feed',
-      'Channel Supporter Chat Badge',
-      'Open Forum Discussion Access',
-      'Creator Notification Alerts'
-    ],
-    targetPage: 'Creator Monetization & Channels',
-    pageRoute: '/monetization',
-    status: 'active',
-    subscriberCount: 9600
-  },
-  {
-    id: 'sub_creator_vip_pass',
-    category: 'creator_channel',
-    name: 'VIP Backstage Pass',
-    badge: 'Exclusive VIP',
-    description: 'Direct backstage access, exclusive livestream replay archives, and stem files.',
-    monthlyFIC: 15,
-    monthlyNaira: 1500,
-    billingCycle: 'monthly',
-    isFreeTier: false,
-    freeTrialDays: 7,
-    features: [
-      'Master FLAC Audio Stem Downloads',
-      'Behind-the-Scenes Vlogs & Early Releases',
-      'Exclusive VIP Live Stream Access',
-      'Direct Creator Question Upvoting'
-    ],
-    targetPage: 'Creator Monetization & Channels',
-    pageRoute: '/monetization',
-    status: 'active',
-    subscriberCount: 1870
-  },
-
-  // 3. Gems & Broadcast Subscriptions (/gems)
-  {
-    id: 'sub_gems_basic_broadcast',
-    category: 'gems_broadcast',
-    name: 'Basic Broadcast Feed (Free Tier)',
-    badge: 'Free Broadcast',
-    description: 'Essential real-time notifications and up to 5 daily discovery broadcast updates.',
-    monthlyFIC: 0,
-    monthlyNaira: 0,
-    billingCycle: 'monthly',
-    isFreeTier: true,
-    freeTrialDays: 365,
-    features: [
-      '5 Daily Live Broadcast Updates',
-      'Standard Audio/Video Bitrate',
-      'Public Broadcast Channels',
-      'Standard Push Notifications'
-    ],
-    targetPage: 'Gems & Broadcast Settings',
-    pageRoute: '/gems',
-    status: 'active',
-    subscriberCount: 18400
-  },
-  {
-    id: 'sub_gems_premium_broadcast',
-    category: 'gems_broadcast',
-    name: 'Premium Crystal Broadcast',
-    badge: 'Ultra High Speed',
-    description: 'High-frequency broadcast updates, instant priority alerts, and low-latency audio.',
-    monthlyFIC: 10,
-    monthlyNaira: 1000,
-    billingCycle: 'monthly',
-    isFreeTier: false,
-    freeTrialDays: 7,
-    features: [
-      '20+ High-Priority Daily Updates',
-      'Ultra Low Latency Broadcast Channels',
-      'High-Definition 4K Streaming Feeds',
-      'Instant Emergency & Price Alerts'
-    ],
-    targetPage: 'Gems & Broadcast Settings',
-    pageRoute: '/gems',
-    status: 'active',
-    subscriberCount: 3120
-  },
-
-  // 4. Content Paywall Subscriptions (/post-publishing-settings)
-  {
-    id: 'sub_paywall_public_free',
-    category: 'content_paywall',
-    name: 'Free Public Media Feed',
-    badge: 'Open Access',
-    description: 'Standard public publishing tier accessible to every authenticated platform user.',
-    monthlyFIC: 0,
-    monthlyNaira: 0,
-    billingCycle: 'per_item',
-    isFreeTier: true,
-    freeTrialDays: 365,
-    features: [
-      'Unrestricted Public Post Reading',
-      'Standard Photo & Video Viewing',
-      'Public Comments & Likes',
-      'Social Share Links'
-    ],
-    targetPage: 'Post Publishing Settings',
-    pageRoute: '/post-publishing-settings',
-    status: 'active',
-    subscriberCount: 45000
-  },
-  {
-    id: 'sub_paywall_subscriber_pass',
-    category: 'content_paywall',
-    name: 'Subscriber-Only Media Pass',
-    badge: 'Paywalled Content',
-    description: 'Episodic short dramas, master audio tracks, and premium masterclasses.',
-    monthlyFIC: 8,
-    monthlyNaira: 800,
-    billingCycle: 'monthly',
-    isFreeTier: false,
-    freeTrialDays: 3,
-    features: [
-      'Full Access to Paywalled Posts',
-      'Auto-Unlock Short Dramas on Dancia',
-      'High-Resolution Raw Photo Downloads',
-      'Masterclass Video Tutorials'
-    ],
-    targetPage: 'Post Publishing Settings',
-    pageRoute: '/post-publishing-settings',
-    status: 'active',
-    subscriberCount: 5230
-  }
-];
+import {
+  SubscriptionModelItem,
+  SubscriptionModelsOverview,
+  SubscriptionModelsSpawn,
+  CreateSubscriptionModelPayload
+} from '../../types/subscriptionModelsConsole';
+import { subscriptionModelsConsoleService } from '../../services/subscriptionModelsConsoleService';
+import audioEngine, { AfricanVoiceLine } from '../../services/SuperViAudioEngine';
 
 export const SUBSCRIPTION_PAGES_DIRECTORY = [
   {
@@ -354,371 +78,465 @@ export const SUBSCRIPTION_PAGES_DIRECTORY = [
   }
 ];
 
-interface Props {
+export interface Props {
   sourceDashboard?: 'MasterDashboard' | 'StercsDashboard';
 }
 
 export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = 'MasterDashboard' }) => {
   const navigate = useNavigate();
-  const [models, setModels] = useState<EditableSubscriptionModel[]>(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) return JSON.parse(saved);
-    } catch {
-      /* Fallback to CURATED_DEFAULT_MODELS */
-    }
-    return CURATED_DEFAULT_MODELS;
-  });
 
+  // State
+  const [items, setItems] = useState<SubscriptionModelItem[]>([]);
+  const [overview, setOverview] = useState<SubscriptionModelsOverview | null>(null);
+  const [spawns, setSpawns] = useState<SubscriptionModelsSpawn[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const [activeCategory, setActiveCategory] = useState<string>('all');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [onlyFreeTiers, setOnlyFreeTiers] = useState(false);
-  const [editingModel, setEditingModel] = useState<EditableSubscriptionModel | null>(null);
-  const [isCreatingNew, setIsCreatingNew] = useState(false);
-  const [activeTestTier, setActiveTestTier] = useState<string | null>(() => {
-    return localStorage.getItem(ACTIVE_TEST_KEY) || 'sub_platform_free';
-  });
-  const [savedBanner, setSavedBanner] = useState<string | null>(null);
+  const [selectedStatus, setSelectedStatus] = useState<string>('all');
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [onlyFreeTiers, setOnlyFreeTiers] = useState<boolean>(false);
+  const [activeTestTier, setActiveTestTier] = useState<string | null>('sub_platform_free');
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
 
-  const [isPersisting, setIsPersisting] = useState(false);
-  const [dbSyncStatus, setDbSyncStatus] = useState<'synced' | 'syncing' | 'offline'>('synced');
+  // Modals
+  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
+  const [isSpawnModalOpen, setIsSpawnModalOpen] = useState<boolean>(false);
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState<boolean>(false);
+  const [uploadFile, setUploadFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState<boolean>(false);
 
-  // Load from PostgreSQL database on mount
+  // Form State
+  const [editingItem, setEditingItem] = useState<SubscriptionModelItem | null>(null);
+  const [formId, setFormId] = useState<string>('');
+  const [formName, setFormName] = useState<string>('');
+  const [formCategory, setFormCategory] = useState<string>('platform');
+  const [formMonthlyFic, setFormMonthlyFic] = useState<number>(0);
+  const [formAnnualFic, setFormAnnualFic] = useState<number>(0);
+  const [formMonthlyNgn, setFormMonthlyNgn] = useState<number>(0);
+  const [formAnnualNgn, setFormAnnualNgn] = useState<number>(0);
+  const [formIsFreeTier, setFormIsFreeTier] = useState<boolean>(false);
+  const [formBadge, setFormBadge] = useState<string>('Standard');
+  const [formDescription, setFormDescription] = useState<string>('');
+  const [formFeaturesText, setFormFeaturesText] = useState<string>('');
+  const [formTargetVolumeFic, setFormTargetVolumeFic] = useState<number>(0);
+
+  // Spawn Form State
+  const [spawnName, setSpawnName] = useState<string>('');
+  const [spawnSlug, setSpawnSlug] = useState<string>('');
+  const [spawnCategory, setSpawnCategory] = useState<string>('Monetization');
+  const [spawnEndpoint, setSpawnEndpoint] = useState<string>('/api/subscription-models-console/spawns');
+
+  const showToast = (msg: string, voice?: AfricanVoiceLine) => {
+    setToastMessage(msg);
+    if (voice) {
+      audioEngine.playVoiceLine(voice);
+    }
+    setTimeout(() => {
+      setToastMessage(null);
+    }, 4000);
+  };
+
+  const loadData = useCallback(async () => {
+    try {
+      setLoading(true);
+      const [overviewData, itemsData, spawnsData] = await Promise.all([
+        subscriptionModelsConsoleService.getOverview(),
+        subscriptionModelsConsoleService.getItems({
+          category: activeCategory === 'all' ? undefined : activeCategory,
+          status: selectedStatus === 'all' ? undefined : selectedStatus,
+          search: searchQuery.trim() || undefined
+        }),
+        subscriptionModelsConsoleService.getSpawns()
+      ]);
+      setOverview(overviewData);
+      setItems(itemsData);
+      setSpawns(spawnsData);
+    } catch (err: any) {
+      console.error('Failed to load subscription models from PostgreSQL:', err);
+      showToast('Error syncing with PostgreSQL Monetization DB', 'wahala');
+    } finally {
+      setLoading(false);
+    }
+  }, [activeCategory, selectedStatus, searchQuery]);
+
   useEffect(() => {
-    let isMounted = true;
-    const fetchModels = async () => {
-      try {
-        const response = await api.get('/monetization/subscription-models');
-        if (response.data?.models && response.data.models.length > 0 && isMounted) {
-          const merged = response.data.models.map((dbModel: any) => {
-            const defaultMatch = CURATED_DEFAULT_MODELS.find((d) => d.id === dbModel.id);
-            return {
-              ...dbModel,
-              targetPage: dbModel.targetPage || defaultMatch?.targetPage || 'Subscriptions Page',
-              pageRoute: dbModel.pageRoute || defaultMatch?.pageRoute || '/subscriptions',
-              billingCycle: dbModel.billingCycle || defaultMatch?.billingCycle || 'monthly',
-              freeTrialDays: dbModel.freeTrialDays ?? defaultMatch?.freeTrialDays ?? (dbModel.isFreeTier ? 365 : 7),
-              monthlyNaira: dbModel.monthlyNaira ?? dbModel.monthlyNGN ?? defaultMatch?.monthlyNaira ?? 0,
-            };
-          });
-          setModels(merged);
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
-          setDbSyncStatus('synced');
-        } else if (isMounted) {
-          // If database is empty, seed defaults to PostgreSQL
-          api.put('/monetization/subscription-models/batch', { models: CURATED_DEFAULT_MODELS }).catch(() => {});
-        }
-      } catch (err) {
-        console.warn('Could not reach backend monetization db, running with local cache', err);
-        if (isMounted) setDbSyncStatus('offline');
+    loadData();
+  }, [loadData]);
+
+  const handleToggleFreeze = async (item: SubscriptionModelItem) => {
+    try {
+      const updated = await subscriptionModelsConsoleService.toggleFreeze(item.id);
+      setItems(prev => prev.map(i => (i.id === item.id ? updated : i)));
+      if (updated.status === 'frozen') {
+        showToast(`Tier "${updated.name}" quarantined / frozen from enrollments!`, 'wahala');
+      } else {
+        showToast(`Tier "${updated.name}" restored to active enrollment catalog!`, 'sweet');
       }
-    };
+      loadData();
+    } catch (err: any) {
+      showToast('Failed to switch tier freeze status', 'see_gobe');
+    }
+  };
 
-    fetchModels();
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+  const handleReorder = async (currentIndex: number, direction: 'UP' | 'DOWN') => {
+    const targetIndex = direction === 'UP' ? currentIndex - 1 : currentIndex + 1;
+    if (targetIndex < 0 || targetIndex >= items.length) return;
 
-  // Sync to PostgreSQL database and mirror to localStorage
-  const saveModelsToStorage = async (updated: EditableSubscriptionModel[], deletedId?: string) => {
-    setModels(updated);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-    window.dispatchEvent(new CustomEvent('fingermobile_subscriptions_changed', { detail: updated }));
-    setIsPersisting(true);
-    setDbSyncStatus('syncing');
+    const sourceItem = items[currentIndex];
+    const targetItem = items[targetIndex];
 
     try {
-      if (deletedId) {
-        await api.delete(`/monetization/subscription-models/${deletedId}`);
-      }
-      await api.put('/monetization/subscription-models/batch', { models: updated });
-      setDbSyncStatus('synced');
-      setSavedBanner('✅ Subscription models saved & persisted to PostgreSQL database successfully!');
-    } catch (error) {
-      console.error('Failed to persist models to backend:', error);
-      setDbSyncStatus('offline');
-      setSavedBanner('⚠️ Saved locally. Will retry synchronizing to PostgreSQL once connected.');
+      const reordered = await subscriptionModelsConsoleService.reorderItems(sourceItem.id, targetItem.id);
+      setItems(reordered);
+      showToast('Subscription tiers resequenced in PostgreSQL!', 'gbaski');
+    } catch (err: any) {
+      showToast('Failed to reorder subscription tiers in database', 'wahala');
+    }
+  };
+
+  const handleDelete = async (item: SubscriptionModelItem) => {
+    if (!window.confirm(`Are you sure you want to delete tier "${item.name}" from PostgreSQL?`)) return;
+
+    try {
+      await subscriptionModelsConsoleService.deleteItem(item.id);
+      setItems(prev => prev.filter(i => i.id !== item.id));
+      showToast(`Subscription tier "${item.name}" deleted from database`, 'owo_ni_koko');
+      loadData();
+    } catch (err: any) {
+      showToast('Failed to delete subscription model', 'see_gobe');
+    }
+  };
+
+  const handleCreate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formName) {
+      showToast('Tier Name is required', 'wahala');
+      return;
+    }
+
+    try {
+      const parsedFeatures = formFeaturesText.split('\n').map(s => s.trim()).filter(Boolean);
+      const generatedId = formId.trim() || `sub_${Date.now()}`;
+      const payload: CreateSubscriptionModelPayload = {
+        id: generatedId,
+        name: formName,
+        category: formCategory,
+        monthly_fic: Number(formMonthlyFic),
+        annual_fic: Number(formAnnualFic) || Number(formMonthlyFic) * 10,
+        monthly_ngn: Number(formMonthlyNgn) || Number(formMonthlyFic) * 100,
+        annual_ngn: Number(formAnnualNgn) || (Number(formMonthlyNgn) || Number(formMonthlyFic) * 100) * 10,
+        is_free_tier: Boolean(formIsFreeTier || Number(formMonthlyFic) === 0),
+        badge: formBadge,
+        description: formDescription,
+        features: parsedFeatures,
+        target_annual_volume_fic: Number(formTargetVolumeFic)
+      };
+
+      const created = await subscriptionModelsConsoleService.createItem(payload);
+      setItems(prev => [...prev, created]);
+      setIsAddModalOpen(false);
+      resetForm();
+      showToast(`Tier "${created.name}" created and committed to PostgreSQL!`, 'great_combo');
+      loadData();
+    } catch (err: any) {
+      showToast('Failed to create subscription tier in PostgreSQL', 'see_gobe');
+    }
+  };
+
+  const handleOpenEdit = (item: SubscriptionModelItem) => {
+    setEditingItem(item);
+    setFormId(item.id);
+    setFormName(item.name);
+    setFormCategory(item.category);
+    setFormMonthlyFic(Number(item.monthly_fic));
+    setFormAnnualFic(Number(item.annual_fic));
+    setFormMonthlyNgn(Number(item.monthly_ngn));
+    setFormAnnualNgn(Number(item.annual_ngn));
+    setFormIsFreeTier(Boolean(item.is_free_tier));
+    setFormBadge(item.badge || 'Standard');
+    setFormDescription(item.description || '');
+    setFormFeaturesText((item.features || []).join('\n'));
+    setFormTargetVolumeFic(Number(item.target_annual_volume_fic || 0));
+    setIsEditModalOpen(true);
+  };
+
+  const handleUpdate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingItem) return;
+
+    try {
+      const parsedFeatures = formFeaturesText.split('\n').map(s => s.trim()).filter(Boolean);
+      const payload: Partial<CreateSubscriptionModelPayload> = {
+        name: formName,
+        category: formCategory,
+        monthly_fic: Number(formMonthlyFic),
+        annual_fic: Number(formAnnualFic),
+        monthly_ngn: Number(formMonthlyNgn),
+        annual_ngn: Number(formAnnualNgn),
+        is_free_tier: Boolean(formIsFreeTier || Number(formMonthlyFic) === 0),
+        badge: formBadge,
+        description: formDescription,
+        features: parsedFeatures,
+        target_annual_volume_fic: Number(formTargetVolumeFic)
+      };
+
+      const updated = await subscriptionModelsConsoleService.updateItem(editingItem.id, payload);
+      setItems(prev => prev.map(i => (i.id === editingItem.id ? updated : i)));
+      setIsEditModalOpen(false);
+      setEditingItem(null);
+      resetForm();
+      showToast(`Tier "${updated.name}" updated successfully in database!`, 'blessings');
+      loadData();
+    } catch (err: any) {
+      showToast('Failed to update subscription tier', 'wahala');
+    }
+  };
+
+  const handleUploadSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!uploadFile) {
+      showToast('Please select a tier document or asset', 'wahala');
+      return;
+    }
+
+    try {
+      setUploading(true);
+      const res = await subscriptionModelsConsoleService.uploadAsset(uploadFile);
+      setIsUploadModalOpen(false);
+      setUploadFile(null);
+      showToast(`Asset "${res.filename}" uploaded direct to Express backend!`, 'sweet');
+    } catch (err: any) {
+      console.error('Direct asset upload failed:', err);
+      showToast('Upload to backend failed', 'see_gobe');
     } finally {
-      setIsPersisting(false);
-      setTimeout(() => setSavedBanner(null), 3500);
+      setUploading(false);
     }
   };
 
-  const handleResetDefaults = async () => {
-    if (window.confirm('Reset all subscription models to platform default curated models in PostgreSQL?')) {
-      await saveModelsToStorage(CURATED_DEFAULT_MODELS);
+  const handleSpawn = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!spawnName || !spawnSlug) {
+      showToast('Sub-Console Name and Slug are required', 'wahala');
+      return;
+    }
+
+    try {
+      const newSpawn = await subscriptionModelsConsoleService.spawnSubConsole({
+        sub_console_name: spawnName,
+        slug: spawnSlug,
+        endpoint: spawnEndpoint,
+        category: spawnCategory
+      });
+      setSpawns(prev => [...prev, newSpawn]);
+      setIsSpawnModalOpen(false);
+      setSpawnName('');
+      setSpawnSlug('');
+      showToast(`Monetization Sub-Console "${newSpawn.sub_console_name}" spawned!`, 'colossal_combo');
+      loadData();
+    } catch (err: any) {
+      showToast('Failed to spawn sub-console', 'wahala');
     }
   };
 
-  const handleTestFreeTier = (model: EditableSubscriptionModel) => {
-    setActiveTestTier(model.id);
-    localStorage.setItem(ACTIVE_TEST_KEY, model.id);
-    localStorage.setItem('user_active_tier_name', model.name);
-    localStorage.setItem('user_active_tier_fic', String(model.monthlyFIC));
+  const handleTestFreeTier = (item: SubscriptionModelItem) => {
+    setActiveTestTier(item.id);
     window.dispatchEvent(
       new CustomEvent('fingermobile_tier_test_activated', {
-        detail: { modelId: model.id, modelName: model.name, isFreeTier: model.isFreeTier }
+        detail: { modelId: item.id, modelName: item.name, isFreeTier: item.is_free_tier }
       })
     );
-    setSavedBanner(`🎉 FREE TIER TEST ACTIVE: "${model.name}" is now live in your session with full free benefits!`);
-    setTimeout(() => setSavedBanner(null), 4000);
+    showToast(`FREE TIER TEST ACTIVE: "${item.name}" live in session!`, 'sweet');
   };
 
-  const handleSaveEdit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!editingModel) return;
-
-    if (isCreatingNew) {
-      const updated = [...models, { ...editingModel, id: `sub_${Date.now()}` }];
-      await saveModelsToStorage(updated);
-    } else {
-      const updated = models.map((m) => (m.id === editingModel.id ? editingModel : m));
-      await saveModelsToStorage(updated);
-    }
-    setEditingModel(null);
-    setIsCreatingNew(false);
-  };
-
-  const [selectedIds, setSelectedIds] = useState<string[]>([]);
-  const [copiedBuffer, setCopiedBuffer] = useState<EditableSubscriptionModel[]>([]);
-  const [targetMoveCategory, setTargetMoveCategory] = useState<'platform' | 'creator_channel' | 'gems_broadcast' | 'content_paywall'>('platform');
-
-  const handleToggleSelect = (id: string) => {
-    setSelectedIds((prev) => (prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]));
-  };
-
-  const handleSelectAll = (visibleIds: string[]) => {
-    if (selectedIds.length === visibleIds.length) {
-      setSelectedIds([]);
-    } else {
-      setSelectedIds(visibleIds);
-    }
-  };
-
-  const handleDuplicateSingle = (model: EditableSubscriptionModel) => {
-    const clone: EditableSubscriptionModel = {
-      ...model,
-      id: `sub_${Date.now()}_${Math.random().toString(36).substr(2, 4)}`,
-      name: `${model.name} (Copy)`,
-      badge: `${model.badge}`,
-      subscriberCount: 0
-    };
-    const updated = [...models, clone];
-    saveModelsToStorage(updated);
-    setSavedBanner(`📋 Duplicated subscription card: "${clone.name}"`);
-  };
-
-  const handleDuplicateSelected = () => {
-    if (selectedIds.length === 0) return;
-    const toClone = models.filter((m) => selectedIds.includes(m.id));
-    const clones: EditableSubscriptionModel[] = toClone.map((model, idx) => ({
-      ...model,
-      id: `sub_${Date.now()}_${idx}_${Math.random().toString(36).substr(2, 4)}`,
-      name: `${model.name} (Copy)`,
-      badge: `${model.badge}`,
-      subscriberCount: 0
-    }));
-    const updated = [...models, ...clones];
-    saveModelsToStorage(updated);
-    setSelectedIds([]);
-    setSavedBanner(`📋 Successfully duplicated ${clones.length} subscription cards!`);
-  };
-
-  const handleCopySelected = () => {
-    if (selectedIds.length === 0) return;
-    const toCopy = models.filter((m) => selectedIds.includes(m.id));
-    setCopiedBuffer(toCopy);
-    setSavedBanner(`📑 Copied ${toCopy.length} card(s) to clipboard buffer! Ready to paste.`);
-  };
-
-  const handlePasteBuffer = () => {
-    if (copiedBuffer.length === 0) return;
-    const targetCat = activeCategory !== 'all' ? (activeCategory as any) : 'platform';
-    const pasted: EditableSubscriptionModel[] = copiedBuffer.map((model, idx) => ({
-      ...model,
-      id: `sub_${Date.now()}_paste_${idx}`,
-      category: targetCat,
-      name: `${model.name} (Pasted)`,
-      badge: `${model.badge}`,
-      subscriberCount: 0
-    }));
-    const updated = [...models, ...pasted];
-    saveModelsToStorage(updated);
-    setSavedBanner(`📥 Pasted ${pasted.length} card(s) into category: "${targetCat}"!`);
-  };
-
-  const handleMoveSelected = () => {
-    if (selectedIds.length === 0) return;
-    const updated = models.map((m) => (selectedIds.includes(m.id) ? { ...m, category: targetMoveCategory } : m));
-    saveModelsToStorage(updated);
-    const count = selectedIds.length;
-    setSelectedIds([]);
-    setSavedBanner(`🔄 Moved ${count} card(s) to category: "${targetMoveCategory}"!`);
-  };
-
-  const handleDeleteSelected = () => {
-    if (selectedIds.length === 0) return;
-    if (window.confirm(`Delete ${selectedIds.length} selected subscription cards?`)) {
-      const updated = models.filter((m) => !selectedIds.includes(m.id));
-      saveModelsToStorage(updated);
-      setSelectedIds([]);
-      setSavedBanner(`🗑️ Deleted ${selectedIds.length} subscription cards.`);
-    }
-  };
-
-  const handleDeleteModel = async (id: string) => {
-    if (window.confirm('Are you sure you want to delete this subscription card?')) {
-      const updated = models.filter((m) => m.id !== id);
-      setSelectedIds((prev) => prev.filter((item) => item !== id));
-      await saveModelsToStorage(updated, id);
-    }
-  };
-
-  const handleSyncToFinancialPnl = async () => {
-    const totalMonthlyNaira = models.reduce((acc, m) => {
-      const subs = m.subscriberCount || 100;
-      const nairaRate = m.monthlyNaira || (m.monthlyFIC * 65);
+  const handleSyncToFinancialPnl = () => {
+    const totalMonthlyNaira = items.reduce((acc, m) => {
+      const subs = m.subscriber_count || 100;
+      const nairaRate = Number(m.monthly_ngn) || (Number(m.monthly_fic) * 100);
       return acc + (subs * nairaRate);
     }, 0);
     const annualTotalNgn = totalMonthlyNaira * 12;
-    localStorage.setItem('fingermobile_synced_subscription_pnl_annual_ngn', String(annualTotalNgn));
+
     window.dispatchEvent(
       new CustomEvent('fingermobile_subscriptions_pnl_sync', {
-        detail: { annualTotalNgn, totalMonthlyNaira, count: models.length }
+        detail: { annualTotalNgn, totalMonthlyNaira, count: items.length }
       })
     );
-    try {
-      await api.put('/monetization/subscription-models/batch', { models });
-    } catch {}
-
-    setSavedBanner(`📊 Subscriptions synced to Financial P&L and PostgreSQL! Projected Annual Gross: ₦${annualTotalNgn.toLocaleString()} across ${models.length} active models.`);
-    setTimeout(() => setSavedBanner(null), 4000);
+    showToast(`P&L Synchronized! Projected Annual Gross: ₦${annualTotalNgn.toLocaleString()}`, 'gbaski');
   };
 
-  const filteredModels = models.filter((m) => {
-    if (activeCategory !== 'all' && m.category !== activeCategory) return false;
-    if (onlyFreeTiers && !m.isFreeTier) return false;
-    if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase();
-      const matchName = m.name.toLowerCase().includes(q);
-      const matchDesc = m.description.toLowerCase().includes(q);
-      const matchFeatures = m.features.some((f) => f.toLowerCase().includes(q));
-      if (!matchName && !matchDesc && !matchFeatures) return false;
-    }
+  const resetForm = () => {
+    setFormId('');
+    setFormName('');
+    setFormCategory('platform');
+    setFormMonthlyFic(0);
+    setFormAnnualFic(0);
+    setFormMonthlyNgn(0);
+    setFormAnnualNgn(0);
+    setFormIsFreeTier(false);
+    setFormBadge('Standard');
+    setFormDescription('');
+    setFormFeaturesText('');
+    setFormTargetVolumeFic(0);
+  };
+
+  const filteredItems = items.filter(m => {
+    if (onlyFreeTiers && !m.is_free_tier) return false;
     return true;
   });
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 bg-slate-50 p-6 rounded-2xl border border-slate-300">
+      {/* Toast Alert */}
+      {toastMessage && (
+        <div className="fixed bottom-6 right-6 z-50 bg-slate-900 border border-amber-500/50 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center space-x-3 transition-all">
+          <Sparkles className="w-5 h-5 text-amber-400 animate-spin" />
+          <span className="text-sm font-semibold text-slate-100">{toastMessage}</span>
+        </div>
+      )}
+
       {/* Header Banner */}
-      <div className="rounded-2xl p-6 bg-gradient-to-r from-blue-900/40 via-indigo-900/30 to-purple-900/40 border border-blue-500/30 shadow-xl backdrop-blur-sm">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="space-y-1.5">
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="px-2.5 py-1 rounded-full text-xs font-mono font-bold bg-blue-500/20 text-blue-300 border border-blue-400/40 flex items-center gap-1">
-                <Sparkles className="w-3.5 h-3.5 text-blue-400" />
-                {sourceDashboard === 'StercsDashboard' ? 'STERCS Curation Engine' : 'Master Control Console'}
-              </span>
-              <span className={`px-2.5 py-1 rounded-full text-xs font-mono font-bold flex items-center gap-1.5 ${
-                dbSyncStatus === 'synced'
-                  ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-400/40'
-                  : dbSyncStatus === 'syncing'
-                    ? 'bg-amber-500/20 text-amber-300 border border-amber-400/40 animate-pulse'
-                    : 'bg-rose-500/20 text-rose-300 border border-rose-400/40'
-              }`}>
-                <Database className="w-3.5 h-3.5" />
-                {dbSyncStatus === 'synced' ? 'PostgreSQL Live Persisted' : dbSyncStatus === 'syncing' ? 'Syncing to PostgreSQL...' : 'Offline Local Cache'}
-              </span>
-            </div>
-            <h2 className="text-2xl font-black text-white tracking-tight">
-              Subscription Models & Free Tier Sandbox
-            </h2>
-            <p className="text-sm text-slate-300 max-w-2xl">
-              Curate, configure, and edit subscription tiers across all platform pages. Test out Free Tiers instantly in the frontend with real session simulation.
-            </p>
+      <div className="bg-white border border-slate-300 rounded-2xl p-6 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div className="space-y-1">
+          <div className="flex items-center space-x-2 flex-wrap">
+            <span className="px-2.5 py-1 rounded-full text-xs font-black bg-blue-100 text-blue-950 border border-blue-400 flex items-center space-x-1">
+              <Sparkles className="w-3.5 h-3.5 text-blue-800" />
+              <span>{sourceDashboard === 'StercsDashboard' ? 'STERCS Curation Engine' : 'Master Control Console'}</span>
+            </span>
+            <span className="px-2.5 py-1 rounded-full text-xs font-black bg-emerald-100 text-emerald-950 border border-emerald-400 flex items-center space-x-1">
+              <Database className="w-3.5 h-3.5 text-emerald-800" />
+              <span>PostgreSQL Live Persisted</span>
+            </span>
           </div>
-
-          <div className="flex flex-wrap items-center gap-2.5">
-            <button
-              onClick={() => {
-                setEditingModel({
-                  id: '',
-                  category: 'platform',
-                  name: 'New Custom Tier',
-                  badge: 'Custom',
-                  description: 'Description of the new subscription tier.',
-                  monthlyFIC: 10,
-                  monthlyNaira: 1000,
-                  billingCycle: 'monthly',
-                  isFreeTier: false,
-                  freeTrialDays: 7,
-                  features: ['Feature 1', 'Feature 2'],
-                  targetPage: 'Custom Module',
-                  pageRoute: '/subscriptions',
-                  status: 'active'
-                });
-                setIsCreatingNew(true);
-              }}
-              className="px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-bold shadow-lg shadow-blue-500/20 flex items-center gap-1.5 transition-all"
-            >
-              <Plus className="w-4 h-4" />
-              <span>Create Model</span>
-            </button>
-
-            <button
-              onClick={handleResetDefaults}
-              className="px-3.5 py-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-slate-300 text-xs font-semibold flex items-center gap-1.5 transition-colors"
-              title="Reset to Curated Platform Defaults"
-            >
-              <RotateCcw className="w-3.5 h-3.5" />
-              <span>Reset Defaults</span>
-            </button>
-          </div>
+          <h1 className="text-2xl font-black text-slate-900 tracking-tight">
+            Subscription Models & Monetization Tiers Console
+          </h1>
+          <p className="text-sm font-medium text-slate-700 max-w-3xl">
+            Micromanage platform memberships, creator channel passes, and high-frequency gems tiers directly in PostgreSQL. Direct multipart upload with zero client localStorage fallback.
+          </p>
         </div>
 
-        {savedBanner && (
-          <div className="mt-4 p-3 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-200 text-xs font-semibold animate-fadeIn flex items-center gap-2">
-            <CheckCircle className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-            <span>{savedBanner}</span>
-          </div>
-        )}
+        <div className="flex flex-wrap items-center gap-2.5 w-full md:w-auto">
+          <button
+            onClick={() => {
+              showToast('Syncing tiers with PostgreSQL Monetization DB...', 'blessings');
+              loadData();
+            }}
+            className="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 text-xs font-bold flex items-center space-x-1.5 transition"
+          >
+            <Database className="w-4 h-4 text-slate-700" />
+            <span>Sync DB</span>
+          </button>
+
+          <button
+            onClick={() => setIsUploadModalOpen(true)}
+            className="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 text-xs font-bold flex items-center space-x-1.5 transition"
+          >
+            <Upload className="w-4 h-4 text-slate-700" />
+            <span>Upload Asset</span>
+          </button>
+
+          <button
+            onClick={() => setIsSpawnModalOpen(true)}
+            className="px-3.5 py-2 rounded-xl bg-purple-100 hover:bg-purple-200 text-purple-950 border border-purple-300 text-xs font-bold flex items-center space-x-1.5 transition"
+          >
+            <Cpu className="w-4 h-4 text-purple-800" />
+            <span>Spawn Sub-Console</span>
+          </button>
+
+          <button
+            onClick={() => {
+              resetForm();
+              setIsAddModalOpen(true);
+            }}
+            className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-black shadow flex items-center space-x-1.5 transition"
+          >
+            <Plus className="w-4 h-4 text-white" />
+            <span>Create Tier</span>
+          </button>
+        </div>
       </div>
 
-      {/* Pages Directory Accordion / Grid */}
-      <div className="rounded-2xl p-5 bg-slate-900/60 border border-slate-800 backdrop-blur-sm">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2">
-            <Layers className="w-4 h-4 text-sky-400" />
-            <h3 className="text-sm font-bold text-white uppercase tracking-wider">
-              Platform Pages Requiring or Offering Subscriptions ({SUBSCRIPTION_PAGES_DIRECTORY.length})
-            </h3>
+      {/* Overview Analytics Bar */}
+      {overview && (
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          <div className="bg-white border border-slate-300 p-4 rounded-xl shadow-sm">
+            <span className="text-xs font-bold text-slate-700 uppercase tracking-wider block">Total Tiers</span>
+            <span className="text-2xl font-black text-slate-900 mt-1 block">{overview.summary.total_items}</span>
+            <span className="text-xs font-semibold text-emerald-800 mt-1 block">Active: {overview.summary.active_count}</span>
           </div>
-          <span className="text-[11px] text-slate-300 font-medium">Click any page to test its live frontend</span>
+
+          <div className="bg-white border border-slate-300 p-4 rounded-xl shadow-sm">
+            <span className="text-xs font-bold text-slate-700 uppercase tracking-wider block">Total Subscribers</span>
+            <span className="text-2xl font-black text-blue-900 mt-1 block">
+              {Number(overview.summary.total_subscribers || 0).toLocaleString()}
+            </span>
+            <span className="text-xs font-semibold text-slate-700 mt-1 block">Active Members</span>
+          </div>
+
+          <div className="bg-white border border-slate-300 p-4 rounded-xl shadow-sm">
+            <span className="text-xs font-bold text-slate-700 uppercase tracking-wider block">Avg Monthly FIC</span>
+            <span className="text-2xl font-black text-slate-900 mt-1 block">
+              {Number(overview.summary.avg_monthly_fic || 0).toFixed(0)} FIC
+            </span>
+            <span className="text-xs font-semibold text-slate-700 mt-1 block">Pricing Benchmark</span>
+          </div>
+
+          <div className="bg-white border border-slate-300 p-4 rounded-xl shadow-sm">
+            <span className="text-xs font-bold text-slate-700 uppercase tracking-wider block">Target Annual Vol</span>
+            <span className="text-2xl font-black text-emerald-900 mt-1 block">
+              {Number(overview.summary.target_annual_volume_fic || 0).toLocaleString()} FIC
+            </span>
+            <span className="text-xs font-semibold text-slate-700 mt-1 block">Projected Volume</span>
+          </div>
+
+          <div className="bg-white border border-slate-300 p-4 rounded-xl shadow-sm">
+            <span className="text-xs font-bold text-slate-700 uppercase tracking-wider block">Categories</span>
+            <span className="text-2xl font-black text-purple-900 mt-1 block">{overview.summary.total_categories}</span>
+            <span className="text-xs font-semibold text-slate-700 mt-1 block">Pricing Tracks</span>
+          </div>
+
+          <div className="bg-white border border-slate-300 p-4 rounded-xl shadow-sm">
+            <span className="text-xs font-bold text-slate-700 uppercase tracking-wider block">Autonomous Spawns</span>
+            <span className="text-2xl font-black text-slate-900 mt-1 block">{spawns.length}</span>
+            <span className="text-xs font-semibold text-emerald-800 mt-1 block">Active Sub-Consoles</span>
+          </div>
+        </div>
+      )}
+
+      {/* Pages Directory Grid */}
+      <div className="bg-white border border-slate-300 rounded-xl p-5 shadow-sm">
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center space-x-2">
+            <Layers className="w-4 h-4 text-blue-700" />
+            <h2 className="text-sm font-black text-slate-900 uppercase tracking-wider">
+              Platform Pages Offering Subscriptions ({SUBSCRIPTION_PAGES_DIRECTORY.length})
+            </h2>
+          </div>
+          <span className="text-xs text-slate-700 font-semibold">Click any page to test its live frontend</span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-          {SUBSCRIPTION_PAGES_DIRECTORY.map((page) => (
+          {SUBSCRIPTION_PAGES_DIRECTORY.map(page => (
             <div
               key={page.route}
               onClick={() => navigate(page.route)}
-              className="group p-3 rounded-xl bg-slate-950/60 hover:bg-slate-800/70 border border-slate-800 hover:border-sky-500/50 cursor-pointer transition-all shadow-sm"
+              className="group p-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-300 hover:border-blue-500 cursor-pointer transition shadow-sm"
             >
               <div className="flex items-center justify-between mb-1">
-                <span className="text-xs font-bold text-sky-400 group-hover:text-sky-300 flex items-center gap-1">
-                  {page.name}
+                <span className="text-xs font-extrabold text-blue-900 group-hover:text-blue-700 flex items-center space-x-1">
+                  <span>{page.name}</span>
                 </span>
-                <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 font-medium">
+                <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-200 text-slate-800 font-bold">
                   {page.route}
                 </span>
               </div>
-              <p className="text-[11px] text-slate-300 leading-snug line-clamp-2 mb-2 font-medium">
+              <p className="text-xs text-slate-700 leading-snug line-clamp-2 mb-2 font-medium">
                 {page.description}
               </p>
-              <div className="flex items-center justify-between text-[10px] text-slate-300 pt-1 border-t border-slate-900 font-medium">
+              <div className="flex items-center justify-between text-[11px] text-slate-600 pt-1 border-t border-slate-200 font-semibold">
                 <span className="font-mono">{page.component}</span>
-                <span className="text-sky-400 font-semibold flex items-center gap-0.5 group-hover:translate-x-0.5 transition-transform">
-                  Visit <ArrowRight className="w-2.5 h-2.5" />
+                <span className="text-blue-700 font-bold flex items-center space-x-0.5 group-hover:translate-x-0.5 transition-transform">
+                  <span>Visit</span> <ArrowRight className="w-3 h-3" />
                 </span>
               </div>
             </div>
@@ -727,464 +545,312 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
       </div>
 
       {/* Filter and Search Controls */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-4 rounded-xl bg-slate-900/50 border border-slate-800">
-        <div className="flex flex-wrap items-center gap-1.5">
-          {[
-            { id: 'all', label: 'All Models', count: models.length },
-            { id: 'platform', label: 'Platform Plans', count: models.filter((m) => m.category === 'platform').length },
-            { id: 'creator_channel', label: 'Creator Channels', count: models.filter((m) => m.category === 'creator_channel').length },
-            { id: 'gems_broadcast', label: 'Gems Broadcast', count: models.filter((m) => m.category === 'gems_broadcast').length },
-            { id: 'content_paywall', label: 'Content Paywall', count: models.filter((m) => m.category === 'content_paywall').length },
-          ].map((cat) => (
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-4 rounded-xl bg-white border border-slate-300 shadow-sm">
+        <div className="flex flex-wrap items-center gap-2">
+          {['all', 'platform', 'creator_channel', 'gems_broadcast', 'content_paywall'].map(cat => (
             <button
-              key={cat.id}
-              onClick={() => setActiveCategory(cat.id)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 ${
-                activeCategory === cat.id
-                  ? 'bg-blue-600 text-white shadow-md'
-                  : 'bg-slate-800/80 text-slate-200 hover:text-white hover:bg-slate-800'
+              key={cat}
+              onClick={() => setActiveCategory(cat)}
+              className={`px-3 py-1.5 rounded-lg text-xs font-extrabold transition flex items-center space-x-1.5 ${
+                activeCategory === cat
+                  ? 'bg-blue-600 text-white shadow-sm'
+                  : 'bg-slate-100 text-slate-800 hover:bg-slate-200 border border-slate-300'
               }`}
             >
-              <span>{cat.label}</span>
-              <span className="text-[10px] opacity-75 font-mono">({cat.count})</span>
+              <span className="capitalize">{cat.replace('_', ' ')}</span>
             </button>
           ))}
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center space-x-2">
           <button
             onClick={() => setOnlyFreeTiers(!onlyFreeTiers)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition-colors flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-extrabold border transition flex items-center space-x-1.5 ${
               onlyFreeTiers
-                ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
-                : 'bg-slate-800 text-slate-300 border-slate-700 hover:text-white'
+                ? 'bg-emerald-100 text-emerald-950 border-emerald-400'
+                : 'bg-slate-100 text-slate-800 border-slate-300 hover:bg-slate-200'
             }`}
           >
-            <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+            <Sparkles className="w-3.5 h-3.5 text-emerald-700" />
             <span>Free Tiers Only</span>
           </button>
 
           <div className="relative">
-            <Search className="w-3.5 h-3.5 text-slate-600 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               placeholder="Search tiers or perks..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-44 sm:w-56 pl-8 pr-3 py-1.5 text-xs bg-slate-950/70 border border-slate-800 rounded-lg text-white placeholder:text-slate-500 focus:outline-none focus:border-blue-500"
+              onChange={e => setSearchQuery(e.target.value)}
+              className="w-48 sm:w-60 pl-8 pr-3 py-1.5 text-xs font-bold text-slate-900 bg-white border border-slate-300 rounded-lg placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
+
+          <button
+            onClick={handleSyncToFinancialPnl}
+            className="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black shadow flex items-center space-x-1.5 transition"
+            title="Recalculate subscription revenue and feed into Financial P&L"
+          >
+            <TrendingUp className="w-3.5 h-3.5 text-white" />
+            <span>Sync to P&L</span>
+          </button>
         </div>
       </div>
 
-      {/* Selection, Duplication, Copy/Paste, Move & P&L Sync Action Toolbar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 p-3.5 rounded-xl bg-slate-900 border border-slate-700 text-xs">
-        <div className="flex flex-wrap items-center gap-2">
-          <button
-            onClick={() => handleSelectAll(filteredModels.map((m) => m.id))}
-            className="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 font-semibold flex items-center gap-1.5 transition"
-          >
-            {selectedIds.length === filteredModels.length && filteredModels.length > 0 ? (
-              <CheckSquare className="w-4 h-4 text-blue-400" />
-            ) : (
-              <Square className="w-4 h-4 text-slate-500" />
-            )}
-            <span>
-              {selectedIds.length === filteredModels.length && filteredModels.length > 0
-                ? 'Deselect All'
-                : `Select All (${filteredModels.length})`}
-            </span>
-          </button>
-
-          {selectedIds.length > 0 && (
-            <span className="px-2.5 py-1 rounded-md bg-blue-500/20 text-blue-300 font-bold border border-blue-400/30">
-              {selectedIds.length} card{selectedIds.length > 1 ? 's' : ''} selected
-            </span>
-          )}
-
-          {/* Duplicate Selected */}
-          <button
-            onClick={handleDuplicateSelected}
-            disabled={selectedIds.length === 0}
-            className={`px-3 py-1.5 rounded-lg font-bold flex items-center gap-1.5 transition ${
-              selectedIds.length > 0
-                ? 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-md'
-                : 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700'
-            }`}
-            title="Duplicate all selected cards"
-          >
-            <Files className="w-3.5 h-3.5" />
-            <span>Duplicate Selected ({selectedIds.length})</span>
-          </button>
-
-          {/* Copy Selected */}
-          <button
-            onClick={handleCopySelected}
-            disabled={selectedIds.length === 0}
-            className={`px-3 py-1.5 rounded-lg font-bold flex items-center gap-1.5 transition ${
-              selectedIds.length > 0
-                ? 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-md'
-                : 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700'
-            }`}
-            title="Copy selected cards to buffer"
-          >
-            <Copy className="w-3.5 h-3.5" />
-            <span>Copy ({selectedIds.length})</span>
-          </button>
-
-          {/* Paste Buffer */}
-          {copiedBuffer.length > 0 && (
-            <button
-              onClick={handlePasteBuffer}
-              className="px-3 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-500 text-white font-bold flex items-center gap-1.5 shadow-md animate-pulse"
-              title="Paste buffered cards as duplicates into active category"
-            >
-              <FolderInput className="w-3.5 h-3.5" />
-              <span>Paste ({copiedBuffer.length}) Cards</span>
-            </button>
-          )}
-
-          {/* Move to Category */}
-          {selectedIds.length > 0 && (
-            <div className="flex items-center gap-1.5 bg-slate-800/90 p-1 rounded-lg border border-slate-700">
-              <span className="text-[11px] text-slate-300 font-semibold px-1">Move to:</span>
-              <select
-                value={targetMoveCategory}
-                onChange={(e) => setTargetMoveCategory(e.target.value as any)}
-                className="bg-slate-900 text-white text-xs rounded px-2 py-1 border border-slate-700 focus:outline-none"
-              >
-                <option value="platform">Platform Plans</option>
-                <option value="creator_channel">Creator Channel</option>
-                <option value="gems_broadcast">Gems Broadcast</option>
-                <option value="content_paywall">Content Paywall</option>
-              </select>
-              <button
-                onClick={handleMoveSelected}
-                className="px-2.5 py-1 rounded bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold"
-              >
-                Apply Move
-              </button>
-            </div>
-          )}
-
-          {/* Delete Selected */}
-          {selectedIds.length > 0 && (
-            <button
-              onClick={handleDeleteSelected}
-              className="px-2.5 py-1.5 rounded-lg bg-rose-900/60 hover:bg-rose-800 text-rose-200 border border-rose-700/60 font-bold flex items-center gap-1"
-            >
-              <Trash2 className="w-3.5 h-3.5" />
-              <span>Delete ({selectedIds.length})</span>
-            </button>
-          )}
+      {/* Subscription Models Table with Transactional Reordering & Freeze Killswitches */}
+      <div className="bg-white border border-slate-300 rounded-xl shadow-sm overflow-hidden">
+        <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between">
+          <h2 className="text-lg font-black text-slate-900">
+            PostgreSQL Monitored Subscription Tiers ({filteredItems.length})
+          </h2>
+          <span className="text-xs font-bold text-slate-700 bg-slate-100 px-3 py-1 rounded-full border border-slate-300">
+            Real-Time Postgres Transaction Ordering
+          </span>
         </div>
 
-        {/* Sync Subscriptions to P&L */}
-        <button
-          onClick={handleSyncToFinancialPnl}
-          className="px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold shadow-md flex items-center gap-1.5 transition ml-auto"
-          title="Recalculate subscription revenue and feed into Financial P&L"
-        >
-          <TrendingUp className="w-4 h-4 text-emerald-200" />
-          <span>Sync Subscriptions to Financial P&L</span>
-        </button>
+        {filteredItems.length === 0 ? (
+          <div className="p-12 text-center">
+            <Database className="w-12 h-12 text-slate-400 mx-auto mb-3" />
+            <h3 className="text-base font-bold text-slate-900">No subscription models matching criteria</h3>
+            <p className="text-xs text-slate-700 mt-1">Adjust filters or create a new tier in PostgreSQL.</p>
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="bg-slate-100/75 border-b border-slate-300 text-xs font-black text-slate-900 uppercase tracking-wider">
+                  <th className="py-3 px-4">Order</th>
+                  <th className="py-3 px-4">Tier Name & ID</th>
+                  <th className="py-3 px-4">Category</th>
+                  <th className="py-3 px-4 text-right">FIC / Mo</th>
+                  <th className="py-3 px-4 text-right">Naira / Mo</th>
+                  <th className="py-3 px-4 text-right">Subscribers</th>
+                  <th className="py-3 px-4 text-center">Status</th>
+                  <th className="py-3 px-4 text-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-200 text-sm">
+                {filteredItems.map((model, idx) => (
+                  <tr key={model.id} className="hover:bg-slate-50/80 transition">
+                    {/* Resequencing Controls */}
+                    <td className="py-3 px-4 whitespace-nowrap">
+                      <div className="flex items-center space-x-1">
+                        <span className="text-xs font-extrabold text-slate-800 w-6 text-center">
+                          #{model.sort_order || idx + 1}
+                        </span>
+                        <div className="flex flex-col space-y-0.5">
+                          <button
+                            onClick={() => handleReorder(idx, 'UP')}
+                            disabled={idx === 0}
+                            title="Move Up"
+                            aria-label={`Move ${model.name} Up`}
+                            className={`p-1 rounded hover:bg-slate-200 text-slate-800 ${
+                              idx === 0 ? 'opacity-30 cursor-not-allowed' : ''
+                            }`}
+                          >
+                            <ArrowUp className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            onClick={() => handleReorder(idx, 'DOWN')}
+                            disabled={idx === filteredItems.length - 1}
+                            title="Move Down"
+                            aria-label={`Move ${model.name} Down`}
+                            className={`p-1 rounded hover:bg-slate-200 text-slate-800 ${
+                              idx === filteredItems.length - 1 ? 'opacity-30 cursor-not-allowed' : ''
+                            }`}
+                          >
+                            <ArrowDown className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </div>
+                    </td>
+
+                    {/* Name & ID */}
+                    <td className="py-3 px-4">
+                      <div className="flex items-center space-x-2">
+                        <span className="font-extrabold text-slate-900">{model.name}</span>
+                        <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-950 border border-blue-400">
+                          {model.badge}
+                        </span>
+                        {model.is_free_tier && (
+                          <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400">
+                            FREE TIER
+                          </span>
+                        )}
+                      </div>
+                      <span className="text-xs font-mono font-semibold text-slate-600 block mt-0.5">{model.id}</span>
+                      <p className="text-xs font-medium text-slate-700 line-clamp-1 mt-0.5">
+                        {model.description}
+                      </p>
+                    </td>
+
+                    {/* Category */}
+                    <td className="py-3 px-4 whitespace-nowrap">
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-900 border border-slate-300">
+                        {model.category}
+                      </span>
+                    </td>
+
+                    {/* Pricing */}
+                    <td className="py-3 px-4 whitespace-nowrap text-right font-mono font-black text-slate-900">
+                      {model.is_free_tier ? 'FREE' : `${Number(model.monthly_fic)} FIC`}
+                    </td>
+
+                    <td className="py-3 px-4 whitespace-nowrap text-right font-mono font-bold text-amber-900">
+                      {model.is_free_tier ? '₦0' : `₦${Number(model.monthly_ngn).toLocaleString()}`}
+                    </td>
+
+                    <td className="py-3 px-4 whitespace-nowrap text-right font-mono font-bold text-slate-800">
+                      {Number(model.subscriber_count || 0).toLocaleString()}
+                    </td>
+
+                    {/* Status */}
+                    <td className="py-3 px-4 whitespace-nowrap text-center">
+                      <span
+                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-extrabold ${
+                          model.status === 'active'
+                            ? 'bg-emerald-100 text-emerald-950 border border-emerald-400'
+                            : 'bg-rose-100 text-rose-950 border border-rose-400'
+                        }`}
+                      >
+                        {model.status === 'active' ? 'Active' : 'Frozen'}
+                      </span>
+                    </td>
+
+                    {/* Actions */}
+                    <td className="py-3 px-4 whitespace-nowrap text-center">
+                      <div className="flex items-center justify-center space-x-1.5">
+                        {model.is_free_tier && (
+                          <button
+                            onClick={() => handleTestFreeTier(model)}
+                            title="Test session free tier"
+                            aria-label={`Test Free Tier ${model.name}`}
+                            className={`p-1.5 rounded-lg border text-xs font-bold transition flex items-center space-x-1 ${
+                              activeTestTier === model.id
+                                ? 'bg-emerald-600 text-white border-emerald-600'
+                                : 'border-emerald-300 hover:bg-emerald-100 text-emerald-900'
+                            }`}
+                          >
+                            <PlayCircle className="w-4 h-4" />
+                          </button>
+                        )}
+
+                        <button
+                          onClick={() => handleToggleFreeze(model)}
+                          title={model.status === 'active' ? 'Freeze / Quarantine' : 'Restore'}
+                          aria-label={model.status === 'active' ? `Freeze ${model.name}` : `Unfreeze ${model.name}`}
+                          className={`p-1.5 rounded-lg border transition ${
+                            model.status === 'active'
+                              ? 'border-amber-300 hover:bg-amber-100 text-amber-900'
+                              : 'border-emerald-300 hover:bg-emerald-100 text-emerald-900'
+                          }`}
+                        >
+                          {model.status === 'active' ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+                        </button>
+
+                        <button
+                          onClick={() => handleOpenEdit(model)}
+                          title="Edit Tier"
+                          aria-label={`Edit ${model.name}`}
+                          className="p-1.5 rounded-lg border border-slate-300 hover:bg-slate-100 text-slate-800 transition"
+                        >
+                          <Edit3 className="w-4 h-4" />
+                        </button>
+
+                        <button
+                          onClick={() => handleDelete(model)}
+                          title="Delete Tier"
+                          aria-label={`Delete ${model.name}`}
+                          className="p-1.5 rounded-lg border border-rose-200 hover:bg-rose-100 text-rose-800 transition"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
 
-      {/* Models Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {filteredModels.map((model) => {
-          const isCurrentActiveTest = activeTestTier === model.id;
-          const isSelected = selectedIds.includes(model.id);
+      {/* Spawns Panel */}
+      <div className="bg-white border border-slate-300 rounded-xl p-6 shadow-sm">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h3 className="text-base font-black text-slate-900 flex items-center space-x-2">
+              <ShieldCheck className="w-5 h-5 text-blue-800" />
+              <span>Autonomous Monetization Sub-Consoles & Paywalls ({spawns.length})</span>
+            </h3>
+            <p className="text-xs font-medium text-slate-700 mt-0.5">
+              Isolated sub-consoles for curating episodic video paywalls, VIP backstages, and exclusive creator drops.
+            </p>
+          </div>
+          <button
+            onClick={() => setIsSpawnModalOpen(true)}
+            className="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-bold transition flex items-center space-x-1.5"
+          >
+            <Plus className="w-3.5 h-3.5" />
+            <span>New Sub-Console</span>
+          </button>
+        </div>
 
-          return (
-            <div
-              key={model.id}
-              className={`relative rounded-2xl p-5 border flex flex-col justify-between transition-all shadow-md ${
-                isSelected ? 'ring-2 ring-blue-500' : ''
-              } ${
-                model.isFreeTier
-                  ? 'bg-gradient-to-b from-emerald-950/20 via-slate-900 to-slate-950 border-emerald-500/30 hover:border-emerald-500/60 shadow-emerald-500/5'
-                  : model.isPopular
-                    ? 'bg-gradient-to-b from-blue-950/25 via-slate-900 to-slate-950 border-blue-500/40 hover:border-blue-500/70 shadow-blue-500/5'
-                    : 'bg-gradient-to-b from-slate-900 via-slate-950 to-slate-950 border-slate-800 hover:border-slate-700'
-              }`}
-            >
-              {/* Header Badges & Select */}
-              <div>
-                <div className="flex items-start justify-between gap-2 mb-2">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <input
-                      type="checkbox"
-                      checked={isSelected}
-                      onChange={() => handleToggleSelect(model.id)}
-                      className="w-4 h-4 rounded text-blue-600 focus:ring-blue-500 cursor-pointer border-slate-700 bg-slate-900"
-                      title="Select card for duplication, copy, or move"
-                      aria-label={`Select ${model.name}`}
-                    />
-                    <span
-                      className={`text-[10px] font-mono uppercase px-2 py-0.5 rounded-full font-bold border ${
-                        model.isFreeTier
-                          ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
-                          : 'bg-blue-500/10 text-blue-400 border-blue-500/30'
-                      }`}
-                    >
-                      {model.badge}
-                    </span>
-                    {model.isPopular && (
-                      <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded-full font-bold bg-amber-500/10 text-amber-400 border border-amber-500/30">
-                        Popular
-                      </span>
-                    )}
-                    {model.isFreeTier && (
-                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500 text-slate-950">
-                        FREE TIER
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="flex items-center gap-1">
-                    {/* Duplicate Single Card */}
-                    <button
-                      type="button"
-                      onClick={() => handleDuplicateSingle(model)}
-                      className="p-1 rounded-lg text-slate-300 hover:text-emerald-400 hover:bg-slate-800 transition-colors"
-                      title="Duplicate this subscription card"
-                      aria-label={`Duplicate ${model.name}`}
-                    >
-                      <Files className="w-3.5 h-3.5" />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setEditingModel({ ...model });
-                        setIsCreatingNew(false);
-                      }}
-                      className="p-1 rounded-lg text-slate-300 hover:text-sky-400 hover:bg-slate-800 transition-colors"
-                      title="Edit Model"
-                      aria-label={`Edit ${model.name}`}
-                    >
-                      <Edit3 className="w-3.5 h-3.5" />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleDeleteModel(model.id)}
-                      className="p-1 rounded-lg text-slate-200 hover:text-red-400 hover:bg-slate-800 transition-colors"
-                      title="Delete Model"
-                      aria-label={`Delete ${model.name}`}
-                    >
-                      <Trash2 className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
-                </div>
-
-                {/* Model Title & Price */}
-                <h3 className="text-lg font-black text-white tracking-tight mb-1">
-                  {model.name}
-                </h3>
-                <p className="text-xs text-slate-300 leading-relaxed mb-3 font-medium">
-                  {model.description}
-                </p>
-
-                {/* Price Display */}
-                <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800/80 mb-4">
-                  <div className="flex items-baseline justify-between">
-                    <div>
-                      <span className="text-2xl font-black text-white">
-                        {model.monthlyFIC === 0 ? 'FREE' : `${model.monthlyFIC} FIC`}
-                      </span>
-                      {model.monthlyFIC > 0 && (
-                        <span className="text-xs text-slate-300 font-semibold ml-1">/{model.billingCycle}</span>
-                      )}
-                    </div>
-                    <div className="text-right">
-                      <span className="text-xs font-mono font-bold text-amber-400 block">
-                        {model.monthlyNaira === 0 ? '₦0' : `₦${model.monthlyNaira.toLocaleString()}`}
-                      </span>
-                      <span className="text-[10px] text-slate-300 font-mono font-medium">
-                        {model.freeTrialDays > 0 ? `${model.freeTrialDays}-Day Free Trial` : 'No Trial'}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Features List */}
-                <div className="space-y-1.5 mb-5">
-                  <span className="text-[11px] font-bold text-slate-200 uppercase tracking-wider block mb-2">
-                    Included Capabilities ({model.features.length}):
+        {spawns.length === 0 ? (
+          <p className="text-xs text-slate-600 italic">No monetization sub-consoles spawned yet.</p>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {spawns.map(sp => (
+              <div key={sp.id} className="p-4 bg-slate-50 border border-slate-300 rounded-xl">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-black text-slate-900">{sp.sub_console_name}</span>
+                  <span className="text-[10px] font-bold px-2 py-0.5 bg-emerald-100 text-emerald-950 border border-emerald-400 rounded-full">
+                    {sp.status}
                   </span>
-                  {model.features.map((feat, idx) => (
-                    <div key={idx} className="flex items-start gap-2 text-xs text-slate-200 font-medium">
-                      <Check className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0 mt-0.5" />
-                      <span className="leading-tight">{feat}</span>
-                    </div>
-                  ))}
                 </div>
+                <div className="text-xs font-mono text-slate-700 mt-2">Slug: {sp.slug}</div>
+                <div className="text-xs font-mono text-slate-700 mt-0.5 truncate">Endpoint: {sp.endpoint}</div>
+                <div className="text-xs font-bold text-blue-900 mt-2">{sp.category}</div>
               </div>
-
-              {/* Action Buttons */}
-              <div className="pt-3 border-t border-slate-800/80 space-y-2">
-                <div className="flex items-center justify-between text-[11px] text-slate-300 font-medium mb-1">
-                  <span>Target: {model.targetPage}</span>
-                  <button
-                    onClick={() => navigate(model.pageRoute)}
-                    className="text-sky-400 hover:underline flex items-center gap-0.5"
-                  >
-                    View Page <ExternalLink className="w-2.5 h-2.5" />
-                  </button>
-                </div>
-
-                {model.isFreeTier ? (
-                  <button
-                    type="button"
-                    onClick={() => handleTestFreeTier(model)}
-                    aria-label={isCurrentActiveTest ? `Active session free tier: ${model.name}` : `Test out free tier: ${model.name}`}
-                    className={`w-full py-2 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 ${
-                      isCurrentActiveTest
-                        ? 'bg-emerald-500 text-slate-950 font-black shadow-lg shadow-emerald-500/20'
-                        : 'bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/40 text-emerald-300'
-                    }`}
-                  >
-                    {isCurrentActiveTest ? (
-                      <>
-                        <CheckCircle className="w-4 h-4" />
-                        <span>Active Session Free Tier</span>
-                      </>
-                    ) : (
-                      <>
-                        <PlayCircle className="w-4 h-4 text-emerald-400" />
-                        <span>Test Out This Free Tier</span>
-                      </>
-                    )}
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => {
-                      alert(`Testing paid subscription checkout for "${model.name}" (${model.monthlyFIC} FIC). Redirecting to Subscriptions...`);
-                      navigate(model.pageRoute);
-                    }}
-                    className="w-full py-2 px-3 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 transition-colors flex items-center justify-center gap-1.5"
-                  >
-                    <span>Test Tier Checkout</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
-                )}
-              </div>
-            </div>
-          );
-        })}
+            ))}
+          </div>
+        )}
       </div>
 
-      {/* Edit / Create Modal */}
-      {editingModel && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm p-4 overflow-y-auto">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-xl w-full p-6 shadow-2xl space-y-4 my-8">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
-              <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                <Edit3 className="w-4 h-4 text-blue-400" />
-                <span>{isCreatingNew ? 'Create New Subscription Model' : 'Edit Subscription Model'}</span>
-              </h3>
-              <button
-                type="button"
-                onClick={() => setEditingModel(null)}
-                className="text-slate-300 hover:text-white text-sm"
-                aria-label="Close subscription edit modal"
-              >
-                ✕
-              </button>
-            </div>
+      {/* Add Modal */}
+      {isAddModalOpen && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white border border-slate-300 rounded-2xl max-w-xl w-full p-6 shadow-2xl relative">
+            <button
+              onClick={() => setIsAddModalOpen(false)}
+              className="absolute top-5 right-5 text-slate-500 hover:text-slate-800"
+            >
+              <X className="w-6 h-6" />
+            </button>
 
-            <form onSubmit={handleSaveEdit} className="space-y-4 text-xs">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <h3 className="text-xl font-black text-slate-900 mb-1">Create Monetization Tier</h3>
+            <p className="text-xs font-medium text-slate-700 mb-4">
+              Add a new subscription tier with instant PostgreSQL persistence.
+            </p>
+
+            <form onSubmit={handleCreate} className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-slate-200 mb-1 font-bold">Tier Name</label>
+                  <label className="text-xs font-bold text-slate-900 block mb-1">Tier Identifier (ID)</label>
                   <input
                     type="text"
-                    required
-                    value={editingModel.name}
-                    onChange={(e) => setEditingModel({ ...editingModel, name: e.target.value })}
-                    className="w-full p-2 bg-slate-950 border border-slate-800 rounded-lg text-white"
+                    value={formId}
+                    onChange={e => setFormId(e.target.value)}
+                    placeholder="sub_custom_plan"
+                    className="w-full text-xs font-bold text-slate-900 bg-white border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
-
                 <div>
-                  <label className="block text-slate-200 mb-1 font-bold">Badge Label</label>
-                  <input
-                    type="text"
-                    required
-                    value={editingModel.badge}
-                    onChange={(e) => setEditingModel({ ...editingModel, badge: e.target.value })}
-                    className="w-full p-2 bg-slate-950 border border-slate-800 rounded-lg text-white"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-slate-200 mb-1 font-bold">Description</label>
-                <textarea
-                  rows={2}
-                  required
-                  value={editingModel.description}
-                  onChange={(e) => setEditingModel({ ...editingModel, description: e.target.value })}
-                  className="w-full p-2 bg-slate-950 border border-slate-800 rounded-lg text-white"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                <div>
-                  <label className="block text-slate-200 mb-1 font-bold">Monthly FIC</label>
-                  <input
-                    type="number"
-                    min="0"
-                    step="0.5"
-                    required
-                    value={editingModel.monthlyFIC}
-                    onChange={(e) =>
-                      setEditingModel({
-                        ...editingModel,
-                        monthlyFIC: parseFloat(e.target.value) || 0,
-                        isFreeTier: parseFloat(e.target.value) === 0
-                      })
-                    }
-                    className="w-full p-2 bg-slate-950 border border-slate-800 rounded-lg text-white"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-slate-200 mb-1 font-bold">Naira (₦)</label>
-                  <input
-                    type="number"
-                    min="0"
-                    required
-                    value={editingModel.monthlyNaira}
-                    onChange={(e) =>
-                      setEditingModel({ ...editingModel, monthlyNaira: parseInt(e.target.value) || 0 })
-                    }
-                    className="w-full p-2 bg-slate-950 border border-slate-800 rounded-lg text-white"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-slate-200 mb-1 font-bold">Free Trial (Days)</label>
-                  <input
-                    type="number"
-                    min="0"
-                    required
-                    value={editingModel.freeTrialDays}
-                    onChange={(e) =>
-                      setEditingModel({ ...editingModel, freeTrialDays: parseInt(e.target.value) || 0 })
-                    }
-                    className="w-full p-2 bg-slate-950 border border-slate-800 rounded-lg text-white"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-slate-200 mb-1 font-bold">Category</label>
+                  <label className="text-xs font-bold text-slate-900 block mb-1">Category *</label>
                   <select
-                    value={editingModel.category}
-                    onChange={(e) =>
-                      setEditingModel({ ...editingModel, category: e.target.value as any })
-                    }
-                    className="w-full p-2 bg-slate-950 border border-slate-800 rounded-lg text-white"
+                    value={formCategory}
+                    onChange={e => setFormCategory(e.target.value)}
+                    className="w-full text-xs font-bold text-slate-900 bg-white border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="platform">Platform Plans</option>
                     <option value="creator_channel">Creator Channel</option>
@@ -1194,60 +860,430 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
                 </div>
               </div>
 
-              <div className="p-3 rounded-xl bg-slate-950/70 border border-slate-800 flex items-center justify-between">
+              <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <span className="font-bold text-white block">Free Tier Model</span>
-                  <span className="text-[11px] text-slate-300 font-medium">
-                    Designate this model as a 100% Free Tier for testing and community explorer tier.
-                  </span>
+                  <label className="text-xs font-bold text-slate-900 block mb-1">Tier Name *</label>
+                  <input
+                    type="text"
+                    required
+                    value={formName}
+                    onChange={e => setFormName(e.target.value)}
+                    placeholder="VIP Sovereign Member"
+                    className="w-full text-xs font-bold text-slate-900 bg-white border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-slate-900 block mb-1">Badge Label</label>
+                  <input
+                    type="text"
+                    value={formBadge}
+                    onChange={e => setFormBadge(e.target.value)}
+                    placeholder="VIP Sovereign"
+                    className="w-full text-xs font-bold text-slate-900 bg-white border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div>
+                  <label className="text-xs font-bold text-slate-900 block mb-1">Monthly FIC</label>
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.5"
+                    value={formMonthlyFic}
+                    onChange={e => setFormMonthlyFic(Number(e.target.value))}
+                    className="w-full text-xs font-bold text-slate-900 bg-white border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-slate-900 block mb-1">Monthly ₦</label>
+                  <input
+                    type="number"
+                    min="0"
+                    value={formMonthlyNgn}
+                    onChange={e => setFormMonthlyNgn(Number(e.target.value))}
+                    className="w-full text-xs font-bold text-slate-900 bg-white border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-slate-900 block mb-1">Annual FIC</label>
+                  <input
+                    type="number"
+                    min="0"
+                    value={formAnnualFic}
+                    onChange={e => setFormAnnualFic(Number(e.target.value))}
+                    className="w-full text-xs font-bold text-slate-900 bg-white border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-slate-900 block mb-1">Target Annual Vol</label>
+                  <input
+                    type="number"
+                    min="0"
+                    value={formTargetVolumeFic}
+                    onChange={e => setFormTargetVolumeFic(Number(e.target.value))}
+                    className="w-full text-xs font-bold text-slate-900 bg-white border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+              </div>
+
+              <div className="p-3 rounded-xl bg-slate-50 border border-slate-300 flex items-center justify-between">
+                <div>
+                  <span className="text-xs font-black text-slate-900 block">Free Tier Plan</span>
+                  <span className="text-[11px] text-slate-700 font-medium">Designate this model as a 100% Free Explorer Tier.</span>
                 </div>
                 <input
                   type="checkbox"
-                  checked={editingModel.isFreeTier}
-                  onChange={(e) =>
-                    setEditingModel({
-                      ...editingModel,
-                      isFreeTier: e.target.checked,
-                      monthlyFIC: e.target.checked ? 0 : editingModel.monthlyFIC,
-                      monthlyNaira: e.target.checked ? 0 : editingModel.monthlyNaira
-                    })
-                  }
-                  className="w-4 h-4 text-emerald-500 rounded"
+                  checked={formIsFreeTier}
+                  onChange={e => setFormIsFreeTier(e.target.checked)}
+                  className="w-4 h-4 text-emerald-600 rounded"
                 />
               </div>
 
               <div>
-                <label className="block text-slate-200 mb-1 font-bold">
-                  Features (One feature per line)
-                </label>
+                <label className="text-xs font-bold text-slate-900 block mb-1">Description</label>
                 <textarea
-                  rows={4}
-                  value={editingModel.features.join('\n')}
-                  onChange={(e) =>
-                    setEditingModel({
-                      ...editingModel,
-                      features: e.target.value.split('\n').filter((l) => l.trim().length > 0)
-                    })
-                  }
-                  className="w-full p-2 bg-slate-950 border border-slate-800 rounded-lg text-white font-mono text-xs"
+                  rows={2}
+                  value={formDescription}
+                  onChange={e => setFormDescription(e.target.value)}
+                  placeholder="Summary of tier value proposition..."
+                  className="w-full text-xs font-bold text-slate-900 bg-white border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-800">
+              <div>
+                <label className="text-xs font-bold text-slate-900 block mb-1">Features (One per line)</label>
+                <textarea
+                  rows={3}
+                  value={formFeaturesText}
+                  onChange={e => setFormFeaturesText(e.target.value)}
+                  placeholder="Feature 1&#10;Feature 2&#10;Feature 3"
+                  className="w-full text-xs font-bold text-slate-900 bg-white border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div className="flex items-center justify-end space-x-3 pt-3 border-t border-slate-200">
                 <button
                   type="button"
-                  onClick={() => setEditingModel(null)}
-                  className="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold"
-                  aria-label="Cancel editing subscription model"
+                  onClick={() => setIsAddModalOpen(false)}
+                  className="px-4 py-2 border border-slate-300 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-100"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold flex items-center gap-1.5"
+                  className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-black shadow transition"
                 >
-                  <Save className="w-3.5 h-3.5" />
-                  <span>Save Changes</span>
+                  Create Tier
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Modal */}
+      {isEditModalOpen && editingItem && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white border border-slate-300 rounded-2xl max-w-xl w-full p-6 shadow-2xl relative">
+            <button
+              onClick={() => {
+                setIsEditModalOpen(false);
+                setEditingItem(null);
+              }}
+              className="absolute top-5 right-5 text-slate-500 hover:text-slate-800"
+            >
+              <X className="w-6 h-6" />
+            </button>
+
+            <h3 className="text-xl font-black text-slate-900 mb-1">Edit Tier: {editingItem.name}</h3>
+            <p className="text-xs font-medium text-slate-700 mb-4">
+              Update pricing, quotas, and capabilities directly in PostgreSQL.
+            </p>
+
+            <form onSubmit={handleUpdate} className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs font-bold text-slate-900 block mb-1">Tier Identifier (Locked)</label>
+                  <input
+                    type="text"
+                    disabled
+                    value={formId}
+                    className="w-full text-xs font-bold text-slate-600 bg-slate-100 border border-slate-300 rounded-lg px-3 py-2 cursor-not-allowed"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-slate-900 block mb-1">Category *</label>
+                  <select
+                    value={formCategory}
+                    onChange={e => setFormCategory(e.target.value)}
+                    className="w-full text-xs font-bold text-slate-900 bg-white border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="platform">Platform Plans</option>
+                    <option value="creator_channel">Creator Channel</option>
+                    <option value="gems_broadcast">Gems Broadcast</option>
+                    <option value="content_paywall">Content Paywall</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs font-bold text-slate-900 block mb-1">Tier Name *</label>
+                  <input
+                    type="text"
+                    required
+                    value={formName}
+                    onChange={e => setFormName(e.target.value)}
+                    className="w-full text-xs font-bold text-slate-900 bg-white border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-slate-900 block mb-1">Badge Label</label>
+                  <input
+                    type="text"
+                    value={formBadge}
+                    onChange={e => setFormBadge(e.target.value)}
+                    className="w-full text-xs font-bold text-slate-900 bg-white border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div>
+                  <label className="text-xs font-bold text-slate-900 block mb-1">Monthly FIC</label>
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.5"
+                    value={formMonthlyFic}
+                    onChange={e => setFormMonthlyFic(Number(e.target.value))}
+                    className="w-full text-xs font-bold text-slate-900 bg-white border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-slate-900 block mb-1">Monthly ₦</label>
+                  <input
+                    type="number"
+                    min="0"
+                    value={formMonthlyNgn}
+                    onChange={e => setFormMonthlyNgn(Number(e.target.value))}
+                    className="w-full text-xs font-bold text-slate-900 bg-white border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-slate-900 block mb-1">Annual FIC</label>
+                  <input
+                    type="number"
+                    min="0"
+                    value={formAnnualFic}
+                    onChange={e => setFormAnnualFic(Number(e.target.value))}
+                    className="w-full text-xs font-bold text-slate-900 bg-white border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-slate-900 block mb-1">Target Annual Vol</label>
+                  <input
+                    type="number"
+                    min="0"
+                    value={formTargetVolumeFic}
+                    onChange={e => setFormTargetVolumeFic(Number(e.target.value))}
+                    className="w-full text-xs font-bold text-slate-900 bg-white border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+              </div>
+
+              <div className="p-3 rounded-xl bg-slate-50 border border-slate-300 flex items-center justify-between">
+                <div>
+                  <span className="text-xs font-black text-slate-900 block">Free Tier Plan</span>
+                  <span className="text-[11px] text-slate-700 font-medium">Designate this model as a 100% Free Explorer Tier.</span>
+                </div>
+                <input
+                  type="checkbox"
+                  checked={formIsFreeTier}
+                  onChange={e => setFormIsFreeTier(e.target.checked)}
+                  className="w-4 h-4 text-emerald-600 rounded"
+                />
+              </div>
+
+              <div>
+                <label className="text-xs font-bold text-slate-900 block mb-1">Description</label>
+                <textarea
+                  rows={2}
+                  value={formDescription}
+                  onChange={e => setFormDescription(e.target.value)}
+                  className="w-full text-xs font-bold text-slate-900 bg-white border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div>
+                <label className="text-xs font-bold text-slate-900 block mb-1">Features (One per line)</label>
+                <textarea
+                  rows={3}
+                  value={formFeaturesText}
+                  onChange={e => setFormFeaturesText(e.target.value)}
+                  className="w-full text-xs font-bold text-slate-900 bg-white border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div className="flex items-center justify-end space-x-3 pt-3 border-t border-slate-200">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsEditModalOpen(false);
+                    setEditingItem(null);
+                  }}
+                  className="px-4 py-2 border border-slate-300 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-100"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-black shadow transition"
+                >
+                  Save Modifications
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Direct Multipart Upload Modal */}
+      {isUploadModalOpen && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white border border-slate-300 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
+            <button
+              onClick={() => {
+                setIsUploadModalOpen(false);
+                setUploadFile(null);
+              }}
+              className="absolute top-5 right-5 text-slate-500 hover:text-slate-800"
+            >
+              <X className="w-6 h-6" />
+            </button>
+
+            <h3 className="text-xl font-black text-slate-900 mb-1">Upload Tier Collateral</h3>
+            <p className="text-xs font-medium text-slate-700 mb-4">
+              Sends multipart/form-data directly to Express backend with zero client localStorage fallback.
+            </p>
+
+            <form onSubmit={handleUploadSubmit} className="space-y-4">
+              <div>
+                <label className="text-xs font-bold text-slate-900 block mb-1">Select Document or Badge Image</label>
+                <input
+                  type="file"
+                  required
+                  accept="image/*,.pdf,.doc,.docx"
+                  onChange={e => {
+                    if (e.target.files && e.target.files[0]) {
+                      setUploadFile(e.target.files[0]);
+                    }
+                  }}
+                  className="w-full text-xs font-bold text-slate-900 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-black file:bg-blue-100 file:text-blue-950 hover:file:bg-blue-200 border border-slate-300 rounded-xl p-2 bg-white"
+                />
+              </div>
+
+              <div className="flex items-center justify-end space-x-3 pt-3 border-t border-slate-200">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsUploadModalOpen(false);
+                    setUploadFile(null);
+                  }}
+                  className="px-4 py-2 border border-slate-300 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-100"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={uploading || !uploadFile}
+                  className="px-5 py-2 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white rounded-xl text-xs font-black shadow transition flex items-center space-x-2"
+                >
+                  <span>{uploading ? 'Uploading to Express...' : 'Upload Direct'}</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Spawn Sub-Console Modal */}
+      {isSpawnModalOpen && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white border border-slate-300 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
+            <button
+              onClick={() => setIsSpawnModalOpen(false)}
+              className="absolute top-5 right-5 text-slate-500 hover:text-slate-800"
+            >
+              <X className="w-6 h-6" />
+            </button>
+
+            <h3 className="text-xl font-black text-slate-900 mb-1">Spawn Monetization Sub-Console</h3>
+            <p className="text-xs font-medium text-slate-700 mb-4">
+              Spawn an autonomous child console node with custom subscription scope.
+            </p>
+
+            <form onSubmit={handleSpawn} className="space-y-4">
+              <div>
+                <label className="text-xs font-bold text-slate-900 block mb-1">Sub-Console Name *</label>
+                <input
+                  type="text"
+                  required
+                  value={spawnName}
+                  onChange={e => setSpawnName(e.target.value)}
+                  placeholder="Creator VIP Backstage Hub"
+                  className="w-full text-xs font-bold text-slate-900 bg-white border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div>
+                <label className="text-xs font-bold text-slate-900 block mb-1">Slug Identifier *</label>
+                <input
+                  type="text"
+                  required
+                  value={spawnSlug}
+                  onChange={e => setSpawnSlug(e.target.value.toLowerCase().replace(/\s+/g, '-'))}
+                  placeholder="creator-vip-backstage"
+                  className="w-full text-xs font-bold text-slate-900 bg-white border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div>
+                <label className="text-xs font-bold text-slate-900 block mb-1">Category / Domain</label>
+                <input
+                  type="text"
+                  value={spawnCategory}
+                  onChange={e => setSpawnCategory(e.target.value)}
+                  placeholder="Creator Economy"
+                  className="w-full text-xs font-bold text-slate-900 bg-white border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div>
+                <label className="text-xs font-bold text-slate-900 block mb-1">Routing Endpoint</label>
+                <input
+                  type="text"
+                  value={spawnEndpoint}
+                  onChange={e => setSpawnEndpoint(e.target.value)}
+                  className="w-full text-xs font-bold text-slate-600 bg-slate-100 border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div className="flex items-center justify-end space-x-3 pt-3 border-t border-slate-200">
+                <button
+                  type="button"
+                  onClick={() => setIsSpawnModalOpen(false)}
+                  className="px-4 py-2 border border-slate-300 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-100"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 bg-purple-700 hover:bg-purple-800 text-white rounded-xl text-xs font-black shadow transition"
+                >
+                  Spawn Node
                 </button>
               </div>
             </form>

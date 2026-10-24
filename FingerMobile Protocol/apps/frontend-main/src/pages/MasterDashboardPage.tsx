@@ -128,6 +128,8 @@ import { MasterDomainEdgeConsole } from '../components/dashboard/MasterDomainEdg
 import { MasterGamificationRewardsConsole } from '../components/dashboard/MasterGamificationRewardsConsole';
 import MasterLoansQrConsole from '../components/dashboard/MasterLoansQrConsole';
 import MasterTrendsSwarmConsole from '../components/dashboard/MasterTrendsSwarmConsole';
+import MasterCommunicationsVoipConsole from '../components/dashboard/MasterCommunicationsVoipConsole';
+import MasterLuminaGalleryConsole from '../components/dashboard/MasterLuminaGalleryConsole';
 
 interface Section {
   id: string;
@@ -2562,6 +2564,8 @@ const MasterDashboardPage: React.FC = () => {
               { id: 'investor-relations-console', label: 'Investor Relations & Capital (Phase 14)', badge: 'Cap Table / Yield' },
               { id: 'loansqr-console', label: 'LoansQR Micro-Lending (Phase 11)', badge: 'Underwrite / Escrow / APR' },
               { id: 'trends-swarm-console', label: 'Trends & Swarms (Phase 12)', badge: 'Virality / NLP / GNN' },
+              { id: 'comms-voip-console', label: 'Communications & VoIP (Phase 13)', badge: 'WebRTC / SFU / Relays' },
+              { id: 'lumina-gallery-console', label: 'Lumina Gallery & Collectibles (Phase 14)', badge: 'NFTs / Provenance / FIC' },
               { id: 'beatwaveng-console', label: 'BeatwaveNG Audio Console', badge: 'Live Sync' },
               { id: 'discover-console', label: 'Discover Master Console', badge: 'Topics & Swarms' },
               { id: 'soundriver-console', label: 'SoundRiver Master Console', badge: '320kbps Stream' },
@@ -2997,6 +3001,20 @@ const MasterDashboardPage: React.FC = () => {
             {activeTab === 'trends-swarm-console' && (
               <div className="space-y-6">
                 <MasterTrendsSwarmConsole />
+              </div>
+            )}
+
+            {/* Dedicated Communications, WebRTC & VoIP Console Tab (Phase 13) */}
+            {activeTab === 'comms-voip-console' && (
+              <div className="space-y-6">
+                <MasterCommunicationsVoipConsole />
+              </div>
+            )}
+
+            {/* Dedicated Lumina Gallery & Digital Collectibles Console Tab (Phase 14) */}
+            {activeTab === 'lumina-gallery-console' && (
+              <div className="space-y-6">
+                <MasterLuminaGalleryConsole />
               </div>
             )}
 

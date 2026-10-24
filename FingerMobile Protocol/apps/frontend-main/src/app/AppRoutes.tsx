@@ -242,6 +242,7 @@ const GamificationRewardsMasterConsolePage = lazy(() => import('../pages/admin/G
 const LoansQrMasterConsolePage = lazy(() => import('../pages/admin/LoansQrMasterConsolePage'));
 const TrendsSwarmMasterConsolePage = lazy(() => import('../pages/admin/TrendsSwarmMasterConsolePage'));
 const CommunicationsVoipMasterConsolePage = lazy(() => import('../pages/admin/CommunicationsVoipMasterConsolePage'));
+const LuminaGalleryMasterConsolePage = lazy(() => import('../pages/admin/LuminaGalleryMasterConsolePage'));
 const ContentAdminDashboardPage = lazy(() => import('../pages/ContentAdminDashboardPage'));
 const MemberManagementPage = lazy(() => import('../pages/admin/MemberManagementPage'));
 
@@ -666,6 +667,13 @@ export const routes: RouteObject[] = [
           { path: '/voip-console', element: <CommunicationsVoipMasterConsolePage /> },
           { path: '/webrtc-console', element: <CommunicationsVoipMasterConsolePage /> },
           { path: '/dashboard/comms-voip', element: <CommunicationsVoipMasterConsolePage /> },
+          { path: '/admin/lumina-gallery-console', element: <LuminaGalleryMasterConsolePage /> },
+          { path: '/admin/lumina-console', element: <LuminaGalleryMasterConsolePage /> },
+          { path: '/admin/collectibles-console', element: <LuminaGalleryMasterConsolePage /> },
+          { path: '/lumina-gallery-console', element: <LuminaGalleryMasterConsolePage /> },
+          { path: '/lumina-console', element: <LuminaGalleryMasterConsolePage /> },
+          { path: '/collectibles-console', element: <LuminaGalleryMasterConsolePage /> },
+          { path: '/dashboard/lumina-gallery', element: <LuminaGalleryMasterConsolePage /> },
           { path: '/businessorganizations', element: <BusinessOrganizationsConsolePage /> },
           { path: '/admin/content', element: <ContentAdminDashboardPage /> },
           { path: '/contentadmindashboard', element: <ContentAdminDashboardPage /> },

@@ -698,6 +698,21 @@ const StercsDashboardPage: React.FC = () => {
       requests24h: '12.4M'
     },
     {
+      id: 'lumina-gallery-console',
+      title: 'Lumina Digital Collectibles & Provenance Master Console',
+      category: 'Creation',
+      icon: Palette,
+      description: 'Autonomous management of African Cultural Artifacts, 3D Holograms, Floor Prices (FIC), Royalties & On-Chain Registry Freeze Switches',
+      status: 'online',
+      version: 'v1.0.0-live',
+      lastUpdated: 'Live sync',
+      responseTime: 7,
+      healthScore: 99.99,
+      route: '/admin/lumina-console',
+      trend: [7, 8, 7, 6, 7, 7, 7],
+      requests24h: '8.9M'
+    },
+    {
       id: 'stercs-curation',
       title: 'STERCS Curation Engine',
       category: 'Intelligence',
