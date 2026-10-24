@@ -1,6 +1,6 @@
 import React from 'react';
 import MainLayout from '../../components/layout/MainLayout';
-import MasterSoundOceanConsole from '../../components/dashboard/MasterSoundOceanConsole';
+import { MasterSoundOceanConsole } from '../../components/dashboard/MasterSoundOceanConsole';
 import PlatformOwnershipCard from '../../components/dashboard/PlatformOwnershipCard';
 
 const SoundOceanMasterConsolePage: React.FC = () => {

@@ -39,16 +39,8 @@ router.patch('/screens/:slug/status', requireRootAccess, MasterDashboardControll
 router.delete('/screens/:slug', requireRootAccess, MasterDashboardController.deleteScreen);
 
 // Database-backed media ecosystems (archive preserves data and audit history)
-router.get('/ecosystems/:ecosystem/summary', requireRootAccess, MediaEcosystemManagementController.getEcosystemSummary);
-router.patch('/ecosystems/:ecosystem/automation', requireRootAccess, MediaEcosystemManagementController.updateAutomation);
-router.get('/ecosystems/:ecosystem/:entity', requireRootAccess, MediaEcosystemManagementController.listEntities);
-router.get('/ecosystems/:ecosystem/:entity/:id/audit', requireRootAccess, MediaEcosystemManagementController.getEntityAudit);
-router.post('/ecosystems/:ecosystem/:entity', requireRootAccess, MediaEcosystemManagementController.createEntity);
-router.put('/ecosystems/:ecosystem/:entity/:id', requireRootAccess, MediaEcosystemManagementController.updateEntity);
-router.patch('/ecosystems/:ecosystem/:entity/:id/lifecycle', requireRootAccess, MediaEcosystemManagementController.transitionEntity);
-router.delete('/ecosystems/:ecosystem/:entity/:id', requireRootAccess, MediaEcosystemManagementController.archiveEntity);
-
-// Sovereign multipart media ingestion — browser sends multipart/form-data, backend persists to disk and returns served URL
+// IMPORTANT: /ecosystems/upload must be declared BEFORE /:ecosystem/:entity so Express does not
+// treat the literal string 'upload' as an ecosystem parameter.
 router.post('/ecosystems/upload', requireRootAccess, consoleUpload.fields([
   { name: 'media', maxCount: 1 },
   { name: 'thumbnail', maxCount: 1 },
@@ -86,6 +78,16 @@ router.post('/ecosystems/upload', requireRootAccess, consoleUpload.fields([
     return res.status(500).json({ success: false, message: err.message || 'Upload failed.' });
   }
 });
+
+router.get('/ecosystems/:ecosystem/summary', requireRootAccess, MediaEcosystemManagementController.getEcosystemSummary);
+router.patch('/ecosystems/:ecosystem/automation', requireRootAccess, MediaEcosystemManagementController.updateAutomation);
+router.get('/ecosystems/:ecosystem/:entity', requireRootAccess, MediaEcosystemManagementController.listEntities);
+router.get('/ecosystems/:ecosystem/:entity/:id/audit', requireRootAccess, MediaEcosystemManagementController.getEntityAudit);
+router.post('/ecosystems/:ecosystem/:entity', requireRootAccess, MediaEcosystemManagementController.createEntity);
+router.put('/ecosystems/:ecosystem/:entity/:id', requireRootAccess, MediaEcosystemManagementController.updateEntity);
+router.patch('/ecosystems/:ecosystem/:entity/:id/lifecycle', requireRootAccess, MediaEcosystemManagementController.transitionEntity);
+router.delete('/ecosystems/:ecosystem/:entity/:id', requireRootAccess, MediaEcosystemManagementController.archiveEntity);
+
 
 // Database-backed management for community, media, discovery, and creator domains.
 router.get('/domains', requireRootAccess, PlatformDomainManagementController.getDefinitions);

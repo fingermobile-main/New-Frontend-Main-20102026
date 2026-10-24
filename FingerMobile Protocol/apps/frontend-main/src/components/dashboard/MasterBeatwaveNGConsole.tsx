@@ -1,5 +1,8 @@
 import React from 'react';
 import MediaCatalogManagementConsole, { MediaEntityDefinition } from './MediaCatalogManagementConsole';
+import SoundRiverMasterConsole from './SoundRiverMasterConsole';
+import SoundOceanMasterConsole from './SoundOceanMasterConsole';
+import { Waves, Diamond, Database } from 'lucide-react';
 
 const BEATWAVE_ENTITIES: MediaEntityDefinition[] = [
   {
@@ -14,8 +17,25 @@ const BEATWAVE_ENTITIES: MediaEntityDefinition[] = [
       { key: 'album_id', label: 'Album ID', type: 'number' },
       { key: 'genre', label: 'Genre' },
       { key: 'duration', label: 'Duration (seconds)', type: 'number' },
-      { key: 'url', label: 'Audio URL', required: true },
-      { key: 'cover_art', label: 'Cover art URL' },
+      {
+        key: 'url',
+        label: 'Upload audio track',
+        type: 'file',
+        required: true,
+        uploadField: 'media',
+        uploadResponseKey: 'media_url',
+        accept: 'audio/mpeg,audio/flac,audio/wav,audio/ogg,audio/aac,.mp3,.flac,.wav,.ogg,.aac,.m4a',
+        hint: 'Upload an MP3, FLAC, WAV, OGG, or AAC file (up to 150 MB). URL is auto-populated after upload.',
+      },
+      {
+        key: 'cover_art',
+        label: 'Upload cover art',
+        type: 'file',
+        uploadField: 'thumbnail',
+        uploadResponseKey: 'thumbnail_url',
+        accept: 'image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp',
+        hint: 'Upload a JPEG, PNG, or WebP cover art image.',
+      },
       { key: 'year', label: 'Release year', type: 'number' },
       { key: 'track_number', label: 'Track number', type: 'number' },
       { key: 'writer', label: 'Writer' },
@@ -35,7 +55,15 @@ const BEATWAVE_ENTITIES: MediaEntityDefinition[] = [
     fields: [
       { key: 'name', label: 'Artist name', required: true },
       { key: 'bio', label: 'Biography', type: 'textarea' },
-      { key: 'cover_art', label: 'Image URL' },
+      {
+        key: 'cover_art',
+        label: 'Upload artist image',
+        type: 'file',
+        uploadField: 'thumbnail',
+        uploadResponseKey: 'thumbnail_url',
+        accept: 'image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp',
+        hint: 'Upload an artist profile photo.',
+      },
       { key: 'verified', label: 'Verified artist', type: 'boolean' },
       { key: 'social_links', label: 'Social links (JSON object)', type: 'json' },
       { key: 'admin_notes', label: 'Management notes', type: 'textarea' },
@@ -51,7 +79,15 @@ const BEATWAVE_ENTITIES: MediaEntityDefinition[] = [
       { key: 'title', label: 'Album title', required: true },
       { key: 'artist_id', label: 'Artist ID', type: 'number' },
       { key: 'year', label: 'Release year', type: 'number' },
-      { key: 'cover_art', label: 'Cover art URL' },
+      {
+        key: 'cover_art',
+        label: 'Upload album cover art',
+        type: 'file',
+        uploadField: 'thumbnail',
+        uploadResponseKey: 'thumbnail_url',
+        accept: 'image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp',
+        hint: 'Upload album artwork (JPEG, PNG, or WebP).',
+      },
       { key: 'genre', label: 'Genre' },
       { key: 'description', label: 'Description', type: 'textarea' },
       { key: 'admin_notes', label: 'Management notes', type: 'textarea' },
@@ -67,7 +103,15 @@ const BEATWAVE_ENTITIES: MediaEntityDefinition[] = [
       { key: 'title', label: 'Playlist title', required: true },
       { key: 'description', label: 'Description', type: 'textarea' },
       { key: 'owner_id', label: 'Owner ID', type: 'number' },
-      { key: 'cover_art', label: 'Cover art URL' },
+      {
+        key: 'cover_art',
+        label: 'Upload playlist cover art',
+        type: 'file',
+        uploadField: 'thumbnail',
+        uploadResponseKey: 'thumbnail_url',
+        accept: 'image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp',
+        hint: 'Upload a playlist cover image.',
+      },
       { key: 'is_public', label: 'Public playlist', type: 'boolean' },
       { key: 'is_collaborative', label: 'Collaborative playlist', type: 'boolean' },
       { key: 'admin_notes', label: 'Management notes', type: 'textarea' },
@@ -81,7 +125,15 @@ const BEATWAVE_ENTITIES: MediaEntityDefinition[] = [
       { key: 'name', label: 'Genre name', required: true },
       { key: 'slug', label: 'Unique slug', required: true },
       { key: 'description', label: 'Description', type: 'textarea' },
-      { key: 'icon_url', label: 'Icon URL' },
+      {
+        key: 'icon_url',
+        label: 'Upload genre icon',
+        type: 'file',
+        uploadField: 'thumbnail',
+        uploadResponseKey: 'thumbnail_url',
+        accept: 'image/jpeg,image/png,image/webp,image/svg+xml,.jpg,.jpeg,.png,.webp,.svg',
+        hint: 'Upload a genre icon (SVG, PNG, or WebP recommended).',
+      },
       { key: 'parent_genre_id', label: 'Parent genre ID', type: 'number' },
       { key: 'admin_notes', label: 'Management notes', type: 'textarea' },
     ],
@@ -97,10 +149,26 @@ const BEATWAVE_ENTITIES: MediaEntityDefinition[] = [
       { key: 'author', label: 'Author', required: true },
       { key: 'synopsis', label: 'Synopsis', type: 'textarea' },
       { key: 'narrator_voice', label: 'Narrator voice' },
-      { key: 'cover_art', label: 'Cover art URL' },
+      {
+        key: 'cover_art',
+        label: 'Upload cover art',
+        type: 'file',
+        uploadField: 'thumbnail',
+        uploadResponseKey: 'thumbnail_url',
+        accept: 'image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp',
+        hint: 'Upload AudioNovel cover art.',
+      },
       { key: 'duration_minutes', label: 'Duration (1–30 minutes)', type: 'number' },
       { key: 'genre', label: 'Genre' },
-      { key: 'audio_url', label: 'Audio URL' },
+      {
+        key: 'audio_url',
+        label: 'Upload audio file',
+        type: 'file',
+        uploadField: 'media',
+        uploadResponseKey: 'media_url',
+        accept: 'audio/mpeg,audio/flac,audio/wav,audio/ogg,.mp3,.flac,.wav,.ogg',
+        hint: 'Upload the audio novel file (MP3, FLAC, WAV, or OGG).',
+      },
       { key: 'ai_prompt_used', label: 'AI prompt used', type: 'textarea' },
       {
         key: 'source_type',
@@ -133,11 +201,27 @@ const BEATWAVE_ENTITIES: MediaEntityDefinition[] = [
       { key: 'host', label: 'Host', required: true },
       { key: 'guest', label: 'Guest' },
       { key: 'description', label: 'Description', type: 'textarea' },
-      { key: 'cover_art', label: 'Cover art URL' },
+      {
+        key: 'cover_art',
+        label: 'Upload cover art',
+        type: 'file',
+        uploadField: 'thumbnail',
+        uploadResponseKey: 'thumbnail_url',
+        accept: 'image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp',
+        hint: 'Upload podcast episode cover art.',
+      },
       { key: 'duration_minutes', label: 'Duration (1–30 minutes)', type: 'number' },
       { key: 'genre', label: 'Genre' },
       { key: 'episode_number', label: 'Episode number', type: 'number' },
-      { key: 'audio_url', label: 'Audio URL' },
+      {
+        key: 'audio_url',
+        label: 'Upload podcast audio',
+        type: 'file',
+        uploadField: 'media',
+        uploadResponseKey: 'media_url',
+        accept: 'audio/mpeg,audio/flac,audio/wav,audio/ogg,.mp3,.flac,.wav,.ogg',
+        hint: 'Upload the podcast audio file (MP3, FLAC, WAV, or OGG).',
+      },
       { key: 'tags', label: 'Tags (JSON array)', type: 'json' },
       { key: 'source_file_name', label: 'Original file name' },
       { key: 'source_file_size_mb', label: 'Source file size (MB)', type: 'number' },
@@ -159,10 +243,6 @@ const BEATWAVE_ENTITIES: MediaEntityDefinition[] = [
     ],
   },
 ];
-
-import SoundRiverMasterConsole from './SoundRiverMasterConsole';
-import SoundOceanMasterConsole from './SoundOceanMasterConsole';
-import { Waves, Diamond, Database, Disc } from 'lucide-react';
 
 export const MasterBeatwaveNGConsole: React.FC = () => {
   const [activeTab, setActiveTab] = React.useState<'river' | 'ocean' | 'catalog'>('river');
@@ -215,7 +295,7 @@ export const MasterBeatwaveNGConsole: React.FC = () => {
         <MediaCatalogManagementConsole
           ecosystem="beatwave"
           title="BeatwaveNG Ecosystem Management"
-          description="Manage persisted tracks, artists, albums, playlists, genres, AudioNovels, and podcasts with audited catalog and moderation controls."
+          description="Upload audio tracks, cover art, and media files directly. Multipart upload to backend, persists to PostgreSQL-linked storage, goes live instantly on Publish."
           entities={BEATWAVE_ENTITIES}
         />
       )}
@@ -224,4 +304,3 @@ export const MasterBeatwaveNGConsole: React.FC = () => {
 };
 
 export default MasterBeatwaveNGConsole;
-
