@@ -1,0 +1,1 @@
+FingerMobile Startup Script 26102026

@@ -4,6 +4,7 @@
   "description": "FingerMobile Protocol Communication Layer",
   "main": "index.js",
   "scripts": {
+    "startup": "./\"FingerMobile Startup Script 26102026\"",
     "test": "echo \"Error: no test specified\" && exit 1",
     "test:unit": "jest packages/*/src/**/__tests__/**/*.test.{js,ts}",
     "test:integration": "jest packages/*/src/**/__tests__/**/*.integration-test.{js,ts}",
