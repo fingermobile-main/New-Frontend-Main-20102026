@@ -28,6 +28,10 @@ import {
   Bars3Icon,
   ArrowRightOnRectangleIcon,
   FaceSmileIcon,
+  HomeIcon,
+  GiftIcon,
+  BellIcon,
+  ChatBubbleLeftRightIcon,
 } from '@heroicons/react/24/outline';
 import {
   CheckCircleIcon as CheckCircleSolidIcon,
@@ -90,17 +94,62 @@ interface SubNavEntity {
   id: string;
   name: string;
   path: string;
+  logo: string;
+  fallbackIcon: React.ComponentType<{ className?: string }>;
+  ariaLabel: string;
   badge?: string;
   badgeColor?: string;
 }
 
 const SUB_NAV_ITEMS: SubNavEntity[] = [
-  { id: 'home', name: 'Home Feeds', path: '/forum' },
-  { id: 'lushpressies', name: 'Lush Pressies', path: '/lushpressies' },
-  { id: 'dancia4tv', name: 'Dancia-4tv', path: '/dancia4tv' },
-  { id: 'marketplace', name: 'Marketplace', path: '/marketplace' },
-  { id: 'photocredits', name: 'PhotoCredits', path: '/photocredits' },
-  { id: 'beatwaveng', name: 'BeatwaveNG', path: '/beatwaveng' },
+  {
+    id: 'home',
+    name: 'Home Feeds',
+    path: '/forum',
+    logo: '/assets/logos/pillars/home_pillar.png',
+    fallbackIcon: HomeIcon,
+    ariaLabel: 'Home Feeds'
+  },
+  {
+    id: 'lushpressies',
+    name: 'Lush Pressies',
+    path: '/lushpressies',
+    logo: '/assets/logos/pillars/lushpressies_pillar.png',
+    fallbackIcon: GiftIcon,
+    ariaLabel: 'Lush Pressies Protocol Escrow Gifting'
+  },
+  {
+    id: 'dancia4tv',
+    name: 'Dancia-4tv',
+    path: '/dancia4tv',
+    logo: '/assets/logos/pillars/dancia4tv_pillar.png',
+    fallbackIcon: TvIcon,
+    ariaLabel: 'Dancia-4Tv Live WebRTC Video Broadcasts'
+  },
+  {
+    id: 'marketplace',
+    name: 'Marketplace',
+    path: '/marketplace',
+    logo: '/assets/logos/pillars/marketplace_pillar.png',
+    fallbackIcon: ShoppingBagIcon,
+    ariaLabel: 'Marketplace Decentralized P2P Commerce'
+  },
+  {
+    id: 'photocredits',
+    name: 'PhotoCredits',
+    path: '/photocredits',
+    logo: '/assets/logos/pillars/photocredits_pillar.png',
+    fallbackIcon: CameraIcon,
+    ariaLabel: 'PhotoCredits Sovereign Creator Royalties'
+  },
+  {
+    id: 'beatwaveng',
+    name: 'BeatwaveNG',
+    path: '/beatwaveng',
+    logo: '/assets/logos/pillars/beatwaveng_pillar.png',
+    fallbackIcon: MusicalNoteIcon,
+    ariaLabel: 'BeatwaveNG Lossless Audio & Stems'
+  },
 ];
 
 // =============================================================================
@@ -977,6 +1026,7 @@ export const ForumPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState<boolean>(false);
   const [isLogoViewerOpen, setIsLogoViewerOpen] = useState<boolean>(false);
+  const [isMobileLeftRailOpen, setIsMobileLeftRailOpen] = useState<boolean>(false);
   const composerContainerRef = useRef<HTMLDivElement | null>(null);
 
   // Profile Data Synced Live from UserProfileSyncService
@@ -1997,10 +2047,11 @@ export const ForumPage: React.FC = () => {
 
       {/* TOP NAVIGATION & LEVEL 2 NAVBAR */}
       <header className="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-xs">
-        <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            {/* Left Section: 1. Logo, 2. FingerMobile, 3. Burger Menu (Justified & Well-Spaced) */}
-            <div className="flex items-center gap-4 sm:gap-6 shrink-0">
+        <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-3 sm:px-6 lg:px-8">
+          {/* Row 1 (H1 Header Row): Facebook-Style Clean Header */}
+          <div className="flex items-center justify-between h-14 sm:h-16 gap-2">
+            {/* Left Section: 1. Logo, 2. Brand Wordmark, 3. Burger Menu */}
+            <div className="flex items-center gap-2 sm:gap-4 shrink-0">
               {/* 1. Logo (Click to View / Enlarge & Download in HD formats) */}
               <button
                 type="button"
@@ -2009,7 +2060,7 @@ export const ForumPage: React.FC = () => {
                 aria-label="View and Download FingerMobile Logo in HD"
                 title="Click to Enlarge & Download FingerMobile™ Logo in Ultra HD (4K / SVG / PNG)"
               >
-                <div className="h-10 w-10 rounded-2xl overflow-hidden bg-white p-1 border border-slate-300 dark:border-slate-700 shadow-xs flex items-center justify-center group-hover:ring-2 group-hover:ring-orange-500/50 transition-all">
+                <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl sm:rounded-2xl overflow-hidden bg-white p-1 border border-slate-300 dark:border-slate-700 shadow-xs flex items-center justify-center group-hover:ring-2 group-hover:ring-orange-500/50 transition-all">
                   <img
                     src="/assets/branding/fingermobile/logo-white.webp"
                     alt="FingerMobile Logo"
@@ -2020,7 +2071,7 @@ export const ForumPage: React.FC = () => {
                   />
                 </div>
                 {/* HD indicator pill */}
-                <span className="absolute -bottom-1 -right-1 px-1 py-0.2 bg-gradient-to-r from-orange-500 to-amber-500 text-white text-[8px] font-black rounded-md shadow-xs opacity-90 group-hover:opacity-100 group-hover:scale-110 transition-all tracking-wider">
+                <span className="absolute -bottom-1 -right-1 px-1 py-0.2 bg-gradient-to-r from-orange-500 to-amber-500 text-white text-[8px] font-black rounded-md shadow-xs opacity-90 group-hover:opacity-100 transition-all tracking-wider">
                   HD
                 </span>
               </button>
@@ -2036,138 +2087,184 @@ export const ForumPage: React.FC = () => {
                   <span className="text-base sm:text-lg font-black tracking-tight text-slate-900 dark:text-white flex items-center group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
                     FingerMobile<span className="text-[#ff6b00] ml-0.5">™</span>
                   </span>
-                  <span className="text-[10px] uppercase font-extrabold tracking-widest text-slate-700 dark:text-slate-300 font-medium -mt-1">
+                  <span className="text-[9px] sm:text-[10px] uppercase font-extrabold tracking-widest text-slate-700 dark:text-slate-300 font-medium -mt-1">
                     Protocol
                   </span>
                 </button>
               </h1>
 
-              {/* 3. Orange Burger Menu / Drawer Button (ONLY visible and accessible when perfectly onboarded) */}
+              {/* 3. Orange Burger Menu / Drawer Button (Accessible when onboarded) */}
               {isOnboarded && (
                 <button
                   type="button"
                   onClick={() => window.dispatchEvent(new CustomEvent('open-drawer-menu'))}
-                  className="p-2 sm:p-2.5 rounded-2xl border border-orange-200 dark:border-orange-500/30 bg-orange-50/80 hover:bg-orange-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-[#ff6b00] hover:text-[#e05e00] transition-all shadow-xs flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-orange-500/40 cursor-pointer ml-1 sm:ml-2"
+                  className="p-1.5 sm:p-2 rounded-xl border border-orange-200 dark:border-orange-500/30 bg-orange-50/80 hover:bg-orange-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-[#ff6b00] hover:text-[#e05e00] transition-all shadow-xs flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-orange-500/40 cursor-pointer"
                   aria-label="Open Navigation Drawer"
                   title="Platform Navigation (385 Pages / 230+ Screens)"
                 >
-                  <Bars3Icon className="w-5 h-5 sm:w-6 sm:h-6 text-[#ff6b00]" />
+                  <Bars3Icon className="w-5 h-5 text-[#ff6b00]" />
                 </button>
               )}
             </div>
 
-            {/* Center: Search Bar (Spacious & Justified) */}
-            <div className="hidden md:flex flex-1 max-w-lg mx-6">
+            {/* Desktop Center: Search Bar */}
+            <div className="hidden md:flex flex-1 max-w-md mx-4">
               <div className="relative w-full">
-                <MagnifyingGlassIcon className="w-4 h-4 text-slate-600 absolute left-3 top-2.5" />
+                <MagnifyingGlassIcon className="w-4 h-4 text-slate-500 absolute left-3 top-2.5" />
                 <input
                   type="text"
                   placeholder="Search sovereign posts, stems, keycards, tags..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-9 pr-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white placeholder:text-slate-400 focus:ring-2 focus:ring-orange-500 focus:outline-none font-medium font-bold border-slate-300"
+                  className="w-full pl-9 pr-4 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white placeholder:text-slate-400 focus:ring-2 focus:ring-orange-500 focus:outline-none font-bold"
                 />
               </div>
             </div>
 
-            {/* Right: Quick Navigation Badges, Settings Link & Log Out / Auth CTAs */}
-            <div className="flex items-center gap-2">
-              {!user ? (
-                <>
+            {/* Right Section: Clean, Uncluttered Icon Action Group (Facebook-Style) */}
+            <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+              {/* Mobile Search Trigger Icon */}
+              <button
+                type="button"
+                onClick={() => window.dispatchEvent(new CustomEvent('open-universal-search'))}
+                className="md:hidden p-2 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+                aria-label="Search"
+                title="Search Platform (Cmd+K)"
+              >
+                <MagnifyingGlassIcon className="w-5 h-5" />
+              </button>
+
+              {/* Go Live Button */}
+              {user && (
+                <button
+                  type="button"
+                  onClick={() => setIsLiveStudioOpen(true)}
+                  className="p-2 sm:px-3 sm:py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl transition flex items-center gap-1.5 shadow-sm cursor-pointer"
+                  title="Launch WebRTC Live Studio Broadcast"
+                  aria-label="Go Live"
+                >
+                  <SignalIcon className="w-4 h-4 animate-pulse shrink-0" />
+                  <span className="hidden sm:inline text-xs font-bold">Go Live</span>
+                </button>
+              )}
+
+              {/* Notifications Button */}
+              <button
+                type="button"
+                onClick={() => navigate('/notifications')}
+                className="p-2 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors relative cursor-pointer"
+                aria-label="Notifications"
+                title="Notifications"
+              >
+                <BellIcon className="w-5 h-5" />
+                <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-500" />
+              </button>
+
+              {/* Chat / Messages Button */}
+              <button
+                type="button"
+                onClick={() => navigate('/messages')}
+                className="p-2 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors relative cursor-pointer"
+                aria-label="Messages"
+                title="Messages"
+              >
+                <ChatBubbleLeftRightIcon className="w-5 h-5" />
+              </button>
+
+              {/* Desktop Quick LogOut (Only on desktop lg+, hidden on mobile to prevent crowding) */}
+              {user && (
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/60 dark:hover:bg-rose-900/80 border border-rose-300 dark:border-rose-700/70 text-rose-700 dark:text-rose-300 hover:text-rose-900 font-extrabold text-xs transition shadow-xs cursor-pointer whitespace-nowrap"
+                  title="Log Out of FingerMobile Protocol"
+                  aria-label="Log Out"
+                >
+                  <ArrowRightOnRectangleIcon className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400 shrink-0" />
+                  <span>Log Out</span>
+                </button>
+              )}
+
+              {/* Auth CTAs for guests */}
+              {!user && (
+                <div className="flex items-center gap-1.5">
                   <button
                     type="button"
                     onClick={() => navigate('/login')}
-                    className="px-3.5 py-1.5 rounded-xl border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs hover:bg-slate-100 dark:hover:bg-slate-800 transition shadow-xs cursor-pointer"
+                    className="px-3 py-1.5 rounded-xl border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
                   >
                     Sign In
                   </button>
                   <button
                     type="button"
                     onClick={() => navigate('/register')}
-                    className="px-3.5 py-1.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-extrabold text-xs transition shadow-xs cursor-pointer"
+                    className="px-3 py-1.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-extrabold text-xs transition shadow-xs cursor-pointer"
                   >
                     Sign Up
                   </button>
-                </>
-              ) : !isOnboarded ? (
-                <>
-                  <button
-                    type="button"
-                    onClick={() => navigate('/onboarding')}
-                    className="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5"
-                  >
-                    <span>Complete Onboarding</span>
-                    <ArrowRightOnRectangleIcon className="w-3.5 h-3.5" />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleLogout}
-                    className="px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/60 dark:hover:bg-rose-900/80 border border-rose-300 dark:border-rose-700/70 text-rose-700 dark:text-rose-300 hover:text-rose-900 font-extrabold text-xs transition flex items-center gap-1.5 shadow-xs cursor-pointer"
-                    title="Log Out of FingerMobile Protocol"
-                    aria-label="Log Out"
-                  >
-                    <ArrowRightOnRectangleIcon className="w-4 h-4 text-rose-600 dark:text-rose-400" />
-                    <span className="font-bold">Log Out</span>
-                  </button>
-                </>
-              ) : (
-                <>
-                  <button
-                    type="button"
-                    onClick={() => setIsLiveStudioOpen(true)}
-                    className="px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl transition flex items-center gap-1.5 shadow-sm cursor-pointer"
-                  >
-                    <SignalIcon className="w-3.5 h-3.5 animate-pulse" />
-                    <span>Go Live</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => navigate('/settings')}
-                    className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition"
-                    title="Sovereign Profile & Settings (Syncs with Master Dashboard)"
-                  >
-                    <LockClosedIcon className="w-4 h-4" />
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={handleLogout}
-                    className="px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/60 dark:hover:bg-rose-900/80 border border-rose-300 dark:border-rose-700/70 text-rose-700 dark:text-rose-300 hover:text-rose-900 font-extrabold text-xs transition flex items-center gap-1.5 shadow-xs cursor-pointer"
-                    title="Log Out of FingerMobile Protocol"
-                    aria-label="Log Out"
-                  >
-                    <ArrowRightOnRectangleIcon className="w-4 h-4 text-rose-600 dark:text-rose-400" />
-                    <span className="font-bold">Log Out</span>
-                  </button>
-                </>
+                </div>
               )}
             </div>
           </div>
 
-          {/* Level 2 Sub-Nav Row */}
+          {/* Row 2 (H2 Sub-Nav Row): Facebook-Style Sovereign 6-Pillar Tab Bar with Official Logos */}
           <nav
-            aria-label="Forum Sub-Navigation"
-            className="w-full py-2 border-t border-slate-200 dark:border-slate-800 text-xs overflow-x-auto scrollbar-none"
+            aria-label="Platform Navigation Pillars"
+            className="w-full border-t border-slate-200 dark:border-slate-800 bg-white/60 dark:bg-slate-900/60"
           >
-            <div className="grid grid-cols-6 gap-2 w-full min-w-[540px] sm:min-w-0">
-              {SUB_NAV_ITEMS.map((sub) => (
-                <button
-                  key={sub.id}
-                  type="button"
-                  onClick={() => {
-                    setActiveSubNav(sub.id);
-                    navigate(sub.path);
-                  }}
-                  className={`w-full py-1.5 px-2 sm:px-3 rounded-lg font-bold text-center whitespace-nowrap transition flex items-center justify-center cursor-pointer ${
-                    activeSubNav === sub.id
-                      ? 'bg-orange-600 text-white shadow-xs'
-                      : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'
-                  }`}
-                >
-                  {sub.name}
-                </button>
-              ))}
+            <div className="grid grid-cols-6 w-full">
+              {SUB_NAV_ITEMS.map((sub) => {
+                const IconComponent = sub.fallbackIcon;
+                const isActive = activeSubNav === sub.id;
+                return (
+                  <button
+                    key={sub.id}
+                    type="button"
+                    onClick={() => {
+                      setActiveSubNav(sub.id);
+                      navigate(sub.path);
+                    }}
+                    className={`relative flex flex-col items-center justify-center py-2 sm:py-2.5 transition-all cursor-pointer group focus:outline-none ${
+                      isActive
+                        ? 'text-orange-600 dark:text-orange-500 font-black'
+                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                    }`}
+                    title={sub.name}
+                    aria-label={sub.ariaLabel}
+                  >
+                    {/* Authentic Pillar Logo / Favicon with zero-downtime SVG fallback */}
+                    <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center p-0.5 transition-all duration-200 ${
+                      isActive
+                        ? 'ring-2 ring-orange-500 bg-orange-500/10 shadow-sm scale-105'
+                        : 'opacity-75 group-hover:opacity-100 group-hover:scale-105'
+                    }`}>
+                      <img
+                        src={sub.logo}
+                        alt={sub.name}
+                        className="w-full h-full object-contain rounded-lg"
+                        onError={(e) => {
+                          e.currentTarget.style.display = 'none';
+                          const next = e.currentTarget.nextElementSibling as HTMLElement;
+                          if (next) next.classList.remove('hidden');
+                        }}
+                      />
+                      <IconComponent className="w-5 h-5 hidden text-slate-700 dark:text-slate-200" />
+                    </div>
+
+                    {/* Descriptive Label (Hidden on small mobile screens to free up space; visible on sm+) */}
+                    <span className={`hidden sm:inline text-[10px] md:text-[11px] font-bold mt-1 tracking-tight truncate max-w-full ${
+                      isActive ? 'text-orange-600 dark:text-orange-400 font-extrabold' : 'text-slate-700 dark:text-slate-300'
+                    }`}>
+                      {sub.name}
+                    </span>
+
+                    {/* Active Highlight Indicator Line (Facebook-Style Bottom Accent Bar) */}
+                    {isActive && (
+                      <span className="absolute bottom-0 inset-x-2 sm:inset-x-4 h-0.5 sm:h-1 bg-orange-600 dark:bg-orange-500 rounded-t-full shadow-sm shadow-orange-500/50" />
+                    )}
+                  </button>
+                );
+              })}
             </div>
           </nav>
         </div>
@@ -2179,10 +2276,27 @@ export const ForumPage: React.FC = () => {
           {/* ======================================================================= */}
           {/* LEFT RAIL (3 cols): IDENTITY, UNIVERSAL PROFILE CARD, PRIVACY           */}
           {/* ======================================================================= */}
-          <div className="lg:col-span-3 lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-5.5rem)] lg:overflow-y-auto space-y-4 scrollbar-none pr-1">
+          <div className="order-2 lg:order-1 lg:col-span-3 lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-5.5rem)] lg:overflow-y-auto space-y-4 scrollbar-none pr-1">
             {/* 1. Sovereign Universal ProfileCard (Subscribed to UserProfileSyncService) */}
             <UniversalProfileCard />
 
+            {/* Mobile Collapsible Drawer Trigger for Tools & Channels */}
+            <div className="lg:hidden">
+              <button
+                type="button"
+                onClick={() => setIsMobileLeftRailOpen((prev) => !prev)}
+                className="w-full py-2.5 px-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 text-slate-800 dark:text-white font-bold text-xs flex items-center justify-between shadow-xs transition cursor-pointer"
+              >
+                <span className="flex items-center gap-2">
+                  <ListBulletIcon className="w-4 h-4 text-[#ff6b00]" />
+                  <span>Channels, Categories & Studio Tools</span>
+                </span>
+                <ChevronDownIcon className={`w-4 h-4 text-slate-500 transition-transform duration-200 ${isMobileLeftRailOpen ? 'rotate-180' : ''}`} />
+              </button>
+            </div>
+
+            {/* Collapsible on Mobile, Always Visible on Desktop */}
+            <div className={`${isMobileLeftRailOpen ? 'block' : 'hidden lg:block'} space-y-4`}>
             {/* Quick Live Studio & "Join Me Live" Card */}
             <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-3.5 shadow-xs space-y-2.5">
               <div className="flex items-center justify-between">
@@ -2384,12 +2498,13 @@ export const ForumPage: React.FC = () => {
 
             {/* Discovery Widget (Directly under Topic Categories) */}
             <DiscoverWidget pageContext="forum" />
+            </div>
           </div>
 
           {/* ======================================================================= */}
           {/* CENTER RAIL (6 cols): STORIES, COMPOSER, RICH POST FEED                 */}
           {/* ======================================================================= */}
-          <div className="lg:col-span-6 space-y-6">
+          <div className="order-1 lg:order-2 lg:col-span-6 space-y-6">
             {/* 1. Mii™®©℠ 48H Ephemeral Stories Bar with Immediate UGC Display, 10s P2P Shuffle & Slide-In Fullscreen View */}
             <MiiStoriesBar
               currentUserName={isOnboarded ? syncedProfile.name : 'Guest'}
@@ -4123,7 +4238,7 @@ export const ForumPage: React.FC = () => {
           {/* ======================================================================= */}
           {/* RIGHT RAIL (3 cols): STATS, CANARY ADS, HALLMARKS, LEADERBOARD         */}
           {/* ======================================================================= */}
-          <div className="lg:col-span-3 lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-5.5rem)] lg:overflow-y-auto space-y-4 scrollbar-none pl-1">
+          <div className="order-3 lg:order-3 lg:col-span-3 lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-5.5rem)] lg:overflow-y-auto space-y-4 scrollbar-none pl-1">
             <PlatformWidgetsAndAdsRail
               pageContext="forum"
               initialChildren={
