@@ -32,6 +32,10 @@ import {
   GiftIcon,
   BellIcon,
   ChatBubbleLeftRightIcon,
+  SparklesIcon,
+  PlusCircleIcon,
+  BanknotesIcon,
+  UserGroupIcon,
 } from '@heroicons/react/24/outline';
 import {
   CheckCircleIcon as CheckCircleSolidIcon,
@@ -2092,10 +2096,11 @@ export const ForumPage: React.FC = () => {
 
       {/* TOP NAVIGATION & LEVEL 2 NAVBAR */}
       <header className="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-xs">
-        <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-3 sm:px-6 lg:px-8">
+        {/* Header Container - Left clearance pl-14 sm:pl-56 for Sovereign Burger Trigger */}
+        <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto pl-14 sm:pl-56 pr-3 sm:px-6 lg:px-8">
           {/* Row 1 (H1 Header Row): Facebook-Style Clean Header */}
           <div className="flex items-center justify-between h-14 sm:h-16 gap-2">
-            {/* Left Section: 1. Logo, 2. Brand Wordmark, 3. Burger Menu */}
+            {/* Left Section: 1. Logo, 2. Brand Wordmark */}
             <div className="flex items-center gap-2 sm:gap-4 shrink-0">
               {/* 1. Logo (Click to View / Enlarge & Download in HD formats) */}
               <button
@@ -2134,19 +2139,6 @@ export const ForumPage: React.FC = () => {
                   </span>
                 </button>
               </h1>
-
-              {/* 3. Orange Burger Menu / Drawer Button (Accessible when onboarded) */}
-              {isOnboarded && (
-                <button
-                  type="button"
-                  onClick={() => window.dispatchEvent(new CustomEvent('open-drawer-menu'))}
-                  className="p-1.5 sm:p-2 rounded-xl border border-orange-200 dark:border-orange-500/30 bg-orange-50/80 hover:bg-orange-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-[#ff6b00] hover:text-[#e05e00] transition-all shadow-xs flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-orange-500/40 cursor-pointer"
-                  aria-label="Open Navigation Drawer"
-                  title="Platform Navigation (385 Pages / 230+ Screens)"
-                >
-                  <Bars3Icon className="w-5 h-5 text-[#ff6b00]" />
-                </button>
-              )}
             </div>
 
             {/* Desktop Center: Search Bar */}
@@ -4757,7 +4749,7 @@ export const ForumPage: React.FC = () => {
         onClose={() => setIsLogoViewerOpen(false)}
       />
 
-      {/* 7. Auto-Hiding Sovereign Mobile Navigation Dock (Facebook-Style: Appears on scroll/hover, auto-hides after 3s) */}
+      {/* 7. Auto-Hiding Sovereign Mobile Navigation Dock (4 Distinct Relevant Companion Actions) */}
       <aside
         aria-label="Mobile Navigation Dock"
         onMouseEnter={() => {
@@ -4773,52 +4765,86 @@ export const ForumPage: React.FC = () => {
             : 'translate-y-full opacity-0 pointer-events-none'
         }`}
       >
-        <div className="grid grid-cols-6 w-full h-14 items-center px-1">
-          {SUB_NAV_ITEMS.map((sub) => {
-            const IconComponent = sub.fallbackIcon;
-            const isActive = activeSubNav === sub.id;
-            return (
-              <button
-                key={sub.id}
-                type="button"
-                onClick={() => {
-                  setActiveSubNav(sub.id);
-                  navigate(sub.path);
-                  showBottomDockTemporarily();
-                }}
-                className={`relative flex flex-col items-center justify-center h-full py-1 transition-all cursor-pointer group focus:outline-none ${
-                  isActive
-                    ? 'text-orange-600 dark:text-orange-500 font-black'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-                }`}
-                title={sub.name}
-                aria-label={sub.ariaLabel}
-              >
-                <div
-                  className={`w-7 h-7 rounded-xl flex items-center justify-center p-0.5 transition-all duration-200 ${
-                    isActive
-                      ? 'ring-2 ring-orange-500 bg-orange-500/10 shadow-sm scale-110'
-                      : 'opacity-75 group-hover:opacity-100'
-                  }`}
-                >
-                  <img
-                    src={sub.logo}
-                    alt={sub.name}
-                    className="w-full h-full object-contain rounded-lg"
-                    onError={(e) => {
-                      e.currentTarget.style.display = 'none';
-                      const next = e.currentTarget.nextElementSibling as HTMLElement;
-                      if (next) next.classList.remove('hidden');
-                    }}
-                  />
-                  <IconComponent className="w-5 h-5 hidden text-slate-700 dark:text-slate-200" />
-                </div>
-                {isActive && (
-                  <span className="absolute bottom-1 w-5 h-1 bg-orange-600 dark:bg-orange-500 rounded-full shadow-xs" />
-                )}
-              </button>
-            );
-          })}
+        <div className="grid grid-cols-4 w-full h-14 items-center px-2">
+          {/* 1. Discover & Viral Trends */}
+          <button
+            type="button"
+            onClick={() => {
+              navigate('/discover');
+              showBottomDockTemporarily();
+            }}
+            className="flex flex-col items-center justify-center h-full py-1 text-slate-600 dark:text-slate-400 hover:text-orange-600 dark:hover:text-orange-400 transition cursor-pointer group focus:outline-none"
+            aria-label="Discover & Trends"
+            title="Discover Sovereign Trends & Curated Highlights"
+          >
+            <div className="w-8 h-8 rounded-xl flex items-center justify-center group-hover:bg-orange-50 dark:group-hover:bg-slate-800 transition">
+              <SparklesIcon className="w-5 h-5 text-amber-500 group-hover:scale-110 transition-transform" />
+            </div>
+            <span className="text-[10px] font-bold tracking-tight text-slate-700 dark:text-slate-300 group-hover:text-orange-600 -mt-0.5">
+              Discover
+            </span>
+          </button>
+
+          {/* 2. Create Post / Quick Compose Studio Action */}
+          <button
+            type="button"
+            onClick={() => {
+              if (composerContainerRef.current) {
+                composerContainerRef.current.scrollIntoView({ behavior: 'smooth' });
+              } else {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }
+              showBottomDockTemporarily();
+            }}
+            className="flex flex-col items-center justify-center h-full py-1 text-slate-600 dark:text-slate-400 hover:text-orange-600 dark:hover:text-orange-400 transition cursor-pointer group focus:outline-none"
+            aria-label="Create Post"
+            title="Compose New Post or Story"
+          >
+            <div className="w-8 h-8 rounded-full bg-gradient-to-r from-orange-500 to-amber-500 text-white flex items-center justify-center shadow-md shadow-orange-500/30 group-hover:scale-110 transition-transform">
+              <PlusCircleIcon className="w-5 h-5 text-white" />
+            </div>
+            <span className="text-[10px] font-bold tracking-tight text-slate-700 dark:text-slate-300 group-hover:text-orange-600 -mt-0.5">
+              Create
+            </span>
+          </button>
+
+          {/* 3. Sovereign Escrow Wallet & FIC Balance */}
+          <button
+            type="button"
+            onClick={() => {
+              navigate('/wallet');
+              showBottomDockTemporarily();
+            }}
+            className="flex flex-col items-center justify-center h-full py-1 text-slate-600 dark:text-slate-400 hover:text-orange-600 dark:hover:text-orange-400 transition cursor-pointer group focus:outline-none"
+            aria-label="Sovereign Wallet"
+            title="FIC Coins, Vault Escrows & Balance"
+          >
+            <div className="w-8 h-8 rounded-xl flex items-center justify-center group-hover:bg-emerald-50 dark:group-hover:bg-slate-800 transition">
+              <BanknotesIcon className="w-5 h-5 text-emerald-600 dark:text-emerald-400 group-hover:scale-110 transition-transform" />
+            </div>
+            <span className="text-[10px] font-bold tracking-tight text-slate-700 dark:text-slate-300 group-hover:text-emerald-600 -mt-0.5">
+              Wallet
+            </span>
+          </button>
+
+          {/* 4. Mega-Communities & Hallmarks */}
+          <button
+            type="button"
+            onClick={() => {
+              navigate('/hallmarks');
+              showBottomDockTemporarily();
+            }}
+            className="flex flex-col items-center justify-center h-full py-1 text-slate-600 dark:text-slate-400 hover:text-orange-600 dark:hover:text-orange-400 transition cursor-pointer group focus:outline-none"
+            aria-label="Hallmarks Mega-Communities"
+            title="Hallmarks Sovereign Communities (Up to 250k Members)"
+          >
+            <div className="w-8 h-8 rounded-xl flex items-center justify-center group-hover:bg-purple-50 dark:group-hover:bg-slate-800 transition">
+              <UserGroupIcon className="w-5 h-5 text-purple-600 dark:text-purple-400 group-hover:scale-110 transition-transform" />
+            </div>
+            <span className="text-[10px] font-bold tracking-tight text-slate-700 dark:text-slate-300 group-hover:text-purple-600 -mt-0.5">
+              Hallmarks
+            </span>
+          </button>
         </div>
       </aside>
     </div>
