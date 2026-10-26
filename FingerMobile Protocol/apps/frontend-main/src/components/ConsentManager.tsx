@@ -100,34 +100,39 @@ export const ConsentManager: React.FC<ConsentProps> = ({
     setLoading(true);
     setError(null);
     try {
-      // Update local storage immediately for fast client feedback
+      // 1. Update local storage immediately for persistent client consent
       if (typeof window !== "undefined") {
         localStorage.setItem("fingermobile_consent_flags", JSON.stringify(newFlags));
         localStorage.setItem("cookieConsent", "true");
+        window.dispatchEvent(new CustomEvent("consent-updated", { detail: newFlags }));
       }
 
-      // Sync with backend if available
+      // 2. Sync with backend if token/endpoint available, without trapping user on network errors
       const targetUrl = apiBaseUrl ? `${apiBaseUrl}/v1/users/consent` : `/api/v1/users/consent`;
       if (effectiveToken || apiBaseUrl) {
-        const res = await fetch(targetUrl, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            ...(effectiveToken ? { Authorization: `Bearer ${effectiveToken}` } : {}),
-          },
-          body: JSON.stringify({ flags: newFlags }),
-        });
-        if (!res.ok) {
-          throw new Error("Consent update failed on server. Preferences saved locally.");
+        try {
+          await fetch(targetUrl, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              ...(effectiveToken ? { Authorization: `Bearer ${effectiveToken}` } : {}),
+            },
+            body: JSON.stringify({ flags: newFlags }),
+          });
+        } catch {
+          // Gracefully continue; preferences are safely recorded locally
         }
       }
 
       setSuccess(true);
       setIsBannerVisible(false);
+      setIsSettingsOpen(false);
       onConsentChange?.(newFlags);
-      setTimeout(() => setSuccess(false), 4000);
+      setTimeout(() => setSuccess(false), 3000);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Unknown error updating consent.");
+      setIsBannerVisible(false);
+      setIsSettingsOpen(false);
     } finally {
       setLoading(false);
     }
