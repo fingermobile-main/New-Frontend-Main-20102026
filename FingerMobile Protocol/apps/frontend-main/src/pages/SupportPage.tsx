@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
-import MainLayout from '../components/layout/MainLayout';
 import {
   LifebuoyIcon,
   ChatBubbleLeftRightIcon,
@@ -64,7 +63,7 @@ const SupportPage: React.FC = () => {
   };
 
   return (
-    <MainLayout pageTitle="Support Center">
+    <div className="w-full">
       <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
         <div className="bg-white border border-slate-300 rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex items-center">
@@ -297,7 +296,7 @@ const SupportPage: React.FC = () => {
           </div>
         </div>
       </div>
-    </MainLayout>
+    </div>
   );
 };
 

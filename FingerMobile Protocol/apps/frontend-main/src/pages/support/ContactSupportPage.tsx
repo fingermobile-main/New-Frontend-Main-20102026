@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import MainLayout from '../../components/layout/MainLayout';
 import { useAppContext } from '../../contexts/AppContext';
 import legalComplianceService from '../../services/legalComplianceService';
 import {
@@ -75,7 +74,7 @@ const ContactSupportPage: React.FC = () => {
   };
 
   return (
-    <MainLayout pageTitle="Contact Support">
+    <div className="w-full">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10 animate-in fade-in duration-500">
         {/* Header */}
         <div className="mb-8">
@@ -283,7 +282,7 @@ const ContactSupportPage: React.FC = () => {
           </div>
         </div>
       </div>
-    </MainLayout>
+    </div>
   );
 };
 
