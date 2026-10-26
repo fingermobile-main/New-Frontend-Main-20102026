@@ -1029,6 +1029,51 @@ export const ForumPage: React.FC = () => {
   const [isMobileLeftRailOpen, setIsMobileLeftRailOpen] = useState<boolean>(false);
   const composerContainerRef = useRef<HTMLDivElement | null>(null);
 
+  // Auto-hiding bottom dock controller (appears on scroll / hover, auto-hides after 3 seconds)
+  const [isBottomDockVisible, setIsBottomDockVisible] = useState<boolean>(true);
+  const bottomDockTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const showBottomDockTemporarily = useCallback(() => {
+    setIsBottomDockVisible(true);
+    if (bottomDockTimerRef.current) {
+      clearTimeout(bottomDockTimerRef.current);
+    }
+    bottomDockTimerRef.current = setTimeout(() => {
+      // Auto-hide after 3 seconds of inactivity if scrolled past 60px
+      if (typeof window !== 'undefined' && window.scrollY > 60) {
+        setIsBottomDockVisible(false);
+      }
+    }, 3000);
+  }, []);
+
+  useEffect(() => {
+    showBottomDockTemporarily();
+
+    const handleScroll = () => {
+      showBottomDockTemporarily();
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      // If mouse enters lower 100px of screen, wake up and keep visible
+      if (typeof window !== 'undefined' && window.innerHeight - e.clientY < 100) {
+        setIsBottomDockVisible(true);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    window.addEventListener('touchstart', handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('touchstart', handleScroll);
+      if (bottomDockTimerRef.current) {
+        clearTimeout(bottomDockTimerRef.current);
+      }
+    };
+  }, [showBottomDockTemporarily]);
+
   // Profile Data Synced Live from UserProfileSyncService
   const [syncedProfile, setSyncedProfile] = useState(() => userProfileSyncService.getProfile());
 
@@ -2081,14 +2126,11 @@ export const ForumPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => navigate('/forum')}
-                  className="cursor-pointer flex flex-col focus:outline-none text-left group"
-                  aria-label="FingerMobile Protocol"
+                  className="cursor-pointer flex items-center focus:outline-none text-left group"
+                  aria-label="FingerMobile"
                 >
                   <span className="text-base sm:text-lg font-black tracking-tight text-slate-900 dark:text-white flex items-center group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
                     FingerMobile<span className="text-[#ff6b00] ml-0.5">™</span>
-                  </span>
-                  <span className="text-[9px] sm:text-[10px] uppercase font-extrabold tracking-widest text-slate-700 dark:text-slate-300 font-medium -mt-1">
-                    Protocol
                   </span>
                 </button>
               </h1>
@@ -2177,7 +2219,7 @@ export const ForumPage: React.FC = () => {
                   type="button"
                   onClick={handleLogout}
                   className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/60 dark:hover:bg-rose-900/80 border border-rose-300 dark:border-rose-700/70 text-rose-700 dark:text-rose-300 hover:text-rose-900 font-extrabold text-xs transition shadow-xs cursor-pointer whitespace-nowrap"
-                  title="Log Out of FingerMobile Protocol"
+                  title="Log Out of FingerMobile"
                   aria-label="Log Out"
                 >
                   <ArrowRightOnRectangleIcon className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400 shrink-0" />
@@ -4714,6 +4756,71 @@ export const ForumPage: React.FC = () => {
         isOpen={isLogoViewerOpen}
         onClose={() => setIsLogoViewerOpen(false)}
       />
+
+      {/* 7. Auto-Hiding Sovereign Mobile Navigation Dock (Facebook-Style: Appears on scroll/hover, auto-hides after 3s) */}
+      <aside
+        aria-label="Mobile Navigation Dock"
+        onMouseEnter={() => {
+          if (bottomDockTimerRef.current) {
+            clearTimeout(bottomDockTimerRef.current);
+          }
+          setIsBottomDockVisible(true);
+        }}
+        onMouseLeave={() => showBottomDockTemporarily()}
+        className={`md:hidden fixed bottom-0 inset-x-0 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-t border-slate-200/90 dark:border-slate-800/90 shadow-2xl transition-all duration-300 ease-out transform ${
+          isBottomDockVisible
+            ? 'translate-y-0 opacity-100 pointer-events-auto'
+            : 'translate-y-full opacity-0 pointer-events-none'
+        }`}
+      >
+        <div className="grid grid-cols-6 w-full h-14 items-center px-1">
+          {SUB_NAV_ITEMS.map((sub) => {
+            const IconComponent = sub.fallbackIcon;
+            const isActive = activeSubNav === sub.id;
+            return (
+              <button
+                key={sub.id}
+                type="button"
+                onClick={() => {
+                  setActiveSubNav(sub.id);
+                  navigate(sub.path);
+                  showBottomDockTemporarily();
+                }}
+                className={`relative flex flex-col items-center justify-center h-full py-1 transition-all cursor-pointer group focus:outline-none ${
+                  isActive
+                    ? 'text-orange-600 dark:text-orange-500 font-black'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                }`}
+                title={sub.name}
+                aria-label={sub.ariaLabel}
+              >
+                <div
+                  className={`w-7 h-7 rounded-xl flex items-center justify-center p-0.5 transition-all duration-200 ${
+                    isActive
+                      ? 'ring-2 ring-orange-500 bg-orange-500/10 shadow-sm scale-110'
+                      : 'opacity-75 group-hover:opacity-100'
+                  }`}
+                >
+                  <img
+                    src={sub.logo}
+                    alt={sub.name}
+                    className="w-full h-full object-contain rounded-lg"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                      const next = e.currentTarget.nextElementSibling as HTMLElement;
+                      if (next) next.classList.remove('hidden');
+                    }}
+                  />
+                  <IconComponent className="w-5 h-5 hidden text-slate-700 dark:text-slate-200" />
+                </div>
+                {isActive && (
+                  <span className="absolute bottom-1 w-5 h-1 bg-orange-600 dark:bg-orange-500 rounded-full shadow-xs" />
+                )}
+              </button>
+            );
+          })}
+        </div>
+      </aside>
     </div>
   );
 };
