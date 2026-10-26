@@ -1,8 +1,9 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { DRAWER_MENU_CONFIG } from '../../../config/drawerMenuConfig';
 import userProfileSyncService from '../../../services/UserProfileSyncService';
 import { useAuth } from '../../../contexts/AuthContext';
+import { useAppContext } from '../../../contexts/AppContext';
 import {
   getUserRoleTier,
   canAccessMasterDashboard,
@@ -142,7 +143,15 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
     return unsub;
   }, []);
 
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const { ficBalance } = useAppContext();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    if (!isDesktopSidebar) onClose();
+    logout();
+    navigate('/login');
+  };
   const path = (location.pathname || (typeof window !== 'undefined' ? window.location.pathname : '')).toLowerCase();
   const isAuthOrOnboardingRoute = 
     path === '/login' ||
@@ -396,15 +405,22 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
 
             {isRewardsExpanded && (
               <>
-                {/* 2 Key Balances: FIC Coins & Daily Streak */}
+                {/* 2 Key Balances: Live FIC Coins & Daily Streak */}
                 <div className="grid grid-cols-2 gap-2 mt-2 pt-2 border-t border-slate-800">
-                  <div className="p-2 rounded-lg bg-slate-900 border border-slate-700 flex items-center gap-2">
-                    <span className="text-base">🪙</span>
+                  <Link
+                    to="/wallet"
+                    onClick={() => !isDesktopSidebar && onClose()}
+                    className="p-2 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-amber-500/50 flex items-center gap-2 transition-all cursor-pointer group/fic"
+                    title="View Live FIC Wallet & Sovereign Vault"
+                  >
+                    <span className="text-base group-hover/fic:scale-110 transition-transform">🪙</span>
                     <div>
-                      <div className="text-[11px] font-black font-mono text-amber-300">2,850 FIC</div>
-                      <div className="text-[9px] text-slate-200 font-bold uppercase tracking-wider">Coins Balance</div>
+                      <div className="text-[11px] font-black font-mono text-amber-300 group-hover/fic:text-amber-200">
+                        {ficBalance?.toLocaleString() ?? '0'} FIC
+                      </div>
+                      <div className="text-[9px] text-slate-200 font-bold uppercase tracking-wider">Vault Balance →</div>
                     </div>
-                  </div>
+                  </Link>
                   <div className="p-2 rounded-lg bg-slate-900 border border-slate-700 flex items-center gap-2">
                     <Flame className="w-4 h-4 text-orange-400" />
                     <div>
@@ -793,15 +809,25 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
         </div>
       </div>
 
-      {/* 5. FOOTER */}
+      {/* 5. FOOTER & SESSION CONTROLS */}
       <div className="p-3 border-t border-slate-800 bg-slate-950 flex items-center justify-between text-xs text-slate-300">
         <div className="flex items-center space-x-2">
-          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span className="font-bold text-slate-200">Live Network Consensus</span>
+          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+          <span className="font-bold text-slate-200">Live Consensus</span>
         </div>
-        <span className="font-mono text-[10px] bg-slate-800 text-slate-100 px-2 py-0.5 rounded-md font-bold border border-slate-700">
-          v2.5.0 • 385 Screens
-        </span>
+        <div className="flex items-center gap-2">
+          <span className="font-mono text-[10px] bg-slate-800 text-slate-100 px-2 py-0.5 rounded-md font-bold border border-slate-700">
+            v2.5.0 • 385 Screens
+          </span>
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="px-2.5 py-1 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 border border-red-500/30 text-[11px] font-bold transition-all focus:outline-none cursor-pointer"
+            title="Sign out of FingerMobile Protocol"
+          >
+            Log Out
+          </button>
+        </div>
       </div>
     </div>
   );

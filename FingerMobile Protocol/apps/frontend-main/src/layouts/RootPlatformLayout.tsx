@@ -35,15 +35,8 @@ export const RootPlatformLayout: React.FC = () => {
     path.includes('/onboarding') ||
     path.includes('/adminlogin');
 
-  // A member is only considered onboarded if authenticated and onboardingComplete is true
-  const isOnboarded = Boolean(
-    user &&
-    (user.onboardingComplete || (user as any).onboarding_completed) &&
-    (localStorage.getItem('onboardingComplete') === 'true' || localStorage.getItem('hasCompletedOnboarding') === 'true')
-  );
-
-  // Strict Security Rule: Never available to unboarded members or on auth/onboarding routes under any circumstance
-  const canShowMenu = isOnboarded && !isAuthOrOnboardingRoute;
+  // The unified Sovereign Burger Menu & Drawer is accessible on all platform pages outside auth/onboarding
+  const canShowMenu = !isAuthOrOnboardingRoute;
 
   useEffect(() => {
     const handleOpenDrawer = () => {
@@ -70,12 +63,9 @@ export const RootPlatformLayout: React.FC = () => {
     setIsDrawerOpen(false);
   }, [location.pathname, canShowMenu]);
 
-  // Pages with integrated in-header burger buttons (e.g., Homepage and Forum)
-  const hasEmbeddedHeader = location.pathname === '/' || location.pathname === '/forum';
-
   return (
     <div className="relative min-h-screen w-full">
-      {/* Omni-present FingerMobile Slide-Over Drawer Menu - ONLY available to perfectly onboarded members outside auth/onboarding */}
+      {/* Omni-present FingerMobile Slide-Over Drawer Menu */}
       {canShowMenu && (
         <DrawerMenuContainer
           isOpen={isDrawerOpen}
@@ -84,8 +74,8 @@ export const RootPlatformLayout: React.FC = () => {
         />
       )}
 
-      {/* Harmonized FingerMobile Member Profile Pill & Platform Menu Trigger - ONLY for onboarded members */}
-      {canShowMenu && !hasEmbeddedHeader && (
+      {/* Harmonized FingerMobile Member Profile Pill & Platform Menu Trigger (Top-Left Sovereign Anchor) */}
+      {canShowMenu && (
         <MemberProfileMenuTrigger
           isOpen={isDrawerOpen}
           onToggleMenu={() => setIsDrawerOpen((prev) => !prev)}

@@ -221,15 +221,6 @@ const ForumHeader: React.FC<ForumHeaderProps> = ({
                 20+
               </span>
             </button>
-
-            {/* Profile Dropdown */}
-            <Link
-              to="/profile"
-              aria-label="View user profile"
-              className="ml-2 w-9 h-9 rounded-full bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center text-white font-semibold hover:opacity-90 transition-opacity"
-            >
-              U
-            </Link>
           </div>
         </div>
 

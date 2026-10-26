@@ -1,11 +1,8 @@
-import React, { useState, Fragment } from 'react';
-import { Link } from 'react-router-dom';
-import { Menu, Transition } from '@headlessui/react';
+import React, { useState } from 'react';
 import {
   Bars3Icon,
   BellIcon,
-  MagnifyingGlassIcon,
-  ChevronDownIcon
+  MagnifyingGlassIcon
 } from '@heroicons/react/24/outline';
 import { checkIsOnboarded } from '../contexts/AuthContext';
 
@@ -13,14 +10,13 @@ interface HeaderProps {
   sidebarOpen: boolean;
   onToggleSidebar: () => void;
   user: any; // Replace with proper user type
-  onLogout: () => void;
+  onLogout?: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({
   sidebarOpen,
   onToggleSidebar,
-  user,
-  onLogout
+  user
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const isOnboarded = checkIsOnboarded(user);
@@ -76,82 +72,6 @@ const Header: React.FC<HeaderProps> = ({
           <span className="sr-only">View notifications</span>
           <BellIcon className="w-6 h-6" aria-hidden="true" />
         </button>
-
-        {/* User dropdown */}
-        <Menu as="div" className="relative ml-3">
-          <div>
-            <Menu.Button
-              type="button"
-              aria-label="Open user menu"
-              onClick={(e) => { e.stopPropagation(); }}
-              className="flex items-center max-w-xs text-sm bg-white rounded-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            >
-              <span className="sr-only">Open user menu</span>
-              {user?.avatar ? (
-                <img
-                  className="w-8 h-8 rounded-full"
-                  src={user.avatar}
-                  alt={`${user.firstName} ${user.lastName}`}
-                />
-              ) : (
-                <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center border text-indigo-950 border-indigo-400 font-black">
-                  <span className="text-indigo-800 font-medium">
-                    {user?.firstName?.charAt(0)}{user?.lastName?.charAt(0)}
-                  </span>
-                </div>
-              )}
-              <ChevronDownIcon className="w-5 h-5 ml-1 text-slate-600" aria-hidden="true" />
-            </Menu.Button>
-          </div>
-          <Transition
-            as={Fragment}
-            enter="transition ease-out duration-100"
-            enterFrom="transform opacity-0 scale-95"
-            enterTo="transform opacity-100 scale-100"
-            leave="transition ease-in duration-75"
-            leaveFrom="transform opacity-100 scale-100"
-            leaveTo="transform opacity-0 scale-95"
-          >
-            <Menu.Items className="absolute right-0 z-50 w-48 py-1 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-              <Menu.Item>
-                {({ active }) => (
-                  <Link
-                    to="/profile"
-                    className={`${
-                      active ? 'bg-gray-100' : ''
-                    } block px-4 py-2 text-sm text-gray-700`}
-                  >
-                    Your Profile
-                  </Link>
-                )}
-              </Menu.Item>
-              <Menu.Item>
-                {({ active }) => (
-                  <Link
-                    to="/settings"
-                    className={`${
-                      active ? 'bg-gray-100' : ''
-                    } block px-4 py-2 text-sm text-gray-700`}
-                  >
-                    Settings
-                  </Link>
-                )}
-              </Menu.Item>
-              <Menu.Item>
-                {({ active }) => (
-                  <button
-                    onClick={onLogout}
-                    className={`${
-                      active ? 'bg-gray-100' : ''
-                    } block w-full text-left px-4 py-2 text-sm text-gray-700`}
-                  >
-                    Sign out
-                  </button>
-                )}
-              </Menu.Item>
-            </Menu.Items>
-          </Transition>
-        </Menu>
       </div>
     </header>
   );

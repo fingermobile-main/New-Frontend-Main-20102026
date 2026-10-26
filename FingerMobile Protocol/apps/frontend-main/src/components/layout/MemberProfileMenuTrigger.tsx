@@ -69,8 +69,35 @@ export const MemberProfileMenuTrigger: React.FC<MemberProfileMenuTriggerProps> =
   const displayPin = profile.pinNumber || '749822';
 
   return (
-    <div className="fixed top-2.5 left-3 z-[9995] pointer-events-auto transition-all duration-300">
-      <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-slate-950/90 hover:bg-slate-950 text-white border border-slate-800/90 shadow-2xl backdrop-blur-xl transition-all ring-1 ring-white/10 group">
+    <div className="fixed top-2 sm:top-2.5 left-2.5 sm:left-3 z-[9995] pointer-events-auto transition-all duration-300">
+      {/* MOBILE COMPACT VIEW (< sm): Sleek, Unobtrusive 40x40px Sovereign Burger Trigger */}
+      <div className="sm:hidden flex items-center">
+        <button
+          type="button"
+          onClick={onToggleMenu}
+          className={`relative w-10 h-10 rounded-full p-0.5 bg-slate-950/95 border border-slate-800 shadow-xl flex items-center justify-center hover:scale-105 active:scale-95 transition-all ring-2 ${
+            isOpen ? 'ring-orange-500 bg-orange-950/40' : 'ring-orange-500/80'
+          } focus:outline-none cursor-pointer`}
+          title="Open Sovereign Platform Mega Menu (385 Pages)"
+          aria-label="Toggle Platform Menu"
+          aria-expanded={isOpen}
+        >
+          <img
+            src={profile.avatar || '/assets/branding/default-avatar.svg'}
+            alt={displayName}
+            className="w-full h-full rounded-full object-cover"
+          />
+          {/* Active Status Beacon */}
+          <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-slate-950" />
+          {/* Mini Burger / Grid Badge */}
+          <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#ff6b00] text-white flex items-center justify-center shadow-xs">
+            <Grid className="w-2.5 h-2.5 text-white" />
+          </span>
+        </button>
+      </div>
+
+      {/* DESKTOP VIEW (sm+): Full Sovereign Profile Pill with Name, PIN, Chevron, & 9-Dot Grid */}
+      <div className="hidden sm:flex items-center gap-1.5 p-1 rounded-2xl bg-slate-950/90 hover:bg-slate-950 text-white border border-slate-800/90 shadow-2xl backdrop-blur-xl transition-all ring-1 ring-white/10 group">
         {/* Clickable Member Profile Picture -> Opens Member Profile Page / Wall */}
         <Link
           to="/profile"
@@ -95,7 +122,7 @@ export const MemberProfileMenuTrigger: React.FC<MemberProfileMenuTriggerProps> =
         >
           {/* User Details (Full view on larger screens, compact on small) */}
           {!isMinimized && (
-            <div className="hidden sm:flex flex-col min-w-0 pr-1">
+            <div className="flex flex-col min-w-0 pr-1">
               <div className="flex items-center gap-1">
                 <span className="text-xs font-bold text-white truncate max-w-[110px]">
                   {displayName}
