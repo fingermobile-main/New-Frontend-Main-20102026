@@ -247,23 +247,10 @@ const HomePage: React.FC = () => {
 
       {/* Main Content Layer */}
       <div className="relative z-10 flex flex-col min-h-screen">
-        {/* Navigation Bar */}
+        {/* Navigation Bar - Left clearance pl-14 sm:pl-56 for Sovereign Burger Trigger */}
         <header className="w-full border-b border-white/10 bg-black/40 backdrop-blur-xl sticky top-0 z-40">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+          <div className="max-w-7xl mx-auto pl-14 sm:pl-56 pr-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <div className="flex items-center gap-2 sm:gap-3">
-              {/* Orange Burger Menu / Drawer Button - STRICTLY LOCKED DOWN until onboarded */}
-              {isOnboarded && (
-                <button
-                  type="button"
-                  onClick={() => window.dispatchEvent(new CustomEvent('open-drawer-menu'))}
-                  className="p-2 -ml-2 rounded-xl text-[#ff6b00] hover:text-[#ff8533] hover:bg-orange-500/10 transition flex items-center justify-center mr-1 focus:outline-none cursor-pointer"
-                  aria-label="Open Navigation Drawer"
-                  title="Platform Navigation (385 Pages / 230+ Screens)"
-                >
-                  <Menu className="w-6 h-6 text-[#ff6b00]" />
-                </button>
-              )}
-
               {/* Header H1 with FingerMobile Orange Logo */}
               <h1 className="flex items-center">
                 <Link to="/" className="flex items-center gap-3.5 group">
@@ -277,35 +264,34 @@ const HomePage: React.FC = () => {
                       }}
                     />
                   </div>
-                  <div className="flex flex-col">
+                  <div className="flex items-center">
                     <span className="text-xl font-black tracking-tight text-[#ff6b00] group-hover:text-[#ff8533] transition-colors">
                       FingerMobile<span className="text-[#ff6b00]">™</span>
-                    </span>
-                    <span className="text-[10px] uppercase font-bold tracking-widest text-[#ff6b00]/90 -mt-1">
-                      Protocol
                     </span>
                   </div>
                 </Link>
               </h1>
             </div>
 
-            <div className="flex items-center gap-2 sm:gap-3">
+            <div className="flex items-center gap-2 sm:gap-3 shrink-0">
               {hasActiveSession ? (
                 <>
                   {isOnboarded ? (
                     <Link
                       to="/forum"
-                      className="px-3 sm:px-4 py-2 text-xs font-bold text-white bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 rounded-xl shadow-md shadow-orange-500/20 transition-all flex items-center gap-1.5"
+                      className="px-2.5 sm:px-4 py-2 min-h-[40px] text-xs font-bold text-white bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 rounded-xl shadow-md shadow-orange-500/20 transition-all flex items-center gap-1.5 whitespace-nowrap"
                     >
-                      <span>Enter Forum</span>
+                      <span className="hidden sm:inline">Enter Forum</span>
+                      <span className="sm:hidden">Forum</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </Link>
                   ) : (
                     <Link
                       to="/onboarding"
-                      className="px-3 sm:px-4 py-2 text-xs font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 rounded-xl shadow-md shadow-emerald-500/20 transition-all flex items-center gap-1.5 animate-pulse"
+                      className="px-2.5 sm:px-4 py-2 min-h-[40px] text-xs font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 rounded-xl shadow-md shadow-emerald-500/20 transition-all flex items-center gap-1.5 animate-pulse whitespace-nowrap"
                     >
-                      <span>Complete Onboarding</span>
+                      <span className="hidden sm:inline">Complete Onboarding</span>
+                      <span className="sm:hidden">Onboard</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </Link>
                   )}
@@ -314,25 +300,25 @@ const HomePage: React.FC = () => {
                   <button
                     type="button"
                     onClick={handleLogout}
-                    className="px-3 sm:px-4 py-2 text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 active:bg-rose-800 border border-rose-500 rounded-xl transition-all flex items-center gap-1.5 shadow-md shadow-rose-600/30 cursor-pointer"
+                    className="px-2.5 sm:px-4 py-2 min-h-[40px] text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 active:bg-rose-800 border border-rose-500 rounded-xl transition-all flex items-center gap-1.5 shadow-md shadow-rose-600/30 cursor-pointer whitespace-nowrap"
                     aria-label="Log Out"
                     title="Log Out of FingerMobile Protocol"
                   >
-                    <LogOut className="w-3.5 h-3.5 text-white" />
-                    <span>Log Out</span>
+                    <LogOut className="w-3.5 h-3.5 text-white shrink-0" />
+                    <span className="hidden sm:inline">Log Out</span>
                   </button>
                 </>
               ) : (
                 <>
                   <Link
                     to="/login"
-                    className="px-4 py-2 text-xs font-bold text-white hover:text-[#ff6b00] transition-colors border border-white/20 hover:border-white/40 rounded-xl bg-white/10 backdrop-blur shadow-sm"
+                    className="px-3 sm:px-4 py-2 min-h-[40px] text-xs font-bold text-white hover:text-[#ff6b00] transition-colors border border-white/20 hover:border-white/40 rounded-xl bg-white/10 backdrop-blur shadow-sm whitespace-nowrap flex items-center"
                   >
                     Sign In
                   </Link>
                   <Link
                     to="/register"
-                    className="px-4 py-2 text-xs font-bold text-black bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 rounded-xl shadow-lg shadow-emerald-500/25 transition-all transform hover:-translate-y-0.5"
+                    className="px-3 sm:px-4 py-2 min-h-[40px] text-xs font-bold text-black bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 rounded-xl shadow-lg shadow-emerald-500/25 transition-all transform hover:-translate-y-0.5 whitespace-nowrap flex items-center"
                   >
                     Get Started
                   </Link>
@@ -412,11 +398,11 @@ const HomePage: React.FC = () => {
                     </div>
 
                     {/* UHD Graphic Container (16:9 Aspect Ratio) */}
-                    <div className="relative aspect-video w-full overflow-hidden bg-zinc-950">
+                    <div className="relative aspect-[16/10] sm:aspect-video w-full overflow-hidden bg-zinc-950">
                       <img
                         src={item.image}
                         alt={`${item.name} UHD Screen Showcase`}
-                        className="w-full h-full object-cover object-center transform group-hover:scale-105 transition-transform duration-700 ease-out"
+                        className="w-full h-full object-cover object-top sm:object-center transform group-hover:scale-105 transition-transform duration-700 ease-out"
                         onError={(e) => {
                           const target = e.currentTarget;
                           if (target.src !== item.fallbackImage) {
@@ -440,17 +426,17 @@ const HomePage: React.FC = () => {
                     </div>
 
                     {/* Card Content & Narrative */}
-                    <div className="p-6 flex flex-col flex-1 justify-between gap-5">
+                    <div className="p-5 sm:p-6 flex flex-col flex-1 justify-between gap-4 sm:gap-5">
                       <div>
                         <div className="flex items-center gap-2 mb-1.5">
-                          <h3 className="text-2xl font-black text-white tracking-tight group-hover:text-emerald-400 transition-colors">
+                          <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight group-hover:text-emerald-400 transition-colors">
                             {item.name}
                           </h3>
                         </div>
-                        <p className="text-xs font-bold text-emerald-300 mb-3">
+                        <p className="text-sm sm:text-xs font-bold text-emerald-300 mb-2.5">
                           {item.tagline}
                         </p>
-                        <p className="text-xs text-zinc-100 font-normal leading-relaxed text-justify">
+                        <p className="text-sm sm:text-xs text-zinc-100 font-normal leading-relaxed text-left sm:text-justify">
                           {item.narrative}
                         </p>
                       </div>
@@ -461,9 +447,9 @@ const HomePage: React.FC = () => {
                           {item.tags.map((tag) => (
                             <span
                               key={tag}
-                              className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-white/10 border border-white/20 text-zinc-100 flex items-center gap-1"
+                              className="text-xs sm:text-[10px] font-bold px-2.5 py-1 sm:py-0.5 rounded-md bg-white/10 border border-white/20 text-zinc-100 flex items-center gap-1"
                             >
-                              <CheckCircle2 className="w-2.5 h-2.5 text-emerald-400" />
+                              <CheckCircle2 className="w-3 h-3 sm:w-2.5 sm:h-2.5 text-emerald-400 shrink-0" />
                               {tag}
                             </span>
                           ))}
@@ -472,7 +458,7 @@ const HomePage: React.FC = () => {
                         {/* Interactive Action CTA */}
                         <Link
                           to={item.link}
-                          className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/15 hover:bg-emerald-500 hover:text-slate-900 text-white text-xs font-black border border-white/25 hover:border-emerald-400 transition-all duration-200 group/btn mt-1 shadow-md"
+                          className="w-full min-h-[44px] flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/15 hover:bg-emerald-500 hover:text-slate-900 text-white text-sm sm:text-xs font-black border border-white/25 hover:border-emerald-400 transition-all duration-200 group/btn mt-1 shadow-md"
                         >
                           <span>{item.ctaText}</span>
                           <ArrowRight className="w-3.5 h-3.5 transform group-hover/btn:translate-x-1 transition-transform" />
@@ -526,11 +512,11 @@ const HomePage: React.FC = () => {
                     </div>
 
                     {/* UHD Graphic Container (16:9 Aspect Ratio) */}
-                    <div className="relative aspect-video w-full overflow-hidden bg-zinc-950">
+                    <div className="relative aspect-[16/10] sm:aspect-video w-full overflow-hidden bg-zinc-950">
                       <img
                         src={item.image}
                         alt={`${item.name} UHD Screen Showcase`}
-                        className="w-full h-full object-cover object-center transform group-hover:scale-105 transition-transform duration-700 ease-out"
+                        className="w-full h-full object-cover object-top sm:object-center transform group-hover:scale-105 transition-transform duration-700 ease-out"
                         onError={(e) => {
                           const target = e.currentTarget;
                           if (target.src !== item.fallbackImage) {
@@ -554,17 +540,17 @@ const HomePage: React.FC = () => {
                     </div>
 
                     {/* Card Content & Narrative */}
-                    <div className="p-5 flex flex-col flex-1 justify-between gap-4">
+                    <div className="p-4 sm:p-5 flex flex-col flex-1 justify-between gap-3 sm:gap-4">
                       <div>
                         <div className="flex items-center gap-2 mb-1">
                           <h3 className="text-xl font-black text-white tracking-tight group-hover:text-cyan-400 transition-colors">
                             {item.name}
                           </h3>
                         </div>
-                        <p className="text-[11px] font-bold text-cyan-300 mb-2">
+                        <p className="text-xs sm:text-[11px] font-bold text-cyan-300 mb-2">
                           {item.tagline}
                         </p>
-                        <p className="text-xs text-zinc-100 font-normal leading-relaxed text-justify">
+                        <p className="text-sm sm:text-xs text-zinc-100 font-normal leading-relaxed text-left sm:text-justify">
                           {item.narrative}
                         </p>
                       </div>
@@ -575,7 +561,7 @@ const HomePage: React.FC = () => {
                           {item.tags.map((tag) => (
                             <span
                               key={tag}
-                              className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-white/10 border border-white/20 text-zinc-100 flex items-center gap-1"
+                              className="text-xs sm:text-[9px] font-bold px-2 sm:px-1.5 py-0.5 rounded bg-white/10 border border-white/20 text-zinc-100 flex items-center gap-1"
                             >
                               <CheckCircle2 className="w-2.5 h-2.5 text-cyan-400 flex-shrink-0" />
                               <span className="truncate">{tag}</span>
@@ -586,7 +572,7 @@ const HomePage: React.FC = () => {
                         {/* Interactive Action CTA */}
                         <Link
                           to={item.link}
-                          className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-white/15 hover:bg-cyan-500 hover:text-slate-900 text-white text-xs font-black border border-white/25 hover:border-cyan-400 transition-all duration-200 group/btn mt-1 shadow-md"
+                          className="w-full min-h-[44px] flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-white/15 hover:bg-cyan-500 hover:text-slate-900 text-white text-sm sm:text-xs font-black border border-white/25 hover:border-cyan-400 transition-all duration-200 group/btn mt-1 shadow-md"
                         >
                           <span>{item.ctaText}</span>
                           <ArrowRight className="w-3.5 h-3.5 transform group-hover/btn:translate-x-1 transition-transform" />
