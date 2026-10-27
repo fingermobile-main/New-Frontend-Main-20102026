@@ -20,9 +20,10 @@ import AudioDeviceSelectorModal from './beatwaveng/AudioDeviceSelectorModal';
 
 interface BeatwaveNGPlayerProps {
   className?: string;
+  hasMobileDock?: boolean;
 }
 
-const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) => {
+const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '', hasMobileDock = false }) => {
   const {
     currentTrack,
     isPlaying,
@@ -120,7 +121,11 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
       {/* ======================================================== */}
       <aside
         aria-label="Audio Player"
-        className={`fixed bottom-0 left-0 right-0 z-40 bg-slate-950/95 backdrop-blur-2xl border-t border-emerald-500/30 text-white shadow-2xl transition-all ${className}`}
+        className={`fixed ${
+          hasMobileDock ? 'bottom-[calc(54px+env(safe-area-inset-bottom,0px))] md:bottom-0' : 'bottom-0'
+        } left-0 right-0 z-40 bg-slate-950/95 backdrop-blur-2xl border-t border-emerald-500/30 text-white shadow-2xl transition-all ${
+          !hasMobileDock ? 'pb-[env(safe-area-inset-bottom,0px)]' : ''
+        } ${className}`}
       >
         {/* Glowing Apple Music Top Scrub Line */}
         <div
@@ -155,12 +160,12 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
           )}
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 py-2.5 grid grid-cols-12 gap-3 items-center">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 py-2 sm:py-2.5 flex flex-wrap md:grid md:grid-cols-12 gap-2 sm:gap-3 items-center">
           {/* ======================================================== */}
-          {/* LEFT: Track Artwork & Info (Cols 1-4) */}
+          {/* LEFT: Track Artwork & Info (Cols 1-3 on desktop) */}
           {/* ======================================================== */}
-          <div className="col-span-4 sm:col-span-3 flex items-center gap-3 min-w-0">
-            <div className="relative group shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden shadow-md bg-slate-900 border border-slate-800">
+          <div className="flex-1 md:col-span-3 flex items-center gap-2.5 sm:gap-3 min-w-0">
+            <div className="relative group shrink-0 w-11 h-11 sm:w-14 sm:h-14 rounded-xl overflow-hidden shadow-md bg-slate-900 border border-slate-800">
               <img
                 src={currentTrack.coverArt || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=300'}
                 alt={currentTrack.title}
@@ -183,7 +188,7 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
                   {currentTrack.title}
                 </h4>
                 {/* Tier Badge */}
-                <span className={`px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wider shrink-0 border ${
+                <span className={`hidden sm:inline-block px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wider shrink-0 border ${
                   currentTrack.tier === 'SoundOcean'
                     ? 'bg-emerald-950/90 text-emerald-300 border-emerald-500/40'
                     : 'bg-sky-950/90 text-sky-300 border-sky-500/40'
@@ -199,7 +204,7 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
               <div className="flex items-center gap-2 mt-1">
                 <button
                   onClick={() => likeTrack(currentTrack.id)}
-                  className={`p-1 rounded-md transition-colors ${
+                  className={`min-h-[36px] min-w-[36px] p-1.5 rounded-md transition-colors flex items-center justify-center ${
                     currentTrack.isLiked ? 'text-red-500' : 'text-slate-300 hover:text-white'
                   }`}
                   title="Favorite"
@@ -209,7 +214,7 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
 
                 <button
                   onClick={() => setShowAmeboModal(true)}
-                  className="p-1 rounded-md text-slate-300 hover:text-emerald-300 transition-colors text-[10px] flex items-center gap-0.5"
+                  className="min-h-[36px] min-w-[36px] p-1.5 rounded-md text-slate-300 hover:text-emerald-300 transition-colors text-[10px] flex items-center justify-center gap-0.5"
                   title="Track Information (Amebo)"
                 >
                   <Info size={13} />
@@ -219,14 +224,14 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
           </div>
 
           {/* ======================================================== */}
-          {/* CENTER: Apple Music Playback Controls (Cols 5-8) */}
+          {/* CENTER: Apple Music Playback Controls (Cols 4-8 on desktop) */}
           {/* ======================================================== */}
-          <div className="col-span-8 sm:col-span-6 flex flex-col items-center justify-center">
-            <div className="flex items-center gap-2 sm:gap-4">
-              {/* Shuffle */}
+          <div className="shrink-0 md:col-span-6 flex flex-col items-center justify-center">
+            <div className="flex items-center gap-1 sm:gap-3">
+              {/* Shuffle (desktop only) */}
               <button
                 onClick={toggleShuffle}
-                className={`p-2 rounded-lg transition-colors ${
+                className={`hidden md:inline-flex min-h-[40px] min-w-[40px] p-2 rounded-lg items-center justify-center transition-colors ${
                   isShuffle ? 'text-emerald-400 bg-emerald-500/20' : 'text-slate-300 hover:text-white'
                 }`}
                 title="Shuffle"
@@ -234,28 +239,28 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
                 <Shuffle size={16} />
               </button>
 
-              {/* Previous */}
+              {/* Previous Track */}
               <button
                 onClick={playPrevious}
-                className="p-2 text-slate-300 hover:text-white transition-colors"
+                className="min-h-[44px] min-w-[44px] p-2 text-slate-300 hover:text-white transition-colors flex items-center justify-center"
                 title="Previous Track"
               >
                 <SkipBack size={20} fill="currentColor" />
               </button>
 
-              {/* Jump -10s */}
+              {/* Jump -10s (desktop only) */}
               <button
                 onClick={() => jumpTime(-10)}
-                className="p-1.5 text-slate-300 hover:text-white transition-colors text-xs font-mono"
+                className="hidden lg:inline-flex min-h-[40px] min-w-[40px] p-1.5 text-slate-300 hover:text-white transition-colors text-xs font-mono items-center justify-center"
                 title="Rewind 10 seconds"
               >
                 <Rewind size={16} />
               </button>
 
-              {/* Large Apple Music Play/Pause Button */}
+              {/* Large Apple Music Play/Pause Button - 44px min */}
               <button
                 onClick={handlePlayPause}
-                className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-gradient-to-r from-emerald-500 to-teal-400 text-black flex items-center justify-center shadow-lg shadow-emerald-500/40 hover:scale-105 active:scale-95 transition-all"
+                className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-gradient-to-r from-emerald-500 to-teal-400 text-black flex items-center justify-center shadow-lg shadow-emerald-500/40 hover:scale-105 active:scale-95 transition-all shrink-0"
                 title={isPlaying ? 'Pause' : 'Play'}
               >
                 {isPlaying ? (
@@ -265,28 +270,28 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
                 )}
               </button>
 
-              {/* Jump +10s */}
+              {/* Jump +10s (desktop only) */}
               <button
                 onClick={() => jumpTime(10)}
-                className="p-1.5 text-slate-300 hover:text-white transition-colors text-xs font-mono"
+                className="hidden lg:inline-flex min-h-[40px] min-w-[40px] p-1.5 text-slate-300 hover:text-white transition-colors text-xs font-mono items-center justify-center"
                 title="Fast forward 10 seconds"
               >
                 <FastForward size={16} />
               </button>
 
-              {/* Next */}
+              {/* Next Track */}
               <button
                 onClick={playNext}
-                className="p-2 text-slate-300 hover:text-white transition-colors"
+                className="min-h-[44px] min-w-[44px] p-2 text-slate-300 hover:text-white transition-colors flex items-center justify-center"
                 title="Next Track"
               >
                 <SkipForward size={20} fill="currentColor" />
               </button>
 
-              {/* Repeat Mode */}
+              {/* Repeat Mode (desktop only) */}
               <button
                 onClick={cycleRepeatMode}
-                className={`p-2 rounded-lg transition-colors relative ${
+                className={`hidden md:inline-flex min-h-[40px] min-w-[40px] p-2 rounded-lg transition-colors items-center justify-center relative ${
                   repeatMode !== 'none' ? 'text-emerald-400 bg-emerald-500/20' : 'text-slate-300 hover:text-white'
                 }`}
                 title={`Repeat: ${repeatMode}`}
@@ -301,26 +306,26 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
             </div>
 
             {/* Time Indicator */}
-            <div className="flex items-center gap-2 text-[11px] text-slate-300 font-mono mt-1">
+            <div className="flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-[11px] text-slate-300 font-mono mt-0.5">
               <span>{formatTime(playbackTime)}</span>
               <span>/</span>
               <span>{formatTime(currentDuration)}</span>
               {/* Quality Pill */}
-              <span className="ml-2 px-1.5 py-0.2 rounded bg-slate-800 text-[10px] text-emerald-300 font-bold border border-emerald-500/30">
-                {audioQuality === 'Lossless' ? 'Lossless 24-bit/192kHz' : audioQuality}
+              <span className="ml-1 px-1.5 py-0.2 rounded bg-slate-800 text-[9px] sm:text-[10px] text-emerald-300 font-bold border border-emerald-500/30">
+                {audioQuality === 'Lossless' ? 'Lossless' : audioQuality}
               </span>
             </div>
           </div>
 
           {/* ======================================================== */}
-          {/* RIGHT: Actions, Equalizer, Lyrics & Volume (Cols 9-12) */}
+          {/* RIGHT: Actions, Equalizer, Lyrics & Volume (Cols 9-12 on desktop) */}
           {/* ======================================================== */}
-          <div className="col-span-12 sm:col-span-3 flex items-center justify-end gap-1.5 sm:gap-2">
+          <div className="w-full md:w-auto md:col-span-3 flex items-center justify-between sm:justify-end gap-1.5 sm:gap-2 pt-1 md:pt-0 border-t border-slate-800/60 md:border-t-0">
             {/* Playback Speed selector */}
             <select
               value={playbackRate}
               onChange={(e) => setPlaybackRate(parseFloat(e.target.value))}
-              className="bg-slate-900 border border-slate-800 rounded-lg px-1.5 py-1 text-[11px] text-slate-300 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              className="bg-slate-900 border border-slate-800 rounded-lg px-2 py-1.5 min-h-[36px] text-xs text-slate-300 focus:outline-none focus:ring-1 focus:ring-emerald-500 font-semibold"
               title="Playback Speed"
             >
               <option value={0.5}>0.5x</option>
@@ -334,7 +339,7 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
             {/* 10-Band Equalizer Button */}
             <button
               onClick={() => setShowEqModal(true)}
-              className={`p-2 rounded-xl transition-colors ${
+              className={`min-h-[40px] min-w-[40px] p-2 rounded-xl transition-colors flex items-center justify-center ${
                 showEqModal || activeEqPreset !== 'Flat'
                   ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
                   : 'bg-slate-900 hover:bg-slate-800 text-slate-300'
@@ -347,7 +352,7 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
             {/* Synchronized Lyrics Drawer Button */}
             <button
               onClick={() => setShowLyricsDrawer(!showLyricsDrawer)}
-              className={`p-2 rounded-xl transition-colors ${
+              className={`min-h-[40px] min-w-[40px] p-2 rounded-xl transition-colors flex items-center justify-center ${
                 showLyricsDrawer
                   ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
                   : 'bg-slate-900 hover:bg-slate-800 text-slate-300'
@@ -360,7 +365,7 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
             {/* Sleep Timer Button */}
             <button
               onClick={() => setShowSleepTimerModal(true)}
-              className={`p-2 rounded-xl transition-colors relative ${
+              className={`min-h-[40px] min-w-[40px] p-2 rounded-xl transition-colors flex items-center justify-center relative ${
                 sleepTimerMinutes !== null
                   ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
                   : 'bg-slate-900 hover:bg-slate-800 text-slate-300'
@@ -376,7 +381,7 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
             {/* Queue Toggle Button */}
             <button
               onClick={() => setShowQueueDrawer(!showQueueDrawer)}
-              className={`p-2 rounded-xl transition-colors ${
+              className={`min-h-[40px] min-w-[40px] p-2 rounded-xl transition-colors flex items-center justify-center ${
                 showQueueDrawer
                   ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
                   : 'bg-slate-900 hover:bg-slate-800 text-slate-300'
@@ -389,7 +394,7 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
             {/* Audio Device Selector Button */}
             <button
               onClick={() => setShowDeviceModal(true)}
-              className={`p-2 rounded-xl transition-colors ${
+              className={`min-h-[40px] min-w-[40px] p-2 rounded-xl transition-colors flex items-center justify-center ${
                 showDeviceModal
                   ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
                   : 'bg-slate-900 hover:bg-slate-800 text-slate-300'
@@ -400,10 +405,10 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
             </button>
 
             {/* Volume Slider with Mute */}
-            <div className="flex items-center gap-1.5 ml-1">
+            <div className="hidden sm:flex items-center gap-1.5 ml-1">
               <button
                 onClick={toggleMute}
-                className="p-1.5 text-slate-300 hover:text-white transition-colors"
+                className="min-h-[36px] min-w-[36px] p-1.5 text-slate-300 hover:text-white transition-colors flex items-center justify-center"
                 title={volume === 0 ? 'Unmute' : 'Mute'}
               >
                 {volume === 0 ? <VolumeX size={18} /> : <Volume2 size={18} />}

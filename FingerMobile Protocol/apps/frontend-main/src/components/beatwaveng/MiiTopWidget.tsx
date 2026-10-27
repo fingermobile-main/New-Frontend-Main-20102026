@@ -38,12 +38,12 @@ export const MiiTopWidget: React.FC<MiiTopWidgetProps> = ({ onOpenDeviceSelector
     <div className="rounded-3xl bg-gradient-to-r from-slate-900 via-slate-900/90 to-slate-950 border border-slate-800 p-4 sm:p-5 shadow-xl space-y-4">
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         {/* Left: Avatar, Handle, Sovereign PIN & Followers */}
-        <div className="flex items-center gap-3.5">
-          <div className="relative">
+        <div className="flex items-center gap-3.5 min-w-0">
+          <div className="relative shrink-0">
             <img
               src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80"
               alt="Mii Avatar"
-              className="w-14 h-14 rounded-2xl object-cover border-2 border-emerald-500 shadow-lg shadow-emerald-500/20"
+              className="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl object-cover border-2 border-emerald-500 shadow-lg shadow-emerald-500/20"
             />
             <span
               className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-slate-900 ${
@@ -57,20 +57,20 @@ export const MiiTopWidget: React.FC<MiiTopWidgetProps> = ({ onOpenDeviceSelector
             />
           </div>
 
-          <div>
-            <div className="flex items-center gap-2">
-              <h3 className="text-base font-black text-white tracking-tight">Adebayo FM</h3>
-              <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-black uppercase tracking-wider border border-emerald-500/30 flex items-center gap-1">
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-2">
+              <h3 className="text-base font-black text-white tracking-tight truncate">Adebayo FM</h3>
+              <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-black uppercase tracking-wider border border-emerald-500/30 flex items-center gap-1 shrink-0">
                 <ShieldCheck size={11} />
                 Sovereign Mii
               </span>
-              <span className="px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 text-[10px] font-mono font-bold border border-slate-700 flex items-center gap-1">
+              <span className="px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 text-[10px] font-mono font-bold border border-slate-700 flex items-center gap-1 shrink-0">
                 <Key size={10} className="text-amber-400" />
                 PIN: #749822
               </span>
             </div>
 
-            <div className="flex items-center gap-3 text-xs text-slate-300 font-medium mt-1">
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-300 font-medium mt-1">
               <span className="flex items-center gap-1">
                 <Users size={12} className="text-emerald-400" />
                 <strong className="text-white font-bold">{miiState.followersCount.toLocaleString()}</strong> Followers
@@ -86,8 +86,8 @@ export const MiiTopWidget: React.FC<MiiTopWidgetProps> = ({ onOpenDeviceSelector
         </div>
 
         {/* Center: Live Listening Broadcast Telemetry */}
-        <div className="flex-1 max-w-lg px-4 py-2.5 rounded-2xl bg-slate-950/70 border border-slate-800 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-2.5 min-w-0">
+        <div className="flex-1 w-full lg:max-w-lg px-4 py-2.5 rounded-2xl bg-slate-950/70 border border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-2.5 min-w-0 w-full sm:w-auto">
             <Radio
               size={16}
               className={`shrink-0 ${
@@ -96,7 +96,7 @@ export const MiiTopWidget: React.FC<MiiTopWidgetProps> = ({ onOpenDeviceSelector
                   : 'text-slate-500'
               }`}
             />
-            <div className="min-w-0">
+            <div className="min-w-0 flex-1">
               <div className="text-[10px] font-black uppercase tracking-wider text-slate-300 font-semibold">
                 Live Broadcast Status
               </div>
@@ -115,11 +115,11 @@ export const MiiTopWidget: React.FC<MiiTopWidgetProps> = ({ onOpenDeviceSelector
             </div>
           </div>
 
-          <div className="flex items-center gap-1.5 shrink-0">
-            {/* Privacy Mode Pills */}
+          <div className="flex items-center gap-1.5 shrink-0 w-full sm:w-auto justify-end">
+            {/* Privacy Mode Pills with >= 40px touch height */}
             <button
               onClick={() => setMiiPrivacyMode('public')}
-              className={`px-2.5 py-1 rounded-xl text-[10px] font-bold transition-all ${
+              className={`min-h-[40px] px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center ${
                 miiState.privacyMode === 'public'
                   ? 'bg-emerald-500 text-black shadow-md'
                   : 'bg-slate-900 text-slate-300 hover:text-white font-medium'
@@ -130,7 +130,7 @@ export const MiiTopWidget: React.FC<MiiTopWidgetProps> = ({ onOpenDeviceSelector
             </button>
             <button
               onClick={() => setMiiPrivacyMode('private')}
-              className={`px-2.5 py-1 rounded-xl text-[10px] font-bold transition-all ${
+              className={`min-h-[40px] px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center ${
                 miiState.privacyMode === 'private'
                   ? 'bg-amber-500 text-black shadow-md'
                   : 'bg-slate-900 text-slate-300 hover:text-white font-medium'
@@ -141,7 +141,7 @@ export const MiiTopWidget: React.FC<MiiTopWidgetProps> = ({ onOpenDeviceSelector
             </button>
             <button
               onClick={() => setMiiPrivacyMode('incognito')}
-              className={`px-2.5 py-1 rounded-xl text-[10px] font-bold transition-all ${
+              className={`min-h-[40px] px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center ${
                 miiState.privacyMode === 'incognito'
                   ? 'bg-slate-600 text-white shadow-md'
                   : 'bg-slate-900 text-slate-300 hover:text-white font-medium'
@@ -154,15 +154,15 @@ export const MiiTopWidget: React.FC<MiiTopWidgetProps> = ({ onOpenDeviceSelector
         </div>
 
         {/* Right: Audio Device Pill & PIN Request Tray */}
-        <div className="flex items-center gap-2.5 self-end lg:self-center">
-          {/* Audio Output Device Quick Selector */}
+        <div className="flex items-center justify-between sm:justify-start gap-2.5 w-full lg:w-auto self-start lg:self-center">
+          {/* Audio Output Device Quick Selector with min 44px touch target */}
           <button
             onClick={onOpenDeviceSelector}
-            className="px-3 py-2 rounded-2xl bg-slate-950 border border-slate-800 hover:border-emerald-500/50 flex items-center gap-2 text-xs font-semibold text-slate-200 transition-all hover:bg-slate-900"
+            className="flex-1 sm:flex-initial min-h-[44px] px-3 py-2 rounded-2xl bg-slate-950 border border-slate-800 hover:border-emerald-500/50 flex items-center gap-2 text-xs font-semibold text-slate-200 transition-all hover:bg-slate-900"
             title="Audio Output Device"
           >
-            <Volume2 size={14} className="text-emerald-400" />
-            <div className="text-left">
+            <Volume2 size={14} className="text-emerald-400 shrink-0" />
+            <div className="text-left min-w-0">
               <div className="text-[9px] uppercase font-bold text-slate-300 leading-none">Output Device</div>
               <div className="text-white font-bold leading-tight truncate max-w-[120px]">
                 {activeAudioDevice.name}
@@ -170,10 +170,10 @@ export const MiiTopWidget: React.FC<MiiTopWidgetProps> = ({ onOpenDeviceSelector
             </div>
           </button>
 
-          {/* Pending PIN Requests Tray */}
+          {/* Pending PIN Requests Tray with min 44px touch target */}
           <button
             onClick={() => setShowRequestsModal(true)}
-            className="relative px-3 py-2 rounded-2xl bg-emerald-950/60 border border-emerald-500/40 hover:bg-emerald-900/60 flex items-center gap-2 text-xs font-bold text-emerald-300 transition-all shadow-md"
+            className="min-h-[44px] px-3.5 py-2 rounded-2xl bg-emerald-950/60 border border-emerald-500/40 hover:bg-emerald-900/60 flex items-center gap-2 text-xs font-bold text-emerald-300 transition-all shadow-md shrink-0"
           >
             <Key size={14} className="text-amber-400" />
             <span>PIN Tray</span>

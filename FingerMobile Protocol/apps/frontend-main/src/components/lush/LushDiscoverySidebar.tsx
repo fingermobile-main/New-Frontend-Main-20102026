@@ -322,28 +322,28 @@ export const LushDiscoverySidebar: React.FC<LushDiscoverySidebarProps> = ({
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-1 ml-2 shrink-0">
+                  <div className="flex items-center gap-1.5 ml-2 shrink-0">
                     {match.pinExchanged ? (
                       <>
                         {onOpenCommitTracker && (
                           <button
                             onClick={() => onOpenCommitTracker(match.id)}
-                            className="p-1.5 rounded-lg text-amber-700 hover:bg-amber-100 transition"
+                            className="min-h-[40px] min-w-[40px] p-2 rounded-xl text-amber-700 hover:bg-amber-100 transition flex items-center justify-center"
                             title="View 5-Month Commitment Milestone"
                           >
-                            <span className="text-xs">💍</span>
+                            <span className="text-sm">💍</span>
                           </button>
                         )}
                         <button
                           onClick={() => onStartVideoCall(match.id)}
-                          className="p-1.5 rounded-lg text-emerald-700 hover:bg-emerald-100 transition"
+                          className="min-h-[40px] min-w-[40px] p-2 rounded-xl text-emerald-700 hover:bg-emerald-100 transition flex items-center justify-center"
                           title="Start Lush WebRTC Video Call"
                         >
                           <VideoCameraIcon className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => onOpenChat(match.id)}
-                          className="p-1.5 rounded-lg text-emerald-700 hover:bg-emerald-100 transition"
+                          className="min-h-[40px] min-w-[40px] p-2 rounded-xl text-emerald-700 hover:bg-emerald-100 transition flex items-center justify-center"
                           title="Send Message"
                         >
                           <ChatBubbleLeftRightIcon className="w-4 h-4" />
@@ -354,7 +354,7 @@ export const LushDiscoverySidebar: React.FC<LushDiscoverySidebarProps> = ({
                               e.stopPropagation();
                               onRevokePin(match.id);
                             }}
-                            className="p-1.5 rounded-lg text-red-500 hover:bg-red-50 hover:text-red-700 transition"
+                            className="min-h-[40px] min-w-[40px] p-2 rounded-xl text-red-500 hover:bg-red-50 hover:text-red-700 transition flex items-center justify-center"
                             title="Revoke 6-Digit PIN (Closes Connection & Locks Profile)"
                           >
                             <XCircleIcon className="w-4 h-4" />
@@ -368,10 +368,10 @@ export const LushDiscoverySidebar: React.FC<LushDiscoverySidebarProps> = ({
                             e.stopPropagation();
                             onExchangePin(match.id);
                           }}
-                          className="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[10px] transition shadow-2xs flex items-center gap-1"
+                          className="min-h-[40px] px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition shadow-2xs flex items-center gap-1.5"
                           title="Exchange 6-Digit PIN to Unlock Profile"
                         >
-                          <KeyIcon className="w-3 h-3" />
+                          <KeyIcon className="w-3.5 h-3.5" />
                           <span>Exchange PIN</span>
                         </button>
                       )

@@ -279,13 +279,13 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
       )}
 
       {/* 1. Header Channel Tabs */}
-      <div className="bg-white rounded-2xl border border-emerald-100/80 shadow-xs p-2 flex items-center justify-between overflow-x-auto gap-2">
+      <div className="bg-white rounded-2xl border border-emerald-100/80 shadow-xs p-2 flex items-center justify-between overflow-x-auto gap-2 scrollbar-none">
         <button
           onClick={() => onTabChange('feed')}
-          className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition whitespace-nowrap ${
+          className={`min-h-[44px] px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition whitespace-nowrap flex items-center justify-center ${
             activeTab === 'feed'
               ? 'bg-emerald-600 text-white shadow-xs'
-              : 'text-gray-600 hover:text-emerald-800 hover:bg-emerald-50/70'
+              : 'text-gray-700 hover:text-emerald-800 hover:bg-emerald-50/70'
           }`}
         >
           Lush-Pressies
@@ -293,7 +293,7 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
 
         <button
           onClick={() => onTabChange('encore')}
-          className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition whitespace-nowrap flex items-center gap-1.5 ${
+          className={`min-h-[44px] px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition whitespace-nowrap flex items-center gap-1.5 justify-center ${
             activeTab === 'encore'
               ? 'bg-gradient-to-r from-amber-500 to-emerald-600 text-white shadow-sm'
               : 'text-amber-900 bg-amber-50/70 hover:bg-amber-100 hover:text-amber-950 border border-amber-200/60'
@@ -306,10 +306,10 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
 
         <button
           onClick={() => onTabChange('discover')}
-          className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition whitespace-nowrap flex items-center gap-1.5 ${
+          className={`min-h-[44px] px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition whitespace-nowrap flex items-center gap-1.5 justify-center ${
             activeTab === 'discover'
               ? 'bg-emerald-600 text-white shadow-xs'
-              : 'text-gray-600 hover:text-emerald-800 hover:bg-emerald-50/70'
+              : 'text-gray-700 hover:text-emerald-800 hover:bg-emerald-50/70'
           }`}
           title="Interactive Swipe Deck & Gestures"
         >
@@ -319,10 +319,10 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
 
         <button
           onClick={() => onTabChange('lapidaires')}
-          className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition whitespace-nowrap flex items-center gap-1.5 ${
+          className={`min-h-[44px] px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition whitespace-nowrap flex items-center gap-1.5 justify-center ${
             activeTab === 'lapidaires' || activeTab === 'lapidaires'
               ? 'bg-emerald-600 text-white shadow-xs'
-              : 'text-gray-600 hover:text-emerald-800 hover:bg-emerald-50/70'
+              : 'text-gray-700 hover:text-emerald-800 hover:bg-emerald-50/70'
           }`}
         >
           <QuestionMarkCircleIcon className="w-4 h-4 text-emerald-600" />
@@ -331,10 +331,10 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
 
         <button
           onClick={() => onTabChange('gifts')}
-          className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition whitespace-nowrap flex items-center gap-1.5 ${
+          className={`min-h-[44px] px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition whitespace-nowrap flex items-center gap-1.5 justify-center ${
             activeTab === 'gifts'
               ? 'bg-emerald-600 text-white shadow-xs'
-              : 'text-gray-600 hover:text-emerald-800 hover:bg-emerald-50/70'
+              : 'text-gray-700 hover:text-emerald-800 hover:bg-emerald-50/70'
           }`}
         >
           <GiftIcon className="w-4 h-4 text-[#DC582A]" />
@@ -343,10 +343,10 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
 
         <button
           onClick={() => onTabChange('trending')}
-          className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition whitespace-nowrap flex items-center gap-1.5 ${
+          className={`min-h-[44px] px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition whitespace-nowrap flex items-center gap-1.5 justify-center ${
             activeTab === 'trending'
               ? 'bg-emerald-600 text-white shadow-xs'
-              : 'text-gray-600 hover:text-emerald-800 hover:bg-emerald-50/70'
+              : 'text-gray-700 hover:text-emerald-800 hover:bg-emerald-50/70'
           }`}
         >
           <SparklesIcon className="w-4 h-4 text-amber-500" />
@@ -470,12 +470,12 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
                 </div>
               </div>
 
-              <div className="flex items-center justify-between pt-3 mt-2 border-t border-slate-200">
-                <div className="flex items-center gap-1.5 sm:gap-2">
+              <div className="flex flex-wrap items-center justify-between gap-2.5 pt-3 mt-2 border-t border-slate-200">
+                <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
                   <button
                     type="button"
                     onClick={onOpenLapidaireModal}
-                    className="px-2.5 py-1.5 rounded-lg text-xs font-semibold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 flex items-center gap-1 transition"
+                    className="min-h-[38px] px-2.5 py-1.5 rounded-lg text-xs font-semibold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 flex items-center gap-1 transition"
                     title="Select from 30 Curated Lapidaire Questions"
                   >
                     <QuestionMarkCircleIcon className="w-4 h-4 text-emerald-600" />
@@ -487,7 +487,7 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
                   <button
                     type="button"
                     onClick={() => setShowComposerEmojis((prev) => !prev)}
-                    className={`p-1.5 rounded-lg transition ${
+                    className={`min-h-[38px] min-w-[38px] p-1.5 rounded-lg transition flex items-center justify-center ${
                       showComposerEmojis
                         ? 'text-emerald-700 bg-emerald-100'
                         : 'text-slate-700 hover:text-emerald-700 hover:bg-emerald-50'
@@ -500,7 +500,7 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
-                    className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1 transition ${
+                    className={`min-h-[38px] px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1 transition ${
                       attachedMedia
                         ? 'text-emerald-800 bg-emerald-100 border border-emerald-300'
                         : 'text-slate-700 hover:text-emerald-700 hover:bg-emerald-50'
@@ -514,7 +514,7 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
                   <button
                     type="button"
                     onClick={handleAttachDemoPhoto}
-                    className="p-1.5 rounded-lg text-slate-700 hover:text-teal-700 hover:bg-teal-50 transition text-[11px] hidden md:inline"
+                    className="min-h-[38px] p-1.5 rounded-lg text-slate-700 hover:text-teal-700 hover:bg-teal-50 transition text-[11px] hidden md:inline"
                     title="Attach Sample Luxury Photo"
                   >
                     Sample Photo
@@ -523,7 +523,7 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
                   <button
                     type="button"
                     onClick={handleAttachDemoVideo}
-                    className="p-1.5 rounded-lg text-slate-700 hover:text-teal-700 hover:bg-teal-50 transition text-[11px] hidden md:inline flex items-center gap-1"
+                    className="min-h-[38px] p-1.5 rounded-lg text-slate-700 hover:text-teal-700 hover:bg-teal-50 transition text-[11px] hidden md:inline flex items-center gap-1"
                     title="Attach Sample Luxury Celebration Video"
                   >
                     <VideoCameraIcon className="w-3.5 h-3.5 text-teal-600" />
@@ -534,7 +534,7 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
                 <button
                   type="submit"
                   disabled={isSubmittingPost || (!newPostText.trim() && !attachedMedia)}
-                  className="px-5 py-2 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 disabled:opacity-50 disabled:cursor-not-allowed shadow-xs transition flex items-center gap-1.5"
+                  className="w-full sm:w-auto min-h-[42px] px-5 py-2 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 disabled:opacity-50 disabled:cursor-not-allowed shadow-xs transition flex items-center justify-center gap-1.5"
                 >
                   <PaperAirplaneIcon className="w-4 h-4" />
                   Post
@@ -695,14 +695,14 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
                   )}
 
                   {/* Action Bar */}
-                  <div className="px-4 sm:px-5 py-2.5 bg-gray-50/70 border-t border-slate-200 flex items-center justify-between text-xs text-gray-600">
-                    <div className="flex items-center gap-4 sm:gap-6">
+                  <div className="px-3 sm:px-5 py-2.5 bg-gray-50/70 border-t border-slate-200 flex flex-wrap items-center justify-between gap-y-2 text-xs text-gray-700">
+                    <div className="flex flex-wrap items-center gap-1.5 sm:gap-4">
                       <button
                         onClick={() => onLikePost(post.id)}
-                        className={`flex items-center gap-1.5 font-semibold transition ${
+                        className={`min-h-[40px] px-2.5 py-1 rounded-lg flex items-center gap-1.5 font-semibold transition ${
                           post.isLiked
-                            ? 'text-rose-600'
-                            : 'text-gray-600 hover:text-rose-600'
+                            ? 'text-rose-600 bg-rose-50'
+                            : 'text-gray-700 hover:text-rose-600 hover:bg-rose-50'
                         }`}
                       >
                         {post.isLiked ? (
@@ -715,7 +715,7 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
 
                       <button
                         onClick={() => handleToggleComments(post.id)}
-                        className="flex items-center gap-1.5 text-gray-600 hover:text-emerald-700 font-semibold transition"
+                        className="min-h-[40px] px-2.5 py-1 rounded-lg flex items-center gap-1.5 text-gray-700 hover:text-emerald-700 hover:bg-emerald-50 font-semibold transition"
                       >
                         <ChatBubbleOvalLeftEllipsisIcon className="w-4 h-4" />
                         <span>{post.commentsCount}</span>
@@ -726,7 +726,7 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
                         onClick={() =>
                           onOpenChat?.(post.author.id, post.author.name)
                         }
-                        className="flex items-center gap-1.5 text-gray-600 hover:text-emerald-700 font-semibold transition"
+                        className="min-h-[40px] px-2.5 py-1 rounded-lg flex items-center gap-1.5 text-gray-700 hover:text-emerald-700 hover:bg-emerald-50 font-semibold transition"
                         title={`Send Message to ${post.author.name}`}
                       >
                         <ChatBubbleLeftRightIcon className="w-4 h-4 text-emerald-600" />
@@ -735,7 +735,7 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
 
                       <button
                         onClick={() => onSendGiftClick(post.id)}
-                        className="flex items-center gap-1.5 text-[#DC582A] hover:text-orange-700 font-semibold transition"
+                        className="min-h-[40px] px-2.5 py-1 rounded-lg flex items-center gap-1.5 text-[#DC582A] hover:text-orange-700 hover:bg-orange-50 font-bold transition"
                         title="Send Lush Plushie"
                       >
                         <GiftIcon className="w-4 h-4" />
@@ -743,11 +743,11 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
                       </button>
                     </div>
 
-                    <div className="flex items-center gap-2 sm:gap-3 text-slate-700">
+                    <div className="flex items-center gap-1.5 sm:gap-2 text-slate-700">
                       <button
                         type="button"
                         onClick={() => handleSharePost(post)}
-                        className="p-1.5 rounded-lg hover:text-emerald-700 hover:bg-emerald-50 transition"
+                        className="min-h-[40px] min-w-[40px] p-2 rounded-lg hover:text-emerald-700 hover:bg-emerald-50 transition flex items-center justify-center"
                         title="Share Post Permalink"
                       >
                         <ShareIcon className="w-4 h-4" />
@@ -758,7 +758,7 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
                         onClick={() =>
                           handleToggleBookmark(post.id, post.isBookmarked)
                         }
-                        className={`p-1.5 rounded-lg transition ${
+                        className={`min-h-[40px] min-w-[40px] p-2 rounded-lg transition flex items-center justify-center ${
                           isPostBookmarked
                             ? 'text-amber-500 hover:text-amber-600 bg-amber-50'
                             : 'hover:text-amber-600 hover:bg-amber-50'

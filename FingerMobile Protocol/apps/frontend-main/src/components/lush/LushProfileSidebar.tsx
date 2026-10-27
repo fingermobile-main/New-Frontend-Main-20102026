@@ -274,7 +274,7 @@ export const LushProfileSidebar: React.FC<LushProfileSidebarProps> = ({
         <div className="space-y-2 pt-2 border-t border-slate-200">
           <button
             onClick={onToggleRadiate}
-            className={`w-full py-2 px-3 rounded-xl text-xs font-semibold flex items-center justify-between transition ${
+            className={`w-full min-h-[44px] py-2 px-3 rounded-xl text-xs font-semibold flex items-center justify-between transition ${
               user.isRadiating
                 ? 'bg-emerald-600 text-white shadow-xs'
                 : 'bg-emerald-50 text-emerald-800 hover:bg-emerald-100'
@@ -291,7 +291,7 @@ export const LushProfileSidebar: React.FC<LushProfileSidebarProps> = ({
 
           <button
             onClick={onToggleIncognito}
-            className={`w-full py-2 px-3 rounded-xl text-xs font-semibold flex items-center justify-between transition ${
+            className={`w-full min-h-[44px] py-2 px-3 rounded-xl text-xs font-semibold flex items-center justify-between transition ${
               user.isIncognito
                 ? 'bg-gray-800 text-white shadow-xs'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -316,7 +316,7 @@ export const LushProfileSidebar: React.FC<LushProfileSidebarProps> = ({
 
         <button
           onClick={() => onSelectFeedTab('feed')}
-          className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition ${
+          className={`w-full min-h-[44px] flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition ${
             activeFeedTab === 'feed'
               ? 'bg-emerald-600 text-white shadow-xs'
               : 'text-gray-700 hover:bg-emerald-50/70 hover:text-emerald-900'
@@ -339,7 +339,7 @@ export const LushProfileSidebar: React.FC<LushProfileSidebarProps> = ({
 
         <button
           onClick={() => onSelectFeedTab('encore')}
-          className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition ${
+          className={`w-full min-h-[44px] flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition ${
             activeFeedTab === 'encore'
               ? 'bg-gradient-to-r from-amber-500 to-emerald-600 text-white shadow-xs'
               : 'text-amber-950 bg-amber-50/60 hover:bg-amber-100 hover:text-amber-950 border border-amber-200/50'
@@ -357,7 +357,7 @@ export const LushProfileSidebar: React.FC<LushProfileSidebarProps> = ({
 
         <button
           onClick={() => onSelectFeedTab('discover')}
-          className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition ${
+          className={`w-full min-h-[44px] flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition ${
             activeFeedTab === 'discover'
               ? 'bg-emerald-600 text-white shadow-xs'
               : 'text-gray-700 hover:bg-emerald-50/70 hover:text-emerald-900'
@@ -374,7 +374,7 @@ export const LushProfileSidebar: React.FC<LushProfileSidebarProps> = ({
 
         <button
           onClick={() => onSelectFeedTab('lapidaires')}
-          className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition ${
+          className={`w-full min-h-[44px] flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition ${
             activeFeedTab === 'lapidaires' || activeFeedTab === 'lapidaires'
               ? 'bg-emerald-600 text-white shadow-xs'
               : 'text-gray-700 hover:bg-emerald-50/70 hover:text-emerald-900'
@@ -391,7 +391,7 @@ export const LushProfileSidebar: React.FC<LushProfileSidebarProps> = ({
 
         <button
           onClick={() => onSelectFeedTab('gifts')}
-          className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition ${
+          className={`w-full min-h-[44px] flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition ${
             activeFeedTab === 'gifts'
               ? 'bg-emerald-600 text-white shadow-xs'
               : 'text-gray-700 hover:bg-emerald-50/70 hover:text-emerald-900'
@@ -408,7 +408,7 @@ export const LushProfileSidebar: React.FC<LushProfileSidebarProps> = ({
 
         <button
           onClick={() => onSelectFeedTab('trending')}
-          className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition ${
+          className={`w-full min-h-[44px] flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition ${
             activeFeedTab === 'trending'
               ? 'bg-emerald-600 text-white shadow-xs'
               : 'text-gray-700 hover:bg-emerald-50/70 hover:text-emerald-900'
@@ -424,7 +424,7 @@ export const LushProfileSidebar: React.FC<LushProfileSidebarProps> = ({
           {onOpenHeatmap && (
             <button
               onClick={onOpenHeatmap}
-              className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-gray-700 hover:bg-emerald-50/70 hover:text-emerald-900 transition"
+              className="w-full min-h-[44px] flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-gray-700 hover:bg-emerald-50/70 hover:text-emerald-900 transition"
             >
               <ChartBarIcon className="w-4 h-4 text-emerald-600" />
               Activity Heatmap
@@ -434,7 +434,7 @@ export const LushProfileSidebar: React.FC<LushProfileSidebarProps> = ({
           {onOpenCommitTracker && (
             <button
               onClick={onOpenCommitTracker}
-              className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-gray-700 hover:bg-emerald-50/70 hover:text-emerald-900 transition"
+              className="w-full min-h-[44px] flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-gray-700 hover:bg-emerald-50/70 hover:text-emerald-900 transition"
             >
               <TrophyIcon className="w-4 h-4 text-amber-600" />
               5-Month Commitment
@@ -443,7 +443,7 @@ export const LushProfileSidebar: React.FC<LushProfileSidebarProps> = ({
 
           <button
             onClick={onOpenPreferences}
-            className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-gray-700 hover:bg-emerald-50/70 hover:text-emerald-900 transition"
+            className="w-full min-h-[44px] flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-gray-700 hover:bg-emerald-50/70 hover:text-emerald-900 transition"
           >
             <AdjustmentsHorizontalIcon className="w-4 h-4 text-emerald-600" />
             Matching Preferences

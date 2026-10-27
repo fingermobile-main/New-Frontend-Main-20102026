@@ -21,7 +21,14 @@ import { CommitProgressTracker } from '../components/CommitProgressTracker';
 import { LushCallModal } from '../components/LushCallModal';
 import { LushMatch } from '../hooks/useLushMatching';
 import { CallSession } from '../hooks/useLushCall';
-import { SparklesIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import {
+  SparklesIcon,
+  XMarkIcon,
+  GiftIcon,
+  UserIcon,
+  KeyIcon,
+  ShoppingBagIcon,
+} from '@heroicons/react/24/outline';
 import { LushChatPanel } from '../components/LushChatPanel';
 import voiceLineServiceInstance from '../services/VoiceLineService';
 import LushEditProfileModal from '../components/lush/LushEditProfileModal';
@@ -264,6 +271,19 @@ export const LushPressiesPage: React.FC = () => {
   const [showPinPackagesModal, setShowPinPackagesModal] =
     useState<boolean>(false);
 
+  // Mobile layout tab switcher state ('feed' | 'discover' | 'profile')
+  const [mobileTab, setMobileTab] = useState<'feed' | 'discover' | 'profile'>('feed');
+  const [isOnboarded, setIsOnboarded] = useState<boolean>(() => {
+    try {
+      return Boolean(
+        localStorage.getItem('onboardingComplete') === 'true' ||
+        localStorage.getItem('hasCompletedOnboarding') === 'true'
+      );
+    } catch {
+      return false;
+    }
+  });
+
   // Load backend profile, posts & PIN quota if available
   useEffect(() => {
     let isMounted = true;
@@ -368,6 +388,10 @@ export const LushPressiesPage: React.FC = () => {
         lushCoins: synced.ficBalance || prev.lushCoins,
         pinNumber: synced.pinNumber || prev.pinNumber,
       }));
+      setIsOnboarded(Boolean(
+        localStorage.getItem('onboardingComplete') === 'true' ||
+        localStorage.getItem('hasCompletedOnboarding') === 'true'
+      ));
     });
 
     return () => {
@@ -682,32 +706,98 @@ export const LushPressiesPage: React.FC = () => {
       <div className="h-1 bg-gradient-to-r from-emerald-600 via-teal-500 to-[#DC582A]" />
 
       {/* Brand Hero Header */}
-      <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-3 sm:px-6 lg:px-8 pt-5">
-        <div className="flex items-center justify-between p-4 bg-white rounded-2xl border border-slate-200 shadow-xs">
+      <div className={`max-w-[1536px] 2xl:max-w-[1680px] mx-auto pt-4 sm:pt-6 transition-all duration-300 ${
+        isOnboarded ? 'pl-14 pr-3 sm:px-6 lg:px-8' : 'px-3 sm:px-6 lg:px-8'
+      }`}>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 sm:p-4 bg-white rounded-2xl border border-slate-200 shadow-xs">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-slate-900 border border-emerald-400/30 p-1 flex items-center justify-center shadow-xs overflow-hidden shrink-0">
+            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-slate-900 border border-emerald-400/30 p-1 flex items-center justify-center shadow-xs overflow-hidden shrink-0">
               <img src="/assets/logos/lushpressies_logo.png" alt="Lush Pressies" className="w-full h-full object-contain" />
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-xl font-extrabold text-slate-900 tracking-tight">Lush Pressies</h1>
+              <div className="flex items-center gap-2 flex-wrap">
+                <h1 className="text-lg sm:text-xl font-extrabold text-slate-900 tracking-tight">Lush Pressies</h1>
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400">
                   Gifting & Appreciation
                 </span>
               </div>
-              <p className="text-xs text-slate-700 font-medium">
+              <p className="text-xs text-slate-700 font-medium line-clamp-1 sm:line-clamp-none">
                 Sovereign luxury gifting, Lapidaire social exchange & authentic tokenized connections.
               </p>
             </div>
+          </div>
+
+          {/* Quick Header Actions for Mobile & Desktop */}
+          <div className="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
+            <button
+              type="button"
+              onClick={() => setShowCatalogModal(true)}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-orange-50 hover:bg-orange-100 text-[#DC582A] text-xs font-bold border border-orange-200 transition shrink-0 min-h-[38px]"
+              title="Open Plushies Gift Shop"
+            >
+              <GiftIcon className="w-4 h-4 text-[#DC582A]" />
+              <span>Gift Shop</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setShowPinPackagesModal(true)}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-950 text-xs font-bold border border-emerald-300 transition shrink-0 min-h-[38px]"
+              title="Manage 6-Digit Consent PIN Quota"
+            >
+              <KeyIcon className="w-4 h-4 text-emerald-600" />
+              <span>PIN: {pinQuota.isUnlimited ? '∞' : `${pinQuota.generationsRemaining} Left`}</span>
+            </button>
           </div>
         </div>
       </div>
 
       {/* Main 3-Column LinkedIn-Style Layout Container */}
-      <main className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-3 sm:px-6 lg:px-8 py-5">
+      <main className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-3 sm:px-6 lg:px-8 py-5 pb-24 lg:pb-8">
+        {/* Mobile View Switcher Tabs (3-way segment: Feed, Discover, Profile) */}
+        <div className="lg:hidden flex items-center p-1 bg-white border border-slate-200 rounded-2xl shadow-xs mb-4 gap-1">
+          <button
+            type="button"
+            onClick={() => setMobileTab('feed')}
+            className={`flex-1 min-h-[44px] rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 ${
+              mobileTab === 'feed'
+                ? 'bg-emerald-600 text-white shadow-xs'
+                : 'text-slate-700 hover:text-slate-900 hover:bg-slate-50'
+            }`}
+          >
+            <GiftIcon className="w-4 h-4" />
+            <span>Feed & Gifts</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setMobileTab('discover')}
+            className={`flex-1 min-h-[44px] rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 ${
+              mobileTab === 'discover'
+                ? 'bg-emerald-600 text-white shadow-xs'
+                : 'text-slate-700 hover:text-slate-900 hover:bg-slate-50'
+            }`}
+          >
+            <SparklesIcon className="w-4 h-4" />
+            <span>Discover ({matches.length})</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setMobileTab('profile')}
+            className={`flex-1 min-h-[44px] rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 ${
+              mobileTab === 'profile'
+                ? 'bg-emerald-600 text-white shadow-xs'
+                : 'text-slate-700 hover:text-slate-900 hover:bg-slate-50'
+            }`}
+          >
+            <UserIcon className="w-4 h-4" />
+            <span>Profile & Perks</span>
+          </button>
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
           {/* Left Column (3 cols): User Profile, Gamification, Fast Navigation */}
-          <div className="lg:col-span-3 lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-5.5rem)] lg:overflow-y-auto space-y-4 scrollbar-none pr-1">
+          <div className={`lg:col-span-3 lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-5.5rem)] lg:overflow-y-auto space-y-4 scrollbar-none pr-1 ${
+            mobileTab === 'profile' ? 'block' : 'hidden lg:block'
+          }`}>
             <LushProfileSidebar
               user={userProfile}
               activeFeedTab={activeFeedTab}
@@ -730,7 +820,9 @@ export const LushPressiesPage: React.FC = () => {
           </div>
 
           {/* Center Column (6 cols): Forum Post Card Feed on #F5F9F6 */}
-          <div className="lg:col-span-6 space-y-4">
+          <div className={`lg:col-span-6 space-y-4 ${
+            mobileTab === 'feed' ? 'block' : 'hidden lg:block'
+          }`}>
             <LushForumFeed
               posts={filteredPosts}
               activeTab={activeFeedTab}
@@ -756,7 +848,9 @@ export const LushPressiesPage: React.FC = () => {
           </div>
 
           {/* Right Column (3 cols): Swipe Deck, Daily Question, Plushies Shop, Matches */}
-          <div className="lg:col-span-3 lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-5.5rem)] lg:overflow-y-auto space-y-4 scrollbar-none pl-1">
+          <div className={`lg:col-span-3 lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-5.5rem)] lg:overflow-y-auto space-y-4 scrollbar-none pl-1 ${
+            mobileTab === 'discover' ? 'block' : 'hidden lg:block'
+          }`}>
             <LushDiscoverySidebar
               userId={1}
               matches={matches}
@@ -1084,7 +1178,7 @@ export const LushPressiesPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => navigate('/messages')}
-                  className="px-2.5 py-1 rounded-xl bg-white/10 hover:bg-white/20 text-slate-700 text-xs font-semibold transition"
+                  className="px-2.5 py-1 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-semibold transition"
                   title="Expand to Full Messages Page"
                 >
                   Full Screen
@@ -1116,6 +1210,74 @@ export const LushPressiesPage: React.FC = () => {
           <p className="text-xs font-semibold leading-relaxed">{toastMessage}</p>
         </div>
       )}
+
+      {/* Sovereign Floating Mobile Quick Dock (Mobile only, with iOS safe-area support) */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 px-3 pt-2 pb-[calc(env(safe-area-inset-bottom,0px)+0.5rem)] shadow-lg">
+        <div className="max-w-md mx-auto flex items-center justify-around">
+          <button
+            type="button"
+            onClick={() => {
+              setMobileTab('feed');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`flex flex-col items-center gap-1 min-h-[44px] min-w-[44px] justify-center text-[10px] font-bold transition ${
+              mobileTab === 'feed' ? 'text-emerald-700' : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            <GiftIcon className="w-5 h-5" />
+            <span>Feed</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              setMobileTab('discover');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`flex flex-col items-center gap-1 min-h-[44px] min-w-[44px] justify-center text-[10px] font-bold transition relative ${
+              mobileTab === 'discover' ? 'text-emerald-700' : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            <SparklesIcon className="w-5 h-5" />
+            <span>Discover</span>
+            {matches.length > 0 && (
+              <span className="absolute top-0 right-1 w-2 h-2 rounded-full bg-emerald-500" />
+            )}
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setShowCatalogModal(true)}
+            className="flex flex-col items-center gap-1 min-h-[44px] min-w-[44px] justify-center text-[10px] font-bold text-[#DC582A] hover:text-orange-700 transition"
+          >
+            <ShoppingBagIcon className="w-5 h-5" />
+            <span>Gifts</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setShowPinPackagesModal(true)}
+            className="flex flex-col items-center gap-1 min-h-[44px] min-w-[44px] justify-center text-[10px] font-bold text-emerald-800 hover:text-emerald-950 transition"
+          >
+            <KeyIcon className="w-5 h-5" />
+            <span>PINs</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              setMobileTab('profile');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`flex flex-col items-center gap-1 min-h-[44px] min-w-[44px] justify-center text-[10px] font-bold transition ${
+              mobileTab === 'profile' ? 'text-emerald-700' : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            <UserIcon className="w-5 h-5" />
+            <span>Profile</span>
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
