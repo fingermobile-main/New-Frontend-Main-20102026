@@ -43,8 +43,8 @@ import {
 } from '@heroicons/react/24/solid';
 import { FingerMobileEmojiPicker } from '../common/FingerMobileEmojiPicker';
 import { renderContentWithFingerMobileEmojis, replaceEmojisInHtml } from '../../utils/fingerMobileEmojiRenderer';
-import { sanitizeHtmlContent } from '../editor/RichTextEditor';
 import MediaEditorModal, { EditedMediaResult } from '../MediaEditorModal';
+import { formatTimeAgo } from '../../utils/time';
 
 export interface FeedComment {
   id: string;
@@ -684,7 +684,9 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
                   </>
                 )}
                 <span>•</span>
-                <span className="text-slate-700 font-medium">{post.createdAt}</span>
+                <span className="text-slate-700 font-medium">
+                  {/^\d{4}-\d{2}-\d{2}T/.test(post.createdAt || '') ? formatTimeAgo(post.createdAt) : post.createdAt}
+                </span>
               </div>
             </div>
           </div>
@@ -1115,8 +1117,8 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
         )}
 
         {/* Post Action Footer: Likes, Comments Toggle, Share, Bookmark */}
-        <div className="mt-4 pt-3.5 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-sm text-slate-700 dark:text-slate-300 font-medium">
-          <div className="flex items-center gap-5 sm:gap-6">
+        <div className="mt-4 pt-3.5 border-t border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-y-2.5 sm:gap-y-0 text-sm text-slate-700 dark:text-slate-300 font-medium">
+          <div className="flex items-center gap-4 sm:gap-6">
             {/* Like Button */}
             <button
               type="button"

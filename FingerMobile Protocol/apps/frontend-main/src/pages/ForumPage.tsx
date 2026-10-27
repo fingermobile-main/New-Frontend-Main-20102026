@@ -32,7 +32,6 @@ import {
   GiftIcon,
   BellIcon,
   ChatBubbleLeftRightIcon,
-  SparklesIcon,
   PlusCircleIcon,
   BanknotesIcon,
   UserGroupIcon,
@@ -2096,8 +2095,8 @@ export const ForumPage: React.FC = () => {
 
       {/* TOP NAVIGATION & LEVEL 2 NAVBAR */}
       <header className="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-xs">
-        {/* Header Container - Left clearance pl-14 sm:pl-56 for Sovereign Burger Trigger */}
-        <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto pl-14 sm:pl-56 pr-3 sm:px-6 lg:px-8">
+        {/* Header Container - Adaptive Left clearance pl-14 sm:pl-56 when Sovereign Burger Trigger is active */}
+        <div className={`max-w-[1536px] 2xl:max-w-[1680px] mx-auto ${isOnboarded ? 'pl-14 sm:pl-56' : 'pl-3 sm:pl-6'} pr-3 sm:px-6 lg:px-8`}>
           {/* Row 1 (H1 Header Row): Facebook-Style Clean Header */}
           <div className="flex items-center justify-between h-14 sm:h-16 gap-2">
             {/* Left Section: 1. Logo, 2. Brand Wordmark */}
@@ -2258,7 +2257,7 @@ export const ForumPage: React.FC = () => {
                       setActiveSubNav(sub.id);
                       navigate(sub.path);
                     }}
-                    className={`relative flex flex-col items-center justify-center py-2 sm:py-2.5 transition-all cursor-pointer group focus:outline-none ${
+                    className={`relative flex flex-col items-center justify-center py-2 sm:py-2.5 min-h-[44px] transition-all cursor-pointer group focus:outline-none ${
                       isActive
                         ? 'text-orange-600 dark:text-orange-500 font-black'
                         : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
@@ -2562,6 +2561,51 @@ export const ForumPage: React.FC = () => {
                 triggerToast={(msg, type) => triggerToast(msg, type === 'warning' ? 'info' : type)}
               />
             )}
+
+            {/* Mobile-First Interactive Topic Chips Bar (lg:hidden) */}
+            <div className="lg:hidden bg-white dark:bg-slate-900 rounded-2xl border border-slate-300 dark:border-slate-800 p-2.5 shadow-xs">
+              <div className="flex items-center justify-between mb-2 px-1">
+                <span className="text-xs font-black uppercase tracking-wider text-slate-900 dark:text-white flex items-center gap-1.5">
+                  <span>🔥</span>
+                  <span>Explore Topics</span>
+                </span>
+                <span className="text-[10px] text-orange-950 dark:text-orange-300 font-bold bg-orange-100 dark:bg-orange-950/60 px-2 py-0.5 rounded-full border border-orange-400 dark:border-orange-800">
+                  {apiCategories.length} Categories
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none py-0.5">
+                <button
+                  type="button"
+                  onClick={() => setSelectedCategoryId('all')}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 transition flex items-center gap-1.5 cursor-pointer min-h-[36px] ${
+                    selectedCategoryId === 'all'
+                      ? 'bg-orange-600 text-white shadow-xs'
+                      : 'bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-slate-200'
+                  }`}
+                >
+                  <span>🔥</span>
+                  <span>All Topics</span>
+                </button>
+                {apiCategories.map((cat) => {
+                  const isSelected = selectedCategoryId.toLowerCase() === cat.name.toLowerCase();
+                  return (
+                    <button
+                      key={cat.id}
+                      type="button"
+                      onClick={() => setSelectedCategoryId(cat.name)}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-semibold shrink-0 transition flex items-center gap-1.5 cursor-pointer min-h-[36px] ${
+                        isSelected
+                          ? 'bg-orange-600 text-white font-bold shadow-xs'
+                          : 'bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-slate-200'
+                      }`}
+                    >
+                      <span className="text-sm shrink-0">{getCategoryEmoji(cat.name, cat.icon)}</span>
+                      <span className="whitespace-nowrap">{cat.name}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
 
             {/* 2. THE NEW HIGH-POWERED POST COMPOSER */}
             {!isOnboarded ? (
@@ -3087,7 +3131,7 @@ export const ForumPage: React.FC = () => {
                   {/* Submit Button */}
                   <button
                     type="submit"
-                    className="px-5 py-2 bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white text-xs font-bold rounded-xl shadow-md transition flex items-center gap-1.5 cursor-pointer"
+                    className="w-full sm:w-auto px-5 py-2.5 bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white text-xs font-bold rounded-xl shadow-md transition flex items-center justify-center gap-1.5 cursor-pointer min-h-[40px]"
                   >
                     <PaperAirplaneIcon className="w-3.5 h-3.5" />
                     Publish Post
@@ -4335,8 +4379,8 @@ export const ForumPage: React.FC = () => {
 
       {/* 1. Mii Stories Creator Modal */}
       {isMiiCreatorOpen && (
-        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl border border-slate-200 dark:border-slate-800 animate-in fade-in zoom-in-95">
+        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-xs z-50 flex items-center justify-center p-2 sm:p-4">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full p-4 sm:p-6 mx-2 sm:mx-auto max-h-[92vh] overflow-y-auto space-y-4 shadow-2xl border border-slate-200 dark:border-slate-800 animate-in fade-in zoom-in-95">
             {/* Modal Header */}
             <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
               <div className="flex items-center gap-2">
@@ -4765,7 +4809,7 @@ export const ForumPage: React.FC = () => {
             : 'translate-y-full opacity-0 pointer-events-none'
         }`}
       >
-        <div className="grid grid-cols-4 w-full h-14 items-center px-2">
+        <div className="grid grid-cols-4 w-full h-14 sm:h-16 items-center px-2 pb-[env(safe-area-inset-bottom,0px)]">
           {/* 1. Discover & Viral Trends */}
           <button
             type="button"
