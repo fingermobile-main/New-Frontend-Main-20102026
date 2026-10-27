@@ -101,6 +101,18 @@ const BeatwaveNGPage: React.FC = () => {
   const [newPlaylistName, setNewPlaylistName] = useState('');
   const [newPlaylistDesc, setNewPlaylistDesc] = useState('');
 
+  // Check sovereign onboarding status for burger button clearance
+  const [isOnboarded] = useState<boolean>(() => {
+    try {
+      return (
+        localStorage.getItem('onboardingComplete') === 'true' ||
+        localStorage.getItem('hasCompletedOnboarding') === 'true'
+      );
+    } catch {
+      return false;
+    }
+  });
+
   // Upload Form State
   const [uploadTier, setUploadTier] = useState<'SoundRiver' | 'SoundOcean'>('SoundRiver');
   const [uploadTitle, setUploadTitle] = useState('');
@@ -208,7 +220,7 @@ const BeatwaveNGPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex pb-28">
+    <div className="min-h-screen bg-slate-950 text-slate-100 flex pb-44 md:pb-28">
       {/* ======================================================== */}
       {/* APPLE MUSIC DESKTOP SIDEBAR NAVIGATION */}
       {/* ======================================================== */}
@@ -557,65 +569,126 @@ const BeatwaveNGPage: React.FC = () => {
       {/* ======================================================== */}
       {/* MAIN CONTENT AREA */}
       {/* ======================================================== */}
-      <main className="flex-1 min-w-0 p-4 sm:p-8 overflow-x-hidden">
-        <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto w-full space-y-8">
+      <main className={`flex-1 min-w-0 p-3 sm:p-6 lg:p-8 overflow-x-hidden ${isOnboarded ? 'pt-16 sm:pt-6' : 'pt-3 sm:pt-6'}`}>
+        <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto w-full space-y-6 sm:space-y-8">
+        {/* MOBILE BRAND HEADER BAR (md:hidden) */}
+        <div className="md:hidden flex items-center justify-between pb-3 border-b border-slate-800/80">
+          <div className="flex items-center gap-2.5">
+            <div className="w-9 h-9 rounded-xl bg-slate-900 border border-emerald-500/40 p-1 flex items-center justify-center shadow-md shadow-emerald-500/20 overflow-hidden shrink-0">
+              <img src="/assets/logos/beatwaveng_logo.png" alt="BeatwaveNG" className="w-full h-full object-contain" />
+            </div>
+            <div>
+              <h1 className="text-base font-black tracking-tight text-white flex items-center gap-1">
+                <span>Beatwave</span>
+                <span className="text-emerald-400 font-bold">NG</span>
+              </h1>
+              <p className="text-[9px] uppercase font-bold text-slate-300 font-medium tracking-wider">
+                Lossless Audio • Web3
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setShowTasteModal(true)}
+              className="min-h-[40px] px-2.5 py-1.5 rounded-xl bg-emerald-600/20 border border-emerald-500/40 text-emerald-300 font-bold text-xs flex items-center gap-1 transition"
+              title="Taste Profile"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+              <span className="hidden xs:inline">Taste</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setShowUploadModal(true)}
+              className="min-h-[40px] px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-md shadow-emerald-600/30 transition"
+              title="Upload Track"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span>Upload</span>
+            </button>
+          </div>
+        </div>
+
+        {/* HORIZONTALLY SCROLLABLE MOBILE CHANNEL TABS (md:hidden) */}
+        <div className="md:hidden">
+          <div className="flex items-center gap-2 overflow-x-auto scrollbar-none py-1 -mx-3 px-3">
+            {[
+              { id: 'listen-now', label: 'Listen Now', icon: Compass },
+              { id: 'browse', label: 'Browse', icon: Globe },
+              { id: 'radio', label: 'Radio', icon: Radio },
+              { id: 'artists', label: 'Artists', icon: Mic2 },
+              { id: 'songs', label: 'Songs', icon: Music },
+              { id: 'albums', label: 'Albums', icon: Disc },
+              { id: 'playlists', label: 'Playlists', icon: ListMusic },
+              { id: 'colabo', label: 'Colabo+', icon: Users },
+              { id: 'virdrive', label: 'VirDrive', icon: FolderGit2 },
+              { id: 'soundocean', label: 'SoundOcean', icon: Sparkles },
+              { id: 'soundriver', label: 'SoundRiver', icon: Waves },
+              { id: 'aggregator', label: '70+ Genres', icon: Flame },
+              { id: 'audionovels', label: 'AudioNovels', icon: BookOpen },
+              { id: 'podcasts', label: 'Podcasts', icon: Podcast },
+              { id: 'beatvlogs', label: 'BeatVlogs', icon: Video },
+              { id: 'discover', label: 'Discover', icon: Compass },
+              { id: 'library', label: 'Library', icon: FolderHeart },
+              { id: 'mysub', label: 'MySub', icon: Trophy },
+              { id: 'history', label: 'History', icon: Clock },
+            ].map(({ id, label, icon: Icon }) => (
+              <button
+                key={id}
+                onClick={() => setActiveTab(id as NavigationTab)}
+                className={`min-h-[44px] px-3.5 py-2 rounded-2xl text-xs font-bold shrink-0 flex items-center gap-2 transition-all ${
+                  activeTab === id
+                    ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30 scale-102'
+                    : 'bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-slate-700'
+                }`}
+              >
+                <Icon className={`w-3.5 h-3.5 ${activeTab === id ? 'text-white' : 'text-emerald-400'}`} />
+                <span>{label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
         {/* MII SOVEREIGN PROFILE & LIVE BROADCAST TOP WIDGET */}
         <MiiTopWidget onOpenDeviceSelector={() => setShowDeviceModal(true)} />
 
         {/* Top Header Bar */}
         <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-800">
-          <div className="flex items-center gap-3">
-            {/* Mobile Tab Selector */}
-            <div className="md:hidden">
-              <select
-                value={activeTab}
-                onChange={(e) => setActiveTab(e.target.value as NavigationTab)}
-                className="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs font-bold text-white focus:outline-none"
-              >
-                <option value="listen-now">🎵 Listen Now</option>
-                <option value="browse">🌐 Browse & Charts</option>
-                <option value="radio">📻 Live Radio</option>
-                <option value="colabo">👥 Colabo+ (Shared Playlists)</option>
-                <option value="virdrive">📁 VirDrive (3/7 Day Drives)</option>
-                <option value="audionovels">📖 AudioNovels (50 Cards)</option>
-                <option value="podcasts">🎙️ Podcasts (50 Cards)</option>
-                <option value="beatvlogs">📹 BeatVlogs (Shared Interest)</option>
-                <option value="soundriver">🌊 SoundRiver (Free Tier)</option>
-                <option value="soundocean">💎 SoundOcean (Lossless)</option>
-                <option value="aggregator">📡 70+ Genre Aggregator</option>
-                <option value="library">🎵 Structured Library</option>
-                <option value="mysub">👑 MySub (Crew Seats)</option>
-                <option value="history">🕒 Recently Played</option>
-              </select>
-            </div>
-
-            <div>
-              <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-                {activeTab === 'listen-now' && 'Listen Now'}
-                {activeTab === 'browse' && 'Browse & Top Charts'}
-                {activeTab === 'radio' && 'Live Radio Stations'}
-                {activeTab === 'colabo' && 'Colabo+ Shared Jam Rooms'}
-                {activeTab === 'virdrive' && 'VirDrive 3 & 7-Day Temporal Storage'}
-                {activeTab === 'audionovels' && 'AI-Assisted AudioNovels (50 Cards Max)'}
-                {activeTab === 'podcasts' && 'Independent Creator Podcasts (50 Cards Max)'}
-                {activeTab === 'beatvlogs' && 'BeatVlogs Shared Interest Streams'}
-                {activeTab === 'soundriver' && 'SoundRiver Creator Stream'}
-                {activeTab === 'soundocean' && 'SoundOcean Lossless Masters'}
-                {activeTab === 'aggregator' && 'Public Stream Aggregator (70+ Genres)'}
-                {activeTab === 'library' && 'Your Structured Music Library'}
-                {activeTab === 'mysub' && 'MySub Shared Family & Crew Plan'}
-                {activeTab === 'history' && 'Listening History & Amebo'}
-              </h2>
-              <p className="text-xs text-slate-300 font-medium mt-0.5">
-                Youth-driven, artist-first streaming protocol with lossless audio and creator sovereignty
-              </p>
-            </div>
+          <div>
+            <h2 className="text-xl sm:text-3xl font-black text-white tracking-tight">
+              {activeTab === 'listen-now' && 'Listen Now'}
+              {activeTab === 'browse' && 'Browse & Top Charts'}
+              {activeTab === 'radio' && 'Live Radio Stations'}
+              {activeTab === 'artists' && 'Artists Catalog'}
+              {activeTab === 'songs' && 'All Songs & Tracks'}
+              {activeTab === 'albums' && 'Albums & Discographies'}
+              {activeTab === 'playlists' && 'Your Sovereign Playlists'}
+              {activeTab === 'all-playlists' && 'All Community Playlists'}
+              {activeTab === 'discover' && 'Discover Members & Mutual Tastes'}
+              {activeTab === 'lapidaire' && 'Lapidaire Swipe Deck'}
+              {activeTab === 'colabo' && 'Colabo+ Shared Jam Rooms'}
+              {activeTab === 'virdrive' && 'VirDrive 3 & 7-Day Temporal Storage'}
+              {activeTab === 'audionovels' && 'AI-Assisted AudioNovels (50 Cards Max)'}
+              {activeTab === 'podcasts' && 'Independent Creator Podcasts (50 Cards Max)'}
+              {activeTab === 'beatvlogs' && 'BeatVlogs Shared Interest Streams'}
+              {activeTab === 'soundriver' && 'SoundRiver Creator Stream'}
+              {activeTab === 'soundocean' && 'SoundOcean Lossless Masters'}
+              {activeTab === 'aggregator' && 'Public Stream Aggregator (70+ Genres)'}
+              {activeTab === 'library' && 'Your Structured Music Library'}
+              {activeTab === 'mysub' && 'MySub Shared Family & Crew Plan'}
+              {activeTab === 'history' && 'Listening History & Amebo'}
+            </h2>
+            <p className="text-xs text-slate-300 font-medium mt-0.5">
+              Youth-driven, artist-first streaming protocol with lossless audio and creator sovereignty
+            </p>
           </div>
 
           {/* Right Badges & Quality Selector */}
-          <div className="flex items-center gap-3">
-            <div className="px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 flex items-center gap-2 text-xs font-mono">
-              <Headphones className="w-3.5 h-3.5 text-emerald-400" />
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+            <div className="min-h-[40px] px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 flex items-center gap-2 text-xs font-mono">
+              <Headphones className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
               <select
                 value={audioQuality}
                 onChange={(e) => setAudioQuality(e.target.value as any)}
@@ -630,14 +703,14 @@ const BeatwaveNGPage: React.FC = () => {
             <button
               type="button"
               onClick={() => setShowTasteModal(true)}
-              className="px-3 py-1.5 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/40 text-emerald-300 font-bold text-xs flex items-center gap-1.5 transition cursor-pointer"
-              title="Personalize your Favorite Music Genres & Artists (Optional)"
+              className="hidden sm:flex min-h-[40px] px-3 py-1.5 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/40 text-emerald-300 font-bold text-xs items-center gap-1.5 transition cursor-pointer"
+              title="Personalize your Favorite Music Genres & Artists"
             >
               <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
               <span>Taste Profile</span>
             </button>
 
-            <div className="px-3 py-1.5 rounded-xl bg-slate-900 border border-amber-500/30 text-xs font-mono font-bold text-amber-300">
+            <div className="min-h-[40px] px-3 py-1.5 rounded-xl bg-slate-900 border border-amber-500/30 text-xs font-mono font-bold text-amber-300 flex items-center">
               🪙 {(ficBalance ?? 0).toLocaleString()} FIC
             </div>
           </div>
@@ -1226,7 +1299,63 @@ const BeatwaveNGPage: React.FC = () => {
       {/* ======================================================== */}
       {/* FLOATING APPLE MUSIC BOTTOM PLAYER */}
       {/* ======================================================== */}
-      <BeatwaveNGPlayer />
+      <BeatwaveNGPlayer hasMobileDock={true} />
+
+      {/* ======================================================== */}
+      {/* FLOATING MOBILE MUSIC QUICK DOCK (md:hidden) */}
+      {/* ======================================================== */}
+      <nav
+        aria-label="Mobile Navigation Dock"
+        className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-950/95 backdrop-blur-xl border-t border-slate-800/80 shadow-2xl px-2 py-1.5 pb-[calc(env(safe-area-inset-bottom,0px)+0.375rem)] flex items-center justify-around"
+      >
+        <button
+          onClick={() => setActiveTab('listen-now')}
+          className={`flex flex-col items-center justify-center min-h-[44px] min-w-[56px] px-2 py-1 rounded-xl transition-all ${
+            activeTab === 'listen-now' ? 'text-emerald-400 font-black' : 'text-slate-400 hover:text-slate-200 font-medium'
+          }`}
+        >
+          <Compass className="w-5 h-5 mb-0.5" />
+          <span className="text-[10px] leading-tight">Listen</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('browse')}
+          className={`flex flex-col items-center justify-center min-h-[44px] min-w-[56px] px-2 py-1 rounded-xl transition-all ${
+            activeTab === 'browse' ? 'text-emerald-400 font-black' : 'text-slate-400 hover:text-slate-200 font-medium'
+          }`}
+        >
+          <Globe className="w-5 h-5 mb-0.5" />
+          <span className="text-[10px] leading-tight">Browse</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('radio')}
+          className={`flex flex-col items-center justify-center min-h-[44px] min-w-[56px] px-2 py-1 rounded-xl transition-all ${
+            activeTab === 'radio' ? 'text-emerald-400 font-black' : 'text-slate-400 hover:text-slate-200 font-medium'
+          }`}
+        >
+          <Radio className="w-5 h-5 mb-0.5" />
+          <span className="text-[10px] leading-tight">Radio</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('library')}
+          className={`flex flex-col items-center justify-center min-h-[44px] min-w-[56px] px-2 py-1 rounded-xl transition-all ${
+            activeTab === 'library' ? 'text-emerald-400 font-black' : 'text-slate-400 hover:text-slate-200 font-medium'
+          }`}
+        >
+          <FolderHeart className="w-5 h-5 mb-0.5" />
+          <span className="text-[10px] leading-tight">Library</span>
+        </button>
+
+        <button
+          onClick={() => setShowUploadModal(true)}
+          className="flex flex-col items-center justify-center min-h-[44px] min-w-[56px] px-2 py-1 rounded-xl text-emerald-400 hover:text-emerald-300 font-medium transition-all"
+        >
+          <Plus className="w-5 h-5 mb-0.5" />
+          <span className="text-[10px] leading-tight font-bold">Upload</span>
+        </button>
+      </nav>
 
       {/* ======================================================== */}
       {/* CREATOR MUSIC & PODCAST UPLOAD MODAL */}
