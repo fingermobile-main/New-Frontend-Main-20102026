@@ -43,6 +43,7 @@ import {
 } from '@heroicons/react/24/solid';
 import { FingerMobileEmojiPicker } from '../common/FingerMobileEmojiPicker';
 import { renderContentWithFingerMobileEmojis, replaceEmojisInHtml } from '../../utils/fingerMobileEmojiRenderer';
+import { sanitizeHtmlContent } from '../editor/RichTextEditor';
 import MediaEditorModal, { EditedMediaResult } from '../MediaEditorModal';
 import { formatTimeAgo } from '../../utils/time';
 

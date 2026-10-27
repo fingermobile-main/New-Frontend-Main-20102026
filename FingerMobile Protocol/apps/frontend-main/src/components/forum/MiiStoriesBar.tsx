@@ -23,8 +23,11 @@ import {
   ChevronRightIcon,
   ArrowPathIcon,
   PlayIcon,
-  PauseIcon
+  PauseIcon,
+  MicrophoneIcon,
+  TrashIcon
 } from '@heroicons/react/24/outline';
+import MediaEditorModal, { EditedMediaResult } from '../MediaEditorModal';
 
 export interface MiiItem {
   id: string;
@@ -36,6 +39,16 @@ export interface MiiItem {
   caption: string;
   isViewed: boolean;
   type: 'photo' | 'audio' | 'video';
+}
+
+export interface MiiAttachedMedia {
+  id: string;
+  url: string;
+  adjustedUrl?: string;
+  type: 'photo' | 'audio' | 'video';
+  name: string;
+  filter?: string;
+  crop?: string;
 }
 
 export const DEFAULT_MII_STORIES: MiiItem[] = [
@@ -122,15 +135,22 @@ export const MiiStoriesBar: React.FC<MiiStoriesBarProps> = ({
 
   const [selectedMiiIndex, setSelectedMiiIndex] = useState<number | null>(null);
   const [isMiiCreatorOpen, setIsMiiCreatorOpen] = useState(false);
-  const [miiType, setMiiType] = useState<'photo' | 'audio' | 'video'>('photo');
   const [miiCaption, setMiiCaption] = useState('');
-  const [miiMediaUrl, setMiiMediaUrl] = useState('');
   const [isP2PAutoShuffling, setIsP2PAutoShuffling] = useState(true);
   const [p2pCycleTimer, setP2pCycleTimer] = useState(10);
   const [viewerIsPaused, setViewerIsPaused] = useState(false);
   const [storyProgress, setStoryProgress] = useState(0);
 
+  // Multi-Media & Voice Note Attachments
+  const [miiMediaList, setMiiMediaList] = useState<MiiAttachedMedia[]>([]);
+  const [editingMediaItem, setEditingMediaItem] = useState<MiiAttachedMedia | null>(null);
+  const [isRecordingVoice, setIsRecordingVoice] = useState(false);
+  const [voiceRecordSeconds, setVoiceRecordSeconds] = useState(0);
+
   const miiFileInputRef = useRef<HTMLInputElement>(null);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
+  const voiceTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // 10-Second P2P Random UGC Shuffling Engine:
   // Randomly cycles through members' uploaded media, giving fresh UGC immediate precedence
@@ -218,51 +238,156 @@ export const MiiStoriesBar: React.FC<MiiStoriesBarProps> = ({
     setStoryProgress(0);
   };
 
-  const handlePublishMii = () => {
-    const media = miiMediaUrl.trim() || currentUserAvatar || 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800';
-    const safeName = currentUserName || 'User';
-    const newMii: MiiItem = {
-      id: `mii-${Date.now()}`,
-      author: safeName.split(' ')[0] || 'You',
-      handle: `@${safeName.toLowerCase().replace(/\s+/g, '')}`,
-      avatar: currentUserAvatar,
-      mediaUrl: media,
-      expiresIn: '48h left',
-      caption: miiCaption.trim() || 'Ephemeral sovereign moment ✨',
-      isViewed: false,
-      type: miiType
-    };
+  // Handle Multiple File Selection (Images, Videos, Audio / Voice Notes)
+  const handleMultipleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
 
-    // P2P Algorithm takes control and gives new member UGC immediate precedence at front!
-    const updated = [newMii, ...miiStories];
-    setMiiStories(updated);
-    try {
-      localStorage.setItem('fmp_mii_stories', JSON.stringify(updated));
-    } catch {
-      // ignore
-    }
-    setIsMiiCreatorOpen(false);
-    setMiiCaption('');
-    setMiiMediaUrl('');
-    triggerToast?.('Mii published and prioritized across P2P swarm!', 'success');
-  };
-
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
+    Array.from(files).forEach((file) => {
       const isVid = file.type.startsWith('video');
       const isAud = file.type.startsWith('audio');
-      if (isVid) setMiiType('video');
-      else if (isAud) setMiiType('audio');
-      else setMiiType('photo');
+      const type: 'photo' | 'audio' | 'video' = isVid ? 'video' : isAud ? 'audio' : 'photo';
 
       const reader = new FileReader();
       reader.onload = (ev) => {
         if (ev.target?.result) {
-          setMiiMediaUrl(ev.target.result as string);
+          const newItem: MiiAttachedMedia = {
+            id: `mii-upload-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+            url: ev.target.result as string,
+            type,
+            name: file.name,
+          };
+          setMiiMediaList((prev) => [...prev, newItem]);
         }
       };
       reader.readAsDataURL(file);
+    });
+
+    e.target.value = '';
+    triggerToast?.(`Added media to Mii queue. You can crop & edit before publishing!`, 'info');
+  };
+
+  // Live Voice Note Recording
+  const startVoiceRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mediaRecorder = new MediaRecorder(stream);
+      mediaRecorderRef.current = mediaRecorder;
+      audioChunksRef.current = [];
+
+      mediaRecorder.ondataavailable = (ev) => {
+        if (ev.data.size > 0) {
+          audioChunksRef.current.push(ev.data);
+        }
+      };
+
+      mediaRecorder.onstop = () => {
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          if (ev.target?.result) {
+            const voiceItem: MiiAttachedMedia = {
+              id: `mii-voice-${Date.now()}`,
+              url: ev.target.result as string,
+              type: 'audio',
+              name: `Voice Note (${voiceRecordSeconds}s)`,
+            };
+            setMiiMediaList((prev) => [...prev, voiceItem]);
+          }
+        };
+        reader.readAsDataURL(audioBlob);
+
+        stream.getTracks().forEach((track) => track.stop());
+        setIsRecordingVoice(false);
+        setVoiceRecordSeconds(0);
+        if (voiceTimerRef.current) clearInterval(voiceTimerRef.current);
+        triggerToast?.('Voice note recorded & attached!', 'success');
+      };
+
+      mediaRecorder.start();
+      setIsRecordingVoice(true);
+      setVoiceRecordSeconds(0);
+      if (voiceTimerRef.current) clearInterval(voiceTimerRef.current);
+      voiceTimerRef.current = setInterval(() => {
+        setVoiceRecordSeconds((s) => s + 1);
+      }, 1000);
+    } catch {
+      triggerToast?.('Microphone access denied or unavailable', 'error');
+    }
+  };
+
+  const stopVoiceRecording = () => {
+    if (mediaRecorderRef.current && isRecordingVoice) {
+      mediaRecorderRef.current.stop();
+    }
+  };
+
+  // Save Crop & Filter Edits from MediaEditorModal
+  const handleSaveEditedMedia = (result: EditedMediaResult) => {
+    if (!editingMediaItem) return;
+    setMiiMediaList((prev) =>
+      prev.map((item) =>
+        item.id === editingMediaItem.id
+          ? {
+              ...item,
+              adjustedUrl: result.url,
+              filter: result.filter,
+              crop: result.crop,
+            }
+          : item
+      )
+    );
+    setEditingMediaItem(null);
+    triggerToast?.('Crop & filter adjustments applied to moment!', 'success');
+  };
+
+  const handlePublishMii = () => {
+    const safeName = currentUserName || 'User';
+
+    // If media was attached, create an ephemeral story for each attached media item
+    if (miiMediaList.length > 0) {
+      const newStories: MiiItem[] = miiMediaList.map((item, idx) => ({
+        id: `mii-${Date.now()}-${idx}`,
+        author: safeName.split(' ')[0] || 'You',
+        handle: `@${safeName.toLowerCase().replace(/\s+/g, '')}`,
+        avatar: currentUserAvatar || '/assets/branding/default-avatar.svg',
+        mediaUrl: item.adjustedUrl || item.url,
+        expiresIn: '48h left',
+        caption: miiCaption.trim() || item.name || 'Ephemeral sovereign moment ✨',
+        isViewed: false,
+        type: item.type,
+      }));
+
+      const updated = [...newStories, ...miiStories];
+      setMiiStories(updated);
+      try {
+        localStorage.setItem('fmp_mii_stories', JSON.stringify(updated));
+      } catch {}
+      setIsMiiCreatorOpen(false);
+      setMiiCaption('');
+      setMiiMediaList([]);
+      triggerToast?.(`${newStories.length} Mii moment${newStories.length > 1 ? 's' : ''} published to the P2P swarm!`, 'success');
+    } else {
+      // Fallback text/avatar story
+      const newMii: MiiItem = {
+        id: `mii-${Date.now()}`,
+        author: safeName.split(' ')[0] || 'You',
+        handle: `@${safeName.toLowerCase().replace(/\s+/g, '')}`,
+        avatar: currentUserAvatar || '/assets/branding/default-avatar.svg',
+        mediaUrl: currentUserAvatar || 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800',
+        expiresIn: '48h left',
+        caption: miiCaption.trim() || 'Ephemeral sovereign moment ✨',
+        isViewed: false,
+        type: 'photo',
+      };
+      const updated = [newMii, ...miiStories];
+      setMiiStories(updated);
+      try {
+        localStorage.setItem('fmp_mii_stories', JSON.stringify(updated));
+      } catch {}
+      setIsMiiCreatorOpen(false);
+      setMiiCaption('');
+      triggerToast?.('Mii published and prioritized across P2P swarm!', 'success');
     }
   };
 
@@ -519,74 +644,229 @@ export const MiiStoriesBar: React.FC<MiiStoriesBarProps> = ({
         </div>
       )}
 
-      {/* 3. Mii Creator Modal */}
+      {/* 3. Mii Creator Modal with Multi-Media, Voice Note & Pre-Upload Crop/Editing */}
       {isMiiCreatorOpen && (
         <div
-          className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in"
-          onClick={() => setIsMiiCreatorOpen(false)}
+          className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-2 sm:p-4 animate-in fade-in"
+          onClick={() => {
+            if (isRecordingVoice) stopVoiceRecording();
+            setIsMiiCreatorOpen(false);
+          }}
         >
           <div
-            className="max-w-md w-full bg-white rounded-3xl border border-slate-300 p-5 shadow-2xl space-y-4"
+            className="max-w-lg w-full bg-white dark:bg-slate-900 rounded-3xl border border-slate-300 dark:border-slate-800 p-4 sm:p-5 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between pb-3 border-b border-slate-200">
+            {/* Header */}
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
               <div className="flex items-center gap-2">
                 <SparklesIcon className="w-5 h-5 text-amber-500" />
-                <h3 className="text-sm font-bold text-slate-900">Publish Mii™®©℠ Moment</h3>
+                <h3 className="text-sm font-black text-slate-900 dark:text-white">Publish 48H Mii™®©℠ Moment</h3>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-orange-100 text-orange-950 border border-orange-400 font-black">
+                  48H TTL
+                </span>
               </div>
-              <button aria-label="Close"
+              <button
+                aria-label="Close"
                 type="button"
-                onClick={() => setIsMiiCreatorOpen(false)}
-                className="text-slate-500 hover:text-slate-800"
+                onClick={() => {
+                  if (isRecordingVoice) stopVoiceRecording();
+                  setIsMiiCreatorOpen(false);
+                }}
+                className="text-slate-500 hover:text-slate-800 dark:hover:text-white font-bold p-1 rounded-lg"
               >
                 <XMarkIcon className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="space-y-3">
-              {/* Type selector */}
-              <div className="grid grid-cols-3 gap-2">
-                {(['photo', 'audio', 'video'] as const).map((t) => (
-                  <button
-                    key={t}
-                    type="button"
-                    onClick={() => setMiiType(t)}
-                    className={`py-2 px-3 rounded-xl text-xs font-bold capitalize flex items-center justify-center gap-1.5 transition ${
-                      miiType === t
-                        ? 'bg-orange-600 text-white shadow-xs'
-                        : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                    }`}
-                  >
-                    {t === 'photo' ? <CameraIcon className="w-4 h-4" /> : t === 'audio' ? <MusicalNoteIcon className="w-4 h-4" /> : <VideoCameraIcon className="w-4 h-4" />}
-                    <span>{t}</span>
-                  </button>
-                ))}
+            <div className="space-y-3.5">
+              {/* Multi-Format Action Selectors */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                {/* 1. Multiple Media Upload (Photos & Videos) */}
+                <button
+                  type="button"
+                  onClick={() => miiFileInputRef.current?.click()}
+                  className="py-2.5 px-3 rounded-xl bg-orange-50 hover:bg-orange-100 text-orange-950 border border-orange-300 text-xs font-bold flex items-center justify-center gap-1.5 transition shadow-2xs cursor-pointer min-h-[44px]"
+                >
+                  <CameraIcon className="w-4 h-4 text-orange-600" />
+                  <span>Add Photos/Videos</span>
+                </button>
+
+                {/* 2. Live Voice Note Recorder */}
+                <button
+                  type="button"
+                  onClick={isRecordingVoice ? stopVoiceRecording : startVoiceRecording}
+                  className={`py-2.5 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition shadow-2xs cursor-pointer min-h-[44px] ${
+                    isRecordingVoice
+                      ? 'bg-rose-600 text-white animate-pulse'
+                      : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-950 border border-emerald-300'
+                  }`}
+                >
+                  <MicrophoneIcon className={`w-4 h-4 ${isRecordingVoice ? 'text-white' : 'text-emerald-700'}`} />
+                  <span>{isRecordingVoice ? `Stop (${voiceRecordSeconds}s)` : 'Record Voice Note'}</span>
+                </button>
+
+                {/* 3. Audio / Stems Picker */}
+                <button
+                  type="button"
+                  onClick={() => miiFileInputRef.current?.click()}
+                  className="col-span-2 sm:col-span-1 py-2.5 px-3 rounded-xl bg-sky-50 hover:bg-sky-100 text-sky-950 border border-sky-300 text-xs font-bold flex items-center justify-center gap-1.5 transition shadow-2xs cursor-pointer min-h-[44px]"
+                >
+                  <MusicalNoteIcon className="w-4 h-4 text-sky-600" />
+                  <span>Audio & Stems</span>
+                </button>
               </div>
 
-              {/* Upload trigger */}
+              {/* Hidden multi-file input */}
               <input
                 ref={miiFileInputRef}
                 type="file"
-                accept={miiType === 'video' ? 'video/*' : miiType === 'audio' ? 'audio/*' : 'image/*'}
-                onChange={handleFileUpload}
-                className="hidden text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
+                multiple
+                accept="image/*,video/*,audio/*"
+                onChange={handleMultipleFileUpload}
+                className="hidden"
               />
 
-              <div
-                onClick={() => miiFileInputRef.current?.click()}
-                className="p-6 border-2 border-dashed border-slate-300 hover:border-orange-500 rounded-2xl bg-slate-50 text-center cursor-pointer space-y-1 transition"
-              >
-                <PlusIcon className="w-8 h-8 text-orange-500 mx-auto" />
-                <p className="text-xs font-bold text-slate-800">Choose File or Photo</p>
-                <p className="text-[10px] text-slate-700 font-medium">Auto-expires in 48 Hours</p>
-              </div>
+              {/* Live Voice Recording Status Banner */}
+              {isRecordingVoice && (
+                <div className="p-3 bg-rose-50 border border-rose-300 rounded-2xl flex items-center justify-between text-xs animate-pulse">
+                  <div className="flex items-center gap-2 text-rose-950 font-bold">
+                    <span className="w-2.5 h-2.5 rounded-full bg-rose-600 animate-ping" />
+                    <span>Recording Voice Note: 00:{voiceRecordSeconds < 10 ? `0${voiceRecordSeconds}` : voiceRecordSeconds}s</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={stopVoiceRecording}
+                    className="px-3 py-1 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-lg text-xs"
+                  >
+                    Done & Attach
+                  </button>
+                </div>
+              )}
 
-              {miiMediaUrl && (
-                <div className="relative rounded-xl overflow-hidden max-h-36 bg-slate-950 flex items-center justify-center">
-                  <img src={miiMediaUrl} alt="Preview" className="max-h-36 w-full object-cover" />
-                  <span className="absolute bottom-1 right-1 bg-black/70 text-white text-[9px] font-mono px-1.5 py-0.5 rounded">
-                    Media Attached
-                  </span>
+              {/* Drag/Click Dropzone when no media attached yet */}
+              {miiMediaList.length === 0 && !isRecordingVoice && (
+                <div
+                  onClick={() => miiFileInputRef.current?.click()}
+                  className="p-6 border-2 border-dashed border-slate-300 hover:border-orange-500 rounded-2xl bg-slate-50 dark:bg-slate-800/50 text-center cursor-pointer space-y-1.5 transition"
+                >
+                  <PlusIcon className="w-8 h-8 text-orange-500 mx-auto" />
+                  <p className="text-xs font-bold text-slate-800 dark:text-slate-200">
+                    Select Multiple Images, Videos or Voice Notes
+                  </p>
+                  <p className="text-[10px] text-slate-700 dark:text-slate-300 font-medium">
+                    Batch upload enabled • Crop & edit each asset before sharing
+                  </p>
+                </div>
+              )}
+
+              {/* Attached Media Cards Carousel (Crop, Filter & Manage Before Upload) */}
+              {miiMediaList.length > 0 && (
+                <div className="p-3 bg-slate-900 rounded-2xl border border-slate-800 space-y-2.5">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="font-bold text-white flex items-center gap-1.5">
+                      <SparklesIcon className="w-4 h-4 text-amber-400" />
+                      Attached Moments ({miiMediaList.length})
+                    </span>
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => miiFileInputRef.current?.click()}
+                        className="px-2.5 py-1 bg-orange-600 hover:bg-orange-500 text-white font-bold rounded-lg text-[11px] flex items-center gap-1 transition shadow-xs cursor-pointer"
+                      >
+                        <PlusIcon className="w-3.5 h-3.5" />
+                        <span>Add More</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setMiiMediaList([])}
+                        className="text-slate-400 hover:text-rose-400 text-[11px] font-semibold transition cursor-pointer"
+                      >
+                        Clear All
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Horizontal Scrollable Media Cards */}
+                  <div className="flex items-center gap-2.5 overflow-x-auto pb-1 scrollbar-none">
+                    {miiMediaList.map((item, idx) => (
+                      <div
+                        key={item.id}
+                        className="relative flex-shrink-0 w-28 h-32 rounded-xl overflow-hidden border border-slate-700 bg-slate-950 flex flex-col justify-between p-1.5 shadow-md"
+                      >
+                        {/* Media Visual Preview */}
+                        {item.type === 'video' ? (
+                          <div className="absolute inset-0 bg-black flex items-center justify-center">
+                            <video
+                              src={item.adjustedUrl || item.url}
+                              className="w-full h-full object-cover"
+                              muted
+                              playsInline
+                            />
+                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                              <VideoCameraIcon className="w-6 h-6 text-white drop-shadow" />
+                            </div>
+                          </div>
+                        ) : item.type === 'audio' ? (
+                          <div className="absolute inset-0 bg-gradient-to-tr from-amber-600 via-orange-600 to-rose-700 flex flex-col items-center justify-center p-2 text-white text-center">
+                            <MusicalNoteIcon className="w-6 h-6 animate-pulse mb-1" />
+                            <span className="text-[9px] font-bold truncate max-w-full px-1">{item.name}</span>
+                          </div>
+                        ) : (
+                          <img
+                            src={item.adjustedUrl || item.url}
+                            alt={item.name}
+                            className="absolute inset-0 w-full h-full object-cover"
+                          />
+                        )}
+
+                        {/* Top Badges & Remove Button */}
+                        <div className="relative z-10 flex items-center justify-between w-full">
+                          <span className="px-1.5 py-0.5 rounded bg-black/75 text-[9px] font-mono font-bold text-white backdrop-blur-xs">
+                            #{idx + 1}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setMiiMediaList((prev) => prev.filter((m) => m.id !== item.id));
+                            }}
+                            className="w-5 h-5 rounded-full bg-rose-600 hover:bg-rose-700 text-white flex items-center justify-center text-xs font-bold transition shadow cursor-pointer"
+                            title="Remove item"
+                          >
+                            ✕
+                          </button>
+                        </div>
+
+                        {/* Filter/Crop tag status */}
+                        {(item.filter || item.crop) && (
+                          <div className="relative z-10">
+                            <span className="px-1.5 py-0.5 rounded bg-emerald-950/80 border border-emerald-600 text-emerald-300 text-[9px] font-bold truncate block backdrop-blur-xs">
+                              ✨ {item.filter || item.crop}
+                            </span>
+                          </div>
+                        )}
+
+                        {/* Bottom Edit Action (Crop & Filters) for images & videos */}
+                        <div className="relative z-10 w-full">
+                          {item.type !== 'audio' ? (
+                            <button
+                              type="button"
+                              onClick={() => setEditingMediaItem(item)}
+                              className="w-full py-1 rounded-lg bg-orange-600 hover:bg-orange-500 text-white text-[10px] font-bold flex items-center justify-center gap-1 backdrop-blur-xs transition shadow-xs cursor-pointer"
+                              title="Crop, rotate, filter & grade"
+                            >
+                              <SparklesIcon className="w-3 h-3 text-amber-300" />
+                              <span>Crop & Edit</span>
+                            </button>
+                          ) : (
+                            <div className="text-center py-0.5 bg-black/50 rounded text-[9px] text-slate-200 font-mono">
+                              Voice Note
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
 
@@ -594,35 +874,51 @@ export const MiiStoriesBar: React.FC<MiiStoriesBarProps> = ({
               <textarea
                 value={miiCaption}
                 onChange={(e) => setMiiCaption(e.target.value)}
-                placeholder="Write an ephemeral caption..."
+                placeholder="Write an ephemeral caption or context for your Mii moment(s)..."
                 rows={2}
-                className="w-full p-3 rounded-xl border border-slate-300 bg-white text-slate-900 font-medium text-xs focus:ring-2 focus:ring-orange-500 focus:outline-none resize-none font-bold placeholder:text-slate-400"
+                className="w-full p-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-medium text-xs focus:ring-2 focus:ring-orange-500 focus:outline-none resize-none placeholder:text-slate-400"
               />
             </div>
 
-            <div className="flex items-center justify-between pt-3 border-t border-slate-200">
-              <span className="text-[10px] font-bold text-slate-700 uppercase tracking-wider">
-                TTL: 48 Hours
+            {/* Modal Footer */}
+            <div className="flex items-center justify-between pt-3 border-t border-slate-200 dark:border-slate-800">
+              <span className="text-[10px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                TTL: 48 Hours Disappearing
               </span>
               <div className="flex items-center gap-2">
                 <button
                   type="button"
-                  onClick={() => setIsMiiCreatorOpen(false)}
-                  className="px-4 py-2 text-xs font-bold text-slate-700 hover:bg-slate-100 rounded-xl"
+                  onClick={() => {
+                    if (isRecordingVoice) stopVoiceRecording();
+                    setIsMiiCreatorOpen(false);
+                  }}
+                  className="px-4 py-2 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
                   onClick={handlePublishMii}
-                  className="px-5 py-2 bg-orange-600 hover:bg-orange-700 text-white text-xs font-bold rounded-xl shadow-md transition"
+                  className="px-5 py-2.5 bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white text-xs font-bold rounded-xl shadow-md transition cursor-pointer"
                 >
-                  Publish Mii
+                  {miiMediaList.length > 1 ? `Publish ${miiMediaList.length} Moments` : 'Publish Mii'}
                 </button>
               </div>
             </div>
           </div>
         </div>
+      )}
+
+      {/* 4. Creative Media Editor Modal (Crop, Rotate, Filters & Adjustments before publishing) */}
+      {editingMediaItem && (
+        <MediaEditorModal
+          isOpen={Boolean(editingMediaItem)}
+          onClose={() => setEditingMediaItem(null)}
+          mediaUrl={editingMediaItem.adjustedUrl || editingMediaItem.url}
+          mediaType={editingMediaItem.type === 'video' ? 'video' : 'image'}
+          mediaName={editingMediaItem.name}
+          onSave={handleSaveEditedMedia}
+        />
       )}
     </>
   );
