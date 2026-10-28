@@ -1,5 +1,6 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
+import { ArrowLeft, MessageSquare, ThumbsUp, Share2 } from 'lucide-react';
 
 import { useAppContext } from '../contexts/AppContext';
 import PostCard from '../components/PostCard';
@@ -9,6 +10,7 @@ import { apiService } from '../services/apiService';
 import { logError } from '../utils/errorLogger';
 
 const PostDetailPage: React.FC = () => {
+  const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const {
     member,
@@ -34,7 +36,7 @@ const PostDetailPage: React.FC = () => {
       try {
         setLoading(true);
         const response = await apiService.get<any>(`/api/posts/${id}`);
-        const rawPost = response.data?.data || response.data?.post || response.data;
+        const rawPost = response?.data?.data || response?.data?.post || response?.data || response?.post || response;
 
         if (rawPost && (rawPost.id || rawPost.title || rawPost.content)) {
           const mappedPost: Post = {
@@ -215,14 +217,15 @@ const PostDetailPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-slate-50 py-6 sm:py-8 px-3 sm:px-6 lg:px-8 w-full max-w-full overflow-x-hidden pb-28 md:pb-12 text-slate-900">
       <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto space-y-6">
         <div className="flex items-center justify-between">
           <button
-            onClick={() => window.history.back()}
-            className="inline-flex items-center gap-2 text-sm font-bold text-slate-800 hover:text-indigo-600 transition-colors"
+            onClick={() => navigate(-1)}
+            className="min-h-[44px] inline-flex items-center gap-2 px-3.5 py-2 text-sm font-bold text-slate-800 hover:text-indigo-600 transition-colors bg-white border border-slate-300 rounded-xl shadow-xs cursor-pointer"
           >
-            <span>&larr;</span> Back to Feed
+            <ArrowLeft className="w-4 h-4 text-slate-700" />
+            <span>Back to Feed</span>
           </button>
         </div>
 
@@ -233,7 +236,7 @@ const PostDetailPage: React.FC = () => {
           />
 
           {/* Comment Section */}
-          <div className="p-6 border-t border-slate-300">
+          <div className="p-4 sm:p-6 border-t border-slate-300">
             <CommentSection
               comments={comments}
               newComment={newComment}
@@ -246,6 +249,54 @@ const PostDetailPage: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <nav
+        aria-label="Post Detail Mobile Navigation"
+        className="md:hidden fixed bottom-4 inset-x-3 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl p-2 z-40 shadow-2xl flex items-center justify-around gap-1"
+      >
+        <button
+          type="button"
+          onClick={() => navigate(-1)}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-slate-300 hover:text-white transition-colors cursor-pointer"
+        >
+          <ArrowLeft className="w-5 h-5 mb-0.5" />
+          <span>Back</span>
+        </button>
+        <button
+          type="button"
+          onClick={handleLike}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-emerald-400 hover:text-emerald-300 transition-colors cursor-pointer"
+        >
+          <ThumbsUp className="w-5 h-5 mb-0.5" />
+          <span>Like</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            const commentInput = document.querySelector('textarea, input[placeholder*="comment"]') as HTMLElement | null;
+            if (commentInput) commentInput.focus();
+          }}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-indigo-400 hover:text-indigo-300 transition-colors cursor-pointer"
+        >
+          <MessageSquare className="w-5 h-5 mb-0.5" />
+          <span>Reply</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            if (navigator.share) {
+              navigator.share({ title: post.title, url: window.location.href }).catch(() => {});
+            } else {
+              showToast('Post URL copied to clipboard', 'info');
+            }
+          }}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-amber-400 hover:text-amber-300 transition-colors cursor-pointer"
+        >
+          <Share2 className="w-5 h-5 mb-0.5" />
+          <span>Share</span>
+        </button>
+      </nav>
     </div>
   );
 };

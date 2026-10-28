@@ -219,7 +219,7 @@ const HomePage: React.FC = () => {
   };
 
   return (
-    <div className="relative min-h-screen w-full bg-zinc-950 text-white font-sans overflow-x-hidden selection:bg-emerald-500 selection:text-black">
+    <div className="relative min-h-screen w-full bg-zinc-950 text-white font-sans overflow-x-hidden selection:bg-emerald-500 selection:text-black pb-28 md:pb-0">
       {/* Background Graphic Layer */}
       <div
         className="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat pointer-events-none transform scale-105"
@@ -279,7 +279,7 @@ const HomePage: React.FC = () => {
                   {isOnboarded ? (
                     <Link
                       to="/forum"
-                      className="px-2.5 sm:px-4 py-2 min-h-[40px] text-xs font-bold text-white bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 rounded-xl shadow-md shadow-orange-500/20 transition-all flex items-center gap-1.5 whitespace-nowrap"
+                      className="px-2.5 sm:px-4 py-2 min-h-[44px] text-xs font-bold text-white bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 rounded-xl shadow-md shadow-orange-500/20 transition-all flex items-center gap-1.5 whitespace-nowrap"
                     >
                       <span className="hidden sm:inline">Enter Forum</span>
                       <span className="sm:hidden">Forum</span>
@@ -288,7 +288,7 @@ const HomePage: React.FC = () => {
                   ) : (
                     <Link
                       to="/onboarding"
-                      className="px-2.5 sm:px-4 py-2 min-h-[40px] text-xs font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 rounded-xl shadow-md shadow-emerald-500/20 transition-all flex items-center gap-1.5 animate-pulse whitespace-nowrap"
+                      className="px-2.5 sm:px-4 py-2 min-h-[44px] text-xs font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 rounded-xl shadow-md shadow-emerald-500/20 transition-all flex items-center gap-1.5 animate-pulse whitespace-nowrap"
                     >
                       <span className="hidden sm:inline">Complete Onboarding</span>
                       <span className="sm:hidden">Onboard</span>
@@ -300,7 +300,7 @@ const HomePage: React.FC = () => {
                   <button
                     type="button"
                     onClick={handleLogout}
-                    className="px-2.5 sm:px-4 py-2 min-h-[40px] text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 active:bg-rose-800 border border-rose-500 rounded-xl transition-all flex items-center gap-1.5 shadow-md shadow-rose-600/30 cursor-pointer whitespace-nowrap"
+                    className="px-2.5 sm:px-4 py-2 min-h-[44px] text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 active:bg-rose-800 border border-rose-500 rounded-xl transition-all flex items-center gap-1.5 shadow-md shadow-rose-600/30 cursor-pointer whitespace-nowrap"
                     aria-label="Log Out"
                     title="Log Out of FingerMobile Protocol"
                   >
@@ -312,13 +312,13 @@ const HomePage: React.FC = () => {
                 <>
                   <Link
                     to="/login"
-                    className="px-3 sm:px-4 py-2 min-h-[40px] text-xs font-bold text-white hover:text-[#ff6b00] transition-colors border border-white/20 hover:border-white/40 rounded-xl bg-white/10 backdrop-blur shadow-sm whitespace-nowrap flex items-center"
+                    className="px-3 sm:px-4 py-2 min-h-[44px] text-xs font-bold text-white hover:text-[#ff6b00] transition-colors border border-white/20 hover:border-white/40 rounded-xl bg-white/10 backdrop-blur shadow-sm whitespace-nowrap flex items-center"
                   >
                     Sign In
                   </Link>
                   <Link
                     to="/register"
-                    className="px-3 sm:px-4 py-2 min-h-[40px] text-xs font-bold text-black bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 rounded-xl shadow-lg shadow-emerald-500/25 transition-all transform hover:-translate-y-0.5 whitespace-nowrap flex items-center"
+                    className="px-3 sm:px-4 py-2 min-h-[44px] text-xs font-bold text-black bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 rounded-xl shadow-lg shadow-emerald-500/25 transition-all transform hover:-translate-y-0.5 whitespace-nowrap flex items-center"
                   >
                     Get Started
                   </Link>
@@ -671,6 +671,41 @@ const HomePage: React.FC = () => {
             </div>
           </div>
         </footer>
+
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <nav
+          aria-label="Home Mobile Navigation"
+          className="md:hidden fixed bottom-4 inset-x-3 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl p-2 z-40 shadow-2xl flex items-center justify-around gap-1"
+        >
+          <Link
+            to="/forum"
+            className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-emerald-400 hover:text-emerald-300 transition-colors"
+          >
+            <MessageSquare className="w-5 h-5 mb-0.5" />
+            <span>Forum</span>
+          </Link>
+          <Link
+            to="/hallmarks"
+            className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-amber-400 hover:text-amber-300 transition-colors"
+          >
+            <Award className="w-5 h-5 mb-0.5" />
+            <span>HallMarks</span>
+          </Link>
+          <Link
+            to="/lushpressies"
+            className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-pink-400 hover:text-pink-300 transition-colors"
+          >
+            <Gift className="w-5 h-5 mb-0.5" />
+            <span>Pressies</span>
+          </Link>
+          <Link
+            to="/commerce"
+            className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-orange-400 hover:text-orange-300 transition-colors"
+          >
+            <ShoppingBag className="w-5 h-5 mb-0.5" />
+            <span>Commerce</span>
+          </Link>
+        </nav>
       </div>
     </div>
   );

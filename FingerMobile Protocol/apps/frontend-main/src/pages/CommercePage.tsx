@@ -257,22 +257,22 @@ const CommercePage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 py-6 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-slate-50 py-6 px-3 sm:px-6 lg:px-8 w-full max-w-full overflow-x-hidden pb-28 md:pb-12 text-slate-900">
       {/* Top Header */}
-      <div className="max-w-7xl mx-auto mb-8">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-300">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto mb-8">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-white p-5 sm:p-6 rounded-2xl shadow-sm border border-slate-300">
           <div className="flex items-center space-x-4">
             <div className="p-3 bg-blue-50 border border-blue-200 rounded-xl">
               <ShoppingCart className="h-8 w-8 text-blue-600" />
             </div>
             <div>
-              <h1 className="text-2xl font-black text-slate-900 tracking-tight">E-Commerce Management Console</h1>
-              <p className="text-sm font-medium text-slate-700">
+              <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">E-Commerce Management Console</h1>
+              <p className="text-xs sm:text-sm font-medium text-slate-700">
                 Sovereign PostgreSQL Inventory, Storefront Rails & Catalog Micromanagement
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             <button
               type="button"
               aria-label="Refresh e-commerce catalog"
@@ -281,20 +281,20 @@ const CommercePage: React.FC = () => {
                 fetchData();
                 showToast('Catalog refreshed from PostgreSQL', 'info');
               }}
-              className="px-4 py-2 border border-slate-300 bg-white hover:bg-slate-50 text-slate-900 font-bold rounded-xl shadow-xs transition-colors flex items-center gap-2"
+              className="min-h-[44px] px-4 py-2 border border-slate-300 bg-white hover:bg-slate-50 text-slate-900 font-bold rounded-xl shadow-xs transition-colors flex items-center gap-2 cursor-pointer"
             >
               <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
-              Sync DB
+              <span>Sync DB</span>
             </button>
             <button
               type="button"
               aria-label="Add new product to catalog"
               title="Add New Product"
               onClick={handleOpenAdd}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-sm transition flex items-center gap-2"
+              className="min-h-[44px] bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-sm transition flex items-center gap-2 cursor-pointer"
             >
               <Plus className="h-4 w-4" />
-              Add Product
+              <span>Add Product</span>
             </button>
           </div>
         </div>
@@ -387,7 +387,7 @@ const CommercePage: React.FC = () => {
             </div>
             <div className="flex items-center gap-3">
               <div className="relative">
-                <Search className="absolute left-3.5 top-3 h-4 w-4 text-slate-500" />
+                <Search className="absolute left-3.5 top-3.5 h-4 w-4 text-slate-500" />
                 <input
                   type="text"
                   aria-label="Search products"
@@ -397,7 +397,7 @@ const CommercePage: React.FC = () => {
                     setSearchTerm(e.target.value);
                     setCurrentPage(1);
                   }}
-                  className="pl-10 pr-4 py-2 border border-slate-300 rounded-xl text-slate-900 font-bold bg-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                  className="min-h-[44px] pl-10 pr-4 py-2 border border-slate-300 rounded-xl text-slate-900 font-bold bg-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm shadow-xs"
                 />
               </div>
               <button
@@ -405,7 +405,7 @@ const CommercePage: React.FC = () => {
                 aria-label="Toggle filter options"
                 title="Filter Catalog"
                 onClick={() => setShowFilterDrawer(prev => !prev)}
-                className={`p-2.5 rounded-xl border transition-colors ${
+                className={`min-h-[44px] min-w-[44px] p-2.5 rounded-xl border transition-colors flex items-center justify-center cursor-pointer ${
                   showFilterDrawer || selectedCategory !== 'all' || selectedStatus !== 'all'
                     ? 'bg-blue-50 border-blue-400 text-blue-700'
                     : 'border-slate-300 text-slate-700 hover:bg-slate-50'
@@ -854,6 +854,47 @@ const CommercePage: React.FC = () => {
           </div>
         </div>
       )}
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <nav
+        aria-label="Commerce Mobile Navigation"
+        className="md:hidden fixed bottom-4 inset-x-3 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl p-2 z-40 shadow-2xl flex items-center justify-around gap-1"
+      >
+        <button
+          type="button"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-blue-400 hover:text-blue-300 transition-colors cursor-pointer"
+        >
+          <ShoppingCart className="w-5 h-5 mb-0.5" />
+          <span>Commerce</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            fetchData();
+            showToast('Catalog refreshed from PostgreSQL', 'info');
+          }}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-emerald-400 hover:text-emerald-300 transition-colors cursor-pointer"
+        >
+          <RefreshCw className="w-5 h-5 mb-0.5" />
+          <span>Sync DB</span>
+        </button>
+        <button
+          type="button"
+          onClick={handleOpenAdd}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-amber-400 hover:text-amber-300 transition-colors cursor-pointer"
+        >
+          <Plus className="w-5 h-5 mb-0.5" />
+          <span>Add</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setShowFilterDrawer(prev => !prev)}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-sky-400 hover:text-sky-300 transition-colors cursor-pointer"
+        >
+          <Filter className="w-5 h-5 mb-0.5" />
+          <span>Filter</span>
+        </button>
+      </nav>
     </div>
   );
 };
