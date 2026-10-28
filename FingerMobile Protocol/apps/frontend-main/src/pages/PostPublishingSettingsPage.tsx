@@ -39,7 +39,7 @@ const PostPublishingSettingsPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Intelligent Post Publishing Settings">
-      <div className="min-h-screen bg-slate-50 py-8 px-4 sm:px-6 lg:px-8">
+      <div className="min-h-screen bg-slate-50 py-8 px-4 sm:px-6 lg:px-8 pb-28 md:pb-12 max-w-full overflow-x-hidden text-slate-900">
         <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto space-y-8">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-300 pb-6">
             <div>
@@ -436,6 +436,37 @@ const PostPublishingSettingsPage: React.FC = () => {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 md:hidden">
+          <div className="flex items-center justify-around gap-2 max-w-md mx-auto">
+            <button
+              type="button"
+              onClick={handleSaveDefault}
+              className="flex flex-col items-center justify-center min-w-[64px] min-h-[48px] px-2 py-1 rounded-xl text-xs font-bold text-emerald-700 hover:text-emerald-900 transition-all"
+            >
+              <span className="text-base font-black">💾</span>
+              <span>Save</span>
+            </button>
+            <button
+              type="button"
+              onClick={handleApplyAiSuggestions}
+              disabled={isApplyingSuggestions}
+              className="flex flex-col items-center justify-center min-w-[64px] min-h-[48px] px-2 py-1 rounded-xl text-xs font-bold text-blue-600 hover:text-blue-800 transition-all disabled:opacity-40"
+            >
+              <span className="text-base font-black">✨</span>
+              <span>AI Optimize</span>
+            </button>
+            <button
+              type="button"
+              onClick={resetSettings}
+              className="flex flex-col items-center justify-center min-w-[64px] min-h-[48px] px-2 py-1 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-900 transition-all"
+            >
+              <span className="text-base font-black">↺</span>
+              <span>Reset</span>
+            </button>
           </div>
         </div>
       </div>
