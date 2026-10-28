@@ -84,7 +84,7 @@ const CreatorDashboardPage: React.FC = () => {
   }
 
   return (
-    <div className="creator-dashboard-page min-h-screen py-6 px-4 sm:px-6 lg:px-8">
+    <div className="creator-dashboard-page min-h-screen py-6 px-4 sm:px-6 lg:px-8 pb-28 md:pb-12 w-full max-w-full overflow-x-hidden text-slate-900">
       <div className="dashboard-header mb-8">
         <h1 className="text-3xl font-black text-slate-900 tracking-tight">Creator Dashboard</h1>
         <p className="text-sm font-semibold text-slate-700 mt-1.5">Manage your content, track earnings, and analyze your audience</p>
@@ -143,6 +143,46 @@ const CreatorDashboardPage: React.FC = () => {
       {/* Sovereign Platform Ownership Directive */}
       <div className="mt-8">
         <PlatformOwnershipCard />
+      </div>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 flex items-center justify-around shadow-2xl">
+        <button
+          onClick={() => setActiveTab('scheduler')}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold rounded-lg transition-colors ${
+            activeTab === 'scheduler' ? 'text-blue-700 bg-blue-50' : 'text-slate-700 hover:text-blue-600'
+          }`}
+        >
+          <span className="text-base mb-0.5">📅</span>
+          <span>Schedule</span>
+        </button>
+        <button
+          onClick={() => setActiveTab('earnings')}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold rounded-lg transition-colors ${
+            activeTab === 'earnings' ? 'text-blue-700 bg-blue-50' : 'text-slate-700 hover:text-blue-600'
+          }`}
+        >
+          <span className="text-base mb-0.5">💰</span>
+          <span>Earnings</span>
+        </button>
+        <button
+          onClick={() => setActiveTab('analytics')}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold rounded-lg transition-colors ${
+            activeTab === 'analytics' ? 'text-blue-700 bg-blue-50' : 'text-slate-700 hover:text-blue-600'
+          }`}
+        >
+          <span className="text-base mb-0.5">📊</span>
+          <span>Audience</span>
+        </button>
+        <button
+          onClick={() => setActiveTab('studio')}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold rounded-lg transition-colors ${
+            activeTab === 'studio' ? 'text-blue-700 bg-blue-50' : 'text-slate-700 hover:text-blue-600'
+          }`}
+        >
+          <span className="text-base mb-0.5">🎨</span>
+          <span>Studio</span>
+        </button>
       </div>
     </div>
   );

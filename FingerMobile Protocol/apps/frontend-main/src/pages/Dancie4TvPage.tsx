@@ -52,7 +52,7 @@ const Dancie4TvPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Dancie 4 Tv">
-      <div className="p-6">
+      <div className="p-4 sm:p-6 pb-28 md:pb-12 w-full max-w-full overflow-x-hidden text-slate-900">
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-gray-900">Dancie 4 Tv</h1>
           <p className="text-gray-600">
@@ -121,6 +121,40 @@ const Dancie4TvPage: React.FC = () => {
               </div>
             )}
           </div>
+        </div>
+
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 flex items-center justify-around shadow-2xl">
+          <button
+            onClick={() => {
+              const el = document.querySelectorAll('h2')[0];
+              el?.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold text-rose-600 bg-rose-50 rounded-lg transition-colors"
+          >
+            <span className="text-base mb-0.5">🔥</span>
+            <span>Discovery</span>
+          </button>
+          <button
+            onClick={() => {
+              const el = document.querySelectorAll('h2')[1];
+              el?.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold text-slate-700 hover:text-rose-600 rounded-lg transition-colors"
+          >
+            <span className="text-base mb-0.5">📺</span>
+            <span>Feed</span>
+          </button>
+          <button
+            onClick={() => {
+              const el = document.querySelectorAll('h2')[2];
+              el?.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold text-slate-700 hover:text-rose-600 rounded-lg transition-colors"
+          >
+            <span className="text-base mb-0.5">🔔</span>
+            <span>Updates</span>
+          </button>
         </div>
       </div>
     </MainLayout>

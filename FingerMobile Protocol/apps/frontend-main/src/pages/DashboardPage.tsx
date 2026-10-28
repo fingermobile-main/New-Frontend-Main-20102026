@@ -270,7 +270,7 @@ const DashboardPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Platform Operations Dashboard">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 pb-28 md:pb-12 w-full max-w-full overflow-x-hidden text-slate-900">
         {/* Executive Header Banner */}
         <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-3xl p-6 sm:p-8 text-white border border-slate-800 shadow-2xl relative overflow-hidden">
           <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -534,6 +534,51 @@ const DashboardPage: React.FC = () => {
               </tbody>
             </table>
           </div>
+        </div>
+
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-300 dark:border-slate-800 px-4 py-2 flex items-center justify-around shadow-2xl">
+          <button
+            onClick={() => setActiveTab('all')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold rounded-lg transition-colors ${
+              activeTab === 'all'
+                ? 'text-blue-600 bg-blue-50 dark:bg-blue-950/40'
+                : 'text-slate-700 dark:text-slate-300 hover:text-blue-600'
+            }`}
+          >
+            <Grid3X3 className="w-5 h-5 mb-0.5 text-blue-500" />
+            <span>All Hubs</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('governance')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold rounded-lg transition-colors ${
+              activeTab === 'governance'
+                ? 'text-blue-600 bg-blue-50 dark:bg-blue-950/40'
+                : 'text-slate-700 dark:text-slate-300 hover:text-blue-600'
+            }`}
+          >
+            <ShieldCheck className="w-5 h-5 mb-0.5 text-indigo-500" />
+            <span>Gov</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('academic')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold rounded-lg transition-colors ${
+              activeTab === 'academic'
+                ? 'text-blue-600 bg-blue-50 dark:bg-blue-950/40'
+                : 'text-slate-700 dark:text-slate-300 hover:text-blue-600'
+            }`}
+          >
+            <GraduationCap className="w-5 h-5 mb-0.5 text-emerald-500" />
+            <span>CAMUS</span>
+          </button>
+          <button
+            onClick={handleTriggerHealthCheck}
+            disabled={isHealthChecking}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-blue-600 rounded-lg transition-colors"
+          >
+            <RefreshCw className={`w-5 h-5 mb-0.5 text-amber-500 ${isHealthChecking ? 'animate-spin' : ''}`} />
+            <span>Sync</span>
+          </button>
         </div>
       </div>
     </MainLayout>

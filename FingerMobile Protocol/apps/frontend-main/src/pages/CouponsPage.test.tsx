@@ -19,8 +19,8 @@ describe('CouponsPage Mobile & Accessibility', () => {
 
     expect(screen.getAllByRole('heading', { name: /Sovereign Coupons & Promo Vouchers/i }).length).toBeGreaterThan(0);
     expect(screen.getAllByRole('button', { name: /Available/i }).length).toBeGreaterThan(0);
-    expect(screen.getAllByRole('button', { name: /Wallet/i }).length).toBeGreaterThan(0);
-    expect(screen.getAllByRole('button', { name: /Redeemed/i }).length).toBeGreaterThan(0);
+    expect(screen.getAllByRole('button', { name: /Claimed/i }).length).toBeGreaterThan(0);
+    expect(screen.getAllByRole('button', { name: /Vault/i }).length).toBeGreaterThan(0);
     expect(screen.getAllByRole('button', { name: /Create/i }).length).toBeGreaterThan(0);
   });
 });

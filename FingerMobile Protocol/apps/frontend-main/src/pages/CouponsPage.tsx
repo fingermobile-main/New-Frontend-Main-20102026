@@ -554,16 +554,16 @@ const CouponsPage: React.FC = () => {
             }`}
           >
             <Gift className="w-5 h-5 mb-0.5 text-blue-600" />
-            <span>Wallet</span>
+            <span>Claimed</span>
           </button>
           <button
-            onClick={() => setActiveTab('redeemed')}
-            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold rounded-lg transition-colors ${
-              activeTab === 'redeemed' ? 'text-orange-600 bg-orange-50' : 'text-slate-700 hover:text-orange-600'
-            }`}
+            onClick={() => {
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold text-slate-700 hover:text-orange-600 rounded-lg transition-colors"
           >
             <Clock className="w-5 h-5 mb-0.5 text-slate-600" />
-            <span>Redeemed</span>
+            <span>Vault</span>
           </button>
           <button
             onClick={() => setActiveTab('create')}

@@ -134,7 +134,7 @@ const CourseDetailPage: React.FC = () => {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-gray-50 min-h-screen pb-28 md:pb-12 w-full max-w-full overflow-x-hidden text-slate-900">
       {/* Header */}
       <div className="bg-white p-4 sm:p-6 lg:p-8">
         <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -272,6 +272,44 @@ const CourseDetailPage: React.FC = () => {
             <p className="text-slate-700 text-center">Reviews coming soon.</p>
           </div>
         )}
+      </div>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 flex items-center justify-around shadow-2xl">
+        <button
+          onClick={() => setActiveTab('curriculum')}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold rounded-lg transition-colors ${
+            activeTab === 'curriculum' ? 'text-blue-700 bg-blue-50' : 'text-slate-700 hover:text-blue-600'
+          }`}
+        >
+          <span className="text-base mb-0.5">📖</span>
+          <span>Curriculum</span>
+        </button>
+        <button
+          onClick={() => setActiveTab('comments')}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold rounded-lg transition-colors ${
+            activeTab === 'comments' ? 'text-blue-700 bg-blue-50' : 'text-slate-700 hover:text-blue-600'
+          }`}
+        >
+          <span className="text-base mb-0.5">💬</span>
+          <span>Comments</span>
+        </button>
+        <button
+          onClick={() => setActiveTab('reviews')}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold rounded-lg transition-colors ${
+            activeTab === 'reviews' ? 'text-blue-700 bg-blue-50' : 'text-slate-700 hover:text-blue-600'
+          }`}
+        >
+          <span className="text-base mb-0.5">⭐</span>
+          <span>Reviews</span>
+        </button>
+        <NavLink
+          to={`/courses/${courseId}/content`}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold text-emerald-700 bg-emerald-50 rounded-lg transition-colors"
+        >
+          <span className="text-base mb-0.5">🎓</span>
+          <span>Study</span>
+        </NavLink>
       </div>
     </div>
   );

@@ -62,7 +62,7 @@ const CreatorsCenterPage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="max-w-3xl mx-auto px-4 py-8">
+      <div className="max-w-3xl mx-auto px-4 py-8 pb-28 md:pb-12 w-full max-w-full overflow-x-hidden text-slate-900">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Creators Center & Services</h1>
         <p className="text-gray-600 mb-8">Upgrade to a Professional Creator Account to unlock monetization and advanced tools.</p>
 
@@ -229,6 +229,46 @@ const CreatorsCenterPage: React.FC = () => {
               </button>
             </div>
           )}
+        </div>
+
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 flex items-center justify-around shadow-2xl">
+          <button
+            onClick={() => setStep(1)}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold rounded-lg transition-colors ${
+              step === 1 ? 'text-indigo-700 bg-indigo-50' : 'text-slate-700 hover:text-indigo-600'
+            }`}
+          >
+            <span className="text-base mb-0.5">ℹ️</span>
+            <span>Overview</span>
+          </button>
+          <button
+            onClick={() => setStep(2)}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold rounded-lg transition-colors ${
+              step === 2 ? 'text-indigo-700 bg-indigo-50' : 'text-slate-700 hover:text-indigo-600'
+            }`}
+          >
+            <span className="text-base mb-0.5">📝</span>
+            <span>Legal</span>
+          </button>
+          <button
+            onClick={() => setStep(3)}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold rounded-lg transition-colors ${
+              step === 3 ? 'text-indigo-700 bg-indigo-50' : 'text-slate-700 hover:text-indigo-600'
+            }`}
+          >
+            <span className="text-base mb-0.5">📄</span>
+            <span>ID Doc</span>
+          </button>
+          <button
+            onClick={() => setStep(4)}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold rounded-lg transition-colors ${
+              step === 4 ? 'text-indigo-700 bg-indigo-50' : 'text-slate-700 hover:text-indigo-600'
+            }`}
+          >
+            <span className="text-base mb-0.5">📸</span>
+            <span>Biometric</span>
+          </button>
         </div>
       </div>
     </MainLayout>

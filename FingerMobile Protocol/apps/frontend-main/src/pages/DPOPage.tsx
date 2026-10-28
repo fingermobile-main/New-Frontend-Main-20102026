@@ -65,7 +65,7 @@ const DPOPage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto px-4 py-8 pb-28 md:pb-12 w-full max-w-full overflow-x-hidden text-slate-900">
         {/* Hero Header */}
         <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 border border-indigo-500/20 p-8 md:p-10 text-white mb-8 shadow-2xl">
           <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -408,6 +408,54 @@ const DPOPage: React.FC = () => {
             </div>
           </div>
         )}
+
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-300 dark:border-slate-800 px-4 py-2 flex items-center justify-around shadow-2xl">
+          <button
+            onClick={() => setActiveTab('overview')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold rounded-lg transition-colors ${
+              activeTab === 'overview'
+                ? 'text-indigo-600 bg-indigo-50 dark:bg-indigo-950/40'
+                : 'text-slate-700 dark:text-slate-300 hover:text-indigo-600'
+            }`}
+          >
+            <ShieldCheck className="w-5 h-5 mb-0.5 text-indigo-500" />
+            <span>Overview</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('dashboard')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold rounded-lg transition-colors ${
+              activeTab === 'dashboard'
+                ? 'text-indigo-600 bg-indigo-50 dark:bg-indigo-950/40'
+                : 'text-slate-700 dark:text-slate-300 hover:text-indigo-600'
+            }`}
+          >
+            <Database className="w-5 h-5 mb-0.5 text-blue-500" />
+            <span>Console</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('sar')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold rounded-lg transition-colors ${
+              activeTab === 'sar'
+                ? 'text-indigo-600 bg-indigo-50 dark:bg-indigo-950/40'
+                : 'text-slate-700 dark:text-slate-300 hover:text-indigo-600'
+            }`}
+          >
+            <Send className="w-5 h-5 mb-0.5 text-amber-500" />
+            <span>Request</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('audit')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold rounded-lg transition-colors ${
+              activeTab === 'audit'
+                ? 'text-indigo-600 bg-indigo-50 dark:bg-indigo-950/40'
+                : 'text-slate-700 dark:text-slate-300 hover:text-indigo-600'
+            }`}
+          >
+            <Key className="w-5 h-5 mb-0.5 text-emerald-500" />
+            <span>Audit</span>
+          </button>
+        </div>
       </div>
     </MainLayout>
   );

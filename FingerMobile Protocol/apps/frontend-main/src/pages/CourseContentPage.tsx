@@ -74,7 +74,7 @@ const CourseContentPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Course Content">
-      <div className="course-content-page p-4 sm:p-6 lg:p-8 w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto">
+      <div className="course-content-page p-4 sm:p-6 lg:p-8 w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto pb-28 md:pb-12 overflow-x-hidden text-slate-900">
         <header className="mb-8">
           <button
             type="button"
@@ -148,6 +148,39 @@ const CourseContentPage: React.FC = () => {
             </main>
           </div>
         )}
+
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 flex items-center justify-around shadow-2xl">
+          <button
+            type="button"
+            onClick={handlePreviousModule}
+            disabled={!content?.modules || content.modules.findIndex((m: any) => m.active) <= 0}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold text-slate-700 hover:text-blue-600 disabled:opacity-40 rounded-lg transition-colors"
+          >
+            <span className="text-base mb-0.5">◀️</span>
+            <span>Prev</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              const el = document.querySelector('aside');
+              el?.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold text-blue-600 bg-blue-50 rounded-lg transition-colors"
+          >
+            <span className="text-base mb-0.5">📚</span>
+            <span>Modules</span>
+          </button>
+          <button
+            type="button"
+            onClick={handleNextModule}
+            disabled={!content?.modules || content.modules.findIndex((m: any) => m.active) >= content.modules.length - 1}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold text-blue-700 hover:text-blue-900 disabled:opacity-40 rounded-lg transition-colors"
+          >
+            <span className="text-base mb-0.5">▶️</span>
+            <span>Next</span>
+          </button>
+        </div>
       </div>
     </MainLayout>
   );

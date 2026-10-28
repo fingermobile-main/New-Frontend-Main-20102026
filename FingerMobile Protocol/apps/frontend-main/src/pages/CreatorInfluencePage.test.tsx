@@ -32,4 +32,12 @@ describe('CreatorInfluencePage', () => {
     expect(screen.getByText(/Monthly Recurring Revenue \(MRR\)/i)).toBeInTheDocument();
     expect(screen.getByText('Chioma Okeke')).toBeInTheDocument();
   });
+
+  it('renders sovereign mobile navigation quick dock', () => {
+    render(<CreatorInfluencePage />);
+    expect(screen.getAllByRole('button', { name: /Status/i }).length).toBeGreaterThan(0);
+    expect(screen.getAllByRole('button', { name: /Plans/i }).length).toBeGreaterThan(0);
+    expect(screen.getAllByRole('button', { name: /Recommend/i }).length).toBeGreaterThan(0);
+    expect(screen.getAllByRole('button', { name: /Perks/i }).length).toBeGreaterThan(0);
+  });
 });
