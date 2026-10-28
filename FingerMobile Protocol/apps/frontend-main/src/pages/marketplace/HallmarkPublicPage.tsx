@@ -46,7 +46,7 @@ const HallmarkPublicPage: React.FC = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 w-full max-w-full overflow-x-hidden text-slate-900 pb-28 md:pb-12">
       <h1 className="text-3xl font-bold mb-6">Hallmark Public Store</h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -76,6 +76,42 @@ const HallmarkPublicPage: React.FC = () => {
             </div>
           </button>
         ))}
+      </div>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 py-2 px-3 flex items-center justify-around gap-1 shadow-lg md:hidden">
+        <button
+          onClick={() => navigate('/marketplace')}
+          aria-label="Marketplace Store"
+          className="min-h-[44px] min-w-[44px] px-2 py-1 flex flex-col items-center justify-center text-xs font-semibold text-slate-800 hover:text-blue-600"
+        >
+          <span className="text-base">🛍️</span>
+          <span>Store</span>
+        </button>
+        <button
+          onClick={() => { const input = document.querySelector('input') as HTMLInputElement; if (input) { input.focus(); input.scrollIntoView({ behavior: 'smooth' }); } }}
+          aria-label="Search Products"
+          className="min-h-[44px] min-w-[44px] px-2 py-1 flex flex-col items-center justify-center text-xs font-semibold text-slate-800 hover:text-blue-600"
+        >
+          <span className="text-base">🔍</span>
+          <span>Search</span>
+        </button>
+        <button
+          onClick={() => fetchProducts()}
+          aria-label="Reload Products"
+          className="min-h-[44px] min-w-[44px] px-2 py-1 flex flex-col items-center justify-center text-xs font-semibold text-slate-800 hover:text-blue-600"
+        >
+          <span className="text-base">🔄</span>
+          <span>Sync</span>
+        </button>
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          aria-label="Scroll to Top"
+          className="min-h-[44px] min-w-[44px] px-2 py-1 flex flex-col items-center justify-center text-xs font-semibold text-slate-800 hover:text-blue-600"
+        >
+          <span className="text-base">⬆️</span>
+          <span>Top</span>
+        </button>
       </div>
     </div>
   );

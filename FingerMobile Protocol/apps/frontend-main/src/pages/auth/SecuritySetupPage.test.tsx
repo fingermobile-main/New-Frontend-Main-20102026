@@ -30,3 +30,4 @@ describe('SecuritySetupPage', () => {
     expect(screen.getByRole('button', { name: /Scroll to Top/i })).toBeInTheDocument();
   });
 });
+

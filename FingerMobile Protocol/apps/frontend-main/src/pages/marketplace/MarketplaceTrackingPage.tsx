@@ -300,7 +300,7 @@ const MarketplaceTrackingPage: React.FC = () => {
   }, [selectedShipment, showToast]);
 
   return (
-    <div className="min-h-screen bg-slate-50 p-4 md:p-8">
+    <div className="min-h-screen bg-slate-50 p-4 md:p-8 w-full max-w-full overflow-x-hidden text-slate-900 pb-28 md:pb-12">
       <div className="max-w-5xl mx-auto space-y-6">
         {/* Header Bar */}
         <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -404,6 +404,42 @@ const MarketplaceTrackingPage: React.FC = () => {
             <span>Return to Marketplace Shop</span>
           </button>
         </div>
+      </div>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 py-2 px-3 flex items-center justify-around gap-1 shadow-lg md:hidden">
+        <button
+          onClick={() => navigate('/marketplace')}
+          aria-label="Marketplace Shop"
+          className="min-h-[44px] min-w-[44px] px-2 py-1 flex flex-col items-center justify-center text-xs font-semibold text-slate-800 hover:text-blue-600"
+        >
+          <span className="text-base">🛍️</span>
+          <span>Shop</span>
+        </button>
+        <button
+          onClick={() => navigate('/storefronttracking')}
+          aria-label="Storefront Hub"
+          className="min-h-[44px] min-w-[44px] px-2 py-1 flex flex-col items-center justify-center text-xs font-semibold text-slate-800 hover:text-blue-600"
+        >
+          <span className="text-base">🚚</span>
+          <span>Hub</span>
+        </button>
+        <button
+          onClick={() => window.location.reload()}
+          aria-label="Reload Tracking"
+          className="min-h-[44px] min-w-[44px] px-2 py-1 flex flex-col items-center justify-center text-xs font-semibold text-slate-800 hover:text-blue-600"
+        >
+          <span className="text-base">🔄</span>
+          <span>Sync</span>
+        </button>
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          aria-label="Scroll to Top"
+          className="min-h-[44px] min-w-[44px] px-2 py-1 flex flex-col items-center justify-center text-xs font-semibold text-slate-800 hover:text-blue-600"
+        >
+          <span className="text-base">⬆️</span>
+          <span>Top</span>
+        </button>
       </div>
     </div>
   );

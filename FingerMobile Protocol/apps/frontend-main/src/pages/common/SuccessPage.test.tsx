@@ -15,3 +15,4 @@ describe('SuccessPage', () => {
     expect(screen.getByText(/Onboarding Completed Successfully/i)).toBeInTheDocument();
   });
 });
+

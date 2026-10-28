@@ -15,3 +15,4 @@ describe('SplashPage', () => {
     expect(screen.getByText(/Loading security services/i)).toBeInTheDocument();
   });
 });
+
