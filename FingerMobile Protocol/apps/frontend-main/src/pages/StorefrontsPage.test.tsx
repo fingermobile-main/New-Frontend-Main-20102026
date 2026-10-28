@@ -55,3 +55,4 @@ describe('StorefrontsPage', () => {
     expect(screen.getByRole('button', { name: /^products$/i })).toBeInTheDocument();
   });
 });
+

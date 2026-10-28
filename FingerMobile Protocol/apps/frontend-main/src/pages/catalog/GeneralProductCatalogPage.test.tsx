@@ -45,3 +45,4 @@ describe('GeneralProductCatalogPage', () => {
     expect(screen.getByRole('button', { name: /^dashboard$/i })).toBeInTheDocument();
   });
 });
+

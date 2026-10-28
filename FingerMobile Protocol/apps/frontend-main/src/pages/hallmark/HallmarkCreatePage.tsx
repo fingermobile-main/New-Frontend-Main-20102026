@@ -1,7 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
+import { Award, Plus, ArrowLeft, Shield, CheckCircle } from 'lucide-react';
 
-import { HallmarkContext, useHallmark } from '../../contexts/HallmarkContext';
+import { useHallmark } from '../../contexts/HallmarkContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { useAppContext } from '../../contexts/AppContext';
 import PageHeader from '../../components/PageHeader';
@@ -63,13 +64,23 @@ const HallmarkCreatePage: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 bg-slate-50 min-h-screen">
+    <div className="flex-1 bg-slate-50 min-h-screen w-full max-w-full overflow-x-hidden pb-28 md:pb-12 text-slate-900">
       <PageHeader
         title="Create Sovereign Hallmark"
         description="Build, brand, and charter your own mega-community space (up to 5,000,000 members)."
       />
-      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
-        <form onSubmit={handleSubmit} className="max-w-3xl mx-auto bg-white p-8 rounded-2xl shadow-sm border border-slate-300 space-y-6">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-3 sm:p-6 lg:p-8 space-y-6">
+        <div className="max-w-3xl mx-auto flex items-center justify-between">
+          <button
+            onClick={() => navigate('/hallmarks')}
+            className="min-h-[44px] inline-flex items-center gap-1.5 px-4 py-2 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm font-bold text-slate-800 hover:bg-slate-100 transition-colors shadow-xs cursor-pointer"
+          >
+            <ArrowLeft className="w-4 h-4 text-slate-700" />
+            <span>Back to Hallmarks Hub</span>
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="max-w-3xl mx-auto bg-white p-5 sm:p-8 rounded-2xl shadow-sm border border-slate-300 space-y-6">
           <div>
             <h3 className="font-bold text-lg border-b pb-2 mb-4">1. Branding</h3>
             <label htmlFor="communityName" className="block text-sm font-medium">Community Name</label>
@@ -105,12 +116,64 @@ const HallmarkCreatePage: React.FC = () => {
             </select>
           </div>
 
-          <button type="submit" disabled={isLoading} className="w-full py-3 font-semibold bg-brand-blue text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400">
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full min-h-[44px] py-3 font-bold bg-blue-600 text-white rounded-xl hover:bg-blue-700 disabled:bg-gray-400 transition-colors shadow-xs cursor-pointer flex items-center justify-center gap-2"
+          >
             {isLoading ? 'Submitting for Review...' : 'Submit for Review'}
           </button>
           <p className="text-xs text-center text-slate-700">Your Hallmark will be reviewed by an admin before it goes live.</p>
         </form>
       </div>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <nav
+        aria-label="Create Hallmark Mobile Navigation"
+        className="md:hidden fixed bottom-4 inset-x-3 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl p-2 z-40 shadow-2xl flex items-center justify-around gap-1"
+      >
+        <button
+          type="button"
+          onClick={() => {
+            const input = document.getElementById('communityName');
+            if (input) input.focus();
+          }}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-amber-400 hover:text-amber-300 transition-colors cursor-pointer"
+        >
+          <Award className="w-5 h-5 mb-0.5" />
+          <span>Branding</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            const rules = document.getElementById('communityRules');
+            if (rules) rules.focus();
+          }}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-sky-400 hover:text-sky-300 transition-colors cursor-pointer"
+        >
+          <Shield className="w-5 h-5 mb-0.5" />
+          <span>Rules</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            const fee = document.getElementById('joinFee');
+            if (fee) fee.focus();
+          }}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-emerald-400 hover:text-emerald-300 transition-colors cursor-pointer"
+        >
+          <CheckCircle className="w-5 h-5 mb-0.5" />
+          <span>Pricing</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => navigate('/hallmarks')}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-slate-300 hover:text-white transition-colors cursor-pointer"
+        >
+          <ArrowLeft className="w-5 h-5 mb-0.5" />
+          <span>Hub</span>
+        </button>
+      </nav>
     </div>
   );
 };

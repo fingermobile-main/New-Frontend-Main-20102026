@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
+import { Award, ShoppingBag, ArrowLeft, RefreshCw, Filter } from 'lucide-react';
 
 import { useAuth } from '../../contexts/AuthContext';
 import { useMarketplace } from '../../contexts/MarketplaceContext';
@@ -53,12 +54,19 @@ const HallmarkPublicPage: React.FC = () => {
   }
 
   return (
-    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-3 sm:p-6 lg:p-8 space-y-6 overflow-x-hidden pb-28 md:pb-12 text-slate-900">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-black text-slate-900">Hallmark Public Store</h1>
-          <p className="text-sm font-semibold text-slate-700 mt-1">Explore verified merchandise, hardware enclaves, and sovereign digital assets</p>
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900">Hallmark Public Store</h1>
+          <p className="text-xs sm:text-sm font-semibold text-slate-700 mt-1">Explore verified merchandise, hardware enclaves, and sovereign digital assets</p>
         </div>
+        <button
+          onClick={() => navigate('/hallmarks')}
+          className="min-h-[44px] inline-flex items-center gap-1.5 px-4 py-2 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm font-bold text-slate-800 hover:bg-slate-100 transition-colors shadow-xs cursor-pointer self-start sm:self-auto"
+        >
+          <ArrowLeft className="w-4 h-4 text-slate-700" />
+          <span>Back to Hallmarks Hub</span>
+        </button>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -92,6 +100,45 @@ const HallmarkPublicPage: React.FC = () => {
           </div>
         ))}
       </div>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <nav
+        aria-label="Hallmark Public Store Mobile Navigation"
+        className="md:hidden fixed bottom-4 inset-x-3 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl p-2 z-40 shadow-2xl flex items-center justify-around gap-1"
+      >
+        <button
+          type="button"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-amber-400 hover:text-amber-300 transition-colors cursor-pointer"
+        >
+          <Award className="w-5 h-5 mb-0.5" />
+          <span>Store</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => fetchProducts()}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-emerald-400 hover:text-emerald-300 transition-colors cursor-pointer"
+        >
+          <RefreshCw className="w-5 h-5 mb-0.5" />
+          <span>Refresh</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => navigate('/marketplace')}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-sky-400 hover:text-sky-300 transition-colors cursor-pointer"
+        >
+          <ShoppingBag className="w-5 h-5 mb-0.5" />
+          <span>Market</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => navigate('/hallmarks')}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-slate-300 hover:text-white transition-colors cursor-pointer"
+        >
+          <ArrowLeft className="w-5 h-5 mb-0.5" />
+          <span>Hub</span>
+        </button>
+      </nav>
     </div>
   );
 };
