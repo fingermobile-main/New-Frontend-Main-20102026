@@ -318,7 +318,7 @@ const EventsPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Community Events">
-      <div className="min-h-screen bg-slate-50 text-gray-900 pb-16">
+      <div className="min-h-screen bg-slate-50 text-gray-900 pb-28 md:pb-16 w-full max-w-full overflow-x-hidden text-slate-900">
         {/* Header Hero */}
         <div className="bg-gradient-to-r from-slate-950 via-blue-950 to-indigo-950 text-white py-12 px-4 sm:px-6 lg:px-8 border-b border-blue-900/40">
           <div className="max-w-[1536px] 2xl:max-w-[1680px] w-full mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
@@ -1024,6 +1024,61 @@ const EventsPage: React.FC = () => {
             </div>
           </div>
         )}
+        {/* SOVEREIGN MOBILE NAVIGATION QUICK DOCK */}
+        <nav
+          aria-label="Events Quick Navigation"
+          className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-3 py-2 sm:hidden flex items-center justify-around shadow-lg"
+        >
+          <button
+            type="button"
+            onClick={() => {
+              setSelectedCategory('All');
+              setFormatFilter('all');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold transition-colors ${
+              selectedCategory === 'All' ? 'text-blue-600' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <CalendarIcon className="w-5 h-5 mb-0.5" />
+            <span>All</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setSelectedCategory('Music & Concerts');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold transition-colors ${
+              selectedCategory === 'Music & Concerts' ? 'text-blue-600' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <SparklesIcon className="w-5 h-5 mb-0.5" />
+            <span>Concerts</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setFormatFilter('virtual');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold transition-colors ${
+              formatFilter === 'virtual' ? 'text-blue-600' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <VideoCameraIcon className="w-5 h-5 mb-0.5" />
+            <span>Virtual</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setIsHostModalOpen(true)}
+            className="min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold text-slate-700 hover:text-slate-900 transition-colors"
+          >
+            <PlusIcon className="w-5 h-5 mb-0.5" />
+            <span>Host</span>
+          </button>
+        </nav>
+
       </div>
     </MainLayout>
   );

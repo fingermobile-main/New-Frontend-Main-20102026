@@ -445,6 +445,53 @@ const ELearningPage: React.FC = () => {
           </div>
         </div>
       </div>
+      {/* SOVEREIGN MOBILE NAVIGATION QUICK DOCK */}
+      <nav
+        aria-label="E-Learning Quick Navigation"
+        className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-3 py-2 sm:hidden flex items-center justify-around shadow-lg"
+      >
+        <button
+          type="button"
+          onClick={() => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className="min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold text-blue-600 hover:text-blue-800 transition-colors"
+        >
+          <BookOpenIcon className="w-5 h-5 mb-0.5" />
+          <span>Courses</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            const el = document.getElementById('enrolled-section');
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+            else window.scrollTo({ top: 400, behavior: 'smooth' });
+          }}
+          className="min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold text-slate-700 hover:text-slate-900 transition-colors"
+        >
+          <AcademicCapIcon className="w-5 h-5 mb-0.5" />
+          <span>My Learn</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => navigate('/camus')}
+          className="min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold text-slate-700 hover:text-slate-900 transition-colors"
+        >
+          <ClipboardCheckIcon className="w-5 h-5 mb-0.5" />
+          <span>Catalog</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            navigate(member ? '/camus/dashboard' : '/auth/signup');
+          }}
+          className="min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold text-slate-700 hover:text-slate-900 transition-colors"
+        >
+          <ChartBarIcon className="w-5 h-5 mb-0.5" />
+          <span>Dashboard</span>
+        </button>
+      </nav>
+
     </div>
   );
 };

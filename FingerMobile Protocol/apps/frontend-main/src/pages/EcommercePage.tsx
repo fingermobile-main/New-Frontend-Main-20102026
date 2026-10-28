@@ -349,7 +349,7 @@ const EcommercePage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pb-28 md:pb-12 w-full max-w-full overflow-x-hidden text-slate-900">
       {/* Header */}
       <header className="bg-white shadow">
         <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -1034,6 +1034,60 @@ const EcommercePage: React.FC = () => {
           </div>
         </div>
       )}
+      {/* SOVEREIGN MOBILE NAVIGATION QUICK DOCK */}
+      <nav
+        aria-label="Ecommerce Quick Navigation"
+        className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-3 py-2 sm:hidden flex items-center justify-around shadow-lg"
+      >
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab('products');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className={`min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold transition-colors ${
+            activeTab === 'products' ? 'text-blue-600' : 'text-slate-700 hover:text-slate-900'
+          }`}
+        >
+          <Package className="w-5 h-5 mb-0.5" />
+          <span>Products</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab('orders');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className={`min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold transition-colors ${
+            activeTab === 'orders' ? 'text-blue-600' : 'text-slate-700 hover:text-slate-900'
+          }`}
+        >
+          <ShoppingBag className="w-5 h-5 mb-0.5" />
+          <span>Orders</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab('inventory');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className={`min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold transition-colors ${
+            activeTab === 'inventory' ? 'text-blue-600' : 'text-slate-700 hover:text-slate-900'
+          }`}
+        >
+          <Box className="w-5 h-5 mb-0.5" />
+          <span>Inventory</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setShowCreateModal(true)}
+          className="min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold text-slate-700 hover:text-slate-900 transition-colors"
+        >
+          <Plus className="w-5 h-5 mb-0.5" />
+          <span>Add</span>
+        </button>
+      </nav>
+
     </div>
   );
 };
