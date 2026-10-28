@@ -71,7 +71,7 @@ const PubliciteePage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+      <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6 pb-28 md:pb-12 max-w-full overflow-x-hidden text-slate-900">
         {/* Creator Specs & Subscription Hero Banner */}
         <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-red-600 via-rose-600 to-orange-500 p-6 md:p-8 text-white shadow-xl">
           <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
@@ -194,6 +194,48 @@ const PubliciteePage: React.FC = () => {
           }}
         />
       </div>
+
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 md:hidden">
+          <div className="flex items-center justify-around gap-2 max-w-md mx-auto">
+            <button
+              type="button"
+              onClick={() => setActiveCategory('all')}
+              className={`flex flex-col items-center justify-center min-w-[64px] min-h-[48px] px-2 py-1 rounded-xl text-xs font-bold ${
+                activeCategory === 'all' ? 'text-rose-600 bg-rose-50 border border-rose-200' : 'text-slate-700 hover:text-slate-900'
+              }`}
+            >
+              <span className="text-base font-black">🎞️</span>
+              <span>All Reels</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveCategory('short_film')}
+              className={`flex flex-col items-center justify-center min-w-[64px] min-h-[48px] px-2 py-1 rounded-xl text-xs font-bold ${
+                activeCategory === 'short_film' ? 'text-rose-600 bg-rose-50 border border-rose-200' : 'text-slate-700 hover:text-slate-900'
+              }`}
+            >
+              <span className="text-base font-black">🎬</span>
+              <span>Films</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setIsCreating(true)}
+              className="flex flex-col items-center justify-center min-w-[64px] min-h-[48px] px-2 py-1 rounded-xl text-xs font-bold text-rose-600 hover:text-rose-800"
+            >
+              <span className="text-base font-black">➕</span>
+              <span>Upload</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="flex flex-col items-center justify-center min-w-[64px] min-h-[48px] px-2 py-1 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-900"
+            >
+              <span className="text-base font-black">⌂</span>
+              <span>Top</span>
+            </button>
+          </div>
+        </div>
     </MainLayout>
   );
 };

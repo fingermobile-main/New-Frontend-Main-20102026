@@ -43,3 +43,4 @@ describe('ProgramsPage', () => {
     fireEvent.click(tuitionBtn);
   });
 });
+
