@@ -48,3 +48,4 @@ describe('NYSCProgramPage Component', () => {
     fireEvent.click(awardsBtn);
   });
 });
+

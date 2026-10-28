@@ -241,7 +241,7 @@ export const NetworkSuggestionsPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Connections & Network Discovery">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 pb-28 md:pb-12 max-w-full overflow-x-hidden text-slate-900">
         {/* Top Header Banner */}
         <div className="bg-gradient-to-r from-slate-900 via-sky-950 to-slate-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden border border-slate-700">
           <div className="absolute right-0 top-0 w-96 h-96 bg-sky-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -445,6 +445,60 @@ export const NetworkSuggestionsPage: React.FC = () => {
             </button>
           </div>
         )}
+
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 md:hidden">
+          <div className="flex items-center justify-around gap-2 max-w-md mx-auto">
+            <button
+              type="button"
+              onClick={() => { setSelectedCategory('all'); setSearchQuery(''); }}
+              className={`flex flex-col items-center justify-center min-w-[64px] min-h-[48px] px-2 py-1 rounded-xl text-xs font-bold transition-all ${
+                selectedCategory === 'all' && !searchQuery
+                  ? 'text-sky-600 bg-sky-50'
+                  : 'text-slate-700 hover:text-slate-900'
+              }`}
+            >
+              <Users className="w-5 h-5 mb-0.5" />
+              <span>All</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setSelectedCategory('engineering')}
+              className={`flex flex-col items-center justify-center min-w-[64px] min-h-[48px] px-2 py-1 rounded-xl text-xs font-bold transition-all ${
+                selectedCategory === 'engineering'
+                  ? 'text-sky-600 bg-sky-50'
+                  : 'text-slate-700 hover:text-slate-900'
+              }`}
+            >
+              <Sparkles className="w-5 h-5 mb-0.5" />
+              <span>Tech</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setSelectedCategory('media')}
+              className={`flex flex-col items-center justify-center min-w-[64px] min-h-[48px] px-2 py-1 rounded-xl text-xs font-bold transition-all ${
+                selectedCategory === 'media'
+                  ? 'text-sky-600 bg-sky-50'
+                  : 'text-slate-700 hover:text-slate-900'
+              }`}
+            >
+              <Filter className="w-5 h-5 mb-0.5" />
+              <span>Media</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setSelectedCategory('governance')}
+              className={`flex flex-col items-center justify-center min-w-[64px] min-h-[48px] px-2 py-1 rounded-xl text-xs font-bold transition-all ${
+                selectedCategory === 'governance'
+                  ? 'text-sky-600 bg-sky-50'
+                  : 'text-slate-700 hover:text-slate-900'
+              }`}
+            >
+              <ShieldCheck className="w-5 h-5 mb-0.5" />
+              <span>Gov</span>
+            </button>
+          </div>
+        </div>
       </div>
     </MainLayout>
   );

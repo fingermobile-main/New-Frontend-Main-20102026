@@ -54,3 +54,4 @@ describe('MyLearningPage Component', () => {
     expect(screen.getByRole('button', { name: /^Certificates$/i })).toBeInTheDocument();
   });
 });
+

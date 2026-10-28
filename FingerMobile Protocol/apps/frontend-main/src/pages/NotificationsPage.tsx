@@ -103,7 +103,7 @@ const NotificationsPage: React.FC = () => {
   const unreadCount = notifications.filter(n => !n.isRead).length;
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 py-8 pb-28 md:pb-12 max-w-full overflow-x-hidden text-slate-900">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white shadow rounded-lg overflow-hidden">
           {/* Header */}
@@ -193,6 +193,38 @@ const NotificationsPage: React.FC = () => {
               ))
             )}
           </div>
+        </div>
+      </div>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 md:hidden">
+        <div className="flex items-center justify-around gap-2 max-w-md mx-auto">
+          <button
+            type="button"
+            onClick={markAllAsRead}
+            disabled={unreadCount === 0}
+            className="flex flex-col items-center justify-center min-w-[64px] min-h-[48px] px-2 py-1 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-900 transition-all disabled:opacity-40"
+          >
+            <CheckIcon className="w-5 h-5 mb-0.5 text-sky-600" />
+            <span>Read All</span>
+          </button>
+          <button
+            type="button"
+            onClick={deleteAllNotifications}
+            disabled={notifications.length === 0}
+            className="flex flex-col items-center justify-center min-w-[64px] min-h-[48px] px-2 py-1 rounded-xl text-xs font-bold text-rose-700 hover:text-rose-900 transition-all disabled:opacity-40"
+          >
+            <TrashIcon className="w-5 h-5 mb-0.5 text-rose-600" />
+            <span>Clear</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="flex flex-col items-center justify-center min-w-[64px] min-h-[48px] px-2 py-1 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-900 transition-all"
+          >
+            <BellIcon className="w-5 h-5 mb-0.5 text-slate-600" />
+            <span>Top</span>
+          </button>
         </div>
       </div>
     </div>

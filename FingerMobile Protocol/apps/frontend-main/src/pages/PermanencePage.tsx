@@ -626,7 +626,7 @@ const PermanencePage: React.FC = () => {
   );
 
   return (
-    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-28 md:pb-12 max-w-full overflow-x-hidden text-slate-900">
       <div className="text-center mb-8">
         <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight mb-2">Permanence</h1>
         <p className="text-slate-700 font-medium">
@@ -672,6 +672,60 @@ const PermanencePage: React.FC = () => {
           {activeTab === 'creator' && renderCreatorSection()}
         </div>
       )}
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 md:hidden">
+        <div className="flex items-center justify-around gap-2 max-w-md mx-auto">
+          <button
+            type="button"
+            onClick={() => setActiveTab('challenges')}
+            className={`flex flex-col items-center justify-center min-w-[64px] min-h-[48px] px-2 py-1 rounded-xl text-xs font-bold transition-all ${
+              activeTab === 'challenges'
+                ? 'text-blue-600 bg-blue-50'
+                : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <span className="text-base font-black">⚡</span>
+            <span>Challenges</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('games')}
+            className={`flex flex-col items-center justify-center min-w-[64px] min-h-[48px] px-2 py-1 rounded-xl text-xs font-bold transition-all ${
+              activeTab === 'games'
+                ? 'text-blue-600 bg-blue-50'
+                : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <span className="text-base font-black">🎮</span>
+            <span>Games</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('viral')}
+            className={`flex flex-col items-center justify-center min-w-[64px] min-h-[48px] px-2 py-1 rounded-xl text-xs font-bold transition-all ${
+              activeTab === 'viral'
+                ? 'text-blue-600 bg-blue-50'
+                : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <span className="text-base font-black">🔥</span>
+            <span>Viral</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('streamed')}
+            className={`flex flex-col items-center justify-center min-w-[64px] min-h-[48px] px-2 py-1 rounded-xl text-xs font-bold transition-all ${
+              activeTab === 'streamed'
+                ? 'text-blue-600 bg-blue-50'
+                : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <span className="text-base font-black">📡</span>
+            <span>Live</span>
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

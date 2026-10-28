@@ -39,7 +39,7 @@ const OrganizeThesePage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 py-8">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 py-8 pb-28 md:pb-12 max-w-full overflow-x-hidden text-slate-900">
         <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-8 gap-4">
           <div>
             <h1 className="text-3xl font-black text-slate-900 tracking-tight">Organize These</h1>
@@ -91,6 +91,39 @@ const OrganizeThesePage: React.FC = () => {
             onReorganize={handleOrganizeClick}
           />
         )}
+
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 md:hidden">
+          <div className="flex items-center justify-around gap-2 max-w-md mx-auto">
+            <button
+              type="button"
+              onClick={handleOrganizeClick}
+              disabled={isOrganizing}
+              className="flex flex-col items-center justify-center min-w-[64px] min-h-[48px] px-2 py-1 rounded-xl text-xs font-bold text-sky-600 hover:text-sky-800 transition-all disabled:opacity-40"
+            >
+              <span className="text-base font-black">⚙</span>
+              <span>Organize</span>
+            </button>
+            <button
+              type="button"
+              onClick={handleExportPDF}
+              disabled={!organizedData || isOrganizing}
+              className="flex flex-col items-center justify-center min-w-[64px] min-h-[48px] px-2 py-1 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-900 transition-all disabled:opacity-40"
+            >
+              <span className="text-base font-black">📄</span>
+              <span>PDF</span>
+            </button>
+            <button
+              type="button"
+              onClick={handleExportCSV}
+              disabled={!organizedData || isOrganizing}
+              className="flex flex-col items-center justify-center min-w-[64px] min-h-[48px] px-2 py-1 rounded-xl text-xs font-bold text-emerald-700 hover:text-emerald-900 transition-all disabled:opacity-40"
+            >
+              <span className="text-base font-black">📊</span>
+              <span>CSV</span>
+            </button>
+          </div>
+        </div>
       </div>
     </MainLayout>
   );

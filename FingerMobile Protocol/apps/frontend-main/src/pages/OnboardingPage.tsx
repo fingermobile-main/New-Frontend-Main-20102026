@@ -2046,7 +2046,7 @@ const OnboardingPage: React.FC = () => {
 
   return (
     <div
-      className="min-h-screen flex flex-col relative transition-all duration-700 ease-in-out bg-cover bg-center bg-no-repeat bg-fixed"
+      className="min-h-screen flex flex-col relative transition-all duration-700 ease-in-out bg-cover bg-center bg-no-repeat bg-fixed pb-28 md:pb-12 max-w-full overflow-x-hidden text-slate-900"
       style={{ backgroundImage: `url("${activeBackground}")` }}
     >
       {/* High-contrast backdrop overlay to guarantee WCAG AAA readability and prevent visual distraction */}
@@ -2069,6 +2069,37 @@ const OnboardingPage: React.FC = () => {
         {/* Main content */}
         <div className="flex-grow flex items-center justify-center">
           {renderCurrentStep()}
+        </div>
+      </div>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 md:hidden">
+        <div className="flex items-center justify-around gap-2 max-w-md mx-auto">
+          <button
+            type="button"
+            onClick={previousStep}
+            disabled={currentStepNumber <= 1}
+            className="flex flex-col items-center justify-center min-w-[64px] min-h-[48px] px-2 py-1 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-900 transition-all disabled:opacity-40"
+          >
+            <span className="text-base font-black">←</span>
+            <span>Back</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate('/')}
+            className="flex flex-col items-center justify-center min-w-[64px] min-h-[48px] px-2 py-1 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-900 transition-all"
+          >
+            <span className="text-base font-black">⌂</span>
+            <span>Home</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate('/login')}
+            className="flex flex-col items-center justify-center min-w-[64px] min-h-[48px] px-2 py-1 rounded-xl text-xs font-bold text-sky-600 hover:text-sky-800 transition-all"
+          >
+            <span className="text-base font-black">↗</span>
+            <span>Sign In</span>
+          </button>
         </div>
       </div>
     </div>

@@ -46,3 +46,4 @@ describe('MyPages Component', () => {
     expect(screen.getByRole('button', { name: /^Wallet$/i })).toBeInTheDocument();
   });
 });
+
