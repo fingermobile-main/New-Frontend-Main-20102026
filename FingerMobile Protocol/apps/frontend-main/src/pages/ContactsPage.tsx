@@ -589,9 +589,9 @@ export const ContactsPage: React.FC = () => {
             <span>Directory</span>
           </button>
           <button
-            onClick={() => setActiveTab('queues')}
+            onClick={() => setActiveTab('queue')}
             className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-semibold rounded-lg transition-colors ${
-              activeTab === 'queues' ? 'text-emerald-400 bg-emerald-500/10' : 'text-zinc-400 hover:text-zinc-200'
+              activeTab === 'queue' ? 'text-emerald-400 bg-emerald-500/10' : 'text-zinc-400 hover:text-zinc-200'
             }`}
           >
             <Zap className="w-5 h-5 mb-0.5" />

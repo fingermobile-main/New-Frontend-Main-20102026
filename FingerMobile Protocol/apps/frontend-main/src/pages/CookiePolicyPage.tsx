@@ -6,7 +6,7 @@ import LegalDocumentBanner from '../components/legal/LegalDocumentBanner';
 const CookiePolicyPage: React.FC = () => {
   return (
     <MainLayout>
-      <div className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
+      <div className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8 pb-28 md:pb-12 w-full max-w-full overflow-x-hidden text-slate-900">
         <div className="bg-white rounded-lg shadow-md p-6">
           <LegalDocumentBanner
             slug="cookie-policy"
@@ -179,6 +179,38 @@ const CookiePolicyPage: React.FC = () => {
               </p>
             </section>
           </div>
+        </div>
+
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 flex items-center justify-around shadow-2xl">
+          <Link
+            to="/"
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold text-slate-700 hover:text-blue-600 rounded-lg transition-colors"
+          >
+            <span className="text-base mb-0.5">🏠</span>
+            <span>Home</span>
+          </Link>
+          <Link
+            to="/privacy"
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold text-slate-700 hover:text-blue-600 rounded-lg transition-colors"
+          >
+            <span className="text-base mb-0.5">🔒</span>
+            <span>Privacy</span>
+          </Link>
+          <Link
+            to="/terms"
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold text-slate-700 hover:text-blue-600 rounded-lg transition-colors"
+          >
+            <span className="text-base mb-0.5">📜</span>
+            <span>Terms</span>
+          </Link>
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold text-blue-600 bg-blue-50 rounded-lg transition-colors"
+          >
+            <span className="text-base mb-0.5">⬆️</span>
+            <span>Top</span>
+          </button>
         </div>
       </div>
     </MainLayout>

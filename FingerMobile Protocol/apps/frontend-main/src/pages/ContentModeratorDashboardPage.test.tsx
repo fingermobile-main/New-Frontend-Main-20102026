@@ -21,3 +21,4 @@ describe('ContentModeratorDashboardPage Mobile & Accessibility', () => {
     expect(screen.getAllByRole('button', { name: /RBAC/i }).length).toBeGreaterThan(0);
   });
 });
+

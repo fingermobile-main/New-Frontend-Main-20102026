@@ -52,7 +52,7 @@ const ContentPage: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pb-28 md:pb-12 w-full max-w-full overflow-x-hidden text-slate-900">
       {/* Header */}
       <header className="bg-white border-b border-slate-300 shadow-xs">
         <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -158,6 +158,34 @@ const ContentPage: React.FC = () => {
           </div>
         </div>
       </main>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 flex items-center justify-around shadow-2xl">
+        <Link
+          to="/content"
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold text-blue-600 bg-blue-50 rounded-lg transition-colors"
+        >
+          <FileText className="w-5 h-5 mb-0.5 text-blue-600" />
+          <span>Items</span>
+        </Link>
+        <button
+          onClick={() => {
+            const el = document.querySelector('input[type="text"]') as HTMLInputElement;
+            el?.focus();
+          }}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold text-slate-700 hover:text-blue-600 rounded-lg transition-colors"
+        >
+          <Search className="w-5 h-5 mb-0.5 text-slate-600" />
+          <span>Search</span>
+        </button>
+        <Link
+          to="/createpost"
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold text-slate-700 hover:text-blue-600 rounded-lg transition-colors"
+        >
+          <Plus className="w-5 h-5 mb-0.5 text-blue-600" />
+          <span>Create</span>
+        </Link>
+      </div>
     </div>
   );
 };

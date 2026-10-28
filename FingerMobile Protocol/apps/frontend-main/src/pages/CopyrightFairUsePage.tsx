@@ -33,7 +33,7 @@ const CopyrightFairUsePage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <div className="container mx-auto px-4 py-8 max-w-4xl pb-28 md:pb-12 w-full max-w-full overflow-x-hidden text-slate-900">
         <h1 className="text-3xl font-bold text-gray-900 mb-6">
           FingerMobile Copyright & AI Fair Use Compliance Policy
         </h1>
@@ -114,6 +114,34 @@ const CopyrightFairUsePage: React.FC = () => {
             className="w-full md:w-auto px-8 py-3 bg-green-600 text-white font-bold rounded-md hover:bg-green-700 transition-colors"
           >
             Accept & Continue
+          </button>
+        </div>
+
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 flex items-center justify-around shadow-2xl">
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold text-slate-700 hover:text-blue-600 rounded-lg transition-colors"
+          >
+            <span className="text-base mb-0.5">📜</span>
+            <span>Policy</span>
+          </button>
+          <button
+            onClick={() => {
+              const el = document.querySelector('input[type="text"]') as HTMLInputElement;
+              el?.focus();
+            }}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold text-blue-600 bg-blue-50 rounded-lg transition-colors"
+          >
+            <span className="text-base mb-0.5">⚖️</span>
+            <span>Evaluate</span>
+          </button>
+          <button
+            onClick={handleAcceptPolicy}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold text-green-700 bg-green-50 rounded-lg transition-colors"
+          >
+            <span className="text-base mb-0.5">✅</span>
+            <span>Accept</span>
           </button>
         </div>
       </div>

@@ -203,7 +203,7 @@ const CouponsPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Coupons & Promotional Vouchers">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 pb-28 md:pb-12 w-full max-w-full overflow-x-hidden text-slate-900">
         
         {/* 1. HERO BANNER: Strict Contrast Hierarchy */}
         <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-300 shadow-sm relative overflow-hidden">
@@ -535,6 +535,46 @@ const CouponsPage: React.FC = () => {
             </form>
           </div>
         )}
+
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 flex items-center justify-around shadow-2xl">
+          <button
+            onClick={() => setActiveTab('available')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold rounded-lg transition-colors ${
+              activeTab === 'available' ? 'text-orange-600 bg-orange-50' : 'text-slate-700 hover:text-orange-600'
+            }`}
+          >
+            <Tag className="w-5 h-5 mb-0.5 text-orange-600" />
+            <span>Available</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('claimed')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold rounded-lg transition-colors ${
+              activeTab === 'claimed' ? 'text-orange-600 bg-orange-50' : 'text-slate-700 hover:text-orange-600'
+            }`}
+          >
+            <Gift className="w-5 h-5 mb-0.5 text-blue-600" />
+            <span>Wallet</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('redeemed')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold rounded-lg transition-colors ${
+              activeTab === 'redeemed' ? 'text-orange-600 bg-orange-50' : 'text-slate-700 hover:text-orange-600'
+            }`}
+          >
+            <Clock className="w-5 h-5 mb-0.5 text-slate-600" />
+            <span>Redeemed</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('create')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold rounded-lg transition-colors ${
+              activeTab === 'create' ? 'text-orange-600 bg-orange-50' : 'text-slate-700 hover:text-orange-600'
+            }`}
+          >
+            <PlusCircle className="w-5 h-5 mb-0.5 text-emerald-600" />
+            <span>Create</span>
+          </button>
+        </div>
 
       </div>
     </MainLayout>

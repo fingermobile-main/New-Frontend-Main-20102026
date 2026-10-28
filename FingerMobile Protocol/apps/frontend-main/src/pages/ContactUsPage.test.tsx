@@ -46,3 +46,4 @@ describe('ContactUsPage Mobile Suite', () => {
     expect(screen.getByRole('link', { name: /Portal/i })).toBeInTheDocument();
   });
 });
+

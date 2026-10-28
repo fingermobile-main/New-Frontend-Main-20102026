@@ -21,3 +21,4 @@ describe('ContentManagementPage Mobile & Accessibility', () => {
     expect(screen.getAllByRole('button', { name: /Create/i }).length).toBeGreaterThan(0);
   });
 });
+

@@ -793,20 +793,9 @@ export const ContentModeratorDashboardPage: React.FC = () => {
             <span>Queue</span>
           </button>
           <button
-            onClick={() => setActiveTab('sentinel')}
+            onClick={() => setActiveTab('audit_log')}
             className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold rounded-lg transition-colors ${
-              activeTab === 'sentinel'
-                ? 'text-amber-600 bg-amber-50 dark:bg-amber-950/40'
-                : 'text-slate-700 dark:text-slate-300 hover:text-amber-600'
-            }`}
-          >
-            <Sparkles className="w-5 h-5 mb-0.5 text-indigo-500" />
-            <span>Sentinel</span>
-          </button>
-          <button
-            onClick={() => setActiveTab('audit')}
-            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold rounded-lg transition-colors ${
-              activeTab === 'audit'
+              activeTab === 'audit_log'
                 ? 'text-amber-600 bg-amber-50 dark:bg-amber-950/40'
                 : 'text-slate-700 dark:text-slate-300 hover:text-amber-600'
             }`}
@@ -815,12 +804,21 @@ export const ContentModeratorDashboardPage: React.FC = () => {
             <span>Audit</span>
           </button>
           <button
-            onClick={() => setActiveTab('tiers')}
-            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold rounded-lg transition-colors ${
-              activeTab === 'tiers'
-                ? 'text-amber-600 bg-amber-50 dark:bg-amber-950/40'
-                : 'text-slate-700 dark:text-slate-300 hover:text-amber-600'
-            }`}
+            onClick={() => {
+              setActiveTab('queue');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-amber-600 transition-colors"
+          >
+            <Sparkles className="w-5 h-5 mb-0.5 text-indigo-500" />
+            <span>Sentinel</span>
+          </button>
+          <button
+            onClick={() => {
+              setActiveTab('queue');
+              window.scrollTo({ top: 300, behavior: 'smooth' });
+            }}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-amber-600 transition-colors"
           >
             <Cpu className="w-5 h-5 mb-0.5 text-rose-500" />
             <span>RBAC</span>

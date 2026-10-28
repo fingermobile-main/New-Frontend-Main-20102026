@@ -37,3 +37,4 @@ describe('ConferencePage Mobile Suite', () => {
     expect(screen.getByRole('button', { name: /Sync/i })).toBeInTheDocument();
   });
 });
+
