@@ -3,6 +3,19 @@ import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import HallmarkPublicPage from './HallmarkPublicPage';
 
+const mockProducts = [
+  {
+    id: 'prod-1',
+    name: 'Sovereign Hallmark Token',
+    description: 'Verifiable physical token',
+    price: 99,
+    category: 'Hardware',
+    images: ['https://placehold.co/200x200']
+  }
+];
+
+const mockFetchProducts = jest.fn();
+
 // Mock contexts
 jest.mock('../../contexts/AuthContext', () => ({
   useAuth: () => ({
@@ -12,19 +25,10 @@ jest.mock('../../contexts/AuthContext', () => ({
 
 jest.mock('../../contexts/MarketplaceContext', () => ({
   useMarketplace: () => ({
-    products: [
-      {
-        id: 'prod-1',
-        name: 'Sovereign Hallmark Token',
-        description: 'Verifiable physical token',
-        price: 99,
-        category: 'Hardware',
-        images: ['https://placehold.co/200x200']
-      }
-    ],
+    products: mockProducts,
     loading: false,
     error: null,
-    fetchProducts: jest.fn()
+    fetchProducts: mockFetchProducts
   })
 }));
 
