@@ -154,17 +154,17 @@ const StercsVideoEditor: React.FC = () => {
           </div>
         </div>
 
-        <div className="flex items-center space-x-3">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-3 w-full sm:w-auto">
           <input
             type="text"
             value={projectTitle}
             onChange={(e) => setProjectTitle(e.target.value)}
-            className="bg-slate-800 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-red-500 w-48 sm:w-64"
+            className="bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-red-500 w-full sm:w-64 min-h-[44px]"
           />
           <button
             onClick={handleExportProject}
             disabled={isExporting}
-            className="px-5 py-2.5 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white rounded-xl text-xs font-bold transition-all shadow-lg shadow-red-600/20 flex items-center space-x-2 disabled:opacity-50"
+            className="px-5 py-2.5 min-h-[44px] bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white rounded-xl text-xs font-bold transition-all shadow-lg shadow-red-600/20 flex items-center justify-center space-x-2 disabled:opacity-50 active:scale-95"
           >
             <ArrowDownTrayIcon className="w-4 h-4" />
             <span>{isExporting ? 'Exporting 4K...' : 'Export Video'}</span>
@@ -214,18 +214,20 @@ const StercsVideoEditor: React.FC = () => {
             <h4 className="text-xs font-bold text-slate-300 uppercase tracking-wider">Editor Tools</h4>
             <div className="grid grid-cols-2 gap-2">
               <button
+                data-testid="stercs-split-btn"
                 onClick={handleSplitClipAtPlayhead}
-                className="p-3 rounded-2xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold flex items-center space-x-2 text-slate-200"
+                className="p-3 min-h-[44px] rounded-2xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold flex items-center justify-center space-x-2 text-slate-200 active:scale-95 transition"
               >
                 <ScissorsIcon className="w-4 h-4 text-red-400" />
                 <span>Split at Time</span>
               </button>
 
               <button
+                data-testid="stercs-transition-btn"
                 onClick={() => {
                   showToast?.('Added Glitch Transition to Track 1', 'info');
                 }}
-                className="p-3 rounded-2xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold flex items-center space-x-2 text-slate-200"
+                className="p-3 min-h-[44px] rounded-2xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold flex items-center justify-center space-x-2 text-slate-200 active:scale-95 transition"
               >
                 <SparklesIcon className="w-4 h-4 text-cyan-400" />
                 <span>Add Transition</span>
@@ -236,7 +238,7 @@ const StercsVideoEditor: React.FC = () => {
                   setPlayheadSec(0);
                   setIsPlaying(false);
                 }}
-                className="p-3 rounded-2xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold flex items-center space-x-2 text-slate-200"
+                className="p-3 min-h-[44px] rounded-2xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold flex items-center justify-center space-x-2 text-slate-200 active:scale-95 transition"
               >
                 <ArrowPathIcon className="w-4 h-4 text-indigo-400" />
                 <span>Reset Head</span>
@@ -246,7 +248,7 @@ const StercsVideoEditor: React.FC = () => {
                 onClick={() => {
                   showToast?.('Timeline snapped to BeatwaveNG 128 BPM markers', 'success');
                 }}
-                className="p-3 rounded-2xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold flex items-center space-x-2 text-slate-200"
+                className="p-3 min-h-[44px] rounded-2xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold flex items-center justify-center space-x-2 text-slate-200 active:scale-95 transition"
               >
                 <MusicalNoteIcon className="w-4 h-4 text-emerald-400" />
                 <span>Snap to BPM</span>

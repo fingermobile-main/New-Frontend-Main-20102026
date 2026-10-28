@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import {
   Coins,
   ShoppingBag,
@@ -14,6 +14,8 @@ import {
   TrendingUp,
   History,
   Info,
+  Wallet,
+  ArrowLeft
 } from 'lucide-react';
 import { useAppContext } from '../../contexts/AppContext';
 import apiService from '../../services/apiService';
@@ -246,37 +248,46 @@ const MyWalletPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 py-8 px-4 sm:px-6 lg:px-8">
-      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto space-y-8">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 py-6 sm:py-8 px-3 sm:px-6 lg:px-8 w-full max-w-full overflow-x-hidden pb-28 md:pb-12">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto space-y-6 sm:space-y-8">
         {/* Sovereign Platform Ownership Proof */}
         <PlatformOwnershipCard />
 
         {/* Header with Protocol Branding */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-6">
-          <div>
-            <div className="flex items-center gap-2 mb-1 text-xs font-mono text-amber-600 dark:text-amber-400 font-bold">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>[FingerMobile™Protocol] Sovereign Monetary Architecture</span>
+          <div className="flex items-start sm:items-center gap-3">
+            <Link
+              to="/financials"
+              className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 text-slate-800 dark:text-slate-200 active:scale-95 transition shrink-0"
+              aria-label="Back to Financials"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </Link>
+            <div>
+              <div className="flex items-center gap-1.5 mb-1 text-xs font-mono text-amber-600 dark:text-amber-400 font-bold">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>[FingerMobile™Protocol] Sovereign Monetary Architecture</span>
+              </div>
+              <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">Multi-Balance Sovereign Wallet</h1>
+              <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-medium mt-0.5">
+                Automated 4-part earning distribution: 45% Liquid Retained, 25% Store Credit, 5% 1-Year Sleepers @ 1.5% APY, and 25% Platform Revenue.
+              </p>
             </div>
-            <h1 className="text-3xl font-extrabold tracking-tight">Multi-Balance Sovereign Wallet</h1>
-            <p className="text-sm text-slate-700 dark:text-slate-300 font-medium mt-1">
-              Automated 4-part earning distribution: 45% Liquid Retained, 25% Store Credit, 5% 1-Year Sleepers @ 1.5% APY, and 25% Platform Revenue.
-            </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <button
               onClick={() => setIsSimulateModalOpen(true)}
-              className="px-3.5 py-2 text-xs font-bold rounded-xl border border-amber-400 dark:border-amber-700 bg-amber-50 dark:bg-amber-950/40 text-amber-950 dark:text-amber-300 hover:bg-amber-100 transition-colors flex items-center gap-1.5 cursor-pointer"
+              className="min-h-[44px] px-3.5 py-2 text-xs font-bold rounded-xl border border-amber-400 dark:border-amber-700 bg-amber-50 dark:bg-amber-950/40 text-amber-950 dark:text-amber-300 hover:bg-amber-100 transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
             >
-              <TrendingUp className="w-3.5 h-3.5" />
-              <span>Simulate 4-Part Split</span>
+              <TrendingUp className="w-4 h-4" />
+              <span>Simulate Split</span>
             </button>
             <button
               onClick={() => navigate('/fic-vault')}
-              className="px-3.5 py-2 text-xs font-bold rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-slate-800 transition-colors flex items-center gap-1.5 cursor-pointer"
+              className="min-h-[44px] px-3.5 py-2 text-xs font-bold rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-slate-800 transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
             >
-              <Clock className="w-3.5 h-3.5 text-blue-500" />
+              <Clock className="w-4 h-4 text-blue-500" />
               <span>Sleeper Vault</span>
             </button>
           </div>
@@ -306,16 +317,16 @@ const MyWalletPage: React.FC = () => {
             <div className="pt-4 mt-4 border-t border-slate-200 dark:border-slate-800 flex items-center gap-2">
               <button
                 onClick={() => setIsSendModalOpen(true)}
-                className="flex-1 px-3 py-1.5 text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center justify-center gap-1 cursor-pointer"
+                className="flex-1 min-h-[44px] px-3 py-2 text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition-all flex items-center justify-center gap-1 cursor-pointer active:scale-95"
               >
-                <ArrowUpRight className="w-3 h-3" />
+                <ArrowUpRight className="w-3.5 h-3.5" />
                 <span>Send</span>
               </button>
               <button
                 onClick={() => setIsDepositModalOpen(true)}
-                className="flex-1 px-3 py-1.5 text-xs font-bold border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors flex items-center justify-center gap-1 cursor-pointer"
+                className="flex-1 min-h-[44px] px-3 py-2 text-xs font-bold border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all flex items-center justify-center gap-1 cursor-pointer active:scale-95"
               >
-                <ArrowDownLeft className="w-3 h-3" />
+                <ArrowDownLeft className="w-3.5 h-3.5" />
                 <span>Deposit</span>
               </button>
             </div>
@@ -347,9 +358,9 @@ const MyWalletPage: React.FC = () => {
             <div className="pt-4 mt-4 border-t border-slate-200 dark:border-slate-800">
               <button
                 onClick={() => setIsStoreCreditModalOpen(true)}
-                className="w-full px-3 py-1.5 text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                className="w-full min-h-[44px] px-3 py-2 text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
               >
-                <ShoppingBag className="w-3 h-3" />
+                <ShoppingBag className="w-4 h-4" />
                 <span>Redeem at Store</span>
               </button>
             </div>
@@ -381,10 +392,10 @@ const MyWalletPage: React.FC = () => {
             <div className="pt-4 mt-4 border-t border-slate-200 dark:border-slate-800">
               <button
                 onClick={() => navigate('/fic-vault')}
-                className="w-full px-3 py-1.5 text-xs font-bold border border-purple-300 dark:border-purple-700 text-purple-800 dark:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-950/40 rounded-lg transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                className="w-full min-h-[44px] px-3 py-2 text-xs font-bold border border-purple-300 dark:border-purple-700 text-purple-800 dark:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-950/40 rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
               >
                 <span>View Sleeper Vault</span>
-                <ExternalLink className="w-3 h-3" />
+                <ExternalLink className="w-3.5 h-3.5" />
               </button>
             </div>
           </div>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import apiService from '../services/apiService';
 import {
   LanguageIcon,
@@ -9,6 +10,7 @@ import {
   ClockIcon,
   VideoCameraIcon
 } from '@heroicons/react/24/outline';
+import { Globe, Wand2, Mic2, FileText, ArrowLeft } from 'lucide-react';
 import PlatformOwnershipCard from '../components/dashboard/PlatformOwnershipCard';
 
 export interface SubtitleCue {
@@ -176,39 +178,46 @@ const VideoTranslationDashboard: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white p-4 sm:p-6 lg:p-8">
+    <div className="min-h-screen bg-gray-950 text-white p-3 sm:p-6 lg:p-8 w-full max-w-full overflow-x-hidden pb-28 md:pb-12">
       <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto space-y-6">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-gray-800 gap-4">
-        <div className="flex items-center gap-3">
-          <div className="p-3 bg-indigo-600/20 text-indigo-400 border border-indigo-500/30 rounded-2xl">
-            <LanguageIcon className="w-8 h-8" />
+          <div className="flex items-center gap-3">
+            <Link
+              to="/videos"
+              className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-xl bg-gray-900 hover:bg-gray-800 text-gray-200 border border-gray-800 active:scale-95 transition"
+              aria-label="Back to Videos"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </Link>
+            <div className="p-2.5 sm:p-3 bg-indigo-600/20 text-indigo-400 border border-indigo-500/30 rounded-2xl shrink-0">
+              <LanguageIcon className="w-7 h-7 sm:w-8 sm:h-8" />
+            </div>
+            <div>
+              <h1 className="text-xl sm:text-2xl font-black tracking-tight">AI Video Translation &amp; Dubbing Studio</h1>
+              <p className="text-xs text-slate-300 font-medium">
+                Multilingual Speech Recognition, Neural Subtitling &amp; Synchronized Voice Cloning
+              </p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-2xl font-black tracking-tight">AI Video Translation &amp; Dubbing Studio</h1>
-            <p className="text-xs text-slate-300 font-medium">
-              Multilingual Speech Recognition, Neural Subtitling &amp; Synchronized Voice Cloning
-            </p>
-          </div>
-        </div>
 
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={() => handleExportFormat('vtt')}
-            className="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-gray-200 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 border border-gray-700"
-          >
-            <ArrowDownTrayIcon className="w-4 h-4" /> Export .VTT
-          </button>
-          <button
-            type="button"
-            onClick={() => handleExportFormat('srt')}
-            className="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-gray-200 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 border border-gray-700"
-          >
-            <ArrowDownTrayIcon className="w-4 h-4" /> Export .SRT
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => handleExportFormat('vtt')}
+              className="min-h-[44px] px-4 py-2 bg-gray-900 hover:bg-gray-800 text-gray-200 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 border border-gray-800 active:scale-95"
+            >
+              <ArrowDownTrayIcon className="w-4 h-4" /> Export .VTT
+            </button>
+            <button
+              type="button"
+              onClick={() => handleExportFormat('srt')}
+              className="min-h-[44px] px-4 py-2 bg-gray-900 hover:bg-gray-800 text-gray-200 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 border border-gray-800 active:scale-95"
+            >
+              <ArrowDownTrayIcon className="w-4 h-4" /> Export .SRT
+            </button>
+          </div>
         </div>
-      </div>
 
       {/* Live Quota Bar from PostgreSQL */}
       <div className="bg-indigo-950/40 border border-indigo-800/60 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-4 text-xs">
@@ -257,7 +266,7 @@ const VideoTranslationDashboard: React.FC = () => {
                 id="source-lang-select"
                 value={sourceLang}
                 onChange={(e) => setSourceLang(e.target.value)}
-                className="w-full p-2.5 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white font-bold focus:outline-none focus:border-indigo-500"
+                className="w-full min-h-[44px] p-2.5 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white font-bold focus:outline-none focus:border-indigo-500"
               >
                 {SUPPORTED_LANGUAGES.map((l) => (
                   <option key={l.code} value={l.code}>
@@ -275,7 +284,7 @@ const VideoTranslationDashboard: React.FC = () => {
                 id="target-lang-select"
                 value={targetLang}
                 onChange={(e) => setTargetLang(e.target.value)}
-                className="w-full p-2.5 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white font-bold focus:outline-none focus:border-indigo-500"
+                className="w-full min-h-[44px] p-2.5 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white font-bold focus:outline-none focus:border-indigo-500"
               >
                 {SUPPORTED_LANGUAGES.map((l) => (
                   <option key={l.code} value={l.code}>
@@ -287,10 +296,11 @@ const VideoTranslationDashboard: React.FC = () => {
           </div>
 
           <button
+            data-testid="run-ai-translation-btn"
             type="button"
             disabled={isTranslating}
             onClick={handleRunAiTranslation}
-            className="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white rounded-xl text-xs font-bold shadow-md transition-all flex items-center justify-center gap-2"
+            className="w-full min-h-[44px] py-2.5 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white rounded-xl text-xs font-bold shadow-md transition-all flex items-center justify-center gap-2 active:scale-95"
           >
             <SparklesIcon className="w-4 h-4" />
             {isTranslating ? 'Running Neural Translation...' : 'Regenerate Subtitle Translations'}
@@ -315,7 +325,7 @@ const VideoTranslationDashboard: React.FC = () => {
                 id="voice-gender-select"
                 value={voiceGender}
                 onChange={(e) => setVoiceGender(e.target.value as 'female' | 'male' | 'neutral')}
-                className="w-full p-2.5 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white font-bold"
+                className="w-full min-h-[44px] p-2.5 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white font-bold"
               >
                 <option value="female">Natural Female</option>
                 <option value="male">Natural Male</option>
@@ -331,7 +341,7 @@ const VideoTranslationDashboard: React.FC = () => {
                 id="voice-accent-select"
                 value={accent}
                 onChange={(e) => setAccent(e.target.value)}
-                className="w-full p-2.5 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white font-bold"
+                className="w-full min-h-[44px] p-2.5 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white font-bold"
               >
                 <option value="neutral_african">Neutral African English</option>
                 <option value="parisian_french">Parisian French</option>
@@ -354,7 +364,7 @@ const VideoTranslationDashboard: React.FC = () => {
                 step="0.1"
                 value={speechRate}
                 onChange={(e) => setSpeechRate(parseFloat(e.target.value))}
-                className="w-full h-1 bg-gray-700 rounded-lg cursor-pointer"
+                className="w-full h-1 bg-gray-700 rounded-lg cursor-pointer min-h-[30px]"
               />
             </div>
             <div>
@@ -369,16 +379,17 @@ const VideoTranslationDashboard: React.FC = () => {
                 step="1"
                 value={bgDuckingDb}
                 onChange={(e) => setBgDuckingDb(parseInt(e.target.value, 10))}
-                className="w-full h-1 bg-gray-700 rounded-lg cursor-pointer"
+                className="w-full h-1 bg-gray-700 rounded-lg cursor-pointer min-h-[30px]"
               />
             </div>
           </div>
 
           <button
+            data-testid="synthesize-dubbing-btn"
             type="button"
             disabled={isDubbing}
             onClick={handleSynthesizeDubbing}
-            className="w-full py-2.5 bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700 disabled:opacity-50 text-white rounded-xl text-xs font-bold shadow-md transition-all flex items-center justify-center gap-2"
+            className="w-full min-h-[44px] py-2.5 bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700 disabled:opacity-50 text-white rounded-xl text-xs font-bold shadow-md transition-all flex items-center justify-center gap-2 active:scale-95"
           >
             <SpeakerWaveIcon className="w-4 h-4" />
             {isDubbing ? 'Synthesizing Audio Dubs...' : 'Synthesize Neural Voice Dubs'}
@@ -440,6 +451,50 @@ const VideoTranslationDashboard: React.FC = () => {
 
       {/* Sovereign Platform Ownership Directive */}
       <PlatformOwnershipCard />
+      </div>
+
+      {/* Floating Sovereign Mobile Navigation Quick Dock */}
+      <div
+        data-testid="video-translation-mobile-dock"
+        className="fixed bottom-3 inset-x-3 z-40 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl shadow-2xl px-2 py-1.5 flex items-center justify-around sm:hidden"
+      >
+        <button
+          onClick={() => {
+            const transBtn = document.querySelector('[data-testid="run-ai-translation-btn"]') as HTMLButtonElement;
+            if (transBtn) transBtn.click();
+          }}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 rounded-xl text-[10px] font-black text-indigo-400 hover:text-indigo-300 transition-colors"
+        >
+          <Wand2 className="w-5 h-5 mb-0.5" />
+          <span>Translate</span>
+        </button>
+
+        <button
+          onClick={() => {
+            const dubBtn = document.querySelector('[data-testid="synthesize-dubbing-btn"]') as HTMLButtonElement;
+            if (dubBtn) dubBtn.click();
+          }}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 rounded-xl text-[10px] font-black text-pink-400 hover:text-pink-300 transition-colors"
+        >
+          <Mic2 className="w-5 h-5 mb-0.5" />
+          <span>Dub Voice</span>
+        </button>
+
+        <button
+          onClick={() => handleExportFormat('vtt')}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 rounded-xl text-[10px] font-black text-emerald-400 hover:text-emerald-300 transition-colors"
+        >
+          <FileText className="w-5 h-5 mb-0.5" />
+          <span>.VTT</span>
+        </button>
+
+        <Link
+          to="/videos"
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-3 py-1 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl text-[10px] font-black text-white shadow-md active:scale-95 transition"
+        >
+          <Globe className="w-5 h-5 mb-0.5" />
+          <span>Videos</span>
+        </Link>
       </div>
     </div>
   );
