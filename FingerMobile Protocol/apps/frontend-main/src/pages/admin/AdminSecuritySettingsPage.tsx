@@ -154,13 +154,13 @@ const AdminSecuritySettingsPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-slate-50 py-8 px-4 sm:px-6 lg:px-8 w-full max-w-full overflow-x-hidden text-slate-900 pb-28 md:pb-12">
       <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto space-y-6">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <div className="flex items-center gap-3">
-              <h1 className="text-3xl font-black text-slate-900 tracking-tight">
+              <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
                 Platform Security Policies &amp; Access Controls
               </h1>
               <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-100 text-emerald-950 border border-emerald-400">
@@ -176,7 +176,7 @@ const AdminSecuritySettingsPage: React.FC = () => {
             <button
               onClick={saveSettings}
               disabled={saving || loading}
-              className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-bold text-sm rounded-xl shadow-sm transition cursor-pointer"
+              className="min-h-[44px] px-5 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-bold text-sm rounded-xl shadow-sm transition flex items-center justify-center cursor-pointer"
             >
               {saving ? 'Synchronizing...' : 'Save Policies'}
             </button>
@@ -262,13 +262,55 @@ const AdminSecuritySettingsPage: React.FC = () => {
               <button
                 onClick={saveSettings}
                 disabled={saving}
-                className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-bold py-2.5 px-6 rounded-xl shadow-sm text-sm cursor-pointer transition-colors"
+                className="min-h-[44px] bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-bold py-2.5 px-6 rounded-xl shadow-sm text-sm cursor-pointer transition-colors flex items-center justify-center"
               >
                 {saving ? 'Synchronizing Policies...' : 'Save & Enforce Policies'}
               </button>
             </div>
           </div>
         )}
+      </div>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 py-2 px-3 flex items-center justify-around gap-1 shadow-lg md:hidden">
+        <button
+          onClick={saveSettings}
+          disabled={saving}
+          aria-label="Save Policies Quick"
+          className="min-h-[44px] min-w-[44px] px-2 py-1 flex flex-col items-center justify-center text-xs font-semibold text-slate-800 hover:text-blue-600"
+        >
+          <span className="text-base">💾</span>
+          <span>Save</span>
+        </button>
+        <button
+          onClick={fetchSecuritySettings}
+          aria-label="Reload Policies"
+          className="min-h-[44px] min-w-[44px] px-2 py-1 flex flex-col items-center justify-center text-xs font-semibold text-slate-800 hover:text-blue-600"
+        >
+          <span className="text-base">🔄</span>
+          <span>Reload</span>
+        </button>
+        <button
+          onClick={() => {
+            const mfaSetting = settings.find((s) => s.id === 'enforce_mfa');
+            if (mfaSetting) {
+              handleSettingChange('enforce_mfa', mfaSetting.value === 'true' ? 'false' : 'true');
+            }
+          }}
+          aria-label="Toggle MFA"
+          className="min-h-[44px] min-w-[44px] px-2 py-1 flex flex-col items-center justify-center text-xs font-semibold text-slate-800 hover:text-blue-600"
+        >
+          <span className="text-base">🔐</span>
+          <span>MFA</span>
+        </button>
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          aria-label="Scroll to Top"
+          className="min-h-[44px] min-w-[44px] px-2 py-1 flex flex-col items-center justify-center text-xs font-semibold text-slate-800 hover:text-blue-600"
+        >
+          <span className="text-base">⬆️</span>
+          <span>Top</span>
+        </button>
       </div>
     </div>
   );

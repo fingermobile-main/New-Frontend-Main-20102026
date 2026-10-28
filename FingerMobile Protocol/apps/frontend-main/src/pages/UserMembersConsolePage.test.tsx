@@ -38,3 +38,4 @@ describe('UserMembersConsolePage', () => {
     expect(screen.getByRole('button', { name: /Top/i })).toBeInTheDocument();
   });
 });
+

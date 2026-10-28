@@ -77,3 +77,4 @@ describe('TrendsPage', () => {
     fireEvent.click(newsBtns[0]);
   });
 });
+
