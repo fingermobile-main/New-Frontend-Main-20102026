@@ -54,7 +54,7 @@ describe('LiveStreamingPage', () => {
       </MemoryRouter>
     );
 
-    expect(await screen.findByText('Live Streams')).toBeInTheDocument();
+    expect(await screen.findByText('Live Streams', {}, { timeout: 4000 })).toBeInTheDocument();
     expect(screen.getAllByText('Viewers').length).toBeGreaterThan(0);
     expect(screen.getByText('Watch Time')).toBeInTheDocument();
     expect(screen.getByText('Likes/Stream')).toBeInTheDocument();

@@ -173,17 +173,18 @@ const OwnitTrackingPage: React.FC = () => {
   }, [loadShipments]);
 
   return (
-    <div style={styles.container}>
-      <header style={styles.header}>
+    <div className="w-full max-w-full overflow-x-hidden min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8 pb-28 md:pb-12 font-sans">
+      <header className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto mb-6 pb-5 border-b border-slate-300 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 style={styles.title}>Ownit Purchase Tracking</h1>
-          <p style={styles.subtitle}>Monitor delivery status parameters across active dispatches</p>
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-black text-slate-900 tracking-tight">Ownit Purchase Tracking</h1>
+          <p className="text-xs sm:text-sm text-slate-700 font-medium mt-1">Monitor delivery status parameters across active dispatches</p>
         </div>
-        <div style={styles.headerActionBlock}>
+        <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
           <button
+            type="button"
             onClick={handleRefresh}
             disabled={refreshing}
-            style={styles.refreshButton}
+            className="flex-1 sm:flex-none px-4 py-2.5 min-h-[44px] bg-white text-slate-700 border border-slate-300 rounded-xl text-xs sm:text-sm font-bold hover:bg-slate-50 transition active:scale-95 flex items-center justify-center shadow-xs"
           >
             {refreshing ? 'Refreshing...' : 'Refresh Status'}
           </button>
@@ -191,41 +192,45 @@ const OwnitTrackingPage: React.FC = () => {
             type="button"
             aria-label="Create new purchase"
             onClick={() => window.location.assign('/store')}
-            style={styles.newPurchaseButton}
+            className="flex-1 sm:flex-none px-5 py-2.5 min-h-[44px] bg-rose-500 hover:bg-rose-600 text-white rounded-xl text-xs sm:text-sm font-black transition active:scale-95 shadow-md shadow-rose-500/20 flex items-center justify-center"
           >
             New Purchase
           </button>
         </div>
       </header>
 
-      <main style={styles.content}>
+      <main className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto">
         {shipments.length > 0 ? (
-          <div style={styles.dashboardGrid}>
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(280px,360px)_1fr] gap-6 items-start">
             {/* Sidebar Navigation Matrix */}
-            <section style={styles.sidebar}>
-              <h2 style={styles.sectionTitle}>Active Consignments ({shipments.length})</h2>
-              <div style={styles.shipmentList}>
+            <section className="flex flex-col gap-3">
+              <h2 className="text-xs font-bold uppercase tracking-wider text-slate-700">Active Consignments ({shipments.length})</h2>
+              {/* Horizontal scroller on mobile, vertical stack on desktop */}
+              <div className="flex lg:flex-col gap-3 overflow-x-auto lg:overflow-visible pb-2 lg:pb-0 scrollbar-none flex-nowrap lg:flex-wrap">
                 {shipments.map((item) => {
                   const isSelected = selectedShipment?.id === item.id;
                   return (
                     <button
                       key={item.id}
+                      type="button"
                       onClick={() => setSelectedShipment(item)}
-                      style={{
-                        ...styles.shipmentItem,
-                        ...(isSelected ? styles.selectedShipmentItem : {})
-                      }}
+                      className={`min-w-[260px] lg:min-w-0 p-4 rounded-xl border text-left transition-all outline-none shrink-0 lg:shrink active:scale-95 min-h-[44px] ${
+                        isSelected
+                          ? 'border-rose-400 bg-rose-50/80 shadow-md shadow-rose-500/10'
+                          : 'border-slate-300 bg-white hover:bg-slate-50'
+                      }`}
                     >
-                      <div style={styles.itemHeader}>
-                        <span style={styles.trackingNumber}>{item.tracking_number}</span>
-                        <span style={{
-                          ...styles.statusBadge,
-                          ...(item.status === 'delivered' ? styles.statusDelivered : styles.statusTransit)
-                        }}>
+                      <div className="flex justify-between items-center mb-2 gap-2">
+                        <span className="font-black text-sm text-slate-900 tracking-tight">{item.tracking_number}</span>
+                        <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-md tracking-wider ${
+                          item.status === 'delivered'
+                            ? 'bg-emerald-100 text-emerald-950 border border-emerald-400'
+                            : 'bg-sky-100 text-sky-950 border border-sky-400'
+                        }`}>
                           {item.status}
                         </span>
                       </div>
-                      <span style={styles.locationSummary}>
+                      <span className="block text-xs text-slate-700 font-medium">
                         Current: {item.current_location?.area}, {item.current_location?.state}
                       </span>
                     </button>
@@ -235,17 +240,17 @@ const OwnitTrackingPage: React.FC = () => {
             </section>
 
             {/* Comprehensive Tracking Display Segment */}
-            <section style={styles.mainDisplay}>
+            <section className="bg-white rounded-2xl border border-slate-300 shadow-sm overflow-hidden">
               {selectedShipment ? (
-                <div style={styles.detailsCard}>
-                  <div style={styles.detailsHeader}>
+                <div className="p-4 sm:p-6 lg:p-8">
+                  <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-6 pb-4 border-b border-slate-200">
                     <div>
-                      <span style={styles.metaLabel}>Tracking Reference</span>
-                      <h2 style={styles.mainTrackingTitle}>{selectedShipment.tracking_number}</h2>
+                      <span className="block text-xs font-bold text-slate-700 uppercase mb-1">Tracking Reference</span>
+                      <h2 className="text-xl sm:text-2xl font-black text-slate-900">{selectedShipment.tracking_number}</h2>
                     </div>
-                    <div style={styles.etaBlock}>
-                      <span style={styles.metaLabelRight}>Estimated Delivery Target</span>
-                      <span style={styles.etaValue}>
+                    <div className="text-left sm:text-right">
+                      <span className="block text-xs font-bold text-slate-700 uppercase mb-1">Estimated Delivery Target</span>
+                      <span className="text-sm sm:text-base font-black text-slate-900">
                         {new Date(selectedShipment.estimated_arrival).toLocaleDateString(undefined, {
                           weekday: 'short',
                           year: 'numeric',
@@ -256,10 +261,10 @@ const OwnitTrackingPage: React.FC = () => {
                     </div>
                   </div>
 
-                  <div style={styles.mapPlaceholder}>
-                    <div style={styles.mapIcon}>📍</div>
-                    <p style={styles.mapTextPrimary}>Telemetry Geolocation Node Display</p>
-                    <p style={styles.mapTextSecondary}>
+                  <div className="p-5 sm:p-8 bg-slate-100 rounded-xl text-center border border-dashed border-slate-300 mb-6 sm:mb-8">
+                    <div className="text-2xl mb-2">📍</div>
+                    <p className="m-0 mb-1 font-bold text-sm text-slate-800">Telemetry Geolocation Node Display</p>
+                    <p className="m-0 text-xs text-slate-700 font-medium">
                       Coordinates: {selectedShipment.current_location?.area}, {selectedShipment.current_location?.state}, {selectedShipment.current_location?.country}
                     </p>
                   </div>
@@ -267,18 +272,51 @@ const OwnitTrackingPage: React.FC = () => {
                   <TrackingTimeline updates={selectedShipment.status_updates} />
                 </div>
               ) : (
-                <div style={styles.emptyDisplayState}>
+                <div className="p-12 text-center text-slate-700 text-sm">
                   <p>Select an active tracking number profile to populate matrix details.</p>
                 </div>
               )}
             </section>
           </div>
         ) : (
-          <div style={styles.emptyState}>
-            <p style={styles.emptyStateText}>No logistical records attached to this consumer registry profile.</p>
+          <div className="p-16 text-center bg-white rounded-2xl border border-slate-300">
+            <p className="text-slate-700 text-sm sm:text-base font-medium m-0">No logistical records attached to this consumer registry profile.</p>
           </div>
         )}
       </main>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div
+        data-testid="ownit-tracking-mobile-dock"
+        className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-xl border-t border-slate-200 shadow-2xl px-4 py-2 pb-safe"
+      >
+        <div className="flex items-center justify-around max-w-md mx-auto">
+          <button
+            type="button"
+            onClick={handleRefresh}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-xl text-slate-700 hover:text-slate-900 active:scale-95 transition"
+          >
+            <span className="text-base mb-0.5">🔄</span>
+            <span className="text-[11px] font-bold leading-tight">Refresh</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-xl text-rose-600 font-bold bg-rose-50"
+          >
+            <span className="text-base mb-0.5">📦</span>
+            <span className="text-[11px] leading-tight">Shipments</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => window.location.assign('/store')}
+            className="flex flex-col items-center justify-center min-w-[48px] min-h-[44px] px-3 py-1 rounded-xl bg-gradient-to-r from-rose-500 to-pink-600 text-white font-black shadow-md shadow-rose-500/20 active:scale-95 transition"
+          >
+            <span className="text-base mb-0.5">🛍️</span>
+            <span className="text-[11px] leading-tight">New Order</span>
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

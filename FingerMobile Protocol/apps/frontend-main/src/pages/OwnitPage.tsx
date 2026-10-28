@@ -444,85 +444,88 @@ const OwnitPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="OwnIt • Celebrity Red-Carpet Luxury Mall">
-      <div className="min-h-screen bg-black text-amber-50 relative pb-28">
+      <div className="w-full max-w-full overflow-x-hidden min-h-screen bg-black text-amber-50 relative pb-28 md:pb-16">
         {/* Subtle Gold Dust Header Glow */}
         <div className="absolute top-0 left-0 right-0 h-[480px] bg-gradient-to-b from-amber-950/30 via-stone-950 to-black pointer-events-none -z-10" />
 
-        <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+        <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-3 sm:px-6 lg:px-8 pt-4 sm:pt-8">
           {/* Top Marquee Status Bar */}
-          <div className="flex flex-wrap items-center justify-between gap-4 p-3.5 mb-8 rounded-2xl bg-stone-950/90 border border-amber-500/30 backdrop-blur-md">
-            <div className="flex items-center gap-3">
-              <span className="p-1.5 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/30">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 sm:p-3.5 mb-6 sm:mb-8 rounded-2xl bg-stone-950/90 border border-amber-500/30 backdrop-blur-md">
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              <span className="p-1.5 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/30 shrink-0">
                 <Crown className="w-4 h-4" />
               </span>
-              <span className="text-xs font-bold text-amber-300 uppercase tracking-widest">
-                OwnIt™ Celebrity Red-Carpet Shopping Mall • 4K Ultra-Curated Luxury
+              <span className="text-[11px] sm:text-xs font-bold text-amber-300 uppercase tracking-wider sm:tracking-widest">
+                OwnIt™ Celebrity Red-Carpet Luxury Mall
               </span>
             </div>
-            <div className="flex items-center gap-4 text-xs text-amber-200/70">
-              <span>Sovereign Reserve: <strong className="text-amber-400 font-bold">{ficBalance.toLocaleString()} FIC</strong></span>
-              <span className="px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/40 text-[11px] font-semibold flex items-center gap-1">
-                <ShieldCheck className="w-3.5 h-3.5" /> 100% Cryptographic Provenance
+            <div className="flex items-center justify-between sm:justify-end gap-3 text-xs text-amber-200/80 pt-2 sm:pt-0 border-t sm:border-t-0 border-stone-800">
+              <span className="text-[11px] sm:text-xs">Reserve: <strong className="text-amber-400 font-bold">{ficBalance.toLocaleString()} FIC</strong></span>
+              <span className="px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/40 text-[10px] sm:text-[11px] font-semibold flex items-center gap-1 shrink-0">
+                <ShieldCheck className="w-3.5 h-3.5 text-amber-400" /> 100% Provenance
               </span>
             </div>
           </div>
 
           {/* Majestic Luxury Mall Hero Marquee */}
-          <div className="relative rounded-3xl overflow-hidden p-8 sm:p-14 mb-10 border border-amber-500/40 bg-gradient-to-r from-stone-950 via-amber-950/40 to-stone-950 shadow-2xl">
+          <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden p-5 sm:p-10 md:p-14 mb-8 sm:mb-10 border border-amber-500/40 bg-gradient-to-r from-stone-950 via-amber-950/40 to-stone-950 shadow-2xl">
             <div className="max-w-3xl">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-300 text-xs font-black uppercase tracking-wider mb-4">
-                <Sparkles className="w-3.5 h-3.5 text-amber-400" /> Red-Carpet VIP Pavilion
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-300 text-xs font-black uppercase tracking-wider mb-3 sm:mb-4">
+                <Sparkles className="w-3.5 h-3.5 text-amber-400 shrink-0" /> Red-Carpet VIP Pavilion
               </div>
-              <h1 className="text-4xl sm:text-6xl font-black text-white tracking-tight leading-tight mb-4">
+              <h1 className="text-2xl sm:text-4xl md:text-6xl font-black text-white tracking-tight leading-tight mb-3 sm:mb-4">
                 Everything <span className="bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-500 bg-clip-text text-transparent">Luxury in 4K</span>
               </h1>
-              <p className="text-base text-amber-100/80 leading-relaxed mb-8 font-light">
+              <p className="text-xs sm:text-sm md:text-base text-amber-100/80 leading-relaxed mb-6 sm:mb-8 font-light">
                 An exclusive shopping mall for the wealthy, royalty, and high-net-worth collectors. Featuring celebrity stalls, branded luxury storefronts, shops within shops, and museum-grade masterworks verified with cryptographic SHA-256 tamper-evident ledgers.
               </p>
 
-              <div className="flex flex-wrap items-center gap-3">
+              <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-2.5 sm:gap-3">
                 <button
+                  type="button"
                   onClick={() => setActiveTab('4k-mall')}
-                  className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-900 font-black text-xs uppercase tracking-wider transition-all shadow-xl shadow-amber-500/20 flex items-center gap-2"
+                  className="px-5 sm:px-6 py-3 min-h-[44px] rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-900 font-black text-xs uppercase tracking-wider transition-all shadow-xl shadow-amber-500/20 flex items-center justify-center gap-2 active:scale-95"
                 >
-                  <Eye className="w-4 h-4" /> View 4K Showcase Gallery
+                  <Eye className="w-4 h-4 shrink-0" /> View 4K Showcase Gallery
                 </button>
                 <button
+                  type="button"
                   onClick={() => setActiveTab('luxury-stores')}
-                  className="px-6 py-3.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-amber-300 border border-amber-500/30 font-bold text-xs uppercase tracking-wider transition-all flex items-center gap-2"
+                  className="px-5 sm:px-6 py-3 min-h-[44px] rounded-xl bg-stone-900 hover:bg-stone-800 text-amber-300 border border-amber-500/30 font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 active:scale-95"
                 >
-                  <Building className="w-4 h-4 text-amber-400" /> Stalls & Branded Salons
+                  <Building className="w-4 h-4 text-amber-400 shrink-0" /> Stalls & Branded Salons
                 </button>
                 <button
+                  type="button"
                   onClick={() => setActiveTab('vip-concierge')}
-                  className="px-5 py-3.5 rounded-xl bg-stone-950 hover:bg-stone-900 text-amber-200/80 border border-stone-800 font-semibold text-xs transition-all flex items-center gap-2"
+                  className="px-5 py-3 min-h-[44px] rounded-xl bg-stone-950 hover:bg-stone-900 text-amber-200/80 border border-stone-800 font-semibold text-xs transition-all flex items-center justify-center gap-2 active:scale-95"
                 >
-                  <Bot className="w-4 h-4 text-amber-400" /> VIP Concierge
+                  <Bot className="w-4 h-4 text-amber-400 shrink-0" /> VIP Concierge
                 </button>
               </div>
             </div>
           </div>
 
           {/* Universal AI Search Engine Tool Bar */}
-          <div className="p-5 rounded-2xl bg-stone-950/90 border border-amber-500/20 backdrop-blur-md mb-8 shadow-xl">
-            <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
+          <div className="p-4 sm:p-5 rounded-2xl bg-stone-950/90 border border-amber-500/20 backdrop-blur-md mb-6 sm:mb-8 shadow-xl">
+            <div className="flex flex-col md:flex-row gap-3 sm:gap-4 items-stretch md:items-center justify-between">
               <div className="relative w-full md:w-1/2">
-                <Search className="absolute left-4 top-3.5 w-5 h-5 text-amber-400/60" />
+                <Search className="absolute left-3.5 top-3.5 w-5 h-5 text-amber-400/60 pointer-events-none" />
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search 4K luxury assets, master horology, gemstones, supercars, or certificate #..."
-                  className="w-full pl-12 pr-4 py-3 bg-black border border-stone-800 rounded-xl text-sm text-amber-100 placeholder-amber-200/30 focus:outline-none focus:border-amber-400"
+                  placeholder="Search 4K luxury assets, horology, gemstones..."
+                  className="w-full min-h-[44px] pl-11 pr-4 py-2.5 bg-black border border-stone-800 rounded-xl text-xs sm:text-sm text-amber-100 placeholder-amber-200/40 focus:outline-none focus:border-amber-400 font-medium"
                 />
               </div>
 
               {/* Rarity & Category Filters */}
-              <div className="flex items-center gap-3 overflow-x-auto w-full md:w-auto pb-1">
+              <div className="flex items-center gap-2.5 overflow-x-auto w-full md:w-auto pb-1 scrollbar-none flex-nowrap">
                 <select
                   value={selectedRarity}
                   onChange={(e) => setSelectedRarity(e.target.value)}
-                  className="px-3 py-2.5 bg-black border border-stone-800 rounded-xl text-xs font-bold text-amber-300 focus:outline-none cursor-pointer"
+                  className="min-h-[44px] px-3.5 py-2.5 bg-black border border-stone-800 rounded-xl text-xs font-bold text-amber-300 focus:outline-none cursor-pointer shrink-0"
                 >
                   <option value="all">All Rarity Tiers</option>
                   <option value="Unique 1-of-1">Unique 1-of-1</option>
@@ -533,7 +536,7 @@ const OwnitPage: React.FC = () => {
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="px-3 py-2.5 bg-black border border-stone-800 rounded-xl text-xs font-bold text-amber-300 focus:outline-none cursor-pointer"
+                  className="min-h-[44px] px-3.5 py-2.5 bg-black border border-stone-800 rounded-xl text-xs font-bold text-amber-300 focus:outline-none cursor-pointer shrink-0"
                 >
                   <option value="all">All Luxury Domains</option>
                   <option value="Haute Horlogerie">Haute Horlogerie</option>
@@ -546,7 +549,7 @@ const OwnitPage: React.FC = () => {
           </div>
 
           {/* Navigation Tabs */}
-          <div className="flex items-center gap-2 border-b border-stone-800 mb-8 overflow-x-auto pb-2 scrollbar-none">
+          <div className="flex items-center gap-2 border-b border-stone-800 mb-6 sm:mb-8 overflow-x-auto pb-2 scrollbar-none flex-nowrap">
             {[
               { id: '4k-mall', label: '4K Luxury Mall Showcase', icon: Sparkles },
               { id: 'luxury-stores', label: 'Celebrity Stalls & Salons', icon: Building, count: stores.length },
@@ -558,14 +561,15 @@ const OwnitPage: React.FC = () => {
               return (
                 <button
                   key={tab.id}
+                  type="button"
                   onClick={() => setActiveTab(tab.id as any)}
-                  className={`px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm whitespace-nowrap transition-all flex items-center gap-2 ${
+                  className={`min-h-[44px] px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm whitespace-nowrap transition-all flex items-center gap-2 shrink-0 active:scale-95 ${
                     isActive
                       ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-sm'
                       : 'text-stone-400 hover:text-amber-200 hover:bg-stone-900 border border-transparent'
                   }`}
                 >
-                  <Icon className="w-4 h-4 text-amber-400" />
+                  <Icon className="w-4 h-4 text-amber-400 shrink-0" />
                   <span>{tab.label}</span>
                   {tab.count !== undefined && (
                     <span className="px-2 py-0.5 rounded-full text-[10px] bg-stone-800 text-amber-300 font-mono">
@@ -696,64 +700,71 @@ const OwnitPage: React.FC = () => {
                             )}
                           </div>
 
-                          {/* Footer & Escrow Initiation */}
-                          <div className="pt-4 border-t border-stone-800">
-                            <div className="flex items-center justify-between mb-4">
-                              <div>
-                                <span className="text-[10px] uppercase font-bold tracking-wider text-amber-400/60 block">Sovereign Valuation</span>
-                                <div className="flex items-baseline gap-2">
-                                  <span className="text-2xl font-black text-amber-400">
-                                    {(p.price_fic || p.priceFic || (p.price / 10)).toLocaleString()} FIC
-                                  </span>
-                                  <span className="text-xs text-stone-400 font-medium">
-                                  (${p.price.toLocaleString()} USD)
-                                  </span>
+                            {/* Footer & Escrow Initiation */}
+                            <div className="pt-4 border-t border-stone-800">
+                              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                                <div>
+                                  <span className="text-[10px] uppercase font-bold tracking-wider text-amber-400/60 block">Sovereign Valuation</span>
+                                  <div className="flex items-baseline gap-2">
+                                    <span className="text-xl sm:text-2xl font-black text-amber-400">
+                                      {(p.price_fic || p.priceFic || (p.price / 10)).toLocaleString()} FIC
+                                    </span>
+                                    <span className="text-xs text-stone-400 font-medium">
+                                      (${p.price.toLocaleString()} USD)
+                                    </span>
+                                  </div>
+                                </div>
+
+                                {/* Likes & Dislikes */}
+                                <div className="flex items-center gap-2">
+                                  <button
+                                    type="button"
+                                    onClick={() => handleReaction(p.id, 'like')}
+                                    className={`min-w-[44px] min-h-[44px] px-3 py-2 rounded-xl border flex items-center justify-center gap-1.5 text-xs transition-colors active:scale-95 ${
+                                      p.userReaction === 'like'
+                                        ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
+                                        : 'bg-stone-900 hover:bg-stone-800 text-stone-300 border-stone-700'
+                                    }`}
+                                    title="Like"
+                                    aria-label="Like product"
+                                  >
+                                    <ThumbsUp className="w-4 h-4 shrink-0" />
+                                    <span className="font-mono text-xs">{p.likes}</span>
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => handleReaction(p.id, 'dislike')}
+                                    className={`min-w-[44px] min-h-[44px] px-3 py-2 rounded-xl border flex items-center justify-center gap-1.5 text-xs transition-colors active:scale-95 ${
+                                      p.userReaction === 'dislike'
+                                        ? 'bg-rose-500/20 text-rose-300 border-rose-500/40'
+                                        : 'bg-stone-900 hover:bg-stone-800 text-stone-300 border-stone-700'
+                                    }`}
+                                    title="Dislike"
+                                    aria-label="Dislike product"
+                                  >
+                                    <ThumbsDown className="w-4 h-4 shrink-0" />
+                                    <span className="font-mono text-xs">{p.dislikes}</span>
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => setEmbedProduct(p)}
+                                    className="min-w-[44px] min-h-[44px] px-3 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 text-stone-300 border border-stone-700 text-xs flex items-center justify-center active:scale-95"
+                                    title="Share & Embed"
+                                    aria-label="Share and embed product"
+                                  >
+                                    <ExternalLink className="w-4 h-4 shrink-0" />
+                                  </button>
                                 </div>
                               </div>
 
-                              {/* Likes & Dislikes */}
-                              <div className="flex items-center gap-2">
-                                <button
-                                  onClick={() => handleReaction(p.id, 'like')}
-                                  className={`p-2 rounded-xl border flex items-center gap-1 text-xs transition-colors ${
-                                    p.userReaction === 'like'
-                                      ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
-                                      : 'bg-stone-900 hover:bg-stone-800 text-stone-300 border-stone-700'
-                                  }`}
-                                  title="Like"
-                                >
-                                  <ThumbsUp className="w-3.5 h-3.5" />
-                                  <span className="font-mono text-[11px]">{p.likes}</span>
-                                </button>
-                                <button
-                                  onClick={() => handleReaction(p.id, 'dislike')}
-                                  className={`p-2 rounded-xl border flex items-center gap-1 text-xs transition-colors ${
-                                    p.userReaction === 'dislike'
-                                      ? 'bg-rose-500/20 text-rose-300 border-rose-500/40'
-                                      : 'bg-stone-900 hover:bg-stone-800 text-stone-300 border-stone-700'
-                                  }`}
-                                  title="Dislike"
-                                >
-                                  <ThumbsDown className="w-3.5 h-3.5" />
-                                  <span className="font-mono text-[11px]">{p.dislikes}</span>
-                                </button>
-                                <button
-                                  onClick={() => setEmbedProduct(p)}
-                                  className="p-2 rounded-xl bg-stone-900 hover:bg-stone-800 text-stone-300 border border-stone-700 text-xs"
-                                  title="Share & Embed"
-                                >
-                                  <ExternalLink className="w-3.5 h-3.5" />
-                                </button>
-                              </div>
+                              <button
+                                type="button"
+                                onClick={() => setSelectedProductForEscrow(p)}
+                                className="w-full py-3.5 min-h-[44px] rounded-xl bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:from-amber-400 hover:to-yellow-300 text-slate-900 font-black text-xs uppercase tracking-widest transition-all shadow-xl shadow-amber-500/20 flex items-center justify-center gap-2 active:scale-95"
+                              >
+                                <Lock className="w-4 h-4 shrink-0" /> Sovereign Escrow Acquisition
+                              </button>
                             </div>
-
-                            <button
-                              onClick={() => setSelectedProductForEscrow(p)}
-                              className="w-full py-3.5 rounded-xl bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:from-amber-400 hover:to-yellow-300 text-slate-900 font-black text-xs uppercase tracking-widest transition-all shadow-xl shadow-amber-500/20 flex items-center justify-center gap-2"
-                            >
-                              <Lock className="w-4 h-4" /> Sovereign Escrow Acquisition
-                            </button>
-                          </div>
                         </div>
                       </div>
                     );
@@ -807,14 +818,15 @@ const OwnitPage: React.FC = () => {
                         </div>
                       </div>
 
-                      <div className="pt-4 border-t border-stone-800 flex items-center justify-between">
+                      <div className="pt-4 border-t border-stone-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                         <span className="text-xs text-stone-400">Curator: <strong className="text-white">{store.curator_name}</strong></span>
                         <button
+                          type="button"
                           onClick={() => {
                             setActiveTab('4k-mall');
                             showToast(`Navigated to ${store.name} showcase`, 'info');
                           }}
-                          className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold text-xs uppercase tracking-wider"
+                          className="w-full sm:w-auto px-5 py-2.5 min-h-[44px] rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold text-xs uppercase tracking-wider flex items-center justify-center active:scale-95 transition"
                         >
                           Enter Pavilion
                         </button>
@@ -851,19 +863,21 @@ const OwnitPage: React.FC = () => {
                         <h4 className="text-base font-bold text-white">{p.name}</h4>
                         <span className="text-xs text-stone-500 font-mono">Serial: {p.serial_number || 'N/A'} • Brand: {p.brand}</span>
                       </div>
-                      <div className="flex items-center gap-3 w-full md:w-auto justify-end">
+                      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full md:w-auto justify-end">
                         <button
+                          type="button"
                           onClick={() => {
                             navigator.clipboard.writeText(p.cryptographic_sha256);
                             showToast('Copied SHA-256 Hash!', 'success');
                           }}
-                          className="px-3 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 text-stone-300 text-xs font-mono flex items-center gap-1.5"
+                          className="px-4 py-2.5 min-h-[44px] rounded-xl bg-stone-900 hover:bg-stone-800 text-stone-300 text-xs font-mono flex items-center justify-center gap-1.5 active:scale-95 transition"
                         >
-                          <Copy className="w-3.5 h-3.5 text-amber-400" /> Copy Hash
+                          <Copy className="w-4 h-4 text-amber-400 shrink-0" /> Copy Hash
                         </button>
                         <button
+                          type="button"
                           onClick={() => setActiveCertificate(p)}
-                          className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-900 text-xs font-bold uppercase"
+                          className="px-5 py-2.5 min-h-[44px] rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-900 text-xs font-bold uppercase flex items-center justify-center active:scale-95 transition"
                         >
                           View Certificate
                         </button>
@@ -901,18 +915,19 @@ const OwnitPage: React.FC = () => {
                 ))}
               </div>
 
-              <div className="flex gap-2">
+              <div className="flex flex-col sm:flex-row gap-2.5">
                 <input
                   type="text"
                   value={conciergeInput}
                   onChange={(e) => setConciergeInput(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleSendConcierge()}
                   placeholder="Request private viewing, gemological details, or wire instructions..."
-                  className="flex-1 px-4 py-3 bg-black border border-stone-800 rounded-xl text-xs text-amber-100 focus:outline-none focus:border-amber-400"
+                  className="flex-1 min-h-[44px] px-4 py-3 bg-black border border-stone-800 rounded-xl text-xs sm:text-sm text-amber-100 placeholder-amber-200/40 focus:outline-none focus:border-amber-400 font-medium"
                 />
                 <button
+                  type="button"
                   onClick={handleSendConcierge}
-                  className="px-5 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold text-xs"
+                  className="px-6 py-3 min-h-[44px] rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-900 font-black text-xs uppercase tracking-wider flex items-center justify-center active:scale-95 transition"
                 >
                   Send
                 </button>
@@ -987,13 +1002,20 @@ const OwnitPage: React.FC = () => {
         {/* ESCROW ACQUISITION MODAL */}
         {selectedProductForEscrow && (
           <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4">
-            <div className="max-w-md w-full bg-stone-950 border border-amber-500/40 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-5">
+            <div className="max-w-md w-full bg-stone-950 border border-amber-500/40 rounded-3xl p-5 sm:p-8 shadow-2xl space-y-5 animate-in fade-in zoom-in-95">
               <div className="flex justify-between items-start">
                 <div>
                   <span className="text-[10px] font-mono uppercase text-amber-400">Sovereign Escrow</span>
-                  <h3 className="text-lg font-bold text-white mt-1">{selectedProductForEscrow.name}</h3>
+                  <h3 className="text-base sm:text-lg font-bold text-white mt-1">{selectedProductForEscrow.name}</h3>
                 </div>
-                <button type="button" onClick={() => setSelectedProductForEscrow(null)} className="text-stone-400 hover:text-white">✕</button>
+                <button
+                  type="button"
+                  aria-label="Close Escrow Modal"
+                  onClick={() => setSelectedProductForEscrow(null)}
+                  className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-xl flex items-center justify-center text-stone-400 hover:text-white hover:bg-stone-900 transition"
+                >
+                  ✕
+                </button>
               </div>
 
               <div className="p-4 rounded-2xl bg-black border border-stone-800 text-xs space-y-2">
@@ -1007,17 +1029,19 @@ const OwnitPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="flex gap-3">
+              <div className="flex flex-col-reverse sm:flex-row gap-3 pt-2">
                 <button
+                  type="button"
                   onClick={() => setSelectedProductForEscrow(null)}
-                  className="flex-1 py-3 rounded-xl bg-stone-900 text-stone-300 text-xs font-bold"
+                  className="w-full sm:flex-1 py-3.5 min-h-[44px] rounded-xl bg-stone-900 hover:bg-stone-800 text-stone-300 text-xs font-bold active:scale-95 transition flex items-center justify-center"
                 >
                   Cancel
                 </button>
                 <button
+                  type="button"
                   onClick={handleInitiateEscrow}
                   disabled={isProcessingEscrow}
-                  className="flex-1 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-900 text-xs font-black uppercase tracking-wider"
+                  className="w-full sm:flex-1 py-3.5 min-h-[44px] rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-900 text-xs font-black uppercase tracking-wider active:scale-95 transition flex items-center justify-center"
                 >
                   {isProcessingEscrow ? 'Signing...' : 'Lock Sovereign Escrow'}
                 </button>
@@ -1041,6 +1065,67 @@ const OwnitPage: React.FC = () => {
             }}
           />
         )}
+
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <div
+          data-testid="ownit-mobile-dock"
+          className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-stone-950/95 backdrop-blur-xl border-t border-amber-500/30 shadow-2xl px-4 py-2 pb-safe text-amber-50"
+        >
+          <div className="flex items-center justify-around max-w-md mx-auto">
+            <button
+              type="button"
+              onClick={() => { setActiveTab('4k-mall'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-xl transition ${
+                activeTab === '4k-mall' ? 'text-amber-400 font-bold bg-amber-500/10' : 'text-stone-400 hover:text-amber-200'
+              }`}
+            >
+              <Sparkles className="w-5 h-5 mb-0.5" />
+              <span className="text-[11px] leading-tight">4K Mall</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => { setActiveTab('luxury-stores'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-xl transition ${
+                activeTab === 'luxury-stores' ? 'text-amber-400 font-bold bg-amber-500/10' : 'text-stone-400 hover:text-amber-200'
+              }`}
+            >
+              <Building className="w-5 h-5 mb-0.5" />
+              <span className="text-[11px] leading-tight">Salons</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => { setActiveTab('authenticity-vault'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-xl transition ${
+                activeTab === 'authenticity-vault' ? 'text-amber-400 font-bold bg-amber-500/10' : 'text-stone-400 hover:text-amber-200'
+              }`}
+            >
+              <ShieldCheck className="w-5 h-5 mb-0.5" />
+              <span className="text-[11px] leading-tight">Vault</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => { setActiveTab('vip-concierge'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-xl transition ${
+                activeTab === 'vip-concierge' ? 'text-amber-400 font-bold bg-amber-500/10' : 'text-stone-400 hover:text-amber-200'
+              }`}
+            >
+              <Bot className="w-5 h-5 mb-0.5" />
+              <span className="text-[11px] leading-tight">Concierge</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                if (products.length > 0) {
+                  setSelectedProductForEscrow(products[0]);
+                }
+              }}
+              className="flex flex-col items-center justify-center min-w-[48px] min-h-[44px] px-2.5 py-1 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-900 font-black shadow-md shadow-amber-500/20 active:scale-95 transition"
+            >
+              <Lock className="w-5 h-5 mb-0.5" />
+              <span className="text-[11px] leading-tight">Escrow</span>
+            </button>
+          </div>
+        </div>
       </div>
     </MainLayout>
   );
