@@ -178,7 +178,7 @@ const StercsModulesPage: React.FC = () => {
   }, [modules, searchQuery, selectedGroup]);
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-50 w-full max-w-full overflow-x-hidden pb-28 md:pb-12 text-slate-900">
       {/* Toast Notification */}
       {toastMessage && (
         <div 
@@ -215,14 +215,14 @@ const StercsModulesPage: React.FC = () => {
                 disabled={loading}
                 aria-label="Refresh modules catalog"
                 title="Refresh Modules Catalog"
-                className="p-2 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-100 transition-colors"
+                className="min-h-[44px] min-w-[44px] p-2 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-100 transition-colors flex items-center justify-center cursor-pointer"
               >
                 <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin text-blue-600' : ''}`} />
               </button>
               <button
                 type="button"
                 onClick={() => setIsAddModalOpen(true)}
-                className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-sm transition-colors"
+                className="min-h-[44px] flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-sm transition-colors cursor-pointer"
               >
                 <Plus className="h-4 w-4" />
                 <span>Add Module</span>
@@ -525,6 +525,51 @@ const StercsModulesPage: React.FC = () => {
           <PlatformOwnershipCard />
         </div>
       </main>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <nav
+        aria-label="Stercs Modules Mobile Navigation"
+        className="md:hidden fixed bottom-4 inset-x-3 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl p-2 z-40 shadow-2xl flex items-center justify-around gap-1"
+      >
+        <button
+          type="button"
+          onClick={() => setSelectedGroup('all')}
+          className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold transition-colors cursor-pointer ${
+            selectedGroup === 'all' ? 'text-blue-400' : 'text-slate-400 hover:text-white'
+          }`}
+        >
+          <Network className="w-5 h-5 mb-0.5" />
+          <span>Modules</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            const searchInput = document.querySelector('input[placeholder*="Search microservices"]') as HTMLInputElement | null;
+            if (searchInput) searchInput.focus();
+          }}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-amber-400 hover:text-amber-300 transition-colors cursor-pointer"
+        >
+          <Search className="w-5 h-5 mb-0.5" />
+          <span>Search</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setIsAddModalOpen(true)}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-emerald-400 hover:text-emerald-300 transition-colors cursor-pointer"
+        >
+          <Plus className="w-5 h-5 mb-0.5" />
+          <span>Add</span>
+        </button>
+        <button
+          type="button"
+          onClick={fetchModules}
+          disabled={loading}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-slate-300 hover:text-white transition-colors cursor-pointer disabled:opacity-40"
+        >
+          <RefreshCw className={`w-5 h-5 mb-0.5 ${loading ? 'animate-spin text-blue-400' : ''}`} />
+          <span>Sync</span>
+        </button>
+      </nav>
     </div>
   );
 };

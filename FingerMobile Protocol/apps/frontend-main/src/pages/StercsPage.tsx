@@ -627,7 +627,7 @@ const StercsPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 w-full max-w-full overflow-x-hidden pb-28 md:pb-12 text-slate-900">
       {/* Header */}
       <header className="bg-white shadow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -704,15 +704,15 @@ const StercsPage: React.FC = () => {
         )}
 
         {/* Tabs */}
-        <div className="border-b border-slate-300 mb-6">
-          <nav className="-mb-px flex space-x-8">
+        <div className="border-b border-slate-300 mb-6 overflow-x-auto">
+          <nav className="-mb-px flex space-x-2 sm:space-x-8 min-w-max pb-1">
             <button
               onClick={() => setActiveTab('modules')}
               className={`${
                 activeTab === 'modules'
                   ? 'border-blue-500 text-blue-600'
                   : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
-              } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
+              } whitespace-nowrap min-h-[44px] py-3 px-3 border-b-2 font-bold text-sm flex items-center cursor-pointer`}
             >
               <Server className="h-4 w-4 mr-2" />
               Modules
@@ -723,7 +723,7 @@ const StercsPage: React.FC = () => {
                 activeTab === 'policies'
                   ? 'border-blue-500 text-blue-600'
                   : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
-              } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
+              } whitespace-nowrap min-h-[44px] py-3 px-3 border-b-2 font-bold text-sm flex items-center cursor-pointer`}
             >
               <Lock className="h-4 w-4 mr-2" />
               Policies
@@ -734,7 +734,7 @@ const StercsPage: React.FC = () => {
                 activeTab === 'controls'
                   ? 'border-blue-500 text-blue-600'
                   : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
-              } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
+              } whitespace-nowrap min-h-[44px] py-3 px-3 border-b-2 font-bold text-sm flex items-center cursor-pointer`}
             >
               <Shield className="h-4 w-4 mr-2" />
               Controls
@@ -745,7 +745,7 @@ const StercsPage: React.FC = () => {
                 activeTab === 'audits'
                   ? 'border-blue-500 text-blue-600'
                   : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
-              } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
+              } whitespace-nowrap min-h-[44px] py-3 px-3 border-b-2 font-bold text-sm flex items-center cursor-pointer`}
             >
               <FileSpreadsheet className="h-4 w-4 mr-2" />
               Audits
@@ -756,7 +756,7 @@ const StercsPage: React.FC = () => {
                 activeTab === 'dashboard'
                   ? 'border-blue-500 text-blue-600'
                   : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
-              } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
+              } whitespace-nowrap min-h-[44px] py-3 px-3 border-b-2 font-bold text-sm flex items-center cursor-pointer`}
             >
               <BarChart3 className="h-4 w-4 mr-2" />
               Dashboard
@@ -1716,17 +1716,62 @@ const StercsPage: React.FC = () => {
 
       {/* FLOATING TOAST NOTIFICATION BANNER */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 bg-slate-900 text-white text-xs font-medium px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 border border-slate-700 animate-in fade-in slide-in-from-bottom-3 duration-200">
+        <div className="fixed bottom-28 md:bottom-6 right-6 z-50 bg-slate-900 text-white text-xs font-medium px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 border border-slate-700 animate-in fade-in slide-in-from-bottom-3 duration-200">
           <BadgeCheck className="w-4 h-4 text-emerald-400 shrink-0" />
           <span>{toastMessage}</span>
           <button type="button" aria-label="Close"
             onClick={() => setToastMessage(null)}
-            className="text-slate-300 hover:text-white ml-2"
+            className="text-slate-300 hover:text-white ml-2 cursor-pointer"
           >
             <X className="w-3.5 h-3.5" />
           </button>
         </div>
       )}
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <nav
+        aria-label="Stercs Mobile Navigation"
+        className="md:hidden fixed bottom-4 inset-x-3 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl p-2 z-40 shadow-2xl flex items-center justify-around gap-1"
+      >
+        <button
+          type="button"
+          onClick={() => setActiveTab('modules')}
+          className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold transition-colors cursor-pointer ${
+            activeTab === 'modules' ? 'text-blue-400' : 'text-slate-400 hover:text-white'
+          }`}
+        >
+          <Server className="w-5 h-5 mb-0.5" />
+          <span>Modules</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab('policies')}
+          className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold transition-colors cursor-pointer ${
+            activeTab === 'policies' ? 'text-blue-400' : 'text-slate-400 hover:text-white'
+          }`}
+        >
+          <Lock className="w-5 h-5 mb-0.5" />
+          <span>Policies</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab('controls')}
+          className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold transition-colors cursor-pointer ${
+            activeTab === 'controls' ? 'text-blue-400' : 'text-slate-400 hover:text-white'
+          }`}
+        >
+          <Shield className="w-5 h-5 mb-0.5" />
+          <span>Controls</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setShowCreateModal(true)}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-emerald-400 hover:text-emerald-300 transition-colors cursor-pointer"
+        >
+          <Plus className="w-5 h-5 mb-0.5" />
+          <span>Add</span>
+        </button>
+      </nav>
     </div>
   );
 };
