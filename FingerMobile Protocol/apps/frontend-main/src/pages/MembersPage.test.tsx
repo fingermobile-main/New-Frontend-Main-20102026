@@ -26,7 +26,7 @@ describe('MembersPage Component', () => {
     expect(nav).toBeInTheDocument();
 
     expect(within(nav).getByRole('button', { name: /^Members$/i })).toBeInTheDocument();
-    expect(within(nav).getByRole('button', { name: /^Active$/i })).toBeInTheDocument();
+    expect(within(nav).getByRole('button', { name: /^Admins$/i })).toBeInTheDocument();
     expect(within(nav).getByRole('button', { name: /^Add$/i })).toBeInTheDocument();
   });
 });

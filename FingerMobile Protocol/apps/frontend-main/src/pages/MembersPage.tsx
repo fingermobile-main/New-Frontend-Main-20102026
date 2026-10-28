@@ -436,9 +436,8 @@ const MembersPage: React.FC = () => {
         <button
           type="button"
           onClick={() => {
-            setStatusFilter('All');
             setRoleFilter('All');
-            setSearchTerm('');
+            setSearchQuery('');
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
           className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold text-blue-600 hover:text-blue-800 transition-colors cursor-pointer"
@@ -449,13 +448,13 @@ const MembersPage: React.FC = () => {
         <button
           type="button"
           onClick={() => {
-            setStatusFilter('Active');
+            setRoleFilter('Admin');
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
           className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold text-slate-700 hover:text-slate-900 transition-colors cursor-pointer"
         >
           <Filter className="w-5 h-5 mb-0.5" />
-          <span>Active</span>
+          <span>Admins</span>
         </button>
         <button
           type="button"

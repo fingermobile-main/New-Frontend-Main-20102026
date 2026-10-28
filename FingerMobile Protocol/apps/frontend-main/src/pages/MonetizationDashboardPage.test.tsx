@@ -64,3 +64,4 @@ describe('MonetizationDashboardPage Component', () => {
     expect(screen.getByRole('button', { name: /^Payouts$/i })).toBeInTheDocument();
   });
 });
+

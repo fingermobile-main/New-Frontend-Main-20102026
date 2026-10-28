@@ -44,3 +44,4 @@ describe('MonetizationPage Component', () => {
     fireEvent.click(plansBtn);
   });
 });
+

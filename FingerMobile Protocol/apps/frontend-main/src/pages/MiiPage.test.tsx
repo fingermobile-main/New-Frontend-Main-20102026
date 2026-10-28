@@ -63,3 +63,4 @@ describe('MiiPage Component', () => {
     fireEvent.click(pinBtn);
   });
 });
+
