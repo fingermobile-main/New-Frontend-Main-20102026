@@ -41,7 +41,7 @@ describe('UserManagementPage', () => {
       </BrowserRouter>
     );
 
-    expect(screen.getByRole('heading', { level: 1, name: /Platform Member & Identity Management/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1, name: /User Management Console/i })).toBeInTheDocument();
   });
 
   it('filters by role and opens creation modal via quick dock', () => {

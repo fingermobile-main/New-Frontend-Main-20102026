@@ -312,6 +312,58 @@ const VoiceFeedPage: React.FC = () => {
         </div>
 
       </div>
+
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 md:hidden">
+          <div className="flex items-center justify-around gap-1 max-w-md mx-auto">
+            <button
+              type="button"
+              onClick={() => setActiveCategory('all')}
+              className={`flex flex-col items-center justify-center min-w-[56px] min-h-[48px] px-2 py-1 rounded-xl text-[11px] font-bold ${
+                activeCategory === 'all' ? 'text-teal-700 bg-teal-50 border border-teal-200' : 'text-slate-700 hover:text-slate-900'
+              }`}
+            >
+              <span className="text-base font-black">🎙️</span>
+              <span>All</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveCategory('music')}
+              className={`flex flex-col items-center justify-center min-w-[56px] min-h-[48px] px-2 py-1 rounded-xl text-[11px] font-bold ${
+                activeCategory === 'music' ? 'text-teal-700 bg-teal-50 border border-teal-200' : 'text-slate-700 hover:text-slate-900'
+              }`}
+            >
+              <span className="text-base font-black">🎵</span>
+              <span>Music</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveCategory('podcast')}
+              className={`flex flex-col items-center justify-center min-w-[56px] min-h-[48px] px-2 py-1 rounded-xl text-[11px] font-bold ${
+                activeCategory === 'podcast' ? 'text-teal-700 bg-teal-50 border border-teal-200' : 'text-slate-700 hover:text-slate-900'
+              }`}
+            >
+              <span className="text-base font-black">📻</span>
+              <span>Podcast</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => window.location.assign('/voice-feed/create')}
+              className="flex flex-col items-center justify-center min-w-[56px] min-h-[48px] px-2 py-1 rounded-xl text-[11px] font-bold text-teal-800 hover:text-teal-950"
+            >
+              <span className="text-base font-black">➕</span>
+              <span>Record</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="flex flex-col items-center justify-center min-w-[56px] min-h-[48px] px-2 py-1 rounded-xl text-[11px] font-bold text-slate-700 hover:text-slate-900"
+            >
+              <span className="text-base font-black">⌂</span>
+              <span>Top</span>
+            </button>
+          </div>
+        </div>
     </MainLayout>
   );
 };
