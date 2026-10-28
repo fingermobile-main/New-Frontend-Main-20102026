@@ -50,7 +50,7 @@ describe('BusinessOrganizationsConsolePage (Subpage Screen)', () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByText('Business & Organizations Console')).toBeInTheDocument();
+    expect(screen.getAllByText('Business & Organizations Console').length).toBeGreaterThan(0);
 
     await waitFor(() => {
       expect(screen.getByText('Apex Sovereign Holdings')).toBeInTheDocument();
