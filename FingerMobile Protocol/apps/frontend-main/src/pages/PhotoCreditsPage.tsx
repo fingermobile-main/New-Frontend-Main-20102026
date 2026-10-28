@@ -1778,7 +1778,7 @@ Status: VALIDATED & PERMANENTLY RECORDED
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 py-6 px-3 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-slate-950 text-slate-100 py-6 px-3 sm:px-6 lg:px-8 pb-28 md:pb-12 max-w-full overflow-x-hidden">
       {/* Header Banner */}
       <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto mb-8">
         <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-amber-950/70 via-emerald-950/40 to-slate-900/90 border border-amber-500/30 p-6 sm:p-8 backdrop-blur-xl shadow-2xl">
@@ -5194,6 +5194,56 @@ Status:          COMPLETED & ANCHORED
           item={selectedItemForAiQuality as any}
         />
       )}
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-slate-900/95 backdrop-blur-md border-t border-slate-700 px-4 py-2 md:hidden">
+        <div className="flex items-center justify-around gap-2 max-w-md mx-auto">
+          <button
+            type="button"
+            onClick={() => setActiveTab('gallery')}
+            className={`flex flex-col items-center justify-center min-w-[64px] min-h-[48px] px-2 py-1 rounded-xl text-xs font-bold transition-all ${
+              activeTab === 'gallery'
+                ? 'text-amber-400 bg-amber-950/40'
+                : 'text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <Camera className="w-5 h-5 mb-0.5" />
+            <span>Gallery</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('giveaway')}
+            className={`flex flex-col items-center justify-center min-w-[64px] min-h-[48px] px-2 py-1 rounded-xl text-xs font-bold transition-all ${
+              activeTab === 'giveaway'
+                ? 'text-amber-400 bg-amber-950/40'
+                : 'text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <Trophy className="w-5 h-5 mb-0.5" />
+            <span>Giveaway</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('royalties')}
+            className={`flex flex-col items-center justify-center min-w-[64px] min-h-[48px] px-2 py-1 rounded-xl text-xs font-bold transition-all ${
+              activeTab === 'royalties'
+                ? 'text-amber-400 bg-amber-950/40'
+                : 'text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <BarChart2 className="w-5 h-5 mb-0.5" />
+            <span>Royalties</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setShowUploadModal(true)}
+            className="flex flex-col items-center justify-center min-w-[64px] min-h-[48px] px-2 py-1 rounded-xl text-xs font-bold text-amber-400 hover:text-amber-300 transition-all"
+          >
+            <UploadCloud className="w-5 h-5 mb-0.5" />
+            <span>Upload</span>
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

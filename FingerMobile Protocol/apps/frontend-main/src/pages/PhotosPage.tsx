@@ -327,7 +327,7 @@ const PhotosPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Photos & Visual Art Studio">
-      <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 pb-28 md:pb-12 max-w-full overflow-x-hidden text-slate-900">
         
         {/* 1. HERO BANNER: Strict Contrast Hierarchy */}
         <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-300 shadow-sm relative overflow-hidden">
@@ -782,6 +782,56 @@ const PhotosPage: React.FC = () => {
             </div>
           </div>
         )}
+
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 md:hidden">
+          <div className="flex items-center justify-around gap-2 max-w-md mx-auto">
+            <button
+              type="button"
+              onClick={() => setSelectedCategory('All Visuals')}
+              className={`flex flex-col items-center justify-center min-w-[64px] min-h-[48px] px-2 py-1 rounded-xl text-xs font-bold transition-all ${
+                selectedCategory === 'All Visuals'
+                  ? 'text-orange-600 bg-orange-50'
+                  : 'text-slate-700 hover:text-slate-900'
+              }`}
+            >
+              <Camera className="w-5 h-5 mb-0.5" />
+              <span>All</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setSelectedCategory('Urban & Architectural')}
+              className={`flex flex-col items-center justify-center min-w-[64px] min-h-[48px] px-2 py-1 rounded-xl text-xs font-bold transition-all ${
+                selectedCategory === 'Urban & Architectural'
+                  ? 'text-orange-600 bg-orange-50'
+                  : 'text-slate-700 hover:text-slate-900'
+              }`}
+            >
+              <Layers className="w-5 h-5 mb-0.5" />
+              <span>Urban</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setSelectedCategory('African Heritage & Culture')}
+              className={`flex flex-col items-center justify-center min-w-[64px] min-h-[48px] px-2 py-1 rounded-xl text-xs font-bold transition-all ${
+                selectedCategory === 'African Heritage & Culture'
+                  ? 'text-orange-600 bg-orange-50'
+                  : 'text-slate-700 hover:text-slate-900'
+              }`}
+            >
+              <Sparkles className="w-5 h-5 mb-0.5" />
+              <span>Culture</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setShowUploadModal(true)}
+              className="flex flex-col items-center justify-center min-w-[64px] min-h-[48px] px-2 py-1 rounded-xl text-xs font-bold text-orange-600 hover:text-orange-800 transition-all"
+            >
+              <PlusCircle className="w-5 h-5 mb-0.5" />
+              <span>Upload</span>
+            </button>
+          </div>
+        </div>
       </div>
     </MainLayout>
   );
