@@ -278,7 +278,7 @@ const SecuritySetupPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4 w-full max-w-full overflow-x-hidden text-slate-900 pb-28 md:pb-12">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -342,6 +342,34 @@ const SecuritySetupPage = () => {
           </div>
         </div>
       </motion.div>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 py-2 px-3 flex items-center justify-around gap-1 shadow-lg md:hidden">
+        <button
+          onClick={() => navigate('/login')}
+          aria-label="Back to Login"
+          className="min-h-[44px] min-w-[44px] px-2 py-1 flex flex-col items-center justify-center text-xs font-semibold text-slate-800 hover:text-indigo-600"
+        >
+          <span className="text-base">🔐</span>
+          <span>Login</span>
+        </button>
+        <button
+          onClick={() => window.location.reload()}
+          aria-label="Reload Security"
+          className="min-h-[44px] min-w-[44px] px-2 py-1 flex flex-col items-center justify-center text-xs font-semibold text-slate-800 hover:text-indigo-600"
+        >
+          <span className="text-base">🔄</span>
+          <span>Sync</span>
+        </button>
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          aria-label="Scroll to Top"
+          className="min-h-[44px] min-w-[44px] px-2 py-1 flex flex-col items-center justify-center text-xs font-semibold text-slate-800 hover:text-indigo-600"
+        >
+          <span className="text-base">⬆️</span>
+          <span>Top</span>
+        </button>
+      </div>
     </div>
   );
 };
