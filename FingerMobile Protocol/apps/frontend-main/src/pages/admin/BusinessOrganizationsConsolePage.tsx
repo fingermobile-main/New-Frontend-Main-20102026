@@ -168,7 +168,7 @@ export const BusinessOrganizationsConsolePage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-100 text-slate-900 py-8 px-4 sm:px-6 lg:px-8 font-sans">
+    <div className="min-h-screen bg-slate-100 text-slate-900 py-8 px-4 sm:px-6 lg:px-8 font-sans w-full max-w-full overflow-x-hidden pb-28 md:pb-12">
       <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto space-y-6">
         {/* Navigation Breadcrumb */}
         <nav className="flex items-center gap-2 text-xs font-bold text-slate-700">
@@ -473,14 +473,14 @@ export const BusinessOrganizationsConsolePage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setSelectedOrg(null)}
-                  className="px-4 py-2 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-100 border border-slate-300 transition"
+                  className="min-h-[44px] px-4 py-2 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-100 border border-slate-300 transition flex items-center justify-center"
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
                   onClick={handleSaveOrganization}
-                  className="px-4 py-2 rounded-xl text-xs font-black text-white bg-blue-600 hover:bg-blue-700 shadow-sm transition"
+                  className="min-h-[44px] px-4 py-2 rounded-xl text-xs font-black text-white bg-blue-600 hover:bg-blue-700 shadow-sm transition flex items-center justify-center"
                 >
                   Save Corporate Configuration
                 </button>
@@ -488,6 +488,56 @@ export const BusinessOrganizationsConsolePage: React.FC = () => {
             </div>
           </div>
         )}
+
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 py-2 px-3 flex items-center justify-around gap-1 shadow-lg md:hidden">
+          <button
+            onClick={() => setStatusFilter('ALL')}
+            aria-label="Filter All Organizations"
+            className={`min-h-[44px] min-w-[44px] px-2 py-1 flex flex-col items-center justify-center text-xs font-semibold ${
+              statusFilter === 'ALL' ? 'text-blue-600' : 'text-slate-800 hover:text-blue-600'
+            }`}
+          >
+            <span className="text-base">🏢</span>
+            <span>All Orgs</span>
+          </button>
+          <button
+            onClick={() => setStatusFilter('verified')}
+            aria-label="Filter Verified"
+            className={`min-h-[44px] min-w-[44px] px-2 py-1 flex flex-col items-center justify-center text-xs font-semibold ${
+              statusFilter === 'verified' ? 'text-blue-600' : 'text-slate-800 hover:text-blue-600'
+            }`}
+          >
+            <span className="text-base">✅</span>
+            <span>KYB</span>
+          </button>
+          <button
+            onClick={() => setStatusFilter('pending')}
+            aria-label="Filter Pending"
+            className={`min-h-[44px] min-w-[44px] px-2 py-1 flex flex-col items-center justify-center text-xs font-semibold ${
+              statusFilter === 'pending' ? 'text-blue-600' : 'text-slate-800 hover:text-blue-600'
+            }`}
+          >
+            <span className="text-base">⏳</span>
+            <span>Pending</span>
+          </button>
+          <button
+            onClick={loadData}
+            aria-label="Reload Organizations"
+            className="min-h-[44px] min-w-[44px] px-2 py-1 flex flex-col items-center justify-center text-xs font-semibold text-slate-800 hover:text-blue-600"
+          >
+            <span className="text-base">🔄</span>
+            <span>Sync</span>
+          </button>
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            aria-label="Scroll to Top"
+            className="min-h-[44px] min-w-[44px] px-2 py-1 flex flex-col items-center justify-center text-xs font-semibold text-slate-800 hover:text-blue-600"
+          >
+            <span className="text-base">⬆️</span>
+            <span>Top</span>
+          </button>
+        </div>
       </div>
     </div>
   );
