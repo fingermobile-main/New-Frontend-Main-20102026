@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Sparkles, RefreshCw, CheckCircle2, ShieldAlert, ArrowLeft } from 'lucide-react';
 import { useAppContext } from '../../../contexts/AppContext';
 import { moderationAdminService, ModerationQueueItem } from '../../../services/moderationAdminService';
 import PlatformOwnershipCard from '../../../components/dashboard/PlatformOwnershipCard';
 
 const FlamingoApprovalPage: React.FC = () => {
+  const navigate = useNavigate();
   const { showToast } = useAppContext();
   const [submissions, setSubmissions] = useState<ModerationQueueItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -45,19 +48,29 @@ const FlamingoApprovalPage: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-3 sm:p-6 lg:p-8 space-y-6 overflow-x-hidden pb-28 md:pb-12 text-slate-900">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-black text-slate-900 tracking-tight">Flamingo Luxury Content Moderation</h1>
-          <p className="text-sm text-slate-700 font-medium mt-1">Review brand sizing, trademark authenticity, luxury fashion assets and outfits</p>
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">Flamingo Luxury Content Moderation</h1>
+          <p className="text-xs sm:text-sm text-slate-700 font-medium mt-1">Review brand sizing, trademark authenticity, luxury fashion assets and outfits</p>
         </div>
-        <button
-          onClick={loadSubmissions}
-          disabled={loading}
-          className="px-4 py-2 text-xs font-bold bg-white hover:bg-slate-100 text-slate-900 border border-slate-300 rounded-xl transition cursor-pointer shadow-xs disabled:opacity-50"
-        >
-          {loading ? 'Refreshing...' : 'Refresh Queue'}
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => navigate('/masterdashboard')}
+            className="min-h-[44px] px-3.5 py-2 text-xs font-bold bg-white hover:bg-slate-50 text-slate-800 border border-slate-300 rounded-xl transition cursor-pointer shadow-xs inline-flex items-center gap-1.5"
+          >
+            <ArrowLeft className="w-4 h-4 text-slate-700" />
+            <span>Dashboard</span>
+          </button>
+          <button
+            onClick={loadSubmissions}
+            disabled={loading}
+            className="min-h-[44px] px-4 py-2 text-xs font-bold bg-white hover:bg-slate-100 text-slate-900 border border-slate-300 rounded-xl transition cursor-pointer shadow-xs disabled:opacity-50 inline-flex items-center gap-1.5"
+          >
+            <RefreshCw className={`w-4 h-4 text-slate-700 ${loading ? 'animate-spin' : ''}`} />
+            <span>{loading ? 'Refreshing...' : 'Refresh Queue'}</span>
+          </button>
+        </div>
       </div>
 
       <PlatformOwnershipCard />
@@ -77,16 +90,16 @@ const FlamingoApprovalPage: React.FC = () => {
                 <p className="text-sm text-slate-700 font-medium mt-1">{item.description}</p>
                 <p className="text-xs text-slate-700 font-medium mt-2">Submitted on {new Date(item.created_at).toLocaleString()}</p>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap sm:flex-nowrap items-center gap-3 w-full sm:w-auto">
                 <button
                   onClick={() => handleDeny(item.id)}
-                  className="px-4 py-2 text-xs font-bold bg-rose-50 text-rose-950 border border-rose-300 hover:bg-rose-100 rounded-lg transition cursor-pointer"
+                  className="flex-1 sm:flex-none min-h-[44px] px-4 py-2 text-xs font-bold bg-rose-50 text-rose-950 border border-rose-300 hover:bg-rose-100 rounded-xl transition cursor-pointer"
                 >
                   Deny Asset
                 </button>
                 <button
                   onClick={() => handleApprove(item.id)}
-                  className="px-4 py-2 text-xs font-bold bg-emerald-600 text-white hover:bg-emerald-700 rounded-lg shadow-sm transition cursor-pointer"
+                  className="flex-1 sm:flex-none min-h-[44px] px-4 py-2 text-xs font-bold bg-emerald-600 text-white hover:bg-emerald-700 rounded-xl shadow-sm transition cursor-pointer"
                 >
                   Approve Asset
                 </button>
@@ -100,6 +113,51 @@ const FlamingoApprovalPage: React.FC = () => {
           <p className="text-sm text-slate-700 font-medium mt-1">No pending luxury outfits or sizing charts awaiting review.</p>
         </div>
       )}
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <nav
+        aria-label="Flamingo Approval Mobile Navigation"
+        className="md:hidden fixed bottom-4 inset-x-3 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl p-2 z-40 shadow-2xl flex items-center justify-around gap-1"
+      >
+        <button
+          type="button"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-pink-400 hover:text-pink-300 transition-colors cursor-pointer"
+        >
+          <Sparkles className="w-5 h-5 mb-0.5" />
+          <span>Flamingo</span>
+        </button>
+        <button
+          type="button"
+          onClick={loadSubmissions}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-emerald-400 hover:text-emerald-300 transition-colors cursor-pointer"
+        >
+          <RefreshCw className="w-5 h-5 mb-0.5" />
+          <span>Refresh</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            if (submissions.length > 0) {
+              handleApprove(submissions[0].id);
+            } else {
+              showToast('No pending assets to approve', 'info');
+            }
+          }}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-sky-400 hover:text-sky-300 transition-colors cursor-pointer"
+        >
+          <CheckCircle2 className="w-5 h-5 mb-0.5" />
+          <span>Quick OK</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => navigate('/masterdashboard')}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-slate-300 hover:text-white transition-colors cursor-pointer"
+        >
+          <ArrowLeft className="w-5 h-5 mb-0.5" />
+          <span>Back</span>
+        </button>
+      </nav>
     </div>
   );
 };

@@ -8,7 +8,8 @@ import React, { useState, useEffect } from 'react';
  * Unauthorized copying, distribution, or modification of this code is strictly prohibited. All laws do and will apply.
  */
 
-import { Shield, AlertTriangle, CheckCircle, XCircle, Clock, Eye, RefreshCw, Loader2 } from 'lucide-react';
+import { Shield, AlertTriangle, CheckCircle, XCircle, Clock, Eye, RefreshCw, Loader2, ArrowLeft, LayoutDashboard, Flag } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '../../components/ui/Select';
 import { moderationAdminService, ModerationQueueItem } from '../../services/moderationAdminService';
@@ -26,6 +27,7 @@ interface ModerationItem {
 }
 
 const ContentModerationPage: React.FC = () => {
+  const navigate = useNavigate();
   const { showToast } = useAppContext();
   const [moderationQueue, setModerationQueue] = useState<ModerationItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -111,24 +113,31 @@ const ContentModerationPage: React.FC = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className="p-6 space-y-6 max-w-7xl mx-auto"
+      className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-3 sm:p-6 lg:p-8 space-y-6 overflow-x-hidden pb-28 md:pb-12 text-slate-900"
     >
       <PlatformOwnershipCard />
 
       <div className="mb-2">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
-            <h1 className="text-3xl font-black text-slate-900 tracking-tight">Content Moderation Console</h1>
-            <p className="text-sm font-semibold text-slate-700 mt-1">Review, adjudicate, and moderate reported protocol content</p>
+            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">Content Moderation Console</h1>
+            <p className="text-xs sm:text-sm font-semibold text-slate-700 mt-1">Review, adjudicate, and moderate reported protocol content</p>
           </div>
-          <div className="flex items-center gap-3 w-full md:w-auto">
+          <div className="flex flex-wrap items-center gap-2.5 w-full md:w-auto">
             <button
               onClick={loadData}
               disabled={loading}
-              className="flex items-center gap-2 px-3.5 py-2 bg-white border border-slate-300 rounded-xl text-sm font-bold text-slate-800 hover:bg-slate-50 disabled:opacity-50 cursor-pointer shadow-sm"
+              className="min-h-[44px] flex items-center gap-2 px-3.5 py-2 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm font-bold text-slate-800 hover:bg-slate-50 disabled:opacity-50 cursor-pointer shadow-xs"
             >
               <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin text-blue-600' : ''}`} />
-              Refresh
+              <span>Refresh</span>
+            </button>
+            <button
+              onClick={() => navigate('/masterdashboard')}
+              className="min-h-[44px] inline-flex items-center gap-1.5 px-3.5 py-2 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm font-bold text-slate-800 hover:bg-slate-50 transition-colors shadow-xs cursor-pointer"
+            >
+              <LayoutDashboard className="w-4 h-4 text-slate-700" />
+              <span>Dashboard</span>
             </button>
             <div className="relative flex-1 md:w-64">
               <input
@@ -136,9 +145,9 @@ const ContentModerationPage: React.FC = () => {
                 placeholder="Search by content or ID..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 bg-white text-slate-900 font-bold border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-slate-500 shadow-sm"
+                className="w-full min-h-[44px] pl-10 pr-4 py-2 bg-white text-slate-900 font-bold border border-slate-300 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-slate-500 shadow-xs"
               />
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-slate-600 absolute left-3.5 top-3" viewBox="0 0 20 20" fill="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-slate-600 absolute left-3.5 top-3.5" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
               </svg>
             </div>
@@ -344,11 +353,11 @@ const ContentModerationPage: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="flex space-x-3 pt-4">
+                <div className="flex flex-wrap sm:flex-nowrap gap-3 pt-4">
                   <button
                     onClick={() => handleApprove(selectedItem.id)}
                     disabled={selectedItem.status !== 'pending' || processingId === selectedItem.id}
-                    className={`flex-1 py-2.5 px-4 rounded-xl font-bold flex items-center justify-center gap-2 cursor-pointer shadow-sm
+                    className={`flex-1 min-h-[44px] py-2.5 px-4 rounded-xl font-bold flex items-center justify-center gap-2 cursor-pointer shadow-xs text-xs sm:text-sm
                       ${selectedItem.status === 'pending'
               ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
               : 'bg-emerald-100 text-emerald-950 border border-emerald-400 cursor-not-allowed opacity-75'
@@ -360,7 +369,7 @@ const ContentModerationPage: React.FC = () => {
                   <button
                     onClick={() => handleReject(selectedItem.id)}
                     disabled={selectedItem.status !== 'pending' || processingId === selectedItem.id}
-                    className={`flex-1 py-2.5 px-4 rounded-xl font-bold flex items-center justify-center gap-2 cursor-pointer shadow-sm
+                    className={`flex-1 min-h-[44px] py-2.5 px-4 rounded-xl font-bold flex items-center justify-center gap-2 cursor-pointer shadow-xs text-xs sm:text-sm
                       ${selectedItem.status === 'pending'
               ? 'bg-rose-600 hover:bg-rose-700 text-white'
               : 'bg-rose-100 text-rose-950 border border-rose-400 cursor-not-allowed opacity-75'
@@ -383,6 +392,48 @@ const ContentModerationPage: React.FC = () => {
           )}
         </div>
       </div>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <nav
+        aria-label="Content Moderation Mobile Navigation"
+        className="md:hidden fixed bottom-4 inset-x-3 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl p-2 z-40 shadow-2xl flex items-center justify-around gap-1"
+      >
+        <button
+          type="button"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-amber-400 hover:text-amber-300 transition-colors cursor-pointer"
+        >
+          <Shield className="w-5 h-5 mb-0.5" />
+          <span>Console</span>
+        </button>
+        <button
+          type="button"
+          onClick={loadData}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-emerald-400 hover:text-emerald-300 transition-colors cursor-pointer"
+        >
+          <RefreshCw className="w-5 h-5 mb-0.5" />
+          <span>Refresh</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            const input = document.querySelector('input[placeholder*="Search by content"]');
+            if (input) (input as HTMLElement).focus();
+          }}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-sky-400 hover:text-sky-300 transition-colors cursor-pointer"
+        >
+          <Flag className="w-5 h-5 mb-0.5" />
+          <span>Search</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => navigate('/masterdashboard')}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-slate-300 hover:text-white transition-colors cursor-pointer"
+        >
+          <LayoutDashboard className="w-5 h-5 mb-0.5" />
+          <span>Dashboard</span>
+        </button>
+      </nav>
     </motion.div>
   );
 };

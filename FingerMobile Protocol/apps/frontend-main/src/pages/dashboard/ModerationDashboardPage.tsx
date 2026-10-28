@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAppContext } from '../../contexts/AppContext';
 import { moderationAdminService, ModerationQueueItem, ModerationStats, UserReportItem } from '../../services/moderationAdminService';
-import { RefreshCw, CheckCircle2, AlertOctagon, XCircle, UserX, Loader2 } from 'lucide-react';
+import { RefreshCw, CheckCircle2, AlertOctagon, XCircle, UserX, Loader2, ShieldCheck, Flag, Users, Settings } from 'lucide-react';
 import { PlatformOwnershipCard } from '../../components/ownership/PlatformOwnershipCard';
 
 const FALLBACK_MODERATION_QUEUE: ModerationQueueItem[] = [
@@ -48,6 +48,7 @@ const FALLBACK_REPORTS: UserReportItem[] = [
 ];
 
 const ModerationDashboardPage: React.FC = () => {
+  const navigate = useNavigate();
   const { showToast } = useAppContext();
   const [activeTab, setActiveTab] = useState('pending');
   const [filter, setFilter] = useState('all');
@@ -189,8 +190,8 @@ const ModerationDashboardPage: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+    <div className="min-h-screen bg-slate-50 w-full max-w-full overflow-x-hidden pb-28 md:pb-12 text-slate-900">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
         <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h1 className="text-3xl font-black text-slate-900">
@@ -203,10 +204,10 @@ const ModerationDashboardPage: React.FC = () => {
           <button
             onClick={loadData}
             disabled={loading}
-            className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-300 rounded-full text-xs font-bold text-slate-800 hover:bg-slate-100 shadow-xs transition-colors self-start sm:self-auto"
+            className="min-h-[44px] flex items-center gap-2 px-4 py-2 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm font-bold text-slate-800 hover:bg-slate-100 shadow-xs transition-colors self-start sm:self-auto cursor-pointer"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin text-blue-600' : 'text-slate-600'}`} />
-            Refresh Queue
+            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin text-blue-600' : 'text-slate-600'}`} />
+            <span>Refresh Queue</span>
           </button>
         </div>
 
@@ -231,49 +232,28 @@ const ModerationDashboardPage: React.FC = () => {
         </div>
 
         {/* Dashboard Tabs */}
-        <div className="bg-white rounded-xl shadow-sm border border-slate-300">
-          <div className="border-b border-slate-300">
-            <nav className="flex space-x-8 px-6">
-              <button
-                onClick={() => setActiveTab('pending')}
-                className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                  activeTab === 'pending'
-                    ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
-                }`}
-              >
-                Pending Review
-              </button>
-              <button
-                onClick={() => setActiveTab('flagged')}
-                className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                  activeTab === 'flagged'
-                    ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
-                }`}
-              >
-                Flagged Members
-              </button>
-              <button
-                onClick={() => setActiveTab('reports')}
-                className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                  activeTab === 'reports'
-                    ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
-                }`}
-              >
-                Reports
-              </button>
-              <button
-                onClick={() => setActiveTab('settings')}
-                className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                  activeTab === 'settings'
-                    ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
-                }`}
-              >
-                Settings
-              </button>
+        <div className="bg-white rounded-xl shadow-sm border border-slate-300 overflow-hidden">
+          <div className="border-b border-slate-300 overflow-x-auto">
+            <nav className="flex space-x-2 sm:space-x-8 px-4 sm:px-6">
+              {[
+                { id: 'pending', label: 'Pending Review' },
+                { id: 'flagged', label: 'Flagged Content' },
+                { id: 'reports', label: 'User Reports' },
+                { id: 'members', label: 'Flagged Members' },
+                { id: 'settings', label: 'Automated Rules' }
+              ].map(tab => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`min-h-[44px] py-3 px-3 border-b-2 font-bold text-xs sm:text-sm whitespace-nowrap transition-colors cursor-pointer ${
+                    activeTab === tab.id
+                      ? 'border-blue-600 text-blue-600'
+                      : 'border-transparent text-slate-700 hover:text-slate-900'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
             </nav>
           </div>
 
@@ -666,6 +646,65 @@ const ModerationDashboardPage: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <nav
+        aria-label="Moderation Dashboard Mobile Navigation"
+        className="md:hidden fixed bottom-4 inset-x-3 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl p-2 z-40 shadow-2xl flex items-center justify-around gap-1"
+      >
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab('pending');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold transition-colors cursor-pointer ${
+            activeTab === 'pending' ? 'text-amber-400' : 'text-slate-300 hover:text-white'
+          }`}
+        >
+          <ShieldCheck className="w-5 h-5 mb-0.5" />
+          <span>Queue</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab('reports');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold transition-colors cursor-pointer ${
+            activeTab === 'reports' ? 'text-rose-400' : 'text-slate-300 hover:text-white'
+          }`}
+        >
+          <Flag className="w-5 h-5 mb-0.5" />
+          <span>Reports</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab('members');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold transition-colors cursor-pointer ${
+            activeTab === 'members' ? 'text-purple-400' : 'text-slate-300 hover:text-white'
+          }`}
+        >
+          <Users className="w-5 h-5 mb-0.5" />
+          <span>Flagged</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab('settings');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold transition-colors cursor-pointer ${
+            activeTab === 'settings' ? 'text-emerald-400' : 'text-slate-300 hover:text-white'
+          }`}
+        >
+          <Settings className="w-5 h-5 mb-0.5" />
+          <span>Rules</span>
+        </button>
+      </nav>
     </div>
   );
 };

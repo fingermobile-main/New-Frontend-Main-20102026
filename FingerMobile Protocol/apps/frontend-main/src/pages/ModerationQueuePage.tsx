@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { ShieldAlert, CheckCircle2, XCircle, Flag, RefreshCw, LayoutDashboard } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
@@ -10,6 +12,7 @@ import { Textarea } from '../components/ui/Textarea';
 import { moderationAdminService } from '../services/moderationAdminService';
 
 const ModerationQueuePage: React.FC = () => {
+  const navigate = useNavigate();
   const [queueItems, setQueueItems] = useState<Array<{
     id: string;
     type: string;
@@ -98,14 +101,14 @@ const ModerationQueuePage: React.FC = () => {
   const filteredItems = queueItems.filter(item => item.status === 'pending');
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 w-full max-w-full overflow-x-hidden pb-28 md:pb-12 text-slate-900">
       <Header />
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8"
+        className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-8"
       >
         <div className="mb-8">
           <h1 className="text-3xl font-black text-slate-900 tracking-tight">Moderation Queue</h1>
@@ -203,11 +206,12 @@ const ModerationQueuePage: React.FC = () => {
                       <p className="text-gray-900 mt-1">{selectedItem.reporter}</p>
                     </div>
 
-                    <div className="flex space-x-2">
+                    <div className="flex flex-wrap items-center gap-2 pt-2">
                       <Button
                         onClick={() => handleApprove(selectedItem.id)}
                         disabled={selectedItem.status !== 'pending'}
                         variant="success"
+                        className="min-h-[44px] px-4 py-2 font-bold cursor-pointer"
                       >
                         Approve Content
                       </Button>
@@ -215,6 +219,7 @@ const ModerationQueuePage: React.FC = () => {
                         variant="danger"
                         onClick={() => handleReject(selectedItem.id)}
                         disabled={selectedItem.status !== 'pending'}
+                        className="min-h-[44px] px-4 py-2 font-bold cursor-pointer"
                       >
                         Reject & Remove
                       </Button>
@@ -224,6 +229,7 @@ const ModerationQueuePage: React.FC = () => {
                         aria-label="Flag item for secondary review"
                         onClick={() => handleFlagForReview(selectedItem.id)}
                         disabled={selectedItem.status !== 'pending'}
+                        className="min-h-[44px] px-4 py-2 font-bold cursor-pointer"
                       >
                         Flag for Review
                       </Button>
@@ -267,6 +273,37 @@ const ModerationQueuePage: React.FC = () => {
           </div>
         </div>
       </motion.div>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <nav
+        aria-label="Moderation Queue Mobile Navigation"
+        className="md:hidden fixed bottom-4 inset-x-3 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl p-2 z-40 shadow-2xl flex items-center justify-around gap-1"
+      >
+        <button
+          type="button"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-amber-400 hover:text-amber-300 transition-colors cursor-pointer"
+        >
+          <ShieldAlert className="w-5 h-5 mb-0.5" />
+          <span>Queue</span>
+        </button>
+        <button
+          type="button"
+          onClick={loadQueue}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-emerald-400 hover:text-emerald-300 transition-colors cursor-pointer"
+        >
+          <RefreshCw className="w-5 h-5 mb-0.5" />
+          <span>Refresh</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => navigate('/masterdashboard')}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-slate-300 hover:text-white transition-colors cursor-pointer"
+        >
+          <LayoutDashboard className="w-5 h-5 mb-0.5" />
+          <span>Dashboard</span>
+        </button>
+      </nav>
 
       <Footer />
     </div>

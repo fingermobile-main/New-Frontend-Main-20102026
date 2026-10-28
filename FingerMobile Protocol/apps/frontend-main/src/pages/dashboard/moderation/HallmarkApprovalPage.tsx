@@ -1,10 +1,13 @@
 import React from 'react';
+import { Award, ShieldCheck, ArrowLeft, RefreshCw } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useHallmark } from '../../../contexts/HallmarkContext';
 import type { HallmarkApplication } from '../../../types';
 import AnimatedAvatar from '../../../components/AnimatedAvatar';
 import PlatformOwnershipCard from '../../../components/dashboard/PlatformOwnershipCard';
 
 const HallmarkApprovalPage: React.FC = () => {
+  const navigate = useNavigate();
   const { hallmarkApplications, handleApproveHallmarkApplication, handleRejectHallmarkApplication } = useHallmark();
 
   const pendingApplications = hallmarkApplications.filter((app: HallmarkApplication) => app.status === 'pending');
@@ -41,13 +44,13 @@ const HallmarkApprovalPage: React.FC = () => {
       <div className="flex items-center gap-2.5 shrink-0 self-end md:self-center">
         <button
           onClick={() => handleRejectHallmarkApplication(application.id)}
-          className="px-4 py-2 text-xs font-bold bg-rose-50 text-rose-950 border border-rose-300 hover:bg-rose-100 rounded-lg transition cursor-pointer"
+          className="min-h-[44px] px-4 py-2 text-xs sm:text-sm font-bold bg-rose-50 text-rose-950 border border-rose-300 hover:bg-rose-100 rounded-xl transition cursor-pointer"
         >
           Reject Application
         </button>
         <button
           onClick={() => handleApproveHallmarkApplication(application.id)}
-          className="px-4 py-2 text-xs font-bold bg-emerald-600 text-white hover:bg-emerald-700 rounded-lg shadow-sm transition cursor-pointer"
+          className="min-h-[44px] px-4 py-2 text-xs sm:text-sm font-bold bg-emerald-600 text-white hover:bg-emerald-700 rounded-xl shadow-xs transition cursor-pointer"
         >
           Approve Hallmark
         </button>
@@ -56,17 +59,26 @@ const HallmarkApprovalPage: React.FC = () => {
   );
 
   return (
-    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-3 sm:p-6 lg:p-8 space-y-6 overflow-x-hidden pb-28 md:pb-12 text-slate-900">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-black text-slate-900 tracking-tight">Hallmark Approval Queue</h1>
-          <p className="text-sm text-slate-700 font-medium mt-1">
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">Hallmark Approval Queue</h1>
+          <p className="text-xs sm:text-sm text-slate-700 font-medium mt-1">
             Review sovereign mega-community charter applications (up to 250k member capacity)
           </p>
         </div>
-        <span className="px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-950 border border-blue-400 self-start sm:self-auto">
-          {pendingApplications.length} Pending Charters
-        </span>
+        <div className="flex items-center gap-2 self-start sm:self-auto">
+          <span className="min-h-[44px] flex items-center px-3.5 py-1 rounded-xl text-xs font-bold bg-blue-100 text-blue-950 border border-blue-400">
+            {pendingApplications.length} Pending Charters
+          </span>
+          <button
+            onClick={() => navigate('/hallmarks')}
+            className="min-h-[44px] inline-flex items-center gap-1.5 px-3.5 py-2 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm font-bold text-slate-800 hover:bg-slate-100 transition-colors shadow-xs cursor-pointer"
+          >
+            <ArrowLeft className="w-4 h-4 text-slate-700" />
+            <span>Hub</span>
+          </button>
+        </div>
       </div>
 
       <PlatformOwnershipCard />
@@ -83,6 +95,37 @@ const HallmarkApprovalPage: React.FC = () => {
           <p className="text-sm text-slate-700 font-medium mt-1">No sovereign mega-community applications are currently awaiting review.</p>
         </div>
       )}
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <nav
+        aria-label="Hallmark Approval Mobile Navigation"
+        className="md:hidden fixed bottom-4 inset-x-3 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl p-2 z-40 shadow-2xl flex items-center justify-around gap-1"
+      >
+        <button
+          type="button"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-amber-400 hover:text-amber-300 transition-colors cursor-pointer"
+        >
+          <Award className="w-5 h-5 mb-0.5" />
+          <span>Queue</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => window.location.reload()}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-emerald-400 hover:text-emerald-300 transition-colors cursor-pointer"
+        >
+          <RefreshCw className="w-5 h-5 mb-0.5" />
+          <span>Refresh</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => navigate('/hallmarks')}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-slate-300 hover:text-white transition-colors cursor-pointer"
+        >
+          <ShieldCheck className="w-5 h-5 mb-0.5" />
+          <span>Hub</span>
+        </button>
+      </nav>
     </div>
   );
 };
