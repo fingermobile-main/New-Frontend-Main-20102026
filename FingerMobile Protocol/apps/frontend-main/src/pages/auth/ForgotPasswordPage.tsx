@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 
 import { motion } from 'framer-motion';
 import { Mail, ArrowLeft } from 'lucide-react';
+import AuthBrandingPanel from '../../components/auth/AuthBrandingPanel';
 
 const ForgotPasswordPage = () => {
   const navigate = useNavigate();
@@ -74,15 +75,19 @@ const ForgotPasswordPage = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="w-full max-w-md"
+        className="w-full max-w-5xl bg-white dark:bg-gray-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col lg:flex-row border border-slate-200 dark:border-gray-700"
       >
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 border border-slate-200 dark:border-gray-700">
+        {/* Rotating Branding Panel (Left Column on Desktop) */}
+        <AuthBrandingPanel initialIndex={3} />
+
+        {/* Form Container (Right Column on Desktop) */}
+        <div className="w-full lg:w-1/2 p-6 sm:p-10 flex flex-col justify-center">
           <div className="text-center mb-8">
             <div className="mx-auto w-16 h-16 bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex items-center justify-center mb-4 border text-indigo-950 border-indigo-400 font-black">
               <Mail className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
             </div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Reset Password</h1>
-            <p className="text-slate-700 dark:text-slate-300 font-medium mt-2">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">Reset Password</h1>
+            <p className="text-slate-700 dark:text-slate-300 font-medium mt-2 text-xs sm:text-sm">
               Enter your email or phone number to receive reset instructions
             </p>
           </div>

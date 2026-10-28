@@ -43,7 +43,7 @@ const Dancia4TvHeader: React.FC<Dancia4TvHeaderProps> = ({
               <img src="/assets/logos/dancia4tv_logo.png" alt="Dancia-4Tv" className="w-full h-full object-contain" />
             </div>
             <div className="min-w-0">
-              <h1 className="text-lg sm:text-2xl font-black tracking-tighter text-white truncate">DANCIA-4Tv{'\u00AE\u2122\u00A9'}</h1>
+              <h1 className="text-lg sm:text-2xl font-black tracking-tighter text-white truncate">Dancia-4Tv{'\u00AE\u2122\u00A9'}</h1>
               <p className="text-[9px] sm:text-[10px] font-bold text-blue-500 uppercase tracking-widest truncate">Live & OTT 4K Stream</p>
             </div>
           </div>

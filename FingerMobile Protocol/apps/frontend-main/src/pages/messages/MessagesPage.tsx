@@ -421,7 +421,7 @@ const MessagesPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Sovereign Protocol Messaging & Chat">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6 overflow-x-hidden text-slate-900 pb-28 md:pb-12">
         
         {/* MAIN CONSOLE CARD: Strict border-slate-300 on white */}
         <div className="bg-white rounded-3xl border border-slate-300 shadow-sm overflow-hidden flex flex-col md:flex-row h-[calc(100vh-12rem)] min-h-[580px]">
@@ -1012,6 +1012,46 @@ const MessagesPage: React.FC = () => {
             )
           }
         />
+
+        {/* MOBILE NAVIGATION QUICK DOCK */}
+        <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 flex items-center justify-around z-30 shadow-lg">
+          <button
+            type="button"
+            onClick={() => setActiveTab('all')}
+            className={`flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold transition-colors ${
+              activeTab === 'all' ? 'text-orange-600 bg-orange-50' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <ChatBubbleLeftRightIcon className="w-5 h-5 mb-0.5" />
+            <span>Chats</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setShowNewChatModal(true)}
+            className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-900 transition-colors"
+          >
+            <PlusIcon className="w-5 h-5 mb-0.5 text-orange-600" />
+            <span>New Chat</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setIsSecureMode(!isSecureMode)}
+            className={`flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold transition-colors ${
+              isSecureMode ? 'text-emerald-700 bg-emerald-50' : 'text-slate-700'
+            }`}
+          >
+            <LockClosedIcon className="w-5 h-5 mb-0.5" />
+            <span>Vault</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate('/dashboard')}
+            className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-900 transition-colors"
+          >
+            <SparklesIcon className="w-5 h-5 mb-0.5" />
+            <span>Dashboard</span>
+          </button>
+        </div>
 
       </div>
     </MainLayout>

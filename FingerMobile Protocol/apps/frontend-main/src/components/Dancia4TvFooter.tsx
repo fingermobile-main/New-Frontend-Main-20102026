@@ -15,7 +15,7 @@ const Dancia4TvFooter: React.FC = () => {
           {/* Brand */}
           <div className="space-y-4">
             <h3 className="text-xl font-black tracking-tighter text-white flex items-center gap-2">
-              <span className="text-red-500">DANCIA-4Tv</span>
+              <span className="text-red-500">Dancia-4Tv</span>
             </h3>
             <p className="text-sm text-slate-200 leading-relaxed font-medium">
               The ultimate premium streaming experience for FingerMobile Protocol™ members. Quality content, anywhere, anytime.

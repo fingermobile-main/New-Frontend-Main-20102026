@@ -28,7 +28,7 @@ describe('LoginPage Mobile Optimization', () => {
       </BrowserRouter>
     );
 
-    expect(screen.getByText(/FingerMobile/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/FingerMobile/i).length).toBeGreaterThan(0);
     expect(screen.getByPlaceholderText(/admin, user@fingermobileprotocol.com/i)).toBeInTheDocument();
   });
 

@@ -111,7 +111,7 @@ const CodeAgentPage: React.FC = () => {
 
 
   return (
-    <div className="flex flex-col h-full bg-gray-900 text-white p-6">
+    <div className="flex flex-col h-full bg-gray-900 text-white p-6 w-full max-w-full overflow-x-hidden pb-28 md:pb-12">
       <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto flex flex-col flex-grow">
         <h1 className="text-3xl font-black text-cyan-400 mb-6">Code Agent</h1>
 
@@ -175,6 +175,42 @@ const CodeAgentPage: React.FC = () => {
         <div className="mt-8">
           <PlatformOwnershipCard />
         </div>
+      </div>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-zinc-950/95 backdrop-blur-md border-t border-slate-700 py-2 px-3 flex items-center justify-around gap-1 shadow-lg md:hidden">
+        <a
+          href="/super-admin/code-agent"
+          aria-label="Code Agent"
+          className="min-h-[44px] min-w-[44px] px-2 py-1 flex flex-col items-center justify-center text-xs font-semibold text-slate-300 hover:text-cyan-400"
+        >
+          <span className="text-base">🤖</span>
+          <span>Agent</span>
+        </a>
+        <button
+          onClick={() => { const input = document.querySelector('textarea') as HTMLTextAreaElement; if (input) { input.focus(); input.scrollIntoView({ behavior: 'smooth' }); } }}
+          aria-label="Prompt Agent"
+          className="min-h-[44px] min-w-[44px] px-2 py-1 flex flex-col items-center justify-center text-xs font-semibold text-slate-300 hover:text-cyan-400"
+        >
+          <span className="text-base">💬</span>
+          <span>Prompt</span>
+        </button>
+        <button
+          onClick={() => window.location.reload()}
+          aria-label="Reload Agent"
+          className="min-h-[44px] min-w-[44px] px-2 py-1 flex flex-col items-center justify-center text-xs font-semibold text-slate-300 hover:text-cyan-400"
+        >
+          <span className="text-base">🔄</span>
+          <span>Sync</span>
+        </button>
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          aria-label="Scroll to Top"
+          className="min-h-[44px] min-w-[44px] px-2 py-1 flex flex-col items-center justify-center text-xs font-semibold text-slate-300 hover:text-cyan-400"
+        >
+          <span className="text-base">⬆️</span>
+          <span>Top</span>
+        </button>
       </div>
     </div>
   );
