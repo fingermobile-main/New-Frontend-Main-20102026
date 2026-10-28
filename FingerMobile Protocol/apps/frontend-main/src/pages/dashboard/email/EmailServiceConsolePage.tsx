@@ -1126,14 +1126,14 @@ const EmailServiceConsolePage: React.FC = () => {
           <span>Composer</span>
         </button>
         <button
-          onClick={() => setActiveTab('health')}
+          onClick={() => setActiveTab('dns')}
           type="button"
           className={`flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold transition-colors ${
-            activeTab === 'health' ? 'text-blue-600 bg-blue-50' : 'text-slate-700 hover:text-slate-900'
+            activeTab === 'dns' ? 'text-blue-600 bg-blue-50' : 'text-slate-700 hover:text-slate-900'
           }`}
         >
           <span className="text-base font-black leading-none mb-0.5">🛡️</span>
-          <span>Health</span>
+          <span>DNS</span>
         </button>
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}

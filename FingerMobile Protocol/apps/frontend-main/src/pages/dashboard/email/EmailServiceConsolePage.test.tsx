@@ -46,7 +46,7 @@ describe('EmailServiceConsolePage Mobile Integration', () => {
 
     expect(screen.getAllByRole('button', { name: /Templates/i }).length).toBeGreaterThan(0);
     expect(screen.getAllByRole('button', { name: /Composer/i }).length).toBeGreaterThan(0);
-    expect(screen.getAllByRole('button', { name: /Health/i }).length).toBeGreaterThan(0);
+    expect(screen.getAllByRole('button', { name: /DNS/i }).length).toBeGreaterThan(0);
     expect(screen.getByRole('button', { name: /Top/i })).toBeInTheDocument();
   });
 });
