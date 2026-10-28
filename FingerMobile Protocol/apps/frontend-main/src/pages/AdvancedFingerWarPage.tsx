@@ -201,7 +201,7 @@ const AdvancedFingerWarPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Advanced FingerWar Arena">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 overflow-x-hidden pb-28 md:pb-12 text-slate-900">
         
         {/* 1. HERO BANNER: Strict Contrast Hierarchy */}
         <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-300 shadow-sm relative overflow-hidden">
@@ -542,16 +542,16 @@ const AdvancedFingerWarPage: React.FC = () => {
                     </span>
 
                     {q.claimed ? (
-                      <span className="text-xs font-bold text-slate-300">Claimed ✓</span>
+                      <span className="text-xs font-bold text-slate-500">Claimed ✓</span>
                     ) : (
                       <button
                         type="button"
                         disabled={!isComplete}
                         onClick={() => handleClaimQuest(q.id, q.reward)}
-                        className={`px-3 py-1.5 rounded-xl text-xs font-black uppercase ${
+                        className={`min-h-[44px] px-3.5 py-1.5 rounded-xl text-xs font-black uppercase ${
                           isComplete
-                            ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
-                            : 'bg-slate-800 text-slate-500 border border-slate-700 cursor-not-allowed'
+                            ? 'bg-emerald-600 hover:bg-emerald-700 text-white cursor-pointer'
+                            : 'bg-slate-200 text-slate-500 border border-slate-300 cursor-not-allowed'
                         }`}
                       >
                         Claim FIC
@@ -564,6 +564,64 @@ const AdvancedFingerWarPage: React.FC = () => {
           </div>
         )}
 
+      </div>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 py-2 px-4 md:hidden shadow-lg safe-area-bottom">
+        <div className="flex justify-around items-center max-w-md mx-auto">
+          <button
+            onClick={() => {
+              setActiveTab('battle');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] ${
+              activeTab === 'battle' ? 'text-orange-600 font-bold' : 'text-slate-700 dark:text-slate-300 font-medium'
+            }`}
+            aria-label="Battle Tab"
+          >
+            <Swords className="w-5 h-5 mb-1" />
+            <span className="text-[10px]">Battle</span>
+          </button>
+          <button
+            onClick={() => {
+              setActiveTab('tournaments');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] ${
+              activeTab === 'tournaments' ? 'text-orange-600 font-bold' : 'text-slate-700 dark:text-slate-300 font-medium'
+            }`}
+            aria-label="Tournaments Tab"
+          >
+            <Trophy className="w-5 h-5 mb-1" />
+            <span className="text-[10px]">Tourneys</span>
+          </button>
+          <button
+            onClick={() => {
+              setActiveTab('leaderboard');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] ${
+              activeTab === 'leaderboard' ? 'text-orange-600 font-bold' : 'text-slate-700 dark:text-slate-300 font-medium'
+            }`}
+            aria-label="Leaderboard Tab"
+          >
+            <Medal className="w-5 h-5 mb-1" />
+            <span className="text-[10px]">Ranks</span>
+          </button>
+          <button
+            onClick={() => {
+              setActiveTab('quests');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] ${
+              activeTab === 'quests' ? 'text-orange-600 font-bold' : 'text-slate-700 dark:text-slate-300 font-medium'
+            }`}
+            aria-label="Quests Tab"
+          >
+            <Target className="w-5 h-5 mb-1" />
+            <span className="text-[10px]">Quests</span>
+          </button>
+        </div>
       </div>
     </MainLayout>
   );
