@@ -77,16 +77,16 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ adminId }) => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="w-full max-w-full overflow-x-hidden text-slate-900 pb-28 md:pb-12 space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
-          <p className="text-gray-600 mt-1">Platform overview and management</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Admin Dashboard</h1>
+          <p className="text-slate-700 mt-1">Platform overview and management</p>
         </div>
         <button
           onClick={loadDashboard}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+          className="min-h-[44px] px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium flex items-center justify-center"
         >
           Refresh Data
         </button>
@@ -102,7 +102,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ adminId }) => {
               {stats.users.growth >= 0 ? '↑' : '↓'} {Math.abs(stats.users.growth)}%
             </span>
           </div>
-          <p className="text-sm text-gray-600 mb-1">Total Users</p>
+          <p className="text-sm text-slate-700 mb-1">Total Users</p>
           <p className="text-3xl font-bold text-gray-900">{stats.users.total.toLocaleString()}</p>
           <p className="text-xs text-slate-700 mt-2">{stats.users.active.toLocaleString()} active</p>
         </div>
@@ -111,11 +111,11 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ adminId }) => {
         <div className="bg-white border border-slate-300 rounded-lg p-6">
           <div className="flex items-center justify-between mb-4">
             <span className="text-3xl">📝</span>
-            <span className="px-2 py-1 bg-amber-100 text-amber-950 border border-amber-400 font-bold rounded-full text-xs font-medium font-black">
+            <span className="px-2 py-1 bg-amber-100 text-amber-950 border border-amber-400 font-bold rounded-full text-xs">
               {stats.content.flagged} flagged
             </span>
           </div>
-          <p className="text-sm text-gray-600 mb-1">Total Posts</p>
+          <p className="text-sm text-slate-700 mb-1">Total Posts</p>
           <p className="text-3xl font-bold text-gray-900">{stats.content.totalPosts.toLocaleString()}</p>
           <p className="text-xs text-slate-700 mt-2">{stats.content.postsToday} today</p>
         </div>
@@ -128,22 +128,22 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ adminId }) => {
               {stats.revenue.growth >= 0 ? '↑' : '↓'} {Math.abs(stats.revenue.growth)}%
             </span>
           </div>
-          <p className="text-sm text-green-700 mb-1">Total Revenue</p>
-          <p className="text-3xl font-bold text-green-900">{formatCurrency(stats.revenue.total)}</p>
-          <p className="text-xs text-green-600 mt-2">{formatCurrency(stats.revenue.thisMonth)} this month</p>
+          <p className="text-sm text-green-800 mb-1">Total Revenue</p>
+          <p className="text-3xl font-bold text-green-950">{formatCurrency(stats.revenue.total)}</p>
+          <p className="text-xs text-green-800 mt-2">{formatCurrency(stats.revenue.thisMonth)} this month</p>
         </div>
 
         {/* System Health */}
         <div className="bg-white border border-slate-300 rounded-lg p-6">
           <div className="flex items-center justify-between mb-4">
             <span className="text-3xl">⚙️</span>
-            <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-              stats.system.uptime >= 99 ? 'bg-green-100 text-green-950 border border-green-400 font-bold' : 'bg-red-100 text-green-950 border border-green-400 font-bold'
-            }font-black`}>
+            <span className={`px-2 py-1 rounded-full text-xs font-bold ${
+              stats.system.uptime >= 99 ? 'bg-green-100 text-green-950 border border-green-400' : 'bg-red-100 text-red-950 border border-red-400'
+            }`}>
               {stats.system.uptime}% uptime
             </span>
           </div>
-          <p className="text-sm text-gray-600 mb-1">System Status</p>
+          <p className="text-sm text-slate-700 mb-1">System Status</p>
           <p className="text-3xl font-bold text-gray-900">{stats.system.activeSessions}</p>
           <p className="text-xs text-slate-700 mt-2">Active sessions</p>
         </div>
@@ -155,7 +155,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ adminId }) => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           <Link
             to="/admin/rbac"
-            className="p-4 border-2 border-slate-300 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all text-center block"
+            className="p-4 border-2 border-slate-300 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all text-center block min-h-[44px]"
           >
             <div className="text-2xl mb-2">👤</div>
             <div className="font-bold text-sm text-slate-900">Manage Users</div>
@@ -163,7 +163,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ adminId }) => {
 
           <Link
             to="/analytics"
-            className="p-4 border-2 border-slate-300 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all text-center block"
+            className="p-4 border-2 border-slate-300 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all text-center block min-h-[44px]"
           >
             <div className="text-2xl mb-2">📊</div>
             <div className="font-bold text-sm text-slate-900">View Reports</div>
@@ -171,7 +171,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ adminId }) => {
 
           <Link
             to="/moderation"
-            className="p-4 border-2 border-slate-300 rounded-lg hover:border-orange-500 hover:bg-orange-50 transition-all text-center block"
+            className="p-4 border-2 border-slate-300 rounded-lg hover:border-orange-500 hover:bg-orange-50 transition-all text-center block min-h-[44px]"
           >
             <div className="text-2xl mb-2">🚩</div>
             <div className="font-bold text-sm text-slate-900">Moderation Queue</div>
@@ -179,7 +179,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ adminId }) => {
 
           <Link
             to="/settings"
-            className="p-4 border-2 border-slate-300 rounded-lg hover:border-green-500 hover:bg-green-50 transition-all text-center block"
+            className="p-4 border-2 border-slate-300 rounded-lg hover:border-green-500 hover:bg-green-50 transition-all text-center block min-h-[44px]"
           >
             <div className="text-2xl mb-2">⚙️</div>
             <div className="font-bold text-sm text-slate-900">System Settings</div>
@@ -193,22 +193,22 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ adminId }) => {
           <h3 className="font-bold text-red-950 mb-3">⚠️ Action Required</h3>
           <div className="space-y-2">
             {stats.content.flagged > 0 && (
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <span className="text-red-900 font-medium">{stats.content.flagged} posts flagged for review</span>
                 <Link
                   to="/moderation"
-                  className="px-3 py-1 bg-red-600 text-white rounded-lg text-sm font-bold hover:bg-red-700 inline-block"
+                  className="min-h-[44px] px-3 py-2 bg-red-600 text-white rounded-lg text-sm font-bold hover:bg-red-700 flex items-center justify-center self-start sm:self-auto"
                 >
                   Review Now
                 </Link>
               </div>
             )}
             {stats.system.errors > 0 && (
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <span className="text-red-900 font-medium">{stats.system.errors} system errors detected</span>
                 <Link
                   to="/security"
-                  className="px-3 py-1 bg-red-600 text-white rounded-lg text-sm font-bold hover:bg-red-700 inline-block"
+                  className="min-h-[44px] px-3 py-2 bg-red-600 text-white rounded-lg text-sm font-bold hover:bg-red-700 flex items-center justify-center self-start sm:self-auto"
                 >
                   View Logs
                 </Link>
@@ -222,19 +222,63 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ adminId }) => {
       <div className="bg-white border border-slate-300 rounded-lg p-6">
         <h3 className="font-semibold text-gray-900 mb-4">Today's Activity</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="p-4 bg-blue-50 rounded-lg">
-            <p className="text-sm text-blue-700 mb-1">New Users</p>
-            <p className="text-2xl font-bold text-blue-900">{stats.users.newToday}</p>
+          <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+            <p className="text-sm text-blue-800 mb-1 font-medium">New Users</p>
+            <p className="text-2xl font-bold text-blue-950">{stats.users.newToday}</p>
           </div>
-          <div className="p-4 bg-purple-50 rounded-lg">
-            <p className="text-sm text-purple-700 mb-1">New Posts</p>
-            <p className="text-2xl font-bold text-purple-900">{stats.content.postsToday}</p>
+          <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
+            <p className="text-sm text-purple-800 mb-1 font-medium">New Posts</p>
+            <p className="text-2xl font-bold text-purple-950">{stats.content.postsToday}</p>
           </div>
-          <div className="p-4 bg-green-50 rounded-lg">
-            <p className="text-sm text-green-700 mb-1">Server Load</p>
-            <p className="text-2xl font-bold text-green-900">{stats.system.serverLoad}%</p>
+          <div className="p-4 bg-green-50 rounded-lg border border-green-200">
+            <p className="text-sm text-green-800 mb-1 font-medium">Server Load</p>
+            <p className="text-2xl font-bold text-green-950">{stats.system.serverLoad}%</p>
           </div>
         </div>
+      </div>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 py-2 px-3 flex items-center justify-around gap-1 shadow-lg md:hidden">
+        <button
+          onClick={loadDashboard}
+          aria-label="Refresh Dashboard"
+          className="min-h-[44px] min-w-[44px] px-2 py-1 flex flex-col items-center justify-center text-xs font-semibold text-slate-800 hover:text-blue-600"
+        >
+          <span className="text-base">🔄</span>
+          <span>Refresh</span>
+        </button>
+        <Link
+          to="/admin/rbac"
+          aria-label="Manage Users"
+          className="min-h-[44px] min-w-[44px] px-2 py-1 flex flex-col items-center justify-center text-xs font-semibold text-slate-800 hover:text-blue-600"
+        >
+          <span className="text-base">👤</span>
+          <span>Users</span>
+        </Link>
+        <Link
+          to="/analytics"
+          aria-label="View Reports"
+          className="min-h-[44px] min-w-[44px] px-2 py-1 flex flex-col items-center justify-center text-xs font-semibold text-slate-800 hover:text-blue-600"
+        >
+          <span className="text-base">📊</span>
+          <span>Reports</span>
+        </Link>
+        <Link
+          to="/moderation"
+          aria-label="Moderation"
+          className="min-h-[44px] min-w-[44px] px-2 py-1 flex flex-col items-center justify-center text-xs font-semibold text-slate-800 hover:text-blue-600"
+        >
+          <span className="text-base">🚩</span>
+          <span>Queue</span>
+        </Link>
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          aria-label="Scroll to Top"
+          className="min-h-[44px] min-w-[44px] px-2 py-1 flex flex-col items-center justify-center text-xs font-semibold text-slate-800 hover:text-blue-600"
+        >
+          <span className="text-base">⬆️</span>
+          <span>Top</span>
+        </button>
       </div>
     </div>
   );
