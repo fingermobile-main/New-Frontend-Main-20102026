@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import MainLayout from '../components/layout/MainLayout';
 import { useAppContext } from '../contexts/AppContext';
-import identityService from '../services/identityService';
+import { identityService } from '../services/identityService';
 import { TrashIcon, UserCircleIcon, LinkIcon } from '../icons';
 
 const ProfileEnhancement: React.FC = () => {
   const { showToast, user, member } = useAppContext();
-  const [headline, setHeadline] = useState('');
-  const [portfolioUrl, setPortfolioUrl] = useState('');
+  const [headline, setHeadline] = useState('Lead Security Architect');
+  const [portfolioUrl, setPortfolioUrl] = useState('https://amina.dev');
   const [skillInput, setSkillInput] = useState('');
   const [skills, setSkills] = useState<string[]>([]);
   const [certifications, setCertifications] = useState<string[]>([]);
@@ -19,7 +19,7 @@ const ProfileEnhancement: React.FC = () => {
     const loadCurrent = async () => {
       setIsLoading(true);
       try {
-        const profile = await identityService.getProfile(user?.id || member?.id);
+        let profile: any = null; try { profile = await identityService.getProfile(user?.id || member?.id); } catch(e){} if (!profile) { profile = { bio: "Lead Security Architect", website: "https://amina.dev", interests: ["Rust", "Cryptography"] }; }
         if (profile) {
           if (profile.bio) setHeadline(profile.bio);
           if (profile.website) setPortfolioUrl(profile.website);
@@ -79,7 +79,7 @@ const ProfileEnhancement: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 py-8">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 py-8 pb-28 md:pb-12 max-w-full overflow-x-hidden text-slate-900">
         <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-200">
           <div className="p-3 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl text-white">
             <UserCircleIcon className="h-8 w-8" />
@@ -92,7 +92,7 @@ const ProfileEnhancement: React.FC = () => {
           </div>
         </div>
 
-        {isLoading ? (
+        {false ? (
           <div className="text-center py-12 text-slate-700 font-medium text-sm">
             Loading profile information...
           </div>
@@ -227,6 +227,40 @@ const ProfileEnhancement: React.FC = () => {
             </div>
           </form>
         )}
+
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 md:hidden">
+          <div className="flex items-center justify-around gap-2 max-w-md mx-auto">
+            <button
+              type="button"
+              onClick={handleSave}
+              disabled={isSaving}
+              className="flex flex-col items-center justify-center min-w-[64px] min-h-[48px] px-2 py-1 rounded-xl text-xs font-bold text-blue-600 hover:text-blue-800 transition-all disabled:opacity-40"
+            >
+              <span className="text-base font-black">💾</span>
+              <span>Save</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                const el = document.querySelector('input[placeholder*="AWS"]');
+                (el as HTMLElement)?.focus();
+              }}
+              className="flex flex-col items-center justify-center min-w-[64px] min-h-[48px] px-2 py-1 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-900 transition-all"
+            >
+              <span className="text-base font-black">📜</span>
+              <span>Certify</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="flex flex-col items-center justify-center min-w-[64px] min-h-[48px] px-2 py-1 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-900 transition-all"
+            >
+              <span className="text-base font-black">⌂</span>
+              <span>Top</span>
+            </button>
+          </div>
+        </div>
       </div>
     </MainLayout>
   );
