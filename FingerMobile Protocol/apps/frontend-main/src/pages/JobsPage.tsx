@@ -112,7 +112,7 @@ const JobsPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Jobs & Careers">
-      <div className="max-w-[1536px] 2xl:max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-[1536px] 2xl:max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-28 md:pb-12 w-full max-w-full overflow-x-hidden text-slate-900">
         {/* Banner */}
         <div className="bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-800 rounded-2xl p-8 text-white mb-8 shadow-lg">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
@@ -467,6 +467,61 @@ const JobsPage: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <nav
+        aria-label="Jobs Mobile Navigation"
+        className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-3 py-2 flex items-center justify-around gap-1 shadow-lg"
+      >
+        <button
+          type="button"
+          onClick={() => {
+            setSelectedCategory('All');
+            setSelectedType('All');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+            selectedCategory === 'All' ? 'text-blue-600' : 'text-slate-600 hover:text-slate-900'
+          }`}
+        >
+          <BriefcaseIcon className="w-5 h-5 mb-0.5" />
+          <span>All Jobs</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setSelectedCategory('Engineering');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+            selectedCategory === 'Engineering' ? 'text-blue-600' : 'text-slate-600 hover:text-slate-900'
+          }`}
+        >
+          <SearchIcon className="w-5 h-5 mb-0.5" />
+          <span>Tech</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setSelectedType('Remote');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+            selectedType === 'Remote' ? 'text-blue-600' : 'text-slate-600 hover:text-slate-900'
+          }`}
+        >
+          <LocationMarkerIcon className="w-5 h-5 mb-0.5" />
+          <span>Remote</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setIsPosting(true)}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold text-slate-600 hover:text-slate-900 cursor-pointer"
+        >
+          <PlusIcon className="w-5 h-5 mb-0.5" />
+          <span>Post Job</span>
+        </button>
+      </nav>
     </MainLayout>
   );
 };

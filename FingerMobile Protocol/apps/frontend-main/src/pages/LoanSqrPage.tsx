@@ -377,7 +377,7 @@ export const LoanSqrPage: React.FC = () => {
   const calcNetProfit = (parseFloat(calcGrossMarginReturn) - parseFloat(calcInterest)).toFixed(0);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans pb-24">
+    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans pb-28 md:pb-12 w-full max-w-full overflow-x-hidden">
       {/* ========================================================= */}
       {/* FOUNDER & VISIONARY EXECUTIVE BRANDING BANNER             */}
       {/* ========================================================= */}
@@ -1762,6 +1762,65 @@ export const LoanSqrPage: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <nav
+        aria-label="LoanSqr Mobile Navigation"
+        className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-900/95 backdrop-blur-md border-t border-slate-700/80 px-3 py-2 flex items-center justify-around gap-1 shadow-2xl"
+      >
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab('products');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+            activeTab === 'products' ? 'text-indigo-400' : 'text-slate-400 hover:text-white'
+          }`}
+        >
+          <CreditCardIcon className="w-5 h-5 mb-0.5" />
+          <span>Products</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab('loans');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+            activeTab === 'loans' ? 'text-indigo-400' : 'text-slate-400 hover:text-white'
+          }`}
+        >
+          <CurrencyNairaIcon className="w-5 h-5 mb-0.5" />
+          <span>Loans</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab('pos');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+            activeTab === 'pos' ? 'text-indigo-400' : 'text-slate-400 hover:text-white'
+          }`}
+        >
+          <ChartBarIcon className="w-5 h-5 mb-0.5" />
+          <span>POS Float</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab('strategy');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+            activeTab === 'strategy' ? 'text-indigo-400' : 'text-slate-400 hover:text-white'
+          }`}
+        >
+          <SparklesIcon className="w-5 h-5 mb-0.5" />
+          <span>Calculator</span>
+        </button>
+      </nav>
     </div>
   );
 };

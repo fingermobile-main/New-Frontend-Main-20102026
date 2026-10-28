@@ -59,7 +59,7 @@ const InvestorRelationsPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Investor Relations">
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto px-4 py-8 pb-28 md:pb-12 w-full max-w-full overflow-x-hidden text-slate-900">
         {/* Page Header */}
         <div className="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div className="flex items-center">
@@ -244,6 +244,53 @@ const InvestorRelationsPage: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <nav
+        aria-label="Investor Relations Mobile Navigation"
+        className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-3 py-2 flex items-center justify-around gap-1 shadow-lg"
+      >
+        <button
+          type="button"
+          onClick={() => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold text-emerald-700 cursor-pointer"
+        >
+          <BuildingOfficeIcon className="w-5 h-5 mb-0.5" />
+          <span>Overview</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            const el = document.getElementById('financial-reports-section');
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+          }}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold text-slate-600 hover:text-slate-900 cursor-pointer"
+        >
+          <DocumentTextIcon className="w-5 h-5 mb-0.5" />
+          <span>Filings</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            const el = document.getElementById('governance-kpis-section');
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+          }}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold text-slate-600 hover:text-slate-900 cursor-pointer"
+        >
+          <ChartBarIcon className="w-5 h-5 mb-0.5" />
+          <span>KPIs</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setShowFilingModal(true)}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold text-slate-600 hover:text-slate-900 cursor-pointer"
+        >
+          <PlusIcon className="w-5 h-5 mb-0.5" />
+          <span>File Report</span>
+        </button>
+      </nav>
     </MainLayout>
   );
 };
