@@ -272,7 +272,7 @@ const AboutPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="About FingerMobile Protocol™">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      <div className="w-full max-w-full overflow-x-hidden text-slate-900 pb-28 md:pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
 
         {/* Executive Hero Banner */}
         <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 via-indigo-950 to-blue-900 p-8 sm:p-12 text-white shadow-xl border border-slate-800">
@@ -1060,6 +1060,68 @@ const AboutPage: React.FC = () => {
               Create Paylink
             </button>
           </div>
+        </div>
+
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 py-2 px-3 flex items-center justify-around gap-1 shadow-lg md:hidden">
+          <button
+            onClick={() => setActiveTab('overview')}
+            aria-label="Overview Tab"
+            className={`min-h-[44px] min-w-[44px] px-2 py-1 flex flex-col items-center justify-center text-xs font-semibold ${
+              activeTab === 'overview' ? 'text-blue-600' : 'text-slate-800 hover:text-blue-600'
+            }`}
+          >
+            <span className="text-base">🌐</span>
+            <span>About</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('founder')}
+            aria-label="Founder Tab"
+            className={`min-h-[44px] min-w-[44px] px-2 py-1 flex flex-col items-center justify-center text-xs font-semibold ${
+              activeTab === 'founder' ? 'text-blue-600' : 'text-slate-800 hover:text-blue-600'
+            }`}
+          >
+            <span className="text-base">👤</span>
+            <span>Founder</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('technology')}
+            aria-label="Technology Tab"
+            className={`min-h-[44px] min-w-[44px] px-2 py-1 flex flex-col items-center justify-center text-xs font-semibold ${
+              activeTab === 'technology' ? 'text-blue-600' : 'text-slate-800 hover:text-blue-600'
+            }`}
+          >
+            <span className="text-base">⚡</span>
+            <span>Tech</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('governance')}
+            aria-label="Governance Tab"
+            className={`min-h-[44px] min-w-[44px] px-2 py-1 flex flex-col items-center justify-center text-xs font-semibold ${
+              activeTab === 'governance' ? 'text-blue-600' : 'text-slate-800 hover:text-blue-600'
+            }`}
+          >
+            <span className="text-base">🏛️</span>
+            <span>Gov</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('contact')}
+            aria-label="Contact Tab"
+            className={`min-h-[44px] min-w-[44px] px-2 py-1 flex flex-col items-center justify-center text-xs font-semibold ${
+              activeTab === 'contact' ? 'text-blue-600' : 'text-slate-800 hover:text-blue-600'
+            }`}
+          >
+            <span className="text-base">✉️</span>
+            <span>Contact</span>
+          </button>
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            aria-label="Scroll to Top"
+            className="min-h-[44px] min-w-[44px] px-2 py-1 flex flex-col items-center justify-center text-xs font-semibold text-slate-800 hover:text-blue-600"
+          >
+            <span className="text-base">⬆️</span>
+            <span>Top</span>
+          </button>
         </div>
 
       </div>
