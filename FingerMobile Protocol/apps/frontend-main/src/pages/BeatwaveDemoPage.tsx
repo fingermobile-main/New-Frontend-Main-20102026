@@ -175,9 +175,9 @@ const BeatwaveDemoPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white flex flex-col">
+    <div className="min-h-screen bg-slate-950 text-white flex flex-col w-full max-w-full overflow-x-hidden pb-28 md:pb-12">
       {/* Top Header */}
-      <header className="border-b border-slate-800 bg-slate-900/60 backdrop-blur-md px-6 py-4 flex items-center justify-between sticky top-0 z-30">
+      <header className="border-b border-slate-800 bg-slate-900/60 backdrop-blur-md px-4 sm:px-6 py-4 flex items-center justify-between sticky top-0 z-30">
         <div className="flex items-center space-x-3">
           <button
             onClick={() => navigate(-1)}
@@ -474,13 +474,13 @@ const BeatwaveDemoPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setIsCreatingPlaylist(false)}
-                  className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-bold"
+                  className="min-h-[44px] px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-bold"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white rounded-xl text-xs font-bold shadow-lg shadow-cyan-500/20"
+                  className="min-h-[44px] px-5 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white rounded-xl text-xs font-bold shadow-lg shadow-cyan-500/20"
                 >
                   Save to Beatwave
                 </button>
@@ -489,6 +489,48 @@ const BeatwaveDemoPage: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-slate-900/95 backdrop-blur-md border-t border-slate-800 py-2 px-4 md:hidden shadow-lg safe-area-bottom">
+        <div className="flex justify-around items-center max-w-md mx-auto">
+          <button
+            onClick={() => {
+              if (currentTrack) {
+                handleTogglePlay();
+              }
+            }}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-cyan-400 font-bold"
+            aria-label={isPlaying ? "Pause Track" : "Play Track"}
+          >
+            {isPlaying ? <Pause className="w-5 h-5 mb-1" /> : <Play className="w-5 h-5 mb-1" />}
+            <span className="text-[10px]">{isPlaying ? 'Pause' : 'Play'}</span>
+          </button>
+          <button
+            onClick={() => setIsCreatingPlaylist(true)}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-slate-300 font-medium"
+            aria-label="Create Playlist"
+          >
+            <Plus className="w-5 h-5 mb-1" />
+            <span className="text-[10px]">Playlist</span>
+          </button>
+          <button
+            onClick={() => navigate('/beatwave-ng')}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-slate-300 font-medium"
+            aria-label="Beatwave NG"
+          >
+            <Sparkles className="w-5 h-5 mb-1" />
+            <span className="text-[10px]">Studio</span>
+          </button>
+          <button
+            onClick={() => navigate('/forum')}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-slate-300 font-medium"
+            aria-label="Back to Forum"
+          >
+            <Radio className="w-5 h-5 mb-1" />
+            <span className="text-[10px]">Forum</span>
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

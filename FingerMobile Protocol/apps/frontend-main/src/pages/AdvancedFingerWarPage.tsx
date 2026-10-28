@@ -571,16 +571,16 @@ const AdvancedFingerWarPage: React.FC = () => {
         <div className="flex justify-around items-center max-w-md mx-auto">
           <button
             onClick={() => {
-              setActiveTab('battle');
+              setActiveTab('arena');
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
             className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] ${
-              activeTab === 'battle' ? 'text-orange-600 font-bold' : 'text-slate-700 dark:text-slate-300 font-medium'
+              activeTab === 'arena' ? 'text-orange-600 font-bold' : 'text-slate-700 dark:text-slate-300 font-medium'
             }`}
             aria-label="Battle Tab"
           >
             <Swords className="w-5 h-5 mb-1" />
-            <span className="text-[10px]">Battle</span>
+            <span className="text-[10px]">Arena</span>
           </button>
           <button
             onClick={() => {

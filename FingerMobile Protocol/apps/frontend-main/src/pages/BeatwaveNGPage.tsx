@@ -220,7 +220,7 @@ const BeatwaveNGPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex pb-44 md:pb-28">
+    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col md:flex-row pb-28 md:pb-28 w-full max-w-full overflow-x-hidden">
       {/* ======================================================== */}
       {/* APPLE MUSIC DESKTOP SIDEBAR NAVIGATION */}
       {/* ======================================================== */}
@@ -1536,6 +1536,59 @@ const BeatwaveNGPage: React.FC = () => {
         onClose={() => setShowTasteModal(false)}
         availableTracks={tracks}
       />
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-slate-950/95 backdrop-blur-md border-t border-slate-800 py-2 px-4 md:hidden shadow-lg safe-area-bottom">
+        <div className="flex justify-around items-center max-w-md mx-auto">
+          <button
+            onClick={() => {
+              setActiveTab('listen-now');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] ${
+              activeTab === 'listen-now' ? 'text-emerald-400 font-bold' : 'text-slate-400 font-medium'
+            }`}
+            aria-label="Listen Now Tab"
+          >
+            <Play className="w-5 h-5 mb-1" />
+            <span className="text-[10px]">Listen</span>
+          </button>
+          <button
+            onClick={() => {
+              setActiveTab('radio');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] ${
+              activeTab === 'radio' ? 'text-emerald-400 font-bold' : 'text-slate-400 font-medium'
+            }`}
+            aria-label="Radio Tab"
+          >
+            <Radio className="w-5 h-5 mb-1" />
+            <span className="text-[10px]">Radio</span>
+          </button>
+          <button
+            onClick={() => {
+              setActiveTab('library');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] ${
+              activeTab === 'library' ? 'text-emerald-400 font-bold' : 'text-slate-400 font-medium'
+            }`}
+            aria-label="Library Tab"
+          >
+            <FolderHeart className="w-5 h-5 mb-1" />
+            <span className="text-[10px]">Library</span>
+          </button>
+          <button
+            onClick={() => setShowCreatePlaylistModal(true)}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-slate-400 font-medium"
+            aria-label="Add Playlist"
+          >
+            <Plus className="w-5 h-5 mb-1" />
+            <span className="text-[10px]">Playlist</span>
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

@@ -481,18 +481,18 @@ const AIGovernancePage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-slate-50 text-slate-900 w-full max-w-full overflow-x-hidden pb-28 md:pb-12">
       {/* Header */}
-      <header className="bg-white shadow">
+      <header className="bg-white shadow border-b border-slate-200">
         <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center">
-              <Brain className="h-8 w-8 text-blue-500" />
-              <h1 className="text-2xl font-bold text-gray-900 ml-3">AI Governance Management</h1>
+              <Brain className="h-8 w-8 text-blue-600" />
+              <h1 className="text-xl sm:text-2xl font-black text-slate-900 ml-3">AI Governance Management</h1>
             </div>
             <div className="flex items-center space-x-4">
               <button 
-                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center"
+                className="min-h-[44px] bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-bold flex items-center shadow-sm cursor-pointer"
                 onClick={() => setShowCreateModal(true)}
               >
                 <Plus className="h-4 w-4 mr-1" />
@@ -1452,14 +1452,14 @@ const AIGovernancePage: React.FC = () => {
                 <div className="flex justify-end space-x-3 mt-6">
                   <button
                     type="button"
-                    className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none"
+                    className="min-h-[44px] px-4 py-2 text-sm font-bold text-slate-700 bg-slate-100 rounded-xl hover:bg-slate-200 focus:outline-none cursor-pointer"
                     onClick={() => setShowCreateModal(false)}
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none"
+                    className="min-h-[44px] px-4 py-2 text-sm font-bold text-white bg-blue-600 rounded-xl hover:bg-blue-700 focus:outline-none cursor-pointer shadow-sm"
                   >
                     Create Policy
                   </button>
@@ -1469,6 +1469,64 @@ const AIGovernancePage: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 py-2 px-4 md:hidden shadow-lg safe-area-bottom">
+        <div className="flex justify-around items-center max-w-md mx-auto">
+          <button
+            onClick={() => {
+              setActiveTab('decisions');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] ${
+              activeTab === 'decisions' ? 'text-blue-600 font-bold' : 'text-slate-700 dark:text-slate-300 font-medium'
+            }`}
+            aria-label="Decisions Tab"
+          >
+            <Brain className="w-5 h-5 mb-1" />
+            <span className="text-[10px]">Decisions</span>
+          </button>
+          <button
+            onClick={() => {
+              setActiveTab('policies');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] ${
+              activeTab === 'policies' ? 'text-blue-600 font-bold' : 'text-slate-700 dark:text-slate-300 font-medium'
+            }`}
+            aria-label="Policies Tab"
+          >
+            <FileText className="w-5 h-5 mb-1" />
+            <span className="text-[10px]">Policies</span>
+          </button>
+          <button
+            onClick={() => {
+              setActiveTab('incidents');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] ${
+              activeTab === 'incidents' ? 'text-blue-600 font-bold' : 'text-slate-700 dark:text-slate-300 font-medium'
+            }`}
+            aria-label="Incidents Tab"
+          >
+            <AlertTriangle className="w-5 h-5 mb-1" />
+            <span className="text-[10px]">Incidents</span>
+          </button>
+          <button
+            onClick={() => {
+              setActiveTab('analytics');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] ${
+              activeTab === 'analytics' ? 'text-blue-600 font-bold' : 'text-slate-700 dark:text-slate-300 font-medium'
+            }`}
+            aria-label="Analytics Tab"
+          >
+            <BarChart3 className="w-5 h-5 mb-1" />
+            <span className="text-[10px]">Analytics</span>
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

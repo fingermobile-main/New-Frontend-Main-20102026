@@ -219,18 +219,18 @@ const AnalyticsPage: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-slate-50 text-slate-900 w-full max-w-full overflow-x-hidden pb-28 md:pb-12">
       {/* Header */}
-      <header className="bg-white shadow">
+      <header className="bg-white shadow border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center py-6 gap-4">
             <div className="flex items-center">
-              <BarChart3 className="h-8 w-8 text-blue-500" />
-              <h1 className="text-2xl font-bold text-gray-900 ml-3">Analytics Dashboard</h1>
+              <BarChart3 className="h-8 w-8 text-blue-600" />
+              <h1 className="text-xl sm:text-2xl font-black text-slate-900 ml-3">Analytics Dashboard</h1>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
               <select
-                className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2"
+                className="min-h-[44px] block pl-3 pr-10 py-2 text-base border-slate-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-xl text-slate-900 font-bold border bg-white focus:ring-2"
                 value={dateRange}
                 onChange={(e) => setDateRange(e.target.value)}
               >
@@ -242,7 +242,7 @@ const AnalyticsPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => handleExportData('summary')}
-                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center shadow-sm"
+                className="min-h-[44px] bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-bold flex items-center shadow-sm cursor-pointer"
               >
                 <Download className="h-4 w-4 mr-1" />
                 Export Report
@@ -811,6 +811,59 @@ const AnalyticsPage: React.FC = () => {
           </>
         )}
       </main>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 py-2 px-4 md:hidden shadow-lg safe-area-bottom">
+        <div className="flex justify-around items-center max-w-md mx-auto">
+          <button
+            onClick={() => {
+              setActiveTab('overview');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] ${
+              activeTab === 'overview' ? 'text-blue-600 font-bold' : 'text-slate-700 dark:text-slate-300 font-medium'
+            }`}
+            aria-label="Overview Tab"
+          >
+            <BarChart3 className="w-5 h-5 mb-1" />
+            <span className="text-[10px]">Overview</span>
+          </button>
+          <button
+            onClick={() => {
+              setActiveTab('engagement');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] ${
+              activeTab === 'engagement' ? 'text-blue-600 font-bold' : 'text-slate-700 dark:text-slate-300 font-medium'
+            }`}
+            aria-label="Engagement Tab"
+          >
+            <Users className="w-5 h-5 mb-1" />
+            <span className="text-[10px]">Engage</span>
+          </button>
+          <button
+            onClick={() => {
+              setActiveTab('revenue');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] ${
+              activeTab === 'revenue' ? 'text-blue-600 font-bold' : 'text-slate-700 dark:text-slate-300 font-medium'
+            }`}
+            aria-label="Revenue Tab"
+          >
+            <DollarSign className="w-5 h-5 mb-1" />
+            <span className="text-[10px]">Revenue</span>
+          </button>
+          <button
+            onClick={() => handleExportData('summary')}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-slate-700 dark:text-slate-300 font-medium"
+            aria-label="Export Report"
+          >
+            <Download className="w-5 h-5 mb-1" />
+            <span className="text-[10px]">Export</span>
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

@@ -302,7 +302,7 @@ const BlogTemplatesPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Free SEO Blog Templates">
-      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-4 sm:p-6 lg:p-8 space-y-6 overflow-x-hidden pb-28 md:pb-12 text-slate-900">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-slate-200 gap-4">
           <div className="flex items-center gap-3">
@@ -854,6 +854,47 @@ const BlogTemplatesPage: React.FC = () => {
             </div>
           </div>
         )}
+
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <div className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 py-2 px-4 md:hidden shadow-lg safe-area-bottom">
+          <div className="flex justify-around items-center max-w-md mx-auto">
+            <button
+              onClick={() => {
+                setSelectedCategory('All');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-indigo-600 font-bold"
+              aria-label="All Templates"
+            >
+              <DocumentTextIcon className="w-5 h-5 mb-1" />
+              <span className="text-[10px]">Templates</span>
+            </button>
+            <button
+              onClick={() => setIsCreateModalOpen(true)}
+              className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-slate-700 dark:text-slate-300 font-medium"
+              aria-label="Create Template"
+            >
+              <PlusIcon className="w-5 h-5 mb-1" />
+              <span className="text-[10px]">Create</span>
+            </button>
+            <button
+              onClick={() => navigate('/blogs')}
+              className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-slate-700 dark:text-slate-300 font-medium"
+              aria-label="Blogs Hub"
+            >
+              <BookOpenIcon className="w-5 h-5 mb-1" />
+              <span className="text-[10px]">Blogs</span>
+            </button>
+            <button
+              onClick={() => navigate('/forum')}
+              className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-slate-700 dark:text-slate-300 font-medium"
+              aria-label="Back to Forum"
+            >
+              <SparklesIcon className="w-5 h-5 mb-1" />
+              <span className="text-[10px]">Forum</span>
+            </button>
+          </div>
+        </div>
       </div>
     </MainLayout>
   );

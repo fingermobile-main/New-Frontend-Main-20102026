@@ -101,13 +101,13 @@ const BeatwaveNGDemoPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white flex flex-col">
+    <div className="min-h-screen bg-slate-950 text-white flex flex-col w-full max-w-full overflow-x-hidden pb-28 md:pb-12">
       {/* Header */}
-      <header className="border-b border-slate-800 bg-slate-900/60 backdrop-blur-md px-6 py-4 flex items-center justify-between sticky top-0 z-30">
+      <header className="border-b border-slate-800 bg-slate-900/60 backdrop-blur-md px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between sticky top-0 z-30 gap-4">
         <div className="flex items-center space-x-3">
           <button
             onClick={() => navigate(-1)}
-            className="p-2 bg-slate-800 hover:bg-slate-700 rounded-xl transition-colors text-slate-300"
+            className="min-h-[44px] min-w-[44px] p-2 bg-slate-800 hover:bg-slate-700 rounded-xl transition-colors text-slate-300 flex items-center justify-center cursor-pointer"
             title="Go Back"
           >
             <ArrowLeft className="w-5 h-5" />
@@ -117,16 +117,16 @@ const BeatwaveNGDemoPage: React.FC = () => {
               <Waves className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h1 className="text-lg font-bold tracking-tight">BeatwaveNG High-Fidelity Studio</h1>
+              <h1 className="text-base sm:text-lg font-bold tracking-tight">BeatwaveNG High-Fidelity Studio</h1>
               <p className="text-xs text-slate-300 font-medium">DSP Audio Pipeline • 32-bit Float Waveform Processing</p>
             </div>
           </div>
         </div>
 
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-3 w-full sm:w-auto">
           <button
             onClick={() => navigate('/beatwave-ng')}
-            className="px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 rounded-xl text-xs font-bold transition-all shadow"
+            className="min-h-[44px] w-full sm:w-auto px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 rounded-xl text-xs font-bold transition-all shadow cursor-pointer flex items-center justify-center"
           >
             Launch BeatwaveNG Console
           </button>
@@ -363,6 +363,50 @@ const BeatwaveNGDemoPage: React.FC = () => {
           </div>
         </div>
       </main>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-slate-900/95 backdrop-blur-md border-t border-slate-800 py-2 px-4 md:hidden shadow-lg safe-area-bottom">
+        <div className="flex justify-around items-center max-w-md mx-auto">
+          <button
+            onClick={() => {
+              setIsPlaying(!isPlaying);
+              showToast?.(isPlaying ? 'Playback paused' : 'Playback started', 'info');
+            }}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-purple-400 font-bold"
+            aria-label={isPlaying ? "Pause Track" : "Play Track"}
+          >
+            {isPlaying ? <Pause className="w-5 h-5 mb-1" /> : <Play className="w-5 h-5 mb-1" />}
+            <span className="text-[10px]">{isPlaying ? 'Pause' : 'Play'}</span>
+          </button>
+          <button
+            onClick={() => handleApplyAcousticPreset('Club')}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-slate-300 font-medium"
+            aria-label="Club Preset"
+          >
+            <Sliders className="w-5 h-5 mb-1" />
+            <span className="text-[10px]">Club EQ</span>
+          </button>
+          <button
+            onClick={() => {
+              setSpatialAudio(!spatialAudio);
+              showToast?.(`Spatial audio ${!spatialAudio ? 'enabled' : 'disabled'}`, 'info');
+            }}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-slate-300 font-medium"
+            aria-label="Toggle Spatial"
+          >
+            <Radio className="w-5 h-5 mb-1" />
+            <span className="text-[10px]">Spatial</span>
+          </button>
+          <button
+            onClick={() => navigate('/beatwave-ng')}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-slate-300 font-medium"
+            aria-label="Console Hub"
+          >
+            <Sparkles className="w-5 h-5 mb-1" />
+            <span className="text-[10px]">Console</span>
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
