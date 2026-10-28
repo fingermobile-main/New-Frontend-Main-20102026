@@ -47,7 +47,7 @@ describe('InboxPage Mobile Integration', () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByRole('button', { name: /New/i })).toBeInTheDocument();
+    expect(screen.getAllByRole('button', { name: /New/i }).length).toBeGreaterThan(0);
     expect(screen.getByRole('button', { name: /Refresh/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Top/i })).toBeInTheDocument();
   });

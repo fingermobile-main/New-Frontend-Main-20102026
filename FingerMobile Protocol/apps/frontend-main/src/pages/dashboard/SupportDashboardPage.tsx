@@ -250,7 +250,7 @@ const SupportDashboardPage: React.FC = () => {
       {/* Sovereign Mobile Navigation Quick Dock */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 flex items-center justify-around z-30 shadow-lg">
         <button
-          onClick={() => setSelectedTicket(tickets[0] || null)}
+          onClick={() => setSelectedTicket(activeTicketPool[0] || null)}
           type="button"
           className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-blue-600 bg-blue-50 transition-colors"
         >

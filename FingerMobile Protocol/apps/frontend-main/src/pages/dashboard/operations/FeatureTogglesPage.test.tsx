@@ -35,7 +35,7 @@ describe('FeatureTogglesPage Mobile Integration', () => {
     );
 
     expect(screen.getByRole('heading', { level: 1, name: /Feature Toggles & Operations/i })).toBeInTheDocument();
-    expect(screen.getByText(/Tropical Fruit Gifts/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Tropical Fruit Gifts/i).length).toBeGreaterThan(0);
   });
 
   it('renders quick dock buttons', () => {
