@@ -244,7 +244,7 @@ const AdminDashboardPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 space-y-6 overflow-x-hidden text-slate-900 pb-28 md:pb-12">
         <PlatformOwnershipCard />
 
         <div className="border-b border-slate-300 pb-5">
@@ -443,7 +443,7 @@ const AdminDashboardPage: React.FC = () => {
                             <td className="px-6 py-4 whitespace-nowrap">
                               <div className="flex items-center">
                                 <img
-                                  className="h-10 w-10 rounded-full border border-slate-300 object-cover"
+                                  className="h-11 w-11 rounded-full border border-slate-300 object-cover flex-shrink-0"
                                   src={m.avatar}
                                   alt={m.name}
                                 />
@@ -595,6 +595,46 @@ const AdminDashboardPage: React.FC = () => {
               </div>
             )}
           </div>
+        </div>
+
+        {/* MOBILE NAVIGATION QUICK DOCK */}
+        <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 flex items-center justify-around z-30 shadow-lg">
+          <button
+            type="button"
+            onClick={() => setActiveTab('overview')}
+            className={`flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold transition-colors ${
+              activeTab === 'overview' ? 'text-blue-600 bg-blue-50' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <Shield className="w-5 h-5 mb-0.5" />
+            <span>Overview</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('members')}
+            className={`flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold transition-colors ${
+              activeTab === 'members' ? 'text-blue-600 bg-blue-50' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <UserPlus className="w-5 h-5 mb-0.5" />
+            <span>Members</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setIsAddMemberOpen(true)}
+            className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-900 transition-colors"
+          >
+            <Plus className="w-5 h-5 mb-0.5 text-blue-600" />
+            <span>Add</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-900 transition-colors"
+          >
+            <span className="text-base font-black leading-none mb-0.5">↑</span>
+            <span>Top</span>
+          </button>
         </div>
       </div>
 
