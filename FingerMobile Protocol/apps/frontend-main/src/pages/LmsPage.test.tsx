@@ -79,3 +79,4 @@ describe('LmsPage Component & Sovereign Mobile Quick Dock', () => {
     expect(mockNavigate).toHaveBeenCalledWith('/elearning');
   });
 });
+

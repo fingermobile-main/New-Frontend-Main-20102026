@@ -49,7 +49,7 @@ const MemberLandingPage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="max-w-6xl mx-auto px-4 py-8">
+      <div className="max-w-6xl mx-auto px-4 py-8 pb-28 md:pb-12 max-w-full overflow-x-hidden text-slate-900">
         {/* Welcome Section */}
         <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl shadow-xl p-8 mb-8 text-white">
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">
@@ -133,6 +133,41 @@ const MemberLandingPage: React.FC = () => {
             ))}
           </div>
         </div>
+
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <nav
+          aria-label="Member Landing Mobile Navigation"
+          className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-3 py-2 flex items-center justify-around gap-1 shadow-lg"
+        >
+          <button
+            type="button"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold text-blue-600 hover:text-blue-800 transition-colors cursor-pointer"
+          >
+            <span>Overview</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate('/create-post')}
+            className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold text-slate-700 hover:text-slate-900 transition-colors cursor-pointer"
+          >
+            <span>Post</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate('/groups')}
+            className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold text-slate-700 hover:text-slate-900 transition-colors cursor-pointer"
+          >
+            <span>Groups</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate('/marketplace')}
+            className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold text-slate-700 hover:text-slate-900 transition-colors cursor-pointer"
+          >
+            <span>Market</span>
+          </button>
+        </nav>
       </div>
     </MainLayout>
   );

@@ -105,7 +105,7 @@ const MiiPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-[1536px] 2xl:max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+    <div className="max-w-[1536px] 2xl:max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-28 md:pb-12 max-w-full overflow-x-hidden text-slate-900 space-y-6">
       {/* Mii™ Protocol Specs Hero Banner */}
       <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-700 p-6 md:p-8 text-white shadow-xl">
         <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
@@ -502,6 +502,65 @@ const MiiPage: React.FC = () => {
         onClose={() => setShowMiniStoreModal(false)}
         showToast={showToast}
       />
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <nav
+        aria-label="Mii Mobile Navigation"
+        className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-3 py-2 flex items-center justify-around gap-1 shadow-lg"
+      >
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab('moments');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+            activeTab === 'moments' ? 'text-emerald-600' : 'text-slate-700 hover:text-slate-900'
+          }`}
+        >
+          <Radio className="w-5 h-5 mb-0.5" />
+          <span>Moments</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab('contacts');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+            activeTab === 'contacts' ? 'text-emerald-600' : 'text-slate-700 hover:text-slate-900'
+          }`}
+        >
+          <Lock className="w-5 h-5 mb-0.5" />
+          <span>PIN Sync</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab('orbit');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+            activeTab === 'orbit' ? 'text-emerald-600' : 'text-slate-700 hover:text-slate-900'
+          }`}
+        >
+          <Folder className="w-5 h-5 mb-0.5" />
+          <span>Orbit</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab('ministore');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+            activeTab === 'ministore' ? 'text-emerald-600' : 'text-slate-700 hover:text-slate-900'
+          }`}
+        >
+          <ShoppingBag className="w-5 h-5 mb-0.5" />
+          <span>Store</span>
+        </button>
+      </nav>
     </div>
   );
 };

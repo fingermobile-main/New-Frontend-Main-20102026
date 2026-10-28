@@ -53,3 +53,4 @@ describe('MasterDashboardPage Component', () => {
     fireEvent.click(analyticsBtn);
   });
 });
+

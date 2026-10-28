@@ -53,3 +53,4 @@ describe('LobbyPage Component & Sovereign Mobile Quick Dock', () => {
     expect(mockNavigate).toHaveBeenCalledWith('/');
   });
 });
+

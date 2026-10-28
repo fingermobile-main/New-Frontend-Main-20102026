@@ -79,3 +79,4 @@ describe('LoanSqrPage Component & Sovereign Mobile Quick Dock', () => {
     expect(calculatorBtn.className).toContain('text-indigo-400');
   });
 });
+

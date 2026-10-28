@@ -44,3 +44,4 @@ describe('MarketingPage Component', () => {
     expect(screen.getByRole('button', { name: /^Studio$/i })).toBeInTheDocument();
   });
 });
+
