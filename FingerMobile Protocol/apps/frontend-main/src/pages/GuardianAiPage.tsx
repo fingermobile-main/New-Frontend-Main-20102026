@@ -626,7 +626,7 @@ const GuardianAiPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pb-28 md:pb-12 w-full max-w-full overflow-x-hidden text-slate-900">
       {/* Header */}
       <header className="bg-white shadow">
         <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -1709,6 +1709,65 @@ const GuardianAiPage: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <nav
+        aria-label="Guardian AI Mobile Navigation"
+        className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-3 py-2 flex items-center justify-around gap-1 shadow-lg"
+      >
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab('systems');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+            activeTab === 'systems' ? 'text-blue-600' : 'text-slate-600 hover:text-slate-900'
+          }`}
+        >
+          <Bot className="w-5 h-5 mb-0.5" />
+          <span>Systems</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab('events');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+            activeTab === 'events' ? 'text-blue-600' : 'text-slate-600 hover:text-slate-900'
+          }`}
+        >
+          <AlertTriangle className="w-5 h-5 mb-0.5" />
+          <span>Events</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab('responses');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+            activeTab === 'responses' ? 'text-blue-600' : 'text-slate-600 hover:text-slate-900'
+          }`}
+        >
+          <Zap className="w-5 h-5 mb-0.5" />
+          <span>Actions</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab('dashboard');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+            activeTab === 'dashboard' ? 'text-blue-600' : 'text-slate-600 hover:text-slate-900'
+          }`}
+        >
+          <Activity className="w-5 h-5 mb-0.5" />
+          <span>Metrics</span>
+        </button>
+      </nav>
     </div>
   );
 };

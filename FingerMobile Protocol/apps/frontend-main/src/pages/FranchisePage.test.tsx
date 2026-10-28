@@ -22,18 +22,18 @@ describe('FranchisePage Mobile View & Sovereign Quick Dock', () => {
     expect(nav).toBeInTheDocument();
 
     const hubsBtn = within(nav).getByRole('button', { name: /^Hubs$/i });
-    const metricsBtn = within(nav).getByRole('button', { name: /^Metrics$/i });
+    const tiersBtn = within(nav).getByRole('button', { name: /^Tiers$/i });
+    const payoutsBtn = within(nav).getByRole('button', { name: /^Payouts$/i });
     const licenseBtn = within(nav).getByRole('button', { name: /^License$/i });
-    const auditsBtn = within(nav).getByRole('button', { name: /^Audits$/i });
 
     expect(hubsBtn).toBeInTheDocument();
-    expect(metricsBtn).toBeInTheDocument();
+    expect(tiersBtn).toBeInTheDocument();
+    expect(payoutsBtn).toBeInTheDocument();
     expect(licenseBtn).toBeInTheDocument();
-    expect(auditsBtn).toBeInTheDocument();
 
-    fireEvent.click(metricsBtn);
+    fireEvent.click(tiersBtn);
+    fireEvent.click(payoutsBtn);
     fireEvent.click(licenseBtn);
-    fireEvent.click(auditsBtn);
     fireEvent.click(hubsBtn);
   });
 });

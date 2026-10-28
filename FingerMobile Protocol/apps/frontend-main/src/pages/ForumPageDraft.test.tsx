@@ -51,3 +51,4 @@ describe('ForumPageDraft Re-export Wrapper', () => {
     expect(dock).toBeInTheDocument();
   });
 });
+

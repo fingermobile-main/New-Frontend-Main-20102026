@@ -11,9 +11,9 @@ const GovernancePage: React.FC = () => {
   const scrollToSection = (id: string, section: 'overview' | 'dashboard' | 'policies' | 'report') => {
     setActiveSection(section);
     const el = document.getElementById(id);
-    if (el) {
+    if (el && typeof el.scrollIntoView === 'function') {
       el.scrollIntoView({ behavior: 'smooth' });
-    } else {
+    } else if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };

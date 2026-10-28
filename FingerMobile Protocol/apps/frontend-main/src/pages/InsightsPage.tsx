@@ -132,7 +132,7 @@ Month-Over-Month Velocity,${stats?.trend_month_over_month || '+18.2%'},Last 30 D
 
   return (
     <MainLayout pageTitle="Insights & AI Telemetry">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-28 md:pb-12 w-full max-w-full overflow-x-hidden text-slate-900">
         {/* Header */}
         <div className="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div className="flex items-center">
@@ -270,6 +270,53 @@ Month-Over-Month Velocity,${stats?.trend_month_over_month || '+18.2%'},Last 30 D
           </table>
         </div>
       </div>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <nav
+        aria-label="Insights Mobile Navigation"
+        className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-3 py-2 flex items-center justify-around gap-1 shadow-lg"
+      >
+        <button
+          type="button"
+          onClick={() => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold text-blue-600 cursor-pointer"
+        >
+          <ChartBarIcon className="w-5 h-5 mb-0.5" />
+          <span>Metrics</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            const el = document.getElementById('ai-recommendations-section');
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+          }}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold text-slate-600 hover:text-slate-900 cursor-pointer"
+        >
+          <SparklesIcon className="w-5 h-5 mb-0.5" />
+          <span>AI Growth</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            const el = document.getElementById('communities-table-section');
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+          }}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold text-slate-600 hover:text-slate-900 cursor-pointer"
+        >
+          <UserGroupIcon className="w-5 h-5 mb-0.5" />
+          <span>Guilds</span>
+        </button>
+        <button
+          type="button"
+          onClick={handleExportReport}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold text-slate-600 hover:text-slate-900 cursor-pointer"
+        >
+          <ArrowDownTrayIcon className="w-5 h-5 mb-0.5" />
+          <span>Export</span>
+        </button>
+      </nav>
     </MainLayout>
   );
 };

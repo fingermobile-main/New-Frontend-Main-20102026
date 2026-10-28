@@ -4,7 +4,10 @@ import { useAppContext } from '../contexts/AppContext';
 import {
   ChartBarIcon,
   ArrowsPointingOutIcon,
-  Cog6ToothIcon
+  Cog6ToothIcon,
+  ServerIcon,
+  CircleStackIcon,
+  SparklesIcon
 } from '../icons';
 
 const GrafanaEmbedPage: React.FC = () => {
@@ -28,7 +31,7 @@ const GrafanaEmbedPage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className={`${isFullscreen ? 'fixed inset-0 z-50 bg-white' : 'max-w-7xl mx-auto px-4 py-8'}`}>
+      <div className={`${isFullscreen ? 'fixed inset-0 z-50 bg-white' : 'max-w-7xl mx-auto px-4 py-8 pb-28 md:pb-12 w-full max-w-full overflow-x-hidden text-slate-900'}`}>
         {/* Header */}
         {!isFullscreen && (
           <div className="mb-8">
@@ -59,10 +62,11 @@ const GrafanaEmbedPage: React.FC = () => {
             <div className="flex items-center justify-between flex-wrap gap-4">
               <div className="flex items-center space-x-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="dashboard-select" className="block text-sm font-medium text-gray-700 mb-2">
                     Select Dashboard
                   </label>
                   <select
+                    id="dashboard-select"
                     value={selectedDashboard}
                     onChange={(e) => setSelectedDashboard(e.target.value)}
                     className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent min-w-[250px] text-slate-900 font-bold border-slate-300 bg-white"
@@ -76,10 +80,11 @@ const GrafanaEmbedPage: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="refresh-select" className="block text-sm font-medium text-gray-700 mb-2">
                     Auto-refresh
                   </label>
                   <select
+                    id="refresh-select"
                     value={autoRefresh}
                     onChange={(e) => setAutoRefresh(Number(e.target.value))}
                     className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-slate-900 font-bold border-slate-300 bg-white"
@@ -153,6 +158,55 @@ const GrafanaEmbedPage: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      {!isFullscreen && (
+        <nav
+          aria-label="Grafana Mobile Navigation"
+          className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-3 py-2 flex items-center justify-around gap-2 shadow-lg"
+        >
+          <button
+            type="button"
+            onClick={() => setSelectedDashboard('fingermobile-overview')}
+            className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+              selectedDashboard === 'fingermobile-overview' ? 'text-purple-600' : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            <ChartBarIcon className="w-5 h-5 mb-0.5" />
+            <span>Overview</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setSelectedDashboard('system-resources')}
+            className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+              selectedDashboard === 'system-resources' ? 'text-purple-600' : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            <ServerIcon className="w-5 h-5 mb-0.5" />
+            <span>System</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setSelectedDashboard('database-metrics')}
+            className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+              selectedDashboard === 'database-metrics' ? 'text-purple-600' : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            <CircleStackIcon className="w-5 h-5 mb-0.5" />
+            <span>Database</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setSelectedDashboard('business-analytics')}
+            className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+              selectedDashboard === 'business-analytics' ? 'text-purple-600' : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            <SparklesIcon className="w-5 h-5 mb-0.5" />
+            <span>Business</span>
+          </button>
+        </nav>
+      )}
     </MainLayout>
   );
 };

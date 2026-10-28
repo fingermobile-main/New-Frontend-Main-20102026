@@ -832,6 +832,7 @@ const FranchisePage: React.FC = () => {
           </div>
         )}
         {/* SOVEREIGN MOBILE NAVIGATION QUICK DOCK */}
+        {/* Sovereign Mobile Navigation Quick Dock */}
         <nav
           aria-label="Franchise Quick Navigation"
           className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-3 py-2 sm:hidden flex items-center justify-around shadow-lg"
@@ -839,11 +840,11 @@ const FranchisePage: React.FC = () => {
           <button
             type="button"
             onClick={() => {
-              setActiveTab('directory');
+              setActiveTab('network');
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
             className={`min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold transition-colors ${
-              activeTab === 'directory' ? 'text-purple-600' : 'text-slate-700 hover:text-slate-900'
+              activeTab === 'network' ? 'text-purple-600' : 'text-slate-700 hover:text-slate-900'
             }`}
           >
             <BuildingStorefrontIcon className="w-5 h-5 mb-0.5" />
@@ -852,15 +853,28 @@ const FranchisePage: React.FC = () => {
           <button
             type="button"
             onClick={() => {
-              setActiveTab('analytics');
+              setActiveTab('tiers');
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
             className={`min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold transition-colors ${
-              activeTab === 'analytics' ? 'text-purple-600' : 'text-slate-700 hover:text-slate-900'
+              activeTab === 'tiers' ? 'text-purple-600' : 'text-slate-700 hover:text-slate-900'
             }`}
           >
             <ChartBarIcon className="w-5 h-5 mb-0.5" />
-            <span>Metrics</span>
+            <span>Tiers</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setActiveTab('payouts');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold transition-colors ${
+              activeTab === 'payouts' ? 'text-purple-600' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <ShieldCheckIcon className="w-5 h-5 mb-0.5" />
+            <span>Payouts</span>
           </button>
           <button
             type="button"
@@ -874,19 +888,6 @@ const FranchisePage: React.FC = () => {
           >
             <PlusIcon className="w-5 h-5 mb-0.5" />
             <span>License</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              setActiveTab('compliance');
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-            className={`min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold transition-colors ${
-              activeTab === 'compliance' ? 'text-purple-600' : 'text-slate-700 hover:text-slate-900'
-            }`}
-          >
-            <ShieldCheckIcon className="w-5 h-5 mb-0.5" />
-            <span>Audits</span>
           </button>
         </nav>
 

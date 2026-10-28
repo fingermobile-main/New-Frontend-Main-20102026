@@ -64,3 +64,4 @@ describe('GovernancePage Component & Sovereign Mobile Quick Dock', () => {
     expect(policiesBtn.className).toContain('text-blue-600');
   });
 });
+

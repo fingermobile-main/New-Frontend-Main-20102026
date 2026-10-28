@@ -49,3 +49,4 @@ describe('GameOnPage Mobile View & Sovereign Quick Dock', () => {
     fireEvent.click(tourneysBtn);
   });
 });
+

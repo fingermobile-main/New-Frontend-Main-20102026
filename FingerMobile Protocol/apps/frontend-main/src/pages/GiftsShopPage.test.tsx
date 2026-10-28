@@ -51,3 +51,4 @@ describe('GiftsShopPage Component & Sovereign Mobile Quick Dock', () => {
     expect(mockNavigate).toHaveBeenCalledWith('/lush-pressies');
   });
 });
+
