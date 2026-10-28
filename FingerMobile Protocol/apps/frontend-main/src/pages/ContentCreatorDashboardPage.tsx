@@ -19,7 +19,7 @@ const ContentCreatorDashboardPage: React.FC = () => {
   const [filter, setFilter] = useState<'All' | 'Videos' | 'Articles'>('All');
   return (
     <MainLayout pageTitle="Creator Studio">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-28 md:pb-12 w-full max-w-full overflow-x-hidden text-slate-900">
 
         {/* Header Section */}
         <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white/80 backdrop-blur-xl p-8 rounded-3xl border border-slate-200/60 shadow-sm relative overflow-hidden">
@@ -206,6 +206,44 @@ const ContentCreatorDashboardPage: React.FC = () => {
         {/* Sovereign Platform Ownership Directive */}
         <div className="mt-8">
           <PlatformOwnershipCard />
+        </div>
+
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 flex items-center justify-around shadow-2xl">
+          <button
+            onClick={() => setFilter('All')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold rounded-lg transition-colors ${
+              filter === 'All' ? 'text-emerald-700 bg-emerald-50' : 'text-slate-700 hover:text-emerald-600'
+            }`}
+          >
+            <DocumentTextIcon className="w-5 h-5 mb-0.5 text-emerald-600" />
+            <span>All</span>
+          </button>
+          <button
+            onClick={() => setFilter('Videos')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold rounded-lg transition-colors ${
+              filter === 'Videos' ? 'text-emerald-700 bg-emerald-50' : 'text-slate-700 hover:text-emerald-600'
+            }`}
+          >
+            <VideoCameraIcon className="w-5 h-5 mb-0.5 text-blue-600" />
+            <span>Videos</span>
+          </button>
+          <button
+            onClick={() => setFilter('Articles')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold rounded-lg transition-colors ${
+              filter === 'Articles' ? 'text-emerald-700 bg-emerald-50' : 'text-slate-700 hover:text-emerald-600'
+            }`}
+          >
+            <PencilIcon className="w-5 h-5 mb-0.5 text-indigo-600" />
+            <span>Articles</span>
+          </button>
+          <button
+            onClick={() => navigate('/createpost')}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold text-slate-700 hover:text-emerald-600 transition-colors"
+          >
+            <CurrencyDollarIcon className="w-5 h-5 mb-0.5 text-amber-600" />
+            <span>Create</span>
+          </button>
         </div>
       </div>
     </MainLayout>

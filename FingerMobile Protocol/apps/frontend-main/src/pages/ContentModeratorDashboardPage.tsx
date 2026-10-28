@@ -315,7 +315,7 @@ export const ContentModeratorDashboardPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Moderation Queue">
-      <div className="max-w-[1536px] 2xl:max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="max-w-[1536px] 2xl:max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-28 md:pb-12 w-full max-w-full overflow-x-hidden text-slate-900">
 
         {/* Floating Toast Notification */}
         {toastMessage && (
@@ -778,6 +778,54 @@ export const ContentModeratorDashboardPage: React.FC = () => {
             </div>
           </div>
         )}
+
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-300 dark:border-slate-800 px-4 py-2 flex items-center justify-around shadow-2xl">
+          <button
+            onClick={() => setActiveTab('queue')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold rounded-lg transition-colors ${
+              activeTab === 'queue'
+                ? 'text-amber-600 bg-amber-50 dark:bg-amber-950/40'
+                : 'text-slate-700 dark:text-slate-300 hover:text-amber-600'
+            }`}
+          >
+            <ShieldAlert className="w-5 h-5 mb-0.5 text-amber-500" />
+            <span>Queue</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('sentinel')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold rounded-lg transition-colors ${
+              activeTab === 'sentinel'
+                ? 'text-amber-600 bg-amber-50 dark:bg-amber-950/40'
+                : 'text-slate-700 dark:text-slate-300 hover:text-amber-600'
+            }`}
+          >
+            <Sparkles className="w-5 h-5 mb-0.5 text-indigo-500" />
+            <span>Sentinel</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('audit')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold rounded-lg transition-colors ${
+              activeTab === 'audit'
+                ? 'text-amber-600 bg-amber-50 dark:bg-amber-950/40'
+                : 'text-slate-700 dark:text-slate-300 hover:text-amber-600'
+            }`}
+          >
+            <History className="w-5 h-5 mb-0.5 text-blue-500" />
+            <span>Audit</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('tiers')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold rounded-lg transition-colors ${
+              activeTab === 'tiers'
+                ? 'text-amber-600 bg-amber-50 dark:bg-amber-950/40'
+                : 'text-slate-700 dark:text-slate-300 hover:text-amber-600'
+            }`}
+          >
+            <Cpu className="w-5 h-5 mb-0.5 text-rose-500" />
+            <span>RBAC</span>
+          </button>
+        </div>
 
       </div>
     </MainLayout>

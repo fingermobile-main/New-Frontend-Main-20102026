@@ -65,8 +65,8 @@ const ContactUsPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Contact Us">
-      <div className="min-h-screen bg-gray-50 p-4 sm:p-6 lg:p-8">
-        <div className="max-w-6xl mx-auto">
+      <div className="min-h-screen bg-gray-50 p-4 sm:p-6 lg:p-8 pb-28 md:pb-12 w-full max-w-full overflow-x-hidden text-slate-900">
+        <div className="max-w-6xl mx-auto overflow-x-hidden">
           <div className="mb-8">
             <div className="flex items-center">
               <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-3 rounded-xl">
@@ -398,6 +398,41 @@ const ContactUsPage: React.FC = () => {
             </p>
           </div>
         </div>
+      </div>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 flex items-center justify-around shadow-lg">
+        <a
+          href="tel:+2348012345678"
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-1 text-slate-700 hover:text-slate-900"
+        >
+          <PhoneIcon className="w-5 h-5 text-blue-600" />
+          <span className="text-[10px] tracking-tight">Call</span>
+        </a>
+        <a
+          href="mailto:fingermobileprotocol@gmail.com"
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-1 text-blue-600 font-bold"
+        >
+          <EnvelopeIcon className="w-5 h-5" />
+          <span className="text-[10px] tracking-tight">Email</span>
+        </a>
+        <button
+          type="button"
+          onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-1 text-slate-700 hover:text-slate-900"
+        >
+          <ArrowRightIcon className="w-5 h-5 text-indigo-600" />
+          <span className="text-[10px] tracking-tight">Form</span>
+        </button>
+        <a
+          href="https://fingermobileprotocol.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-1 text-slate-700 hover:text-slate-900"
+        >
+          <GlobeAltIcon className="w-5 h-5 text-emerald-600" />
+          <span className="text-[10px] tracking-tight">Portal</span>
+        </a>
       </div>
     </MainLayout>
   );

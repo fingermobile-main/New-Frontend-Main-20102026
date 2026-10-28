@@ -2403,9 +2403,9 @@ export const CamusPage: React.FC = () => {
         </button>
         <button
           type="button"
-          onClick={() => setActiveSection('tracks')}
+          onClick={() => setActiveSection('topics')}
           className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-1 ${
-            activeSection === 'tracks' ? 'text-blue-700 font-bold' : 'text-slate-700 hover:text-slate-900'
+            activeSection === 'topics' ? 'text-blue-700 font-bold' : 'text-slate-700 hover:text-slate-900'
           }`}
         >
           <Target className="w-5 h-5 text-indigo-600" />

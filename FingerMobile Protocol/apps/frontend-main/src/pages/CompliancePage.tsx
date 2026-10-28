@@ -513,18 +513,18 @@ const CompliancePage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pb-28 md:pb-12 w-full max-w-full overflow-x-hidden text-slate-900">
       {/* Header */}
       <header className="bg-white shadow">
         <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center py-6 gap-4">
             <div className="flex items-center">
-              <Shield className="h-8 w-8 text-blue-500" />
-              <h1 className="text-2xl font-bold text-gray-900 ml-3">Compliance Management</h1>
+              <Shield className="h-8 w-8 text-blue-500 shrink-0" />
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-900 ml-3">Compliance Management</h1>
             </div>
             <div className="flex items-center space-x-4">
               <button 
-                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center"
+                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center min-w-[44px] min-h-[44px]"
                 onClick={() => setShowCreateModal(true)}
               >
                 <Plus className="h-4 w-4 mr-1" />
@@ -535,7 +535,7 @@ const CompliancePage: React.FC = () => {
         </div>
       </header>
 
-      <main className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8 overflow-x-hidden">
         {/* Stats Overview */}
         {complianceStats && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -1564,14 +1564,14 @@ const CompliancePage: React.FC = () => {
                 <div className="flex justify-end space-x-3 mt-6">
                   <button
                     type="button"
-                    className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none"
+                    className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none min-w-[44px] min-h-[44px]"
                     onClick={() => setShowCreateModal(false)}
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none"
+                    className="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none min-w-[44px] min-h-[44px]"
                   >
                     Create Requirement
                   </button>
@@ -1581,6 +1581,48 @@ const CompliancePage: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 flex items-center justify-around shadow-lg">
+        <button
+          type="button"
+          onClick={() => setActiveTab('requirements')}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-1 ${
+            activeTab === 'requirements' ? 'text-blue-600 font-bold' : 'text-slate-700 hover:text-slate-900'
+          }`}
+        >
+          <FileText className="w-5 h-5" />
+          <span className="text-[10px] tracking-tight">Rules</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab('audits')}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-1 ${
+            activeTab === 'audits' ? 'text-blue-600 font-bold' : 'text-slate-700 hover:text-slate-900'
+          }`}
+        >
+          <Scale className="w-5 h-5 text-indigo-600" />
+          <span className="text-[10px] tracking-tight">Audits</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab('reports')}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-1 ${
+            activeTab === 'reports' ? 'text-blue-600 font-bold' : 'text-slate-700 hover:text-slate-900'
+          }`}
+        >
+          <BarChart3 className="w-5 h-5 text-purple-600" />
+          <span className="text-[10px] tracking-tight">Reports</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setShowCreateModal(true)}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-1 text-slate-700 hover:text-slate-900"
+        >
+          <Plus className="w-5 h-5 text-emerald-600" />
+          <span className="text-[10px] tracking-tight">Add</span>
+        </button>
+      </div>
     </div>
   );
 };

@@ -93,7 +93,7 @@ const ContentAdminDashboardPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Content Admin Dashboard">
-      <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-28 md:pb-12 w-full max-w-full overflow-x-hidden text-slate-900">
 
         {/* Feedback Alert */}
         {reportGenerated && (
@@ -392,6 +392,40 @@ const ContentAdminDashboardPage: React.FC = () => {
             </div>
           </div>
         )}
+
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 flex items-center justify-around shadow-2xl">
+          <button
+            onClick={() => {
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold text-slate-800 hover:text-rose-600 transition-colors"
+          >
+            <ShieldCheckIcon className="w-5 h-5 mb-0.5 text-rose-600" />
+            <span>Governance</span>
+          </button>
+          <button
+            onClick={() => setGrowthRange(growthRange === '7d' ? '30d' : '7d')}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold text-slate-800 hover:text-rose-600 transition-colors"
+          >
+            <ChartBarIcon className="w-5 h-5 mb-0.5 text-blue-600" />
+            <span>Metrics</span>
+          </button>
+          <button
+            onClick={() => navigate('/community-management')}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold text-slate-800 hover:text-rose-600 transition-colors"
+          >
+            <UsersIcon className="w-5 h-5 mb-0.5 text-emerald-600" />
+            <span>Users</span>
+          </button>
+          <button
+            onClick={handleGenerateReport}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold text-slate-800 hover:text-rose-600 transition-colors"
+          >
+            <DocumentTextIcon className="w-5 h-5 mb-0.5 text-amber-600" />
+            <span>Report</span>
+          </button>
+        </div>
 
       </div>
     </MainLayout>

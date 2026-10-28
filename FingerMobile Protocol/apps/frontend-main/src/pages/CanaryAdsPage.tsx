@@ -680,9 +680,9 @@ const CanaryAdsPage: React.FC = () => {
         </button>
         <button
           type="button"
-          onClick={() => setActiveTab('campaigns')}
+          onClick={() => setActiveTab('manager')}
           className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-1 ${
-            activeTab === 'campaigns' ? 'text-amber-600 font-bold' : 'text-slate-700 hover:text-slate-900'
+            activeTab === 'manager' ? 'text-amber-600 font-bold' : 'text-slate-700 hover:text-slate-900'
           }`}
         >
           <SparklesIcon className="w-5 h-5 text-amber-500" />

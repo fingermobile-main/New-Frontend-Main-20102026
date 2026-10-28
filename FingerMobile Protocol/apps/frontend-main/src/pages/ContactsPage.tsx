@@ -148,7 +148,7 @@ export const ContactsPage: React.FC = () => {
   });
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 p-4 md:p-8">
+    <div className="min-h-screen bg-zinc-950 text-zinc-100 p-4 md:p-8 pb-28 md:pb-12 w-full max-w-full overflow-x-hidden">
       {/* Top Header */}
       <div className="max-w-7xl mx-auto mb-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-zinc-800">
@@ -576,6 +576,46 @@ export const ContactsPage: React.FC = () => {
             </div>
           </div>
         )}
+
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-zinc-950/95 backdrop-blur-md border-t border-zinc-800 px-4 py-2 flex items-center justify-around shadow-2xl">
+          <button
+            onClick={() => setActiveTab('directory')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-semibold rounded-lg transition-colors ${
+              activeTab === 'directory' ? 'text-emerald-400 bg-emerald-500/10' : 'text-zinc-400 hover:text-zinc-200'
+            }`}
+          >
+            <Users className="w-5 h-5 mb-0.5" />
+            <span>Directory</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('queues')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-semibold rounded-lg transition-colors ${
+              activeTab === 'queues' ? 'text-emerald-400 bg-emerald-500/10' : 'text-zinc-400 hover:text-zinc-200'
+            }`}
+          >
+            <Zap className="w-5 h-5 mb-0.5" />
+            <span>Queues</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('abuse')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-semibold rounded-lg transition-colors ${
+              activeTab === 'abuse' ? 'text-emerald-400 bg-emerald-500/10' : 'text-zinc-400 hover:text-zinc-200'
+            }`}
+          >
+            <ShieldAlert className="w-5 h-5 mb-0.5" />
+            <span>Abuse</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('export')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-semibold rounded-lg transition-colors ${
+              activeTab === 'export' ? 'text-emerald-400 bg-emerald-500/10' : 'text-zinc-400 hover:text-zinc-200'
+            }`}
+          >
+            <FileSpreadsheet className="w-5 h-5 mb-0.5" />
+            <span>Export</span>
+          </button>
+        </div>
       </div>
     </div>
   );
