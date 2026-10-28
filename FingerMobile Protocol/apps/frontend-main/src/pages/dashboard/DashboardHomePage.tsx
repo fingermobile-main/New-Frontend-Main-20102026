@@ -136,7 +136,7 @@ const DashboardHomePage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 space-y-6 sm:space-y-8 overflow-x-hidden text-slate-900 pb-28 md:pb-12">
         <div className="mb-8">
           <h1 className="text-2xl font-black text-slate-900">
             Creator Dashboard
@@ -197,12 +197,12 @@ const DashboardHomePage: React.FC = () => {
             <h2 className="text-lg font-black text-slate-900 mb-6">Wallet Balance</h2>
             <div className="text-center">
               <p className="text-3xl font-black text-slate-900">
-                {balance.toLocaleString()}{' '}
+                {(balance ?? 0).toLocaleString()}{' '}
                 <span className="text-lg text-slate-600 font-bold">FIC</span>
               </p>
               <p className="text-slate-700 font-semibold mt-2">
                 ≈ $
-                {(balance * 0.1).toLocaleString(undefined, {
+                {((balance ?? 0) * 0.1).toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2
                 })}{' '}
@@ -352,6 +352,42 @@ const DashboardHomePage: React.FC = () => {
               <span className="font-medium text-slate-900">View Analytics</span>
             </button>
           </div>
+        </div>
+
+        {/* MOBILE NAVIGATION QUICK DOCK */}
+        <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 flex items-center justify-around z-30 shadow-lg">
+          <button
+            type="button"
+            onClick={() => navigate('/posts/create')}
+            className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-blue-600 bg-blue-50 transition-colors"
+          >
+            <span className="text-base font-extrabold leading-none mb-0.5">✎</span>
+            <span>Create</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate('/media/upload')}
+            className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-emerald-600 bg-emerald-50 transition-colors"
+          >
+            <span className="text-base font-extrabold leading-none mb-0.5">📷</span>
+            <span>Upload</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate('/subscriptions')}
+            className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-purple-600 bg-purple-50 transition-colors"
+          >
+            <span className="text-base font-extrabold leading-none mb-0.5">💎</span>
+            <span>Monetize</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-900 transition-colors"
+          >
+            <span className="text-base font-black leading-none mb-0.5">↑</span>
+            <span>Top</span>
+          </button>
         </div>
       </div>
     </div>

@@ -90,7 +90,7 @@ const DashboardOverviewPage: React.FC = () => {
   const totalRevenue = data?.totalRevenue ?? 5240;
 
   return (
-    <div className="space-y-6">
+    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6 space-y-6 overflow-x-hidden text-slate-900 pb-28 md:pb-12">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-black text-slate-900">Dashboard Overview</h1>
@@ -170,7 +170,7 @@ const DashboardOverviewPage: React.FC = () => {
                 <img
                   src={member.avatarUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80'}
                   alt={member.name}
-                  className="w-10 h-10 rounded-full border border-slate-300 object-cover"
+                  className="w-11 h-11 rounded-full border border-slate-300 object-cover flex-shrink-0"
                 />
                 <div className="flex-1">
                   <p className="font-black text-slate-900">{member.name}</p>
@@ -183,6 +183,29 @@ const DashboardOverviewPage: React.FC = () => {
             ))}
           </div>
         </div>
+      </div>
+
+      {/* MOBILE NAVIGATION QUICK DOCK */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 flex items-center justify-around z-30 shadow-lg">
+        <button
+          type="button"
+          onClick={() => {
+            refreshData();
+            showToast('Synchronizing latest dashboard telemetry...', 'info');
+          }}
+          className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-blue-600 bg-blue-50 transition-colors"
+        >
+          <span className="text-base font-extrabold leading-none mb-0.5">⚡</span>
+          <span>Refresh</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-900 transition-colors"
+        >
+          <span className="text-base font-black leading-none mb-0.5">↑</span>
+          <span>Top</span>
+        </button>
       </div>
     </div>
   );

@@ -89,7 +89,7 @@ const DashboardCampaignDetailPage: React.FC = () => {
   const campaignTitle = analytics.campaign?.title || analytics.campaign?.name || 'Campaign Details';
 
   return (
-    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 space-y-6 overflow-x-hidden text-slate-900 pb-28 md:pb-12">
       <NavLink
         to="/dashboard/campaigns"
         className="text-xs font-bold text-blue-600 hover:text-blue-800 inline-flex items-center gap-1 hover:underline cursor-pointer"
@@ -148,6 +148,33 @@ const DashboardCampaignDetailPage: React.FC = () => {
           <h3 className="text-base font-black text-slate-900 mb-4">Daily Engagement (Past 7 Days)</h3>
           <BarChart data={analytics.engagement?.data || []} color="bg-emerald-600" />
         </div>
+      </div>
+
+      {/* MOBILE NAVIGATION QUICK DOCK */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 flex items-center justify-around z-30 shadow-lg">
+        <NavLink
+          to="/dashboard/campaigns"
+          className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-blue-600 bg-blue-50 transition-colors"
+        >
+          <span className="text-base font-black leading-none mb-0.5">←</span>
+          <span>Campaigns</span>
+        </NavLink>
+        <button
+          type="button"
+          onClick={() => fetchAnalytics()}
+          className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-900 transition-colors"
+        >
+          <span className="text-base font-extrabold leading-none mb-0.5">⚡</span>
+          <span>Refresh</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-900 transition-colors"
+        >
+          <span className="text-base font-black leading-none mb-0.5">↑</span>
+          <span>Top</span>
+        </button>
       </div>
     </div>
   );
