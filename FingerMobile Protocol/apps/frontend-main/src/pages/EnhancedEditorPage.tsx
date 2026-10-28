@@ -36,23 +36,23 @@ const EditorHeader: React.FC<EditorHeaderProps> = React.memo(({
   isSaving
 }) => {
   return (
-    <header className="bg-white border-b p-3, sm:p-4, lg:p-5 flex flex-wrap justify-between items-center flex-shrink-0 gap-2">
+    <header className="bg-white border-b border-slate-300 p-3 sm:p-4 lg:p-5 flex flex-col md:flex-row justify-between items-start md:items-center flex-shrink-0 gap-3">
       <input
         type="text"
         value={pageName}
         onChange={(e) => onPageNameChange(e.target.value)}
-        className="font-semibold text-base, sm:text-lg border-transparent rounded-md, focus:ring-2, focus:ring-brand-blue, focus:border-transparent flex-1 min-w-[200px] text-slate-900 font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
+        className="font-bold text-base sm:text-lg rounded-xl text-slate-900 border border-slate-300 bg-white focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400 px-3 py-2 w-full md:w-auto md:min-w-[220px]"
       />
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
         <button
           onClick={onExportHtml}
-          className="px-4 py-2 text-xs, sm:text-sm font-semibold bg-white border border-gray-300 rounded-full, hover:bg-gray-50 whitespace-nowrap"
+          className="min-h-[44px] px-4 py-2 text-xs sm:text-sm font-bold bg-white border border-slate-300 rounded-xl hover:bg-slate-50 text-slate-800 whitespace-nowrap cursor-pointer shadow-xs"
         >
           Export HTML
         </button>
         <button
           onClick={onPreview}
-          className="px-4 py-2 text-xs, sm:text-sm font-semibold bg-white border border-gray-300 rounded-full, hover:bg-gray-50 whitespace-nowrap"
+          className="min-h-[44px] px-4 py-2 text-xs sm:text-sm font-bold bg-white border border-slate-300 rounded-xl hover:bg-slate-50 text-slate-800 whitespace-nowrap cursor-pointer shadow-xs"
         >
           Preview
         </button>
@@ -61,19 +61,19 @@ const EditorHeader: React.FC<EditorHeaderProps> = React.memo(({
           value={aiPrompt}
           onChange={(e) => onAiPromptChange(e.target.value)}
           placeholder="Describe component to AI..."
-          className="px-4 py-2 text-xs, sm:text-sm border border-gray-300 rounded-full, focus:ring-2, focus:ring-brand-blue, focus:border-transparent flex-1 min-w-[150px] text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
+          className="min-h-[44px] px-4 py-2 text-xs sm:text-sm border border-slate-300 rounded-xl text-slate-900 font-bold bg-white focus:ring-2 focus:ring-purple-500 placeholder:text-slate-400 flex-1 min-w-[150px]"
         />
         <button
           onClick={onGenerateWithAi}
           disabled={isGeneratingAi}
-          className="px-4 py-2 text-xs, sm:text-sm font-semibold bg-purple-600 text-white rounded-full, hover:bg-purple-700, disabled:bg-gray-400 whitespace-nowrap"
+          className="min-h-[44px] px-4 py-2 text-xs sm:text-sm font-bold bg-purple-600 text-white rounded-xl hover:bg-purple-700 disabled:bg-slate-300 whitespace-nowrap cursor-pointer shadow-xs"
         >
           {isGeneratingAi ? 'Generating...' : 'Generate with AI'}
         </button>
         <button
           onClick={onSaveAndDeploy}
           disabled={isSaving}
-          className="px-4 py-2 text-xs, sm:text-sm font-semibold bg-brand-blue text-white rounded-full, hover:bg-blue-700, disabled:bg-gray-400 whitespace-nowrap"
+          className="min-h-[44px] px-4 py-2 text-xs sm:text-sm font-bold bg-blue-600 text-white rounded-xl hover:bg-blue-700 disabled:bg-slate-300 whitespace-nowrap cursor-pointer shadow-xs"
         >
           {isSaving ? 'Saving...' : 'Save & Deploy'}
         </button>
@@ -206,8 +206,6 @@ const EnhancedEditorPage: React.FC = () => {
         }
       } else {
         if (isMounted) {
-          setComponents([]);
-          setPageName('Untitled Page');
           setIsLoading(false);
         }
       }
@@ -453,7 +451,7 @@ const EnhancedEditorPage: React.FC = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="flex flex-col h-screen bg-gray-100 font-sans">
+      <div className="flex flex-col min-h-screen bg-gray-100 font-sans w-full max-w-full overflow-x-hidden pb-28 md:pb-0 text-slate-900">
         {/* Header */}
         <EditorHeader
           pageName={pageName}
@@ -469,11 +467,13 @@ const EnhancedEditorPage: React.FC = () => {
         />
 
         {/* Main Editor Area */}
-        <div className="flex flex-1 overflow-hidden">
-          <ComponentLibrary
-            onDrop={addComponent}
-          />
-          <div className="flex-1 flex overflow-y-auto">
+        <div className="flex flex-col md:flex-row flex-1 overflow-hidden">
+          <div className="hidden md:block">
+            <ComponentLibrary
+              onDrop={addComponent}
+            />
+          </div>
+          <div className="flex-1 flex overflow-y-auto p-2 sm:p-4">
             <Canvas
               components={components}
               projectId={pageId || ''}
@@ -485,11 +485,50 @@ const EnhancedEditorPage: React.FC = () => {
               onDelete={deleteComponent}
             />
           </div>
-          <PropertiesPanel
-            component={selectedComponent || undefined}
-            onUpdate={updateComponent}
-          />
+          <div className="hidden lg:block w-80 bg-white border-l border-slate-300 p-4 overflow-y-auto">
+            <PropertiesPanel
+              component={selectedComponent || undefined}
+              onUpdate={updateComponent}
+            />
+          </div>
         </div>
+
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <nav
+          aria-label="Enhanced Editor Mobile Navigation"
+          className="md:hidden fixed bottom-4 inset-x-3 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl p-2 z-40 shadow-2xl flex items-center justify-around gap-1"
+        >
+          <button
+            type="button"
+            onClick={handlePreview}
+            className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-amber-400 hover:text-amber-300 transition-colors cursor-pointer"
+          >
+            <span>Preview</span>
+          </button>
+          <button
+            type="button"
+            onClick={handleGenerateWithAi}
+            disabled={isGeneratingAi}
+            className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-purple-400 hover:text-purple-300 transition-colors cursor-pointer disabled:opacity-40"
+          >
+            <span>AI Gen</span>
+          </button>
+          <button
+            type="button"
+            onClick={handleExportHtml}
+            className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-indigo-400 hover:text-indigo-300 transition-colors cursor-pointer"
+          >
+            <span>Export</span>
+          </button>
+          <button
+            type="button"
+            onClick={handleSaveAndDeploy}
+            disabled={isSaving}
+            className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-emerald-400 hover:text-emerald-300 transition-colors cursor-pointer disabled:opacity-40"
+          >
+            <span>Save</span>
+          </button>
+        </nav>
       </div>
     </DndProvider>
   );

@@ -48,27 +48,27 @@ const EditorToolbar: React.FC<EditorToolbarProps> = React.memo(({
   isSaving
 }) => {
   return (
-    <header className="bg-gradient-to-r from-blue-600 to-purple-600 p-4 flex justify-between items-center flex-shrink-0">
-      <div className="flex items-center">
+    <header className="bg-gradient-to-r from-blue-600 to-purple-600 p-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-3 flex-shrink-0">
+      <div className="flex items-center w-full md:w-auto">
         <div className="bg-white/20 p-2 rounded-lg">
-          <PencilIcon className="h-6 w-6 text-slate-700" />
+          <PencilIcon className="h-6 w-6 text-white" />
         </div>
         <input
           type="text"
           value={pageName}
           onChange={(e) => onPageNameChange(e.target.value)}
-          className="ml-3 font-semibold text-lg text-white bg-transparent border-b border-white/30, focus:outline-none, focus:border-white"
+          className="ml-3 font-semibold text-lg text-white bg-transparent border-b border-white/30 focus:outline-none focus:border-white w-full md:w-auto"
         />
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex flex-wrap items-center gap-2 sm:gap-3 w-full md:w-auto">
         <div className="bg-white/20 px-3 py-1.5 rounded-lg flex items-center">
           <div className="bg-yellow-100 p-1 rounded">
             <svg className="h-5 w-5 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <span className="ml-2 text-slate-700 font-medium">{ficBalance.toFixed(2)} FIC</span>
+          <span className="ml-2 text-white font-bold">{ficBalance.toFixed(2)} FIC</span>
         </div>
 
         <input
@@ -76,39 +76,39 @@ const EditorToolbar: React.FC<EditorToolbarProps> = React.memo(({
           value={aiPrompt}
           onChange={(e) => onAiPromptChange(e.target.value)}
           placeholder="Describe component to AI..."
-          className="px-4 py-2 text-sm border border-white/30 rounded-full bg-white placeholder-white/70 text-white, focus:outline-none, focus:ring-2, focus:ring-white/30 text-slate-900 font-bold border-slate-300 focus:ring-2 placeholder:text-slate-400"
+          className="min-h-[44px] px-4 py-2 text-sm rounded-full bg-white text-slate-900 font-bold border border-slate-300 focus:ring-2 focus:ring-blue-400 placeholder:text-slate-400 flex-1 sm:flex-initial"
         />
         <button
           onClick={onGenerateWithAi}
           disabled={isGeneratingAi}
-          className="px-4 py-2 text-sm font-semibold bg-white text-blue-600 rounded-full, hover:bg-gray-100, disabled:bg-gray-300 flex items-center"
+          className="min-h-[44px] px-4 py-2 text-sm font-bold bg-white text-blue-600 rounded-full hover:bg-slate-100 disabled:bg-slate-300 flex items-center cursor-pointer shadow-xs"
         >
-          <SparklesIcon className="h-4 w-4 mr-1" />
+          <SparklesIcon className="h-4 w-4 mr-1 text-blue-600" />
           {isGeneratingAi ? 'Generating...' : 'AI Gen'}
         </button>
 
         <button
           onClick={onPreview}
-          className="px-4 py-2 text-sm font-semibold bg-white/20 text-slate-700 rounded-full, hover:bg-white/30 flex items-center"
+          className="min-h-[44px] px-4 py-2 text-sm font-bold bg-white/20 text-white rounded-full hover:bg-white/30 flex items-center cursor-pointer"
         >
-          <EyeIcon className="h-4 w-4 mr-1" />
+          <EyeIcon className="h-4 w-4 mr-1 text-white" />
           Preview
         </button>
 
         <button
           onClick={onExportHtml}
-          className="px-4 py-2 text-sm font-semibold bg-white/20 text-slate-700 rounded-full, hover:bg-white/30 flex items-center"
+          className="min-h-[44px] px-4 py-2 text-sm font-bold bg-white/20 text-white rounded-full hover:bg-white/30 flex items-center cursor-pointer"
         >
-          <CodeBracketIcon className="h-4 w-4 mr-1" />
+          <CodeBracketIcon className="h-4 w-4 mr-1 text-white" />
           Export
         </button>
 
         <button
           onClick={onSaveAndDeploy}
           disabled={isSaving}
-          className="px-4 py-2 text-sm font-semibold bg-white text-blue-600 rounded-full, hover:bg-gray-100, disabled:bg-gray-300 flex items-center"
+          className="min-h-[44px] px-4 py-2 text-sm font-bold bg-white text-blue-600 rounded-full hover:bg-slate-100 disabled:bg-slate-300 flex items-center cursor-pointer shadow-xs"
         >
-          <CloudArrowUpIcon className="h-4 w-4 mr-1" />
+          <CloudArrowUpIcon className="h-4 w-4 mr-1 text-blue-600" />
           {isSaving ? 'Saving...' : 'Save'}
         </button>
       </div>
@@ -305,8 +305,6 @@ const EditorPage: React.FC = () => {
         }
       } else {
         if (isMounted) {
-          setComponents([]);
-          setPageName('Untitled Page');
           setIsLoading(false);
         }
       }
@@ -497,7 +495,7 @@ const EditorPage: React.FC = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="flex flex-col h-screen bg-gray-100 font-sans">
+      <div className="flex flex-col min-h-screen bg-gray-100 font-sans w-full max-w-full overflow-x-hidden pb-28 md:pb-0 text-slate-900">
         <EditorToolbar
           pageName={pageName}
           onPageNameChange={setPageName}
@@ -511,10 +509,12 @@ const EditorPage: React.FC = () => {
           isGeneratingAi={isGeneratingAi}
           isSaving={isSaving}
         />
-        <div className="flex flex-1 overflow-hidden">
-          <ComponentLibrarySidebar onAddComponent={addComponent} />
+        <div className="flex flex-col md:flex-row flex-1 overflow-hidden">
+          <div className="hidden md:block">
+            <ComponentLibrarySidebar onAddComponent={addComponent} />
+          </div>
 
-          <div className="flex-1 flex overflow-y-auto bg-gray-100">
+          <div className="flex-1 flex overflow-y-auto bg-gray-100 p-2 sm:p-4">
             <Canvas
               components={components}
               onAdd={addComponent}
@@ -525,13 +525,53 @@ const EditorPage: React.FC = () => {
             />
           </div>
 
-          <div className="w-80 bg-white border-l border-slate-300 p-4 overflow-y-auto">
+          <div className="hidden lg:block w-80 bg-white border-l border-slate-300 p-4 overflow-y-auto">
             <PropertiesPanelSidebar
               selectedComponent={selectedComponent}
               onUpdate={updateComponent}
             />
           </div>
         </div>
+
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <nav
+          aria-label="Editor Mobile Navigation"
+          className="md:hidden fixed bottom-4 inset-x-3 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl p-2 z-40 shadow-2xl flex items-center justify-around gap-1"
+        >
+          <button
+            type="button"
+            onClick={() => addComponent('TextBlock')}
+            className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-indigo-400 hover:text-indigo-300 transition-colors cursor-pointer"
+          >
+            <DocumentTextIcon className="w-5 h-5 mb-0.5" />
+            <span>+ Text</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => addComponent('Image')}
+            className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-purple-400 hover:text-purple-300 transition-colors cursor-pointer"
+          >
+            <PhotoIcon className="w-5 h-5 mb-0.5" />
+            <span>+ Image</span>
+          </button>
+          <button
+            type="button"
+            onClick={handlePreview}
+            className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-amber-400 hover:text-amber-300 transition-colors cursor-pointer"
+          >
+            <EyeIcon className="w-5 h-5 mb-0.5" />
+            <span>Preview</span>
+          </button>
+          <button
+            type="button"
+            onClick={handleSaveAndDeploy}
+            disabled={isSaving}
+            className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-emerald-400 hover:text-emerald-300 transition-colors cursor-pointer disabled:opacity-40"
+          >
+            <CloudArrowUpIcon className="w-5 h-5 mb-0.5" />
+            <span>Save</span>
+          </button>
+        </nav>
       </div>
     </DndProvider>
   );

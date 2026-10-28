@@ -30,4 +30,17 @@ describe('StercsEditorPage', () => {
     expect(screen.getByText(/Simulation Viewport/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Play Preview/i })).toBeInTheDocument();
   });
+
+  it('renders Sovereign Mobile Navigation Quick Dock with min 44px touch targets', () => {
+    render(<StercsEditorPage />);
+
+    const mobileDock = screen.getByRole('navigation', { name: /stercs editor mobile navigation/i });
+    expect(mobileDock).toBeInTheDocument();
+
+    const buttons = mobileDock.querySelectorAll('button');
+    expect(buttons.length).toBe(4);
+    buttons.forEach((btn) => {
+      expect(btn.className).toContain('min-h-[44px]');
+    });
+  });
 });
