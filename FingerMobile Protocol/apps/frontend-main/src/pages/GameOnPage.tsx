@@ -193,7 +193,7 @@ const GameOnPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Game On Arena">
-      <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-28 md:pb-12 w-full max-w-full overflow-x-hidden text-slate-900">
 
         {/* Hero Header */}
         <div className="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-gradient-to-r from-purple-950 via-slate-900 to-indigo-950 p-6 sm:p-8 rounded-3xl border border-purple-900/60 text-white shadow-xl">
@@ -586,6 +586,65 @@ const GameOnPage: React.FC = () => {
             </div>
           </div>
         )}
+
+        {/* SOVEREIGN MOBILE NAVIGATION QUICK DOCK */}
+        <nav
+          aria-label="GameOn Quick Navigation"
+          className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-3 py-2 sm:hidden flex items-center justify-around shadow-lg"
+        >
+          <button
+            type="button"
+            onClick={() => {
+              setActiveTab('events');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold transition-colors ${
+              activeTab === 'events' ? 'text-purple-600' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <TrophyIcon className="w-5 h-5 mb-0.5" />
+            <span>Tourneys</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setActiveTab('matches');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold transition-colors ${
+              activeTab === 'matches' ? 'text-purple-600' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <FireIcon className="w-5 h-5 mb-0.5" />
+            <span>Matches</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setActiveTab('arcade');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold transition-colors ${
+              activeTab === 'arcade' ? 'text-purple-600' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <PlayIcon className="w-5 h-5 mb-0.5" />
+            <span>Arcade</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setActiveTab('leaderboard');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold transition-colors ${
+              activeTab === 'leaderboard' ? 'text-purple-600' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <UserGroupIcon className="w-5 h-5 mb-0.5" />
+            <span>Ranks</span>
+          </button>
+        </nav>
 
       </div>
     </MainLayout>

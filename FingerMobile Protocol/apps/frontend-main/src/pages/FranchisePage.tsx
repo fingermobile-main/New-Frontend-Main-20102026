@@ -218,7 +218,7 @@ const FranchisePage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Franchise Operations">
-      <div className="min-h-screen bg-slate-50 text-gray-900 pb-16">
+      <div className="min-h-screen bg-slate-50 text-gray-900 pb-28 md:pb-16 w-full max-w-full overflow-x-hidden text-slate-900">
         {/* Header Hero */}
         <div className="bg-gradient-to-r from-slate-950 via-purple-950 to-indigo-950 text-white py-12 px-4 sm:px-6 lg:px-8 border-b border-purple-900/40">
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
@@ -831,6 +831,65 @@ const FranchisePage: React.FC = () => {
             </div>
           </div>
         )}
+        {/* SOVEREIGN MOBILE NAVIGATION QUICK DOCK */}
+        <nav
+          aria-label="Franchise Quick Navigation"
+          className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-3 py-2 sm:hidden flex items-center justify-around shadow-lg"
+        >
+          <button
+            type="button"
+            onClick={() => {
+              setActiveTab('directory');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold transition-colors ${
+              activeTab === 'directory' ? 'text-purple-600' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <BuildingStorefrontIcon className="w-5 h-5 mb-0.5" />
+            <span>Hubs</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setActiveTab('analytics');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold transition-colors ${
+              activeTab === 'analytics' ? 'text-purple-600' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <ChartBarIcon className="w-5 h-5 mb-0.5" />
+            <span>Metrics</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setActiveTab('apply');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold transition-colors ${
+              activeTab === 'apply' ? 'text-purple-600' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <PlusIcon className="w-5 h-5 mb-0.5" />
+            <span>License</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setActiveTab('compliance');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold transition-colors ${
+              activeTab === 'compliance' ? 'text-purple-600' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <ShieldCheckIcon className="w-5 h-5 mb-0.5" />
+            <span>Audits</span>
+          </button>
+        </nav>
+
       </div>
     </MainLayout>
   );

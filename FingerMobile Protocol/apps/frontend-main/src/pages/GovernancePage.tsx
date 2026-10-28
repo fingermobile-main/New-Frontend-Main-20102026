@@ -1,16 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout';
 import GovernanceDashboard from '../components/GovernanceDashboard';
 import PlatformOwnershipCard from '../components/dashboard/PlatformOwnershipCard';
-import { Shield, Info, FileText, Eye, BookOpen } from 'lucide-react';
+import { Shield, Info, FileText, Eye, BookOpen, AlertTriangle } from 'lucide-react';
 
 const GovernancePage: React.FC = () => {
+  const [activeSection, setActiveSection] = useState<'overview' | 'dashboard' | 'policies' | 'report'>('overview');
+
+  const scrollToSection = (id: string, section: 'overview' | 'dashboard' | 'policies' | 'report') => {
+    setActiveSection(section);
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   return (
     <MainLayout>
-      <div className="max-w-[1536px] 2xl:max-w-[1680px] w-full mx-auto py-10 px-4 sm:px-6 lg:px-8 space-y-12">
+      <div className="max-w-[1536px] 2xl:max-w-[1680px] w-full mx-auto py-10 px-4 sm:px-6 lg:px-8 space-y-12 pb-28 md:pb-12 max-w-full overflow-x-hidden text-slate-900">
         {/* Hero Section */}
-        <section className="text-center space-y-4">
+        <section id="governance-hero" className="text-center space-y-4">
           <div className="inline-flex items-center space-x-2 px-4 py-1.5 bg-blue-600/10 border border-blue-500/20 rounded-full">
             <Shield size={14} className="text-blue-500" />
             <span className="text-[10px] font-black text-blue-500 uppercase tracking-[0.2em]">Official Protocol Governance</span>
@@ -22,10 +34,12 @@ const GovernancePage: React.FC = () => {
         </section>
 
         {/* Governance Dashboard */}
-        <GovernanceDashboard />
+        <div id="governance-dashboard">
+          <GovernanceDashboard />
+        </div>
 
         {/* Detailed Policies Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div id="governance-policies" className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {[
             {
               title: 'Privacy Manifesto',
@@ -65,7 +79,7 @@ const GovernancePage: React.FC = () => {
         </div>
 
         {/* Bottom Banner */}
-        <div className="p-10 bg-gradient-to-r from-blue-600 to-indigo-700 rounded-[3rem] text-center space-y-6 shadow-2xl shadow-blue-900/40">
+        <div id="governance-report" className="p-10 bg-gradient-to-r from-blue-600 to-indigo-700 rounded-[3rem] text-center space-y-6 shadow-2xl shadow-blue-900/40">
           <h2 className="text-3xl font-black text-white tracking-tighter">Secure. Harmonized. FingerMobile.</h2>
           <div className="flex flex-wrap justify-center gap-4">
             <Link
@@ -86,6 +100,53 @@ const GovernancePage: React.FC = () => {
         {/* Sovereign Platform Ownership Directive */}
         <PlatformOwnershipCard />
       </div>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <nav
+        aria-label="Governance Mobile Navigation"
+        className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-3 py-2 flex items-center justify-around gap-2 shadow-lg"
+      >
+        <button
+          type="button"
+          onClick={() => scrollToSection('governance-hero', 'overview')}
+          className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+            activeSection === 'overview' ? 'text-blue-600' : 'text-slate-600 hover:text-slate-900'
+          }`}
+        >
+          <Shield className="w-5 h-5 mb-0.5" />
+          <span>Overview</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => scrollToSection('governance-dashboard', 'dashboard')}
+          className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+            activeSection === 'dashboard' ? 'text-blue-600' : 'text-slate-600 hover:text-slate-900'
+          }`}
+        >
+          <Eye className="w-5 h-5 mb-0.5" />
+          <span>Integrity</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => scrollToSection('governance-policies', 'policies')}
+          className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+            activeSection === 'policies' ? 'text-blue-600' : 'text-slate-600 hover:text-slate-900'
+          }`}
+        >
+          <FileText className="w-5 h-5 mb-0.5" />
+          <span>Policies</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => scrollToSection('governance-report', 'report')}
+          className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+            activeSection === 'report' ? 'text-blue-600' : 'text-slate-600 hover:text-slate-900'
+          }`}
+        >
+          <AlertTriangle className="w-5 h-5 mb-0.5" />
+          <span>Report</span>
+        </button>
+      </nav>
     </MainLayout>
   );
 };

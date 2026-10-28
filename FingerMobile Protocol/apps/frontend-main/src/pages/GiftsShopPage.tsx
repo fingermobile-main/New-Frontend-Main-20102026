@@ -53,7 +53,7 @@ export const GiftsShopPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F5F9F6] text-gray-900 pb-16">
+    <div className="min-h-screen bg-[#F5F9F6] text-gray-900 pb-28 md:pb-16 w-full max-w-full overflow-x-hidden text-slate-900">
       {/* Top Ambient Ribbon */}
       <div className="h-1.5 bg-gradient-to-r from-emerald-600 via-teal-500 to-[#DC582A]" />
 
@@ -311,6 +311,47 @@ export const GiftsShopPage: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <nav
+        aria-label="Gifts Shop Mobile Navigation"
+        className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-3 py-2 flex items-center justify-around gap-2 shadow-lg"
+      >
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab('plushies');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+            activeTab === 'plushies' ? 'text-emerald-700' : 'text-slate-600 hover:text-slate-900'
+          }`}
+        >
+          <GiftIcon className="w-5 h-5 mb-0.5" />
+          <span>Plushies</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab('virtual');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+            activeTab === 'virtual' ? 'text-emerald-700' : 'text-slate-600 hover:text-slate-900'
+          }`}
+        >
+          <SparklesIcon className="w-5 h-5 mb-0.5" />
+          <span>Virtual</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => navigate('/lush-pressies')}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
+        >
+          <ArrowLeftIcon className="w-5 h-5 mb-0.5" />
+          <span>Feed</span>
+        </button>
+      </nav>
     </div>
   );
 };
