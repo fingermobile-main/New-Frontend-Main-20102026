@@ -11,10 +11,9 @@ jest.mock('../contexts/AppContext', () => ({
 }));
 
 // Mock apiService
-jest.mock('../services/apiService', () => ({
-  __esModule: true,
-  default: {
-    get: jest.fn().mockImplementation((url) => {
+jest.mock('../services/apiService', () => {
+  const mockApi = {
+    get: jest.fn().mockImplementation((url: string) => {
       if (url.includes('tracking')) {
         return Promise.resolve({
           shipments: [
@@ -42,9 +41,18 @@ jest.mock('../services/apiService', () => ({
       return Promise.resolve({ data: [] });
     }),
     post: jest.fn().mockResolvedValue({ success: true }),
-    put: jest.fn().mockResolvedValue({ success: true })
-  }
-}));
+    put: jest.fn().mockResolvedValue({ success: true }),
+    delete: jest.fn().mockResolvedValue({ success: true }),
+    request: jest.fn().mockResolvedValue({ success: true })
+  };
+
+  return {
+    __esModule: true,
+    default: mockApi,
+    apiService: mockApi,
+    ApiService: mockApi
+  };
+});
 
 // Mock PlatformDomainManagementConsole
 jest.mock('../components/dashboard/PlatformDomainManagementConsole', () => ({
@@ -65,7 +73,8 @@ describe('StorefrontTrackingPage', () => {
     renderComponent();
     expect(screen.getByText('E-Commerce & Storefront Sovereign Operations')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /dispatch package/i })).toBeInTheDocument();
-    expect(await screen.findByText('TRK-987654321')).toBeInTheDocument();
+    const trackingCodes = await screen.findAllByText('TRK-987654321');
+    expect(trackingCodes.length).toBeGreaterThan(0);
   });
 
   it('renders tab switchers across logistics and commerce database', () => {

@@ -501,7 +501,7 @@ const GemsPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 py-6 px-3 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-slate-950 text-slate-100 py-6 px-3 sm:px-6 lg:px-8 w-full max-w-full overflow-x-hidden pb-28 md:pb-12">
       {/* Top Banner & Multi-Currency Header */}
       <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto mb-8">
         <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-purple-900/60 via-indigo-900/40 to-slate-900/90 border border-purple-500/30 p-6 sm:p-8 backdrop-blur-xl shadow-2xl">
@@ -542,15 +542,15 @@ const GemsPage: React.FC = () => {
                 <button
                   onClick={refreshBalance}
                   title="Refresh Balance"
-                  className="p-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors border border-slate-700"
+                  className="min-h-[44px] min-w-[44px] flex items-center justify-center p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors border border-slate-700 cursor-pointer"
                 >
                   <RefreshCw className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => setIsAddGemsModalOpen(true)}
-                  className="px-4 py-2.5 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-semibold text-xs uppercase tracking-wider rounded-lg shadow-md transition-all transform hover:scale-[1.02] cursor-pointer active:scale-95 flex items-center gap-1.5"
+                  className="min-h-[44px] px-4 py-2.5 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-md transition-all transform hover:scale-[1.02] cursor-pointer active:scale-95 flex items-center justify-center gap-1.5"
                 >
-                  <Coins className="w-3.5 h-3.5" />
+                  <Coins className="w-4 h-4" />
                   + Add Gems
                 </button>
               </div>
@@ -561,7 +561,7 @@ const GemsPage: React.FC = () => {
           <div className="flex flex-wrap items-center gap-2 mt-6 pt-6 border-t border-purple-500/20">
             <button
               onClick={() => setActiveTab('marketplace')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
+              className={`min-h-[44px] flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
                 activeTab === 'marketplace'
                   ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/30'
                   : 'bg-slate-900/60 text-slate-300 hover:bg-slate-800 hover:text-white'
@@ -576,7 +576,7 @@ const GemsPage: React.FC = () => {
 
             <button
               onClick={() => setActiveTab('broadcast')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
+              className={`min-h-[44px] flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
                 activeTab === 'broadcast'
                   ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/30'
                   : 'bg-slate-900/60 text-slate-300 hover:bg-slate-800 hover:text-white'
@@ -591,7 +591,7 @@ const GemsPage: React.FC = () => {
 
             <button
               onClick={() => setActiveTab('powertools')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
+              className={`min-h-[44px] flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
                 activeTab === 'powertools'
                   ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/30'
                   : 'bg-slate-900/60 text-slate-300 hover:bg-slate-800 hover:text-white'
@@ -606,7 +606,7 @@ const GemsPage: React.FC = () => {
 
             <button
               onClick={() => setActiveTab('guides')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
+              className={`min-h-[44px] flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
                 activeTab === 'guides'
                   ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/30'
                   : 'bg-slate-900/60 text-slate-300 hover:bg-slate-800 hover:text-white'
@@ -1642,6 +1642,60 @@ const GemsPage: React.FC = () => {
         isOpen={Boolean(selectedBroadcastForAnalytics)}
         onClose={() => setSelectedBroadcastForAnalytics(null)}
       />
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <nav
+        aria-label="Gems Mobile Navigation"
+        className="md:hidden fixed bottom-4 inset-x-3 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl p-2 z-40 shadow-2xl flex items-center justify-around gap-1"
+      >
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab('marketplace');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold transition-colors cursor-pointer ${
+            activeTab === 'marketplace' ? 'text-pink-400' : 'text-slate-300 hover:text-white'
+          }`}
+        >
+          <ShoppingCart className="w-5 h-5 mb-0.5" />
+          <span>Market</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab('broadcast');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold transition-colors cursor-pointer ${
+            activeTab === 'broadcast' ? 'text-emerald-400' : 'text-slate-300 hover:text-white'
+          }`}
+        >
+          <Radio className="w-5 h-5 mb-0.5" />
+          <span>Broadcast</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setIsAddGemsModalOpen(true)}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-yellow-400 hover:text-yellow-300 transition-colors cursor-pointer"
+        >
+          <Coins className="w-5 h-5 mb-0.5" />
+          <span>Add Gems</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab('powertools');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold transition-colors cursor-pointer ${
+            activeTab === 'powertools' ? 'text-purple-400' : 'text-slate-300 hover:text-white'
+          }`}
+        >
+          <Bot className="w-5 h-5 mb-0.5" />
+          <span>Tools</span>
+        </button>
+      </nav>
     </div>
   );
 };

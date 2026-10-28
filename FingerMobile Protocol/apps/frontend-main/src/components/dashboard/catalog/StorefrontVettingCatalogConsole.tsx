@@ -183,22 +183,22 @@ export const StorefrontVettingCatalogConsole: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex items-center space-x-3">
+          <div className="flex flex-wrap items-center gap-2">
             <button
               onClick={() => fetchStorefrontCatalog()}
-              className="inline-flex items-center space-x-2 px-4 py-2 border border-slate-300 rounded-xl text-xs font-bold text-slate-800 bg-white hover:bg-slate-50 transition shadow-sm"
+              className="min-h-[44px] inline-flex items-center space-x-2 px-4 py-2 border border-slate-300 rounded-xl text-xs sm:text-sm font-bold text-slate-800 bg-white hover:bg-slate-50 transition shadow-sm cursor-pointer"
             >
-              <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
+              <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
               <span>Refresh</span>
             </button>
             <a
               href="/storefront"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center space-x-1.5 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold shadow-md transition"
+              className="min-h-[44px] inline-flex items-center space-x-1.5 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs sm:text-sm font-bold shadow-md transition cursor-pointer"
             >
               <span>View Storefronts</span>
-              <ExternalLink className="w-3.5 h-3.5" />
+              <ExternalLink className="w-4 h-4" />
             </a>
           </div>
         </div>
@@ -249,7 +249,7 @@ export const StorefrontVettingCatalogConsole: React.FC = () => {
             <button
               key={tab.id}
               onClick={() => setVettingFilter(tab.id as any)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition ${
+              className={`min-h-[44px] px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition cursor-pointer flex items-center justify-center ${
                 vettingFilter === tab.id
                   ? 'bg-amber-100 text-amber-950 border border-amber-400 font-black shadow-sm'
                   : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
@@ -261,13 +261,13 @@ export const StorefrontVettingCatalogConsole: React.FC = () => {
         </div>
 
         <div className="relative w-full md:w-72">
-          <Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-3" />
+          <Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search merchant items..."
-            className="w-full pl-9 pr-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500"
+            className="w-full min-h-[44px] pl-9 pr-3 py-2 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500"
           />
         </div>
       </div>
@@ -355,7 +355,7 @@ export const StorefrontVettingCatalogConsole: React.FC = () => {
                           setCensorBlurMedia(item.censorship_flags?.blurred || false);
                           setAgeRestricted(item.censorship_flags?.age_restricted || false);
                         }}
-                        className="px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-xs font-bold transition shadow-sm"
+                        className="min-h-[44px] px-3.5 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs sm:text-sm font-bold transition shadow-sm cursor-pointer"
                       >
                         Vet & Moderate
                       </button>

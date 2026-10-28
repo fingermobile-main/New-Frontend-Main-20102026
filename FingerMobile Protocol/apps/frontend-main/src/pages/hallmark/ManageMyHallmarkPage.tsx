@@ -1,9 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
+import { Award, Radio, Users, Shield, Plus, ArrowLeft } from 'lucide-react';
 
 import { toast } from 'react-toastify';
 import { XIcon } from '../../components/icons';
-import { hallmarkService, HallmarkApplication } from '../../services/hallmarkService';
+import { hallmarkService } from '../../services/hallmarkService';
 import { Hallmark, Member } from '../../types';
 import { useAppContext } from '../../contexts/AppContext';
 import PlatformOwnershipCard from '../../components/dashboard/PlatformOwnershipCard';
@@ -156,12 +157,19 @@ const ManageMyHallmarkPage: React.FC = () => {
   const selectedHallmark = hallmarks.find(h => h.id === selectedHallmarkId);
 
   return (
-    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-3 sm:p-6 lg:p-8 space-y-6 overflow-x-hidden pb-28 md:pb-12 text-slate-900">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-black text-slate-900">Manage Sovereign Hallmark</h1>
-          <p className="text-sm font-semibold text-slate-700 mt-1">Configure mega-community parameters, live voice sessions, member roles, and tags</p>
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900">Manage Sovereign Hallmark</h1>
+          <p className="text-xs sm:text-sm font-semibold text-slate-700 mt-1">Configure mega-community parameters, live voice sessions, member roles, and tags</p>
         </div>
+        <button
+          onClick={() => navigate('/hallmarks')}
+          className="min-h-[44px] inline-flex items-center gap-1.5 px-4 py-2 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm font-bold text-slate-800 hover:bg-slate-100 transition-colors shadow-xs cursor-pointer self-start sm:self-auto"
+        >
+          <ArrowLeft className="w-4 h-4 text-slate-700" />
+          <span>Back to Hallmarks Hub</span>
+        </button>
       </div>
 
       {loading && <div className="text-center py-8 text-slate-700 font-medium">Loading hallmarks...</div>}
@@ -176,7 +184,7 @@ const ManageMyHallmarkPage: React.FC = () => {
               <select
                 value={selectedHallmarkId}
                 onChange={(e) => setSelectedHallmarkId(e.target.value)}
-                className="w-full p-2 border rounded mb-4 text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500"
+                className="w-full min-h-[44px] p-2.5 border rounded-xl mb-4 text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 text-sm"
               >
                 <option value="">Select a hallmark</option>
                 {hallmarks.map((hallmark) => (
@@ -189,38 +197,38 @@ const ManageMyHallmarkPage: React.FC = () => {
               {selectedHallmark && (
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">Name</label>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-800">Name</label>
                     <input
                       type="text"
                       value={name || selectedHallmark.name || ''}
                       onChange={(e) => setName(e.target.value)}
-                      className="mt-1 block w-full border border-gray-300 rounded-md p-2 text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
+                      className="mt-1 block w-full min-h-[44px] border border-slate-300 rounded-xl p-2.5 text-slate-900 font-bold bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 text-sm"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">Description</label>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-800">Description</label>
                     <textarea
                       value={description || selectedHallmark.description || ''}
                       onChange={(e) => setDescription(e.target.value)}
-                      className="mt-1 block w-full border border-gray-300 rounded-md p-2 text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
+                      className="mt-1 block w-full border border-slate-300 rounded-xl p-2.5 text-slate-900 font-bold bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 text-sm"
                       rows={3}
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">Tags</label>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-800">Tags</label>
                     <div className="flex mt-1">
                       <input
                         type="text"
                         value={currentTag}
                         onChange={(e) => setCurrentTag(e.target.value)}
                         placeholder="Add a tag"
-                        className="flex-1 border border-gray-300 rounded-l-md p-2 text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
+                        className="flex-1 min-h-[44px] border border-slate-300 rounded-l-xl p-2.5 text-slate-900 font-bold bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 text-sm"
                       />
                       <button
                         onClick={handleAddTag}
-                        className="bg-blue-500 text-white px-4 rounded-r-md"
+                        className="min-h-[44px] px-5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-r-xl cursor-pointer"
                       >
                         Add
                       </button>
@@ -253,7 +261,7 @@ const ManageMyHallmarkPage: React.FC = () => {
 
                   <button
                     onClick={handleSaveChanges}
-                    className="w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600"
+                    className="w-full min-h-[44px] bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl shadow-xs transition-colors cursor-pointer"
                   >
                     Save Changes
                   </button>
@@ -395,6 +403,48 @@ const ManageMyHallmarkPage: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <nav
+        aria-label="Manage Hallmark Mobile Navigation"
+        className="md:hidden fixed bottom-4 inset-x-3 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl p-2 z-40 shadow-2xl flex items-center justify-around gap-1"
+      >
+        <button
+          type="button"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-amber-400 hover:text-amber-300 transition-colors cursor-pointer"
+        >
+          <Award className="w-5 h-5 mb-0.5" />
+          <span>Hallmark</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            const input = document.querySelector('input[placeholder*="Session Title"]');
+            if (input) (input as HTMLElement).focus();
+          }}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-emerald-400 hover:text-emerald-300 transition-colors cursor-pointer"
+        >
+          <Radio className="w-5 h-5 mb-0.5" />
+          <span>Session</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setShowAddMemberForm(true)}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-sky-400 hover:text-sky-300 transition-colors cursor-pointer"
+        >
+          <Plus className="w-5 h-5 mb-0.5" />
+          <span>Member</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => navigate('/hallmarks')}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-slate-300 hover:text-white transition-colors cursor-pointer"
+        >
+          <Shield className="w-5 h-5 mb-0.5" />
+          <span>Hub</span>
+        </button>
+      </nav>
     </div>
   );
 };

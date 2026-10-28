@@ -559,8 +559,8 @@ const HallmarksPage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="min-h-screen bg-slate-50/70 pb-20">
-        <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      <div className="min-h-screen bg-slate-50/70 w-full max-w-full overflow-x-hidden pb-28 md:pb-12 text-slate-900">
+        <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6 sm:space-y-8">
 
           {/* 1. Flagship Executive Hero Section */}
           <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-white p-8 md:p-10 shadow-2xl border border-slate-800">
@@ -613,7 +613,7 @@ const HallmarksPage: React.FC = () => {
 
                 <button
                   onClick={handleCreateCommunityClick}
-                  className="w-full py-3 px-4 rounded-xl font-black text-xs uppercase tracking-wider text-white bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 hover:from-orange-600 hover:to-amber-600 shadow-md hover:shadow-orange-500/25 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full min-h-[44px] py-3 px-4 rounded-xl font-black text-xs uppercase tracking-wider text-white bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 hover:from-orange-600 hover:to-amber-600 shadow-md hover:shadow-orange-500/25 transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <PlusIcon className="w-4 h-4" />
                   <span>Launch Community ({createdCount}/{maxAllowed})</span>
@@ -621,7 +621,7 @@ const HallmarksPage: React.FC = () => {
 
                 <button
                   onClick={handleOpenAuditModal}
-                  className="w-full py-2.5 px-4 rounded-xl font-bold text-xs text-white bg-white/10 hover:bg-white/20 border border-white/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full min-h-[44px] py-2.5 px-4 rounded-xl font-bold text-xs text-white bg-white/10 hover:bg-white/20 border border-white/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <span>📜</span>
                   <span>View 50-PIN Audit Ledger</span>
@@ -786,7 +786,7 @@ const HallmarksPage: React.FC = () => {
               <div className="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0">
                 <button
                   onClick={() => setActiveTab('communities')}
-                  className={`px-4 py-2.5 rounded-xl font-black text-xs uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer ${
+                  className={`min-h-[44px] px-4 py-2.5 rounded-xl font-black text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer ${
                     activeTab === 'communities'
                       ? 'bg-slate-900 text-white shadow-md'
                       : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-300'
@@ -798,7 +798,7 @@ const HallmarksPage: React.FC = () => {
 
                 <button
                   onClick={() => setActiveTab('hallmarks')}
-                  className={`px-4 py-2.5 rounded-xl font-black text-xs uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer ${
+                  className={`min-h-[44px] px-4 py-2.5 rounded-xl font-black text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer ${
                     activeTab === 'hallmarks'
                       ? 'bg-slate-900 text-white shadow-md'
                       : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-300'
@@ -810,7 +810,7 @@ const HallmarksPage: React.FC = () => {
 
                 <button
                   onClick={() => setActiveTab('governance')}
-                  className={`px-4 py-2.5 rounded-xl font-black text-xs uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer ${
+                  className={`min-h-[44px] px-4 py-2.5 rounded-xl font-black text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer ${
                     activeTab === 'governance'
                       ? 'bg-slate-900 text-white shadow-md'
                       : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-300'
@@ -822,7 +822,7 @@ const HallmarksPage: React.FC = () => {
 
                 <button
                   onClick={() => setActiveTab('discourse')}
-                  className={`px-4 py-2.5 rounded-xl font-black text-xs uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer ${
+                  className={`min-h-[44px] px-4 py-2.5 rounded-xl font-black text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer ${
                     activeTab === 'discourse'
                       ? 'bg-slate-900 text-white shadow-md'
                       : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-300'
@@ -836,7 +836,7 @@ const HallmarksPage: React.FC = () => {
               {/* Action Button */}
               <Button
                 onClick={handleCreateCommunityClick}
-                className="bg-orange-500 hover:bg-orange-600 text-white font-black text-xs uppercase tracking-wider px-4 py-2.5 rounded-xl shadow-sm flex items-center gap-2 self-start sm:self-auto cursor-pointer"
+                className="min-h-[44px] bg-orange-500 hover:bg-orange-600 text-white font-black text-xs uppercase tracking-wider px-4 py-2.5 rounded-xl shadow-sm flex items-center justify-center gap-2 self-start sm:self-auto cursor-pointer"
               >
                 <PlusIcon className="w-4 h-4" />
                 <span>New Community</span>
@@ -1599,6 +1599,55 @@ const HallmarksPage: React.FC = () => {
           )}
 
         </div>
+
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <nav
+          aria-label="Hallmarks Master Navigation"
+          className="md:hidden fixed bottom-4 inset-x-3 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl p-2 z-40 shadow-2xl flex items-center justify-around gap-1"
+        >
+          <button
+            type="button"
+            onClick={() => {
+              setActiveTab('communities');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold transition-colors cursor-pointer ${
+              activeTab === 'communities' ? 'text-orange-400' : 'text-slate-300 hover:text-white'
+            }`}
+          >
+            <ShieldCheck className="w-5 h-5 mb-0.5" />
+            <span>Guilds</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setActiveTab('hallmarks');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold transition-colors cursor-pointer ${
+              activeTab === 'hallmarks' ? 'text-amber-400' : 'text-slate-300 hover:text-white'
+            }`}
+          >
+            <Award className="w-5 h-5 mb-0.5" />
+            <span>Accolades</span>
+          </button>
+          <button
+            type="button"
+            onClick={handleCreateCommunityClick}
+            className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-emerald-400 hover:text-emerald-300 transition-colors cursor-pointer"
+          >
+            <PlusIcon className="w-5 h-5 mb-0.5" />
+            <span>Create</span>
+          </button>
+          <button
+            type="button"
+            onClick={handleOpenAuditModal}
+            className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-indigo-400 hover:text-indigo-300 transition-colors cursor-pointer"
+          >
+            <ShieldIcon className="w-5 h-5 mb-0.5" />
+            <span>Audit</span>
+          </button>
+        </nav>
       </div>
     </MainLayout>
   );
