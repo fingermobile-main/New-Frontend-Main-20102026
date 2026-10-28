@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 
 import PostCard from '../../components/PostCard';
@@ -9,8 +9,10 @@ import { useAppContext } from '../../contexts/AppContext';
 import groupsService from '../../services/groupsService';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import voiceLineServiceInstance from '../../services/VoiceLineService';
+import { Users, Compass, ArrowLeft, MessageSquare, PhoneCall, Radio } from 'lucide-react';
 
 const GroupDetailPage = () => {
+  const navigate = useNavigate();
   const { slug } = useParams();
   const { showToast } = useAppContext();
   const [group, setGroup] = useState<any>(null);
@@ -133,28 +135,39 @@ const GroupDetailPage = () => {
   };
 
   const CommunityHeader = () => (
-    <div className="bg-white border-b border-slate-300 p-6 text-center">
+    <div className="bg-white border-b border-slate-300 p-4 sm:p-6 text-center">
+      <div className="flex items-center justify-start mb-3">
+        <button
+          type="button"
+          onClick={() => navigate('/groups')}
+          className="min-w-[44px] min-h-[44px] p-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-700 hover:text-slate-900 shadow-sm flex items-center justify-center active:scale-95 transition-all cursor-pointer"
+          aria-label="Back to Groups"
+        >
+          <ArrowLeft className="w-5 h-5" />
+        </button>
+      </div>
       <img
         src={group.logoUrl}
         alt={group.name}
-        className="w-24 h-24 rounded-full border-4 border-slate-200 mx-auto mb-2 bg-white object-cover shadow-sm"
+        className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-4 border-slate-200 mx-auto mb-2 bg-white object-cover shadow-sm"
       />
-      <h1 className="text-3xl font-black text-slate-900">{group.name}</h1>
-      <p className="text-slate-700 font-medium mt-2 max-w-xl mx-auto">{group.description}</p>
+      <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">{group.name}</h1>
+      <p className="text-slate-700 text-xs sm:text-sm font-medium mt-1 sm:mt-2 max-w-xl mx-auto leading-relaxed">{group.description}</p>
       <div className="flex justify-center gap-6 mt-4">
         <div>
-          <div className="font-black text-slate-900 text-lg">{group.members.length}</div>
-          <div className="text-xs font-bold text-slate-700 uppercase tracking-wider">Members</div>
+          <div className="font-black text-slate-900 text-base sm:text-lg">{group.members.length}</div>
+          <div className="text-[11px] sm:text-xs font-bold text-slate-700 uppercase tracking-wider">Members</div>
         </div>
         <div>
-          <div className="font-black text-slate-900 text-lg">{group.posts.length}</div>
-          <div className="text-xs font-bold text-slate-700 uppercase tracking-wider">Posts</div>
+          <div className="font-black text-slate-900 text-base sm:text-lg">{group.posts.length}</div>
+          <div className="text-[11px] sm:text-xs font-bold text-slate-700 uppercase tracking-wider">Posts</div>
         </div>
       </div>
       {!isMember && !isOwner && (
         <button
+          type="button"
           onClick={handleJoin}
-          className="mt-4 px-6 py-2.5 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 shadow-sm transition-colors cursor-pointer"
+          className="mt-4 min-h-[44px] px-6 py-2.5 bg-blue-600 text-white font-black text-xs uppercase tracking-wider rounded-xl hover:bg-blue-700 shadow-sm transition-all active:scale-95 cursor-pointer"
         >
           Join Group
         </button>
@@ -164,24 +177,63 @@ const GroupDetailPage = () => {
 
   if (!isMember && !isOwner) {
     return (
-      <div className="flex-1 bg-slate-50 min-h-screen">
+      <div className="flex-1 bg-slate-50 min-h-screen w-full max-w-full overflow-x-hidden pb-28 md:pb-12">
         <CommunityHeader />
-        <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-4 sm:p-6 lg:p-8">
-          <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-300 text-center max-w-xl mx-auto">
-            <h2 className="text-2xl font-black text-slate-900 mb-2">Private Group</h2>
-            <p className="text-slate-700 font-medium">
-              Join this group to see posts and participate in discussions.
+        <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-3 sm:p-6 lg:p-8">
+          <div className="bg-white p-6 sm:p-8 rounded-2xl sm:rounded-3xl shadow-sm border border-slate-300 text-center max-w-xl mx-auto space-y-2">
+            <h2 className="text-xl sm:text-2xl font-black text-slate-900">Private Sovereign Group</h2>
+            <p className="text-slate-700 text-xs sm:text-sm font-medium">
+              Join this group to see posts, participate in audio rooms, and access community perks.
             </p>
           </div>
+        </div>
+
+        {/* Floating Sovereign Mobile Navigation Quick Dock */}
+        <div
+          data-testid="group-detail-mobile-dock"
+          className="fixed bottom-3 inset-x-3 z-40 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl shadow-2xl px-2 py-1.5 flex items-center justify-around sm:hidden"
+        >
+          <button
+            type="button"
+            onClick={() => navigate('/groups')}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-blue-400 active:scale-95 transition-transform"
+          >
+            <Users className="w-5 h-5" />
+            <span className="text-[10px] font-bold mt-0.5">Groups</span>
+          </button>
+          <button
+            type="button"
+            onClick={handleJoin}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-slate-300 hover:text-white active:scale-95 transition-transform"
+          >
+            <Users className="w-5 h-5" />
+            <span className="text-[10px] font-medium mt-0.5">Join</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate('/communities')}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-slate-300 hover:text-white active:scale-95 transition-transform"
+          >
+            <Compass className="w-5 h-5" />
+            <span className="text-[10px] font-medium mt-0.5">Explore</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate('/forum')}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-slate-300 hover:text-white active:scale-95 transition-transform"
+          >
+            <MessageSquare className="w-5 h-5" />
+            <span className="text-[10px] font-medium mt-0.5">Forum</span>
+          </button>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex-1 bg-slate-50 min-h-screen">
+    <div className="flex-1 bg-slate-50 min-h-screen w-full max-w-full overflow-x-hidden pb-28 md:pb-12">
       <CommunityHeader />
-      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-4 sm:p-6 lg:p-8">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-3 sm:p-6 lg:p-8">
         {isLive && (
           <div className="max-w-3xl mx-auto mb-6 bg-gradient-to-r from-purple-600 to-indigo-600 text-white p-4 rounded-2xl flex justify-between items-center shadow-md">
             <div className="flex items-center gap-3">
@@ -189,13 +241,14 @@ const GroupDetailPage = () => {
               <div>
                 <h3 className="font-black text-white">{activeSession?.title || 'Live Session'}</h3>
                 <p className="text-sm opacity-90">
-                  {group.owner.name} is live now!
+                  {group.owner?.name || 'Host'} is live now!
                 </p>
               </div>
             </div>
             <button
+              type="button"
               onClick={handleJoinSession}
-              className="px-4 py-2 font-bold bg-white text-indigo-700 rounded-xl hover:bg-indigo-50 shadow-sm transition-colors cursor-pointer"
+              className="min-h-[44px] px-4 py-2 font-bold bg-white text-indigo-700 rounded-xl hover:bg-indigo-50 shadow-sm transition-colors cursor-pointer flex items-center justify-center"
             >
               Join Session
             </button>
@@ -213,8 +266,9 @@ const GroupDetailPage = () => {
               </div>
             </div>
             <button
+              type="button"
               onClick={() => handleJoinGroupAudioCall()}
-              className="px-4 py-2 font-bold bg-white text-teal-800 rounded-xl hover:bg-teal-50 shadow-sm transition-colors cursor-pointer"
+              className="min-h-[44px] px-4 py-2 font-bold bg-white text-teal-800 rounded-xl hover:bg-teal-50 shadow-sm transition-colors cursor-pointer flex items-center justify-center"
             >
               Join Call
             </button>
@@ -244,6 +298,45 @@ const GroupDetailPage = () => {
             </div>
           )}
         </div>
+      </div>
+
+      {/* Floating Sovereign Mobile Navigation Quick Dock */}
+      <div
+        data-testid="group-detail-mobile-dock"
+        className="fixed bottom-3 inset-x-3 z-40 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl shadow-2xl px-2 py-1.5 flex items-center justify-around sm:hidden"
+      >
+        <button
+          type="button"
+          onClick={() => navigate('/groups')}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-blue-400 active:scale-95 transition-transform"
+        >
+          <Users className="w-5 h-5" />
+          <span className="text-[10px] font-bold mt-0.5">Groups</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-slate-300 hover:text-white active:scale-95 transition-transform"
+        >
+          <MessageSquare className="w-5 h-5" />
+          <span className="text-[10px] font-medium mt-0.5">Posts</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => navigate('/communities')}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-slate-300 hover:text-white active:scale-95 transition-transform"
+        >
+          <Compass className="w-5 h-5" />
+          <span className="text-[10px] font-medium mt-0.5">Guilds</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => navigate('/forum')}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-slate-300 hover:text-white active:scale-95 transition-transform"
+        >
+          <Radio className="w-5 h-5" />
+          <span className="text-[10px] font-medium mt-0.5">Forum</span>
+        </button>
       </div>
     </div>
   );

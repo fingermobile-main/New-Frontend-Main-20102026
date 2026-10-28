@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../../contexts/AppContext';
 import { apiService } from '../../services/apiService';
-import { Users, Gift, Share2, Copy, CheckCircle2, TrendingUp, Sparkles } from 'lucide-react';
+import { Users, Gift, Share2, Copy, CheckCircle2, TrendingUp, Sparkles, Wallet, Link as LinkIcon, ShieldCheck } from 'lucide-react';
 
 interface ReferralItem {
   id: string | number;
@@ -14,6 +15,7 @@ interface ReferralItem {
 }
 
 const ReferralsPage: React.FC = () => {
+  const navigate = useNavigate();
   const { showToast } = useAppContext();
   const [isLoading, setIsLoading] = useState(false);
   const [stats, setStats] = useState({
@@ -58,7 +60,7 @@ const ReferralsPage: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto space-y-8 text-slate-900">
+    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-3 sm:p-6 lg:p-8 space-y-6 sm:space-y-8 text-slate-900 overflow-x-hidden pb-28 md:pb-12">
       <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-300 shadow-sm">
         <div className="flex items-start gap-4">
           <div className="p-3.5 rounded-2xl bg-blue-500/10 border border-blue-400/40 text-blue-700 flex-shrink-0">
@@ -135,19 +137,19 @@ const ReferralsPage: React.FC = () => {
             <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider">
               Referral Link
             </label>
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2">
               <input
                 type="text"
                 readOnly
                 value={stats.referralLink}
-                className="w-full bg-white border-2 border-slate-300 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-900 font-mono font-bold select-all focus:outline-none focus:border-blue-500 border focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
+                className="w-full min-h-[44px] bg-white border-2 border-slate-300 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-900 font-mono font-bold select-all focus:outline-none focus:border-blue-500 border focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
               />
               <button
                 type="button"
                 onClick={() => copyToClipboard(stats.referralLink, 'Referral link')}
-                className="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-black rounded-xl whitespace-nowrap shadow-sm flex items-center gap-1.5 transition-all"
+                className="min-h-[44px] px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-black rounded-xl whitespace-nowrap shadow-sm flex items-center justify-center gap-1.5 transition-all active:scale-95"
               >
-                <Copy className="w-3.5 h-3.5" />
+                <Copy className="w-4 h-4" />
                 Copy Link
               </button>
             </div>
@@ -157,17 +159,17 @@ const ReferralsPage: React.FC = () => {
             <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider">
               Referral Code
             </label>
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2">
               <input
                 type="text"
                 readOnly
                 value={stats.referralCode}
-                className="w-full bg-white border-2 border-slate-300 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-900 font-mono font-black tracking-wider select-all focus:outline-none focus:border-blue-500 font-bold border focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
+                className="w-full min-h-[44px] bg-white border-2 border-slate-300 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-900 font-mono font-black tracking-wider select-all focus:outline-none focus:border-blue-500 font-bold border focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
               />
               <button
                 type="button"
                 onClick={() => copyToClipboard(stats.referralCode, 'Referral code')}
-                className="px-4 py-2.5 border-2 border-slate-300 text-slate-900 bg-slate-100 hover:bg-slate-200 text-xs font-black rounded-xl whitespace-nowrap transition-all"
+                className="min-h-[44px] px-5 py-2.5 border-2 border-slate-300 text-slate-900 bg-slate-100 hover:bg-slate-200 text-xs font-black rounded-xl whitespace-nowrap transition-all active:scale-95 flex items-center justify-center"
               >
                 Copy Code
               </button>
@@ -252,6 +254,45 @@ const ReferralsPage: React.FC = () => {
             <p className="text-xs text-slate-700 font-medium">Share your invite link above to start earning 50 FIC per activation!</p>
           </div>
         )}
+      </div>
+
+      {/* Floating Sovereign Mobile Navigation Quick Dock */}
+      <div
+        data-testid="referrals-mobile-dock"
+        className="fixed bottom-3 inset-x-3 z-40 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl shadow-2xl px-2 py-1.5 flex items-center justify-around sm:hidden"
+      >
+        <button
+          type="button"
+          onClick={() => copyToClipboard(stats.referralLink, 'Referral link')}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-blue-400 active:scale-95 transition-transform"
+        >
+          <LinkIcon className="w-5 h-5" />
+          <span className="text-[10px] font-bold mt-0.5">Share</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => copyToClipboard(stats.referralCode, 'Referral code')}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-slate-300 hover:text-white active:scale-95 transition-transform"
+        >
+          <Copy className="w-5 h-5" />
+          <span className="text-[10px] font-medium mt-0.5">Code</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => navigate('/financials/loyalty')}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-slate-300 hover:text-white active:scale-95 transition-transform"
+        >
+          <Gift className="w-5 h-5" />
+          <span className="text-[10px] font-medium mt-0.5">Rewards</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => navigate('/financials')}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-slate-300 hover:text-white active:scale-95 transition-transform"
+        >
+          <Wallet className="w-5 h-5" />
+          <span className="text-[10px] font-medium mt-0.5">Finance</span>
+        </button>
       </div>
     </div>
   );

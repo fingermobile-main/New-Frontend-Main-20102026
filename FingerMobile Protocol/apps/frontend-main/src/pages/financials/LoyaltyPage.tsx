@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../../contexts/AppContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { LOYALTY_TIERS } from '../../constants';
 import MainLayout from '../../components/layout/MainLayout';
 import { GiftIcon, SparklesIcon, CheckCircleIcon } from '../../icons';
 import { apiService } from '../../services/apiService';
+import { Trophy, Award, Gift, Wallet } from 'lucide-react';
 
 export interface LocalLoyaltyReward {
   id: string;
@@ -30,6 +32,7 @@ interface HistoryReward {
 }
 
 const LoyaltyPage: React.FC = () => {
+  const navigate = useNavigate();
   const { member } = useAuth();
   const { showToast } = useAppContext();
   const [userPoints, setUserPoints] = useState(0);
@@ -183,8 +186,8 @@ const LoyaltyPage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="p-6 lg:p-8 bg-[#F5F9F6] min-h-screen text-slate-900">
-        <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto space-y-8">
+      <div className="p-3 sm:p-6 lg:p-8 bg-[#F5F9F6] min-h-screen text-slate-900 w-full max-w-full overflow-x-hidden pb-28 md:pb-12">
+        <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto space-y-6 sm:space-y-8">
 
           {/* Main Tier Overview Banner */}
           <div className="bg-white p-8 rounded-3xl border border-slate-300 shadow-sm text-center relative overflow-hidden">
@@ -241,9 +244,9 @@ const LoyaltyPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => handleRedeemReward(reward)}
-                      className={`px-3 py-1.5 rounded-xl text-xs font-black transition ${
+                      className={`min-h-[44px] px-4 py-2 rounded-xl text-xs font-black transition active:scale-95 flex items-center justify-center ${
                         userPoints >= reward.redemptionCost
-                          ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-sm'
+                          ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-sm cursor-pointer'
                           : 'bg-slate-100 text-slate-500 border border-slate-300 cursor-not-allowed'
                       }`}
                     >
@@ -285,6 +288,48 @@ const LoyaltyPage: React.FC = () => {
           </div>
 
         </div>
+      </div>
+
+      {/* Floating Sovereign Mobile Navigation Quick Dock */}
+      <div
+        data-testid="loyalty-mobile-dock"
+        className="fixed bottom-3 inset-x-3 z-40 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl shadow-2xl px-2 py-1.5 flex items-center justify-around sm:hidden"
+      >
+        <button
+          type="button"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-amber-400 active:scale-95 transition-transform"
+        >
+          <Trophy className="w-5 h-5" />
+          <span className="text-[10px] font-bold mt-0.5">Tier</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            const el = document.querySelector('h3');
+            el?.scrollIntoView({ behavior: 'smooth' });
+          }}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-slate-300 hover:text-white active:scale-95 transition-transform"
+        >
+          <Gift className="w-5 h-5" />
+          <span className="text-[10px] font-medium mt-0.5">Rewards</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => navigate('/financials/referrals')}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-slate-300 hover:text-white active:scale-95 transition-transform"
+        >
+          <Award className="w-5 h-5" />
+          <span className="text-[10px] font-medium mt-0.5">Referrals</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => navigate('/financials')}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-slate-300 hover:text-white active:scale-95 transition-transform"
+        >
+          <Wallet className="w-5 h-5" />
+          <span className="text-[10px] font-medium mt-0.5">Finance</span>
+        </button>
       </div>
     </MainLayout>
   );

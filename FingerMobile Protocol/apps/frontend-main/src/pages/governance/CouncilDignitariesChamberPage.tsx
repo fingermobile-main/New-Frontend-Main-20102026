@@ -5,7 +5,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Landmark,
   Shield,
@@ -17,13 +17,16 @@ import {
   Users,
   MessageSquare,
   Sparkles,
-  ArrowRight
+  ArrowRight,
+  Compass,
+  Building
 } from 'lucide-react';
 import sovereignRbacApi, { DistinguishedRank, DistinguishedDignitary } from '../../services/sovereignRbacApi';
 import { usePlatformPrivilege } from '../../components/common/ExecutiveOnlyContent';
 import PlatformOwnershipCard from '../../components/dashboard/PlatformOwnershipCard';
 
 export const CouncilDignitariesChamberPage: React.FC = () => {
+  const navigate = useNavigate();
   const { isExecutive } = usePlatformPrivilege();
   const [ranks, setRanks] = useState<DistinguishedRank[]>([]);
   const [dignitaries, setDignitaries] = useState<DistinguishedDignitary[]>([]);
@@ -93,10 +96,10 @@ export const CouncilDignitariesChamberPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-100 text-slate-900 py-8 px-4 sm:px-6 lg:px-8 font-sans">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className="min-h-screen bg-slate-100 text-slate-900 py-6 sm:py-8 px-3 sm:px-6 lg:px-8 font-sans w-full max-w-full overflow-x-hidden pb-28 md:pb-12">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto space-y-6">
         {/* Navigation Breadcrumb */}
-        <nav className="flex items-center gap-2 text-xs font-bold text-slate-700">
+        <nav className="flex items-center gap-2 text-xs font-bold text-slate-700 overflow-x-auto pb-1">
           <Link to="/forum" className="hover:text-orange-600 transition">Forum Home</Link>
           <ChevronRight className="w-3 h-3 text-slate-500" />
           <span className="text-slate-900 font-extrabold flex items-center gap-1">
@@ -197,20 +200,22 @@ export const CouncilDignitariesChamberPage: React.FC = () => {
 
                   <div className="flex items-center gap-2 shrink-0">
                     {userVotes[prop.id] ? (
-                      <span className="px-3 py-1.5 rounded-lg text-xs font-black bg-blue-100 text-blue-950 border border-blue-400">
+                      <span className="min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-black bg-blue-100 text-blue-950 border border-blue-400 flex items-center justify-center">
                         Voted {userVotes[prop.id]} (Ballot Cast)
                       </span>
                     ) : (
                       <>
                         <button
+                          type="button"
                           onClick={() => handleVote(prop.id, 'YES')}
-                          className="px-3.5 py-1.5 text-xs font-black rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white transition flex items-center gap-1 shadow-xs cursor-pointer"
+                          className="min-h-[44px] px-4 py-2 text-xs font-black rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white transition flex items-center justify-center gap-1 shadow-xs active:scale-95 cursor-pointer"
                         >
                           Vote YES ({prop.yesVotes})
                         </button>
                         <button
+                          type="button"
                           onClick={() => handleVote(prop.id, 'NO')}
-                          className="px-3.5 py-1.5 text-xs font-black rounded-lg bg-rose-600 hover:bg-rose-700 text-white transition flex items-center gap-1 shadow-xs cursor-pointer"
+                          className="min-h-[44px] px-4 py-2 text-xs font-black rounded-xl bg-rose-600 hover:bg-rose-700 text-white transition flex items-center justify-center gap-1 shadow-xs active:scale-95 cursor-pointer"
                         >
                           Vote NO ({prop.noVotes})
                         </button>
@@ -222,6 +227,48 @@ export const CouncilDignitariesChamberPage: React.FC = () => {
             ))}
           </div>
         </div>
+      </div>
+
+      {/* Floating Sovereign Mobile Navigation Quick Dock */}
+      <div
+        data-testid="council-mobile-dock"
+        className="fixed bottom-3 inset-x-3 z-40 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl shadow-2xl px-2 py-1.5 flex items-center justify-around sm:hidden"
+      >
+        <button
+          type="button"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-purple-400 active:scale-95 transition-transform"
+        >
+          <Landmark className="w-5 h-5" />
+          <span className="text-[10px] font-bold mt-0.5">Chamber</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            const el = document.querySelector('h2');
+            el?.scrollIntoView({ behavior: 'smooth' });
+          }}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-slate-300 hover:text-white active:scale-95 transition-transform"
+        >
+          <Vote className="w-5 h-5" />
+          <span className="text-[10px] font-medium mt-0.5">Votes</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => navigate('/forum')}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-slate-300 hover:text-white active:scale-95 transition-transform"
+        >
+          <Building className="w-5 h-5" />
+          <span className="text-[10px] font-medium mt-0.5">Forum</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => navigate('/communities')}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-slate-300 hover:text-white active:scale-95 transition-transform"
+        >
+          <Users className="w-5 h-5" />
+          <span className="text-[10px] font-medium mt-0.5">Guilds</span>
+        </button>
       </div>
     </div>
   );

@@ -8,6 +8,7 @@ import PageHeader from '../../components/PageHeader';
 import PlatformOwnershipCard from '../../components/dashboard/PlatformOwnershipCard';
 import { Group } from '../../types';
 import groupsService from '../../services/groupsService';
+import { Users, Save, ArrowLeft, Compass, MessageSquare } from 'lucide-react';
 
 const ManageMyGroupPage = () => {
   const { groupId } = useParams();
@@ -71,29 +72,107 @@ const ManageMyGroupPage = () => {
   };
 
   return (
-    <div className="flex-1 bg-slate-50 min-h-screen">
-      <PageHeader
-        title={`Manage: ${currentGroup.name}`}
-        description="Update your sovereign group parameters, charter rules, and membership criteria."
-      />
-      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+    <div className="flex-1 bg-slate-50 min-h-screen w-full max-w-full overflow-x-hidden pb-28 md:pb-12 text-slate-900">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-3 sm:p-6 lg:p-8 space-y-6">
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => navigate(`/groups/${currentGroup.id}`)}
+            className="min-w-[44px] min-h-[44px] p-2.5 rounded-xl bg-white border border-slate-300 text-slate-700 hover:text-slate-900 shadow-sm flex items-center justify-center active:scale-95 transition-all cursor-pointer"
+            aria-label="Back to Group"
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </button>
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+              Manage: {currentGroup.name}
+            </h1>
+            <p className="text-xs sm:text-sm text-slate-700 font-medium">
+              Update sovereign group parameters, charter rules, and membership criteria.
+            </p>
+          </div>
+        </div>
+
         <PlatformOwnershipCard />
 
-        <div className="max-w-3xl mx-auto bg-white p-8 rounded-2xl shadow-sm border border-slate-300 space-y-6">
+        <div className="max-w-3xl mx-auto bg-white p-5 sm:p-8 rounded-2xl sm:rounded-3xl shadow-sm border border-slate-300 space-y-6">
           <div>
-            <label htmlFor="groupName" className="block text-sm font-bold text-slate-900 mb-1">Group Name</label>
-            <input id="groupName" type="text" value={name} onChange={(e) => setName(e.target.value)} className="w-full p-2.5 border rounded-xl text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-blue-600 placeholder:text-slate-400 text-sm" />
+            <label htmlFor="groupName" className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
+              Group Name
+            </label>
+            <input
+              id="groupName"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full min-h-[44px] px-3.5 py-2.5 border-2 border-slate-300 rounded-xl text-slate-900 font-bold text-sm bg-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 placeholder:text-slate-400"
+            />
           </div>
+
           <div>
-            <label htmlFor="groupRules" className="block text-sm font-bold text-slate-900 mb-1">Group Rules & Charter</label>
-            <textarea id="groupRules" value={rules} onChange={e => setRules(e.target.value)} rows={5} className="w-full p-2.5 border rounded-xl text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-blue-600 placeholder:text-slate-400 text-sm" />
+            <label htmlFor="groupRules" className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
+              Group Rules & Charter
+            </label>
+            <textarea
+              id="groupRules"
+              value={rules}
+              onChange={(e) => setRules(e.target.value)}
+              rows={5}
+              className="w-full min-h-[120px] px-3.5 py-2.5 border-2 border-slate-300 rounded-xl text-slate-900 font-bold text-sm bg-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 placeholder:text-slate-400"
+            />
           </div>
+
           <div className="pt-4 border-t border-slate-200 flex justify-end">
-            <button type="button" onClick={handleSaveChanges} disabled={isSaving} className="px-6 py-2.5 font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-sm transition-colors disabled:bg-slate-400 cursor-pointer text-sm">
+            <button
+              type="button"
+              onClick={handleSaveChanges}
+              disabled={isSaving}
+              className="w-full sm:w-auto min-h-[44px] px-6 py-2.5 font-black text-xs uppercase tracking-wider bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-sm transition-all disabled:bg-slate-300 active:scale-95 cursor-pointer flex items-center justify-center gap-2"
+            >
+              <Save className="w-4 h-4" />
               {isSaving ? 'Saving...' : 'Save Changes'}
             </button>
           </div>
         </div>
+      </div>
+
+      {/* Floating Sovereign Mobile Navigation Quick Dock */}
+      <div
+        data-testid="manage-group-mobile-dock"
+        className="fixed bottom-3 inset-x-3 z-40 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl shadow-2xl px-2 py-1.5 flex items-center justify-around sm:hidden"
+      >
+        <button
+          type="button"
+          onClick={() => navigate(`/groups/${currentGroup.id}`)}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-blue-400 active:scale-95 transition-transform"
+        >
+          <ArrowLeft className="w-5 h-5" />
+          <span className="text-[10px] font-bold mt-0.5">Back</span>
+        </button>
+        <button
+          type="button"
+          onClick={handleSaveChanges}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-emerald-400 active:scale-95 transition-transform"
+        >
+          <Save className="w-5 h-5" />
+          <span className="text-[10px] font-medium mt-0.5">Save</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => navigate('/groups')}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-slate-300 hover:text-white active:scale-95 transition-transform"
+        >
+          <Users className="w-5 h-5" />
+          <span className="text-[10px] font-medium mt-0.5">Groups</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => navigate('/communities')}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-slate-300 hover:text-white active:scale-95 transition-transform"
+        >
+          <Compass className="w-5 h-5" />
+          <span className="text-[10px] font-medium mt-0.5">Guilds</span>
+        </button>
       </div>
     </div>
   );
