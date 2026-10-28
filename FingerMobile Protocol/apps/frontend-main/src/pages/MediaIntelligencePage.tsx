@@ -188,7 +188,7 @@ export const MediaIntelligencePage: React.FC = () => {
   });
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 p-4 md:p-8">
+    <div className="min-h-screen bg-zinc-950 text-zinc-100 p-4 md:p-8 pb-28 md:pb-12 max-w-full overflow-x-hidden">
       {/* Top Header */}
       <div className="max-w-7xl mx-auto mb-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-zinc-800">
@@ -833,6 +833,65 @@ export const MediaIntelligencePage: React.FC = () => {
             </div>
           </div>
         )}
+
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <nav
+          aria-label="Media Intelligence Mobile Navigation"
+          className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-zinc-900/95 backdrop-blur-md border-t border-zinc-800 px-3 py-2 flex items-center justify-around gap-1 shadow-lg"
+        >
+          <button
+            type="button"
+            onClick={() => {
+              setActiveTab('pipeline');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+              activeTab === 'pipeline' ? 'text-emerald-400' : 'text-zinc-400 hover:text-zinc-200'
+            }`}
+          >
+            <Activity className="w-5 h-5 mb-0.5" />
+            <span>Pipeline</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setActiveTab('routing');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+              activeTab === 'routing' ? 'text-emerald-400' : 'text-zinc-400 hover:text-zinc-200'
+            }`}
+          >
+            <Sliders className="w-5 h-5 mb-0.5" />
+            <span>Routing</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setActiveTab('workers');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+              activeTab === 'workers' ? 'text-emerald-400' : 'text-zinc-400 hover:text-zinc-200'
+            }`}
+          >
+            <Server className="w-5 h-5 mb-0.5" />
+            <span>Workers</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setActiveTab('reviews');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+              activeTab === 'reviews' ? 'text-emerald-400' : 'text-zinc-400 hover:text-zinc-200'
+            }`}
+          >
+            <ShieldCheck className="w-5 h-5 mb-0.5" />
+            <span>Reviews</span>
+          </button>
+        </nav>
       </div>
     </div>
   );

@@ -30,7 +30,7 @@ const MarketingPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Marketing Hub">
-      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 py-8 animate-in fade-in slide-in-from-bottom-4 duration-700 space-y-8">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 py-8 pb-28 md:pb-12 max-w-full overflow-x-hidden text-slate-900 animate-in fade-in slide-in-from-bottom-4 duration-700 space-y-8">
 
         {/* Hero header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-gradient-to-r from-indigo-900 via-indigo-800 to-slate-900 p-8 rounded-3xl text-white shadow-xl">
@@ -133,6 +133,36 @@ const MarketingPage: React.FC = () => {
           )}
         </div>
 
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <nav
+          aria-label="Marketing Mobile Navigation"
+          className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-3 py-2 flex items-center justify-around gap-1 shadow-lg"
+        >
+          <button
+            type="button"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold text-indigo-600 hover:text-indigo-800 transition-colors cursor-pointer"
+          >
+            <MegaphoneIcon className="w-5 h-5 mb-0.5" />
+            <span>Hub</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate('/campaigns')}
+            className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold text-slate-700 hover:text-slate-900 transition-colors cursor-pointer"
+          >
+            <ChartBarIcon className="w-5 h-5 mb-0.5" />
+            <span>Campaigns</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate('/canary-ad-maker')}
+            className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold text-slate-700 hover:text-slate-900 transition-colors cursor-pointer"
+          >
+            <SparklesIcon className="w-5 h-5 mb-0.5" />
+            <span>Studio</span>
+          </button>
+        </nav>
       </div>
     </MainLayout>
   );

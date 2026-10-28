@@ -2433,7 +2433,7 @@ const MasterDashboardPage: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 relative">
+    <div className="min-h-screen bg-gray-50 relative pb-28 md:pb-12 max-w-full overflow-x-hidden text-slate-900">
       {/* Toast Notification Banner */}
       {toastMessage && (
         <div className="fixed bottom-6 right-6 z-50 bg-slate-900 text-white text-sm font-medium px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 border border-slate-700 animate-in fade-in slide-in-from-bottom-3 duration-200">
@@ -3629,6 +3629,65 @@ const MasterDashboardPage: React.FC = () => {
         item={selectedConsoleForDetail}
         onClose={() => setSelectedConsoleForDetail(null)}
       />
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <nav
+        aria-label="Master Dashboard Mobile Navigation"
+        className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-3 py-2 flex items-center justify-around gap-1 shadow-lg"
+      >
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab('overview');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+            activeTab === 'overview' ? 'text-blue-600' : 'text-slate-700 hover:text-slate-900'
+          }`}
+        >
+          <Grid3X3 className="w-5 h-5 mb-0.5" />
+          <span>Overview</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab('analytics');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+            activeTab === 'analytics' ? 'text-blue-600' : 'text-slate-700 hover:text-slate-900'
+          }`}
+        >
+          <BarChart3 className="w-5 h-5 mb-0.5" />
+          <span>Analytics</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab('system');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+            activeTab === 'system' ? 'text-blue-600' : 'text-slate-700 hover:text-slate-900'
+          }`}
+        >
+          <Activity className="w-5 h-5 mb-0.5" />
+          <span>System</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab('security');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+            activeTab === 'security' ? 'text-blue-600' : 'text-slate-700 hover:text-slate-900'
+          }`}
+        >
+          <Shield className="w-5 h-5 mb-0.5" />
+          <span>Security</span>
+        </button>
+      </nav>
     </div>
   );
 };
