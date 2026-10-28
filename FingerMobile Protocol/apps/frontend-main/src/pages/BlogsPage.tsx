@@ -41,6 +41,7 @@ import {
   FileText,
   Flame,
   Plus,
+  PlusCircle,
   Share2,
   Layers,
   Cpu,
@@ -315,8 +316,8 @@ const BlogsPage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="min-h-screen bg-slate-50/70 pb-20">
-        <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      <div className="min-h-screen bg-slate-50/70 pb-28 md:pb-12 w-full max-w-full overflow-x-hidden text-slate-900">
+        <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 overflow-x-hidden">
 
           {/* ========================================================================= */}
           {/* 1. FLAGSHIP EXECUTIVE HERO SECTION (Exact Hallmarks Styling)              */}
@@ -1050,6 +1051,48 @@ const BlogsPage: React.FC = () => {
             </div>
           )}
         </div>
+      </div>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 flex items-center justify-around shadow-lg">
+        <button
+          type="button"
+          onClick={() => { setActiveTab('dispatches'); handleHaptic(); }}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-1 ${
+            activeTab === 'dispatches' ? 'text-orange-600 font-bold' : 'text-slate-700 hover:text-slate-900'
+          }`}
+        >
+          <Layers className="w-5 h-5" />
+          <span className="text-[10px] tracking-tight">Dispatches</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => { setIsComposerOpen(true); handleHaptic(); }}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-1 text-slate-700 hover:text-slate-900"
+        >
+          <PlusCircle className="w-5 h-5 text-orange-600" />
+          <span className="text-[10px] tracking-tight">Write</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => { setActiveTab('reading-list'); handleHaptic(); }}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-1 ${
+            activeTab === 'reading-list' ? 'text-orange-600 font-bold' : 'text-slate-700 hover:text-slate-900'
+          }`}
+        >
+          <Bookmark className="w-5 h-5 text-purple-600" />
+          <span className="text-[10px] tracking-tight">Saved</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => { setActiveTab('monetization'); handleHaptic(); }}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-1 ${
+            activeTab === 'monetization' ? 'text-orange-600 font-bold' : 'text-slate-700 hover:text-slate-900'
+          }`}
+        >
+          <DollarSign className="w-5 h-5 text-emerald-600" />
+          <span className="text-[10px] tracking-tight">Monetize</span>
+        </button>
       </div>
 
       {/* ========================================================================= */}

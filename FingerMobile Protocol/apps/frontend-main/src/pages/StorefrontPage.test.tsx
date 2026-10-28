@@ -54,4 +54,3 @@ describe('StorefrontPage', () => {
     expect(screen.getByRole('button', { name: /^copilot$/i })).toBeInTheDocument();
   });
 });
-

@@ -86,4 +86,3 @@ describe('EditPostPage Mobile Optimization Suite', () => {
     });
   });
 });
-

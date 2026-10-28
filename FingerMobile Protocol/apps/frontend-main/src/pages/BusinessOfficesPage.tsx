@@ -277,8 +277,8 @@ export const BusinessOfficesPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Business Offices & Global Locations">
-      <div className="min-h-screen bg-slate-950 text-slate-100 py-8 px-4 sm:px-6 lg:px-8">
-        <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto space-y-10">
+      <div className="min-h-screen bg-slate-950 text-slate-100 py-8 px-4 sm:px-6 lg:px-8 pb-28 md:pb-12 w-full max-w-full overflow-x-hidden">
+        <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto space-y-10 overflow-x-hidden">
           {/* Hero Header */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-slate-800 pb-8">
             <div>
@@ -975,14 +975,14 @@ export const BusinessOfficesPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => setSelectedOffice(null)}
-                      className="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-semibold hover:bg-slate-700"
+                      className="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-semibold hover:bg-slate-700 min-w-[44px] min-h-[44px]"
                     >
                       Cancel
                     </button>
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="px-6 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-bold shadow-md flex items-center gap-2"
+                      className="px-6 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-bold shadow-md flex items-center gap-2 min-w-[44px] min-h-[44px]"
                     >
                       <Send className="w-3.5 h-3.5" />
                       {isSubmitting ? 'Confirming...' : 'Confirm Appointment'}
@@ -993,6 +993,48 @@ export const BusinessOfficesPage: React.FC = () => {
             </div>
           )}
         </div>
+      </div>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-950/95 backdrop-blur-md border-t border-slate-800 px-4 py-2 flex items-center justify-around shadow-lg">
+        <button
+          type="button"
+          onClick={() => { setSelectedRegion('All'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-1 ${
+            selectedRegion === 'All' ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-white'
+          }`}
+        >
+          <Building2 className="w-5 h-5" />
+          <span className="text-[10px] tracking-tight">Hubs</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => { setSelectedRegion('Nigeria'); }}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-1 ${
+            selectedRegion === 'Nigeria' ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-white'
+          }`}
+        >
+          <MapPin className="w-5 h-5 text-emerald-400" />
+          <span className="text-[10px] tracking-tight">Nigeria</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => { setSelectedRegion('North America'); }}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-1 ${
+            selectedRegion === 'North America' ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-white'
+          }`}
+        >
+          <Globe className="w-5 h-5 text-blue-400" />
+          <span className="text-[10px] tracking-tight">Global</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => { if (filteredOffices.length > 0) setSelectedOffice(filteredOffices[0]); }}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-1 text-slate-400 hover:text-white"
+        >
+          <Calendar className="w-5 h-5 text-amber-400" />
+          <span className="text-[10px] tracking-tight">Book Visit</span>
+        </button>
       </div>
     </MainLayout>
   );

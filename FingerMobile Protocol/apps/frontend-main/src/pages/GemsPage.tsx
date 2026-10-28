@@ -1701,4 +1701,3 @@ const GemsPage: React.FC = () => {
 };
 
 export default GemsPage;
-

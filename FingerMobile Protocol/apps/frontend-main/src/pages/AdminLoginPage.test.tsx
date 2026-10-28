@@ -26,4 +26,3 @@ describe('AdminLoginPage Mobile Optimization', () => {
     expect(screen.getByRole('button', { name: /user login/i })).toBeInTheDocument();
   });
 });
-

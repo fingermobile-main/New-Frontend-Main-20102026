@@ -168,4 +168,3 @@ const ModerationPage: React.FC = () => {
 };
 
 export default ModerationPage;
-

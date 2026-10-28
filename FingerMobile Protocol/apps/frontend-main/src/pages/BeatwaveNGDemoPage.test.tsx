@@ -51,4 +51,3 @@ describe('BeatwaveNGDemoPage Mobile Optimization', () => {
     expect(screen.getByLabelText('Console Hub')).toBeInTheDocument();
   });
 });
-

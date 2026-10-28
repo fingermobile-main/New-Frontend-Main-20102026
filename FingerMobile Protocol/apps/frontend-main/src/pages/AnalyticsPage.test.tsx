@@ -28,4 +28,3 @@ describe('AnalyticsPage Mobile Optimization', () => {
     expect(screen.getByLabelText('Export Report')).toBeInTheDocument();
   });
 });
-

@@ -85,4 +85,3 @@ describe('EnhancedEditorPage Mobile Optimization Suite', () => {
     });
   });
 });
-

@@ -69,4 +69,3 @@ describe('CommunitiesPage Mobile & Responsive Suite', () => {
     expect(await screen.findByRole('button', { name: /joined/i })).toBeInTheDocument();
   });
 });
-

@@ -33,4 +33,3 @@ describe('MonitoringDashboardPage Mobile Optimization', () => {
     expect(screen.getByRole('button', { name: /live on|paused/i })).toBeInTheDocument();
   });
 });
-

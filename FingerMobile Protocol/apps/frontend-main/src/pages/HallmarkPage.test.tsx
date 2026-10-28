@@ -56,4 +56,3 @@ describe('HallmarkPage', () => {
     expect(screen.getByRole('link', { name: /^market$/i })).toBeInTheDocument();
   });
 });
-

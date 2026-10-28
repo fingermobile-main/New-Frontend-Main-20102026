@@ -33,4 +33,3 @@ describe('AIGovernancePage Mobile Optimization', () => {
     expect(screen.getByLabelText('Analytics Tab')).toBeInTheDocument();
   });
 });
-

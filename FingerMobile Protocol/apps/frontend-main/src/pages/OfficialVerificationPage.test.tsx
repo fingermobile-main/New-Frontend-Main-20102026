@@ -36,4 +36,3 @@ describe('OfficialVerificationPage Mobile Optimization', () => {
     expect(screen.getByRole('button', { name: /review/i })).toBeInTheDocument();
   });
 });
-

@@ -44,4 +44,3 @@ describe('CataloguePage Mobile Optimization & Behavior', () => {
     });
   });
 });
-

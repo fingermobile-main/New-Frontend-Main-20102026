@@ -40,4 +40,3 @@ describe('StercsThemeDesignerPage Mobile Optimization Suite', () => {
     });
   });
 });
-

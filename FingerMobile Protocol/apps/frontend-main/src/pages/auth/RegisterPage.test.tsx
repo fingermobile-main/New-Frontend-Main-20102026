@@ -44,4 +44,3 @@ describe('RegisterPage Mobile Optimization', () => {
     expect(screen.getAllByRole('button', { name: /sign in/i }).length).toBeGreaterThanOrEqual(1);
   });
 });
-

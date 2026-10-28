@@ -32,4 +32,3 @@ describe('SubscriptionsPage Mobile Optimization Tests', () => {
     expect(screen.getByText('+ Card')).toBeInTheDocument();
   });
 });
-

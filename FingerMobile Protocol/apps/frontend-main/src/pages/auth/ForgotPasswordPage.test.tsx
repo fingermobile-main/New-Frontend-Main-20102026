@@ -26,4 +26,3 @@ describe('ForgotPasswordPage Mobile Optimization', () => {
     expect(screen.getByRole('button', { name: /^login$/i })).toBeInTheDocument();
   });
 });
-

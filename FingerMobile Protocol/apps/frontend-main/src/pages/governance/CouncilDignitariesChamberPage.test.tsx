@@ -88,4 +88,3 @@ describe('CouncilDignitariesChamberPage Mobile & Responsive Suite', () => {
     expect(screen.getByText(/Ballot Cast/i)).toBeInTheDocument();
   });
 });
-

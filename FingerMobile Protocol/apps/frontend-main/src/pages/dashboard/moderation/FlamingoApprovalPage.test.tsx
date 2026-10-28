@@ -61,4 +61,3 @@ describe('FlamingoApprovalPage Mobile Optimization & Behavior', () => {
     });
   });
 });
-

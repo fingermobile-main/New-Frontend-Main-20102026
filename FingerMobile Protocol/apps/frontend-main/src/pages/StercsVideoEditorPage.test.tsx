@@ -70,4 +70,3 @@ describe('StercsVideoEditorPage Mobile Optimization Tests', () => {
     fireEvent.click(introClip);
   });
 });
-

@@ -59,4 +59,3 @@ describe('CommercePage Mobile Optimization & Behavior', () => {
     });
   });
 });
-

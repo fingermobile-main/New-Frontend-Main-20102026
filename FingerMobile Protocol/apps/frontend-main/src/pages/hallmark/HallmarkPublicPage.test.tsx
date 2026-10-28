@@ -55,4 +55,3 @@ describe('HallmarkPublicPage', () => {
     expect(screen.getByRole('button', { name: /^hub$/i })).toBeInTheDocument();
   });
 });
-

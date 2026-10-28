@@ -157,22 +157,22 @@ const CacheManagementPage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto px-4 py-8 pb-28 md:pb-12 w-full max-w-full overflow-x-hidden text-slate-900">
         {/* Header */}
         <div className="mb-8">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center">
-              <div className="bg-gradient-to-r from-teal-600 to-cyan-600 p-3 rounded-xl">
+              <div className="bg-gradient-to-r from-teal-600 to-cyan-600 p-3 rounded-xl shrink-0">
                 <CircleStackIcon className="h-8 w-8 text-white" />
               </div>
               <div className="ml-4">
-                <h1 className="text-3xl font-bold text-gray-900">Cache Management</h1>
-                <p className="text-gray-600">Monitor and manage Redis cache performance</p>
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Cache Management</h1>
+                <p className="text-gray-600 text-sm">Monitor and manage Redis cache performance</p>
               </div>
             </div>
             <button
               onClick={() => { fetchCacheStats(); fetchCacheKeys(); }}
-              className="flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+              className="flex items-center justify-center px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors min-w-[44px] min-h-[44px]"
             >
               <ArrowPathIcon className="h-5 w-5 mr-2" />
               Refresh
@@ -436,6 +436,48 @@ const CacheManagementPage: React.FC = () => {
         <div className="mt-8">
           <PlatformOwnershipCard />
         </div>
+      </div>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 flex items-center justify-around shadow-lg">
+        <button
+          type="button"
+          onClick={() => setActiveTab('overview')}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-1 ${
+            activeTab === 'overview' ? 'text-teal-600 font-bold' : 'text-slate-700 hover:text-slate-900'
+          }`}
+        >
+          <CircleStackIcon className="w-5 h-5" />
+          <span className="text-[10px] tracking-tight">Overview</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab('keys')}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-1 ${
+            activeTab === 'keys' ? 'text-teal-600 font-bold' : 'text-slate-700 hover:text-slate-900'
+          }`}
+        >
+          <ClockIcon className="w-5 h-5 text-indigo-600" />
+          <span className="text-[10px] tracking-tight">Keys</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab('analytics')}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-1 ${
+            activeTab === 'analytics' ? 'text-teal-600 font-bold' : 'text-slate-700 hover:text-slate-900'
+          }`}
+        >
+          <ChartBarIcon className="w-5 h-5 text-purple-600" />
+          <span className="text-[10px] tracking-tight">Analytics</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => { fetchCacheStats(); fetchCacheKeys(); }}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-1 text-slate-700 hover:text-slate-900"
+        >
+          <ArrowPathIcon className="w-5 h-5 text-teal-600" />
+          <span className="text-[10px] tracking-tight">Refresh</span>
+        </button>
       </div>
     </MainLayout>
   );

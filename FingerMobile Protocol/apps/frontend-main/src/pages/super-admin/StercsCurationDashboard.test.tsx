@@ -34,4 +34,3 @@ describe('StercsCurationDashboard Mobile Optimization', () => {
     expect(screen.getAllByRole('button', { name: /ads/i }).length).toBeGreaterThanOrEqual(1);
   });
 });
-

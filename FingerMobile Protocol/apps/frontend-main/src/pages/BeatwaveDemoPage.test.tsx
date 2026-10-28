@@ -50,4 +50,3 @@ describe('BeatwaveDemoPage Mobile Optimization', () => {
     expect(screen.getByLabelText('Back to Forum')).toBeInTheDocument();
   });
 });
-

@@ -44,4 +44,3 @@ describe('TrendsSwarmMasterConsolePage Mobile Optimization', () => {
     expect(screen.getByLabelText('Admin Hub')).toBeInTheDocument();
   });
 });
-

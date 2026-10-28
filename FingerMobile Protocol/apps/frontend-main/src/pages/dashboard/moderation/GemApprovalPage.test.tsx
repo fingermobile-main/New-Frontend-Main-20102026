@@ -59,4 +59,3 @@ describe('GemApprovalPage', () => {
     expect(screen.getAllByRole('button', { name: /^gems hub$/i }).length).toBeGreaterThanOrEqual(1);
   });
 });
-

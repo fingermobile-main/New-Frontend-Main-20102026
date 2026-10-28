@@ -51,4 +51,3 @@ describe('WalletAndPayPage Mobile Optimization', () => {
     expect(screen.getByLabelText('Pay Links')).toBeInTheDocument();
   });
 });
-

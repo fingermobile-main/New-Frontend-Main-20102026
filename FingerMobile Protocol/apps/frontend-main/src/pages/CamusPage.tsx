@@ -542,7 +542,7 @@ export const CamusPage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="min-h-screen bg-slate-50 text-slate-900 pb-24">
+      <div className="min-h-screen bg-slate-50 text-slate-900 pb-28 md:pb-12 w-full max-w-full overflow-x-hidden">
         
         {/* ========================================================================= */}
         {/* SLEEK, CLEAN MODERN HERO: CORPORATE TRAINING & STUDENT MASTERY ENGINE    */}
@@ -2387,6 +2387,48 @@ export const CamusPage: React.FC = () => {
           </div>
         )}
 
+      </div>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 flex items-center justify-around shadow-lg">
+        <button
+          type="button"
+          onClick={() => setActiveSection('courses')}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-1 ${
+            activeSection === 'courses' ? 'text-blue-700 font-bold' : 'text-slate-700 hover:text-slate-900'
+          }`}
+        >
+          <BookOpen className="w-5 h-5" />
+          <span className="text-[10px] tracking-tight">Courses</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveSection('tracks')}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-1 ${
+            activeSection === 'tracks' ? 'text-blue-700 font-bold' : 'text-slate-700 hover:text-slate-900'
+          }`}
+        >
+          <Target className="w-5 h-5 text-indigo-600" />
+          <span className="text-[10px] tracking-tight">Tracks</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveSection('resources')}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-1 ${
+            activeSection === 'resources' ? 'text-blue-700 font-bold' : 'text-slate-700 hover:text-slate-900'
+          }`}
+        >
+          <BookMarked className="w-5 h-5 text-purple-600" />
+          <span className="text-[10px] tracking-tight">Library</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => navigate('/camusdashboard')}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-1 text-slate-700 hover:text-slate-900"
+        >
+          <LayoutGrid className="w-5 h-5 text-emerald-600" />
+          <span className="text-[10px] tracking-tight">Dashboard</span>
+        </button>
       </div>
     </MainLayout>
   );

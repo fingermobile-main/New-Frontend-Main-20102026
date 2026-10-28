@@ -65,4 +65,3 @@ describe('SearchResultsPage Mobile Optimization', () => {
     });
   });
 });
-

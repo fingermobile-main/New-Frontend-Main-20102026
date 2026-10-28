@@ -39,4 +39,3 @@ describe('MonetizationPage Mobile Optimization Tests', () => {
     fireEvent.click(payoutBtn);
   });
 });
-

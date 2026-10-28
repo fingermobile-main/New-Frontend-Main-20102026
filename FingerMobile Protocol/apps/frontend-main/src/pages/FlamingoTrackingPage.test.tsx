@@ -55,4 +55,3 @@ describe('FlamingoTrackingPage Mobile Optimization & Behavior', () => {
     });
   });
 });
-

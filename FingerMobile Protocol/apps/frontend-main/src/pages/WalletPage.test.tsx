@@ -36,4 +36,3 @@ describe('WalletPage Mobile Optimization', () => {
     expect(screen.getByLabelText('Refresh Balances')).toBeInTheDocument();
   });
 });
-

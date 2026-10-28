@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import MainLayout from '../components/layout/MainLayout';
 import { cacheManagementService } from '../services/cacheManagementService';
 import { useAppContext } from '../contexts/AppContext';
+import { RefreshCw, Trash2, Database, Zap, Layers } from 'lucide-react';
 
 const CacheDemoPage: React.FC = () => {
   const { showToast } = useAppContext();
@@ -58,23 +59,23 @@ const CacheDemoPage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        <div className="flex justify-between items-center mb-8">
+      <div className="max-w-6xl mx-auto px-4 py-8 pb-28 md:pb-12 w-full max-w-full overflow-x-hidden text-slate-900">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
           <div>
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white">CDN & Protocol Cache Demo</h1>
             <p className="text-slate-700 dark:text-slate-300 font-medium mt-1">Live edge caching diagnostics and speed inspection</p>
           </div>
-          <div className="flex space-x-3">
+          <div className="flex flex-wrap items-center gap-3">
             <button
               onClick={loadStats}
               disabled={loading}
-              className="px-4 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg font-medium transition"
+              className="px-4 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg font-medium transition min-w-[44px] min-h-[44px] flex items-center justify-center"
             >
               Refresh Stats
             </button>
             <button
               onClick={handlePurge}
-              className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition shadow-sm"
+              className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition shadow-sm min-w-[44px] min-h-[44px] flex items-center justify-center"
             >
               Purge Global Cache
             </button>
@@ -130,7 +131,7 @@ const CacheDemoPage: React.FC = () => {
               </div>
               <button
                 onClick={handleSimulateSet}
-                className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-sm transition"
+                className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-sm transition min-h-[44px] flex items-center justify-center"
               >
                 Store in Edge Cache
               </button>
@@ -161,6 +162,34 @@ const CacheDemoPage: React.FC = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-300 dark:border-slate-800 px-4 py-2 flex items-center justify-around shadow-lg">
+        <button
+          type="button"
+          onClick={loadStats}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-1 text-slate-700 dark:text-slate-300 hover:text-slate-900"
+        >
+          <RefreshCw className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+          <span className="text-[10px] tracking-tight">Refresh</span>
+        </button>
+        <button
+          type="button"
+          onClick={handleSimulateSet}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-1 text-slate-700 dark:text-slate-300 hover:text-slate-900"
+        >
+          <Zap className="w-5 h-5 text-amber-500" />
+          <span className="text-[10px] tracking-tight">Store</span>
+        </button>
+        <button
+          type="button"
+          onClick={handlePurge}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-1 text-slate-700 dark:text-slate-300 hover:text-slate-900"
+        >
+          <Trash2 className="w-5 h-5 text-red-500" />
+          <span className="text-[10px] tracking-tight">Purge</span>
+        </button>
       </div>
     </MainLayout>
   );

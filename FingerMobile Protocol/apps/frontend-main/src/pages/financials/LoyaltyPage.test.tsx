@@ -89,4 +89,3 @@ describe('LoyaltyPage Mobile & Responsive Suite', () => {
     expect(screen.getAllByRole('button', { name: /redeem/i }).length).toBeGreaterThan(0);
   });
 });
-

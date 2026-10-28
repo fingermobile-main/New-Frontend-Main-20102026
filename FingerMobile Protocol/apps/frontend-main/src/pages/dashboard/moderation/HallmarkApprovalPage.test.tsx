@@ -59,4 +59,3 @@ describe('HallmarkApprovalPage', () => {
     expect(screen.getAllByRole('button', { name: /^hub$/i }).length).toBeGreaterThanOrEqual(1);
   });
 });
-

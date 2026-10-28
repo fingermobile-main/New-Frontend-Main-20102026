@@ -42,4 +42,3 @@ describe('AuditLogAdminPage Mobile Optimization', () => {
     expect(screen.getAllByRole('button', { name: /export/i }).length).toBeGreaterThanOrEqual(1);
   });
 });
-
