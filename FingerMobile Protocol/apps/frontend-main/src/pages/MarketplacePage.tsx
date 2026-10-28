@@ -302,67 +302,70 @@ const MarketplacePage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Flagship Store | FingerMobile Protocol™">
-      <div className="min-h-screen bg-slate-950 text-slate-100 relative pb-24">
+      <div className="w-full max-w-full overflow-x-hidden min-h-screen bg-slate-950 text-slate-100 relative pb-28 md:pb-16">
         {/* Ambient Emerald Glow Header Background */}
         <div className="absolute top-0 left-0 right-0 h-96 bg-gradient-to-b from-emerald-950/40 via-slate-900 to-slate-950 pointer-events-none -z-10" />
 
-        <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+        <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-3 sm:px-6 lg:px-8 pt-4 sm:pt-8">
           {/* Top Platform Governance & Stercs Status Banner */}
-          <div className="flex flex-wrap items-center justify-between gap-4 p-3.5 mb-8 rounded-2xl bg-slate-900/80 border border-emerald-500/20 backdrop-blur-md">
-            <div className="flex items-center gap-3">
-              <span className="flex h-3 w-3 relative">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 sm:p-3.5 mb-6 sm:mb-8 rounded-2xl bg-slate-900/80 border border-emerald-500/20 backdrop-blur-md">
+            <div className="flex items-center gap-2.5">
+              <span className="flex h-2.5 w-2.5 relative shrink-0">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
               </span>
-              <span className="text-xs font-semibold text-emerald-400 uppercase tracking-widest">
-                Platform Flagship Store • Company Sovereign Drops
+              <span className="text-[11px] sm:text-xs font-semibold text-emerald-400 uppercase tracking-wider truncate">
+                Platform Flagship Store • Sovereign Drops
               </span>
             </div>
-            <div className="flex items-center gap-4 text-xs text-slate-200 font-semibold">
-              <span className="hidden sm:inline-block">FIC Balance: <strong className="text-emerald-400 font-bold">{ficBalance.toLocaleString()} FIC</strong></span>
-              <span className="px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[11px] font-bold flex items-center gap-1">
+            <div className="flex items-center flex-wrap gap-2 text-xs text-slate-200 font-semibold">
+              <span className="text-[11px] sm:text-xs">FIC: <strong className="text-emerald-400 font-bold">{ficBalance.toLocaleString()} FIC</strong></span>
+              <span className="px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] sm:text-[11px] font-bold flex items-center gap-1 shrink-0">
                 <ShieldCheck className="w-3.5 h-3.5" /> STERCS Governed
               </span>
-              <span className="px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-300 border border-blue-500/30 text-[11px] font-bold hidden md:inline-flex items-center gap-1">
-                <Zap className="w-3.5 h-3.5" /> Multi-Rail Active
+              <span className="px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-300 border border-blue-500/30 text-[10px] sm:text-[11px] font-bold flex items-center gap-1 shrink-0">
+                <Zap className="w-3.5 h-3.5" /> Multi-Rail
               </span>
             </div>
           </div>
 
           {/* Majestic Hero Banner */}
-          <div className="relative rounded-3xl overflow-hidden p-8 sm:p-12 mb-10 border border-emerald-500/30 bg-gradient-to-r from-emerald-950/60 via-slate-900 to-slate-950 shadow-2xl">
+          <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden p-5 sm:p-8 md:p-12 mb-6 sm:mb-10 border border-emerald-500/30 bg-gradient-to-r from-emerald-950/60 via-slate-900 to-slate-950 shadow-2xl">
             <div className="max-w-3xl">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-bold uppercase tracking-wider mb-4">
-                <Sparkles className="w-4 h-4 text-emerald-400" /> Company Flagship Vault
+              <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-lg bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[11px] sm:text-xs font-bold uppercase tracking-wider mb-3 sm:mb-4">
+                <Sparkles className="w-3.5 h-3.5 text-emerald-400" /> Company Flagship Vault
               </div>
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-slate-900 border border-emerald-500/40 p-1.5 flex items-center justify-center shadow-lg shadow-emerald-500/20 overflow-hidden shrink-0">
+              <div className="flex items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-slate-900 border border-emerald-500/40 p-1.5 flex items-center justify-center shadow-lg shadow-emerald-500/20 overflow-hidden shrink-0">
                   <img src="/assets/logos/marketplace_icon.png" alt="Marketplace" className="w-full h-full object-contain" />
                 </div>
-                <h1 className="text-4xl sm:text-5xl font-black text-white tracking-tight leading-tight">
+                <h1 className="text-2xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight">
                   The Platform&apos;s <span className="bg-gradient-to-r from-emerald-400 to-teal-200 bg-clip-text text-transparent">Flagship Store</span>
                 </h1>
               </div>
-              <p className="text-base text-slate-100 leading-relaxed mb-6 font-medium">
+              <p className="text-xs sm:text-sm md:text-base text-slate-100 leading-relaxed mb-5 sm:mb-6 font-medium">
                 Where FingerMobile Protocol™ showcases its finest hardware innovations, sovereign keycards, official studio reference gear, and limited apparel. Authenticated with cryptographic SHA-256 provenance hashes.
               </p>
 
-              <div className="flex flex-wrap items-center gap-3">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3">
                 <button
+                  type="button"
                   onClick={() => setActiveTab('flagship-drops')}
-                  className="px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm transition-all shadow-lg shadow-emerald-500/25 flex items-center gap-2"
+                  className="min-h-[44px] px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs sm:text-sm transition-all shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2 active:scale-95"
                 >
                   <ShoppingBag className="w-4 h-4" /> Explore Flagship Drops
                 </button>
                 <button
+                  type="button"
                   onClick={() => setShowAiAssistant(true)}
-                  className="px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-emerald-500/30 font-semibold text-sm transition-all flex items-center gap-2"
+                  className="min-h-[44px] px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-emerald-500/30 font-semibold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 active:scale-95"
                 >
                   <Bot className="w-4 h-4 text-emerald-400" /> Ask Flagship AI Assistant
                 </button>
                 <button
+                  type="button"
                   onClick={() => setActiveTab('ledger')}
-                  className="px-5 py-3 rounded-xl bg-slate-900/60 hover:bg-slate-800 text-slate-200 hover:text-white border border-slate-700 text-sm font-semibold transition-all flex items-center gap-2"
+                  className="min-h-[44px] px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-slate-900/60 hover:bg-slate-800 text-slate-200 hover:text-white border border-slate-700 text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-2 active:scale-95"
                 >
                   <FileText className="w-4 h-4" /> Provenance Ledger
                 </button>
@@ -371,21 +374,22 @@ const MarketplacePage: React.FC = () => {
           </div>
 
           {/* Universal AI Search Engine Tool Bar */}
-          <div className="p-5 rounded-2xl bg-slate-900/90 border border-slate-800 backdrop-blur-md mb-8 shadow-xl">
-            <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
+          <div className="p-3.5 sm:p-5 rounded-2xl bg-slate-900/90 border border-slate-800 backdrop-blur-md mb-6 sm:mb-8 shadow-xl">
+            <div className="flex flex-col md:flex-row gap-3 sm:gap-4 items-stretch md:items-center justify-between">
               {/* Search input with AI chip */}
               <div className="relative w-full md:w-1/2">
-                <Search className="absolute left-4 top-3.5 w-5 h-5 text-slate-300" />
+                <Search className="absolute left-3.5 top-3.5 w-4 h-4 sm:w-5 sm:h-5 text-slate-300" />
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search Flagship hardware, SKU, specs, or ask AI..."
-                  className="w-full pl-12 pr-28 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-emerald-500 transition-colors"
+                  placeholder="Search Flagship hardware, SKU, specs..."
+                  className="w-full min-h-[44px] pl-10 sm:pl-12 pr-24 sm:pr-28 py-2.5 sm:py-3 bg-slate-950 border border-slate-800 rounded-xl text-xs sm:text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-emerald-500 transition-colors"
                 />
                 <button
+                  type="button"
                   onClick={() => setAiSearchAssistActive(!aiSearchAssistActive)}
-                  className={`absolute right-2 top-2 px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 transition-all ${
+                  className={`absolute right-1.5 top-1.5 min-h-[36px] px-2.5 sm:px-3 py-1 rounded-lg text-[11px] sm:text-xs font-bold flex items-center gap-1 transition-all ${
                     aiSearchAssistActive
                       ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/30'
                       : 'bg-slate-800 text-emerald-400 hover:bg-slate-700'
@@ -396,13 +400,13 @@ const MarketplacePage: React.FC = () => {
               </div>
 
               {/* Filters & Sorting */}
-              <div className="flex flex-wrap items-center gap-3 w-full md:w-auto justify-end">
-                <div className="flex items-center gap-2 bg-slate-950 px-3 py-2 rounded-xl border border-slate-800">
-                  <Filter className="w-4 h-4 text-slate-300" />
+              <div className="flex items-center gap-2 w-full md:w-auto justify-between md:justify-end">
+                <div className="flex-1 sm:flex-initial flex items-center gap-2 bg-slate-950 px-3 py-2 rounded-xl border border-slate-800 min-h-[44px]">
+                  <Filter className="w-4 h-4 text-slate-300 shrink-0" />
                   <select
                     value={sortBy}
                     onChange={(e: any) => setSortBy(e.target.value)}
-                    className="bg-transparent text-xs text-slate-100 font-semibold focus:outline-none cursor-pointer"
+                    className="w-full bg-transparent text-xs text-slate-100 font-semibold focus:outline-none cursor-pointer"
                   >
                     <option value="newest" className="bg-slate-900">Newest Drops</option>
                     <option value="price_asc" className="bg-slate-900">Price: Low to High</option>
@@ -414,16 +418,17 @@ const MarketplacePage: React.FC = () => {
               </div>
             </div>
 
-            {/* AI Search Suggestion Chips */}
-            <div className="mt-3 pt-3 border-t border-slate-800/80 flex flex-wrap items-center gap-2">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1">
+            {/* AI Search Suggestion Chips - Horizontal Scroller */}
+            <div className="mt-3 pt-3 border-t border-slate-800/80 flex items-center gap-2 overflow-x-auto scrollbar-none pb-1">
+              <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1 shrink-0">
                 <Bot className="w-3 h-3 text-emerald-400" /> AI Suggestions:
               </span>
               {['Sovereign Keycard V3', 'Comm-Badge', 'Graphene Parka', 'Reference Monitors', 'EAL6+ Security', 'Beatwave Audio'].map((chip) => (
                 <button
                   key={chip}
+                  type="button"
                   onClick={() => setSearchQuery(chip)}
-                  className="px-2.5 py-1 rounded-md text-xs bg-slate-800/80 hover:bg-emerald-500/20 text-slate-200 hover:text-emerald-300 border border-slate-700 hover:border-emerald-500/40 font-medium transition-colors"
+                  className="min-h-[34px] px-2.5 py-1 rounded-lg text-xs bg-slate-800/80 hover:bg-emerald-500/20 text-slate-200 hover:text-emerald-300 border border-slate-700 hover:border-emerald-500/40 font-medium transition-colors shrink-0 whitespace-nowrap active:scale-95"
                 >
                   {chip}
                 </button>
@@ -432,7 +437,7 @@ const MarketplacePage: React.FC = () => {
           </div>
 
           {/* Independent Navigation Tabs */}
-          <div className="flex items-center gap-2 border-b border-slate-800 mb-8 overflow-x-auto pb-2 scrollbar-none">
+          <div className="flex items-center gap-2 border-b border-slate-800 mb-6 sm:mb-8 overflow-x-auto pb-2 scrollbar-none">
             {[
               { id: 'flagship-drops', label: 'All Flagship Drops', icon: Sparkles },
               { id: 'hardware', label: 'Hardware & Security', icon: Cpu },
@@ -446,14 +451,15 @@ const MarketplacePage: React.FC = () => {
               return (
                 <button
                   key={tab.id}
+                  type="button"
                   onClick={() => setActiveTab(tab.id as any)}
-                  className={`px-4 py-2.5 rounded-xl font-bold text-sm whitespace-nowrap transition-all flex items-center gap-2 ${
+                  className={`min-h-[44px] px-3.5 sm:px-4 py-2 rounded-xl font-bold text-xs sm:text-sm whitespace-nowrap transition-all flex items-center gap-2 shrink-0 active:scale-95 ${
                     isActive
                       ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/40 shadow-sm'
                       : 'text-slate-200 hover:text-white hover:bg-slate-900 border border-transparent'
                   }`}
                 >
-                  <Icon className="w-4 h-4" />
+                  <Icon className="w-4 h-4 shrink-0" />
                   <span>{tab.label}</span>
                   {tab.count !== undefined && (
                     <span className="px-2 py-0.5 rounded-full text-[10px] bg-slate-800 text-slate-200 font-mono font-bold">
@@ -469,43 +475,44 @@ const MarketplacePage: React.FC = () => {
           {activeTab === 'ledger' ? (
             /* PROTOCOL AUTHENTICITY LEDGER VIEW */
             <div className="space-y-6">
-              <div className="p-6 rounded-3xl bg-slate-900/80 border border-slate-800">
+              <div className="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-slate-900/80 border border-slate-800">
                 <div className="flex items-center gap-3 mb-2">
-                  <ShieldCheck className="w-6 h-6 text-emerald-400" />
-                  <h2 className="text-xl font-bold text-white">FingerMobile Protocol™ Authenticity Ledger</h2>
+                  <ShieldCheck className="w-6 h-6 text-emerald-400 shrink-0" />
+                  <h2 className="text-lg sm:text-xl font-bold text-white">FingerMobile Protocol™ Authenticity Ledger</h2>
                 </div>
-                <p className="text-sm text-slate-200 font-medium mb-6">
+                <p className="text-xs sm:text-sm text-slate-200 font-medium mb-6">
                   Every product listed in the Flagship Store possesses a cryptographically verified SHA-256 genesis hash minted by the platform authorities. Verify provenance, hardware batch, and warranty legitimacy below.
                 </p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {products.map((p) => (
-                    <div key={p.id} className="p-5 rounded-2xl bg-slate-950 border border-slate-800 hover:border-emerald-500/40 transition-colors">
+                    <div key={p.id} className="p-4 sm:p-5 rounded-2xl bg-slate-950 border border-slate-800 hover:border-emerald-500/40 transition-colors">
                       <div className="flex items-start justify-between gap-3 mb-3">
                         <div>
                           <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-bold">
                             {p.sku}
                           </span>
-                          <h3 className="text-base font-bold text-white mt-1">{p.name}</h3>
+                          <h3 className="text-sm sm:text-base font-bold text-white mt-1">{p.name}</h3>
                         </div>
-                        <span className="text-xs font-bold text-emerald-400">{p.priceFic.toLocaleString()} FIC</span>
+                        <span className="text-xs font-bold text-emerald-400 shrink-0">{p.priceFic.toLocaleString()} FIC</span>
                       </div>
-                      <div className="p-3 rounded-xl bg-slate-900/90 font-mono text-[11px] text-slate-200 break-all mb-3 border border-slate-800 flex items-center justify-between gap-2">
-                        <span>{p.authenticity_ledger_hash || '0x4f89acbe1209348123acde5678901234abcd5678'}</span>
+                      <div className="p-2.5 sm:p-3 rounded-xl bg-slate-900/90 font-mono text-[10px] sm:text-[11px] text-slate-200 break-all mb-3 border border-slate-800 flex items-center justify-between gap-2">
+                        <span className="truncate">{p.authenticity_ledger_hash || '0x4f89acbe1209348123acde5678901234abcd5678'}</span>
                         <button
+                          type="button"
                           onClick={() => {
                             navigator.clipboard.writeText(p.authenticity_ledger_hash || '');
                             showToast('Copied ledger hash!', 'success');
                           }}
-                          className="p-1.5 hover:bg-slate-800 rounded text-slate-300 hover:text-emerald-400 shrink-0"
+                          className="min-h-[40px] min-w-[40px] flex items-center justify-center hover:bg-slate-800 rounded-lg text-slate-300 hover:text-emerald-400 shrink-0"
                           title="Copy Hash"
                         >
-                          <Copy className="w-3.5 h-3.5" />
+                          <Copy className="w-4 h-4" />
                         </button>
                       </div>
                       <div className="flex items-center justify-between text-xs text-slate-300 font-medium">
-                        <span>Category: <strong className="text-slate-100">{p.category}</strong></span>
-                        <span className="text-emerald-400 flex items-center gap-1 font-bold">
+                        <span className="truncate">Category: <strong className="text-slate-100">{p.category}</strong></span>
+                        <span className="text-emerald-400 flex items-center gap-1 font-bold shrink-0">
                           <CheckCircle2 className="w-3.5 h-3.5" /> Verified Drop
                         </span>
                       </div>
@@ -517,21 +524,21 @@ const MarketplacePage: React.FC = () => {
           ) : activeTab === 'my-orders' ? (
             /* MY ORDERS VIEW */
             <div className="space-y-6">
-              <div className="p-6 rounded-3xl bg-slate-900/80 border border-slate-800">
-                <h2 className="text-xl font-bold text-white mb-2">My Flagship Orders & Settlements</h2>
-                <p className="text-sm text-slate-200 font-medium mb-6">
+              <div className="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-slate-900/80 border border-slate-800">
+                <h2 className="text-lg sm:text-xl font-bold text-white mb-2">My Flagship Orders & Settlements</h2>
+                <p className="text-xs sm:text-sm text-slate-200 font-medium mb-6">
                   Multi-rail order tracking settled via FIC tokens, creator wallet earnings, or cards with protocol escrow assurance.
                 </p>
 
                 {orders.length === 0 ? (
-                  <div className="text-center py-12 text-slate-700 text-sm font-medium">
+                  <div className="text-center py-12 text-slate-600 text-sm font-medium">
                     No flagship orders placed yet.
                   </div>
                 ) : (
                   <div className="space-y-3">
                     {orders.map((ord) => (
-                      <div key={ord.id} className="p-4 rounded-2xl bg-slate-950 border border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                        <div>
+                      <div key={ord.id} className="p-4 rounded-2xl bg-slate-950 border border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                        <div className="w-full sm:w-auto">
                           <div className="flex items-center gap-2 mb-1">
                             <span className="font-mono text-xs text-slate-200 font-bold">{ord.id}</span>
                             <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-blue-500/10 text-blue-400 border border-blue-500/20">
@@ -541,11 +548,12 @@ const MarketplacePage: React.FC = () => {
                           <h4 className="text-sm font-bold text-white">{ord.productName}</h4>
                           <span className="text-xs text-slate-300 font-medium">{ord.date} • Settled via {ord.paymentRail}</span>
                         </div>
-                        <div className="flex items-center gap-4">
-                          <span className="font-bold text-emerald-400 text-base">{ord.total.toLocaleString()} {ord.currency}</span>
+                        <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-4 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-800">
+                          <span className="font-bold text-emerald-400 text-sm sm:text-base">{ord.total.toLocaleString()} {ord.currency}</span>
                           <button
+                            type="button"
                             onClick={() => showToast(`Tracking dispatched for order ${ord.id}`, 'info')}
-                            className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold"
+                            className="min-h-[40px] px-3.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold flex items-center justify-center active:scale-95"
                           >
                             Track Package
                           </button>
@@ -562,7 +570,7 @@ const MarketplacePage: React.FC = () => {
               {error && (
                 <div className="mb-6 p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-200 text-xs flex items-center justify-between">
                   <span>{error}</span>
-                  <button type="button" onClick={() => setError(null)} className="text-amber-400 font-bold ml-3 hover:underline">Dismiss</button>
+                  <button type="button" onClick={() => setError(null)} className="min-h-[40px] px-2 text-amber-400 font-bold ml-3 hover:underline">Dismiss</button>
                 </div>
               )}
               {loading ? (
@@ -571,19 +579,20 @@ const MarketplacePage: React.FC = () => {
                   <p className="text-sm text-slate-200 font-semibold">Loading Flagship Store drops...</p>
                 </div>
               ) : filteredProducts.length === 0 ? (
-                <div className="p-12 text-center rounded-3xl bg-slate-900/60 border border-slate-800 text-slate-200">
+                <div className="p-8 sm:p-12 text-center rounded-3xl bg-slate-900/60 border border-slate-800 text-slate-200">
                   <ShoppingBag className="w-12 h-12 text-slate-600 mx-auto mb-3" />
                   <p className="text-base font-bold text-white mb-1">No Flagship Goods Match Query</p>
                   <p className="text-xs text-slate-300 mb-4">Try clearing filters or search terms.</p>
                   <button
+                    type="button"
                     onClick={() => { setSearchQuery(''); setSelectedCategory('all'); }}
-                    className="px-4 py-2 rounded-xl bg-slate-800 text-emerald-400 text-xs font-bold"
+                    className="min-h-[44px] px-4 py-2 rounded-xl bg-slate-800 text-emerald-400 text-xs font-bold"
                   >
                     Reset Filters
                   </button>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-8">
                   {filteredProducts.map((product) => {
                     const firstImage = product.imageUrl || (product.images && product.images[0]) || 'https://images.unsplash.com/photo-1563770660941-20978e870e26?auto=format&fit=crop&w=1200&q=80';
                     const poll = product.poll_data;
@@ -592,35 +601,35 @@ const MarketplacePage: React.FC = () => {
                     return (
                       <div
                         key={product.id}
-                        className="rounded-3xl bg-slate-900/90 border border-slate-800 hover:border-emerald-500/40 transition-all overflow-hidden flex flex-col shadow-xl group"
+                        className="rounded-2xl sm:rounded-3xl bg-slate-900/90 border border-slate-800 hover:border-emerald-500/40 transition-all overflow-hidden flex flex-col shadow-xl group"
                       >
                         {/* Image Showcase */}
-                        <div className="relative h-72 w-full overflow-hidden bg-slate-950">
+                        <div className="relative h-56 sm:h-72 w-full overflow-hidden bg-slate-950">
                           <img
                             src={firstImage}
                             alt={product.name}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                           />
-                          <div className="absolute top-4 left-4 flex flex-wrap gap-2">
-                            <span className="px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-emerald-500 text-slate-950 shadow-md">
+                          <div className="absolute top-3 left-3 sm:top-4 sm:left-4 flex flex-wrap gap-2">
+                            <span className="px-2.5 sm:px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-black uppercase tracking-wider bg-emerald-500 text-slate-950 shadow-md">
                               Company Flagship
                             </span>
-                            <span className="px-2.5 py-1 rounded-full text-[11px] font-bold bg-slate-900/80 backdrop-blur-md text-slate-200 border border-slate-700 font-mono">
+                            <span className="px-2 sm:px-2.5 py-1 rounded-full text-[10px] sm:text-[11px] font-bold bg-slate-900/80 backdrop-blur-md text-slate-200 border border-slate-700 font-mono">
                               {product.sku}
                             </span>
                           </div>
-                          <div className="absolute top-4 right-4">
-                            <span className="px-3 py-1 rounded-full text-xs font-bold bg-slate-950/80 text-emerald-400 border border-emerald-500/30 backdrop-blur-md">
+                          <div className="absolute top-3 right-3 sm:top-4 sm:right-4">
+                            <span className="px-2.5 sm:px-3 py-1 rounded-full text-[11px] sm:text-xs font-bold bg-slate-950/80 text-emerald-400 border border-emerald-500/30 backdrop-blur-md">
                               {product.category}
                             </span>
                           </div>
                         </div>
 
                         {/* Card Body */}
-                        <div className="p-6 flex-1 flex flex-col justify-between space-y-5">
+                        <div className="p-4 sm:p-6 flex-1 flex flex-col justify-between space-y-4 sm:space-y-5">
                           <div>
-                            <div className="flex items-center justify-between gap-2 mb-1.5">
-                              <h3 className="text-xl font-black text-white tracking-tight">{product.name}</h3>
+                            <div className="flex items-center justify-between gap-2 mb-1">
+                              <h3 className="text-lg sm:text-xl font-black text-white tracking-tight">{product.name}</h3>
                             </div>
                             {product.tagline && (
                               <p className="text-xs font-semibold text-emerald-400 mb-2">{product.tagline}</p>
@@ -648,7 +657,7 @@ const MarketplacePage: React.FC = () => {
 
                             {/* Interactive Community Poll */}
                             {poll && (
-                              <div className="p-4 rounded-2xl bg-emerald-950/20 border border-emerald-500/20 mb-4">
+                              <div className="p-3.5 sm:p-4 rounded-2xl bg-emerald-950/20 border border-emerald-500/20 mb-4">
                                 <div className="flex items-center justify-between mb-2">
                                   <span className="text-xs font-bold text-emerald-300 flex items-center gap-1.5">
                                     <BarChart2 className="w-3.5 h-3.5 text-emerald-400" /> Community Flagship Poll
@@ -663,9 +672,10 @@ const MarketplacePage: React.FC = () => {
                                     return (
                                       <button
                                         key={opt.id}
+                                        type="button"
                                         onClick={() => handleVotePoll(product.id, opt.id)}
                                         disabled={product.hasVoted}
-                                        className="w-full text-left relative overflow-hidden rounded-xl bg-slate-900 border border-slate-800 hover:border-emerald-500/40 p-2.5 text-xs transition-all disabled:cursor-default"
+                                        className="w-full text-left relative overflow-hidden rounded-xl bg-slate-900 border border-slate-800 hover:border-emerald-500/40 p-2.5 min-h-[44px] text-xs transition-all disabled:cursor-default"
                                       >
                                         <div
                                           className="absolute top-0 bottom-0 left-0 bg-emerald-500/15 transition-all duration-500"
@@ -685,11 +695,11 @@ const MarketplacePage: React.FC = () => {
 
                           {/* Price & Checkout Footer */}
                           <div className="pt-4 border-t border-slate-800">
-                            <div className="flex items-center justify-between mb-4">
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
                               <div>
                                 <span className="text-[10px] uppercase font-bold text-slate-300 block">Settlement Price</span>
                                 <div className="flex items-baseline gap-2">
-                                  <span className="text-2xl font-black text-emerald-400">
+                                  <span className="text-xl sm:text-2xl font-black text-emerald-400">
                                     {product.priceFic.toLocaleString()} FIC
                                   </span>
                                   <span className="text-xs text-slate-200 font-bold">
@@ -701,42 +711,46 @@ const MarketplacePage: React.FC = () => {
                               {/* Likes & Dislikes */}
                               <div className="flex items-center gap-2">
                                 <button
+                                  type="button"
                                   onClick={() => handleReaction(product.id, 'like')}
-                                  className={`p-2 rounded-xl border flex items-center gap-1 text-xs transition-colors ${
+                                  className={`min-h-[44px] min-w-[44px] px-3 rounded-xl border flex items-center justify-center gap-1.5 text-xs transition-colors active:scale-95 ${
                                     product.userReaction === 'like'
                                       ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
                                       : 'bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700 font-medium'
                                   }`}
                                   title="Like"
                                 >
-                                  <ThumbsUp className="w-3.5 h-3.5" />
-                                  <span className="font-mono text-[11px] font-bold">{product.likes}</span>
+                                  <ThumbsUp className="w-4 h-4" />
+                                  <span className="font-mono text-xs font-bold">{product.likes}</span>
                                 </button>
                                 <button
+                                  type="button"
                                   onClick={() => handleReaction(product.id, 'dislike')}
-                                  className={`p-2 rounded-xl border flex items-center gap-1 text-xs transition-colors ${
+                                  className={`min-h-[44px] min-w-[44px] px-3 rounded-xl border flex items-center justify-center gap-1.5 text-xs transition-colors active:scale-95 ${
                                     product.userReaction === 'dislike'
                                       ? 'bg-rose-500/20 text-rose-300 border-rose-500/40'
                                       : 'bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700 font-medium'
                                   }`}
                                   title="Dislike"
                                 >
-                                  <ThumbsDown className="w-3.5 h-3.5" />
-                                  <span className="font-mono text-[11px] font-bold">{product.dislikes}</span>
+                                  <ThumbsDown className="w-4 h-4" />
+                                  <span className="font-mono text-xs font-bold">{product.dislikes}</span>
                                 </button>
                                 <button
+                                  type="button"
                                   onClick={() => setEmbedProduct(product)}
-                                  className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs"
+                                  className="min-h-[44px] min-w-[44px] px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs flex items-center justify-center active:scale-95"
                                   title="Share & Embed"
                                 >
-                                  <ExternalLink className="w-3.5 h-3.5" />
+                                  <ExternalLink className="w-4 h-4" />
                                 </button>
                               </div>
                             </div>
 
                             <button
+                              type="button"
                               onClick={() => setCheckoutProduct(product)}
-                              className="w-full py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-sm tracking-wide transition-all shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2"
+                              className="w-full min-h-[48px] py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs sm:text-sm tracking-wide transition-all shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2 active:scale-98"
                             >
                               <ShoppingBag className="w-4 h-4" /> Multi-Rail Sovereign Checkout
                             </button>
@@ -753,18 +767,19 @@ const MarketplacePage: React.FC = () => {
 
         {/* CHECKOUT MODAL */}
         {checkoutProduct && (
-          <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 animate-fade-in">
-            <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-6">
+          <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4 animate-fade-in">
+            <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-5 sm:p-8 shadow-2xl space-y-5 sm:space-y-6 max-h-[92vh] overflow-y-auto">
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <span className="px-2.5 py-1 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-mono uppercase font-bold">
                     {checkoutProduct.sku}
                   </span>
-                  <h3 className="text-xl font-bold text-white mt-1.5">{checkoutProduct.name}</h3>
+                  <h3 className="text-lg sm:text-xl font-bold text-white mt-1.5">{checkoutProduct.name}</h3>
                 </div>
                 <button
+                  type="button"
                   onClick={() => setCheckoutProduct(null)}
-                  className="p-1.5 text-slate-300 hover:text-white rounded-lg hover:bg-slate-800"
+                  className="min-h-[44px] min-w-[44px] flex items-center justify-center text-slate-300 hover:text-white rounded-lg hover:bg-slate-800"
                 >
                   ✕
                 </button>
@@ -783,15 +798,16 @@ const MarketplacePage: React.FC = () => {
                   ].map((rail) => (
                     <button
                       key={rail.id}
+                      type="button"
                       onClick={() => setSelectedPaymentRail(rail.id as any)}
-                      className={`p-3 rounded-2xl border text-left transition-all ${
+                      className={`min-h-[52px] p-2.5 sm:p-3 rounded-2xl border text-left transition-all active:scale-95 ${
                         selectedPaymentRail === rail.id
                           ? 'bg-emerald-500/15 border-emerald-500 text-white'
                           : 'bg-slate-950 border-slate-800 text-slate-200 hover:border-slate-700'
                       }`}
                     >
                       <span className="block text-xs font-bold text-white">{rail.label}</span>
-                      <span className="block text-[10px] text-emerald-400 font-mono font-bold mt-0.5">{rail.sub}</span>
+                      <span className="block text-[10px] text-emerald-400 font-mono font-bold mt-0.5 truncate">{rail.sub}</span>
                     </button>
                   ))}
                 </div>
@@ -815,15 +831,17 @@ const MarketplacePage: React.FC = () => {
 
               <div className="flex items-center gap-3">
                 <button
+                  type="button"
                   onClick={() => setCheckoutProduct(null)}
-                  className="flex-1 py-3 rounded-xl bg-slate-800 text-slate-200 text-sm font-bold hover:bg-slate-700"
+                  className="flex-1 min-h-[48px] py-3 rounded-xl bg-slate-800 text-slate-200 text-xs sm:text-sm font-bold hover:bg-slate-700 active:scale-98"
                 >
                   Cancel
                 </button>
                 <button
+                  type="button"
                   onClick={handlePurchase}
                   disabled={isProcessingOrder}
-                  className="flex-1 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm transition-all shadow-lg shadow-emerald-500/25 disabled:opacity-50"
+                  className="flex-1 min-h-[48px] py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs sm:text-sm transition-all shadow-lg shadow-emerald-500/25 disabled:opacity-50 active:scale-98"
                 >
                   {isProcessingOrder ? 'Confirming...' : 'Place Sovereign Order'}
                 </button>
@@ -834,15 +852,16 @@ const MarketplacePage: React.FC = () => {
 
         {/* AI SHOPPING ASSISTANT DRAWER */}
         {showAiAssistant && (
-          <div className="fixed inset-y-0 right-0 w-full sm:w-96 bg-slate-900 border-l border-slate-800 z-50 p-6 flex flex-col shadow-2xl">
-            <div className="flex items-center justify-between pb-4 border-b border-slate-800">
+          <div className="fixed inset-y-0 right-0 w-full sm:w-96 bg-slate-900 border-l border-slate-800 z-50 p-4 sm:p-6 flex flex-col shadow-2xl">
+            <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-slate-800">
               <div className="flex items-center gap-2">
                 <Bot className="w-5 h-5 text-emerald-400" />
                 <h3 className="font-bold text-white text-base">Flagship AI Assistant</h3>
               </div>
               <button
+                type="button"
                 onClick={() => setShowAiAssistant(false)}
-                className="text-slate-200 hover:text-white"
+                className="min-h-[44px] min-w-[44px] flex items-center justify-center text-slate-200 hover:text-white"
               >
                 ✕
               </button>
@@ -869,8 +888,9 @@ const MarketplacePage: React.FC = () => {
               {['Explain Keycard V3', 'How monitors sync', 'FIC vs card rail'].map((prompt) => (
                 <button
                   key={prompt}
+                  type="button"
                   onClick={() => handleSendAiQuery(prompt)}
-                  className="px-2.5 py-1 rounded-md text-[10px] bg-slate-800 text-slate-200 font-semibold hover:bg-emerald-500/20 hover:text-emerald-300"
+                  className="min-h-[36px] px-2.5 py-1 rounded-md text-[10px] bg-slate-800 text-slate-200 font-semibold hover:bg-emerald-500/20 hover:text-emerald-300 shrink-0"
                 >
                   {prompt}
                 </button>
@@ -885,11 +905,13 @@ const MarketplacePage: React.FC = () => {
                 onChange={(e) => setAiQuery(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSendAiQuery()}
                 placeholder="Ask about specs, orders, or tokens..."
-                className="flex-1 px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-emerald-500"
+                className="flex-1 min-h-[44px] px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-emerald-500"
               />
-              <button type="button" aria-label="Send"
+              <button
+                type="button"
+                aria-label="Send"
                 onClick={() => handleSendAiQuery()}
-                className="p-2.5 rounded-xl bg-emerald-500 text-slate-950 font-bold hover:bg-emerald-400"
+                className="min-h-[44px] min-w-[44px] p-2.5 rounded-xl bg-emerald-500 text-slate-950 font-bold hover:bg-emerald-400 flex items-center justify-center shrink-0 active:scale-95"
               >
                 <Send className="w-4 h-4" />
               </button>
@@ -912,6 +934,39 @@ const MarketplacePage: React.FC = () => {
             }}
           />
         )}
+
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <div className="fixed bottom-3 inset-x-3 z-40 md:hidden bg-slate-900/95 backdrop-blur-xl border border-emerald-500/30 rounded-2xl p-1.5 shadow-2xl shadow-black/80 grid grid-cols-4 gap-1">
+          {[
+            { id: 'flagship-drops', label: 'Drops', icon: Sparkles },
+            { id: 'hardware', label: 'Hardware', icon: Cpu },
+            { id: 'ledger', label: 'Ledger', icon: ShieldCheck },
+            { id: 'my-orders', label: 'Orders', icon: CreditCard, count: orders.length }
+          ].map((item) => {
+            const Icon = item.icon;
+            const isActive = activeTab === item.id;
+            return (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => setActiveTab(item.id as any)}
+                className={`min-h-[48px] py-1.5 px-1 rounded-xl flex flex-col items-center justify-center gap-0.5 transition-all relative ${
+                  isActive
+                    ? 'bg-emerald-500/20 text-emerald-300 font-bold'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                <Icon className={`w-4 h-4 ${isActive ? 'text-emerald-400' : 'text-slate-400'}`} />
+                <span className="text-[10px] font-semibold tracking-tight">{item.label}</span>
+                {item.count !== undefined && item.count > 0 && (
+                  <span className="absolute top-1 right-2.5 px-1 py-0.2 rounded-full text-[9px] bg-emerald-500 text-slate-950 font-bold">
+                    {item.count}
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
       </div>
     </MainLayout>
   );

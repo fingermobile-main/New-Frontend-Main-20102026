@@ -293,3 +293,4 @@ bash
 
 Now proceed!!!
 
+on mobile, before you continuet o screen 4 and then screen 5., one of the footer Icons (the last one "hallmarks) in http://localhost:3000/forum is out of the veiwwport

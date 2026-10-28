@@ -1935,7 +1935,7 @@ export const ForumPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] dark:bg-slate-950 text-slate-800 dark:text-slate-100 font-sans pb-16">
+    <div className="min-h-screen w-full max-w-full overflow-x-hidden bg-[#F8FAFC] dark:bg-slate-950 text-slate-800 dark:text-slate-100 font-sans pb-20">
       {/* Hidden File Inputs for Direct Device Attachments */}
       <input
         ref={mediaFileInputRef}
@@ -1970,11 +1970,11 @@ export const ForumPage: React.FC = () => {
       {/* TOP NAVIGATION & LEVEL 2 NAVBAR */}
       <header className="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-xs">
         {/* Header Container - Adaptive Left clearance pl-14 sm:pl-56 when Sovereign Burger Trigger is active */}
-        <div className={`max-w-[1536px] 2xl:max-w-[1680px] mx-auto ${isOnboarded ? 'pl-14 sm:pl-56' : 'pl-3 sm:pl-6'} pr-3 sm:px-6 lg:px-8`}>
+        <div className={`max-w-[1536px] 2xl:max-w-[1680px] mx-auto w-full ${isOnboarded ? 'pl-14 sm:pl-56' : 'pl-2 sm:pl-6'} pr-2 sm:px-6 lg:px-8`}>
           {/* Row 1 (H1 Header Row): Facebook-Style Clean Header */}
-          <div className="flex items-center justify-between h-14 sm:h-16 gap-2">
+          <div className="flex items-center justify-between h-14 sm:h-16 gap-1 sm:gap-2 min-w-0 max-w-full">
             {/* Left Section: 1. Logo, 2. Brand Wordmark */}
-            <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+            <div className="flex items-center gap-1.5 sm:gap-4 shrink min-w-0">
               {/* 1. Logo (Click to View / Enlarge & Download in HD formats) */}
               <button
                 type="button"
@@ -1983,7 +1983,7 @@ export const ForumPage: React.FC = () => {
                 aria-label="View and Download FingerMobile Logo in HD"
                 title="Click to Enlarge & Download FingerMobile™ Logo in Ultra HD (4K / SVG / PNG)"
               >
-                <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl sm:rounded-2xl overflow-hidden bg-white p-1 border border-slate-300 dark:border-slate-700 shadow-xs flex items-center justify-center group-hover:ring-2 group-hover:ring-orange-500/50 transition-all">
+                <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-xl sm:rounded-2xl overflow-hidden bg-white p-0.5 sm:p-1 border border-slate-300 dark:border-slate-700 shadow-xs flex items-center justify-center group-hover:ring-2 group-hover:ring-orange-500/50 transition-all">
                   <img
                     src="/assets/branding/fingermobile/logo-white.webp"
                     alt="FingerMobile Logo"
@@ -2000,14 +2000,14 @@ export const ForumPage: React.FC = () => {
               </button>
 
               {/* 2. FingerMobile Brand Name Typography */}
-              <h1 className="flex items-center m-0 p-0">
+              <h1 className="flex items-center m-0 p-0 min-w-0">
                 <button
                   type="button"
                   onClick={() => navigate('/forum')}
-                  className="cursor-pointer flex items-center focus:outline-none text-left group"
+                  className="cursor-pointer flex items-center focus:outline-none text-left group min-w-0"
                   aria-label="FingerMobile"
                 >
-                  <span className="text-base sm:text-lg font-black tracking-tight text-slate-900 dark:text-white flex items-center group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
+                  <span className="text-sm sm:text-base md:text-lg font-black tracking-tight text-slate-900 dark:text-white flex items-center group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors truncate">
                     FingerMobile<span className="text-[#ff6b00] ml-0.5">™</span>
                   </span>
                 </button>
@@ -2029,12 +2029,12 @@ export const ForumPage: React.FC = () => {
             </div>
 
             {/* Right Section: Clean, Uncluttered Icon Action Group (Facebook-Style) */}
-            <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+            <div className="flex items-center gap-1 sm:gap-2 shrink-0">
               {/* Mobile Search Trigger Icon */}
               <button
                 type="button"
                 onClick={() => window.dispatchEvent(new CustomEvent('open-universal-search'))}
-                className="md:hidden p-2 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+                className="md:hidden p-1.5 sm:p-2 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
                 aria-label="Search"
                 title="Search Platform (Cmd+K)"
               >
@@ -2046,7 +2046,7 @@ export const ForumPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setIsLiveStudioOpen(true)}
-                  className="p-2 sm:px-3 sm:py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl transition flex items-center gap-1.5 shadow-sm cursor-pointer"
+                  className="p-1.5 sm:px-3 sm:py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl transition flex items-center gap-1.5 shadow-sm cursor-pointer"
                   title="Launch WebRTC Live Studio Broadcast"
                   aria-label="Go Live"
                 >
@@ -2055,28 +2055,32 @@ export const ForumPage: React.FC = () => {
                 </button>
               )}
 
-              {/* Notifications Button */}
-              <button
-                type="button"
-                onClick={() => navigate('/notifications')}
-                className="p-2 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors relative cursor-pointer"
-                aria-label="Notifications"
-                title="Notifications"
-              >
-                <BellIcon className="w-5 h-5" />
-                <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-500" />
-              </button>
+              {/* Notifications Button (Only for authenticated user) */}
+              {user && (
+                <button
+                  type="button"
+                  onClick={() => navigate('/notifications')}
+                  className="p-1.5 sm:p-2 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors relative cursor-pointer shrink-0"
+                  aria-label="Notifications"
+                  title="Notifications"
+                >
+                  <BellIcon className="w-5 h-5" />
+                  <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-500" />
+                </button>
+              )}
 
-              {/* Chat / Messages Button */}
-              <button
-                type="button"
-                onClick={() => navigate('/messages')}
-                className="p-2 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors relative cursor-pointer"
-                aria-label="Messages"
-                title="Messages"
-              >
-                <ChatBubbleLeftRightIcon className="w-5 h-5" />
-              </button>
+              {/* Chat / Messages Button (Only for authenticated user) */}
+              {user && (
+                <button
+                  type="button"
+                  onClick={() => navigate('/messages')}
+                  className="p-1.5 sm:p-2 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors relative cursor-pointer shrink-0"
+                  aria-label="Messages"
+                  title="Messages"
+                >
+                  <ChatBubbleLeftRightIcon className="w-5 h-5" />
+                </button>
+              )}
 
               {/* Desktop Quick LogOut (Only on desktop lg+, hidden on mobile to prevent crowding) */}
               {user && (
@@ -2094,18 +2098,18 @@ export const ForumPage: React.FC = () => {
 
               {/* Auth CTAs for guests */}
               {!user && (
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
                   <button
                     type="button"
                     onClick={() => navigate('/login')}
-                    className="px-3 py-1.5 rounded-xl border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
+                    className="px-2.5 sm:px-3 py-1.5 rounded-xl border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
                   >
                     Sign In
                   </button>
                   <button
                     type="button"
                     onClick={() => navigate('/register')}
-                    className="px-3 py-1.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-extrabold text-xs transition shadow-xs cursor-pointer"
+                    className="px-2.5 sm:px-3 py-1.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-extrabold text-xs transition shadow-xs cursor-pointer"
                   >
                     Sign Up
                   </button>
@@ -2117,9 +2121,9 @@ export const ForumPage: React.FC = () => {
           {/* Row 2 (H2 Sub-Nav Row): Facebook-Style Sovereign 6-Pillar Tab Bar with Official Logos */}
           <nav
             aria-label="Platform Navigation Pillars"
-            className="w-full border-t border-slate-200 dark:border-slate-800 bg-white/60 dark:bg-slate-900/60"
+            className="w-full max-w-full overflow-x-auto scrollbar-none border-t border-slate-200 dark:border-slate-800 bg-white/60 dark:bg-slate-900/60"
           >
-            <div className="grid grid-cols-6 w-full">
+            <div className="grid grid-cols-6 w-full min-w-0">
               {SUB_NAV_ITEMS.map((sub) => {
                 const IconComponent = sub.fallbackIcon;
                 const isActive = activeSubNav === sub.id;
@@ -2178,8 +2182,8 @@ export const ForumPage: React.FC = () => {
       </header>
 
       {/* MAIN CONTAINER */}
-      <main className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 mt-6">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <main className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto w-full px-3 sm:px-6 lg:px-8 mt-4 sm:mt-6 overflow-hidden">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full min-w-0">
           {/* ======================================================================= */}
           {/* LEFT RAIL (3 cols): IDENTITY, UNIVERSAL PROFILE CARD, PRIVACY           */}
           {/* ======================================================================= */}
@@ -2411,7 +2415,7 @@ export const ForumPage: React.FC = () => {
           {/* ======================================================================= */}
           {/* CENTER RAIL (6 cols): STORIES, COMPOSER, RICH POST FEED                 */}
           {/* ======================================================================= */}
-          <div className="order-1 lg:order-2 lg:col-span-6 space-y-6">
+          <div className="order-1 lg:order-2 lg:col-span-6 space-y-6 min-w-0 max-w-full overflow-hidden">
             {/* 1. Mii™®©℠ 48H Ephemeral Stories Bar with Immediate UGC Display, 10s P2P Shuffle & Slide-In Fullscreen View */}
             <MiiStoriesBar
               currentUserName={isOnboarded ? syncedProfile.name : 'Guest'}
@@ -4368,13 +4372,14 @@ export const ForumPage: React.FC = () => {
           setIsBottomDockVisible(true);
         }}
         onMouseLeave={() => showBottomDockTemporarily()}
-        className={`md:hidden fixed bottom-0 inset-x-0 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-t border-slate-200/90 dark:border-slate-800/90 shadow-2xl transition-all duration-300 ease-out transform ${
+        className={`md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-t border-slate-200/90 dark:border-slate-800/90 shadow-2xl transition-all duration-300 ease-out transform overflow-hidden ${
           isBottomDockVisible
             ? 'translate-y-0 opacity-100 pointer-events-auto'
             : 'translate-y-full opacity-0 pointer-events-none'
         }`}
+        style={{ width: '100%', maxWidth: '100vw' }}
       >
-        <div className="grid grid-cols-4 w-full h-14 sm:h-16 items-center px-2 pb-[env(safe-area-inset-bottom,0px)]">
+        <div className="grid grid-cols-4 w-full h-14 sm:h-16 items-center px-1 sm:px-2 pb-[env(safe-area-inset-bottom,0px)]">
           {/* 1. Discover & Viral Trends */}
           <button
             type="button"
@@ -4382,14 +4387,14 @@ export const ForumPage: React.FC = () => {
               navigate('/discover');
               showBottomDockTemporarily();
             }}
-            className="flex flex-col items-center justify-center h-full py-1 text-slate-600 dark:text-slate-400 hover:text-orange-600 dark:hover:text-orange-400 transition cursor-pointer group focus:outline-none"
+            className="flex flex-col items-center justify-center h-full py-1 col-span-1 min-w-0 max-w-full text-slate-600 dark:text-slate-400 hover:text-orange-600 dark:hover:text-orange-400 transition cursor-pointer group focus:outline-none"
             aria-label="Discover & Trends"
             title="Discover Sovereign Trends & Curated Highlights"
           >
-            <div className="w-8 h-8 rounded-xl flex items-center justify-center group-hover:bg-orange-50 dark:group-hover:bg-slate-800 transition">
+            <div className="w-8 h-8 rounded-xl flex items-center justify-center group-hover:bg-orange-50 dark:group-hover:bg-slate-800 transition shrink-0">
               <SparklesIcon className="w-5 h-5 text-amber-500 group-hover:scale-110 transition-transform" />
             </div>
-            <span className="text-[10px] font-bold tracking-tight text-slate-700 dark:text-slate-300 group-hover:text-orange-600 -mt-0.5">
+            <span className="text-[10px] font-bold tracking-tight text-slate-700 dark:text-slate-300 group-hover:text-orange-600 -mt-0.5 truncate max-w-full px-0.5">
               Discover
             </span>
           </button>
@@ -4405,14 +4410,14 @@ export const ForumPage: React.FC = () => {
               }
               showBottomDockTemporarily();
             }}
-            className="flex flex-col items-center justify-center h-full py-1 text-slate-600 dark:text-slate-400 hover:text-orange-600 dark:hover:text-orange-400 transition cursor-pointer group focus:outline-none"
+            className="flex flex-col items-center justify-center h-full py-1 col-span-1 min-w-0 max-w-full text-slate-600 dark:text-slate-400 hover:text-orange-600 dark:hover:text-orange-400 transition cursor-pointer group focus:outline-none"
             aria-label="Create Post"
             title="Compose New Post or Story"
           >
-            <div className="w-8 h-8 rounded-full bg-gradient-to-r from-orange-500 to-amber-500 text-white flex items-center justify-center shadow-md shadow-orange-500/30 group-hover:scale-110 transition-transform">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-r from-orange-500 to-amber-500 text-white flex items-center justify-center shadow-md shadow-orange-500/30 group-hover:scale-110 transition-transform shrink-0">
               <PlusCircleIcon className="w-5 h-5 text-white" />
             </div>
-            <span className="text-[10px] font-bold tracking-tight text-slate-700 dark:text-slate-300 group-hover:text-orange-600 -mt-0.5">
+            <span className="text-[10px] font-bold tracking-tight text-slate-700 dark:text-slate-300 group-hover:text-orange-600 -mt-0.5 truncate max-w-full px-0.5">
               Create
             </span>
           </button>
@@ -4424,14 +4429,14 @@ export const ForumPage: React.FC = () => {
               navigate('/wallet');
               showBottomDockTemporarily();
             }}
-            className="flex flex-col items-center justify-center h-full py-1 text-slate-600 dark:text-slate-400 hover:text-orange-600 dark:hover:text-orange-400 transition cursor-pointer group focus:outline-none"
+            className="flex flex-col items-center justify-center h-full py-1 col-span-1 min-w-0 max-w-full text-slate-600 dark:text-slate-400 hover:text-orange-600 dark:hover:text-orange-400 transition cursor-pointer group focus:outline-none"
             aria-label="Sovereign Wallet"
             title="FIC Coins, Vault Escrows & Balance"
           >
-            <div className="w-8 h-8 rounded-xl flex items-center justify-center group-hover:bg-emerald-50 dark:group-hover:bg-slate-800 transition">
+            <div className="w-8 h-8 rounded-xl flex items-center justify-center group-hover:bg-emerald-50 dark:group-hover:bg-slate-800 transition shrink-0">
               <BanknotesIcon className="w-5 h-5 text-emerald-600 dark:text-emerald-400 group-hover:scale-110 transition-transform" />
             </div>
-            <span className="text-[10px] font-bold tracking-tight text-slate-700 dark:text-slate-300 group-hover:text-emerald-600 -mt-0.5">
+            <span className="text-[10px] font-bold tracking-tight text-slate-700 dark:text-slate-300 group-hover:text-emerald-600 -mt-0.5 truncate max-w-full px-0.5">
               Wallet
             </span>
           </button>
@@ -4443,14 +4448,14 @@ export const ForumPage: React.FC = () => {
               navigate('/hallmarks');
               showBottomDockTemporarily();
             }}
-            className="flex flex-col items-center justify-center h-full py-1 text-slate-600 dark:text-slate-400 hover:text-orange-600 dark:hover:text-orange-400 transition cursor-pointer group focus:outline-none"
+            className="flex flex-col items-center justify-center h-full py-1 col-span-1 min-w-0 max-w-full text-slate-600 dark:text-slate-400 hover:text-orange-600 dark:hover:text-orange-400 transition cursor-pointer group focus:outline-none"
             aria-label="Hallmarks Mega-Communities"
             title="Hallmarks Sovereign Communities (Up to 250k Members)"
           >
-            <div className="w-8 h-8 rounded-xl flex items-center justify-center group-hover:bg-purple-50 dark:group-hover:bg-slate-800 transition">
+            <div className="w-8 h-8 rounded-xl flex items-center justify-center group-hover:bg-purple-50 dark:group-hover:bg-slate-800 transition shrink-0">
               <UserGroupIcon className="w-5 h-5 text-purple-600 dark:text-purple-400 group-hover:scale-110 transition-transform" />
             </div>
-            <span className="text-[10px] font-bold tracking-tight text-slate-700 dark:text-slate-300 group-hover:text-purple-600 -mt-0.5">
+            <span className="text-[10px] font-bold tracking-tight text-slate-700 dark:text-slate-300 group-hover:text-purple-600 -mt-0.5 truncate max-w-full px-0.5">
               Hallmarks
             </span>
           </button>

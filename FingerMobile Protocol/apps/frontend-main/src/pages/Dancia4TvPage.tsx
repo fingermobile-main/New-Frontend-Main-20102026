@@ -283,7 +283,7 @@ const Dancia4TvPage: React.FC = () => {
     );
   }
   return (
-    <div className="dancia4tv-page p-4 sm:p-6 lg:p-8 bg-gray-950 min-h-screen text-white">
+    <div className="dancia4tv-page w-full max-w-full overflow-x-hidden p-3 sm:p-6 lg:p-8 bg-gray-950 min-h-screen text-white pb-24 md:pb-8">
       <Dancia4TvHeader
         activeNavTab={activeNavTab}
         onSelectNavTab={(tab: string) => setActiveNavTab(tab)}
@@ -301,7 +301,7 @@ const Dancia4TvPage: React.FC = () => {
         )}
 
         {/* Top Secondary Tabs: Home / Browse / Subscriptions / My Library / Discover / Lapidaire */}
-        <div className="flex border-b border-gray-800 pb-2 space-x-3 overflow-x-auto">
+        <div className="flex border-b border-gray-800 pb-2 space-x-2 sm:space-x-3 overflow-x-auto scrollbar-none items-center py-1">
           <button
             className={`py-1.5 px-4 rounded-xl font-bold text-xs transition shrink-0 ${activeTab === 'home' ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-200 hover:text-white bg-slate-800/80 border border-slate-700/80'}`}
             onClick={() => setActiveTab('home')}
@@ -348,7 +348,7 @@ const Dancia4TvPage: React.FC = () => {
         {activeTab === 'home' && activeNavTab === 'movies' && (
           <div className="space-y-8">
             {/* Prime Video Hero Player Banner */}
-            <div className="relative w-full h-[520px] rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-slate-950">
+            <div className="relative w-full min-h-[480px] sm:h-[520px] rounded-2xl sm:rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-slate-950">
               <img
                 src={activeHeroMovie.bannerImage}
                 alt={activeHeroMovie.title}
@@ -357,56 +357,56 @@ const Dancia4TvPage: React.FC = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent" />
               <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/80 to-transparent" />
 
-              <div className="absolute bottom-10 left-10 max-w-2xl space-y-4 z-10 text-white">
-                <div className="flex items-center space-x-3">
-                  <span className="bg-sky-500 text-slate-900 font-extrabold text-xs px-2.5 py-1 rounded tracking-wider uppercase">PRIME EXCLUSIVE</span>
-                  <span className="bg-amber-400/20 text-amber-300 border border-amber-400/40 text-xs px-2.5 py-1 rounded font-semibold">{activeHeroMovie.quality}</span>
-                  <span className="text-slate-100 text-xs font-bold">{activeHeroMovie.releaseYear} • {activeHeroMovie.durationMinutes} mins • {activeHeroMovie.rating}</span>
-                  <span className="flex items-center text-amber-400 text-xs font-bold">
-                    <Star className="w-3.5 h-3.5 fill-amber-400 mr-1" /> {activeHeroMovie.imdbRating}
+              <div className="absolute bottom-4 sm:bottom-10 left-3 sm:left-10 right-3 sm:right-10 max-w-2xl space-y-3 sm:space-y-4 z-10 text-white">
+                <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                  <span className="bg-sky-500 text-slate-900 font-extrabold text-[10px] sm:text-xs px-2 sm:px-2.5 py-0.5 sm:py-1 rounded tracking-wider uppercase">PRIME EXCLUSIVE</span>
+                  <span className="bg-amber-400/20 text-amber-300 border border-amber-400/40 text-[10px] sm:text-xs px-2 sm:px-2.5 py-0.5 sm:py-1 rounded font-semibold">{activeHeroMovie.quality}</span>
+                  <span className="text-slate-100 text-[10px] sm:text-xs font-bold">{activeHeroMovie.releaseYear} • {activeHeroMovie.durationMinutes} mins • {activeHeroMovie.rating}</span>
+                  <span className="flex items-center text-amber-400 text-[10px] sm:text-xs font-bold">
+                    <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-amber-400 mr-1" /> {activeHeroMovie.imdbRating}
                   </span>
                 </div>
 
-                <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-white drop-shadow-md">
+                <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white drop-shadow-md">
                   {activeHeroMovie.title}
                 </h1>
 
-                <p className="text-slate-100 text-sm md:text-base line-clamp-3 font-medium leading-relaxed">
+                <p className="text-slate-100 text-xs sm:text-sm md:text-base line-clamp-2 sm:line-clamp-3 font-medium leading-relaxed">
                   {activeHeroMovie.synopsis}
                 </p>
 
                 {/* AI Curated Summary Box */}
-                <div className="bg-slate-900/90 backdrop-blur-md border border-sky-500/40 p-3.5 rounded-xl text-xs text-sky-100 flex items-start space-x-3 shadow-lg">
-                  <Sparkles className="w-5 h-5 text-sky-400 flex-shrink-0 mt-0.5" />
-                  <div>
+                <div className="bg-slate-900/90 backdrop-blur-md border border-sky-500/40 p-2.5 sm:p-3.5 rounded-xl text-xs text-sky-100 flex items-start space-x-2.5 sm:space-x-3 shadow-lg">
+                  <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-sky-400 flex-shrink-0 mt-0.5" />
+                  <div className="text-[11px] sm:text-xs leading-relaxed">
                     <strong className="text-sky-300 font-bold block mb-0.5">Dancia AI Curated Captions & Summary:</strong>
-                    {activeHeroMovie.aiCuratedSummary}
-                    <div className="mt-1 text-sky-200/95 font-medium italic">
+                    <span className="line-clamp-2">{activeHeroMovie.aiCuratedSummary}</span>
+                    <div className="mt-1 text-sky-200/95 font-medium italic truncate">
                       Live Caption: "{activeHeroMovie.aiGeneratedCaptions.sampleCaption}"
                     </div>
                   </div>
                 </div>
 
-                <div className="flex items-center space-x-4 pt-2">
+                <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 sm:gap-4 pt-1 sm:pt-2">
                   <button
                     onClick={() => setActivePlayingMovie(activeHeroMovie)}
-                    className="flex items-center space-x-2 bg-sky-500 hover:bg-sky-400 text-slate-900 font-extrabold px-7 py-3.5 rounded-xl transition-all transform hover:scale-105 shadow-lg shadow-sky-500/30"
+                    className="flex-1 sm:flex-initial flex items-center justify-center space-x-2 bg-sky-500 hover:bg-sky-400 text-slate-900 font-extrabold px-5 sm:px-7 py-3 sm:py-3.5 rounded-xl transition-all transform hover:scale-105 shadow-lg shadow-sky-500/30 min-h-[44px]"
                   >
                     <Play className="w-5 h-5 fill-black" />
                     <span>Watch Now</span>
                   </button>
                   <button
                     onClick={() => addToWatchlist(activeHeroMovie.id)}
-                    className="flex items-center space-x-2 bg-gray-800/80 hover:bg-gray-700 text-white font-semibold px-5 py-3.5 rounded-xl border border-white/10 transition"
+                    className="flex items-center justify-center space-x-1.5 bg-gray-800/80 hover:bg-gray-700 text-white font-semibold px-4 sm:px-5 py-3 sm:py-3.5 rounded-xl border border-white/10 transition min-h-[44px]"
                   >
-                    <Plus className="w-5 h-5" />
+                    <Plus className="w-4 h-4" />
                     <span>Watchlist</span>
                   </button>
                   <button
                     onClick={() => setActiveDetailMovie(activeHeroMovie)}
-                    className="flex items-center space-x-2 bg-gray-800/80 hover:bg-gray-700 text-white font-semibold px-5 py-3.5 rounded-xl border border-white/10 transition"
+                    className="flex items-center justify-center space-x-1.5 bg-gray-800/80 hover:bg-gray-700 text-white font-semibold px-4 sm:px-5 py-3 sm:py-3.5 rounded-xl border border-white/10 transition min-h-[44px]"
                   >
-                    <Info className="w-5 h-5" />
+                    <Info className="w-4 h-4" />
                     <span>Details</span>
                   </button>
                 </div>
@@ -1101,6 +1101,76 @@ const Dancia4TvPage: React.FC = () => {
           onPause={pauseVideo}
         />
       )}
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <aside
+        aria-label="Dancia-4Tv Mobile Navigation Dock"
+        className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-gray-950/95 backdrop-blur-xl border-t border-white/10 px-1 py-1.5 pb-[env(safe-area-inset-bottom,0px)] shadow-2xl"
+        style={{ width: '100%', maxWidth: '100vw' }}
+      >
+        <div className="grid grid-cols-4 w-full h-13 items-center">
+          <button
+            type="button"
+            onClick={() => {
+              setActiveTab('home');
+              setActiveNavTab('movies');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`flex flex-col items-center justify-center py-1 col-span-1 min-w-0 max-w-full transition cursor-pointer min-h-[44px] ${
+              activeTab === 'home' ? 'text-sky-400 font-black' : 'text-slate-400 hover:text-white'
+            }`}
+            aria-label="Stream Feed"
+          >
+            <Play className="w-5 h-5 mb-0.5" />
+            <span className="text-[10px] font-bold tracking-tight truncate max-w-full">Stream</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              setActiveTab('browse');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`flex flex-col items-center justify-center py-1 col-span-1 min-w-0 max-w-full transition cursor-pointer min-h-[44px] ${
+              activeTab === 'browse' ? 'text-sky-400 font-black' : 'text-slate-400 hover:text-white'
+            }`}
+            aria-label="Catalog Browse"
+          >
+            <Film className="w-5 h-5 mb-0.5" />
+            <span className="text-[10px] font-bold tracking-tight truncate max-w-full">Catalog</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              setActiveTab('subscriptions');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`flex flex-col items-center justify-center py-1 col-span-1 min-w-0 max-w-full transition cursor-pointer min-h-[44px] ${
+              activeTab === 'subscriptions' ? 'text-sky-400 font-black' : 'text-slate-400 hover:text-white'
+            }`}
+            aria-label="Subscription Plans"
+          >
+            <Star className="w-5 h-5 mb-0.5" />
+            <span className="text-[10px] font-bold tracking-tight truncate max-w-full">Plans</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              setActiveTab(currentMember ? 'my-library' : 'discover');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`flex flex-col items-center justify-center py-1 col-span-1 min-w-0 max-w-full transition cursor-pointer min-h-[44px] ${
+              activeTab === 'my-library' || activeTab === 'discover' ? 'text-sky-400 font-black' : 'text-slate-400 hover:text-white'
+            }`}
+            aria-label="Library & Discovery"
+          >
+            <Compass className="w-5 h-5 mb-0.5" />
+            <span className="text-[10px] font-bold tracking-tight truncate max-w-full">Library</span>
+          </button>
+        </div>
+      </aside>
     </div>
   );
 };
@@ -1127,36 +1197,42 @@ const AgeVerificationModalLocal: React.FC<{
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
-      <form onSubmit={handleSubmit} className="bg-gray-800 p-6 rounded-lg w-full max-w-md">
-        <h3 className="text-xl font-bold text-white mb-4">Age Verification</h3>
-        <p className="text-gray-300 mb-4">
+    <div className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50 p-4">
+      <form onSubmit={handleSubmit} className="bg-gray-800 p-5 sm:p-6 rounded-2xl w-full max-w-md border border-white/10 shadow-2xl">
+        <h3 className="text-xl font-bold text-white mb-2">Age Verification</h3>
+        <p className="text-gray-300 text-xs sm:text-sm mb-4 leading-relaxed font-medium">
           Please verify you are over 18 years old to access this content.
         </p>
-        <div className="grid grid-cols-2 gap-3 mb-4">
-          <input
-            type="number"
-            placeholder="Birth Year (e.g. 1995)"
-            value={birthYear}
-            onChange={(e) => setBirthYear(e.target.value)}
-            className="p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none"
-          />
-          <input
-            type="number"
-            placeholder="Birth Month (1-12)"
-            value={birthMonth}
-            onChange={(e) => setBirthMonth(e.target.value)}
-            min="1"
-            max="12"
-            className="p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none"
-          />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
+          <div>
+            <label className="block text-[11px] font-bold text-gray-400 mb-1">Birth Year</label>
+            <input
+              type="number"
+              placeholder="e.g. 1995"
+              value={birthYear}
+              onChange={(e) => setBirthYear(e.target.value)}
+              className="w-full p-2.5 rounded-xl bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 font-bold text-sm min-h-[44px]"
+            />
+          </div>
+          <div>
+            <label className="block text-[11px] font-bold text-gray-400 mb-1">Birth Month</label>
+            <input
+              type="number"
+              placeholder="1 - 12"
+              value={birthMonth}
+              onChange={(e) => setBirthMonth(e.target.value)}
+              min="1"
+              max="12"
+              className="w-full p-2.5 rounded-xl bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 font-bold text-sm min-h-[44px]"
+            />
+          </div>
         </div>
-        <div className="flex justify-end space-x-3">
+        <div className="flex justify-end">
           <button
             type="submit"
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            className="w-full sm:w-auto px-6 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-500 font-bold transition min-h-[44px] cursor-pointer"
           >
-            Verify
+            Verify & Enter
           </button>
         </div>
       </form>
