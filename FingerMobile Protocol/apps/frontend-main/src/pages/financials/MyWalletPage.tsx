@@ -820,14 +820,14 @@ const MyWalletPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setIsSimulateModalOpen(false)}
-                  className="px-4 py-2 text-xs font-bold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 hover:bg-slate-200 rounded-xl cursor-pointer"
+                  className="min-h-[44px] px-4 py-2 text-xs font-bold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 hover:bg-slate-200 rounded-xl cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isProcessing}
-                  className="px-4 py-2 text-xs font-bold bg-amber-600 hover:bg-amber-700 text-white rounded-xl shadow-md disabled:opacity-50 cursor-pointer"
+                  className="min-h-[44px] px-4 py-2 text-xs font-bold bg-amber-600 hover:bg-amber-700 text-white rounded-xl shadow-md disabled:opacity-50 cursor-pointer"
                 >
                   {isProcessing ? 'Calculating...' : 'Apply 4-Part Split'}
                 </button>
@@ -836,6 +836,52 @@ const MyWalletPage: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Floating Sovereign Mobile Navigation Quick Dock */}
+      <div
+        data-testid="my-wallet-mobile-dock"
+        className="fixed bottom-3 inset-x-3 z-40 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl shadow-2xl px-2 py-1.5 flex items-center justify-around sm:hidden"
+      >
+        <button
+          onClick={() => setIsSendModalOpen(true)}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 rounded-xl text-[10px] font-black text-blue-400 hover:text-blue-300 transition-colors"
+        >
+          <ArrowUpRight className="w-5 h-5 mb-0.5" />
+          <span>Send</span>
+        </button>
+
+        <button
+          onClick={() => setIsDepositModalOpen(true)}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 rounded-xl text-[10px] font-black text-cyan-400 hover:text-cyan-300 transition-colors"
+        >
+          <ArrowDownLeft className="w-5 h-5 mb-0.5" />
+          <span>Deposit</span>
+        </button>
+
+        <button
+          onClick={() => setIsStoreCreditModalOpen(true)}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 rounded-xl text-[10px] font-black text-emerald-400 hover:text-emerald-300 transition-colors"
+        >
+          <ShoppingBag className="w-5 h-5 mb-0.5" />
+          <span>Store</span>
+        </button>
+
+        <button
+          onClick={() => navigate('/fic-vault')}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 rounded-xl text-[10px] font-black text-purple-400 hover:text-purple-300 transition-colors"
+        >
+          <Lock className="w-5 h-5 mb-0.5" />
+          <span>Vault</span>
+        </button>
+
+        <button
+          onClick={() => setIsSimulateModalOpen(true)}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-3 py-1 bg-gradient-to-r from-amber-600 to-yellow-600 rounded-xl text-[10px] font-black text-white shadow-md active:scale-95 transition"
+        >
+          <TrendingUp className="w-5 h-5 mb-0.5" />
+          <span>Simulate</span>
+        </button>
+      </div>
     </div>
   );
 };

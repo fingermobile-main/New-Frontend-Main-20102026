@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { useAppContext } from '../../contexts/AppContext';
 import { apiService } from '../../services/apiService';
 import type { GiftCard } from '../../types';
+import { Gift, ShoppingBag, ArrowDownLeft, ArrowLeft } from 'lucide-react';
 
 const GiftCardsPage: React.FC = () => {
   const { giftCards, openModal, showToast } = useAppContext();
@@ -93,19 +95,28 @@ const GiftCardsPage: React.FC = () => {
     : (giftCards || []).filter((card: GiftCard) => card.status === 'active' || card.status === 'used' || card.status === 'expired');
 
   return (
-    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto space-y-6">
-      <div>
-        <h2 className="text-2xl font-black text-slate-900">Gift Cards</h2>
-        <p className="mt-1 text-sm font-medium text-slate-700">Buy, send, or redeem gift cards securely</p>
+    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto space-y-6 overflow-x-hidden pb-28 md:pb-12">
+      <div className="flex items-start sm:items-center gap-3">
+        <Link
+          to="/financials"
+          className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-xl bg-white border border-slate-300 text-slate-800 active:scale-95 transition shrink-0"
+          aria-label="Back to Financials"
+        >
+          <ArrowLeft className="w-5 h-5" />
+        </Link>
+        <div>
+          <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">Gift Cards</h2>
+          <p className="mt-0.5 text-xs sm:text-sm font-medium text-slate-700">Buy, send, or redeem gift cards securely across sovereign channels</p>
+        </div>
       </div>
 
       <div className="border-b border-slate-300">
-        <nav className="-mb-px flex space-x-8">
+        <nav className="-mb-px flex space-x-2 sm:space-x-8 overflow-x-auto scrollbar-none">
           <button
             onClick={() => setActiveTab('your-cards')}
-            className={`py-4 px-1 border-b-2 font-bold text-sm transition-colors ${
+            className={`min-h-[44px] py-2.5 px-3 sm:px-1 border-b-2 font-bold text-xs sm:text-sm transition-all whitespace-nowrap cursor-pointer ${
               activeTab === 'your-cards'
-                ? 'border-brand-blue text-brand-blue'
+                ? 'border-brand-blue text-brand-blue font-black'
                 : 'border-transparent text-slate-700 hover:text-slate-900 hover:border-slate-300'
             }`}
           >
@@ -113,9 +124,9 @@ const GiftCardsPage: React.FC = () => {
           </button>
           <button
             onClick={() => setActiveTab('buy')}
-            className={`py-4 px-1 border-b-2 font-bold text-sm transition-colors ${
+            className={`min-h-[44px] py-2.5 px-3 sm:px-1 border-b-2 font-bold text-xs sm:text-sm transition-all whitespace-nowrap cursor-pointer ${
               activeTab === 'buy'
-                ? 'border-brand-blue text-brand-blue'
+                ? 'border-brand-blue text-brand-blue font-black'
                 : 'border-transparent text-slate-700 hover:text-slate-900 hover:border-slate-300'
             }`}
           >
@@ -123,9 +134,9 @@ const GiftCardsPage: React.FC = () => {
           </button>
           <button
             onClick={() => setActiveTab('redeem')}
-            className={`py-4 px-1 border-b-2 font-bold text-sm transition-colors ${
+            className={`min-h-[44px] py-2.5 px-3 sm:px-1 border-b-2 font-bold text-xs sm:text-sm transition-all whitespace-nowrap cursor-pointer ${
               activeTab === 'redeem'
-                ? 'border-brand-blue text-brand-blue'
+                ? 'border-brand-blue text-brand-blue font-black'
                 : 'border-transparent text-slate-700 hover:text-slate-900 hover:border-slate-300'
             }`}
           >
@@ -137,10 +148,10 @@ const GiftCardsPage: React.FC = () => {
       {activeTab === 'your-cards' && (
         <div>
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-bold text-slate-900">Your Gift Cards</h3>
+            <h3 className="text-base sm:text-lg font-bold text-slate-900">Your Gift Cards</h3>
             <button
               onClick={() => openModal('gift')}
-              className="px-4 py-2 bg-brand-blue text-white font-bold rounded-lg hover:bg-blue-700 shadow-sm transition-colors"
+              className="min-h-[44px] px-4 py-2 bg-brand-blue text-white font-bold text-xs sm:text-sm rounded-xl hover:bg-blue-700 shadow-sm transition-all active:scale-95 cursor-pointer"
             >
               Send Gift Card
             </button>
@@ -293,13 +304,49 @@ const GiftCardsPage: React.FC = () => {
             <button
               type="submit"
               disabled={isRedeeming}
-              className="mt-6 w-full px-4 py-2.5 bg-brand-blue text-white font-bold rounded-lg hover:bg-blue-700 shadow-sm disabled:opacity-50 transition-colors"
+              className="mt-6 w-full min-h-[44px] px-4 py-2.5 bg-brand-blue text-white font-bold rounded-xl hover:bg-blue-700 shadow-sm disabled:opacity-50 transition-all cursor-pointer active:scale-95 flex items-center justify-center text-sm"
             >
               {isRedeeming ? 'Redeeming...' : 'Redeem Gift Card'}
             </button>
           </form>
         </div>
       )}
+
+      {/* Floating Sovereign Mobile Navigation Quick Dock */}
+      <div
+        data-testid="giftcards-mobile-dock"
+        className="fixed bottom-3 inset-x-3 z-40 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl shadow-2xl px-2 py-1.5 flex items-center justify-around sm:hidden"
+      >
+        <button
+          onClick={() => setActiveTab('your-cards')}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 rounded-xl text-[10px] font-black transition-colors ${
+            activeTab === 'your-cards' ? 'text-blue-400' : 'text-slate-400 hover:text-white'
+          }`}
+        >
+          <Gift className="w-5 h-5 mb-0.5" />
+          <span>My Cards</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('buy')}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 rounded-xl text-[10px] font-black transition-colors ${
+            activeTab === 'buy' ? 'text-emerald-400' : 'text-slate-400 hover:text-white'
+          }`}
+        >
+          <ShoppingBag className="w-5 h-5 mb-0.5" />
+          <span>Buy Card</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('redeem')}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 rounded-xl text-[10px] font-black transition-colors ${
+            activeTab === 'redeem' ? 'text-amber-400' : 'text-slate-400 hover:text-white'
+          }`}
+        >
+          <ArrowDownLeft className="w-5 h-5 mb-0.5" />
+          <span>Redeem</span>
+        </button>
+      </div>
     </div>
   );
 };

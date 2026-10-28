@@ -663,18 +663,18 @@ export const SubscriptionsPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Platform Subscriptions & Sovereign Passes">
-      <div className="min-h-screen bg-slate-50 text-slate-900 py-8 px-4 sm:px-6 lg:px-8">
-        <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto space-y-8">
+      <div className="min-h-screen bg-slate-50 text-slate-900 py-6 sm:py-8 px-3 sm:px-6 lg:px-8 w-full max-w-full overflow-x-hidden pb-28 md:pb-12">
+        <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto space-y-6 sm:space-y-8">
           {/* Header */}
-          <div className="bg-white border border-slate-300 rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="bg-white border border-slate-300 rounded-3xl p-5 sm:p-8 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-5 sm:gap-6">
             <div>
-              <div className="flex items-center gap-3">
-                <div className="p-3 rounded-2xl bg-amber-50 border border-amber-300 text-amber-700 shadow-sm">
-                  <Crown className="w-8 h-8" />
+              <div className="flex items-start sm:items-center gap-3">
+                <div className="p-2.5 sm:p-3 rounded-2xl bg-amber-50 border border-amber-300 text-amber-700 shadow-sm shrink-0">
+                  <Crown className="w-7 h-7 sm:w-8 sm:h-8" />
                 </div>
                 <div>
-                  <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 flex items-center gap-2">
-                    Subscriptions, Passes & FIC Management
+                  <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 flex items-center gap-2">
+                    Subscriptions, Passes &amp; FIC Management
                   </h1>
                   <p className="text-xs sm:text-sm font-medium text-slate-700 mt-1 max-w-2xl leading-relaxed">
                     Centralized subscription studio for all 385 pages across 20 core platform modules. Manage graphical cards, audit gated screen matrices, configure FIC token allocation rules, and enforce FIAT settlement terms.
@@ -683,29 +683,29 @@ export const SubscriptionsPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               <button
                 type="button"
                 onClick={handleAddNewCard}
-                className="px-4 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-700 active:bg-orange-800 text-white text-xs font-bold transition-all shadow-sm flex items-center gap-2 cursor-pointer"
+                className="min-h-[44px] px-4 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-700 active:bg-orange-800 text-white text-xs font-bold transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer active:scale-95"
               >
                 <PlusCircle className="w-4 h-4" />
                 <span>Create New Card</span>
               </button>
 
-              <div className="px-4 py-2.5 rounded-xl bg-slate-100 border border-slate-300 text-xs shadow-xs">
-                <span className="text-slate-800 font-bold">Vault Balance: </span>
+              <div className="min-h-[44px] px-3.5 py-2 rounded-xl bg-slate-100 border border-slate-300 text-xs shadow-xs flex items-center">
+                <span className="text-slate-800 font-bold mr-1">Vault: </span>
                 <span className="font-mono font-black text-amber-800">{ficBalance.toLocaleString()} FIC</span>
               </div>
             </div>
           </div>
 
           {/* Navigation Mode Tabs */}
-          <div className="flex items-center gap-2 border-b border-slate-300 pb-4 overflow-x-auto scrollbar-none">
+          <div className="flex items-center gap-2 border-b border-slate-300 pb-3 overflow-x-auto scrollbar-none">
             <button
               type="button"
               onClick={() => setActiveTab('cards')}
-              className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer ${
+              className={`min-h-[44px] px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer shrink-0 ${
                 activeTab === 'cards'
                   ? 'bg-slate-900 text-white shadow-sm'
                   : 'bg-white text-slate-800 hover:bg-slate-50 border border-slate-300'
@@ -718,7 +718,7 @@ export const SubscriptionsPage: React.FC = () => {
             <button
               type="button"
               onClick={() => setActiveTab('matrix')}
-              className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer ${
+              className={`min-h-[44px] px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer shrink-0 ${
                 activeTab === 'matrix'
                   ? 'bg-slate-900 text-white shadow-sm'
                   : 'bg-white text-slate-800 hover:bg-slate-50 border border-slate-300'
@@ -731,20 +731,20 @@ export const SubscriptionsPage: React.FC = () => {
             <button
               type="button"
               onClick={() => setActiveTab('fic_management')}
-              className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer ${
+              className={`min-h-[44px] px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer shrink-0 ${
                 activeTab === 'fic_management'
                   ? 'bg-slate-900 text-white shadow-sm'
                   : 'bg-white text-slate-800 hover:bg-slate-50 border border-slate-300'
               }`}
             >
               <Coins className="w-4 h-4" />
-              <span>FIC Management & FIAT Rules Console</span>
+              <span>FIC Management &amp; FIAT Rules</span>
             </button>
 
             <button
               type="button"
               onClick={() => setActiveTab('active')}
-              className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer ${
+              className={`min-h-[44px] px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer shrink-0 ${
                 activeTab === 'active'
                   ? 'bg-slate-900 text-white shadow-sm'
                   : 'bg-white text-slate-800 hover:bg-slate-50 border border-slate-300'
@@ -1526,7 +1526,7 @@ export const SubscriptionsPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setSelectedPlanForUpgrade(null)}
-                    className="px-4 py-2 text-xs font-bold text-slate-800 bg-slate-100 border border-slate-300 rounded-xl hover:bg-slate-200 cursor-pointer"
+                    className="min-h-[44px] px-4 py-2 text-xs font-bold text-slate-800 bg-slate-100 border border-slate-300 rounded-xl hover:bg-slate-200 cursor-pointer active:scale-95 transition"
                   >
                     Cancel
                   </button>
@@ -1534,7 +1534,7 @@ export const SubscriptionsPage: React.FC = () => {
                     type="button"
                     onClick={handleUpgradePlan}
                     disabled={isProcessingUpgrade}
-                    className="px-5 py-2 text-xs font-bold text-white bg-orange-600 hover:bg-orange-700 active:bg-orange-800 rounded-xl shadow-sm flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                    className="min-h-[44px] px-5 py-2 text-xs font-bold text-white bg-orange-600 hover:bg-orange-700 active:bg-orange-800 rounded-xl shadow-sm flex items-center gap-1.5 cursor-pointer disabled:opacity-50 active:scale-95 transition"
                   >
                     <CreditCard className="w-3.5 h-3.5" />
                     {isProcessingUpgrade ? 'Confirming...' : 'Confirm Subscription'}
@@ -1544,6 +1544,50 @@ export const SubscriptionsPage: React.FC = () => {
             </div>
           )}
         </div>
+      </div>
+
+      {/* Floating Sovereign Mobile Navigation Quick Dock */}
+      <div
+        data-testid="subscriptions-mobile-dock"
+        className="fixed bottom-3 inset-x-3 z-40 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl shadow-2xl px-2 py-1.5 flex items-center justify-around sm:hidden"
+      >
+        <button
+          onClick={() => setActiveTab('cards')}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 rounded-xl text-[10px] font-black transition-colors ${
+            activeTab === 'cards' ? 'text-amber-400' : 'text-slate-400 hover:text-white'
+          }`}
+        >
+          <Crown className="w-5 h-5 mb-0.5" />
+          <span>Plans</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('matrix')}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 rounded-xl text-[10px] font-black transition-colors ${
+            activeTab === 'matrix' ? 'text-blue-400' : 'text-slate-400 hover:text-white'
+          }`}
+        >
+          <Sliders className="w-5 h-5 mb-0.5" />
+          <span>Audit</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('fic_management')}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 rounded-xl text-[10px] font-black transition-colors ${
+            activeTab === 'fic_management' ? 'text-emerald-400' : 'text-slate-400 hover:text-white'
+          }`}
+        >
+          <Coins className="w-5 h-5 mb-0.5" />
+          <span>Tokens</span>
+        </button>
+
+        <button
+          onClick={() => handleAddNewCard()}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-3 py-1 bg-gradient-to-r from-orange-600 to-amber-600 rounded-xl text-[10px] font-black text-white shadow-md active:scale-95 transition"
+        >
+          <PlusCircle className="w-5 h-5 mb-0.5" />
+          <span>+ Card</span>
+        </button>
       </div>
     </MainLayout>
   );

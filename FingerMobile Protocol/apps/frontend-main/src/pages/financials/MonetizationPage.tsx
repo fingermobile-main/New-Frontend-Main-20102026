@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAppContext } from '../../contexts/AppContext';
 import { apiService } from '../../services/apiService';
 import PlatformOwnershipCard from '../../components/dashboard/PlatformOwnershipCard';
@@ -10,6 +10,7 @@ import {
   ArrowTrendingUpIcon,
   ShieldCheckIcon
 } from '../../icons';
+import { Coins, Lock, ArrowUpRight, Sliders, ArrowLeft } from 'lucide-react';
 
 interface MonetizationChannel {
   id: string;
@@ -99,25 +100,34 @@ const MonetizationPage: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-3 sm:p-6 lg:p-8 space-y-6 overflow-x-hidden pb-28 md:pb-12">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-black text-slate-900 tracking-tight">Sovereign Creator Monetization</h1>
-          <p className="text-sm font-semibold text-slate-700 mt-1">
-            Real-time revenue distributions, split contracts, and instant fiat-to-FIC settlement channels
-          </p>
+        <div className="flex items-start sm:items-center gap-3">
+          <Link
+            to="/financials"
+            className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-xl bg-white border border-slate-300 text-slate-800 active:scale-95 transition shrink-0"
+            aria-label="Back to Financials"
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </Link>
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">Sovereign Creator Monetization</h1>
+            <p className="text-xs sm:text-sm font-semibold text-slate-700 mt-0.5">
+              Real-time revenue distributions, split contracts, and instant fiat-to-FIC settlement channels
+            </p>
+          </div>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <button
             onClick={() => navigate('/financials/vault')}
-            className="px-4 py-2.5 text-xs font-bold bg-white text-slate-900 border border-slate-300 rounded-xl hover:bg-slate-100 shadow-sm transition-colors cursor-pointer"
+            className="min-h-[44px] px-4 py-2.5 text-xs font-bold bg-white text-slate-900 border border-slate-300 rounded-xl hover:bg-slate-100 shadow-sm transition-all cursor-pointer active:scale-95"
           >
-            Lock into FIC Vault (1.5% APY)
+            Lock into FIC Vault
           </button>
           <button
             onClick={handleRequestPayout}
             disabled={requestingPayout}
-            className="px-5 py-2.5 text-xs font-bold bg-blue-600 text-white rounded-xl hover:bg-blue-700 shadow-sm transition-colors disabled:opacity-50 cursor-pointer"
+            className="min-h-[44px] px-5 py-2.5 text-xs font-bold bg-blue-600 text-white rounded-xl hover:bg-blue-700 shadow-sm transition-all disabled:opacity-50 cursor-pointer active:scale-95"
           >
             {requestingPayout ? 'Processing...' : 'Request Instant Payout'}
           </button>
@@ -127,75 +137,75 @@ const MonetizationPage: React.FC = () => {
       <PlatformOwnershipCard />
 
       {/* KPI Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="bg-white p-6 rounded-2xl border border-slate-300 shadow-xs">
-          <p className="text-xs font-bold text-slate-700 uppercase tracking-wider">Gross Creator Yield</p>
-          <p className="text-3xl font-black text-slate-900 mt-2">{totalEarnings.toLocaleString()} FIC</p>
-          <span className="text-xs font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 px-2 py-0.5 rounded-full inline-block mt-3">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+        <div className="bg-white p-4 sm:p-6 rounded-2xl border border-slate-300 shadow-xs">
+          <p className="text-[11px] sm:text-xs font-bold text-slate-700 uppercase tracking-wider">Gross Creator Yield</p>
+          <p className="text-xl sm:text-3xl font-black text-slate-900 mt-1 sm:mt-2">{totalEarnings.toLocaleString()} FIC</p>
+          <span className="text-[10px] sm:text-xs font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 px-2 py-0.5 rounded-full inline-block mt-2 sm:mt-3">
             +22.4% vs last cycle
           </span>
         </div>
-        <div className="bg-white p-6 rounded-2xl border border-slate-300 shadow-xs">
-          <p className="text-xs font-bold text-slate-700 uppercase tracking-wider">Active Monetization Channels</p>
-          <p className="text-3xl font-black text-slate-900 mt-2">{channels.length} Streams</p>
-          <span className="text-xs font-bold bg-blue-100 text-blue-950 border border-blue-400 px-2 py-0.5 rounded-full inline-block mt-3">
+        <div className="bg-white p-4 sm:p-6 rounded-2xl border border-slate-300 shadow-xs">
+          <p className="text-[11px] sm:text-xs font-bold text-slate-700 uppercase tracking-wider">Active Channels</p>
+          <p className="text-xl sm:text-3xl font-black text-slate-900 mt-1 sm:mt-2">{channels.length} Streams</p>
+          <span className="text-[10px] sm:text-xs font-bold bg-blue-100 text-blue-950 border border-blue-400 px-2 py-0.5 rounded-full inline-block mt-2 sm:mt-3">
             100% Operational
           </span>
         </div>
-        <div className="bg-white p-6 rounded-2xl border border-slate-300 shadow-xs">
-          <p className="text-xs font-bold text-slate-700 uppercase tracking-wider">Platform Retention Rate</p>
-          <p className="text-3xl font-black text-slate-900 mt-2">80 - 100%</p>
-          <span className="text-xs font-bold bg-purple-100 text-purple-950 border border-purple-400 px-2 py-0.5 rounded-full inline-block mt-3">
-            Industry Highest Creator Split
+        <div className="bg-white p-4 sm:p-6 rounded-2xl border border-slate-300 shadow-xs">
+          <p className="text-[11px] sm:text-xs font-bold text-slate-700 uppercase tracking-wider">Retention Rate</p>
+          <p className="text-xl sm:text-3xl font-black text-slate-900 mt-1 sm:mt-2">80 - 100%</p>
+          <span className="text-[10px] sm:text-xs font-bold bg-purple-100 text-purple-950 border border-purple-400 px-2 py-0.5 rounded-full inline-block mt-2 sm:mt-3">
+            Highest Split
           </span>
         </div>
-        <div className="bg-white p-6 rounded-2xl border border-slate-300 shadow-xs">
-          <p className="text-xs font-bold text-slate-700 uppercase tracking-wider">Settlement Protocol</p>
-          <p className="text-3xl font-black text-emerald-800 mt-2">Instant / T+0</p>
-          <span className="text-xs font-bold bg-slate-100 text-slate-800 border border-slate-300 px-2 py-0.5 rounded-full inline-block mt-3">
-            SEPA &bull; FedNow &bull; Crypto
+        <div className="bg-white p-4 sm:p-6 rounded-2xl border border-slate-300 shadow-xs">
+          <p className="text-[11px] sm:text-xs font-bold text-slate-700 uppercase tracking-wider">Settlement Protocol</p>
+          <p className="text-xl sm:text-3xl font-black text-emerald-800 mt-1 sm:mt-2">Instant / T+0</p>
+          <span className="text-[10px] sm:text-xs font-bold bg-slate-100 text-slate-800 border border-slate-300 px-2 py-0.5 rounded-full inline-block mt-2 sm:mt-3">
+            FedNow &bull; Crypto
           </span>
         </div>
       </div>
 
       {/* Monetization Channels Matrix */}
       <div className="bg-white rounded-2xl border border-slate-300 shadow-xs overflow-hidden">
-        <div className="p-6 border-b border-slate-200 flex items-center justify-between">
+        <div className="p-4 sm:p-6 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 bg-blue-100 text-blue-900 border border-blue-300 rounded-xl">
+            <div className="p-2 sm:p-2.5 bg-blue-100 text-blue-900 border border-blue-300 rounded-xl">
               <SparklesIcon className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-xl font-black text-slate-900">Active Revenue Streams & Split Models</h2>
+              <h2 className="text-lg sm:text-xl font-black text-slate-900">Active Revenue Streams &amp; Split Models</h2>
               <p className="text-xs text-slate-700 font-semibold mt-0.5">Automated smart contract distribution across platform activities</p>
             </div>
           </div>
-          <span className="px-3 py-1 bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold text-xs rounded-full">
+          <span className="self-start sm:self-auto px-3 py-1 bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold text-xs rounded-full">
             All Channels Authorized
           </span>
         </div>
 
         <div className="divide-y divide-slate-200">
           {channels.map((ch) => (
-            <div key={ch.id} className="p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-slate-50/60 transition-colors">
+            <div key={ch.id} className="p-4 sm:p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-slate-50/60 transition-colors">
               <div className="flex-1">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
                   <h3 className="text-base font-black text-slate-900">{ch.name}</h3>
                   <span className="px-2.5 py-0.5 text-xs font-bold rounded-full bg-blue-100 text-blue-950 border border-blue-400">
                     {ch.sharePct}
                   </span>
                 </div>
-                <p className="text-sm text-slate-700 font-medium mt-1">{ch.description}</p>
+                <p className="text-xs sm:text-sm text-slate-700 font-medium mt-1">{ch.description}</p>
               </div>
 
-              <div className="flex items-center gap-6 self-end md:self-center">
-                <div className="text-right">
-                  <p className="text-xl font-black text-slate-900">{ch.estimatedEarnings.toLocaleString()} FIC</p>
-                  <p className="text-xs font-bold text-slate-700 uppercase tracking-wider">Current Cycle Yield</p>
+              <div className="flex items-center justify-between sm:justify-end gap-4 sm:gap-6 pt-2 sm:pt-0 border-t sm:border-0 border-slate-100">
+                <div className="text-left sm:text-right">
+                  <p className="text-lg sm:text-xl font-black text-slate-900">{ch.estimatedEarnings.toLocaleString()} FIC</p>
+                  <p className="text-[10px] sm:text-xs font-bold text-slate-700 uppercase tracking-wider">Current Cycle Yield</p>
                 </div>
                 <button
                   onClick={() => showToast(`Configuring split contract for ${ch.name}`, 'info')}
-                  className="px-4 py-2 text-xs font-bold bg-white text-slate-800 border border-slate-300 rounded-xl hover:bg-slate-100 transition-colors cursor-pointer"
+                  className="min-h-[44px] px-4 py-2 text-xs font-bold bg-white text-slate-800 border border-slate-300 rounded-xl hover:bg-slate-100 transition-all cursor-pointer active:scale-95"
                 >
                   Configure
                 </button>
@@ -203,6 +213,37 @@ const MonetizationPage: React.FC = () => {
             </div>
           ))}
         </div>
+      </div>
+
+      {/* Floating Sovereign Mobile Navigation Quick Dock */}
+      <div
+        data-testid="monetization-mobile-dock"
+        className="fixed bottom-3 inset-x-3 z-40 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl shadow-2xl px-2 py-1.5 flex items-center justify-around sm:hidden"
+      >
+        <Link
+          to="/financials/my-wallet"
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 rounded-xl text-[10px] font-black text-blue-400 hover:text-blue-300 transition-colors"
+        >
+          <Coins className="w-5 h-5 mb-0.5" />
+          <span>Wallet</span>
+        </Link>
+
+        <Link
+          to="/financials/vault"
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 rounded-xl text-[10px] font-black text-purple-400 hover:text-purple-300 transition-colors"
+        >
+          <Lock className="w-5 h-5 mb-0.5" />
+          <span>Vault</span>
+        </Link>
+
+        <button
+          onClick={handleRequestPayout}
+          disabled={requestingPayout}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-3 py-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl text-[10px] font-black text-white shadow-md active:scale-95 transition"
+        >
+          <ArrowUpRight className="w-5 h-5 mb-0.5" />
+          <span>Payout</span>
+        </button>
       </div>
     </div>
   );

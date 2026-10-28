@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { useAppContext } from '../../contexts/AppContext';
 import { apiService } from '../../services/apiService';
+import { Award, Gift, Star, ArrowLeft } from 'lucide-react';
 
 const LoyaltyRewardsPage: React.FC = () => {
   const { showToast } = useAppContext();
@@ -147,10 +149,19 @@ const LoyaltyRewardsPage: React.FC = () => {
     : 100;
 
   return (
-    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto space-y-6">
-      <div>
-        <h2 className="text-2xl font-black text-slate-900">Loyalty Rewards</h2>
-        <p className="mt-1 text-sm font-medium text-slate-700">Earn points and unlock exclusive platform benefits</p>
+    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto space-y-6 overflow-x-hidden pb-28 md:pb-12">
+      <div className="flex items-start sm:items-center gap-3">
+        <Link
+          to="/financials"
+          className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-xl bg-white border border-slate-300 text-slate-800 active:scale-95 transition shrink-0"
+          aria-label="Back to Financials"
+        >
+          <ArrowLeft className="w-5 h-5" />
+        </Link>
+        <div>
+          <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">Loyalty Rewards</h2>
+          <p className="mt-0.5 text-xs sm:text-sm font-medium text-slate-700">Earn points and unlock exclusive platform benefits</p>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -300,7 +311,7 @@ const LoyaltyRewardsPage: React.FC = () => {
               <button
                 onClick={() => handleRedeem(reward.id, reward.points, reward.name)}
                 disabled={redeemingId === reward.id || points < reward.points}
-                className={`mt-5 w-full px-4 py-2 font-bold text-sm rounded-lg transition-colors ${
+                className={`mt-5 w-full min-h-[44px] px-4 py-2 font-bold text-xs sm:text-sm rounded-xl transition-all flex items-center justify-center cursor-pointer active:scale-95 ${
                   points >= reward.points
                     ? 'bg-brand-blue text-white hover:bg-blue-700 shadow-sm'
                     : 'border border-slate-300 text-slate-500 bg-slate-100 cursor-not-allowed'
@@ -311,6 +322,33 @@ const LoyaltyRewardsPage: React.FC = () => {
             </div>
           ))}
         </div>
+      </div>
+
+      {/* Floating Sovereign Mobile Navigation Quick Dock */}
+      <div
+        data-testid="loyalty-mobile-dock"
+        className="fixed bottom-3 inset-x-3 z-40 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl shadow-2xl px-2 py-1.5 flex items-center justify-around sm:hidden"
+      >
+        <div className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 rounded-xl text-[10px] font-black text-amber-400">
+          <Star className="w-5 h-5 mb-0.5" />
+          <span>{currentTierObj.name}</span>
+        </div>
+
+        <Link
+          to="/financials/giftcards"
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 rounded-xl text-[10px] font-black text-blue-400 hover:text-blue-300 transition-colors"
+        >
+          <Gift className="w-5 h-5 mb-0.5" />
+          <span>Gifts</span>
+        </Link>
+
+        <Link
+          to="/financials"
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-3 py-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl text-[10px] font-black text-white shadow-md active:scale-95 transition"
+        >
+          <Award className="w-5 h-5 mb-0.5" />
+          <span>Finance</span>
+        </Link>
       </div>
     </div>
   );
