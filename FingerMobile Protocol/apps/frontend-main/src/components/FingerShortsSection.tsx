@@ -339,18 +339,18 @@ export const FingerShortsSection: React.FC<FingerShortsSectionProps> = ({
                 <button
                   type="button"
                   onClick={() => setViewerPaused((p) => !p)}
-                  className="w-7 h-7 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black/80 transition"
+                  className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black/80 transition active:scale-95"
                   title={viewerPaused ? 'Resume auto-advance' : 'Pause'}
                 >
-                  {viewerPaused ? <Play className="w-3.5 h-3.5 fill-white" /> : <Pause className="w-3.5 h-3.5 fill-white" />}
+                  {viewerPaused ? <Play className="w-4 h-4 fill-white" /> : <Pause className="w-4 h-4 fill-white" />}
                 </button>
                 <button
                   type="button"
                   aria-label="Close short viewer"
                   onClick={() => setActiveSession(null)}
-                  className="w-7 h-7 rounded-full bg-black/60 text-white flex items-center justify-center font-bold hover:bg-black/80 transition"
+                  className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-full bg-black/60 text-white flex items-center justify-center font-bold hover:bg-black/80 transition active:scale-95"
                 >
-                  <X className="w-4 h-4" />
+                  <X className="w-5 h-5" />
                 </button>
               </div>
             </div>
@@ -378,19 +378,19 @@ export const FingerShortsSection: React.FC<FingerShortsSectionProps> = ({
               <button
                 type="button"
                 onClick={prevCard}
-                className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/60 hover:bg-black/80 text-white border border-white/20 backdrop-blur-md transition shadow-lg z-20"
+                className="absolute left-2 top-1/2 -translate-y-1/2 w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full bg-black/60 hover:bg-black/80 text-white border border-white/20 backdrop-blur-md transition shadow-lg z-20 active:scale-95"
                 title="Previous Card"
               >
-                <ChevronLeft className="w-4 h-4" />
+                <ChevronLeft className="w-5 h-5" />
               </button>
 
               <button
                 type="button"
                 onClick={nextCard}
-                className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/60 hover:bg-black/80 text-white border border-white/20 backdrop-blur-md transition shadow-lg z-20"
+                className="absolute right-2 top-1/2 -translate-y-1/2 w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full bg-black/60 hover:bg-black/80 text-white border border-white/20 backdrop-blur-md transition shadow-lg z-20 active:scale-95"
                 title="Next Card (Slides in from right)"
               >
-                <ChevronRight className="w-4 h-4" />
+                <ChevronRight className="w-5 h-5" />
               </button>
 
               {/* Tap Left/Right Navigation zones */}
@@ -402,7 +402,7 @@ export const FingerShortsSection: React.FC<FingerShortsSectionProps> = ({
             <div className="absolute bottom-4 inset-x-4 z-30 flex items-center justify-between text-white">
               <div className="flex items-center space-x-3 text-xs">
                 {activeSession.cards[currentCardIndex]?.sound_title && (
-                  <span className="flex items-center gap-1 bg-black/60 px-2 py-1 rounded-full text-[10px] font-medium border border-white/20">
+                  <span className="flex items-center gap-1 bg-black/60 px-2.5 py-1.5 rounded-full text-[10px] font-medium border border-white/20">
                     <Music className="w-3 h-3 text-pink-400" /> {activeSession.cards[currentCardIndex].sound_title}
                   </span>
                 )}
@@ -413,7 +413,7 @@ export const FingerShortsSection: React.FC<FingerShortsSectionProps> = ({
                   title="Tip Creator"
                   aria-label="Tip Creator"
                   onClick={() => setShowTipModal(true)}
-                  className="p-2 bg-black/60 rounded-full hover:bg-black/90 transition shadow"
+                  className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center bg-black/60 rounded-full hover:bg-black/90 transition shadow active:scale-95"
                 >
                   <Gift className="w-4 h-4 text-emerald-400" />
                 </button>
@@ -422,7 +422,7 @@ export const FingerShortsSection: React.FC<FingerShortsSectionProps> = ({
                   title="Duet"
                   aria-label="Duet with creator"
                   onClick={handleDuet}
-                  className="p-2 bg-black/60 rounded-full hover:bg-black/90 transition shadow"
+                  className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center bg-black/60 rounded-full hover:bg-black/90 transition shadow active:scale-95"
                 >
                   <SplitSquareVertical className="w-4 h-4 text-purple-300" />
                 </button>
@@ -431,7 +431,7 @@ export const FingerShortsSection: React.FC<FingerShortsSectionProps> = ({
                   title="Like"
                   aria-label="Like story card"
                   onClick={handleLike}
-                  className="p-2 bg-black/60 rounded-full hover:bg-black/90 transition shadow"
+                  className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center bg-black/60 rounded-full hover:bg-black/90 transition shadow active:scale-95"
                 >
                   <Heart className={`w-4 h-4 ${activeSession && likedCardIds[activeSession.cards[currentCardIndex]?.id] ? 'fill-red-500 text-red-500' : 'text-red-400'}`} />
                 </button>
@@ -440,7 +440,7 @@ export const FingerShortsSection: React.FC<FingerShortsSectionProps> = ({
                   title="Comment"
                   aria-label="Comment on story card"
                   onClick={handleComment}
-                  className="p-2 bg-black/60 rounded-full hover:bg-black/90 transition shadow"
+                  className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center bg-black/60 rounded-full hover:bg-black/90 transition shadow active:scale-95"
                 >
                   <MessageCircle className="w-4 h-4 text-blue-300" />
                 </button>
