@@ -47,3 +47,4 @@ describe('StercsModulesPage Mobile Optimization Suite', () => {
     });
   });
 });
+

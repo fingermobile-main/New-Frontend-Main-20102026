@@ -39,3 +39,4 @@ describe('StercsPage Mobile Optimization Suite', () => {
     });
   });
 });
+

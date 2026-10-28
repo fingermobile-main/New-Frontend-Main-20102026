@@ -40,3 +40,4 @@ describe('StercsMediaLibraryPage Mobile Optimization Suite', () => {
     });
   });
 });
+

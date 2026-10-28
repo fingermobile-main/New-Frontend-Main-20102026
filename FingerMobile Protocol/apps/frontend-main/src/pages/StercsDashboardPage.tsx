@@ -1142,7 +1142,7 @@ const StercsDashboardPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans antialiased">
+    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans antialiased w-full max-w-full overflow-x-hidden pb-28 md:pb-12">
       {/* 1. SEMrush Standard Breadcrumb & Project Control Bar */}
       <div className="bg-white border-b border-slate-300 sticky top-0 z-30 shadow-xs">
         <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -1252,9 +1252,9 @@ const StercsDashboardPage: React.FC = () => {
                   alt={syncedProfile.name}
                   className="w-5 h-5 rounded-full object-cover ring-1 ring-blue-600"
                 />
-                <span className="text-xs font-black text-slate-900 hidden sm:inline">{syncedProfile.name}</span>
+                <span className="text-xs font-black text-slate-900 hidden sm:inline">{syncedProfile?.name || 'Administrator'}</span>
                 <span className="text-[10px] font-mono text-emerald-950 font-black bg-emerald-100 px-1.5 py-0.2 rounded border border-emerald-400">
-                  PIN: ••{syncedProfile.pinNumber.slice(-2)}
+                  PIN: ••{syncedProfile?.pinNumber ? syncedProfile.pinNumber.slice(-2) : '88'}
                 </span>
               </div>
             </div>
@@ -2652,7 +2652,7 @@ const StercsDashboardPage: React.FC = () => {
 
       {/* FLOATING TOAST NOTIFICATION BANNER */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 bg-slate-900 text-white text-xs font-medium px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 border border-slate-700 animate-in fade-in slide-in-from-bottom-3 duration-200">
+        <div className="fixed bottom-28 md:bottom-6 right-6 z-50 bg-slate-900 text-white text-xs font-medium px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 border border-slate-700 animate-in fade-in slide-in-from-bottom-3 duration-200">
           <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
           <span>{toastMessage}</span>
           <button type="button" aria-label="Close"
@@ -2663,6 +2663,52 @@ const StercsDashboardPage: React.FC = () => {
           </button>
         </div>
       )}
+
+      {/* SOVEREIGN MOBILE QUICK DOCK */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-3 py-2 shadow-lg">
+        <div className="flex items-center justify-around max-w-md mx-auto">
+          <button
+            type="button"
+            onClick={() => setActiveTab('overview')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-lg transition-colors ${
+              activeTab === 'overview' ? 'text-blue-700 font-bold bg-blue-50' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <Activity className="w-5 h-5 mb-0.5" />
+            <span className="text-[10px] leading-tight">Overview</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('governance')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-lg transition-colors ${
+              activeTab === 'governance' ? 'text-blue-700 font-bold bg-blue-50' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <Shield className="w-5 h-5 mb-0.5" />
+            <span className="text-[10px] leading-tight">Governance</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('consoles')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-lg transition-colors ${
+              activeTab === 'consoles' ? 'text-blue-700 font-bold bg-blue-50' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <Layers className="w-5 h-5 mb-0.5" />
+            <span className="text-[10px] leading-tight">Consoles</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('controls')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-lg transition-colors ${
+              activeTab === 'controls' ? 'text-blue-700 font-bold bg-blue-50' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <Sliders className="w-5 h-5 mb-0.5" />
+            <span className="text-[10px] leading-tight">Controls</span>
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

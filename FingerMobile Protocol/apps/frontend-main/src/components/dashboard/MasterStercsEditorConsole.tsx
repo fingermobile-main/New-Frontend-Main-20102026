@@ -211,7 +211,7 @@ export const MasterStercsEditorConsole: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 p-6">
+    <div className="min-h-screen bg-slate-50 text-slate-900 p-4 sm:p-6 w-full max-w-full overflow-x-hidden pb-28 md:pb-12">
       {/* Toast */}
       {toastMessage && (
         <div className="fixed top-5 right-5 z-50 bg-slate-900 text-white px-5 py-3 rounded-lg shadow-xl border border-slate-700 flex items-center gap-3">
@@ -902,6 +902,48 @@ export const MasterStercsEditorConsole: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* SOVEREIGN MOBILE QUICK DOCK */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-3 py-2 shadow-lg">
+        <div className="flex items-center justify-around max-w-md mx-auto">
+          <button
+            type="button"
+            onClick={loadData}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-lg text-slate-700 hover:text-slate-900 transition-colors"
+          >
+            <ArrowPathIcon className="w-5 h-5 mb-0.5" />
+            <span className="text-[10px] leading-tight">Refresh</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setFormName('');
+              setFormCode(`CMD_${Date.now().toString(36).toUpperCase()}`);
+              setFormCategory('Transitions');
+              setFormDsl('TRANSITION glitch DURATION 450ms');
+              setFormResolution('4K UltraHD');
+              setFormEngine('STERCS WebGL');
+              setFormFps(60);
+              setFormLatency(16);
+              setFormVoiceTag('blessings');
+              setFormNotes('');
+              setIsAddModalOpen(true);
+            }}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-lg text-blue-700 font-bold bg-blue-50 transition-colors"
+          >
+            <PlusIcon className="w-5 h-5 mb-0.5" />
+            <span className="text-[10px] leading-tight">+ Module</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setIsSpawnModalOpen(true)}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-lg text-amber-800 font-bold bg-amber-50 transition-colors"
+          >
+            <SparklesIcon className="w-5 h-5 mb-0.5" />
+            <span className="text-[10px] leading-tight">Spawn</span>
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
