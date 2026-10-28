@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import MainLayout from '../components/layout/MainLayout';
 import PlatformOwnershipCard from '../components/dashboard/PlatformOwnershipCard';
 import {
@@ -8,13 +8,17 @@ import {
   HeartIcon,
   FireIcon,
   TrophyIcon,
-  StarIcon
+  StarIcon,
+  SparklesIcon,
+  TrendingUpIcon
 } from '../icons';
+import { Users, Flame, Award, Compass, MessageSquare } from 'lucide-react';
 
 const ContentCommunityDashboardPage: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <MainLayout pageTitle="Community Dashboard">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-3 sm:p-6 lg:p-8 space-y-6 sm:space-y-8 overflow-x-hidden pb-28 md:pb-12 text-slate-900">
 
         {/* Header Section */}
         <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white/80 backdrop-blur-xl p-8 rounded-3xl border border-slate-200/60 shadow-sm relative overflow-hidden">
@@ -31,8 +35,8 @@ const ContentCommunityDashboardPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-3 relative z-10">
-            <select className="bg-white border border-slate-200 text-slate-900 text-sm rounded-xl focus:ring-fuchsia-500 focus:border-fuchsia-500 block p-3 font-medium shadow-sm font-bold border-slate-300 focus:ring-2">
+          <div className="flex items-center gap-3 relative z-10 w-full sm:w-auto">
+            <select className="w-full sm:w-auto min-h-[44px] bg-white border-2 border-slate-300 text-slate-900 text-xs sm:text-sm rounded-xl focus:ring-fuchsia-500 focus:border-fuchsia-500 block p-3 font-bold shadow-sm">
               <option>All Communities</option>
               <option>Web3 Developers</option>
               <option>DeFi Enthusiasts</option>
@@ -64,7 +68,7 @@ const ContentCommunityDashboardPage: React.FC = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 relative z-10">
           {/* Trending Discussions */}
-          <div className="bg-white/80 backdrop-blur-xl rounded-3xl p-8 border border-slate-200/60 shadow-sm flex flex-col">
+          <div id="trends-section" className="bg-white/80 backdrop-blur-xl rounded-3xl p-8 border border-slate-200/60 shadow-sm flex flex-col">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
                 <FireIcon className="w-6 h-6 text-orange-500" />
@@ -97,7 +101,7 @@ const ContentCommunityDashboardPage: React.FC = () => {
           </div>
 
           {/* Top Contributors */}
-          <div className="bg-white/80 backdrop-blur-xl rounded-3xl p-8 border border-slate-200/60 shadow-sm flex flex-col">
+          <div id="contributors-section" className="bg-white/80 backdrop-blur-xl rounded-3xl p-8 border border-slate-200/60 shadow-sm flex flex-col">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
                 <TrophyIcon className="w-6 h-6 text-amber-500" />
@@ -149,6 +153,48 @@ const ContentCommunityDashboardPage: React.FC = () => {
         {/* Sovereign Platform Ownership Directive */}
         <div className="mt-8">
           <PlatformOwnershipCard />
+        </div>
+
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <div className="fixed bottom-3 inset-x-3 z-40 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl shadow-2xl px-2 py-1.5 flex items-center justify-around sm:hidden">
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-slate-300 hover:text-white transition-colors"
+            title="Insights"
+          >
+            <SparklesIcon className="w-5 h-5" />
+            <span className="text-[10px] font-semibold mt-0.5">Insights</span>
+          </button>
+          <button
+            onClick={() => {
+              const el = document.getElementById('trends-section');
+              el?.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-slate-300 hover:text-white transition-colors"
+            title="Trends"
+          >
+            <TrendingUpIcon className="w-5 h-5" />
+            <span className="text-[10px] font-semibold mt-0.5">Trends</span>
+          </button>
+          <button
+            onClick={() => {
+              const el = document.getElementById('contributors-section');
+              el?.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-slate-300 hover:text-white transition-colors"
+            title="Top"
+          >
+            <StarIcon className="w-5 h-5 text-amber-400" />
+            <span className="text-[10px] font-semibold mt-0.5">Top</span>
+          </button>
+          <button
+            onClick={() => navigate('/communities')}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-slate-300 hover:text-white transition-colors"
+            title="Guilds"
+          >
+            <UserGroupIcon className="w-5 h-5" />
+            <span className="text-[10px] font-semibold mt-0.5">Guilds</span>
+          </button>
         </div>
       </div>
     </MainLayout>

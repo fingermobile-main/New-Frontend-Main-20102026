@@ -429,14 +429,14 @@ const CommunityPage: React.FC = () => {
       {/* Header */}
       <header className="bg-white shadow border-b border-slate-200">
         <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center py-4 sm:py-6 gap-3">
             <div className="flex items-center">
-              <Users className="h-8 w-8 text-blue-600" />
-              <h1 className="text-2xl font-bold text-slate-900 ml-3">Community Management</h1>
+              <Users className="h-7 w-7 sm:h-8 sm:w-8 text-blue-600" />
+              <h1 className="text-xl sm:text-2xl font-bold text-slate-900 ml-3">Community Management</h1>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-4 w-full sm:w-auto justify-end">
               <button
-                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center shadow-sm"
+                className="min-h-[44px] bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center shadow-sm active:scale-95 transition-all"
                 onClick={() => setShowCreateModal(true)}
               >
                 <Plus className="h-4 w-4 mr-1" />
@@ -447,7 +447,7 @@ const CommunityPage: React.FC = () => {
         </div>
       </header>
 
-      <main className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-8 w-full max-w-full overflow-x-hidden pb-28 md:pb-12">
         {/* Stats Overview */}
         {communityStats && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -502,15 +502,15 @@ const CommunityPage: React.FC = () => {
         )}
 
         {/* Tabs */}
-        <div className="border-b border-slate-300 mb-6">
-          <nav className="-mb-px flex space-x-8">
+        <div className="border-b border-slate-300 mb-6 overflow-x-auto">
+          <nav className="-mb-px flex space-x-4 sm:space-x-8 min-w-max pb-1">
             <button
               onClick={() => setActiveTab('groups')}
               className={`${
                 activeTab === 'groups'
                   ? 'border-blue-500 text-blue-600'
                   : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
-              } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
+              } whitespace-nowrap py-3 sm:py-4 px-2 sm:px-1 border-b-2 font-black text-xs sm:text-sm flex items-center min-h-[44px]`}
             >
               <Users className="h-4 w-4 mr-2" />
               Groups
@@ -521,7 +521,7 @@ const CommunityPage: React.FC = () => {
                 activeTab === 'threads'
                   ? 'border-blue-500 text-blue-600'
                   : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
-              } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
+              } whitespace-nowrap py-3 sm:py-4 px-2 sm:px-1 border-b-2 font-black text-xs sm:text-sm flex items-center min-h-[44px]`}
             >
               <MessageSquare className="h-4 w-4 mr-2" />
               Threads
@@ -532,7 +532,7 @@ const CommunityPage: React.FC = () => {
                 activeTab === 'interactions'
                   ? 'border-blue-500 text-blue-600'
                   : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
-              } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
+              } whitespace-nowrap py-3 sm:py-4 px-2 sm:px-1 border-b-2 font-black text-xs sm:text-sm flex items-center min-h-[44px]`}
             >
               <Activity className="h-4 w-4 mr-2" />
               Interactions
@@ -543,7 +543,7 @@ const CommunityPage: React.FC = () => {
                 activeTab === 'moderation'
                   ? 'border-blue-500 text-blue-600'
                   : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
-              } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
+              } whitespace-nowrap py-3 sm:py-4 px-2 sm:px-1 border-b-2 font-black text-xs sm:text-sm flex items-center min-h-[44px]`}
             >
               <Shield className="h-4 w-4 mr-2" />
               Moderation
@@ -554,7 +554,7 @@ const CommunityPage: React.FC = () => {
                 activeTab === 'analytics'
                   ? 'border-blue-500 text-blue-600'
                   : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
-              } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
+              } whitespace-nowrap py-3 sm:py-4 px-2 sm:px-1 border-b-2 font-black text-xs sm:text-sm flex items-center min-h-[44px]`}
             >
               <BarChart3 className="h-4 w-4 mr-2" />
               Analytics
@@ -1281,14 +1281,14 @@ const CommunityPage: React.FC = () => {
                 <div className="flex justify-end space-x-3 mt-6">
                   <button
                     type="button"
-                    className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none"
+                    className="min-h-[44px] px-4 py-2 text-xs sm:text-sm font-bold text-slate-700 bg-slate-100 rounded-xl hover:bg-slate-200 focus:outline-none"
                     onClick={() => setShowCreateModal(false)}
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none"
+                    className="min-h-[44px] px-4 py-2 text-xs sm:text-sm font-bold text-white bg-blue-600 rounded-xl hover:bg-blue-700 focus:outline-none shadow-sm active:scale-95"
                   >
                     Create Group
                   </button>
@@ -1298,6 +1298,51 @@ const CommunityPage: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Floating Sovereign Mobile Navigation Quick Dock */}
+      <div
+        data-testid="community-management-mobile-dock"
+        className="fixed bottom-3 inset-x-3 z-40 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl shadow-2xl px-2 py-1.5 flex items-center justify-around sm:hidden"
+      >
+        <button
+          type="button"
+          onClick={() => setActiveTab('groups')}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] transition-transform active:scale-95 ${
+            activeTab === 'groups' ? 'text-blue-400' : 'text-slate-300 hover:text-white'
+          }`}
+        >
+          <Users className="w-5 h-5" />
+          <span className="text-[10px] font-bold mt-0.5">Groups</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab('threads')}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] transition-transform active:scale-95 ${
+            activeTab === 'threads' ? 'text-blue-400' : 'text-slate-300 hover:text-white'
+          }`}
+        >
+          <MessageSquare className="w-5 h-5" />
+          <span className="text-[10px] font-medium mt-0.5">Threads</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setShowCreateModal(true)}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-emerald-400 active:scale-95 transition-transform"
+        >
+          <Plus className="w-5 h-5" />
+          <span className="text-[10px] font-bold mt-0.5">New</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab('analytics')}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] transition-transform active:scale-95 ${
+            activeTab === 'analytics' ? 'text-blue-400' : 'text-slate-300 hover:text-white'
+          }`}
+        >
+          <BarChart3 className="w-5 h-5" />
+          <span className="text-[10px] font-medium mt-0.5">Stats</span>
+        </button>
+      </div>
     </div>
   );
 };

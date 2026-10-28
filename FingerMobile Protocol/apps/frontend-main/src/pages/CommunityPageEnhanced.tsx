@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
 import { useCommunityMembers } from '../hooks/useCommunityMembers';
 import { useCommunityPosts } from '../hooks/useCommunityPosts';
 import { useCommunityGroups } from '../hooks/useCommunityGroups';
+import { Users, FileText, Compass, MessageSquare, Plus } from 'lucide-react';
 
 interface CommunityFilters {
   query: string;
@@ -13,6 +14,7 @@ interface CommunityFilters {
 }
 
 const CommunityPageEnhanced: React.FC = () => {
+  const navigate = useNavigate();
   // eslint-disable-next-line no-unused-vars
   const { showToast } = useAppContext();
   const {
@@ -144,31 +146,40 @@ const CommunityPageEnhanced: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto p-4 sm:p-6 lg:p-8">
-        <div className="mb-8">
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-2">
-            Community
-          </h1>
-          <p className="text-gray-600 sm:text-lg lg:text-xl">
-            Connect with creators and explore content
-          </p>
+    <div className="min-h-screen bg-gray-50 w-full max-w-full overflow-x-hidden pb-28 md:pb-12 text-slate-900">
+      <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-3 sm:p-6 lg:p-8">
+        <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 mb-1">
+              Community Hub
+            </h1>
+            <p className="text-slate-700 text-xs sm:text-sm lg:text-base font-medium">
+              Connect with sovereign creators, explore trending posts, and join local guilds.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => navigate('/groups/create')}
+            className="min-h-[44px] px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs sm:text-sm font-black flex items-center justify-center gap-2 shadow-sm transition active:scale-95 shrink-0"
+          >
+            <Plus className="w-4 h-4" />
+            Create Guild
+          </button>
         </div>
 
         {/* Search and Filters */}
-        <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
-          <div className="flex flex-col md:flex-row gap-4 mb-6">
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-300 p-4 sm:p-6 mb-6 sm:mb-8 space-y-4">
+          <div className="flex flex-col md:flex-row gap-3">
             <div className="flex-1">
               <input
                 type="text"
                 placeholder="Search community..."
                 value={filters.query}
-                onChange={(e) => setFilters((prev) => ({ ...prev, query: e.target.value }))
-                }
-                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-brand-blue focus:border-transparent sm:text-base lg:text-lg text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
+                onChange={(e) => setFilters((prev) => ({ ...prev, query: e.target.value }))}
+                className="w-full min-h-[44px] px-3.5 py-2.5 border-2 border-slate-300 rounded-xl text-slate-900 font-bold text-sm bg-white placeholder:text-slate-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
               />
             </div>
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2">
               <select
                 value={filters.sortBy}
                 onChange={(e) =>
@@ -176,7 +187,7 @@ const CommunityPageEnhanced: React.FC = () => {
                     e.target.value as 'newest' | 'popular' | 'active',
                   )
                 }
-                className="p-3 border rounded-lg focus:ring-2 focus:ring-brand-blue focus:border-transparent sm:text-base lg:text-lg text-slate-900 font-bold border-slate-300 bg-white"
+                className="min-h-[44px] px-3.5 py-2.5 border-2 border-slate-300 rounded-xl text-slate-900 font-bold text-xs sm:text-sm bg-white focus:outline-none focus:border-blue-500"
               >
                 <option value="popular">Most Popular</option>
                 <option value="newest">Newest</option>
@@ -189,7 +200,7 @@ const CommunityPageEnhanced: React.FC = () => {
                     e.target.value as 'all' | 'posts' | 'groups' | 'members',
                   )
                 }
-                className="p-3 border rounded-lg focus:ring-2 focus:ring-brand-blue focus:border-transparent sm:text-base lg:text-lg text-slate-900 font-bold border-slate-300 bg-white"
+                className="min-h-[44px] px-3.5 py-2.5 border-2 border-slate-300 rounded-xl text-slate-900 font-bold text-xs sm:text-sm bg-white focus:outline-none focus:border-blue-500"
               >
                 <option value="all">All Content</option>
                 <option value="posts">Posts</option>
@@ -201,21 +212,22 @@ const CommunityPageEnhanced: React.FC = () => {
 
           {/* Tag Filters */}
           <div>
-            <h3 className="font-semibold mb-3 sm:text-lg lg:text-xl">
+            <h3 className="font-black text-xs uppercase tracking-wider text-slate-800 mb-2">
               Filter by Tags
             </h3>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-1.5 sm:gap-2">
               {allTags.map((tag) => (
                 <button
                   key={tag}
+                  type="button"
                   onClick={() => toggleTagFilter(tag)}
-                  className={`px-3 py-1 rounded-full text-sm sm:text-base lg:text-lg ${
+                  className={`min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-black transition-all active:scale-95 flex items-center justify-center ${
                     filters.tags.includes(tag)
-                      ? 'bg-brand-blue text-white'
-                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                      ? 'bg-blue-600 text-white shadow-sm'
+                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-300'
                   }`}
                 >
-                  {tag}
+                  #{tag}
                 </button>
               ))}
             </div>
@@ -435,10 +447,10 @@ const CommunityPageEnhanced: React.FC = () => {
                           type="button"
                           aria-label={followingMembers[member.id] ? `Unfollow ${member.name}` : `Follow ${member.name}`}
                           onClick={() => toggleFollowMember(member.id)}
-                          className={`mt-3 px-4 py-1 rounded-lg text-sm sm:text-base lg:text-lg font-semibold transition-colors ${
+                          className={`mt-3 min-h-[44px] px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all active:scale-95 flex items-center justify-center cursor-pointer ${
                             followingMembers[member.id]
                               ? 'bg-slate-700 hover:bg-slate-600 text-white'
-                              : 'bg-brand-blue hover:bg-blue-700 text-white'
+                              : 'bg-blue-600 hover:bg-blue-700 text-white shadow-sm'
                           }`}
                         >
                           {followingMembers[member.id] ? 'Following' : 'Follow'}
@@ -450,6 +462,51 @@ const CommunityPageEnhanced: React.FC = () => {
               </div>
             ) : null}
         </div>
+      </div>
+
+      {/* Floating Sovereign Mobile Navigation Quick Dock */}
+      <div
+        data-testid="community-enhanced-mobile-dock"
+        className="fixed bottom-3 inset-x-3 z-40 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl shadow-2xl px-2 py-1.5 flex items-center justify-around sm:hidden"
+      >
+        <button
+          type="button"
+          onClick={() => handleContentTypeChange('all')}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] transition-transform active:scale-95 ${
+            filters.contentType === 'all' ? 'text-blue-400' : 'text-slate-300 hover:text-white'
+          }`}
+        >
+          <Compass className="w-5 h-5" />
+          <span className="text-[10px] font-bold mt-0.5">Explore</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => handleContentTypeChange('posts')}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] transition-transform active:scale-95 ${
+            filters.contentType === 'posts' ? 'text-blue-400' : 'text-slate-300 hover:text-white'
+          }`}
+        >
+          <FileText className="w-5 h-5" />
+          <span className="text-[10px] font-medium mt-0.5">Posts</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => handleContentTypeChange('groups')}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] transition-transform active:scale-95 ${
+            filters.contentType === 'groups' ? 'text-blue-400' : 'text-slate-300 hover:text-white'
+          }`}
+        >
+          <Users className="w-5 h-5" />
+          <span className="text-[10px] font-medium mt-0.5">Guilds</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => navigate('/groups/create')}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-emerald-400 active:scale-95 transition-transform"
+        >
+          <Plus className="w-5 h-5" />
+          <span className="text-[10px] font-bold mt-0.5">Create</span>
+        </button>
       </div>
     </div>
   );

@@ -60,4 +60,15 @@ describe('GroupsPage', () => {
       expect(screen.getByText('Failed to connect to groups database')).toBeInTheDocument();
     });
   });
+
+  it('renders mobile quick dock with interactive targets', async () => {
+    jest.spyOn(groupsService, 'getAllGroups').mockResolvedValue({ success: true, data: groups });
+    renderPage();
+    const dock = await screen.findByTestId('groups-mobile-dock');
+    expect(dock).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /^discover$/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /^joined$/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /^create$/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /^guides$/i })).toBeInTheDocument();
+  });
 });

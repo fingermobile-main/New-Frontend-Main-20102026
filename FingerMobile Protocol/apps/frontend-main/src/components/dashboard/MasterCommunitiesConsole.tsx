@@ -453,7 +453,7 @@ export const MasterCommunitiesConsole: React.FC = () => {
               });
               setIsSpawnerModalOpen(true);
             }}
-            className="py-2.5 px-4 rounded-xl font-bold text-xs bg-purple-700 hover:bg-purple-800 text-white transition-colors flex items-center gap-2 shadow-sm"
+            className="min-h-[44px] py-2.5 px-4 rounded-xl font-bold text-xs bg-purple-700 hover:bg-purple-800 text-white transition-colors flex items-center justify-center gap-2 shadow-sm"
           >
             <Layers className="w-4 h-4" />
             <span>Spawn New Console</span>
@@ -461,7 +461,7 @@ export const MasterCommunitiesConsole: React.FC = () => {
 
           <button
             onClick={() => setIsMediaUploadModalOpen(true)}
-            className="py-2.5 px-4 rounded-xl font-bold text-xs bg-slate-900 hover:bg-slate-800 text-white transition-colors flex items-center gap-2 shadow-sm"
+            className="min-h-[44px] py-2.5 px-4 rounded-xl font-bold text-xs bg-slate-900 hover:bg-slate-800 text-white transition-colors flex items-center justify-center gap-2 shadow-sm"
           >
             <Upload className="w-4 h-4 text-emerald-400" />
             <span>Upload Media</span>
@@ -469,7 +469,7 @@ export const MasterCommunitiesConsole: React.FC = () => {
 
           <button
             onClick={handleOpenCreateModal}
-            className="py-2.5 px-4 rounded-xl font-bold text-xs bg-emerald-600 hover:bg-emerald-700 text-white transition-colors flex items-center gap-2 shadow-sm"
+            className="min-h-[44px] py-2.5 px-4 rounded-xl font-bold text-xs bg-emerald-600 hover:bg-emerald-700 text-white transition-colors flex items-center justify-center gap-2 shadow-sm"
           >
             <Plus className="w-4 h-4" />
             <span>Add New Item</span>
@@ -493,7 +493,7 @@ export const MasterCommunitiesConsole: React.FC = () => {
                   setActiveService(srv.key);
                   audioEngine.playVoiceLine('small_combo');
                 }}
-                className={`py-2.5 px-4 rounded-xl font-bold text-xs transition-all flex items-center gap-2.5 ${
+                className={`min-h-[44px] py-2.5 px-4 rounded-xl font-bold text-xs transition-all flex items-center justify-center gap-2.5 shrink-0 ${
                   isSelected
                     ? 'bg-slate-900 text-white shadow-md'
                     : 'bg-slate-50 hover:bg-slate-100 text-slate-800 border border-slate-200'
@@ -563,7 +563,7 @@ export const MasterCommunitiesConsole: React.FC = () => {
         <div className="flex md:flex-col justify-end gap-2 shrink-0">
           <button
             onClick={() => navigate(activeConfig.route)}
-            className="py-2.5 px-4 rounded-xl bg-white hover:bg-slate-100 text-slate-900 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors shadow-sm"
+            className="min-h-[44px] py-2.5 px-4 rounded-xl bg-white hover:bg-slate-100 text-slate-900 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors shadow-sm"
           >
             <span>Launch Public Page</span>
             <ExternalLink className="w-3.5 h-3.5" />
@@ -581,7 +581,7 @@ export const MasterCommunitiesConsole: React.FC = () => {
               placeholder={`Search ${activeConfig.name} items by title, slug, or tags...`}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 text-xs font-bold text-slate-900 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"
+              className="w-full min-h-[44px] pl-9 pr-4 py-2 text-xs font-bold text-slate-900 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"
             />
           </div>
 
@@ -590,7 +590,7 @@ export const MasterCommunitiesConsole: React.FC = () => {
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="py-2 px-3 text-xs font-bold text-slate-900 bg-white border border-slate-300 rounded-xl outline-none"
+              className="min-h-[44px] py-2 px-3 text-xs font-bold text-slate-900 bg-white border border-slate-300 rounded-xl outline-none"
             >
               <option value="all">All Statuses</option>
               <option value="active">Active Only</option>

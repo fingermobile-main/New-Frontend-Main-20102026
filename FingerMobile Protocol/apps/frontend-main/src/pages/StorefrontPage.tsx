@@ -453,7 +453,7 @@ const StorefrontPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Member Storefronts | FingerMobile Protocol™">
-      <div className="min-h-screen bg-slate-900 text-slate-100 pb-24">
+      <div className="min-h-screen bg-slate-900 text-slate-100 w-full max-w-full overflow-x-hidden pb-28 md:pb-12">
         {/* Top Header Banner */}
         <div className="bg-gradient-to-r from-blue-950 via-slate-900 to-indigo-950 border-b border-blue-500/20 py-8 px-4 sm:px-6 lg:px-8">
           <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto flex flex-col md:flex-row md:items-center justify-between gap-6">
@@ -510,7 +510,7 @@ const StorefrontPage: React.FC = () => {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search stores, merchant products, goods, services, or SKU..."
-                  className="w-full pl-12 pr-4 py-2.5 bg-slate-900 border border-slate-700/80 rounded-xl text-sm text-slate-100 placeholder:text-slate-300 font-medium focus:outline-none focus:border-blue-500"
+                  className="w-full min-h-[44px] pl-12 pr-4 py-2.5 bg-slate-900 border border-slate-700/80 rounded-xl text-sm text-slate-100 placeholder:text-slate-300 font-medium focus:outline-none focus:border-blue-500"
                 />
               </div>
 
@@ -525,7 +525,7 @@ const StorefrontPage: React.FC = () => {
                   <button
                     key={type.id}
                     onClick={() => setSelectedGoodsType(type.id as any)}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
+                    className={`min-h-[44px] px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center justify-center shrink-0 ${
                       selectedGoodsType === type.id
                         ? 'bg-blue-600 text-white shadow-sm'
                         : 'bg-slate-900 text-slate-300 font-medium hover:bg-slate-800 hover:text-white'

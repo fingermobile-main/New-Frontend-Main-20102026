@@ -29,7 +29,8 @@ import {
   Sparkles,
   BarChart2,
   Heart,
-  ChevronRight
+  ChevronRight,
+  Compass
 } from 'lucide-react';
 
 
@@ -268,23 +269,23 @@ const GroupsPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 py-6 px-3 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-slate-950 text-slate-100 py-6 px-3 sm:px-6 lg:px-8 w-full max-w-full overflow-x-hidden pb-28 md:pb-12">
       {/* Top Banner & Living Room Identity */}
-      <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto mb-8">
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-900/60 via-indigo-900/40 to-slate-900/90 border border-blue-500/30 p-6 sm:p-8 backdrop-blur-xl shadow-2xl">
+      <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto mb-6 sm:mb-8">
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-900/60 via-indigo-900/40 to-slate-900/90 border border-blue-500/30 p-5 sm:p-8 backdrop-blur-xl shadow-2xl">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-300 text-xs font-semibold mb-3">
                 <Sparkles className="w-3.5 h-3.5 text-blue-400" />
                 The Digital Living Room™ Micro-Community Architecture
               </div>
-              <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white flex items-center gap-3">
+              <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white flex items-center gap-3">
                 <span>Groups Protocol</span>
-                <span className="text-sm font-medium px-2.5 py-0.5 rounded-md bg-blue-600/30 text-blue-300 border border-blue-500/30">
+                <span className="text-xs sm:text-sm font-medium px-2.5 py-0.5 rounded-md bg-blue-600/30 text-blue-300 border border-blue-500/30">
                   Many-to-Many
                 </span>
               </h1>
-              <p className="mt-2 text-slate-300 text-sm sm:text-base max-w-2xl leading-relaxed">
+              <p className="mt-2 text-slate-300 text-xs sm:text-base max-w-2xl leading-relaxed">
                 Shared dedicated spaces prioritizing peer-to-peer dialogue, crowdsourced problem solving, and belonging. Stripping away performative status feeds in favor of focused high-utility connections.
               </p>
             </div>
@@ -292,8 +293,9 @@ const GroupsPage: React.FC = () => {
             {/* Quick Action Button */}
             <div className="shrink-0 flex items-center gap-3">
               <button
+                type="button"
                 onClick={() => setIsCreateModalOpen(true)}
-                className="px-5 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-blue-600/30 transition-all flex items-center gap-2 transform hover:-translate-y-0.5"
+                className="min-h-[44px] px-5 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-blue-600/30 transition-all flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
               >
                 <Plus className="w-4 h-4" />
                 Create Digital Living Room
@@ -337,8 +339,9 @@ const GroupsPage: React.FC = () => {
           {/* Navigation Tabs */}
           <div className="flex flex-wrap items-center gap-2 mt-6 pt-6 border-t border-blue-500/20">
             <button
+              type="button"
               onClick={() => setActiveTab('discover')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
+              className={`min-h-[44px] flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all active:scale-95 cursor-pointer ${
                 activeTab === 'discover'
                   ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30'
                   : 'bg-slate-900/60 text-slate-300 hover:bg-slate-800 hover:text-white'
@@ -352,8 +355,9 @@ const GroupsPage: React.FC = () => {
             </button>
 
             <button
+              type="button"
               onClick={() => setActiveTab('my-groups')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
+              className={`min-h-[44px] flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all active:scale-95 cursor-pointer ${
                 activeTab === 'my-groups'
                   ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30'
                   : 'bg-slate-900/60 text-slate-300 hover:bg-slate-800 hover:text-white'
@@ -367,8 +371,9 @@ const GroupsPage: React.FC = () => {
             </button>
 
             <button
+              type="button"
               onClick={() => setActiveTab('guides')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
+              className={`min-h-[44px] flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all active:scale-95 cursor-pointer ${
                 activeTab === 'guides'
                   ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30'
                   : 'bg-slate-900/60 text-slate-300 hover:bg-slate-800 hover:text-white'
@@ -379,8 +384,9 @@ const GroupsPage: React.FC = () => {
             </button>
 
             <button
+              type="button"
               onClick={() => setActiveTab('powertools')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
+              className={`min-h-[44px] flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all active:scale-95 cursor-pointer ${
                 activeTab === 'powertools'
                   ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30'
                   : 'bg-slate-900/60 text-slate-300 hover:bg-slate-800 hover:text-white'
@@ -1020,6 +1026,50 @@ const GroupsPage: React.FC = () => {
           </div>
         </div>
       )}
+      {/* Floating Sovereign Mobile Navigation Quick Dock */}
+      <div
+        data-testid="groups-mobile-dock"
+        className="fixed bottom-3 inset-x-3 z-40 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl shadow-2xl px-2 py-1.5 flex items-center justify-around sm:hidden"
+      >
+        <button
+          type="button"
+          onClick={() => setActiveTab('discover')}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] transition-transform active:scale-95 ${
+            activeTab === 'discover' ? 'text-blue-400' : 'text-slate-300 hover:text-white'
+          }`}
+        >
+          <Globe className="w-5 h-5" />
+          <span className="text-[10px] font-bold mt-0.5">Discover</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab('my-groups')}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] transition-transform active:scale-95 ${
+            activeTab === 'my-groups' ? 'text-blue-400' : 'text-slate-300 hover:text-white'
+          }`}
+        >
+          <Users className="w-5 h-5" />
+          <span className="text-[10px] font-medium mt-0.5">Joined</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setIsCreateModalOpen(true)}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-emerald-400 active:scale-95 transition-transform"
+        >
+          <Plus className="w-5 h-5" />
+          <span className="text-[10px] font-bold mt-0.5">Create</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab('guides')}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] transition-transform active:scale-95 ${
+            activeTab === 'guides' ? 'text-blue-400' : 'text-slate-300 hover:text-white'
+          }`}
+        >
+          <BookOpen className="w-5 h-5" />
+          <span className="text-[10px] font-medium mt-0.5">Guides</span>
+        </button>
+      </div>
     </div>
   );
 };
