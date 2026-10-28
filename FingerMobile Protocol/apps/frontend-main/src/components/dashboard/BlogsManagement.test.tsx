@@ -46,3 +46,4 @@ describe('BlogsManagement Component', () => {
     expect(window.location.assign).toHaveBeenCalledWith('/blog/create');
   });
 });
+
