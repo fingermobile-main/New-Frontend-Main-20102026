@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
+import { Package, Truck, RefreshCw, ShoppingBag } from 'lucide-react';
 import apiService from '../services/apiService';
 // --- Domain Interface Schema Definitions ---
 interface StatusUpdate {
@@ -278,6 +279,47 @@ const FlamingoTrackingPage: React.FC = () => {
           </div>
         )}
       </main>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <nav
+        aria-label="Flamingo Tracking Mobile Navigation"
+        className="md:hidden fixed bottom-4 inset-x-3 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl p-2 z-40 shadow-2xl flex items-center justify-around gap-1"
+      >
+        <button
+          type="button"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-pink-400 hover:text-pink-300 transition-colors cursor-pointer"
+        >
+          <Package className="w-5 h-5 mb-0.5" />
+          <span>Tracking</span>
+        </button>
+        <button
+          type="button"
+          onClick={handleRefresh}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-emerald-400 hover:text-emerald-300 transition-colors cursor-pointer"
+        >
+          <RefreshCw className={`w-5 h-5 mb-0.5 ${refreshing ? 'animate-spin' : ''}`} />
+          <span>Refresh</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => window.location.assign('/store')}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-amber-400 hover:text-amber-300 transition-colors cursor-pointer"
+        >
+          <ShoppingBag className="w-5 h-5 mb-0.5" />
+          <span>Shop</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            if (shipments.length > 0) setSelectedShipment(shipments[0]);
+          }}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-sky-400 hover:text-sky-300 transition-colors cursor-pointer"
+        >
+          <Truck className="w-5 h-5 mb-0.5" />
+          <span>Dispatch</span>
+        </button>
+      </nav>
     </div>
   );
 };
@@ -287,7 +329,10 @@ const styles: Record<string, React.CSSProperties> = {
   container: {
     minHeight: '100vh',
     backgroundColor: '#f8fafc',
-    padding: '24px',
+    padding: '16px',
+    maxWidth: '100%',
+    overflowX: 'hidden',
+    paddingBottom: '112px',
     fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
   },
   header: {
@@ -326,7 +371,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   dashboardGrid: {
     display: 'grid',
-    gridTemplateColumns: 'minmax(280px, 340px) 1fr',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
     gap: '24px',
     alignItems: 'start'
   },
@@ -528,22 +573,24 @@ const styles: Record<string, React.CSSProperties> = {
     lineHeight: '1.4'
   },
   refreshButton: {
+    minHeight: '44px',
     padding: '10px 16px',
     backgroundColor: '#ffffff',
-    color: '#475569',
+    color: '#0f172a',
     border: '1px solid #cbd5e1',
-    borderRadius: '10px',
+    borderRadius: '12px',
     cursor: 'pointer',
     fontSize: '14px',
-    fontWeight: '600',
+    fontWeight: '700',
     transition: 'background-color 0.15s ease'
   },
   newPurchaseButton: {
+    minHeight: '44px',
     padding: '10px 18px',
     backgroundColor: '#ff6b9d',
     color: '#ffffff',
     border: 'none',
-    borderRadius: '10px',
+    borderRadius: '12px',
     cursor: 'pointer',
     fontSize: '14px',
     fontWeight: '700',

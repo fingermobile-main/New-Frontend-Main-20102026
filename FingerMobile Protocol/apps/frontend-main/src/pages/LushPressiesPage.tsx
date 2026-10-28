@@ -701,7 +701,7 @@ export const LushPressiesPage: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen bg-[#F5F9F6] text-gray-900 transition-colors">
+    <div className="min-h-screen bg-[#F5F9F6] text-gray-900 transition-colors w-full max-w-full overflow-x-hidden pb-28 md:pb-12">
       {/* Top Ambient Glow Banner */}
       <div className="h-1 bg-gradient-to-r from-emerald-600 via-teal-500 to-[#DC582A]" />
 

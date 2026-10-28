@@ -113,8 +113,8 @@ export const ModeratorCommandCenterPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-100 text-slate-900 py-8 px-4 sm:px-6 lg:px-8 font-sans">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className="min-h-screen bg-slate-100 text-slate-900 py-6 sm:py-8 px-3 sm:px-6 lg:px-8 font-sans w-full max-w-full overflow-x-hidden pb-28 md:pb-12">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto space-y-6">
         {/* Navigation Breadcrumb */}
         <nav className="flex items-center gap-2 text-xs font-bold text-slate-700">
           <Link to="/forum" className="hover:text-orange-600 transition">Forum Home</Link>
@@ -169,21 +169,21 @@ export const ModeratorCommandCenterPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <button
               onClick={loadData}
-              className="px-3.5 py-2 text-xs font-bold rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-900 border border-slate-300 transition flex items-center gap-1.5 cursor-pointer"
+              className="min-h-[44px] px-3.5 py-2 text-xs font-bold rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-900 border border-slate-300 transition flex items-center gap-1.5 cursor-pointer shadow-xs"
             >
-              <RefreshCw className="w-3.5 h-3.5" />
-              Refresh Feed
+              <RefreshCw className="w-4 h-4" />
+              <span>Refresh Feed</span>
             </button>
             {isExecutive && (
               <Link
                 to="/admin/users-permissions"
-                className="px-4 py-2 text-xs font-black rounded-xl bg-rose-600 hover:bg-rose-700 text-white transition flex items-center gap-1.5 shadow-xs cursor-pointer"
+                className="min-h-[44px] px-4 py-2 text-xs font-black rounded-xl bg-rose-600 hover:bg-rose-700 text-white transition flex items-center gap-1.5 shadow-xs cursor-pointer"
               >
-                <ShieldCheck className="w-3.5 h-3.5" />
-                Manage Moderator Scopes
+                <ShieldCheck className="w-4 h-4" />
+                <span>Manage Moderator Scopes</span>
               </Link>
             )}
           </div>
@@ -260,24 +260,24 @@ export const ModeratorCommandCenterPage: React.FC = () => {
                   <div className="flex items-center gap-2 pt-1 flex-wrap">
                     <button
                       onClick={() => handleTimeout(item.reportedUser, item.id)}
-                      className="px-3 py-1.5 text-xs font-black rounded-lg bg-amber-600 hover:bg-amber-700 text-white transition flex items-center gap-1 shadow-xs cursor-pointer"
+                      className="min-h-[44px] px-3.5 py-2 text-xs font-black rounded-xl bg-amber-600 hover:bg-amber-700 text-white transition flex items-center gap-1.5 shadow-xs cursor-pointer"
                     >
-                      <Clock className="w-3.5 h-3.5" />
-                      Issue 24h Timeout
+                      <Clock className="w-4 h-4" />
+                      <span>Issue 24h Timeout</span>
                     </button>
                     <button
                       onClick={() => handleQuarantine(item.id)}
-                      className="px-3 py-1.5 text-xs font-black rounded-lg bg-rose-600 hover:bg-rose-700 text-white transition flex items-center gap-1 shadow-xs cursor-pointer"
+                      className="min-h-[44px] px-3.5 py-2 text-xs font-black rounded-xl bg-rose-600 hover:bg-rose-700 text-white transition flex items-center gap-1.5 shadow-xs cursor-pointer"
                     >
-                      <UserX className="w-3.5 h-3.5" />
-                      Quarantine Content
+                      <UserX className="w-4 h-4" />
+                      <span>Quarantine Content</span>
                     </button>
                     <button
                       onClick={() => handleDismiss(item.id)}
-                      className="px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-900 transition flex items-center gap-1 border border-slate-300 cursor-pointer"
+                      className="min-h-[44px] px-3.5 py-2 text-xs font-bold rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-900 transition flex items-center gap-1.5 border border-slate-300 cursor-pointer"
                     >
-                      <CheckCircle className="w-3.5 h-3.5 text-emerald-700" />
-                      Dismiss Report
+                      <CheckCircle className="w-4 h-4 text-emerald-700" />
+                      <span>Dismiss Report</span>
                     </button>
                   </div>
                 </div>
@@ -286,6 +286,47 @@ export const ModeratorCommandCenterPage: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <nav
+        aria-label="Moderator Command Center Mobile Navigation"
+        className="md:hidden fixed bottom-4 inset-x-3 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl p-2 z-40 shadow-2xl flex items-center justify-around gap-1"
+      >
+        <button
+          type="button"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-rose-400 hover:text-rose-300 transition-colors cursor-pointer"
+        >
+          <ShieldAlert className="w-5 h-5 mb-0.5" />
+          <span>Sentinel</span>
+        </button>
+        <button
+          type="button"
+          onClick={loadData}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-emerald-400 hover:text-emerald-300 transition-colors cursor-pointer"
+        >
+          <RefreshCw className="w-5 h-5 mb-0.5" />
+          <span>Refresh</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            const firstFlag = flags[0];
+            if (firstFlag) handleDismiss(firstFlag.id);
+          }}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-amber-400 hover:text-amber-300 transition-colors cursor-pointer"
+        >
+          <CheckCircle className="w-5 h-5 mb-0.5" />
+          <span>Dismiss</span>
+        </button>
+        <Link
+          to="/forum"
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-slate-300 hover:text-white transition-colors"
+        >
+          <MessageSquare className="w-5 h-5 mb-0.5" />
+          <span>Forum</span>
+        </Link>
+      </nav>
     </div>
   );
 };

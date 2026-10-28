@@ -845,7 +845,7 @@ const CataloguePage: React.FC = () => {
             type="button"
             onClick={() => {
               const firstItem = filteredAssets[0];
-              if (firstItem) handleOpenDetail(firstItem);
+              if (firstItem) setSelectedAsset(firstItem);
             }}
             className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-emerald-400 hover:text-emerald-300 transition-colors cursor-pointer"
           >
