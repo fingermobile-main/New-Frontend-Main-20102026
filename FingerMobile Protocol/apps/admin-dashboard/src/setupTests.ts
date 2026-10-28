@@ -4,12 +4,19 @@
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom';
 
-// Mock localStorage
+// Mock localStorage with actual storage behavior
+let store: Record<string, string> = {};
 const localStorageMock = {
-  getItem: jest.fn(),
-  setItem: jest.fn(),
-  removeItem: jest.fn(),
-  clear: jest.fn(),
+  getItem: jest.fn((key: string) => store[key] || null),
+  setItem: jest.fn((key: string, value: string) => {
+    store[key] = value.toString();
+  }),
+  removeItem: jest.fn((key: string) => {
+    delete store[key];
+  }),
+  clear: jest.fn(() => {
+    store = {};
+  }),
 };
 Object.defineProperty(window, 'localStorage', {
   value: localStorageMock,
