@@ -1970,11 +1970,22 @@ export const ForumPage: React.FC = () => {
       {/* TOP NAVIGATION & LEVEL 2 NAVBAR */}
       <header className="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-xs">
         {/* Header Container - Adaptive Left clearance pl-14 sm:pl-56 when Sovereign Burger Trigger is active */}
-        <div className={`max-w-[1536px] 2xl:max-w-[1680px] mx-auto w-full ${isOnboarded ? 'pl-14 sm:pl-56' : 'pl-2 sm:pl-6'} pr-2 sm:px-6 lg:px-8`}>
+        <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto w-full pl-14 sm:pl-56 pr-2 sm:px-6 lg:px-8">
           {/* Row 1 (H1 Header Row): Facebook-Style Clean Header */}
           <div className="flex items-center justify-between h-14 sm:h-16 gap-1 sm:gap-2 min-w-0 max-w-full">
-            {/* Left Section: 1. Logo, 2. Brand Wordmark */}
-            <div className="flex items-center gap-1.5 sm:gap-4 shrink min-w-0">
+            {/* Left Section: 1. Burger Menu Trigger, 2. Logo, 3. Brand Wordmark */}
+            <div className="flex items-center gap-1.5 sm:gap-3 shrink min-w-0">
+              {/* Dedicated Header Burger Menu Trigger Button (Both Mobile & Desktop) */}
+              <button
+                type="button"
+                onClick={() => window.dispatchEvent(new CustomEvent('toggle-drawer-menu'))}
+                className="p-1.5 sm:p-2 rounded-xl text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 transition cursor-pointer flex items-center justify-center shrink-0 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                aria-label="Toggle Platform Navigation Menu"
+                title="Open Platform Mega Menu (385 Pages)"
+              >
+                <Bars3Icon className="w-5 h-5 text-slate-900 dark:text-white" />
+              </button>
+
               {/* 1. Logo (Click to View / Enlarge & Download in HD formats) */}
               <button
                 type="button"
@@ -2082,17 +2093,17 @@ export const ForumPage: React.FC = () => {
                 </button>
               )}
 
-              {/* Desktop Quick LogOut (Only on desktop lg+, hidden on mobile to prevent crowding) */}
+              {/* Quick LogOut (Visible on mobile & desktop for authenticated members) */}
               {user && (
                 <button
                   type="button"
                   onClick={handleLogout}
-                  className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/60 dark:hover:bg-rose-900/80 border border-rose-300 dark:border-rose-700/70 text-rose-700 dark:text-rose-300 hover:text-rose-900 font-extrabold text-xs transition shadow-xs cursor-pointer whitespace-nowrap"
+                  className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/60 dark:hover:bg-rose-900/80 border border-rose-300 dark:border-rose-700/70 text-rose-700 dark:text-rose-300 hover:text-rose-900 font-extrabold text-xs transition shadow-xs cursor-pointer whitespace-nowrap"
                   title="Log Out of FingerMobile"
                   aria-label="Log Out"
                 >
-                  <ArrowRightOnRectangleIcon className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400 shrink-0" />
-                  <span>Log Out</span>
+                  <ArrowRightOnRectangleIcon className="w-4 h-4 text-rose-600 dark:text-rose-400 shrink-0" />
+                  <span className="hidden sm:inline">Log Out</span>
                 </button>
               )}
 
@@ -4379,8 +4390,27 @@ export const ForumPage: React.FC = () => {
         }`}
         style={{ width: '100%', maxWidth: '100vw' }}
       >
-        <div className="grid grid-cols-4 w-full h-14 sm:h-16 items-center px-1 sm:px-2 pb-[env(safe-area-inset-bottom,0px)]">
-          {/* 1. Discover & Viral Trends */}
+        <div className="grid grid-cols-5 w-full h-14 sm:h-16 items-center px-1 sm:px-2 pb-[env(safe-area-inset-bottom,0px)]">
+          {/* 1. Burger Platform Menu (385 Pages) */}
+          <button
+            type="button"
+            onClick={() => {
+              window.dispatchEvent(new CustomEvent('toggle-drawer-menu'));
+              showBottomDockTemporarily();
+            }}
+            className="flex flex-col items-center justify-center h-full py-1 col-span-1 min-w-0 max-w-full text-slate-700 dark:text-slate-300 hover:text-orange-600 dark:hover:text-orange-400 transition cursor-pointer group focus:outline-none"
+            aria-label="Platform Menu (385 Pages)"
+            title="Open Platform Mega Menu"
+          >
+            <div className="w-8 h-8 rounded-xl flex items-center justify-center group-hover:bg-orange-50 dark:group-hover:bg-slate-800 transition shrink-0">
+              <Bars3Icon className="w-5 h-5 text-slate-800 dark:text-slate-200 group-hover:text-orange-600 group-hover:scale-110 transition-transform" />
+            </div>
+            <span className="text-[10px] font-extrabold tracking-tight text-slate-800 dark:text-slate-200 group-hover:text-orange-600 -mt-0.5 truncate max-w-full px-0.5">
+              Menu
+            </span>
+          </button>
+
+          {/* 2. Discover & Viral Trends */}
           <button
             type="button"
             onClick={() => {
@@ -4399,7 +4429,7 @@ export const ForumPage: React.FC = () => {
             </span>
           </button>
 
-          {/* 2. Create Post / Quick Compose Studio Action */}
+          {/* 3. Create Post / Quick Compose Studio Action */}
           <button
             type="button"
             onClick={() => {
@@ -4422,7 +4452,7 @@ export const ForumPage: React.FC = () => {
             </span>
           </button>
 
-          {/* 3. Sovereign Escrow Wallet & FIC Balance */}
+          {/* 4. Sovereign Escrow Wallet & FIC Balance */}
           <button
             type="button"
             onClick={() => {
@@ -4441,7 +4471,7 @@ export const ForumPage: React.FC = () => {
             </span>
           </button>
 
-          {/* 4. Mega-Communities & Hallmarks */}
+          {/* 5. Mega-Communities & Hallmarks */}
           <button
             type="button"
             onClick={() => {
