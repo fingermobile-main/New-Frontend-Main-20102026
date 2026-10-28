@@ -20,3 +20,4 @@ describe('DataImportPage Mobile & Accessibility', () => {
     expect(screen.getAllByRole('link', { name: /Bulk CSV/i }).length).toBeGreaterThan(0);
   });
 });
+

@@ -61,3 +61,4 @@ describe('ELearningPage Mobile View & Sovereign Quick Dock', () => {
     fireEvent.click(dashboardBtn);
   });
 });
+

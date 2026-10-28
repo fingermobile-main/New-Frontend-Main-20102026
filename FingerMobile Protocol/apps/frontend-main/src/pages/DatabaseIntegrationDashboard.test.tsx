@@ -21,3 +21,4 @@ describe('DatabaseIntegrationDashboard Mobile & Accessibility', () => {
     expect(screen.getAllByRole('button', { name: /Report/i }).length).toBeGreaterThan(0);
   });
 });
+

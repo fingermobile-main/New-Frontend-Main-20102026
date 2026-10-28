@@ -20,3 +20,4 @@ describe('DatabaseIntegrationReportPage Mobile & Accessibility', () => {
     expect(screen.getAllByRole('button', { name: /Top/i }).length).toBeGreaterThan(0);
   });
 });
+

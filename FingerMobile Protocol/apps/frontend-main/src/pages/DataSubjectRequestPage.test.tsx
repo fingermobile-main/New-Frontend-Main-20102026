@@ -21,3 +21,4 @@ describe('DataSubjectRequestPage Mobile & Accessibility', () => {
     expect(screen.getAllByRole('button', { name: /Form/i }).length).toBeGreaterThan(0);
   });
 });
+

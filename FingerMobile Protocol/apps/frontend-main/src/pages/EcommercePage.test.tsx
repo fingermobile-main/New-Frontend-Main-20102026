@@ -40,3 +40,4 @@ describe('EcommercePage Mobile View & Sovereign Quick Dock', () => {
     expect(screen.getByText(/Add New Product/i)).toBeInTheDocument();
   });
 });
+
