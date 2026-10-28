@@ -36,7 +36,7 @@ const CanaryPage: React.FC = () => {
   // eslint-disable-next-line no-unused-vars
   const { balance } = useWeb3();
   const { ficBalance, openModal, showToast } = useAppContext();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('active');
   const [canaryPosts, setCanaryPosts] = useState<Post[]>([]);
   const [showSubmissionForm, setShowSubmissionForm] = useState(false);
@@ -44,7 +44,6 @@ const CanaryPage: React.FC = () => {
 
   const loadAnnouncements = useCallback(async () => {
     try {
-      setIsLoading(true);
       const items = await advertisingService.getAnnouncements(
         undefined,
         activeTab === 'all' ? undefined : activeTab
@@ -266,7 +265,7 @@ const CanaryPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Canary">
-      <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 pb-28 md:pb-12 w-full max-w-full overflow-x-hidden text-slate-900">
         <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-300 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center">
             <div className="bg-gradient-to-r from-yellow-500 to-amber-600 p-3.5 rounded-2xl shadow-md text-white">
@@ -522,6 +521,46 @@ const CanaryPage: React.FC = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 flex items-center justify-around shadow-lg">
+        <button
+          type="button"
+          onClick={() => { setActiveTab('active'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-1 ${
+            activeTab === 'active' ? 'text-amber-600 font-bold' : 'text-slate-700 hover:text-slate-900'
+          }`}
+        >
+          <CanaryIcon className="w-5 h-5 text-amber-500" />
+          <span className="text-[10px] tracking-tight">Active</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => { setActiveTab('all'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-1 ${
+            activeTab === 'all' ? 'text-amber-600 font-bold' : 'text-slate-700 hover:text-slate-900'
+          }`}
+        >
+          <BellIcon className="w-5 h-5 text-blue-500" />
+          <span className="text-[10px] tracking-tight">Disclosures</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setShowSubmissionForm(true)}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-1 text-slate-700 hover:text-slate-900"
+        >
+          <ShieldIcon className="w-5 h-5 text-emerald-500" />
+          <span className="text-[10px] tracking-tight">Create Ad</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => { window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }); }}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-1 text-slate-700 hover:text-slate-900"
+        >
+          <UserCircleIcon className="w-5 h-5 text-indigo-500" />
+          <span className="text-[10px] tracking-tight">Status</span>
+        </button>
       </div>
 
     </MainLayout>

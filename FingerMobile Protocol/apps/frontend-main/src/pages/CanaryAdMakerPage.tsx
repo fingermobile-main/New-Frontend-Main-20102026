@@ -155,7 +155,7 @@ export const CanaryAdMakerPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
+    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col pb-28 md:pb-12 w-full max-w-full overflow-x-hidden">
       {/* STATIC H1 HEADER */}
       <UniversalHeader pageTitle="Canary™ Ad Studio" />
 
@@ -163,7 +163,7 @@ export const CanaryAdMakerPage: React.FC = () => {
       <H2AdBucket />
 
       {/* MAIN AD STUDIO WORKSPACE */}
-      <main className="flex-1 w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 py-8">
+      <main className="flex-1 w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 py-8 overflow-x-hidden">
         {/* Studio Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-slate-800 gap-4">
           <div>
@@ -782,6 +782,50 @@ export const CanaryAdMakerPage: React.FC = () => {
 
         </div>
       </main>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-950/95 backdrop-blur-md border-t border-slate-800 px-4 py-2 flex items-center justify-around shadow-lg">
+        <button
+          type="button"
+          onClick={() => setStep(1)}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-1 ${
+            step === 1 ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-white'
+          }`}
+        >
+          <span className="text-base">📝</span>
+          <span className="text-[10px] tracking-tight">Terms</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setStep(2)}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-1 ${
+            step === 2 ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-white'
+          }`}
+        >
+          <span className="text-base">🎯</span>
+          <span className="text-[10px] tracking-tight">Type</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setStep(4)}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-1 ${
+            step === 4 ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-white'
+          }`}
+        >
+          <span className="text-base">🎨</span>
+          <span className="text-[10px] tracking-tight">Creative</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setStep(5)}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-1 ${
+            step === 5 ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-white'
+          }`}
+        >
+          <span className="text-base">🚀</span>
+          <span className="text-[10px] tracking-tight">Deploy</span>
+        </button>
+      </div>
     </div>
   );
 };

@@ -201,7 +201,7 @@ const CanaryAdsPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Canary Ads Platform">
-      <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 pb-28 md:pb-12 w-full max-w-full overflow-x-hidden text-slate-900">
 
         {/* Hero Banner */}
         <div className="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-gradient-to-r from-slate-900 via-gray-900 to-indigo-950 p-6 sm:p-8 rounded-3xl border border-slate-800 text-white shadow-xl">
@@ -664,6 +664,47 @@ const CanaryAdsPage: React.FC = () => {
           </div>
         )}
 
+      </div>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 flex items-center justify-around shadow-lg">
+        <button
+          type="button"
+          onClick={() => setActiveTab('placements')}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-1 ${
+            activeTab === 'placements' ? 'text-amber-600 font-bold' : 'text-slate-700 hover:text-slate-900'
+          }`}
+        >
+          <FilmIcon className="w-5 h-5" />
+          <span className="text-[10px] tracking-tight">Placements</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab('campaigns')}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-1 ${
+            activeTab === 'campaigns' ? 'text-amber-600 font-bold' : 'text-slate-700 hover:text-slate-900'
+          }`}
+        >
+          <SparklesIcon className="w-5 h-5 text-amber-500" />
+          <span className="text-[10px] tracking-tight">Campaigns</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab('analytics')}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-1 ${
+            activeTab === 'analytics' ? 'text-amber-600 font-bold' : 'text-slate-700 hover:text-slate-900'
+          }`}
+        >
+          <DocumentTextIcon className="w-5 h-5 text-indigo-600" />
+          <span className="text-[10px] tracking-tight">Analytics</span>
+        </button>
+        <NavLink
+          to="/canary-ad-maker"
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-1 text-slate-700 hover:text-slate-900"
+        >
+          <ArrowPathIcon className="w-5 h-5 text-emerald-600" />
+          <span className="text-[10px] tracking-tight">Maker</span>
+        </NavLink>
       </div>
     </MainLayout>
   );
