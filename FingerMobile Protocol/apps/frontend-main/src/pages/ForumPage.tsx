@@ -1935,7 +1935,7 @@ export const ForumPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen w-full max-w-full overflow-x-hidden bg-[#F8FAFC] dark:bg-slate-950 text-slate-800 dark:text-slate-100 font-sans pb-20">
+    <div className="min-h-screen w-full max-w-full overflow-x-hidden bg-[#F8FAFC] dark:bg-slate-950 text-slate-800 dark:text-slate-100 font-sans pb-28 md:pb-12 text-slate-900">
       {/* Hidden File Inputs for Direct Device Attachments */}
       <input
         ref={mediaFileInputRef}

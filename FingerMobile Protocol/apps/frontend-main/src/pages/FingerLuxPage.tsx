@@ -669,7 +669,7 @@ const FingerLuxPage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="max-w-[1536px] 2xl:max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 animate-slide-up">
+      <div className="max-w-[1536px] 2xl:max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 pb-28 md:pb-12 w-full max-w-full overflow-x-hidden text-slate-900 animate-slide-up">
         {/* Header Ribbon: Metrics, 40+ Currencies Selector, Locations, Mode Switcher */}
         <FingerLuxHeader
           activeTab={activeTab}
@@ -867,6 +867,61 @@ const FingerLuxPage: React.FC = () => {
             : null
         }
       />
+      {/* SOVEREIGN MOBILE NAVIGATION QUICK DOCK */}
+      <nav
+        aria-label="FingerLux Quick Navigation"
+        className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-3 py-2 sm:hidden flex items-center justify-around shadow-lg"
+      >
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab('showcase');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className={`min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold transition-colors ${
+            activeTab === 'showcase' ? 'text-indigo-600' : 'text-slate-700 hover:text-slate-900'
+          }`}
+        >
+          <span>Catalog</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab('calendar');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className={`min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold transition-colors ${
+            activeTab === 'calendar' ? 'text-indigo-600' : 'text-slate-700 hover:text-slate-900'
+          }`}
+        >
+          <span>Calendar</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab('payments_pos');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className={`min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold transition-colors ${
+            activeTab === 'payments_pos' ? 'text-indigo-600' : 'text-slate-700 hover:text-slate-900'
+          }`}
+        >
+          <span>POS</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab('revenue');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className={`min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold transition-colors ${
+            activeTab === 'revenue' ? 'text-indigo-600' : 'text-slate-700 hover:text-slate-900'
+          }`}
+        >
+          <span>Revenue</span>
+        </button>
+      </nav>
+
     </MainLayout>
   );
 };

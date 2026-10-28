@@ -51,7 +51,7 @@ const FeedbackPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Send Feedback">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-in fade-in slide-in-from-bottom-4 duration-700 relative">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-28 md:pb-12 w-full max-w-full overflow-x-hidden text-slate-900 animate-in fade-in slide-in-from-bottom-4 duration-700 relative">
 
         {/* Animated Background */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-96 -z-10 overflow-hidden opacity-30 pointer-events-none flex justify-center items-center">
@@ -174,6 +174,63 @@ const FeedbackPage: React.FC = () => {
             </form>
           </div>
         </div>
+        {/* SOVEREIGN MOBILE NAVIGATION QUICK DOCK */}
+        <nav
+          aria-label="Feedback Quick Navigation"
+          className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-3 py-2 sm:hidden flex items-center justify-around shadow-lg"
+        >
+          <button
+            type="button"
+            onClick={() => {
+              setFormData(prev => ({ ...prev, category: 'general' }));
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold transition-colors ${
+              formData.category === 'general' ? 'text-indigo-600' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <ChatBubbleBottomCenterTextIcon className="w-5 h-5 mb-0.5" />
+            <span>General</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setFormData(prev => ({ ...prev, category: 'bug' }));
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold transition-colors ${
+              formData.category === 'bug' ? 'text-indigo-600' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <TagIcon className="w-5 h-5 mb-0.5" />
+            <span>Bug</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setFormData(prev => ({ ...prev, category: 'feature' }));
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold transition-colors ${
+              formData.category === 'feature' ? 'text-indigo-600' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <StarIcon className="w-5 h-5 mb-0.5" />
+            <span>Feature</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              const el = document.getElementById('comment');
+              if (el) el.focus();
+            }}
+            className="min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold text-slate-700 hover:text-slate-900 transition-colors"
+          >
+            <PaperAirplaneIcon className="w-5 h-5 mb-0.5" />
+            <span>Write</span>
+          </button>
+        </nav>
+
       </div>
     </MainLayout>
   );

@@ -826,7 +826,7 @@ export const FlamingoPageContent: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="min-h-screen bg-slate-950 text-slate-100 selection:bg-pink-500/30 selection:text-pink-200">
+      <div className="min-h-screen bg-slate-950 text-slate-100 selection:bg-pink-500/30 selection:text-pink-200 pb-28 md:pb-12 w-full max-w-full overflow-x-hidden">
 
         {/* TOP STATUS & STATUTORY REGULATORY BAR */}
         <div className="bg-gradient-to-r from-slate-950 via-pink-950/40 to-slate-950 border-b border-pink-500/20 px-4 py-2 text-xs">
@@ -2002,6 +2002,55 @@ export const FlamingoPageContent: React.FC = () => {
           }
           isNsfw={true}
         />
+
+        {/* SOVEREIGN MOBILE NAVIGATION QUICK DOCK */}
+        <nav
+          aria-label="Flamingo Quick Navigation"
+          className="fixed bottom-0 left-0 right-0 z-40 bg-slate-900/95 backdrop-blur-md border-t border-slate-800 px-3 py-2 sm:hidden flex items-center justify-around shadow-lg"
+        >
+          <button
+            type="button"
+            onClick={() => {
+              setSelectedCategory('all');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold transition-colors ${
+              selectedCategory === 'all' ? 'text-pink-400' : 'text-slate-300 hover:text-white'
+            }`}
+          >
+            <Sparkles className="w-5 h-5 mb-0.5" />
+            <span>Runway</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setShowAiStylistDrawer(true)}
+            className="min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold text-slate-300 hover:text-white transition-colors"
+          >
+            <Bot className="w-5 h-5 mb-0.5" />
+            <span>Stylist</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setShowOutfitBuilderModal(true)}
+            className="min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold text-slate-300 hover:text-white transition-colors"
+          >
+            <Layers className="w-5 h-5 mb-0.5" />
+            <span>Outfits</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setShowCartDrawer(true)}
+            className="min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold text-slate-300 hover:text-white transition-colors relative"
+          >
+            <ShoppingBag className="w-5 h-5 mb-0.5" />
+            <span>Bag</span>
+            {cart.length > 0 && (
+              <span className="absolute top-1 right-2 bg-pink-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
+                {cart.length}
+              </span>
+            )}
+          </button>
+        </nav>
 
       </div>
     </MainLayout>
