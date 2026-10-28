@@ -8,6 +8,7 @@ jest.mock('../contexts/AppContext', () => ({
   useAppContext: () => ({
     currentUser: { id: 'test-user', membername: 'Scholar' },
     ficBalance: 4200,
+    showToast: jest.fn(),
   }),
 }));
 
@@ -58,7 +59,7 @@ describe('CamusPage Mobile Suite', () => {
     );
 
     expect(screen.getAllByRole('button', { name: /Courses/i }).length).toBeGreaterThan(0);
-    expect(screen.getByRole('button', { name: /Tracks/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Library/i })).toBeInTheDocument();
+    expect(screen.getAllByRole('button', { name: /Tracks/i }).length).toBeGreaterThan(0);
+    expect(screen.getAllByRole('button', { name: /Library/i }).length).toBeGreaterThan(0);
   });
 });

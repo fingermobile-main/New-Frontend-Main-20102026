@@ -39,4 +39,3 @@ describe('BusinessOfficesPage Mobile Suite', () => {
     expect(screen.getByRole('button', { name: /Book Visit/i })).toBeInTheDocument();
   });
 });
-

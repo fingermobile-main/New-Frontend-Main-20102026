@@ -76,4 +76,3 @@ describe('CacheManagementPage Mobile Suite', () => {
     expect(screen.getAllByRole('button', { name: /Analytics/i }).length).toBeGreaterThan(0);
   });
 });
-
