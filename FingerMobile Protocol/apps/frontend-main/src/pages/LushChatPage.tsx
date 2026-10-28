@@ -5,10 +5,21 @@ import { LushChatPanel } from '../components/LushChatPanel';
 import { LushCallModal } from '../components/LushCallModal';
 import { useLushChatContext } from '../contexts/LushChatContext';
 import { useLushCall } from '../hooks/useLushCall';
+import { MessageSquare, Phone, Users, Shield } from 'lucide-react';
+
+const PageWrapper = styled.div`
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  padding-bottom: 7rem;
+  @media (min-width: 768px) {
+    padding-bottom: 3rem;
+  }
+`;
 
 const PageContainer = styled.div`
   display: flex;
-  height: calc(100vh - 64px); // Assuming a header
+  height: calc(100vh - 64px);
   background: var(--surface-background);
   color: var(--text-primary);
   max-width: 1200px;
@@ -17,21 +28,37 @@ const PageContainer = styled.div`
   overflow: hidden;
   box-shadow: 0 4px 20px rgba(0,0,0,0.1);
   border: 1px solid var(--border-color);
+  @media (max-width: 768px) {
+    flex-direction: column;
+    height: auto;
+    min-height: calc(100vh - 120px);
+  }
 `;
 
-const Sidebar = styled.div`
+const Sidebar = styled.div<{ $isMobileHidden?: boolean }>`
   width: 320px;
   min-width: 320px;
   border-right: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
+  @media (max-width: 768px) {
+    width: 100%;
+    min-width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+    display: ${({ $isMobileHidden }) => ($isMobileHidden ? 'none' : 'flex')};
+  }
 `;
 
-const MainContent = styled.div`
+const MainContent = styled.div<{ $isMobileHidden?: boolean }>`
   flex: 1;
   display: flex;
   flex-direction: column;
   background: var(--surface-1);
+  @media (max-width: 768px) {
+    display: ${({ $isMobileHidden }) => ($isMobileHidden ? 'none' : 'flex')};
+    min-height: 450px;
+  }
 `;
 
 const Header = styled.div`
@@ -48,6 +75,7 @@ const Title = styled.h2`
 export const LushChatPage: React.FC = () => {
   const { activeConversationId, isConnected } = useLushChatContext();
   const { activeCall, answerCall, endCall } = useLushCall();
+  const [mobileTab, setMobileTab] = useState<'conversations' | 'chat'>('conversations');
 
   // Mock conversations for UI demo
   const [conversations] = useState([
@@ -56,35 +84,80 @@ export const LushChatPage: React.FC = () => {
   ]);
 
   return (
-    <PageContainer>
-      <Sidebar>
-        <Header>
-          <Title>Messages {isConnected ? '🟢' : '🔴'}</Title>
-        </Header>
-        <ConversationList conversations={conversations} />
-      </Sidebar>
+    <PageWrapper>
+      <PageContainer>
+        <Sidebar $isMobileHidden={mobileTab === 'chat'}>
+          <Header>
+            <Title>Messages {isConnected ? '🟢' : '🔴'}</Title>
+          </Header>
+          <ConversationList conversations={conversations} />
+        </Sidebar>
 
-      <MainContent>
-        {activeConversationId ? (
-          <LushChatPanel
-            initialConversationId={activeConversationId.toString()}
+        <MainContent $isMobileHidden={mobileTab === 'conversations'}>
+          {activeConversationId ? (
+            <LushChatPanel
+              initialConversationId={activeConversationId.toString()}
+            />
+          ) : (
+            <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-secondary)', padding: '24px' }}>
+              Select a conversation to start chatting
+            </div>
+          )}
+        </MainContent>
+
+        {activeCall && (
+          <LushCallModal
+            activeCall={activeCall}
+            onAnswer={answerCall}
+            onEnd={endCall}
+            currentUserId={1}
           />
-        ) : (
-          <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-secondary)' }}>
-            Select a conversation to start chatting
-          </div>
         )}
-      </MainContent>
+      </PageContainer>
 
-      {activeCall && (
-        <LushCallModal
-          activeCall={activeCall}
-          onAnswer={answerCall}
-          onEnd={endCall}
-          currentUserId={1} // mock current user ID
-        />
-      )}
-    </PageContainer>
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <nav
+        aria-label="Lush Chat Mobile Navigation"
+        className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-3 py-2 flex items-center justify-around gap-1 shadow-lg"
+      >
+        <button
+          type="button"
+          onClick={() => {
+            setMobileTab('conversations');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+            mobileTab === 'conversations' ? 'text-pink-600' : 'text-slate-600 hover:text-slate-900'
+          }`}
+        >
+          <Users className="w-5 h-5 mb-0.5" />
+          <span>Chats</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setMobileTab('chat');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+            mobileTab === 'chat' ? 'text-pink-600' : 'text-slate-600 hover:text-slate-900'
+          }`}
+        >
+          <MessageSquare className="w-5 h-5 mb-0.5" />
+          <span>Active Chat</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold text-slate-600 hover:text-slate-900 cursor-pointer"
+        >
+          <Phone className="w-5 h-5 mb-0.5" />
+          <span>Voice</span>
+        </button>
+      </nav>
+    </PageWrapper>
   );
 };
 
