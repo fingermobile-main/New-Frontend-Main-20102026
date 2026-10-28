@@ -67,7 +67,7 @@ export const BadgesManagementPage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-6">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 space-y-6 overflow-x-hidden text-slate-900 pb-28 md:pb-12">
         <PlatformOwnershipCard />
         {loading ? (
           <div className="flex justify-center items-center h-64">
@@ -86,6 +86,25 @@ export const BadgesManagementPage: React.FC = () => {
             getBadgeMembers={getBadgeMembers}
           />
         )}
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 flex items-center justify-around z-30 shadow-lg">
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            type="button"
+            className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-amber-600 bg-amber-50 transition-colors"
+          >
+            <span className="text-base font-extrabold leading-none mb-0.5">🎖️</span>
+            <span>Badges</span>
+          </button>
+          <button
+            onClick={() => fetchData()}
+            type="button"
+            className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-900 transition-colors"
+          >
+            <span className="text-base font-black leading-none mb-0.5">🔄</span>
+            <span>Refresh</span>
+          </button>
+        </div>
       </div>
     </MainLayout>
   );
