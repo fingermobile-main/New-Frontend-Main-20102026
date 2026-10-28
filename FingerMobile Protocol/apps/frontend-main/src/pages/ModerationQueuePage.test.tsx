@@ -49,3 +49,4 @@ describe('ModerationQueuePage', () => {
     expect(screen.getByRole('button', { name: /^dashboard$/i })).toBeInTheDocument();
   });
 });
+

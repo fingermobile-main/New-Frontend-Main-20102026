@@ -54,3 +54,4 @@ describe('ModerationDashboardPage', () => {
     expect(screen.getByRole('button', { name: /^rules$/i })).toBeInTheDocument();
   });
 });
+

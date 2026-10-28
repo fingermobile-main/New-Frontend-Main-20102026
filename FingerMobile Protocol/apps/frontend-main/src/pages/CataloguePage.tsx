@@ -317,7 +317,7 @@ const CataloguePage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Catalogue">
-      <div className="min-h-screen bg-slate-50 text-gray-900 pb-16">
+      <div className="min-h-screen bg-slate-50 text-gray-900 w-full max-w-full overflow-x-hidden pb-28 md:pb-16">
         {/* Hero Header */}
         <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-purple-950 text-white py-12 px-4 sm:px-6 lg:px-8 border-b border-indigo-900/40">
           <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
@@ -341,7 +341,7 @@ const CataloguePage: React.FC = () => {
               </div>
               <div>
                 <p className="text-xs text-indigo-200 font-semibold uppercase tracking-wider">Available Balance</p>
-                <p className="text-xl font-black text-amber-300">{ficBalance.toLocaleString()} FIC</p>
+                <p className="text-xl font-black text-amber-300">{(ficBalance ?? 0).toLocaleString()} FIC</p>
               </div>
             </div>
           </div>
@@ -353,13 +353,13 @@ const CataloguePage: React.FC = () => {
             {/* Search Input and Sort Selector */}
             <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
               <div className="relative w-full md:w-96">
-                <MagnifyingGlassIcon className="w-5 h-5 text-slate-600 absolute left-3.5 top-3" />
+                <MagnifyingGlassIcon className="w-5 h-5 text-slate-600 absolute left-3.5 top-3.5" />
                 <input
                   type="text"
                   placeholder="Search by title, creator, stem, tags..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:bg-white transition-all text-slate-900 font-bold placeholder:text-slate-400"
+                  className="w-full min-h-[44px] pl-10 pr-4 py-2 bg-white border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:bg-white transition-all text-slate-900 font-bold placeholder:text-slate-500 shadow-xs"
                 />
               </div>
 
@@ -368,7 +368,7 @@ const CataloguePage: React.FC = () => {
                 <select
                   value={sortBy}
                   onChange={(e: any) => setSortBy(e.target.value)}
-                  className="px-3 py-2 bg-white border border-slate-300 rounded-xl text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-600 font-bold"
+                  className="min-h-[44px] px-3 py-2 bg-white border border-slate-300 rounded-xl text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-600 font-bold shadow-xs cursor-pointer"
                 >
                   <option value="featured">Featured Picks</option>
                   <option value="price_low">Price: Low to High</option>
@@ -395,10 +395,10 @@ const CataloguePage: React.FC = () => {
                   <button
                     key={tab.id}
                     onClick={() => setSelectedCategory(tab.id)}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
+                    className={`min-h-[44px] flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
                       isActive
                         ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20'
-                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                        : 'bg-slate-100 text-slate-800 hover:bg-slate-200 border border-slate-200'
                     }`}
                   >
                     <IconComponent className="w-4 h-4" />
@@ -409,11 +409,11 @@ const CataloguePage: React.FC = () => {
 
               {/* License Filter */}
               <div className="ml-auto flex items-center gap-2 pl-4">
-                <span className="text-xs text-slate-700 font-semibold uppercase">License:</span>
+                <span className="text-xs text-slate-700 font-bold uppercase">License:</span>
                 <select
                   value={selectedLicense}
                   onChange={(e) => setSelectedLicense(e.target.value)}
-                  className="px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-medium text-slate-900 focus:outline-none font-bold focus:ring-2 focus:ring-indigo-500"
+                  className="min-h-[44px] px-3 py-1.5 bg-white border border-slate-300 rounded-xl text-xs font-medium text-slate-900 focus:outline-none font-bold focus:ring-2 focus:ring-indigo-500 shadow-xs cursor-pointer"
                 >
                   <option value="all">All Licenses</option>
                   <option value="Royalty-Free">Royalty-Free</option>
@@ -808,6 +808,51 @@ const CataloguePage: React.FC = () => {
             </div>
           </div>
         )}
+
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <nav
+          aria-label="Catalogue Mobile Navigation"
+          className="md:hidden fixed bottom-4 inset-x-3 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl p-2 z-40 shadow-2xl flex items-center justify-around gap-1"
+        >
+          <button
+            type="button"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-indigo-400 hover:text-indigo-300 transition-colors cursor-pointer"
+          >
+            <CatalogueIcon className="w-5 h-5 mb-0.5" />
+            <span>Catalogue</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              const input = document.querySelector('input[placeholder*="Search by title"]') as HTMLInputElement | null;
+              if (input) input.focus();
+            }}
+            className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-sky-400 hover:text-sky-300 transition-colors cursor-pointer"
+          >
+            <MagnifyingGlassIcon className="w-5 h-5 mb-0.5" />
+            <span>Search</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setSelectedCategory(selectedCategory === 'merchandise' ? 'all' : 'merchandise')}
+            className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-amber-400 hover:text-amber-300 transition-colors cursor-pointer"
+          >
+            <ShoppingBagIcon className="w-5 h-5 mb-0.5" />
+            <span>Merch</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              const firstItem = filteredAssets[0];
+              if (firstItem) handleOpenDetail(firstItem);
+            }}
+            className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-emerald-400 hover:text-emerald-300 transition-colors cursor-pointer"
+          >
+            <SparklesIcon className="w-5 h-5 mb-0.5" />
+            <span>Featured</span>
+          </button>
+        </nav>
       </div>
     </MainLayout>
   );

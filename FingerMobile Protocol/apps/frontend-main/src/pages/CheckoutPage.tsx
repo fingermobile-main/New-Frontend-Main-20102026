@@ -1,4 +1,4 @@
-import { useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 
 import { useAppContext } from '../contexts/AppContext';
@@ -6,6 +6,12 @@ import apiService from '../services/apiService';
 import { useMarketplace } from '../contexts/MarketplaceContext';
 import { useAuth } from '../contexts/AuthContext';
 import type { CartItem } from '../types';
+import {
+  CreditCard,
+  Gift,
+  Coins,
+  ArrowLeft
+} from 'lucide-react';
 
 const CheckoutPage: React.FC = () => {
   const { ficBalance, showToast } = useAppContext();
@@ -124,12 +130,21 @@ const CheckoutPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+    <div className="min-h-screen bg-gray-50 py-6 sm:py-12 w-full max-w-full overflow-x-hidden pb-28 md:pb-12 text-slate-900">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-3 sm:p-6 lg:p-8">
         <div className="max-w-2xl mx-auto">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-8">
-            Checkout
-          </h1>
+          <div className="flex items-center justify-between mb-6">
+            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+              Checkout & Payment
+            </h1>
+            <button
+              onClick={() => navigate('/products')}
+              className="min-h-[44px] px-3.5 py-2 inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-slate-800 hover:text-blue-600 transition-colors bg-white border border-slate-300 rounded-xl shadow-xs cursor-pointer"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span>Back to Mall</span>
+            </button>
+          </div>
 
           {/* Cart Items */}
           <div className="bg-white shadow rounded-lg mb-6">
@@ -158,19 +173,19 @@ const CheckoutPage: React.FC = () => {
                         </p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <p className="text-sm font-medium text-gray-900">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <p className="text-sm font-bold text-slate-900">
                         ${item.price.toFixed(2)}
                       </p>
                       <button
                         onClick={() => onOpenGiftModal(item)}
-                        className="text-sm text-blue-600 hover:text-blue-800"
+                        className="min-h-[44px] px-3 py-1.5 text-xs font-bold text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors flex items-center justify-center cursor-pointer"
                       >
                         Gift
                       </button>
                       <button
                         onClick={() => onOpenPaylinkModal(item)}
-                        className="text-sm text-blue-600 hover:text-blue-800"
+                        className="min-h-[44px] px-3 py-1.5 text-xs font-bold text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors flex items-center justify-center cursor-pointer"
                       >
                         Paylink
                       </button>
@@ -219,17 +234,58 @@ const CheckoutPage: React.FC = () => {
             onClick={handleCheckout}
             disabled={isProcessing || !user || cart.length === 0 || !hasSufficientFunds}
             className={`
-                            w-full mt-6 py-3 px-4 rounded-lg text-slate-700 font-medium
-                            ${
-    isProcessing || !user || cart.length === 0 || !hasSufficientFunds
-      ? 'bg-gray-400 cursor-not-allowed'
-      : 'bg-brand-blue hover:bg-blue-700'
-    }
-                        `}
+              w-full min-h-[48px] mt-6 py-3 px-4 rounded-xl text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2 transition-all shadow-md
+              ${
+                isProcessing || !user || cart.length === 0 || !hasSufficientFunds
+                  ? 'bg-slate-400 cursor-not-allowed shadow-none'
+                  : 'bg-blue-600 hover:bg-blue-700 cursor-pointer shadow-blue-500/25'
+              }
+            `}
           >
-            {isProcessing ? 'Processing...' : 'Place Order'}
+            <CreditCard className="w-5 h-5" />
+            <span>{isProcessing ? 'Processing Order...' : 'Place Order Now'}</span>
           </button>
         </div>
+      </div>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div className="fixed bottom-3 inset-x-3 z-40 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl shadow-2xl px-2 py-1.5 flex items-center justify-around sm:hidden">
+        <button
+          onClick={() => navigate('/products')}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-slate-300 hover:text-white transition-colors"
+          title="Mall"
+        >
+          <ArrowLeft className="w-5 h-5 text-blue-400" />
+          <span className="text-[10px] font-semibold mt-0.5">Mall</span>
+        </button>
+        <button
+          onClick={() => {
+            if (cart.length > 0) onOpenGiftModal(cart[0]);
+          }}
+          disabled={cart.length === 0}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-slate-300 hover:text-white disabled:opacity-40 transition-colors"
+          title="Gift"
+        >
+          <Gift className="w-5 h-5 text-amber-400" />
+          <span className="text-[10px] font-semibold mt-0.5">Gift</span>
+        </button>
+        <button
+          onClick={() => navigate('/my-wallet')}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-slate-300 hover:text-white transition-colors"
+          title="Vault"
+        >
+          <Coins className="w-5 h-5 text-emerald-400" />
+          <span className="text-[10px] font-semibold mt-0.5">Vault</span>
+        </button>
+        <button
+          onClick={handleCheckout}
+          disabled={isProcessing || !user || cart.length === 0 || !hasSufficientFunds}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-slate-300 hover:text-white disabled:opacity-40 transition-colors"
+          title="Pay"
+        >
+          <CreditCard className="w-5 h-5 text-blue-400" />
+          <span className="text-[10px] font-semibold mt-0.5">Pay</span>
+        </button>
       </div>
 
       {/* Gift Modal */}
