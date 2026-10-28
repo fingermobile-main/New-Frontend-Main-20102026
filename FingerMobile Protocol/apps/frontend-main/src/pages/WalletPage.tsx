@@ -756,7 +756,7 @@ const WalletPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Wallet">
-      <div className="bg-slate-50 min-h-screen text-gray-900 pb-16">
+      <div className="bg-slate-50 min-h-screen text-slate-900 pb-28 md:pb-16 overflow-x-hidden w-full max-w-full">
         <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
 
           {/* Top Header & Sovereign Protocol Notice */}
@@ -2458,12 +2458,12 @@ const WalletPage: React.FC = () => {
               <p className="text-xs font-mono font-bold text-slate-900 break-all select-all">{walletAddress || '0xDEF482...987A21'}</p>
             </div>
             <div className="flex gap-3 pt-3">
-              <Button type="button" variant="outline" className="flex-1 rounded-2xl border-slate-300 text-slate-800 font-bold hover:bg-slate-50 cursor-pointer" onClick={() => setShowReceiveModal(false)}>
+              <Button type="button" variant="outline" className="flex-1 rounded-2xl border-slate-300 text-slate-800 font-bold hover:bg-slate-50 cursor-pointer min-h-[44px]" onClick={() => setShowReceiveModal(false)}>
                 Close
               </Button>
               <Button
                 type="button"
-                className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl shadow-sm cursor-pointer"
+                className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl shadow-sm cursor-pointer min-h-[44px]"
                 onClick={() => {
                   navigator.clipboard.writeText(walletAddress || '0xDEF482...987A21');
                   toast({ title: 'Copied!', description: 'Address copied to clipboard.' });
@@ -2475,6 +2475,50 @@ const WalletPage: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 py-2 px-4 md:hidden shadow-lg safe-area-bottom">
+        <div className="flex justify-around items-center max-w-md mx-auto">
+          <button
+            onClick={() => {
+              window.scrollTo({ top: 300, behavior: 'smooth' });
+            }}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-indigo-600 font-bold"
+            aria-label="Fund FIC"
+          >
+            <PlusIcon className="w-5 h-5 mb-1" />
+            <span className="text-[10px]">Fund</span>
+          </button>
+          <button
+            onClick={() => setShowSendModal(true)}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-slate-700 dark:text-slate-300 font-medium"
+            aria-label="Send FIC"
+          >
+            <ArrowUpIcon className="w-5 h-5 mb-1" />
+            <span className="text-[10px]">Send</span>
+          </button>
+          <button
+            onClick={() => setShowReceiveModal(true)}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-slate-700 dark:text-slate-300 font-medium"
+            aria-label="Receive FIC"
+          >
+            <QrCodeIcon className="w-5 h-5 mb-1" />
+            <span className="text-[10px]">Receive</span>
+          </button>
+          <button
+            onClick={() => {
+              fetchWalletData();
+              fetchTreasuryData();
+              toast({ title: 'Refreshed', description: 'Wallet balance and requests updated.' });
+            }}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-slate-700 dark:text-slate-300 font-medium"
+            aria-label="Refresh Balances"
+          >
+            <RefreshCw className="w-5 h-5 mb-1" />
+            <span className="text-[10px]">Sync</span>
+          </button>
+        </div>
+      </div>
     </MainLayout>
   );
 };

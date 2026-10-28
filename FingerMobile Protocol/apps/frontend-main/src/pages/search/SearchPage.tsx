@@ -96,7 +96,7 @@ const SearchPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+    <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6 w-full max-w-full overflow-x-hidden pb-28 md:pb-12">
       {/* Header Banner */}
       <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-300 shadow-sm">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-950 border border-blue-400 text-xs font-black uppercase mb-3">
@@ -350,6 +350,52 @@ const SearchPage: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* SOVEREIGN MOBILE QUICK DOCK */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-3 py-2 shadow-lg">
+        <div className="flex items-center justify-around max-w-md mx-auto">
+          <button
+            type="button"
+            onClick={() => setActiveTab('all')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-lg transition-colors ${
+              activeTab === 'all' ? 'text-blue-700 font-bold bg-blue-50' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <span className="text-xs">🔍</span>
+            <span className="text-[10px] leading-tight">All</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('posts')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-lg transition-colors ${
+              activeTab === 'posts' ? 'text-blue-700 font-bold bg-blue-50' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <span className="text-xs">📝</span>
+            <span className="text-[10px] leading-tight">Posts</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('topics')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-lg transition-colors ${
+              activeTab === 'topics' ? 'text-blue-700 font-bold bg-blue-50' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <span className="text-xs">🏷️</span>
+            <span className="text-[10px] leading-tight">Topics</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('hashtags')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-lg transition-colors ${
+              activeTab === 'hashtags' ? 'text-blue-700 font-bold bg-blue-50' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <span className="text-xs">#</span>
+            <span className="text-[10px] leading-tight">Tags</span>
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
