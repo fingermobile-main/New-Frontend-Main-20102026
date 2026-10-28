@@ -416,6 +416,58 @@ const UGCDashboardPage: React.FC = () => {
         contentType="post"
         contentId="default_ugc_post"
       />
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 md:hidden">
+        <div className="flex items-center justify-around gap-1 max-w-md mx-auto">
+          <button
+            type="button"
+            onClick={() => setActiveTab('studio')}
+            className={`flex flex-col items-center justify-center min-w-[56px] min-h-[48px] px-2 py-1 rounded-xl text-[11px] font-bold ${
+              activeTab === 'studio' ? 'text-indigo-600 bg-indigo-50 border border-indigo-200' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <span className="text-base font-black">✏️</span>
+            <span>Studio</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('analytics')}
+            className={`flex flex-col items-center justify-center min-w-[56px] min-h-[48px] px-2 py-1 rounded-xl text-[11px] font-bold ${
+              activeTab === 'analytics' ? 'text-indigo-600 bg-indigo-50 border border-indigo-200' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <span className="text-base font-black">📊</span>
+            <span>Analytics</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('monetization')}
+            className={`flex flex-col items-center justify-center min-w-[56px] min-h-[48px] px-2 py-1 rounded-xl text-[11px] font-bold ${
+              activeTab === 'monetization' ? 'text-indigo-600 bg-indigo-50 border border-indigo-200' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <span className="text-base font-black">💰</span>
+            <span>Earnings</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setIsUploadModalOpen(true)}
+            className="flex flex-col items-center justify-center min-w-[56px] min-h-[48px] px-2 py-1 rounded-xl text-[11px] font-bold text-blue-600 hover:text-blue-800"
+          >
+            <span className="text-base font-black">📤</span>
+            <span>Upload</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="flex flex-col items-center justify-center min-w-[56px] min-h-[48px] px-2 py-1 rounded-xl text-[11px] font-bold text-slate-700 hover:text-slate-900"
+          >
+            <span className="text-base font-black">⌂</span>
+            <span>Top</span>
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

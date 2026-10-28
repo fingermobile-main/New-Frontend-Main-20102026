@@ -869,6 +869,48 @@ const UserManagementPage: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 md:hidden">
+        <div className="flex items-center justify-around gap-1 max-w-md mx-auto">
+          <button
+            type="button"
+            onClick={() => setFilterRole('all')}
+            className={`flex flex-col items-center justify-center min-w-[56px] min-h-[48px] px-2 py-1 rounded-xl text-[11px] font-bold ${
+              filterRole === 'all' ? 'text-blue-600 bg-blue-50 border border-blue-200' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <span className="text-base font-black">👥</span>
+            <span>All</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setFilterRole('admin')}
+            className={`flex flex-col items-center justify-center min-w-[56px] min-h-[48px] px-2 py-1 rounded-xl text-[11px] font-bold ${
+              filterRole === 'admin' ? 'text-blue-600 bg-blue-50 border border-blue-200' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <span className="text-base font-black">🛡️</span>
+            <span>Admins</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setShowCreateModal(true)}
+            className="flex flex-col items-center justify-center min-w-[56px] min-h-[48px] px-2 py-1 rounded-xl text-[11px] font-bold text-blue-600 hover:text-blue-800"
+          >
+            <span className="text-base font-black">➕</span>
+            <span>Add User</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="flex flex-col items-center justify-center min-w-[56px] min-h-[48px] px-2 py-1 rounded-xl text-[11px] font-bold text-slate-700 hover:text-slate-900"
+          >
+            <span className="text-base font-black">⌂</span>
+            <span>Top</span>
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

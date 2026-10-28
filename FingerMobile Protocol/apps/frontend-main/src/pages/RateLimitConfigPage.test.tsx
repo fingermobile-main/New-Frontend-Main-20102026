@@ -47,3 +47,4 @@ describe('RateLimitConfigPage', () => {
     fireEvent.click(refreshBtns[0]);
   });
 });
+

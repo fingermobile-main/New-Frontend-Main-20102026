@@ -74,3 +74,4 @@ describe('RbacManagementPage', () => {
     fireEvent.click(assignBtns[0]);
   });
 });
+

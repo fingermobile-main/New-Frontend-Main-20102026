@@ -66,3 +66,4 @@ describe('SeadsPage', () => {
     fireEvent.click(launchBtns[0]);
   });
 });
+

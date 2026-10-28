@@ -288,6 +288,36 @@ export const UnifiedDashboardPage: React.FC = () => {
           </div>
         </div>
       </div>
+
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 md:hidden">
+          <div className="flex items-center justify-around gap-2 max-w-md mx-auto">
+            <button
+              type="button"
+              onClick={loadMetrics}
+              disabled={loading}
+              className="flex flex-col items-center justify-center min-w-[64px] min-h-[48px] px-2 py-1 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-900 disabled:opacity-40"
+            >
+              <span className="text-base font-black">🔄</span>
+              <span>Sync</span>
+            </button>
+            <Link
+              to="/master-dashboard"
+              className="flex flex-col items-center justify-center min-w-[64px] min-h-[48px] px-2 py-1 rounded-xl text-xs font-bold text-blue-600 hover:text-blue-800"
+            >
+              <span className="text-base font-black">🎛️</span>
+              <span>Master</span>
+            </Link>
+            <button
+              type="button"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="flex flex-col items-center justify-center min-w-[64px] min-h-[48px] px-2 py-1 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-900"
+            >
+              <span className="text-base font-black">⌂</span>
+              <span>Top</span>
+            </button>
+          </div>
+        </div>
     </MainLayout>
   );
 };

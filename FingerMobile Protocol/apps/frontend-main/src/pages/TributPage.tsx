@@ -474,7 +474,7 @@ export const TributPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Tribut">
-      <div className="min-h-screen bg-slate-50 py-8 px-4 sm:px-6 lg:px-8">
+      <div className="min-h-screen bg-slate-50 py-8 px-4 sm:px-6 lg:px-8 pb-28 md:pb-12 max-w-full overflow-x-hidden text-slate-900">
         <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto space-y-8">
 
           {/* ==================== 1. GUARDIAN AI MISSION HERO BANNER ==================== */}
@@ -1376,6 +1376,58 @@ export const TributPage: React.FC = () => {
 
         </div>
       </div>
+
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 md:hidden">
+          <div className="flex items-center justify-around gap-1 max-w-md mx-auto">
+            <button
+              type="button"
+              onClick={() => setSelectedCategory('all')}
+              className={`flex flex-col items-center justify-center min-w-[56px] min-h-[48px] px-2 py-1 rounded-xl text-[11px] font-bold ${
+                selectedCategory === 'all' ? 'text-rose-600 bg-rose-50 border border-rose-200' : 'text-slate-700 hover:text-slate-900'
+              }`}
+            >
+              <span className="text-base font-black">📌</span>
+              <span>All Pins</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setSelectedCategory('fashion')}
+              className={`flex flex-col items-center justify-center min-w-[56px] min-h-[48px] px-2 py-1 rounded-xl text-[11px] font-bold ${
+                selectedCategory === 'fashion' ? 'text-rose-600 bg-rose-50 border border-rose-200' : 'text-slate-700 hover:text-slate-900'
+              }`}
+            >
+              <span className="text-base font-black">👗</span>
+              <span>Fashion</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setSelectedCategory('art')}
+              className={`flex flex-col items-center justify-center min-w-[56px] min-h-[48px] px-2 py-1 rounded-xl text-[11px] font-bold ${
+                selectedCategory === 'art' ? 'text-rose-600 bg-rose-50 border border-rose-200' : 'text-slate-700 hover:text-slate-900'
+              }`}
+            >
+              <span className="text-base font-black">🎨</span>
+              <span>Art</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setShowUploadPinModal(true)}
+              className="flex flex-col items-center justify-center min-w-[56px] min-h-[48px] px-2 py-1 rounded-xl text-[11px] font-bold text-rose-600 hover:text-rose-800"
+            >
+              <span className="text-base font-black">➕</span>
+              <span>Create</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="flex flex-col items-center justify-center min-w-[56px] min-h-[48px] px-2 py-1 rounded-xl text-[11px] font-bold text-slate-700 hover:text-slate-900"
+            >
+              <span className="text-base font-black">⌂</span>
+              <span>Top</span>
+            </button>
+          </div>
+        </div>
     </MainLayout>
   );
 };

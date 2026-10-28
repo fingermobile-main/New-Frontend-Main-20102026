@@ -37,3 +37,4 @@ describe('SecurityPage', () => {
     fireEvent.click(policiesBtns[0]);
   });
 });
+
