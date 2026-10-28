@@ -6,6 +6,7 @@ import { Eye, EyeOff, Phone, User, Mail } from 'lucide-react';
 import authService from '../../services/authService';
 import { userProfileSyncService } from '../../services/UserProfileSyncService';
 import { useAuth } from '../../contexts/AuthContext';
+import AuthBrandingPanel from '../../components/auth/AuthBrandingPanel';
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -191,11 +192,15 @@ const RegisterPage = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="w-full max-w-md"
+        className="w-full max-w-5xl bg-white dark:bg-gray-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col lg:flex-row"
       >
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+        {/* Rotating Branding Panel (Left Column on Desktop) */}
+        <AuthBrandingPanel initialIndex={1} />
+
+        {/* Form Container (Right Column on Desktop) */}
+        <div className="w-full lg:w-1/2 p-6 sm:p-10 flex flex-col justify-center">
           <div className="text-center mb-8">
-            <div className="mx-auto w-24 h-24 mb-4 flex items-center justify-center rounded-2xl overflow-hidden bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-md p-1">
+            <div className="mx-auto w-20 h-20 mb-4 flex items-center justify-center rounded-2xl overflow-hidden bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-md p-1">
               <img
                 src="/assets/branding/fingermobile/logo-white.webp"
                 alt="FingerMobile Logo"
@@ -209,10 +214,10 @@ const RegisterPage = () => {
                 }}
               />
             </div>
-            <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">
               FingerMobile<span className="text-[#ff6b00]">™</span>
             </h1>
-            <p className="text-sm font-semibold tracking-normal text-slate-700 dark:text-slate-300 mt-1">
+            <p className="text-xs sm:text-sm font-semibold tracking-normal text-slate-700 dark:text-slate-300 mt-1">
               Create your Sovereign Account
             </p>
           </div>

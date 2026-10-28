@@ -151,7 +151,7 @@ const EditProfile: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-4xl 2xl:max-w-5xl mx-auto p-4 sm:px-6 lg:px-8 py-8">
+    <div className="w-full max-w-4xl 2xl:max-w-5xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 overflow-x-hidden text-slate-900 pb-28 md:pb-12">
       <div className="mb-6">
         <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">Edit Profile</h1>
         <p className="text-slate-700 dark:text-gray-300 mt-2 font-medium">
@@ -163,7 +163,7 @@ const EditProfile: React.FC = () => {
         <form onSubmit={handleSubmit}>
           <div className="flex flex-col items-center mb-6">
             <div className="relative">
-              <div className="w-24 h-24 rounded-full bg-slate-100 dark:bg-gray-700 flex items-center justify-center overflow-hidden border border-slate-400 dark:border-gray-600 text-slate-950 font-black">
+              <div className="w-[106px] h-[106px] rounded-full bg-slate-100 dark:bg-gray-700 flex items-center justify-center overflow-hidden border border-slate-400 dark:border-gray-600 text-slate-950 font-black">
                 {avatar ? (
                   <img
                     src={avatar}
@@ -305,6 +305,49 @@ const EditProfile: React.FC = () => {
             </button>
           </div>
         </form>
+      </div>
+
+      {/* MOBILE NAVIGATION QUICK DOCK */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-t border-slate-300 dark:border-gray-800 px-4 py-2 flex items-center justify-around z-30 shadow-lg">
+        <button
+          type="button"
+          onClick={() => {
+            const form = document.querySelector('form');
+            if (form) form.requestSubmit();
+          }}
+          disabled={loading}
+          className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-purple-600 bg-purple-50 dark:bg-purple-950/40 transition-colors"
+        >
+          <span className="text-base font-extrabold leading-none mb-0.5">✓</span>
+          <span>Save</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            const input = document.getElementById('avatar-upload');
+            if (input) input.click();
+          }}
+          className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-slate-900 transition-colors"
+        >
+          <span className="text-base font-extrabold leading-none mb-0.5">📷</span>
+          <span>Avatar</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => navigate('/profile')}
+          className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-slate-900 transition-colors"
+        >
+          <span className="text-base font-extrabold leading-none mb-0.5">✕</span>
+          <span>Cancel</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-slate-900 transition-colors"
+        >
+          <span className="text-base font-black leading-none mb-0.5">↑</span>
+          <span>Top</span>
+        </button>
       </div>
     </div>
   );

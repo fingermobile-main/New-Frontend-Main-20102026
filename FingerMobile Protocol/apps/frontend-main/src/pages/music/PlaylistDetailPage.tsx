@@ -73,7 +73,7 @@ const TrackItem: React.FC<TrackItemProps> = ({
       <img
         src={track.albumArtUrl}
         alt={track.title}
-        className="w-10 h-10 rounded-md object-cover"
+        className="w-11 h-11 rounded-md object-cover flex-shrink-0"
       />
       <div className="flex-1 min-w-0">
         <p className={`font-semibold truncate ${isPlaying ? 'text-brand-blue' : 'text-gray-200'} lg:text-base`}>
@@ -267,10 +267,10 @@ const PlaylistDetailPage: React.FC = () => {
           : 'bg-gradient-to-b from-gray-800 to-black'
       }`}
     >
-      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto overflow-x-hidden pb-28 md:pb-12">
         {/* Header */}
-        <div className="p-6 sm:p-8 flex flex-col md:flex-row md:items-end gap-6">
-          <div className="w-48 h-48 rounded-lg shadow-2xl grid grid-cols-2 grid-rows-2 gap-px overflow-hidden bg-gray-700 flex-shrink-0 border border-white/10">
+        <div className="p-4 sm:p-8 flex flex-col md:flex-row md:items-end gap-6">
+          <div className="w-52 h-52 rounded-lg shadow-2xl grid grid-cols-2 grid-rows-2 gap-px overflow-hidden bg-gray-700 flex-shrink-0 border border-white/10">
             {coverArt.length > 0 ? (
               coverArt.map((url, i) => (
                 <img
@@ -391,6 +391,46 @@ const PlaylistDetailPage: React.FC = () => {
               This playlist currently has no tracks.
             </div>
           )}
+        </div>
+
+        {/* MOBILE NAVIGATION QUICK DOCK */}
+        <div className="md:hidden fixed bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-md border-t border-slate-700 px-4 py-2 flex items-center justify-around z-30 shadow-lg">
+          <button
+            type="button"
+            onClick={() => {
+              if (trackDetails.length > 0) {
+                handlePlayMedia(trackDetails[0]);
+              }
+            }}
+            className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-white bg-blue-600 transition-colors"
+          >
+            <PlayIcon className="w-5 h-5 mb-0.5" />
+            <span>Play First</span>
+          </button>
+          <button
+            type="button"
+            onClick={handleSmartShuffle}
+            className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-slate-300 hover:text-white transition-colors"
+          >
+            <ShuffleIcon className="w-5 h-5 mb-0.5" />
+            <span>Shuffle</span>
+          </button>
+          <button
+            type="button"
+            onClick={handlePinPlaylist}
+            className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-slate-300 hover:text-white transition-colors"
+          >
+            <PinIcon className="w-5 h-5 mb-0.5" />
+            <span>Pin</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-slate-300 hover:text-white transition-colors"
+          >
+            <span className="text-sm font-black">↑</span>
+            <span>Top</span>
+          </button>
         </div>
       </div>
     </div>

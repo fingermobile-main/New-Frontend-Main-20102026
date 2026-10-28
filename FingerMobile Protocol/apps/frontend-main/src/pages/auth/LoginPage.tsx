@@ -6,6 +6,7 @@ import { Eye, EyeOff, User, Phone, Mail, Fingerprint, Sparkles } from 'lucide-re
 import authService from '../../services/authService';
 import { useAuth } from '../../contexts/AuthContext';
 import { userProfileSyncService } from '../../services/UserProfileSyncService';
+import AuthBrandingPanel from '../../components/auth/AuthBrandingPanel';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -199,11 +200,15 @@ const LoginPage = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="w-full max-w-md"
+        className="w-full max-w-5xl bg-white dark:bg-gray-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col lg:flex-row"
       >
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+        {/* Rotating Branding Panel (Left Column on Desktop) */}
+        <AuthBrandingPanel />
+
+        {/* Form Container (Right Column on Desktop) */}
+        <div className="w-full lg:w-1/2 p-6 sm:p-10 flex flex-col justify-center">
           <div className="text-center mb-8">
-            <div className="mx-auto w-24 h-24 mb-4 flex items-center justify-center">
+            <div className="mx-auto w-20 h-20 mb-4 flex items-center justify-center">
               <img
                 src="/assets/branding/fingermobile/logo-orange.webp"
                 alt="FingerMobile Logo"
@@ -217,10 +222,10 @@ const LoginPage = () => {
                 }}
               />
             </div>
-            <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">
               FingerMobile<span className="text-[#ff6b00]">™</span>
             </h1>
-            <p className="text-sm font-semibold tracking-wide uppercase text-slate-700 dark:text-slate-300 mt-1">
+            <p className="text-xs sm:text-sm font-semibold tracking-wide uppercase text-slate-700 dark:text-slate-300 mt-1">
               Protocol Sign In
             </p>
           </div>

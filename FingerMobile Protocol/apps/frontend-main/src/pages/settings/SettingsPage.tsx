@@ -252,8 +252,8 @@ export const SettingsPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Settings & Preferences">
-      <div className="min-h-screen bg-slate-50 text-slate-900 py-8 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-[1536px] 2xl:max-w-[1680px] w-full mx-auto space-y-8">
+      <div className="min-h-screen bg-slate-50 text-slate-900 py-6 sm:py-8 px-3 sm:px-6 lg:px-8">
+        <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto space-y-6 sm:space-y-8 overflow-x-hidden pb-28 md:pb-12">
           {/* Header */}
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-300 pb-6">
             <div>
@@ -325,7 +325,7 @@ export const SettingsPage: React.FC = () => {
                       <img
                         src={profile.avatarUrl}
                         alt="Profile avatar preview"
-                        className="w-20 h-20 rounded-full object-cover border-2 border-blue-500 shadow-md"
+                        className="w-[88px] h-[88px] rounded-full object-cover border-2 border-blue-500 shadow-md flex-shrink-0"
                       />
                       <div className="flex-1 w-full space-y-2">
                         <label className="text-xs font-bold uppercase tracking-wider text-slate-800 block">
@@ -956,6 +956,50 @@ export const SettingsPage: React.FC = () => {
               )}
             </main>
           </div>
+        </div>
+
+        {/* MOBILE NAVIGATION QUICK DOCK */}
+        <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 flex items-center justify-around z-30 shadow-lg">
+          <button
+            type="button"
+            onClick={() => setActiveTab('profile')}
+            className={`flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold transition-colors ${
+              activeTab === 'profile' ? 'text-blue-600 bg-blue-50' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <User className="w-5 h-5 mb-0.5" />
+            <span>Profile</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('security')}
+            className={`flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold transition-colors ${
+              activeTab === 'security' ? 'text-blue-600 bg-blue-50' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <Shield className="w-5 h-5 mb-0.5" />
+            <span>Security</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('privacy')}
+            className={`flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold transition-colors ${
+              activeTab === 'privacy' ? 'text-blue-600 bg-blue-50' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <Eye className="w-5 h-5 mb-0.5" />
+            <span>Privacy</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('media')}
+            className={`flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold transition-colors ${
+              activeTab === 'media' ? 'text-blue-600 bg-blue-50' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <Volume2 className="w-5 h-5 mb-0.5" />
+            <span>Media</span>
+          </button>
         </div>
       </div>
     </MainLayout>

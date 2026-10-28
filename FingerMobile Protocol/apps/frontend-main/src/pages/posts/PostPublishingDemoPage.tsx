@@ -36,8 +36,8 @@ const DemoContent: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 py-4 sm:py-8">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-3 sm:px-6 lg:px-8 overflow-x-hidden text-slate-900 pb-28 md:pb-12">
         <div className="mb-8">
           <h1 className="text-3xl font-black text-slate-900">Intelligent Post Publishing</h1>
           <p className="mt-2 text-slate-700 font-medium">
@@ -208,6 +208,46 @@ const DemoContent: React.FC = () => {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* MOBILE NAVIGATION QUICK DOCK */}
+        <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 flex items-center justify-around z-30 shadow-lg">
+          <button
+            type="button"
+            onClick={handleSave}
+            disabled={isSaving}
+            className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-blue-600 bg-blue-50 transition-colors"
+          >
+            <span className="text-base font-extrabold leading-none mb-0.5">✦</span>
+            <span>Publish</span>
+          </button>
+          <button
+            type="button"
+            onClick={handleApplyAI}
+            className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-purple-600 bg-purple-50 transition-colors"
+          >
+            <span className="text-base font-extrabold leading-none mb-0.5">✨</span>
+            <span>AI Assist</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              const el = document.querySelector('textarea');
+              if (el) el.focus();
+            }}
+            className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-900 transition-colors"
+          >
+            <span className="text-base font-extrabold leading-none mb-0.5">✎</span>
+            <span>Compose</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-900 transition-colors"
+          >
+            <span className="text-base font-black leading-none mb-0.5">↑</span>
+            <span>Top</span>
+          </button>
         </div>
       </div>
     </div>

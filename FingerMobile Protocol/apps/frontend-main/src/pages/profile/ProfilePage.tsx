@@ -1208,7 +1208,7 @@ export const ProfilePage: React.FC = () => {
   });
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 pb-24 relative">
+    <div className="w-full max-w-full overflow-x-hidden min-h-screen bg-slate-50 text-slate-900 pb-28 md:pb-12 relative">
       {loading && (
         <div className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-500 via-amber-400 to-emerald-500 z-50 animate-pulse" />
       )}
@@ -1338,7 +1338,7 @@ export const ProfilePage: React.FC = () => {
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5 text-center sm:text-left">
               <div className="relative shrink-0 group">
-                <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-3xl overflow-hidden border-4 border-white shadow-2xl ring-4 ring-orange-500/80 bg-slate-100 relative">
+                <div className="w-32 h-32 sm:w-36 sm:h-36 rounded-3xl overflow-hidden border-4 border-white shadow-2xl ring-4 ring-orange-500/80 bg-slate-100 relative">
                   {isVideoMedia(profile.avatarUrl) ? (
                     <video
                       src={profile.avatarUrl || ''}
@@ -2571,6 +2571,52 @@ export const ProfilePage: React.FC = () => {
         currentPositionY={profile.coverPositionY}
         currentFormat={profile.coverFormat}
       />
+
+      {/* MOBILE NAVIGATION QUICK DOCK */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 flex items-center justify-around z-30 shadow-lg">
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab('wall');
+            window.scrollTo({ top: 350, behavior: 'smooth' });
+          }}
+          className={`flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold transition-colors ${
+            activeTab === 'wall' ? 'text-orange-600 bg-orange-50' : 'text-slate-700 hover:text-slate-900'
+          }`}
+        >
+          <FileText className="w-5 h-5 mb-0.5" />
+          <span>Wall</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab('about');
+            window.scrollTo({ top: 350, behavior: 'smooth' });
+          }}
+          className={`flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold transition-colors ${
+            activeTab === 'about' ? 'text-orange-600 bg-orange-50' : 'text-slate-700 hover:text-slate-900'
+          }`}
+        >
+          <User className="w-5 h-5 mb-0.5" />
+          <span>About</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setIsEditModalOpen(true)}
+          className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-900 transition-colors"
+        >
+          <Sliders className="w-5 h-5 mb-0.5 text-purple-600" />
+          <span>Edit</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-900 transition-colors"
+        >
+          <span className="text-base font-black leading-none mb-0.5">↑</span>
+          <span>Top</span>
+        </button>
+      </div>
     </div>
   );
 };
