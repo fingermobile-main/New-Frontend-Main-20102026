@@ -60,13 +60,13 @@ export const MemberProfileMenuTrigger: React.FC<MemberProfileMenuTriggerProps> =
     path.includes('/onboarding') ||
     path.includes('/adminlogin');
 
-  // Strict Security Rule: Never display menu trigger for unauthenticated / unboarded users or on auth/onboarding routes
-  if (isAuthOrOnboardingRoute || !isOnboarded) {
+  // Strict Security Rule: Never display menu trigger on auth or onboarding routes
+  if (isAuthOrOnboardingRoute) {
     return null;
   }
 
-  const displayName = (user?.firstName ? `${user.firstName} ${user.lastName || ''}`.trim() : user?.username) || (user ? profile.name : '') || 'Sovereign Member';
-  const displayPin = profile.pinNumber || '749822';
+  const displayName = (user?.firstName ? `${user.firstName} ${user.lastName || ''}`.trim() : user?.username) || (user ? profile.name : '') || 'Guest Explorer';
+  const displayPin = (user && profile.pinNumber) || '749822';
 
   return (
     <div className="fixed top-2 sm:top-2.5 left-2.5 sm:left-3 z-[9995] pointer-events-auto transition-all duration-300">
