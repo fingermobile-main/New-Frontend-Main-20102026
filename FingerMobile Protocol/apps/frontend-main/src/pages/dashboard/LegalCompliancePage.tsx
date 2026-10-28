@@ -40,7 +40,7 @@ const LegalCompliancePage: React.FC = () => {
   }, []);
 
   return (
-    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-4 sm:p-6 lg:p-8 space-y-6 animate-in fade-in duration-500">
+    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 space-y-6 overflow-x-hidden text-slate-900 pb-28 md:pb-12 animate-in fade-in duration-500">
       <PlatformOwnershipCard />
 
       {/* Top Banner */}
@@ -48,10 +48,10 @@ const LegalCompliancePage: React.FC = () => {
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-100 text-blue-950 text-xs font-bold rounded-full mb-2 border border-blue-400">
             <ShieldCheckIcon className="w-4 h-4" />
-            <span>NDPA 2023 & GDPR Compliance Center</span>
+            <span>NDPA 2023 &amp; GDPR Compliance Center</span>
           </div>
-          <h1 className="text-3xl font-black text-slate-900 tracking-tight">
-            Legal & Regulatory Compliance Console
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+            Legal &amp; Regulatory Compliance Console
           </h1>
           <p className="text-slate-700 font-semibold text-sm mt-1">
             Supervise data subject requests, statutory purge schedules, policy documents, and cryptographic audit records.
@@ -230,6 +230,33 @@ const LegalCompliancePage: React.FC = () => {
             </tbody>
           </table>
         </div>
+      </div>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 flex items-center justify-around z-30 shadow-lg">
+        <button
+          onClick={fetchComplianceData}
+          type="button"
+          className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-blue-600 bg-blue-50 transition-colors"
+        >
+          <span className="text-base font-extrabold leading-none mb-0.5">⚡</span>
+          <span>Refresh</span>
+        </button>
+        <Link
+          to="/dashboard/policy"
+          className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-900 transition-colors"
+        >
+          <span className="text-base font-extrabold leading-none mb-0.5">📜</span>
+          <span>Policies</span>
+        </Link>
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          type="button"
+          className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-900 transition-colors"
+        >
+          <span className="text-base font-black leading-none mb-0.5">↑</span>
+          <span>Top</span>
+        </button>
       </div>
     </div>
   );

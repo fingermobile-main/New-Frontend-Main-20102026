@@ -156,48 +156,47 @@ const FranchiseManagementPage: React.FC = () => {
   const totalRevenue = franchises.reduce((acc, f) => acc + ((f.royalty_pct || 8.5) * 12000), 0);
 
   return (
-    <div className="min-h-screen bg-slate-50 py-8 px-4 sm:px-6 lg:px-8">
-      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto space-y-8">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-3">
-              <h1 className="text-3xl font-black text-slate-900 tracking-tight">
-                Franchise &amp; Terminal Operations Console
-              </h1>
-              <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-100 text-emerald-950 border border-emerald-400">
-                PoS Mesh Active
-              </span>
-            </div>
-            <p className="text-slate-700 font-medium text-sm mt-1">
-              Oversee regional franchise territories, merchant licenses, POS hardware mesh, and revenue settlement
-            </p>
+    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 space-y-6 overflow-x-hidden text-slate-900 pb-28 md:pb-12">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-3">
+            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+              Franchise &amp; Terminal Operations Console
+            </h1>
+            <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-100 text-emerald-950 border border-emerald-400">
+              PoS Mesh Active
+            </span>
           </div>
-
-          <div className="flex items-center gap-2">
-            {selectedFranchise ? (
-              <button
-                onClick={() => {
-                  setSelectedFranchise(null);
-                  navigate('/franchisemanagement');
-                }}
-                className="px-4 py-2 bg-white border border-slate-300 text-slate-900 text-xs font-bold rounded-xl shadow-xs hover:bg-slate-100 transition-colors cursor-pointer"
-              >
-                ← Back to Franchise Directory
-              </button>
-            ) : (
-              <button
-                onClick={() => setShowCreateModal(true)}
-                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-sm transition-colors cursor-pointer"
-              >
-                + Register New Franchise
-              </button>
-            )}
-          </div>
+          <p className="text-slate-700 font-medium text-sm mt-1">
+            Oversee regional franchise territories, merchant licenses, POS hardware mesh, and revenue settlement
+          </p>
         </div>
 
-        {/* Platform Ownership Card */}
-        <PlatformOwnershipCard />
+        <div className="flex items-center gap-2">
+          {selectedFranchise ? (
+            <button
+              onClick={() => {
+                setSelectedFranchise(null);
+                navigate('/franchisemanagement');
+              }}
+              className="px-4 py-2 bg-white border border-slate-300 text-slate-900 text-xs font-bold rounded-xl shadow-xs hover:bg-slate-100 transition-colors cursor-pointer"
+            >
+              ← Back to Franchise Directory
+            </button>
+          ) : (
+            <button
+              onClick={() => setShowCreateModal(true)}
+              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-sm transition-colors cursor-pointer"
+            >
+              + Register New Franchise
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Platform Ownership Card */}
+      <PlatformOwnershipCard />
 
         {/* Global Statistics Banner */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -592,6 +591,33 @@ const FranchiseManagementPage: React.FC = () => {
             </div>
           </div>
         )}
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 flex items-center justify-around z-30 shadow-lg">
+        <button
+          onClick={() => setShowCreateModal(true)}
+          type="button"
+          className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-blue-600 bg-blue-50 transition-colors"
+        >
+          <span className="text-base font-extrabold leading-none mb-0.5">+</span>
+          <span>New</span>
+        </button>
+        <button
+          onClick={() => loadFranchises()}
+          type="button"
+          className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-900 transition-colors"
+        >
+          <span className="text-base font-extrabold leading-none mb-0.5">⚡</span>
+          <span>Refresh</span>
+        </button>
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          type="button"
+          className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-900 transition-colors"
+        >
+          <span className="text-base font-black leading-none mb-0.5">↑</span>
+          <span>Top</span>
+        </button>
       </div>
     </div>
   );
