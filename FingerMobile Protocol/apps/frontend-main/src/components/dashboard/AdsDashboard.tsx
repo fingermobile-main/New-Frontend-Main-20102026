@@ -54,20 +54,21 @@ const AdsDashboard: React.FC = () => {
   }
 
   return (
-    <div className="bg-gray-900 text-white rounded-xl border border-gray-700 overflow-hidden">
+    <div className="w-full max-w-full overflow-x-hidden pb-28 md:pb-12 bg-gray-900 text-white rounded-xl border border-gray-700">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-6 border-b border-gray-700">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-6 border-b border-gray-700 gap-4">
         <div>
           <h2 className="text-2xl font-bold">Ads Dashboard</h2>
           <p className="text-gray-300 font-medium mt-1">
             Track and manage your advertising campaigns
           </p>
         </div>
-        <div className="flex items-center space-x-4 mt-4 sm:mt-0">
+        <div className="flex items-center space-x-4 mt-2 sm:mt-0">
           <select
-            className="bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="min-h-[44px] bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
             value={timeRange}
             onChange={(e) => setTimeRange(e.target.value)}
+            aria-label="Select Time Range"
           >
             <option value="1d">Last 24 Hours</option>
             <option value="7d">Last 7 Days</option>
@@ -77,21 +78,21 @@ const AdsDashboard: React.FC = () => {
       </div>
 
       {/* Tabs */}
-      <div className="flex border-b border-gray-700 px-6">
+      <div className="flex border-b border-gray-700 px-4 sm:px-6 overflow-x-auto">
         <button
-          className={`py-4 px-6 text-sm font-medium border-b-2 transition-colors ${activeTab === 'overview' ? 'border-blue-500 text-white' : 'border-transparent text-gray-300 hover:text-white'}`}
+          className={`min-h-[44px] py-3 px-4 sm:px-6 text-sm font-medium border-b-2 transition-colors flex items-center justify-center ${activeTab === 'overview' ? 'border-blue-500 text-white' : 'border-transparent text-gray-300 hover:text-white'}`}
           onClick={() => setActiveTab('overview')}
         >
           Overview
         </button>
         <button
-          className={`py-4 px-6 text-sm font-medium border-b-2 transition-colors ${activeTab === 'performance' ? 'border-blue-500 text-white' : 'border-transparent text-gray-300 hover:text-white'}`}
+          className={`min-h-[44px] py-3 px-4 sm:px-6 text-sm font-medium border-b-2 transition-colors flex items-center justify-center ${activeTab === 'performance' ? 'border-blue-500 text-white' : 'border-transparent text-gray-300 hover:text-white'}`}
           onClick={() => setActiveTab('performance')}
         >
           Performance
         </button>
         <button
-          className={`py-4 px-6 text-sm font-medium border-b-2 transition-colors ${activeTab === 'audience' ? 'border-blue-500 text-white' : 'border-transparent text-gray-300 hover:text-white'}`}
+          className={`min-h-[44px] py-3 px-4 sm:px-6 text-sm font-medium border-b-2 transition-colors flex items-center justify-center ${activeTab === 'audience' ? 'border-blue-500 text-white' : 'border-transparent text-gray-300 hover:text-white'}`}
           onClick={() => setActiveTab('audience')}
         >
           Audience
@@ -202,6 +203,56 @@ const AdsDashboard: React.FC = () => {
             </div>
           </div>
         )}
+      </div>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 py-2 px-3 flex items-center justify-around gap-1 shadow-lg md:hidden">
+        <button
+          onClick={() => setActiveTab('overview')}
+          aria-label="Overview Tab"
+          className={`min-h-[44px] min-w-[44px] px-2 py-1 flex flex-col items-center justify-center text-xs font-semibold ${
+            activeTab === 'overview' ? 'text-blue-600' : 'text-slate-800 hover:text-blue-600'
+          }`}
+        >
+          <span className="text-base">📊</span>
+          <span>Overview</span>
+        </button>
+        <button
+          onClick={() => setActiveTab('performance')}
+          aria-label="Performance Tab"
+          className={`min-h-[44px] min-w-[44px] px-2 py-1 flex flex-col items-center justify-center text-xs font-semibold ${
+            activeTab === 'performance' ? 'text-blue-600' : 'text-slate-800 hover:text-blue-600'
+          }`}
+        >
+          <span className="text-base">📈</span>
+          <span>Perform</span>
+        </button>
+        <button
+          onClick={() => setActiveTab('audience')}
+          aria-label="Audience Tab"
+          className={`min-h-[44px] min-w-[44px] px-2 py-1 flex flex-col items-center justify-center text-xs font-semibold ${
+            activeTab === 'audience' ? 'text-blue-600' : 'text-slate-800 hover:text-blue-600'
+          }`}
+        >
+          <span className="text-base">👥</span>
+          <span>Audience</span>
+        </button>
+        <button
+          onClick={fetchData}
+          aria-label="Refresh Ads"
+          className="min-h-[44px] min-w-[44px] px-2 py-1 flex flex-col items-center justify-center text-xs font-semibold text-slate-800 hover:text-blue-600"
+        >
+          <span className="text-base">🔄</span>
+          <span>Refresh</span>
+        </button>
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          aria-label="Scroll to Top"
+          className="min-h-[44px] min-w-[44px] px-2 py-1 flex flex-col items-center justify-center text-xs font-semibold text-slate-800 hover:text-blue-600"
+        >
+          <span className="text-base">⬆️</span>
+          <span>Top</span>
+        </button>
       </div>
     </div>
   );
