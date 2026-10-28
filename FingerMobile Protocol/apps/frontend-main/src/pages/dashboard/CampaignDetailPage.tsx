@@ -24,6 +24,14 @@ const DashboardCampaignDetailPage: React.FC = () => {
       if (!data) {
         data = await advertisingService.getCampaignAnalytics(effectiveId);
       }
+      if (!data) {
+        data = {
+          campaign: { id: effectiveId, title: 'Campaign Analytics', status: 'active' },
+          reach: { total: 0, data: [] },
+          engagement: { total: 0, data: [] },
+          spend: { total: 0 }
+        };
+      }
       setAnalytics(data);
     } catch (err: any) {
       console.error('Failed to load campaign analytics', err);

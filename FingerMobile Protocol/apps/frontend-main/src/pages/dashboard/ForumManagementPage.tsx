@@ -175,25 +175,24 @@ const ForumManagementPage: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
-        <PlatformOwnershipCard />
+    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 space-y-6 overflow-x-hidden text-slate-900 pb-28 md:pb-12">
+      <PlatformOwnershipCard />
 
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-300 pb-5">
-          <div>
-            <h1 className="text-3xl font-black text-slate-900 tracking-tight">Forum Categories Management</h1>
-            <p className="text-sm font-semibold text-slate-700 mt-1">
-              Organize, moderate, and structure community discussion boards and thread hierarchies
-            </p>
-          </div>
-          <button
-            onClick={openCreateModal}
-            className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-sm transition-all cursor-pointer text-sm"
-          >
-            <Plus className="w-4 h-4" />
-            Create New Category
-          </button>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-300 pb-5">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">Forum Categories Management</h1>
+          <p className="text-sm font-semibold text-slate-700 mt-1">
+            Organize, moderate, and structure community discussion boards and thread hierarchies
+          </p>
         </div>
+        <button
+          onClick={openCreateModal}
+          className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-sm transition-all cursor-pointer text-sm"
+        >
+          <Plus className="w-4 h-4" />
+          Create New Category
+        </button>
+      </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {categories.map((category: ForumCategory) => (
@@ -244,6 +243,25 @@ const ForumManagementPage: React.FC = () => {
         </div>
 
         {isModalOpen && <CategoryEditorModal />}
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 flex items-center justify-around z-30 shadow-lg">
+        <button
+          onClick={openCreateModal}
+          type="button"
+          className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-blue-600 bg-blue-50 transition-colors"
+        >
+          <span className="text-base font-extrabold leading-none mb-0.5">+</span>
+          <span>New</span>
+        </button>
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          type="button"
+          className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-900 transition-colors"
+        >
+          <span className="text-base font-black leading-none mb-0.5">↑</span>
+          <span>Top</span>
+        </button>
       </div>
     </div>
   );

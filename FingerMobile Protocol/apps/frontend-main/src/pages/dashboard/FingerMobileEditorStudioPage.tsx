@@ -47,9 +47,29 @@ const FingerMobileEditorStudioPage: React.FC = () => {
         </div>
       </div>
 
-      <footer className="bg-slate-900 text-slate-300 font-semibold text-xs p-2 text-center border-t border-slate-800">
+      <footer className="bg-slate-900 text-slate-300 font-semibold text-xs p-2 text-center border-t border-slate-800 pb-20 md:pb-2">
         FingerMobile Protocol Editor Studio v1.0 | Guardian AI Assistant Enabled
       </footer>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-md border-t border-slate-700 px-4 py-2 flex items-center justify-around z-30 shadow-lg">
+        <button
+          onClick={() => setShowOwnership(prev => !prev)}
+          type="button"
+          className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-blue-400 bg-slate-800 transition-colors"
+        >
+          <span className="text-base font-extrabold leading-none mb-0.5">🛡️</span>
+          <span>Clearance</span>
+        </button>
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          type="button"
+          className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-slate-300 hover:text-white transition-colors"
+        >
+          <span className="text-base font-black leading-none mb-0.5">↑</span>
+          <span>Top</span>
+        </button>
+      </div>
     </div>
   );
 };

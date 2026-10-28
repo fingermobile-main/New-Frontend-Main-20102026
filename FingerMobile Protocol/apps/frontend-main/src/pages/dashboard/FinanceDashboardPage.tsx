@@ -106,18 +106,17 @@ const FinanceDashboardPage: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
-        <div className="mb-8">
-          <h1 className="text-2xl font-black text-slate-900">
-            Finance & Treasury Dashboard
-          </h1>
-          <p className="text-slate-700 font-medium mt-1">
-            Monitor platform liquidity, merchant payouts, subscriptions, and financial settlement
-          </p>
-        </div>
+    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 space-y-6 overflow-x-hidden text-slate-900 pb-28 md:pb-12">
+      <div className="mb-4">
+        <h1 className="text-2xl sm:text-3xl font-black text-slate-900">
+          Finance &amp; Treasury Dashboard
+        </h1>
+        <p className="text-slate-700 font-medium mt-1">
+          Monitor platform liquidity, merchant payouts, subscriptions, and financial settlement
+        </p>
+      </div>
 
-        <PlatformOwnershipCard />
+      <PlatformOwnershipCard />
 
         {/* Financial Overview */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -388,6 +387,33 @@ const FinanceDashboardPage: React.FC = () => {
             </button>
           </div>
         </div>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 flex items-center justify-around z-30 shadow-lg">
+        <button
+          onClick={() => navigate('/financials/wallet')}
+          type="button"
+          className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-blue-600 bg-blue-50 transition-colors"
+        >
+          <span className="text-base font-extrabold leading-none mb-0.5">💰</span>
+          <span>Wallet</span>
+        </button>
+        <button
+          onClick={() => loadDashboardData()}
+          type="button"
+          className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-900 transition-colors"
+        >
+          <span className="text-base font-extrabold leading-none mb-0.5">⚡</span>
+          <span>Refresh</span>
+        </button>
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          type="button"
+          className="flex flex-col items-center justify-center min-h-[44px] min-w-[44px] px-2 py-1 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-900 transition-colors"
+        >
+          <span className="text-base font-black leading-none mb-0.5">↑</span>
+          <span>Top</span>
+        </button>
       </div>
     </div>
   );

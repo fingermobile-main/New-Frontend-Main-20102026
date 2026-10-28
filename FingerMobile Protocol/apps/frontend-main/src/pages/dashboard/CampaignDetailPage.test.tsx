@@ -1,37 +1,30 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
+
+const mockAnalytics = {
+  campaign: {
+    id: 'c-1',
+    title: 'Festival Rewards Campaign',
+    status: 'active',
+  },
+  impressions: { total: 12000 },
+  clicks: { total: 850 },
+  spend: { total: 320 },
+  reach: { total: 12000, data: [{ day: 'Mon', value: 100 }] },
+  engagement: { total: 850, data: [{ day: 'Mon', value: 50 }] },
+};
 
 jest.mock('../../contexts/AppContext', () => ({
   useAppContext: () => ({
     showToast: jest.fn(),
-    getCampaignDetails: jest.fn().mockResolvedValue({
-      campaign: {
-        id: 'c-1',
-        title: 'Festival Rewards Campaign',
-      },
-      impressions: { total: 12000 },
-      clicks: { total: 850 },
-      spend: { total: 320 },
-      reach: { data: [{ day: 'Mon', value: 100 }] },
-      engagement: { data: [{ day: 'Mon', value: 50 }] },
-    }),
+    getCampaignDetails: jest.fn(() => Promise.resolve(mockAnalytics)),
   }),
 }));
 
 jest.mock('../../services/advertisingService', () => ({
   advertisingService: {
-    getCampaignAnalytics: jest.fn().mockResolvedValue({
-      campaign: {
-        id: 'c-1',
-        title: 'Festival Rewards Campaign',
-      },
-      impressions: { total: 12000 },
-      clicks: { total: 850 },
-      spend: { total: 320 },
-      reach: { data: [{ day: 'Mon', value: 100 }] },
-      engagement: { data: [{ day: 'Mon', value: 50 }] },
-    }),
+    getCampaignAnalytics: jest.fn(() => Promise.resolve(mockAnalytics)),
   },
 }));
 
@@ -49,7 +42,7 @@ describe('CampaignDetailPage', () => {
   });
 
   it('renders campaign detail page and mobile quick dock', async () => {
-    const { container } = render(
+    render(
       <MemoryRouter initialEntries={['/dashboard/campaigns/c-1']}>
         <Routes>
           <Route path="/dashboard/campaigns/:campaignId" element={<DashboardCampaignDetailPage />} />
@@ -57,6 +50,11 @@ describe('CampaignDetailPage', () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByText(/Campaigns Management|Back to Campaigns/i)).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.queryByText(/Loading\.\.\./i)).not.toBeInTheDocument();
+    }, { timeout: 3000 });
+
+    expect(screen.getByRole('heading', { level: 1, name: /Festival Rewards Campaign/i })).toBeInTheDocument();
+    expect(screen.getByText(/Back to Campaigns Management/i)).toBeInTheDocument();
   });
 });
