@@ -94,7 +94,7 @@ const MyLearningPage: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 py-8 pb-28 md:pb-12 max-w-full overflow-x-hidden text-slate-900">
       <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
@@ -222,6 +222,37 @@ const MyLearningPage: React.FC = () => {
           )}
         </div>
       </div>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <nav
+        aria-label="My Learning Mobile Navigation"
+        className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-3 py-2 flex items-center justify-around gap-1 shadow-lg"
+      >
+        <button
+          type="button"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold text-blue-600 hover:text-blue-800 transition-colors cursor-pointer"
+        >
+          <BookOpenIcon className="w-5 h-5 mb-0.5" />
+          <span>Dashboard</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => navigate('/camus')}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold text-slate-700 hover:text-slate-900 transition-colors cursor-pointer"
+        >
+          <AcademicCapIcon className="w-5 h-5 mb-0.5" />
+          <span>Catalog</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => navigate('/certifications')}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold text-slate-700 hover:text-slate-900 transition-colors cursor-pointer"
+        >
+          <ChartBarIcon className="w-5 h-5 mb-0.5" />
+          <span>Certificates</span>
+        </button>
+      </nav>
     </div>
   );
 };

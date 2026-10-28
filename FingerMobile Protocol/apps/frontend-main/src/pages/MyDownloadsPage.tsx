@@ -355,7 +355,7 @@ const MyDownloadsPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Offline Media Vault & Cryptographic Downloads">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-28 md:pb-12 max-w-full overflow-x-hidden text-slate-900 space-y-8">
         
         {/* 1. HERO HEADER: Strict Contrast Hierarchy on White */}
         <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-300 shadow-sm relative overflow-hidden">
@@ -872,6 +872,64 @@ const MyDownloadsPage: React.FC = () => {
           </div>
         )}
 
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <nav
+          aria-label="My Downloads Mobile Navigation"
+          className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-3 py-2 flex items-center justify-around gap-1 shadow-lg"
+        >
+          <button
+            type="button"
+            onClick={() => {
+              setSelectedType('all');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+              selectedType === 'all' ? 'text-indigo-600' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <HardDrive className="w-5 h-5 mb-0.5" />
+            <span>All</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setSelectedType('audio');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+              selectedType === 'audio' ? 'text-indigo-600' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <Music className="w-5 h-5 mb-0.5" />
+            <span>Audio</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setSelectedType('video');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+              selectedType === 'video' ? 'text-indigo-600' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <Video className="w-5 h-5 mb-0.5" />
+            <span>Video</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setSelectedType('photo');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+              selectedType === 'photo' ? 'text-indigo-600' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <ImageIcon className="w-5 h-5 mb-0.5" />
+            <span>Photos</span>
+          </button>
+        </nav>
       </div>
     </MainLayout>
   );

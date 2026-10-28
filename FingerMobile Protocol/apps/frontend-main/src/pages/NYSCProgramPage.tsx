@@ -411,7 +411,7 @@ export const NYSCProgramPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="NYSC">
-      <div className="bg-slate-50 min-h-screen text-slate-900 pb-20">
+      <div className="bg-slate-50 min-h-screen text-slate-900 pb-28 md:pb-12 max-w-full overflow-x-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
           {/* Header Banner */}
           <div className="bg-gradient-to-r from-emerald-950 via-slate-900 to-emerald-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl border border-emerald-500/30 relative overflow-hidden">
@@ -1056,6 +1056,65 @@ export const NYSCProgramPage: React.FC = () => {
             </div>
           )}
         </div>
+
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <nav
+          aria-label="NYSC Program Mobile Navigation"
+          className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-3 py-2 flex items-center justify-around gap-1 shadow-lg"
+        >
+          <button
+            type="button"
+            onClick={() => {
+              setActiveTab('overview');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+              activeTab === 'overview' ? 'text-emerald-600' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <ShieldCheck className="w-5 h-5 mb-0.5" />
+            <span>Overview</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setActiveTab('awards');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+              activeTab === 'awards' ? 'text-emerald-600' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <Award className="w-5 h-5 mb-0.5" />
+            <span>Awards</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setActiveTab('courses');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+              activeTab === 'courses' ? 'text-emerald-600' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <BookOpen className="w-5 h-5 mb-0.5" />
+            <span>Courses</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setActiveTab('register');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+              activeTab === 'register' ? 'text-emerald-600' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <FileCheck className="w-5 h-5 mb-0.5" />
+            <span>Apply</span>
+          </button>
+        </nav>
       </div>
     </MainLayout>
   );
