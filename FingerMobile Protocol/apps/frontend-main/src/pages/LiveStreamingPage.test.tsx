@@ -46,4 +46,51 @@ describe('LiveStreamingPage', () => {
     ).toBeInTheDocument();
     expect(screen.getAllByRole('button', { name: /Create Stream/i }).length).toBeGreaterThan(0);
   });
+
+  it('renders stats overview cards and tab navigation correctly', async () => {
+    render(
+      <MemoryRouter>
+        <LiveStreamingPage />
+      </MemoryRouter>
+    );
+
+    expect(await screen.findByText('Live Streams')).toBeInTheDocument();
+    expect(screen.getAllByText('Viewers').length).toBeGreaterThan(0);
+    expect(screen.getByText('Watch Time')).toBeInTheDocument();
+    expect(screen.getByText('Likes/Stream')).toBeInTheDocument();
+
+    expect(screen.getAllByRole('button', { name: /Streams/i }).length).toBeGreaterThan(0);
+    expect(screen.getAllByRole('button', { name: /Viewers/i }).length).toBeGreaterThan(0);
+    expect(screen.getByRole('button', { name: /Interactions/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Analytics/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Settings/i })).toBeInTheDocument();
+  });
+
+  it('renders Sovereign Mobile Navigation Quick Dock with action tabs', () => {
+    render(
+      <MemoryRouter>
+        <LiveStreamingPage />
+      </MemoryRouter>
+    );
+
+    const mobileDock = screen.getByTestId('live-streaming-mobile-dock');
+    expect(mobileDock).toBeInTheDocument();
+
+    expect(screen.getByRole('button', { name: /Go Live/i })).toBeInTheDocument();
+  });
+
+  it('switches tabs and opens modal from mobile quick dock', () => {
+    render(
+      <MemoryRouter>
+        <LiveStreamingPage />
+      </MemoryRouter>
+    );
+
+    const goLiveBtn = screen.getByRole('button', { name: /Go Live/i });
+    fireEvent.click(goLiveBtn);
+
+    expect(
+      screen.getByRole('heading', { level: 3, name: /Create New Stream/i })
+    ).toBeInTheDocument();
+  });
 });

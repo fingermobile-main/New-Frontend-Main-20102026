@@ -251,89 +251,95 @@ const FingerWarsPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="FingerWars Battle Arena">
-      <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="w-full max-w-full overflow-x-hidden min-h-screen pb-28 md:pb-12 max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8">
 
         {/* Hero Header */}
-        <div className="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-gradient-to-r from-slate-900 via-gray-900 to-amber-950 p-6 sm:p-8 rounded-3xl border border-slate-800 text-white shadow-xl">
+        <div className="mb-6 sm:mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-gradient-to-r from-slate-900 via-gray-900 to-amber-950 p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl border border-slate-800 text-white shadow-xl">
           <div className="flex items-center">
-            <div className="bg-gradient-to-r from-yellow-500 to-amber-600 p-3.5 rounded-2xl shadow-md text-gray-950 mr-4">
-              <GameIcon className="h-8 w-8" />
+            <div className="bg-gradient-to-r from-yellow-500 to-amber-600 p-3 sm:p-3.5 rounded-xl sm:rounded-2xl shadow-md text-gray-950 mr-3 sm:mr-4 shrink-0">
+              <GameIcon className="h-7 w-7 sm:h-8 sm:w-8" />
             </div>
             <div>
-              <h1 className="text-3xl font-black tracking-tight">FingerWars Battle Arena</h1>
-              <p className="text-gray-300 text-sm mt-0.5">High-stakes reflex battles, tournament brackets, and seasonal ELO rankings</p>
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-white">FingerWars Battle Arena</h1>
+              <p className="text-slate-300 text-xs sm:text-sm mt-0.5 leading-snug">High-stakes reflex battles, tournament brackets, and seasonal ELO rankings</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3 self-stretch md:self-auto justify-between md:justify-end">
-            <div className="px-4 py-2 bg-slate-800/80 border border-slate-700 rounded-2xl text-right">
+          <div className="flex items-center gap-2.5 sm:gap-3 w-full md:w-auto justify-between md:justify-end mt-2 md:mt-0">
+            <div className="px-3.5 sm:px-4 py-2 bg-slate-800/90 border border-slate-700 rounded-xl sm:rounded-2xl text-right shrink-0">
               <p className="text-[10px] text-slate-300 font-bold uppercase tracking-wider">War Chest</p>
-              <p className="text-lg font-black text-yellow-400">{(ficBalance || 0).toLocaleString()} FIC</p>
+              <p className="text-base sm:text-lg font-black text-yellow-400">{(ficBalance || 0).toLocaleString()} FIC</p>
             </div>
 
             <button
+              type="button"
               onClick={() => fetchFingerWarsData()}
               disabled={loading}
-              className="p-3 bg-slate-800/80 border border-slate-700 rounded-2xl text-gray-300 hover:text-yellow-400 hover:border-yellow-500/50 transition-colors shadow-md"
+              className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center bg-slate-800/90 border border-slate-700 rounded-xl sm:rounded-2xl text-gray-300 hover:text-yellow-400 hover:border-yellow-500/50 transition-colors shadow-md active:scale-95 shrink-0"
               title="Refresh Arena Data"
+              aria-label="Refresh Arena Data"
             >
               <ArrowPathIcon className={`w-5 h-5 ${loading ? 'animate-spin text-yellow-400' : ''}`} />
             </button>
 
             <NavLink
               to="/advanced-finger-war"
-              className="flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-400 hover:to-amber-500 text-gray-950 font-black rounded-2xl shadow-lg transition-all text-sm shrink-0"
+              className="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 sm:px-5 py-3 min-h-[44px] bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-400 hover:to-amber-500 text-gray-950 font-black rounded-xl sm:rounded-2xl shadow-lg transition-all text-xs sm:text-sm shrink-0 active:scale-95"
             >
-              <PlayCircleIcon className="w-4 h-4" />
-              Play Live Arena
+              <PlayCircleIcon className="w-4 h-4 shrink-0" />
+              <span>Play Live</span>
             </NavLink>
           </div>
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex gap-2 border-b border-gray-200 pb-4 mb-8 overflow-x-auto no-scrollbar">
+        <div className="flex gap-2 border-b border-gray-200 pb-3 mb-6 sm:mb-8 overflow-x-auto scrollbar-none flex-nowrap">
           <button
+            type="button"
             onClick={() => setActiveTab('tournaments')}
-            className={`px-5 py-2.5 rounded-xl font-bold text-sm transition-all flex items-center gap-2 whitespace-nowrap ${
+            className={`min-h-[44px] px-4 sm:px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all flex items-center gap-2 whitespace-nowrap shrink-0 active:scale-95 ${
               activeTab === 'tournaments'
                 ? 'bg-yellow-500 text-gray-950 shadow-sm'
-                : 'text-gray-600 hover:bg-gray-100'
+                : 'text-slate-700 hover:bg-gray-100'
             }`}
           >
-            <TrophyIcon className="w-4 h-4" />
-            Championship Tournaments ({tournaments.length})
+            <TrophyIcon className="w-4 h-4 shrink-0" />
+            Tournaments ({tournaments.length})
           </button>
           <button
+            type="button"
             onClick={() => setActiveTab('challenges')}
-            className={`px-5 py-2.5 rounded-xl font-bold text-sm transition-all flex items-center gap-2 whitespace-nowrap ${
+            className={`min-h-[44px] px-4 sm:px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all flex items-center gap-2 whitespace-nowrap shrink-0 active:scale-95 ${
               activeTab === 'challenges'
                 ? 'bg-yellow-500 text-gray-950 shadow-sm'
-                : 'text-gray-600 hover:bg-gray-100'
+                : 'text-slate-700 hover:bg-gray-100'
             }`}
           >
-            <FireIcon className="w-4 h-4" />
-            Daily & Quest Challenges ({challenges.length})
+            <FireIcon className="w-4 h-4 shrink-0" />
+            Challenges ({challenges.length})
           </button>
           <button
+            type="button"
             onClick={() => setActiveTab('lobby')}
-            className={`px-5 py-2.5 rounded-xl font-bold text-sm transition-all flex items-center gap-2 whitespace-nowrap ${
+            className={`min-h-[44px] px-4 sm:px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all flex items-center gap-2 whitespace-nowrap shrink-0 active:scale-95 ${
               activeTab === 'lobby'
                 ? 'bg-yellow-500 text-gray-950 shadow-sm'
-                : 'text-gray-600 hover:bg-gray-100'
+                : 'text-slate-700 hover:bg-gray-100'
             }`}
           >
-            <UserGroupIcon className="w-4 h-4" />
-            Live Battle Lobby ({lobbyMatches.length})
+            <UserGroupIcon className="w-4 h-4 shrink-0" />
+            Live Lobby ({lobbyMatches.length})
           </button>
           <button
+            type="button"
             onClick={() => setActiveTab('leaderboard')}
-            className={`px-5 py-2.5 rounded-xl font-bold text-sm transition-all flex items-center gap-2 whitespace-nowrap ${
+            className={`min-h-[44px] px-4 sm:px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all flex items-center gap-2 whitespace-nowrap shrink-0 active:scale-95 ${
               activeTab === 'leaderboard'
                 ? 'bg-yellow-500 text-gray-950 shadow-sm'
-                : 'text-gray-600 hover:bg-gray-100'
+                : 'text-slate-700 hover:bg-gray-100'
             }`}
           >
-            <SparklesIcon className="w-4 h-4" />
+            <SparklesIcon className="w-4 h-4 shrink-0" />
             ELO Rankings
           </button>
         </div>
@@ -377,11 +383,12 @@ const FingerWarsPage: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="mt-6 pt-4 border-t border-slate-200 flex items-center justify-between gap-4">
+                  <div className="mt-6 pt-4 border-t border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                     <span className="text-xs text-slate-700 font-medium">Smart contract escrow verified</span>
                     <button
+                      type="button"
                       onClick={() => handleJoinTournament(t)}
-                      className="px-6 py-2.5 bg-yellow-500 hover:bg-yellow-400 text-gray-950 font-black text-xs rounded-xl shadow-md transition-all"
+                      className="w-full sm:w-auto px-6 py-3 min-h-[44px] bg-yellow-500 hover:bg-yellow-400 text-gray-950 font-black text-xs sm:text-sm rounded-xl shadow-md transition-all active:scale-95 flex items-center justify-center"
                     >
                       Register ({t.entry_fee} FIC)
                     </button>
@@ -432,14 +439,15 @@ const FingerWarsPage: React.FC = () => {
 
                   <div className="mt-6 pt-3 border-t border-slate-200">
                     {c.is_claimed ? (
-                      <span className="block text-center py-2 text-xs font-bold text-green-700 bg-green-50 rounded-xl">
+                      <span className="block text-center py-2.5 min-h-[44px] flex items-center justify-center text-xs font-bold text-green-700 bg-green-50 rounded-xl">
                         ✓ Reward Claimed
                       </span>
                     ) : (
                       <button
+                        type="button"
                         onClick={() => handleClaimReward(c.id)}
                         disabled={!isComplete}
-                        className={`w-full py-2.5 rounded-xl text-xs font-black transition-colors ${
+                        className={`w-full py-3 min-h-[44px] rounded-xl text-xs sm:text-sm font-black transition-colors flex items-center justify-center active:scale-95 ${
                           isComplete
                             ? 'bg-yellow-500 hover:bg-yellow-600 text-gray-950 shadow-sm'
                             : 'bg-gray-100 text-slate-500 cursor-not-allowed'
@@ -461,28 +469,30 @@ const FingerWarsPage: React.FC = () => {
             <div className="flex justify-between items-center mb-2">
               <span className="text-xs font-bold text-slate-700">Live Showdown Queue</span>
               <button
+                type="button"
                 onClick={() => setShowCreateMatchModal(true)}
-                className="flex items-center gap-1.5 px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-gray-950 font-black rounded-xl text-xs transition-all shadow-sm"
+                className="flex items-center gap-1.5 px-4 py-2.5 min-h-[44px] bg-yellow-500 hover:bg-yellow-600 text-gray-950 font-black rounded-xl text-xs sm:text-sm transition-all shadow-sm active:scale-95"
               >
-                <PlusIcon className="w-4 h-4" />
+                <PlusIcon className="w-4 h-4 shrink-0" />
                 Post Wager Match
               </button>
             </div>
 
             {lobbyMatches.map((m) => (
-              <div key={m.id} className="bg-white p-5 rounded-2xl border border-slate-300 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+              <div key={m.id} className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-300 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
                     <span className="font-bold text-sm text-gray-900">{m.player1}</span>
                     <span className="text-xs text-slate-700 font-black">VS</span>
                     <span className="text-xs text-slate-700">{m.player2}</span>
                   </div>
-                  <p className="text-xs text-slate-700 mt-1">Lobby Wager: <strong className="text-yellow-700">{m.wager} FIC</strong></p>
+                  <p className="text-xs text-slate-700 mt-1">Lobby Wager: <strong className="text-yellow-700 font-black">{m.wager} FIC</strong></p>
                 </div>
                 <button
+                  type="button"
                   onClick={() => handleJoinLobbyMatch(m)}
-                  className="px-6 py-2.5 bg-yellow-500 hover:bg-yellow-600 text-gray-950 font-black text-xs rounded-xl shadow-sm transition-colors"
+                  className="w-full sm:w-auto px-6 py-2.5 min-h-[44px] bg-yellow-500 hover:bg-yellow-600 text-gray-950 font-black text-xs sm:text-sm rounded-xl shadow-sm transition-colors flex items-center justify-center active:scale-95"
                 >
                   Accept & Battle
                 </button>
@@ -494,54 +504,56 @@ const FingerWarsPage: React.FC = () => {
         {/* TAB 4: LEADERBOARD */}
         {activeTab === 'leaderboard' && (
           <div className="bg-white rounded-2xl border border-slate-300 shadow-sm overflow-hidden">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="bg-gray-50 text-slate-700 text-xs uppercase tracking-wider border-b border-slate-200">
-                  <th className="py-3 px-5">Rank</th>
-                  <th className="py-3 px-5">Player Handle</th>
-                  <th className="py-3 px-5">Tier</th>
-                  <th className="py-3 px-5">W / L Record</th>
-                  <th className="py-3 px-5 text-right">ELO Rating</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100 text-sm">
-                {leaderboard.map((player) => (
-                  <tr key={player.rank} className="hover:bg-yellow-50/30 transition-colors">
-                    <td className="py-4 px-5">
-                      <span className="w-7 h-7 rounded-full flex items-center justify-center font-black text-xs bg-yellow-100 text-yellow-950 border border-yellow-400">
-                        #{player.rank}
-                      </span>
-                    </td>
-                    <td className="py-4 px-5 font-bold text-gray-900">{player.username}</td>
-                    <td className="py-4 px-5">
-                      <span className="px-2.5 py-1 text-xs font-bold rounded-full bg-purple-50 text-purple-950 border  border-purple-400 font-black">
-                        {player.tier}
-                      </span>
-                    </td>
-                    <td className="py-4 px-5 text-xs text-gray-600">
-                      {player.wins}W - {player.losses}L
-                    </td>
-                    <td className="py-4 px-5 font-black text-yellow-700 text-right">
-                      {player.elo_rating} ELO
-                    </td>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse min-w-[500px]">
+                <thead>
+                  <tr className="bg-gray-50 text-slate-700 text-xs uppercase tracking-wider border-b border-slate-200">
+                    <th className="py-3 px-4 sm:px-5">Rank</th>
+                    <th className="py-3 px-4 sm:px-5">Player Handle</th>
+                    <th className="py-3 px-4 sm:px-5">Tier</th>
+                    <th className="py-3 px-4 sm:px-5">W / L Record</th>
+                    <th className="py-3 px-4 sm:px-5 text-right">ELO Rating</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-gray-100 text-sm">
+                  {leaderboard.map((player) => (
+                    <tr key={player.rank} className="hover:bg-yellow-50/30 transition-colors">
+                      <td className="py-4 px-4 sm:px-5">
+                        <span className="w-7 h-7 rounded-full flex items-center justify-center font-black text-xs bg-yellow-100 text-yellow-950 border border-yellow-400">
+                          #{player.rank}
+                        </span>
+                      </td>
+                      <td className="py-4 px-4 sm:px-5 font-bold text-gray-900">{player.username}</td>
+                      <td className="py-4 px-4 sm:px-5">
+                        <span className="px-2.5 py-1 text-xs font-bold rounded-full bg-purple-50 text-purple-950 border border-purple-400 font-black">
+                          {player.tier}
+                        </span>
+                      </td>
+                      <td className="py-4 px-4 sm:px-5 text-xs text-gray-600 font-medium">
+                        {player.wins}W - {player.losses}L
+                      </td>
+                      <td className="py-4 px-4 sm:px-5 font-black text-yellow-700 text-right">
+                        {player.elo_rating} ELO
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
 
         {/* Create Match Modal */}
         {showCreateMatchModal && (
           <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 animate-in fade-in zoom-in-95">
-              <div className="flex justify-between items-center pb-4 border-b border-slate-200">
-                <h3 className="text-lg font-black text-gray-900">Create PvP Challenge</h3>
+            <div className="bg-white rounded-2xl max-w-md w-full p-5 sm:p-6 shadow-2xl border border-slate-200 animate-in fade-in zoom-in-95">
+              <div className="flex justify-between items-center pb-3 border-b border-slate-200">
+                <h3 className="text-lg font-black text-slate-900">Create PvP Challenge</h3>
                 <button
                   type="button"
                   aria-label="Close PvP Challenge Modal"
                   onClick={() => setShowCreateMatchModal(false)}
-                  className="text-slate-700 hover:text-gray-600"
+                  className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-xl flex items-center justify-center text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition"
                 >
                   <XMarkIcon className="w-5 h-5" />
                 </button>
@@ -549,28 +561,28 @@ const FingerWarsPage: React.FC = () => {
 
               <form onSubmit={handleCreateChallenge} className="space-y-4 mt-4">
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Target Opponent (Optional)</label>
+                  <label className="block text-xs font-bold text-slate-900 uppercase mb-1">Target Opponent (Optional)</label>
                   <input
                     type="text"
                     placeholder="Leave empty for Open Public Lobby"
                     value={opponentName}
                     onChange={(e) => setOpponentName(e.target.value)}
-                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-yellow-500 focus:outline-none text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
+                    className="w-full min-h-[44px] px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-yellow-500 focus:outline-none text-slate-900 font-bold bg-white placeholder:text-slate-400"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Match Wager (FIC)</label>
+                  <label className="block text-xs font-bold text-slate-900 uppercase mb-1">Match Wager (FIC)</label>
                   <div className="grid grid-cols-4 gap-2 mb-2">
                     {[10, 25, 50, 100].map((amt) => (
                       <button
                         key={amt}
                         type="button"
                         onClick={() => setMatchWager(amt)}
-                        className={`py-2 rounded-lg text-xs font-bold transition-colors ${
+                        className={`min-h-[44px] py-2.5 rounded-xl text-xs font-bold transition-colors flex items-center justify-center active:scale-95 ${
                           matchWager === amt
-                            ? 'bg-yellow-500 text-gray-950 font-black'
-                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                            ? 'bg-yellow-500 text-gray-950 font-black shadow-sm'
+                            : 'bg-slate-100 text-slate-800 hover:bg-slate-200'
                         }`}
                       >
                         {amt} FIC
@@ -582,22 +594,22 @@ const FingerWarsPage: React.FC = () => {
                     min="5"
                     value={matchWager}
                     onChange={(e) => setMatchWager(Number(e.target.value))}
-                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-yellow-500 focus:outline-none text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400 font-mono"
+                    className="w-full min-h-[44px] px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-yellow-500 focus:outline-none text-slate-900 font-bold bg-white placeholder:text-slate-400 font-mono"
                   />
                 </div>
 
-                <div className="flex justify-end gap-3 pt-4 border-t border-slate-200">
+                <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 pt-3 border-t border-slate-200">
                   <button
                     type="button"
                     onClick={() => setShowCreateMatchModal(false)}
-                    className="px-4 py-2 border border-gray-300 rounded-xl text-sm font-semibold text-gray-700 hover:bg-gray-50"
+                    className="w-full sm:w-auto px-5 py-2.5 min-h-[44px] border border-slate-300 rounded-xl text-sm font-bold text-slate-700 hover:bg-slate-50 transition active:scale-95 flex items-center justify-center"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="px-6 py-2 bg-yellow-500 hover:bg-yellow-600 text-gray-950 font-black rounded-xl text-sm shadow-md transition-colors"
+                    className="w-full sm:w-auto px-6 py-2.5 min-h-[44px] bg-yellow-500 hover:bg-yellow-600 text-gray-950 font-black rounded-xl text-sm shadow-md transition-colors active:scale-95 flex items-center justify-center"
                   >
                     {isSubmitting ? 'Deploying...' : 'Deploy Challenge'}
                   </button>
@@ -606,6 +618,62 @@ const FingerWarsPage: React.FC = () => {
             </div>
           </div>
         )}
+
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <div
+          data-testid="finger-wars-mobile-dock"
+          className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-950/95 backdrop-blur-xl border-t border-slate-800 shadow-2xl px-4 py-2 pb-safe text-white"
+        >
+          <div className="flex items-center justify-around max-w-md mx-auto">
+            <button
+              type="button"
+              onClick={() => { setActiveTab('tournaments'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-xl transition ${
+                activeTab === 'tournaments' ? 'text-yellow-400 font-bold bg-yellow-500/10' : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              <TrophyIcon className="w-5 h-5 mb-0.5" />
+              <span className="text-[11px] leading-tight">Tourneys</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => { setActiveTab('challenges'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-xl transition ${
+                activeTab === 'challenges' ? 'text-yellow-400 font-bold bg-yellow-500/10' : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              <FireIcon className="w-5 h-5 mb-0.5" />
+              <span className="text-[11px] leading-tight">Quests</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => { setActiveTab('lobby'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-xl transition ${
+                activeTab === 'lobby' ? 'text-yellow-400 font-bold bg-yellow-500/10' : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              <UserGroupIcon className="w-5 h-5 mb-0.5" />
+              <span className="text-[11px] leading-tight">Lobby</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => { setActiveTab('leaderboard'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-xl transition ${
+                activeTab === 'leaderboard' ? 'text-yellow-400 font-bold bg-yellow-500/10' : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              <SparklesIcon className="w-5 h-5 mb-0.5" />
+              <span className="text-[11px] leading-tight">Ranks</span>
+            </button>
+            <NavLink
+              to="/advanced-finger-war"
+              className="flex flex-col items-center justify-center min-w-[48px] min-h-[44px] px-2.5 py-1 rounded-xl bg-gradient-to-r from-yellow-500 to-amber-600 text-gray-950 font-black shadow-md shadow-yellow-500/20 active:scale-95 transition"
+            >
+              <PlayCircleIcon className="w-5 h-5 mb-0.5" />
+              <span className="text-[11px] leading-tight">Battle</span>
+            </NavLink>
+          </div>
+        </div>
 
       </div>
     </MainLayout>

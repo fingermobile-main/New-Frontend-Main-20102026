@@ -452,18 +452,19 @@ const LiveStreamingPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="w-full max-w-full overflow-x-hidden min-h-screen bg-gray-50 pb-28 md:pb-12">
       {/* Header */}
-      <header className="bg-white shadow">
+      <header className="bg-white shadow-xs border-b border-slate-200">
         <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 py-4 sm:py-6">
             <div className="flex items-center">
-              <Video className="h-8 w-8 text-blue-500" />
-              <h1 className="text-2xl font-bold text-gray-900 ml-3">Live Streaming Management</h1>
+              <Video className="h-7 w-7 sm:h-8 sm:w-8 text-blue-500 shrink-0" />
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-900 ml-2.5 sm:ml-3">Live Streaming Management</h1>
             </div>
             <div className="flex items-center space-x-4">
               <button
-                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center"
+                type="button"
+                className="w-full sm:w-auto min-h-[44px] bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center active:scale-95 transition"
                 onClick={() => setShowCreateModal(true)}
               >
                 <Plus className="h-4 w-4 mr-1" />
@@ -474,54 +475,54 @@ const LiveStreamingPage: React.FC = () => {
         </div>
       </header>
 
-      <main className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8">
         {/* Stats Overview */}
         {streamingStats && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <div className="bg-white rounded-xl shadow p-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-6 sm:mb-8">
+            <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-slate-200/80 p-3.5 sm:p-6">
               <div className="flex items-center">
-                <div className="p-3 rounded-lg bg-red-100">
-                  <Radio className="h-6 w-6 text-red-600" />
+                <div className="p-2 sm:p-3 rounded-xl bg-red-100 shrink-0">
+                  <Radio className="h-5 w-5 sm:h-6 sm:w-6 text-red-600" />
                 </div>
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Live Streams</p>
-                  <p className="text-2xl font-semibold text-gray-900">{streamingStats.liveStreams}</p>
+                <div className="ml-2.5 sm:ml-4 min-w-0">
+                  <p className="text-xs sm:text-sm font-medium text-gray-600 truncate">Live Streams</p>
+                  <p className="text-lg sm:text-2xl font-bold text-gray-900">{streamingStats.liveStreams}</p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white rounded-xl shadow p-6">
+            <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-slate-200/80 p-3.5 sm:p-6">
               <div className="flex items-center">
-                <div className="p-3 rounded-lg bg-blue-100">
-                  <Users className="h-6 w-6 text-blue-600" />
+                <div className="p-2 sm:p-3 rounded-xl bg-blue-100 shrink-0">
+                  <Users className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
                 </div>
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Concurrent Viewers</p>
-                  <p className="text-2xl font-semibold text-gray-900">{streamingStats.concurrentViewers.toLocaleString()}</p>
+                <div className="ml-2.5 sm:ml-4 min-w-0">
+                  <p className="text-xs sm:text-sm font-medium text-gray-600 truncate">Viewers</p>
+                  <p className="text-lg sm:text-2xl font-bold text-gray-900">{streamingStats.concurrentViewers.toLocaleString()}</p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white rounded-xl shadow p-6">
+            <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-slate-200/80 p-3.5 sm:p-6">
               <div className="flex items-center">
-                <div className="p-3 rounded-lg bg-green-100">
-                  <TrendingUp className="h-6 w-6 text-green-600" />
+                <div className="p-2 sm:p-3 rounded-xl bg-green-100 shrink-0">
+                  <TrendingUp className="h-5 w-5 sm:h-6 sm:w-6 text-green-600" />
                 </div>
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Avg. Watch Time (min)</p>
-                  <p className="text-2xl font-semibold text-gray-900">{Math.round(streamingStats.avgWatchTime / 60)}</p>
+                <div className="ml-2.5 sm:ml-4 min-w-0">
+                  <p className="text-xs sm:text-sm font-medium text-gray-600 truncate">Watch Time</p>
+                  <p className="text-lg sm:text-2xl font-bold text-gray-900">{Math.round(streamingStats.avgWatchTime / 60)}m</p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white rounded-xl shadow p-6">
+            <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-slate-200/80 p-3.5 sm:p-6">
               <div className="flex items-center">
-                <div className="p-3 rounded-lg bg-purple-100">
-                  <Heart className="h-6 w-6 text-purple-600" />
+                <div className="p-2 sm:p-3 rounded-xl bg-purple-100 shrink-0">
+                  <Heart className="h-5 w-5 sm:h-6 sm:w-6 text-purple-600" />
                 </div>
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Avg. Likes/Stream</p>
-                  <p className="text-2xl font-semibold text-gray-900">{streamingStats.engagementMetrics.avgLikesPerStream}</p>
+                <div className="ml-2.5 sm:ml-4 min-w-0">
+                  <p className="text-xs sm:text-sm font-medium text-gray-600 truncate">Likes/Stream</p>
+                  <p className="text-lg sm:text-2xl font-bold text-gray-900">{streamingStats.engagementMetrics.avgLikesPerStream}</p>
                 </div>
               </div>
             </div>
@@ -530,16 +531,16 @@ const LiveStreamingPage: React.FC = () => {
 
         {/* Tabs */}
         <div className="border-b border-slate-300 mb-6">
-          <nav className="-mb-px flex space-x-8">
+          <nav className="-mb-px flex space-x-2 sm:space-x-8 overflow-x-auto scrollbar-none pb-1 flex-nowrap">
             <button
               onClick={() => setActiveTab('streams')}
               className={`${
                 activeTab === 'streams'
                   ? 'border-blue-500 text-blue-600'
                   : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
-              } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
+              } min-h-[44px] shrink-0 whitespace-nowrap py-3 sm:py-4 px-2.5 sm:px-1 border-b-2 font-bold text-xs sm:text-sm flex items-center active:scale-95 transition`}
             >
-              <Video className="h-4 w-4 mr-2" />
+              <Video className="h-4 w-4 mr-1.5 sm:mr-2 shrink-0" />
               Streams
             </button>
             <button
@@ -548,9 +549,9 @@ const LiveStreamingPage: React.FC = () => {
                 activeTab === 'viewers'
                   ? 'border-blue-500 text-blue-600'
                   : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
-              } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
+              } min-h-[44px] shrink-0 whitespace-nowrap py-3 sm:py-4 px-2.5 sm:px-1 border-b-2 font-bold text-xs sm:text-sm flex items-center active:scale-95 transition`}
             >
-              <Users className="h-4 w-4 mr-2" />
+              <Users className="h-4 w-4 mr-1.5 sm:mr-2 shrink-0" />
               Viewers
             </button>
             <button
@@ -559,9 +560,9 @@ const LiveStreamingPage: React.FC = () => {
                 activeTab === 'interactions'
                   ? 'border-blue-500 text-blue-600'
                   : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
-              } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
+              } min-h-[44px] shrink-0 whitespace-nowrap py-3 sm:py-4 px-2.5 sm:px-1 border-b-2 font-bold text-xs sm:text-sm flex items-center active:scale-95 transition`}
             >
-              <MessageSquare className="h-4 w-4 mr-2" />
+              <MessageSquare className="h-4 w-4 mr-1.5 sm:mr-2 shrink-0" />
               Interactions
             </button>
             <button
@@ -570,9 +571,9 @@ const LiveStreamingPage: React.FC = () => {
                 activeTab === 'analytics'
                   ? 'border-blue-500 text-blue-600'
                   : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
-              } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
+              } min-h-[44px] shrink-0 whitespace-nowrap py-3 sm:py-4 px-2.5 sm:px-1 border-b-2 font-bold text-xs sm:text-sm flex items-center active:scale-95 transition`}
             >
-              <BarChart3 className="h-4 w-4 mr-2" />
+              <BarChart3 className="h-4 w-4 mr-1.5 sm:mr-2 shrink-0" />
               Analytics
             </button>
             <button
@@ -581,25 +582,25 @@ const LiveStreamingPage: React.FC = () => {
                 activeTab === 'settings'
                   ? 'border-blue-500 text-blue-600'
                   : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
-              } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
+              } min-h-[44px] shrink-0 whitespace-nowrap py-3 sm:py-4 px-2.5 sm:px-1 border-b-2 font-bold text-xs sm:text-sm flex items-center active:scale-95 transition`}
             >
-              <Settings className="h-4 w-4 mr-2" />
+              <Settings className="h-4 w-4 mr-1.5 sm:mr-2 shrink-0" />
               Settings
             </button>
           </nav>
         </div>
 
         {/* Filters and Search */}
-        <div className="bg-white rounded-xl shadow p-6 mb-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="bg-white rounded-xl sm:rounded-2xl shadow p-4 sm:p-6 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-3 sm:gap-4">
             <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search className="h-5 w-5 text-slate-700" />
+              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                <Search className="h-4 w-4 sm:h-5 sm:w-5 text-slate-700" />
               </div>
               <input
                 type="text"
                 placeholder={`Search ${activeTab}...`}
-                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder:text-slate-400 focus:outline-none focus:placeholder:text-slate-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-slate-900 font-bold border-slate-300 focus:ring-2"
+                className="block w-full min-h-[44px] pl-10 pr-3 py-2 border border-slate-300 rounded-xl leading-5 bg-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm text-slate-900 font-bold"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -608,7 +609,7 @@ const LiveStreamingPage: React.FC = () => {
             {activeTab === 'streams' && (
               <>
                 <select
-                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-slate-900 font-bold border-slate-300 bg-white focus:ring-2"
+                  className="block w-full min-h-[44px] px-3 py-2 border border-slate-300 rounded-xl shadow-xs focus:outline-none focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm text-slate-900 font-bold bg-white"
                   value={filterStatus}
                   onChange={(e) => setFilterStatus(e.target.value)}
                 >
@@ -620,7 +621,7 @@ const LiveStreamingPage: React.FC = () => {
                 </select>
 
                 <select
-                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-slate-900 font-bold border-slate-300 bg-white focus:ring-2"
+                  className="block w-full min-h-[44px] px-3 py-2 border border-slate-300 rounded-xl shadow-xs focus:outline-none focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm text-slate-900 font-bold bg-white"
                   value={filterCategory}
                   onChange={(e) => setFilterCategory(e.target.value)}
                 >
@@ -637,7 +638,7 @@ const LiveStreamingPage: React.FC = () => {
             )}
 
             <div className="flex items-center">
-              <span className="text-sm text-gray-700 mr-2">
+              <span className="text-xs sm:text-sm font-semibold text-gray-700">
                 {activeTab === 'streams' ? `${filteredStreams.length} streams` :
                  activeTab === 'viewers' ? `${filteredViewers.length} viewers` :
                  `${filteredInteractions.length} interactions`}
@@ -738,12 +739,12 @@ const LiveStreamingPage: React.FC = () => {
                               {stream.duration ? `${Math.floor(stream.duration / 60)}m` : '-'}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                              <div className="flex space-x-2">
+                              <div className="flex items-center space-x-1.5">
                                 {stream.status === 'live' ? (
                                   <button
                                     type="button"
                                     aria-label={`End live stream ${stream.title}`}
-                                    className="text-red-600 hover:text-red-900"
+                                    className="min-w-[40px] min-h-[40px] flex items-center justify-center rounded-lg text-red-600 hover:text-red-900 hover:bg-red-50 active:scale-95 transition"
                                     onClick={() => handleEndStream(stream.id)}
                                   >
                                     <Square className="h-4 w-4" />
@@ -752,7 +753,7 @@ const LiveStreamingPage: React.FC = () => {
                                   <button
                                     type="button"
                                     aria-label={`Start scheduled stream ${stream.title}`}
-                                    className="text-green-600 hover:text-green-900"
+                                    className="min-w-[40px] min-h-[40px] flex items-center justify-center rounded-lg text-green-600 hover:text-green-900 hover:bg-green-50 active:scale-95 transition"
                                     onClick={() => handleStartStream(stream.id)}
                                   >
                                     <Play className="h-4 w-4" />
@@ -761,7 +762,7 @@ const LiveStreamingPage: React.FC = () => {
                                   <button
                                     type="button"
                                     aria-label={`Start stream ${stream.title}`}
-                                    className="text-green-600 hover:text-green-900"
+                                    className="min-w-[40px] min-h-[40px] flex items-center justify-center rounded-lg text-green-600 hover:text-green-900 hover:bg-green-50 active:scale-95 transition"
                                     onClick={() => handleStartStream(stream.id)}
                                   >
                                     <Play className="h-4 w-4" />
@@ -770,7 +771,7 @@ const LiveStreamingPage: React.FC = () => {
                                 <button
                                   type="button"
                                   aria-label={`View stream ${stream.title} details`}
-                                  className="text-blue-600 hover:text-blue-900"
+                                  className="min-w-[40px] min-h-[40px] flex items-center justify-center rounded-lg text-blue-600 hover:text-blue-900 hover:bg-blue-50 active:scale-95 transition"
                                   onClick={() => history.push(`/dashboard/streaming/streams/${stream.id}/details`)}
                                 >
                                   <Eye className="h-4 w-4" />
@@ -780,7 +781,7 @@ const LiveStreamingPage: React.FC = () => {
                                     type="button"
                                     aria-label={`More options for stream ${stream.title}`}
                                     onClick={() => showToast(`Actions for stream: ${stream.title}`, 'info')}
-                                    className="text-gray-600 hover:text-gray-900"
+                                    className="min-w-[40px] min-h-[40px] flex items-center justify-center rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 active:scale-95 transition"
                                   >
                                     <MoreHorizontal className="h-4 w-4" />
                                   </button>
@@ -876,11 +877,11 @@ const LiveStreamingPage: React.FC = () => {
                               </div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                              <div className="flex space-x-2">
+                              <div className="flex items-center space-x-1.5">
                                 <button
                                   type="button"
                                   aria-label={`View viewer ${viewer.userName} details`}
-                                  className="text-blue-600 hover:text-blue-900"
+                                  className="min-w-[40px] min-h-[40px] flex items-center justify-center rounded-lg text-blue-600 hover:text-blue-900 hover:bg-blue-50 active:scale-95 transition"
                                   onClick={() => history.push(`/dashboard/streaming/viewers/${viewer.id}/details`)}
                                 >
                                   <Eye className="h-4 w-4" />
@@ -890,7 +891,7 @@ const LiveStreamingPage: React.FC = () => {
                                     type="button"
                                     aria-label={`More options for viewer ${viewer.userName}`}
                                     onClick={() => showToast(`Actions for viewer: ${viewer.userName}`, 'info')}
-                                    className="text-gray-600 hover:text-gray-900"
+                                    className="min-w-[40px] min-h-[40px] flex items-center justify-center rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 active:scale-95 transition"
                                   >
                                     <MoreHorizontal className="h-4 w-4" />
                                   </button>
@@ -979,7 +980,7 @@ const LiveStreamingPage: React.FC = () => {
                                 <button
                                   type="button"
                                   aria-label={`View interaction #${interaction.id} details`}
-                                  className="text-blue-600 hover:text-blue-900"
+                                  className="w-10 h-10 min-w-[40px] min-h-[40px] rounded-lg flex items-center justify-center text-blue-600 hover:text-blue-900 hover:bg-blue-50 transition"
                                   onClick={() => history.push(`/dashboard/streaming/interactions/${interaction.id}/details`)}
                                 >
                                   <Eye className="h-4 w-4" />
@@ -989,19 +990,19 @@ const LiveStreamingPage: React.FC = () => {
                                     type="button"
                                     aria-label={`More options for interaction #${interaction.id}`}
                                     onClick={() => showToast(`Actions for interaction #${interaction.id}`, 'info')}
-                                    className="text-gray-600 hover:text-gray-900"
+                                    className="w-10 h-10 min-w-[40px] min-h-[40px] rounded-lg flex items-center justify-center text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition"
                                   >
                                     <MoreHorizontal className="h-4 w-4" />
                                   </button>
                                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden">
                                     <button
-                                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                                      className="block px-4 py-2 text-sm text-slate-800 hover:bg-gray-100 w-full text-left"
                                       onClick={() => history.push(`/dashboard/streaming/interactions/${interaction.id}/moderate`)}
                                     >
                                       Moderate
                                     </button>
                                     <button
-                                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                                      className="block px-4 py-2 text-sm text-slate-800 hover:bg-gray-100 w-full text-left"
                                       onClick={() => history.push(`/dashboard/streaming/interactions/${interaction.id}/user-profile`)}
                                     >
                                       View User Profile
@@ -1204,13 +1205,13 @@ const LiveStreamingPage: React.FC = () => {
 
         {/* Pagination */}
         {['streams', 'viewers', 'interactions'].includes(activeTab) && totalPages > 1 && (
-          <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-slate-300 sm:px-6 mt-6">
+          <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-slate-300 sm:px-6 mt-6 rounded-xl shadow-sm">
             <div className="flex-1 flex justify-between sm:hidden">
               <button
                 onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                 disabled={currentPage === 1}
-                className={`relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md ${
-                  currentPage === 1 ? 'bg-gray-100 text-slate-700' : 'bg-white text-gray-700 hover:bg-gray-50'
+                className={`relative inline-flex items-center justify-center px-4 py-2 min-h-[44px] min-w-[44px] border border-slate-300 text-sm font-bold rounded-lg transition ${
+                  currentPage === 1 ? 'bg-slate-100 text-slate-400 cursor-not-allowed' : 'bg-white text-slate-800 hover:bg-slate-50 active:scale-95'
                 }`}
               >
                 Previous
@@ -1218,8 +1219,8 @@ const LiveStreamingPage: React.FC = () => {
               <button
                 onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                 disabled={currentPage === totalPages}
-                className={`ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md ${
-                  currentPage === totalPages ? 'bg-gray-100 text-slate-700' : 'bg-white text-gray-700 hover:bg-gray-50'
+                className={`ml-3 relative inline-flex items-center justify-center px-4 py-2 min-h-[44px] min-w-[44px] border border-slate-300 text-sm font-bold rounded-lg transition ${
+                  currentPage === totalPages ? 'bg-slate-100 text-slate-400 cursor-not-allowed' : 'bg-white text-slate-800 hover:bg-slate-50 active:scale-95'
                 }`}
               >
                 Next
@@ -1227,19 +1228,19 @@ const LiveStreamingPage: React.FC = () => {
             </div>
             <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
               <div>
-                <p className="text-sm text-gray-700">
-                  Showing <span className="font-medium">{indexOfFirstItem + 1}</span> to{' '}
-                  <span className="font-medium">{Math.min(indexOfLastItem, (activeTab === 'streams' ? filteredStreams : activeTab === 'viewers' ? filteredViewers : filteredInteractions).length)}</span> of{' '}
-                  <span className="font-medium">{(activeTab === 'streams' ? filteredStreams : activeTab === 'viewers' ? filteredViewers : filteredInteractions).length}</span> results
+                <p className="text-sm font-medium text-slate-700">
+                  Showing <span className="font-bold text-slate-900">{indexOfFirstItem + 1}</span> to{' '}
+                  <span className="font-bold text-slate-900">{Math.min(indexOfLastItem, (activeTab === 'streams' ? filteredStreams : activeTab === 'viewers' ? filteredViewers : filteredInteractions).length)}</span> of{' '}
+                  <span className="font-bold text-slate-900">{(activeTab === 'streams' ? filteredStreams : activeTab === 'viewers' ? filteredViewers : filteredInteractions).length}</span> results
                 </p>
               </div>
               <div>
-                <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-1" aria-label="Pagination">
+                <nav className="relative z-0 inline-flex rounded-lg shadow-sm -space-x-px" aria-label="Pagination">
                   <button
                     onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                     disabled={currentPage === 1}
-                    className={`relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium ${
-                      currentPage === 1 ? 'text-slate-700' : 'text-slate-700 hover:bg-gray-50'
+                    className={`relative inline-flex items-center justify-center px-3 py-2 min-h-[44px] min-w-[44px] rounded-l-lg border border-slate-300 bg-white text-sm font-medium transition ${
+                      currentPage === 1 ? 'text-slate-300 cursor-not-allowed' : 'text-slate-700 hover:bg-slate-50'
                     }`}
                   >
                     <span className="sr-only">Previous</span>
@@ -1252,10 +1253,10 @@ const LiveStreamingPage: React.FC = () => {
                       type="button"
                       aria-label={`Go to page ${i + 1}`}
                       onClick={() => setCurrentPage(i + 1)}
-                      className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
+                      className={`relative inline-flex items-center justify-center px-4 py-2 min-h-[44px] min-w-[44px] border text-sm font-bold transition ${
                         currentPage === i + 1
-                          ? 'z-10 bg-blue-50 border-blue-500 text-blue-600'
-                          : 'bg-white border-gray-300 text-slate-700 hover:bg-gray-50'
+                          ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-700'
+                          : 'bg-white border-slate-300 text-slate-800 hover:bg-slate-50'
                       }`}
                     >
                       {i + 1}
@@ -1265,8 +1266,8 @@ const LiveStreamingPage: React.FC = () => {
                   <button
                     onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                     disabled={currentPage === totalPages}
-                    className={`relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium ${
-                      currentPage === totalPages ? 'text-slate-700' : 'text-slate-700 hover:bg-gray-50'
+                    className={`relative inline-flex items-center justify-center px-3 py-2 min-h-[44px] min-w-[44px] rounded-r-lg border border-slate-300 bg-white text-sm font-medium transition ${
+                      currentPage === totalPages ? 'text-slate-300 cursor-not-allowed' : 'text-slate-700 hover:bg-slate-50'
                     }`}
                   >
                     <span className="sr-only">Next</span>
@@ -1281,15 +1282,15 @@ const LiveStreamingPage: React.FC = () => {
 
       {/* Create Stream Modal */}
       {showCreateModal && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-          <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-            <div className="mt-3">
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm overflow-y-auto h-full w-full z-50 flex items-center justify-center p-4">
+          <div className="relative mx-auto p-5 sm:p-6 border border-slate-300 w-full max-w-lg shadow-2xl rounded-2xl bg-white animate-in fade-in zoom-in duration-200">
+            <div>
               <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-medium text-gray-900">Create New Stream</h3>
+                <h3 className="text-xl font-black text-slate-900 tracking-tight">Create New Stream</h3>
                 <button
                   type="button"
                   aria-label="Close modal"
-                  className="text-slate-700 hover:text-gray-700"
+                  className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-xl flex items-center justify-center text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition"
                   onClick={() => setShowCreateModal(false)}
                 >
                   <XCircle className="h-6 w-6" />
@@ -1298,38 +1299,41 @@ const LiveStreamingPage: React.FC = () => {
 
               <form onSubmit={(e) => { e.preventDefault(); handleCreateStream(); }}>
                 <div className="mb-4">
-                  <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="stream-title">
+                  <label className="block text-slate-900 text-sm font-bold mb-2" htmlFor="stream-title">
                     Title
                   </label>
                   <input
                     type="text"
                     id="stream-title"
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-900 leading-tight focus:outline-none focus:shadow-outline font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
+                    className="shadow appearance-none border rounded-xl w-full py-3 px-3.5 min-h-[44px] text-slate-900 leading-tight focus:outline-none focus:shadow-outline font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                     value={newStream.title}
                     onChange={(e) => setNewStream({...newStream, title: e.target.value})}
+                    placeholder="Enter broadcast title..."
                     required
                   />
                 </div>
 
                 <div className="mb-4">
-                  <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="stream-description">
+                  <label className="block text-slate-900 text-sm font-bold mb-2" htmlFor="stream-description">
                     Description
                   </label>
                   <textarea
                     id="stream-description"
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-900 leading-tight focus:outline-none focus:shadow-outline font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
+                    rows={3}
+                    className="shadow appearance-none border rounded-xl w-full py-3 px-3.5 text-slate-900 leading-tight focus:outline-none focus:shadow-outline font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                     value={newStream.description}
                     onChange={(e) => setNewStream({...newStream, description: e.target.value})}
+                    placeholder="Describe your stream..."
                   />
                 </div>
 
                 <div className="mb-4">
-                  <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="stream-category">
+                  <label className="block text-slate-900 text-sm font-bold mb-2" htmlFor="stream-category">
                     Category
                   </label>
                   <select
                     id="stream-category"
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-900 leading-tight focus:outline-none focus:shadow-outline font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500"
+                    className="shadow appearance-none border rounded-xl w-full py-3 px-3.5 min-h-[44px] text-slate-900 leading-tight focus:outline-none focus:shadow-outline font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500"
                     value={newStream.category}
                     onChange={(e) => setNewStream({...newStream, category: e.target.value})}
                   >
@@ -1343,30 +1347,30 @@ const LiveStreamingPage: React.FC = () => {
                   </select>
                 </div>
 
-                <div className="mb-4 flex items-center">
+                <div className="mb-6 flex items-center p-3 rounded-xl bg-slate-50 border border-slate-200">
                   <input
                     id="stream-public"
                     type="checkbox"
-                    className="h-4 w-4 text-slate-900 focus:ring-blue-500 border-gray-300 rounded font-bold border border-slate-300 bg-white focus:ring-2 placeholder:text-slate-400"
+                    className="h-5 w-5 text-indigo-600 focus:ring-indigo-500 border-slate-300 rounded font-bold cursor-pointer"
                     checked={newStream.isPublic}
                     onChange={(e) => setNewStream({...newStream, isPublic: e.target.checked})}
                   />
-                  <label htmlFor="stream-public" className="ml-2 block text-sm text-gray-900">
-                    Make this stream public
+                  <label htmlFor="stream-public" className="ml-3 block text-sm font-bold text-slate-900 cursor-pointer">
+                    Make this stream public & sovereignly broadcasted
                   </label>
                 </div>
 
-                <div className="flex justify-end space-x-3 mt-6">
+                <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 pt-2">
                   <button
                     type="button"
-                    className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none"
+                    className="w-full sm:w-auto px-5 py-3 min-h-[44px] text-sm font-bold text-slate-700 bg-slate-100 rounded-xl hover:bg-slate-200 active:scale-95 transition"
                     onClick={() => setShowCreateModal(false)}
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none"
+                    className="w-full sm:w-auto px-6 py-3 min-h-[44px] text-sm font-bold text-white bg-gradient-to-r from-red-600 to-indigo-600 rounded-xl hover:opacity-95 shadow-lg shadow-indigo-600/20 active:scale-95 transition"
                   >
                     Create Stream
                   </button>
@@ -1376,6 +1380,63 @@ const LiveStreamingPage: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div
+        data-testid="live-streaming-mobile-dock"
+        className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-xl border-t border-slate-200 shadow-2xl px-4 py-2 pb-safe"
+      >
+        <div className="flex items-center justify-around max-w-md mx-auto">
+          <button
+            type="button"
+            onClick={() => { setActiveTab('streams'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-xl transition ${
+              activeTab === 'streams' ? 'text-red-600 font-bold bg-red-50' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <Video className="w-5 h-5 mb-0.5" />
+            <span className="text-[11px] leading-tight">Streams</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => { setActiveTab('viewers'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-xl transition ${
+              activeTab === 'viewers' ? 'text-indigo-600 font-bold bg-indigo-50' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <Users className="w-5 h-5 mb-0.5" />
+            <span className="text-[11px] leading-tight">Viewers</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => { setActiveTab('interactions'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-xl transition ${
+              activeTab === 'interactions' ? 'text-indigo-600 font-bold bg-indigo-50' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <MessageSquare className="w-5 h-5 mb-0.5" />
+            <span className="text-[11px] leading-tight">Chat</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => { setActiveTab('analytics'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-xl transition ${
+              activeTab === 'analytics' ? 'text-indigo-600 font-bold bg-indigo-50' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <BarChart3 className="w-5 h-5 mb-0.5" />
+            <span className="text-[11px] leading-tight">Stats</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setShowCreateModal(true)}
+            className="flex flex-col items-center justify-center min-w-[48px] min-h-[44px] px-3 py-1 rounded-xl bg-gradient-to-r from-red-600 to-indigo-600 text-white font-bold shadow-md shadow-red-500/20 active:scale-95 transition"
+          >
+            <Radio className="w-5 h-5 mb-0.5" />
+            <span className="text-[11px] leading-tight">Go Live</span>
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
