@@ -39,7 +39,7 @@ const AdminLoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-900 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-slate-900 py-12 px-4 sm:px-6 lg:px-8 w-full max-w-full overflow-x-hidden pb-28 md:pb-12">
       <div className="bg-slate-800 border border-slate-700 p-8 rounded-2xl shadow-2xl w-full max-w-md">
         <div className="text-center mb-8">
           <div className="mx-auto w-14 h-14 bg-indigo-600/20 border border-indigo-500/30 rounded-2xl flex items-center justify-center mb-4">
@@ -104,12 +104,34 @@ const AdminLoginPage: React.FC = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full mt-6 inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-semibold text-sm text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 shadow-lg shadow-indigo-600/20 transition-all disabled:opacity-50"
+            className="w-full mt-6 inline-flex items-center justify-center gap-2 py-3 px-4 min-h-[44px] rounded-xl font-semibold text-sm text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 shadow-lg shadow-indigo-600/20 transition-all disabled:opacity-50"
           >
             {loading ? 'Authenticating...' : 'Sign In to Console'}
             <ArrowRight className="w-4 h-4" />
           </button>
         </form>
+      </div>
+
+      {/* SOVEREIGN MOBILE QUICK DOCK */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-900/95 backdrop-blur-md border-t border-slate-700 px-3 py-2 shadow-2xl">
+        <div className="flex items-center justify-around max-w-md mx-auto">
+          <button
+            type="button"
+            onClick={() => navigate('/')}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-lg text-slate-300 hover:text-white transition-colors"
+          >
+            <ShieldCheck className="w-5 h-5 mb-0.5 text-indigo-400" />
+            <span className="text-[10px] leading-tight">Home</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate('/login')}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-lg text-indigo-400 font-bold bg-indigo-950/40 transition-colors"
+          >
+            <Lock className="w-5 h-5 mb-0.5" />
+            <span className="text-[10px] leading-tight">User Login</span>
+          </button>
+        </div>
       </div>
     </div>
   );

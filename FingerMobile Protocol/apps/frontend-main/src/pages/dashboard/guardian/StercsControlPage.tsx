@@ -134,7 +134,7 @@ const StercsControlPage: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-4 sm:p-6 lg:p-8 space-y-6 max-w-full overflow-x-hidden pb-28 md:pb-12">
       {/* Permanent Platform Ownership Authority Seal */}
       <PlatformOwnershipCard />
 
@@ -774,6 +774,40 @@ const StercsControlPage: React.FC = () => {
               </div>
             </div>
           )}
+        </div>
+      </div>
+
+      {/* SOVEREIGN MOBILE QUICK DOCK */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-900/95 backdrop-blur-md border-t border-slate-700 px-3 py-2 shadow-2xl">
+        <div className="flex items-center justify-around max-w-md mx-auto">
+          <button
+            type="button"
+            onClick={() => setSystemMode('threat')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-lg transition-colors ${
+              systemMode === 'threat' ? 'text-red-400 font-bold bg-red-950/40' : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            <ShieldExclamationIcon className="w-5 h-5 mb-0.5" />
+            <span className="text-[10px] leading-tight">Threat</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setSystemMode('enterprise')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-lg transition-colors ${
+              systemMode === 'enterprise' ? 'text-blue-400 font-bold bg-blue-950/40' : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            <BuildingOfficeIcon className="w-5 h-5 mb-0.5" />
+            <span className="text-[10px] leading-tight">Enterprise</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setAuthStep(4)}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-lg text-amber-400 font-bold bg-amber-950/40 transition-colors"
+          >
+            <FingerPrintIcon className="w-5 h-5 mb-0.5" />
+            <span className="text-[10px] leading-tight">Authorize</span>
+          </button>
         </div>
       </div>
     </div>

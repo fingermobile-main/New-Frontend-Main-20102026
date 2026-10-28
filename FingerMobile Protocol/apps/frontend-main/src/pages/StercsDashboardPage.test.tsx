@@ -60,7 +60,7 @@ describe('StercsDashboardPage Mobile Optimization', () => {
 
     expect(screen.getAllByRole('button', { name: /overview/i }).length).toBeGreaterThanOrEqual(1);
     expect(screen.getAllByRole('button', { name: /governance/i }).length).toBeGreaterThanOrEqual(1);
-    expect(screen.getAllByRole('button', { name: /consoles/i }).length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByRole('button', { name: /modules/i }).length).toBeGreaterThanOrEqual(1);
     expect(screen.getAllByRole('button', { name: /controls/i }).length).toBeGreaterThanOrEqual(1);
   });
 });

@@ -2689,13 +2689,13 @@ const StercsDashboardPage: React.FC = () => {
           </button>
           <button
             type="button"
-            onClick={() => setActiveTab('consoles')}
+            onClick={() => setActiveTab('modules')}
             className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-lg transition-colors ${
-              activeTab === 'consoles' ? 'text-blue-700 font-bold bg-blue-50' : 'text-slate-700 hover:text-slate-900'
+              activeTab === 'modules' ? 'text-blue-700 font-bold bg-blue-50' : 'text-slate-700 hover:text-slate-900'
             }`}
           >
             <Layers className="w-5 h-5 mb-0.5" />
-            <span className="text-[10px] leading-tight">Consoles</span>
+            <span className="text-[10px] leading-tight">Modules</span>
           </button>
           <button
             type="button"

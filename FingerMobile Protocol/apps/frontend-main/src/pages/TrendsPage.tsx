@@ -217,7 +217,7 @@ const TrendsPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Trends">
-      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-full overflow-x-hidden pb-28 md:pb-12">
 
         {/* Header with Title and Policy Highlight */}
         <div className="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -509,6 +509,50 @@ const TrendsPage: React.FC = () => {
 
         </div>
 
+      </div>
+
+      {/* SOVEREIGN MOBILE QUICK DOCK */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-3 py-2 shadow-lg">
+        <div className="flex items-center justify-around max-w-md mx-auto">
+          <button
+            type="button"
+            onClick={() => setActiveCategory('all')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-lg transition-colors ${
+              activeCategory === 'all' ? 'text-red-600 font-bold bg-red-50' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <SparklesIcon className="w-5 h-5 mb-0.5" />
+            <span className="text-[10px] leading-tight">All</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveCategory('red_carpet')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-lg transition-colors ${
+              activeCategory === 'red_carpet' ? 'text-red-600 font-bold bg-red-50' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <FireIcon className="w-5 h-5 mb-0.5" />
+            <span className="text-[10px] leading-tight">Red Carpet</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveCategory('e_news')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-lg transition-colors ${
+              activeCategory === 'e_news' ? 'text-red-600 font-bold bg-red-50' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <NewspaperIcon className="w-5 h-5 mb-0.5" />
+            <span className="text-[10px] leading-tight">News</span>
+          </button>
+          <button
+            type="button"
+            onClick={fetchTrends}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-lg text-blue-700 font-bold bg-blue-50 transition-colors"
+          >
+            <ArrowPathIcon className="w-5 h-5 mb-0.5" />
+            <span className="text-[10px] leading-tight">Refresh</span>
+          </button>
+        </div>
       </div>
     </MainLayout>
   );

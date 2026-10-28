@@ -132,7 +132,7 @@ const MonitoringDashboardPage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 py-8">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 py-8 max-w-full overflow-x-hidden pb-28 md:pb-12">
         {/* Header */}
         <div className="mb-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -458,6 +458,30 @@ const MonitoringDashboardPage: React.FC = () => {
             </div>
           </>
         )}
+      </div>
+
+      {/* SOVEREIGN MOBILE QUICK DOCK */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-3 py-2 shadow-lg">
+        <div className="flex items-center justify-around max-w-md mx-auto">
+          <button
+            type="button"
+            onClick={fetchMetrics}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-lg text-blue-700 font-bold bg-blue-50 transition-colors"
+          >
+            <ArrowPathIcon className="w-5 h-5 mb-0.5" />
+            <span className="text-[10px] leading-tight">Refresh</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setAutoRefresh(!autoRefresh)}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-lg transition-colors ${
+              autoRefresh ? 'text-emerald-700 font-bold bg-emerald-50' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <ClockIcon className="w-5 h-5 mb-0.5" />
+            <span className="text-[10px] leading-tight">{autoRefresh ? 'Live ON' : 'Paused'}</span>
+          </button>
+        </div>
       </div>
     </MainLayout>
   );

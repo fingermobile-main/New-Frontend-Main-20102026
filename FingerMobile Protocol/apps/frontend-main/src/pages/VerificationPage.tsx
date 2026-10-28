@@ -77,7 +77,7 @@ const VerificationPage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 max-w-full overflow-x-hidden pb-28 md:pb-12">
         <div className="bg-white border border-slate-300 rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex items-center">
             <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-3.5 rounded-2xl shadow-md text-white">
@@ -291,6 +291,40 @@ const VerificationPage: React.FC = () => {
               Add Funds
             </Link>
           </div>
+        </div>
+      </div>
+
+      {/* SOVEREIGN MOBILE QUICK DOCK */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-3 py-2 shadow-lg">
+        <div className="flex items-center justify-around max-w-md mx-auto">
+          <button
+            type="button"
+            onClick={() => setVerificationMethod('phone')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-lg transition-colors ${
+              verificationMethod === 'phone' ? 'text-indigo-600 font-bold bg-indigo-50' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <PhoneIcon className="w-5 h-5 mb-0.5" />
+            <span className="text-[10px] leading-tight">Phone</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setVerificationMethod('email')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-lg transition-colors ${
+              verificationMethod === 'email' ? 'text-indigo-600 font-bold bg-indigo-50' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <MailIcon className="w-5 h-5 mb-0.5" />
+            <span className="text-[10px] leading-tight">Email</span>
+          </button>
+          <button
+            type="button"
+            onClick={isVerified ? resetVerification : handleSubmitCode}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-lg text-emerald-700 font-bold bg-emerald-50 transition-colors"
+          >
+            <ShieldCheckIcon className="w-5 h-5 mb-0.5" />
+            <span className="text-[10px] leading-tight">{isVerified ? 'Reset' : 'Verify'}</span>
+          </button>
         </div>
       </div>
     </MainLayout>

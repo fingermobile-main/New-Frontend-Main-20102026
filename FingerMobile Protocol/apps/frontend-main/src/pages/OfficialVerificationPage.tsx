@@ -59,7 +59,7 @@ const OfficialVerificationPage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="max-w-3xl mx-auto px-4 py-8">
+      <div className="max-w-3xl mx-auto px-4 py-8 w-full max-w-full overflow-x-hidden pb-28 md:pb-12">
         <div className="flex items-center mb-2">
           <ShieldCheckIcon className="h-8 w-8 text-indigo-600 mr-3" />
           <h1 className="text-3xl font-bold text-gray-900">Official Verification</h1>
@@ -205,6 +205,42 @@ const OfficialVerificationPage: React.FC = () => {
               </button>
             </div>
           )}
+        </div>
+      </div>
+
+      {/* SOVEREIGN MOBILE QUICK DOCK */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-3 py-2 shadow-lg">
+        <div className="flex items-center justify-around max-w-md mx-auto">
+          <button
+            type="button"
+            onClick={() => setStep(1)}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-lg transition-colors ${
+              step === 1 ? 'text-indigo-600 font-bold bg-indigo-50' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <ShieldCheckIcon className="w-5 h-5 mb-0.5" />
+            <span className="text-[10px] leading-tight">Entity</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setStep(2)}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-lg transition-colors ${
+              step === 2 ? 'text-indigo-600 font-bold bg-indigo-50' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <CheckCircleIcon className="w-5 h-5 mb-0.5" />
+            <span className="text-[10px] leading-tight">Documents</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setStep(3)}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-lg transition-colors ${
+              step === 3 ? 'text-indigo-600 font-bold bg-indigo-50' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <CreditCardIcon className="w-5 h-5 mb-0.5" />
+            <span className="text-[10px] leading-tight">Review</span>
+          </button>
         </div>
       </div>
     </MainLayout>

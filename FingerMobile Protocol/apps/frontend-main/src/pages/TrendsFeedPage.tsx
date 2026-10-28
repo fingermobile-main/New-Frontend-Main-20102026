@@ -82,7 +82,7 @@ const TrendsFeedPage: React.FC<TrendsFeedPageProps> = ({
 
   return (
     <MainLayout>
-      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full max-w-full overflow-x-hidden pb-28 md:pb-12">
         <div className="mb-10">
           <div className="flex items-center">
             <div className="bg-gradient-to-r from-orange-500 to-amber-600 p-3 rounded-xl shadow-md">
@@ -180,6 +180,33 @@ const TrendsFeedPage: React.FC<TrendsFeedPageProps> = ({
               </ul>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* SOVEREIGN MOBILE QUICK DOCK */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-3 py-2 shadow-lg">
+        <div className="flex items-center justify-around max-w-md mx-auto">
+          <Link
+            to="/trends"
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-lg text-slate-700 hover:text-slate-900 transition-colors"
+          >
+            <FireIcon className="w-5 h-5 mb-0.5 text-orange-600" />
+            <span className="text-[10px] leading-tight">Radar</span>
+          </Link>
+          <Link
+            to="/forum"
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-lg text-slate-700 hover:text-slate-900 transition-colors"
+          >
+            <ChatBubbleLeftRightIcon className="w-5 h-5 mb-0.5" />
+            <span className="text-[10px] leading-tight">Forum</span>
+          </Link>
+          <Link
+            to="/createpost"
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-lg text-orange-600 font-bold bg-orange-50 transition-colors"
+          >
+            <LinkIcon className="w-5 h-5 mb-0.5" />
+            <span className="text-[10px] leading-tight">Post</span>
+          </Link>
         </div>
       </div>
     </MainLayout>

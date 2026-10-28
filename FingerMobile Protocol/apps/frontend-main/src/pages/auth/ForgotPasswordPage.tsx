@@ -69,7 +69,7 @@ const ForgotPasswordPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4 w-full max-w-full overflow-x-hidden pb-28 md:pb-12">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -158,6 +158,28 @@ const ForgotPasswordPage = () => {
           </div>
         </div>
       </motion.div>
+
+      {/* SOVEREIGN MOBILE QUICK DOCK */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-300 dark:border-slate-700 px-3 py-2 shadow-lg">
+        <div className="flex items-center justify-around max-w-md mx-auto">
+          <button
+            type="button"
+            onClick={() => navigate('/')}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-lg text-slate-700 dark:text-slate-300 hover:text-slate-900 transition-colors"
+          >
+            <ArrowLeft className="w-5 h-5 mb-0.5" />
+            <span className="text-[10px] leading-tight">Home</span>
+          </button>
+          <button
+            type="button"
+            onClick={handleBackToLogin}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-lg text-indigo-600 dark:text-indigo-400 font-bold bg-indigo-50 dark:bg-indigo-950/40 transition-colors"
+          >
+            <Mail className="w-5 h-5 mb-0.5" />
+            <span className="text-[10px] leading-tight">Login</span>
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

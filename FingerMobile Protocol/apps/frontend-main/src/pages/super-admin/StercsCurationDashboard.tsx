@@ -90,7 +90,7 @@ const StercsCurationDashboard: React.FC = () => {
 
   return (
     <MainLayout pageTitle="STERCS Curation & Content Management">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-in fade-in slide-in-from-bottom-4 duration-700 w-full max-w-full overflow-x-hidden pb-28 md:pb-12">
         {/* Permanent Platform Ownership Authority Seal */}
         <PlatformOwnershipCard />
 
@@ -219,6 +219,42 @@ const StercsCurationDashboard: React.FC = () => {
         </div>
       </>
     )}
+  </div>
+
+  {/* SOVEREIGN MOBILE QUICK DOCK */}
+  <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-3 py-2 shadow-lg">
+    <div className="flex items-center justify-around max-w-md mx-auto">
+      <button
+        type="button"
+        onClick={() => setActiveTab('subscriptions')}
+        className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-lg transition-colors ${
+          activeTab === 'subscriptions' ? 'text-indigo-600 font-bold bg-indigo-50' : 'text-slate-700 hover:text-slate-900'
+        }`}
+      >
+        <span className="text-xs">💳</span>
+        <span className="text-[10px] leading-tight">Subscriptions</span>
+      </button>
+      <button
+        type="button"
+        onClick={() => setActiveTab('products')}
+        className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-lg transition-colors ${
+          activeTab === 'products' ? 'text-indigo-600 font-bold bg-indigo-50' : 'text-slate-700 hover:text-slate-900'
+        }`}
+      >
+        <span className="text-xs">📦</span>
+        <span className="text-[10px] leading-tight">Products</span>
+      </button>
+      <button
+        type="button"
+        onClick={() => setActiveTab('ads')}
+        className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 rounded-lg transition-colors ${
+          activeTab === 'ads' ? 'text-indigo-600 font-bold bg-indigo-50' : 'text-slate-700 hover:text-slate-900'
+        }`}
+      >
+        <span className="text-xs">📢</span>
+        <span className="text-[10px] leading-tight">Ads</span>
+      </button>
+    </div>
   </div>
 </MainLayout>
   );
