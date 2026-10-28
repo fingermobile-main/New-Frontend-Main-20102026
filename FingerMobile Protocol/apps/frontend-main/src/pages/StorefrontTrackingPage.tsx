@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Package,
   Truck,
@@ -11,6 +12,7 @@ import {
   Copy,
   Check,
   X,
+  Compass
 } from 'lucide-react';
 import { useAppContext } from '../contexts/AppContext';
 import apiService from '../services/apiService';
@@ -64,6 +66,7 @@ export interface TrackingShipment {
 const CARRIERS = ['DHL Express', 'GIG Logistics', 'FedEx Priority', 'UPS Worldwide', 'FingerCourier Node'];
 
 export const StorefrontTrackingPage: React.FC = () => {
+  const navigate = useNavigate();
   const { showToast } = useAppContext();
   const [activeTab, setActiveTab] = useState<'logistics' | 'commerce-management'>('logistics');
   // Logistics / Shipments State
@@ -284,10 +287,10 @@ export const StorefrontTrackingPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 p-4 md:p-8">
+    <div className="min-h-screen bg-slate-50 p-3 sm:p-6 lg:p-8 w-full max-w-full overflow-x-hidden pb-28 md:pb-12 text-slate-900">
       {/* Top Header Bar */}
-      <header className="max-w-7xl mx-auto mb-6">
-        <div className="bg-white rounded-xl shadow-xs border border-slate-300 p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <header className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto mb-6">
+        <div className="bg-white rounded-2xl shadow-xs border border-slate-300 p-4 sm:p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div className="flex items-center gap-3">
             <div className="p-3 bg-emerald-100 text-emerald-950 rounded-xl border border-emerald-300 shadow-xs">
               <Store className="h-7 w-7 text-emerald-700" />
@@ -310,7 +313,7 @@ export const StorefrontTrackingPage: React.FC = () => {
               type="button"
               onClick={handleRefresh}
               disabled={refreshing}
-              className="px-3.5 py-2.5 text-xs font-bold text-slate-800 bg-white border border-slate-300 hover:bg-slate-100 rounded-lg flex items-center gap-1.5 shadow-xs transition-colors"
+              className="min-h-[44px] px-3.5 py-2.5 text-xs sm:text-sm font-bold text-slate-800 bg-white border border-slate-300 hover:bg-slate-100 rounded-xl flex items-center justify-center gap-1.5 shadow-xs transition-colors cursor-pointer"
             >
               <RefreshCw className={`h-4 w-4 text-slate-700 ${refreshing ? 'animate-spin' : ''}`} />
               <span>Refresh</span>
@@ -318,7 +321,7 @@ export const StorefrontTrackingPage: React.FC = () => {
             <button
               type="button"
               onClick={() => setIsDispatchModalOpen(true)}
-              className="px-4 py-2.5 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-lg flex items-center gap-1.5 shadow-xs transition-colors"
+              className="min-h-[44px] px-4 py-2.5 text-xs sm:text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl flex items-center justify-center gap-1.5 shadow-xs transition-colors cursor-pointer"
             >
               <Plus className="h-4 w-4" />
               <span>Dispatch Package</span>
@@ -327,7 +330,7 @@ export const StorefrontTrackingPage: React.FC = () => {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto space-y-6">
+      <main className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto space-y-6">
         {/* Navigation Tabs & Platform Scope Strip */}
         <div className="bg-white p-4 rounded-xl border border-slate-300 shadow-xs flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
           <div className="flex flex-wrap items-center gap-2">
@@ -340,7 +343,7 @@ export const StorefrontTrackingPage: React.FC = () => {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`px-3.5 py-2 rounded-lg text-xs font-bold flex items-center gap-2 transition-all ${
+                  className={`min-h-[44px] px-4 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
                     activeTab === tab.id
                       ? 'bg-blue-600 text-white shadow-xs'
                       : 'text-slate-700 hover:bg-slate-100'
@@ -782,6 +785,46 @@ export const StorefrontTrackingPage: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div className="fixed bottom-3 inset-x-3 z-40 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl shadow-2xl px-2 py-1.5 flex items-center justify-around sm:hidden">
+        <button
+          onClick={() => setActiveTab('logistics')}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 transition-colors ${
+            activeTab === 'logistics' ? 'text-blue-400' : 'text-slate-300 hover:text-white'
+          }`}
+          title="Transit"
+        >
+          <Truck className="w-5 h-5" />
+          <span className="text-[10px] font-semibold mt-0.5">Transit</span>
+        </button>
+        <button
+          onClick={() => setActiveTab('commerce-management')}
+          className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 transition-colors ${
+            activeTab === 'commerce-management' ? 'text-blue-400' : 'text-slate-300 hover:text-white'
+          }`}
+          title="Commerce"
+        >
+          <Store className="w-5 h-5 text-emerald-400" />
+          <span className="text-[10px] font-semibold mt-0.5">Commerce</span>
+        </button>
+        <button
+          onClick={() => setIsDispatchModalOpen(true)}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-slate-300 hover:text-white transition-colors"
+          title="Dispatch"
+        >
+          <Plus className="w-5 h-5 text-amber-400" />
+          <span className="text-[10px] font-semibold mt-0.5">Dispatch</span>
+        </button>
+        <button
+          onClick={() => navigate('/storefronts')}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-slate-300 hover:text-white transition-colors"
+          title="Stores"
+        >
+          <Compass className="w-5 h-5 text-indigo-400" />
+          <span className="text-[10px] font-semibold mt-0.5">Stores</span>
+        </button>
+      </div>
     </div>
   );
 };

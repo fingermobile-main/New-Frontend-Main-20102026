@@ -5,6 +5,13 @@ import PageHeader from '../components/PageHeader';
 import AnimatedAvatar from '../components/AnimatedAvatar';
 import apiService from '../services/apiService';
 import { CURATED_STOREFRONTS, CURATED_STOREFRONT_PRODUCTS } from '../data/curatedStorefrontData';
+import {
+  Store,
+  ArrowLeft,
+  Gift,
+  Link as LinkIcon,
+  MessageSquare
+} from 'lucide-react';
 
 interface Product {
   id: string;
@@ -269,7 +276,17 @@ const StorefrontDetailPage: React.FC = () => {
   }
 
   return (
-    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+    <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6 overflow-x-hidden pb-28 md:pb-12 text-slate-900">
+      <div className="flex items-center justify-between">
+        <button
+          onClick={() => navigate('/storefronts')}
+          className="min-h-[44px] px-3.5 py-2 inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-slate-800 hover:text-blue-600 transition-colors bg-white border border-slate-300 rounded-xl shadow-xs cursor-pointer"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          <span>Back to Storefronts</span>
+        </button>
+      </div>
+
       <PageHeader
         title={storefront.name}
         description="Verified creator storefront on FingerMobile Protocol"
@@ -326,10 +343,10 @@ const StorefrontDetailPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 flex-wrap">
               <button
                 onClick={handleFollowToggle}
-                className={`px-5 py-2.5 rounded-xl font-semibold text-sm transition shadow-sm ${
+                className={`min-h-[44px] px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition shadow-sm flex items-center justify-center cursor-pointer ${
                   isFollowing
                     ? 'bg-gray-100 text-gray-800 hover:bg-gray-200 border border-gray-300'
                     : 'bg-brand-blue text-white hover:bg-blue-700'
@@ -339,7 +356,7 @@ const StorefrontDetailPage: React.FC = () => {
               </button>
               <button
                 onClick={handleSendMessage}
-                className="px-5 py-2.5 border border-gray-300 rounded-xl text-gray-700 font-semibold text-sm hover:bg-gray-50 transition shadow-sm"
+                className="min-h-[44px] px-5 py-2.5 border border-gray-300 rounded-xl text-gray-700 font-bold text-xs sm:text-sm hover:bg-gray-50 transition shadow-sm flex items-center justify-center cursor-pointer"
               >
                 Message
               </button>
@@ -363,16 +380,16 @@ const StorefrontDetailPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap">
             <button
               onClick={onOpenGiftModal}
-              className="px-4 py-2 bg-purple-50 text-purple-700 border border-purple-200 rounded-xl text-xs font-semibold hover:bg-purple-100 transition"
+              className="min-h-[44px] px-4 py-2 bg-purple-50 text-purple-700 border border-purple-200 rounded-xl text-xs sm:text-sm font-bold hover:bg-purple-100 transition flex items-center justify-center cursor-pointer"
             >
               Send Tip / Gift
             </button>
             <button
               onClick={onOpenPaylinkModal}
-              className="px-4 py-2 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-xl text-xs font-semibold hover:bg-emerald-100 transition"
+              className="min-h-[44px] px-4 py-2 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-xl text-xs sm:text-sm font-bold hover:bg-emerald-100 transition flex items-center justify-center cursor-pointer"
             >
               Generate Paylink
             </button>
@@ -410,20 +427,20 @@ const StorefrontDetailPage: React.FC = () => {
                   <div className="flex gap-2">
                     <button
                       onClick={() => handleBuyProduct(product)}
-                      className="flex-1 py-2 bg-brand-blue text-white text-xs font-semibold rounded-xl hover:bg-blue-700 transition"
+                      className="min-h-[44px] flex-1 py-2 bg-brand-blue text-white text-xs font-bold rounded-xl hover:bg-blue-700 transition flex items-center justify-center cursor-pointer"
                     >
                       Instant Buy
                     </button>
                     <button
                       onClick={onOpenGiftModal}
-                      className="px-3 py-2 bg-purple-50 text-purple-700 text-xs font-semibold rounded-xl hover:bg-purple-100 transition"
+                      className="min-h-[44px] px-3.5 py-2 bg-purple-50 text-purple-700 text-xs font-bold rounded-xl hover:bg-purple-100 transition flex items-center justify-center cursor-pointer"
                       title="Gift this item"
                     >
                       Gift
                     </button>
                     <button
                       onClick={onOpenPaylinkModal}
-                      className="px-3 py-2 bg-emerald-50 text-emerald-700 text-xs font-semibold rounded-xl hover:bg-emerald-100 transition"
+                      className="min-h-[44px] px-3.5 py-2 bg-emerald-50 text-emerald-700 text-xs font-bold rounded-xl hover:bg-emerald-100 transition flex items-center justify-center cursor-pointer"
                       title="Paylink for this item"
                     >
                       Paylink
@@ -490,13 +507,13 @@ const StorefrontDetailPage: React.FC = () => {
             <div className="flex justify-end gap-2">
               <button
                 onClick={() => setShowPaylinkModal(false)}
-                className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-xl hover:bg-gray-200"
+                className="min-h-[44px] px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-xl hover:bg-gray-200"
               >
                 Cancel
               </button>
               <button
                 onClick={handleCreatePaylink}
-                className="px-5 py-2 text-sm font-semibold text-white bg-emerald-600 rounded-xl hover:bg-emerald-700"
+                className="min-h-[44px] px-5 py-2 text-sm font-semibold text-white bg-emerald-600 rounded-xl hover:bg-emerald-700"
               >
                 Create & Copy Link
               </button>
@@ -504,6 +521,42 @@ const StorefrontDetailPage: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div className="fixed bottom-3 inset-x-3 z-40 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl shadow-2xl px-2 py-1.5 flex items-center justify-around sm:hidden">
+        <button
+          onClick={() => navigate('/storefronts')}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-slate-300 hover:text-white transition-colors"
+          title="Storefronts"
+        >
+          <Store className="w-5 h-5 text-amber-400" />
+          <span className="text-[10px] font-semibold mt-0.5">Stores</span>
+        </button>
+        <button
+          onClick={onOpenGiftModal}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-slate-300 hover:text-white transition-colors"
+          title="Tip"
+        >
+          <Gift className="w-5 h-5 text-purple-400" />
+          <span className="text-[10px] font-semibold mt-0.5">Tip</span>
+        </button>
+        <button
+          onClick={onOpenPaylinkModal}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-slate-300 hover:text-white transition-colors"
+          title="Paylink"
+        >
+          <LinkIcon className="w-5 h-5 text-emerald-400" />
+          <span className="text-[10px] font-semibold mt-0.5">Paylink</span>
+        </button>
+        <button
+          onClick={handleSendMessage}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-slate-300 hover:text-white transition-colors"
+          title="Message"
+        >
+          <MessageSquare className="w-5 h-5 text-blue-400" />
+          <span className="text-[10px] font-semibold mt-0.5">Message</span>
+        </button>
+      </div>
     </div>
   );
 };

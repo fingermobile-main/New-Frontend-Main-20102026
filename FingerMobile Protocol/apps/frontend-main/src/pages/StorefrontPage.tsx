@@ -555,7 +555,7 @@ const StorefrontPage: React.FC = () => {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as any)}
-                  className={`px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm whitespace-nowrap transition-all flex items-center gap-2 ${
+                  className={`min-h-[44px] px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm whitespace-nowrap transition-all flex items-center justify-center gap-2 shrink-0 ${
                     isActive
                       ? 'bg-blue-600/20 text-blue-400 border border-blue-500/40 shadow-sm'
                       : 'text-slate-300 font-medium hover:text-white hover:bg-slate-800/60 border border-transparent'
@@ -1476,6 +1476,50 @@ const StorefrontPage: React.FC = () => {
             </div>
           </div>
         )}
+
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <div className="fixed bottom-3 inset-x-3 z-40 bg-slate-950/95 backdrop-blur-md border border-slate-800 rounded-2xl shadow-2xl px-2 py-1.5 flex items-center justify-around sm:hidden">
+          <button
+            onClick={() => setActiveTab('browse-mall')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 transition-colors ${
+              activeTab === 'browse-mall' ? 'text-blue-400' : 'text-slate-400 hover:text-white'
+            }`}
+            title="Mall"
+          >
+            <Store className="w-5 h-5" />
+            <span className="text-[10px] font-semibold mt-0.5">Mall</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('my-dashboard')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 transition-colors ${
+              activeTab === 'my-dashboard' ? 'text-blue-400' : 'text-slate-400 hover:text-white'
+            }`}
+            title="Merchant"
+          >
+            <Package className="w-5 h-5" />
+            <span className="text-[10px] font-semibold mt-0.5">Merchant</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('catalog')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 transition-colors ${
+              activeTab === 'catalog' ? 'text-blue-400' : 'text-slate-400 hover:text-white'
+            }`}
+            title="Catalog"
+          >
+            <Layers className="w-5 h-5" />
+            <span className="text-[10px] font-semibold mt-0.5">Catalog</span>
+          </button>
+          <button
+            onClick={() => setShowAiCopilot(prev => !prev)}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 transition-colors ${
+              showAiCopilot ? 'text-cyan-400' : 'text-slate-400 hover:text-white'
+            }`}
+            title="Copilot"
+          >
+            <Bot className="w-5 h-5" />
+            <span className="text-[10px] font-semibold mt-0.5">Copilot</span>
+          </button>
+        </div>
       </div>
     </MainLayout>
   );

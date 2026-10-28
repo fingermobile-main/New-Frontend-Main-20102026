@@ -1,9 +1,17 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 
 import { useAppContext } from '../contexts/AppContext';
 import { useMarketplace } from '../contexts/MarketplaceContext';
 import { Product } from '../types';
+import {
+  ArrowLeft,
+  ShoppingCart,
+  Zap,
+  Star,
+  MessageSquare,
+  ShieldCheck
+} from 'lucide-react';
 
 interface Review {
   id: string;
@@ -22,6 +30,7 @@ interface QuestionAnswer {
 
 const ProductDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const { openModal } = useAppContext();
 
   const {
@@ -105,12 +114,12 @@ const ProductDetailPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-slate-50 py-6 sm:py-8 px-3 sm:px-6 lg:px-8 w-full max-w-full overflow-x-hidden pb-28 md:pb-12 text-slate-900">
       <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto space-y-6">
         <div className="flex items-center justify-between">
           <button
-            onClick={() => window.history.back()}
-            className="inline-flex items-center gap-2 text-sm font-bold text-slate-800 hover:text-indigo-600 transition-colors"
+            onClick={() => navigate('/products')}
+            className="min-h-[44px] px-3 py-2 inline-flex items-center gap-2 text-sm font-bold text-slate-800 hover:text-indigo-600 transition-colors rounded-xl bg-white border border-slate-200 shadow-xs cursor-pointer"
           >
             <span>&larr;</span> Back to Products
           </button>
@@ -209,8 +218,8 @@ const ProductDetailPage: React.FC = () => {
             </div>
 
             <div className="space-y-4">
-              <div className="flex items-center">
-                <label htmlFor="quantity-input" className="mr-3 font-bold text-slate-900 text-sm">Quantity:</label>
+              <div className="flex items-center flex-wrap gap-3">
+                <label htmlFor="quantity-input" className="font-bold text-slate-900 text-sm">Quantity:</label>
                 <input
                   id="quantity-input"
                   type="number"
@@ -218,26 +227,28 @@ const ProductDetailPage: React.FC = () => {
                   max={product.stock}
                   value={quantity}
                   onChange={(e) => setQuantity(parseInt(e.target.value, 10) || 1)}
-                  className="border border-slate-300 rounded-xl p-2 w-20 text-slate-900 font-bold bg-white focus:ring-2 focus:ring-indigo-500 font-mono"
+                  className="min-h-[44px] border border-slate-300 rounded-xl p-2 w-20 text-slate-900 font-bold bg-white focus:ring-2 focus:ring-indigo-500 font-mono"
                 />
-                <span className="ml-3 text-sm font-bold text-slate-700">Available: {product.stock}</span>
+                <span className="text-sm font-bold text-slate-700">Available: {product.stock}</span>
               </div>
 
-              <div className="flex flex-wrap gap-4 pt-2">
+              <div className="flex flex-col sm:flex-row gap-3 pt-2">
                 <button
                   type="button"
                   onClick={handleAddToCartClick}
-                  className="flex-1 py-3.5 px-6 font-bold bg-indigo-50 text-indigo-900 border border-indigo-200 rounded-xl hover:bg-indigo-100 transition-colors shadow-sm"
+                  className="min-h-[44px] flex-1 py-3 px-6 font-bold bg-indigo-50 text-indigo-900 border border-indigo-200 rounded-xl hover:bg-indigo-100 transition-colors shadow-sm flex items-center justify-center gap-2"
                 >
-                  Add to Cart
+                  <ShoppingCart className="w-4 h-4" />
+                  <span>Add to Cart</span>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => openModal('cart')}
-                  className="flex-1 py-3.5 px-6 font-bold bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-colors shadow-md"
+                  className="min-h-[44px] flex-1 py-3 px-6 font-bold bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-colors shadow-md flex items-center justify-center gap-2"
                 >
-                  Buy Now
+                  <Zap className="w-4 h-4" />
+                  <span>Buy Now</span>
                 </button>
               </div>
             </div>
@@ -314,6 +325,42 @@ const ProductDetailPage: React.FC = () => {
             <p className="text-slate-700 dark:text-slate-300 font-medium">No questions yet. Ask the first one!</p>
           )}
         </div>
+      </div>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <div className="fixed bottom-3 inset-x-3 z-40 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl shadow-2xl px-2 py-1.5 flex items-center justify-around sm:hidden">
+        <button
+          onClick={() => navigate('/products')}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-slate-300 hover:text-white transition-colors"
+          title="Catalog"
+        >
+          <ArrowLeft className="w-5 h-5 text-indigo-400" />
+          <span className="text-[10px] font-semibold mt-0.5">Catalog</span>
+        </button>
+        <button
+          onClick={handleAddToCartClick}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-slate-300 hover:text-white transition-colors"
+          title="Cart"
+        >
+          <ShoppingCart className="w-5 h-5 text-indigo-400" />
+          <span className="text-[10px] font-semibold mt-0.5">Add Cart</span>
+        </button>
+        <button
+          onClick={() => openModal('cart')}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-slate-300 hover:text-white transition-colors"
+          title="Buy"
+        >
+          <Zap className="w-5 h-5 text-amber-400" />
+          <span className="text-[10px] font-semibold mt-0.5">Buy Now</span>
+        </button>
+        <button
+          onClick={() => navigate('/storefront')}
+          className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-slate-300 hover:text-white transition-colors"
+          title="Stores"
+        >
+          <ShieldCheck className="w-5 h-5 text-emerald-400" />
+          <span className="text-[10px] font-semibold mt-0.5">Stores</span>
+        </button>
       </div>
     </div>
   </div>

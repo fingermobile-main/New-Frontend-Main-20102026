@@ -1,10 +1,19 @@
 import React, { useEffect, useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { useAppContext } from '../contexts/AppContext';
 import apiService from '../services/apiService';
 import SocialEmbedModal from '../components/commerce/SocialEmbedModal';
+import {
+  LayoutDashboard,
+  Package,
+  HardDrive,
+  ShoppingBag,
+  ExternalLink
+} from 'lucide-react';
 
 const MyStorefrontPage: React.FC = () => {
+  const navigate = useNavigate();
   const { showToast } = useAppContext();
 
   const [activeTab, setActiveTab] = useState('overview');
@@ -93,13 +102,22 @@ const MyStorefrontPage: React.FC = () => {
   }, [fetchStorefrontData]);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-900">My Storefront</h1>
-          <p className="text-gray-600">
-            Manage your storefront and track your sales performance
-          </p>
+    <div className="min-h-screen bg-gray-50 w-full max-w-full overflow-x-hidden pb-28 md:pb-12 text-slate-900">
+      <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto p-3 sm:p-6 lg:p-8 space-y-6 sm:space-y-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">My Storefront</h1>
+            <p className="text-slate-700 font-medium text-xs sm:text-sm mt-1">
+              Manage your storefront and track your sales performance
+            </p>
+          </div>
+          <button
+            onClick={() => navigate('/storefronts')}
+            className="min-h-[44px] px-4 py-2 bg-white border border-slate-300 hover:bg-slate-100 text-slate-900 text-xs sm:text-sm font-bold rounded-xl shadow-xs transition-colors flex items-center justify-center gap-1.5 self-start sm:self-auto cursor-pointer"
+          >
+            <span>Public Mall</span>
+            <ExternalLink className="w-4 h-4 text-slate-600" />
+          </button>
         </div>
 
         {/* Storefront Header */}
@@ -198,64 +216,64 @@ const MyStorefrontPage: React.FC = () => {
         )}
 
         {/* Navigation Tabs */}
-        <div className="border-b border-slate-300 mb-8">
-          <nav className="flex space-x-8">
+        <div className="border-b border-slate-300 mb-8 overflow-x-auto pb-1 no-scrollbar">
+          <nav className="flex space-x-2 sm:space-x-8 min-w-max">
             <button
               onClick={() => setActiveTab('overview')}
-              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+              className={`min-h-[44px] py-2.5 px-3 sm:px-1 border-b-2 font-bold text-xs sm:text-sm flex items-center justify-center shrink-0 cursor-pointer ${
                 activeTab === 'overview'
                   ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
+                  : 'border-transparent text-slate-700 hover:text-slate-900 hover:border-slate-300'
               }`}
             >
               Overview
             </button>
             <button
               onClick={() => setActiveTab('products')}
-              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+              className={`min-h-[44px] py-2.5 px-3 sm:px-1 border-b-2 font-bold text-xs sm:text-sm flex items-center justify-center shrink-0 cursor-pointer ${
                 activeTab === 'products'
                   ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
+                  : 'border-transparent text-slate-700 hover:text-slate-900 hover:border-slate-300'
               }`}
             >
               Products
             </button>
             <button
               onClick={() => setActiveTab('analytics')}
-              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+              className={`min-h-[44px] py-2.5 px-3 sm:px-1 border-b-2 font-bold text-xs sm:text-sm flex items-center justify-center shrink-0 cursor-pointer ${
                 activeTab === 'analytics'
                   ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
+                  : 'border-transparent text-slate-700 hover:text-slate-900 hover:border-slate-300'
               }`}
             >
               Analytics
             </button>
             <button
               onClick={() => setActiveTab('orders')}
-              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+              className={`min-h-[44px] py-2.5 px-3 sm:px-1 border-b-2 font-bold text-xs sm:text-sm flex items-center justify-center shrink-0 cursor-pointer ${
                 activeTab === 'orders'
                   ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
+                  : 'border-transparent text-slate-700 hover:text-slate-900 hover:border-slate-300'
               }`}
             >
               Orders
             </button>
             <button
               onClick={() => setActiveTab('storage')}
-              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+              className={`min-h-[44px] py-2.5 px-3 sm:px-1 border-b-2 font-bold text-xs sm:text-sm flex items-center justify-center shrink-0 cursor-pointer ${
                 activeTab === 'storage'
                   ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
+                  : 'border-transparent text-slate-700 hover:text-slate-900 hover:border-slate-300'
               }`}
             >
               Storage & Quota Plan
             </button>
             <button
               onClick={() => setActiveTab('settings')}
-              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+              className={`min-h-[44px] py-2.5 px-3 sm:px-1 border-b-2 font-bold text-xs sm:text-sm flex items-center justify-center shrink-0 cursor-pointer ${
                 activeTab === 'settings'
                   ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
+                  : 'border-transparent text-slate-700 hover:text-slate-900 hover:border-slate-300'
               }`}
             >
               Settings
@@ -1119,6 +1137,48 @@ const MyStorefrontPage: React.FC = () => {
               : null
           }
         />
+
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <div className="fixed bottom-3 inset-x-3 z-40 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl shadow-2xl px-2 py-1.5 flex items-center justify-around sm:hidden">
+          <button
+            onClick={() => setActiveTab('overview')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 transition-colors ${
+              activeTab === 'overview' ? 'text-blue-400' : 'text-slate-300 hover:text-white'
+            }`}
+            title="Overview"
+          >
+            <LayoutDashboard className="w-5 h-5" />
+            <span className="text-[10px] font-semibold mt-0.5">Overview</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('products')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 transition-colors ${
+              activeTab === 'products' ? 'text-blue-400' : 'text-slate-300 hover:text-white'
+            }`}
+            title="Products"
+          >
+            <Package className="w-5 h-5" />
+            <span className="text-[10px] font-semibold mt-0.5">Products</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('storage')}
+            className={`flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 transition-colors ${
+              activeTab === 'storage' ? 'text-blue-400' : 'text-slate-300 hover:text-white'
+            }`}
+            title="Storage"
+          >
+            <HardDrive className="w-5 h-5 text-amber-400" />
+            <span className="text-[10px] font-semibold mt-0.5">Storage</span>
+          </button>
+          <button
+            onClick={() => navigate('/storefronts')}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-slate-300 hover:text-white transition-colors"
+            title="Mall"
+          >
+            <ShoppingBag className="w-5 h-5 text-emerald-400" />
+            <span className="text-[10px] font-semibold mt-0.5">Mall</span>
+          </button>
+        </div>
       </div>
     </div>
   );
