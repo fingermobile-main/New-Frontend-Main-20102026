@@ -717,7 +717,7 @@ const DiscoverPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Discover Nexus">
-      <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
+      <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8 pb-28 md:pb-12 w-full max-w-full overflow-x-hidden text-slate-900">
 
         {/* ======================================================================= */}
         {/* HERO COMMAND CENTER: Topics Engine, P2P Swarm & 30% Trends Nexus */}
@@ -1762,6 +1762,65 @@ const DiscoverPage: React.FC = () => {
             </div>
           </div>
         )}
+
+        {/* SOVEREIGN MOBILE NAVIGATION QUICK DOCK */}
+        <nav
+          aria-label="Discover Quick Navigation"
+          className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-3 py-2 sm:hidden flex items-center justify-around shadow-lg"
+        >
+          <button
+            type="button"
+            onClick={() => {
+              setActiveEngineMode('topics');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold transition-colors ${
+              activeEngineMode === 'topics' ? 'text-indigo-600' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <SparklesIcon className="w-5 h-5 mb-0.5" />
+            <span>Topics</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setActiveEngineMode('trends');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold transition-colors ${
+              activeEngineMode === 'trends' ? 'text-indigo-600' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <FireIcon className="w-5 h-5 mb-0.5" />
+            <span>Trends</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setActiveEngineMode('p2p');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold transition-colors ${
+              activeEngineMode === 'p2p' ? 'text-indigo-600' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <WifiIcon className="w-5 h-5 mb-0.5" />
+            <span>P2P Swarm</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setActiveEngineMode('hashtags');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold transition-colors ${
+              activeEngineMode === 'hashtags' ? 'text-indigo-600' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <HashtagIcon className="w-5 h-5 mb-0.5" />
+            <span>Tags</span>
+          </button>
+        </nav>
 
       </div>
     </MainLayout>

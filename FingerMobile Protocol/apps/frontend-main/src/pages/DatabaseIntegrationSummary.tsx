@@ -22,7 +22,7 @@ const DatabaseIntegrationSummary: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Database Integration Summary">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-28 md:pb-12 w-full max-w-full overflow-x-hidden text-slate-900">
         <div className="mb-8">
           <h1 className="text-3xl font-black text-slate-900">Database Integration Summary</h1>
           <p className="mt-2 text-slate-700 font-medium">
@@ -137,6 +137,37 @@ const DatabaseIntegrationSummary: React.FC = () => {
         {/* Sovereign Platform Ownership Directive */}
         <div className="mt-8">
           <PlatformOwnershipCard />
+        </div>
+
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 flex items-center justify-around shadow-2xl">
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold text-blue-700 bg-blue-50 rounded-lg transition-colors"
+          >
+            <span className="text-base mb-0.5">📊</span>
+            <span>Summary</span>
+          </button>
+          <button
+            onClick={() => {
+              const el = document.querySelectorAll('h2')[0];
+              el?.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold text-slate-700 hover:text-blue-600 rounded-lg transition-colors"
+          >
+            <span className="text-base mb-0.5">🔌</span>
+            <span>Components</span>
+          </button>
+          <button
+            onClick={() => {
+              const el = document.querySelectorAll('h2')[1];
+              el?.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold text-slate-700 hover:text-blue-600 rounded-lg transition-colors"
+          >
+            <span className="text-base mb-0.5">🛡️</span>
+            <span>Security</span>
+          </button>
         </div>
       </div>
     </MainLayout>

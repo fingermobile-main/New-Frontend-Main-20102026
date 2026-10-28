@@ -24,3 +24,4 @@ describe('DashboardPage Mobile & Accessibility', () => {
     expect(screen.getAllByRole('button', { name: /Sync/i }).length).toBeGreaterThan(0);
   });
 });
+

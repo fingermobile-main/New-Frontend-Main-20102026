@@ -9,7 +9,8 @@ import {
   MusicalNoteIcon,
   FilmIcon,
   AcademicCapIcon,
-  ShareIcon
+  ShareIcon,
+  SparklesIcon
 } from '../icons';
 import MainLayout from '../components/layout/MainLayout';
 import CuratedDiscovery from '../components/CuratedDiscovery';
@@ -264,7 +265,7 @@ const DiscoveryPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Discovery">
-      <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+      <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6 pb-28 md:pb-12 w-full max-w-full overflow-x-hidden text-slate-900">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-2xl sm:text-3xl font-black text-slate-900">
@@ -372,6 +373,65 @@ const DiscoveryPage: React.FC = () => {
             </div>
           </div>
         </div>
+        {/* SOVEREIGN MOBILE NAVIGATION QUICK DOCK */}
+        <nav
+          aria-label="Discovery Quick Navigation"
+          className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-3 py-2 sm:hidden flex items-center justify-around shadow-lg"
+        >
+          <button
+            type="button"
+            onClick={() => {
+              setActiveTab('all');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold transition-colors ${
+              activeTab === 'all' ? 'text-blue-600' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <SparklesIcon className="w-5 h-5 mb-0.5" />
+            <span>All</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setActiveTab('people');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold transition-colors ${
+              activeTab === 'people' ? 'text-blue-600' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <MemberGroupIcon className="w-5 h-5 mb-0.5" />
+            <span>People</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setActiveTab('groups');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold transition-colors ${
+              activeTab === 'groups' ? 'text-blue-600' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <UserPlusIcon className="w-5 h-5 mb-0.5" />
+            <span>Groups</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setActiveTab('content');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`min-w-[44px] min-h-[44px] flex flex-col items-center justify-center text-xs font-bold transition-colors ${
+              activeTab === 'content' ? 'text-blue-600' : 'text-slate-700 hover:text-slate-900'
+            }`}
+          >
+            <BookOpenIcon className="w-5 h-5 mb-0.5" />
+            <span>Content</span>
+          </button>
+        </nav>
+
       </div>
     </MainLayout>
   );

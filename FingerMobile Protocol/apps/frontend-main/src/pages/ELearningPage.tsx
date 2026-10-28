@@ -210,7 +210,7 @@ const ELearningPage: React.FC = () => {
     .filter(Boolean) as Course[];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pb-28 md:pb-12 w-full max-w-full overflow-x-hidden text-slate-900">
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
         <div className="max-w-[1536px] 2xl:max-w-[1680px] w-full mx-auto p-4 sm:p-6 lg:p-8 py-16">

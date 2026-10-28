@@ -53,7 +53,7 @@ const DataSubjectRequestPage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
+      <div className="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8 pb-28 md:pb-12 w-full max-w-full overflow-x-hidden text-slate-900">
         <div className="mb-6">
           <Link to="/" className="text-blue-600 hover:text-blue-800 flex items-center">
             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -177,6 +177,41 @@ const DataSubjectRequestPage: React.FC = () => {
               <li>Rights related to automated decision making</li>
             </ul>
           </div>
+        </div>
+
+        {/* Sovereign Mobile Navigation Quick Dock */}
+        <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-4 py-2 flex items-center justify-around shadow-2xl">
+          <Link
+            to="/"
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold text-slate-700 hover:text-blue-600 rounded-lg transition-colors"
+          >
+            <span className="text-base mb-0.5">🏠</span>
+            <span>Home</span>
+          </Link>
+          <Link
+            to="/privacy"
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold text-slate-700 hover:text-blue-600 rounded-lg transition-colors"
+          >
+            <span className="text-base mb-0.5">🔒</span>
+            <span>Privacy</span>
+          </Link>
+          <Link
+            to="/dpo"
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold text-slate-700 hover:text-blue-600 rounded-lg transition-colors"
+          >
+            <span className="text-base mb-0.5">🛡️</span>
+            <span>DPO Office</span>
+          </Link>
+          <button
+            onClick={() => {
+              const formEl = document.querySelector('form');
+              formEl?.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] px-2 py-1 text-xs font-bold text-blue-700 bg-blue-50 rounded-lg transition-colors"
+          >
+            <span className="text-base mb-0.5">📝</span>
+            <span>Form</span>
+          </button>
         </div>
       </div>
     </MainLayout>
