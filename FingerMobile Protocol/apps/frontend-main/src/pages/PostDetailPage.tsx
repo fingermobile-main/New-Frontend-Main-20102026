@@ -6,7 +6,7 @@ import { useAppContext } from '../contexts/AppContext';
 import PostCard from '../components/PostCard';
 import CommentSection, { type Comment } from '../components/CommentSection';
 import { Post, Member } from '../types';
-import { apiService } from '../services/apiService';
+import apiService from '../services/apiService';
 import { logError } from '../utils/errorLogger';
 
 const PostDetailPage: React.FC = () => {

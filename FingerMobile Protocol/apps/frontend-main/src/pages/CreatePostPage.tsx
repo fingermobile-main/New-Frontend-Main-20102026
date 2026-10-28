@@ -238,7 +238,7 @@ const CreatePostPage: React.FC = () => {
     editingMediaIndex !== null ? attachments[editingMediaIndex] : null;
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 w-full max-w-full overflow-x-hidden pb-28 md:pb-12 text-slate-900">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header Hero Banner */}
         <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 rounded-2xl shadow-xl p-6 text-white mb-8">
@@ -578,7 +578,7 @@ const CreatePostPage: React.FC = () => {
                   type="button"
                   onClick={handlePost}
                   disabled={isPosting}
-                  className="flex-1 py-3 px-6 bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white rounded-xl font-bold text-sm shadow-lg shadow-emerald-600/20 transition flex items-center justify-center gap-2 disabled:opacity-50"
+                  className="flex-1 min-h-[44px] py-3 px-6 bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white rounded-xl font-bold text-sm shadow-lg shadow-emerald-600/20 transition flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
                 >
                   {isPosting ? (
                     <>
@@ -694,6 +694,47 @@ const CreatePostPage: React.FC = () => {
       )}
 
       {showH2Composer && <H2Composer />}
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <nav
+        aria-label="Create Post Mobile Navigation"
+        className="md:hidden fixed bottom-4 inset-x-3 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl p-2 z-40 shadow-2xl flex items-center justify-around gap-1"
+      >
+        <button
+          type="button"
+          onClick={() => fileInputRef.current?.click()}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-indigo-400 hover:text-indigo-300 transition-colors cursor-pointer"
+        >
+          <PhotoIcon className="w-5 h-5 mb-0.5" />
+          <span>Media</span>
+        </button>
+        <button
+          type="button"
+          onClick={handleGenerate}
+          disabled={isGenerating || !prompt.trim()}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-purple-400 hover:text-purple-300 transition-colors cursor-pointer disabled:opacity-40"
+        >
+          <SparklesIcon className="w-5 h-5 mb-0.5" />
+          <span>AI Assist</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setShowPoll(!showPoll)}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-amber-400 hover:text-amber-300 transition-colors cursor-pointer"
+        >
+          <AdjustmentsHorizontalIcon className="w-5 h-5 mb-0.5" />
+          <span>Poll</span>
+        </button>
+        <button
+          type="button"
+          onClick={handlePost}
+          disabled={isPosting}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-emerald-400 hover:text-emerald-300 transition-colors cursor-pointer disabled:opacity-50"
+        >
+          <ArrowUpTrayIcon className="w-5 h-5 mb-0.5" />
+          <span>Publish</span>
+        </button>
+      </nav>
     </div>
   );
 };

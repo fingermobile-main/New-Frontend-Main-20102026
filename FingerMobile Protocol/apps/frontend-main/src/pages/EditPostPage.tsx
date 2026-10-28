@@ -342,7 +342,7 @@ const EditPostPage: React.FC = () => {
   }, [id, postTitle, editedContent, originalContent, selectedPreset, showToast, navigate]);
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 pb-16">
+    <div className="min-h-screen bg-slate-50 text-slate-900 w-full max-w-full overflow-x-hidden pb-28 md:pb-16">
       <PageHeader title="AI Post Editor & Transformer" />
 
       <div className="max-w-6xl mx-auto p-4 sm:p-6 lg:p-8 space-y-8">
@@ -359,15 +359,15 @@ const EditPostPage: React.FC = () => {
                 </span>
               </div>
               <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">AI Content Enhancement Suite</h1>
-              <p className="text-sm text-slate-700 mt-1 max-w-2xl">
+              <p className="text-sm text-slate-300 mt-1 max-w-2xl">
                 Refine, polish, expand, or stylize your post in real time. Compare side-by-side revisions with automated token accounting.
               </p>
             </div>
             <div className="flex items-center gap-3 bg-white/10 backdrop-blur-md px-4 py-3 rounded-xl border border-white/15 self-start md:self-auto">
               <Zap className="w-5 h-5 text-amber-400" />
               <div>
-                <div className="text-xs text-slate-700 font-medium">FIC Balance</div>
-                <div className="text-lg font-extrabold text-slate-700">{balance.toLocaleString()} FIC</div>
+                <div className="text-xs text-slate-300 font-medium">FIC Balance</div>
+                <div className="text-lg font-extrabold text-white">{(balance ?? 0).toLocaleString()} FIC</div>
               </div>
               <div className="ml-2 text-[11px] font-semibold text-blue-200 bg-blue-600/40 px-2 py-0.5 rounded">
                 3 FIC / Edit
@@ -463,7 +463,7 @@ const EditPostPage: React.FC = () => {
               value={instruction}
               onChange={(e) => setInstruction(e.target.value)}
               placeholder="e.g. 'Add 3 bullet points', 'Make it sound more urgent', 'Shorten by half'..."
-              className="flex-1 px-4 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 font-bold bg-white placeholder:text-slate-400"
+              className="flex-1 min-h-[44px] px-4 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 font-bold bg-white placeholder:text-slate-400"
               disabled={isEditing}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') handleEdit();
@@ -472,7 +472,7 @@ const EditPostPage: React.FC = () => {
             <button
               onClick={() => handleEdit()}
               disabled={isEditing || !originalContent.trim()}
-              className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold text-sm rounded-lg shadow-sm transition-colors flex items-center justify-center gap-2 disabled:bg-slate-300 disabled:cursor-not-allowed"
+              className="min-h-[44px] px-6 py-2.5 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold text-sm rounded-lg shadow-sm transition-colors flex items-center justify-center gap-2 disabled:bg-slate-300 disabled:cursor-not-allowed cursor-pointer"
             >
               {isEditing ? (
                 <>
@@ -624,17 +624,17 @@ const EditPostPage: React.FC = () => {
 
         {/* Global Action Footer */}
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 w-full sm:w-auto">
             <button
               onClick={handleRevert}
               disabled={!editedContent}
-              className="px-4 py-2 text-sm font-medium border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              className="flex-1 sm:flex-initial min-h-[44px] px-4 py-2 text-sm font-bold border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
             >
               Discard AI Changes
             </button>
             <button
               onClick={() => navigate('/forum')}
-              className="px-4 py-2 text-sm font-medium text-slate-700 hover:text-slate-900 transition-colors"
+              className="flex-1 sm:flex-initial min-h-[44px] px-4 py-2 text-sm font-bold text-slate-700 hover:text-slate-900 transition-colors cursor-pointer"
             >
               Cancel
             </button>
@@ -643,7 +643,7 @@ const EditPostPage: React.FC = () => {
           <div className="flex items-center gap-3 w-full sm:w-auto">
             <button
               onClick={handleSave}
-              className="w-full sm:w-auto px-8 py-2.5 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold text-sm rounded-lg shadow-sm transition-colors flex items-center justify-center gap-2"
+              className="w-full sm:w-auto min-h-[44px] px-8 py-2.5 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold text-sm rounded-lg shadow-sm transition-colors flex items-center justify-center gap-2 cursor-pointer"
             >
               <Check className="w-4 h-4" />
               Save & Publish Post
@@ -651,6 +651,48 @@ const EditPostPage: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Sovereign Mobile Navigation Quick Dock */}
+      <nav
+        aria-label="Edit Post Mobile Navigation"
+        className="md:hidden fixed bottom-4 inset-x-3 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl p-2 z-40 shadow-2xl flex items-center justify-around gap-1"
+      >
+        <button
+          type="button"
+          onClick={() => handleEdit()}
+          disabled={isEditing || !originalContent.trim()}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-indigo-400 hover:text-indigo-300 transition-colors cursor-pointer disabled:opacity-40"
+        >
+          <Sparkles className="w-5 h-5 mb-0.5" />
+          <span>AI Polish</span>
+        </button>
+        <button
+          type="button"
+          onClick={handleUndo}
+          disabled={historyIndex <= 0}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-slate-300 hover:text-white transition-colors cursor-pointer disabled:opacity-30"
+        >
+          <RotateCcw className="w-5 h-5 mb-0.5" />
+          <span>Undo</span>
+        </button>
+        <button
+          type="button"
+          onClick={handleCopy}
+          disabled={!editedContent}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-amber-400 hover:text-amber-300 transition-colors cursor-pointer disabled:opacity-30"
+        >
+          <Copy className="w-5 h-5 mb-0.5" />
+          <span>Copy</span>
+        </button>
+        <button
+          type="button"
+          onClick={handleSave}
+          className="flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-[11px] font-bold text-emerald-400 hover:text-emerald-300 transition-colors cursor-pointer"
+        >
+          <Check className="w-5 h-5 mb-0.5" />
+          <span>Save</span>
+        </button>
+      </nav>
     </div>
   );
 };
