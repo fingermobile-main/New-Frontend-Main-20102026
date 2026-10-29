@@ -165,3 +165,4 @@ export const QRCodeDisplay: React.FC<QRCodeDisplayProps> = ({
 };
 
 export default QRCodeDisplay;
+

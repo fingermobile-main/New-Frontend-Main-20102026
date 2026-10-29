@@ -98,3 +98,4 @@ export async function downloadQrCode(
     document.body.removeChild(link);
   }
 }
+
