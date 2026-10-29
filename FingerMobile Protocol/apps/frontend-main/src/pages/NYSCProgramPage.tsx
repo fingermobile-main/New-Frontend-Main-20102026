@@ -430,7 +430,7 @@ export const NYSCProgramPage: React.FC = () => {
                 </p>
                 <div className="flex flex-wrap items-center gap-4 pt-2">
                   <a
-                    href="https://www.nysc.gov.ng/aboutscheme.html"
+                    href="https://www.nysc.gov.ng/about.html"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center space-x-1.5 text-xs font-bold text-emerald-400 hover:text-emerald-300 underline underline-offset-4"
