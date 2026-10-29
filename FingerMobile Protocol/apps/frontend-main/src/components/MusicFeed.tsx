@@ -22,14 +22,18 @@ interface MusicFeedProps {
   onPlayTrack?: (track: Track) => void;
   onLikeTrack?: (trackId: string) => void;
   onShareTrack?: (trackId: string) => void;
+  onOptionsTrack?: (track: Track) => void;
 }
 
 const MusicFeed: React.FC<MusicFeedProps> = ({
   tracks: propTracks,
   onPlayTrack,
   onLikeTrack,
-  onShareTrack
+  onShareTrack,
+  onOptionsTrack
 }) => {
+  const [activeOptionsTrack, setActiveOptionsTrack] = React.useState<Track | null>(null);
+  const [copyFeedback, setCopyFeedback] = React.useState<string | null>(null);
   const defaultTracks: Track[] = [
     {
       id: '1',
@@ -141,7 +145,13 @@ const MusicFeed: React.FC<MusicFeedProps> = ({
                     variant="ghost"
                     size="icon"
                     aria-label={`More options for ${track.title}`}
-                    onClick={() => alert(`Options for ${track.title}`)}
+                    onClick={() => {
+                      if (onOptionsTrack) {
+                        onOptionsTrack(track);
+                      } else {
+                        setActiveOptionsTrack(track);
+                      }
+                    }}
                     className="text-slate-700"
                   >
                     <MoreHorizontal className="h-5 w-5" />
@@ -152,6 +162,71 @@ const MusicFeed: React.FC<MusicFeedProps> = ({
           </Card>
         ))}
       </div>
+
+      {/* Track Options Modal */}
+      {activeOptionsTrack && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
+          <div className="bg-white rounded-2xl border border-slate-300 max-w-sm w-full p-5 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+              <div>
+                <h4 className="font-bold text-slate-900 text-sm truncate">{activeOptionsTrack.title}</h4>
+                <p className="text-xs text-slate-700 font-medium">{activeOptionsTrack.artist}</p>
+              </div>
+              <button
+                onClick={() => setActiveOptionsTrack(null)}
+                className="text-slate-500 hover:text-slate-800 p-1 text-sm font-bold"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="space-y-1.5 text-xs font-bold">
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(`${window.location.origin}/soundsonic?track=${activeOptionsTrack.id}`);
+                  setCopyFeedback('Track link copied!');
+                  setTimeout(() => setCopyFeedback(null), 2000);
+                }}
+                className="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 text-slate-800 flex items-center justify-between cursor-pointer"
+              >
+                <span>Copy Track Share Link</span>
+                {copyFeedback && <span className="text-emerald-600 font-semibold">{copyFeedback}</span>}
+              </button>
+
+              <button
+                onClick={() => {
+                  onShareTrack?.(activeOptionsTrack.id);
+                  setActiveOptionsTrack(null);
+                }}
+                className="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 text-slate-800 cursor-pointer"
+              >
+                Broadcast to SoundSonic Feed
+              </button>
+
+              <button
+                onClick={() => {
+                  onPlayTrack?.(activeOptionsTrack);
+                  setActiveOptionsTrack(null);
+                }}
+                className="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 text-slate-800 cursor-pointer"
+              >
+                Play Lossless Master Stream
+              </button>
+            </div>
+
+            <div className="pt-2 border-t border-slate-200 flex justify-end">
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => setActiveOptionsTrack(null)}
+                className="text-xs border-slate-300 text-slate-800"
+              >
+                Done
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

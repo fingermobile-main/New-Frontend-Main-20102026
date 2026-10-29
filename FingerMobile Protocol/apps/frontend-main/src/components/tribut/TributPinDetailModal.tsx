@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   XMarkIcon,
   BookmarkIcon,
@@ -66,6 +67,10 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
   const [commentText, setCommentText] = useState('');
   const [activeEmojiPicker, setActiveEmojiPicker] = useState(false);
   const [likedCommentIds, setLikedCommentIds] = useState<string[]>([]);
+  const [isFollowingAuthor, setIsFollowingAuthor] = useState(false);
+  const [attachedAsset, setAttachedAsset] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
 
   const currentIndex = allPins.findIndex((p) => p.id === pin.id);
   const hasPrev = currentIndex > 0;
@@ -416,9 +421,9 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
               <div className="absolute bottom-4 right-4 flex items-center gap-2">
                 {/* Visual Search / Lens button */}
                 <button
-                  onClick={() => alert(`Guardian AI Visual Lens searching for similar aesthetics to: ${pin.title}`)}
-                  className="p-2.5 rounded-full bg-slate-900/80 hover:bg-slate-900 text-white backdrop-blur-md border border-slate-700/80 shadow-lg transition"
-                  title="Visual Lens Search"
+                  onClick={() => navigate(`/search?visualQuery=${encodeURIComponent(pin.mediaUrl)}&title=${encodeURIComponent(pin.title)}`)}
+                  className="p-2.5 rounded-full bg-slate-900/80 hover:bg-slate-900 text-white backdrop-blur-md border border-slate-700/80 shadow-lg transition cursor-pointer"
+                  title="Guardian AI Visual Lens Search"
                 >
                   <SearchIcon className="w-4 h-4 text-white" />
                 </button>
@@ -502,10 +507,14 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
                 </div>
 
                 <button
-                  onClick={() => alert(`Followed ${pin.author.name} on FingerMobile Tribut`)}
-                  className="py-1.5 px-4 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-950 font-bold text-xs transition border border-slate-400 font-black"
+                  onClick={() => setIsFollowingAuthor(!isFollowingAuthor)}
+                  className={`py-1.5 px-4 rounded-full font-bold text-xs transition border cursor-pointer ${
+                    isFollowingAuthor
+                      ? 'bg-emerald-600 text-white border-emerald-500'
+                      : 'bg-slate-100 hover:bg-slate-200 text-slate-950 border-slate-400'
+                  }`}
                 >
-                  Follow
+                  {isFollowingAuthor ? '✓ Following' : 'Follow'}
                 </button>
               </div>
 
@@ -719,11 +728,24 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
                           >
                             GIF
                           </button>
+                          <input
+                            type="file"
+                            ref={fileInputRef}
+                            className="hidden"
+                            accept="image/*"
+                            onChange={(e) => {
+                              if (e.target.files?.[0]) {
+                                setAttachedAsset(e.target.files[0].name);
+                              }
+                            }}
+                          />
                           <button
                             type="button"
-                            onClick={() => alert('Attach design asset screenshot')}
-                            className="p-1.5 text-slate-600 hover:text-slate-900 rounded-full hover:bg-slate-200 transition"
-                            title="Attach Photo"
+                            onClick={() => fileInputRef.current?.click()}
+                            className={`p-1.5 rounded-full hover:bg-slate-200 transition cursor-pointer ${
+                              attachedAsset ? 'text-emerald-600 bg-emerald-50' : 'text-slate-600 hover:text-slate-900'
+                            }`}
+                            title={attachedAsset ? `Attached: ${attachedAsset}` : 'Attach Photo'}
                           >
                             <PhotoIcon className="w-4 h-4" />
                           </button>

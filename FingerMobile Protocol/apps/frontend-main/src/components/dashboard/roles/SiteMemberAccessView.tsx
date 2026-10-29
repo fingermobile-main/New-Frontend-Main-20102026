@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Users,
   Search,
@@ -39,6 +40,7 @@ export const SiteMemberAccessView: React.FC<SiteMemberAccessViewProps> = ({
   onNavigateToBadges,
   onNavigateToPricingPlans,
 }) => {
+  const navigate = useNavigate();
   const [search, setSearch] = useState('');
   const [viewMode, setViewMode] = useState<'roles-table' | 'subscription-matrix'>('roles-table');
   const [isAccessModalOpen, setIsAccessModalOpen] = useState(false);
@@ -405,8 +407,8 @@ export const SiteMemberAccessView: React.FC<SiteMemberAccessViewProps> = ({
             </p>
           </div>
           <button
-            onClick={() => alert('Opening Sovereign Signup & Login Security Controls')}
-            className="mt-4 text-xs font-bold text-blue-700 dark:text-blue-400 hover:underline flex items-center gap-1"
+            onClick={() => navigate('/admin/security-settings')}
+            className="mt-4 text-xs font-bold text-blue-700 dark:text-blue-400 hover:underline flex items-center gap-1 cursor-pointer"
           >
             <span>Manage Settings</span>
             <ChevronRight className="w-3.5 h-3.5" />

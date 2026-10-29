@@ -11,6 +11,22 @@ interface VideoEditorProps {
 
 const VideoEditor: React.FC<VideoEditorProps> = ({ videoUrl, onSave }) => {
   const [selectedTool, setSelectedTool] = React.useState<string>('trim');
+  const [isPreviewing, setIsPreviewing] = React.useState<boolean>(false);
+  const videoRef = React.useRef<HTMLVideoElement>(null);
+
+  const togglePreview = () => {
+    if (videoRef.current) {
+      if (videoRef.current.paused) {
+        videoRef.current.play().catch(() => {});
+        setIsPreviewing(true);
+      } else {
+        videoRef.current.pause();
+        setIsPreviewing(false);
+      }
+    } else {
+      setIsPreviewing(prev => !prev);
+    }
+  };
 
   const tools = [
     { id: 'trim', label: 'Trim', icon: <Scissors className="h-5 w-5" /> },
@@ -31,7 +47,14 @@ const VideoEditor: React.FC<VideoEditorProps> = ({ videoUrl, onSave }) => {
         {/* Video Preview */}
         <div className="aspect-video bg-muted rounded-lg flex items-center justify-center">
           {videoUrl ? (
-            <video src={videoUrl} controls className="w-full h-full object-contain" />
+            <video
+              ref={videoRef}
+              src={videoUrl}
+              controls
+              onPlay={() => setIsPreviewing(true)}
+              onPause={() => setIsPreviewing(false)}
+              className="w-full h-full object-contain rounded-lg"
+            />
           ) : (
             <div className="text-center text-slate-700 dark:text-slate-300 font-medium">
               <Video className="h-16 w-16 mx-auto mb-4 opacity-20" />
@@ -69,15 +92,15 @@ const VideoEditor: React.FC<VideoEditorProps> = ({ videoUrl, onSave }) => {
             type="button"
             variant="outline"
             aria-label="Preview video"
-            onClick={() => alert('Video preview initialized')}
-            className="flex-1"
+            onClick={togglePreview}
+            className="flex-1 font-bold text-xs"
           >
-            Preview
+            {isPreviewing ? 'Pause Preview' : 'Play Preview'}
           </Button>
           <Button
             type="button"
             aria-label="Export video"
-            className="flex-1"
+            className="flex-1 font-bold text-xs"
             onClick={() => onSave?.(new Blob())}
           >
             Export Video

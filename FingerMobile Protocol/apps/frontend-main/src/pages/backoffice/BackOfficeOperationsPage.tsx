@@ -33,6 +33,8 @@ export const BackOfficeOperationsPage: React.FC = () => {
   const [assignments, setAssignments] = useState<StaffAssignment[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'queue' | 'staff' | 'settlement'>('queue');
+  const [selectedCase, setSelectedCase] = useState<any | null>(null);
+  const [caseResolution, setCaseResolution] = useState<string | null>(null);
 
   // Mock operational items for the Back Office queue
   const [queueItems] = useState([
@@ -249,8 +251,8 @@ export const BackOfficeOperationsPage: React.FC = () => {
                   <div className="flex items-center gap-3 shrink-0 self-end md:self-center">
                     <span className="text-xs font-bold text-slate-700">{item.status}</span>
                     <button
-                      onClick={() => alert(`Opening adjudication workspace for case ${item.id}.`)}
-                      className="px-3 py-1.5 text-xs font-bold rounded-lg bg-blue-600 hover:bg-blue-700 text-white transition flex items-center gap-1 shadow-xs"
+                      onClick={() => setSelectedCase(item)}
+                      className="px-3 py-1.5 text-xs font-bold rounded-lg bg-blue-600 hover:bg-blue-700 text-white transition flex items-center gap-1 shadow-xs cursor-pointer"
                     >
                       Process Case
                       <ArrowRight className="w-3.5 h-3.5" />
@@ -324,6 +326,83 @@ export const BackOfficeOperationsPage: React.FC = () => {
           <span>Top</span>
         </button>
       </div>
+
+      {/* Adjudication Workspace Modal */}
+      {selectedCase && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
+          <div className="bg-white rounded-2xl border border-slate-300 max-w-lg w-full p-6 shadow-2xl space-y-4 animate-in fade-in">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+              <div>
+                <span className="text-[10px] font-mono font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
+                  {selectedCase.id}
+                </span>
+                <h3 className="text-base font-black text-slate-900 mt-1">{selectedCase.type}</h3>
+              </div>
+              <button
+                onClick={() => {
+                  setSelectedCase(null);
+                  setCaseResolution(null);
+                }}
+                className="text-slate-500 hover:text-slate-800 p-1 text-sm font-bold cursor-pointer"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200 text-xs space-y-1.5">
+              <div className="flex justify-between">
+                <span className="text-slate-700 font-semibold">Target Account:</span>
+                <span className="font-mono font-bold text-slate-900">{selectedCase.user}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-700 font-semibold">Department:</span>
+                <span className="font-bold text-slate-900">{selectedCase.department}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-700 font-semibold">Priority:</span>
+                <span className="font-bold text-red-600">{selectedCase.priority}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-700 font-semibold">Status:</span>
+                <span className="font-bold text-slate-800">{caseResolution || selectedCase.status}</span>
+              </div>
+            </div>
+
+            {caseResolution ? (
+              <div className="p-3 bg-emerald-50 border border-emerald-300 rounded-xl text-xs text-emerald-950 font-bold text-center">
+                ✓ {caseResolution}
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 gap-2 pt-2">
+                <button
+                  onClick={() => setCaseResolution('Approved & Sovereign Identity Endorsed')}
+                  className="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition cursor-pointer"
+                >
+                  Approve Verification
+                </button>
+                <button
+                  onClick={() => setCaseResolution('Escalated to Compliance Executive')}
+                  className="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition cursor-pointer"
+                >
+                  Escalate Case
+                </button>
+              </div>
+            )}
+
+            <div className="pt-3 border-t border-slate-200 flex justify-end">
+              <button
+                onClick={() => {
+                  setSelectedCase(null);
+                  setCaseResolution(null);
+                }}
+                className="px-4 py-2 text-xs font-bold rounded-xl border border-slate-300 text-slate-800 hover:bg-slate-50 cursor-pointer"
+              >
+                Close Workspace
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

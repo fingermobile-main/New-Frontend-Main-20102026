@@ -39,6 +39,8 @@ export const MemberTributProjectsModal: React.FC<MemberTributProjectsModalProps>
 }) => {
   const [activeTab, setActiveTab] = useState<'tribut' | 'boards' | 'discussions' | 'store'>('tribut');
   const [isFollowing, setIsFollowing] = useState(false);
+  const [collabSent, setCollabSent] = useState(false);
+  const [critiqueRequested, setCritiqueRequested] = useState(false);
 
   // Filter member's pins
   const memberPins = allPins.filter(
@@ -120,10 +122,14 @@ export const MemberTributProjectsModal: React.FC<MemberTributProjectsModalProps>
               </button>
 
               <button
-                onClick={() => alert(`Collaborative Design Studio invite sent to ${author.name}`)}
-                className="py-2 px-4 rounded-xl bg-purple-600/40 hover:bg-purple-600/60 border border-purple-400/50 text-white font-bold text-xs transition"
+                onClick={() => setCollabSent(true)}
+                className={`py-2 px-4 rounded-xl border font-bold text-xs transition cursor-pointer ${
+                  collabSent
+                    ? 'bg-emerald-600 border-emerald-400 text-white'
+                    : 'bg-purple-600/40 hover:bg-purple-600/60 border-purple-400/50 text-white'
+                }`}
               >
-                Collaborate
+                {collabSent ? '✓ Studio Invite Dispatched' : 'Collaborate'}
               </button>
             </div>
           </div>
@@ -313,10 +319,14 @@ export const MemberTributProjectsModal: React.FC<MemberTributProjectsModalProps>
                   Active topics & design feedback started by {author.name}.
                 </span>
                 <button
-                  onClick={() => alert(`Starting collaborative critique room with ${author.name}`)}
-                  className="px-3 py-1.5 rounded-xl bg-purple-600 text-white font-bold text-xs"
+                  onClick={() => setCritiqueRequested(true)}
+                  className={`px-3 py-1.5 rounded-xl font-bold text-xs transition cursor-pointer ${
+                    critiqueRequested
+                      ? 'bg-emerald-600 text-white'
+                      : 'bg-purple-600 hover:bg-purple-700 text-white'
+                  }`}
                 >
-                  + Ask {author.name} for Design Critique
+                  {critiqueRequested ? '✓ Critique Room Requested' : `+ Ask ${author.name} for Design Critique`}
                 </button>
               </div>
 
