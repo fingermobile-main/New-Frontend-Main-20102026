@@ -1198,7 +1198,7 @@ const StercsDashboardPage: React.FC = () => {
                 type="button"
                 onClick={() => window.dispatchEvent(new CustomEvent('open-universal-search'))}
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-slate-800 bg-white border border-slate-300 rounded-md hover:bg-slate-50 hover:text-blue-700 transition-colors shadow-2xs"
-                title="Universal AI Search (Cmd+K)"
+                title="Universal AI Search"
               >
                 <Search className="w-3.5 h-3.5 text-cyan-700" />
                 <span>Universal Search</span>

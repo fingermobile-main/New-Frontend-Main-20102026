@@ -867,7 +867,7 @@ export const LushPressiesPage: React.FC = () => {
               onRevokePin={handleRevokePin}
               onExchangePin={handleExchangePin}
               onReverseSwipe={() => {
-                alert('Rewind used! Last profile returned to deck.');
+                showToast('✓ Rewind used! Last profile returned to deck.');
               }}
             />
 
@@ -1105,8 +1105,8 @@ export const LushPressiesPage: React.FC = () => {
             <CommitProgressTracker
               match={selectedCommitMatch}
               onRequestCommit={(matchId) => {
-                alert(
-                  `Commitment requested for match ${matchId}! Status set to pending.`
+                showToast(
+                  `✓ Commitment requested for match ${matchId}! Status set to pending.`
                 );
                 setSelectedCommitMatch((prev) =>
                   prev ? { ...prev, commit_status: 'pending' } : null
@@ -1118,7 +1118,7 @@ export const LushPressiesPage: React.FC = () => {
                     'Are you sure you want to dissolve this commitment milestone?'
                   )
                 ) {
-                  alert(`Commitment ${commitId} has been dissolved.`);
+                  showToast(`✓ Commitment ${commitId} has been dissolved.`);
                   setSelectedCommitMatch((prev) =>
                     prev ? { ...prev, commit_status: 'none' } : null
                   );

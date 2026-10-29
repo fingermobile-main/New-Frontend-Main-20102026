@@ -1057,7 +1057,7 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
           </div>
         )}
 
-        {/* DANCIA-4TV VIDEO STREAM EMBED */}
+        {/* Dancia-4Tv®™© VIDEO STREAM EMBED */}
         {post.videoStreamUrl && (
           <div className="mt-3 p-3 bg-gradient-to-r from-purple-900 to-indigo-950 text-white rounded-2xl flex items-center justify-between text-xs border border-purple-800 shadow-xs">
             <div className="flex items-center gap-2.5 min-w-0 flex-1">

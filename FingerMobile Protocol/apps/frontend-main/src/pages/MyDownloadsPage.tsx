@@ -318,7 +318,7 @@ const MyDownloadsPage: React.FC = () => {
         `CREATOR: ${item.creator}\n` +
         `LICENSE_HASH: ${item.licenseHash}\n` +
         `TTL_POLICY: 10_DAYS\n` +
-        `PLAYER_COMPLIANCE: FingerMobile Website, Standalone FingerMobile Media Player, BeatwaveNG, Dancia-4TV\n` +
+        `PLAYER_COMPLIANCE: FingerMobile Website, Standalone FingerMobile Media Player, BeatwaveNG, Dancia-4Tv®™©\n` +
         `SOVEREIGN_PAYLOAD_CHECKSUM: 0x${Math.random().toString(16).substring(2, 10)}${Math.random().toString(16).substring(2, 10)}\n`;
 
       const blob = new Blob([sovereignHeader], { type: 'application/octet-stream' });
@@ -369,7 +369,7 @@ const MyDownloadsPage: React.FC = () => {
                 Digital Asset Vault &amp; Downloads
               </h1>
               <p className="text-slate-700 text-sm sm:text-base leading-relaxed font-medium">
-                Holds logged-in member downloaded files, lots, history, and metadata under exclusive <strong className="text-slate-900">.fma</strong> (Audio) and <strong className="text-slate-900">.fmv</strong> (Video) formats. All files are restricted to play on FingerMobile Website, Standalone FingerMobile Media Player, BeatwaveNG, or Dancia-4TV.
+                Holds logged-in member downloaded files, lots, history, and metadata under exclusive <strong className="text-slate-900">.fma</strong> (Audio) and <strong className="text-slate-900">.fmv</strong> (Video) formats. All files are restricted to play on FingerMobile Website, Standalone FingerMobile Media Player, BeatwaveNG, or Dancia-4Tv®™©.
               </p>
             </div>
 
@@ -845,7 +845,7 @@ const MyDownloadsPage: React.FC = () => {
                     Combined Audio &amp; Video Architecture
                   </span>
                   <p>
-                    The standalone <strong>FingerMobile Media Player</strong> combines the professional audio capabilities of <strong>BeatwaveNG</strong> (multi-stem track mixer, 64-band equalizer, 24-bit 96kHz master engine) with <strong>Dancia-4TV</strong> (4K Ultra HD HDR live replay broadcaster).
+                    The standalone <strong>FingerMobile Media Player</strong> combines the professional audio capabilities of <strong>BeatwaveNG</strong> (multi-stem track mixer, 64-band equalizer, 24-bit 96kHz master engine) with <strong>Dancia-4Tv®™©</strong> (4K Ultra HD HDR live replay broadcaster).
                   </p>
                 </div>
 
@@ -853,7 +853,7 @@ const MyDownloadsPage: React.FC = () => {
                   <h4 className="font-black text-slate-900">Proprietary Playback Logic:</h4>
                   <ul className="list-disc list-inside space-y-1 text-slate-800">
                     <li><strong className="text-slate-900">.fma</strong> (FingerMobile Audio) files can only decode on FingerMobile Services, BeatwaveNG, or the standalone player.</li>
-                    <li><strong className="text-slate-900">.fmv</strong> (FingerMobile Video) files enforce hardware DRM and decode on Dancia-4TV or the standalone player.</li>
+                    <li><strong className="text-slate-900">.fmv</strong> (FingerMobile Video) files enforce hardware DRM and decode on Dancia-4Tv®™© or the standalone player.</li>
                     <li><strong className="text-slate-900">10-Day TTL:</strong> Files are locally purged after 10 days, and metadata logs prune every 15 days automatically.</li>
                   </ul>
                 </div>

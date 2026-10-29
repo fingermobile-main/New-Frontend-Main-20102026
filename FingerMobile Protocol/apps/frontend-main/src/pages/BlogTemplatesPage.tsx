@@ -128,6 +128,7 @@ const BlogTemplatesPage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [activeJsonLdModal, setActiveJsonLdModal] = useState<BlogTemplate | null>(null);
+  const [jsonLdCopied, setJsonLdCopied] = useState(false);
   const [activeSandboxTemplate, setActiveSandboxTemplate] = useState<BlogTemplate | null>(null);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
   const [forkNotification, setForkNotification] = useState<string | null>(null);
@@ -837,11 +838,14 @@ const BlogTemplatesPage: React.FC = () => {
                     navigator.clipboard.writeText(
                       JSON.stringify(activeJsonLdModal.jsonLdSnippet, null, 2)
                     );
-                    alert('Copied Schema.org JSON-LD snippet to clipboard!');
+                    setJsonLdCopied(true);
+                    setTimeout(() => setJsonLdCopied(false), 2500);
                   }}
-                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold"
+                  className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors ${
+                    jsonLdCopied ? 'bg-emerald-600 text-white' : 'bg-indigo-600 hover:bg-indigo-700 text-white'
+                  }`}
                 >
-                  Copy JSON-LD
+                  {jsonLdCopied ? '✓ Copied to Clipboard!' : 'Copy JSON-LD'}
                 </button>
                 <button
                   type="button"

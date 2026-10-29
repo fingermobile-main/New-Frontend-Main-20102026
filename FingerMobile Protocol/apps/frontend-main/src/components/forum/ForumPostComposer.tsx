@@ -1157,7 +1157,7 @@ export const ForumPostComposer: React.FC<ForumPostComposerProps> = ({
           </div>
         )}
 
-        {/* SUB-PANEL 8: DANCIA-4TV */}
+        {/* SUB-PANEL 8: Dancia-4Tv®™© */}
         {activeComposerTool === 'dancia' && (
           <div className="p-3.5 bg-purple-50/90 border border-purple-200 rounded-2xl space-y-2 text-xs animate-in fade-in duration-150">
             <div className="flex items-center justify-between">

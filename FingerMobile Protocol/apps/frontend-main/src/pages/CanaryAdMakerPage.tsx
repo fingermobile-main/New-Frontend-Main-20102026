@@ -58,23 +58,23 @@ export const CanaryAdMakerPage: React.FC = () => {
   const handleNextStep = () => {
     if (step === 1) {
       if (!disclaimerAccepted || !digitalSignature.trim() || !companyName.trim() || !billingEmail.trim()) {
-        alert('Please fill out all merchant details and sign the mandatory disclaimer agreement.');
+        if (showToast) showToast('Please fill out all merchant details and sign the mandatory disclaimer agreement.', 'error');
         return;
       }
     }
     if (step === 3) {
       if (!campaignTitle.trim()) {
-        alert('Please enter a campaign title.');
+        if (showToast) showToast('Please enter a campaign title.', 'error');
         return;
       }
     }
     if (step === 4) {
       if (!mediaUrl.trim() || !headline.trim() || !destinationUrl.trim()) {
-        alert('Media URL, Headline, and Destination URL are required.');
+        if (showToast) showToast('Media URL, Headline, and Destination URL are required.', 'error');
         return;
       }
       if (headline.length > headlineMax) {
-        alert(`Headline exceeds ${headlineMax} characters.`);
+        if (showToast) showToast(`Headline exceeds ${headlineMax} characters.`, 'error');
         return;
       }
     }
@@ -148,7 +148,9 @@ export const CanaryAdMakerPage: React.FC = () => {
       if (showToast) showToast('Ad Campaign submitted and queued for RBC moderation!', 'success');
       setStep(6);
     } catch (err: any) {
-      alert(`Error submitting campaign: ${err.message}`);
+      if (showToast) {
+        showToast(`Error submitting campaign: ${err.message}`, 'error');
+      }
     } finally {
       setIsSubmitting(false);
     }

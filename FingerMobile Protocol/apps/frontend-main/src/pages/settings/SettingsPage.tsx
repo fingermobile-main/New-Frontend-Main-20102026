@@ -712,7 +712,7 @@ export const SettingsPage: React.FC = () => {
                           { key: 'hallmarks', name: 'Hallmarks', desc: 'Milestone accolades & honours' },
                           { key: 'mii', name: 'Mii Encounters', desc: 'Disappearing peer commentary' },
                           { key: 'groups', name: 'Digital Living Rooms', desc: 'Group threads & discussions' },
-                          { key: 'lushpressies', name: 'LushPressies', desc: 'Dating comments & matching' },
+                          { key: 'lushpressies', name: 'Lush-Pressies', desc: 'Dating comments & matching' },
                           { key: 'blogs', name: 'Community Blogs', desc: 'Article discussions & replies' }
                         ].map((ms) => {
                           const isEnabled = voiceSettings.microservices[ms.key] !== false && voiceSettings.enabled;

@@ -73,10 +73,13 @@ const VoiceFeedPage: React.FC = () => {
     setPosts(prev => prev.map(p => p.id === id ? { ...p, comments_count: (Number(p.comments_count) || 0) + 1 } : p));
   };
 
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+
   const handleShare = async (id: string) => {
     if (navigator?.clipboard) {
       await navigator.clipboard.writeText(`${window.location.origin}/voice-feed#${id}`);
-      alert('Voice clip link copied to clipboard!');
+      setCopiedId(id);
+      setTimeout(() => setCopiedId(null), 3000);
     }
   };
 
@@ -108,6 +111,14 @@ const VoiceFeedPage: React.FC = () => {
             </p>
           </div>
         </div>
+
+        {/* Dynamic Share Notification */}
+        {copiedId && (
+          <div className="bg-emerald-100 border border-emerald-400 text-emerald-950 px-4 py-3 rounded-2xl flex items-center justify-between font-bold text-sm shadow-md transition-all">
+            <span>✓ Voice clip direct link copied to clipboard!</span>
+            <button type="button" onClick={() => setCopiedId(null)} className="text-emerald-800 hover:text-emerald-950 font-black">✕</button>
+          </div>
+        )}
 
         {/* Categories Bar */}
         <div className="flex items-center gap-3 overflow-x-auto pb-2 border-b border-slate-300">

@@ -547,7 +547,7 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
           <div className="space-y-4">
             {posts.length === 0 && (
               <p className="rounded-xl border border-slate-300 bg-white p-6 text-center font-semibold text-slate-700">
-                No LushPressies posts are available yet.
+                No Lush-Pressies posts are available yet.
               </p>
             )}
             {posts.map((post) => {

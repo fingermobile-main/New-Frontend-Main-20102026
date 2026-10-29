@@ -298,11 +298,11 @@ const SocialLinksPanel: React.FC = () => {
           <ul className="text-sm text-slate-700 space-y-1">
             <li className="flex items-start">
               <span className="text-green-500 mr-2">•</span>
-              Add a link to your Lush Pressies profile on your social media bio
+              Add a link to your Lush-Pressies profile on your social media bio
             </li>
             <li className="flex items-start">
               <span className="text-green-500 mr-2">•</span>
-              Share a post mentioning @LushPressies to help with verification
+              Share a post mentioning @Lush-Pressies to help with verification
             </li>
             <li className="flex items-start">
               <span className="text-green-500 mr-2">•</span>

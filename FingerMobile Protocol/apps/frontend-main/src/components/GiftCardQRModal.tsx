@@ -18,6 +18,7 @@ const GiftCardQRModal: React.FC<GiftCardQRModalProps> = ({
   giftCardData
 }) => {
   const [showCode, setShowCode] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   if (!isOpen) return null;
 
@@ -34,7 +35,8 @@ const GiftCardQRModal: React.FC<GiftCardQRModalProps> = ({
   const handleCopyCode = async () => {
     try {
       await navigator.clipboard.writeText(mockGiftCard.code);
-      alert('Gift card code copied to clipboard!');
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
     } catch (err) {
       console.error('Failed to copy:', err);
     }
@@ -151,9 +153,11 @@ const GiftCardQRModal: React.FC<GiftCardQRModalProps> = ({
           <div className="border-t border-slate-300 px-6 py-4 flex gap-3">
             <button
               onClick={handleCopyCode}
-              className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium"
+              className={`flex-1 px-4 py-2 text-white rounded-lg transition-colors font-medium ${
+                copied ? 'bg-emerald-600 font-bold' : 'bg-purple-600 hover:bg-purple-700'
+              }`}
             >
-              Copy Code
+              {copied ? '✓ Code Copied!' : 'Copy Code'}
             </button>
 
             <button

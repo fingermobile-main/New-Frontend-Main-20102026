@@ -301,7 +301,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
                   PIN: #{profile.pinNumber || '749822'}
                 </span>
                 <span className="text-slate-300 bg-slate-800/80 border border-slate-700 px-2.5 py-1 rounded-lg">
-                  LushPressies Quota: <strong className="text-orange-400">{profile.pinQuotaRemaining ?? 48}</strong> / {profile.pinQuotaMax ?? 50}
+                  Lush-Pressies Quota: <strong className="text-orange-400">{profile.pinQuotaRemaining ?? 48}</strong> / {profile.pinQuotaMax ?? 50}
                 </span>
                 <span className="text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-lg flex items-center gap-1 font-bold">
                   <CreditCard className="w-3.5 h-3.5" />
@@ -742,7 +742,7 @@ export const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({
                       NexusGNN Embeddings: How Graph Neural Networks power sovereign content matching
                     </h4>
                     <p className="text-xs text-slate-300 font-medium mt-1">
-                      Started by @israel_protocol • 42 comments • 18 LushPressies gifted
+                      Started by @israel_protocol • 42 comments • 18 Lush-Pressies gifted
                     </p>
                   </div>
                   <Link to="/forum" className="px-3 py-1.5 rounded-xl bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold transition-all shrink-0">

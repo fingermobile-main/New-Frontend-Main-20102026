@@ -72,11 +72,11 @@ const ALL_DISCOVERY_CHANNELS: DiscoverChannel[] = [
   },
   {
     id: 'ch-lushpressies',
-    title: 'LushPressies Gifting',
+    title: 'Lush-Pressies Gifting',
     subtitle: '3D Animated Plushies & Lapidaires',
     badge: 'Sovereign VIP',
     icon: <Gift className="w-4 h-4 text-pink-600" />,
-    path: '/lushpressies'
+    path: '/lush-pressies'
   }
 ];
 

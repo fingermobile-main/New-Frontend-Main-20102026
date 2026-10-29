@@ -16,11 +16,12 @@ const QRCodeModal: React.FC<QRCodeModalProps> = ({
   size = 256
 }) => {
   const [downloadFormat, setDownloadFormat] = useState<'png' | 'svg'>('png');
+  const [copied, setCopied] = useState(false);
 
   if (!isOpen) return null;
 
-  // Generate QR code URL (using a public API for demo - replace with proper library in production)
-  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(data)}`;
+  // Generate QR code URL (using goqr.me API)
+  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(data)}&format=${downloadFormat}`;
 
   const handleDownload = async () => {
     try {
@@ -42,7 +43,8 @@ const QRCodeModal: React.FC<QRCodeModalProps> = ({
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(data);
-      alert('QR code data copied to clipboard!');
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
     } catch (err) {
       console.error('Failed to copy:', err);
     }
@@ -135,10 +137,14 @@ const QRCodeModal: React.FC<QRCodeModalProps> = ({
 
             <button
               onClick={handleCopy}
-              className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium flex items-center justify-center gap-2"
+              className={`px-4 py-2 rounded-lg transition-colors font-medium flex items-center justify-center gap-2 ${
+                copied
+                  ? 'bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold'
+                  : 'bg-slate-100 text-slate-800 hover:bg-slate-200 border border-slate-300'
+              }`}
             >
-              <span>📋</span>
-              Copy
+              <span>{copied ? '✓' : '📋'}</span>
+              {copied ? 'Copied!' : 'Copy'}
             </button>
 
             <button

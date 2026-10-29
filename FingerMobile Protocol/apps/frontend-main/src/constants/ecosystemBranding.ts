@@ -174,7 +174,7 @@ export const PLATFORM_BRANDS: Record<string, PlatformBrand> = {
   },
   lushpressies: {
     key: 'lushpressies',
-    name: 'LushPressies',
+    name: 'Lush-Pressies',
     tagline: 'Matchmaking & Luxury Plushies Gifting',
     description: 'Empathetic social connection, consensual 6-digit PIN handshake verification, Lapidaire icebreaker Q&A, and plushies gift exchanges.',
     logoUrl: '/assets/logos/lushpressies_logo.png',

@@ -3633,7 +3633,7 @@ export const ForumPage: React.FC = () => {
                 )}
 
                 {/* ================================================================= */}
-                {/* SUB-PANEL 8: DANCIA-4TV LIVE BROADCAST                            */}
+                {/* SUB-PANEL 8: Dancia-4Tv®™© LIVE BROADCAST                            */}
                 {/* ================================================================= */}
                 {activeComposerTool === 'dancia' && (
                   <div className="p-3.5 bg-purple-50/90 border border-purple-200 rounded-2xl space-y-2.5 text-xs animate-in fade-in duration-150">
