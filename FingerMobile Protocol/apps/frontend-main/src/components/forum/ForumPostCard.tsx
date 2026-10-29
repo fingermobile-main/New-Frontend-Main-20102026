@@ -41,6 +41,8 @@ import {
   TrashIcon,
   FlagIcon,
   ShieldExclamationIcon,
+  ArrowUpIcon,
+  ArrowDownIcon,
 } from '@heroicons/react/24/outline';
 import {
   HeartIcon as HeartSolidIcon,
@@ -172,6 +174,10 @@ export interface ForumPostCardProps {
   onUpdatePost?: (updatedPost: FeedPost) => void;
   // eslint-disable-next-line no-unused-vars
   onDeletePost?: (postId: string) => void;
+  // eslint-disable-next-line no-unused-vars
+  onMoveUp?: (postId: string) => void;
+  // eslint-disable-next-line no-unused-vars
+  onMoveDown?: (postId: string) => void;
 }
 
 // =============================================================================
@@ -390,6 +396,8 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
   hideCategory = false,
   onUpdatePost,
   onDeletePost,
+  onMoveUp,
+  onMoveDown,
 }) => {
   const navigate = useNavigate();
 
@@ -1062,6 +1070,36 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
                     >
                       <ShieldExclamationIcon className="w-4 h-4 text-rose-600" />
                       <span>{isSuspended ? 'Restore Suspended Post' : 'Suspend Post'}</span>
+                    </button>
+                  )}
+
+                  {/* Move Up in Feed Order (Moderators & Admins) */}
+                  {isModerator && onMoveUp && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setActiveMenuOpen(false);
+                        onMoveUp(post.id);
+                      }}
+                      className="w-full text-left px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-900 dark:text-slate-100 font-bold rounded-xl flex items-center gap-2"
+                    >
+                      <ArrowUpIcon className="w-4 h-4 text-slate-700 dark:text-slate-300" />
+                      <span>Move Up (Pin Higher)</span>
+                    </button>
+                  )}
+
+                  {/* Move Down in Feed Order (Moderators & Admins) */}
+                  {isModerator && onMoveDown && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setActiveMenuOpen(false);
+                        onMoveDown(post.id);
+                      }}
+                      className="w-full text-left px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-900 dark:text-slate-100 font-bold rounded-xl flex items-center gap-2"
+                    >
+                      <ArrowDownIcon className="w-4 h-4 text-slate-700 dark:text-slate-300" />
+                      <span>Move Down (Reorder Lower)</span>
                     </button>
                   )}
 

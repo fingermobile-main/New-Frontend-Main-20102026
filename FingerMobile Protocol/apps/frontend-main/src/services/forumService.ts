@@ -850,6 +850,32 @@ class ForumService {
       };
     }
   }
+
+  static async movePostOrder(postId: string, direction: 'up' | 'down', currentOrder: number = 0): Promise<ApiResponse<any>> {
+    const newOrder = direction === 'up' ? Math.max(0, currentOrder - 1) : currentOrder + 1;
+    return this.updatePost(postId, { order_index: newOrder, orderIndex: newOrder } as any);
+  }
+
+  static async reorderCategory(categoryId: string, direction: 'up' | 'down', currentOrder: number = 0): Promise<ApiResponse<any>> {
+    const newOrder = direction === 'up' ? Math.max(0, currentOrder - 1) : currentOrder + 1;
+    return this.updateCategory(categoryId, { display_order: newOrder, sortOrder: newOrder, displayOrder: newOrder } as any);
+  }
+
+  static async toggleFreezePost(postId: string, isFrozen: boolean): Promise<ApiResponse<any>> {
+    return this.updatePost(postId, { is_frozen: isFrozen, isFrozen } as any);
+  }
+
+  static async toggleCensorPost(postId: string, isCensored: boolean, censorReason?: string): Promise<ApiResponse<any>> {
+    return this.updatePost(postId, { is_censored: isCensored, isCensored, censor_reason: censorReason, censorReason } as any);
+  }
+
+  static async togglePausePostComments(postId: string, isPaused: boolean): Promise<ApiResponse<any>> {
+    return this.updatePost(postId, { is_commenting_paused: isPaused, isCommentingPaused: isPaused, isCommentsPaused: isPaused } as any);
+  }
+
+  static async toggleSuspendPost(postId: string, isSuspended: boolean): Promise<ApiResponse<any>> {
+    return this.updatePost(postId, { is_suspended: isSuspended, isSuspended } as any);
+  }
 }
 
 export default ForumService;

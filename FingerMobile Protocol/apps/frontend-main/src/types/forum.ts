@@ -16,6 +16,18 @@ export interface ForumCategory {
   sortOrder: number;
   createdAt: string;
   updatedAt: string;
+  // Granular Moderation, Rules, Gating & Styling
+  rules?: string;
+  moderationState?: 'active' | 'frozen' | 'suspended' | 'read_only' | 'comments_paused';
+  accessType?: 'free' | 'subscription' | 'rbac_gated';
+  allowedRoles?: string[];
+  subscriptionTierRequired?: string;
+  styleColor?: string;
+  headerImageUrl?: string;
+  coverImageUrl?: string;
+  isFrozen?: boolean;
+  isCommentingPaused?: boolean;
+  isSuspended?: boolean;
 }
 
 export interface ForumThread {

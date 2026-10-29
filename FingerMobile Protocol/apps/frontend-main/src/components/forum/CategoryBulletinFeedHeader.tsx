@@ -84,6 +84,17 @@ export interface CategoryBulletinFeedHeaderProps {
   onClearCategory: () => void;
   onPublishToCategory: () => void;
   triggerToast?: (msg: string, type: 'info' | 'success' | 'warning' | 'error') => void;
+  headerImageUrl?: string;
+  coverImageUrl?: string;
+  rules?: string;
+  moderationState?: string;
+  accessType?: string;
+  subscriptionTierRequired?: string;
+  isFrozen?: boolean;
+  isCommentingPaused?: boolean;
+  isGated?: boolean;
+  hasAccess?: boolean;
+  styleColor?: string;
 }
 
 export const CategoryBulletinFeedHeader: React.FC<CategoryBulletinFeedHeaderProps> = ({
@@ -95,9 +106,24 @@ export const CategoryBulletinFeedHeader: React.FC<CategoryBulletinFeedHeaderProp
   onClearCategory,
   onPublishToCategory,
   triggerToast,
+  headerImageUrl,
+  coverImageUrl,
+  rules,
+  moderationState,
+  accessType,
+  subscriptionTierRequired,
+  isFrozen,
+  isCommentingPaused,
+  isGated,
+  hasAccess = true,
+  styleColor,
 }) => {
+  const [showRules, setShowRules] = useState<boolean>(false);
   // Check if private room or subscription-based space
   const isPrivateSpace =
+    Boolean(isGated) ||
+    accessType === 'subscription' ||
+    accessType === 'rbac_gated' ||
     categoryName.toLowerCase().includes('private') ||
     categoryName.toLowerCase().includes('verified') ||
     categoryName.toLowerCase().includes('classified') ||
@@ -221,6 +247,17 @@ export const CategoryBulletinFeedHeader: React.FC<CategoryBulletinFeedHeaderProp
 
   return (
     <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-300 dark:border-slate-800 shadow-sm overflow-hidden mb-6 transition-all">
+      {/* 0. Category Header Banner Image */}
+      {headerImageUrl && (
+        <div className="w-full h-32 sm:h-48 overflow-hidden relative border-b border-slate-200 dark:border-slate-800 bg-slate-950">
+          <img src={headerImageUrl} alt={cleanCategoryName} className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+          <div className="absolute bottom-3 left-6 text-white text-xs font-mono font-bold bg-black/60 px-2.5 py-1 rounded-lg backdrop-blur-xs border border-white/20">
+            Sovereign Header Space
+          </div>
+        </div>
+      )}
+
       {/* 1. Category Space & Identity Banner */}
       <div className="p-5 sm:p-6 bg-gradient-to-br from-slate-50 via-white to-orange-50/40 dark:from-slate-900 dark:via-slate-850 dark:to-slate-800 border-b border-slate-200 dark:border-slate-800">
         <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
@@ -237,12 +274,17 @@ export const CategoryBulletinFeedHeader: React.FC<CategoryBulletinFeedHeaderProp
             {isPrivateSpace ? (
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-purple-100 dark:bg-purple-950/70 text-purple-950 dark:text-purple-300 border border-purple-400 dark:border-purple-800 text-[11px] font-black tracking-wide uppercase">
                 <Lock className="w-3 h-3 text-purple-700 dark:text-purple-300" />
-                Sovereign Enclave • Subscription Space
+                {subscriptionTierRequired ? `${subscriptionTierRequired} • Subscription Space` : 'Sovereign Enclave • Gated Space'}
               </span>
             ) : (
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950/70 text-emerald-950 dark:text-emerald-300 border border-emerald-400 dark:border-emerald-800 text-[11px] font-black tracking-wide uppercase">
                 <Globe className="w-3 h-3 text-emerald-700 dark:text-emerald-300" />
                 Public Member Space • Dedicated Feed
+              </span>
+            )}
+            {moderationState && moderationState !== 'active' && (
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-100 dark:bg-amber-950/70 text-amber-950 dark:text-amber-300 border border-amber-400 dark:border-amber-800 text-[11px] font-black uppercase">
+                {moderationState.replace('_', ' ')}
               </span>
             )}
             <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-orange-100 dark:bg-orange-950/70 text-orange-950 dark:text-orange-300 border border-orange-400 dark:border-orange-800 text-[11px] font-black">
@@ -256,26 +298,35 @@ export const CategoryBulletinFeedHeader: React.FC<CategoryBulletinFeedHeaderProp
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-1.5">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-2xl bg-orange-100 dark:bg-orange-950/60 border border-orange-300 dark:border-orange-800 flex items-center justify-center text-2xl shadow-xs shrink-0 overflow-hidden">
-                {isIconUrl ? (
-                  <img
-                    src={categoryIcon}
-                    alt={cleanCategoryName}
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      (e.currentTarget as HTMLElement).style.display = 'none';
-                    }}
-                  />
-                ) : (
-                  categoryEmoji
-                )}
-              </div>
+              {coverImageUrl ? (
+                <div className="w-14 h-14 rounded-2xl border-2 border-slate-300 dark:border-slate-700 shadow-xs shrink-0 overflow-hidden relative">
+                  <img src={coverImageUrl} alt={cleanCategoryName} className="w-full h-full object-cover" />
+                </div>
+              ) : (
+                <div
+                  style={{ borderColor: styleColor || undefined }}
+                  className="w-12 h-12 rounded-2xl bg-orange-100 dark:bg-orange-950/60 border border-orange-300 dark:border-orange-800 flex items-center justify-center text-2xl shadow-xs shrink-0 overflow-hidden"
+                >
+                  {isIconUrl ? (
+                    <img
+                      src={categoryIcon}
+                      alt={cleanCategoryName}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        (e.currentTarget as HTMLElement).style.display = 'none';
+                      }}
+                    />
+                  ) : (
+                    categoryEmoji
+                  )}
+                </div>
+              )}
               <div>
                 <h1 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
                   <span>{cleanCategoryName}</span>
                 </h1>
                 <p className="text-xs text-slate-700 dark:text-slate-300 font-medium max-w-xl">
-                  Dedicated preferred topics feed for personalized member-generated content. Tailor your daily publishing & reading stream directly.
+                  Dedicated preferred topics feed for personalized member-generated content. Independent feed state, rules & moderation.
                 </p>
               </div>
             </div>
@@ -309,13 +360,78 @@ export const CategoryBulletinFeedHeader: React.FC<CategoryBulletinFeedHeaderProp
             <button
               type="button"
               onClick={onPublishToCategory}
-              className="px-4 py-2 rounded-xl bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white text-xs font-bold transition shadow-sm flex items-center gap-1.5 cursor-pointer"
+              disabled={isFrozen || !hasAccess}
+              className={`px-4 py-2 rounded-xl text-white text-xs font-bold transition shadow-sm flex items-center gap-1.5 ${
+                isFrozen || !hasAccess
+                  ? 'bg-slate-400 dark:bg-slate-700 cursor-not-allowed opacity-60'
+                  : 'bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 cursor-pointer'
+              }`}
             >
               <PenSquare className="w-3.5 h-3.5" />
-              <span>Publish UGC Here</span>
+              <span>{isFrozen ? 'Posting Locked' : !hasAccess ? 'Access Gated' : 'Publish UGC Here'}</span>
             </button>
           </div>
         </div>
+
+        {/* 1.1 Gated Category Access Banner */}
+        {isGated && !hasAccess && (
+          <div className="mt-4 p-4 bg-gradient-to-r from-purple-900 via-indigo-950 to-slate-900 rounded-2xl border border-purple-500/40 text-white shadow-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-2 text-purple-300 font-black text-sm">
+                <Lock className="w-4 h-4 text-amber-400 shrink-0" />
+                <span>GATED CATEGORY: {subscriptionTierRequired || accessType?.toUpperCase() || 'MEMBERSHIP ONLY'}</span>
+              </div>
+              <p className="text-xs text-slate-200 mt-1 max-w-lg font-medium">
+                This sovereign category is restricted to members holding an active {subscriptionTierRequired || 'subscription plan'} or collaborator RBAC credentials.
+              </p>
+            </div>
+            <a
+              href="/settings"
+              className="px-4 py-2 bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-400 hover:to-indigo-500 text-white font-bold text-xs rounded-xl shadow-lg border border-purple-400/40 shrink-0 text-center"
+            >
+              Unlock Membership &amp; Tier Access &rarr;
+            </a>
+          </div>
+        )}
+
+        {/* 1.2 Category Frozen Notice */}
+        {isFrozen && (
+          <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-950/60 border border-blue-400 dark:border-blue-700 rounded-2xl flex items-center gap-2.5 text-xs text-blue-950 dark:text-blue-200 font-bold">
+            <Lock className="w-4 h-4 text-blue-600 shrink-0" />
+            <span>❄️ CATEGORY FROZEN: This category is temporarily locked by moderators. New postcard dispatches and comments are locked.</span>
+          </div>
+        )}
+
+        {/* 1.3 Commenting Paused Notice */}
+        {isCommentingPaused && (
+          <div className="mt-3 p-2.5 bg-amber-50 dark:bg-amber-950/60 border border-amber-400 dark:border-amber-700 rounded-xl flex items-center gap-2 text-xs text-amber-950 dark:text-amber-200 font-bold">
+            <Pause className="w-4 h-4 text-amber-600 shrink-0" />
+            <span>🔒 Commenting has been paused across all discussions in this category by administration.</span>
+          </div>
+        )}
+
+        {/* 1.4 Community Rules & Guidelines Expandable Section */}
+        {rules && (
+          <div className="mt-4 p-3.5 bg-slate-100 dark:bg-slate-800/80 rounded-2xl border border-slate-300 dark:border-slate-700 text-xs">
+            <div
+              className="flex items-center justify-between cursor-pointer select-none"
+              onClick={() => setShowRules(!showRules)}
+            >
+              <div className="flex items-center gap-2 font-black text-slate-900 dark:text-white">
+                <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>Community Rules &amp; Publishing Code of Conduct</span>
+              </div>
+              <button type="button" className="text-slate-600 hover:text-slate-900 dark:text-slate-300">
+                {showRules ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+              </button>
+            </div>
+            {showRules && (
+              <div className="mt-2.5 pt-2.5 border-t border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-200 whitespace-pre-line leading-relaxed font-medium">
+                {rules}
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       {/* 2. On-Demand Audio Updates Bulletin Player ("Listen on the move") */}

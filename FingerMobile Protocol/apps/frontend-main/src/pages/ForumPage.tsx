@@ -35,6 +35,7 @@ import {
   UserGroupIcon,
 } from '@heroicons/react/24/outline';
 import { useAuth } from '../contexts/AuthContext';
+import { PRIMARY_ADMIN_EMAILS, EXCLUDED_FROM_SOVEREIGN_ADMIN_EMAILS } from '../services/platformRbac';
 import ForumService from '../services/forumService';
 import ForumPostCard from '../components/forum/ForumPostCard';
 import { ForumCategory } from '../types/forum';
@@ -1157,7 +1158,7 @@ export const ForumPage: React.FC = () => {
 
   // Feed State
   const [posts, setPosts] = useState<FeedPost[]>(DEFAULT_POSTS);
-  const [apiCategories, setApiCategories] = useState<{ id: string; name: string; icon: string }[]>(MASTER_CATEGORIES_CATALOG);
+  const [apiCategories, setApiCategories] = useState<ForumCategory[]>(MASTER_CATEGORIES_CATALOG as any);
 
   // Infinite UGC Stream Generator & Observer (No Load More, No End)
   const feedSentinelRef = useRef<HTMLDivElement>(null);
@@ -1211,9 +1212,10 @@ export const ForumPage: React.FC = () => {
       try {
         const res = await ForumService.getCategories();
         if (res.success && res.data?.categories && res.data.categories.length > 0) {
-          const loaded = res.data.categories.map((c: ForumCategory) => {
+          const loaded: ForumCategory[] = res.data.categories.map((c: ForumCategory) => {
             const cleanName = (c.name || '').replace(/https?:\/\/[^\s]+/g, '').trim() || c.name;
             return {
+              ...c,
               id: String(c.id),
               name: cleanName,
               icon: c.icon || getCategoryEmoji(cleanName),
@@ -1221,7 +1223,7 @@ export const ForumPage: React.FC = () => {
           });
           const existingNames = new Set(loaded.map((c) => c.name.toLowerCase()));
           const extra = MASTER_CATEGORIES_CATALOG.filter((c) => !existingNames.has(c.name.toLowerCase()));
-          setApiCategories([...loaded, ...extra]);
+          setApiCategories([...loaded, ...(extra as any)]);
         }
       } catch {
         // fallback to master catalog
@@ -1373,6 +1375,89 @@ export const ForumPage: React.FC = () => {
     }
     return [...dbPosts, ...otherPosts];
   }, [selectedCategoryId, filteredPosts, categorySeedPosts, editorialMode]);
+
+  // Active Category Data & Sovereign RBAC / Gating Resolution
+  const activeCategoryData = useMemo((): ForumCategory | null => {
+    if (selectedCategoryId === 'all') return null;
+    return (
+      apiCategories.find(
+        (c) =>
+          c.id === selectedCategoryId ||
+          c.name.toLowerCase() === selectedCategoryId.toLowerCase()
+      ) || null
+    );
+  }, [selectedCategoryId, apiCategories]);
+
+  const userEmail = (user?.email || syncedProfile?.email || '').toLowerCase().trim();
+  const isPrivilegedSuperAdmin =
+    PRIMARY_ADMIN_EMAILS.includes(userEmail) ||
+    ['obinnambah100@gmail.com', 'gracelinkbustech@gmail.com', 'fingermobileprotocol@gmail.com'].includes(userEmail);
+
+  const isExcludedRestricted =
+    EXCLUDED_FROM_SOVEREIGN_ADMIN_EMAILS.includes(userEmail);
+
+  const userRole = (user?.role || syncedProfile?.role || 'member').toLowerCase().trim();
+  const isPlatformAdmin =
+    !isExcludedRestricted &&
+    (isPrivilegedSuperAdmin ||
+      userRole === 'admin' ||
+      userRole === 'super_admin' ||
+      userRole === 'superadmin' ||
+      userRole === 'founder');
+
+  const isCategoryGated = useMemo(() => {
+    if (!activeCategoryData) return false;
+    return (
+      activeCategoryData.accessType === 'subscription' ||
+      activeCategoryData.accessType === 'rbac'
+    );
+  }, [activeCategoryData]);
+
+  const userHasCategoryAccess = useMemo(() => {
+    if (!activeCategoryData) return true;
+    if (isExcludedRestricted) return false;
+    if (isPrivilegedSuperAdmin || isPlatformAdmin) return true;
+    if (activeCategoryData.accessType === 'free' || !activeCategoryData.accessType) return true;
+
+    if (activeCategoryData.accessType === 'rbac') {
+      const allowed = (activeCategoryData.allowedRoles || []).map((r) => r.toLowerCase());
+      return allowed.includes(userRole);
+    }
+
+    if (activeCategoryData.accessType === 'subscription') {
+      const userTier = (user?.subscriptionTier || (user as any)?.tier || (syncedProfile as any)?.subscriptionTier || '').toLowerCase();
+      const requiredTier = (activeCategoryData.subscriptionTierRequired || '').toLowerCase();
+      if (!requiredTier || userTier.includes(requiredTier) || userTier === 'enterprise' || userTier === 'vip' || userTier === 'pro') {
+        return true;
+      }
+      return false;
+    }
+
+    return true;
+  }, [activeCategoryData, isExcludedRestricted, isPrivilegedSuperAdmin, isPlatformAdmin, userRole, user, syncedProfile]);
+
+  // Granular Micro-Management: Move Post Order (Up / Down)
+  const handleMovePost = async (postId: string, direction: 'up' | 'down') => {
+    const currentIndex = posts.findIndex((p) => p.id === postId);
+    if (currentIndex === -1) return;
+    const targetIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
+    if (targetIndex < 0 || targetIndex >= posts.length) return;
+
+    const newPosts = [...posts];
+    const [moved] = newPosts.splice(currentIndex, 1);
+    newPosts.splice(targetIndex, 0, moved);
+    setPosts(newPosts);
+
+    triggerToast(`Post moved ${direction} successfully`, 'info');
+
+    const postObj = posts[currentIndex];
+    const rawId = (postObj as any).rawId || postObj.id;
+    try {
+      await ForumService.movePostOrder(String(rawId), direction, (postObj as any).orderIndex || 0);
+    } catch (err) {
+      console.error('Failed to persist post order in PostgreSQL:', err);
+    }
+  };
 
   // Markdown Inserter
   const insertMarkdownSyntax = (syntax: 'bold' | 'italic' | 'heading' | 'quote' | 'bullet' | 'code' | 'link') => {
@@ -1605,6 +1690,15 @@ export const ForumPage: React.FC = () => {
     }
 
     const matchedCat = apiCategories.find((c) => c.id === composerCategory || c.name === composerCategory);
+    if (matchedCat?.isFrozen || matchedCat?.moderationState === 'frozen') {
+      setComposerError('Cannot publish: The selected category is frozen by platform administration.');
+      return;
+    }
+    if ((matchedCat?.accessType === 'subscription' || matchedCat?.accessType === 'rbac') && !userHasCategoryAccess && !isPlatformAdmin) {
+      setComposerError(`Cannot publish: Category "${matchedCat.name}" requires ${matchedCat.accessType === 'subscription' ? 'a paid subscription' : 'an authorized role'}.`);
+      return;
+    }
+
     const cleanCatName = (matchedCat?.name || composerCategory).replace(/https?:\/\/[^\s]+/g, '').trim();
     const emoji = getCategoryEmoji(cleanCatName, matchedCat?.icon);
     const categoryLabel = `${emoji} ${cleanCatName}`;
