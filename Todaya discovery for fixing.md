@@ -158,3 +158,19 @@ In strict accordance with the mandatory platform design hierarchy:
    - Frontend renderers (such as `StercsPageRenderer.tsx` and microservice consumers) consume updated schemas in real time without browser refreshes or rebuild cycles.
 3. **Instant Defcon Freezing**:
    - Toggling any entity or route to `frozen` in `ScreenCatalogManagementConsole.tsx` renders a graceful security hold state across all client touchpoints, maintaining database integrity while isolating unauthorized traffic.
+
+---
+
+10. Floating Burger Menu & Mobile Drawer Anti-Clutter Architecture
+
+1. **Floating Trigger Collision & Relocation**:
+   - The detached floating capsule (`MemberProfileMenuTrigger.tsx`) currently renders at `fixed top-2 left-2.5 z-[9995]`, obstructing user avatars, profile cards, headers, and action buttons across screens like `LushPressiesPage.tsx` and `WalletPage.tsx`.
+   - **Resolution**: Collapse the desktop trigger from a 260px wide capsule to an ultra-compact docked 84px trigger or 40px icon. On mobile, collapse the capsule into an ergonomic single 38px circular/rounded burger icon (`Menu`), removing the redundant avatar and freeing 70% of screen visibility with zero collisions.
+
+2. **Mobile Menu Dropdown Nesting & Anti-Clutter**:
+   - `DrawerMenuContainer.tsx` currently mounts with all 8 mega-categories expanded simultaneously by default (`expandedCategories = true`), dumping 64+ multi-line cards into an endless vertical scroll.
+   - **Resolution**:
+     - Implement **Strict Accordion Mode**: Collapse all categories by default on mobile (or auto-expand only the current route's category).
+     - Implement **2-Tier Sub-Accordions**: Cluster large categories (e.g. 13 finance items into "Wallets & Currencies", "Gifting & Loyalty", "Business & Operations").
+     - Implement **Collapsible Rewards Header**: Collapse the 320px protocol rewards block into a 36px summary chip (`Level 5 · 0 FIC · 14 Days Streak ▾`), unlocking 220px of visible viewport for menu navigation.
+     - Implement **Compact View on Mobile**: Display clean 38px single-line rows (Icon + Title + Badge) without long descriptive paragraphs, reducing visual noise and eliminating text overlapping.

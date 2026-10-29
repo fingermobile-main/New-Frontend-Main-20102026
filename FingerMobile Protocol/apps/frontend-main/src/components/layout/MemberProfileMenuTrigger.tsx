@@ -71,16 +71,15 @@ export const MemberProfileMenuTrigger: React.FC<MemberProfileMenuTriggerProps> =
 
   return (
     <div className="fixed top-2 sm:top-2.5 left-2.5 sm:left-3 z-[9995] pointer-events-auto transition-all duration-300">
-      {/* MOBILE COMPACT VIEW (< sm): Highly Visible Sovereign Burger Menu Button + Avatar */}
-      <div className="sm:hidden flex items-center gap-1.5 p-1 rounded-2xl bg-slate-950/95 border border-slate-800 shadow-2xl backdrop-blur-md">
-        {/* Unmistakable Hamburger Burger Button */}
+      {/* MOBILE COMPACT VIEW (< sm): Sleek, Ergonomic 38px Burger Icon (Zero Collision with Page Titles) */}
+      <div className="sm:hidden">
         <button
           type="button"
           onClick={onToggleMenu}
-          className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all cursor-pointer ${
+          className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all cursor-pointer shadow-xl backdrop-blur-md ${
             isOpen
               ? 'bg-gradient-to-tr from-amber-500 to-orange-600 text-white shadow-md shadow-orange-500/40 ring-2 ring-orange-400'
-              : 'bg-slate-900 text-orange-400 hover:text-white hover:bg-slate-800 ring-1 ring-slate-700'
+              : 'bg-slate-950/90 text-orange-400 hover:text-white hover:bg-slate-900 border border-slate-800 ring-1 ring-slate-700/60'
           }`}
           title="Open Sovereign Platform Burger Menu (385 Pages)"
           aria-label="Toggle Platform Menu"
@@ -88,23 +87,9 @@ export const MemberProfileMenuTrigger: React.FC<MemberProfileMenuTriggerProps> =
         >
           <Menu className="w-5 h-5" />
         </button>
-
-        {/* Member Avatar */}
-        <Link
-          to="/profile"
-          className="relative w-8 h-8 rounded-full p-0.5 bg-slate-900 border border-slate-700 flex items-center justify-center shrink-0"
-          title="View Profile"
-        >
-          <img
-            src={profile.avatar || '/assets/branding/default-avatar.svg'}
-            alt={displayName}
-            className="w-full h-full rounded-full object-cover"
-          />
-          <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-emerald-500 ring-1 ring-slate-950" />
-        </Link>
       </div>
 
-      {/* DESKTOP VIEW (sm+): Full Sovereign Profile Pill with Name, PIN, Chevron, & 9-Dot Grid */}
+      {/* DESKTOP VIEW (sm+): Compact, Non-Blocking Sovereign Menu Anchor */}
       <div className="hidden sm:flex items-center gap-1.5 p-1 rounded-2xl bg-slate-950/90 hover:bg-slate-950 text-white border border-slate-800/90 shadow-2xl backdrop-blur-xl transition-all ring-1 ring-white/10 group">
         {/* Clickable Member Profile Picture -> Opens Member Profile Page / Wall */}
         <Link
@@ -115,72 +100,27 @@ export const MemberProfileMenuTrigger: React.FC<MemberProfileMenuTriggerProps> =
           <img
             src={profile.avatar || '/assets/branding/default-avatar.svg'}
             alt={displayName}
-            className="w-8 h-8 rounded-full object-cover ring-2 ring-orange-500/80 shadow-md"
+            className="w-7 h-7 rounded-full object-cover ring-1 ring-orange-500/80 shadow-md"
           />
-          <span className="absolute bottom-0.5 right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-slate-950" />
+          <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-emerald-500 ring-1 ring-slate-950" />
         </Link>
 
         {/* Platform Menu Toggle Button */}
         <button
           type="button"
           onClick={onToggleMenu}
-          className="flex items-center gap-2 py-1 px-1 rounded-xl hover:bg-slate-900 transition-all text-left focus:outline-none"
-          title="Open Sovereign Platform Burger Menu (385 Pages)"
-          aria-expanded={isOpen}
-        >
-          {/* User Details (Full view on larger screens, compact on small) */}
-          {!isMinimized && (
-            <div className="flex flex-col min-w-0 pr-1">
-              <div className="flex items-center gap-1">
-                <span className="text-xs font-bold text-white truncate max-w-[110px]">
-                  {displayName}
-                </span>
-                <ShieldCheck className="w-3.5 h-3.5 text-sky-400 shrink-0" />
-              </div>
-              <div className="flex items-center gap-1.5">
-                <span className="text-[10px] text-orange-400 font-bold tracking-wide">
-                  #PIN-{displayPin}
-                </span>
-                <span className="text-[10px] text-slate-200 font-semibold hidden md:inline">
-                  • {profile.pinQuotaRemaining ?? 48} Pins
-                </span>
-              </div>
-            </div>
-          )}
-
-          {/* FingerMobile Dropdown Chevron */}
-          <div className="p-1 rounded-lg text-slate-200 group-hover:text-white transition-colors">
-            <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180 text-orange-500' : ''}`} />
-          </div>
-        </button>
-
-        {/* Vertical Divider */}
-        <div className="h-5 w-px bg-slate-800" />
-
-        {/* FingerMobile Sovereign Burger Menu Trigger */}
-        <button
-          type="button"
-          onClick={onToggleMenu}
           className={`px-2.5 py-1.5 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
             isOpen
               ? 'bg-gradient-to-tr from-amber-500 to-orange-600 text-white shadow-md shadow-orange-500/30'
-              : 'text-slate-300 hover:text-white hover:bg-slate-900 border border-slate-800'
+              : 'text-slate-200 hover:text-white hover:bg-slate-900'
           }`}
           title="FingerMobile Sovereign Platform Burger Menu (385 Pages)"
           aria-label="Toggle Platform Burger Menu"
+          aria-expanded={isOpen}
         >
           <Menu className="w-4 h-4 text-orange-400 group-hover:scale-105 transition-transform" />
-          <span className="text-xs font-bold text-slate-200 group-hover:text-white hidden lg:inline">Menu</span>
-        </button>
-
-        {/* Quick Minimize / Collapse Toggle Button */}
-        <button
-          type="button"
-          onClick={() => setIsMinimized((prev) => !prev)}
-          className="p-1 text-[10px] text-slate-500 hover:text-slate-300 hidden md:block"
-          title={isMinimized ? 'Expand Profile Pill' : 'Minimize Profile Pill'}
-        >
-          <Sparkles className="w-3 h-3" />
+          <span className="text-xs font-bold text-slate-100 tracking-wide">Menu</span>
+          <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 ${isOpen ? 'rotate-180 text-orange-400' : ''}`} />
         </button>
       </div>
     </div>

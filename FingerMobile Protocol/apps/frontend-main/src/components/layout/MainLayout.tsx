@@ -34,9 +34,9 @@ export default function MainLayout({ children, pageTitle }: MainLayoutProps) {
 
       {/* Main Content Area */}
       <div className="flex flex-col flex-1 min-w-0">
-        {/* Top Navigation Header - Left clearance pl-14 sm:pl-56 for Sovereign Burger Trigger */}
+        {/* Top Navigation Header - Left clearance pl-14 sm:pl-32 for Sovereign Burger Trigger */}
         <header className="bg-white/95 backdrop-blur-md border-b border-slate-200/90 shadow-2xs z-20 sticky top-1">
-          <div className="pl-14 sm:pl-56 pr-4 sm:px-6 lg:px-8 py-3">
+          <div className="pl-14 sm:pl-32 pr-4 sm:px-6 lg:px-8 py-3">
             <div className="flex items-center justify-between gap-4">
               <div className="flex items-center gap-3 min-w-0">
                 <div className="truncate">

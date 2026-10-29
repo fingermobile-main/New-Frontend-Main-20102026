@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { DRAWER_MENU_CONFIG } from '../../../config/drawerMenuConfig';
+import { DRAWER_MENU_CONFIG, DrawerMenuItem } from '../../../config/drawerMenuConfig';
 import userProfileSyncService from '../../../services/UserProfileSyncService';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useAppContext } from '../../../contexts/AppContext';
@@ -136,7 +136,7 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
   const [profile, setProfile] = useState(() => userProfileSyncService.getProfile());
   const [isRadiating, setIsRadiating] = useState(true);
   const [isIncognito, setIsIncognito] = useState(false);
-  const [isRewardsExpanded, setIsRewardsExpanded] = useState(true);
+  const [isRewardsExpanded, setIsRewardsExpanded] = useState(false);
   const [rbacNotice, setRbacNotice] = useState<string | null>(null);
 
   const triggerRbacNotice = (message: string) => {
@@ -192,22 +192,54 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
   const canAccessMaster = canAccessMasterDashboard(user);
   const authorizedDashboardPath = getAuthorizedDashboardPath(user);
 
-  // Track open accordion categories - expand all by default
-  const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({
-    'executive-dashboards': true,
-    'sovereign-governance': true,
-    'community-social': true,
-    'media-entertainment': true,
-    'commerce-stores': true,
-    'creative-ugc': true,
-    'finance-monetization': true,
-    'system-engagement': true
+  // Auto-expand category matching current path, or collapse all by default on mobile
+  const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>(() => {
+    const current = (typeof window !== 'undefined' ? window.location.pathname : '').toLowerCase();
+    for (const cat of DRAWER_MENU_CONFIG) {
+      if (cat.items.some((item) => item.path.toLowerCase() === current)) {
+        return { [cat.id]: true };
+      }
+    }
+    return {};
+  });
+
+  // Track open nested sub-group accordions
+  const [expandedSubCategories, setExpandedSubCategories] = useState<Record<string, boolean>>(() => {
+    const current = (typeof window !== 'undefined' ? window.location.pathname : '').toLowerCase();
+    const initial: Record<string, boolean> = {};
+    for (const cat of DRAWER_MENU_CONFIG) {
+      if (cat.subGroups) {
+        for (const sub of cat.subGroups) {
+          if (sub.itemIds.some((id) => {
+            const item = cat.items.find((i) => i.id === id);
+            return item && item.path.toLowerCase() === current;
+          })) {
+            initial[sub.id] = true;
+          }
+        }
+      }
+    }
+    return initial;
   });
 
   const toggleCategory = (categoryId: string) => {
-    setExpandedCategories((prev) => ({
+    setExpandedCategories((prev) => {
+      const isCurrentlyOpen = !!prev[categoryId];
+      // On mobile viewports: Strict Single Accordion mode to prevent vertical clutter & text overlapping
+      if (typeof window !== 'undefined' && window.innerWidth < 768) {
+        return isCurrentlyOpen ? {} : { [categoryId]: true };
+      }
+      return {
+        ...prev,
+        [categoryId]: !isCurrentlyOpen
+      };
+    });
+  };
+
+  const toggleSubCategory = (subId: string) => {
+    setExpandedSubCategories((prev) => ({
       ...prev,
-      [categoryId]: !prev[categoryId]
+      [subId]: !prev[subId]
     }));
   };
 
@@ -245,6 +277,101 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
     default:
       return 'bg-blue-500/20 text-blue-300 border border-blue-500/40 font-bold';
     }
+  };
+
+  const renderMenuItem = (item: DrawerMenuItem) => {
+    const active = isActive(item.path);
+    const isDashboard = isDashboardRoute(item.path);
+    const hasDashboardAccess = canAccessDashboard(item.path, user);
+    const isRestrictedDashboard = isDashboard && !hasDashboardAccess;
+
+    if (isRestrictedDashboard) {
+      return (
+        <div
+          key={item.id}
+          onClick={() => {
+            triggerRbacNotice(`Access to "${item.title}" is restricted by Platform RBAC. Contact Primary Admin (SuperAdmin) or CFO for dashboard assignment.`);
+          }}
+          className="group flex items-start justify-between p-2 rounded-lg text-xs bg-slate-950/60 border border-slate-800/80 text-slate-400 cursor-not-allowed opacity-60 hover:opacity-85 transition-opacity"
+          title="Access Restricted: Executive or Assigned RBAC Required"
+        >
+          <div className="flex items-start space-x-2.5 min-w-0 flex-1">
+            <div className="mt-0.5 shrink-0">
+              <Lock className="w-3.5 h-3.5 text-rose-400" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center space-x-1.5 flex-wrap">
+                <span className="font-bold text-xs truncate text-slate-300">{item.title}</span>
+                <span className="text-[9px] font-bold px-1.5 py-0.2 rounded-full uppercase bg-rose-950/70 text-rose-300 border border-rose-800/60">
+                  Disabled (RBAC)
+                </span>
+              </div>
+              {item.description && (
+                <p className={`text-[11px] mt-0.5 line-clamp-1 leading-normal text-slate-500 font-medium ${searchQuery ? 'block' : 'hidden sm:block'}`}>
+                  {item.description}
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <Link
+        key={item.id}
+        to={item.path}
+        onClick={() => !isDesktopSidebar && onClose()}
+        className={`group flex items-start justify-between p-2 rounded-lg text-xs transition-all ${
+          active
+            ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white font-bold shadow-md shadow-orange-500/20'
+            : 'text-slate-100 hover:bg-slate-800/90 hover:text-white'
+        }`}
+      >
+        <div className="flex items-start space-x-2.5 min-w-0 flex-1">
+          <div className="mt-0.5 shrink-0">
+            {item.logoUrl ? (
+              <img
+                src={item.logoUrl}
+                alt={item.title}
+                className="w-4 h-4 rounded object-contain bg-slate-900/40 p-0.5 border border-slate-700/60 shadow-sm"
+              />
+            ) : item.isPrivate ? (
+              <Lock className={`w-3.5 h-3.5 ${active ? 'text-white' : 'text-rose-400'}`} />
+            ) : item.requiresPaidPlan ? (
+              <Crown className={`w-3.5 h-3.5 ${active ? 'text-white' : 'text-amber-400'}`} />
+            ) : (
+              <ArrowRight className={`w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity ${active ? 'text-white' : 'text-orange-400'}`} />
+            )}
+          </div>
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center space-x-1.5 flex-wrap">
+              <span className="font-bold text-xs truncate text-white">{item.title}</span>
+              {item.badge && (
+                <span
+                  className={`text-[9px] font-bold px-1.5 py-0.2 rounded-full uppercase ${
+                    active
+                      ? 'bg-white/20 text-white border border-white/30'
+                      : getBadgeStyle(item.badge.type)
+                  }`}
+                >
+                  {item.badge.text}
+                </span>
+              )}
+            </div>
+            {item.description && (
+              <p
+                className={`text-[11px] mt-0.5 line-clamp-1 leading-normal ${
+                  active ? 'text-white/95 font-medium' : 'text-slate-200 font-medium'
+                } ${searchQuery ? 'block' : 'hidden sm:block'}`}
+              >
+                {item.description}
+              </p>
+            )}
+          </div>
+        </div>
+      </Link>
+    );
   };
 
   const renderContent = () => (
@@ -391,9 +518,10 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
               <button
                 type="button"
                 onClick={() => setIsRewardsExpanded((prev) => !prev)}
-                className="text-[10px] font-black text-orange-400 hover:text-orange-300 flex items-center gap-0.5 px-2 py-0.5 rounded-md bg-orange-500/15 border border-orange-500/40"
+                className="text-[10px] font-black text-orange-400 hover:text-orange-300 flex items-center gap-1 px-2 py-0.5 rounded-md bg-orange-500/15 border border-orange-500/40 cursor-pointer transition-colors"
+                title={isRewardsExpanded ? 'Collapse Rewards' : 'Expand Protocol Rewards & Vault'}
               >
-                <span>Level 5</span>
+                <span>Level 5 • {ficBalance?.toLocaleString() ?? '0'} FIC</span>
                 <ChevronDown className={`w-3 h-3 transition-transform ${isRewardsExpanded ? 'rotate-180' : ''}`} />
               </button>
             </div>
@@ -654,100 +782,52 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
 
                     {isExpanded && (
                       <div className="p-1 space-y-1">
-                        {cat.items.map((item) => {
-                          const active = isActive(item.path);
-                          const isDashboard = isDashboardRoute(item.path);
-                          const hasDashboardAccess = canAccessDashboard(item.path, user);
-                          const isRestrictedDashboard = isDashboard && !hasDashboardAccess;
+                        {/* Nested Sub-Accordions: When category has subGroups and no active search query */}
+                        {cat.subGroups && !searchQuery.trim() ? (
+                          cat.subGroups.map((sub) => {
+                            const isSubOpen = expandedSubCategories[sub.id] ?? false;
+                            const subItems = sub.itemIds
+                              .map((id) => cat.items.find((item) => item.id === id))
+                              .filter(Boolean) as DrawerMenuItem[];
 
-                          if (isRestrictedDashboard) {
+                            if (subItems.length === 0) return null;
+
                             return (
                               <div
-                                key={item.id}
-                                onClick={() => {
-                                  triggerRbacNotice(`Access to "${item.title}" is restricted by Platform RBAC. Contact Primary Admin (SuperAdmin) or CFO for dashboard assignment.`);
-                                }}
-                                className="group flex items-start justify-between p-2 rounded-lg text-xs bg-slate-950/60 border border-slate-800/80 text-slate-400 cursor-not-allowed opacity-60 hover:opacity-85 transition-opacity"
-                                title="Access Restricted: Executive or Assigned RBAC Required"
+                                key={sub.id}
+                                className="rounded-lg border border-slate-800/80 bg-slate-900/60 my-1 overflow-hidden shadow-2xs"
                               >
-                                <div className="flex items-start space-x-2.5 min-w-0 flex-1">
-                                  <div className="mt-0.5 shrink-0">
-                                    <Lock className="w-3.5 h-3.5 text-rose-400" />
+                                <button
+                                  type="button"
+                                  onClick={() => toggleSubCategory(sub.id)}
+                                  className="w-full px-3 py-2 flex items-center justify-between text-left bg-slate-800/40 hover:bg-slate-800/70 transition-colors cursor-pointer border-b border-slate-800/40"
+                                >
+                                  <div className="flex items-center gap-2 min-w-0">
+                                    <span className="text-[11px] font-bold text-slate-200 tracking-wide truncate">
+                                      {sub.title}
+                                    </span>
+                                    <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-slate-950 text-orange-400 font-mono font-bold border border-slate-800">
+                                      {subItems.length}
+                                    </span>
                                   </div>
-                                  <div className="min-w-0 flex-1">
-                                    <div className="flex items-center space-x-1.5 flex-wrap">
-                                      <span className="font-bold text-xs truncate text-slate-300">{item.title}</span>
-                                      <span className="text-[9px] font-bold px-1.5 py-0.2 rounded-full uppercase bg-rose-950/70 text-rose-300 border border-rose-800/60">
-                                        Disabled (RBAC)
-                                      </span>
-                                    </div>
-                                    {item.description && (
-                                      <p className="text-[11px] mt-0.5 line-clamp-1 leading-normal text-slate-500 font-medium">
-                                        {item.description}
-                                      </p>
-                                    )}
+                                  {isSubOpen ? (
+                                    <ChevronDown className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                                  ) : (
+                                    <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                                  )}
+                                </button>
+
+                                {isSubOpen && (
+                                  <div className="p-1 space-y-1 bg-slate-950/40">
+                                    {subItems.map((item) => renderMenuItem(item))}
                                   </div>
-                                </div>
+                                )}
                               </div>
                             );
-                          }
-
-                          return (
-                            <Link
-                              key={item.id}
-                              to={item.path}
-                              onClick={() => !isDesktopSidebar && onClose()}
-                              className={`group flex items-start justify-between p-2 rounded-lg text-xs transition-all ${
-                                active
-                                  ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white font-bold shadow-md shadow-orange-500/20'
-                                  : 'text-slate-100 hover:bg-slate-800/90 hover:text-white'
-                              }`}
-                            >
-                              <div className="flex items-start space-x-2.5 min-w-0 flex-1">
-                                <div className="mt-0.5 shrink-0">
-                                  {item.logoUrl ? (
-                                    <img
-                                      src={item.logoUrl}
-                                      alt={item.title}
-                                      className="w-4 h-4 rounded object-contain bg-slate-900/40 p-0.5 border border-slate-700/60 shadow-sm"
-                                    />
-                                  ) : item.isPrivate ? (
-                                    <Lock className={`w-3.5 h-3.5 ${active ? 'text-white' : 'text-rose-400'}`} />
-                                  ) : item.requiresPaidPlan ? (
-                                    <Crown className={`w-3.5 h-3.5 ${active ? 'text-white' : 'text-amber-400'}`} />
-                                  ) : (
-                                    <ArrowRight className={`w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity ${active ? 'text-white' : 'text-orange-400'}`} />
-                                  )}
-                                </div>
-                                <div className="min-w-0 flex-1">
-                                  <div className="flex items-center space-x-1.5 flex-wrap">
-                                    <span className="font-bold text-xs truncate text-white">{item.title}</span>
-                                    {item.badge && (
-                                      <span
-                                        className={`text-[9px] font-bold px-1.5 py-0.2 rounded-full uppercase ${
-                                          active
-                                            ? 'bg-white/20 text-white border border-white/30'
-                                            : getBadgeStyle(item.badge.type)
-                                        }`}
-                                      >
-                                        {item.badge.text}
-                                      </span>
-                                    )}
-                                  </div>
-                                  {item.description && (
-                                    <p
-                                      className={`text-[11px] mt-0.5 line-clamp-1 leading-normal ${
-                                        active ? 'text-white/95 font-medium' : 'text-slate-200 font-medium'
-                                      }`}
-                                    >
-                                      {item.description}
-                                    </p>
-                                  )}
-                                </div>
-                              </div>
-                            </Link>
-                          );
-                        })}
+                          })
+                        ) : (
+                          cat.items.map((item) => renderMenuItem(item))
+                        )}
                       </div>
                     )}
                   </div>

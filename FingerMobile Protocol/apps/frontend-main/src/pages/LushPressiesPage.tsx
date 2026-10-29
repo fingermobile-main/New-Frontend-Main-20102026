@@ -707,7 +707,7 @@ export const LushPressiesPage: React.FC = () => {
 
       {/* Brand Hero Header */}
       <div className={`max-w-[1536px] 2xl:max-w-[1680px] mx-auto pt-4 sm:pt-6 transition-all duration-300 ${
-        isOnboarded ? 'pl-14 pr-3 sm:px-6 lg:px-8' : 'px-3 sm:px-6 lg:px-8'
+        isOnboarded ? 'pl-14 sm:pl-32 pr-3 sm:pr-6 lg:pr-8' : 'px-3 sm:px-6 lg:px-8'
       }`}>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 sm:p-4 bg-white rounded-2xl border border-slate-200 shadow-xs">
           <div className="flex items-center gap-3">

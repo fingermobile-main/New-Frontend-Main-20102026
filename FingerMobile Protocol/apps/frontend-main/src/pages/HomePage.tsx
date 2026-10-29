@@ -247,9 +247,9 @@ const HomePage: React.FC = () => {
 
       {/* Main Content Layer */}
       <div className="relative z-10 flex flex-col min-h-screen">
-        {/* Navigation Bar - Left clearance pl-14 sm:pl-56 for Sovereign Burger Trigger */}
+        {/* Navigation Bar - Left clearance pl-14 sm:pl-32 for Sovereign Burger Trigger */}
         <header className="w-full border-b border-white/10 bg-black/40 backdrop-blur-xl sticky top-0 z-40">
-          <div className="max-w-7xl mx-auto pl-14 sm:pl-56 pr-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+          <div className="max-w-7xl mx-auto pl-14 sm:pl-32 pr-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <div className="flex items-center gap-2 sm:gap-3">
               {/* Header H1 with FingerMobile Orange Logo */}
               <h1 className="flex items-center">
