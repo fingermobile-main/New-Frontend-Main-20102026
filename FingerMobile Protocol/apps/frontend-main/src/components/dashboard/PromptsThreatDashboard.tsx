@@ -12,6 +12,7 @@ const PromptsThreatDashboard: React.FC<PromptsThreatDashboardProps> = ({ userId 
   const [threatHistory, setThreatHistory] = useState<ThreatAnalysis[]>([]);
   const [stats, setStats] = useState<any | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   // Load threat history on mount
   useEffect(() => {
