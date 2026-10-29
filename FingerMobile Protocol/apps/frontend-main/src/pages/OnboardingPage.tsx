@@ -37,6 +37,7 @@ import { HumanCaptchaPuzzle } from '../components/onboarding/HumanCaptchaPuzzle'
 import { CESFormulaCard } from '../components/onboarding/CESFormulaCard';
 import { CountryAvailabilityData, CreatorTier } from '../types/creatorOnboarding';
 import userProfileSyncService from '../services/UserProfileSyncService';
+import AuthBrandingPanel from '../components/auth/AuthBrandingPanel';
 
 export const ONBOARDING_BACKGROUNDS = {
   // FingerMobile Login screen Background image (from Assets/WebP converted Images)
@@ -2045,30 +2046,61 @@ const OnboardingPage: React.FC = () => {
   const activeBackground = getOnboardingBackground(currentStepNumber, currentStepId);
 
   return (
-    <div
-      className="min-h-screen flex flex-col relative transition-all duration-700 ease-in-out bg-cover bg-center bg-no-repeat bg-fixed pb-28 md:pb-12 max-w-full overflow-x-hidden text-slate-900"
-      style={{ backgroundImage: `url("${activeBackground}")` }}
-    >
-      {/* High-contrast backdrop overlay to guarantee WCAG AAA readability and prevent visual distraction */}
-      <div className="absolute inset-0 bg-slate-950/40 backdrop-blur-[2px] pointer-events-none" />
+    <div className="min-h-screen flex flex-col lg:flex-row relative w-full max-w-full overflow-x-hidden bg-slate-950 text-slate-900 pb-28 md:pb-0">
+      {/* LEFT COLUMN (Desktop): Full-Screen Rotating Platform Branding Panel */}
+      <AuthBrandingPanel
+        initialIndex={currentStepNumber % 5}
+        className="lg:w-5/12 xl:w-1/2 lg:min-h-screen lg:sticky lg:top-0 border-r border-slate-800"
+      />
 
-      <div className="relative z-10 container mx-auto px-4 py-8 flex-grow flex flex-col">
-        {/* Progress bar card */}
-        <div className="mb-8 max-w-2xl mx-auto w-full bg-white/95 backdrop-blur-md border border-slate-300 shadow-xl rounded-2xl p-4">
-          <div className="flex justify-between items-center mb-2">
-            <span className="text-sm font-bold text-slate-900">
-              Step {currentStepNumber} of {state.steps.length}
-            </span>
-            <span className="text-sm font-bold text-slate-800">
-              {Math.round(progressPercentage)}% Complete
-            </span>
+      {/* RIGHT COLUMN: Interactive Step Onboarding Flow */}
+      <div
+        className="w-full lg:w-7/12 xl:w-1/2 min-h-screen flex flex-col justify-between relative transition-all duration-700 ease-in-out bg-cover bg-center bg-no-repeat overflow-y-auto"
+        style={{ backgroundImage: `url("${activeBackground}")` }}
+      >
+        {/* Subtle Backdrop Layer on the right column for content legibility */}
+        <div className="absolute inset-0 bg-slate-950/50 backdrop-blur-[2px] pointer-events-none" />
+
+        <div className="relative z-10 w-full px-4 sm:px-8 py-8 flex-grow flex flex-col max-w-3xl mx-auto">
+          {/* Header & Progress Bar */}
+          <div className="mb-6 w-full bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-slate-300 dark:border-slate-800 shadow-xl rounded-2xl p-4">
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-sm font-bold text-slate-900 dark:text-white">
+                Step {currentStepNumber} of {state.steps.length}
+              </span>
+              <span className="text-sm font-bold text-orange-600 dark:text-orange-400">
+                {Math.round(progressPercentage)}% Complete
+              </span>
+            </div>
+            <Progress value={progressPercentage} className="h-2.5 bg-slate-200 dark:bg-slate-800" />
           </div>
-          <Progress value={progressPercentage} className="h-2.5 bg-slate-200" />
+
+          {/* Main Content Card */}
+          <div className="flex-grow flex items-center justify-center my-auto">
+            {renderCurrentStep()}
+          </div>
         </div>
 
-        {/* Main content */}
-        <div className="flex-grow flex items-center justify-center">
-          {renderCurrentStep()}
+        {/* Desktop Quick Breadcrumb / Footer Bar */}
+        <div className="hidden lg:flex relative z-10 items-center justify-between px-8 py-4 border-t border-slate-300/60 dark:border-slate-800/80 bg-white/90 dark:bg-slate-950/90 backdrop-blur-md text-xs font-bold text-slate-700 dark:text-slate-300">
+          <div className="flex items-center gap-2">
+            <span>FingerMobile Protocol™ Sovereign Onboarding</span>
+            <span>•</span>
+            <span className="font-mono text-orange-600">Encrypted Flow</span>
+          </div>
+          <div className="flex items-center gap-4">
+            <button
+              type="button"
+              onClick={previousStep}
+              disabled={currentStepNumber <= 1}
+              className="text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white disabled:opacity-30 cursor-pointer"
+            >
+              ← Previous Step
+            </button>
+            <Link to="/login" className="text-orange-600 hover:text-orange-500 font-extrabold">
+              Already have an account? Sign In →
+            </Link>
+          </div>
         </div>
       </div>
 

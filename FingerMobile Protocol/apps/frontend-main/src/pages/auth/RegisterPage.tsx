@@ -187,29 +187,29 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4 w-full max-w-full overflow-x-hidden pb-28 md:pb-12">
+    <div className="min-h-screen bg-slate-950 lg:bg-gradient-to-br lg:from-slate-900 lg:to-slate-950 flex items-center justify-center w-full max-w-full overflow-x-hidden">
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="w-full max-w-5xl bg-white dark:bg-gray-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col lg:flex-row"
+        transition={{ duration: 0.4 }}
+        className="w-full min-h-screen lg:min-h-screen bg-white dark:bg-slate-900 overflow-hidden flex flex-col lg:flex-row shadow-2xl"
       >
-        {/* Rotating Branding Panel (Left Column on Desktop) */}
-        <AuthBrandingPanel initialIndex={1} />
+        {/* Rotating Branding Panel (Left Column on Desktop: Full Screen Height) */}
+        <AuthBrandingPanel initialIndex={1} className="lg:w-1/2 lg:min-h-screen" />
 
-        {/* Form Container (Right Column on Desktop) */}
-        <div className="w-full lg:w-1/2 p-6 sm:p-10 flex flex-col justify-center">
+        {/* Form Container (Right Column on Desktop: Full Screen Height Scrollable) */}
+        <div className="w-full lg:w-1/2 min-h-screen p-6 sm:p-12 xl:p-16 flex flex-col justify-center overflow-y-auto max-w-2xl mx-auto">
           <div className="text-center mb-8">
-            <div className="mx-auto w-20 h-20 mb-4 flex items-center justify-center rounded-2xl overflow-hidden bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-md p-1">
+            <div className="mx-auto w-20 h-20 mb-4 flex items-center justify-center p-2 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 shadow-md">
               <img
-                src="/assets/branding/fingermobile/logo-white.webp"
+                src="/assets/branding/fingermobile/logo-orange.webp"
                 alt="FingerMobile Logo"
-                className="w-full h-full object-contain"
+                className="w-full h-full object-contain filter drop-shadow-md"
                 onError={(e) => {
                   const target = e.currentTarget;
                   if (!target.dataset.triedFallback) {
                     target.dataset.triedFallback = 'true';
-                    target.src = '/assets/branding/fingermobile/FingerMobile White Logo FRONT.webp';
+                    target.src = '/assets/branding/fingermobile/logo-white.webp';
                   }
                 }}
               />
@@ -217,7 +217,7 @@ const RegisterPage = () => {
             <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">
               FingerMobile<span className="text-[#ff6b00]">™</span>
             </h1>
-            <p className="text-xs sm:text-sm font-semibold tracking-normal text-slate-700 dark:text-slate-300 mt-1">
+            <p className="text-xs sm:text-sm font-bold tracking-normal text-slate-700 dark:text-slate-300 mt-1">
               Create your Sovereign Account
             </p>
           </div>

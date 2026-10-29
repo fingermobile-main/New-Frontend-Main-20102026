@@ -594,15 +594,38 @@ class VoiceLineService {
       try {
         const audio = new Audio(matchingLine.audioUrl);
         audio.volume = volume;
-        // Preserves the natural recorded/uploaded media rate (1.0x) unless explicitly changed by user/author
+        // Preserves natural playback speed (1.0x) unless changed
         audio.playbackRate = this.getAudioPlaybackRate();
-        const playPromise = audio.play();
-        if (playPromise !== undefined) {
-          await playPromise;
-          playedSuccessfully = true;
-        }
+        
+        await new Promise<void>((resolve, reject) => {
+          let resolved = false;
+          const onPlay = () => {
+            if (!resolved) {
+              resolved = true;
+              playedSuccessfully = true;
+              resolve();
+            }
+          };
+          const onError = (e: any) => {
+            if (!resolved) {
+              resolved = true;
+              reject(e);
+            }
+          };
+          audio.addEventListener('playing', onPlay, { once: true });
+          audio.addEventListener('error', onError, { once: true });
+
+          const playPromise = audio.play();
+          if (playPromise !== undefined) {
+            playPromise
+              .then(() => onPlay())
+              .catch((err) => onError(err));
+          } else {
+            onPlay();
+          }
+        });
       } catch {
-        // Physical file not hosted yet, move to Level 2
+        // Physical file blocked by browser autoplay policy or failed, fall through to Chime & TTS
         playedSuccessfully = false;
       }
     }

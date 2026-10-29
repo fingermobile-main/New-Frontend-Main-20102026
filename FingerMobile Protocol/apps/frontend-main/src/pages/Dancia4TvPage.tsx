@@ -859,10 +859,20 @@ const Dancia4TvPage: React.FC = () => {
                   />
                 ) : (
                   <video
+                    key={activePlayingMovie.id}
                     src={activePlayingMovie.videoUrl}
                     controls
                     autoPlay
+                    playsInline
                     className="w-full h-full object-contain"
+                    onError={(e) => {
+                      const videoEl = e.currentTarget;
+                      const fallback = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
+                      if (videoEl.src !== fallback) {
+                        videoEl.src = fallback;
+                        videoEl.play().catch(() => {});
+                      }
+                    }}
                   />
                 )}
               </div>

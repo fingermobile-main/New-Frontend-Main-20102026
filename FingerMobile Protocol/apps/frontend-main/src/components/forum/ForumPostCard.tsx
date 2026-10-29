@@ -392,6 +392,56 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
   const [eventData, setEventData] = useState<FeedEvent | undefined>(post.event);
   // Audio playback state
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+  const audioStemRef = React.useRef<HTMLAudioElement | null>(null);
+
+  React.useEffect(() => {
+    return () => {
+      if (audioStemRef.current) {
+        audioStemRef.current.pause();
+        audioStemRef.current = null;
+      }
+    };
+  }, []);
+
+  const handleToggleAudioStem = () => {
+    if (!post.audioPreview) return;
+
+    if (isPlayingAudio) {
+      if (audioStemRef.current) {
+        audioStemRef.current.pause();
+      }
+      setIsPlayingAudio(false);
+      notify('Audio playback paused', 'info');
+    } else {
+      // Find track or fallback to sample audio stem
+      const audioUrl =
+        (post as any).audioUrl ||
+        (post as any).audio_stem ||
+        '/audio/african/great.mp3';
+
+      if (!audioStemRef.current) {
+        audioStemRef.current = new Audio(audioUrl);
+        audioStemRef.current.onended = () => setIsPlayingAudio(false);
+        audioStemRef.current.onerror = () => {
+          setIsPlayingAudio(false);
+          notify('Unable to play audio stem source', 'error');
+        };
+      } else {
+        audioStemRef.current.src = audioUrl;
+      }
+
+      audioStemRef.current
+        .play()
+        .then(() => {
+          setIsPlayingAudio(true);
+          notify(`Streaming stem: ${post.audioPreview}`, 'info');
+        })
+        .catch(() => {
+          setIsPlayingAudio(false);
+          notify('Audio playback requires user interaction or codec support', 'warning');
+        });
+    }
+  };
   // Lightbox modal fallback
   const [localLightbox, setLocalLightbox] = useState<{ url: string; title: string; author: string } | null>(null);
 
@@ -967,11 +1017,7 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
             <div className="flex items-center gap-2 flex-shrink-0 ml-2">
               <button
                 type="button"
-                onClick={() => {
-                  const nextState = !isPlayingAudio;
-                  setIsPlayingAudio(nextState);
-                  notify(nextState ? `Streaming stem: ${post.audioPreview}` : 'Audio playback paused', 'info');
-                }}
+                onClick={handleToggleAudioStem}
                 className="px-3 py-1.5 bg-orange-600 hover:bg-orange-700 text-white text-[11px] font-bold rounded-xl transition flex items-center gap-1 shadow-xs cursor-pointer"
               >
                 <PlayIcon className="w-3.5 h-3.5" />
