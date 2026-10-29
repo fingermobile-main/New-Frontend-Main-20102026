@@ -58,7 +58,7 @@ export function ProtocolLushDrawer({
   const navItems = [
     { name: 'Home', href: '/', icon: HomeIcon },
     { name: 'Live Feed', href: '/feed', icon: NewspaperIcon, badge: 'Live', badgeColor: 'bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold' },
-    { name: 'Wallet & Vault', href: '/wallet', icon: WalletIcon, badge: '🪙 FIC', badgeColor: 'bg-amber-100 text-amber-900 font-bold' },
+    { name: 'Wallet & Vault', href: '/wallet', icon: WalletIcon, badge: 'Infinite Coin', badgeColor: 'bg-amber-100 text-amber-900 font-bold' },
     { name: 'Guardian Protection', href: '/guardian-protection', icon: ShieldCheckIcon, badge: 'STERCS™', badgeColor: 'bg-red-100 text-red-950 border border-red-400 font-bold font-bold' },
     { name: 'Flamingo Luxury', href: '/flamingo', icon: SparklesIcon, badge: '19+ Store', badgeColor: 'bg-purple-100 text-purple-950 border border-purple-400 font-bold' },
     { name: 'Lush-Pressies', href: '/lush-pressies', icon: HeartIcon, badge: 'VIP Bonds', badgeColor: 'bg-pink-100 text-pink-800 font-bold' },
@@ -166,12 +166,12 @@ export function ProtocolLushDrawer({
         {/* Currency & Streak Stats */}
         <div className="grid grid-cols-2 gap-2 pt-1">
           <div className="bg-[#F5F9F6] border border-emerald-100 rounded-xl p-2.5 text-center">
-            <div className="text-base font-extrabold text-emerald-800 flex items-center justify-center gap-1">
-              <span>🪙</span>
+            <div className="text-base font-extrabold text-emerald-800 flex items-center justify-center gap-1.5">
+              <img src="/assets/logos/fic_logo.png" alt="Infinite Coin" className="w-4 h-4 object-contain inline-block shrink-0" />
               {ficBalance.toLocaleString()}
             </div>
             <div className="text-[10px] text-slate-700 font-bold uppercase tracking-wider mt-0.5 font-medium">
-              FIC Coins
+              Infinite Coins
             </div>
           </div>
 

@@ -411,9 +411,13 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
                     to="/wallet"
                     onClick={() => !isDesktopSidebar && onClose()}
                     className="p-2 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-amber-500/50 flex items-center gap-2 transition-all cursor-pointer group/fic"
-                    title="View Live FIC Wallet & Sovereign Vault"
+                    title="View Live Infinite Coin Wallet & Sovereign Vault"
                   >
-                    <span className="text-base group-hover/fic:scale-110 transition-transform">🪙</span>
+                    <img
+                      src="/assets/logos/fic_logo.png"
+                      alt="Infinite Coin"
+                      className="w-5 h-5 object-contain group-hover/fic:scale-110 transition-transform shrink-0"
+                    />
                     <div>
                       <div className="text-[11px] font-black font-mono text-amber-300 group-hover/fic:text-amber-200">
                         {ficBalance?.toLocaleString() ?? '0'} FIC
