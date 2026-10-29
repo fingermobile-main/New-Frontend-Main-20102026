@@ -1,14 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Gift, Send, Sparkles, Home } from 'lucide-react';
-import { useAppContext } from '../contexts/AppContext';
 import { GiftIcon } from '../icons';
 import AdvancedGiftingEngine from '../components/gifting/AdvancedGiftingEngine';
 import MainLayout from '../components/layout/MainLayout';
 
 const AdvancedGiftingPage: React.FC = () => {
   const navigate = useNavigate();
-  const { ficBalance } = useAppContext();
 
   return (
     <MainLayout pageTitle="Advanced Gifting">
@@ -35,22 +33,6 @@ const AdvancedGiftingPage: React.FC = () => {
           </div>
 
           <div className="space-y-6">
-            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-6 border border-purple-200 shadow-xs">
-              <h2 className="text-base sm:text-lg font-black text-slate-900 mb-4 flex items-center">
-                <GiftIcon className="h-5 w-5 text-purple-600 mr-2" />
-                Your FIC Balance
-              </h2>
-              <div className="flex items-center justify-between">
-                <span className="text-2xl font-black text-slate-900 font-mono">{ficBalance.toFixed(2)} FIC</span>
-                <button
-                  onClick={() => navigate('/wallet')}
-                  className="min-h-[44px] inline-flex items-center text-sm bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 py-2 rounded-xl hover:from-purple-700 hover:to-pink-700 font-bold shadow-sm cursor-pointer"
-                >
-                  Add Funds
-                </button>
-              </div>
-            </div>
-
             <div className="bg-white rounded-2xl shadow-sm p-6 border border-slate-300">
               <h2 className="text-base sm:text-lg font-black text-slate-900 mb-4">Gifting Actions</h2>
               <div className="space-y-3">

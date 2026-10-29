@@ -17,7 +17,7 @@ interface FranchiseLocation {
 }
 
 const RbacManagementPage: React.FC = () => {
-  const { showToast, ficBalance } = useAppContext();
+  const { showToast } = useAppContext();
   const { data, loading, error, refreshData } = useRbacData();
 
   const [activeView, setActiveView] = useState('dashboard');
@@ -383,22 +383,6 @@ const RbacManagementPage: React.FC = () => {
           </div>
 
           <div className="space-y-6">
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100">
-              <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
-                <UserCircleIcon className="h-5 w-5 text-blue-600 mr-2" />
-                Admin FIC Balance
-              </h2>
-              <div className="flex items-center justify-between">
-                <span className="text-2xl font-bold text-gray-900">{ficBalance.toFixed(2)} FIC</span>
-                <Link
-                  to="/wallet"
-                  className="text-sm bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-3 py-1.5 rounded-lg hover:from-blue-700 hover:to-indigo-700 font-bold inline-block"
-                >
-                  Add Funds
-                </Link>
-              </div>
-            </div>
-
             <div className="bg-white rounded-2xl shadow-md p-6 border border-slate-300">
               <h2 className="text-lg font-bold text-gray-900 mb-4">RBAC Actions</h2>
               <div className="space-y-3">

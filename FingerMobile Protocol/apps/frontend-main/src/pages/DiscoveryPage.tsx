@@ -142,7 +142,7 @@ DiscoveryItemCard.displayName = 'DiscoveryItemCard';
 
 const DiscoveryPage: React.FC = () => {
   // eslint-disable-next-line no-unused-vars
-  const { ficBalance, openModal, showToast, handleAiAssist: _handleAiAssist } = useAppContext();
+  const { openModal, showToast, handleAiAssist: _handleAiAssist } = useAppContext();
   // eslint-disable-next-line no-unused-vars
   // eslint-disable-next-line no-unused-vars
   // eslint-disable-next-line no-unused-vars
@@ -351,25 +351,6 @@ const DiscoveryPage: React.FC = () => {
                 Discover More
               </h2>
               <CuratedDiscovery />
-            </div>
-
-            {/* FIC Balance Card */}
-            <div className="bg-gradient-to-r from-purple-700 to-indigo-600 rounded-xl p-6 text-white shadow-md border border-purple-800">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-lg font-bold">Your FIC Balance</h3>
-                  <p className="text-3xl font-black mt-1">
-                    {ficBalance.toFixed(2)} FIC
-                  </p>
-                </div>
-                <ShareIcon className="h-12 w-12 opacity-80" />
-              </div>
-              <button
-                onClick={() => openModal('gift', {})}
-                className="mt-4 w-full bg-white text-purple-700 font-bold py-2.5 rounded-lg hover:bg-slate-100 transition-colors shadow-sm"
-              >
-                Share with Community
-              </button>
             </div>
           </div>
         </div>

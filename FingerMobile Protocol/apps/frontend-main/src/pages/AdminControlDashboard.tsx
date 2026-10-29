@@ -31,7 +31,7 @@ import {
 
 const AdminControlDashboard: React.FC = () => {
   const { user } = useAuth();
-  const { showToast, ficBalance } = useAppContext();
+  const { showToast } = useAppContext();
   const [actions, setActions] = useState<AdminActionItem[]>([]);
   const [members, setMembers] = useState<AdminMemberItem[]>([]);
   const [auditLogs, setAuditLogItems] = useState<AuditLogItem[]>([]);
@@ -560,22 +560,6 @@ const AdminControlDashboard: React.FC = () => {
           </div>
 
           <div className="space-y-6">
-            <div className="bg-gradient-to-br from-red-50 to-orange-50 rounded-2xl p-6 border border-red-100">
-              <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
-                <UserCircleIcon className="h-5 w-5 text-red-600 mr-2" />
-                Admin FIC Balance
-              </h2>
-              <div className="flex items-center justify-between">
-                <span className="text-2xl font-bold text-gray-900">{ficBalance?.toFixed(2) ?? '0.00'} FIC</span>
-                <Link
-                  to="/wallet"
-                  className="text-sm bg-gradient-to-r from-red-600 to-orange-600 text-white px-3 py-1.5 rounded-lg hover:from-red-700 hover:to-orange-700 shadow-sm"
-                >
-                  Add Funds
-                </Link>
-              </div>
-            </div>
-
             <div className="bg-white rounded-2xl shadow-md p-6 border border-slate-300">
               <h2 className="text-lg font-bold text-gray-900 mb-4">Admin Actions</h2>
               <div className="space-y-3">

@@ -8,7 +8,7 @@ import MainLayout from '../components/layout/MainLayout';
 
 const AdvancedAnalyticsPage: React.FC = () => {
   const navigate = useNavigate();
-  const { ficBalance, showToast } = useAppContext();
+  const { showToast } = useAppContext();
 
   return (
     <MainLayout pageTitle="Advanced Analytics">
@@ -35,22 +35,6 @@ const AdvancedAnalyticsPage: React.FC = () => {
           </div>
 
           <div className="space-y-6">
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-200 shadow-xs">
-              <h2 className="text-base sm:text-lg font-black text-slate-900 mb-4 flex items-center">
-                <ChartBarIcon className="h-5 w-5 text-blue-600 mr-2" />
-                Your FIC Balance
-              </h2>
-              <div className="flex items-center justify-between">
-                <span className="text-2xl font-black text-slate-900 font-mono">{ficBalance.toFixed(2)} FIC</span>
-                <Link
-                  to="/wallet"
-                  className="min-h-[44px] inline-flex items-center text-sm font-bold bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl shadow-sm"
-                >
-                  Add Funds
-                </Link>
-              </div>
-            </div>
-
             <div className="bg-white rounded-2xl shadow-sm p-6 border border-slate-300">
               <h2 className="text-base sm:text-lg font-black text-slate-900 mb-4">Analytics Actions</h2>
               <div className="space-y-3">

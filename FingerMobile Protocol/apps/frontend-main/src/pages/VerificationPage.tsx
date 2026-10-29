@@ -272,26 +272,6 @@ const VerificationPage: React.FC = () => {
             </div>
           </div>
         </div>
-
-        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-300 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <div className="flex items-center">
-            <div className="bg-blue-50 border border-blue-200 p-3 rounded-2xl mr-4 text-blue-700">
-              <UserCircleIcon className="h-7 w-7" />
-            </div>
-            <div>
-              <h3 className="font-bold text-slate-900 text-base">Your FIC Balance</h3>
-              <p className="text-2xl font-black text-slate-900 mt-0.5">{ficBalance.toFixed(2)} <span className="text-xs font-bold text-slate-600">FIC</span></p>
-            </div>
-          </div>
-          <div>
-            <Link
-              to="/fic/funding"
-              className="inline-flex items-center px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-xl shadow-md transition-colors cursor-pointer"
-            >
-              Add Funds
-            </Link>
-          </div>
-        </div>
       </div>
 
       {/* SOVEREIGN MOBILE QUICK DOCK */}

@@ -10,7 +10,7 @@ import { guardianSearchIndexer, SearchBenchmarkResult } from '../services/Guardi
 
 const DatabaseIntegrationDashboard: React.FC = () => {
   const navigate = useNavigate();
-  const { ficBalance, showToast } = useAppContext();
+  const { showToast } = useAppContext();
   const [dbSearchQuery, setDbSearchQuery] = useState('');
   const [selectedClusterFilter, setSelectedClusterFilter] = useState<string>('all');
 
@@ -297,28 +297,6 @@ const DatabaseIntegrationDashboard: React.FC = () => {
           </div>
 
           <div className="space-y-6">
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-200 shadow-sm">
-              <h2 className="text-lg font-black text-slate-900 mb-4 flex items-center">
-                <UserCircleIcon className="h-5 w-5 text-blue-600 mr-2" />
-                Admin FIC Balance
-              </h2>
-              <div className="flex items-center justify-between">
-                <span className="text-2xl font-black text-slate-900">{ficBalance.toFixed(2)} FIC</span>
-                <button
-                  onClick={() => {
-                    showToast('Navigating to Treasury & Liquidity console...', 'info');
-                    navigate('/dashboard/finance');
-                  }}
-                  className="text-xs font-bold bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-3.5 py-2 rounded-lg hover:from-blue-700 hover:to-indigo-700 shadow-sm cursor-pointer transition-transform active:scale-95"
-                >
-                  Manage Treasury
-                </button>
-              </div>
-              <p className="text-[11px] text-slate-700 font-bold mt-2 font-mono">
-                Parity: 1 FIC = ₦100.00 NGN (Collateralized)
-              </p>
-            </div>
-
             <div className="bg-white rounded-2xl shadow-md p-6 border border-slate-300">
               <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
                 <DbIcon className="w-5 h-5 text-indigo-600" />

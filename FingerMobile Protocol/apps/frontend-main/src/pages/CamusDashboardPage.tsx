@@ -69,7 +69,7 @@ interface NavOption {
 
 const CamusDashboardPage: React.FC = () => {
   const { member } = useAuth();
-  const { ficBalance, showToast } = useAppContext();
+  const { showToast } = useAppContext();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -325,25 +325,6 @@ const CamusDashboardPage: React.FC = () => {
                 })}
               </div>
             </nav>
-
-            {/* FIC Balance Card */}
-            <div className="bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-950/40 dark:to-indigo-950/40 rounded-3xl p-6 border border-purple-100 dark:border-purple-900/60 shadow-xs">
-              <h2 className="text-xs font-bold text-gray-700 dark:text-gray-300 mb-2 flex items-center">
-                <MemberIcon className="h-4 w-4 text-purple-600 mr-2" />
-                Wallet FIC Balance
-              </h2>
-              <div className="flex items-center justify-between">
-                <span className="text-xl font-black font-mono text-gray-900 dark:text-white">
-                  {ficBalance.toFixed(2)} FIC
-                </span>
-                <button
-                  onClick={() => navigate('/wallet')}
-                  className="text-xs font-bold bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-xl transition"
-                >
-                  Add Funds
-                </button>
-              </div>
-            </div>
           </div>
 
           {/* Main Content Area */}

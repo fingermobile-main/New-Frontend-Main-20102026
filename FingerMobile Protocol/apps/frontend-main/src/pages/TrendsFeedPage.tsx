@@ -35,7 +35,7 @@ const TrendsFeedPage: React.FC<TrendsFeedPageProps> = ({
   showToast: propsShowToast = () => {}
 }) => {
   // eslint-disable-next-line no-unused-vars
-  const { openModal, showToast: contextShowToast, ficBalance } = useAppContext();
+  const { openModal, showToast: contextShowToast } = useAppContext();
   const showToast = contextShowToast || propsShowToast;
   const [posts, setLocalPosts] = useState<PostType[]>(propsPosts);
 
@@ -110,22 +110,6 @@ const TrendsFeedPage: React.FC<TrendsFeedPageProps> = ({
           </div>
 
           <div className="space-y-6">
-            <div className="bg-gradient-to-br from-orange-50 to-amber-50 rounded-2xl p-6 border border-orange-100">
-              <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
-                <UserCircleIcon className="h-5 w-5 text-orange-600 mr-2" />
-                Your FIC Balance
-              </h2>
-              <div className="flex items-center justify-between">
-                <span className="text-2xl font-bold text-gray-900">{ficBalance.toFixed(2)} FIC</span>
-                <Link
-                  to="/wallet"
-                  className="text-sm bg-gradient-to-r from-orange-500 to-amber-600 text-white px-3 py-1.5 rounded-lg hover:from-orange-600 hover:to-amber-700 shadow-sm"
-                >
-                  Add Funds
-                </Link>
-              </div>
-            </div>
-
             <div className="bg-white rounded-2xl shadow-md p-6 border border-slate-300">
               <h2 className="text-lg font-bold text-gray-900 mb-4">Trending Actions</h2>
               <div className="space-y-3">

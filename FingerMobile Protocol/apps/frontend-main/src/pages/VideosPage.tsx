@@ -447,22 +447,6 @@ const VideosPage: React.FC = () => {
           </div>
 
           <div className="space-y-6">
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-5 sm:p-6 border border-blue-200 shadow-sm">
-              <h2 className="text-base sm:text-lg font-black text-slate-900 mb-3 flex items-center">
-                <UserCircleIcon className="h-5 w-5 text-blue-700 mr-2" />
-                Your FIC Balance
-              </h2>
-              <div className="flex items-center justify-between gap-3">
-                <span className="text-2xl sm:text-3xl font-black text-slate-900">{ficBalance.toFixed(2)} FIC</span>
-                <Link
-                  to="/wallet"
-                  className="min-h-[44px] inline-flex items-center justify-center text-xs sm:text-sm font-bold bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700 shadow-sm transition-all active:scale-95"
-                >
-                  Add Funds
-                </Link>
-              </div>
-            </div>
-
             <div className="bg-white rounded-2xl shadow-sm p-5 sm:p-6 border border-slate-300">
               <h2 className="text-base sm:text-lg font-black text-slate-900 mb-4">Trending Categories</h2>
               <div className="space-y-2">

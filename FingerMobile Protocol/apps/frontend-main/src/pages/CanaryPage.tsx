@@ -35,7 +35,7 @@ const mapToPost = (item: CanaryAnnouncement | any): Post => ({
 const CanaryPage: React.FC = () => {
   // eslint-disable-next-line no-unused-vars
   const { balance } = useWeb3();
-  const { ficBalance, openModal, showToast } = useAppContext();
+  const { openModal, showToast } = useAppContext();
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('active');
   const [canaryPosts, setCanaryPosts] = useState<Post[]>([]);
@@ -446,24 +446,6 @@ const CanaryPage: React.FC = () => {
 
           {/* Right Sidebar */}
           <div className="lg:col-span-3 space-y-6">
-            <div className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl p-6 border border-amber-100">
-              <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
-                <UserCircleIcon className="h-5 w-5 text-amber-600 mr-2" />
-                Your FIC Balance
-              </h2>
-              <div className="flex items-center justify-between">
-                <span className="text-2xl font-bold text-gray-900">{ficBalance.toFixed(2)} FIC</span>
-                <button
-                  type="button"
-                  aria-label="Add FIC funds"
-                  onClick={() => window.location.assign('/wallet/topup')}
-                  className="text-sm bg-gradient-to-r from-amber-500 to-yellow-600 text-white px-3 py-1.5 rounded-lg hover:from-amber-600 hover:to-yellow-700"
-                >
-                  Add Funds
-                </button>
-              </div>
-            </div>
-
             {/* System Status */}
             <div className="bg-white shadow-lg rounded-2xl p-6 border border-slate-300">
               <div className="flex items-center gap-2 mb-4">
