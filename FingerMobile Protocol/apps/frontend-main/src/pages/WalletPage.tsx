@@ -2505,6 +2505,10 @@ const WalletPage: React.FC = () => {
                 data={walletAddress || '0xDEF482a876123987A21098B65321'}
                 size={180}
                 showActions={true}
+                purpose="wallet"
+                centerLogoType="infinite-coin"
+                tier="tier2-transaction"
+                label="FIC Wallet Address"
               />
             </div>
             <div className="flex gap-3 pt-3">

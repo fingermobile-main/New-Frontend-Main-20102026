@@ -571,6 +571,10 @@ const PaylinksPage: React.FC = () => {
                   data={showQrModal.url}
                   size={180}
                   showActions={false}
+                  purpose="payment"
+                  centerLogoType="infinite-coin"
+                  tier="tier2-transaction"
+                  label={`Pay ${showQrModal.amount || ''} ${showQrModal.currency || 'INC'}`}
                 />
               </div>
 

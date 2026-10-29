@@ -129,7 +129,11 @@ const GiftCardQRModal: React.FC<GiftCardQRModalProps> = ({
                   <QRCodeDisplay
                     data={giftCardData?.code || mockGiftCard.code}
                     size={200}
-                    showActions={false}
+                    showActions={true}
+                    purpose="giftcard"
+                    centerLogoType="infinite-coin"
+                    tier="tier2-transaction"
+                    label="Infinite Coin Gift Card"
                   />
                 </div>
               )}

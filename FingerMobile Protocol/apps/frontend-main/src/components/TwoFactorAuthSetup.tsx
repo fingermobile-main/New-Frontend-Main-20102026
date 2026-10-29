@@ -206,6 +206,10 @@ const TwoFactorAuthSetup: React.FC<TwoFactorAuthSetupProps> = ({
                   data={`otpauth://totp/FingerMobile:${encodeURIComponent(userId || 'member')}?secret=${secretKey}&issuer=FingerMobile`}
                   size={200}
                   showActions={false}
+                  purpose="security"
+                  centerLogoType="fingermobile"
+                  tier="tier1-profile"
+                  label="FingerMobile 2FA Authenticator"
                 />
               </div>
 

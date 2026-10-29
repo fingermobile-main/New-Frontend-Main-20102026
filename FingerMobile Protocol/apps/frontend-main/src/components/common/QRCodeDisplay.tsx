@@ -6,7 +6,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Copy, Check, Download, RefreshCw, QrCode, Share2 } from 'lucide-react';
 import { generateQrDataUrl, downloadQrCode, getGoQrUrl } from '../../utils/qrCodeGenerator';
-import { downloadQRCode, QRCodeOptions, QRTier } from '../../services/qrService';
+import { downloadQRCode, QRCodeOptions, QRTier, QRLogoType, QRPurpose } from '../../services/qrService';
 
 export interface QRCodeDisplayProps {
   data: string;
@@ -17,8 +17,12 @@ export interface QRCodeDisplayProps {
   subtitle?: string;
   /** Legacy: show copy + download action buttons */
   showActions?: boolean;
-  /** Legacy: show FingerMobile brand emblem in center */
+  /** Show brand / token emblem in center (default true) */
   centerLogo?: boolean;
+  /** Specific emblem type: 'fingermobile' | 'infinite-coin' | 'auto' | 'none' (default 'auto') */
+  centerLogoType?: QRLogoType;
+  /** Semantic purpose of QR: 'wallet' | 'payment' | 'transaction' | 'giftcard' | 'profile' | 'onboarding' | 'content' | 'general' | 'security' */
+  purpose?: QRPurpose;
   className?: string;
   // ── New tier-aware props ──────────────────────────────────────────────────
   /** Short label beneath the QR image (replaces title for new call-sites) */
@@ -54,6 +58,8 @@ export const QRCodeDisplay: React.FC<QRCodeDisplayProps> = ({
   subtitle,
   showActions = true,
   centerLogo = true,
+  centerLogoType = 'auto',
+  purpose,
   className = '',
   label,
   tier,
@@ -72,6 +78,42 @@ export const QRCodeDisplay: React.FC<QRCodeDisplayProps> = ({
   const effectiveShowDownload = isNewApi ? (showDownload ?? true) : showActions;
   const effectiveShowShare    = isNewApi ? (showShare    ?? true) : false;
   const effectiveCopyAction   = isNewApi ? false : showActions;
+
+  // Determine effective center emblem: Infinite Coin (wallets, financial) vs FingerMobile Logo (profiles, content, generic)
+  const resolveEffectiveLogoType = useCallback((): 'infinite-coin' | 'fingermobile' | 'none' => {
+    if (centerLogo === false || centerLogoType === 'none') {
+      return 'none';
+    }
+    if (centerLogoType === 'infinite-coin') {
+      return 'infinite-coin';
+    }
+    if (centerLogoType === 'fingermobile') {
+      return 'fingermobile';
+    }
+
+    // Auto-detection based on semantic cues, tier, purpose, or data payload
+    const isFinancialOrWallet =
+      tier === 'tier2-transaction' ||
+      purpose === 'wallet' ||
+      purpose === 'payment' ||
+      purpose === 'transaction' ||
+      purpose === 'giftcard' ||
+      options?.tier === 'tier2-transaction' ||
+      options?.purpose === 'wallet' ||
+      options?.purpose === 'payment' ||
+      options?.purpose === 'transaction' ||
+      options?.purpose === 'giftcard' ||
+      options?.logoType === 'infinite-coin' ||
+      /fmp-payment|wallet|0x[a-fA-F0-9]{20,}|GIFT-|giftcard|INC|FIC|paylink|receive|currency.*INC/i.test(data) ||
+      /wallet|payment|pay\b|gift|transaction|infinite coin|fic\b|receive|balance|escrow|token|deposit|withdraw/i.test(
+        `${title || ''} ${subtitle || ''} ${label || ''}`
+      );
+
+    return isFinancialOrWallet ? 'infinite-coin' : 'fingermobile';
+  }, [centerLogo, centerLogoType, tier, purpose, options, data, title, subtitle, label]);
+
+  const effectiveLogoType = resolveEffectiveLogoType();
+  const emblemSize = Math.max(34, Math.min(52, Math.round(size * 0.22)));
 
   const loadQr = useCallback(async () => {
     if (!data) {
@@ -105,18 +147,31 @@ export const QRCodeDisplay: React.FC<QRCodeDisplayProps> = ({
   };
 
   const handleDownload = useCallback(async () => {
+    const effectiveOptions: QRCodeOptions = {
+      ...options,
+      tier,
+      purpose,
+      logoType: effectiveLogoType,
+    };
+
     if (label || tier) {
       // New API — use qrService for clean filename + options
       const filename = label
         ? label.replace(/\s+/g, '-').toLowerCase()
         : `fingermobile-${tier ?? 'qr'}`;
-      await downloadQRCode(data, filename, options);
+      await downloadQRCode(data, filename, effectiveOptions);
     } else {
-      // Legacy path
-      if (!qrSrc) return;
-      downloadQrCode(qrSrc, `fingermobile-qr-${Date.now()}.png`);
+      // Legacy path with logo composite
+      try {
+        const { createQrWithLogoDataUrl, downloadQrCode } = await import('../../utils/qrCodeGenerator');
+        const compositeUrl = await createQrWithLogoDataUrl(qrSrc, effectiveLogoType, Math.max(360, size * 2));
+        await downloadQrCode(compositeUrl, `fingermobile-qr-${Date.now()}.png`);
+      } catch {
+        if (!qrSrc) return;
+        downloadQrCode(qrSrc, `fingermobile-qr-${Date.now()}.png`);
+      }
     }
-  }, [data, label, tier, options, qrSrc]);
+  }, [data, label, tier, purpose, effectiveLogoType, options, qrSrc, size]);
 
   const handleShare = useCallback(async () => {
     if (navigator.share) {
@@ -175,15 +230,36 @@ export const QRCodeDisplay: React.FC<QRCodeDisplayProps> = ({
               }}
             />
 
-            {/* FingerMobile Brand Emblem (legacy centerLogo) */}
-            {centerLogo && !tier && (
+            {/* Brand / Token Center Emblem (FingerMobile Logo or Infinite Coin) */}
+            {effectiveLogoType !== 'none' && (
               <div
                 aria-hidden="true"
-                className="absolute inset-0 m-auto w-10 h-10 rounded-full bg-white shadow-md border-2 border-slate-900 flex items-center justify-center pointer-events-none"
+                style={{ width: emblemSize, height: emblemSize }}
+                className={`absolute inset-0 m-auto rounded-full bg-white shadow-md flex items-center justify-center pointer-events-none p-1 border-2 ${
+                  effectiveLogoType === 'infinite-coin'
+                    ? 'border-amber-500 ring-2 ring-amber-400/40'
+                    : 'border-orange-500 ring-2 ring-orange-400/40'
+                }`}
               >
-                <div className="w-7 h-7 rounded-full bg-slate-900 flex items-center justify-center text-white text-[11px] font-black">
-                  FM
-                </div>
+                {effectiveLogoType === 'infinite-coin' ? (
+                  <img
+                    src="/assets/logos/infinite_coin_icon.png"
+                    alt="Infinite Coin Logo"
+                    className="w-full h-full object-contain rounded-full select-none"
+                    onError={(e) => {
+                      (e.currentTarget as HTMLImageElement).src = '/assets/logos/infinite_coin_medallion.webp';
+                    }}
+                  />
+                ) : (
+                  <img
+                    src="/assets/branding/fingermobile/logo-orange.webp"
+                    alt="FingerMobile Logo"
+                    className="w-full h-full object-contain select-none"
+                    onError={(e) => {
+                      (e.currentTarget as HTMLImageElement).src = '/assets/logos/fingermobile_logo.webp';
+                    }}
+                  />
+                )}
               </div>
             )}
           </div>

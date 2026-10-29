@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 import QRCodeDisplay from './common/QRCodeDisplay';
+import { downloadQRCode, QRLogoType, QRPurpose, QRTier, QRSize } from '../services/qrService';
+
 interface QRCodeModalProps {
   isOpen: boolean;
   onClose: () => void;
   data?: string;
   title?: string;
   size?: number;
+  logoType?: QRLogoType;
+  purpose?: QRPurpose;
+  tier?: QRTier;
 }
 
 const QRCodeModal: React.FC<QRCodeModalProps> = ({
@@ -13,7 +18,10 @@ const QRCodeModal: React.FC<QRCodeModalProps> = ({
   onClose,
   data = '',
   title = 'QR Code',
-  size = 256
+  size = 256,
+  logoType,
+  purpose,
+  tier,
 }) => {
   const [downloadFormat, setDownloadFormat] = useState<'png' | 'svg'>('png');
   const [copied, setCopied] = useState(false);
@@ -25,6 +33,18 @@ const QRCodeModal: React.FC<QRCodeModalProps> = ({
 
   const handleDownload = async () => {
     try {
+      if (downloadFormat === 'png') {
+        const filename = (title || 'qr-code').replace(/\s+/g, '-').toLowerCase();
+        await downloadQRCode(data, filename, {
+          size: `${size}x${size}` as QRSize,
+          format: 'png',
+          logoType,
+          purpose,
+          tier,
+        });
+        return;
+      }
+
       const response = await fetch(qrCodeUrl);
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
@@ -80,6 +100,9 @@ const QRCodeModal: React.FC<QRCodeModalProps> = ({
                 data={data}
                 size={size}
                 showActions={false}
+                centerLogoType={logoType}
+                purpose={purpose}
+                tier={tier}
               />
             </div>
 

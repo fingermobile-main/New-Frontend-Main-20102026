@@ -7,6 +7,8 @@
 export type QRTier = 'tier1-profile' | 'tier2-content' | 'tier2-transaction' | 'tier2-onboarding';
 export type QRSize = '150x150' | '200x200' | '250x250' | '300x300' | '400x400' | '500x500';
 export type QRFormat = 'png' | 'svg' | 'eps' | 'pdf';
+export type QRLogoType = 'fingermobile' | 'infinite-coin' | 'auto' | 'none';
+export type QRPurpose = 'wallet' | 'payment' | 'transaction' | 'giftcard' | 'profile' | 'onboarding' | 'content' | 'general' | 'security';
 
 export interface QRCodeOptions {
   size?: QRSize;
@@ -14,6 +16,8 @@ export interface QRCodeOptions {
   bgcolor?: string;      // hex without #, e.g. 'ffffff'
   format?: QRFormat;
   tier?: QRTier;
+  purpose?: QRPurpose;
+  logoType?: QRLogoType;
   errorCorrectionLevel?: 'L' | 'M' | 'Q' | 'H';
   margin?: number;
 }
@@ -59,8 +63,10 @@ export function generateMemberProfileQR(memberId: string, username: string, opti
     color: '0f172a',
     bgcolor: 'ffffff',
     errorCorrectionLevel: 'H',
-    ...options,
     tier: 'tier1-profile',
+    purpose: 'profile',
+    logoType: 'fingermobile',
+    ...options,
   });
 }
 
@@ -74,8 +80,10 @@ export function generateOnboardingQR(referralCode?: string, options?: QRCodeOpti
     color: '0f172a',
     bgcolor: 'f8fafc',
     errorCorrectionLevel: 'H',
-    ...options,
     tier: 'tier2-onboarding',
+    purpose: 'onboarding',
+    logoType: 'fingermobile',
+    ...options,
   });
 }
 
@@ -90,8 +98,10 @@ export function generateContentQR(contentType: string, contentId: string, option
     color: '065f46',
     bgcolor: 'ffffff',
     errorCorrectionLevel: 'M',
-    ...options,
     tier: 'tier2-content',
+    purpose: 'content',
+    logoType: 'fingermobile',
+    ...options,
   });
 }
 
@@ -117,16 +127,44 @@ export function generatePaymentQR(
     color: '92400e',
     bgcolor: 'fffbeb',
     errorCorrectionLevel: 'H',
-    ...options,
     tier: 'tier2-transaction',
+    purpose: 'payment',
+    logoType: 'infinite-coin',
+    ...options,
   });
 }
 
 /**
- * Download a QR code image programmatically
+ * Download a QR code image programmatically with embedded center emblem
  */
 export async function downloadQRCode(data: string, filename: string, options?: QRCodeOptions): Promise<void> {
   const url = generateQRUrl(data, { ...options, format: 'png' });
+  const requestedLogo = options?.logoType;
+  const resolvedLogo: 'fingermobile' | 'infinite-coin' | 'none' =
+    requestedLogo === 'none'
+      ? 'none'
+      : requestedLogo === 'fingermobile' || requestedLogo === 'infinite-coin'
+      ? requestedLogo
+      : options?.tier === 'tier2-transaction' ||
+        options?.purpose === 'wallet' ||
+        options?.purpose === 'payment' ||
+        options?.purpose === 'transaction' ||
+        options?.purpose === 'giftcard' ||
+        /fmp-payment|wallet|0x[a-fA-F0-9]{20,}|gift|GIFT-|INC|FIC/i.test(data)
+      ? 'infinite-coin'
+      : 'fingermobile';
+
+  if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+    try {
+      const { createQrWithLogoDataUrl, downloadQrCode } = await import('../utils/qrCodeGenerator');
+      const compositeUrl = await createQrWithLogoDataUrl(url, resolvedLogo, 400);
+      await downloadQrCode(compositeUrl, `${filename}.png`);
+      return;
+    } catch {
+      // Fallback to direct raw download
+    }
+  }
+
   const response = await fetch(url);
   const blob = await response.blob();
   const blobUrl = URL.createObjectURL(blob);

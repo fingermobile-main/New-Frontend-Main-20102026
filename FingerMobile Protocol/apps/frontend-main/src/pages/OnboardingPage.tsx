@@ -1007,6 +1007,9 @@ const OnboardingPage: React.FC = () => {
                         size={180}
                         title="Scan with Authenticator"
                         subtitle="Compatible with Google Authenticator, Authy, 1Password & Microsoft Authenticator"
+                        purpose="security"
+                        centerLogoType="fingermobile"
+                        tier="tier1-profile"
                       />
                     </div>
                     
