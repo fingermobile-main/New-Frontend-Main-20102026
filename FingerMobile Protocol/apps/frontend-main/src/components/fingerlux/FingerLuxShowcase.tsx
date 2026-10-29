@@ -1,4 +1,6 @@
 import React, { useState, useMemo } from 'react';
+import { Camera } from 'lucide-react';
+import CommerceVisualSearchModal from '../commerce/CommerceVisualSearchModal';
 import type {
   FingerLuxService,
   StaffMember,
@@ -56,6 +58,7 @@ export const FingerLuxShowcase: React.FC<FingerLuxShowcaseProps> = ({
   const [selectedType, setSelectedType] = useState<'all' | ServiceType>('all');
   const [selectedDelivery, setSelectedDelivery] = useState<'all' | ServiceDelivery>('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [showVisualSearchModal, setShowVisualSearchModal] = useState<boolean>(false);
 
   // Booking Modal State
   const [bookingModalService, setBookingModalService] = useState<FingerLuxService | null>(null);
@@ -226,14 +229,24 @@ export const FingerLuxShowcase: React.FC<FingerLuxShowcaseProps> = ({
             <option value="online">Online Only (Zoom/Google Meet)</option>
           </select>
 
-          {/* Search Box */}
-          <input
-            type="text"
-            placeholder="Search offerings..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="bg-white border border-slate-300 text-xs font-bold text-slate-900 placeholder:text-slate-400 px-3 py-2 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none w-36 sm:w-48"
-          />
+          {/* Search Box & Visual Search */}
+          <div className="flex items-center gap-1.5">
+            <input
+              type="text"
+              placeholder="Search offerings..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="bg-white border border-slate-300 text-xs font-bold text-slate-900 placeholder:text-slate-400 px-3 py-2 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none w-32 sm:w-48"
+            />
+            <button
+              type="button"
+              onClick={() => setShowVisualSearchModal(true)}
+              className="p-2 rounded-xl bg-purple-100 hover:bg-purple-200 text-purple-950 border border-purple-300 transition shadow-2xs cursor-pointer"
+              title="Search luxury offerings by image"
+            >
+              <Camera className="w-4 h-4 text-purple-700" />
+            </button>
+          </div>
 
           {/* Add Service Button */}
           <button
@@ -865,6 +878,13 @@ export const FingerLuxShowcase: React.FC<FingerLuxShowcaseProps> = ({
           </div>
         </div>
       )}
+
+      {/* Sovereign Visual Commerce Search Modal */}
+      <CommerceVisualSearchModal
+        isOpen={showVisualSearchModal}
+        onClose={() => setShowVisualSearchModal(false)}
+        initialStore="fingerlux"
+      />
     </div>
   );
 };

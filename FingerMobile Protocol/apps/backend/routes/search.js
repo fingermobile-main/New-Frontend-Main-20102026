@@ -1,9 +1,47 @@
 const express = require('express');
 const router = express.Router();
+const path = require('path');
+const fs = require('fs');
+const multer = require('multer');
 const SearchService = require('../services/SearchService');
 const logger = require('../utils/logger');
 const search = require('../controllers/searchController.js');
-const { authenticate, requireAdmin } = require('../middleware/authenticate');
+const visualSearchController = require('../controllers/visualSearchController');
+const { authenticate, optionalAuthenticate, requireAdmin } = require('../middleware/authenticate');
+
+// Visual Image Search Multer Storage
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    const uploadDir = path.join(__dirname, '../uploads/images');
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+    cb(null, uploadDir);
+  },
+  filename: function (req, file, cb) {
+    const ext = path.extname(file.originalname).toLowerCase() || '.jpg';
+    cb(null, `${Date.now()}_visual_search_${Math.random().toString(36).substring(2, 9)}${ext}`);
+  }
+});
+const upload = multer({
+  storage,
+  limits: { fileSize: 25 * 1024 * 1024 }
+});
+
+// POST /api/search/image - Multimodal commerce visual image search
+router.post('/image', optionalAuthenticate, upload.single('image'), (req, res) => {
+  return visualSearchController.searchByImage(req, res);
+});
+
+// POST /api/search/visual - Visual commerce search alias
+router.post('/visual', optionalAuthenticate, upload.single('image'), (req, res) => {
+  return visualSearchController.searchByImage(req, res);
+});
+
+// GET /api/search/visual/recommendations - Visual recommendations
+router.get('/visual/recommendations', optionalAuthenticate, (req, res) => {
+  return visualSearchController.getVisualSearchRecommendations(req, res);
+});
 
 // GET /api/search - Full-text search with Elasticsearch
 router.get('/', async (req, res) => {

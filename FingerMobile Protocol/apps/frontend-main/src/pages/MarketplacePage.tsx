@@ -12,10 +12,12 @@ import apiService from '../services/apiService';
 import { useAuth } from '../contexts/AuthContext';
 import { useAppContext } from '../contexts/AppContext';
 import SocialEmbedModal from '../components/commerce/SocialEmbedModal';
+import CommerceVisualSearchModal from '../components/commerce/CommerceVisualSearchModal';
 import {
   Sparkles,
   ShieldCheck,
   Search,
+  Camera,
   Filter,
   CreditCard,
   ShoppingBag,
@@ -93,6 +95,7 @@ const MarketplacePage: React.FC = () => {
   const [aiSearchAssistActive, setAiSearchAssistActive] = useState<boolean>(false);
 
   // Modals & Drawers
+  const [showVisualSearchModal, setShowVisualSearchModal] = useState<boolean>(false);
   const [checkoutProduct, setCheckoutProduct] = useState<FlagshipProduct | null>(null);
   const [selectedPaymentRail, setSelectedPaymentRail] = useState<'fic' | 'earnings' | 'card'>('fic');
   const [isProcessingOrder, setIsProcessingOrder] = useState<boolean>(false);
@@ -376,7 +379,7 @@ const MarketplacePage: React.FC = () => {
           {/* Universal AI Search Engine Tool Bar */}
           <div className="p-3.5 sm:p-5 rounded-2xl bg-slate-900/90 border border-slate-800 backdrop-blur-md mb-6 sm:mb-8 shadow-xl">
             <div className="flex flex-col md:flex-row gap-3 sm:gap-4 items-stretch md:items-center justify-between">
-              {/* Search input with AI chip */}
+              {/* Search input with AI & Visual Search chips */}
               <div className="relative w-full md:w-1/2">
                 <Search className="absolute left-3.5 top-3.5 w-4 h-4 sm:w-5 sm:h-5 text-slate-300" />
                 <input
@@ -384,19 +387,30 @@ const MarketplacePage: React.FC = () => {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search Flagship hardware, SKU, specs..."
-                  className="w-full min-h-[44px] pl-10 sm:pl-12 pr-24 sm:pr-28 py-2.5 sm:py-3 bg-slate-950 border border-slate-800 rounded-xl text-xs sm:text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-emerald-500 transition-colors"
+                  className="w-full min-h-[44px] pl-10 sm:pl-12 pr-44 sm:pr-48 py-2.5 sm:py-3 bg-slate-950 border border-slate-800 rounded-xl text-xs sm:text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-emerald-500 transition-colors"
                 />
-                <button
-                  type="button"
-                  onClick={() => setAiSearchAssistActive(!aiSearchAssistActive)}
-                  className={`absolute right-1.5 top-1.5 min-h-[36px] px-2.5 sm:px-3 py-1 rounded-lg text-[11px] sm:text-xs font-bold flex items-center gap-1 transition-all ${
-                    aiSearchAssistActive
-                      ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/30'
-                      : 'bg-slate-800 text-emerald-400 hover:bg-slate-700'
-                  }`}
-                >
-                  <Sparkles className="w-3.5 h-3.5" /> AI Match
-                </button>
+                <div className="absolute right-1.5 top-1.5 flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => setShowVisualSearchModal(true)}
+                    className="min-h-[36px] px-2.5 sm:px-3 py-1 rounded-lg text-[11px] sm:text-xs font-bold flex items-center gap-1.5 bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-emerald-500/30 transition shadow-2xs cursor-pointer"
+                    title="Search by image or photo"
+                  >
+                    <Camera className="w-3.5 h-3.5 text-emerald-400" />
+                    <span className="hidden sm:inline">Image</span> Search
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setAiSearchAssistActive(!aiSearchAssistActive)}
+                    className={`min-h-[36px] px-2.5 sm:px-3 py-1 rounded-lg text-[11px] sm:text-xs font-bold flex items-center gap-1 transition-all ${
+                      aiSearchAssistActive
+                        ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/30'
+                        : 'bg-slate-800 text-emerald-400 hover:bg-slate-700'
+                    }`}
+                  >
+                    <Sparkles className="w-3.5 h-3.5" /> AI Match
+                  </button>
+                </div>
               </div>
 
               {/* Filters & Sorting */}
@@ -934,6 +948,13 @@ const MarketplacePage: React.FC = () => {
             }}
           />
         )}
+
+        {/* Visual Commerce Search Modal */}
+        <CommerceVisualSearchModal
+          isOpen={showVisualSearchModal}
+          onClose={() => setShowVisualSearchModal(false)}
+          initialStore="marketplace"
+        />
 
         {/* Sovereign Mobile Navigation Quick Dock */}
         <div className="fixed bottom-3 inset-x-3 z-40 md:hidden bg-slate-900/95 backdrop-blur-xl border border-emerald-500/30 rounded-2xl p-1.5 shadow-2xl shadow-black/80 grid grid-cols-4 gap-1">

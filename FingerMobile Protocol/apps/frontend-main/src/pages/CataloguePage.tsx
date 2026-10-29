@@ -26,6 +26,8 @@ import {
   CubeIcon,
   HeartIcon
 } from '../icons';
+import { Camera } from 'lucide-react';
+import CommerceVisualSearchModal from '../components/commerce/CommerceVisualSearchModal';
 
 export interface CatalogueAsset {
   id: string;
@@ -224,6 +226,7 @@ const CataloguePage: React.FC = () => {
   const [selectedLicense, setSelectedLicense] = useState<string>('all');
   const [sortBy, setSortBy] = useState<'featured' | 'price_low' | 'price_high' | 'downloads' | 'rating'>('featured');
   const [favorites, setFavorites] = useState<string[]>([]);
+  const [showVisualSearchModal, setShowVisualSearchModal] = useState(false);
 
   // Modals & Interaction State
   const [selectedAsset, setSelectedAsset] = useState<CatalogueAsset | null>(null);
@@ -352,15 +355,24 @@ const CataloguePage: React.FC = () => {
           <div className="bg-white rounded-2xl shadow-xl border border-slate-300/80 p-5 space-y-4">
             {/* Search Input and Sort Selector */}
             <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-              <div className="relative w-full md:w-96">
-                <MagnifyingGlassIcon className="w-5 h-5 text-slate-600 absolute left-3.5 top-3.5" />
+              <div className="relative w-full md:w-[420px] flex items-center">
+                <MagnifyingGlassIcon className="w-5 h-5 text-slate-600 absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
                   placeholder="Search by title, creator, stem, tags..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full min-h-[44px] pl-10 pr-4 py-2 bg-white border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:bg-white transition-all text-slate-900 font-bold placeholder:text-slate-500 shadow-xs"
+                  className="w-full min-h-[44px] pl-10 pr-32 py-2 bg-white border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:bg-white transition-all text-slate-900 font-bold placeholder:text-slate-500 shadow-xs"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowVisualSearchModal(true)}
+                  className="absolute right-2 px-2.5 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-bold flex items-center gap-1.5 transition shrink-0 cursor-pointer shadow-2xs"
+                  title="Visual image search across universal merchandise and catalog"
+                >
+                  <Camera className="w-3.5 h-3.5 text-emerald-600" />
+                  <span>Image Search</span>
+                </button>
               </div>
 
               <div className="flex items-center gap-3 w-full md:w-auto justify-end">
@@ -853,6 +865,11 @@ const CataloguePage: React.FC = () => {
             <span>Featured</span>
           </button>
         </nav>
+        <CommerceVisualSearchModal
+          isOpen={showVisualSearchModal}
+          onClose={() => setShowVisualSearchModal(false)}
+          initialStore="all"
+        />
       </div>
     </MainLayout>
   );

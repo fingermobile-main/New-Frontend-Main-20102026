@@ -543,3 +543,4 @@ class VisualSearchCommerceService {
 }
 
 module.exports = new VisualSearchCommerceService();
+

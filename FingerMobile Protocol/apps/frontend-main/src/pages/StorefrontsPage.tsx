@@ -17,8 +17,10 @@ import {
   TrendingUp,
   Zap,
   ShoppingBag,
-  Clock
+  Clock,
+  Camera
 } from 'lucide-react';
+import CommerceVisualSearchModal from '../components/commerce/CommerceVisualSearchModal';
 import apiService from '../services/apiService';
 import { CURATED_STOREFRONTS } from '../data/curatedStorefrontData';
 
@@ -95,6 +97,7 @@ const StorefrontsPage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedTier, setSelectedTier] = useState('All');
   const [sortBy, setSortBy] = useState('popular');
+  const [showVisualSearchModal, setShowVisualSearchModal] = useState(false);
 
   // Calculator State
   const [monthlyVolume, setMonthlyVolume] = useState<number>(500000); // ₦500,000 or ~5,000 FIC
@@ -398,7 +401,7 @@ const StorefrontsPage: React.FC = () => {
                 </div>
 
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-2 border-t border-slate-200">
-                  <div className="relative flex-1">
+                  <div className="relative flex-1 flex items-center">
                     <Search className="w-4 h-4 text-slate-600 absolute left-3.5 top-1/2 -translate-y-1/2" />
                     <input
                       id="storefront-search-input"
@@ -406,8 +409,17 @@ const StorefrontsPage: React.FC = () => {
                       placeholder="Search store name, creator, product catalog..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full min-h-[44px] pl-9 pr-4 py-2 bg-white border-2 border-slate-300 rounded-xl text-xs text-slate-900 font-bold placeholder:text-slate-400 focus:outline-none focus:border-amber-400 border focus:ring-2 focus:ring-indigo-500"
+                      className="w-full min-h-[44px] pl-9 pr-32 py-2 bg-white border-2 border-slate-300 rounded-xl text-xs text-slate-900 font-bold placeholder:text-slate-400 focus:outline-none focus:border-amber-400 border focus:ring-2 focus:ring-indigo-500"
                     />
+                    <button
+                      type="button"
+                      onClick={() => setShowVisualSearchModal(true)}
+                      className="absolute right-2 px-2.5 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-bold flex items-center gap-1.5 transition shrink-0 cursor-pointer shadow-2xs"
+                      title="Visual image search across storefronts and merchant products"
+                    >
+                      <Camera className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>Image Search</span>
+                    </button>
                   </div>
 
                   <div className="flex items-center gap-2 flex-shrink-0">
@@ -870,6 +882,11 @@ const StorefrontsPage: React.FC = () => {
             </button>
           </div>
         </div>
+        <CommerceVisualSearchModal
+          isOpen={showVisualSearchModal}
+          onClose={() => setShowVisualSearchModal(false)}
+          initialStore="storefront"
+        />
       </div>
     </MainLayout>
   );

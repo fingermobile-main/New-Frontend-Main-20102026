@@ -10,6 +10,7 @@ import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import MainLayout from '../components/layout/MainLayout';
 import apiService from '../services/apiService';
+import CommerceVisualSearchModal from '../components/commerce/CommerceVisualSearchModal';
 import {
   SearchIcon,
   PlusIcon
@@ -17,6 +18,7 @@ import {
 import {
   Store,
   Sparkles,
+  Camera,
   Bot,
   Package,
   Layers,
@@ -166,6 +168,7 @@ const StorefrontPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   // Search & Filter
+  const [showVisualSearchModal, setShowVisualSearchModal] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedGoodsType, setSelectedGoodsType] = useState<'all' | 'physical' | 'digital' | 'service'>('all');
 
@@ -510,8 +513,17 @@ const StorefrontPage: React.FC = () => {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search stores, merchant products, goods, services, or SKU..."
-                  className="w-full min-h-[44px] pl-12 pr-4 py-2.5 bg-slate-900 border border-slate-700/80 rounded-xl text-sm text-slate-100 placeholder:text-slate-300 font-medium focus:outline-none focus:border-blue-500"
+                  className="w-full min-h-[44px] pl-12 pr-32 py-2.5 bg-slate-900 border border-slate-700/80 rounded-xl text-sm text-slate-100 placeholder:text-slate-300 font-medium focus:outline-none focus:border-blue-500"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowVisualSearchModal(true)}
+                  className="absolute right-1.5 top-1.5 min-h-[36px] px-2.5 sm:px-3 py-1 rounded-lg text-xs font-bold flex items-center gap-1.5 bg-blue-500/10 hover:bg-blue-500/20 text-blue-300 border border-blue-500/30 transition shadow-2xs cursor-pointer"
+                  title="Search products by image or photo"
+                >
+                  <Camera className="w-3.5 h-3.5 text-blue-400" />
+                  <span className="hidden sm:inline">Image</span> Search
+                </button>
               </div>
 
               {/* Goods Type Filter */}
@@ -1520,6 +1532,12 @@ const StorefrontPage: React.FC = () => {
             <span className="text-[10px] font-semibold mt-0.5">Copilot</span>
           </button>
         </div>
+        {/* Sovereign Commerce Visual Search Modal */}
+        <CommerceVisualSearchModal
+          isOpen={showVisualSearchModal}
+          onClose={() => setShowVisualSearchModal(false)}
+          initialStore="storefront"
+        />
       </div>
     </MainLayout>
   );

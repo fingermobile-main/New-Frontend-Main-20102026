@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { router } from '../../app/AppRoutes';
+import CommerceVisualSearchModal from '../commerce/CommerceVisualSearchModal';
 import {
   Search,
   Sparkles,
@@ -366,6 +367,7 @@ const STATIC_REGISTRY: SearchResultItem[] = [
 export const UniversalSearchModal: React.FC<UniversalSearchModalProps> = ({ isOpen, onClose, onNavigate }) => {
   const [query, setQuery] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [showVisualSearchModal, setShowVisualSearchModal] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const goToRoute = useCallback(
@@ -480,6 +482,16 @@ export const UniversalSearchModal: React.FC<UniversalSearchModalProps> = ({ isOp
               ESC
             </kbd>
           )}
+
+          <button
+            type="button"
+            onClick={() => setShowVisualSearchModal(true)}
+            className="ml-2.5 px-2.5 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700 text-xs font-bold flex items-center gap-1.5 transition shrink-0 cursor-pointer shadow-2xs"
+            title="Visual image search across all commerce stores"
+          >
+            <Camera className="w-4 h-4 text-emerald-600" />
+            <span className="hidden sm:inline">Image</span> Search
+          </button>
         </div>
 
         {/* Results List */}
@@ -584,6 +596,11 @@ export const UniversalSearchModal: React.FC<UniversalSearchModalProps> = ({ isOp
           </div>
         </div>
       </div>
+      <CommerceVisualSearchModal
+        isOpen={showVisualSearchModal}
+        onClose={() => setShowVisualSearchModal(false)}
+        initialStore="all"
+      />
     </div>
   );
 };
