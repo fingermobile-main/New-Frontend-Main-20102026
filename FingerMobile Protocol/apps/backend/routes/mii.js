@@ -7,12 +7,12 @@
 const express = require('express');
 const router = express.Router();
 const mii = require('../controllers/miiController');
-const { authenticate } = require('../middleware/authenticate');
+const { authenticate, optionalAuthenticate } = require('../middleware/authenticate');
 
 // --- 1. MII DISAPPEARING STATUS (48h TTL, Up to 20 Cards) ---
-router.get('/status/feed', authenticate, mii.getStatusFeed);
-router.get('/status/my', authenticate, mii.getMyStatus);
-router.post('/status', authenticate, mii.createStatus);
+router.get('/status/feed', optionalAuthenticate, mii.getStatusFeed);
+router.get('/status/my', optionalAuthenticate, mii.getMyStatus);
+router.post('/status', optionalAuthenticate, mii.createStatus);
 router.post('/status/:statusId/cards', authenticate, mii.addCardToStatus);
 router.delete('/status/:id', authenticate, mii.deleteStatus);
 router.post('/status/cards/:cardId/view', authenticate, mii.recordView);

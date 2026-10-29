@@ -13,7 +13,7 @@ const { JWT_SECRET } = require('../config');
 const StorageService = require('../services/StorageService');
 const logger = require('../utils/logger');
 
-const DEFAULT_USER_ID = '00000000-0000-0000-0000-000000000000';
+const DEFAULT_USER_ID = '00000000-0000-0000-0000-000000000001';
 
 // Resilient authentication middleware that allows fallback to default system user
 const optionalAuth = (req, res, next) => {
@@ -139,7 +139,15 @@ async function handleSingleUpload(req, res) {
       });
     }
 
-    const userId = req.user?.id || DEFAULT_USER_ID;
+    let userId = req.user?.id || DEFAULT_USER_ID;
+    try {
+      const uCheck = await pool.query('SELECT id FROM users WHERE id::text = $1', [String(userId)]);
+      if (uCheck.rows.length === 0) {
+        userId = DEFAULT_USER_ID;
+      }
+    } catch {
+      userId = DEFAULT_USER_ID;
+    }
     const mediaId = crypto.randomUUID();
 
     let fileType = 'image';
