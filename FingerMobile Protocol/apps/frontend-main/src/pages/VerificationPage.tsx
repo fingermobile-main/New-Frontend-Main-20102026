@@ -6,7 +6,7 @@ import { ShieldCheckIcon, PhoneIcon, MailIcon, UserCircleIcon, ArrowRightIcon } 
 import identityService from '../services/identityService';
 
 const VerificationPage: React.FC = () => {
-  const { showToast, ficBalance } = useAppContext();
+  const { showToast } = useAppContext();
   const [verificationMethod, setVerificationMethod] = useState<'phone' | 'email'>('phone');
   const [verificationCode, setVerificationCode] = useState('');
   const [isVerified, setIsVerified] = useState(false);
