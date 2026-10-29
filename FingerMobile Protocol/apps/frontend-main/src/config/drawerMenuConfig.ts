@@ -14,12 +14,20 @@ export interface DrawerMenuItem {
   requiresAgeVerification?: boolean;
 }
 
+export interface DrawerSubGroup {
+  id: string;
+  title: string;
+  icon?: string;
+  itemIds: string[];
+}
+
 export interface DrawerMenuCategory {
   id: string;
   title: string;
   icon: string;
   description: string;
   items: DrawerMenuItem[];
+  subGroups?: DrawerSubGroup[];
 }
 
 export const DRAWER_MENU_CONFIG: DrawerMenuCategory[] = [
