@@ -809,6 +809,16 @@ router.post('/verify-2fa-login', async (req, res) => {
 });
 
 /**
+ * Biometric WebAuthn Passkey Routes (Hardware TouchID, FaceID, Windows Hello)
+ */
+const biometricController = require('../controllers/biometricController');
+router.post('/biometric-options', biometricController.getBiometricOptions);
+router.post('/biometric-verify', biometricController.verifyBiometricAuth);
+router.post('/biometric-register-options', biometricController.getBiometricOptions);
+router.post('/biometric-register-verify', biometricController.verifyBiometricRegistration);
+router.post('/biometric-register', biometricController.verifyBiometricRegistration);
+
+/**
  * POST /api/auth/forgot-password
  * General forgot password initiation by identifier (email or phone)
  */
