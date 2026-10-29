@@ -94,11 +94,11 @@ export const BlogComposerModal: React.FC<BlogComposerModalProps> = ({
 
   const handlePublish = async () => {
     if (!title.trim()) {
-      alert('Please provide an article title.');
+      showToast('Please provide an article title.', 'error');
       return;
     }
     if (!editorContent.text.trim() && embeddedMediaList.length === 0) {
-      alert('Please add content or media before publishing.');
+      showToast('Please add content or media before publishing.', 'error');
       return;
     }
 

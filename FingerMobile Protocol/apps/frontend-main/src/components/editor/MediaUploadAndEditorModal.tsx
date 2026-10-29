@@ -84,6 +84,7 @@ export const MediaUploadAndEditorModal: React.FC<MediaUploadAndEditorModalProps>
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
 
   if (!isOpen) return null;
 
@@ -115,9 +116,10 @@ export const MediaUploadAndEditorModal: React.FC<MediaUploadAndEditorModalProps>
 
   const handleSave = async () => {
     if (!mediaUrl.trim() && !selectedFile) {
-      alert('Please select or upload media first.');
+      setUploadError('Please select or upload media first.');
       return;
     }
+    setUploadError(null);
 
     let finalUrl = mediaUrl;
     let finalId = `media-${Date.now()}`;
@@ -239,6 +241,18 @@ export const MediaUploadAndEditorModal: React.FC<MediaUploadAndEditorModalProps>
 
         {/* Modal Body */}
         <div className="p-6 overflow-y-auto flex-1 space-y-6">
+          {uploadError && (
+            <div className="p-3.5 rounded-xl bg-rose-100 border border-rose-400 text-rose-950 font-bold text-xs flex items-center justify-between">
+              <span>⚠️ {uploadError}</span>
+              <button
+                type="button"
+                onClick={() => setUploadError(null)}
+                className="text-rose-950 font-black ml-2"
+              >
+                ✕
+              </button>
+            </div>
+          )}
           {/* Upload or URL Selector */}
           {!mediaUrl ? (
             <div className="border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-2xl p-8 text-center bg-slate-50/50 dark:bg-slate-950/30 flex flex-col items-center justify-center">

@@ -28,6 +28,12 @@ export const PodcastsTab: React.FC = () => {
   const [durationMinutes, setDurationMinutes] = useState(30);
   const [genre, setGenre] = useState('Music Production');
   const [tagsInput, setTagsInput] = useState('Amapiano, Studio Secrets, Log Drums');
+  const [playbackNotice, setPlaybackNotice] = useState<string | null>(null);
+
+  const showPlaybackNotice = (msg: string) => {
+    setPlaybackNotice(msg);
+    setTimeout(() => setPlaybackNotice(null), 4000);
+  };
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,11 +61,11 @@ export const PodcastsTab: React.FC = () => {
 
   const handlePlayPodcast = (pod: PodcastCard) => {
     if (pod.moderationStatus !== 'active') {
-      alert('This podcast is awaiting publication approval.');
+      showPlaybackNotice('This podcast is awaiting publication approval.');
       return;
     }
     if (!pod.audioUrl) {
-      alert('This podcast has no persistent media URL. Audio file storage is not connected yet.');
+      showPlaybackNotice('This podcast has no persistent media URL. Audio file storage is not connected yet.');
       return;
     }
     playTrack({
@@ -81,6 +87,19 @@ export const PodcastsTab: React.FC = () => {
 
   return (
     <div className="space-y-8 animate-fadeIn">
+      {/* Live Playback Notice */}
+      {playbackNotice && (
+        <div className="p-4 rounded-2xl bg-teal-950/90 border border-teal-500/50 text-teal-200 text-sm font-bold flex items-center justify-between shadow-xl">
+          <span>⚠️ {playbackNotice}</span>
+          <button
+            onClick={() => setPlaybackNotice(null)}
+            className="text-teal-400 hover:text-white font-black ml-3"
+          >
+            ✕
+          </button>
+        </div>
+      )}
+
       {/* Banner */}
       <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-teal-950/70 via-slate-900 to-emerald-950/70 border border-teal-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-6 shadow-xl">
         <div className="space-y-2 max-w-xl">

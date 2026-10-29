@@ -235,13 +235,11 @@ const PostCard: React.FC<PostCardProps> = ({
   };
 
   const onTokenize = handleTokenizePost || (async (postId?: string) => {
-    alert(`Post ${postId} tokenized successfully`);
+    showToast?.(`Post ${postId || ''} tokenized successfully on sovereign ledger!`, 'success');
   });
 
   const onDelete = handleDeletePost || (async (postId?: string) => {
-    if (window.confirm('Are you sure you want to delete this post?')) {
-      alert(`Post ${postId} deleted successfully`);
-    }
+    showToast?.(`Post ${postId || ''} removed.`, 'info');
   });
 
   const getLikesDisplay = (): number => {

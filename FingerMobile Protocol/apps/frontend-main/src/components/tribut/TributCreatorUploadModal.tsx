@@ -86,6 +86,7 @@ export const TributCreatorUploadModal: React.FC<TributCreatorUploadModalProps> =
   // Form fields
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [validationError, setValidationError] = useState<string | null>(null);
   const [category, setCategory] = useState<'fashion' | 'architecture' | 'tech' | 'art' | 'culinary' | 'wellness'>('fashion');
   const [boardName, setBoardName] = useState(userBoards[0]?.name || 'Smart Home Lagos 2026');
   const [priority, setPriority] = useState<'high' | 'medium' | 'normal'>('high');
@@ -212,10 +213,11 @@ export const TributCreatorUploadModal: React.FC<TributCreatorUploadModalProps> =
 
   const handlePublish = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title) {
-      alert('Please enter a pin title');
+    if (!title.trim()) {
+      setValidationError('Please enter a pin title');
       return;
     }
+    setValidationError(null);
 
     setIsUploadingToBackend(true);
 
@@ -470,6 +472,18 @@ export const TributCreatorUploadModal: React.FC<TributCreatorUploadModalProps> =
 
         {/* Form Body */}
         <form onSubmit={handlePublish} className="p-6 overflow-y-auto space-y-5 text-xs">
+          {validationError && (
+            <div className="p-3 rounded-xl bg-rose-100 border border-rose-400 text-rose-950 font-bold text-xs flex items-center justify-between">
+              <span>⚠️ {validationError}</span>
+              <button
+                type="button"
+                onClick={() => setValidationError(null)}
+                className="text-rose-900 font-black ml-2"
+              >
+                ✕
+              </button>
+            </div>
+          )}
 
           {/* HARDWARE DEVICE UPLOAD SECTION (PHONE / LAPTOP / DESKTOP) */}
           <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-purple-50 via-slate-50 to-indigo-50 border-2 border-purple-300 shadow-sm space-y-4">

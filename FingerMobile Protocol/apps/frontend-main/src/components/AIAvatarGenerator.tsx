@@ -8,6 +8,7 @@ const AIAvatarGenerator: React.FC = () => {
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
   const [generationPrompt, setGenerationPrompt] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,7 +59,9 @@ const AIAvatarGenerator: React.FC = () => {
     if (profile.profile) {
       try {
         await profile.updateAvatar(avatarUrl);
-        alert('Avatar updated successfully!');
+        setSuccessMsg('Avatar updated successfully!');
+        setError(null);
+        setTimeout(() => setSuccessMsg(null), 4000);
       } catch (err) {
         setError('Failed to update avatar. Please try again.');
         console.error(err);
@@ -163,6 +166,19 @@ const AIAvatarGenerator: React.FC = () => {
       {error && (
         <div className="mb-6 p-3 bg-red-100 text-red-950 border border-red-400 font-bold rounded-md">
           {error}
+        </div>
+      )}
+
+      {successMsg && (
+        <div className="mb-6 p-3 bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold rounded-md flex items-center justify-between">
+          <span>✓ {successMsg}</span>
+          <button
+            type="button"
+            onClick={() => setSuccessMsg(null)}
+            className="text-emerald-950 font-black ml-2"
+          >
+            ✕
+          </button>
         </div>
       )}
 

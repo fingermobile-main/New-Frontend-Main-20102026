@@ -22,6 +22,7 @@ const CommunityHeader: React.FC<CommunityHeaderProps> = ({
   const [activeTab, setActiveTab] = useState<'posts' | 'members' | 'events' | 'discussions' | 'analytics'>('posts');
   const [isPinned, setIsPinned] = useState(false);
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+  const [reportSuccess, setReportSuccess] = useState(false);
 
   return (
     <div className="bg-white border-b border-slate-300">
@@ -65,6 +66,11 @@ const CommunityHeader: React.FC<CommunityHeaderProps> = ({
                     <span className="text-emerald-600 font-bold">●</span>
                     {memberCount.toLocaleString()} members online
                   </p>
+                  {reportSuccess && (
+                    <div className="mt-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-emerald-100 text-emerald-950 border border-emerald-400 text-xs font-bold">
+                      ✓ Community "{communityName}" reported to Moderator Council for review.
+                    </div>
+                  )}
                 </div>
 
                 {/* Action Buttons */}
@@ -127,8 +133,9 @@ const CommunityHeader: React.FC<CommunityHeaderProps> = ({
                             <button
                               type="button"
                               onClick={() => {
-                                alert(`Reporting community ${communityName}`);
+                                setReportSuccess(true);
                                 setShowDropdown(false);
+                                setTimeout(() => setReportSuccess(false), 4000);
                               }}
                               className="w-full px-4 py-2 text-left hover:bg-red-50 text-sm font-semibold text-red-700"
                               role="menuitem"

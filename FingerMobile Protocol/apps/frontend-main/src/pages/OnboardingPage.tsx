@@ -2083,6 +2083,26 @@ const OnboardingPage: React.FC = () => {
             <Progress value={progressPercentage} className="h-2.5 bg-slate-200 dark:bg-slate-800" />
           </div>
 
+          {/* Live Notification Banner */}
+          {onboardingNotice && (
+            <div
+              className={`mb-4 p-4 rounded-xl border font-bold text-sm flex items-center justify-between shadow-lg transition-all ${
+                onboardingNotice.type === 'success'
+                  ? 'bg-emerald-100 text-emerald-950 border-emerald-400'
+                  : 'bg-rose-100 text-rose-950 border-rose-400'
+              }`}
+            >
+              <span>{onboardingNotice.text}</span>
+              <button
+                type="button"
+                onClick={() => setOnboardingNotice(null)}
+                className="text-slate-700 hover:text-slate-900 font-black ml-2"
+              >
+                ✕
+              </button>
+            </div>
+          )}
+
           {/* Main Content Card */}
           <div className="flex-grow flex items-center justify-center my-auto">
             {renderCurrentStep()}

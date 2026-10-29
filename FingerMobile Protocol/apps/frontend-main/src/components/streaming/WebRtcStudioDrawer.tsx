@@ -503,7 +503,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
       }
     } else {
       if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) {
-        alert('Screen sharing is not supported by your browser.');
+        setCameraError('Screen sharing is not supported by your current browser environment.');
         return;
       }
       try {

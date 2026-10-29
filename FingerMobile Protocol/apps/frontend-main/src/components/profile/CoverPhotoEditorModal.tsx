@@ -230,6 +230,7 @@ export const CoverPhotoEditorModal: React.FC<CoverPhotoEditorModalProps> = ({
   currentFormat = 'profile-page'
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploadError, setUploadError] = useState<string | null>(null);
 
   // Active cover format spec
   const [selectedFormat, setSelectedFormat] = useState<CoverFormatKey>(currentFormat);
@@ -287,9 +288,10 @@ export const CoverPhotoEditorModal: React.FC<CoverPhotoEditorModalProps> = ({
     if (!file) return;
 
     if (!file.type.startsWith('image/')) {
-      alert('Please select an image file (PNG, JPEG, WebP, AVIF).');
+      setUploadError('Please select a valid image file (PNG, JPEG, WebP, AVIF).');
       return;
     }
+    setUploadError(null);
 
     const reader = new FileReader();
     reader.onload = (event) => {
@@ -370,6 +372,18 @@ export const CoverPhotoEditorModal: React.FC<CoverPhotoEditorModalProps> = ({
 
         {/* MODAL BODY (Scrollable) */}
         <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-6">
+          {uploadError && (
+            <div className="p-3.5 rounded-2xl bg-rose-100 border border-rose-400 text-rose-950 font-bold text-xs flex items-center justify-between">
+              <span>⚠️ {uploadError}</span>
+              <button
+                type="button"
+                onClick={() => setUploadError(null)}
+                className="text-rose-950 font-black ml-2"
+              >
+                ✕
+              </button>
+            </div>
+          )}
           {/* 1. COVER FORMAT STANDARDS SELECTOR */}
           <div>
             <div className="flex items-center justify-between mb-2">

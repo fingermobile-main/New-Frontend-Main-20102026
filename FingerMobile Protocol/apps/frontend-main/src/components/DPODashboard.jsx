@@ -7,6 +7,7 @@ const DPODashboard = () => {
   const [pendingReviews, setPendingReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedReview, setSelectedReview] = useState(null);
+  const [statusBanner, setStatusBanner] = useState(null);
 
   const handleApproveReview = async (reviewId) => {
     try {
@@ -98,13 +99,13 @@ const DPODashboard = () => {
         });
 
         if (response.ok) {
-          alert(`${module} module has been isolated`);
+          setStatusBanner({ text: `${module} module has been isolated.`, type: 'success' });
         } else {
-          alert(`Failed to isolate ${module} module`);
+          setStatusBanner({ text: `Failed to isolate ${module} module.`, type: 'error' });
         }
       } catch (err) {
         console.error('Error isolating module:', err);
-        alert('Error occurred while isolating the module');
+        setStatusBanner({ text: 'Error occurred while isolating the module.', type: 'error' });
       }
     }
   };
@@ -115,6 +116,32 @@ const DPODashboard = () => {
         <h1>Data Protection Officer Dashboard</h1>
         <p>Monitor and manage compliance with NDPA 2023 and Cybercrimes Act 2024</p>
       </header>
+
+      {statusBanner && (
+        <div
+          style={{
+            padding: '12px 16px',
+            margin: '12px 0',
+            borderRadius: '8px',
+            fontWeight: 'bold',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            backgroundColor: statusBanner.type === 'success' ? '#dcfce7' : '#fee2e2',
+            color: statusBanner.type === 'success' ? '#14532d' : '#7f1d1d',
+            border: `1px solid ${statusBanner.type === 'success' ? '#86efac' : '#fca5a5'}`
+          }}
+        >
+          <span>{statusBanner.text}</span>
+          <button
+            type="button"
+            onClick={() => setStatusBanner(null)}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', fontWeight: 'bold' }}
+          >
+            ✕
+          </button>
+        </div>
+      )}
 
       <div className="dashboard-overview">
         <div className="metric-card compliance-health">

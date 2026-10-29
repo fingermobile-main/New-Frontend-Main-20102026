@@ -25,6 +25,7 @@ const CollaborationInviteModal: React.FC<CollaborationInviteModalProps> = ({
   const [isSending, setIsSending] = useState(false);
   const [success, setSuccess] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [copiedLink, setCopiedLink] = useState(false);
 
   if (!isOpen) return null;
 
@@ -81,7 +82,11 @@ const CollaborationInviteModal: React.FC<CollaborationInviteModalProps> = ({
   const generateInviteLink = () => {
     const link = `https://platform.com/invite/${projectId}/${Date.now()}`;
     navigator.clipboard.writeText(link);
-    alert('Invite link copied to clipboard!');
+    setCopiedLink(true);
+    setSuccess('Invite link copied to clipboard!');
+    setTimeout(() => {
+      setCopiedLink(false);
+    }, 3000);
   };
 
   const roles = [
@@ -215,9 +220,11 @@ const CollaborationInviteModal: React.FC<CollaborationInviteModalProps> = ({
                 </p>
                 <button
                   onClick={generateInviteLink}
-                  className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                  className={`w-full px-4 py-2 text-white rounded-lg transition-colors font-medium ${
+                    copiedLink ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-blue-600 hover:bg-blue-700'
+                  }`}
                 >
-                  🔗 Generate & Copy Link
+                  {copiedLink ? '✓ Invite Link Copied!' : '🔗 Generate & Copy Link'}
                 </button>
               </div>
             )}

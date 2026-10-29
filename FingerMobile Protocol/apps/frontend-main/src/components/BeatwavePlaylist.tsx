@@ -1,5 +1,5 @@
-import React, {} from 'react';
-import { Music, ListMusic, Clock, MoreVertical } from 'lucide-react';
+import React, { useState } from 'react';
+import { Music, ListMusic, Clock, MoreVertical, Plus, X } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
@@ -65,7 +65,31 @@ const BeatwavePlaylist: React.FC<BeatwavePlaylistProps> = ({
     }
   ];
 
-  const playlists = propPlaylists || defaultPlaylists;
+  const [playlistList, setPlaylistList] = useState<Playlist[]>(propPlaylists || defaultPlaylists);
+  const [isCreating, setIsCreating] = useState(false);
+  const [newPlaylistName, setNewPlaylistName] = useState('');
+  const [newPlaylistDesc, setNewPlaylistDesc] = useState('');
+
+  const playlists = propPlaylists || playlistList;
+
+  const handleCreateNew = () => {
+    if (onCreatePlaylist) {
+      onCreatePlaylist();
+      return;
+    }
+    if (!newPlaylistName.trim()) return;
+    const newEntry: Playlist = {
+      id: `pl-${Date.now()}`,
+      name: newPlaylistName.trim(),
+      description: newPlaylistDesc.trim() || 'Custom BeatwaveNG playlist',
+      createdAt: new Date().toISOString().split('T')[0],
+      tracks: []
+    };
+    setPlaylistList(prev => [newEntry, ...prev]);
+    setNewPlaylistName('');
+    setNewPlaylistDesc('');
+    setIsCreating(false);
+  };
 
   return (
     <div className="w-full space-y-6">
@@ -81,14 +105,55 @@ const BeatwavePlaylist: React.FC<BeatwavePlaylistProps> = ({
             if (onCreatePlaylist) {
               onCreatePlaylist();
             } else {
-              alert('Create new playlist feature');
+              setIsCreating(prev => !prev);
             }
           }}
         >
           <Music className="h-4 w-4 mr-2" />
-          New Playlist
+          {isCreating ? 'Cancel' : 'New Playlist'}
         </Button>
       </div>
+
+      {isCreating && (
+        <div className="p-4 bg-white rounded-xl border border-slate-300 shadow-md space-y-3">
+          <h3 className="text-sm font-black text-slate-900">Create New BeatwaveNG Playlist</h3>
+          <div className="space-y-2">
+            <input
+              type="text"
+              value={newPlaylistName}
+              onChange={(e) => setNewPlaylistName(e.target.value)}
+              placeholder="Playlist name (e.g., Afro-Fusion Energy)..."
+              className="w-full px-3 py-2 text-xs rounded-lg border border-slate-300 text-slate-900 font-bold bg-white focus:outline-none focus:ring-2 focus:ring-orange-500"
+            />
+            <input
+              type="text"
+              value={newPlaylistDesc}
+              onChange={(e) => setNewPlaylistDesc(e.target.value)}
+              placeholder="Description (optional)..."
+              className="w-full px-3 py-2 text-xs rounded-lg border border-slate-300 text-slate-900 font-bold bg-white focus:outline-none focus:ring-2 focus:ring-orange-500"
+            />
+          </div>
+          <div className="flex items-center gap-2 justify-end">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => setIsCreating(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              size="sm"
+              onClick={handleCreateNew}
+              disabled={!newPlaylistName.trim()}
+              className="bg-orange-600 hover:bg-orange-700 text-white"
+            >
+              Save Playlist
+            </Button>
+          </div>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {playlists.map((playlist) => (

@@ -42,6 +42,7 @@ const LushPrivacyController: React.FC<LushPrivacyControllerProps> = ({
   const [settings, setSettings] = useState<PrivacySettings>(initialSettings);
   const [isLoading, setIsLoading] = useState(true);
   const [canView, setCanView] = useState(false);
+  const [accessNotice, setAccessNotice] = useState<string | null>(null);
 
   useEffect(() => {
     const checkPermissions = async () => {
@@ -123,9 +124,8 @@ const LushPrivacyController: React.FC<LushPrivacyControllerProps> = ({
         }
       }
     } else if (settings.giftRequiredToView) {
-      // Handle gift requirement - redirect to gift sending page
-      alert('A gift must be sent before viewing this content.');
-      // In a real app, this would redirect to gift sending page
+      setAccessNotice('A gift must be sent before viewing this exclusive content.');
+      return { success: false };
     }
 
     return { success: false };
@@ -180,6 +180,12 @@ const LushPrivacyController: React.FC<LushPrivacyControllerProps> = ({
               )}
             </ul>
           </div>
+
+          {accessNotice && (
+            <div className="mt-4 p-3 rounded-lg bg-rose-50 border border-rose-300 text-xs font-bold text-rose-900">
+              {accessNotice}
+            </div>
+          )}
 
           <div className="mt-6">
             <button

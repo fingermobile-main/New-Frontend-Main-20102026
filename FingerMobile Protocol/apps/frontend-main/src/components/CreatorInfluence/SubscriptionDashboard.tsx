@@ -52,6 +52,12 @@ const SubscriptionDashboard: React.FC<SubscriptionDashboardProps> = ({
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [cancelReason, setCancelReason] = useState('');
   const [isCancelling, setIsCancelling] = useState(false);
+  const [actionNotice, setActionNotice] = useState<{ text: string; type: 'success' | 'error' | 'info' } | null>(null);
+
+  const showNotice = (text: string, type: 'success' | 'error' | 'info' = 'info') => {
+    setActionNotice({ text, type });
+    setTimeout(() => setActionNotice(null), 4000);
+  };
 
   // Inside the useEffect, we'll fetch usage and billing history separately
   useEffect(() => {
@@ -76,7 +82,7 @@ const SubscriptionDashboard: React.FC<SubscriptionDashboardProps> = ({
 
   const handleCancelSubmit = async () => {
     if (!cancelReason.trim()) {
-      alert('Please provide a reason for cancellation');
+      showNotice('Please provide a reason for cancellation', 'error');
       return;
     }
 
@@ -85,10 +91,10 @@ const SubscriptionDashboard: React.FC<SubscriptionDashboardProps> = ({
       await cancelSubscription(cancelReason);
       setShowCancelModal(false);
       setCancelReason('');
-      // Refresh data after cancellation
-      window.location.reload(); // Simple refresh for now
+      showNotice('Subscription cancelled successfully.', 'success');
+      setTimeout(() => window.location.reload(), 1500);
     } catch (err) {
-      alert('Failed to cancel subscription. Please try again.');
+      showNotice('Failed to cancel subscription. Please try again.', 'error');
     } finally {
       setIsCancelling(false);
     }
@@ -140,6 +146,27 @@ const SubscriptionDashboard: React.FC<SubscriptionDashboardProps> = ({
           Manage your subscription and track your creator growth
         </p>
       </div>
+
+      {actionNotice && (
+        <div
+          className={`mb-6 p-4 rounded-xl border font-bold text-sm flex items-center justify-between shadow-md transition-all ${
+            actionNotice.type === 'success'
+              ? 'bg-emerald-100 text-emerald-950 border-emerald-400'
+              : actionNotice.type === 'error'
+              ? 'bg-rose-100 text-rose-950 border-rose-400'
+              : 'bg-indigo-100 text-indigo-950 border-indigo-400'
+          }`}
+        >
+          <span>{actionNotice.text}</span>
+          <button
+            type="button"
+            onClick={() => setActionNotice(null)}
+            className="text-slate-900 font-black ml-2"
+          >
+            ✕
+          </button>
+        </div>
+      )}
 
       {/* Current Subscription Card */}
       {subscription ? (
@@ -240,7 +267,7 @@ const SubscriptionDashboard: React.FC<SubscriptionDashboardProps> = ({
                 type="button"
                 onClick={() => {
                   if (billingHistory.length > 0) {
-                    alert(`Downloading latest invoice ${billingHistory[0].id}...`);
+                    showNotice(`Preparing invoice ${billingHistory[0].id} for download...`, 'info');
                   } else {
                     navigate('/settings/billing');
                   }

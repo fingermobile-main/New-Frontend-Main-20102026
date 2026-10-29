@@ -63,6 +63,12 @@ export const AudioNovelsTab: React.FC = () => {
     textContent?: string;
   } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [playbackNotice, setPlaybackNotice] = useState<string | null>(null);
+
+  const showPlaybackNotice = (msg: string) => {
+    setPlaybackNotice(msg);
+    setTimeout(() => setPlaybackNotice(null), 4000);
+  };
 
   // Live Audio Recording Studio State
   const [isRecording, setIsRecording] = useState(false);
@@ -296,19 +302,19 @@ export const AudioNovelsTab: React.FC = () => {
   const handlePlayNovel = (novel: AudioNovelCard) => {
     const status = String(novel.moderationStatus || 'draft');
     if (status === 'blocked') {
-      alert('This asset has been blocked by platform administration.');
+      showPlaybackNotice('This asset has been blocked by platform administration.');
       return;
     }
     if (status === 'frozen') {
-      alert('This asset is currently frozen under administrative review.');
+      showPlaybackNotice('This asset is currently frozen under administrative review.');
       return;
     }
     if (status !== 'active') {
-      alert('This AudioNovel is awaiting publication approval.');
+      showPlaybackNotice('This AudioNovel is awaiting publication approval.');
       return;
     }
     if (!novel.audioUrl) {
-      alert('This AudioNovel has no persistent media URL. Audio file storage is not connected yet.');
+      showPlaybackNotice('This AudioNovel has no persistent media URL. Audio file storage is not connected yet.');
       return;
     }
     playTrack({
@@ -350,6 +356,19 @@ export const AudioNovelsTab: React.FC = () => {
 
   return (
     <div className="space-y-8 animate-fadeIn">
+      {/* Live Playback Notice */}
+      {playbackNotice && (
+        <div className="p-4 rounded-2xl bg-amber-950/90 border border-amber-500/50 text-amber-200 text-sm font-bold flex items-center justify-between shadow-xl">
+          <span>⚠️ {playbackNotice}</span>
+          <button
+            onClick={() => setPlaybackNotice(null)}
+            className="text-amber-400 hover:text-white font-black ml-3"
+          >
+            ✕
+          </button>
+        </div>
+      )}
+
       {/* Banner */}
       <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-amber-950/70 via-slate-900 to-rose-950/70 border border-amber-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-6 shadow-xl">
         <div className="space-y-2 max-w-xl">

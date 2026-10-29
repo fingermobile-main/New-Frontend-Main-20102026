@@ -58,6 +58,7 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
   const [showBoardDropdown, setShowBoardDropdown] = useState(false);
   const [selectedBoardName, setSelectedBoardName] = useState(pin.boardName || 'Profile');
   const [selectedColorSwatch, setSelectedColorSwatch] = useState<string | null>(null);
+  const [copiedPrompt, setCopiedPrompt] = useState(false);
 
   // Likes state
   const [likeCount, setLikeCount] = useState(pin.metrics.likes || 192);
@@ -541,11 +542,14 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
                       <button
                         onClick={() => {
                           navigator.clipboard?.writeText?.(pin.promptRecipe || '');
-                          alert('Prompt copied!');
+                          setCopiedPrompt(true);
+                          setTimeout(() => setCopiedPrompt(false), 2500);
                         }}
-                        className="text-purple-700 hover:underline"
+                        className={`font-bold transition-colors ${
+                          copiedPrompt ? 'text-emerald-600' : 'text-purple-700 hover:underline'
+                        }`}
                       >
-                        Copy
+                        {copiedPrompt ? '✓ Copied!' : 'Copy'}
                       </button>
                     </div>
                     <p className="text-xs text-slate-700 italic leading-relaxed">
