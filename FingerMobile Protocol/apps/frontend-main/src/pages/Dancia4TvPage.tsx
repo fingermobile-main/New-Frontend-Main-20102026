@@ -867,7 +867,7 @@ const Dancia4TvPage: React.FC = () => {
                     className="w-full h-full object-contain"
                     onError={(e) => {
                       const videoEl = e.currentTarget;
-                      const fallback = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
+                      const fallback = '/uploads/videos/1793261173718_Steve_Jobs_Introducing_The_iPhone_At_MacWorld_2007_copy_7b19dd4721229b32.mp4';
                       if (videoEl.src !== fallback) {
                         videoEl.src = fallback;
                         videoEl.play().catch(() => {});

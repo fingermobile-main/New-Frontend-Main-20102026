@@ -245,16 +245,25 @@ export const MultiMediaGallery: React.FC<{
 
   const currentUrl = urls[activeIndex];
   const isVideo = /\.(mp4|webm|mov|m4v)$/i.test(currentUrl) || currentUrl.startsWith('data:video');
+  const isAudio = /\.(mp3|wav|ogg|flac|aac|m4a)$/i.test(currentUrl) || currentUrl.startsWith('data:audio');
 
   return (
     <div className="-mx-5 mt-3.5 overflow-hidden border-y border-slate-300 dark:border-slate-800 bg-slate-950 relative group shadow-xs">
       {/* Current Active Item Viewport */}
       <div
         className="relative max-h-[640px] sm:max-h-[720px] aspect-[16/10] sm:aspect-video flex items-center justify-center cursor-pointer overflow-hidden bg-black"
-        onClick={() => !isVideo && onOpenLightbox({ url: currentUrl, title, author })}
+        onClick={() => !isVideo && !isAudio && onOpenLightbox({ url: currentUrl, title, author })}
       >
         {isVideo ? (
           <video src={currentUrl} controls playsInline className="w-full h-full object-contain" />
+        ) : isAudio ? (
+          <div className="w-full h-full p-6 bg-slate-950 flex flex-col items-center justify-center gap-3">
+            <div className="text-xs font-bold text-slate-300 flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              Sovereign Audio Track ({activeIndex + 1}/{urls.length})
+            </div>
+            <audio src={currentUrl} controls className="w-full max-w-lg" />
+          </div>
         ) : (
           <img
             src={currentUrl}
@@ -423,9 +432,14 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
       notify('Audio playback paused', 'info');
     } else {
       // Find track or fallback to sample audio stem
+      const foundInMedia = post.mediaUrls?.find(u => /\.(mp3|wav|ogg|flac|aac|m4a)$/i.test(u) || u.startsWith('data:audio')) ||
+        (post.mediaUrl && (/\.(mp3|wav|ogg|flac|aac|m4a)$/i.test(post.mediaUrl) || post.mediaUrl.startsWith('data:audio')) ? post.mediaUrl : null);
+
       const audioUrl =
         (post as any).audioUrl ||
         (post as any).audio_stem ||
+        foundInMedia ||
+        (post.audioPreview && /\.(mp3|wav|ogg|m4a)$/i.test(post.audioPreview) ? post.audioPreview : null) ||
         '/audio/african/great.mp3';
 
       if (!audioStemRef.current) {

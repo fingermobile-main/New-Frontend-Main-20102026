@@ -38,11 +38,12 @@ import {
   FeedLinkEmbed,
   FeedTaggedProduct
 } from './ForumPostCard';
+import { uploadService } from '../../services/UploadService';
 
 export interface AttachedMediaItem {
   id: string;
   url: string;
-  type: 'image' | 'video';
+  type: 'image' | 'video' | 'audio';
   name: string;
   size?: string;
   filter?: string;
@@ -223,28 +224,44 @@ export const ForumPostComposer: React.FC<ForumPostComposerProps> = ({
     }
   };
 
-  const handleMediaUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleMediaUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
-      Array.from(files).forEach((file) => {
+      triggerToast?.('Uploading media to sovereign backend...', 'info');
+      for (const file of Array.from(files)) {
         const isVideo = file.type.startsWith('video');
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-          if (ev.target?.result) {
-            const newItem: AttachedMediaItem = {
-              id: `media-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
-              url: ev.target.result as string,
-              type: isVideo ? 'video' : 'image',
-              name: file.name,
-              size: `${(file.size / 1024 / 1024).toFixed(1)} MB`
-            };
-            setAttachedMediaList((prev) => [...prev, newItem]);
-          }
-        };
-        reader.readAsDataURL(file);
-      });
+        const isAudio = file.type.startsWith('audio');
+        try {
+          const category = isVideo ? 'forum' : isAudio ? 'beatwave' : 'forum';
+          const res = await uploadService.uploadFile(file, category);
+          const newItem: AttachedMediaItem = {
+            id: `media-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+            url: res.url,
+            type: isVideo ? 'video' : isAudio ? 'audio' : 'image',
+            name: file.name,
+            size: `${(file.size / 1024 / 1024).toFixed(1)} MB`
+          };
+          setAttachedMediaList((prev) => [...prev, newItem]);
+          triggerToast?.(`Attached ${file.name}!`, 'success');
+        } catch {
+          // Graceful local fallback if offline
+          const reader = new FileReader();
+          reader.onload = (ev) => {
+            if (ev.target?.result) {
+              const newItem: AttachedMediaItem = {
+                id: `media-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+                url: ev.target.result as string,
+                type: isVideo ? 'video' : isAudio ? 'audio' : 'image',
+                name: file.name,
+                size: `${(file.size / 1024 / 1024).toFixed(1)} MB`
+              };
+              setAttachedMediaList((prev) => [...prev, newItem]);
+            }
+          };
+          reader.readAsDataURL(file);
+        }
+      }
       setActiveComposerTool(null);
-      triggerToast?.('Attached media files!', 'success');
     }
   };
 
@@ -716,7 +733,7 @@ export const ForumPostComposer: React.FC<ForumPostComposerProps> = ({
         </div>
 
         {/* Hidden inputs for file triggers */}
-        <input ref={mediaFileInputRef} type="file" multiple accept="image/*,video/*" onChange={handleMediaUpload} className="hidden text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" />
+        <input ref={mediaFileInputRef} type="file" multiple accept="image/*,video/*,audio/*" onChange={handleMediaUpload} className="hidden text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" />
         <input
           ref={fileInputRef}
           type="file"

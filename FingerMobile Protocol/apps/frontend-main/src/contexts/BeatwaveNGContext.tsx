@@ -1314,7 +1314,6 @@ export const BeatwaveNGProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     if (!audioRef.current) {
       const audio = new Audio();
       audio.preload = 'metadata';
-      audio.crossOrigin = 'anonymous';
       audioRef.current = audio;
 
       audio.ontimeupdate = () => {
@@ -1548,9 +1547,24 @@ export const BeatwaveNGProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     }
 
     if (audioRef.current) {
+      if (audioContextRef.current && audioContextRef.current.state === 'suspended') {
+        audioContextRef.current.resume().catch(() => {});
+      }
+      const isExternal = track.url.startsWith('http') && !track.url.includes('localhost') && (typeof window !== 'undefined' ? !track.url.includes(window.location.host) : true);
+      if (isExternal) {
+        audioRef.current.removeAttribute('crossorigin');
+      } else {
+        audioRef.current.crossOrigin = 'anonymous';
+      }
       audioRef.current.src = track.url;
       audioRef.current.playbackRate = playbackRate;
-      audioRef.current.play().catch(() => {});
+      audioRef.current.play().catch((playErr) => {
+        console.warn('Playback error, retrying without crossOrigin:', playErr);
+        if (audioRef.current) {
+          audioRef.current.removeAttribute('crossorigin');
+          audioRef.current.play().catch(() => {});
+        }
+      });
     }
 
     setRecentlyPlayed((prev) => {
