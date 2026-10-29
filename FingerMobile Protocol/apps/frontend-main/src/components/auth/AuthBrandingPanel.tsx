@@ -3,31 +3,31 @@ import React, { useState, useEffect } from 'react';
 const BRANDING_IMAGES = [
   {
     src: '/assets/branding/general/FingerMobile Login screen.webp',
-    fallbackSrc: '/branding/FingerMobile Login screen.webp',
+    fallbackSrc: '/assets/branding/auth/Sign In.webp',
     title: 'Sovereign Identity & High-Speed Rails',
     subtitle: 'Connecting users and enterprise systems securely across global networks.',
   },
   {
     src: '/assets/branding/general/Sign In.webp',
-    fallbackSrc: '/branding/Sign In.webp',
+    fallbackSrc: '/assets/branding/auth/Login Sign in.webp',
     title: 'Stercs Studio & Infinite Coin',
     subtitle: 'Creator content monetization and instant cryptographic financial settlement.',
   },
   {
     src: '/assets/branding/general/register.webp',
-    fallbackSrc: '/assets/branding/general/Login Sign in.webp',
+    fallbackSrc: '/assets/branding/auth/register.webp',
     title: 'Share Moments, Build Communities',
     subtitle: 'Experience decentralized social, media streaming, and curated discovery.',
   },
   {
     src: '/assets/branding/general/FingerMobile Forgot password screen.webp',
-    fallbackSrc: '/branding/FingerMobile Forgot password screen.webp',
+    fallbackSrc: '/assets/branding/auth/FingerMobile Login screen.webp',
     title: 'Zero-Knowledge Security Vault',
     subtitle: 'Encrypted credentials, multi-factor hardware keys, and biometrics protection.',
   },
   {
     src: '/assets/branding/general/Login Sign in.webp',
-    fallbackSrc: '/assets/branding/general/Sign In.webp',
+    fallbackSrc: '/assets/branding/auth/FingerMobile Login screen.webp',
     title: 'Decentralized Sovereign Communications',
     subtitle: 'Real-time messaging, encrypted voice lines, and secure P2P micro-transactions.',
   },
@@ -131,7 +131,7 @@ export const AuthBrandingPanel: React.FC<AuthBrandingPanelProps> = ({ initialInd
       {/* Bottom Legal / Version Marker */}
       <div className="relative z-10 flex items-center justify-between text-[11px] text-slate-400 font-semibold border-t border-slate-800/80 pt-4">
         <span>© 2026 GraceLink Ltd. Singapore</span>
-        <span className="font-mono text-orange-400/90 font-bold">FIC Sovereign Rails v2.4</span>
+        <span className="font-mono text-orange-400/90 font-bold">Infinite Coin Sovereign Rails v2.4</span>
       </div>
     </div>
   );
