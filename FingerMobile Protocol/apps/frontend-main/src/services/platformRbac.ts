@@ -15,6 +15,16 @@ export const SECONDARY_ADMIN_EMAILS = [
   'philipatiks@yahoo.com'
 ].map((e) => e.toLowerCase());
 
+/**
+ * Excluded from unconditional sovereign admin bypass:
+ * These emails do NOT retain automatic sovereign bypass and are strictly restricted
+ * to their explicit RBAC role assignments, assignedDashboards, and permissions.
+ */
+export const EXCLUDED_FROM_SOVEREIGN_ADMIN_EMAILS = [
+  'eunicembah@gmail.com',
+  'philipatiks@yahoo.com'
+].map((e) => e.toLowerCase());
+
 export type UserRoleTier =
   | 'PRIMARY_SUPER_ADMIN'
   | 'SECONDARY_ADMIN_CFO'
@@ -103,28 +113,30 @@ export function getUserRoleTier(user?: PlatformUserRBAC | null): UserRoleTier {
   const username = (effectiveUser.username || '').toLowerCase().trim();
   const role = (effectiveUser.role || '').toLowerCase().trim();
 
-  // 1. Primary Admin & SuperAdmin (Owner / SuperAdmin)
+  // 1. Primary Admin & SuperAdmin (Owner / SuperAdmin) - Excludes non-sovereign accounts
   if (
-    PRIMARY_ADMIN_EMAILS.includes(email) ||
-    username === 'israelobinna' ||
-    username === 'usr_founder_obinna' ||
-    username === 'fingermobileprotocol' ||
-    role === 'superadmin' ||
-    role === 'primary admin' ||
-    role === 'super_admin'
+    !EXCLUDED_FROM_SOVEREIGN_ADMIN_EMAILS.includes(email) &&
+    (PRIMARY_ADMIN_EMAILS.includes(email) ||
+      username === 'israelobinna' ||
+      username === 'usr_founder_obinna' ||
+      username === 'fingermobileprotocol' ||
+      role === 'superadmin' ||
+      role === 'primary admin' ||
+      role === 'super_admin')
   ) {
     return 'PRIMARY_SUPER_ADMIN';
   }
 
-  // 2. Secondary Admin & CFO / Co-Founder
+  // 2. Secondary Admin & Scoped Executive (strictly governed by RBAC, excluded from sovereign super-admin)
   if (
-    SECONDARY_ADMIN_EMAILS.includes(email) ||
-    username === 'eunicembah' ||
-    username === 'usr_cofounder_eunice' ||
-    role === 'secondary admin' ||
-    role === 'cfo' ||
-    role === 'co-founder' ||
-    role === 'cofounder'
+    !EXCLUDED_FROM_SOVEREIGN_ADMIN_EMAILS.includes(email) &&
+    (SECONDARY_ADMIN_EMAILS.includes(email) ||
+      username === 'eunicembah' ||
+      username === 'usr_cofounder_eunice' ||
+      role === 'secondary admin' ||
+      role === 'cfo' ||
+      role === 'co-founder' ||
+      role === 'cofounder')
   ) {
     return 'SECONDARY_ADMIN_CFO';
   }
@@ -169,13 +181,15 @@ export function canAccessMasterDashboard(user?: PlatformUserRBAC | null): boolea
 
   if (!effectiveUser) return false;
 
+  const email = (effectiveUser.email || '').toLowerCase().trim();
+  const isExcluded = EXCLUDED_FROM_SOVEREIGN_ADMIN_EMAILS.includes(email);
+
   const tier = getUserRoleTier(effectiveUser);
-  if (tier === 'PRIMARY_SUPER_ADMIN' || tier === 'SECONDARY_ADMIN_CFO') {
+  if (tier === 'PRIMARY_SUPER_ADMIN' && !isExcluded) {
     return true;
   }
 
-  const email = (effectiveUser.email || '').toLowerCase().trim();
-  if (PRIMARY_ADMIN_EMAILS.includes(email) || SECONDARY_ADMIN_EMAILS.includes(email)) {
+  if (PRIMARY_ADMIN_EMAILS.includes(email) && !isExcluded) {
     return true;
   }
 
@@ -221,16 +235,20 @@ export function isDashboardRoute(path: string): boolean {
  * Validates whether the user can access any specific managed dashboard
  */
 export function canAccessDashboard(pathOrId: string, user?: PlatformUserRBAC | null): boolean {
+  if (!user) return false;
+
+  const email = (user.email || '').toLowerCase().trim();
+  const isExcluded = EXCLUDED_FROM_SOVEREIGN_ADMIN_EMAILS.includes(email);
   const tier = getUserRoleTier(user);
 
-  // Primary Admin and Secondary Admin (CFO) have direct access to ANY dashboard from the Platform Burger Menu
-  if (tier === 'PRIMARY_SUPER_ADMIN' || tier === 'SECONDARY_ADMIN_CFO') {
+  // Sovereign SuperAdmins (obinnambah100@gmail.com, gracelinkbustech@gmail.com, fingermobileprotocol@gmail.com)
+  // retain full unconditional access to all Dashboards and every aspect of the platform
+  if (!isExcluded && (tier === 'PRIMARY_SUPER_ADMIN' || PRIMARY_ADMIN_EMAILS.includes(email))) {
     return true;
   }
 
-  // All other members require explicit dashboard assignment
-  if (!user) return false;
-
+  // All other accounts (including excluded emails like eunicembah@gmail.com and philipatiks@yahoo.com)
+  // are strictly evaluated against their explicit RBAC permissions and assigned dashboards
   const clean = pathOrId.toLowerCase().replace(/^\//, '').split('?')[0];
   const assigned = (user.assignedDashboards || []).map((d: string) =>
     d.toLowerCase().replace(/^\//, '')
@@ -240,7 +258,7 @@ export function canAccessDashboard(pathOrId: string, user?: PlatformUserRBAC | n
   const hasCreatorAccess = isContentCreator(user);
   const hasBusinessAccess = isBusinessEntity(user);
 
-  // Explicit dashboard assignment
+  // Explicit dashboard assignment or ALL_DASHBOARDS permission
   if (assigned.includes(clean) || assigned.includes('*') || permissions.includes('ALL_DASHBOARDS')) {
     return true;
   }

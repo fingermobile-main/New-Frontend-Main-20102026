@@ -108,6 +108,69 @@ export const DRAWER_MENU_CONFIG: DrawerMenuCategory[] = [
         path: '/admin/business-console',
         icon: 'Building2',
         badge: { text: 'Enterprise Hive', type: 'primary' }
+      },
+      {
+        id: 'camus-enclave-console',
+        title: 'Camus Enclave Master Console',
+        description: 'Academic enclave governance, syllabus audit & applicant approvals',
+        path: '/admin/camus-enclave-console',
+        icon: 'GraduationCap',
+        badge: { text: 'Enclave', type: 'primary' },
+        isPrivate: true
+      },
+      {
+        id: 'financial-treasury-console',
+        title: 'Financial Treasury Master Console',
+        description: 'Alternative Bank CBN supervisory rail & corporate settlement ledger',
+        path: '/admin/financial-treasury-console',
+        icon: 'Building2',
+        badge: { text: 'Treasury', type: 'warning' },
+        isPrivate: true
+      },
+      {
+        id: 'security-defcon-console',
+        title: 'Security DEFCON Master Console',
+        description: 'DEFCON threat levels, perimeter defense & firewall enforcement',
+        path: '/admin/security-defcon-console',
+        icon: 'ShieldAlert',
+        badge: { text: 'DEFCON', type: 'danger' },
+        isPrivate: true
+      },
+      {
+        id: 'stercs-editor-console',
+        title: 'STERCS™ Editor Master Console',
+        description: 'Dynamic page factory, schema wiring & layout stacking controls',
+        path: '/admin/stercs-editor-console',
+        icon: 'Layers',
+        badge: { text: 'Meta-OS', type: 'primary' },
+        isPrivate: true
+      },
+      {
+        id: 'loans-qr-console',
+        title: 'LoansQR Master Console',
+        description: 'Credit limits, interest tiers & dynamic QR lending disbursements',
+        path: '/admin/loans-qr-console',
+        icon: 'QrCode',
+        badge: { text: 'Lending', type: 'info' },
+        isPrivate: true
+      },
+      {
+        id: 'mii-stories-console',
+        title: 'Mii Stories Master Console',
+        description: '48-hour ephemeral story stream moderation & PIN exchange',
+        path: '/admin/mii-stories-console',
+        icon: 'Clock',
+        badge: { text: 'Mii', type: 'warning' },
+        isPrivate: true
+      },
+      {
+        id: 'database-integration-dashboard',
+        title: 'Database Integration Dashboard',
+        description: '15 platform databases CDC replication & multi-service sync status',
+        path: '/database-integration-dashboard',
+        icon: 'Database',
+        badge: { text: 'Data CDC', type: 'warning' },
+        isPrivate: true
       }
     ],
     subGroups: [
@@ -115,13 +178,19 @@ export const DRAWER_MENU_CONFIG: DrawerMenuCategory[] = [
         id: 'exec-strategic-consoles',
         title: 'Strategic & Operational Consoles',
         icon: 'LayoutDashboard',
-        itemIds: ['master-dashboard', 'monetization-dashboard', 'ugc-dashboard', 'creator-dashboard', 'monitoring-dashboard']
+        itemIds: ['master-dashboard', 'monetization-dashboard', 'ugc-dashboard', 'creator-dashboard', 'monitoring-dashboard', 'database-integration-dashboard']
       },
       {
         id: 'exec-governance-consoles',
-        title: 'Permissions & Entity Matrix',
+        title: 'Permissions & Security Matrix',
         icon: 'ShieldCheck',
-        itemIds: ['users-permissions-console', 'pages-permissions-console', 'creators-console', 'business-console']
+        itemIds: ['users-permissions-console', 'pages-permissions-console', 'creators-console', 'business-console', 'security-defcon-console']
+      },
+      {
+        id: 'exec-domain-consoles',
+        title: 'Domain & Enclave Master Consoles',
+        icon: 'Crown',
+        itemIds: ['camus-enclave-console', 'financial-treasury-console', 'stercs-editor-console', 'loans-qr-console', 'mii-stories-console']
       }
     ]
   },
@@ -131,6 +200,40 @@ export const DRAWER_MENU_CONFIG: DrawerMenuCategory[] = [
     icon: 'Shield',
     description: 'Back Office Operations, Badge Enclaves, Parliamentary Council & Moderation',
     items: [
+      {
+        id: 'camus-enclave',
+        title: 'Camus Sovereign Enclave',
+        description: 'AI-driven sovereign elearning, course exploration & certificate verification',
+        path: '/camus',
+        icon: 'GraduationCap',
+        badge: { text: 'Enclave', type: 'primary' }
+      },
+      {
+        id: 'camus-dashboard',
+        title: 'Camus Intelligence Dashboard',
+        description: 'Course telemetry, enrollment analytics & applicant tracking',
+        path: '/camusdashboard',
+        icon: 'BookOpen',
+        badge: { text: 'Elearning', type: 'info' },
+        isPrivate: true
+      },
+      {
+        id: 'guardian-ai-hub',
+        title: 'Guardian AI Hub',
+        description: '5 algorithmic curation pillars and autonomous platform defense',
+        path: '/guardian-ai',
+        icon: 'Sparkles',
+        badge: { text: '5 Pillars', type: 'success' }
+      },
+      {
+        id: 'guardian-protection',
+        title: 'Guardian Safety & Defense',
+        description: 'Autonomous safety monitoring and threat mitigation console',
+        path: '/guardian',
+        icon: 'ShieldAlert',
+        badge: { text: 'Sentinel', type: 'danger' },
+        isPrivate: true
+      },
       {
         id: 'backoffice-ops',
         title: 'Back Office Operations Portal',
@@ -162,6 +265,20 @@ export const DRAWER_MENU_CONFIG: DrawerMenuCategory[] = [
         path: '/moderator/command-center',
         icon: 'ShieldAlert',
         badge: { text: 'Sentinel', type: 'danger' }
+      }
+    ],
+    subGroups: [
+      {
+        id: 'gov-enclaves',
+        title: 'Enclaves & Academic Intelligence',
+        icon: 'GraduationCap',
+        itemIds: ['camus-enclave', 'camus-dashboard', 'badge-enclave', 'council-governance']
+      },
+      {
+        id: 'gov-security-ops',
+        title: 'Operations, Defense & Moderation',
+        icon: 'ShieldAlert',
+        itemIds: ['guardian-ai-hub', 'guardian-protection', 'backoffice-ops', 'moderator-command']
       }
     ]
   },
@@ -225,11 +342,12 @@ export const DRAWER_MENU_CONFIG: DrawerMenuCategory[] = [
     description: 'Trending media, music, streaming, and events',
     items: [
       {
-        id: 'trends',
-        title: 'Trends',
-        description: 'Real-time trending topics & hashtags',
-        path: '/trends',
-        icon: 'TrendingUp'
+        id: 'soundsonic',
+        title: 'SoundSonic Stream Engine',
+        description: 'Spatial audio streaming, 24-bit lossless playback & radio',
+        path: '/soundsonic',
+        icon: 'Radio',
+        badge: { text: 'Spatial', type: 'success' }
       },
       {
         id: 'beatwave-ng',
@@ -240,12 +358,27 @@ export const DRAWER_MENU_CONFIG: DrawerMenuCategory[] = [
         logoUrl: '/assets/logos/beatwaveng_logo.png'
       },
       {
+        id: 'trends',
+        title: 'Trends',
+        description: 'Real-time trending topics & hashtags',
+        path: '/trends',
+        icon: 'TrendingUp'
+      },
+      {
         id: 'dancia-4tv',
         title: 'Dancia-4Tv',
         description: 'Live broadcast TV, videos & streams',
         path: '/dancia-4tv',
         icon: 'Video',
         logoUrl: '/assets/logos/dancia4tv_logo.png'
+      },
+      {
+        id: 'mii-moments',
+        title: 'Mii™®©℠ Moments',
+        description: '48-hour disappearing video status streams & creator broadcast',
+        path: '/mii',
+        icon: 'Flame',
+        badge: { text: '48H Stream', type: 'warning' }
       },
       {
         id: 'programs',
@@ -299,13 +432,13 @@ export const DRAWER_MENU_CONFIG: DrawerMenuCategory[] = [
         id: 'media-audio-tv',
         title: 'Audio, Music & Live TV',
         icon: 'Music',
-        itemIds: ['beatwave-ng', 'trends', 'dancia-4tv']
+        itemIds: ['soundsonic', 'beatwave-ng', 'trends', 'dancia-4tv']
       },
       {
         id: 'media-programs-events',
         title: 'Programs, NYSC Grants & Events',
         icon: 'Calendar',
-        itemIds: ['programs', 'nysc', 'events']
+        itemIds: ['mii-moments', 'programs', 'nysc', 'events']
       },
       {
         id: 'media-social-connections',

@@ -11,6 +11,7 @@ import {
   canAccessDashboard,
   PRIMARY_ADMIN_EMAILS,
   SECONDARY_ADMIN_EMAILS,
+  EXCLUDED_FROM_SOVEREIGN_ADMIN_EMAILS,
   UserRoleTier
 } from '../../services/platformRbac';
 
@@ -28,9 +29,10 @@ export const usePlatformPrivilege = (): PlatformPrivilegeState => {
   const { user } = useAuth();
   const roleTier = getUserRoleTier(user);
   const email = (user?.email || '').toLowerCase().trim();
+  const isExcluded = EXCLUDED_FROM_SOVEREIGN_ADMIN_EMAILS.includes(email);
 
-  const isPrimaryAdmin = PRIMARY_ADMIN_EMAILS.includes(email) || roleTier === 'PRIMARY_SUPER_ADMIN';
-  const isCfo = SECONDARY_ADMIN_EMAILS.includes(email) || roleTier === 'SECONDARY_ADMIN_CFO';
+  const isPrimaryAdmin = !isExcluded && (PRIMARY_ADMIN_EMAILS.includes(email) || roleTier === 'PRIMARY_SUPER_ADMIN');
+  const isCfo = !isExcluded && (SECONDARY_ADMIN_EMAILS.includes(email) || roleTier === 'SECONDARY_ADMIN_CFO');
   const isExecutive = isPrimaryAdmin || isCfo;
   const canAccessMaster = canAccessMasterDashboard(user);
 
