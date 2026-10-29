@@ -12,7 +12,7 @@
  */
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { router } from '../../app/AppRoutes';
 import {
   Camera,
   UploadCloud,
