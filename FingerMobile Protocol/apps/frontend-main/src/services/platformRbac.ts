@@ -107,6 +107,26 @@ export function getUserRoleTier(user?: PlatformUserRBAC | null): UserRoleTier {
     }
   }
 
+  // Fallback to synchronized profile if effectiveUser is missing or has empty email
+  if (typeof window !== 'undefined' && (!effectiveUser || !effectiveUser.email)) {
+    try {
+      const comp = localStorage.getItem('fmp_comprehensive_profile');
+      if (comp) {
+        const parsedComp = JSON.parse(comp);
+        if (parsedComp.email || parsedComp.username) {
+          effectiveUser = {
+            ...(effectiveUser || {}),
+            email: effectiveUser?.email || parsedComp.email,
+            username: effectiveUser?.username || parsedComp.username,
+            role: effectiveUser?.role || parsedComp.role
+          };
+        }
+      }
+    } catch (_e) {
+      // ignore
+    }
+  }
+
   if (!effectiveUser) return 'STANDARD_MEMBER';
 
   const email = (effectiveUser.email || '').toLowerCase().trim();
@@ -114,15 +134,22 @@ export function getUserRoleTier(user?: PlatformUserRBAC | null): UserRoleTier {
   const role = (effectiveUser.role || '').toLowerCase().trim();
 
   // 1. Primary Admin & SuperAdmin (Owner / SuperAdmin) - Excludes non-sovereign accounts
+  // obinnambah100@gmail.com, gracelinkbustech@gmail.com, fingermobileprotocol@gmail.com retain full sovereign access
   if (
     !EXCLUDED_FROM_SOVEREIGN_ADMIN_EMAILS.includes(email) &&
     (PRIMARY_ADMIN_EMAILS.includes(email) ||
       username === 'israelobinna' ||
       username === 'usr_founder_obinna' ||
       username === 'fingermobileprotocol' ||
+      username === 'obinnambah' ||
+      username === 'obinnambah100' ||
+      username === 'gracelink_primary' ||
+      username === 'gracelinkbustech' ||
       role === 'superadmin' ||
       role === 'primary admin' ||
-      role === 'super_admin')
+      role === 'super_admin' ||
+      role === 'founder' ||
+      role === 'owner')
   ) {
     return 'PRIMARY_SUPER_ADMIN';
   }
@@ -179,10 +206,35 @@ export function canAccessMasterDashboard(user?: PlatformUserRBAC | null): boolea
     }
   }
 
+  // Fallback to synchronized profile if effectiveUser is missing or has empty email
+  if (typeof window !== 'undefined' && (!effectiveUser || !effectiveUser.email)) {
+    try {
+      const comp = localStorage.getItem('fmp_comprehensive_profile');
+      if (comp) {
+        const parsedComp = JSON.parse(comp);
+        if (parsedComp.email || parsedComp.username) {
+          effectiveUser = {
+            ...(effectiveUser || {}),
+            email: effectiveUser?.email || parsedComp.email,
+            username: effectiveUser?.username || parsedComp.username,
+            role: effectiveUser?.role || parsedComp.role
+          };
+        }
+      }
+    } catch (_e) {
+      // ignore
+    }
+  }
+
   if (!effectiveUser) return false;
 
   const email = (effectiveUser.email || '').toLowerCase().trim();
-  const isExcluded = EXCLUDED_FROM_SOVEREIGN_ADMIN_EMAILS.includes(email);
+  const username = (effectiveUser.username || '').toLowerCase().trim();
+  const isExcluded = EXCLUDED_FROM_SOVEREIGN_ADMIN_EMAILS.includes(email) ||
+                     email === 'eunicembah@gmail.com' ||
+                     email === 'philipatiks@yahoo.com' ||
+                     username === 'eunicembah' ||
+                     username === 'philipatiks';
 
   const tier = getUserRoleTier(effectiveUser);
   if (tier === 'PRIMARY_SUPER_ADMIN' && !isExcluded) {
@@ -235,11 +287,49 @@ export function isDashboardRoute(path: string): boolean {
  * Validates whether the user can access any specific managed dashboard
  */
 export function canAccessDashboard(pathOrId: string, user?: PlatformUserRBAC | null): boolean {
-  if (!user) return false;
+  let effectiveUser = user;
+  if (!effectiveUser && typeof window !== 'undefined') {
+    try {
+      const stored = localStorage.getItem('user');
+      if (stored) {
+        effectiveUser = JSON.parse(stored);
+      }
+    } catch (_e) {
+      // ignore
+    }
+  }
 
-  const email = (user.email || '').toLowerCase().trim();
-  const isExcluded = EXCLUDED_FROM_SOVEREIGN_ADMIN_EMAILS.includes(email);
-  const tier = getUserRoleTier(user);
+  // Fallback to synchronized profile if effectiveUser is missing or has empty email
+  if (typeof window !== 'undefined' && (!effectiveUser || !effectiveUser.email)) {
+    try {
+      const comp = localStorage.getItem('fmp_comprehensive_profile');
+      if (comp) {
+        const parsedComp = JSON.parse(comp);
+        if (parsedComp.email || parsedComp.username) {
+          effectiveUser = {
+            ...(effectiveUser || {}),
+            email: effectiveUser?.email || parsedComp.email,
+            username: effectiveUser?.username || parsedComp.username,
+            role: effectiveUser?.role || parsedComp.role
+          };
+        }
+      }
+    } catch (_e) {
+      // ignore
+    }
+  }
+
+  if (!effectiveUser) return false;
+
+  const email = (effectiveUser.email || '').toLowerCase().trim();
+  const username = (effectiveUser.username || '').toLowerCase().trim();
+  const isExcluded = EXCLUDED_FROM_SOVEREIGN_ADMIN_EMAILS.includes(email) ||
+                     email === 'eunicembah@gmail.com' ||
+                     email === 'philipatiks@yahoo.com' ||
+                     username === 'eunicembah' ||
+                     username === 'philipatiks';
+
+  const tier = getUserRoleTier(effectiveUser);
 
   // Sovereign SuperAdmins (obinnambah100@gmail.com, gracelinkbustech@gmail.com, fingermobileprotocol@gmail.com)
   // retain full unconditional access to all Dashboards and every aspect of the platform
@@ -250,26 +340,41 @@ export function canAccessDashboard(pathOrId: string, user?: PlatformUserRBAC | n
   // All other accounts (including excluded emails like eunicembah@gmail.com and philipatiks@yahoo.com)
   // are strictly evaluated against their explicit RBAC permissions and assigned dashboards
   const clean = pathOrId.toLowerCase().replace(/^\//, '').split('?')[0];
-  const assigned = (user.assignedDashboards || []).map((d: string) =>
+  const assigned = (effectiveUser.assignedDashboards || []).map((d: string) =>
     d.toLowerCase().replace(/^\//, '')
   );
-  const permissions = user.permissions || [];
-  const userRole = (user.role || '').toLowerCase();
-  const hasCreatorAccess = isContentCreator(user);
-  const hasBusinessAccess = isBusinessEntity(user);
+  const permissions = effectiveUser.permissions || [];
+  const userRole = (effectiveUser.role || '').toLowerCase();
+  const hasCreatorAccess = isContentCreator(effectiveUser);
+  const hasBusinessAccess = isBusinessEntity(effectiveUser);
 
   // Explicit dashboard assignment or ALL_DASHBOARDS permission
   if (assigned.includes(clean) || assigned.includes('*') || permissions.includes('ALL_DASHBOARDS')) {
     return true;
   }
 
+  // CFO & Financial Executive scoped access (e.g. philipatiks@yahoo.com)
+  if (userRole === 'cfo' || userRole === 'secondary admin' || permissions.includes('CFO_ACCESS') || permissions.includes('FINANCE_ACCESS')) {
+    if (
+      clean.includes('financial') ||
+      clean.includes('treasury') ||
+      clean.includes('monetiz') ||
+      clean.includes('payout') ||
+      clean.includes('wallet') ||
+      clean.includes('vault') ||
+      clean.includes('loans')
+    ) {
+      return true;
+    }
+  }
+
   // Back Office operations access check
-  if (clean.includes('backoffice') && (userRole === 'staff' || permissions.includes('BACKOFFICE_ACCESS') || (user.staff_roles && user.staff_roles.length > 0))) {
+  if (clean.includes('backoffice') && (userRole === 'staff' || permissions.includes('BACKOFFICE_ACCESS') || (effectiveUser.staff_roles && effectiveUser.staff_roles.length > 0))) {
     return true;
   }
 
   // Council of Dignitaries access check
-  if (clean.includes('council') && (permissions.includes('COUNCIL_ACCESS') || (user.distinguished_ranks && user.distinguished_ranks.length > 0))) {
+  if (clean.includes('council') && (permissions.includes('COUNCIL_ACCESS') || (effectiveUser.distinguished_ranks && effectiveUser.distinguished_ranks.length > 0))) {
     return true;
   }
 
@@ -300,7 +405,7 @@ export function canAccessDashboard(pathOrId: string, user?: PlatformUserRBAC | n
   }
 
   // Moderator dashboard
-  if (clean.includes('moderat') && (userRole === 'moderator' || permissions.includes('MODERATOR_DASHBOARD') || (user.moderator_scopes && user.moderator_scopes.length > 0))) {
+  if (clean.includes('moderat') && (userRole === 'moderator' || permissions.includes('MODERATOR_DASHBOARD') || (effectiveUser.moderator_scopes && effectiveUser.moderator_scopes.length > 0))) {
     return true;
   }
   if (clean.includes('canary') || clean.includes('advertis')) {

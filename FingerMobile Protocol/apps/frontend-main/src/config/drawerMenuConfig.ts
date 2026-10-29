@@ -557,6 +557,23 @@ export const DRAWER_MENU_CONFIG: DrawerMenuCategory[] = [
         description: 'Service & digital product list',
         path: '/catalogue',
         icon: 'List'
+      },
+      {
+        id: 'stercs-editor',
+        title: 'STERCS™ Enclave Editor',
+        description: 'Interactive sovereign media & protocol widget editor',
+        path: '/stercseditor',
+        icon: 'Layers',
+        isPrivate: true,
+        badge: { text: 'Enclave', type: 'warning' }
+      },
+      {
+        id: 'canary-ad-maker',
+        title: 'Canary™ Ad Maker Studio',
+        description: 'Design & launch high-impact Canary advertising campaigns',
+        path: '/canary-ad-maker',
+        icon: 'Megaphone',
+        badge: { text: 'Studio', type: 'info' }
       }
     ],
     subGroups: [
@@ -564,7 +581,7 @@ export const DRAWER_MENU_CONFIG: DrawerMenuCategory[] = [
         id: 'ugc-studio-gallery',
         title: 'Studio, Livestream & Media Folders',
         icon: 'Camera',
-        itemIds: ['livestream-ugc', 'photocredits', 'gallery-ugc', 'folders']
+        itemIds: ['livestream-ugc', 'photocredits', 'gallery-ugc', 'folders', 'stercs-editor', 'canary-ad-maker']
       },
       {
         id: 'ugc-luxury-portfolios',
@@ -672,6 +689,14 @@ export const DRAWER_MENU_CONFIG: DrawerMenuCategory[] = [
         description: 'Withdraw funds & payout history',
         path: '/payouts',
         icon: 'DollarSign'
+      },
+      {
+        id: 'loans-qr-rail',
+        title: 'LoansQR Rail & Credit Terminal',
+        description: 'Real-time sovereign credit issuance and QR settlement rail',
+        path: '/loansqr',
+        icon: 'QrCode',
+        badge: { text: 'Credit Rail', type: 'warning' }
       }
     ],
     subGroups: [
@@ -679,7 +704,7 @@ export const DRAWER_MENU_CONFIG: DrawerMenuCategory[] = [
         id: 'fin-wallets-rails',
         title: 'Wallets & Currency Rails',
         icon: 'Wallet',
-        itemIds: ['my-wallet', 'infinite-coins', 'paylinks', 'payouts']
+        itemIds: ['my-wallet', 'infinite-coins', 'loans-qr-rail', 'paylinks', 'payouts']
       },
       {
         id: 'fin-loyalty-rewards',
@@ -785,6 +810,23 @@ export const DRAWER_MENU_CONFIG: DrawerMenuCategory[] = [
         description: 'Customer help & tickets',
         path: '/support',
         icon: 'HelpCircle'
+      },
+      {
+        id: 'my-learning',
+        title: 'My Learning & Sovereign Academy',
+        description: 'Interactive course progress, certifications & sovereign learning tracks',
+        path: '/mylearning',
+        icon: 'Award',
+        badge: { text: 'Academy', type: 'info' }
+      },
+      {
+        id: 'user-reports',
+        title: 'User Reports & Abuse Audit',
+        description: 'Platform dispute, abuse reporting & member audit log',
+        path: '/userreports',
+        icon: 'ShieldAlert',
+        isPrivate: true,
+        badge: { text: 'Audit', type: 'danger' }
       }
     ],
     subGroups: [
@@ -798,13 +840,13 @@ export const DRAWER_MENU_CONFIG: DrawerMenuCategory[] = [
         id: 'sys-access-clearance',
         title: 'Governance, Roles & Badges',
         icon: 'ShieldCheck',
-        itemIds: ['roles-permissions', 'site-member-access', 'badges-studio']
+        itemIds: ['roles-permissions', 'site-member-access', 'badges-studio', 'user-reports']
       },
       {
         id: 'sys-settings-support',
         title: 'Platform Settings & Support',
         icon: 'Settings',
-        itemIds: ['settings-hub', 'settings', 'support', 'campaigns', 'coupons']
+        itemIds: ['settings-hub', 'settings', 'support', 'my-learning', 'campaigns', 'coupons']
       }
     ]
   }

@@ -12,7 +12,8 @@ import {
   getUserRoleBadge,
   getAuthorizedDashboardPath,
   isContentCreator,
-  isBusinessEntity
+  isBusinessEntity,
+  PlatformUserRBAC
 } from '../../../services/platformRbac';
 import {
   Search,
@@ -187,10 +188,21 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
     return null;
   }
 
-  const roleTier = getUserRoleTier(user);
-  const roleBadge = getUserRoleBadge(user);
-  const canAccessMaster = canAccessMasterDashboard(user);
-  const authorizedDashboardPath = getAuthorizedDashboardPath(user);
+  // Merge authenticated user with synchronized profile to ensure sovereign state is recognized immediately
+  const effectiveAuthUser: PlatformUserRBAC = useMemo(() => {
+    return {
+      ...(user || {}),
+      email: user?.email || profile?.email || '',
+      username: user?.username || profile?.username || '',
+      name: (user?.firstName ? `${user.firstName} ${user.lastName || ''}`.trim() : user?.username) || profile?.name || '',
+      role: user?.role || (profile as any)?.role || '',
+    };
+  }, [user, profile]);
+
+  const roleTier = getUserRoleTier(effectiveAuthUser);
+  const roleBadge = getUserRoleBadge(effectiveAuthUser);
+  const canAccessMaster = canAccessMasterDashboard(effectiveAuthUser);
+  const authorizedDashboardPath = getAuthorizedDashboardPath(effectiveAuthUser);
 
   // Auto-expand category matching current path, or collapse all by default on mobile
   const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>(() => {
@@ -249,11 +261,13 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
   const filteredCategories = useMemo(() => {
     if (!searchQuery.trim()) return DRAWER_MENU_CONFIG;
 
-    const query = searchQuery.toLowerCase();
+    const query = searchQuery.toLowerCase().trim();
     return DRAWER_MENU_CONFIG.map((cat) => {
       const matchingItems = cat.items.filter(
         (item) =>
           item.title.toLowerCase().includes(query) ||
+          item.id.toLowerCase().includes(query) ||
+          item.path.toLowerCase().includes(query) ||
           (item.description && item.description.toLowerCase().includes(query))
       );
       return {
@@ -282,7 +296,7 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
   const renderMenuItem = (item: DrawerMenuItem) => {
     const active = isActive(item.path);
     const isDashboard = isDashboardRoute(item.path);
-    const hasDashboardAccess = canAccessDashboard(item.path, user);
+    const hasDashboardAccess = canAccessDashboard(item.path, effectiveAuthUser);
     const isRestrictedDashboard = isDashboard && !hasDashboardAccess;
 
     if (isRestrictedDashboard) {
@@ -625,16 +639,16 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
                 title={
                   canAccessMaster
                     ? 'Master Dashboard (Executive Access Granted)'
-                    : isContentCreator(user)
+                    : isContentCreator(effectiveAuthUser)
                       ? 'Creator Studio Dashboard'
-                      : isBusinessEntity(user)
+                      : isBusinessEntity(effectiveAuthUser)
                         ? 'Business Hub & Offices'
                         : 'Your Assigned Dashboard'
                 }
               >
                 <Sparkles className="w-4 h-4 text-orange-400 mb-1 group-hover:scale-110 transition-transform" />
                 <span className="text-[11px] font-bold text-slate-200 group-hover:text-white">
-                  {canAccessMaster ? 'Dashboard' : isContentCreator(user) ? 'Studio' : isBusinessEntity(user) ? 'Business' : 'Dashboard'}
+                  {canAccessMaster ? 'Dashboard' : isContentCreator(effectiveAuthUser) ? 'Studio' : isBusinessEntity(effectiveAuthUser) ? 'Business' : 'Dashboard'}
                 </span>
               </Link>
             ) : (
