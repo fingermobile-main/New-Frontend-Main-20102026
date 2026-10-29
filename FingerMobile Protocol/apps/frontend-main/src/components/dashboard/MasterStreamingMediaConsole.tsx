@@ -24,8 +24,6 @@ import {
   ChevronDown,
   Image as ImageIcon,
   ShieldAlert,
-  EyeOff,
-  Eye,
   Film,
   Globe,
   CheckCircle
@@ -1191,8 +1189,6 @@ export const MasterStreamingMediaConsole: React.FC = () => {
                         >
                           {item.status === 'frozen' ? 'Unfreeze' : 'Freeze'}
                         </button>
-                          {item.status === 'frozen' ? 'Unfreeze' : 'Freeze'}
-                        </button>
 
                         {/* Edit Button */}
                         <button
@@ -1536,6 +1532,78 @@ export const MasterStreamingMediaConsole: React.FC = () => {
                 />
               </div>
 
+              {/* VoD Monetization, Licensor & Compliance Settings for Dancia-4Tv */}
+              {activeService === 'dancia4tv' && (
+                <div className="bg-indigo-50/70 border border-indigo-200 rounded-xl p-3.5 space-y-3">
+                  <div className="flex items-center gap-2 text-xs font-black text-indigo-950 uppercase tracking-wide">
+                    <Tv className="w-4 h-4 text-indigo-700" />
+                    Dancia-4Tv VoD Distribution & Broadcast Curation
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                    <div>
+                      <label className="font-bold text-slate-900 block mb-1">Core VOD Monetization Model</label>
+                      <select
+                        value={formData.vod_model}
+                        onChange={(e) => setFormData({ ...formData, vod_model: e.target.value })}
+                        className="w-full p-2 font-bold text-slate-900 bg-white border border-slate-300 rounded-lg outline-none"
+                      >
+                        {VOD_MONETIZATION_MODELS.map(m => (
+                          <option key={m.value} value={m.value}>{m.label}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="font-bold text-slate-900 block mb-1">Content Acquisition Licensor</label>
+                      <select
+                        value={formData.acquisition_source}
+                        onChange={(e) => setFormData({ ...formData, acquisition_source: e.target.value })}
+                        className="w-full p-2 font-bold text-slate-900 bg-white border border-slate-300 rounded-lg outline-none"
+                      >
+                        {VOD_ACQUISITION_LICENSORS.map(lic => (
+                          <option key={lic.value} value={lic.value}>{lic.label}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="font-bold text-slate-900 block mb-1">Content Rating & Age Maturity</label>
+                      <select
+                        value={formData.content_rating}
+                        onChange={(e) => setFormData({ ...formData, content_rating: e.target.value })}
+                        className="w-full p-2 font-bold text-slate-900 bg-white border border-slate-300 rounded-lg outline-none"
+                      >
+                        {CONTENT_RATINGS.map(r => (
+                          <option key={r.value} value={r.value}>{r.label}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="font-bold text-slate-900 block mb-1">Broadcast / Lifecycle Status</label>
+                      <select
+                        value={formData.status}
+                        onChange={(e) => setFormData({ ...formData, status: e.target.value as any })}
+                        className="w-full p-2 font-bold text-slate-900 bg-white border border-slate-300 rounded-lg outline-none"
+                      >
+                        <option value="active">Active (On Air / Published)</option>
+                        <option value="censored">Censored (18+ Sensitive Mask)</option>
+                        <option value="frozen">Frozen (Compliance Quarantine)</option>
+                        <option value="suspended">Suspended (Offline)</option>
+                        <option value="draft">Draft (Private Preview)</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="font-bold text-slate-900 block mb-1">External VoD Stream Pull URL (HLS .m3u8 / MP4 CDN)</label>
+                    <input
+                      type="url"
+                      value={formData.external_pull_url}
+                      onChange={(e) => setFormData({ ...formData, external_pull_url: e.target.value })}
+                      placeholder="https://cdn.example.com/vod/stream.m3u8"
+                      className="w-full p-2 font-bold text-slate-900 bg-white border border-slate-300 rounded-lg outline-none font-mono text-xs"
+                    />
+                  </div>
+                </div>
+              )}
+
               <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-200">
                 <button
                   type="button"
@@ -1556,78 +1624,395 @@ export const MasterStreamingMediaConsole: React.FC = () => {
         </div>
       )}
 
-      {/* MODAL 2: Multipart Direct File Uploader (Real Express Backend) */}
+      {/* MODAL 2: Multipart Direct File Uploader & VoD Ingestion Engine (Real Express Backend) */}
       {isUploadModalOpen && (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center z-50 p-4">
-          <div className="bg-white border border-slate-300 rounded-2xl max-w-md w-full p-6 shadow-xl space-y-4">
+          <div className="bg-white border border-slate-300 rounded-2xl max-w-xl w-full p-6 shadow-xl space-y-4 max-h-[92vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-3 border-b border-slate-200">
               <h2 className="text-base font-black text-slate-900 flex items-center gap-2">
-                <Upload className="w-5 h-5 text-indigo-700" />
-                Upload Media to Express Backend
+                {activeService === 'dancia4tv' ? (
+                  <>
+                    <Tv className="w-5 h-5 text-indigo-700" />
+                    Dancia-4Tv VoD Distribution & Acquisition Engine
+                  </>
+                ) : activeService === 'beatwaveng' ? (
+                  <>
+                    <Music className="w-5 h-5 text-purple-700" />
+                    BeatwaveNG Audio Master & Album Art Studio
+                  </>
+                ) : (
+                  <>
+                    <Upload className="w-5 h-5 text-indigo-700" />
+                    Upload Media Asset to Express Backend
+                  </>
+                )}
               </h2>
               <button
                 type="button"
                 onClick={() => setIsUploadModalOpen(false)}
-                className="text-slate-500 hover:text-slate-900 font-bold"
+                className="text-slate-500 hover:text-slate-900 font-bold p-1 rounded-lg"
               >
                 ✕
               </button>
             </div>
 
-            <p className="text-xs font-bold text-slate-700">
-              Direct multipart/form-data ingestion saving permanently to Express backend storage (<code className="font-mono bg-slate-100 p-1 rounded">/uploads/media/</code>).
-            </p>
+            {/* Dancia-4Tv Mode Switcher: Direct VoD Upload vs Movie Curation Engine Stream Pull */}
+            {activeService === 'dancia4tv' && (
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 p-1 bg-slate-100 rounded-xl border border-slate-300 text-xs font-bold">
+                  <button
+                    type="button"
+                    onClick={() => setVodIngestMode('upload')}
+                    className={`py-2 rounded-lg flex items-center justify-center gap-1.5 transition ${
+                      vodIngestMode === 'upload'
+                        ? 'bg-white text-indigo-900 shadow-xs'
+                        : 'text-slate-700 hover:text-slate-900'
+                    }`}
+                  >
+                    <Upload className="w-3.5 h-3.5 text-indigo-700" />
+                    Direct VoD Video Upload
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setVodIngestMode('pull')}
+                    className={`py-2 rounded-lg flex items-center justify-center gap-1.5 transition ${
+                      vodIngestMode === 'pull'
+                        ? 'bg-white text-indigo-900 shadow-xs'
+                        : 'text-slate-700 hover:text-slate-900'
+                    }`}
+                  >
+                    <Globe className="w-3.5 h-3.5 text-indigo-700" />
+                    Curated Engine / Stream Pull
+                  </button>
+                </div>
 
-            {/* Option 1: Audio Master / Video File */}
-            <div className="border-2 border-dashed border-slate-300 rounded-2xl p-4 text-center space-y-2 hover:border-indigo-600 transition-colors">
-              <Upload className="w-6 h-6 text-indigo-700 mx-auto" />
-              <div className="text-xs font-black text-slate-900">
-                Audio Master Track / Video File (.mp3, .wav, .flac, .mp4)
+                {/* Sub-Mode A: Direct Multipart VoD Upload */}
+                {vodIngestMode === 'upload' && (
+                  <div className="space-y-4">
+                    <p className="text-xs font-medium text-slate-700">
+                      Upload broadcast video masters (<code className="font-mono bg-slate-100 px-1 py-0.5 rounded text-slate-900 font-bold">.mp4, .webm, .mov, .mkv</code>) and official poster art directly to Express backend storage.
+                    </p>
+
+                    {/* Direct Video File Dropzone */}
+                    <div className="border-2 border-dashed border-indigo-300 bg-indigo-50/40 rounded-2xl p-4 text-center space-y-2 hover:border-indigo-600 transition-colors">
+                      <Film className="w-7 h-7 text-indigo-700 mx-auto" />
+                      <div className="text-xs font-black text-slate-900">
+                        VoD Video Master File (.mp4, .mov, .webm, .mkv)
+                      </div>
+                      <p className="text-[11px] font-medium text-slate-600">
+                        High-definition 1080p / 4K UHD video encoding with multi-audio track support.
+                      </p>
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="video/*"
+                        onChange={handleFileUpload}
+                        disabled={isUploading}
+                        className="text-xs font-bold text-slate-700 cursor-pointer block mx-auto"
+                      />
+                    </div>
+
+                    {/* Video Poster Art / LP Jacket Dropzone */}
+                    <div className="border-2 border-dashed border-slate-300 rounded-2xl p-3.5 text-center space-y-2 hover:border-purple-600 transition-colors">
+                      <ImageIcon className="w-6 h-6 text-purple-700 mx-auto" />
+                      <div className="text-xs font-black text-slate-900">
+                        Official Video Poster / Cover Art (Graphic Design / Thumbnail)
+                      </div>
+                      <p className="text-[11px] font-medium text-slate-600">
+                        Broadcast billboard, key art thumbnail, or VoD title poster (JPEG, PNG, WebP).
+                      </p>
+                      <input
+                        ref={coverInputRef}
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
+                        onChange={handleCoverUpload}
+                        disabled={isUploadingCover}
+                        className="text-xs font-bold text-slate-700 cursor-pointer block mx-auto"
+                      />
+                    </div>
+
+                    {/* Metadata Dropdowns for Direct Video */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs bg-slate-50 p-3 rounded-xl border border-slate-200">
+                      <div>
+                        <label className="font-bold text-slate-900 block mb-1">Core VOD Model</label>
+                        <select
+                          value={formData.vod_model}
+                          onChange={(e) => setFormData({ ...formData, vod_model: e.target.value })}
+                          className="w-full p-2 font-bold text-slate-900 bg-white border border-slate-300 rounded-lg outline-none"
+                        >
+                          {VOD_MONETIZATION_MODELS.map(m => (
+                            <option key={m.value} value={m.value}>{m.label}</option>
+                          ))}
+                        </select>
+                      </div>
+                      <div>
+                        <label className="font-bold text-slate-900 block mb-1">Acquisition Licensor</label>
+                        <select
+                          value={formData.acquisition_source}
+                          onChange={(e) => setFormData({ ...formData, acquisition_source: e.target.value })}
+                          className="w-full p-2 font-bold text-slate-900 bg-white border border-slate-300 rounded-lg outline-none"
+                        >
+                          {VOD_ACQUISITION_LICENSORS.map(lic => (
+                            <option key={lic.value} value={lic.value}>{lic.label}</option>
+                          ))}
+                        </select>
+                      </div>
+                      <div>
+                        <label className="font-bold text-slate-900 block mb-1">Curated Dancia-4Tv Genre</label>
+                        <select
+                          value={formData.category}
+                          onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                          className="w-full p-2 font-bold text-slate-900 bg-white border border-slate-300 rounded-lg outline-none"
+                        >
+                          {(SERVICE_GENRES.dancia4tv || []).map(g => (
+                            <option key={g} value={g}>{g}</option>
+                          ))}
+                        </select>
+                      </div>
+                      <div>
+                        <label className="font-bold text-slate-900 block mb-1">Content Rating</label>
+                        <select
+                          value={formData.content_rating}
+                          onChange={(e) => setFormData({ ...formData, content_rating: e.target.value })}
+                          className="w-full p-2 font-bold text-slate-900 bg-white border border-slate-300 rounded-lg outline-none"
+                        >
+                          {CONTENT_RATINGS.map(r => (
+                            <option key={r.value} value={r.value}>{r.label}</option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Sub-Mode B: Curated VoD Stream Pull (Movie Engines, OTT CDN, Globecast, BBC, iROKOtv, FilmOne) */}
+                {vodIngestMode === 'pull' && (
+                  <form onSubmit={handleIngestExternalStream} className="space-y-3.5 text-xs">
+                    <p className="text-xs font-medium text-slate-700">
+                      Curate and pull licensed video content across global distribution networks, OTT satellite/fiber playout feeds, and video syndication engines.
+                    </p>
+
+                    <div>
+                      <label className="font-bold text-slate-900 block mb-1">Video / Movie Title *</label>
+                      <input
+                        type="text"
+                        required
+                        value={pullTitle}
+                        onChange={(e) => setPullTitle(e.target.value)}
+                        placeholder="e.g. The Wedding Party, King of Boys, Anikulapo..."
+                        className="w-full p-2.5 font-bold text-slate-900 bg-white border border-slate-300 rounded-xl outline-none"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="font-bold text-slate-900 block mb-1">External VoD Stream / Playout URL *</label>
+                      <input
+                        type="url"
+                        required
+                        value={pullStreamUrl}
+                        onChange={(e) => setPullStreamUrl(e.target.value)}
+                        placeholder="https://ott.broadcaster.com/live/stream.m3u8 or https://cdn.movie.com/video.mp4"
+                        className="w-full p-2.5 font-bold text-slate-900 bg-white border border-slate-300 rounded-xl outline-none font-mono"
+                      />
+                      <span className="text-[11px] font-medium text-slate-600 block mt-1">
+                        Supports HLS playlists (.m3u8), MP4 CDN streams, IPTV/OTT feeds, or Globecast / BBC Studios / FilmOne / iROKOtv IP fiber streams.
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200">
+                      <div>
+                        <label className="font-bold text-slate-900 block mb-1">Content Acquisition Partner</label>
+                        <select
+                          value={pullLicensor}
+                          onChange={(e) => setPullLicensor(e.target.value)}
+                          className="w-full p-2 font-bold text-slate-900 bg-white border border-slate-300 rounded-lg outline-none"
+                        >
+                          {VOD_ACQUISITION_LICENSORS.map(lic => (
+                            <option key={lic.value} value={lic.value}>{lic.label}</option>
+                          ))}
+                        </select>
+                      </div>
+                      <div>
+                        <label className="font-bold text-slate-900 block mb-1">Core VOD Model</label>
+                        <select
+                          value={pullVodModel}
+                          onChange={(e) => setPullVodModel(e.target.value)}
+                          className="w-full p-2 font-bold text-slate-900 bg-white border border-slate-300 rounded-lg outline-none"
+                        >
+                          {VOD_MONETIZATION_MODELS.map(m => (
+                            <option key={m.value} value={m.value}>{m.label}</option>
+                          ))}
+                        </select>
+                      </div>
+                      <div>
+                        <label className="font-bold text-slate-900 block mb-1">Curated Genre</label>
+                        <select
+                          value={pullGenre}
+                          onChange={(e) => setPullGenre(e.target.value)}
+                          className="w-full p-2 font-bold text-slate-900 bg-white border border-slate-300 rounded-lg outline-none"
+                        >
+                          {(SERVICE_GENRES.dancia4tv || []).map(g => (
+                            <option key={g} value={g}>{g}</option>
+                          ))}
+                        </select>
+                      </div>
+                      <div>
+                        <label className="font-bold text-slate-900 block mb-1">Content Rating</label>
+                        <select
+                          value={pullRating}
+                          onChange={(e) => setPullRating(e.target.value)}
+                          className="w-full p-2 font-bold text-slate-900 bg-white border border-slate-300 rounded-lg outline-none"
+                        >
+                          {CONTENT_RATINGS.map(r => (
+                            <option key={r.value} value={r.value}>{r.label}</option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 p-2.5 bg-amber-50 border border-amber-200 rounded-xl">
+                      <input
+                        type="checkbox"
+                        id="censorTogglePull"
+                        checked={pullCensored}
+                        onChange={(e) => setPullCensored(e.target.checked)}
+                        className="rounded text-amber-600 focus:ring-amber-500 w-4 h-4"
+                      />
+                      <label htmlFor="censorTogglePull" className="font-bold text-slate-900 text-xs cursor-pointer flex items-center gap-1.5">
+                        <ShieldAlert className="w-4 h-4 text-amber-700" />
+                        Apply Content Censorship (18+ Sensitive mask on public catalog)
+                      </label>
+                    </div>
+
+                    <div className="flex items-center justify-end gap-2 pt-2">
+                      <button
+                        type="button"
+                        onClick={() => setIsUploadModalOpen(false)}
+                        className="px-4 py-2 border border-slate-300 rounded-xl font-bold text-slate-700 hover:bg-slate-100"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="submit"
+                        disabled={isPulling}
+                        className="px-5 py-2 bg-indigo-700 hover:bg-indigo-800 text-white rounded-xl font-bold flex items-center gap-2"
+                      >
+                        <CheckCircle className="w-4 h-4" />
+                        {isPulling ? 'Ingesting Stream...' : 'Validate & Ingest VoD Stream to Dancia-4Tv'}
+                      </button>
+                    </div>
+                  </form>
+                )}
               </div>
-              <p className="text-[11px] font-medium text-slate-600">
-                Audio stem archives, master mixes, or video broadcasts.
-              </p>
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="audio/*,video/*"
-                onChange={handleFileUpload}
-                disabled={isUploading}
-                className="text-xs font-bold text-slate-700 cursor-pointer block mx-auto"
-              />
-            </div>
+            )}
 
-            {/* Option 2: Album Cover / Record Sleeve / LP Jacket */}
-            <div className="border-2 border-dashed border-slate-300 rounded-2xl p-4 text-center space-y-2 hover:border-purple-600 transition-colors">
-              <ImageIcon className="w-6 h-6 text-purple-700 mx-auto" />
-              <div className="text-xs font-black text-slate-900">
-                Album Cover / Cover Art (Record Sleeve / LP Jacket)
+            {/* BeatwaveNG Dedicated Audio & Album Art Console */}
+            {activeService === 'beatwaveng' && (
+              <div className="space-y-4">
+                <p className="text-xs font-bold text-slate-700">
+                  Direct multipart audio stems and album cover artwork saving permanently to Express backend storage (<code className="font-mono bg-slate-100 p-1 rounded">/uploads/media/</code>).
+                </p>
+
+                {/* Option 1: Audio Master Track / Stem Archive */}
+                <div className="border-2 border-dashed border-slate-300 rounded-2xl p-4 text-center space-y-2 hover:border-indigo-600 transition-colors">
+                  <Upload className="w-6 h-6 text-indigo-700 mx-auto" />
+                  <div className="text-xs font-black text-slate-900">
+                    Audio Master Track / Stem File (.mp3, .wav, .flac, .m4a)
+                  </div>
+                  <p className="text-[11px] font-medium text-slate-600">
+                    Lossless 24-bit 96kHz acoustic master or multi-track STEM package.
+                  </p>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="audio/*"
+                    onChange={handleFileUpload}
+                    disabled={isUploading}
+                    className="text-xs font-bold text-slate-700 cursor-pointer block mx-auto"
+                  />
+                </div>
+
+                {/* Option 2: Album Cover / Record Sleeve / LP Jacket */}
+                <div className="border-2 border-dashed border-slate-300 rounded-2xl p-4 text-center space-y-2 hover:border-purple-600 transition-colors">
+                  <ImageIcon className="w-6 h-6 text-purple-700 mx-auto" />
+                  <div className="text-xs font-black text-slate-900">
+                    Album Cover / Cover Art (Record Sleeve / LP Jacket)
+                  </div>
+                  <p className="text-[11px] font-medium text-slate-600">
+                    Graphic design album art or physical packaging for vinyl records (JPEG, PNG, WebP).
+                  </p>
+                  <input
+                    ref={coverInputRef}
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
+                    onChange={handleCoverUpload}
+                    disabled={isUploadingCover}
+                    className="text-xs font-bold text-slate-700 cursor-pointer block mx-auto"
+                  />
+                </div>
+
+                {/* Genre Selector for BeatwaveNG */}
+                <div className="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                  <label className="font-bold text-slate-900 block mb-1 text-xs">Curated BeatwaveNG Genre</label>
+                  <select
+                    value={formData.category}
+                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                    className="w-full p-2 font-bold text-slate-900 bg-white border border-slate-300 rounded-lg outline-none text-xs"
+                  >
+                    {(SERVICE_GENRES.beatwaveng || []).map(genre => (
+                      <option key={genre} value={genre}>{genre}</option>
+                    ))}
+                  </select>
+                </div>
               </div>
-              <p className="text-[11px] font-medium text-slate-600">
-                Graphic design album art or physical vinyl packaging (JPEG, PNG, WebP).
-              </p>
-              <input
-                type="file"
-                accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
-                onChange={(e) => {
-                  handleCoverUpload(e);
-                  setIsUploadModalOpen(false);
-                }}
-                disabled={isUploadingCover}
-                className="text-xs font-bold text-slate-700 cursor-pointer block mx-auto"
-              />
-            </div>
+            )}
 
-            {isUploading && (
+            {/* Other Services Default Upload */}
+            {activeService !== 'dancia4tv' && activeService !== 'beatwaveng' && (
+              <div className="space-y-4">
+                <div className="border-2 border-dashed border-slate-300 rounded-2xl p-4 text-center space-y-2 hover:border-indigo-600 transition-colors">
+                  <Upload className="w-6 h-6 text-indigo-700 mx-auto" />
+                  <div className="text-xs font-black text-slate-900">
+                    Media Master File (.mp4, .mov, .mp3, .wav)
+                  </div>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="audio/*,video/*"
+                    onChange={handleFileUpload}
+                    disabled={isUploading}
+                    className="text-xs font-bold text-slate-700 cursor-pointer block mx-auto"
+                  />
+                </div>
+
+                <div className="border-2 border-dashed border-slate-300 rounded-2xl p-4 text-center space-y-2 hover:border-purple-600 transition-colors">
+                  <ImageIcon className="w-6 h-6 text-purple-700 mx-auto" />
+                  <div className="text-xs font-black text-slate-900">
+                    Cover Image / Artwork Thumbnail
+                  </div>
+                  <input
+                    ref={coverInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleCoverUpload}
+                    disabled={isUploadingCover}
+                    className="text-xs font-bold text-slate-700 cursor-pointer block mx-auto"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* Upload Progress Indicator */}
+            {(isUploading || isUploadingCover) && (
               <div className="space-y-1.5">
                 <div className="flex justify-between text-xs font-bold text-slate-800">
-                  <span>Uploading to server...</span>
-                  <span>{uploadProgress}%</span>
+                  <span>{isUploading ? 'Uploading Media...' : 'Uploading Cover Art...'}</span>
+                  <span>{isUploading ? uploadProgress : coverUploadProgress}%</span>
                 </div>
                 <div className="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
                   <div
                     className="bg-indigo-700 h-2 transition-all duration-200"
-                    style={{ width: `${uploadProgress}%` }}
+                    style={{ width: `${isUploading ? uploadProgress : coverUploadProgress}%` }}
                   />
                 </div>
               </div>

@@ -15,7 +15,7 @@ export interface CommerceLuxuryConsoleItem {
   currency: string;
   inventory_count: number;
   sku: string;
-  status: 'active' | 'frozen' | 'draft' | 'archived';
+  status: 'active' | 'frozen' | 'draft' | 'archived' | 'censored' | 'suspended';
   display_order: number;
   fic_bounty: string | number;
   fic_discount_percent: string | number;
@@ -24,6 +24,10 @@ export interface CommerceLuxuryConsoleItem {
   tags: string[];
   voice_prompt: string;
   vendor_name: string;
+  thumbnail_url?: string;
+  images?: string[];
+  video_urls?: string[];
+  is_comments_paused?: boolean;
   metadata?: Record<string, any>;
   created_at: string;
   updated_at: string;

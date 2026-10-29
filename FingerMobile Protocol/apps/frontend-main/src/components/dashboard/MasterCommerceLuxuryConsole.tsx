@@ -27,7 +27,13 @@ import {
   Banknote,
   Lock,
   Building2,
-  Crown
+  Crown,
+  ShieldAlert,
+  PauseCircle,
+  EyeOff,
+  Eye,
+  AlertOctagon,
+  Image as ImageIcon
 } from 'lucide-react';
 import {
   CommerceLuxuryServiceKey,
@@ -38,6 +44,16 @@ import {
 import commerceLuxuryConsoleService from '../../services/commerceLuxuryConsoleService';
 import audioEngine, { AfricanVoiceLine } from '../../services/SuperViAudioEngine';
 import { useAppContext } from '../../contexts/AppContext';
+import { useAuth } from '../../contexts/AuthContext';
+import { getUserRoleTier } from '../../utils/profileTierHierarchy';
+import CommerceMediaPicker, { CommerceMediaValue } from '../common/CommerceMediaPicker';
+
+// Primary Admin Emails with unrestricted Super Admin authority
+const PRIMARY_ADMIN_EMAILS = [
+  'obinnambah100@gmail.com',
+  'gracelinkbustech@gmail.com',
+  'fingermobileprotocol@gmail.com'
+];
 
 // 6 Commerce & Luxury Microservices Definitions
 export const COMMERCE_LUXURY_SERVICES: {
@@ -108,6 +124,26 @@ export const COMMERCE_LUXURY_SERVICES: {
 export const MasterCommerceLuxuryConsole: React.FC = () => {
   const navigate = useNavigate();
   const { showToast } = useAppContext();
+  const { user } = useAuth();
+
+  // Granular RBAC Permissions
+  const userRoleTier = getUserRoleTier(user);
+  const isSuperAdmin =
+    (user?.email && PRIMARY_ADMIN_EMAILS.includes(user.email.toLowerCase())) ||
+    userRoleTier === 'Founder' ||
+    user?.role === 'super_admin';
+
+  const isAdmin =
+    isSuperAdmin ||
+    userRoleTier === 'Senior Sentinel' ||
+    userRoleTier === 'Sentinel' ||
+    user?.role === 'admin' ||
+    user?.role === 'administrator';
+
+  const isModerator =
+    isAdmin ||
+    user?.role === 'moderator' ||
+    user?.role === 'sentinel';
 
   // Active Service State
   const [activeService, setActiveService] = useState<CommerceLuxuryServiceKey>('marketplace');
@@ -134,6 +170,14 @@ export const MasterCommerceLuxuryConsole: React.FC = () => {
   const [spawnDescription, setSpawnDescription] = useState<string>('');
   const [spawnedConsoles, setSpawnedConsoles] = useState<SpawnedCommerceConsole[]>([]);
 
+  // Multi-Media Asset State for Add & Edit
+  const [mediaPickerValue, setMediaPickerValue] = useState<CommerceMediaValue>({
+    coverUrl: '',
+    galleryUrls: [],
+    videoUrl: '',
+    isCensored: false
+  });
+
   // Item Form State
   const [formData, setFormData] = useState<{
     title: string;
@@ -154,6 +198,8 @@ export const MasterCommerceLuxuryConsole: React.FC = () => {
     tags: string;
     voice_prompt: string;
     vendor_name: string;
+    status: 'active' | 'frozen' | 'draft' | 'archived' | 'censored' | 'suspended';
+    is_comments_paused: boolean;
   }>({
     title: '',
     slug: '',
@@ -172,7 +218,9 @@ export const MasterCommerceLuxuryConsole: React.FC = () => {
     escrow_protected: true,
     tags: 'Commerce, Luxury, Sovereign',
     voice_prompt: 'owo_ni_koko',
-    vendor_name: 'Official Sovereign Store'
+    vendor_name: 'Official Sovereign Store',
+    status: 'active',
+    is_comments_paused: false
   });
 
   // Load Overview Data
@@ -219,7 +267,7 @@ export const MasterCommerceLuxuryConsole: React.FC = () => {
     loadSpawned();
   }, [loadOverview, loadItems, loadSpawned]);
 
-  // Toggle Freeze Handler
+  // Toggle Freeze Handler (Quarantine)
   const handleToggleFreeze = async (id: number) => {
     try {
       const updated = await commerceLuxuryConsoleService.toggleFreeze(activeService, id);
@@ -229,6 +277,67 @@ export const MasterCommerceLuxuryConsole: React.FC = () => {
       showToast(`Item #${id} is now ${updated.status.toUpperCase()}`, 'info');
     } catch (_err) {
       showToast('Error toggling freeze state', 'error');
+    }
+  };
+
+  // Toggle Censor Handler (18+ Sensitive Blur Mask)
+  const handleToggleCensor = async (item: CommerceLuxuryConsoleItem) => {
+    try {
+      const nextStatus = item.status === 'censored' ? 'active' : 'censored';
+      const updated = await commerceLuxuryConsoleService.updateItem(activeService, item.id, {
+        status: nextStatus as any
+      });
+      setItems(prev => prev.map(i => i.id === item.id ? updated : i));
+      loadOverview();
+      audioEngine.playVoiceLine('wahala');
+      showToast(
+        nextStatus === 'censored'
+          ? `Item #${item.id} (${item.title}) has been CENSORED with 18+ sensitive mask.`
+          : `Censorship lifted on Item #${item.id} (${item.title}): Now ACTIVE.`,
+        nextStatus === 'censored' ? 'warning' : 'success'
+      );
+    } catch (_err) {
+      showToast('Error toggling censorship status', 'error');
+    }
+  };
+
+  // Toggle Suspend Handler (Offline / Delisted)
+  const handleToggleSuspend = async (item: CommerceLuxuryConsoleItem) => {
+    try {
+      const nextStatus = item.status === 'suspended' ? 'active' : 'suspended';
+      const updated = await commerceLuxuryConsoleService.updateItem(activeService, item.id, {
+        status: nextStatus as any
+      });
+      setItems(prev => prev.map(i => i.id === item.id ? updated : i));
+      loadOverview();
+      audioEngine.playVoiceLine('wahala');
+      showToast(
+        nextStatus === 'suspended'
+          ? `Item #${item.id} (${item.title}) has been SUSPENDED & taken offline.`
+          : `Item #${item.id} (${item.title}) restored to ACTIVE catalog.`,
+        nextStatus === 'suspended' ? 'warning' : 'success'
+      );
+    } catch (_err) {
+      showToast('Error toggling suspension status', 'error');
+    }
+  };
+
+  // Toggle Pause Comments / Inquiries
+  const handleTogglePauseComments = async (item: CommerceLuxuryConsoleItem) => {
+    try {
+      const nextVal = !item.is_comments_paused;
+      const updated = await commerceLuxuryConsoleService.updateItem(activeService, item.id, {
+        is_comments_paused: nextVal
+      });
+      setItems(prev => prev.map(i => i.id === item.id ? updated : i));
+      showToast(
+        nextVal
+          ? `Inquiries & commenting PAUSED for "${item.title}".`
+          : `Inquiries & commenting RESUMED for "${item.title}".`,
+        'info'
+      );
+    } catch (_err) {
+      showToast('Error toggling commenting status', 'error');
     }
   };
 
@@ -259,15 +368,19 @@ export const MasterCommerceLuxuryConsole: React.FC = () => {
     }
   };
 
-  // Delete Item Handler
+  // Delete Item Handler (Strictly Gated to Super Admin)
   const handleDeleteItem = async (id: number, title: string) => {
-    if (!window.confirm(`Permanently delete "${title}" from ${activeService}?`)) return;
+    if (!isSuperAdmin) {
+      showToast('RBAC Access Denied: Only Super Admins can permanently delete catalog records.', 'error');
+      return;
+    }
+    if (!window.confirm(`SUPER ADMIN ACTION: Permanently purge "${title}" from ${activeService}? This cannot be undone.`)) return;
 
     try {
       await commerceLuxuryConsoleService.deleteItem(activeService, id);
       setItems(prev => prev.filter(item => item.id !== id));
       loadOverview();
-      showToast(`Deleted ${title}`, 'success');
+      showToast(`Permanently deleted ${title}`, 'success');
     } catch (_err) {
       showToast('Error deleting item', 'error');
     }
@@ -277,13 +390,19 @@ export const MasterCommerceLuxuryConsole: React.FC = () => {
   const handleOpenCreate = () => {
     const currentMeta = COMMERCE_LUXURY_SERVICES.find(s => s.key === activeService);
     setEditingItem(null);
+    setMediaPickerValue({
+      coverUrl: '',
+      galleryUrls: [],
+      videoUrl: '',
+      isCensored: false
+    });
     setFormData({
       title: '',
       slug: '',
       category: currentMeta ? currentMeta.defaultCategory : 'General',
       subcategory: activeService === 'ownit' ? 'Tokenized Deed' : activeService === 'fingerlux' ? 'High Jewelry' : 'Boutique',
       description: '',
-      media_url: '/images/supervi-banner.png',
+      media_url: '',
       media_type: activeService === 'storefront' ? '3d_twin' : activeService === 'tribut' ? 'lookbook' : 'image',
       price: activeService === 'ownit' ? 10000000 : activeService === 'fingerlux' ? 5000000 : 150000,
       currency: 'NGN',
@@ -295,7 +414,9 @@ export const MasterCommerceLuxuryConsole: React.FC = () => {
       escrow_protected: true,
       tags: `${activeService}, luxury, asset`,
       voice_prompt: 'owo_ni_koko',
-      vendor_name: activeService === 'ownit' ? 'OwnIt Escrow Vault' : activeService === 'fingerlux' ? 'FingerLux Vault' : 'Sovereign Vendor'
+      vendor_name: activeService === 'ownit' ? 'OwnIt Escrow Vault' : activeService === 'fingerlux' ? 'FingerLux Vault' : 'Sovereign Vendor',
+      status: 'active',
+      is_comments_paused: false
     });
     setIsEditModalOpen(true);
   };
@@ -303,6 +424,12 @@ export const MasterCommerceLuxuryConsole: React.FC = () => {
   // Open Edit Modal
   const handleOpenEdit = (item: CommerceLuxuryConsoleItem) => {
     setEditingItem(item);
+    setMediaPickerValue({
+      coverUrl: item.thumbnail_url || item.media_url || '',
+      galleryUrls: item.images || [],
+      videoUrl: item.video_urls?.[0] || (item.media_type === 'video' ? item.media_url : ''),
+      isCensored: item.status === 'censored'
+    });
     setFormData({
       title: item.title,
       slug: item.slug,
@@ -321,7 +448,9 @@ export const MasterCommerceLuxuryConsole: React.FC = () => {
       escrow_protected: Boolean(item.escrow_protected),
       tags: Array.isArray(item.tags) ? item.tags.join(', ') : '',
       voice_prompt: item.voice_prompt || 'owo_ni_koko',
-      vendor_name: item.vendor_name || 'Official Sovereign Store'
+      vendor_name: item.vendor_name || 'Official Sovereign Store',
+      status: item.status || 'active',
+      is_comments_paused: Boolean(item.is_comments_paused)
     });
     setIsEditModalOpen(true);
   };
@@ -334,14 +463,20 @@ export const MasterCommerceLuxuryConsole: React.FC = () => {
       return;
     }
 
+    const finalCover = mediaPickerValue.coverUrl || formData.media_url.trim() || '/images/supervi-banner.png';
+    const finalStatus = mediaPickerValue.isCensored ? 'censored' : formData.status;
+
     const payload: Partial<CommerceLuxuryConsoleItem> = {
       title: formData.title.trim(),
       slug: formData.slug.trim(),
       category: formData.category,
       subcategory: formData.subcategory,
       description: formData.description,
-      media_url: formData.media_url.trim() || '/images/supervi-banner.png',
-      media_type: formData.media_type,
+      media_url: finalCover,
+      thumbnail_url: finalCover,
+      media_type: mediaPickerValue.videoUrl ? 'video' : formData.media_type,
+      images: mediaPickerValue.galleryUrls,
+      video_urls: mediaPickerValue.videoUrl ? [mediaPickerValue.videoUrl] : [],
       price: Number(formData.price) || 0,
       currency: formData.currency,
       inventory_count: Number(formData.inventory_count) || 0,
@@ -352,7 +487,9 @@ export const MasterCommerceLuxuryConsole: React.FC = () => {
       escrow_protected: formData.escrow_protected,
       tags: formData.tags.split(',').map(t => t.trim()).filter(Boolean),
       voice_prompt: formData.voice_prompt,
-      vendor_name: formData.vendor_name.trim() || 'Official Sovereign Store'
+      vendor_name: formData.vendor_name.trim() || 'Official Sovereign Store',
+      status: finalStatus,
+      is_comments_paused: formData.is_comments_paused
     };
 
     try {
@@ -370,6 +507,8 @@ export const MasterCommerceLuxuryConsole: React.FC = () => {
       audioEngine.playVoiceLine('blessings');
     } catch (_err) {
       showToast('Error saving item to database', 'error');
+    }
+  };
     }
   };
 

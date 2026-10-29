@@ -413,8 +413,8 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
     isAdmin ||
     user?.role === 'moderator' ||
     user?.role === 'sentinel' ||
-    (Array.isArray(user?.roles) && user.roles.includes('moderator')) ||
-    (Array.isArray(user?.permissions) && user.permissions.includes('moderate'));
+    (Array.isArray((user as any)?.roles) && (user as any).roles.includes('moderator')) ||
+    (Array.isArray((user as any)?.permissions) && (user as any).permissions.includes('moderate'));
 
   const isBadgeHolder =
     isModerator ||
