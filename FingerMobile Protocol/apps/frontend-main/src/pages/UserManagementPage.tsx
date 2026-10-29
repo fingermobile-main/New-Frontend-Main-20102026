@@ -21,6 +21,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import PlatformOwnershipCard from '../components/dashboard/PlatformOwnershipCard';
+import PhoneIntelligenceModal from '../components/admin/PhoneIntelligenceModal';
 
 interface PlatformUser {
   id: number;
@@ -54,6 +55,7 @@ const UserManagementPage: React.FC = () => {
   const [usersPerPage] = useState(10);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [selectedUserForActivity, setSelectedUserForActivity] = useState<PlatformUser | null>(null);
+  const [selectedPhoneForIntel, setSelectedPhoneForIntel] = useState<{ phone: string; name: string } | null>(null);
   const [newUser, setNewUser] = useState({
     email: '',
     password: '',
@@ -319,14 +321,24 @@ const UserManagementPage: React.FC = () => {
               <p className="text-xs text-slate-700 mt-0.5">Manage identity accounts, permissions, balances, and governance access</p>
             </div>
           </div>
-          <button
-            type="button"
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-lg text-sm font-semibold flex items-center shadow-sm transition-colors"
-            onClick={() => setShowCreateModal(true)}
-          >
-            <UserPlus className="h-4 w-4 mr-2" />
-            Add Member
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              className="bg-indigo-50 hover:bg-indigo-100 text-indigo-900 border border-indigo-300 px-3 py-2.5 rounded-lg text-sm font-semibold flex items-center shadow-xs transition-colors cursor-pointer"
+              onClick={() => setSelectedPhoneForIntel({ phone: '', name: 'Manual Reconnaissance' })}
+            >
+              <Phone className="h-4 w-4 mr-1.5 text-indigo-600" />
+              Phone Recon
+            </button>
+            <button
+              type="button"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-lg text-sm font-semibold flex items-center shadow-sm transition-colors cursor-pointer"
+              onClick={() => setShowCreateModal(true)}
+            >
+              <UserPlus className="h-4 w-4 mr-2" />
+              Add Member
+            </button>
+          </div>
         </div>
       </header>
 
@@ -449,8 +461,19 @@ const UserManagementPage: React.FC = () => {
                         </div>
                         {user.phone && (
                           <div className="text-xs text-slate-700 flex items-center gap-1.5 mt-1">
-                            <Phone className="h-3.5 w-3.5 text-slate-600" />
-                            {user.phone}
+                            <Phone className="h-3.5 w-3.5 text-slate-600 shrink-0" />
+                            <span>{user.phone}</span>
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setSelectedPhoneForIntel({ phone: user.phone!, name: user.username || user.email });
+                              }}
+                              className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-indigo-50 hover:bg-indigo-100 text-indigo-900 border border-indigo-200 transition cursor-pointer"
+                              title="Inspect with PhoneInfoga Reconnaissance"
+                            >
+                              Intel
+                            </button>
                           </div>
                         )}
                       </td>
@@ -911,6 +934,13 @@ const UserManagementPage: React.FC = () => {
           </button>
         </div>
       </div>
+
+      <PhoneIntelligenceModal
+        isOpen={Boolean(selectedPhoneForIntel)}
+        onClose={() => setSelectedPhoneForIntel(null)}
+        initialPhone={selectedPhoneForIntel?.phone || ''}
+        memberName={selectedPhoneForIntel?.name}
+      />
     </div>
   );
 };

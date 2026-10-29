@@ -768,6 +768,10 @@ app.use('/api/biometrics', biometricRoutes); // Also expose biometric routes as 
 const qrRoutes = require('./routes/qr');
 app.use('/api/qr', qrRoutes);
 
+// Phone Intelligence & Reconnaissance Routes (PhoneInfoga Engine)
+const phoneIntelligenceRoutes = require('./routes/phoneIntelligence');
+app.use('/api/phone', phoneIntelligenceRoutes);
+
 // NEW: Add voice lines route alias to fix frontend/backend misalignment
 app.use('/api/voice-lines', voicelinesRoutes); // Also expose voicelines routes as /api/voice-lines to match frontend expectations
 

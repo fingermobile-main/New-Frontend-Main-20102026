@@ -305,6 +305,10 @@ app.use('/api/biometric', sensitiveLimiter, biometricRoutes);
 const qrRoutes = require('./routes/qr');
 app.use('/api/qr', qrRoutes);
 
+// Phone Intelligence & OSINT Reconnaissance Routes (PhoneInfoga Engine)
+const phoneIntelligenceRoutes = require('./routes/phoneIntelligence');
+app.use('/api/phone', sensitiveLimiter, phoneIntelligenceRoutes);
+
 // Branding & 48-Hour Rotation Routes
 const brandingRoutes = require('./routes/brandingRoutes');
 const brandingRotationService = require('./services/brandingRotationService');

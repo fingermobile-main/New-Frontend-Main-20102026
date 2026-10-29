@@ -1,4 +1,5 @@
 const logger = require('../utils/logger');
+const phoneIntelligenceService = require('./PhoneIntelligenceService');
 /**
  * SMSService
  * Twilio integration for SMS notifications and verification
@@ -222,13 +223,17 @@ class SMSService {
   }
 
   /**
-   * Format phone number to E.164 format
+   * Format phone number to E.164 format using PhoneIntelligenceService
    */
   formatPhoneNumber(phoneNumber) {
-    // Remove all non-digit characters except +
-    let cleaned = phoneNumber.replace(/[^\d+]/g, '');
+    if (!phoneNumber) return '';
+    const intel = phoneIntelligenceService.analyzeFast(phoneNumber, 'NG');
+    if (intel && intel.isValid && intel.e164) {
+      return intel.e164;
+    }
 
-    // Add country code if missing (default to Nigeria +234)
+    // Fallback normalization
+    let cleaned = phoneNumber.replace(/[^\d+]/g, '');
     if (!cleaned.startsWith('+')) {
       if (cleaned.startsWith('0')) {
         cleaned = '+234' + cleaned.substring(1);
@@ -238,7 +243,6 @@ class SMSService {
         cleaned = '+234' + cleaned;
       }
     }
-
     return cleaned;
   }
 
