@@ -9,25 +9,20 @@ import {
   Plus,
   Trash2,
   Edit3,
-  Snowflake,
   Play,
   Pause,
   Volume2,
   Upload,
   ExternalLink,
-  Shield,
-  Coins,
-  CheckCircle2,
   AlertTriangle,
   RotateCcw,
   Search,
   Filter,
-  Eye,
   Tag,
-  Radio,
-  Sliders,
   Sparkles,
-  Layers
+  Layers,
+  ChevronDown,
+  Image as ImageIcon
 } from 'lucide-react';
 import {
   MediaStreamingServiceKey,
@@ -38,6 +33,49 @@ import {
 import mediaStreamingConsoleService from '../../services/mediaStreamingConsoleService';
 import audioEngine, { AfricanVoiceLine } from '../../services/SuperViAudioEngine';
 import { useAppContext } from '../../contexts/AppContext';
+import { useBeatwaveNG } from '../../contexts/BeatwaveNGContext';
+
+// Curated platform genres for each streaming microservice
+export const SERVICE_GENRES: Record<MediaStreamingServiceKey, string[]> = {
+  beatwaveng: [
+    'Afrobeats',
+    'Amapiano',
+    'Afro-Fusion',
+    'Highlife',
+    'Fuji & Apala',
+    'Gospel & Spiritual',
+    'Hip-Hop & Rap',
+    'R&B & Neo-Soul',
+    'Electronic & Afro-House',
+    'Reggae & Dancehall',
+    'Jazz & Afro-Jazz',
+    'Classical & Instrumental',
+    'Traditional & Folk',
+    'Spoken Word & Podcast',
+    'Alté & Indie'
+  ],
+  dancia4tv: [
+    'Music Videos',
+    'Live Concerts & Festivals',
+    'Dance Battles & Choreography',
+    'Documentary & Culture',
+    'Creative Studio & Behind The Scenes',
+    'Film & Short Cinema',
+    'Comedy & Skits',
+    'News & Interviews',
+    'Masterclasses & Tutorials',
+    'Temporal Drops & Premiere Specials'
+  ],
+  videobox: [
+    'Cinematic 4K Showcase',
+    'Short Films & Animation',
+    'Drone & Nature Scapes',
+    'VR & 360 Immersion',
+    'Tech & Coding Walkthroughs',
+    'Luxury & Automotive',
+    'Experimental Visuals'
+  ]
+};
 
 // 3 Media & Streaming Microservices Definitions
 export const MEDIA_STREAMING_SERVICES: {
@@ -81,6 +119,7 @@ export const MEDIA_STREAMING_SERVICES: {
 export const MasterStreamingMediaConsole: React.FC = () => {
   const navigate = useNavigate();
   const { showToast } = useAppContext();
+  const beatwave = useBeatwaveNG();
 
   // Active Service State
   const [activeService, setActiveService] = useState<MediaStreamingServiceKey>('beatwaveng');
@@ -101,10 +140,15 @@ export const MasterStreamingMediaConsole: React.FC = () => {
   const [isUploadModalOpen, setIsUploadModalOpen] = useState<boolean>(false);
   const [isSpawnerModalOpen, setIsSpawnerModalOpen] = useState<boolean>(false);
 
-  // Upload State
+  // Media Master Upload State
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  // Album Cover / Cover Art / LP Sleeve Upload State
+  const [coverUploadProgress, setCoverUploadProgress] = useState<number>(0);
+  const [isUploadingCover, setIsUploadingCover] = useState<boolean>(false);
+  const coverInputRef = useRef<HTMLInputElement | null>(null);
 
   // Spawner Form State
   const [spawnName, setSpawnName] = useState<string>('');
@@ -139,7 +183,7 @@ export const MasterStreamingMediaConsole: React.FC = () => {
     description: '',
     media_url: '',
     media_type: 'audio',
-    thumbnail_url: '/images/supervi-banner.png',
+    thumbnail_url: '',
     duration_seconds: 180,
     bpm: 120,
     musical_key: 'C Major',
@@ -196,30 +240,57 @@ export const MasterStreamingMediaConsole: React.FC = () => {
     loadSpawned();
   }, [loadOverview, loadItems, loadSpawned]);
 
-  // Stop audio preview when changing service
+  // Stop audio preview & reset category filter when changing service
   useEffect(() => {
     if (audioPreviewRef.current) {
       audioPreviewRef.current.pause();
+      audioPreviewRef.current.currentTime = 0;
       setPlayingItemId(null);
     }
+    setCategoryFilter('ALL');
   }, [activeService]);
+
+  // Clean up audio on unmount
+  useEffect(() => {
+    return () => {
+      if (audioPreviewRef.current) {
+        audioPreviewRef.current.pause();
+        audioPreviewRef.current = null;
+      }
+    };
+  }, []);
 
   // Toggle Audio Preview
   const handleToggleAudio = (item: MediaStreamingConsoleItem) => {
     if (playingItemId === item.id) {
       if (audioPreviewRef.current) {
         audioPreviewRef.current.pause();
+        audioPreviewRef.current.currentTime = 0;
       }
       setPlayingItemId(null);
     } else {
       if (audioPreviewRef.current) {
         audioPreviewRef.current.pause();
+        audioPreviewRef.current.currentTime = 0;
       }
-      audioPreviewRef.current = new Audio(item.media_url);
-      audioPreviewRef.current.play().catch(() => {
-        showToast('Cannot play audio preview format directly in browser', 'info');
+
+      if (!item.media_url || !item.media_url.trim()) {
+        showToast('No audio or media file source attached to this record', 'error');
+        return;
+      }
+
+      const rawUrl = item.media_url.trim();
+      const audio = new Audio(rawUrl);
+      audioPreviewRef.current = audio;
+
+      audio.play().then(() => {
+        showToast(`Playing audio preview: ${item.title}`, 'info');
+      }).catch((playErr: any) => {
+        showToast(`Unable to play audio directly (${playErr?.message || 'Check media file or server connection'})`, 'info');
+        setPlayingItemId(null);
       });
-      audioPreviewRef.current.onended = () => {
+
+      audio.onended = () => {
         setPlayingItemId(null);
       };
       setPlayingItemId(item.id);
@@ -284,16 +355,17 @@ export const MasterStreamingMediaConsole: React.FC = () => {
   // Open Create Modal
   const handleOpenCreate = () => {
     const currentMeta = MEDIA_STREAMING_SERVICES.find(s => s.key === activeService);
+    const availableGenres = SERVICE_GENRES[activeService] || ['General'];
     setEditingItem(null);
     setFormData({
       title: '',
       slug: '',
-      category: currentMeta ? currentMeta.defaultCategory : 'General',
-      subcategory: activeService === 'beatwaveng' ? 'Stem Session' : activeService === 'dancia4tv' ? 'Broadcast' : 'Showcase',
+      category: availableGenres[0] || (currentMeta ? currentMeta.defaultCategory : 'General'),
+      subcategory: activeService === 'beatwaveng' ? 'Master Track' : activeService === 'dancia4tv' ? 'Broadcast' : 'Showcase',
       description: '',
       media_url: '',
       media_type: activeService === 'beatwaveng' ? 'audio' : activeService === 'dancia4tv' ? 'stream' : 'video',
-      thumbnail_url: '/images/supervi-banner.png',
+      thumbnail_url: '',
       duration_seconds: activeService === 'beatwaveng' ? 210 : activeService === 'dancia4tv' ? 0 : 90,
       bpm: activeService === 'beatwaveng' ? 124 : 120,
       musical_key: 'F# Minor',
@@ -319,7 +391,7 @@ export const MasterStreamingMediaConsole: React.FC = () => {
       description: item.description,
       media_url: item.media_url,
       media_type: item.media_type,
-      thumbnail_url: item.thumbnail_url || '/images/supervi-banner.png',
+      thumbnail_url: item.thumbnail_url || '',
       duration_seconds: item.duration_seconds || 0,
       bpm: item.bpm || 120,
       musical_key: item.musical_key || 'C Major',
@@ -409,6 +481,35 @@ export const MasterStreamingMediaConsole: React.FC = () => {
       setIsUploading(false);
       setUploadProgress(0);
       if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
+
+  // Album Cover / Cover Art (Record Sleeve / LP Jacket) Upload Handler
+  const handleCoverUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploadingCover(true);
+    setCoverUploadProgress(0);
+
+    try {
+      const res = await mediaStreamingConsoleService.uploadMedia(file, (percent) => {
+        setCoverUploadProgress(percent);
+      });
+
+      setFormData(prev => ({
+        ...prev,
+        thumbnail_url: res.url
+      }));
+
+      audioEngine.playVoiceLine('sweet');
+      showToast(`Album Cover Art / Record Sleeve uploaded (${file.name})`, 'success');
+    } catch (_err) {
+      showToast('Album cover upload failed', 'error');
+    } finally {
+      setIsUploadingCover(false);
+      setCoverUploadProgress(0);
+      if (coverInputRef.current) coverInputRef.current.value = '';
     }
   };
 
@@ -628,6 +729,24 @@ export const MasterStreamingMediaConsole: React.FC = () => {
             </select>
           </div>
 
+          {/* Platform Genre Filter with Dropdown Arrow */}
+          <div className="flex items-center gap-1.5 text-xs font-bold text-slate-700">
+            <Tag className="w-4 h-4 text-slate-700" />
+            <div className="relative">
+              <select
+                value={categoryFilter}
+                onChange={(e) => setCategoryFilter(e.target.value)}
+                className="p-2 pr-7 font-bold text-slate-900 bg-white border border-slate-300 rounded-xl text-xs outline-none appearance-none cursor-pointer"
+              >
+                <option value="ALL">All Genres</option>
+                {(SERVICE_GENRES[activeService] || []).map(genre => (
+                  <option key={genre} value={genre}>{genre}</option>
+                ))}
+              </select>
+              <ChevronDown className="w-3.5 h-3.5 text-slate-600 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
+            </div>
+          </div>
+
           {/* Reload Button */}
           <button
             onClick={() => {
@@ -711,13 +830,44 @@ export const MasterStreamingMediaConsole: React.FC = () => {
                       </div>
                     </td>
 
-                    {/* Title, Creator & Media Preview */}
+                    {/* Title, Creator, Album Cover & Media Preview */}
                     <td className="py-3 px-3">
                       <div className="flex items-start gap-3">
-                        {/* Play preview button */}
+                        {/* Album Cover / LP Jacket Thumbnail */}
+                        <div className="relative w-12 h-12 rounded-xl overflow-hidden border border-slate-300 shrink-0 bg-slate-100 group shadow-xs">
+                          {item.thumbnail_url ? (
+                            <img
+                              src={item.thumbnail_url}
+                              alt={item.title}
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                (e.target as HTMLElement).style.display = 'none';
+                              }}
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center bg-indigo-50 text-indigo-700">
+                              <Music className="w-5 h-5" />
+                            </div>
+                          )}
+                          <button
+                            onClick={() => handleToggleAudio(item)}
+                            className={`absolute inset-0 flex items-center justify-center bg-slate-900/50 text-white transition-opacity ${
+                              playingItemId === item.id ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                            }`}
+                            title={playingItemId === item.id ? 'Pause Preview' : 'Play Preview'}
+                          >
+                            {playingItemId === item.id ? (
+                              <Pause className="w-5 h-5" />
+                            ) : (
+                              <Play className="w-5 h-5 ml-0.5" />
+                            )}
+                          </button>
+                        </div>
+
+                        {/* Dedicated Play Preview Button */}
                         <button
                           onClick={() => handleToggleAudio(item)}
-                          className={`p-2 rounded-xl border mt-0.5 transition-colors ${
+                          className={`p-2 rounded-xl border mt-0.5 transition-colors shrink-0 ${
                             playingItemId === item.id
                               ? 'bg-indigo-600 text-white border-indigo-700 animate-pulse'
                               : 'bg-slate-100 hover:bg-slate-200 text-slate-800 border-slate-300'
@@ -730,11 +880,11 @@ export const MasterStreamingMediaConsole: React.FC = () => {
                             <Play className="w-4 h-4" />
                           )}
                         </button>
-                        <div>
-                          <div className="font-black text-slate-900 text-sm leading-snug">
+                        <div className="min-w-0">
+                          <div className="font-black text-slate-900 text-sm leading-snug truncate">
                             {item.title}
                           </div>
-                          <div className="text-[11px] font-bold text-slate-700 mt-0.5 flex items-center gap-1.5">
+                          <div className="text-[11px] font-bold text-slate-700 mt-0.5 flex items-center gap-1.5 flex-wrap">
                             <span>By {item.creator_name}</span>
                             <span>•</span>
                             <span className="font-mono text-slate-600">/{item.slug}</span>
@@ -803,11 +953,35 @@ export const MasterStreamingMediaConsole: React.FC = () => {
                     {/* Action Buttons */}
                     <td className="py-3 px-3 text-right">
                       <div className="flex items-center justify-end gap-1.5">
-                        {/* African Voice Line Trigger */}
+                        {/* Beatwave Studio Player Direct Trigger */}
+                        {activeService === 'beatwaveng' && (
+                          <button
+                            onClick={() => {
+                              beatwave.playTrack({
+                                id: String(item.id),
+                                title: item.title,
+                                artist: item.creator_name,
+                                album: item.category || 'Beatwave Showcase',
+                                duration: item.duration_seconds || 180,
+                                url: item.media_url,
+                                coverArt: item.thumbnail_url || '/images/beatwave-album.png',
+                                bpm: item.bpm || 120,
+                                key: item.musical_key || 'C Major'
+                              });
+                              showToast(`Loaded "${item.title}" into Beatwave Studio Player`, 'success');
+                            }}
+                            className="p-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg border border-indigo-300"
+                            title="Play in Sovereign Beatwave Player (DAW Equalizer & Stems)"
+                          >
+                            <Music className="w-3.5 h-3.5 text-indigo-700" />
+                          </button>
+                        )}
+
+                        {/* African Voice Line Shoutout Trigger */}
                         <button
                           onClick={() => audioEngine.playVoiceLine((item.voice_prompt as AfricanVoiceLine) || 'owo_ni_koko')}
                           className="p-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-lg border border-slate-300"
-                          title={`Voice FX: ${item.voice_prompt}`}
+                          title={`Voice Line FX Shoutout: ${item.voice_prompt}`}
                         >
                           <Volume2 className="w-3.5 h-3.5 text-purple-700" />
                         </button>
@@ -920,14 +1094,22 @@ export const MasterStreamingMediaConsole: React.FC = () => {
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
-                  <label className="font-bold text-slate-900 block mb-1">Category</label>
-                  <input
-                    type="text"
-                    value={formData.category}
-                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                    className="w-full p-2.5 font-bold text-slate-900 bg-white border border-slate-300 rounded-xl outline-none"
-                    placeholder="e.g. Amapiano"
-                  />
+                  <label className="font-bold text-slate-900 block mb-1 flex items-center justify-between">
+                    <span>Platform Genre *</span>
+                    <span className="text-[10px] text-indigo-700 font-mono font-bold uppercase">{currentServiceMeta.name}</span>
+                  </label>
+                  <div className="relative">
+                    <select
+                      value={formData.category}
+                      onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                      className="w-full p-2.5 pr-8 font-bold text-slate-900 bg-white border border-slate-300 rounded-xl outline-none appearance-none cursor-pointer focus:ring-2 focus:ring-indigo-500"
+                    >
+                      {(SERVICE_GENRES[activeService] || ['General']).map(genre => (
+                        <option key={genre} value={genre}>{genre}</option>
+                      ))}
+                    </select>
+                    <ChevronDown className="w-4 h-4 text-slate-600 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  </div>
                 </div>
 
                 <div>
@@ -953,6 +1135,84 @@ export const MasterStreamingMediaConsole: React.FC = () => {
                     <option value="video">VOD Video</option>
                     <option value="stream">Live HLS Stream</option>
                   </select>
+                </div>
+              </div>
+
+              {/* Album Cover / Cover Art / LP Record Sleeve Upload Section */}
+              <div className="bg-slate-50 border border-slate-300 rounded-xl p-3.5 space-y-2">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <label className="font-black text-slate-900 text-xs block">
+                      {activeService === 'beatwaveng'
+                        ? 'Album Cover / Cover Art (Record Sleeve / LP Jacket)'
+                        : 'Cover Art / Video Poster & Thumbnail'}
+                    </label>
+                    <p className="text-[11px] font-medium text-slate-700">
+                      {activeService === 'beatwaveng'
+                        ? 'Graphic design artwork, record sleeve, or physical vinyl LP packaging (JPEG, PNG, WebP).'
+                        : 'Official video poster, broadcast artwork banner, or high-res thumbnail.'}
+                    </p>
+                  </div>
+                  {formData.thumbnail_url && (
+                    <button
+                      type="button"
+                      onClick={() => setFormData({ ...formData, thumbnail_url: '' })}
+                      className="text-[11px] font-bold text-red-600 hover:text-red-700"
+                    >
+                      Remove Cover
+                    </button>
+                  )}
+                </div>
+
+                <div className="flex items-start gap-3 pt-1">
+                  {/* Thumbnail / Sleeve Image Preview Box */}
+                  <div className="w-16 h-16 rounded-xl border-2 border-dashed border-slate-300 bg-white overflow-hidden shrink-0 flex items-center justify-center relative shadow-xs">
+                    {formData.thumbnail_url ? (
+                      <img
+                        src={formData.thumbnail_url}
+                        alt="Album Cover Art"
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          (e.target as HTMLElement).style.display = 'none';
+                        }}
+                      />
+                    ) : (
+                      <div className="text-center p-1">
+                        <ImageIcon className="w-5 h-5 text-slate-400 mx-auto" />
+                        <span className="text-[9px] font-bold text-slate-500 block leading-tight mt-0.5">No Cover</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Upload Trigger & URL fallback */}
+                  <div className="flex-1 space-y-2">
+                    <div className="flex items-center gap-2">
+                      <label className="cursor-pointer px-3 py-1.5 bg-white border border-slate-300 hover:bg-slate-100 text-slate-800 rounded-lg text-xs font-bold inline-flex items-center gap-1.5 shadow-2xs transition-colors">
+                        <Upload className="w-3.5 h-3.5 text-indigo-700" />
+                        <span>
+                          {isUploadingCover
+                            ? `Uploading Cover (${coverUploadProgress}%)`
+                            : 'Upload Cover Image / LP Sleeve'}
+                        </span>
+                        <input
+                          ref={coverInputRef}
+                          type="file"
+                          accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
+                          onChange={handleCoverUpload}
+                          disabled={isUploadingCover}
+                          className="hidden"
+                        />
+                      </label>
+                      <span className="text-[11px] font-medium text-slate-600">or enter image URL:</span>
+                    </div>
+                    <input
+                      type="text"
+                      value={formData.thumbnail_url}
+                      onChange={(e) => setFormData({ ...formData, thumbnail_url: e.target.value })}
+                      className="w-full p-2 font-mono text-xs font-bold text-slate-900 bg-white border border-slate-300 rounded-lg outline-none"
+                      placeholder="e.g. /uploads/images/album-cover.jpg or https://..."
+                    />
+                  </div>
                 </div>
               </div>
 
@@ -1120,21 +1380,46 @@ export const MasterStreamingMediaConsole: React.FC = () => {
             </div>
 
             <p className="text-xs font-bold text-slate-700">
-              Direct multipart/form-data ingestion saving permanently to <code className="font-mono bg-slate-100 p-1 rounded">public/uploads/media/</code>.
+              Direct multipart/form-data ingestion saving permanently to Express backend storage (<code className="font-mono bg-slate-100 p-1 rounded">/uploads/media/</code>).
             </p>
 
-            <div className="border-2 border-dashed border-slate-300 rounded-2xl p-6 text-center space-y-3 hover:border-indigo-600 transition-colors">
-              <Upload className="w-8 h-8 text-slate-400 mx-auto" />
-              <div className="text-xs font-bold text-slate-800">
-                Choose an audio master (.mp3, .wav), stem archive, or video (.mp4)
+            {/* Option 1: Audio Master / Video File */}
+            <div className="border-2 border-dashed border-slate-300 rounded-2xl p-4 text-center space-y-2 hover:border-indigo-600 transition-colors">
+              <Upload className="w-6 h-6 text-indigo-700 mx-auto" />
+              <div className="text-xs font-black text-slate-900">
+                Audio Master Track / Video File (.mp3, .wav, .flac, .mp4)
               </div>
+              <p className="text-[11px] font-medium text-slate-600">
+                Audio stem archives, master mixes, or video broadcasts.
+              </p>
               <input
                 ref={fileInputRef}
                 type="file"
                 accept="audio/*,video/*"
                 onChange={handleFileUpload}
                 disabled={isUploading}
-                className="text-xs font-bold text-slate-700 cursor-pointer"
+                className="text-xs font-bold text-slate-700 cursor-pointer block mx-auto"
+              />
+            </div>
+
+            {/* Option 2: Album Cover / Record Sleeve / LP Jacket */}
+            <div className="border-2 border-dashed border-slate-300 rounded-2xl p-4 text-center space-y-2 hover:border-purple-600 transition-colors">
+              <ImageIcon className="w-6 h-6 text-purple-700 mx-auto" />
+              <div className="text-xs font-black text-slate-900">
+                Album Cover / Cover Art (Record Sleeve / LP Jacket)
+              </div>
+              <p className="text-[11px] font-medium text-slate-600">
+                Graphic design album art or physical vinyl packaging (JPEG, PNG, WebP).
+              </p>
+              <input
+                type="file"
+                accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
+                onChange={(e) => {
+                  handleCoverUpload(e);
+                  setIsUploadModalOpen(false);
+                }}
+                disabled={isUploadingCover}
+                className="text-xs font-bold text-slate-700 cursor-pointer block mx-auto"
               />
             </div>
 
