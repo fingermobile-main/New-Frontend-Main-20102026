@@ -16,7 +16,7 @@ const LegalIndexPage: React.FC = () => {
     {
       icon: <DocumentIcon className="w-8 h-8 text-emerald-600" />,
       title: 'Platform Service of Use',
-      description: 'Statutory agreement: GraceLink Business Technologies Group.., Singapore governing law, FIC token rules, and AI creation.',
+      description: 'Statutory agreement: GraceLink Ltd., Singapore governing law, FIC token rules, and AI creation.',
       link: '/platform-service-of-use',
       badge: 'v2.2.0'
     },
