@@ -1969,23 +1969,12 @@ export const ForumPage: React.FC = () => {
 
       {/* TOP NAVIGATION & LEVEL 2 NAVBAR */}
       <header className="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-xs">
-        {/* Header Container - Adaptive Left clearance pl-14 sm:pl-56 when Sovereign Burger Trigger is active */}
-        <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto w-full pl-14 sm:pl-56 pr-2 sm:px-6 lg:px-8">
+        {/* Header Container - Adaptive Left clearance pl-14 sm:pl-32 for Sovereign Burger Trigger */}
+        <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto w-full pl-14 sm:pl-32 pr-2 sm:px-6 lg:px-8">
           {/* Row 1 (H1 Header Row): Facebook-Style Clean Header */}
           <div className="flex items-center justify-between h-14 sm:h-16 gap-1 sm:gap-2 min-w-0 max-w-full">
-            {/* Left Section: 1. Burger Menu Trigger, 2. Logo, 3. Brand Wordmark */}
-            <div className="flex items-center gap-1.5 sm:gap-3 shrink min-w-0">
-              {/* Dedicated Header Burger Menu Trigger Button (Both Mobile & Desktop) */}
-              <button
-                type="button"
-                onClick={() => window.dispatchEvent(new CustomEvent('toggle-drawer-menu'))}
-                className="p-1.5 sm:p-2 rounded-xl text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 transition cursor-pointer flex items-center justify-center shrink-0 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                aria-label="Toggle Platform Navigation Menu"
-                title="Open Platform Mega Menu (385 Pages)"
-              >
-                <Bars3Icon className="w-5 h-5 text-slate-900 dark:text-white" />
-              </button>
-
+            {/* Left Section: 1. Logo, 2. Brand Wordmark (Sovereign Trigger sits at top-left clearance) */}
+            <div className="flex items-center gap-2 sm:gap-3 shrink min-w-0">
               {/* 1. Logo (Click to View / Enlarge & Download in HD formats) */}
               <button
                 type="button"
@@ -2052,17 +2041,17 @@ export const ForumPage: React.FC = () => {
                 <MagnifyingGlassIcon className="w-5 h-5" />
               </button>
 
-              {/* Go Live Button */}
+              {/* Go Live Button (Desktop only on top bar; mobile uses bottom dock or drawer) */}
               {user && (
                 <button
                   type="button"
                   onClick={() => setIsLiveStudioOpen(true)}
-                  className="p-1.5 sm:px-3 sm:py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl transition flex items-center gap-1.5 shadow-sm cursor-pointer"
+                  className="hidden sm:flex px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl transition items-center gap-1.5 shadow-sm cursor-pointer shrink-0"
                   title="Launch WebRTC Live Studio Broadcast"
                   aria-label="Go Live"
                 >
                   <SignalIcon className="w-4 h-4 animate-pulse shrink-0" />
-                  <span className="hidden sm:inline text-xs font-bold">Go Live</span>
+                  <span className="text-xs font-bold">Go Live</span>
                 </button>
               )}
 
@@ -2093,17 +2082,17 @@ export const ForumPage: React.FC = () => {
                 </button>
               )}
 
-              {/* Quick LogOut (Visible on mobile & desktop for authenticated members) */}
+              {/* Quick LogOut (Visible on desktop; mobile accesses via drawer menu or profile) */}
               {user && (
                 <button
                   type="button"
                   onClick={handleLogout}
-                  className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/60 dark:hover:bg-rose-900/80 border border-rose-300 dark:border-rose-700/70 text-rose-700 dark:text-rose-300 hover:text-rose-900 font-extrabold text-xs transition shadow-xs cursor-pointer whitespace-nowrap"
+                  className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/60 dark:hover:bg-rose-900/80 border border-rose-300 dark:border-rose-700/70 text-rose-700 dark:text-rose-300 hover:text-rose-900 font-extrabold text-xs transition shadow-xs cursor-pointer whitespace-nowrap shrink-0"
                   title="Log Out of FingerMobile"
                   aria-label="Log Out"
                 >
                   <ArrowRightOnRectangleIcon className="w-4 h-4 text-rose-600 dark:text-rose-400 shrink-0" />
-                  <span className="hidden sm:inline">Log Out</span>
+                  <span>Log Out</span>
                 </button>
               )}
 
