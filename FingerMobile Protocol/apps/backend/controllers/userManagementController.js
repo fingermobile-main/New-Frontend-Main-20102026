@@ -1,5 +1,5 @@
-const { socialDb, pool } = require('../db');
-const db = socialDb || pool;
+const { pool } = require('../db');
+const db = pool;
 const logger = require('../utils/logger');
 
 // Resilient in-memory fallback matching http://localhost:3000/profile Source of Truth
