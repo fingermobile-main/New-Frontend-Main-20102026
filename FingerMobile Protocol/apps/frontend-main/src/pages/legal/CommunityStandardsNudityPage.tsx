@@ -24,7 +24,7 @@ const CommunityStandardsNudityPage: React.FC = () => {
             applies.
           </p>
           <p className="text-xs text-slate-700 mt-3">
-            Effective Date: October 14, 2026 &nbsp;·&nbsp; Policy Version: v1.0.0 &nbsp;·&nbsp; Governing Authority: FingerMobile Protocol (GraceLink Ltd.)
+            Effective Date: October 14, 2026 &nbsp;·&nbsp; Policy Version: v1.0.0 &nbsp;·&nbsp; Governing Authority: FingerMobile Protocol (GraceLink Business Technologies Group..)
           </p>
         </div>
 

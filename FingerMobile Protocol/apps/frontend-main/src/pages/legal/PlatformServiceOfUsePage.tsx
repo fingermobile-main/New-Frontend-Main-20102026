@@ -476,7 +476,7 @@ const PlatformServiceOfUsePage: React.FC = () => {
 
               <div className="mt-6 pt-4 border-t border-slate-200 dark:border-slate-800">
                 <div className="text-xs text-slate-700 dark:text-slate-300 space-y-1">
-                  <p><strong>Operator:</strong> GraceLink Ltd.</p>
+                  <p><strong>Operator:</strong> GraceLink Business Technologies Group..</p>
                   <p><strong>Jurisdiction:</strong> Singapore</p>
                   <p><strong>Effective:</strong> Oct 9, 2026</p>
                 </div>
