@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const speakeasy = require('speakeasy');
+const phoneIntelligenceService = require('../services/PhoneIntelligenceService');
 
 // Lazy-load services and logger to avoid circular dependencies
 let logger = null;
@@ -88,6 +89,35 @@ router.post('/register', async (req, res) => {
     // Determine contact fields
     const effectivePhone = (phone && phone.trim()) || '';
     const cleanPhoneDigits = effectivePhone.replace(/[^0-9]/g, '');
+
+    // Phone validation & intelligence screening (PhoneInfoga Engine)
+    let verifiedPhone = effectivePhone;
+    let phoneCarrier = null;
+    let phoneLineType = null;
+    let phoneRiskScore = 0;
+
+    if (effectivePhone) {
+      const phoneIntel = phoneIntelligenceService.analyzeFast(effectivePhone, 'NG');
+      if (phoneIntel.isValid) {
+        verifiedPhone = phoneIntel.e164;
+        phoneCarrier = phoneIntel.carrier;
+        phoneLineType = phoneIntel.lineType;
+        phoneRiskScore = phoneIntel.riskScore;
+
+        if (phoneIntel.isDisposable) {
+          return res.status(400).json({
+            success: false,
+            message: 'Virtual burner and disposable numbers are not permitted. Please register with a verified mobile operator number.'
+          });
+        }
+      } else if (cleanPhoneDigits.length > 5) {
+        return res.status(400).json({
+          success: false,
+          message: 'Invalid phone number format. Please provide a valid mobile number with country code.'
+        });
+      }
+    }
+
     const effectiveEmail = (email && email.trim())
       ? email.toLowerCase().trim()
       : (cleanPhoneDigits ? `user_${cleanPhoneDigits}@fingermobileprotocol.com` : `user_${Date.now()}@fingermobileprotocol.com`);
@@ -164,10 +194,10 @@ router.post('/register', async (req, res) => {
 
       // Create user
       const newUser = await client.query(
-        `INSERT INTO users (username, first_name, last_name, display_name, email, phone, password_hash, role, email_verified, phone_verified, two_factor_enabled, onboarding_completed, created_at, updated_at)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $9, FALSE, TRUE, NOW(), NOW())
-         RETURNING id, username, first_name, last_name, display_name, email, phone, role, email_verified, phone_verified, onboarding_completed`,
-        [finalUsername, effectiveFirstName, effectiveLastName, effectiveDisplayName, effectiveEmail, effectivePhone, hashedPassword, effectiveRole, autoVerify]
+        `INSERT INTO users (username, first_name, last_name, display_name, email, phone, password_hash, role, email_verified, phone_verified, two_factor_enabled, onboarding_completed, phone_carrier, phone_line_type, phone_risk_score, created_at, updated_at)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $9, FALSE, TRUE, $10, $11, $12, NOW(), NOW())
+         RETURNING id, username, first_name, last_name, display_name, email, phone, role, email_verified, phone_verified, onboarding_completed, phone_carrier, phone_line_type, phone_risk_score`,
+        [finalUsername, effectiveFirstName, effectiveLastName, effectiveDisplayName, effectiveEmail, verifiedPhone, hashedPassword, effectiveRole, autoVerify, phoneCarrier, phoneLineType, phoneRiskScore]
       );
 
       createdUser = newUser.rows[0];
