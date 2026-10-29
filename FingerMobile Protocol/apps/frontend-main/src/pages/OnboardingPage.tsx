@@ -38,6 +38,7 @@ import { CESFormulaCard } from '../components/onboarding/CESFormulaCard';
 import { CountryAvailabilityData, CreatorTier } from '../types/creatorOnboarding';
 import userProfileSyncService from '../services/UserProfileSyncService';
 import AuthBrandingPanel from '../components/auth/AuthBrandingPanel';
+import QRCodeDisplay from '../components/common/QRCodeDisplay';
 
 export const ONBOARDING_BACKGROUNDS = {
   // FingerMobile Login screen Background image (from Assets/WebP converted Images)
@@ -994,12 +995,13 @@ const OnboardingPage: React.FC = () => {
                       <li>Click "Verify" to complete setup</li>
                     </ol>
                     
-                    <div className="mt-4 flex justify-center">
-                      <div className="bg-white p-4 border-2 border-dashed border-gray-300 rounded-lg">
-                        <div className="bg-gray-200 border-2 border-dashed rounded-xl w-48 h-48 flex items-center justify-center">
-                          <span className="text-slate-700">QR Code</span>
-                        </div>
-                      </div>
+                    <div className="mt-4 flex flex-col items-center justify-center">
+                      <QRCodeDisplay
+                        data={`otpauth://totp/FingerMobile:${encodeURIComponent(tempData.email || state.progress?.profileData?.email || 'member')}?secret=${tempData.twoFactorSecret || 'JBSWY3DPEHPK3PXP'}&issuer=FingerMobile`}
+                        size={180}
+                        title="Scan with Authenticator"
+                        subtitle="Compatible with Google Authenticator, Authy, 1Password & Microsoft Authenticator"
+                      />
                     </div>
                     
                     <div className="mt-4">

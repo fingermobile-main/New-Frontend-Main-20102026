@@ -5,6 +5,7 @@ import apiService from '../services/apiService';
 import { Button } from '../components/ui/Button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/Card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/Tabs';
+import QRCodeDisplay from '../components/common/QRCodeDisplay';
 import {
   ArrowUpIcon,
   ArrowDownIcon,
@@ -2451,11 +2452,12 @@ const WalletPage: React.FC = () => {
           <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl text-center space-y-4 border border-slate-300 animate-in fade-in">
             <h3 className="text-xl font-black text-slate-900">Receive FIC</h3>
             <p className="text-xs font-medium text-slate-700">Share your protocol wallet address to receive funds.</p>
-            <div className="p-4 bg-slate-50 border border-slate-300 rounded-2xl my-4 text-center">
-              <div className="w-32 h-32 mx-auto bg-slate-200 rounded-xl flex items-center justify-center mb-3 border border-slate-300">
-                <QrCodeIcon className="w-16 h-16 text-slate-700" />
-              </div>
-              <p className="text-xs font-mono font-bold text-slate-900 break-all select-all">{walletAddress || '0xDEF482...987A21'}</p>
+            <div className="p-4 bg-slate-50 border border-slate-300 rounded-2xl my-4 flex flex-col items-center justify-center">
+              <QRCodeDisplay
+                data={walletAddress || '0xDEF482a876123987A21098B65321'}
+                size={180}
+                showActions={true}
+              />
             </div>
             <div className="flex gap-3 pt-3">
               <Button type="button" variant="outline" className="flex-1 rounded-2xl border-slate-300 text-slate-800 font-bold hover:bg-slate-50 cursor-pointer min-h-[44px]" onClick={() => setShowReceiveModal(false)}>

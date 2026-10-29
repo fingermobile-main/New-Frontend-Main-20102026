@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import QRCodeDisplay from './common/QRCodeDisplay';
 interface QRCodeModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -73,15 +74,11 @@ const QRCodeModal: React.FC<QRCodeModalProps> = ({
           <div className="p-6 space-y-6">
             {/* QR Code Display */}
             <div className="flex justify-center">
-              <div className="bg-white p-4 rounded-lg border-2 border-slate-300 shadow-sm">
-                <img
-                  src={qrCodeUrl}
-                  alt="QR Code"
-                  width={size}
-                  height={size}
-                  className="rounded"
-                />
-              </div>
+              <QRCodeDisplay
+                data={data}
+                size={size}
+                showActions={false}
+              />
             </div>
 
             {/* Data Preview */}

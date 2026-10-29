@@ -3,6 +3,7 @@ import MainLayout from '../components/layout/MainLayout';
 import apiService from '../services/apiService';
 import { useAppContext } from '../contexts/AppContext';
 import { useAuth } from '../contexts/AuthContext';
+import QRCodeDisplay from '../components/common/QRCodeDisplay';
 import {
   LinkIcon,
   TrashIcon,
@@ -565,13 +566,12 @@ const PaylinksPage: React.FC = () => {
               </div>
 
               {/* QR Render */}
-              <div className="p-6 bg-slate-50 rounded-2xl border border-slate-300 inline-block">
-                <div className="w-48 h-48 bg-white border-2 border-slate-900 p-3 rounded-xl flex items-center justify-center shadow-inner mx-auto">
-                  <div className="text-center space-y-2">
-                    <QrCodeIcon className="w-24 h-24 text-slate-900 mx-auto" />
-                    <span className="block text-[10px] font-mono font-bold text-slate-700">{showQrModal.id}</span>
-                  </div>
-                </div>
+              <div className="flex justify-center my-2">
+                <QRCodeDisplay
+                  data={showQrModal.url}
+                  size={180}
+                  showActions={false}
+                />
               </div>
 
               <div className="space-y-1">

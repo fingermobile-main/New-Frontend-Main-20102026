@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import QRCodeDisplay from './common/QRCodeDisplay';
 
 interface TwoFactorAuthSetupProps {
   userId?: string;
@@ -200,8 +201,12 @@ const TwoFactorAuthSetup: React.FC<TwoFactorAuthSetupProps> = ({
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Scan QR Code</h3>
               <p className="text-sm text-gray-600 mb-4">Open your authenticator app and scan this QR code</p>
 
-              <div className="inline-block bg-white p-4 rounded-lg border-2 border-slate-300 shadow-sm mb-4">
-                <img src={qrCodeUrl} alt="QR Code" width={200} height={200} className="rounded"  />
+              <div className="flex justify-center mb-4">
+                <QRCodeDisplay
+                  data={`otpauth://totp/FingerMobile:${encodeURIComponent(userId || 'member')}?secret=${secretKey}&issuer=FingerMobile`}
+                  size={200}
+                  showActions={false}
+                />
               </div>
 
               <div className="bg-gray-50 rounded-lg p-4">

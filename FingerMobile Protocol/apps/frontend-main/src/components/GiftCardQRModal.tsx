@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import QRCodeDisplay from './common/QRCodeDisplay';
 interface GiftCardQRModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -123,15 +124,11 @@ const GiftCardQRModal: React.FC<GiftCardQRModalProps> = ({
                 </div>
               ) : (
                 <div className="flex justify-center">
-                  <div className="bg-white p-4 rounded-lg border-2 border-slate-300 shadow-sm">
-                    <img
-                      src={qrCodeUrl}
-                      alt="Gift Card QR Code"
-                      width={200}
-                      height={200}
-                      className="rounded"
-                    />
-                  </div>
+                  <QRCodeDisplay
+                    data={giftCardData?.code || mockGiftCard.code}
+                    size={200}
+                    showActions={false}
+                  />
                 </div>
               )}
             </div>

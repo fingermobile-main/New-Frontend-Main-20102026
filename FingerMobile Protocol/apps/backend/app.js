@@ -764,6 +764,10 @@ app.use('/api/courses', courseContentRoutes); // Also expose course-content rout
 // NEW: Add biometrics route alias to fix frontend/backend misalignment
 app.use('/api/biometrics', biometricRoutes); // Also expose biometric routes as /api/biometrics to match frontend expectations
 
+// Universal QR Code Engine Routes
+const qrRoutes = require('./routes/qr');
+app.use('/api/qr', qrRoutes);
+
 // NEW: Add voice lines route alias to fix frontend/backend misalignment
 app.use('/api/voice-lines', voicelinesRoutes); // Also expose voicelines routes as /api/voice-lines to match frontend expectations
 

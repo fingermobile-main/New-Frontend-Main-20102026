@@ -301,6 +301,10 @@ app.use('/api/auth', sensitiveLimiter, authRoutes);
 app.use('/api/biometrics', sensitiveLimiter, biometricRoutes);
 app.use('/api/biometric', sensitiveLimiter, biometricRoutes);
 
+// Universal QR Code Engine Routes (Tier 1 & Tier 2)
+const qrRoutes = require('./routes/qr');
+app.use('/api/qr', qrRoutes);
+
 // Branding & 48-Hour Rotation Routes
 const brandingRoutes = require('./routes/brandingRoutes');
 const brandingRotationService = require('./services/brandingRotationService');

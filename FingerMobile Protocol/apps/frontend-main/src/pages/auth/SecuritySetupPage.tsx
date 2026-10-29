@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { motion } from 'framer-motion';
 import { Shield, Fingerprint, Smartphone, Eye, EyeOff, CheckCircle } from 'lucide-react';
+import { fingerBioAuth } from '../../services/FingerBioSDK';
 
 const SecuritySetupPage = () => {
   const navigate = useNavigate();
@@ -45,7 +46,18 @@ const SecuritySetupPage = () => {
   }, [step]);
 
   const handleNext = async () => {
-    if (step < 3) {
+    if (step === 1 && enableBiometrics) {
+      setIsLoading(true);
+      try {
+        await fingerBioAuth.registerHardwareBiometrics();
+      } catch (err: any) {
+        // Non-blocking so user can still proceed if device doesn't support it
+        console.warn('Hardware biometric registration fallback:', err?.message);
+      } finally {
+        setIsLoading(false);
+      }
+      setStep(step + 1);
+    } else if (step < 3) {
       setStep(step + 1);
     } else {
       // Complete security setup
