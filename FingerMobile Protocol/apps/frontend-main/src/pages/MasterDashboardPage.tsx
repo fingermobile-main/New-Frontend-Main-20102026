@@ -1394,7 +1394,7 @@ const MasterDashboardPage: React.FC = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div
             onClick={() => setActiveTab('financials')}
-            className="bg-white/5 hover:bg-white/10 border border-white/10 hover:border-amber-400/50 rounded-2xl p-4 transition-all duration-200 cursor-pointer group"
+            className="bg-white/10 hover:bg-white/15 border border-white/20 hover:border-amber-400/60 rounded-2xl p-4 transition-all duration-200 cursor-pointer group"
           >
             <div className="flex items-center justify-between mb-3">
               <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center justify-center group-hover:scale-105 transition-transform">
@@ -1404,20 +1404,20 @@ const MasterDashboardPage: React.FC = () => {
                 TREASURY
               </span>
             </div>
-            <h4 className="font-bold text-sm text-slate-900 group-hover:text-amber-300 transition-colors">
+            <h4 className="font-black text-sm text-white group-hover:text-amber-300 transition-colors">
               FIC Minting & Reserves
             </h4>
-            <p className="text-xs text-slate-700 mt-1 line-clamp-2">
+            <p className="text-xs text-slate-100 font-medium mt-1 line-clamp-2">
               100M Total Minted, 38.42M circulating, cryptographic audit ledger & real-time allocation forms.
             </p>
-            <div className="mt-3 text-[11px] font-semibold text-amber-400 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+            <div className="mt-3 text-[11px] font-bold text-amber-300 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
               Manage FIC Minting &rarr;
             </div>
           </div>
 
           <div
             onClick={() => setActiveTab('financials')}
-            className="bg-white/5 hover:bg-white/10 border border-white/10 hover:border-emerald-400/50 rounded-2xl p-4 transition-all duration-200 cursor-pointer group"
+            className="bg-white/10 hover:bg-white/15 border border-white/20 hover:border-emerald-400/60 rounded-2xl p-4 transition-all duration-200 cursor-pointer group"
           >
             <div className="flex items-center justify-between mb-3">
               <div className="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center group-hover:scale-105 transition-transform">
@@ -1427,20 +1427,20 @@ const MasterDashboardPage: React.FC = () => {
                 CBN COMPLIANT
               </span>
             </div>
-            <h4 className="font-bold text-sm text-slate-900 group-hover:text-emerald-300 transition-colors">
+            <h4 className="font-black text-sm text-white group-hover:text-emerald-300 transition-colors">
               FIAT Rules & Payout Rails
             </h4>
-            <p className="text-xs text-slate-700 mt-1 line-clamp-2">
+            <p className="text-xs text-slate-100 font-medium mt-1 line-clamp-2">
               Fixed ₦100 parity safeguards, NIBSS, Paystack & Flutterwave rails with KYC Tier transfer ceilings.
             </p>
-            <div className="mt-3 text-[11px] font-semibold text-emerald-400 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+            <div className="mt-3 text-[11px] font-bold text-emerald-300 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
               Configure FIAT Rails &rarr;
             </div>
           </div>
 
           <div
             onClick={() => setActiveTab('financials')}
-            className="bg-white/5 hover:bg-white/10 border border-white/10 hover:border-indigo-400/50 rounded-2xl p-4 transition-all duration-200 cursor-pointer group"
+            className="bg-white/10 hover:bg-white/15 border border-white/20 hover:border-indigo-400/60 rounded-2xl p-4 transition-all duration-200 cursor-pointer group"
           >
             <div className="flex items-center justify-between mb-3">
               <div className="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 flex items-center justify-center group-hover:scale-105 transition-transform">
@@ -1450,20 +1450,20 @@ const MasterDashboardPage: React.FC = () => {
                 70/30 SPLIT
               </span>
             </div>
-            <h4 className="font-bold text-sm text-slate-900 group-hover:text-indigo-300 transition-colors">
+            <h4 className="font-black text-sm text-white group-hover:text-indigo-300 transition-colors">
               Creator Monetization Engine
             </h4>
-            <p className="text-xs text-slate-700 mt-1 line-clamp-2">
+            <p className="text-xs text-slate-100 font-medium mt-1 line-clamp-2">
               0.05 FIC/stream payout thresholds, tipping fee overrides & emergency monetization killswitch.
             </p>
-            <div className="mt-3 text-[11px] font-semibold text-indigo-400 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+            <div className="mt-3 text-[11px] font-bold text-indigo-300 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
               Monetization Rules &rarr;
             </div>
           </div>
 
           <div
             onClick={() => setActiveTab('financials')}
-            className="bg-white/5 hover:bg-white/10 border border-white/10 hover:border-cyan-400/50 rounded-2xl p-4 transition-all duration-200 cursor-pointer group"
+            className="bg-white/10 hover:bg-white/15 border border-white/20 hover:border-cyan-400/60 rounded-2xl p-4 transition-all duration-200 cursor-pointer group"
           >
             <div className="flex items-center justify-between mb-3">
               <div className="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 flex items-center justify-center group-hover:scale-105 transition-transform">
@@ -1473,13 +1473,13 @@ const MasterDashboardPage: React.FC = () => {
                 RBAC BRIDGE
               </span>
             </div>
-            <h4 className="font-bold text-sm text-slate-900 group-hover:text-cyan-300 transition-colors">
+            <h4 className="font-black text-sm text-white group-hover:text-cyan-300 transition-colors">
               Subscription Access Bridge
             </h4>
-            <p className="text-xs text-slate-700 mt-1 line-clamp-2">
+            <p className="text-xs text-slate-100 font-medium mt-1 line-clamp-2">
               Ties subscriptions directly to member roles and unlocks 20 gated platform modules and screens.
             </p>
-            <div className="mt-3 text-[11px] font-semibold text-cyan-400 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+            <div className="mt-3 text-[11px] font-bold text-cyan-300 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
               Inspect Access Gates &rarr;
             </div>
           </div>
@@ -1499,7 +1499,7 @@ const MasterDashboardPage: React.FC = () => {
                 ACTIVE V2.4
               </span>
             </div>
-            <p className="text-xs text-indigo-200/80 mt-1">
+            <p className="text-xs text-indigo-100 font-medium mt-1">
               Collaborator seat quotas (5/10 active), 45+ permission catalog, gated site pages & custom member badge privilege suite.
             </p>
           </div>
@@ -1508,7 +1508,7 @@ const MasterDashboardPage: React.FC = () => {
               setActiveTab('governance-ops');
               setConsoleSearchTerm('');
             }}
-            className="px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-bold transition text-slate-700 border border-white/20 shrink-0 cursor-pointer"
+            className="px-3.5 py-1.5 rounded-xl bg-white/15 hover:bg-white/25 text-xs font-bold transition text-white border border-white/30 shrink-0 cursor-pointer shadow-sm"
           >
             All Governance Consoles &rarr;
           </button>
@@ -1517,30 +1517,30 @@ const MasterDashboardPage: React.FC = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div
             onClick={() => navigate('/settings/roles-permissions')}
-            className="bg-white/5 hover:bg-white/10 border border-white/10 hover:border-indigo-400/50 rounded-2xl p-4 transition-all duration-200 cursor-pointer group"
+            className="bg-white/10 hover:bg-white/15 border border-white/20 hover:border-indigo-400/60 rounded-2xl p-4 transition-all duration-200 cursor-pointer group"
           >
             <div className="flex items-center justify-between mb-3">
               <div className="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 flex items-center justify-center group-hover:scale-105 transition-transform">
                 <Shield className="w-5 h-5" />
               </div>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
                 5 / 10 SEATS
               </span>
             </div>
-            <h4 className="font-bold text-sm text-slate-900 group-hover:text-indigo-300 transition-colors">
+            <h4 className="font-black text-sm text-white group-hover:text-indigo-300 transition-colors">
               Roles & Permissions
             </h4>
-            <p className="text-xs text-slate-700 mt-1 line-clamp-2">
+            <p className="text-xs text-slate-100 font-medium mt-1 line-clamp-2">
               Enterprise FingerMobile collaborator seats, 45+ granular permissions, custom roles & location scopes.
             </p>
-            <div className="mt-3 text-[11px] font-semibold text-indigo-400 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+            <div className="mt-3 text-[11px] font-bold text-indigo-300 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
               Launch RBAC Console &rarr;
             </div>
           </div>
 
           <div
             onClick={() => navigate('/contacts/site-members/site-member-access')}
-            className="bg-white/5 hover:bg-white/10 border border-white/10 hover:border-amber-400/50 rounded-2xl p-4 transition-all duration-200 cursor-pointer group"
+            className="bg-white/10 hover:bg-white/15 border border-white/20 hover:border-amber-400/60 rounded-2xl p-4 transition-all duration-200 cursor-pointer group"
           >
             <div className="flex items-center justify-between mb-3">
               <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center justify-center group-hover:scale-105 transition-transform">
@@ -1550,20 +1550,20 @@ const MasterDashboardPage: React.FC = () => {
                 10 GATED PAGES
               </span>
             </div>
-            <h4 className="font-bold text-sm text-slate-900 group-hover:text-amber-300 transition-colors">
+            <h4 className="font-black text-sm text-white group-hover:text-amber-300 transition-colors">
               Site Member Access
             </h4>
-            <p className="text-xs text-slate-700 mt-1 line-clamp-2">
+            <p className="text-xs text-slate-100 font-medium mt-1 line-clamp-2">
               Gate site pages to specific member roles, VIP cohorts & monetization pricing plans.
             </p>
-            <div className="mt-3 text-[11px] font-semibold text-amber-400 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+            <div className="mt-3 text-[11px] font-bold text-amber-300 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
               Manage Page Gates &rarr;
             </div>
           </div>
 
           <div
             onClick={() => navigate('/settings/badges')}
-            className="bg-white/5 hover:bg-white/10 border border-white/10 hover:border-rose-400/50 rounded-2xl p-4 transition-all duration-200 cursor-pointer group"
+            className="bg-white/10 hover:bg-white/15 border border-white/20 hover:border-rose-400/60 rounded-2xl p-4 transition-all duration-200 cursor-pointer group"
           >
             <div className="flex items-center justify-between mb-3">
               <div className="w-10 h-10 rounded-xl bg-rose-500/20 text-rose-400 border border-rose-500/30 flex items-center justify-center group-hover:scale-105 transition-transform">
@@ -1573,20 +1573,20 @@ const MasterDashboardPage: React.FC = () => {
                 STUDIO ACTIVE
               </span>
             </div>
-            <h4 className="font-bold text-sm text-slate-900 group-hover:text-rose-300 transition-colors">
+            <h4 className="font-black text-sm text-white group-hover:text-rose-300 transition-colors">
               Member Badges Studio
             </h4>
-            <p className="text-xs text-slate-700 mt-1 line-clamp-2">
+            <p className="text-xs text-slate-100 font-medium mt-1 line-clamp-2">
               Design SVG badges, customize hex styling, unlock page privileges & assign members.
             </p>
-            <div className="mt-3 text-[11px] font-semibold text-rose-400 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+            <div className="mt-3 text-[11px] font-bold text-rose-300 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
               Launch Badges Studio &rarr;
             </div>
           </div>
 
           <div
             onClick={() => navigate('/settings-hub')}
-            className="bg-white/5 hover:bg-white/10 border border-white/10 hover:border-cyan-400/50 rounded-2xl p-4 transition-all duration-200 cursor-pointer group"
+            className="bg-white/10 hover:bg-white/15 border border-white/20 hover:border-cyan-400/60 rounded-2xl p-4 transition-all duration-200 cursor-pointer group"
           >
             <div className="flex items-center justify-between mb-3">
               <div className="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 flex items-center justify-center group-hover:scale-105 transition-transform">
@@ -1596,13 +1596,13 @@ const MasterDashboardPage: React.FC = () => {
                 12 MODULES
               </span>
             </div>
-            <h4 className="font-bold text-sm text-slate-900 group-hover:text-cyan-300 transition-colors">
+            <h4 className="font-black text-sm text-white group-hover:text-cyan-300 transition-colors">
               Settings Hub
             </h4>
-            <p className="text-xs text-slate-700 mt-1 line-clamp-2">
+            <p className="text-xs text-slate-100 font-medium mt-1 line-clamp-2">
               Central enterprise configuration console across platform modules & features.
             </p>
-            <div className="mt-3 text-[11px] font-semibold text-cyan-400 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+            <div className="mt-3 text-[11px] font-bold text-cyan-300 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
               Open Settings Hub &rarr;
             </div>
           </div>
@@ -1622,7 +1622,7 @@ const MasterDashboardPage: React.FC = () => {
                 100% AUTO-HEALING
               </span>
             </div>
-            <p className="text-xs text-emerald-200/80 mt-1">
+            <p className="text-xs text-emerald-100 font-medium mt-1">
               Autonomous 12-hour self-healing cycles, Core Web Vitals optimization, Google/Bing search indexing, and sub-millisecond B-Tree &amp; Hash Map search indexing.
             </p>
           </div>
@@ -1636,25 +1636,25 @@ const MasterDashboardPage: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
-          <div className="bg-white/5 border border-white/10 rounded-xl p-3">
-            <span className="text-[10px] uppercase font-bold text-emerald-300">Google PSI</span>
-            <div className="text-lg font-black text-slate-700 mt-0.5">100 / 98</div>
-            <span className="text-[10px] text-emerald-400">Desktop / Mobile</span>
+          <div className="bg-white/10 border border-white/20 rounded-xl p-3 shadow-inner">
+            <span className="text-[10px] uppercase font-bold text-emerald-300 tracking-wider">Google PSI</span>
+            <div className="text-xl font-black text-white mt-0.5">100 / 98</div>
+            <span className="text-[10px] text-emerald-200 font-bold">Desktop / Mobile</span>
           </div>
-          <div className="bg-white/5 border border-white/10 rounded-xl p-3">
-            <span className="text-[10px] uppercase font-bold text-emerald-300">LCP &amp; INP</span>
-            <div className="text-lg font-black text-slate-700 mt-0.5">1.1s / 48ms</div>
-            <span className="text-[10px] text-emerald-400">Optimal CWV</span>
+          <div className="bg-white/10 border border-white/20 rounded-xl p-3 shadow-inner">
+            <span className="text-[10px] uppercase font-bold text-emerald-300 tracking-wider">LCP &amp; INP</span>
+            <div className="text-xl font-black text-white mt-0.5">1.1s / 48ms</div>
+            <span className="text-[10px] text-emerald-200 font-bold">Optimal CWV</span>
           </div>
-          <div className="bg-white/5 border border-white/10 rounded-xl p-3">
-            <span className="text-[10px] uppercase font-bold text-emerald-300">Search Engine Index</span>
-            <div className="text-lg font-black text-slate-700 mt-0.5">385 Pages</div>
-            <span className="text-[10px] text-emerald-400">100% Crawl Ready</span>
+          <div className="bg-white/10 border border-white/20 rounded-xl p-3 shadow-inner">
+            <span className="text-[10px] uppercase font-bold text-emerald-300 tracking-wider">Search Engine Index</span>
+            <div className="text-xl font-black text-white mt-0.5">385 Pages</div>
+            <span className="text-[10px] text-emerald-200 font-bold">100% Crawl Ready</span>
           </div>
-          <div className="bg-white/5 border border-white/10 rounded-xl p-3">
-            <span className="text-[10px] uppercase font-bold text-emerald-300">B-Tree Seek Latency</span>
-            <div className="text-lg font-black text-slate-700 mt-0.5">&lt; 1.5ms</div>
-            <span className="text-[10px] text-emerald-400">Zero Full Scans</span>
+          <div className="bg-white/10 border border-white/20 rounded-xl p-3 shadow-inner">
+            <span className="text-[10px] uppercase font-bold text-emerald-300 tracking-wider">B-Tree Seek Latency</span>
+            <div className="text-xl font-black text-white mt-0.5">&lt; 1.5ms</div>
+            <span className="text-[10px] text-emerald-200 font-bold">Zero Full Scans</span>
           </div>
         </div>
       </div>
