@@ -5,10 +5,14 @@ const fs = require('fs');
 const multer = require('multer');
 const controller = require('../controllers/mediaStreamingConsoleController');
 
-// Ensure upload directory exists for media & streaming
-const uploadDir = path.join(__dirname, '../public/uploads/media');
+// Ensure upload directory exists for media & streaming (both uploads/media and public/uploads/media)
+const uploadDir = path.join(__dirname, '../uploads/media');
+const publicUploadDir = path.join(__dirname, '../public/uploads/media');
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
+}
+if (!fs.existsSync(publicUploadDir)) {
+  fs.mkdirSync(publicUploadDir, { recursive: true });
 }
 
 // Multer storage engine for master audio tracks, video clips, and stems

@@ -35,12 +35,20 @@ import {
   SparklesIcon,
   XMarkIcon,
   FaceSmileIcon,
+  EyeSlashIcon,
+  PauseCircleIcon,
+  NoSymbolIcon,
+  TrashIcon,
+  FlagIcon,
+  ShieldExclamationIcon,
 } from '@heroicons/react/24/outline';
 import {
   HeartIcon as HeartSolidIcon,
   BookmarkIcon as BookmarkSolidIcon,
   CheckCircleIcon as CheckCircleSolidIcon,
 } from '@heroicons/react/24/solid';
+import { useAuth } from '../../contexts/AuthContext';
+import { getUserRoleTier, PRIMARY_ADMIN_EMAILS } from '../../services/platformRbac';
 import { FingerMobileEmojiPicker } from '../common/FingerMobileEmojiPicker';
 import { renderContentWithFingerMobileEmojis, replaceEmojisInHtml } from '../../utils/fingerMobileEmojiRenderer';
 import { sanitizeHtmlContent } from '../editor/RichTextEditor';
@@ -128,6 +136,12 @@ export interface FeedPost {
   commentsList?: FeedComment[];
   privacy?: 'public' | 'friends' | 'private';
   tipsFic?: number;
+  isFrozen?: boolean;
+  isCensored?: boolean;
+  isSuspended?: boolean;
+  isCommentsPaused?: boolean;
+  isFlagged?: boolean;
+  flagReason?: string;
 }
 
 export interface ForumPostCardProps {
@@ -156,6 +170,8 @@ export interface ForumPostCardProps {
   hideCategory?: boolean;
   // eslint-disable-next-line no-unused-vars
   onUpdatePost?: (updatedPost: FeedPost) => void;
+  // eslint-disable-next-line no-unused-vars
+  onDeletePost?: (postId: string) => void;
 }
 
 // =============================================================================
@@ -373,8 +389,46 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
   triggerToast,
   hideCategory = false,
   onUpdatePost,
+  onDeletePost,
 }) => {
   const navigate = useNavigate();
+
+  // User Authentication & RBAC Hierarchy
+  const { user } = useAuth();
+  const userEmail = (user?.email || '').toLowerCase().trim();
+  const roleTier = getUserRoleTier(user as any);
+
+  const isSuperAdmin =
+    PRIMARY_ADMIN_EMAILS.includes(userEmail) ||
+    roleTier === 'PRIMARY_SUPER_ADMIN' ||
+    user?.role === 'super_admin' ||
+    user?.role === 'founder';
+
+  const isAdmin =
+    isSuperAdmin ||
+    user?.role === 'admin' ||
+    user?.role === 'administrator';
+
+  const isModerator =
+    isAdmin ||
+    user?.role === 'moderator' ||
+    user?.role === 'sentinel' ||
+    (Array.isArray(user?.roles) && user.roles.includes('moderator')) ||
+    (Array.isArray(user?.permissions) && user.permissions.includes('moderate'));
+
+  const isBadgeHolder =
+    isModerator ||
+    Boolean(user?.isVerified || (user as any)?.badge || (user as any)?.hallmarkTier || (user as any)?.membershipTier);
+
+  // Granular Moderation Local States
+  const [isFrozen, setIsFrozen] = useState<boolean>(Boolean(post.isFrozen));
+  const [isCensored, setIsCensored] = useState<boolean>(Boolean(post.isCensored));
+  const [isCensoredRevealed, setIsCensoredRevealed] = useState<boolean>(false);
+  const [isSuspended, setIsSuspended] = useState<boolean>(Boolean(post.isSuspended));
+  const [isCommentsPaused, setIsCommentsPaused] = useState<boolean>(Boolean(post.isCommentsPaused));
+  const [isFlagged, setIsFlagged] = useState<boolean>(Boolean(post.isFlagged));
+  const [isDeleted, setIsDeleted] = useState<boolean>(false);
+  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState<boolean>(false);
 
   // Local state for smooth reactive fallback if parent doesn't override
   const [isLiked, setIsLiked] = useState<boolean>(Boolean(post.isLiked));
@@ -552,6 +606,10 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
   };
 
   const handleLikeClick = () => {
+    if (isFrozen) {
+      notify('This post is frozen by moderators. Upvotes are locked.', 'warning');
+      return;
+    }
     const nextState = !isLiked;
     setIsLiked(nextState);
     setLikesCount((prev) => (nextState ? prev + 1 : Math.max(0, prev - 1)));
@@ -578,6 +636,10 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
   };
 
   const handleTipClick = () => {
+    if (isFrozen) {
+      notify('This post is frozen by moderators. Micro-tipping is locked.', 'warning');
+      return;
+    }
     setActiveMenuOpen(false);
     setIsTipModalOpen(true);
   };
@@ -669,6 +731,14 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
 
   const handleCommentSubmit = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
+    if (isFrozen) {
+      notify('This post is frozen by moderators. Comments are locked.', 'warning');
+      return;
+    }
+    if (isCommentsPaused) {
+      notify('Commenting has been paused by moderators for this discussion.', 'warning');
+      return;
+    }
     if (!commentInput.trim()) return;
 
     const newComment: FeedComment = {
@@ -698,12 +768,77 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
     }
   };
 
+  if (isDeleted) {
+    return null;
+  }
+
   return (
     <>
       <article
         id={post.id}
         className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-300 dark:border-slate-800 p-5 shadow-xs transition hover:shadow-sm"
       >
+        {/* MODERATION COMPLIANCE BANNERS */}
+        {isSuspended && (
+          <div className="mb-4 p-3 bg-rose-50 dark:bg-rose-950/40 border border-rose-300 dark:border-rose-700 rounded-2xl flex items-center justify-between text-xs">
+            <div className="flex items-center gap-2 text-rose-950 dark:text-rose-200 font-bold">
+              <ShieldExclamationIcon className="w-5 h-5 text-rose-600 shrink-0" />
+              <span>POST SUSPENDED: This content is quarantined by community moderation.</span>
+            </div>
+            {isModerator && (
+              <button
+                type="button"
+                onClick={() => {
+                  setIsSuspended(false);
+                  notify('Post restored to public feeds', 'success');
+                  if (onUpdatePost) onUpdatePost({ ...post, isSuspended: false });
+                }}
+                className="px-2.5 py-1 bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-[11px] rounded-lg shadow-xs shrink-0 ml-2"
+              >
+                Restore Post
+              </button>
+            )}
+          </div>
+        )}
+
+        {isFrozen && (
+          <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-950/40 border border-blue-300 dark:border-blue-700 rounded-2xl flex items-center justify-between text-xs">
+            <div className="flex items-center gap-2 text-blue-950 dark:text-blue-200 font-bold">
+              <NoSymbolIcon className="w-5 h-5 text-blue-600 shrink-0" />
+              <span>POST FROZEN: Reactions, tips, and comments are locked by moderators.</span>
+            </div>
+            {isModerator && (
+              <button
+                type="button"
+                onClick={() => {
+                  setIsFrozen(false);
+                  notify('Post unfrozen', 'success');
+                  if (onUpdatePost) onUpdatePost({ ...post, isFrozen: false });
+                }}
+                className="px-2.5 py-1 bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-[11px] rounded-lg shadow-xs shrink-0 ml-2"
+              >
+                Unfreeze Post
+              </button>
+            )}
+          </div>
+        )}
+
+        {isCensored && (
+          <div className="mb-4 p-3 bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-700 rounded-2xl flex items-center justify-between text-xs">
+            <div className="flex items-center gap-2 text-amber-950 dark:text-amber-200 font-bold">
+              <EyeSlashIcon className="w-5 h-5 text-amber-600 shrink-0" />
+              <span>CENSORED (18+ COMPLIANCE): Media is blurred for sensitive content.</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => setIsCensoredRevealed(!isCensoredRevealed)}
+              className="px-2.5 py-1 bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-[11px] rounded-lg shadow-xs shrink-0 ml-2"
+            >
+              {isCensoredRevealed ? 'Hide Media' : 'Reveal Media (18+)'}
+            </button>
+          </div>
+        )}
+
         {/* Post Header: Author, Verification, Role, Timestamp, Privacy Icon, Options Menu */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -728,6 +863,12 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
                   {post.authorName}
                 </span>
                 {post.isVerified && <CheckCircleSolidIcon className="w-4 h-4 text-orange-600" />}
+                {isFlagged && (
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-100 text-amber-950 border border-amber-400">
+                    <FlagIcon className="w-3 h-3 text-amber-700" />
+                    <span>Flagged for Review</span>
+                  </span>
+                )}
                 <span className="text-xs sm:text-[13px] text-slate-700 font-mono font-medium">
                   {post.authorHandle.startsWith('@') ? post.authorHandle : `@${post.authorHandle}`}
                 </span>
@@ -777,7 +918,7 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
             </button>
 
             {activeMenuOpen && (
-              <div className="absolute right-0 top-9 w-52 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-2xl shadow-xl p-1.5 z-30 text-xs">
+              <div className="absolute right-0 top-9 w-60 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-2xl shadow-xl p-1.5 z-30 text-xs">
                 {localMediaUrls.length > 0 && (
                   <button
                     type="button"
@@ -812,19 +953,139 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
                 <button
                   type="button"
                   onClick={handleTipClick}
-                  className="w-full text-left px-3 py-2 hover:bg-amber-50 dark:hover:bg-amber-950/30 text-amber-950 dark:text-amber-300 font-bold rounded-xl flex items-center gap-2"
+                  disabled={isFrozen}
+                  className={`w-full text-left px-3 py-2 font-bold rounded-xl flex items-center gap-2 ${
+                    isFrozen
+                      ? 'opacity-50 cursor-not-allowed text-slate-400'
+                      : 'hover:bg-amber-50 dark:hover:bg-amber-950/30 text-amber-950 dark:text-amber-300'
+                  }`}
                 >
                   <SparklesIcon className="w-4 h-4 text-amber-600" />
                   <span>Send FIC Coin Tip</span>
                 </button>
-                <button
-                  type="button"
-                  onClick={handleReportClick}
-                  className="w-full text-left px-3 py-2 hover:bg-rose-50 dark:hover:bg-rose-950/30 text-rose-700 dark:text-rose-400 font-bold rounded-xl flex items-center gap-2 border-t border-slate-100 dark:border-slate-800 mt-1"
-                >
-                  <ShieldCheckIcon className="w-4 h-4 text-rose-600" />
-                  <span>Report to Sentinel</span>
-                </button>
+
+                {/* RBAC Moderation Options Section */}
+                <div className="my-1 border-t border-slate-200 dark:border-slate-800 pt-1">
+                  <div className="px-3 py-1 text-[10px] font-black uppercase tracking-wider text-slate-500">
+                    Compliance & RBAC Actions
+                  </div>
+
+                  {/* Flag Post (Badge Holders, Moderators, Admins, Super Admins) */}
+                  {isBadgeHolder && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setActiveMenuOpen(false);
+                        const next = !isFlagged;
+                        setIsFlagged(next);
+                        notify(next ? 'Post flagged for compliance review' : 'Flag removed from post', 'info');
+                        if (onUpdatePost) onUpdatePost({ ...post, isFlagged: next });
+                      }}
+                      className="w-full text-left px-3 py-2 hover:bg-amber-50 dark:hover:bg-amber-950/30 text-amber-950 dark:text-amber-300 font-bold rounded-xl flex items-center gap-2"
+                    >
+                      <FlagIcon className="w-4 h-4 text-amber-600" />
+                      <span>{isFlagged ? 'Remove Flag' : 'Flag for Moderator Review'}</span>
+                    </button>
+                  )}
+
+                  {/* Freeze Post (Moderators, Admins, Super Admins) */}
+                  {isModerator && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setActiveMenuOpen(false);
+                        const next = !isFrozen;
+                        setIsFrozen(next);
+                        notify(next ? 'Post frozen: interactions locked' : 'Post unfrozen', 'info');
+                        if (onUpdatePost) onUpdatePost({ ...post, isFrozen: next });
+                      }}
+                      className="w-full text-left px-3 py-2 hover:bg-blue-50 dark:hover:bg-blue-950/30 text-blue-950 dark:text-blue-300 font-bold rounded-xl flex items-center gap-2"
+                    >
+                      <NoSymbolIcon className="w-4 h-4 text-blue-600" />
+                      <span>{isFrozen ? 'Unfreeze Post' : 'Freeze Post'}</span>
+                    </button>
+                  )}
+
+                  {/* Pause Commenting (Moderators, Admins, Super Admins) */}
+                  {isModerator && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setActiveMenuOpen(false);
+                        const next = !isCommentsPaused;
+                        setIsCommentsPaused(next);
+                        notify(next ? 'Commenting paused on this post' : 'Commenting resumed', 'info');
+                        if (onUpdatePost) onUpdatePost({ ...post, isCommentsPaused: next });
+                      }}
+                      className="w-full text-left px-3 py-2 hover:bg-indigo-50 dark:hover:bg-indigo-950/30 text-indigo-950 dark:text-indigo-300 font-bold rounded-xl flex items-center gap-2"
+                    >
+                      <PauseCircleIcon className="w-4 h-4 text-indigo-600" />
+                      <span>{isCommentsPaused ? 'Resume Commenting' : 'Pause Commenting'}</span>
+                    </button>
+                  )}
+
+                  {/* Censor Post (Moderators, Admins, Super Admins) */}
+                  {isModerator && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setActiveMenuOpen(false);
+                        const next = !isCensored;
+                        setIsCensored(next);
+                        setIsCensoredRevealed(false);
+                        notify(next ? 'Post censored (18+ Sensitive mask applied)' : 'Post uncensored', 'info');
+                        if (onUpdatePost) onUpdatePost({ ...post, isCensored: next });
+                      }}
+                      className="w-full text-left px-3 py-2 hover:bg-orange-50 dark:hover:bg-orange-950/30 text-orange-950 dark:text-orange-300 font-bold rounded-xl flex items-center gap-2"
+                    >
+                      <EyeSlashIcon className="w-4 h-4 text-orange-600" />
+                      <span>{isCensored ? 'Uncensor Post' : 'Censor Post (18+ Mask)'}</span>
+                    </button>
+                  )}
+
+                  {/* Suspend Post (Moderators, Admins, Super Admins) */}
+                  {isModerator && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setActiveMenuOpen(false);
+                        const next = !isSuspended;
+                        setIsSuspended(next);
+                        notify(next ? 'Post suspended from public feeds' : 'Post restored to feeds', 'warning');
+                        if (onUpdatePost) onUpdatePost({ ...post, isSuspended: next });
+                      }}
+                      className="w-full text-left px-3 py-2 hover:bg-rose-50 dark:hover:bg-rose-950/30 text-rose-950 dark:text-rose-300 font-bold rounded-xl flex items-center gap-2"
+                    >
+                      <ShieldExclamationIcon className="w-4 h-4 text-rose-600" />
+                      <span>{isSuspended ? 'Restore Suspended Post' : 'Suspend Post'}</span>
+                    </button>
+                  )}
+
+                  {/* Report Post (All Members & Roles) */}
+                  <button
+                    type="button"
+                    onClick={handleReportClick}
+                    className="w-full text-left px-3 py-2 hover:bg-rose-50 dark:hover:bg-rose-950/30 text-rose-700 dark:text-rose-400 font-bold rounded-xl flex items-center gap-2"
+                  >
+                    <ShieldCheckIcon className="w-4 h-4 text-rose-600" />
+                    <span>Report to Sentinel</span>
+                  </button>
+
+                  {/* Permanent Delete Post (Super Admin ONLY) */}
+                  {isSuperAdmin && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setActiveMenuOpen(false);
+                        setIsConfirmDeleteOpen(true);
+                      }}
+                      className="w-full text-left px-3 py-2 hover:bg-red-100 dark:hover:bg-red-950/50 text-red-700 dark:text-red-400 font-black rounded-xl flex items-center gap-2 border-t border-red-200 dark:border-red-900/50 mt-1"
+                    >
+                      <TrashIcon className="w-4 h-4 text-red-600" />
+                      <span>Delete Post (Super Admin)</span>
+                    </button>
+                  )}
+                </div>
               </div>
             )}
           </div>
@@ -859,13 +1120,35 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
 
         {/* Multi-Media Gallery (Single or Multi-Photo & Video Carousel with UHD Lightbox & UGC Editor) */}
         {(localMediaUrls.length > 0 || mediaList.length > 0) && (
-          <MultiMediaGallery
-            urls={localMediaUrls.length > 0 ? localMediaUrls : mediaList}
-            title={post.title}
-            author={post.authorName}
-            onOpenLightbox={handleLightboxOpen}
-            onEditUgc={handleOpenMediaEditor}
-          />
+          <div className="relative">
+            <div className={isCensored && !isCensoredRevealed ? 'filter blur-2xl select-none pointer-events-none opacity-40 transition-all duration-300' : ''}>
+              <MultiMediaGallery
+                urls={localMediaUrls.length > 0 ? localMediaUrls : mediaList}
+                title={post.title}
+                author={post.authorName}
+                onOpenLightbox={handleLightboxOpen}
+                onEditUgc={handleOpenMediaEditor}
+              />
+            </div>
+            {isCensored && !isCensoredRevealed && (
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-950/70 backdrop-blur-md rounded-2xl p-4 text-center z-20">
+                <EyeSlashIcon className="w-8 h-8 text-amber-400 mb-2" />
+                <div className="text-white font-black text-sm mb-1">
+                  18+ Sensitive Media Censored
+                </div>
+                <p className="text-slate-300 text-xs max-w-xs mb-3 font-medium">
+                  This media has been censored under platform safety & community standards.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setIsCensoredRevealed(true)}
+                  className="px-4 py-2 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white rounded-xl text-xs font-bold shadow-lg transition cursor-pointer"
+                >
+                  Reveal Censored Media (18+)
+                </button>
+              </div>
+            )}
+          </div>
         )}
 
         {/* INTERACTIVE POLL COMPONENT (With Real Voting) */}
@@ -1302,40 +1585,51 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
             )}
 
             {/* Comment Input */}
-            <form onSubmit={handleCommentSubmit} className="flex items-center gap-2 pt-1 relative">
-              <div className="relative flex-1 flex items-center">
-                <input
-                  type="text"
-                  placeholder="Write a sovereign comment..."
-                  value={commentInput}
-                  onChange={(e) => setCommentInput(e.target.value)}
-                  className="w-full pl-4 pr-11 py-2.5 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-orange-500 focus:outline-hidden placeholder:text-slate-400"
-                />
-                <button
-                  type="button"
-                  onClick={() => setIsCommentEmojiOpen(!isCommentEmojiOpen)}
-                  className="absolute right-2.5 p-1 rounded-lg text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-slate-700 transition"
-                  title="Add FingerMobile 5D Emoji"
-                >
-                  <FaceSmileIcon className="w-5 h-5 text-emerald-600" />
-                </button>
-                <FingerMobileEmojiPicker
-                  isOpen={isCommentEmojiOpen}
-                  onClose={() => setIsCommentEmojiOpen(false)}
-                  onSelectEmoji={(emoji) => {
-                    setCommentInput((prev) => `${prev} [emoji:${emoji.slug}] `);
-                  }}
-                  position="top"
-                  align="right"
-                />
+            {isFrozen || isCommentsPaused ? (
+              <div className="p-3 bg-slate-100 dark:bg-slate-800 rounded-xl text-xs text-slate-800 dark:text-slate-200 font-bold text-center border border-slate-300 dark:border-slate-700 flex items-center justify-center gap-2">
+                <LockClosedIcon className="w-4 h-4 text-slate-600" />
+                <span>
+                  {isFrozen
+                    ? '❄️ Commenting is locked because this post is frozen by moderators.'
+                    : '🔒 Commenting has been paused on this post by moderators.'}
+                </span>
               </div>
-              <button
-                type="submit"
-                className="px-4 py-2.5 bg-orange-600 hover:bg-orange-700 text-white text-xs font-bold rounded-xl transition shadow-xs cursor-pointer shrink-0"
-              >
-                Reply
-              </button>
-            </form>
+            ) : (
+              <form onSubmit={handleCommentSubmit} className="flex items-center gap-2 pt-1 relative">
+                <div className="relative flex-1 flex items-center">
+                  <input
+                    type="text"
+                    placeholder="Write a sovereign comment..."
+                    value={commentInput}
+                    onChange={(e) => setCommentInput(e.target.value)}
+                    className="w-full pl-4 pr-11 py-2.5 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-orange-500 focus:outline-hidden placeholder:text-slate-400"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setIsCommentEmojiOpen(!isCommentEmojiOpen)}
+                    className="absolute right-2.5 p-1 rounded-lg text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-slate-700 transition"
+                    title="Add FingerMobile 5D Emoji"
+                  >
+                    <FaceSmileIcon className="w-5 h-5 text-emerald-600" />
+                  </button>
+                  <FingerMobileEmojiPicker
+                    isOpen={isCommentEmojiOpen}
+                    onClose={() => setIsCommentEmojiOpen(false)}
+                    onSelectEmoji={(emoji) => {
+                      setCommentInput((prev) => `${prev} [emoji:${emoji.slug}] `);
+                    }}
+                    position="top"
+                    align="right"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="px-4 py-2.5 bg-orange-600 hover:bg-orange-700 text-white text-xs font-bold rounded-xl transition shadow-xs cursor-pointer shrink-0"
+                >
+                  Reply
+                </button>
+              </form>
+            )}
           </div>
         )}
       </article>
@@ -1627,6 +1921,42 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
           mediaName={`${post.title || 'UGC Media'} (Media #${editingUgc.index + 1})`}
           onSave={handleSaveEditedUgc}
         />
+      )}
+
+      {/* Super Admin Permanent Delete Confirmation Modal */}
+      {isConfirmDeleteOpen && (
+        <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-slate-900 border border-red-300 dark:border-red-900 rounded-3xl max-w-sm w-full p-5 shadow-2xl space-y-3">
+            <div className="flex items-center gap-2.5 text-red-600">
+              <TrashIcon className="w-6 h-6 shrink-0" />
+              <h4 className="font-black text-base text-slate-900 dark:text-white">Delete UGC Post?</h4>
+            </div>
+            <p className="text-xs text-slate-700 dark:text-slate-300 font-medium">
+              As a Sovereign Super Admin, you are about to permanently purge this post from the network. This action is irreversible.
+            </p>
+            <div className="flex justify-end gap-2 pt-2">
+              <button
+                type="button"
+                onClick={() => setIsConfirmDeleteOpen(false)}
+                className="px-3 py-1.5 text-xs font-bold text-slate-700 dark:text-slate-300 border border-slate-300 rounded-xl hover:bg-slate-100"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setIsConfirmDeleteOpen(false);
+                  setIsDeleted(true);
+                  notify('UGC post permanently deleted', 'success');
+                  if (onDeletePost) onDeletePost(post.id);
+                }}
+                className="px-3 py-1.5 text-xs font-bold text-white bg-red-600 hover:bg-red-700 rounded-xl shadow-xs"
+              >
+                Confirm Delete
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );

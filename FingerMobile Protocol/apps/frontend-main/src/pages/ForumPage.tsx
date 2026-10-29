@@ -13,7 +13,6 @@ import {
   ShoppingBagIcon,
   ChevronDownIcon,
   XMarkIcon,
-  LockClosedIcon,
   CameraIcon,
   MapPinIcon,
   MusicalNoteIcon,
@@ -25,7 +24,6 @@ import {
   ArrowTopRightOnSquareIcon,
   ArrowPathIcon,
   CheckIcon,
-  Bars3Icon,
   ArrowRightOnRectangleIcon,
   FaceSmileIcon,
   HomeIcon,
@@ -36,9 +34,6 @@ import {
   BanknotesIcon,
   UserGroupIcon,
 } from '@heroicons/react/24/outline';
-import {
-  CheckCircleIcon as CheckCircleSolidIcon,
-} from '@heroicons/react/24/solid';
 import { useAuth } from '../contexts/AuthContext';
 import ForumService from '../services/forumService';
 import ForumPostCard from '../components/forum/ForumPostCard';
@@ -942,7 +937,9 @@ export const ForumPage: React.FC = () => {
     logout();
     try {
       authService.clearSession();
-    } catch (_e) {}
+    } catch (_e) {
+      /* ignore session clearing failure */
+    }
     if (typeof window !== 'undefined') {
       localStorage.removeItem('token');
       localStorage.removeItem('accessToken');
@@ -955,7 +952,9 @@ export const ForumPage: React.FC = () => {
       localStorage.removeItem('fmp_comprehensive_profile');
       try {
         userProfileSyncService.clearProfile();
-      } catch (_e) {}
+      } catch (_e) {
+        /* ignore profile clearing failure */
+      }
     }
     navigate('/login');
   };
@@ -1467,8 +1466,8 @@ export const ForumPage: React.FC = () => {
             serverUrl = json.data.url;
           }
         }
-      } catch (uploadErr) {
-        console.warn('Backend multipart upload notice:', uploadErr);
+      } catch (_uploadErr) {
+        // Backend multipart upload fallback handled gracefully
       }
 
       const finalUrl = serverUrl || URL.createObjectURL(file);
@@ -4143,6 +4142,9 @@ export const ForumPage: React.FC = () => {
                         prev.map((p) => (p.id === updatedPost.id ? updatedPost : p))
                       );
                     }}
+                    onDeletePost={(postId) => {
+                      setPosts((prev) => prev.filter((p) => p.id !== postId));
+                    }}
                     triggerToast={(msg, type) => triggerToast(msg, type === 'warning' ? 'info' : type)}
                   />
 
@@ -4380,22 +4382,23 @@ export const ForumPage: React.FC = () => {
         style={{ width: '100%', maxWidth: '100vw' }}
       >
         <div className="grid grid-cols-5 w-full h-14 sm:h-16 items-center px-1 sm:px-2 pb-[env(safe-area-inset-bottom,0px)]">
-          {/* 1. Burger Platform Menu (385 Pages) */}
+          {/* 1. Sovereign Feed Anchor */}
           <button
             type="button"
             onClick={() => {
-              window.dispatchEvent(new CustomEvent('toggle-drawer-menu'));
+              navigate('/forum');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
               showBottomDockTemporarily();
             }}
             className="flex flex-col items-center justify-center h-full py-1 col-span-1 min-w-0 max-w-full text-slate-700 dark:text-slate-300 hover:text-orange-600 dark:hover:text-orange-400 transition cursor-pointer group focus:outline-none"
-            aria-label="Platform Menu (385 Pages)"
-            title="Open Platform Mega Menu"
+            aria-label="Sovereign Feeds"
+            title="Sovereign Discussion Feeds"
           >
             <div className="w-8 h-8 rounded-xl flex items-center justify-center group-hover:bg-orange-50 dark:group-hover:bg-slate-800 transition shrink-0">
-              <Bars3Icon className="w-5 h-5 text-slate-800 dark:text-slate-200 group-hover:text-orange-600 group-hover:scale-110 transition-transform" />
+              <ChatBubbleLeftRightIcon className="w-5 h-5 text-orange-600 dark:text-orange-400 group-hover:scale-110 transition-transform" />
             </div>
-            <span className="text-[10px] font-extrabold tracking-tight text-slate-800 dark:text-slate-200 group-hover:text-orange-600 -mt-0.5 truncate max-w-full px-0.5">
-              Menu
+            <span className="text-[10px] font-extrabold tracking-tight text-orange-600 dark:text-orange-400 -mt-0.5 truncate max-w-full px-0.5">
+              Feeds
             </span>
           </button>
 

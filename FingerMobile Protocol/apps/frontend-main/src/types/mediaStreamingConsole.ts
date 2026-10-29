@@ -17,7 +17,7 @@ export interface MediaStreamingConsoleItem {
   musical_key: string;
   stream_latency_mode: 'ultra_low' | 'standard' | 'dvr';
   resolution: string;
-  status: 'active' | 'frozen' | 'draft' | 'archived';
+  status: 'active' | 'frozen' | 'draft' | 'archived' | 'censored' | 'suspended';
   display_order: number;
   fic_bounty: string | number;
   license_fee_fic: string | number;
