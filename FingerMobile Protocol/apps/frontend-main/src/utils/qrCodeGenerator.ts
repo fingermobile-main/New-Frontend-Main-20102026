@@ -70,6 +70,94 @@ export async function generateQrDataUrl(
 }
 
 /**
+ * Renders a QR code image with an embedded center emblem (FingerMobile Logo or Infinite Coin)
+ * into a unified canvas Data URL for high-resolution download and printing.
+ */
+export async function createQrWithLogoDataUrl(
+  qrImageUrl: string,
+  logoType: 'fingermobile' | 'infinite-coin' | 'none',
+  size = 360
+): Promise<string> {
+  if (logoType === 'none' || typeof window === 'undefined' || typeof document === 'undefined') {
+    return qrImageUrl;
+  }
+
+  const logoSrc =
+    logoType === 'infinite-coin'
+      ? '/assets/logos/infinite_coin_icon.png'
+      : '/assets/branding/fingermobile/logo-orange.webp';
+
+  return new Promise<string>((resolve) => {
+    const canvas = document.createElement('canvas');
+    canvas.width = size;
+    canvas.height = size;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) {
+      resolve(qrImageUrl);
+      return;
+    }
+
+    const qrImg = new Image();
+    qrImg.crossOrigin = 'anonymous';
+
+    qrImg.onload = () => {
+      ctx.drawImage(qrImg, 0, 0, size, size);
+
+      const logoImg = new Image();
+      logoImg.crossOrigin = 'anonymous';
+
+      logoImg.onload = () => {
+        const emblemSize = Math.max(40, Math.round(size * 0.22));
+        const center = size / 2;
+        const radius = emblemSize / 2;
+
+        // Draw protective white circular background with padding
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(center, center, radius + 4, 0, 2 * Math.PI);
+        ctx.fillStyle = '#ffffff';
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.25)';
+        ctx.shadowBlur = 8;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 2;
+        ctx.fill();
+
+        ctx.shadowColor = 'transparent';
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = logoType === 'infinite-coin' ? '#f59e0b' : '#ff6b00';
+        ctx.stroke();
+
+        // Clip circular region for the logo
+        ctx.beginPath();
+        ctx.arc(center, center, radius, 0, 2 * Math.PI);
+        ctx.clip();
+        ctx.drawImage(logoImg, center - radius, center - radius, emblemSize, emblemSize);
+        ctx.restore();
+
+        try {
+          resolve(canvas.toDataURL('image/png'));
+        } catch {
+          resolve(qrImageUrl);
+        }
+      };
+
+      logoImg.onerror = () => {
+        // Fallback: resolve raw QR image if logo asset cannot be loaded
+        resolve(qrImageUrl);
+      };
+
+      logoImg.src = logoSrc;
+    };
+
+    qrImg.onerror = () => {
+      resolve(qrImageUrl);
+    };
+
+    qrImg.src = qrImageUrl;
+  });
+}
+
+/**
  * Downloads a QR code as PNG or SVG
  */
 export async function downloadQrCode(
