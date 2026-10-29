@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Camera } from 'lucide-react';
 import CommerceVisualSearchModal from '../commerce/CommerceVisualSearchModal';
+import CommerceMediaPicker, { CommerceMediaValue } from '../common/CommerceMediaPicker';
 import type {
   FingerLuxService,
   StaffMember,
@@ -87,6 +88,12 @@ export const FingerLuxShowcase: React.FC<FingerLuxShowcaseProps> = ({
   const [newServiceDesc, setNewServiceDesc] = useState('');
   const [newServiceFreeCancelHours, setNewServiceFreeCancelHours] = useState(24);
   const [newServiceLateCancelFee, setNewServiceLateCancelFee] = useState(50);
+  const [serviceMediaValue, setServiceMediaValue] = useState<CommerceMediaValue>({
+    coverUrl: '',
+    galleryUrls: [],
+    videoUrl: '',
+    isCensored: false
+  });
 
   // Available Time Slots Mock Matrix
   const AVAILABLE_SLOTS = ['09:30', '11:00', '13:30', '15:00', '16:30', '18:00'];
@@ -158,6 +165,7 @@ export const FingerLuxShowcase: React.FC<FingerLuxShowcaseProps> = ({
 
   const handleSaveNewService = () => {
     if (!newServiceName.trim()) return;
+    const finalCover = serviceMediaValue.coverUrl || 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&auto=format&fit=crop&q=80';
     onAddService({
       name: newServiceName,
       type: newServiceType,
@@ -177,8 +185,8 @@ export const FingerLuxShowcase: React.FC<FingerLuxShowcaseProps> = ({
       },
       depositRequired: true,
       depositPercent: 25,
-      tags: ['New', 'AI Configured'],
-      imageUrl: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&auto=format&fit=crop&q=80',
+      tags: ['New', 'Luxury Bespoke'],
+      imageUrl: finalCover,
       assignedStaffIds: [staff[0]?.id || 'staff-elena'],
       resourceIds: [resources[0]?.id || 'res-penthouse-salon'],
       intakeFormFields: [
@@ -186,6 +194,7 @@ export const FingerLuxShowcase: React.FC<FingerLuxShowcaseProps> = ({
       ]
     });
     setShowAddServiceModal(false);
+    setServiceMediaValue({ coverUrl: '', galleryUrls: [], videoUrl: '', isCensored: false });
   };
 
   return (
@@ -856,6 +865,16 @@ export const FingerLuxShowcase: React.FC<FingerLuxShowcaseProps> = ({
                   className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:outline-none placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
+
+              {/* FingerLux Media Picker for Cover Art, Suite/Salon Gallery, and Showcase Video */}
+              <CommerceMediaPicker
+                value={serviceMediaValue}
+                onChange={setServiceMediaValue}
+                title="FingerLux Service Cover & Media Reel"
+                description="Upload ultra-luxury hero image, suite/salon photos, and showcase video reels saving directly to Express storage."
+                allowGallery={true}
+                allowVideo={true}
+              />
             </div>
 
             {/* Modal Actions */}

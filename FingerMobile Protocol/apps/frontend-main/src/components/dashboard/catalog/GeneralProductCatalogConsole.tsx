@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import CommerceMediaPicker, { CommerceMediaValue } from '../../common/CommerceMediaPicker';
 import {
   Package,
   Plus,
@@ -119,6 +120,14 @@ export const GeneralProductCatalogConsole: React.FC = () => {
     status: 'active' as 'active' | 'draft' | 'out_of_stock'
   });
 
+  // Media Picker state for Add Product
+  const [mediaPickerValue, setMediaPickerValue] = useState<CommerceMediaValue>({
+    coverUrl: '',
+    galleryUrls: [],
+    videoUrl: '',
+    isCensored: false
+  });
+
   const showToast = (msg: string) => {
     setToastMessage(msg);
     setTimeout(() => setToastMessage(null), 3500);
@@ -210,15 +219,24 @@ export const GeneralProductCatalogConsole: React.FC = () => {
     }
 
     try {
-      const images = formData.imagesText
+      const pickerImages = [
+        ...(mediaPickerValue.coverUrl ? [mediaPickerValue.coverUrl] : []),
+        ...mediaPickerValue.galleryUrls
+      ].filter(Boolean);
+
+      const fallbackImages = formData.imagesText
         .split('\n')
         .map((s) => s.trim())
         .filter((s) => s.length > 0);
 
-      const video_urls = formData.videosText
-        .split('\n')
-        .map((s) => s.trim())
-        .filter((s) => s.length > 0);
+      const images = pickerImages.length > 0 ? pickerImages : fallbackImages;
+
+      const video_urls = mediaPickerValue.videoUrl
+        ? [mediaPickerValue.videoUrl]
+        : formData.videosText
+            .split('\n')
+            .map((s) => s.trim())
+            .filter((s) => s.length > 0);
 
       const payload = {
         sku: formData.sku.trim() || undefined,
@@ -233,13 +251,14 @@ export const GeneralProductCatalogConsole: React.FC = () => {
         images,
         video_urls,
         curated_stores: formData.curated_stores,
-        status: formData.status
+        status: mediaPickerValue.isCensored ? 'draft' : formData.status
       };
 
       const res = await api.post('/catalog/general', payload);
       if (res.data?.success) {
         showToast(`Product "${formData.name}" ingested into General Catalogue!`);
         setIsCreateModalOpen(false);
+        setMediaPickerValue({ coverUrl: '', galleryUrls: [], videoUrl: '', isCensored: false });
         setFormData({
           sku: '',
           name: '',
@@ -745,32 +764,16 @@ export const GeneralProductCatalogConsole: React.FC = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-bold text-slate-800 mb-1">
-                    Image URLs (1 per line for multiple angles)
-                  </label>
-                  <textarea
-                    rows={3}
-                    value={formData.imagesText}
-                    onChange={(e) => setFormData({ ...formData, imagesText: e.target.value })}
-                    placeholder="https://...&#10;https://..."
-                    className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-mono font-medium text-slate-900 focus:ring-2 focus:ring-emerald-500"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-bold text-slate-800 mb-1">
-                    Demo Video URLs (1 per line for showcases)
-                  </label>
-                  <textarea
-                    rows={3}
-                    value={formData.videosText}
-                    onChange={(e) => setFormData({ ...formData, videosText: e.target.value })}
-                    placeholder="https://.../video.mp4"
-                    className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-mono font-medium text-slate-900 focus:ring-2 focus:ring-emerald-500"
-                  />
-                </div>
-              </div>
+              {/* Sovereign Commerce Media Picker (Direct Uploads for Cover, Multi-Angle Gallery & Video) */}
+              <CommerceMediaPicker
+                value={mediaPickerValue}
+                onChange={setMediaPickerValue}
+                title="Product Media & Showcase Assets"
+                description="Upload product cover photo, multi-angle gallery photos, and showcase video reel saving directly to Express storage."
+                allowGallery={true}
+                allowVideo={true}
+                maxGalleryImages={8}
+              />
 
               {/* Initial Store Allocation */}
               <div>

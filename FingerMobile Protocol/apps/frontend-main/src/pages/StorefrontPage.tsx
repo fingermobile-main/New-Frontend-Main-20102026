@@ -11,6 +11,7 @@ import { useAppContext } from '../contexts/AppContext';
 import MainLayout from '../components/layout/MainLayout';
 import apiService from '../services/apiService';
 import CommerceVisualSearchModal from '../components/commerce/CommerceVisualSearchModal';
+import CommerceMediaPicker, { CommerceMediaValue } from '../components/common/CommerceMediaPicker';
 import {
   SearchIcon,
   PlusIcon
@@ -199,6 +200,14 @@ const StorefrontPage: React.FC = () => {
     image_url: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=600&q=80'
   });
 
+  // Media Picker state for Add Product
+  const [productMediaValue, setProductMediaValue] = useState<CommerceMediaValue>({
+    coverUrl: '',
+    galleryUrls: [],
+    videoUrl: '',
+    isCensored: false
+  });
+
   // Orders State
   const [orders, setOrders] = useState<StorefrontOrder[]>([]);
 
@@ -301,6 +310,11 @@ const StorefrontPage: React.FC = () => {
       return;
     }
     try {
+      const allImages = [
+        ...(productMediaValue.coverUrl ? [productMediaValue.coverUrl] : []),
+        ...productMediaValue.galleryUrls
+      ].filter(Boolean);
+
       await apiService.post('/api/storefront/products', {
         store_id: storefrontId,
         name: newProductForm.name,
@@ -310,14 +324,16 @@ const StorefrontPage: React.FC = () => {
         compare_at_price: newProductForm.discount_price,
         category: newProductForm.category,
         sku: newProductForm.sku,
-        images: newProductForm.image_url ? [newProductForm.image_url] : [],
+        images: allImages.length > 0 ? allImages : (newProductForm.image_url ? [newProductForm.image_url] : []),
+        video_url: productMediaValue.videoUrl || undefined,
         stock: newProductForm.stock,
         reorder_point: newProductForm.reorder_point,
         goods_type: newProductForm.goods_type
       });
       await loadData();
       setShowProductModal(false);
-      showToast(`Added "${newProductForm.name}" to your Storefront.`, 'success');
+      setProductMediaValue({ coverUrl: '', galleryUrls: [], videoUrl: '', isCensored: false });
+      showToast(`Added "${newProductForm.name}" with media assets to your Storefront.`, 'success');
     } catch {
       showToast('Unable to create the product. Please try again.', 'error');
     }
@@ -1261,6 +1277,16 @@ const StorefrontPage: React.FC = () => {
                     className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-blue-500"
                   />
                 </div>
+
+                {/* Media Picker for Cover Photo, Gallery, and Video Showcase */}
+                <CommerceMediaPicker
+                  value={productMediaValue}
+                  onChange={setProductMediaValue}
+                  title="Storefront Product Media Assets"
+                  description="Upload product cover photo, multi-angle gallery photos, and showcase video reels saving directly to Express storage."
+                  allowGallery={true}
+                  allowVideo={true}
+                />
 
                 <div className="pt-2 flex gap-3">
                   <button

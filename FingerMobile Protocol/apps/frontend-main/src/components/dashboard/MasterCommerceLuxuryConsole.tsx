@@ -5,33 +5,24 @@ import {
   Store,
   Sparkles,
   Shield,
-  Gem,
   Compass,
   ArrowUp,
   ArrowDown,
   Plus,
   Trash2,
   Edit3,
-  Snowflake,
   Volume2,
   Upload,
   ExternalLink,
-  Coins,
-  CheckCircle2,
   AlertTriangle,
   RotateCcw,
   Search,
   Filter,
-  Tag,
   Layers,
-  Banknote,
   Lock,
-  Building2,
   Crown,
   ShieldAlert,
   PauseCircle,
-  EyeOff,
-  Eye,
   AlertOctagon,
   Image as ImageIcon
 } from 'lucide-react';
@@ -509,8 +500,6 @@ export const MasterCommerceLuxuryConsole: React.FC = () => {
       showToast('Error saving item to database', 'error');
     }
   };
-    }
-  };
 
   // File Upload Handler (Multipart / Form-Data direct to Express)
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -747,7 +736,9 @@ export const MasterCommerceLuxuryConsole: React.FC = () => {
             >
               <option value="ALL">All Statuses</option>
               <option value="active">Active Only</option>
+              <option value="censored">Censored (18+ Mask) Only</option>
               <option value="frozen">Frozen Only</option>
+              <option value="suspended">Suspended Only</option>
               <option value="draft">Draft Only</option>
             </select>
           </div>
@@ -835,22 +826,54 @@ export const MasterCommerceLuxuryConsole: React.FC = () => {
                       </div>
                     </td>
 
-                    {/* Product & Vendor */}
+                    {/* Product & Vendor with Media Thumbnail */}
                     <td className="py-3 px-3">
-                      <div>
-                        <div className="font-black text-slate-900 text-sm leading-snug">
-                          {item.title}
+                      <div className="flex items-start gap-3">
+                        <div className="w-12 h-12 rounded-xl border border-slate-300 bg-slate-100 overflow-hidden shrink-0 relative shadow-2xs">
+                          {item.thumbnail_url || item.media_url ? (
+                            <>
+                              <img
+                                src={item.thumbnail_url || item.media_url}
+                                alt={item.title}
+                                className={`w-full h-full object-cover ${
+                                  item.status === 'censored' ? 'filter blur-xs' : ''
+                                }`}
+                                onError={(e) => {
+                                  (e.target as HTMLElement).style.display = 'none';
+                                }}
+                              />
+                              {item.status === 'censored' && (
+                                <span className="absolute inset-0 bg-black/50 text-[8px] font-black text-white flex items-center justify-center uppercase">
+                                  18+
+                                </span>
+                              )}
+                            </>
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-slate-400">
+                              <ImageIcon className="w-5 h-5" />
+                            </div>
+                          )}
                         </div>
-                        <div className="text-[11px] font-bold text-slate-700 mt-0.5 flex items-center gap-1.5">
-                          <span>Vendor: {item.vendor_name}</span>
-                          <span>•</span>
-                          <span className="font-mono text-slate-600">SKU: {item.sku || 'N/A'}</span>
+                        <div className="min-w-0">
+                          <div className="font-black text-slate-900 text-sm leading-snug flex items-center gap-1.5">
+                            <span className="truncate">{item.title}</span>
+                            {item.is_comments_paused && (
+                              <span className="px-1.5 py-0.2 bg-amber-100 text-amber-950 border border-amber-300 rounded text-[9px] font-bold">
+                                Inquiries Paused
+                              </span>
+                            )}
+                          </div>
+                          <div className="text-[11px] font-bold text-slate-700 mt-0.5 flex items-center gap-1.5">
+                            <span>Vendor: {item.vendor_name}</span>
+                            <span>•</span>
+                            <span className="font-mono text-slate-600">SKU: {item.sku || 'N/A'}</span>
+                          </div>
+                          {item.description && (
+                            <p className="text-[11px] font-medium text-slate-700 line-clamp-1 mt-1">
+                              {item.description}
+                            </p>
+                          )}
                         </div>
-                        {item.description && (
-                          <p className="text-[11px] font-medium text-slate-700 line-clamp-1 mt-1">
-                            {item.description}
-                          </p>
-                        )}
                       </div>
                     </td>
 
@@ -893,12 +916,16 @@ export const MasterCommerceLuxuryConsole: React.FC = () => {
                       <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-mono font-bold border ${
                         item.status === 'active'
                           ? 'bg-emerald-100 text-emerald-950 border-emerald-400'
+                          : item.status === 'censored'
+                          ? 'bg-purple-100 text-purple-950 border-purple-400'
                           : item.status === 'frozen'
                           ? 'bg-blue-100 text-blue-950 border-blue-400'
+                          : item.status === 'suspended'
+                          ? 'bg-rose-100 text-rose-950 border-rose-400'
                           : 'bg-slate-100 text-slate-900 border-slate-300'
                       }`}>
                         <span className={`w-1.5 h-1.5 rounded-full ${
-                          item.status === 'active' ? 'bg-emerald-600' : item.status === 'frozen' ? 'bg-blue-600' : 'bg-slate-500'
+                          item.status === 'active' ? 'bg-emerald-600' : item.status === 'censored' ? 'bg-purple-600' : item.status === 'frozen' ? 'bg-blue-600' : item.status === 'suspended' ? 'bg-rose-600' : 'bg-slate-500'
                         }`} />
                         {item.status.toUpperCase()}
                       </span>
@@ -914,7 +941,7 @@ export const MasterCommerceLuxuryConsole: React.FC = () => {
                       </div>
                     </td>
 
-                    {/* Action Buttons */}
+                    {/* Granular RBAC Action Buttons */}
                     <td className="py-3 px-3 text-right">
                       <div className="flex items-center justify-end gap-1.5">
                         {/* African Voice Line Trigger */}
@@ -926,36 +953,87 @@ export const MasterCommerceLuxuryConsole: React.FC = () => {
                           <Volume2 className="w-3.5 h-3.5 text-amber-700" />
                         </button>
 
-                        {/* Freeze / Unfreeze */}
-                        <button
-                          onClick={() => handleToggleFreeze(item.id)}
-                          className={`px-2.5 py-1 rounded-lg text-xs font-bold border transition-colors ${
-                            item.status === 'frozen'
-                              ? 'bg-emerald-100 text-emerald-950 border-emerald-400 hover:bg-emerald-200'
-                              : 'bg-blue-100 text-blue-950 border-blue-400 hover:bg-blue-200'
-                          }`}
-                          title={item.status === 'frozen' ? 'Unfreeze' : 'Freeze'}
-                        >
-                          {item.status === 'frozen' ? 'Unfreeze' : 'Freeze'}
-                        </button>
+                        {/* Freeze / Unfreeze (Moderator / Admin / Super Admin) */}
+                        {isModerator && (
+                          <button
+                            onClick={() => handleToggleFreeze(item.id)}
+                            className={`px-2 py-1 rounded-lg text-xs font-bold border transition-colors ${
+                              item.status === 'frozen'
+                                ? 'bg-emerald-100 text-emerald-950 border-emerald-400 hover:bg-emerald-200'
+                                : 'bg-blue-100 text-blue-950 border-blue-400 hover:bg-blue-200'
+                            }`}
+                            title={item.status === 'frozen' ? 'Unfreeze Item' : 'Freeze Item (Hold Asset)'}
+                          >
+                            {item.status === 'frozen' ? 'Unfreeze' : 'Freeze'}
+                          </button>
+                        )}
+
+                        {/* Censor / Uncensor (18+ Sensitive Blur Mask) */}
+                        {isModerator && (
+                          <button
+                            onClick={() => handleToggleCensor(item)}
+                            className={`p-1.5 rounded-lg border transition-colors ${
+                              item.status === 'censored'
+                                ? 'bg-purple-100 text-purple-950 border-purple-400 hover:bg-purple-200'
+                                : 'bg-slate-100 text-slate-800 border-slate-300 hover:bg-slate-200'
+                            }`}
+                            title={item.status === 'censored' ? 'Uncensor Item (Lift 18+ mask)' : 'Censor Item (Apply 18+ sensitive blur mask)'}
+                          >
+                            <ShieldAlert className={`w-3.5 h-3.5 ${item.status === 'censored' ? 'text-purple-800' : 'text-slate-700'}`} />
+                          </button>
+                        )}
+
+                        {/* Suspend / Restore (Quarantine / Delist) */}
+                        {isModerator && (
+                          <button
+                            onClick={() => handleToggleSuspend(item)}
+                            className={`p-1.5 rounded-lg border transition-colors ${
+                              item.status === 'suspended'
+                                ? 'bg-rose-100 text-rose-950 border-rose-400 hover:bg-rose-200'
+                                : 'bg-slate-100 text-slate-800 border-slate-300 hover:bg-slate-200'
+                            }`}
+                            title={item.status === 'suspended' ? 'Restore Item to Active Catalog' : 'Suspend Item (Take Offline)'}
+                          >
+                            <AlertOctagon className={`w-3.5 h-3.5 ${item.status === 'suspended' ? 'text-rose-800' : 'text-slate-700'}`} />
+                          </button>
+                        )}
+
+                        {/* Pause Commenting / Inquiries */}
+                        {isModerator && (
+                          <button
+                            onClick={() => handleTogglePauseComments(item)}
+                            className={`p-1.5 rounded-lg border transition-colors ${
+                              item.is_comments_paused
+                                ? 'bg-amber-100 text-amber-950 border-amber-400 hover:bg-amber-200'
+                                : 'bg-slate-100 text-slate-800 border-slate-300 hover:bg-slate-200'
+                            }`}
+                            title={item.is_comments_paused ? 'Resume Inquiries & Commenting' : 'Pause Inquiries & Commenting'}
+                          >
+                            <PauseCircle className={`w-3.5 h-3.5 ${item.is_comments_paused ? 'text-amber-800' : 'text-slate-700'}`} />
+                          </button>
+                        )}
 
                         {/* Edit Button */}
-                        <button
-                          onClick={() => handleOpenEdit(item)}
-                          className="p-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-lg border border-slate-300"
-                          title="Edit Item"
-                        >
-                          <Edit3 className="w-3.5 h-3.5" />
-                        </button>
+                        {isAdmin && (
+                          <button
+                            onClick={() => handleOpenEdit(item)}
+                            className="p-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-lg border border-slate-300"
+                            title="Edit Item Specs & Media"
+                          >
+                            <Edit3 className="w-3.5 h-3.5" />
+                          </button>
+                        )}
 
-                        {/* Delete Button */}
-                        <button
-                          onClick={() => handleDeleteItem(item.id, item.title)}
-                          className="p-1.5 bg-red-50 hover:bg-red-100 text-red-700 rounded-lg border border-red-300"
-                          title="Delete Item"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
+                        {/* Delete Button (Strictly Super Admin) */}
+                        {isSuperAdmin && (
+                          <button
+                            onClick={() => handleDeleteItem(item.id, item.title)}
+                            className="p-1.5 bg-red-50 hover:bg-red-100 text-red-700 rounded-lg border border-red-300"
+                            title="Permanently Purge Record (Super Admin)"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        )}
                       </div>
                     </td>
                   </tr>
@@ -1124,27 +1202,16 @@ export const MasterCommerceLuxuryConsole: React.FC = () => {
                 />
               </div>
 
-              {/* Direct Media File Uploader Trigger */}
-              <div>
-                <label className="font-bold text-slate-900 block mb-1">Media Image / 3D Asset URL</label>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="text"
-                    value={formData.media_url}
-                    onChange={(e) => setFormData({ ...formData, media_url: e.target.value })}
-                    className="flex-1 p-2.5 font-bold text-slate-900 bg-white border border-slate-300 rounded-xl outline-none font-mono"
-                    placeholder="e.g. /uploads/commerce/photo.png or https://..."
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setIsUploadModalOpen(true)}
-                    className="px-3.5 py-2.5 bg-amber-700 hover:bg-amber-800 text-white rounded-xl font-bold flex items-center gap-1.5 shrink-0"
-                  >
-                    <Upload className="w-4 h-4" />
-                    Upload File
-                  </button>
-                </div>
-              </div>
+              {/* Universal Sovereign Media Picker (Cover Image, Multi-Image Gallery, Showcase Video) */}
+              <CommerceMediaPicker
+                value={mediaPickerValue}
+                onChange={setMediaPickerValue}
+                title={`${currentServiceMeta.name} Media & Cover Art Picker`}
+                description="Upload high-fidelity product cover photos, multi-angle gallery photos, and showcase video reels saving directly to Express storage."
+                allowGallery={true}
+                allowVideo={true}
+                maxGalleryImages={8}
+              />
 
               {/* Vendor, Provenance & Escrow */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">

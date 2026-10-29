@@ -80,9 +80,9 @@ const SETTINGS_STORAGE_KEY = 'fingermobile_voiceline_settings';
 
 const DEFAULT_SETTINGS: VoiceLineSettings = {
   volume: 0.35, // 35% device/system speaker volume
-  audioPlaybackRate: 1.0, // Preserves natural uploaded media playback rate at 1.0x unless modified by user/author
-  utteranceRate: 0.60, // Dedicated spoken speech synthesis / TTS utterance rate (0.60x)
-  playbackRate: 1.0,
+  audioPlaybackRate: 0.92, // Deliberate, relaxed natural playback speed (0.92x)
+  utteranceRate: 0.52, // Calibrated spoken speech synthesis utterance rate (0.52x) for authentic human cadence
+  playbackRate: 0.92,
   enabled: true,
   microservices: {
     forum: true,
