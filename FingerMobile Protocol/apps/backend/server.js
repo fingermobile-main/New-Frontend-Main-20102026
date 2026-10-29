@@ -101,6 +101,9 @@ app.use(helmet({
   },
   referrerPolicy: {
     policy: 'strict-origin-when-cross-origin'
+  },
+  crossOriginResourcePolicy: {
+    policy: 'cross-origin'
   }
 }));
 
@@ -339,8 +342,20 @@ app.use('/api/users', userConsentRoutes);
 // OAuth2 Routes (no /api prefix for compatibility with Passport redirects)
 app.use('/auth', sensitiveLimiter, oauth2Routes);
 
-// Static uploads directory serving
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// Static uploads directory serving with CORS and byte-range support
+const staticUploadOptions = {
+  maxAge: '1d',
+  setHeaders: (res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', '*');
+    res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+    res.setHeader('Accept-Ranges', 'bytes');
+  }
+};
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'), staticUploadOptions));
+app.use('/uploads', express.static(path.join(__dirname, 'public/uploads'), staticUploadOptions));
+app.use('/public/uploads', express.static(path.join(__dirname, 'public/uploads'), staticUploadOptions));
 
 // Metrics & Prometheus Telemetry
 const metricsRoutes = require('./routes/metrics');
