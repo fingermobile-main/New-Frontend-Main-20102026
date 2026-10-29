@@ -43,7 +43,7 @@ const LegalPage: React.FC = () => {
     {
       to: '/platform-service-of-use',
       title: 'Platform Service of Use',
-      desc: 'Official statutory agreement: GraceLink Ltd., Singapore law, FIC tokens, and AI creation rules',
+      desc: 'Official statutory agreement: GraceLink Business Technologies Group., Singapore law, FIC tokens, and AI creation rules',
       icon: <FileText className="w-6 h-6 text-emerald-600" />
     },
     {
