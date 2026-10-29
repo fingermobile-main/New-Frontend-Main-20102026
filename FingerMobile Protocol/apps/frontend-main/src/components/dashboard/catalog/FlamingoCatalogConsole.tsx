@@ -16,7 +16,10 @@ import {
   PauseCircle,
   PlayCircle,
   ShieldAlert,
-  AlertOctagon
+  AlertOctagon,
+  ArrowUp,
+  ArrowDown,
+  Flag
 } from 'lucide-react';
 import { api } from '../../../services/api';
 import { useAuth } from '../../../contexts/AuthContext';
@@ -75,8 +78,10 @@ export const FlamingoCatalogConsole: React.FC = () => {
     isCensored: false
   });
 
-  // Permanent Delete Modal
+  // Permanent Delete & Report Modals
   const [productToDelete, setProductToDelete] = useState<CatalogProduct | null>(null);
+  const [productToReport, setProductToReport] = useState<CatalogProduct | null>(null);
+  const [reportReason, setReportReason] = useState<string>('');
 
   const [selectedProductForRestock, setSelectedProductForRestock] = useState<CatalogProduct | null>(null);
   const [restockAmount, setRestockAmount] = useState('20');
@@ -264,6 +269,47 @@ export const FlamingoCatalogConsole: React.FC = () => {
     }
   };
 
+  const handleMoveOrder = async (index: number, direction: 'up' | 'down') => {
+    const targetIdx = direction === 'up' ? index - 1 : index + 1;
+    if (targetIdx < 0 || targetIdx >= products.length) return;
+
+    const newProds = [...products];
+    const [moved] = newProds.splice(index, 1);
+    newProds.splice(targetIdx, 0, moved);
+    setProducts(newProds);
+    showToast(`Moved "${moved.name}" ${direction}`);
+
+    try {
+      await api.put(`/catalog/general/${moved.id}`, {
+        specifications: {
+          ...(moved.specifications || {}),
+          display_order: targetIdx
+        }
+      });
+    } catch {
+      // optimistic state retained
+    }
+  };
+
+  const submitReport = async () => {
+    if (!productToReport || !reportReason.trim()) return;
+    try {
+      const nextFlags = {
+        ...(productToReport.censorship_flags || {}),
+        is_reported: true,
+        report_reason: reportReason.trim(),
+        reported_at: new Date().toISOString()
+      };
+      await api.put(`/catalog/general/${productToReport.id}`, { censorship_flags: nextFlags });
+      showToast(`Filed report for "${productToReport.name}"`);
+      setProductToReport(null);
+      setReportReason('');
+      fetchFlamingoCatalog();
+    } catch {
+      showToast('Failed to file report');
+    }
+  };
+
   const handleRestockSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedProductForRestock) return;
@@ -428,6 +474,7 @@ export const FlamingoCatalogConsole: React.FC = () => {
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="border-b border-slate-200 bg-slate-50 text-[11px] font-bold text-slate-700 uppercase tracking-wider">
+                  <th className="py-3 px-3 text-center w-16">Move</th>
                   <th className="py-3 px-4">Flamingo Fashion Piece</th>
                   <th className="py-3 px-4">VIP Tier</th>
                   <th className="py-3 px-4">FIC Price</th>
@@ -437,14 +484,39 @@ export const FlamingoCatalogConsole: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200 text-xs text-slate-800">
-                {filtered.map((item) => {
+                {filtered.map((item, index) => {
                   const isFrozen = Boolean((item.censorship_flags as any)?.is_frozen);
                   const isCensored = Boolean((item.censorship_flags as any)?.is_blurred);
                   const isCommentsPaused = Boolean((item.censorship_flags as any)?.is_comments_paused);
                   const isSuspended = item.status === 'suspended';
+                  const isReported = Boolean((item.censorship_flags as any)?.is_reported);
 
                   return (
                     <tr key={item.id} className="hover:bg-slate-50/80 transition-colors">
+                      {/* Move Order */}
+                      <td className="py-3 px-2 text-center">
+                        <div className="flex flex-col items-center gap-1">
+                          <button
+                            type="button"
+                            disabled={index === 0}
+                            onClick={() => handleMoveOrder(index, 'up')}
+                            className="p-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-800 disabled:opacity-30 disabled:cursor-not-allowed border border-slate-300 transition cursor-pointer"
+                            title="Move Up"
+                          >
+                            <ArrowUp className="w-3 h-3" />
+                          </button>
+                          <span className="text-[10px] font-mono font-bold text-slate-600">#{index + 1}</span>
+                          <button
+                            type="button"
+                            disabled={index === filtered.length - 1}
+                            onClick={() => handleMoveOrder(index, 'down')}
+                            className="p-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-800 disabled:opacity-30 disabled:cursor-not-allowed border border-slate-300 transition cursor-pointer"
+                            title="Move Down"
+                          >
+                            <ArrowDown className="w-3 h-3" />
+                          </button>
+                        </div>
+                      </td>
                       <td className="py-3 px-4">
                         <div className="flex items-center space-x-3">
                           <div className="relative w-12 h-12 rounded-xl overflow-hidden border border-slate-300 shrink-0">
@@ -572,6 +644,20 @@ export const FlamingoCatalogConsole: React.FC = () => {
                               <AlertOctagon className={`w-3.5 h-3.5 ${isSuspended ? 'text-rose-800' : 'text-slate-700'}`} />
                             </button>
                           )}
+
+                          {/* Report */}
+                          <button
+                            type="button"
+                            onClick={() => setProductToReport(item)}
+                            className={`p-1.5 rounded-lg border transition cursor-pointer ${
+                              isReported
+                                ? 'bg-red-100 text-red-950 border-red-400 hover:bg-red-200'
+                                : 'bg-slate-100 text-slate-800 border-slate-300 hover:bg-slate-200'
+                            }`}
+                            title="File Regulatory Report"
+                          >
+                            <Flag className={`w-3.5 h-3.5 ${isReported ? 'text-red-700' : 'text-slate-700'}`} />
+                          </button>
 
                           {/* Withdraw Button */}
                           <button
@@ -831,6 +917,64 @@ export const FlamingoCatalogConsole: React.FC = () => {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+      {/* Regulatory Report Dialog */}
+      {productToReport && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white border border-slate-300 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200">
+              <div className="flex items-center space-x-2">
+                <Flag className="w-5 h-5 text-red-600" />
+                <h4 className="font-black text-sm text-slate-900">File Compliance & Regulatory Report</h4>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setProductToReport(null);
+                  setReportReason('');
+                }}
+                className="text-slate-400 hover:text-slate-600 text-xs font-bold cursor-pointer"
+              >
+                ✕
+              </button>
+            </div>
+            <p className="text-xs text-slate-700 font-medium">
+              Reporting fashion piece: <strong className="text-slate-900">{productToReport.name}</strong> ({productToReport.sku})
+            </p>
+            <div>
+              <label className="block text-xs font-bold text-slate-800 mb-1">
+                Violation or Regulatory Justification *
+              </label>
+              <textarea
+                value={reportReason}
+                onChange={(e) => setReportReason(e.target.value)}
+                placeholder="State specific policy violation, trademark infringement, counterfeit material, or luxury charter violation..."
+                rows={3}
+                className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-red-500 bg-white"
+              />
+            </div>
+            <div className="pt-3 border-t border-slate-200 flex justify-end space-x-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setProductToReport(null);
+                  setReportReason('');
+                }}
+                className="px-3 py-1.5 text-xs font-bold text-slate-700 border border-slate-300 rounded-xl hover:bg-slate-100 cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                disabled={!reportReason.trim()}
+                onClick={submitReport}
+                className="px-3 py-1.5 text-xs font-bold text-white bg-red-600 hover:bg-red-700 disabled:opacity-40 rounded-xl shadow transition cursor-pointer"
+              >
+                Submit Report
+              </button>
+            </div>
           </div>
         </div>
       )}

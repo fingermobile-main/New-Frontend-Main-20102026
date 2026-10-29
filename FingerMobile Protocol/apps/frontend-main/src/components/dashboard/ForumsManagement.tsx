@@ -22,6 +22,8 @@ import {
   PhotoIcon,
   PaintBrushIcon,
   ShieldCheckIcon,
+  VideoCameraIcon,
+  MegaphoneIcon,
 } from '@heroicons/react/24/outline';
 import ForumService from '../../services/forumService';
 import { ForumCategory } from '../../types/forum';

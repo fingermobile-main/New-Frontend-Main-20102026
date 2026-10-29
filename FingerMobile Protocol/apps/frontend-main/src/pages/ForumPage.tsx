@@ -1396,7 +1396,7 @@ export const ForumPage: React.FC = () => {
   const isExcludedRestricted =
     EXCLUDED_FROM_SOVEREIGN_ADMIN_EMAILS.includes(userEmail);
 
-  const userRole = (user?.role || syncedProfile?.role || 'member').toLowerCase().trim();
+  const userRole = (user?.role || (syncedProfile as any)?.role || 'member').toLowerCase().trim();
   const isPlatformAdmin =
     !isExcludedRestricted &&
     (isPrivilegedSuperAdmin ||
@@ -1409,7 +1409,7 @@ export const ForumPage: React.FC = () => {
     if (!activeCategoryData) return false;
     return (
       activeCategoryData.accessType === 'subscription' ||
-      activeCategoryData.accessType === 'rbac'
+      activeCategoryData.accessType === 'rbac_gated'
     );
   }, [activeCategoryData]);
 
@@ -1419,13 +1419,13 @@ export const ForumPage: React.FC = () => {
     if (isPrivilegedSuperAdmin || isPlatformAdmin) return true;
     if (activeCategoryData.accessType === 'free' || !activeCategoryData.accessType) return true;
 
-    if (activeCategoryData.accessType === 'rbac') {
+    if (activeCategoryData.accessType === 'rbac_gated') {
       const allowed = (activeCategoryData.allowedRoles || []).map((r) => r.toLowerCase());
       return allowed.includes(userRole);
     }
 
     if (activeCategoryData.accessType === 'subscription') {
-      const userTier = (user?.subscriptionTier || (user as any)?.tier || (syncedProfile as any)?.subscriptionTier || '').toLowerCase();
+      const userTier = ((user as any)?.subscriptionTier || (user as any)?.tier || (syncedProfile as any)?.subscriptionTier || '').toLowerCase();
       const requiredTier = (activeCategoryData.subscriptionTierRequired || '').toLowerCase();
       if (!requiredTier || userTier.includes(requiredTier) || userTier === 'enterprise' || userTier === 'vip' || userTier === 'pro') {
         return true;
@@ -1694,7 +1694,7 @@ export const ForumPage: React.FC = () => {
       setComposerError('Cannot publish: The selected category is frozen by platform administration.');
       return;
     }
-    if ((matchedCat?.accessType === 'subscription' || matchedCat?.accessType === 'rbac') && !userHasCategoryAccess && !isPlatformAdmin) {
+    if ((matchedCat?.accessType === 'subscription' || matchedCat?.accessType === 'rbac_gated') && !userHasCategoryAccess && !isPlatformAdmin) {
       setComposerError(`Cannot publish: Category "${matchedCat.name}" requires ${matchedCat.accessType === 'subscription' ? 'a paid subscription' : 'an authorized role'}.`);
       return;
     }
@@ -2520,16 +2520,35 @@ export const ForumPage: React.FC = () => {
             {selectedCategoryId !== 'all' && (
               <CategoryBulletinFeedHeader
                 categoryName={selectedCategoryId}
-                categoryIcon={apiCategories.find((c) => c.name.toLowerCase() === selectedCategoryId.toLowerCase())?.icon}
+                categoryIcon={activeCategoryData?.icon || apiCategories.find((c) => c.name.toLowerCase() === selectedCategoryId.toLowerCase())?.icon}
                 totalPostsCount={effectivePosts.length}
                 editorialMode={editorialMode}
                 onToggleEditorialMode={(mode) => setEditorialMode(mode)}
                 onClearCategory={() => setSelectedCategoryId('all')}
                 onPublishToCategory={() => {
-                  setComposerCategory(selectedCategoryId);
+                  if (activeCategoryData?.isFrozen || activeCategoryData?.moderationState === 'frozen') {
+                    triggerToast('This category is frozen by platform administration. New posts cannot be published.', 'error');
+                    return;
+                  }
+                  if (!userHasCategoryAccess) {
+                    triggerToast(`Access restricted: This category requires ${activeCategoryData?.accessType === 'subscription' ? (activeCategoryData.subscriptionTierRequired || 'VIP') + ' subscription' : 'specialized role clearance'}.`, 'info');
+                    return;
+                  }
+                  setComposerCategory(activeCategoryData?.name || selectedCategoryId);
                   composerContainerRef.current?.scrollIntoView({ behavior: 'smooth' });
                 }}
                 triggerToast={(msg, type) => triggerToast(msg, type === 'warning' ? 'info' : type)}
+                headerImageUrl={activeCategoryData?.headerImageUrl}
+                coverImageUrl={activeCategoryData?.coverImageUrl}
+                rules={activeCategoryData?.rules}
+                moderationState={activeCategoryData?.moderationState}
+                accessType={activeCategoryData?.accessType}
+                subscriptionTierRequired={activeCategoryData?.subscriptionTierRequired}
+                isFrozen={activeCategoryData?.isFrozen || activeCategoryData?.moderationState === 'frozen'}
+                isCommentingPaused={activeCategoryData?.isCommentingPaused || activeCategoryData?.moderationState === 'comments_paused'}
+                isGated={isCategoryGated}
+                hasAccess={userHasCategoryAccess}
+                styleColor={activeCategoryData?.styleColor}
               />
             )}
 
@@ -2661,6 +2680,40 @@ export const ForumPage: React.FC = () => {
                   <div className="mt-3 p-2.5 bg-rose-50 border border-rose-200 text-rose-700 text-xs sm:text-sm rounded-xl flex items-center gap-2">
                     <ExclamationCircleIcon className="w-4 h-4 flex-shrink-0" />
                     <span>{composerError}</span>
+                  </div>
+                )}
+
+                {/* Category Moderation / Gating Status Banner */}
+                {activeCategoryData && (activeCategoryData.isFrozen || activeCategoryData.moderationState === 'frozen') && (
+                  <div className="mt-3 p-3 bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-700 rounded-xl text-amber-900 dark:text-amber-200 text-xs font-bold flex items-center gap-2.5">
+                    <span className="text-lg shrink-0">❄️</span>
+                    <div>
+                      <p className="font-extrabold uppercase">Category Frozen by Moderation</p>
+                      <p className="font-normal text-[11px] mt-0.5">
+                        New dispatches in &ldquo;{activeCategoryData.name}&rdquo; are currently paused. Browsing and reading existing dispatches remain active.
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {activeCategoryData && isCategoryGated && !userHasCategoryAccess && (
+                  <div className="mt-3 p-3 bg-purple-50 dark:bg-purple-950/40 border border-purple-300 dark:border-purple-700 rounded-xl text-purple-900 dark:text-purple-200 text-xs font-bold flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div className="flex items-center gap-2">
+                      <span className="text-lg shrink-0">🔒</span>
+                      <div>
+                        <p className="font-extrabold uppercase">Gated Category</p>
+                        <p className="font-normal text-[11px] mt-0.5">
+                          Requires {activeCategoryData.accessType === 'subscription' ? `${activeCategoryData.subscriptionTierRequired || 'VIP'} Subscription` : 'RBAC Clearance'} to publish new discussions.
+                        </p>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => navigate('/pricing')}
+                      className="px-3 py-1.5 bg-purple-700 hover:bg-purple-800 text-white rounded-lg text-xs font-bold shrink-0 transition"
+                    >
+                      Upgrade Access →
+                    </button>
                   </div>
                 )}
 
@@ -4231,13 +4284,47 @@ export const ForumPage: React.FC = () => {
                       handleAddComment(postId);
                     }}
                     onOpenLightbox={setSelectedLightboxImage}
-                    onUpdatePost={(updatedPost) => {
+                    onMoveUp={(id) => handleMovePost(id, 'up')}
+                    onMoveDown={(id) => handleMovePost(id, 'down')}
+                    onUpdatePost={async (updatedPost) => {
                       setPosts((prev) =>
                         prev.map((p) => (p.id === updatedPost.id ? updatedPost : p))
                       );
+                      const rawId = (updatedPost as any).rawId || updatedPost.id;
+                      try {
+                        await ForumService.updatePost(String(rawId), {
+                          title: updatedPost.title,
+                          content: updatedPost.content,
+                          is_frozen: updatedPost.isFrozen,
+                          isFrozen: updatedPost.isFrozen,
+                          is_censored: updatedPost.isCensored,
+                          isCensored: updatedPost.isCensored,
+                          censor_reason: (updatedPost as any).censorReason,
+                          censorReason: (updatedPost as any).censorReason,
+                          is_suspended: updatedPost.isSuspended,
+                          isSuspended: updatedPost.isSuspended,
+                          is_commenting_paused: updatedPost.isCommentsPaused,
+                          isCommentingPaused: updatedPost.isCommentsPaused,
+                          isCommentsPaused: updatedPost.isCommentsPaused,
+                          is_flagged: updatedPost.isFlagged,
+                          isFlagged: updatedPost.isFlagged,
+                          flag_reason: updatedPost.flagReason,
+                          flagReason: updatedPost.flagReason,
+                        } as any);
+                      } catch (err) {
+                        console.error('Failed to persist post updates to PostgreSQL:', err);
+                      }
                     }}
-                    onDeletePost={(postId) => {
+                    onDeletePost={async (postId) => {
+                      const postToDelete = posts.find((p) => p.id === postId);
                       setPosts((prev) => prev.filter((p) => p.id !== postId));
+                      const rawId = (postToDelete as any)?.rawId || postId;
+                      try {
+                        await ForumService.deletePost(String(rawId));
+                        triggerToast('Post purged from sovereign database', 'success');
+                      } catch (err) {
+                        console.error('Failed to purge post from PostgreSQL:', err);
+                      }
                     }}
                     triggerToast={(msg, type) => triggerToast(msg, type === 'warning' ? 'info' : type)}
                   />

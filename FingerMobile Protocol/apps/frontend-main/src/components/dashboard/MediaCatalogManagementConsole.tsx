@@ -1,9 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import axios from 'axios';
 import { api } from '../../services/api';
+import { useAuth } from '../../contexts/AuthContext';
+import { getUserRoleTier, PRIMARY_ADMIN_EMAILS } from '../../services/platformRbac';
 
 export type MediaEcosystem = 'beatwave' | 'dancia';
-type MediaAction = 'publish' | 'freeze' | 'block' | 'suspend' | 'restore' | 'flag' | 'warn';
+type MediaAction = 'publish' | 'freeze' | 'block' | 'suspend' | 'restore' | 'flag' | 'warn' | 'pause_comments' | 'censor';
 type FieldType = 'text' | 'textarea' | 'number' | 'boolean' | 'json' | 'datetime-local' | 'select' | 'file';
 
 export interface MediaField {
@@ -95,6 +97,20 @@ const MediaCatalogManagementConsole: React.FC<MediaCatalogManagementConsoleProps
   const [formValues, setFormValues] = useState<Record<string, string>>({});
   const [uploads, setUploads] = useState<Record<string, UploadState>>({});
   const fileInputRefs = useRef<Record<string, HTMLInputElement | null>>({});
+
+  const { user } = useAuth();
+  const userEmail = (user?.email || '').toLowerCase().trim();
+  const roleTier = getUserRoleTier(user as any);
+
+  const isSuperAdmin =
+    PRIMARY_ADMIN_EMAILS.includes(userEmail) ||
+    roleTier === 'PRIMARY_SUPER_ADMIN' ||
+    user?.role === 'super_admin' ||
+    user?.role === 'founder';
+
+  const [recordToDelete, setRecordToDelete] = useState<MediaRecord | null>(null);
+  const [recordToReport, setRecordToReport] = useState<MediaRecord | null>(null);
+  const [reportReason, setReportReason] = useState<string>('');
 
   const entity = useMemo(
     () => entities.find(item => item.key === activeEntity) || entities[0],
@@ -341,6 +357,56 @@ const MediaCatalogManagementConsole: React.FC<MediaCatalogManagementConsoleProps
     }
   };
 
+  const handleMoveOrder = async (index: number, direction: 'up' | 'down') => {
+    const targetIdx = direction === 'up' ? index - 1 : index + 1;
+    if (targetIdx < 0 || targetIdx >= records.length) return;
+
+    const newRecords = [...records];
+    const [moved] = newRecords.splice(index, 1);
+    newRecords.splice(targetIdx, 0, moved);
+    setRecords(newRecords);
+
+    try {
+      await api.patch(
+        `/master-dashboard/ecosystems/${ecosystem}/${entity.key}/${encodeURIComponent(String(moved.id))}`,
+        { order_index: targetIdx, display_order: targetIdx }
+      );
+    } catch {
+      // optimistic update retained
+    }
+  };
+
+  const togglePauseComments = async (record: MediaRecord) => {
+    const isPaused = Boolean(record.is_commenting_paused || record.isCommentsPaused);
+    await runAction(record, 'pause_comments', { is_commenting_paused: !isPaused });
+  };
+
+  const toggleCensor = async (record: MediaRecord) => {
+    const isCensored = Boolean(record.is_censored || record.isCensored);
+    await runAction(record, 'censor', { is_censored: !isCensored });
+  };
+
+  const handlePermanentDelete = async () => {
+    if (!recordToDelete) return;
+    try {
+      await api.delete(
+        `/master-dashboard/ecosystems/${ecosystem}/${entity.key}/${encodeURIComponent(String(recordToDelete.id))}?permanent=true`
+      );
+      setSuccessMessage(`Permanently deleted from PostgreSQL database.`);
+      setRecordToDelete(null);
+      await loadData();
+    } catch (err) {
+      setErrorMessage(getErrorMessage(err));
+    }
+  };
+
+  const submitReport = async () => {
+    if (!recordToReport || !reportReason.trim()) return;
+    await runAction(recordToReport, 'flag', { reason: reportReason.trim() });
+    setRecordToReport(null);
+    setReportReason('');
+  };
+
   const statusCounts = summary[activeEntity] || {};
 
   return (
@@ -531,6 +597,7 @@ const MediaCatalogManagementConsole: React.FC<MediaCatalogManagementConsoleProps
           <table className="min-w-full divide-y divide-slate-200">
             <thead className="bg-slate-50">
               <tr>
+                <th scope="col" className="px-3 py-3 text-center text-xs font-bold uppercase tracking-wide text-slate-800 w-16">Move</th>
                 <th scope="col" className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wide text-slate-800">Record</th>
                 <th scope="col" className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wide text-slate-800">Lifecycle</th>
                 {entity.risks && <th scope="col" className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wide text-slate-800">Risk</th>}
@@ -539,12 +606,37 @@ const MediaCatalogManagementConsole: React.FC<MediaCatalogManagementConsoleProps
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200">
-              {records.map(record => {
+              {records.map((record, index) => {
                 const recordTitle = String(record.title || record.name || record.author || record.host || record.slug || record.id);
                 const status = String(record.moderation_status || 'draft');
                 const archived = status === 'archived';
+                const isCommentsPaused = Boolean(record.is_commenting_paused || record.isCommentsPaused);
+                const isCensored = Boolean(record.is_censored || record.isCensored);
                 return (
                   <tr key={String(record.id)}>
+                    <td className="px-2 py-4 align-top text-center">
+                      <div className="flex flex-col items-center gap-1">
+                        <button
+                          type="button"
+                          disabled={index === 0}
+                          onClick={() => handleMoveOrder(index, 'up')}
+                          className="rounded border border-slate-300 bg-white p-1 text-slate-700 hover:bg-slate-100 disabled:opacity-30 cursor-pointer text-xs"
+                          title="Move Up"
+                        >
+                          ▲
+                        </button>
+                        <span className="font-mono text-[10px] font-bold text-slate-600">#{index + 1}</span>
+                        <button
+                          type="button"
+                          disabled={index === records.length - 1}
+                          onClick={() => handleMoveOrder(index, 'down')}
+                          className="rounded border border-slate-300 bg-white p-1 text-slate-700 hover:bg-slate-100 disabled:opacity-30 cursor-pointer text-xs"
+                          title="Move Down"
+                        >
+                          ▼
+                        </button>
+                      </div>
+                    </td>
                     <td className="max-w-sm px-4 py-4 align-top">
                       <p className="font-bold text-slate-900">{recordTitle}</p>
                       <p className="mt-0.5 break-all font-mono text-xs text-slate-700">ID {String(record.id)}</p>
@@ -610,11 +702,62 @@ const MediaCatalogManagementConsole: React.FC<MediaCatalogManagementConsoleProps
                                 <button type="button" onClick={() => void runAction(record, 'block')} className="rounded border border-red-400 bg-red-100 px-2.5 py-1 text-xs font-black text-red-950">Block</button>
                                 <button type="button" onClick={() => void runAction(record, 'suspend')} className="rounded border border-amber-400 bg-amber-100 px-2.5 py-1 text-xs font-black text-amber-950">Suspend</button>
                               </>}
+
+                            {/* Pause / Resume Commenting */}
+                            <button
+                              type="button"
+                              onClick={() => void togglePauseComments(record)}
+                              className={`rounded border px-2.5 py-1 text-xs font-black cursor-pointer ${
+                                isCommentsPaused
+                                  ? 'border-amber-400 bg-amber-100 text-amber-950'
+                                  : 'border-slate-300 bg-white text-slate-800 hover:bg-slate-50'
+                              }`}
+                              title={isCommentsPaused ? 'Resume Commenting' : 'Pause Commenting'}
+                            >
+                              {isCommentsPaused ? '▶ Comments' : '⏸ Pause'}
+                            </button>
+
+                            {/* Censor / Uncensor (18+ Mask) */}
+                            <button
+                              type="button"
+                              onClick={() => void toggleCensor(record)}
+                              className={`rounded border px-2.5 py-1 text-xs font-black cursor-pointer ${
+                                isCensored
+                                  ? 'border-purple-400 bg-purple-100 text-purple-950'
+                                  : 'border-slate-300 bg-white text-slate-800 hover:bg-slate-50'
+                              }`}
+                              title={isCensored ? 'Uncensor Media' : 'Censor Media (18+ Mask)'}
+                            >
+                              {isCensored ? '👁 18+' : '👁‍🗨 Censor'}
+                            </button>
+
+                            {/* Report Media Item */}
+                            <button
+                              type="button"
+                              onClick={() => setRecordToReport(record)}
+                              className="rounded border border-red-300 bg-red-50 px-2.5 py-1 text-xs font-black text-red-950 hover:bg-red-100 cursor-pointer"
+                              title="File Regulatory Report"
+                            >
+                              🚩 Report
+                            </button>
+
                             {entity.warnings && status !== 'frozen' && status !== 'blocked' && status !== 'suspended' && <button type="button" onClick={() => {
                               const reason = window.prompt(`Warning reason for ${recordTitle}:`);
                               if (reason?.trim()) void runAction(record, 'warn', { reason: reason.trim() });
                             }} className="rounded border border-amber-400 bg-amber-100 px-2.5 py-1 text-xs font-black text-amber-950">Issue warning</button>}
                             <button type="button" onClick={() => void archiveRecord(record)} className="rounded border border-slate-400 bg-slate-100 px-2.5 py-1 text-xs font-black text-slate-950">Archive</button>
+
+                            {/* Super Admin Permanent Delete */}
+                            {isSuperAdmin && (
+                              <button
+                                type="button"
+                                onClick={() => setRecordToDelete(record)}
+                                className="rounded border border-red-400 bg-red-600 px-2.5 py-1 text-xs font-black text-white hover:bg-red-700 cursor-pointer"
+                                title="Permanently Purge Record from PostgreSQL (Super Admin)"
+                              >
+                                🗑 Delete
+                              </button>
+                            )}
                           </>
                         )}
                       </div>
@@ -626,6 +769,90 @@ const MediaCatalogManagementConsole: React.FC<MediaCatalogManagementConsoleProps
           </table>
         )}
       </div>
+
+      {/* Super Admin Permanent Purge Confirmation Modal */}
+      {recordToDelete && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white border border-red-300 rounded-3xl max-w-sm w-full p-6 shadow-2xl space-y-3">
+            <h4 className="font-black text-base text-slate-900">Purge Media Record from Database?</h4>
+            <p className="text-xs text-slate-700 leading-relaxed font-medium">
+              As a Sovereign Super Admin, you are about to permanently purge <strong className="text-slate-900">{String(recordToDelete.title || recordToDelete.name || recordToDelete.id)}</strong> from the PostgreSQL database. This action is irreversible.
+            </p>
+            <div className="pt-3 border-t border-slate-200 flex justify-end space-x-2">
+              <button
+                type="button"
+                onClick={() => setRecordToDelete(null)}
+                className="px-3 py-1.5 text-xs font-bold text-slate-700 border border-slate-300 rounded-xl hover:bg-slate-100 cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handlePermanentDelete}
+                className="px-3 py-1.5 text-xs font-bold text-white bg-red-600 hover:bg-red-700 rounded-xl shadow transition cursor-pointer"
+              >
+                Confirm Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Regulatory Report Dialog */}
+      {recordToReport && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white border border-slate-300 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200">
+              <h4 className="font-black text-sm text-slate-900">File Compliance &amp; Media Report</h4>
+              <button
+                type="button"
+                onClick={() => {
+                  setRecordToReport(null);
+                  setReportReason('');
+                }}
+                className="text-slate-400 hover:text-slate-600 text-xs font-bold cursor-pointer"
+              >
+                ✕
+              </button>
+            </div>
+            <p className="text-xs text-slate-700 font-medium">
+              Reporting media record: <strong className="text-slate-900">{String(recordToReport.title || recordToReport.name || recordToReport.id)}</strong>
+            </p>
+            <div>
+              <label className="block text-xs font-bold text-slate-800 mb-1">
+                Violation or Regulatory Justification *
+              </label>
+              <textarea
+                value={reportReason}
+                onChange={(e) => setReportReason(e.target.value)}
+                placeholder="State specific policy violation, copyright claim, broadcast infraction, or harmful content..."
+                rows={3}
+                className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-red-500 bg-white"
+              />
+            </div>
+            <div className="pt-3 border-t border-slate-200 flex justify-end space-x-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setRecordToReport(null);
+                  setReportReason('');
+                }}
+                className="px-3 py-1.5 text-xs font-bold text-slate-700 border border-slate-300 rounded-xl hover:bg-slate-100 cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                disabled={!reportReason.trim()}
+                onClick={submitReport}
+                className="px-3 py-1.5 text-xs font-bold text-white bg-red-600 hover:bg-red-700 disabled:opacity-40 rounded-xl shadow transition cursor-pointer"
+              >
+                Submit Report
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
