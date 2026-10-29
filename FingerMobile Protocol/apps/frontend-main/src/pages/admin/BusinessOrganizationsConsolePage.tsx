@@ -224,8 +224,15 @@ export const BusinessOrganizationsConsolePage: React.FC = () => {
               to="/admin/creators-console"
               className="px-4 py-2 text-xs font-black rounded-xl bg-purple-600 hover:bg-purple-700 text-white transition flex items-center gap-1.5 shadow-sm"
             >
-              <Users className="w-3.5 h-3.5" />
+              <Palette className="w-3.5 h-3.5" />
               Creators Console
+            </Link>
+            <Link
+              to="/admin/users-permissions"
+              className="px-4 py-2 text-xs font-black rounded-xl bg-slate-900 hover:bg-slate-800 text-white transition flex items-center gap-1.5 shadow-sm"
+            >
+              <Users className="w-3.5 h-3.5 text-orange-400" />
+              Users Permissions
             </Link>
           </div>
         </div>
@@ -249,19 +256,6 @@ export const BusinessOrganizationsConsolePage: React.FC = () => {
             </button>
           </div>
         )}
-            >
-              <Palette className="w-3.5 h-3.5" />
-              Creators Console
-            </Link>
-            <Link
-              to="/admin/users-permissions"
-              className="px-4 py-2 text-xs font-black rounded-xl bg-slate-900 hover:bg-slate-800 text-white transition flex items-center gap-1.5 shadow-sm"
-            >
-              <Users className="w-3.5 h-3.5 text-orange-400" />
-              Users Permissions
-            </Link>
-          </div>
-        </div>
 
         {/* Top Operational Metrics */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

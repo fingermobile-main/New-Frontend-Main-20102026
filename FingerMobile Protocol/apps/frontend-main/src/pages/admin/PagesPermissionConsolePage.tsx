@@ -34,6 +34,12 @@ export const PagesPermissionConsolePage: React.FC = () => {
   const [categoryFilter, setCategoryFilter] = useState('ALL');
   const [tierFilter, setTierFilter] = useState('ALL');
   const [editingPage, setEditingPage] = useState<PageDirectoryEntry | null>(null);
+  const [toastMsg, setToastMsg] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
+
+  const showToast = (text: string, type: 'success' | 'error' = 'success') => {
+    setToastMsg({ text, type });
+    setTimeout(() => setToastMsg(null), 4500);
+  };
 
   useEffect(() => {
     document.title = 'Pages Permission Console | FingerMobile Protocol';

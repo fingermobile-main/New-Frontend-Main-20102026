@@ -96,7 +96,7 @@ export const MasterWidgetConsole: React.FC = () => {
     };
   }, []);
 
-  const showToast = (msg: string) => {
+  const showToast = (msg: string, _type?: 'success' | 'error' | 'info') => {
     setToastMessage(msg);
     setTimeout(() => setToastMessage(null), 3500);
   };
