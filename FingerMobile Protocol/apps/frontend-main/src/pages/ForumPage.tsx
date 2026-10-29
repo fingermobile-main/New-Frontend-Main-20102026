@@ -2004,10 +2004,10 @@ export const ForumPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => navigate('/forum')}
-                  className="cursor-pointer flex items-center focus:outline-none text-left group min-w-0"
+                  className="cursor-pointer flex items-center focus:outline-none text-left group shrink-0"
                   aria-label="FingerMobile"
                 >
-                  <span className="text-sm sm:text-base md:text-lg font-black tracking-tight text-slate-900 dark:text-white flex items-center group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors truncate">
+                  <span className="text-sm sm:text-base md:text-lg font-black tracking-tight text-slate-900 dark:text-white flex items-center group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors whitespace-nowrap shrink-0">
                     FingerMobile<span className="text-[#ff6b00] ml-0.5">™</span>
                   </span>
                 </button>
