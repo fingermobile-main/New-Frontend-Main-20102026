@@ -184,8 +184,8 @@ const WalletAndPayPage: React.FC = () => {
           <div className="space-y-6">
             <div className="bg-white rounded-3xl p-6 border border-slate-300 shadow-sm">
               <h2 className="text-sm font-bold text-slate-700 uppercase tracking-wider mb-3 flex items-center">
-                <UserCircleIcon className="h-5 w-5 text-emerald-700 mr-2" />
-                Active FIC Balance
+                <img src="/assets/logos/fic_logo.png" alt="Infinite Coin" className="w-5 h-5 object-contain mr-2 shrink-0" />
+                Active Infinite Coin Balance
               </h2>
               <div className="flex items-center justify-between">
                 <span className="text-2xl font-mono font-black text-slate-900">{ficBalance.toFixed(2)} FIC</span>

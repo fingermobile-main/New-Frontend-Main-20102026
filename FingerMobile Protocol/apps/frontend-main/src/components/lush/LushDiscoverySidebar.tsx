@@ -125,8 +125,9 @@ export const LushDiscoverySidebar: React.FC<LushDiscoverySidebarProps> = ({
             <QuestionMarkCircleIcon className="w-4 h-4 text-emerald-600" />
             Daily Question
           </span>
-          <span className="text-[10px] font-bold text-orange-950 bg-orange-100 px-2 py-0.5 rounded-full border border-orange-400 font-black">
-            +50 Coins
+          <span className="text-[10px] font-bold text-orange-950 bg-orange-100 px-2 py-0.5 rounded-full border border-orange-400 font-black flex items-center gap-1">
+            <img src="/assets/logos/fic_logo.png" alt="Infinite Coin" className="w-3.5 h-3.5 object-contain" />
+            +50 Infinite Coins
           </span>
         </div>
 

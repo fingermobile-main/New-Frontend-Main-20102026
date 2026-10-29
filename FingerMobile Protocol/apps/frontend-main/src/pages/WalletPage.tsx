@@ -1004,13 +1004,16 @@ const WalletPage: React.FC = () => {
             <Card className="lg:col-span-2 bg-white border border-slate-300 shadow-sm rounded-3xl overflow-hidden">
               <CardHeader className="bg-slate-50/70 border-b border-slate-300 pb-4">
                 <div className="flex items-center justify-between">
-                  <div>
-                    <CardDescription className="text-xs font-bold text-slate-700 uppercase tracking-wider">
-                      Confirmed Live Balance
-                    </CardDescription>
-                    <CardTitle className="text-4xl font-black text-slate-900 mt-1">
-                      {ficBalance.toLocaleString()} <span className="text-indigo-700 text-2xl font-bold">FIC</span>
-                    </CardTitle>
+                  <div className="flex items-center gap-3">
+                    <img src="/assets/logos/fic_logo.png" alt="Infinite Coin" className="w-12 h-12 object-contain shrink-0" />
+                    <div>
+                      <CardDescription className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                        Confirmed Live Balance (Infinite Coin)
+                      </CardDescription>
+                      <CardTitle className="text-4xl font-black text-slate-900 mt-1">
+                        {ficBalance.toLocaleString()} <span className="text-indigo-700 text-2xl font-bold">FIC</span>
+                      </CardTitle>
+                    </div>
                   </div>
                   <div className="text-right">
                     <span className="text-xs font-bold text-slate-700 uppercase tracking-wider block">FIAT Valuation</span>

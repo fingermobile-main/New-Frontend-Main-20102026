@@ -21,7 +21,7 @@ export interface LuxuryStoreItem {
   id: string;
   store: 'ownit' | 'flamingo';
   title: string;
-  price: number; // in FIC / Lush Coins
+  price: number; // in FIC / Infinite Coins
   rarity: '1-of-1 Bespoke' | 'Ultra Rare' | 'Museum Grade' | 'Haute Couture' | 'Imperial Reserve';
   image: string;
   tagline: string;

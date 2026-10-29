@@ -57,7 +57,7 @@ interface MeetOption {
   emoji: string;
   tagline: string;
   badge: string;
-  suggestedEscrow: number; // in FIC / Lush Coins
+  suggestedEscrow: number; // in FIC / Infinite Coins
 }
 
 const MEET_OPTIONS: MeetOption[] = [

@@ -209,7 +209,7 @@ export const LushProfileSidebar: React.FC<LushProfileSidebarProps> = ({
         </div>
       </div>
 
-      {/* 2. Gamification & Lush Coins Card */}
+      {/* 2. Gamification & Infinite Coins Card */}
       <div className="bg-white rounded-2xl border border-emerald-100/80 shadow-xs p-4 space-y-3.5">
         <div className="flex items-center justify-between">
           <span className="text-xs font-bold text-gray-800 uppercase tracking-wider flex items-center gap-1.5">
@@ -240,12 +240,12 @@ export const LushProfileSidebar: React.FC<LushProfileSidebarProps> = ({
         {/* Currency & Streak Stats */}
         <div className="grid grid-cols-2 gap-2 pt-1">
           <div className="bg-[#F5F9F6] border border-emerald-100 rounded-xl p-2.5 text-center">
-            <div className="text-base font-extrabold text-emerald-800 flex items-center justify-center gap-1">
-              <span>🪙</span>
+            <div className="text-base font-extrabold text-emerald-800 flex items-center justify-center gap-1.5">
+              <img src="/assets/logos/fic_logo.png" alt="Infinite Coin" className="w-4 h-4 object-contain shrink-0 inline-block" />
               {user.lushCoins.toLocaleString()}
             </div>
             <div className="text-[10px] text-slate-700 font-bold uppercase tracking-wider mt-0.5 font-medium">
-              Lush Coins
+              Infinite Coins
             </div>
           </div>
 
