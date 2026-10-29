@@ -316,6 +316,12 @@ const FinanceDashboardPage = lazy(() => import('../pages/dashboard/FinanceDashbo
 const ModerationDashboardPage = lazy(() => import('../pages/dashboard/ModerationDashboardPage'));
 const CompliancePage = lazy(() => import('../pages/CompliancePage'));
 const SessionManagementPage = lazy(() => import('../pages/SessionManagementPage'));
+const DashboardCampaignsPage = lazy(() => import('../pages/dashboard/CampaignsPage'));
+const DashboardCampaignDetailPage = lazy(() => import('../pages/dashboard/CampaignDetailPage'));
+const ContentPage = lazy(() => import('../pages/ContentPage'));
+const AdminSecurityEventsPage = lazy(() => import('../pages/admin/AdminSecurityEventsPage'));
+const CodeAgentPage = lazy(() => import('../pages/super-admin/CodeAgentPage'));
+const SiteMenusPage = lazy(() => import('../pages/dashboard/site-management/SiteMenusPage'));
 
 const redirectTo = (to: string) => <Navigate to={to} replace />;
 
@@ -856,6 +862,83 @@ export const routes: RouteObject[] = [
           { path: '/members-console', element: <UserMembersConsolePage /> },
           { path: '/user-members-console', element: <UserMembersConsolePage /> },
           { path: '/members-management', element: <UserMembersConsolePage /> },
+
+          // Campaigns & Analytics Routes
+          { path: '/dashboard/campaigns-manager', element: <DashboardCampaignsPage /> },
+          { path: '/dashboard/campaigns/:id', element: <DashboardCampaignDetailPage /> },
+          { path: '/campaigns/:id', element: <DashboardCampaignDetailPage /> },
+
+          // Master Console Breadcrumb Aliases
+          { path: '/admin/analytics-telemetry', element: <AnalyticsTelemetryMasterConsolePage /> },
+          { path: '/admin/camus-enclave', element: <CamusEnclaveMasterConsolePage /> },
+          { path: '/admin/commerce-luxury', element: <CommerceLuxuryMasterConsolePage /> },
+          { path: '/admin/comms-voip', element: <CommunicationsVoipMasterConsolePage /> },
+          { path: '/admin/corporate-governance', element: <CorporateGovernanceMasterConsolePage /> },
+          { path: '/admin/creator-monetization', element: <CreatorMonetizationMasterConsolePage /> },
+          { path: '/admin/domain-edge', element: <DomainEdgeMasterConsolePage /> },
+          { path: '/admin/elearning-nysc', element: <ElearningNyscMasterConsolePage /> },
+          { path: '/admin/email-comms', element: <EmailCommsMasterConsolePage /> },
+          { path: '/admin/financial-treasury', element: <FinancialTreasuryMasterConsolePage /> },
+          { path: '/admin/franchise-hubs', element: <FranchiseHubsMasterConsolePage /> },
+          { path: '/admin/gamification-rewards', element: <GamificationRewardsMasterConsolePage /> },
+          { path: '/admin/gaming-super-vi', element: <GamingSuperViMasterConsolePage /> },
+          { path: '/admin/investor-relations', element: <InvestorRelationsMasterConsolePage /> },
+          { path: '/admin/loans-qr', element: <LoansQrMasterConsolePage /> },
+          { path: '/admin/lumina-gallery', element: <LuminaGalleryMasterConsolePage /> },
+          { path: '/admin/marketing-campaign', element: <MarketingCampaignMasterConsolePage /> },
+          { path: '/admin/media-streaming', element: <MediaStreamingMasterConsolePage /> },
+          { path: '/admin/member-retention', element: <MemberRetentionMasterConsolePage /> },
+          { path: '/admin/mii-stories', element: <MiiStoriesMasterConsolePage /> },
+          { path: '/admin/rbac-permissions', element: <RbacPermissionsMasterConsolePage /> },
+          { path: '/admin/security-defcon', element: <SecurityDefConMasterConsolePage /> },
+          { path: '/admin/sound-ocean', element: <SoundOceanMasterConsolePage /> },
+          { path: '/admin/sound-river', element: <SoundRiverMasterConsolePage /> },
+          { path: '/admin/sound-sonic', element: <SoundSonicMasterConsolePage /> },
+          { path: '/admin/subscription-models', element: <SubscriptionModelsMasterConsolePage /> },
+          { path: '/admin/support-care', element: <SupportCareMasterConsolePage /> },
+          { path: '/admin/system-infra', element: <SystemInfraMasterConsolePage /> },
+
+          // Common Dead-Link Resolution & Feature Redirect Aliases
+          { path: '/financials/my-wallet', element: redirectTo('/wallet') },
+          { path: '/financials/fic-vault', element: redirectTo('/fic-vault') },
+          { path: '/financials/monetization', element: redirectTo('/creator-monetization') },
+          { path: '/dashboard/financials', element: redirectTo('/financials') },
+          { path: '/dashboard/finance', element: redirectTo('/financials') },
+          { path: '/canary-admaker', element: redirectTo('/canary-ad-maker') },
+          { path: '/compliance', element: <CompliancePage /> },
+          { path: '/legal/whitepaper', element: redirectTo('/about') },
+          { path: '/dashboard/policy', element: redirectTo('/legalcompliance') },
+          { path: '/upload', element: redirectTo('/videos') },
+          { path: '/media/upload', element: redirectTo('/videos') },
+          { path: '/golive', element: redirectTo('/live') },
+          { path: '/ugc', element: redirectTo('/ugc-media') },
+          { path: '/commerce', element: redirectTo('/storefront') },
+          { path: '/leaderboard', element: redirectTo('/leaderboards') },
+          { path: '/rbac', element: redirectTo('/rbac-management') },
+          { path: '/admin/security-settings', element: redirectTo('/admin/security') },
+          { path: '/groups/create', element: redirectTo('/communities') },
+          { path: '/posts/create', element: redirectTo('/createpost') },
+          { path: '/music', element: redirectTo('/soundsonic') },
+          { path: '/community-management', element: redirectTo('/communitymanagement') },
+          { path: '/reports', element: redirectTo('/userreports') },
+          { path: '/gaming/matchmaking', element: redirectTo('/gameon') },
+          { path: '/gaming/leaderboard', element: redirectTo('/gameon/leaderboard') },
+          { path: '/ownit-tracking', element: redirectTo('/ownit') },
+          { path: '/certifications', element: redirectTo('/mylearning') },
+          { path: '/info', element: redirectTo('/about') },
+
+          // Content, Menus & Security Events
+          { path: '/content', element: <ContentPage /> },
+          { path: '/content-management', element: <ContentPage /> },
+          { path: '/admin/security-events', element: <AdminSecurityEventsPage /> },
+          { path: '/security-events', element: <AdminSecurityEventsPage /> },
+          { path: '/super-admin/code-agent', element: <CodeAgentPage /> },
+          { path: '/code-agent', element: <CodeAgentPage /> },
+          { path: '/dashboard/site/menus', element: <SiteMenusPage /> },
+          { path: '/settings/billing', element: redirectTo('/subscriptions') },
+          { path: '/admin/activity-logs', element: redirectTo('/admin/audit-logs') },
+          { path: '/dashboard/badges', element: redirectTo('/settings/badges') },
+          { path: '/database-integration-report', element: redirectTo('/database-integration-dashboard') },
         ],
       },
 
