@@ -22,7 +22,13 @@ import {
   Sparkles,
   Layers,
   ChevronDown,
-  Image as ImageIcon
+  Image as ImageIcon,
+  ShieldAlert,
+  EyeOff,
+  Eye,
+  Film,
+  Globe,
+  CheckCircle
 } from 'lucide-react';
 import {
   MediaStreamingServiceKey,
@@ -34,6 +40,38 @@ import mediaStreamingConsoleService from '../../services/mediaStreamingConsoleSe
 import audioEngine, { AfricanVoiceLine } from '../../services/SuperViAudioEngine';
 import { useAppContext } from '../../contexts/AppContext';
 import { useBeatwaveNG } from '../../contexts/BeatwaveNGContext';
+
+// Core VOD Monetization Models for Dancia-4Tv
+export const VOD_MONETIZATION_MODELS = [
+  { value: 'SVOD', label: 'SVOD (Subscription Video on Demand - Unlimited tier access)', desc: 'Recurring subscription access (Netflix model)' },
+  { value: 'TVOD', label: 'TVOD (Transactional Video on Demand - Pay-per-view / Rental in FIC)', desc: 'Pay per rental or purchase in FIC (iTunes/Apple TV model)' },
+  { value: 'AVOD', label: 'AVOD (Ad-Supported Video on Demand - Free with Canary Ads)', desc: 'Free-to-watch monetized via sovereign Canary Ads (YouTube/Tubi model)' },
+  { value: 'Hybrid', label: 'Hybrid (Base Subscription + Transactional Premium Releases)', desc: 'Tier subscription with optional TVOD early-window releases' }
+];
+
+// Digital Broadcast Media Content Acquisition & Distribution Licensors
+export const VOD_ACQUISITION_LICENSORS = [
+  { value: 'FilmOne Entertainment', label: 'FilmOne Entertainment (West African Theatrical & SVOD Rights)' },
+  { value: 'iROKOtv', label: 'iROKOtv (Nollywood Digital VOD & Film Catalog)' },
+  { value: 'Africa Magic (MultiChoice)', label: 'Africa Magic MultiChoice (Regional DTH, Cable & OTT Broadcast)' },
+  { value: 'Tribe Nation Studios', label: 'Tribe Nation Studios (Motion Picture Production & Acquisition)' },
+  { value: 'Virtual Media Network Limited', label: 'Virtual Media Network (AI-Driven Content Creation & Distribution)' },
+  { value: 'View Africa Television (VATV)', label: 'View Africa Television VATV (DTH, IPTV & OTT Global Channels)' },
+  { value: 'Globecast', label: 'Globecast (Global Satellite/IP Fiber Transport & Cloud Playout)' },
+  { value: 'BBC Studios', label: 'BBC Studios (Commercial Production & Multi-Channel Distribution)' },
+  { value: 'Sony Pictures / NBCUniversal / Disney', label: 'Sony Pictures / NBCUniversal / Disney (Multinational Conglomerate Syndicate)' },
+  { value: 'Sovereign Independent', label: 'Sovereign Independent Creator (Direct Decentralized Protocol Ingest)' }
+];
+
+// Standard Age Compliance Ratings
+export const CONTENT_RATINGS = [
+  { value: 'G', label: 'G (General Audiences)' },
+  { value: 'PG', label: 'PG (Parental Guidance Suggested)' },
+  { value: 'PG-13', label: 'PG-13 (Parents Strongly Cautioned)' },
+  { value: '16+', label: '16+ (Mature Teens & Young Adults)' },
+  { value: '18+', label: '18+ Mature (Restricted / Adult Themes)' },
+  { value: 'Restricted', label: 'Restricted (Compliance Review Required)' }
+];
 
 // Curated platform genres for each streaming microservice
 export const SERVICE_GENRES: Record<MediaStreamingServiceKey, string[]> = {
@@ -155,6 +193,17 @@ export const MasterStreamingMediaConsole: React.FC = () => {
   const [spawnDescription, setSpawnDescription] = useState<string>('');
   const [spawnedConsoles, setSpawnedConsoles] = useState<SpawnedMediaConsole[]>([]);
 
+  // VoD Ingest Engine State for Dancia-4Tv
+  const [vodIngestMode, setVodIngestMode] = useState<'upload' | 'pull'>('upload');
+  const [pullStreamUrl, setPullStreamUrl] = useState<string>('');
+  const [pullTitle, setPullTitle] = useState<string>('');
+  const [pullLicensor, setPullLicensor] = useState<string>('FilmOne Entertainment');
+  const [pullVodModel, setPullVodModel] = useState<string>('SVOD');
+  const [pullGenre, setPullGenre] = useState<string>('Film & Short Cinema');
+  const [pullRating, setPullRating] = useState<string>('PG-13');
+  const [pullCensored, setPullCensored] = useState<boolean>(false);
+  const [isPulling, setIsPulling] = useState<boolean>(false);
+
   // Item Form State
   const [formData, setFormData] = useState<{
     title: string;
@@ -175,6 +224,11 @@ export const MasterStreamingMediaConsole: React.FC = () => {
     tags: string;
     voice_prompt: string;
     creator_name: string;
+    status: 'active' | 'frozen' | 'draft' | 'archived' | 'censored' | 'suspended';
+    vod_model: string;
+    acquisition_source: string;
+    external_pull_url: string;
+    content_rating: string;
   }>({
     title: '',
     slug: '',
@@ -193,7 +247,12 @@ export const MasterStreamingMediaConsole: React.FC = () => {
     license_fee_fic: 10,
     tags: 'Afrobeats, Audio, Stem',
     voice_prompt: 'owo_ni_koko',
-    creator_name: 'Master Studio'
+    creator_name: 'Master Studio',
+    status: 'active',
+    vod_model: 'SVOD',
+    acquisition_source: 'FilmOne Entertainment',
+    external_pull_url: '',
+    content_rating: 'PG-13'
   });
 
   // Load Overview Data
@@ -310,6 +369,81 @@ export const MasterStreamingMediaConsole: React.FC = () => {
     }
   };
 
+  // Toggle Censor Handler (18+ Sensitive Content Mask)
+  const handleToggleCensor = async (item: MediaStreamingConsoleItem) => {
+    try {
+      const nextStatus = item.status === 'censored' ? 'active' : 'censored';
+      const updated = await mediaStreamingConsoleService.updateItem(activeService, item.id, {
+        status: nextStatus as any
+      });
+      setItems(prev => prev.map(i => i.id === item.id ? updated : i));
+      loadOverview();
+      audioEngine.playVoiceLine('wahala');
+      showToast(
+        nextStatus === 'censored'
+          ? `Item #${item.id} (${item.title}) has been CENSORED with 18+ sensitive mask.`
+          : `Censorship lifted on Item #${item.id} (${item.title}): Now ACTIVE.`,
+        nextStatus === 'censored' ? 'warning' : 'success'
+      );
+    } catch (_err) {
+      showToast('Error toggling censorship status', 'error');
+    }
+  };
+
+  // Ingest External VoD Stream (Movie Platforms & Curation Engines)
+  const handleIngestExternalStream = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!pullStreamUrl.trim()) {
+      showToast('External stream URL is required', 'error');
+      return;
+    }
+    if (!pullTitle.trim()) {
+      showToast('Stream title is required', 'error');
+      return;
+    }
+
+    setIsPulling(true);
+    try {
+      const isHls = /\.m3u8/i.test(pullStreamUrl);
+      const created = await mediaStreamingConsoleService.createItem(activeService, {
+        title: pullTitle.trim(),
+        slug: pullTitle.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+        category: pullGenre,
+        subcategory: `${pullVodModel} Syndication`,
+        description: `External VoD content curated and acquired from ${pullLicensor}. Monetization model: ${pullVodModel}.`,
+        media_url: pullStreamUrl.trim(),
+        media_type: isHls ? 'stream' : 'video',
+        thumbnail_url: formData.thumbnail_url || '/assets/branding/fingermobile/drawer-splash-logo.webp',
+        duration_seconds: 7200,
+        stream_latency_mode: 'standard',
+        resolution: '4K UHD',
+        status: pullCensored ? 'censored' : 'active',
+        fic_bounty: 250,
+        license_fee_fic: 25,
+        creator_name: pullLicensor,
+        tags: [pullVodModel, pullLicensor.split(' ')[0], 'VOD', 'Syndication'],
+        metadata: {
+          vod_model: pullVodModel,
+          acquisition_source: pullLicensor,
+          external_pull_url: pullStreamUrl.trim(),
+          content_rating: pullRating
+        }
+      });
+
+      setItems(prev => [...prev, created]);
+      loadOverview();
+      audioEngine.playVoiceLine('blessings');
+      showToast(`Ingested "${created.title}" from ${pullLicensor} into Dancia-4Tv (${pullVodModel})!`, 'success');
+      setIsUploadModalOpen(false);
+      setPullStreamUrl('');
+      setPullTitle('');
+    } catch (_err) {
+      showToast('Failed to ingest external stream', 'error');
+    } finally {
+      setIsPulling(false);
+    }
+  };
+
   // Move Item Up / Down (Reorder)
   const handleMoveOrder = async (index: number, direction: 'up' | 'down') => {
     const targetIndex = direction === 'up' ? index - 1 : index + 1;
@@ -375,7 +509,12 @@ export const MasterStreamingMediaConsole: React.FC = () => {
       license_fee_fic: 15,
       tags: `${activeService}, media, master`,
       voice_prompt: 'owo_ni_koko',
-      creator_name: 'Master Sound Studio'
+      creator_name: 'Master Sound Studio',
+      status: 'active',
+      vod_model: 'SVOD',
+      acquisition_source: 'FilmOne Entertainment',
+      external_pull_url: '',
+      content_rating: 'PG-13'
     });
     setIsEditModalOpen(true);
   };
@@ -401,7 +540,12 @@ export const MasterStreamingMediaConsole: React.FC = () => {
       license_fee_fic: Number(item.license_fee_fic) || 0,
       tags: Array.isArray(item.tags) ? item.tags.join(', ') : '',
       voice_prompt: item.voice_prompt || 'owo_ni_koko',
-      creator_name: item.creator_name || 'Master Studio'
+      creator_name: item.creator_name || 'Master Studio',
+      status: item.status || 'active',
+      vod_model: item.metadata?.vod_model || 'SVOD',
+      acquisition_source: item.metadata?.acquisition_source || 'FilmOne Entertainment',
+      external_pull_url: item.metadata?.external_pull_url || '',
+      content_rating: item.metadata?.content_rating || 'PG-13'
     });
     setIsEditModalOpen(true);
   };
@@ -428,11 +572,19 @@ export const MasterStreamingMediaConsole: React.FC = () => {
       musical_key: formData.musical_key,
       stream_latency_mode: formData.stream_latency_mode,
       resolution: formData.resolution,
+      status: formData.status,
       fic_bounty: Number(formData.fic_bounty) || 0,
       license_fee_fic: Number(formData.license_fee_fic) || 0,
       tags: formData.tags.split(',').map(t => t.trim()).filter(Boolean),
       voice_prompt: formData.voice_prompt,
-      creator_name: formData.creator_name.trim() || 'Master Studio'
+      creator_name: formData.creator_name.trim() || 'Master Studio',
+      metadata: {
+        ...(editingItem?.metadata || {}),
+        vod_model: formData.vod_model,
+        acquisition_source: formData.acquisition_source,
+        external_pull_url: formData.external_pull_url.trim(),
+        content_rating: formData.content_rating
+      }
     };
 
     try {
@@ -725,6 +877,8 @@ export const MasterStreamingMediaConsole: React.FC = () => {
               <option value="ALL">All Statuses</option>
               <option value="active">Active Only</option>
               <option value="frozen">Frozen Only</option>
+              <option value="censored">Censored (18+) Only</option>
+              <option value="suspended">Suspended Only</option>
               <option value="draft">Draft Only</option>
             </select>
           </div>
@@ -839,7 +993,7 @@ export const MasterStreamingMediaConsole: React.FC = () => {
                             <img
                               src={item.thumbnail_url}
                               alt={item.title}
-                              className="w-full h-full object-cover"
+                              className={`w-full h-full object-cover ${item.status === 'censored' ? 'filter blur-xs' : ''}`}
                               onError={(e) => {
                                 (e.target as HTMLElement).style.display = 'none';
                               }}
@@ -847,6 +1001,11 @@ export const MasterStreamingMediaConsole: React.FC = () => {
                           ) : (
                             <div className="w-full h-full flex items-center justify-center bg-indigo-50 text-indigo-700">
                               <Music className="w-5 h-5" />
+                            </div>
+                          )}
+                          {item.status === 'censored' && (
+                            <div className="absolute inset-0 bg-slate-950/70 backdrop-blur-2xs flex items-center justify-center text-[8px] font-black text-amber-300 border border-amber-500/50">
+                              18+ CENSOR
                             </div>
                           )}
                           <button
@@ -916,10 +1075,19 @@ export const MasterStreamingMediaConsole: React.FC = () => {
                           <div className="text-slate-600 font-medium">{item.duration_seconds}s • {item.resolution}</div>
                         </div>
                       ) : (
-                        <div className="space-y-0.5 font-mono text-[11px]">
-                          <div className="font-black text-indigo-900">{item.resolution || '1080p'}</div>
-                          <div className="font-bold text-slate-700 capitalize">{item.stream_latency_mode} Latency</div>
-                          <div className="text-slate-600 font-medium">{item.duration_seconds > 0 ? `${item.duration_seconds}s` : 'Live 24/7'}</div>
+                        <div className="space-y-1 font-mono text-[11px]">
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <span className="px-1.5 py-0.5 rounded text-[10px] font-black bg-purple-100 text-purple-950 border border-purple-400">
+                              {item.metadata?.vod_model || 'SVOD'}
+                            </span>
+                            <span className="font-black text-indigo-900">{item.resolution || '4K UHD'}</span>
+                          </div>
+                          <div className="font-bold text-slate-800 text-[10px] truncate max-w-[140px]" title={item.metadata?.acquisition_source || item.creator_name}>
+                            🏛️ {item.metadata?.acquisition_source || item.creator_name}
+                          </div>
+                          <div className="text-slate-600 text-[10px] font-bold">
+                            Rating: {item.metadata?.content_rating || 'PG-13'} • {item.duration_seconds > 0 ? `${item.duration_seconds}s` : 'Live Stream'}
+                          </div>
                         </div>
                       )}
                     </td>
@@ -931,12 +1099,24 @@ export const MasterStreamingMediaConsole: React.FC = () => {
                           ? 'bg-emerald-100 text-emerald-950 border-emerald-400'
                           : item.status === 'frozen'
                           ? 'bg-blue-100 text-blue-950 border-blue-400'
+                          : item.status === 'censored'
+                          ? 'bg-amber-100 text-amber-950 border-amber-400 font-extrabold'
+                          : item.status === 'suspended'
+                          ? 'bg-rose-100 text-rose-950 border-rose-400 font-extrabold'
                           : 'bg-slate-100 text-slate-900 border-slate-300'
                       }`}>
                         <span className={`w-1.5 h-1.5 rounded-full ${
-                          item.status === 'active' ? 'bg-emerald-600' : item.status === 'frozen' ? 'bg-blue-600' : 'bg-slate-500'
+                          item.status === 'active'
+                            ? 'bg-emerald-600'
+                            : item.status === 'frozen'
+                            ? 'bg-blue-600'
+                            : item.status === 'censored'
+                            ? 'bg-amber-600'
+                            : item.status === 'suspended'
+                            ? 'bg-rose-600'
+                            : 'bg-slate-500'
                         }`} />
-                        {item.status.toUpperCase()}
+                        {item.status === 'censored' ? 'CENSORED (18+)' : item.status.toUpperCase()}
                       </span>
                     </td>
 
@@ -986,6 +1166,19 @@ export const MasterStreamingMediaConsole: React.FC = () => {
                           <Volume2 className="w-3.5 h-3.5 text-purple-700" />
                         </button>
 
+                        {/* Granular Censor / Uncensor Toggle */}
+                        <button
+                          onClick={() => handleToggleCensor(item)}
+                          className={`p-1.5 rounded-lg border transition-colors ${
+                            item.status === 'censored'
+                              ? 'bg-amber-100 text-amber-950 border-amber-400 hover:bg-amber-200'
+                              : 'bg-slate-100 text-slate-800 border-slate-300 hover:bg-slate-200'
+                          }`}
+                          title={item.status === 'censored' ? 'Uncensor Item (Lift 18+ mask)' : 'Censor Item (Apply 18+ sensitive mask)'}
+                        >
+                          <ShieldAlert className={`w-3.5 h-3.5 ${item.status === 'censored' ? 'text-amber-800' : 'text-slate-700'}`} />
+                        </button>
+
                         {/* Freeze / Unfreeze */}
                         <button
                           onClick={() => handleToggleFreeze(item.id)}
@@ -996,6 +1189,8 @@ export const MasterStreamingMediaConsole: React.FC = () => {
                           }`}
                           title={item.status === 'frozen' ? 'Unfreeze' : 'Freeze'}
                         >
+                          {item.status === 'frozen' ? 'Unfreeze' : 'Freeze'}
+                        </button>
                           {item.status === 'frozen' ? 'Unfreeze' : 'Freeze'}
                         </button>
 
