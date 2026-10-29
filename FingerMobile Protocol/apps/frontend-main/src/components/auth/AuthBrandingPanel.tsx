@@ -130,7 +130,7 @@ export const AuthBrandingPanel: React.FC<AuthBrandingPanelProps> = ({ initialInd
 
       {/* Bottom Legal / Version Marker */}
       <div className="relative z-10 flex items-center justify-between text-[11px] text-slate-400 font-semibold border-t border-slate-800/80 pt-4">
-        <span>© 2026 GraceLink Ltd. Singapore</span>
+        <span>© 2026 GraceLink Business Technologies Group. Singapore</span>
         <span className="font-mono text-orange-400/90 font-bold">Infinite Coin Sovereign Rails v2.4</span>
       </div>
     </div>
