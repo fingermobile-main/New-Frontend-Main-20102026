@@ -384,7 +384,13 @@ const RbacManagementPage: React.FC = () => {
 
           <div className="space-y-6">
             <div className="bg-white rounded-2xl shadow-md p-6 border border-slate-300">
-              <h2 className="text-lg font-bold text-gray-900 mb-4">RBAC Actions</h2>
+              <div className="px-3.5 py-2 mb-4 bg-black text-white border border-[#880808] rounded-xl flex items-center justify-between shadow-xs">
+                <h2 className="text-xs font-black text-white uppercase tracking-wider flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse" />
+                  Compliance & RBAC Actions
+                </h2>
+                <span className="text-[9px] font-mono text-rose-300 font-bold">SOVEREIGN</span>
+              </div>
               <div className="space-y-3">
                 <button
                   type="button"

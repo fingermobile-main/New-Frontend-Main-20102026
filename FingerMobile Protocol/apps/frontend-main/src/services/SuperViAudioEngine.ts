@@ -152,8 +152,8 @@ class SuperViAudioEngine {
 
     const text = phrases[type] || 'SuperVi!';
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = 1.05;
-    utterance.pitch = 1.1;
+    utterance.rate = 0.88; // Relaxed deliberate African cadence
+    utterance.pitch = 0.85; // Warm human-like baritone bass resonance
     utterance.volume = 0.85;
 
     // Try finding an African English voice if available in the browser

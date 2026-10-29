@@ -13,11 +13,13 @@ import {
   Eye,
   HardDrive,
   Video,
-  Image as ImageIcon,
   CheckSquare,
-  Square
+  Square,
+  ShieldAlert
 } from 'lucide-react';
 import { api } from '../../../services/api';
+import { useAuth } from '../../../contexts/AuthContext';
+import { getUserRoleTier, PRIMARY_ADMIN_EMAILS } from '../../../services/platformRbac';
 import { CatalogProduct } from './GeneralProductCatalogConsole';
 
 const getVettingBadgeStyle = (status: string) => {
@@ -34,6 +36,27 @@ const getVettingBadgeStyle = (status: string) => {
 };
 
 export const StorefrontVettingCatalogConsole: React.FC = () => {
+  const { user } = useAuth();
+  const userEmail = (user?.email || '').toLowerCase().trim();
+  const roleTier = getUserRoleTier(user as any);
+
+  const isSuperAdmin =
+    PRIMARY_ADMIN_EMAILS.includes(userEmail) ||
+    roleTier === 'PRIMARY_SUPER_ADMIN' ||
+    user?.role === 'super_admin' ||
+    user?.role === 'founder';
+
+  const isAdmin =
+    isSuperAdmin ||
+    user?.role === 'admin' ||
+    user?.role === 'administrator';
+
+  const isModerator =
+    isAdmin ||
+    user?.role === 'moderator' ||
+    user?.role === 'sentinel' ||
+    user?.role === 'curator';
+
   const [products, setProducts] = useState<CatalogProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -208,6 +231,27 @@ export const StorefrontVettingCatalogConsole: React.FC = () => {
             {error}
           </div>
         )}
+
+        {/* Sovereign Compliance & RBAC Actions Banner - Black with hairline of dark red (#880808) */}
+        <div className="mt-4 p-3.5 bg-black border border-[#880808] rounded-xl text-white shadow-lg flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-center space-x-2.5">
+            <span className="w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse shrink-0" />
+            <div>
+              <h4 className="text-xs font-black uppercase tracking-wider text-white flex items-center gap-2">
+                <ShieldAlert className="w-4 h-4 text-red-500" />
+                Compliance & RBAC Actions: Storefront Vetting
+              </h4>
+              <p className="text-[11px] text-slate-300 font-medium">
+                Admin: Freeze, Suspend, Censor (18+ Blur), Quota Enforcement · Super Admin: Permanent Purge from PostgreSQL
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2 shrink-0">
+            <span className="px-2.5 py-1 rounded-full text-[10px] font-mono font-bold bg-red-950/80 text-rose-200 border border-red-800/80">
+              {isSuperAdmin ? 'ROLE: SUPER ADMIN' : isAdmin ? 'ROLE: ADMIN' : isModerator ? 'ROLE: MODERATOR' : 'ROLE: REVIEWER'}
+            </span>
+          </div>
+        </div>
 
         {/* Storefront Vetting KPI Counters */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-6">
@@ -630,31 +674,46 @@ export const StorefrontVettingCatalogConsole: React.FC = () => {
               </div>
             </div>
 
-            {/* Decision Buttons */}
-            <div className="pt-4 border-t border-slate-200 flex flex-wrap items-center justify-between gap-2">
-              <button
-                type="button"
-                onClick={() => handleApplyVetting('reject')}
-                className="px-4 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-300 rounded-xl text-xs font-bold transition"
-              >
-                Reject Listing
-              </button>
+            {/* Sovereign Compliance & RBAC Actions Box - Black with hairline of dark red (#880808) */}
+            <div className="bg-black border border-[#880808] rounded-xl p-3.5 space-y-3 shadow-lg text-white">
+              <div className="flex items-center justify-between pb-2 border-b border-red-950/60">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-red-600 animate-pulse shrink-0" />
+                  <span className="text-xs font-black uppercase tracking-wider text-white">Compliance & RBAC Actions</span>
+                </div>
+                <span className="text-[10px] font-mono text-rose-300 font-bold">SOVEREIGN VETTING</span>
+              </div>
+              <p className="text-[11px] text-slate-300">
+                Enforce regulatory compliance, blur sensitive imagery, verify merchant legitimacy, or approve catalog publication.
+              </p>
+              <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
+                <button
+                  type="button"
+                  onClick={() => handleApplyVetting('reject')}
+                  className="px-4 py-2 bg-rose-950/70 hover:bg-rose-900 text-rose-200 border border-rose-800 rounded-xl text-xs font-bold transition flex items-center gap-1.5"
+                >
+                  <X className="w-3.5 h-3.5 text-rose-400" />
+                  Reject Listing
+                </button>
 
-              <div className="flex items-center space-x-2">
-                <button
-                  type="button"
-                  onClick={() => handleApplyVetting('censor')}
-                  className="px-4 py-2 bg-purple-100 hover:bg-purple-200 text-purple-950 border border-purple-300 rounded-xl text-xs font-bold transition"
-                >
-                  Apply Censorship
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleApplyVetting('approve')}
-                  className="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-md transition"
-                >
-                  Approve for Storefronts
-                </button>
+                <div className="flex items-center space-x-2">
+                  <button
+                    type="button"
+                    onClick={() => handleApplyVetting('censor')}
+                    className="px-4 py-2 bg-purple-950/70 hover:bg-purple-900 text-purple-200 border border-purple-800 rounded-xl text-xs font-bold transition flex items-center gap-1.5"
+                  >
+                    <EyeOff className="w-3.5 h-3.5 text-purple-400" />
+                    Apply Censorship
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleApplyVetting('approve')}
+                    className="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-md transition flex items-center gap-1.5"
+                  >
+                    <CheckCircle2 className="w-3.5 h-3.5 text-white" />
+                    Approve for Storefronts
+                  </button>
+                </div>
               </div>
             </div>
           </div>

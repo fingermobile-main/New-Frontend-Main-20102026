@@ -964,10 +964,14 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
                   <span>Send FIC Coin Tip</span>
                 </button>
 
-                {/* RBAC Moderation Options Section */}
-                <div className="my-1 border-t border-slate-200 dark:border-slate-800 pt-1">
-                  <div className="px-3 py-1 text-[10px] font-black uppercase tracking-wider text-slate-500">
-                    Compliance & RBAC Actions
+                {/* RBAC Moderation Options Section - Black with hairline of dark red (#880808) */}
+                <div className="my-1.5 pt-1.5 border-t border-red-950/60">
+                  <div className="mx-1 px-2.5 py-1.5 text-[10px] font-black uppercase tracking-wider bg-black text-white border border-[#880808] rounded-xl flex items-center justify-between shadow-xs mb-1.5">
+                    <span className="flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse" />
+                      Compliance & RBAC Actions
+                    </span>
+                    <span className="text-[9px] font-mono text-rose-300 font-bold">SOVEREIGN</span>
                   </div>
 
                   {/* Flag Post (Badge Holders, Moderators, Admins, Super Admins) */}

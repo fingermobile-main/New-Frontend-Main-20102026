@@ -157,7 +157,7 @@ export const CategoryBulletinFeedHeader: React.FC<CategoryBulletinFeedHeaderProp
         window.speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(bulletinTranscript);
         utterance.rate = audioPlaybackSpeed;
-        utterance.pitch = 1.0;
+        utterance.pitch = 0.90; // Natural warm vocal resonance
         utterance.onend = () => {
           setIsPlayingAudio(false);
           setAudioProgressSeconds(0);

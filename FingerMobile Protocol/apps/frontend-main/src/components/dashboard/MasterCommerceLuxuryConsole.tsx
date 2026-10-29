@@ -1251,6 +1251,46 @@ export const MasterCommerceLuxuryConsole: React.FC = () => {
                 </div>
               </div>
 
+              {/* Compliance & RBAC Actions Box - Black with hairline of dark red (#880808) */}
+              <div className="bg-black border border-[#880808] rounded-xl p-3.5 space-y-3 shadow-lg text-white">
+                <div className="flex items-center justify-between border-b border-red-950/60 pb-2">
+                  <div className="flex items-center gap-2 text-xs font-black text-white uppercase tracking-wider">
+                    <ShieldAlert className="w-4 h-4 text-red-500" />
+                    Compliance & RBAC Actions
+                  </div>
+                  <span className="text-[9px] font-mono text-red-300 font-bold bg-red-950/80 px-2 py-0.5 rounded-full border border-red-800/60">
+                    SOVEREIGN POLICY
+                  </span>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                  <div>
+                    <label className="font-bold text-slate-200 block mb-1">Catalog Lifecycle Status</label>
+                    <select
+                      value={formData.status}
+                      onChange={(e) => setFormData({ ...formData, status: e.target.value as any })}
+                      className="w-full p-2 font-bold text-slate-900 bg-white border border-slate-300 rounded-lg outline-none"
+                    >
+                      <option value="active">Active (Public Catalog)</option>
+                      <option value="censored">Censored (18+ Blur Mask)</option>
+                      <option value="frozen">Frozen (Compliance Quarantine)</option>
+                      <option value="suspended">Suspended (Offline)</option>
+                      <option value="draft">Draft (Private Inspection)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="font-bold text-slate-200 block mb-1">Public Inquiries & Comments</label>
+                    <select
+                      value={formData.is_comments_paused ? 'paused' : 'open'}
+                      onChange={(e) => setFormData({ ...formData, is_comments_paused: e.target.value === 'paused' })}
+                      className="w-full p-2 font-bold text-slate-900 bg-white border border-slate-300 rounded-lg outline-none"
+                    >
+                      <option value="open">Open (Inquiries & Tips Enabled)</option>
+                      <option value="paused">Paused (Moderator Freeze)</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
               <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-200">
                 <button
                   type="button"

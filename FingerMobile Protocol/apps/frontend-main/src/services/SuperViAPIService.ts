@@ -290,8 +290,8 @@ class SuperViApiService {
     if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
       try {
         const utterance = new SpeechSynthesisUtterance(text);
-        if (settings?.pitch) utterance.pitch = settings.pitch;
-        utterance.rate = 1.05;
+        utterance.pitch = settings?.pitch ?? 0.88;
+        utterance.rate = 0.88;
         window.speechSynthesis.speak(utterance);
       } catch (_) {
         // Fallback

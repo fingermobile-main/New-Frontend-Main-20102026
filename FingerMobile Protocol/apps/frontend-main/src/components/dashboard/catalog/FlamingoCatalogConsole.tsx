@@ -6,17 +6,77 @@ import {
   ExternalLink,
   CheckCircle2,
   Award,
-  X
+  X,
+  Plus,
+  Trash2,
+  Lock,
+  Unlock,
+  EyeOff,
+  Eye,
+  PauseCircle,
+  PlayCircle,
+  ShieldAlert,
+  AlertOctagon
 } from 'lucide-react';
 import { api } from '../../../services/api';
+import { useAuth } from '../../../contexts/AuthContext';
+import { getUserRoleTier, PRIMARY_ADMIN_EMAILS } from '../../../services/platformRbac';
+import { CommerceMediaPicker, CommerceMediaValue } from '../../common/CommerceMediaPicker';
 import { CatalogProduct } from './GeneralProductCatalogConsole';
 
 export const FlamingoCatalogConsole: React.FC = () => {
+  const { user } = useAuth();
+  const userEmail = (user?.email || '').toLowerCase().trim();
+  const roleTier = getUserRoleTier(user as any);
+
+  const isSuperAdmin =
+    PRIMARY_ADMIN_EMAILS.includes(userEmail) ||
+    roleTier === 'PRIMARY_SUPER_ADMIN' ||
+    user?.role === 'super_admin' ||
+    user?.role === 'founder';
+
+  const isAdmin =
+    isSuperAdmin ||
+    user?.role === 'admin' ||
+    user?.role === 'administrator';
+
+  const isModerator =
+    isAdmin ||
+    user?.role === 'moderator' ||
+    user?.role === 'sentinel' ||
+    (Array.isArray((user as any)?.roles) && (user as any).roles.includes('moderator')) ||
+    (Array.isArray((user as any)?.permissions) && (user as any).permissions.includes('moderate'));
+
   const [products, setProducts] = useState<CatalogProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  // Ingestion Modal with CommerceMediaPicker
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [newProductData, setNewProductData] = useState({
+    name: '',
+    subtitle: '',
+    description: '',
+    category: 'Haute Couture & Bespoke',
+    goods_type: 'physical',
+    price_fic: '150.0',
+    price_fiat: '120000',
+    stock_quantity: '20',
+    sku: '',
+    vip_tier: 'Flamingo Gold'
+  });
+  const [mediaPickerValue, setMediaPickerValue] = useState<CommerceMediaValue>({
+    coverUrl: '',
+    galleryUrls: [],
+    videoUrl: '',
+    isCensored: false
+  });
+
+  // Permanent Delete Modal
+  const [productToDelete, setProductToDelete] = useState<CatalogProduct | null>(null);
 
   const [selectedProductForRestock, setSelectedProductForRestock] = useState<CatalogProduct | null>(null);
   const [restockAmount, setRestockAmount] = useState('20');
@@ -45,6 +105,149 @@ export const FlamingoCatalogConsole: React.FC = () => {
     fetchFlamingoCatalog();
   }, [fetchFlamingoCatalog]);
 
+  const handleCreateFlamingoProduct = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newProductData.name.trim()) {
+      showToast('Please enter an item title');
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+      const images = [
+        ...(mediaPickerValue.coverUrl ? [mediaPickerValue.coverUrl] : []),
+        ...mediaPickerValue.galleryUrls
+      ].filter(Boolean);
+
+      const video_urls = mediaPickerValue.videoUrl ? [mediaPickerValue.videoUrl] : [];
+
+      const payload = {
+        name: newProductData.name.trim(),
+        subtitle: newProductData.subtitle.trim(),
+        description: newProductData.description.trim(),
+        category: newProductData.category,
+        goods_type: newProductData.goods_type,
+        price_fic: parseFloat(newProductData.price_fic) || 50,
+        price_fiat: parseFloat(newProductData.price_fiat) || 45000,
+        stock_quantity: parseInt(newProductData.stock_quantity, 10) || 10,
+        images,
+        video_urls,
+        curated_stores: ['flamingo'],
+        status: 'active',
+        vetting_status: 'approved',
+        censorship_flags: {
+          is_blurred: mediaPickerValue.isCensored || false
+        },
+        specifications: {
+          tier_access: newProductData.vip_tier,
+          vip_status: 'Flamingo VIP Approved'
+        }
+      };
+
+      const res = await api.post('/catalog/general', payload);
+      if (res.data?.success) {
+        showToast(`"${newProductData.name}" added to Flamingo VIP catalog.`);
+        setIsAddModalOpen(false);
+        setNewProductData({
+          name: '',
+          subtitle: '',
+          description: '',
+          category: 'Haute Couture & Bespoke',
+          goods_type: 'physical',
+          price_fic: '150.0',
+          price_fiat: '120000',
+          stock_quantity: '20',
+          sku: '',
+          vip_tier: 'Flamingo Gold'
+        });
+        setMediaPickerValue({ coverUrl: '', galleryUrls: [], videoUrl: '', isCensored: false });
+        fetchFlamingoCatalog();
+      }
+    } catch (err: any) {
+      showToast(err?.response?.data?.message || 'Failed to add Flamingo item');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleToggleFreeze = async (prod: CatalogProduct) => {
+    const isFrozen = Boolean((prod.censorship_flags as any)?.is_frozen);
+    try {
+      const nextFlags = {
+        ...(prod.censorship_flags || {}),
+        is_frozen: !isFrozen
+      };
+      const res = await api.put(`/catalog/general/${prod.id}`, { censorship_flags: nextFlags });
+      if (res.data?.success) {
+        showToast(isFrozen ? `Unfroze "${prod.name}"` : `Froze "${prod.name}": bookings locked`);
+        fetchFlamingoCatalog();
+      }
+    } catch {
+      showToast('Failed to update freeze status');
+    }
+  };
+
+  const handleToggleCensor = async (prod: CatalogProduct) => {
+    const isBlurred = Boolean((prod.censorship_flags as any)?.is_blurred);
+    try {
+      const nextFlags = {
+        ...(prod.censorship_flags || {}),
+        is_blurred: !isBlurred
+      };
+      const res = await api.put(`/catalog/general/${prod.id}`, { censorship_flags: nextFlags });
+      if (res.data?.success) {
+        showToast(isBlurred ? `Uncensored "${prod.name}"` : `Censored "${prod.name}" (18+ blur applied)`);
+        fetchFlamingoCatalog();
+      }
+    } catch {
+      showToast('Failed to update censor status');
+    }
+  };
+
+  const handleToggleSuspend = async (prod: CatalogProduct) => {
+    const nextStatus = prod.status === 'suspended' ? 'active' : 'suspended';
+    try {
+      const res = await api.put(`/catalog/general/${prod.id}`, { status: nextStatus });
+      if (res.data?.success) {
+        showToast(nextStatus === 'suspended' ? `Suspended "${prod.name}" (taken offline)` : `Restored "${prod.name}" to active`);
+        fetchFlamingoCatalog();
+      }
+    } catch {
+      showToast('Failed to toggle suspend status');
+    }
+  };
+
+  const handleTogglePauseComments = async (prod: CatalogProduct) => {
+    const isPaused = Boolean((prod.censorship_flags as any)?.is_comments_paused);
+    try {
+      const nextFlags = {
+        ...(prod.censorship_flags || {}),
+        is_comments_paused: !isPaused
+      };
+      const res = await api.put(`/catalog/general/${prod.id}`, { censorship_flags: nextFlags });
+      if (res.data?.success) {
+        showToast(isPaused ? `Resumed inquiries on "${prod.name}"` : `Paused inquiries on "${prod.name}"`);
+        fetchFlamingoCatalog();
+      }
+    } catch {
+      showToast('Failed to toggle inquiries status');
+    }
+  };
+
+  const handlePermanentDelete = async () => {
+    if (!productToDelete) return;
+    try {
+      const res = await api.delete(`/catalog/general/${productToDelete.id}`);
+      if (res.data?.success) {
+        showToast(`Permanently purged "${productToDelete.name}" from PostgreSQL`);
+        setProductToDelete(null);
+        fetchFlamingoCatalog();
+      }
+    } catch {
+      showToast('Failed to delete item');
+    }
+  };
+
   const handleRemoveFromFlamingo = async (id: string, name: string) => {
     if (!window.confirm(`Withdraw "${name}" from Flamingo VIP tier?`)) return;
     try {
@@ -56,7 +259,7 @@ export const FlamingoCatalogConsole: React.FC = () => {
         showToast(`"${name}" withdrawn from Flamingo.`);
         fetchFlamingoCatalog();
       }
-    } catch (err: any) {
+    } catch (_err: any) {
       showToast('Error removing product from Flamingo');
     }
   };
@@ -72,21 +275,22 @@ export const FlamingoCatalogConsole: React.FC = () => {
         setSelectedProductForRestock(null);
         fetchFlamingoCatalog();
       }
-    } catch (err: any) {
+    } catch (_err: any) {
       showToast('Error restocking product');
     }
   };
 
   const filtered = products.filter((p) =>
     p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    p.sku.toLowerCase().includes(searchQuery.toLowerCase()) ||
     p.category.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
     <div className="space-y-6">
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 bg-slate-900 border border-pink-500 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center space-x-3">
-          <CheckCircle2 className="w-5 h-5 text-pink-400" />
+        <div className="fixed bottom-6 right-6 z-50 bg-slate-900 border border-rose-500 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center space-x-3">
+          <CheckCircle2 className="w-5 h-5 text-rose-400" />
           <span className="text-sm font-semibold">{toastMessage}</span>
         </div>
       )}
@@ -95,21 +299,30 @@ export const FlamingoCatalogConsole: React.FC = () => {
       <div className="bg-white border border-slate-300 rounded-2xl p-6 shadow-sm">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200">
           <div className="flex items-center space-x-3">
-            <span className="p-2.5 bg-pink-100 border border-pink-300 text-pink-950 rounded-xl">
-              <Flame className="w-6 h-6 text-pink-700" />
+            <span className="p-2.5 bg-rose-100 border border-rose-300 text-rose-950 rounded-xl">
+              <Flame className="w-6 h-6 text-rose-600" />
             </span>
             <div>
-              <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Flamingo Product Catalogue Console</h2>
+              <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Flamingo VIP Haute & Runway Console</h2>
               <p className="text-sm text-slate-700 mt-0.5">
-                Micro-manage luxury fashion, bespoke African wear, runway video showcases, and VIP-gated tier goods for <span className="font-mono text-pink-800">/flamingo</span>.
+                Micro-manage items actively featured in the VIP Runway and Private Atelier boutique.
               </p>
             </div>
           </div>
 
           <div className="flex items-center space-x-3">
+            {isAdmin && (
+              <button
+                onClick={() => setIsAddModalOpen(true)}
+                className="inline-flex items-center space-x-2 px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold shadow-md transition cursor-pointer"
+              >
+                <Plus className="w-4 h-4" />
+                <span>Add Flamingo Item</span>
+              </button>
+            )}
             <button
               onClick={() => fetchFlamingoCatalog()}
-              className="inline-flex items-center space-x-2 px-4 py-2 border border-slate-300 rounded-xl text-xs font-bold text-slate-800 bg-white hover:bg-slate-50 transition shadow-sm"
+              className="inline-flex items-center space-x-2 px-4 py-2 border border-slate-300 rounded-xl text-xs font-bold text-slate-800 bg-white hover:bg-slate-50 transition shadow-sm cursor-pointer"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
               <span>Refresh</span>
@@ -118,9 +331,9 @@ export const FlamingoCatalogConsole: React.FC = () => {
               href="/flamingo"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center space-x-1.5 px-4 py-2 bg-pink-600 hover:bg-pink-700 text-white rounded-xl text-xs font-bold shadow-md transition"
+              className="inline-flex items-center space-x-1.5 px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold shadow-md transition"
             >
-              <span>View Live Flamingo</span>
+              <span>View Flamingo Boutique</span>
               <ExternalLink className="w-3.5 h-3.5" />
             </a>
           </div>
@@ -132,32 +345,56 @@ export const FlamingoCatalogConsole: React.FC = () => {
           </div>
         )}
 
-        {/* Flamingo Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-6">
-          <div className="p-4 bg-pink-50 border border-pink-200 rounded-xl">
-            <span className="text-xs font-bold uppercase tracking-wider text-pink-950">Haute Couture Pieces</span>
-            <p className="text-2xl font-black text-pink-950 mt-1">{products.length}</p>
+        {/* Sovereign Compliance & RBAC Actions Banner - Black with hairline of dark red (#880808) */}
+        <div className="mt-4 p-3.5 bg-black border border-[#880808] rounded-xl text-white shadow-lg flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-center space-x-2.5">
+            <span className="w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse shrink-0" />
+            <div>
+              <h4 className="text-xs font-black uppercase tracking-wider text-white flex items-center gap-2">
+                <ShieldAlert className="w-4 h-4 text-red-500" />
+                Compliance & RBAC Actions: Flamingo VIP Atelier
+              </h4>
+              <p className="text-[11px] text-slate-300 font-medium">
+                Admin: Freeze Bookings, Suspend, Censor (18+ Blur), Pause Inquiries · Super Admin: Permanent Purge from PostgreSQL
+              </p>
+            </div>
           </div>
-          <div className="p-4 bg-purple-50 border border-purple-200 rounded-xl">
-            <span className="text-xs font-bold uppercase tracking-wider text-purple-950">VIP Gated Listings</span>
-            <p className="text-2xl font-black text-purple-950 mt-1">{products.length}</p>
+          <div className="flex items-center gap-2 shrink-0">
+            <span className="px-2.5 py-1 rounded-full text-[10px] font-mono font-bold bg-red-950/80 text-rose-200 border border-red-800/80">
+              {isSuperAdmin ? 'ROLE: SUPER ADMIN' : isAdmin ? 'ROLE: ADMIN' : 'ROLE: MODERATOR'}
+            </span>
+          </div>
+        </div>
+
+        {/* Quick Metrics */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-6">
+          <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl">
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-600">VIP Featured</span>
+            <p className="text-2xl font-black text-slate-900 mt-1">{products.length}</p>
+          </div>
+          <div className="p-4 bg-rose-50 border border-rose-200 rounded-xl">
+            <span className="text-xs font-bold uppercase tracking-wider text-rose-950">Runway Collections</span>
+            <p className="text-2xl font-black text-rose-950 mt-1">Sovereign Edition</p>
           </div>
           <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-xl">
-            <span className="text-xs font-bold uppercase tracking-wider text-emerald-950">Luxury Stock Units</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-emerald-950">Atelier Stock</span>
             <p className="text-2xl font-black text-emerald-950 mt-1">
-              {products.reduce((acc, curr) => acc + (curr.stock_quantity || 0), 0)}
+              {products.reduce((acc, curr) => acc + (curr.stock_quantity || 0), 0)} items
             </p>
           </div>
-          <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-700">Runway Video Clips</span>
-            <p className="text-2xl font-black text-slate-900 mt-1">
-              {products.reduce((acc, c) => acc + (c.video_urls?.length || 0), 0)}
+          <div className="p-4 bg-amber-50 border border-amber-200 rounded-xl">
+            <span className="text-xs font-bold uppercase tracking-wider text-amber-950">Average Price</span>
+            <p className="text-2xl font-black text-amber-950 mt-1">
+              {products.length > 0
+                ? (products.reduce((acc, c) => acc + Number(c.price_fic), 0) / products.length).toFixed(0)
+                : 0}{' '}
+              FIC
             </p>
           </div>
         </div>
       </div>
 
-      {/* Search */}
+      {/* Search & Actions */}
       <div className="bg-white border border-slate-300 rounded-2xl p-4 shadow-sm flex items-center justify-between">
         <div className="relative w-full max-w-sm">
           <Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-3" />
@@ -165,25 +402,25 @@ export const FlamingoCatalogConsole: React.FC = () => {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search Flamingo fashion pieces..."
-            className="w-full pl-9 pr-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-pink-500"
+            placeholder="Search Flamingo luxury lines & styles..."
+            className="w-full pl-9 pr-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-rose-500"
           />
         </div>
       </div>
 
-      {/* Listings */}
+      {/* Listings Table */}
       <div className="bg-white border border-slate-300 rounded-2xl shadow-sm overflow-hidden">
         {loading ? (
           <div className="p-12 text-center text-slate-700 flex flex-col items-center justify-center">
-            <RefreshCw className="w-8 h-8 text-pink-600 animate-spin mb-3" />
-            <p className="text-sm font-semibold">Loading Flamingo luxury catalogue from PostgreSQL...</p>
+            <RefreshCw className="w-8 h-8 text-rose-600 animate-spin mb-3" />
+            <p className="text-sm font-semibold">Loading Flamingo VIP items from PostgreSQL...</p>
           </div>
         ) : filtered.length === 0 ? (
           <div className="p-12 text-center text-slate-700">
-            <Flame className="w-12 h-12 mx-auto mb-3 text-pink-400" />
-            <h3 className="text-base font-bold text-slate-900">No pieces active in Flamingo</h3>
+            <Flame className="w-12 h-12 mx-auto mb-3 text-slate-400" />
+            <h3 className="text-base font-bold text-slate-900">No items curated for Flamingo</h3>
             <p className="text-xs text-slate-600 mt-1">
-              Go to the General Product Catalogue to curate fashion pieces into Flamingo.
+              Click &quot;Add Flamingo Item&quot; or allocate items from the General Catalogue.
             </p>
           </div>
         ) : (
@@ -191,86 +428,383 @@ export const FlamingoCatalogConsole: React.FC = () => {
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="border-b border-slate-200 bg-slate-50 text-[11px] font-bold text-slate-700 uppercase tracking-wider">
-                  <th className="py-3 px-4">Fashion Piece & Media</th>
-                  <th className="py-3 px-4">Sizing & Material</th>
-                  <th className="py-3 px-4">VIP Price</th>
-                  <th className="py-3 px-4">Bespoke Stock</th>
-                  <th className="py-3 px-4">Exclusivity Tier</th>
-                  <th className="py-3 px-4 text-right">Actions</th>
+                  <th className="py-3 px-4">Flamingo Fashion Piece</th>
+                  <th className="py-3 px-4">VIP Tier</th>
+                  <th className="py-3 px-4">FIC Price</th>
+                  <th className="py-3 px-4">Stock</th>
+                  <th className="py-3 px-4">Status & Compliance</th>
+                  <th className="py-3 px-4 text-right">Micro-Management (RBAC)</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200 text-xs text-slate-800">
-                {filtered.map((item) => (
-                  <tr key={item.id} className="hover:bg-slate-50/80 transition-colors">
-                    <td className="py-3 px-4">
-                      <div className="flex items-center space-x-3">
-                        <img
-                          src={item.images?.[0] || 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=200'}
-                          alt={item.name}
-                          className="w-12 h-12 rounded-xl object-cover border border-slate-300"
-                        />
-                        <div>
-                          <div className="font-bold text-slate-900">{item.name}</div>
-                          <div className="text-[11px] text-slate-600 font-mono">SKU: {item.sku}</div>
+                {filtered.map((item) => {
+                  const isFrozen = Boolean((item.censorship_flags as any)?.is_frozen);
+                  const isCensored = Boolean((item.censorship_flags as any)?.is_blurred);
+                  const isCommentsPaused = Boolean((item.censorship_flags as any)?.is_comments_paused);
+                  const isSuspended = item.status === 'suspended';
+
+                  return (
+                    <tr key={item.id} className="hover:bg-slate-50/80 transition-colors">
+                      <td className="py-3 px-4">
+                        <div className="flex items-center space-x-3">
+                          <div className="relative w-12 h-12 rounded-xl overflow-hidden border border-slate-300 shrink-0">
+                            <img
+                              src={item.images?.[0] || 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=200'}
+                              alt={item.name}
+                              className={`w-full h-full object-cover ${isCensored ? 'filter blur-xs' : ''}`}
+                            />
+                            {isCensored && (
+                              <div className="absolute inset-0 bg-purple-950/60 flex items-center justify-center">
+                                <span className="text-[8px] font-black text-white uppercase tracking-wider px-1 bg-purple-900 rounded">18+</span>
+                              </div>
+                            )}
+                          </div>
+                          <div className="min-w-0">
+                            <div className="font-bold text-slate-900 flex items-center gap-1.5 truncate">
+                              <span>{item.name}</span>
+                              {isCommentsPaused && (
+                                <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-amber-100 text-amber-950 border border-amber-300">
+                                  Paused
+                                </span>
+                              )}
+                            </div>
+                            <div className="text-[11px] text-slate-600 font-mono">SKU: {item.sku || 'N/A'}</div>
+                          </div>
                         </div>
-                      </div>
-                    </td>
-                    <td className="py-3 px-4">
-                      <span className="font-semibold text-slate-800">
-                        {item.specifications?.material || 'Hand-Woven Silk'}
-                      </span>
-                      <div className="text-[11px] text-slate-600">{item.specifications?.sizing || 'Bespoke Sizing'}</div>
-                    </td>
-                    <td className="py-3 px-4">
-                      <span className="font-bold text-slate-900">{item.price_fic} FIC</span>
-                      <div className="text-[11px] text-slate-600 font-medium">₦{Number(item.price_fiat).toLocaleString()}</div>
-                    </td>
-                    <td className="py-3 px-4">
-                      <span className="font-bold text-slate-900">{item.stock_quantity} remaining</span>
-                      <div>
-                        <button
-                          onClick={() => setSelectedProductForRestock(item)}
-                          className="text-[11px] font-bold text-pink-700 hover:text-pink-900 underline"
-                        >
-                          + Restock
-                        </button>
-                      </div>
-                    </td>
-                    <td className="py-3 px-4">
-                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-pink-100 text-pink-950 border border-pink-300">
-                        <Award className="w-3 h-3 mr-1 text-pink-700" />
-                        Flamingo Haute VIP
-                      </span>
-                    </td>
-                    <td className="py-3 px-4 text-right">
-                      <button
-                        onClick={() => handleRemoveFromFlamingo(item.id, item.name)}
-                        className="px-3 py-1 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded-lg border border-rose-200 text-xs font-bold transition"
-                      >
-                        Remove Tier
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                      </td>
+                      <td className="py-3 px-4">
+                        <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-rose-100 text-rose-950 border border-rose-300">
+                          <Award className="w-3 h-3 mr-1 text-rose-600" />
+                          {item.specifications?.tier_access || 'Flamingo VIP'}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4">
+                        <span className="font-bold text-slate-900">{item.price_fic} FIC</span>
+                        <div className="text-[11px] text-slate-600 font-medium">₦{Number(item.price_fiat).toLocaleString()}</div>
+                      </td>
+                      <td className="py-3 px-4">
+                        <span className="font-bold text-slate-900">{item.stock_quantity} available</span>
+                        <div>
+                          <button
+                            onClick={() => setSelectedProductForRestock(item)}
+                            className="text-[11px] font-bold text-rose-700 hover:text-rose-900 underline cursor-pointer"
+                          >
+                            + Restock
+                          </button>
+                        </div>
+                      </td>
+                      <td className="py-3 px-4">
+                        <div className="flex flex-col gap-1 items-start">
+                          <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold border ${
+                            isSuspended
+                              ? 'bg-rose-100 text-rose-950 border-rose-400'
+                              : isFrozen
+                              ? 'bg-blue-100 text-blue-950 border-blue-400'
+                              : isCensored
+                              ? 'bg-purple-100 text-purple-950 border-purple-400'
+                              : 'bg-emerald-100 text-emerald-950 border-emerald-400'
+                          }`}>
+                            <span className={`w-1.5 h-1.5 rounded-full ${
+                              isSuspended ? 'bg-rose-600' : isFrozen ? 'bg-blue-600' : isCensored ? 'bg-purple-600' : 'bg-emerald-600'
+                            }`} />
+                            {isSuspended ? 'SUSPENDED' : isFrozen ? 'FROZEN' : isCensored ? 'CENSORED' : 'ACTIVE'}
+                          </span>
+                        </div>
+                      </td>
+                      <td className="py-3 px-4 text-right">
+                        <div className="flex items-center justify-end gap-1.5 flex-wrap">
+                          {/* Freeze / Unfreeze Button */}
+                          {isModerator && (
+                            <button
+                              onClick={() => handleToggleFreeze(item)}
+                              className={`p-1.5 rounded-lg border transition cursor-pointer ${
+                                isFrozen
+                                  ? 'bg-blue-100 text-blue-950 border-blue-400 hover:bg-blue-200'
+                                  : 'bg-slate-100 text-slate-800 border-slate-300 hover:bg-slate-200'
+                              }`}
+                              title={isFrozen ? 'Unfreeze Bookings' : 'Freeze Bookings'}
+                            >
+                              {isFrozen ? <Unlock className="w-3.5 h-3.5 text-blue-800" /> : <Lock className="w-3.5 h-3.5 text-slate-700" />}
+                            </button>
+                          )}
+
+                          {/* Censor / Uncensor (18+ Mask) */}
+                          {isModerator && (
+                            <button
+                              onClick={() => handleToggleCensor(item)}
+                              className={`p-1.5 rounded-lg border transition cursor-pointer ${
+                                isCensored
+                                  ? 'bg-purple-100 text-purple-950 border-purple-400 hover:bg-purple-200'
+                                  : 'bg-slate-100 text-slate-800 border-slate-300 hover:bg-slate-200'
+                              }`}
+                              title={isCensored ? 'Uncensor Piece' : 'Censor Piece (18+ Blur)'}
+                            >
+                              {isCensored ? <Eye className="w-3.5 h-3.5 text-purple-800" /> : <EyeOff className="w-3.5 h-3.5 text-slate-700" />}
+                            </button>
+                          )}
+
+                          {/* Pause Commenting / Inquiries */}
+                          {isModerator && (
+                            <button
+                              onClick={() => handleTogglePauseComments(item)}
+                              className={`p-1.5 rounded-lg border transition cursor-pointer ${
+                                isCommentsPaused
+                                  ? 'bg-amber-100 text-amber-950 border-amber-400 hover:bg-amber-200'
+                                  : 'bg-slate-100 text-slate-800 border-slate-300 hover:bg-slate-200'
+                              }`}
+                              title={isCommentsPaused ? 'Resume Inquiries' : 'Pause Inquiries'}
+                            >
+                              {isCommentsPaused ? <PlayCircle className="w-3.5 h-3.5 text-amber-800" /> : <PauseCircle className="w-3.5 h-3.5 text-slate-700" />}
+                            </button>
+                          )}
+
+                          {/* Suspend / Restore (Delist) */}
+                          {isModerator && (
+                            <button
+                              onClick={() => handleToggleSuspend(item)}
+                              className={`p-1.5 rounded-lg border transition cursor-pointer ${
+                                isSuspended
+                                  ? 'bg-rose-100 text-rose-950 border-rose-400 hover:bg-rose-200'
+                                  : 'bg-slate-100 text-slate-800 border-slate-300 hover:bg-slate-200'
+                              }`}
+                              title={isSuspended ? 'Restore to Active Flamingo' : 'Suspend from Flamingo'}
+                            >
+                              <AlertOctagon className={`w-3.5 h-3.5 ${isSuspended ? 'text-rose-800' : 'text-slate-700'}`} />
+                            </button>
+                          )}
+
+                          {/* Withdraw Button */}
+                          <button
+                            onClick={() => handleRemoveFromFlamingo(item.id, item.name)}
+                            className="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-lg border border-slate-300 text-xs font-bold transition cursor-pointer"
+                            title="Withdraw from Flamingo VIP collection"
+                          >
+                            Withdraw
+                          </button>
+
+                          {/* Super Admin Permanent Purge */}
+                          {isSuperAdmin && (
+                            <button
+                              onClick={() => setProductToDelete(item)}
+                              className="p-1.5 bg-red-50 hover:bg-red-100 text-red-700 rounded-lg border border-red-300 transition cursor-pointer"
+                              title="Permanently Purge Record (Super Admin)"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
         )}
       </div>
 
+      {/* Add Flamingo Item Modal with Universal CommerceMediaPicker */}
+      {isAddModalOpen && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-white border border-slate-300 rounded-2xl shadow-2xl max-w-2xl w-full p-6 my-8">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200">
+              <div className="flex items-center gap-2 text-rose-900">
+                <Flame className="w-5 h-5 text-rose-600" />
+                <h3 className="text-base font-bold text-slate-900">Add Haute Item to Flamingo</h3>
+              </div>
+              <button aria-label="Close" type="button" onClick={() => setIsAddModalOpen(false)} className="text-slate-400 hover:text-slate-600 cursor-pointer">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleCreateFlamingoProduct} className="pt-4 space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-slate-800 mb-1">Item Title</label>
+                  <input
+                    type="text"
+                    required
+                    value={newProductData.name}
+                    onChange={(e) => setNewProductData({ ...newProductData, name: e.target.value })}
+                    placeholder="e.g. Sovereign Silk Velvet Kimono"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-rose-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-800 mb-1">Edition / Runway Season</label>
+                  <input
+                    type="text"
+                    value={newProductData.subtitle}
+                    onChange={(e) => setNewProductData({ ...newProductData, subtitle: e.target.value })}
+                    placeholder="e.g. Autumn / Winter Sovereign Lookbook"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-rose-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-800 mb-1">Category</label>
+                  <select
+                    value={newProductData.category}
+                    onChange={(e) => setNewProductData({ ...newProductData, category: e.target.value })}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-rose-500"
+                  >
+                    <option value="Haute Couture & Bespoke">Haute Couture & Bespoke</option>
+                    <option value="Runway Footwear & Leather">Runway Footwear & Leather</option>
+                    <option value="Fine Jewelry & Gems">Fine Jewelry & Gems</option>
+                    <option value="Bespoke Tailoring">Bespoke Tailoring</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-800 mb-1">VIP Tier Requirement</label>
+                  <select
+                    value={newProductData.vip_tier}
+                    onChange={(e) => setNewProductData({ ...newProductData, vip_tier: e.target.value })}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-rose-500"
+                  >
+                    <option value="Flamingo Silver">Flamingo Silver</option>
+                    <option value="Flamingo Gold">Flamingo Gold</option>
+                    <option value="Flamingo Platinum">Flamingo Platinum</option>
+                    <option value="Black Sovereign Tier">Black Sovereign Tier</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-800 mb-1">Stock Quantity</label>
+                  <input
+                    type="number"
+                    min="1"
+                    required
+                    value={newProductData.stock_quantity}
+                    onChange={(e) => setNewProductData({ ...newProductData, stock_quantity: e.target.value })}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-rose-500 font-mono"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-800 mb-1">Price (FIC Token)</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    required
+                    value={newProductData.price_fic}
+                    onChange={(e) => setNewProductData({ ...newProductData, price_fic: e.target.value })}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-rose-500 font-mono"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-800 mb-1">Fiat Equivalent (₦ NGN)</label>
+                  <input
+                    type="number"
+                    min="0"
+                    required
+                    value={newProductData.price_fiat}
+                    onChange={(e) => setNewProductData({ ...newProductData, price_fiat: e.target.value })}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-rose-500 font-mono"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-800 mb-1">Description & Material Details</label>
+                <textarea
+                  rows={2}
+                  value={newProductData.description}
+                  onChange={(e) => setNewProductData({ ...newProductData, description: e.target.value })}
+                  placeholder="Fabric composition, designer provenance, sizing guide..."
+                  className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-rose-500"
+                />
+              </div>
+
+              {/* Universal Media Picker */}
+              <CommerceMediaPicker
+                value={mediaPickerValue}
+                onChange={setMediaPickerValue}
+                title="Flamingo Runway Media Picker"
+                description="Upload runway lookbook photos, detail embroidery close-ups, and backstage fashion reel videos."
+                allowGallery={true}
+                allowVideo={true}
+                maxGalleryImages={8}
+              />
+
+              {/* Sovereign Compliance & RBAC Actions Box - Black with hairline of dark red */}
+              <div className="bg-black border border-[#880808] rounded-xl p-3.5 space-y-2 shadow-lg text-white">
+                <div className="flex items-center justify-between border-b border-red-950/60 pb-1.5">
+                  <div className="flex items-center gap-2 text-xs font-black text-white uppercase tracking-wider">
+                    <ShieldAlert className="w-4 h-4 text-red-500" />
+                    Compliance & RBAC Actions
+                  </div>
+                  <span className="text-[9px] font-mono text-red-300 font-bold bg-red-950/80 px-2 py-0.5 rounded-full border border-red-800/60">
+                    FLAMINGO VIP POLICY
+                  </span>
+                </div>
+                <p className="text-[11px] text-slate-300 font-medium">
+                  Pieces submitted to Flamingo are verified against designer provenance hashes, reserved for authenticated VIP tier members, and protected under escrow.
+                </p>
+              </div>
+
+              <div className="pt-3 border-t border-slate-200 flex justify-end space-x-2">
+                <button
+                  type="button"
+                  onClick={() => setIsAddModalOpen(false)}
+                  className="px-4 py-2 border border-slate-300 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="px-5 py-2 bg-rose-600 hover:bg-rose-700 disabled:opacity-50 text-white rounded-xl text-xs font-bold shadow transition cursor-pointer"
+                >
+                  {isSubmitting ? 'Registering with PostgreSQL...' : 'Publish to Flamingo'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Super Admin Permanent Delete Confirmation Modal */}
+      {productToDelete && (
+        <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white border border-red-300 rounded-3xl max-w-sm w-full p-6 shadow-2xl space-y-3">
+            <div className="flex items-center gap-2.5 text-red-600">
+              <Trash2 className="w-6 h-6 shrink-0" />
+              <h4 className="font-black text-base text-slate-900">Delete Piece from Flamingo?</h4>
+            </div>
+            <p className="text-xs text-slate-700 font-medium">
+              As a Sovereign Super Admin, you are about to permanently purge <strong className="text-slate-900">{productToDelete.name}</strong> from the database. This action is irreversible.
+            </p>
+            <div className="flex justify-end gap-2 pt-2">
+              <button
+                type="button"
+                onClick={() => setProductToDelete(null)}
+                className="px-3 py-1.5 text-xs font-bold text-slate-700 border border-slate-300 rounded-xl hover:bg-slate-100 cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handlePermanentDelete}
+                className="px-4 py-1.5 text-xs font-bold text-white bg-red-600 hover:bg-red-700 rounded-xl shadow-xs cursor-pointer"
+              >
+                Confirm Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Restock Modal */}
       {selectedProductForRestock && (
         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-white border border-slate-300 rounded-2xl shadow-2xl max-w-sm w-full p-6">
             <div className="flex items-center justify-between pb-3 border-b border-slate-200">
-              <h3 className="text-base font-bold text-slate-900">Restock Flamingo Fashion Units</h3>
-              <button aria-label="Close" type="button" onClick={() => setSelectedProductForRestock(null)} className="text-slate-400 hover:text-slate-600">
+              <h3 className="text-base font-bold text-slate-900">Restock Flamingo Units</h3>
+              <button aria-label="Close" type="button" onClick={() => setSelectedProductForRestock(null)} className="text-slate-400 hover:text-slate-600 cursor-pointer">
                 <X className="w-5 h-5" />
               </button>
             </div>
             <form onSubmit={handleRestockSubmit} className="pt-4 space-y-4">
               <div>
-                <span className="text-xs text-slate-600 font-medium">Piece</span>
+                <span className="text-xs text-slate-600 font-medium">Item</span>
                 <p className="text-xs font-bold text-slate-900">{selectedProductForRestock.name}</p>
               </div>
               <div>
@@ -281,18 +815,18 @@ export const FlamingoCatalogConsole: React.FC = () => {
                   required
                   value={restockAmount}
                   onChange={(e) => setRestockAmount(e.target.value)}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-pink-500"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-rose-500"
                 />
               </div>
               <div className="pt-3 border-t border-slate-200 flex justify-end space-x-2">
                 <button
                   type="button"
                   onClick={() => setSelectedProductForRestock(null)}
-                  className="px-3 py-1.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-700"
+                  className="px-3 py-1.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-700 cursor-pointer"
                 >
                   Cancel
                 </button>
-                <button type="submit" className="px-4 py-1.5 bg-pink-600 hover:bg-pink-700 text-white rounded-xl text-xs font-bold shadow">
+                <button type="submit" className="px-4 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold shadow cursor-pointer">
                   Confirm Restock
                 </button>
               </div>

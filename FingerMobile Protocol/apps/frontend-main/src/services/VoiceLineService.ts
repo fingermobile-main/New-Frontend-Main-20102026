@@ -267,10 +267,10 @@ class VoiceLineService {
 
   /**
    * Web Speech Synthesis (TTS) Utterance Cadence:
-   * Calibrated separately from uploaded media, calibrated to 0.60 for deliberate spoken cadence.
+   * Calibrated separately from uploaded media, calibrated to 0.52 for deliberate, natural spoken cadence.
    */
   public getUtteranceRate(): number {
-    return this.settings.utteranceRate ?? 0.60;
+    return this.settings.utteranceRate ?? 0.52;
   }
 
   public setUtteranceRate(rate: number): void {
@@ -466,26 +466,41 @@ class VoiceLineService {
       const now = ctx.currentTime;
       const gainNode = ctx.createGain();
       gainNode.gain.setValueAtTime(volume * 0.4, now);
-      gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.8);
-      gainNode.connect(ctx.destination);
+      gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.95);
 
-      // Root note (E5) + Third (G#5) pleasant African notification chord
+      // Warm acoustic bass booster (+4.5dB shelf at 200Hz)
+      let destinationNode: AudioNode = ctx.destination;
+      if (typeof ctx.createBiquadFilter === 'function') {
+        try {
+          const bassFilter = ctx.createBiquadFilter();
+          bassFilter.type = 'lowshelf';
+          bassFilter.frequency.setValueAtTime(200, now);
+          bassFilter.gain.setValueAtTime(4.5, now);
+          bassFilter.connect(ctx.destination);
+          destinationNode = bassFilter;
+        } catch {
+          destinationNode = ctx.destination;
+        }
+      }
+      gainNode.connect(destinationNode);
+
+      // Deep root note (E4: 329.63Hz) + Third (G#4: 415.30Hz) warm resonant African chime
       const osc1 = ctx.createOscillator();
       const osc2 = ctx.createOscillator();
 
       osc1.type = 'sine';
-      osc1.frequency.setValueAtTime(659.25, now); // E5
+      osc1.frequency.setValueAtTime(329.63, now); // E4 warm bass fundamental
 
       osc2.type = 'triangle';
-      osc2.frequency.setValueAtTime(830.61, now + 0.08); // G#5
+      osc2.frequency.setValueAtTime(415.30, now + 0.08); // G#4 acoustic harmonic
 
       osc1.connect(gainNode);
       osc2.connect(gainNode);
 
       osc1.start(now);
       osc2.start(now + 0.08);
-      osc1.stop(now + 0.8);
-      osc2.stop(now + 0.8);
+      osc1.stop(now + 0.95);
+      osc2.stop(now + 0.95);
     } catch {
       // AudioContext unavailable or denied
     }
@@ -493,6 +508,7 @@ class VoiceLineService {
 
   /**
    * Spoken speech synthesis fallback utilizing Web Speech API
+   * Calibrated with deliberate 0.52 cadence and warm bass resonance (pitch: 0.88)
    */
   private speakVoiceLineText(text: string, volume: number): void {
     if (typeof window === 'undefined' || !window.speechSynthesis) return;
@@ -502,7 +518,7 @@ class VoiceLineService {
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.volume = volume;
       utterance.rate = this.getUtteranceRate();
-      utterance.pitch = 1.0;
+      utterance.pitch = 0.88; // Deliberate warm bass vocal resonance (lowered from 1.0)
 
       // Select natural English voice if present
       const voices = window.speechSynthesis.getVoices();

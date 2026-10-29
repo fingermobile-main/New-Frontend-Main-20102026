@@ -1532,16 +1532,21 @@ export const MasterStreamingMediaConsole: React.FC = () => {
                 />
               </div>
 
-              {/* VoD Monetization, Licensor & Compliance Settings for Dancia-4Tv */}
+              {/* VoD Monetization, Licensor & Compliance Settings for Dancia-4Tv - Black with hairline of dark red (#880808) */}
               {activeService === 'dancia4tv' && (
-                <div className="bg-indigo-50/70 border border-indigo-200 rounded-xl p-3.5 space-y-3">
-                  <div className="flex items-center gap-2 text-xs font-black text-indigo-950 uppercase tracking-wide">
-                    <Tv className="w-4 h-4 text-indigo-700" />
-                    Dancia-4Tv VoD Distribution & Broadcast Curation
+                <div className="bg-black border border-[#880808] rounded-xl p-3.5 space-y-3 shadow-lg">
+                  <div className="flex items-center justify-between border-b border-red-950/60 pb-2">
+                    <div className="flex items-center gap-2 text-xs font-black text-white uppercase tracking-wider">
+                      <Tv className="w-4 h-4 text-red-500" />
+                      Dancia-4Tv VoD Distribution & Broadcast Compliance
+                    </div>
+                    <span className="text-[9px] font-mono text-red-300 font-bold bg-red-950/80 px-2 py-0.5 rounded-full border border-red-800/60">
+                      RBAC ENFORCED
+                    </span>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                     <div>
-                      <label className="font-bold text-slate-900 block mb-1">Core VOD Monetization Model</label>
+                      <label className="font-bold text-slate-200 block mb-1">Core VOD Monetization Model</label>
                       <select
                         value={formData.vod_model}
                         onChange={(e) => setFormData({ ...formData, vod_model: e.target.value })}
@@ -1553,7 +1558,7 @@ export const MasterStreamingMediaConsole: React.FC = () => {
                       </select>
                     </div>
                     <div>
-                      <label className="font-bold text-slate-900 block mb-1">Content Acquisition Licensor</label>
+                      <label className="font-bold text-slate-200 block mb-1">Content Acquisition Licensor</label>
                       <select
                         value={formData.acquisition_source}
                         onChange={(e) => setFormData({ ...formData, acquisition_source: e.target.value })}
@@ -1565,7 +1570,7 @@ export const MasterStreamingMediaConsole: React.FC = () => {
                       </select>
                     </div>
                     <div>
-                      <label className="font-bold text-slate-900 block mb-1">Content Rating & Age Maturity</label>
+                      <label className="font-bold text-slate-200 block mb-1">Content Rating & Age Maturity</label>
                       <select
                         value={formData.content_rating}
                         onChange={(e) => setFormData({ ...formData, content_rating: e.target.value })}
@@ -1577,7 +1582,7 @@ export const MasterStreamingMediaConsole: React.FC = () => {
                       </select>
                     </div>
                     <div>
-                      <label className="font-bold text-slate-900 block mb-1">Broadcast / Lifecycle Status</label>
+                      <label className="font-bold text-slate-200 block mb-1">Broadcast / Lifecycle Status</label>
                       <select
                         value={formData.status}
                         onChange={(e) => setFormData({ ...formData, status: e.target.value as any })}
@@ -1592,7 +1597,7 @@ export const MasterStreamingMediaConsole: React.FC = () => {
                     </div>
                   </div>
                   <div>
-                    <label className="font-bold text-slate-900 block mb-1">External VoD Stream Pull URL (HLS .m3u8 / MP4 CDN)</label>
+                    <label className="font-bold text-slate-200 block mb-1">External VoD Stream Pull URL (HLS .m3u8 / MP4 CDN)</label>
                     <input
                       type="url"
                       value={formData.external_pull_url}
