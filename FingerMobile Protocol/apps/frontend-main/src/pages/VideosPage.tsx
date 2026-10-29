@@ -357,7 +357,7 @@ const VideosPage: React.FC = () => {
                       <img
                         src={video.thumbnail}
                         alt={video.title}
-                        className="w-full h-44 sm:h-48 object-cover"
+                        className="w-full h-48 sm:h-52 object-cover"
                       />
                       <div className="absolute bottom-2 right-2 bg-slate-950/80 backdrop-blur-sm text-white text-xs px-2 py-0.5 rounded font-mono font-bold">
                         {video.duration}

@@ -19,10 +19,12 @@ const PaymentHistory: React.FC = () => {
   const [payments, setPayments] = useState<PaymentHistoryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const fetchPaymentHistory = async () => {
     try {
       setLoading(true);
+      setErrorMessage(null);
       // In a real implementation, this would call the paymentAPI.getPaymentHistory method
       // For now, using mock data
       const mockPayments: PaymentHistoryItem[] = [
@@ -58,7 +60,7 @@ const PaymentHistory: React.FC = () => {
       setPayments(mockPayments);
     } catch (error) {
       console.error('Error fetching payment history:', error);
-      window.alert('Error: Failed to load payment history');
+      setErrorMessage('Failed to load payment history');
     } finally {
       setLoading(false);
       setRefreshing(false);

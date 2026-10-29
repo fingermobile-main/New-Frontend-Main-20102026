@@ -137,6 +137,12 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
   const [isRadiating, setIsRadiating] = useState(true);
   const [isIncognito, setIsIncognito] = useState(false);
   const [isRewardsExpanded, setIsRewardsExpanded] = useState(true);
+  const [rbacNotice, setRbacNotice] = useState<string | null>(null);
+
+  const triggerRbacNotice = (message: string) => {
+    setRbacNotice(message);
+    setTimeout(() => setRbacNotice(null), 5000);
+  };
 
   useEffect(() => {
     const unsub = userProfileSyncService.subscribe((updated) => setProfile(updated));
@@ -507,7 +513,7 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
               <button
                 type="button"
                 onClick={() => {
-                  alert('Dashboard access restricted. Only Primary Admins, CFO/Co-Founders, Content Creators, or explicitly assigned members have dashboard access.');
+                  triggerRbacNotice('Dashboard access restricted. Only Primary Admins, CFO/Co-Founders, Content Creators, or explicitly assigned members have dashboard access.');
                 }}
                 className="flex flex-col items-center justify-center p-2 rounded-xl bg-slate-900/60 border border-slate-800/80 text-slate-500 cursor-not-allowed transition-all text-center group shadow-xs opacity-60 hover:opacity-80"
                 title="Dashboard access restricted by RBAC"
@@ -535,6 +541,23 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
           </div>
         </div>
       </div>
+
+      {/* RBAC Access Notice Toast */}
+      {rbacNotice && (
+        <div className="mx-4 my-2 p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs flex items-start gap-2 shadow-lg animate-fade-in">
+          <Lock className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+          <div className="flex-1 text-[11px] font-medium leading-relaxed">
+            {rbacNotice}
+          </div>
+          <button
+            type="button"
+            onClick={() => setRbacNotice(null)}
+            className="text-amber-400 hover:text-white font-bold ml-1"
+          >
+            ✕
+          </button>
+        </div>
+      )}
 
       {/* 3. MOBILE TABS TOGGLE (Explore vs Create) */}
       <div className="flex md:hidden border-b border-slate-800 bg-slate-950 p-1">
@@ -642,7 +665,7 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
                               <div
                                 key={item.id}
                                 onClick={() => {
-                                  alert(`Access to "${item.title}" is restricted by Platform RBAC. Contact Primary Admin (SuperAdmin) or CFO for dashboard assignment.`);
+                                  triggerRbacNotice(`Access to "${item.title}" is restricted by Platform RBAC. Contact Primary Admin (SuperAdmin) or CFO for dashboard assignment.`);
                                 }}
                                 className="group flex items-start justify-between p-2 rounded-lg text-xs bg-slate-950/60 border border-slate-800/80 text-slate-400 cursor-not-allowed opacity-60 hover:opacity-85 transition-opacity"
                                 title="Access Restricted: Executive or Assigned RBAC Required"
@@ -763,7 +786,7 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
                   <div
                     key={q.id}
                     onClick={() => {
-                      alert(`Access to "${q.title}" requires Executive RBAC (Primary Admin or CFO/Co-Founder).`);
+                      triggerRbacNotice(`Access to "${q.title}" requires Executive RBAC (Primary Admin or CFO/Co-Founder).`);
                     }}
                     className="flex items-start gap-2.5 p-2.5 rounded-xl bg-slate-950/60 border border-slate-900 text-slate-500 cursor-not-allowed opacity-50 hover:opacity-75 transition-opacity"
                     title="Executive RBAC required"

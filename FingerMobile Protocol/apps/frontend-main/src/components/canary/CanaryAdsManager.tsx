@@ -98,6 +98,24 @@ export const CanaryAdsManager: React.FC<CanaryAdsManagerProps> = ({
   const [bumperCountdown, setBumperCountdown] = useState(6);
   const [isPlayingBumper, setIsPlayingBumper] = useState(false);
   const [isDismissed, setIsDismissed] = useState(false);
+  const [liveAd, setLiveAd] = useState<{
+    id: string;
+    title: string;
+    description: string;
+    imageUrl?: string;
+    targetUrl?: string;
+  } | null>(null);
+
+  useEffect(() => {
+    fetch('/api/advertisements')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.ads && data.ads.length > 0) {
+          setLiveAd(data.ads[0]);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   // Check if current route is an excluded route
   const isExcludedRoute = EXCLUDED_ROUTES.some((route) =>
@@ -202,7 +220,7 @@ export const CanaryAdsManager: React.FC<CanaryAdsManagerProps> = ({
           <img
             src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300"
             alt="Product"
-            className="w-20 h-20 rounded-xl object-cover border border-slate-200"
+            className="w-[88px] h-[88px] rounded-xl object-cover border border-slate-200"
           />
           <div className="flex-1 min-w-0">
             <h4 className="text-xs font-bold text-slate-900 dark:text-white truncate">
@@ -267,28 +285,34 @@ export const CanaryAdsManager: React.FC<CanaryAdsManagerProps> = ({
   // 4. Default Display Ad Banner
   return (
     <div
-      onClick={() => navigate('/canary-admaker')}
+      onClick={() => {
+        if (liveAd?.targetUrl) {
+          window.open(liveAd.targetUrl, '_blank', 'noopener,noreferrer');
+        } else {
+          navigate('/canary-ad-maker');
+        }
+      }}
       className={`cursor-pointer rounded-2xl bg-gradient-to-r from-amber-50 to-orange-50 dark:from-slate-800 dark:to-slate-900 border border-amber-300 dark:border-amber-600/50 p-3 shadow-xs hover:shadow-md transition flex items-center justify-between ${className}`}
     >
       <div className="flex items-center gap-2.5">
-        <div className="w-8 h-8 rounded-lg bg-amber-500 text-slate-950 flex items-center justify-center font-black">
+        <div className="w-8 h-8 rounded-lg bg-amber-500 text-slate-950 flex items-center justify-center font-black shrink-0">
           <Sparkles className="w-4 h-4" />
         </div>
         <div>
           <div className="flex items-center gap-1.5">
             <span className="text-xs font-black text-slate-900 dark:text-white">
-              Canary Ads Display Network
+              {liveAd?.title || 'Canary Ads Display Network'}
             </span>
             <span className="text-[9px] font-bold bg-amber-100 text-amber-950 border border-amber-400 px-1 py-0.2 rounded">
               Ad
             </span>
           </div>
           <p className="text-[11px] text-slate-700 dark:text-slate-300 font-medium">
-            Sovereign programmatic reach across screens & pages
+            {liveAd?.description || 'Sovereign programmatic reach across screens & pages'}
           </p>
         </div>
       </div>
-      <ExternalLink className="w-4 h-4 text-amber-700 dark:text-amber-400" />
+      <ExternalLink className="w-4 h-4 text-amber-700 dark:text-amber-400 shrink-0" />
     </div>
   );
 };

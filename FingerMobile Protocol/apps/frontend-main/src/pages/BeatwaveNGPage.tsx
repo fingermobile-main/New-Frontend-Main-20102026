@@ -1076,7 +1076,7 @@ const BeatwaveNGPage: React.FC = () => {
                     onClick={() => handlePlay(track)}
                     className="flex items-center gap-4 p-4 rounded-2xl bg-slate-900/80 hover:bg-slate-900 border border-slate-800 hover:border-emerald-500/40 cursor-pointer transition-all"
                   >
-                    <img src={track.coverArt} alt={track.title} className="w-14 h-14 rounded-xl object-cover" />
+                    <img src={track.coverArt} alt={track.title} className="w-16 h-16 rounded-xl object-cover" />
                     <div className="flex-1 min-w-0">
                       <h5 className="font-bold text-sm text-white truncate">{track.title}</h5>
                       <p className="text-xs text-slate-300 font-medium truncate">{track.artist}</p>
@@ -1169,7 +1169,7 @@ const BeatwaveNGPage: React.FC = () => {
                       className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-emerald-500/40 transition-all flex flex-col justify-between"
                     >
                       <div className="flex items-start gap-3">
-                        <img src={item.coverArt} alt={item.title} className="w-16 h-16 rounded-xl object-cover" />
+                        <img src={item.coverArt} alt={item.title} className="w-[72px] h-[72px] rounded-xl object-cover" />
                         <div className="min-w-0 flex-1">
                           <h5 className="font-bold text-sm text-white truncate">{item.title}</h5>
                           <p className="text-xs text-slate-300 font-medium truncate mt-0.5">{item.artist}</p>
@@ -1282,7 +1282,7 @@ const BeatwaveNGPage: React.FC = () => {
                   onClick={() => handlePlay(t)}
                   className="flex items-center gap-3 p-3 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-emerald-500/40 cursor-pointer transition-all"
                 >
-                  <img src={t.coverArt} alt={t.title} className="w-12 h-12 rounded-xl object-cover" />
+                  <img src={t.coverArt} alt={t.title} className="w-14 h-14 rounded-xl object-cover" />
                   <div className="flex-1 min-w-0">
                     <h5 className="font-bold text-xs sm:text-sm text-white truncate">{t.title}</h5>
                     <p className="text-[11px] text-slate-300 font-medium truncate">{t.artist}</p>

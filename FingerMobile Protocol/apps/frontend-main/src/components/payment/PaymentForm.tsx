@@ -39,12 +39,14 @@ const INITIAL_FORM_STATE: PaymentFormData = {
 const PaymentForm: React.FC = () => {
   const [formData, setFormData] = useState<PaymentFormData>(INITIAL_FORM_STATE);
   const [loading, setLoading] = useState(false);
+  const [statusMessage, setStatusMessage] = useState<{ text: string; isError: boolean } | null>(null);
 
   const handleInputChange = useCallback((field: keyof PaymentFormData, value: string) => {
     setFormData(prev => ({
       ...prev,
       [field]: value,
     }));
+    setStatusMessage(null);
   }, []);
 
   const handleAmountChange = useCallback((value: string) => {
@@ -61,16 +63,17 @@ const PaymentForm: React.FC = () => {
     const numericAmount = parseFloat(formData.amount);
 
     if (isNaN(numericAmount) || numericAmount <= 0) {
-      window.alert('Validation Error: Please enter a valid amount greater than zero.');
+      setStatusMessage({ text: 'Validation Error: Please enter a valid amount greater than zero.', isError: true });
       return;
     }
 
     if (!formData.paymentMethod.trim()) {
-      window.alert('Validation Error: Payment Method is required.');
+      setStatusMessage({ text: 'Validation Error: Payment Method is required.', isError: true });
       return;
     }
 
     setLoading(true);
+    setStatusMessage(null);
     try {
       // API integration placeholder
       console.log('Processing payment:', {
@@ -78,11 +81,11 @@ const PaymentForm: React.FC = () => {
         amount: numericAmount,
       });
 
-      window.alert('Success: Payment processed successfully.');
+      setStatusMessage({ text: 'Success: Payment processed successfully.', isError: false });
       setFormData(INITIAL_FORM_STATE);
     } catch (error) {
       console.error('Payment error:', error);
-      window.alert('Error: Failed to process payment. Please try again.');
+      setStatusMessage({ text: 'Error: Failed to process payment. Please try again.', isError: true });
     } finally {
       setLoading(false);
     }
@@ -98,6 +101,14 @@ const PaymentForm: React.FC = () => {
         keyboardShouldPersistTaps="handled"
       >
         <Text style={styles.title}>Payment Form</Text>
+
+        {statusMessage && (
+          <View style={[styles.statusBox, statusMessage.isError ? styles.errorBox : styles.successBox]}>
+            <Text style={statusMessage.isError ? styles.errorText : styles.successText}>
+              {statusMessage.text}
+            </Text>
+          </View>
+        )}
 
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Amount *</Text>
@@ -220,6 +231,30 @@ const styles = WebStyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
+  },
+  statusBox: {
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 16,
+    borderWidth: 1,
+  },
+  errorBox: {
+    backgroundColor: '#FEF2F2',
+    borderColor: '#F87171',
+  },
+  successBox: {
+    backgroundColor: '#ECFDF5',
+    borderColor: '#34D399',
+  },
+  errorText: {
+    color: '#991B1B',
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  successText: {
+    color: '#065F46',
+    fontSize: 14,
+    fontWeight: 'bold',
   },
 });
 

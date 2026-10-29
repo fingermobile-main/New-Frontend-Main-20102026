@@ -617,8 +617,8 @@ const MarketplacePage: React.FC = () => {
                         key={product.id}
                         className="rounded-2xl sm:rounded-3xl bg-slate-900/90 border border-slate-800 hover:border-emerald-500/40 transition-all overflow-hidden flex flex-col shadow-xl group"
                       >
-                        {/* Image Showcase */}
-                        <div className="relative h-56 sm:h-72 w-full overflow-hidden bg-slate-950">
+                        {/* Image Showcase - 10% increase for immersive product experience */}
+                        <div className="relative h-64 sm:h-80 w-full overflow-hidden bg-slate-950">
                           <img
                             src={firstImage}
                             alt={product.name}

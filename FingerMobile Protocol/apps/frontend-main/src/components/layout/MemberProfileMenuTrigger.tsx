@@ -11,6 +11,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import {
   ChevronDown,
   Grid,
+  Menu,
   ShieldCheck,
   Sparkles
 } from 'lucide-react';
@@ -70,30 +71,37 @@ export const MemberProfileMenuTrigger: React.FC<MemberProfileMenuTriggerProps> =
 
   return (
     <div className="fixed top-2 sm:top-2.5 left-2.5 sm:left-3 z-[9995] pointer-events-auto transition-all duration-300">
-      {/* MOBILE COMPACT VIEW (< sm): Sleek, Unobtrusive 40x40px Sovereign Burger Trigger */}
-      <div className="sm:hidden flex items-center">
+      {/* MOBILE COMPACT VIEW (< sm): Highly Visible Sovereign Burger Menu Button + Avatar */}
+      <div className="sm:hidden flex items-center gap-1.5 p-1 rounded-2xl bg-slate-950/95 border border-slate-800 shadow-2xl backdrop-blur-md">
+        {/* Unmistakable Hamburger Burger Button */}
         <button
           type="button"
           onClick={onToggleMenu}
-          className={`relative w-10 h-10 rounded-full p-0.5 bg-slate-950/95 border border-slate-800 shadow-xl flex items-center justify-center hover:scale-105 active:scale-95 transition-all ring-2 ${
-            isOpen ? 'ring-orange-500 bg-orange-950/40' : 'ring-orange-500/80'
-          } focus:outline-none cursor-pointer`}
-          title="Open Sovereign Platform Mega Menu (385 Pages)"
+          className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all cursor-pointer ${
+            isOpen
+              ? 'bg-gradient-to-tr from-amber-500 to-orange-600 text-white shadow-md shadow-orange-500/40 ring-2 ring-orange-400'
+              : 'bg-slate-900 text-orange-400 hover:text-white hover:bg-slate-800 ring-1 ring-slate-700'
+          }`}
+          title="Open Sovereign Platform Burger Menu (385 Pages)"
           aria-label="Toggle Platform Menu"
           aria-expanded={isOpen}
+        >
+          <Menu className="w-5 h-5" />
+        </button>
+
+        {/* Member Avatar */}
+        <Link
+          to="/profile"
+          className="relative w-8 h-8 rounded-full p-0.5 bg-slate-900 border border-slate-700 flex items-center justify-center shrink-0"
+          title="View Profile"
         >
           <img
             src={profile.avatar || '/assets/branding/default-avatar.svg'}
             alt={displayName}
             className="w-full h-full rounded-full object-cover"
           />
-          {/* Active Status Beacon */}
-          <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-slate-950" />
-          {/* Mini Burger / Grid Badge */}
-          <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#ff6b00] text-white flex items-center justify-center shadow-xs">
-            <Grid className="w-2.5 h-2.5 text-white" />
-          </span>
-        </button>
+          <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-emerald-500 ring-1 ring-slate-950" />
+        </Link>
       </div>
 
       {/* DESKTOP VIEW (sm+): Full Sovereign Profile Pill with Name, PIN, Chevron, & 9-Dot Grid */}
@@ -149,19 +157,20 @@ export const MemberProfileMenuTrigger: React.FC<MemberProfileMenuTriggerProps> =
         {/* Vertical Divider */}
         <div className="h-5 w-px bg-slate-800" />
 
-        {/* FingerMobile 9-Dot Menu Grid Trigger */}
+        {/* FingerMobile Sovereign Burger Menu Trigger */}
         <button
           type="button"
           onClick={onToggleMenu}
-          className={`p-2 rounded-xl transition-all flex items-center justify-center ${
+          className={`px-2.5 py-1.5 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
             isOpen
               ? 'bg-gradient-to-tr from-amber-500 to-orange-600 text-white shadow-md shadow-orange-500/30'
-              : 'text-slate-300 hover:text-white hover:bg-slate-900'
+              : 'text-slate-300 hover:text-white hover:bg-slate-900 border border-slate-800'
           }`}
-          title="FingerMobile Platform Mega Menu (385 Pages)"
-          aria-label="Toggle Platform Mega Menu"
+          title="FingerMobile Sovereign Platform Burger Menu (385 Pages)"
+          aria-label="Toggle Platform Burger Menu"
         >
-          <Grid className="w-4 h-4 text-orange-400 group-hover:scale-105 transition-transform" />
+          <Menu className="w-4 h-4 text-orange-400 group-hover:scale-105 transition-transform" />
+          <span className="text-xs font-bold text-slate-200 group-hover:text-white hidden lg:inline">Menu</span>
         </button>
 
         {/* Quick Minimize / Collapse Toggle Button */}

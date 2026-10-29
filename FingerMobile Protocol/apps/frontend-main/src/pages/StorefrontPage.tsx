@@ -594,7 +594,7 @@ const StorefrontPage: React.FC = () => {
                     key={store.id}
                     className="rounded-3xl bg-slate-950 border border-slate-800 hover:border-blue-500/40 transition-all overflow-hidden flex flex-col shadow-xl"
                   >
-                    <div className="relative h-48 bg-slate-900">
+                    <div className="relative h-52 bg-slate-900">
                       <img
                         src={store.cover_image_url || 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=1200&q=80'}
                         alt={store.name}
@@ -739,7 +739,7 @@ const StorefrontPage: React.FC = () => {
                   {filteredProducts.map((p) => (
                     <div key={p.id} className="rounded-2xl bg-slate-950 border border-slate-800 overflow-hidden flex flex-col justify-between">
                       <div>
-                        <div className="h-44 bg-slate-900 relative">
+                        <div className="h-48 bg-slate-900 relative">
                           <img src={p.image_url} alt={p.name} className="w-full h-full object-cover" />
                           <span className="absolute top-3 left-3 px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-slate-950/80 text-blue-300 border border-blue-500/20">
                             {p.goods_type}
@@ -931,7 +931,7 @@ const StorefrontPage: React.FC = () => {
                             <img
                               src={p.image_url || 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=120&q=80'}
                               alt={p.name}
-                              className="w-12 h-12 rounded-xl object-cover border border-slate-800 flex-shrink-0"
+                              className="w-14 h-14 rounded-xl object-cover border border-slate-800 flex-shrink-0"
                             />
                             <div className="min-w-0">
                               <div className="flex items-center gap-2 mb-1 flex-wrap">

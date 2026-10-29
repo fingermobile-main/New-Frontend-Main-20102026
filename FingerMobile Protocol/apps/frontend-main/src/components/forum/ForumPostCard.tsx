@@ -335,7 +335,7 @@ export const MultiMediaGallery: React.FC<{
               key={idx}
               type="button"
               onClick={() => setActiveIndex(idx)}
-              className={`w-12 h-12 rounded-xl overflow-hidden border-2 transition flex-shrink-0 relative ${
+              className={`w-14 h-14 rounded-xl overflow-hidden border-2 transition flex-shrink-0 relative ${
                 activeIndex === idx
                   ? 'border-indigo-500 scale-105 shadow-md'
                   : 'border-slate-800 opacity-60 hover:opacity-100'
