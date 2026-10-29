@@ -1,0 +1,52 @@
+{
+  "package": "FingerMobile Infinite Coin Lion Medallion \u2014 AI/ML and NFT preparation package",
+  "source_dimensions_px": [
+    1254,
+    1254
+  ],
+  "source_mode": "RGBA",
+  "transparency": "Present",
+  "processing_note": "The original is preserved. Derived exports are format conversions/resizing only; this package does not claim OCR correction, true super-resolution, rights verification, or on-chain minting.",
+  "files": [
+    {
+      "file": "00_original_source.png",
+      "bytes": 3271835,
+      "sha256": "8703dc249fc1d504291ad51af455d8130073308b02a1fb188b52b32109068908"
+    },
+    {
+      "file": "01_master_transparent.png",
+      "bytes": 2920845,
+      "sha256": "8cde84afbdbd1e20e0394bbb2a418a39513fe68e245bf68267a5506c819611e3"
+    },
+    {
+      "file": "02_web_transparent.webp",
+      "bytes": 2114488,
+      "sha256": "8599633da0d4fe12ed5bd12d20969626dbd15a895e2d44d2735b2dc7cdabd55c"
+    },
+    {
+      "file": "03_thumbnail_512.png",
+      "bytes": 541290,
+      "sha256": "d133f69c18fd33a23930dc0fbd6edc151857a150d3bf8ff307c840b8d2e902c7"
+    },
+    {
+      "file": "04_preview_dark.jpg",
+      "bytes": 562673,
+      "sha256": "c0e7d54e954810d7048add8fead44d1319e273571e61a87cb518e0fdd2f16a17"
+    },
+    {
+      "file": "05_ai_ml_labels.json",
+      "bytes": 1978,
+      "sha256": "3b4a616a05e39d412254aa5b4f9d17c5078303366b784f405769f6e132014ebe"
+    },
+    {
+      "file": "06_nft_metadata_TEMPLATE.json",
+      "bytes": 2018,
+      "sha256": "12bc19a300bd34e280797897a94adc1ba46f501099688d1bd6872bc77dc8329a"
+    },
+    {
+      "file": "README.md",
+      "bytes": 2157,
+      "sha256": "84e7fc6c9160fd61f3b42741b645a45a5582e1cc71bc07711a063deeae221b3e"
+    }
+  ]
+}

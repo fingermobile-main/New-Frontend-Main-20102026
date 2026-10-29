@@ -1,0 +1,57 @@
+{
+  "name": "FingerMobile Infinite Coin — Lion Medallion",
+  "description": "A circular gold medallion featuring two back-to-back lion heads with bright blue eyes, embossed gold circuit-board traces, and a raised metallic rim. The outer ring contains the title 'Infinite Coin' and additional decorative text, including FingerMobile Protocol. The artwork uses a high-relief, polished gold and amber palette on a transparent background. This metadata file is a template; ownership, licensing, provenance, and token details must be verified and completed by the creator/minter.",
+  "image": "ipfs://REPLACE_WITH_CID/01_master_transparent.png",
+  "external_url": "https://REPLACE_WITH_OFFICIAL_PROJECT_URL",
+  "attributes": [
+    {
+      "trait_type": "Artwork",
+      "value": "Lion Medallion"
+    },
+    {
+      "trait_type": "Palette",
+      "value": "Gold / Amber"
+    },
+    {
+      "trait_type": "Motif",
+      "value": "Dual Lions"
+    },
+    {
+      "trait_type": "Motif",
+      "value": "Circuitry"
+    },
+    {
+      "trait_type": "Format",
+      "value": "Transparent PNG"
+    }
+  ],
+  "properties": {
+    "files": [
+      {
+        "uri": "ipfs://REPLACE_WITH_CID/01_master_transparent.png",
+        "type": "image/png"
+      },
+      {
+        "uri": "ipfs://REPLACE_WITH_CID/02_web_transparent.webp",
+        "type": "image/webp"
+      }
+    ],
+    "category": "image"
+  },
+  "creator_supplied_fields_to_complete": {
+    "creator_or_rights_holder": "REQUIRED: confirm the legal creator/rights holder",
+    "license": "REQUIRED: specify the license and permitted uses",
+    "provenance": "OPTIONAL: document origin and creation history truthfully",
+    "edition": "OPTIONAL: edition size, if applicable",
+    "royalties": "OPTIONAL: marketplace/chain-specific and not guaranteed by metadata alone"
+  },
+  "not_set_by_this_template": [
+    "blockchain/network",
+    "contract address",
+    "token ID",
+    "wallet address",
+    "mint transaction",
+    "verified ownership",
+    "legal copyright status"
+  ]
+}
