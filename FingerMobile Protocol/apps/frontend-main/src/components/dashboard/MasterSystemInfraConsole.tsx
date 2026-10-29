@@ -393,7 +393,7 @@ export const MasterSystemInfraConsole: React.FC = () => {
               )}
               <span className="font-semibold text-sm">{notification.message}</span>
             </div>
-            <button onClick={() => setNotification(null)} className="text-slate-500 hover:text-slate-800">
+            <button type="button" aria-label="Close" onClick={() => setNotification(null)} className="text-slate-500 hover:text-slate-800">
               <X className="w-4 h-4" />
             </button>
           </div>
@@ -820,7 +820,7 @@ export const MasterSystemInfraConsole: React.FC = () => {
                 <Cpu className="w-5 h-5 text-blue-700" />
                 Provision New Infrastructure Node / Service
               </h3>
-              <button onClick={() => setIsAddModalOpen(false)} className="text-slate-500 hover:text-slate-800">
+              <button type="button" aria-label="Close" onClick={() => setIsAddModalOpen(false)} className="text-slate-500 hover:text-slate-800">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -969,7 +969,7 @@ export const MasterSystemInfraConsole: React.FC = () => {
                 <Edit className="w-5 h-5 text-blue-700" />
                 Edit Infrastructure Node: {selectedItem.name}
               </h3>
-              <button onClick={() => setIsEditModalOpen(false)} className="text-slate-500 hover:text-slate-800">
+              <button type="button" aria-label="Close" onClick={() => setIsEditModalOpen(false)} className="text-slate-500 hover:text-slate-800">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -1086,7 +1086,7 @@ export const MasterSystemInfraConsole: React.FC = () => {
                 <Sparkles className="w-5 h-5 text-purple-700" />
                 Spawn Sovereign Infrastructure Console
               </h3>
-              <button onClick={() => setIsSpawnModalOpen(false)} className="text-slate-500 hover:text-slate-800">
+              <button type="button" aria-label="Close" onClick={() => setIsSpawnModalOpen(false)} className="text-slate-500 hover:text-slate-800">
                 <X className="w-5 h-5" />
               </button>
             </div>

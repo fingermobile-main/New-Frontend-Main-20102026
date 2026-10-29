@@ -362,7 +362,7 @@ export const UnifiedFinancialTreasuryConsole: React.FC = () => {
             )}
             <span className="font-bold text-sm">{notification.message}</span>
           </div>
-          <button
+          <button type="button" aria-label="Close"
             onClick={() => setNotification(null)}
             className="text-slate-500 hover:text-slate-900 font-bold"
           >
@@ -786,7 +786,7 @@ export const UnifiedFinancialTreasuryConsole: React.FC = () => {
               <h3 className="text-xl font-black text-slate-900">
                 {isEditModalOpen ? `Edit Financial Entry: ${selectedItem?.code}` : 'Add New Sovereign Financial Entry'}
               </h3>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => {
                   setIsAddModalOpen(false);
                   setIsEditModalOpen(false);
@@ -1004,7 +1004,7 @@ export const UnifiedFinancialTreasuryConsole: React.FC = () => {
               <h3 className="text-xl font-black text-slate-900">
                 One-Click Console Spawner
               </h3>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setIsSpawnModalOpen(false)}
                 className="text-slate-500 hover:text-slate-900"
               >

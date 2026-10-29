@@ -661,7 +661,7 @@ export const MasterLuminaGalleryConsole: React.FC = () => {
       {isAddModalOpen && (
         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-white border border-slate-300 rounded-2xl max-w-xl w-full p-6 shadow-2xl relative">
-            <button
+            <button type="button" aria-label="Close"
               onClick={() => setIsAddModalOpen(false)}
               className="absolute top-5 right-5 text-slate-500 hover:text-slate-800"
             >
@@ -782,7 +782,7 @@ export const MasterLuminaGalleryConsole: React.FC = () => {
       {isEditModalOpen && activeItem && (
         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-white border border-slate-300 rounded-2xl max-w-xl w-full p-6 shadow-2xl relative">
-            <button
+            <button type="button" aria-label="Close"
               onClick={() => {
                 setIsEditModalOpen(false);
                 setActiveItem(null);
@@ -904,7 +904,7 @@ export const MasterLuminaGalleryConsole: React.FC = () => {
       {isUploadModalOpen && selectedItemForUpload && (
         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-white border border-slate-300 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
-            <button
+            <button type="button" aria-label="Close"
               onClick={() => {
                 setIsUploadModalOpen(false);
                 setSelectedItemForUpload(null);
@@ -967,7 +967,7 @@ export const MasterLuminaGalleryConsole: React.FC = () => {
       {isSpawnModalOpen && (
         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-white border border-slate-300 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
-            <button
+            <button type="button" aria-label="Close"
               onClick={() => setIsSpawnModalOpen(false)}
               className="absolute top-5 right-5 text-slate-500 hover:text-slate-800"
             >

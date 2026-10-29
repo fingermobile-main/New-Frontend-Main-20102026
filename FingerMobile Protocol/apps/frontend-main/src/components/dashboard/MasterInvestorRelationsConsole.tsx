@@ -545,7 +545,7 @@ export const MasterInvestorRelationsConsole: React.FC = () => {
           <div className="bg-white rounded-2xl border border-slate-300 max-w-xl w-full p-6 shadow-2xl overflow-y-auto max-h-[90vh]">
             <div className="flex items-center justify-between pb-4 border-b border-slate-200">
               <h2 className="text-lg font-black text-slate-900">Create Capital Tranche</h2>
-              <button onClick={() => setIsAddModalOpen(false)} className="text-slate-500 hover:text-slate-900">
+              <button type="button" aria-label="Close" onClick={() => setIsAddModalOpen(false)} className="text-slate-500 hover:text-slate-900">
                 <XMarkIcon className="w-6 h-6" />
               </button>
             </div>
@@ -715,7 +715,7 @@ export const MasterInvestorRelationsConsole: React.FC = () => {
           <div className="bg-white rounded-2xl border border-slate-300 max-w-xl w-full p-6 shadow-2xl overflow-y-auto max-h-[90vh]">
             <div className="flex items-center justify-between pb-4 border-b border-slate-200">
               <h2 className="text-lg font-black text-slate-900">Edit Tranche #{activeItem.id}</h2>
-              <button onClick={() => setIsEditModalOpen(false)} className="text-slate-500 hover:text-slate-900">
+              <button type="button" aria-label="Close" onClick={() => setIsEditModalOpen(false)} className="text-slate-500 hover:text-slate-900">
                 <XMarkIcon className="w-6 h-6" />
               </button>
             </div>
@@ -885,7 +885,7 @@ export const MasterInvestorRelationsConsole: React.FC = () => {
           <div className="bg-white rounded-2xl border border-slate-300 max-w-md w-full p-6 shadow-2xl">
             <div className="flex items-center justify-between pb-4 border-b border-slate-200">
               <h2 className="text-lg font-black text-slate-900">Spawn Sovereign Capital Console</h2>
-              <button onClick={() => setIsSpawnModalOpen(false)} className="text-slate-500 hover:text-slate-900">
+              <button type="button" aria-label="Close" onClick={() => setIsSpawnModalOpen(false)} className="text-slate-500 hover:text-slate-900">
                 <XMarkIcon className="w-6 h-6" />
               </button>
             </div>

@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "file": "FingerMobile Protocol/apps/frontend-main/src/pages/MiiAvatarPage.test.tsx",
+    "line": 8,
+    "column": 40,
+    "element": "button",
+    "label": "children",
+    "issue": "button-missing-click-handler",
+    "severity": "high",
+    "handlerName": "",
+    "snippet": "",
+    "recommendation": "Define explicit CTA contract or remove element from production UI."
+  },
+  {
+    "file": "FingerMobile Protocol/apps/frontend-main/src/pages/MiiAvatarPage.test.tsx",
+    "line": 28,
+    "column": 45,
+    "element": "button",
+    "label": "children",
+    "issue": "button-missing-click-handler",
+    "severity": "high",
+    "handlerName": "",
+    "snippet": "",
+    "recommendation": "Define explicit CTA contract or remove element from production UI."
+  },
+  {
+    "file": "FingerMobile Protocol/apps/frontend-main/src/pages/catalog/GeneralProductCatalogPage.test.tsx",
+    "line": 18,
+    "column": 6,
+    "element": "button",
+    "label": "Sync Live DB",
+    "issue": "button-missing-click-handler",
+    "severity": "high",
+    "handlerName": "",
+    "snippet": "",
+    "recommendation": "Implement real mutation endpoint, authorization check, database transaction, loading state, success state, and error state."
+  },
+  {
+    "file": "FingerMobile Protocol/apps/frontend-main/src/pages/catalog/GeneralProductCatalogPage.test.tsx",
+    "line": 19,
+    "column": 6,
+    "element": "button",
+    "label": "Ingest Product / Service",
+    "issue": "button-missing-click-handler",
+    "severity": "high",
+    "handlerName": "",
+    "snippet": "",
+    "recommendation": "Define explicit CTA contract or remove element from production UI."
+  },
+  {
+    "file": "FingerMobile Protocol/apps/frontend-main/src/pages/catalog/StorefrontCatalogPage.test.tsx",
+    "line": 18,
+    "column": 6,
+    "element": "button",
+    "label": "Refresh",
+    "issue": "button-missing-click-handler",
+    "severity": "high",
+    "handlerName": "",
+    "snippet": "",
+    "recommendation": "Define explicit CTA contract or remove element from production UI."
+  },
+  {
+    "file": "FingerMobile Protocol/apps/frontend-main/src/pages/dashboard/ContentModerationPage.test.tsx",
+    "line": 7,
+    "column": 40,
+    "element": "button",
+    "label": "children",
+    "issue": "button-missing-click-handler",
+    "severity": "high",
+    "handlerName": "",
+    "snippet": "",
+    "recommendation": "Define explicit CTA contract or remove element from production UI."
+  }
+]

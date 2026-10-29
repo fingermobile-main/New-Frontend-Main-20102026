@@ -36,7 +36,7 @@ import commerceLuxuryConsoleService from '../../services/commerceLuxuryConsoleSe
 import audioEngine, { AfricanVoiceLine } from '../../services/SuperViAudioEngine';
 import { useAppContext } from '../../contexts/AppContext';
 import { useAuth } from '../../contexts/AuthContext';
-import { getUserRoleTier } from '../../utils/profileTierHierarchy';
+import { getUserRoleTier } from '../../services/platformRbac';
 import CommerceMediaPicker, { CommerceMediaValue } from '../common/CommerceMediaPicker';
 
 // Primary Admin Emails with unrestricted Super Admin authority
@@ -118,23 +118,25 @@ export const MasterCommerceLuxuryConsole: React.FC = () => {
   const { user } = useAuth();
 
   // Granular RBAC Permissions
-  const userRoleTier = getUserRoleTier(user);
+  const userEmail = (user?.email || '').toLowerCase().trim();
+  const userRoleTier = getUserRoleTier(user as any);
   const isSuperAdmin =
-    (user?.email && PRIMARY_ADMIN_EMAILS.includes(user.email.toLowerCase())) ||
-    userRoleTier === 'Founder' ||
-    user?.role === 'super_admin';
+    (userEmail && PRIMARY_ADMIN_EMAILS.includes(userEmail)) ||
+    userRoleTier === 'PRIMARY_SUPER_ADMIN' ||
+    user?.role === 'super_admin' ||
+    user?.role === 'founder';
 
   const isAdmin =
     isSuperAdmin ||
-    userRoleTier === 'Senior Sentinel' ||
-    userRoleTier === 'Sentinel' ||
+    userRoleTier === 'SECONDARY_ADMIN_CFO' ||
     user?.role === 'admin' ||
     user?.role === 'administrator';
 
   const isModerator =
     isAdmin ||
     user?.role === 'moderator' ||
-    user?.role === 'sentinel';
+    user?.role === 'sentinel' ||
+    user?.role === 'curator';
 
   // Active Service State
   const [activeService, setActiveService] = useState<CommerceLuxuryServiceKey>('marketplace');

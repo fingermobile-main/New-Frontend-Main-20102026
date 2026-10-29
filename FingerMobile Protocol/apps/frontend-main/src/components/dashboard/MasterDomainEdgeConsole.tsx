@@ -633,7 +633,7 @@ export const MasterDomainEdgeConsole: React.FC = () => {
           <div className="bg-white border border-slate-300 rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden animate-fadeIn">
             <div className="px-6 py-4 bg-slate-100 border-b border-slate-300 flex justify-between items-center">
               <h3 className="font-black text-slate-900 text-lg">Provision Edge Route Node</h3>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setIsAddModalOpen(false)}
                 className="text-slate-500 hover:text-slate-900"
               >
@@ -749,7 +749,7 @@ export const MasterDomainEdgeConsole: React.FC = () => {
           <div className="bg-white border border-slate-300 rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden animate-fadeIn">
             <div className="px-6 py-4 bg-slate-100 border-b border-slate-300 flex justify-between items-center">
               <h3 className="font-black text-slate-900 text-lg">Modify Route: {activeItem?.name}</h3>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setIsEditModalOpen(false)}
                 className="text-slate-500 hover:text-slate-900"
               >
@@ -862,7 +862,7 @@ export const MasterDomainEdgeConsole: React.FC = () => {
           <div className="bg-white border border-slate-300 rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden animate-fadeIn">
             <div className="px-6 py-4 bg-slate-100 border-b border-slate-300 flex justify-between items-center">
               <h3 className="font-black text-slate-900 text-lg">Spawn Domain & Edge Sub-Console</h3>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setIsSpawnModalOpen(false)}
                 className="text-slate-500 hover:text-slate-900"
               >
@@ -948,7 +948,7 @@ export const MasterDomainEdgeConsole: React.FC = () => {
               <h3 className="font-black text-slate-900 text-lg">
                 {selectedItemForUpload ? `Upload Cert for ${selectedItemForUpload.name}` : 'Upload SSL/Config Asset'}
               </h3>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setIsUploadModalOpen(false)}
                 className="text-slate-500 hover:text-slate-900"
               >

@@ -542,7 +542,7 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-4 rounded-xl bg-white border border-slate-300 shadow-sm">
         <div className="flex flex-wrap items-center gap-2">
           {['all', 'platform', 'creator_channel', 'gems_broadcast', 'content_paywall'].map(cat => (
-            <button
+            <button type="button" aria-label="Action"
               key={cat}
               onClick={() => setActiveCategory(cat)}
               className={`px-3 py-1.5 rounded-lg text-xs font-extrabold transition flex items-center space-x-1.5 ${
@@ -831,7 +831,7 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
       {isAddModalOpen && (
         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-white border border-slate-300 rounded-2xl max-w-xl w-full p-6 shadow-2xl relative">
-            <button
+            <button type="button" aria-label="Close"
               onClick={() => setIsAddModalOpen(false)}
               className="absolute top-5 right-5 text-slate-500 hover:text-slate-800"
             >
@@ -997,7 +997,7 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
       {isEditModalOpen && editingItem && (
         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-white border border-slate-300 rounded-2xl max-w-xl w-full p-6 shadow-2xl relative">
-            <button
+            <button type="button" aria-label="Close"
               onClick={() => {
                 setIsEditModalOpen(false);
                 setEditingItem(null);
@@ -1164,7 +1164,7 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
       {isUploadModalOpen && (
         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-white border border-slate-300 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
-            <button
+            <button type="button" aria-label="Close"
               onClick={() => {
                 setIsUploadModalOpen(false);
                 setUploadFile(null);
@@ -1223,7 +1223,7 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
       {isSpawnModalOpen && (
         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-white border border-slate-300 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
-            <button
+            <button type="button" aria-label="Close"
               onClick={() => setIsSpawnModalOpen(false)}
               className="absolute top-5 right-5 text-slate-500 hover:text-slate-800"
             >

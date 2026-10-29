@@ -648,7 +648,7 @@ export const CommerceVisualSearchModal: React.FC<CommerceVisualSearchModalProps>
           {errorMessage && (
             <div className="p-3.5 rounded-2xl bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 text-xs font-bold flex items-center justify-between">
               <span>{errorMessage}</span>
-              <button
+              <button aria-label="Close"
                 type="button"
                 onClick={() => setErrorMessage(null)}
                 className="text-red-600 hover:text-red-800 p-1"

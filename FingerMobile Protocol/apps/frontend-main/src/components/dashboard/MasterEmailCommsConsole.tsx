@@ -545,7 +545,7 @@ export const MasterEmailCommsConsole: React.FC = () => {
           <div className="bg-white rounded-3xl max-w-xl w-full p-6 shadow-2xl border border-slate-300 animate-in fade-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-4 border-b border-slate-200">
               <h3 className="text-lg font-black text-slate-900">Register Communications Channel</h3>
-              <button onClick={() => setIsAddModalOpen(false)} className="text-slate-500 hover:text-slate-800">
+              <button type="button" aria-label="Close" onClick={() => setIsAddModalOpen(false)} className="text-slate-500 hover:text-slate-800">
                 <XMarkIcon className="w-6 h-6" />
               </button>
             </div>
@@ -665,7 +665,7 @@ export const MasterEmailCommsConsole: React.FC = () => {
           <div className="bg-white rounded-3xl max-w-xl w-full p-6 shadow-2xl border border-slate-300 animate-in fade-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-4 border-b border-slate-200">
               <h3 className="text-lg font-black text-slate-900">Edit Channel: {activeItem.code}</h3>
-              <button onClick={() => setIsEditModalOpen(false)} className="text-slate-500 hover:text-slate-800">
+              <button type="button" aria-label="Close" onClick={() => setIsEditModalOpen(false)} className="text-slate-500 hover:text-slate-800">
                 <XMarkIcon className="w-6 h-6" />
               </button>
             </div>
@@ -770,7 +770,7 @@ export const MasterEmailCommsConsole: React.FC = () => {
           <div className="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-300">
             <div className="flex items-center justify-between pb-4 border-b border-slate-200">
               <h3 className="text-lg font-black text-slate-900">Spawn Sovereign Sub-Console</h3>
-              <button onClick={() => setIsSpawnModalOpen(false)} className="text-slate-500 hover:text-slate-800">
+              <button type="button" aria-label="Close" onClick={() => setIsSpawnModalOpen(false)} className="text-slate-500 hover:text-slate-800">
                 <XMarkIcon className="w-6 h-6" />
               </button>
             </div>
@@ -850,7 +850,7 @@ export const MasterEmailCommsConsole: React.FC = () => {
                 <DocumentTextIcon className="w-5 h-5 text-teal-600" />
                 Upload Template / Manifest
               </h3>
-              <button onClick={() => setIsUploadModalOpen(false)} className="text-slate-500 hover:text-slate-800">
+              <button type="button" aria-label="Close" onClick={() => setIsUploadModalOpen(false)} className="text-slate-500 hover:text-slate-800">
                 <XMarkIcon className="w-6 h-6" />
               </button>
             </div>

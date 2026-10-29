@@ -21,9 +21,12 @@ import {
   CheckSquare,
   Square,
   EyeOff,
-  Eye
+  Eye,
+  ShieldAlert
 } from 'lucide-react';
 import { api } from '../../../services/api';
+import { useAuth } from '../../../contexts/AuthContext';
+import { getUserRoleTier, PRIMARY_ADMIN_EMAILS } from '../../../services/platformRbac';
 
 const getStockDotColor = (qty: number) => {
   if (qty > 10) return 'bg-emerald-500';
@@ -53,7 +56,7 @@ export interface CatalogProduct {
   video_urls: string[];
   specifications: Record<string, any>;
   service_details: Record<string, any>;
-  status: 'active' | 'draft' | 'out_of_stock' | 'archived';
+  status: 'active' | 'draft' | 'out_of_stock' | 'archived' | 'suspended';
   curated_stores: string[]; // 'marketplace' | 'flamingo' | 'ownit' | 'storefront'
   store_scheduling: Record<string, any>;
   vetting_status: 'approved' | 'pending_vetting' | 'censored' | 'rejected';
@@ -81,6 +84,27 @@ interface CatalogStats {
 }
 
 export const GeneralProductCatalogConsole: React.FC = () => {
+  const { user } = useAuth();
+  const userEmail = (user?.email || '').toLowerCase().trim();
+  const roleTier = getUserRoleTier(user as any);
+
+  const isSuperAdmin =
+    PRIMARY_ADMIN_EMAILS.includes(userEmail) ||
+    roleTier === 'PRIMARY_SUPER_ADMIN' ||
+    user?.role === 'super_admin' ||
+    user?.role === 'founder';
+
+  const isAdmin =
+    isSuperAdmin ||
+    user?.role === 'admin' ||
+    user?.role === 'administrator';
+
+  const isModerator =
+    isAdmin ||
+    user?.role === 'moderator' ||
+    user?.role === 'sentinel' ||
+    user?.role === 'curator';
+
   const [products, setProducts] = useState<CatalogProduct[]>([]);
   const [stats, setStats] = useState<CatalogStats | null>(null);
   const [loading, setLoading] = useState(true);
@@ -418,6 +442,27 @@ export const GeneralProductCatalogConsole: React.FC = () => {
             <span className="text-xs font-bold uppercase tracking-wider text-rose-950">Pending Vetting</span>
             <p className="text-2xl font-black text-rose-950 mt-1">{stats?.pending_vetting_count || 0}</p>
             <span className="text-xs text-rose-800 font-medium">Awaiting Inspection</span>
+          </div>
+        </div>
+
+        {/* Sovereign Compliance & RBAC Actions Banner - Black with hairline of dark red (#880808) */}
+        <div className="mt-4 p-3.5 bg-black border border-[#880808] rounded-xl text-white shadow-lg flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-center space-x-2.5">
+            <span className="w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse shrink-0" />
+            <div>
+              <h4 className="text-xs font-black uppercase tracking-wider text-white flex items-center gap-2">
+                <ShieldAlert className="w-4 h-4 text-red-500" />
+                Compliance & RBAC Actions: Master Product & Inventory Engine
+              </h4>
+              <p className="text-[11px] text-slate-300 font-medium">
+                Admin: Freeze, Suspend, Censor (18+ Blur), Pause Syndication · Super Admin: Permanent Purge from PostgreSQL
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2 shrink-0">
+            <span className="px-2.5 py-1 rounded-full text-[10px] font-mono font-bold bg-red-950/80 text-rose-200 border border-red-800/80">
+              {isSuperAdmin ? 'ROLE: SUPER ADMIN' : isAdmin ? 'ROLE: ADMIN' : isModerator ? 'ROLE: MODERATOR' : 'ROLE: REVIEWER'}
+            </span>
           </div>
         </div>
       </div>
@@ -1038,37 +1083,42 @@ export const GeneralProductCatalogConsole: React.FC = () => {
                       </div>
                     </div>
 
-                    {/* Batch Action Toolbar */}
+                    {/* Sovereign Batch Action Toolbar - Black with hairline of dark red (#880808) */}
                     {selectedMediaUrls.length > 0 && (
-                      <div className="flex flex-wrap items-center gap-2 p-2 bg-emerald-50 border border-emerald-200 rounded-lg">
-                        <span className="text-[11px] font-bold text-emerald-950">Batch Actions:</span>
-                        <button
-                          type="button"
-                          disabled={isBatchProcessing}
-                          onClick={() => handleBatchMediaAction('delete')}
-                          className="px-2.5 py-1 text-[11px] font-bold bg-rose-600 hover:bg-rose-700 text-white rounded-lg flex items-center space-x-1 shadow-sm transition"
-                        >
-                          <Trash2 className="w-3 h-3" />
-                          <span>Erase Selected ({selectedMediaUrls.length})</span>
-                        </button>
-                        <button
-                          type="button"
-                          disabled={isBatchProcessing}
-                          onClick={() => handleBatchMediaAction('freeze')}
-                          className="px-2.5 py-1 text-[11px] font-bold bg-purple-700 hover:bg-purple-800 text-white rounded-lg flex items-center space-x-1 shadow-sm transition"
-                        >
-                          <EyeOff className="w-3 h-3" />
-                          <span>Freeze / Blur ({selectedMediaUrls.length})</span>
-                        </button>
-                        <button
-                          type="button"
-                          disabled={isBatchProcessing}
-                          onClick={() => handleBatchMediaAction('unfreeze')}
-                          className="px-2.5 py-1 text-[11px] font-bold bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg flex items-center space-x-1 shadow-sm transition"
-                        >
-                          <Eye className="w-3 h-3" />
-                          <span>Unfreeze ({selectedMediaUrls.length})</span>
-                        </button>
+                      <div className="flex flex-wrap items-center justify-between gap-2 p-3 bg-black border border-[#880808] text-white rounded-xl shadow-lg">
+                        <div className="flex items-center space-x-2">
+                          <span className="w-2 h-2 rounded-full bg-red-600 animate-pulse" />
+                          <span className="text-xs font-black uppercase tracking-wider text-white">Compliance & RBAC Actions:</span>
+                        </div>
+                        <div className="flex flex-wrap items-center gap-2">
+                          <button
+                            type="button"
+                            disabled={isBatchProcessing}
+                            onClick={() => handleBatchMediaAction('delete')}
+                            className="px-2.5 py-1 text-[11px] font-bold bg-rose-950/70 hover:bg-rose-900 text-rose-200 border border-rose-800 rounded-lg flex items-center space-x-1 shadow-sm transition"
+                          >
+                            <Trash2 className="w-3 h-3 text-rose-400" />
+                            <span>Erase Selected ({selectedMediaUrls.length})</span>
+                          </button>
+                          <button
+                            type="button"
+                            disabled={isBatchProcessing}
+                            onClick={() => handleBatchMediaAction('freeze')}
+                            className="px-2.5 py-1 text-[11px] font-bold bg-purple-950/70 hover:bg-purple-900 text-purple-200 border border-purple-800 rounded-lg flex items-center space-x-1 shadow-sm transition"
+                          >
+                            <EyeOff className="w-3 h-3 text-purple-400" />
+                            <span>Freeze / Blur ({selectedMediaUrls.length})</span>
+                          </button>
+                          <button
+                            type="button"
+                            disabled={isBatchProcessing}
+                            onClick={() => handleBatchMediaAction('unfreeze')}
+                            className="px-2.5 py-1 text-[11px] font-bold bg-emerald-700 hover:bg-emerald-600 text-white border border-emerald-500 rounded-lg flex items-center space-x-1 shadow-sm transition"
+                          >
+                            <Eye className="w-3 h-3 text-white" />
+                            <span>Unfreeze ({selectedMediaUrls.length})</span>
+                          </button>
+                        </div>
                       </div>
                     )}
                   </div>

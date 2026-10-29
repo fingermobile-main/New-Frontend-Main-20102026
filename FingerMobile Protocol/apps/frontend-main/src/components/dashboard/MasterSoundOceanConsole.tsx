@@ -676,7 +676,7 @@ export const MasterSoundOceanConsole: React.FC = () => {
           <div className="bg-white border border-slate-300 rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden animate-fadeIn max-h-[90vh] overflow-y-auto">
             <div className="px-6 py-4 bg-slate-100 border-b border-slate-300 flex justify-between items-center sticky top-0 bg-slate-100 z-10">
               <h3 className="font-black text-slate-900 text-lg">Ingest Audio to SoundOcean Library</h3>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setIsAddModalOpen(false)}
                 className="text-slate-500 hover:text-slate-900"
               >
@@ -846,7 +846,7 @@ export const MasterSoundOceanConsole: React.FC = () => {
           <div className="bg-white border border-slate-300 rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden animate-fadeIn max-h-[90vh] overflow-y-auto">
             <div className="px-6 py-4 bg-slate-100 border-b border-slate-300 flex justify-between items-center sticky top-0 bg-slate-100 z-10">
               <h3 className="font-black text-slate-900 text-lg">Modify Library Item: {activeItem?.title}</h3>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setIsEditModalOpen(false)}
                 className="text-slate-500 hover:text-slate-900"
               >
@@ -951,7 +951,7 @@ export const MasterSoundOceanConsole: React.FC = () => {
           <div className="bg-white border border-slate-300 rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden animate-fadeIn">
             <div className="px-6 py-4 bg-slate-100 border-b border-slate-300 flex justify-between items-center">
               <h3 className="font-black text-slate-900 text-lg">Spawn SoundOcean Sub-Console</h3>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setIsSpawnModalOpen(false)}
                 className="text-slate-500 hover:text-slate-900"
               >
@@ -1036,7 +1036,7 @@ export const MasterSoundOceanConsole: React.FC = () => {
               <h3 className="font-black text-slate-900 text-lg">
                 {selectedItemForUpload ? `Upload FLAC/Stems for ${selectedItemForUpload.title}` : 'Direct Master Audio Upload'}
               </h3>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setIsUploadModalOpen(false)}
                 className="text-slate-500 hover:text-slate-900"
               >

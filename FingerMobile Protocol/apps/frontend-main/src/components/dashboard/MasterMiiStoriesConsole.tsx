@@ -505,7 +505,7 @@ export const MasterMiiStoriesConsole: React.FC = () => {
                       <div className="text-[11px] font-mono text-slate-500 mt-0.5">{item.author_id}</div>
                     </td>
                     <td className="py-3 px-4">
-                      <button
+                      <button type="button" aria-label="Play"
                         onClick={() => setPreviewMediaUrl(item.media_url)}
                         className="px-2.5 py-1 text-xs font-bold text-indigo-950 bg-indigo-100 hover:bg-indigo-200 border border-indigo-400 rounded-lg flex items-center gap-1.5"
                       >

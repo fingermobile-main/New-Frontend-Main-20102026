@@ -394,7 +394,7 @@ export const MasterCorporateGovernanceConsole: React.FC = () => {
               )}
               <span className="font-semibold text-sm">{notification.message}</span>
             </div>
-            <button onClick={() => setNotification(null)} className="text-slate-500 hover:text-slate-800">
+            <button type="button" aria-label="Close" onClick={() => setNotification(null)} className="text-slate-500 hover:text-slate-800">
               <X className="w-4 h-4" />
             </button>
           </div>
@@ -815,7 +815,7 @@ export const MasterCorporateGovernanceConsole: React.FC = () => {
                 <Shield className="w-5 h-5 text-blue-700" />
                 Ratify New Corporate Governance Mandate
               </h3>
-              <button onClick={() => setIsAddModalOpen(false)} className="text-slate-500 hover:text-slate-800">
+              <button type="button" aria-label="Close" onClick={() => setIsAddModalOpen(false)} className="text-slate-500 hover:text-slate-800">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -965,7 +965,7 @@ export const MasterCorporateGovernanceConsole: React.FC = () => {
                 <Edit className="w-5 h-5 text-blue-700" />
                 Edit Governance Mandate: {selectedItem.name}
               </h3>
-              <button onClick={() => setIsEditModalOpen(false)} className="text-slate-500 hover:text-slate-800">
+              <button type="button" aria-label="Close" onClick={() => setIsEditModalOpen(false)} className="text-slate-500 hover:text-slate-800">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -1083,7 +1083,7 @@ export const MasterCorporateGovernanceConsole: React.FC = () => {
                 <Sparkles className="w-5 h-5 text-purple-700" />
                 Spawn Sovereign Governance Console
               </h3>
-              <button onClick={() => setIsSpawnModalOpen(false)} className="text-slate-500 hover:text-slate-800">
+              <button type="button" aria-label="Close" onClick={() => setIsSpawnModalOpen(false)} className="text-slate-500 hover:text-slate-800">
                 <X className="w-5 h-5" />
               </button>
             </div>

@@ -770,7 +770,7 @@ export const MasterSecurityDefConConsole: React.FC = () => {
                 <Shield className="w-5 h-5 text-rose-700" />
                 Commission New Security / DefCon Node
               </h3>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setIsAddModalOpen(false)}
                 className="p-1 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all"
               >
@@ -958,7 +958,7 @@ export const MasterSecurityDefConConsole: React.FC = () => {
                 <Edit className="w-5 h-5 text-indigo-700" />
                 Modify Defense Node: {selectedItem.name}
               </h3>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setIsEditModalOpen(false)}
                 className="p-1 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all"
               >
@@ -1094,7 +1094,7 @@ export const MasterSecurityDefConConsole: React.FC = () => {
                 <Sliders className="w-5 h-5 text-indigo-700" />
                 Spawn Sovereign Security Sub-Console
               </h3>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setIsSpawnModalOpen(false)}
                 className="p-1 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all"
               >

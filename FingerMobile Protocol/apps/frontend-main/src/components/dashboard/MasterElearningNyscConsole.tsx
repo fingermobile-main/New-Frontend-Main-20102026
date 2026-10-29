@@ -252,7 +252,7 @@ export const MasterElearningNyscConsole: React.FC = () => {
             : 'bg-red-50 border-red-300 text-red-950 font-semibold'
         }`}>
           <span>{notification.message}</span>
-          <button onClick={() => setNotification(null)} className="text-slate-600 hover:text-slate-900 ml-4">
+          <button type="button" aria-label="Close" onClick={() => setNotification(null)} className="text-slate-600 hover:text-slate-900 ml-4">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -629,7 +629,7 @@ export const MasterElearningNyscConsole: React.FC = () => {
               <h3 className="text-lg font-bold text-slate-900">
                 {isAddModalOpen ? 'Create & Publish New EduTech Course' : `Edit Course: ${selectedItem?.code}`}
               </h3>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => {
                   setIsAddModalOpen(false);
                   setIsEditModalOpen(false);
@@ -789,7 +789,7 @@ export const MasterElearningNyscConsole: React.FC = () => {
                 <Sparkles className="w-5 h-5 text-indigo-600" />
                 Spawn New Specialized EduTech Console
               </h3>
-              <button onClick={() => setIsSpawnModalOpen(false)} className="text-slate-500 hover:text-slate-800">
+              <button type="button" aria-label="Close" onClick={() => setIsSpawnModalOpen(false)} className="text-slate-500 hover:text-slate-800">
                 <X className="w-5 h-5" />
               </button>
             </div>

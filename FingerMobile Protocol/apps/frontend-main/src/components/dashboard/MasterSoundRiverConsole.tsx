@@ -677,7 +677,7 @@ export const MasterSoundRiverConsole: React.FC = () => {
           <div className="bg-white border border-slate-300 rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden animate-fadeIn">
             <div className="px-6 py-4 bg-slate-100 border-b border-slate-300 flex justify-between items-center">
               <h3 className="font-black text-slate-900 text-lg">Provision SoundRiver Stream Station</h3>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setIsAddModalOpen(false)}
                 className="text-slate-500 hover:text-slate-900"
               >
@@ -806,7 +806,7 @@ export const MasterSoundRiverConsole: React.FC = () => {
           <div className="bg-white border border-slate-300 rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden animate-fadeIn">
             <div className="px-6 py-4 bg-slate-100 border-b border-slate-300 flex justify-between items-center">
               <h3 className="font-black text-slate-900 text-lg">Modify Stream: {activeItem?.station_name}</h3>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setIsEditModalOpen(false)}
                 className="text-slate-500 hover:text-slate-900"
               >
@@ -907,7 +907,7 @@ export const MasterSoundRiverConsole: React.FC = () => {
           <div className="bg-white border border-slate-300 rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden animate-fadeIn">
             <div className="px-6 py-4 bg-slate-100 border-b border-slate-300 flex justify-between items-center">
               <h3 className="font-black text-slate-900 text-lg">Spawn SoundRiver Sub-Console</h3>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setIsSpawnModalOpen(false)}
                 className="text-slate-500 hover:text-slate-900"
               >
@@ -992,7 +992,7 @@ export const MasterSoundRiverConsole: React.FC = () => {
               <h3 className="font-black text-slate-900 text-lg">
                 {selectedItemForUpload ? `Upload Bumper for ${selectedItemForUpload.station_name}` : 'Upload Stream Bumper / Jingle'}
               </h3>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setIsUploadModalOpen(false)}
                 className="text-slate-500 hover:text-slate-900"
               >

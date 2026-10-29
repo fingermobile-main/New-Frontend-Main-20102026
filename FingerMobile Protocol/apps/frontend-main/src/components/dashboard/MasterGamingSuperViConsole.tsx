@@ -357,7 +357,7 @@ export const MasterGamingSuperViConsole: React.FC = () => {
             )}
             <span className="font-bold text-sm">{notification.message}</span>
           </div>
-          <button
+          <button type="button" aria-label="Close"
             onClick={() => setNotification(null)}
             className="text-slate-500 hover:text-slate-900 font-bold"
           >
@@ -790,7 +790,7 @@ export const MasterGamingSuperViConsole: React.FC = () => {
               <h3 className="text-xl font-black text-slate-900">
                 {isEditModalOpen ? `Edit Game Asset: ${selectedItem?.code}` : 'Register New SuperVi Game Asset'}
               </h3>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => {
                   setIsAddModalOpen(false);
                   setIsEditModalOpen(false);
@@ -1013,7 +1013,7 @@ export const MasterGamingSuperViConsole: React.FC = () => {
               <h3 className="text-xl font-black text-slate-900">
                 One-Click Gaming Console Spawner
               </h3>
-              <button
+              <button type="button" aria-label="Close"
                 onClick={() => setIsSpawnModalOpen(false)}
                 className="text-slate-500 hover:text-slate-900"
               >
