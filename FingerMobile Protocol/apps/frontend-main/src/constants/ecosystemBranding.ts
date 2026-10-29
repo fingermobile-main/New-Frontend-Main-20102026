@@ -31,6 +31,11 @@ export interface PlatformBrand {
   borderHoverColor: string;
   gradientFrom: string;
   gradientTo: string;
+  medallionUrl?: string;
+  masterPngUrl?: string;
+  thumbnailUrl?: string;
+  previewDarkUrl?: string;
+  sha256?: string;
 }
 
 export const PLATFORM_BRANDS: Record<string, PlatformBrand> = {
@@ -119,8 +124,13 @@ export const PLATFORM_BRANDS: Record<string, PlatformBrand> = {
     name: 'Finger Infinite Coin',
     tagline: 'Sovereign Protocol Currency & Settlement Token',
     description: 'Cryptographic utility coin powering on-chain and off-chain settlements, peer-to-peer tipping, corporate vaults, and marketplace liquidation.',
-    logoUrl: '/assets/logos/fic_logo.png',
-    iconUrl: '/assets/logos/fic_logo.png',
+    logoUrl: '/assets/fic/03_thumbnail_512.png',
+    iconUrl: '/assets/fic/03_thumbnail_512.png',
+    medallionUrl: '/assets/fic/02_web_transparent.webp',
+    masterPngUrl: '/assets/fic/01_master_transparent.png',
+    thumbnailUrl: '/assets/fic/03_thumbnail_512.png',
+    previewDarkUrl: '/assets/fic/04_preview_dark.jpg',
+    sha256: '8cde84afbdbd1e20e0394bbb2a418a39513fe68e245bf68267a5506c819611e3',
     faviconUrl: '/fic-favicon.ico',
     route: '/wallet',
     category: 'fintech',

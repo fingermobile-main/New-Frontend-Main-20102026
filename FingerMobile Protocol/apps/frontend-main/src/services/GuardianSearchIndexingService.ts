@@ -518,6 +518,31 @@ export const SEED_INDEX_CATALOG: IndexedEntity[] = [
     keywords: ['wallet', 'fic', 'fiat', 'balance', 'funding', 'payouts', 'screens']
   },
   {
+    id: 'asset-fic-lion-medallion',
+    title: 'FingerMobile Infinite Coin Lion Medallion (Sovereign Token Emblem)',
+    category: 'Screens',
+    subCategory: 'Commerce & Growth',
+    route: '/wallet',
+    description: 'Circular metallic gold coin artwork featuring dual back-to-back lion heads with electric blue eyes, embossed gold electronic circuit-board traces, and high-relief sovereign metallic rim.',
+    telemetry: { healthScore: 100, responseTimeMs: 4, lastIndexedAt: '2026-10-29T12:00:00Z' },
+    keywords: [
+      'fic',
+      'infinite coin',
+      'lion medallion',
+      'gold medallion',
+      'two lions',
+      'lion heads',
+      'blue eyes',
+      'circuit board',
+      'electronic traces',
+      'metallic relief',
+      'amber gold',
+      'fingermobile protocol',
+      'sovereign token',
+      'emblem'
+    ]
+  },
+  {
     id: 'screen-business-offices',
     title: 'Global Corporate Governance Centers & Offices',
     category: 'Screens',
