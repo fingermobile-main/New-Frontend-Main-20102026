@@ -36,6 +36,7 @@ interface MiiStoriesBarProps {
   onOpenPinExchange?: () => void;
   onOpenOrbit?: () => void;
   onOpenMiniStore?: () => void;
+  refreshTrigger?: number;
   className?: string;
 }
 
@@ -44,6 +45,7 @@ export const MiiStoriesBar: React.FC<MiiStoriesBarProps> = ({
   onOpenPinExchange,
   onOpenOrbit,
   onOpenMiniStore,
+  refreshTrigger,
   className = ''
 }) => {
   const [statuses, setStatuses] = useState<MiiContactStatus[]>([]);
@@ -58,12 +60,16 @@ export const MiiStoriesBar: React.FC<MiiStoriesBarProps> = ({
 
   useEffect(() => {
     fetchMiiFeed();
-  }, []);
+  }, [refreshTrigger]);
 
   const fetchMiiFeed = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+      const token =
+        localStorage.getItem('accessToken') ||
+        localStorage.getItem('fingermobile_token') ||
+        localStorage.getItem('token') ||
+        sessionStorage.getItem('token');
       const headers: Record<string, string> = {};
       if (token) headers['Authorization'] = `Bearer ${token}`;
 

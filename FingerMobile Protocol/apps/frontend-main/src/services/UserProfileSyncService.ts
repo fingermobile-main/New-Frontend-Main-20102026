@@ -476,6 +476,30 @@ class UserProfileSyncService {
 
         // Broadcast live custom event across all windows / tabs
         window.dispatchEvent(new CustomEvent('fmp_profile_updated', { detail: updated }));
+
+        // Persist directly to PostgreSQL database via Consolidated Profile Charter API
+        try {
+          const targetId = (updated as any).id || (storedUser ? (JSON.parse(storedUser)?.id) : null) || '00000000-0000-0000-0000-000000000001';
+          const token = localStorage.getItem('accessToken') || localStorage.getItem('fingermobile_token') || localStorage.getItem('token');
+          fetch(`http://localhost:5001/api/v1/profiles/${targetId}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              ...(token ? { Authorization: `Bearer ${token}` } : {})
+            },
+            body: JSON.stringify({
+              name: updated.name,
+              headline: updated.headline,
+              bio: updated.headline || updated.name,
+              location: updated.location,
+              avatarUrl: updated.avatar,
+              coverPhotoUrl: updated.coverImage,
+              username: updated.username
+            })
+          }).catch(() => {});
+        } catch {
+          // Non-blocking network fallback
+        }
       } catch (err) {
         console.warn('LocalStorage error while syncing profile', err);
       }

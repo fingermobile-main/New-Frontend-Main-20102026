@@ -17,7 +17,7 @@ function getLogger() {
 function getIdentityDb() {
   if (!identityDb) {
     const db = require('../db');
-    identityDb = db.identityDb;
+    identityDb = db.pool || db.identityDb;
   }
   return identityDb;
 }

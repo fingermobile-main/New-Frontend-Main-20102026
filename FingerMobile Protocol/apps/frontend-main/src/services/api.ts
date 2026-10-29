@@ -328,8 +328,10 @@ export const search = async (query: string, filters?: unknown): Promise<unknown>
 // Member profile update
 export const updateMemberProfile = async (memberData: unknown): Promise<unknown> => {
   // Extract ID from member data or use current user's ID
-  const id = (memberData as any).id || (memberData as any).memberId;
-  return api.put(`/api/members/${id}/profile`, memberData).then(res => res.data);
+  const id = (memberData as any)?.id || (memberData as any)?.memberId || '00000000-0000-0000-0000-000000000001';
+  return api.put(`/api/v1/profiles/${id}`, memberData)
+    .then(res => res.data)
+    .catch(() => api.put(`/api/users/profile`, memberData).then(res => res.data));
 };
 
 // Wallet and payments

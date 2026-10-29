@@ -33,7 +33,11 @@ class UploadService {
   constructor() {
     this.api.interceptors.request.use((config) => {
       if (typeof window !== 'undefined') {
-        const token = localStorage.getItem('token') || sessionStorage.getItem('token') || localStorage.getItem('accessToken');
+        const token =
+          localStorage.getItem('accessToken') ||
+          localStorage.getItem('fingermobile_token') ||
+          localStorage.getItem('token') ||
+          sessionStorage.getItem('token');
         if (token) {
           if (!config.headers) {
             config.headers = {} as any;

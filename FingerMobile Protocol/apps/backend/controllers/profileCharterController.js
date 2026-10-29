@@ -690,7 +690,7 @@ class ProfileCharterController {
         intro: {
           title: 'Intro',
           bio: profileData.bio,
-          headline: 'CEO & CTO, Founder | FingerMobile Protocol™ Sovereign Ecosystem Architect',
+          headline: profileData.headline || 'CEO & CTO, Founder | FingerMobile Protocol™ Sovereign Ecosystem Architect',
           pronouns: profileData.pronouns || 'he/him',
           audience: 'public'
         },
@@ -1326,6 +1326,8 @@ class ProfileCharterController {
       // 1. If PostgreSQL is reachable, attempt DB update
       try {
         const displayName = body.name || body.display_name;
+        const firstName = body.firstName || body.first_name || (displayName ? displayName.split(' ')[0] : undefined);
+        const lastName = body.lastName || body.last_name || (displayName && displayName.split(' ').length > 1 ? displayName.split(' ').slice(1).join(' ') : undefined);
         const headline = body.headline;
         const bio = body.bio;
         const location = typeof body.location === 'object' ? (body.location.city || body.location.country || JSON.stringify(body.location)) : body.location;
@@ -1336,18 +1338,22 @@ class ProfileCharterController {
         const updateRes = await pool.query(
           `UPDATE users 
            SET display_name = COALESCE($1, display_name),
-               headline = COALESCE($2, headline),
-               bio = COALESCE($3, bio),
-               location = COALESCE($4, location),
-               website = COALESCE($5, website),
-               avatar_url = COALESCE($6, avatar_url),
-               cover_url = COALESCE($7, cover_url),
-               cover_photo_url = COALESCE($7, cover_photo_url),
+               first_name = COALESCE($2, first_name),
+               last_name = COALESCE($3, last_name),
+               headline = COALESCE($4, headline),
+               bio = COALESCE($5, bio),
+               location = COALESCE($6, location),
+               website = COALESCE($7, website),
+               avatar_url = COALESCE($8, avatar_url),
+               cover_url = COALESCE($9, cover_url),
+               cover_photo_url = COALESCE($9, cover_photo_url),
                updated_at = NOW()
-           WHERE id::text = $8 OR username = $8
-           RETURNING id, username, display_name, headline, bio, location, website, avatar_url, cover_url;`,
+           WHERE id::text = $10 OR username = $10
+           RETURNING id, username, display_name, first_name, last_name, headline, bio, location, website, avatar_url, cover_url;`,
           [
             displayName,
+            firstName,
+            lastName,
             headline,
             bio,
             location,

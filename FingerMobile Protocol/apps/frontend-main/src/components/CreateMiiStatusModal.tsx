@@ -25,7 +25,11 @@ export const CreateMiiStatusModal: React.FC<CreateMiiStatusModalProps> = ({ isOp
         throw new Error('At least one media card is required');
       }
 
-      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+      const token =
+        localStorage.getItem('accessToken') ||
+        localStorage.getItem('fingermobile_token') ||
+        localStorage.getItem('token') ||
+        sessionStorage.getItem('token');
       const headers: Record<string, string> = {
         'Content-Type': 'application/json'
       };

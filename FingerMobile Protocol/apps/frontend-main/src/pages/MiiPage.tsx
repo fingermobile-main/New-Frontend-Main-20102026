@@ -22,7 +22,7 @@ import {
   MiiFingerOrbitModal,
   MiiMiniStoreModal
 } from '../components/MiiModals';
-import { CreatePubliciteeShortsModal } from '../components/CreatePubliciteeShortsModal';
+import { CreateMiiStatusModal } from '../components/CreateMiiStatusModal';
 import {
   Radio, Lock, Folder, ShoppingBag, MessageSquare,
   Music, Tv, ShieldAlert, Plus,
@@ -46,6 +46,7 @@ const MiiPage: React.FC = () => {
   const [showPinModal, setShowPinModal] = useState(false);
   const [showOrbitModal, setShowOrbitModal] = useState(false);
   const [showMiniStoreModal, setShowMiniStoreModal] = useState(false);
+  const [feedRefreshKey, setFeedRefreshKey] = useState<number>(0);
 
   // Live ShowCase status
   const [myActivity, setMyActivity] = useState<{
@@ -162,6 +163,7 @@ const MiiPage: React.FC = () => {
         onOpenPinExchange={() => setShowPinModal(true)}
         onOpenOrbit={() => setShowOrbitModal(true)}
         onOpenMiniStore={() => setShowMiniStoreModal(true)}
+        refreshTrigger={feedRefreshKey}
       />
 
       {/* Navigation Tabs Row */}
@@ -479,11 +481,12 @@ const MiiPage: React.FC = () => {
       </div>
 
       {/* Global Modals */}
-      <CreatePubliciteeShortsModal
+      <CreateMiiStatusModal
         isOpen={showCreateModal}
         onClose={() => setShowCreateModal(false)}
         onSuccess={() => {
           setShowCreateModal(false);
+          setFeedRefreshKey(Date.now());
           showToast('Mii Moment published! Active for 48 hours to Followers.', 'success');
         }}
       />

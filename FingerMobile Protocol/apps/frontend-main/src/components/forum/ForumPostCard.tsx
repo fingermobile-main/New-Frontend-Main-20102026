@@ -177,13 +177,22 @@ export const MultiMediaGallery: React.FC<{
   if (urls.length === 1) {
     const url = urls[0];
     const isVideo = /\.(mp4|webm|mov|m4v)$/i.test(url) || url.startsWith('data:video');
+    const isAudio = /\.(mp3|wav|ogg|flac|aac|m4a)$/i.test(url) || url.startsWith('data:audio');
     return (
       <div
-        onClick={() => !isVideo && onOpenLightbox({ url, title, author })}
+        onClick={() => !isVideo && !isAudio && onOpenLightbox({ url, title, author })}
         className="-mx-5 mt-3.5 overflow-hidden max-h-[700px] sm:max-h-[760px] border-y border-slate-300 dark:border-slate-800 cursor-pointer relative group bg-slate-900 shadow-xs"
       >
         {isVideo ? (
           <video src={url} controls playsInline className="w-full max-h-[700px] sm:max-h-[760px] object-contain bg-black" />
+        ) : isAudio ? (
+          <div className="w-full p-6 bg-slate-950 flex flex-col items-center justify-center gap-3">
+            <div className="text-xs font-bold text-slate-300 flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              Sovereign Audio Stem
+            </div>
+            <audio src={url} controls className="w-full max-w-lg" />
+          </div>
         ) : (
           <img src={url} alt={title} className="w-full max-h-[700px] sm:max-h-[760px] object-cover group-hover:scale-[1.01] transition duration-300" />
         )}
