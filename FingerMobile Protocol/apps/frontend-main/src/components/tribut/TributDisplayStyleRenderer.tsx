@@ -153,17 +153,17 @@ export const TributDisplayStyleRenderer: React.FC<TributDisplayStyleRendererProp
 
             <div className="flex items-center justify-between text-[11px] text-slate-200">
               <button
-                onClick={(e) => onMemberClick(pin.author, e)}
+                onClick={(e) => pin.author && onMemberClick(pin.author, e)}
                 className="flex items-center gap-1.5 hover:text-purple-300 transition text-left group/author"
-                title={`View ${pin.author.name}'s Tribut & Projects`}
+                title={`View ${pin.author?.name || 'Creator'}'s Tribut & Projects`}
               >
                 <img
-                  src={pin.author.avatar}
-                  alt={pin.author.name}
+                  src={pin.author?.avatar || '/assets/branding/default-avatar.svg'}
+                  alt={pin.author?.name || 'Creator'}
                   className="w-5 h-5 rounded-full object-cover border border-white/40"
                 />
                 <span className="font-semibold underline decoration-white/40 group-hover/author:decoration-purple-300 truncate max-w-[110px]">
-                  {pin.author.name}
+                  {pin.author?.name || 'Creator Member'}
                 </span>
               </button>
 

@@ -113,7 +113,9 @@ export const TributPage: React.FC = () => {
               id: dbPin.id,
               title: dbPin.title,
               description: dbPin.caption || '',
+              altText: dbPin.alt_text || dbPin.title || 'Tribut Pin',
               category: (dbPin.category || 'architecture') as any,
+              categoryLabel: dbPin.category_label || 'Afrofuturist Architecture',
               boardName: dbPin.board_name || 'Smart Home Lagos 2026',
               aspectRatio: (dbPin.aspect_ratio || '3:4') as any,
               mediaType: (dbPin.media_type || 'image') as any,
@@ -123,28 +125,29 @@ export const TributPage: React.FC = () => {
               colorPalette: dbPin.color_palette || [],
               priority: (dbPin.priority || 'high') as any,
               tags: dbPin.tags || [],
-              uploader: {
-                name: dbPin.uploader_name || 'Creator Member',
-                handle: dbPin.uploader_handle || '@member',
-                avatar: '/assets/branding/mbah_israel_obinna.jpeg',
-                isVerified: true
+              author: {
+                id: dbPin.author_id || dbPin.uploader_id || 'creator-member-1',
+                name: dbPin.author_name || dbPin.uploader_name || 'Creator Member',
+                handle: dbPin.author_handle || dbPin.uploader_handle || '@member',
+                avatar: dbPin.author_avatar || dbPin.uploader_avatar || '/assets/branding/mbah_israel_obinna.jpeg',
+                domainReputation: (dbPin.domain_reputation || 'Sovereign Verified') as any,
+                consistencyStreak: dbPin.consistency_streak || '30-Day Daily Pin Streak'
               },
               metrics: {
-                views: dbPin.views_count || 120,
-                likes: dbPin.likes_count || 45,
-                saves: 18,
-                shares: dbPin.shares_count || 5,
-                comments: dbPin.comments_count || 3,
-                downloads: 8,
-                salesCount: 0
+                saves: Number(dbPin.saves_count || 18),
+                downloads: Number(dbPin.downloads_count || 8),
+                closeups: Number(dbPin.closeups_count || 65),
+                outboundClicks: Number(dbPin.outbound_clicks || 14),
+                likes: Number(dbPin.likes_count || 45),
+                shelfLifeDays: Number(dbPin.shelf_life_days || 90)
               },
-              guardianAudit: {
-                qualityScore: Number(dbPin.guardian_quality_score || 95),
-                authenticityScore: 98,
-                safetyScore: 99,
-                privacyCompliance: 100,
-                dignityAffirmation: 98,
-                pillarVerificationPassed: true
+              pillars: {
+                domainQualityScore: Number(dbPin.guardian_quality_score || 94),
+                pinUsageScore: Number(dbPin.pin_usage_score || 92),
+                topicRelevanceSeoScore: Number(dbPin.seo_score || 96),
+                pinnerQualityScore: Number(dbPin.pinner_quality_score || 95),
+                richProfileDataSync: true,
+                overallGuardianScore: Number(dbPin.guardian_quality_score || 95)
               },
               createdAt: dbPin.created_at
             }));
@@ -338,14 +341,15 @@ export const TributPage: React.FC = () => {
   // Filtering & Sorting Logic based on Guardian AI 5 Measures
   const filteredPins = pinsList
     .filter((pin) => {
+      if (!pin) return false;
       const matchesCategory = selectedCategory === 'all' || pin.category === selectedCategory;
       const matchesSearch =
-        pin.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        pin.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        pin.tags.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        pin.author.name.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesShoppable = !onlyShoppable || (pin.shopping && pin.shopping.isShoppable);
-      const matchesPromoted = !onlyPromoted || (pin.promoted && pin.promoted.isPromoted);
+        (pin.title || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (pin.description || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (pin.tags || []).some((t) => (t || '').toLowerCase().includes(searchQuery.toLowerCase())) ||
+        (pin.author?.name || '').toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesShoppable = !onlyShoppable || Boolean(pin.shopping && pin.shopping.isShoppable);
+      const matchesPromoted = !onlyPromoted || Boolean(pin.promoted && pin.promoted.isPromoted);
       const matchesStore =
         selectedStoreEngine === 'all' ||
         (pin.shopping && pin.shopping.storeEngine === selectedStoreEngine);
@@ -356,25 +360,30 @@ export const TributPage: React.FC = () => {
       return matchesCategory && matchesSearch && matchesShoppable && matchesPromoted && matchesStore && matchesSource;
     })
     .sort((a, b) => {
+      if (!a || !b) return 0;
       if (ugcSortOrder === 'composite') {
-        return (b.pillars.overallGuardianScore || 0) - (a.pillars.overallGuardianScore || 0);
+        const aScore = a.pillars?.overallGuardianScore ?? (a as any).guardianAudit?.qualityScore ?? 0;
+        const bScore = b.pillars?.overallGuardianScore ?? (b as any).guardianAudit?.qualityScore ?? 0;
+        return bScore - aScore;
       }
       if (ugcSortOrder === 'saves-downloads') {
-        const aUsage = (a.metrics.saves || 0) + (a.metrics.downloads || 0);
-        const bUsage = (b.metrics.saves || 0) + (b.metrics.downloads || 0);
+        const aUsage = (a.metrics?.saves || 0) + (a.metrics?.downloads || 0);
+        const bUsage = (b.metrics?.saves || 0) + (b.metrics?.downloads || 0);
         return bUsage - aUsage;
       }
       if (ugcSortOrder === 'shelf-life') {
-        return (b.metrics.shelfLifeDays || 0) - (a.metrics.shelfLifeDays || 0);
+        return (b.metrics?.shelfLifeDays || 0) - (a.metrics?.shelfLifeDays || 0);
       }
       if (ugcSortOrder === 'quality') {
-        return (b.pillars.domainQualityScore || 0) - (a.pillars.domainQualityScore || 0);
+        const aQuality = a.pillars?.domainQualityScore ?? (a as any).guardianAudit?.qualityScore ?? 0;
+        const bQuality = b.pillars?.domainQualityScore ?? (b as any).guardianAudit?.qualityScore ?? 0;
+        return bQuality - aQuality;
       }
       if (ugcSortOrder === 'commercial') {
-        return (b.metrics.outboundClicks || 0) - (a.metrics.outboundClicks || 0);
+        return (b.metrics?.outboundClicks || 0) - (a.metrics?.outboundClicks || 0);
       }
       if (ugcSortOrder === 'recent') {
-        return (b.metrics.likes || 0) - (a.metrics.likes || 0);
+        return (b.metrics?.likes || 0) - (a.metrics?.likes || 0);
       }
       return 0;
     });
