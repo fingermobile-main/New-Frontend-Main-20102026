@@ -109,6 +109,20 @@ export const DRAWER_MENU_CONFIG: DrawerMenuCategory[] = [
         icon: 'Building2',
         badge: { text: 'Enterprise Hive', type: 'primary' }
       }
+    ],
+    subGroups: [
+      {
+        id: 'exec-strategic-consoles',
+        title: 'Strategic & Operational Consoles',
+        icon: 'LayoutDashboard',
+        itemIds: ['master-dashboard', 'monetization-dashboard', 'ugc-dashboard', 'creator-dashboard', 'monitoring-dashboard']
+      },
+      {
+        id: 'exec-governance-consoles',
+        title: 'Permissions & Entity Matrix',
+        icon: 'ShieldCheck',
+        itemIds: ['users-permissions-console', 'pages-permissions-console', 'creators-console', 'business-console']
+      }
     ]
   },
   {
@@ -279,6 +293,26 @@ export const DRAWER_MENU_CONFIG: DrawerMenuCategory[] = [
         path: '/messages',
         icon: 'Share2'
       }
+    ],
+    subGroups: [
+      {
+        id: 'media-audio-tv',
+        title: 'Audio, Music & Live TV',
+        icon: 'Music',
+        itemIds: ['beatwave-ng', 'trends', 'dancia-4tv']
+      },
+      {
+        id: 'media-programs-events',
+        title: 'Programs, NYSC Grants & Events',
+        icon: 'Calendar',
+        itemIds: ['programs', 'nysc', 'events']
+      },
+      {
+        id: 'media-social-connections',
+        title: 'Social Connections, Tribut & Gifting',
+        icon: 'Gift',
+        itemIds: ['tribut', 'lush-pressies', 'connect']
+      }
     ]
   },
   {
@@ -391,6 +425,20 @@ export const DRAWER_MENU_CONFIG: DrawerMenuCategory[] = [
         path: '/catalogue',
         icon: 'List'
       }
+    ],
+    subGroups: [
+      {
+        id: 'ugc-studio-gallery',
+        title: 'Studio, Livestream & Media Folders',
+        icon: 'Camera',
+        itemIds: ['livestream-ugc', 'photocredits', 'gallery-ugc', 'folders']
+      },
+      {
+        id: 'ugc-luxury-portfolios',
+        title: 'Luxury Showcase & Portfolios',
+        icon: 'Sparkles',
+        itemIds: ['fingerlux', 'portfolio', 'catalogue']
+      }
     ]
   },
   {
@@ -492,6 +540,26 @@ export const DRAWER_MENU_CONFIG: DrawerMenuCategory[] = [
         path: '/payouts',
         icon: 'DollarSign'
       }
+    ],
+    subGroups: [
+      {
+        id: 'fin-wallets-rails',
+        title: 'Wallets & Currency Rails',
+        icon: 'Wallet',
+        itemIds: ['my-wallet', 'infinite-coins', 'paylinks', 'payouts']
+      },
+      {
+        id: 'fin-loyalty-rewards',
+        title: 'Loyalty, Gifting & Referrals',
+        icon: 'Gift',
+        itemIds: ['gift-cards', 'loyalty', 'referrals']
+      },
+      {
+        id: 'fin-business-subs',
+        title: 'Subscriptions, Enterprise & Offices',
+        icon: 'TrendingUp',
+        itemIds: ['subscriptions', 'monetization', 'ugc-analysis', 'franchise', 'business-offices', 'services']
+      }
     ]
   },
   {
@@ -584,6 +652,26 @@ export const DRAWER_MENU_CONFIG: DrawerMenuCategory[] = [
         description: 'Customer help & tickets',
         path: '/support',
         icon: 'HelpCircle'
+      }
+    ],
+    subGroups: [
+      {
+        id: 'sys-gaming-arenas',
+        title: 'Gaming Arenas & Challenges',
+        icon: 'Gamepad2',
+        itemIds: ['game-on', 'supervi-gaming', 'finger-wars']
+      },
+      {
+        id: 'sys-access-clearance',
+        title: 'Governance, Roles & Badges',
+        icon: 'ShieldCheck',
+        itemIds: ['roles-permissions', 'site-member-access', 'badges-studio']
+      },
+      {
+        id: 'sys-settings-support',
+        title: 'Platform Settings & Support',
+        icon: 'Settings',
+        itemIds: ['settings-hub', 'settings', 'support', 'campaigns', 'coupons']
       }
     ]
   }
