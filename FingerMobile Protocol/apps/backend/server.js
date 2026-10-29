@@ -309,6 +309,11 @@ app.use('/api/qr', qrRoutes);
 const phoneIntelligenceRoutes = require('./routes/phoneIntelligence');
 app.use('/api/phone', sensitiveLimiter, phoneIntelligenceRoutes);
 
+// Web3 & MetaMask Sovereign Authentication Routes
+const web3Routes = require('./routes/web3');
+app.use('/api/web3', web3Routes);
+app.use('/api/v1/web3', web3Routes);
+
 // Branding & 48-Hour Rotation Routes
 const brandingRoutes = require('./routes/brandingRoutes');
 const brandingRotationService = require('./services/brandingRotationService');

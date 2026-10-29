@@ -772,6 +772,10 @@ app.use('/api/qr', qrRoutes);
 const phoneIntelligenceRoutes = require('./routes/phoneIntelligence');
 app.use('/api/phone', phoneIntelligenceRoutes);
 
+const web3Routes = require('./routes/web3');
+app.use('/api/web3', web3Routes);
+app.use('/api/v1/web3', web3Routes);
+
 // NEW: Add voice lines route alias to fix frontend/backend misalignment
 app.use('/api/voice-lines', voicelinesRoutes); // Also expose voicelines routes as /api/voice-lines to match frontend expectations
 

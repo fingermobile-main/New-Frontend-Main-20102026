@@ -22,6 +22,29 @@ jest.mock('../hooks/use-toast', () => ({
   }),
 }));
 
+jest.mock('../contexts/Web3Context', () => ({
+  useWeb3: () => ({
+    isConnected: false,
+    walletConnected: false,
+    connectedAccount: null,
+    walletAddress: null,
+    account: null,
+    balance: 1000,
+    chainId: 1,
+    chainName: 'Ethereum Mainnet',
+    isMetaMaskInstalled: true,
+    isConnecting: false,
+    isVerified: false,
+    verificationProof: null,
+    connectWallet: jest.fn(),
+    connectMetaMask: jest.fn(),
+    disconnectWallet: jest.fn(),
+    signChallenge: jest.fn(),
+    switchChain: jest.fn(),
+    getMetaMaskDeepLink: () => 'https://metamask.app.link',
+  }),
+}));
+
 describe('WalletPage Mobile Optimization', () => {
   it('renders Sovereign Mobile Navigation Quick Dock with min 44px touch targets', () => {
     render(

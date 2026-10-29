@@ -43,6 +43,8 @@ import {
 } from '../constants/platformOwnership';
 import { downloadFicReceiptPdf, FICReceiptData } from '../utils/ficReceiptPdf';
 import FinanceBankingPaymentsWidget from '../components/widgets/FinanceBankingPaymentsWidget';
+import WalletConnectModal from '../components/WalletConnectModal';
+import { useWeb3 } from '../contexts/Web3Context';
 
 interface WalletTransaction {
   id: string | number;
@@ -226,6 +228,15 @@ const WalletPage: React.FC = () => {
   const [showSendModal, setShowSendModal] = useState(false);
   const [showReceiveModal, setShowReceiveModal] = useState(false);
   const [showRolesModal, setShowRolesModal] = useState(false);
+  const [isWalletModalOpen, setIsWalletModalOpen] = useState(false);
+
+  // Web3 & MetaMask Sovereign Identity
+  const {
+    isConnected: isWeb3Connected,
+    walletAddress: metaMaskAddress,
+    isVerified: isWeb3Verified,
+    chainName
+  } = useWeb3();
 
   // Fund Wallet Form Fields & Multi-Channel Rails
   const [selectedChannel, setSelectedChannel] = useState<PaymentChannelType>('alternative_bank_transfer');
@@ -1077,6 +1088,40 @@ const WalletPage: React.FC = () => {
                 <p className="text-xs text-slate-700 font-medium mt-2.5 leading-relaxed">
                   Permanent cryptographic account linked to your verified NIN identity.
                 </p>
+
+                {/* MetaMask Web3 Binding Integration */}
+                <div className="mt-3.5 p-3 bg-slate-50 rounded-2xl border border-slate-300 flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="w-8 h-8 rounded-lg bg-amber-50 border border-amber-200 flex items-center justify-center text-lg shrink-0">
+                      🦊
+                    </div>
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-xs font-bold text-slate-900">
+                          {isWeb3Connected ? 'MetaMask Linked' : 'MetaMask Wallet'}
+                        </span>
+                        {isWeb3Connected && isWeb3Verified && (
+                          <span className="px-1.5 py-0.2 bg-emerald-100 text-emerald-950 border border-emerald-400 rounded-full text-[9px] font-bold">
+                            Verified
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-[11px] text-slate-700 font-medium truncate">
+                        {isWeb3Connected && metaMaskAddress
+                          ? `${metaMaskAddress.slice(0, 6)}...${metaMaskAddress.slice(-4)} (${chainName})`
+                          : 'Bind Web3 sovereign address'}
+                      </p>
+                    </div>
+                  </div>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="text-xs font-bold border-slate-300 text-slate-800 hover:bg-white cursor-pointer shrink-0"
+                    onClick={() => setIsWalletModalOpen(true)}
+                  >
+                    {isWeb3Connected ? 'Manage' : 'Connect'}
+                  </Button>
+                </div>
               </div>
 
               <div className="pt-4 border-t border-slate-200 flex gap-2">
@@ -2480,6 +2525,12 @@ const WalletPage: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Web3 & MetaMask Modal */}
+      <WalletConnectModal
+        isOpen={isWalletModalOpen}
+        onClose={() => setIsWalletModalOpen(false)}
+      />
 
       {/* Sovereign Mobile Navigation Quick Dock */}
       <div className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 py-2 px-4 md:hidden shadow-lg safe-area-bottom">
