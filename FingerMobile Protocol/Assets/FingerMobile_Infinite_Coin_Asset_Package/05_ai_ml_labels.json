@@ -1,0 +1,51 @@
+{
+  "asset_name": "FingerMobile Infinite Coin Lion Medallion",
+  "short_label": "Gold dual-lion circuit medallion",
+  "caption": "A gold Infinite Coin medallion with two back-to-back lions and circuit-board detailing.",
+  "alt_text": "Circular metallic gold coin artwork showing two back-to-back lion heads with blue eyes, surrounded by gold electronic circuit traces and an embossed rim with decorative lettering.",
+  "description": "A circular gold medallion featuring two back-to-back lion heads with bright blue eyes, embossed gold circuit-board traces, and a raised metallic rim. The outer ring contains the title 'Infinite Coin' and additional decorative text, including FingerMobile Protocol. The artwork uses a high-relief, polished gold and amber palette on a transparent background.",
+  "visual_tags": [
+    "gold medallion",
+    "coin artwork",
+    "two lions",
+    "lion heads",
+    "blue eyes",
+    "circuit board",
+    "electronic traces",
+    "metallic relief",
+    "amber gold",
+    "FingerMobile Protocol",
+    "digital asset",
+    "emblem",
+    "transparent background"
+  ],
+  "suggested_ai_labels": [
+    {
+      "label": "medallion",
+      "confidence": null
+    },
+    {
+      "label": "lion",
+      "confidence": null
+    },
+    {
+      "label": "gold",
+      "confidence": null
+    },
+    {
+      "label": "circuitry",
+      "confidence": null
+    },
+    {
+      "label": "emblem",
+      "confidence": null
+    }
+  ],
+  "machine_readability_notes": [
+    "The supplied image is 1254 x 1254 pixels and already contains an alpha channel.",
+    "The corners are transparent; keep transparency for compositing and model training.",
+    "Small curved lettering and the long perimeter string may not be reliably readable by OCR.",
+    "Use the supplied descriptive labels as human-authored annotations, not as model-generated ground truth.",
+    "If training a vision model, split near-duplicate variants into the same dataset partition to avoid leakage."
+  ]
+}
