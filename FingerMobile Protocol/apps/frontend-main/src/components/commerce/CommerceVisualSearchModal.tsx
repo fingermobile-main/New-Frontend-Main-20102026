@@ -60,6 +60,7 @@ export interface CommerceVisualSearchModalProps {
   onClose: () => void;
   initialStore?: 'all' | 'marketplace' | 'ownit' | 'flamingo' | 'storefront' | 'fingerlux';
   onSelectProduct?: (product: VisualSearchResultItem) => void;
+  onVisualMatch?: (product: VisualSearchResultItem) => void;
 }
 
 const STORE_TABS = [
@@ -108,9 +109,9 @@ export const CommerceVisualSearchModal: React.FC<CommerceVisualSearchModalProps>
   isOpen,
   onClose,
   initialStore = 'all',
-  onSelectProduct
+  onSelectProduct,
+  onVisualMatch
 }) => {
-  const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
 
@@ -287,8 +288,17 @@ export const CommerceVisualSearchModal: React.FC<CommerceVisualSearchModalProps>
       onClose();
       return;
     }
+    if (onVisualMatch) {
+      onVisualMatch(product);
+      onClose();
+      return;
+    }
     onClose();
-    navigate(product.deep_link);
+    if (router && typeof router.navigate === 'function') {
+      router.navigate(product.deep_link);
+    } else {
+      window.location.href = product.deep_link;
+    }
   };
 
   if (!isOpen) return null;

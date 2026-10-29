@@ -596,11 +596,13 @@ export const UniversalSearchModal: React.FC<UniversalSearchModalProps> = ({ isOp
           </div>
         </div>
       </div>
-      <CommerceVisualSearchModal
-        isOpen={showVisualSearchModal}
-        onClose={() => setShowVisualSearchModal(false)}
-        initialStore="all"
-      />
+      {showVisualSearchModal && (
+        <CommerceVisualSearchModal
+          isOpen={showVisualSearchModal}
+          onClose={() => setShowVisualSearchModal(false)}
+          initialStore="all"
+        />
+      )}
     </div>
   );
 };
