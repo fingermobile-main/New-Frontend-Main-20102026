@@ -547,7 +547,7 @@ export const ConsoleCard: React.FC<{
         </div>
 
         {/* Purpose */}
-        <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-2 leading-relaxed mb-3">
+        <p className="text-xs text-slate-700 dark:text-slate-300 font-medium line-clamp-2 leading-relaxed mb-3">
           {item.purpose}
         </p>
 

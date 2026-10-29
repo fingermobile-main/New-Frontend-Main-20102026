@@ -117,7 +117,7 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
 
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
             <div className="px-4 py-2 rounded-2xl bg-white/5 border border-white/10 flex flex-col justify-center">
-              <span className="text-[10px] uppercase font-bold text-slate-700 tracking-wider">Next 12H Auto-Run</span>
+              <span className="text-[10px] uppercase font-bold text-slate-200 tracking-wider">Next 12H Auto-Run</span>
               <span className="font-mono font-bold text-sm text-emerald-400 flex items-center gap-1.5">
                 <Clock className="w-3.5 h-3.5" />
                 {formatCountdown(countdownSeconds)}
@@ -704,7 +704,7 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
           {/* Indexing Architecture Overview */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-300 dark:border-slate-800 shadow-xs">
-              <span className="text-[10px] uppercase font-bold text-slate-700">Total Indexed Items</span>
+              <span className="text-[10px] uppercase font-black text-slate-800 dark:text-slate-200">Total Indexed Items</span>
               <div className="text-2xl font-black text-slate-900 dark:text-white font-mono mt-0.5">
                 {indexStats.totalIndexedEntities}
               </div>
@@ -712,7 +712,7 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
             </div>
 
             <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-300 dark:border-slate-800 shadow-xs">
-              <span className="text-[10px] uppercase font-bold text-slate-700">Database Tables Indexed</span>
+              <span className="text-[10px] uppercase font-black text-slate-800 dark:text-slate-200">Database Tables Indexed</span>
               <div className="text-2xl font-black text-blue-600 dark:text-blue-400 font-mono mt-0.5">
                 {indexStats.databaseTablesIndexed}
               </div>
@@ -720,7 +720,7 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
             </div>
 
             <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-300 dark:border-slate-800 shadow-xs">
-              <span className="text-[10px] uppercase font-bold text-slate-700">Master &amp; Stercs Consoles</span>
+              <span className="text-[10px] uppercase font-black text-slate-800 dark:text-slate-200">Master &amp; Stercs Consoles</span>
               <div className="text-2xl font-black text-amber-600 dark:text-amber-400 font-mono mt-0.5">
                 {indexStats.masterConsolesIndexed + indexStats.stercsModulesIndexed}
               </div>
@@ -728,7 +728,7 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
             </div>
 
             <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-300 dark:border-slate-800 shadow-xs">
-              <span className="text-[10px] uppercase font-bold text-slate-700">Seek Execution Latency</span>
+              <span className="text-[10px] uppercase font-black text-slate-800 dark:text-slate-200">Seek Execution Latency</span>
               <div className="text-2xl font-black text-emerald-600 dark:text-emerald-400 font-mono mt-0.5">
                 &lt; 1.5 ms
               </div>

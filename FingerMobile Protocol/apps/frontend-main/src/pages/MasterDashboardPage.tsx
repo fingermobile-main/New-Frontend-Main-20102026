@@ -185,7 +185,7 @@ const MasterDashboardPage: React.FC = () => {
     return (
       <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-4">
         <Loader2 className="w-8 h-8 text-emerald-400 animate-spin" />
-        <p className="mt-4 text-xs font-semibold text-slate-400 tracking-wider uppercase">
+        <p className="mt-4 text-xs font-bold text-slate-200 tracking-wider uppercase">
           Verifying Sovereign Protocol Credentials...
         </p>
       </div>
@@ -1174,7 +1174,7 @@ const MasterDashboardPage: React.FC = () => {
                 placeholder="Search controls, safeguards, telemetry..."
                 value={consoleSearchTerm}
                 onChange={(e) => setConsoleSearchTerm(e.target.value)}
-                className="pl-9 pr-24 py-2 text-xs bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 w-full sm:w-72 focus:outline-hidden focus:ring-2 focus:ring-blue-500 font-mono font-bold border-slate-300"
+                className="pl-9 pr-24 py-2 text-xs bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-500 w-full sm:w-72 focus:outline-hidden focus:ring-2 focus:ring-blue-500 font-mono font-bold"
               />
               {consoleSearchTerm && (
                 <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
@@ -1183,7 +1183,7 @@ const MasterDashboardPage: React.FC = () => {
                   </span>
                   <button type="button" aria-label="Close"
                     onClick={() => setConsoleSearchTerm('')}
-                    className="text-slate-700 hover:text-slate-600 dark:hover:text-slate-200 p-0.5"
+                    className="text-slate-700 hover:text-slate-900 dark:hover:text-slate-200 p-0.5"
                   >
                     <X className="w-3.5 h-3.5" />
                   </button>
@@ -1915,37 +1915,37 @@ const MasterDashboardPage: React.FC = () => {
             <tr>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                className="px-6 py-3 text-left text-xs font-bold text-slate-800 uppercase tracking-wider"
               >
                 Section
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                className="px-6 py-3 text-left text-xs font-bold text-slate-800 uppercase tracking-wider"
               >
                 Status
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                className="px-6 py-3 text-left text-xs font-bold text-slate-800 uppercase tracking-wider"
               >
                 Health Score
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                className="px-6 py-3 text-left text-xs font-bold text-slate-800 uppercase tracking-wider"
               >
                 Response Time
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                className="px-6 py-3 text-left text-xs font-bold text-slate-800 uppercase tracking-wider"
               >
                 Last Updated
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                className="px-6 py-3 text-right text-xs font-bold text-slate-800 uppercase tracking-wider"
               >
                 Actions
               </th>
@@ -2027,7 +2027,7 @@ const MasterDashboardPage: React.FC = () => {
                         style={{ width: `${section.healthScore}%` }}
                       ></div>
                     </div>
-                    <span className="text-sm font-medium text-gray-600">
+                    <span className="text-sm font-bold text-slate-900">
                       {section.healthScore}%
                     </span>
                   </div>
@@ -2776,7 +2776,7 @@ const MasterDashboardPage: React.FC = () => {
                         </div>
                       </div>
                       <p
-                        className="text-sm text-gray-600 mb-4 break-words line-clamp-2"
+                        className="text-sm text-slate-700 font-medium mb-4 break-words line-clamp-2"
                         title={section.description}
                       >
                         {section.description}
@@ -2785,7 +2785,7 @@ const MasterDashboardPage: React.FC = () => {
                         <span className="font-mono text-blue-600 truncate max-w-[150px]">
                           {section.route}
                         </span>
-                        <span className="font-semibold text-gray-700">
+                        <span className="font-bold text-slate-900">
                           {section.healthScore}% health
                         </span>
                       </div>
@@ -3447,7 +3447,7 @@ const MasterDashboardPage: React.FC = () => {
             </div>
             <div className="p-6 space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-gray-700 mb-1">
+                <label className="block text-xs font-bold text-slate-800 mb-1">
                   Section Title
                 </label>
                 <input
@@ -3459,11 +3459,11 @@ const MasterDashboardPage: React.FC = () => {
                       title: e.target.value,
                     })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold bg-white placeholder:text-slate-500"
                 />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-gray-700 mb-1">
+                <label className="block text-xs font-bold text-slate-800 mb-1">
                   Description
                 </label>
                 <textarea
@@ -3475,11 +3475,11 @@ const MasterDashboardPage: React.FC = () => {
                     })
                   }
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold bg-white placeholder:text-slate-500"
                 />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-gray-700 mb-1">
+                <label className="block text-xs font-bold text-slate-800 mb-1">
                   Canonical Route
                 </label>
                 <input
@@ -3491,11 +3491,11 @@ const MasterDashboardPage: React.FC = () => {
                       route: e.target.value,
                     })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm font-mono focus:outline-hidden focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm font-mono focus:outline-hidden focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold bg-white placeholder:text-slate-500"
                 />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-gray-700 mb-1">
+                <label className="block text-xs font-bold text-slate-800 mb-1">
                   Operational Status
                 </label>
                 <select
@@ -3506,25 +3506,25 @@ const MasterDashboardPage: React.FC = () => {
                       status: e.target.value as any,
                     })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold bg-white"
                 >
-                  <option value="online">Online</option>
-                  <option value="maintenance">Maintenance</option>
-                  <option value="degraded">Degraded</option>
-                  <option value="offline">Offline</option>
+                  <option value="online" className="bg-white text-slate-900 font-bold">Online</option>
+                  <option value="maintenance" className="bg-white text-slate-900 font-bold">Maintenance</option>
+                  <option value="degraded" className="bg-white text-slate-900 font-bold">Degraded</option>
+                  <option value="offline" className="bg-white text-slate-900 font-bold">Offline</option>
                 </select>
               </div>
             </div>
             <div className="px-6 py-3 bg-gray-50 border-t border-slate-300 flex justify-end gap-2">
               <button
                 onClick={() => setSelectedSectionForEdit(null)}
-                className="px-4 py-2 border border-gray-300 hover:bg-gray-100 text-gray-700 rounded-lg text-xs font-semibold transition"
+                className="px-4 py-2 border border-slate-300 hover:bg-slate-100 text-slate-800 rounded-lg text-xs font-bold transition"
               >
                 Cancel
               </button>
               <button
                 onClick={() => handleSaveSectionEdit(selectedSectionForEdit)}
-                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold transition"
+                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold transition shadow-xs"
               >
                 Save Changes
               </button>
@@ -3539,23 +3539,23 @@ const MasterDashboardPage: React.FC = () => {
           <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden border border-slate-200 animate-in fade-in zoom-in-95 duration-150">
             <div className="px-6 py-4 bg-gray-50 border-b border-slate-300 flex justify-between items-center">
               <div>
-                <h3 className="font-bold text-gray-900 text-base">
+                <h3 className="font-bold text-slate-900 text-base">
                   Add New Platform Section
                 </h3>
-                <p className="text-xs text-slate-700">
+                <p className="text-xs text-slate-700 font-medium">
                   Register a new module to the Master Dashboard
                 </p>
               </div>
               <button type="button" aria-label="Close"
                 onClick={() => setIsAddSectionModalOpen(false)}
-                className="text-slate-700 hover:text-gray-600 p-1 rounded-lg"
+                className="text-slate-700 hover:text-slate-900 p-1 rounded-lg"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
             <div className="p-6 space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-gray-700 mb-1">
+                <label className="block text-xs font-bold text-slate-800 mb-1">
                   Section Title
                 </label>
                 <input
@@ -3568,11 +3568,11 @@ const MasterDashboardPage: React.FC = () => {
                       title: e.target.value,
                     })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold bg-white placeholder:text-slate-500"
                 />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-gray-700 mb-1">
+                <label className="block text-xs font-bold text-slate-800 mb-1">
                   Description
                 </label>
                 <textarea
@@ -3585,11 +3585,11 @@ const MasterDashboardPage: React.FC = () => {
                     })
                   }
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold bg-white placeholder:text-slate-500"
                 />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-gray-700 mb-1">
+                <label className="block text-xs font-bold text-slate-800 mb-1">
                   Route Path
                 </label>
                 <input
@@ -3602,20 +3602,20 @@ const MasterDashboardPage: React.FC = () => {
                       route: e.target.value,
                     })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm font-mono focus:outline-hidden focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm font-mono focus:outline-hidden focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold bg-white placeholder:text-slate-500"
                 />
               </div>
             </div>
             <div className="px-6 py-3 bg-gray-50 border-t border-slate-300 flex justify-end gap-2">
               <button
                 onClick={() => setIsAddSectionModalOpen(false)}
-                className="px-4 py-2 border border-gray-300 hover:bg-gray-100 text-gray-700 rounded-lg text-xs font-semibold transition"
+                className="px-4 py-2 border border-slate-300 hover:bg-slate-100 text-slate-800 rounded-lg text-xs font-bold transition"
               >
                 Cancel
               </button>
               <button
                 onClick={handleCreateSection}
-                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold transition"
+                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold transition shadow-xs"
               >
                 Create Section
               </button>
