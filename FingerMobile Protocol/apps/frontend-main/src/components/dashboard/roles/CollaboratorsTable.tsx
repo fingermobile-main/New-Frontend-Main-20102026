@@ -288,8 +288,8 @@ export const CollaboratorsTable: React.FC<CollaboratorsTableProps> = ({
                           <span>Manage locations</span>
                         </button>
                         <button
-                          onClick={() => {
-                            alert(`Set ${collab.name} as primary client liaison`);
+                          onClick={async () => {
+                            await onUpdateRoles(collab.id, ['client_liaison']);
                             setActiveMenuId(null);
                           }}
                           className="w-full px-3.5 py-2 text-xs text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2 font-bold"

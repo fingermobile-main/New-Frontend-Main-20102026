@@ -64,9 +64,9 @@ export const PagesPermissionConsolePage: React.FC = () => {
         is_maintenance_locked: updatedLock
       });
       setPages(prev => prev.map(p => p.id === page.id ? { ...p, is_maintenance_locked: updatedLock } : p));
-      alert(`Emergency Maintenance Mode ${updatedLock ? 'ENABLED' : 'DISABLED'} for "${page.title}".`);
+      showToast(`Emergency Maintenance Mode ${updatedLock ? 'ENABLED' : 'DISABLED'} for "${page.title}".`, 'success');
     } catch (err: any) {
-      alert(`Failed to update maintenance state: ${err.message}`);
+      showToast(`Failed to update maintenance state: ${err.message}`, 'error');
     }
   };
 
@@ -84,11 +84,11 @@ export const PagesPermissionConsolePage: React.FC = () => {
         confidential_fields: editingPage.confidential_fields,
         description: editingPage.description
       });
-      alert(`Permissions updated for "${editingPage.title}".`);
+      showToast(`Permissions updated for "${editingPage.title}".`, 'success');
       setEditingPage(null);
       loadPages();
     } catch (err: any) {
-      alert(`Failed to save page edit: ${err.message}`);
+      showToast(`Failed to save page edit: ${err.message}`, 'error');
     }
   };
 
@@ -153,6 +153,26 @@ export const PagesPermissionConsolePage: React.FC = () => {
             </Link>
           </div>
         </div>
+
+        {/* Live Notification Toast */}
+        {toastMsg && (
+          <div
+            className={`p-4 rounded-xl border font-bold text-sm flex items-center justify-between shadow-md transition-all ${
+              toastMsg.type === 'success'
+                ? 'bg-emerald-100 text-emerald-950 border-emerald-400'
+                : 'bg-rose-100 text-rose-950 border-rose-400'
+            }`}
+          >
+            <span>{toastMsg.text}</span>
+            <button
+              type="button"
+              onClick={() => setToastMsg(null)}
+              className="text-slate-700 hover:text-slate-900 font-black ml-2"
+            >
+              ✕
+            </button>
+          </div>
+        )}
 
         {/* Filters & Search Toolbar */}
         <div className="bg-white p-4 rounded-xl border border-slate-300 shadow-sm flex flex-col lg:flex-row items-center justify-between gap-3">

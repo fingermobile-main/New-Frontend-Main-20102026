@@ -114,7 +114,7 @@ export const MasterWidgetConsole: React.FC = () => {
 
   const handleDelete = (id: string, name: string, isPermanent: boolean) => {
     if (isPermanent) {
-      alert('Canary Ads Widget is permanently anchored to the bottom right column and cannot be deleted.');
+      showToast('Canary Ads Widget is permanently anchored to the bottom right column and cannot be deleted.', 'error');
       return;
     }
     if (window.confirm(`Are you sure you want to remove "${name}" from the widgets database table?`)) {
@@ -132,7 +132,7 @@ export const MasterWidgetConsole: React.FC = () => {
   const handleSaveWidget = (e: React.FormEvent) => {
     e.preventDefault();
     if (!creatorForm.name || !creatorForm.title || !creatorForm.actionUrl) {
-      alert('Please fill out the Name, Title, and Action URL fields.');
+      showToast('Please fill out the Name, Title, and Action URL fields.', 'error');
       return;
     }
 

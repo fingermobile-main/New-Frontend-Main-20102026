@@ -47,6 +47,7 @@ export const SiteMemberAccessView: React.FC<SiteMemberAccessViewProps> = ({
   const [isCreateRoleModalOpen, setIsCreateRoleModalOpen] = useState(false);
   const [newRoleName, setNewRoleName] = useState('');
   const [newRoleDesc, setNewRoleDesc] = useState('');
+  const [grantedPasses, setGrantedPasses] = useState<Record<string, boolean>>({});
   const selectedPagesForNewRole = ['page_01'];
 
   const filteredRoles = memberRoles.filter(
@@ -338,11 +339,18 @@ export const SiteMemberAccessView: React.FC<SiteMemberAccessViewProps> = ({
                     <td className="p-3 text-right">
                       <button
                         onClick={() => {
-                          alert(`Manually granting pass for ${page.title} (${page.path}) to current session member.`);
+                          setGrantedPasses((prev) => ({
+                            ...prev,
+                            [page.id]: !prev[page.id],
+                          }));
                         }}
-                        className="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-blue-600 hover:text-white rounded-lg text-[10px] font-bold transition border border-slate-300"
+                        className={`px-2.5 py-1 rounded-lg text-[10px] font-bold transition border ${
+                          grantedPasses[page.id]
+                            ? 'bg-emerald-100 text-emerald-950 border-emerald-400'
+                            : 'bg-slate-100 dark:bg-slate-800 hover:bg-blue-600 hover:text-white border-slate-300'
+                        }`}
                       >
-                        Grant Pass
+                        {grantedPasses[page.id] ? '✓ Pass Active' : 'Grant Pass'}
                       </button>
                     </td>
                   </tr>

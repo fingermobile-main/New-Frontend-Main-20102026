@@ -76,7 +76,8 @@ const PromptsThreatDashboard: React.FC<PromptsThreatDashboardProps> = ({ userId 
   const handleMitigate = async (threatId: string, action: string) => {
     try {
       await promptsService.mitigateThreat(threatId, action);
-      alert(`Mitigation applied: ${action}`);
+      setSuccessMessage(`✓ Mitigation applied successfully: ${action}`);
+      setTimeout(() => setSuccessMessage(null), 4000);
       await loadThreatHistory();
     } catch (err: any) {
       setError(err.message || 'Mitigation failed');
@@ -152,6 +153,12 @@ const PromptsThreatDashboard: React.FC<PromptsThreatDashboardProps> = ({ userId 
           {error && (
             <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3 text-red-700 dark:text-red-400 text-sm">
               {error}
+            </div>
+          )}
+
+          {successMessage && (
+            <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-400 dark:border-emerald-600 rounded-lg p-3 text-emerald-900 dark:text-emerald-300 font-bold text-sm">
+              {successMessage}
             </div>
           )}
 

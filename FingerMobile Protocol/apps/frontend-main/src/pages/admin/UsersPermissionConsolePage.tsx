@@ -51,6 +51,12 @@ export const UsersPermissionConsolePage: React.FC = () => {
   const [modTier, setModTier] = useState('COMMUNITY_MOD');
   const [modCategory, setModCategory] = useState('ALL');
   const [newRole, setNewRole] = useState('Member');
+  const [toastMsg, setToastMsg] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
+
+  const showToast = (text: string, type: 'success' | 'error' = 'success') => {
+    setToastMsg({ text, type });
+    setTimeout(() => setToastMsg(null), 4500);
+  };
 
   useEffect(() => {
     document.title = 'Users Permission Console | FingerMobile Protocol';
@@ -86,11 +92,11 @@ export const UsersPermissionConsolePage: React.FC = () => {
     if (!selectedUser || !selectedStaffRole) return;
     try {
       await sovereignRbacApi.assignStaff(selectedUser.id, selectedStaffRole, staffNotes);
-      alert(`Staff role assigned to ${selectedUser.username || selectedUser.email}`);
+      showToast(`Staff role assigned to ${selectedUser.username || selectedUser.email}`, 'success');
       setActiveModal(null);
       loadData();
     } catch (err: any) {
-      alert(`Error assigning staff role: ${err.message}`);
+      showToast(`Error assigning staff role: ${err.message}`, 'error');
     }
   };
 
@@ -98,11 +104,11 @@ export const UsersPermissionConsolePage: React.FC = () => {
     if (!selectedUser || !selectedDistRank) return;
     try {
       await sovereignRbacApi.appointDistinguished(selectedUser.id, selectedDistRank, distCitation);
-      alert(`Distinguished honor bestowed upon ${selectedUser.username || selectedUser.email}`);
+      showToast(`Distinguished honor bestowed upon ${selectedUser.username || selectedUser.email}`, 'success');
       setActiveModal(null);
       loadData();
     } catch (err: any) {
-      alert(`Error bestowing honor: ${err.message}`);
+      showToast(`Error bestowing honor: ${err.message}`, 'error');
     }
   };
 
@@ -114,11 +120,11 @@ export const UsersPermissionConsolePage: React.FC = () => {
         modTier,
         assignedCategory: modCategory
       });
-      alert(`Moderator scope granted to ${selectedUser.username || selectedUser.email}`);
+      showToast(`Moderator scope granted to ${selectedUser.username || selectedUser.email}`, 'success');
       setActiveModal(null);
       loadData();
     } catch (err: any) {
-      alert(`Error assigning moderator scope: ${err.message}`);
+      showToast(`Error assigning moderator scope: ${err.message}`, 'error');
     }
   };
 
@@ -126,11 +132,11 @@ export const UsersPermissionConsolePage: React.FC = () => {
     if (!selectedUser || !newRole) return;
     try {
       await sovereignRbacApi.updateUserRole(selectedUser.id, newRole);
-      alert(`Account role updated to "${newRole}" for ${selectedUser.username || selectedUser.email}`);
+      showToast(`Account role updated to "${newRole}" for ${selectedUser.username || selectedUser.email}`, 'success');
       setActiveModal(null);
       loadData();
     } catch (err: any) {
-      alert(`Error updating role: ${err.message}`);
+      showToast(`Error updating role: ${err.message}`, 'error');
     }
   };
 
@@ -209,6 +215,26 @@ export const UsersPermissionConsolePage: React.FC = () => {
             </Link>
           </div>
         </div>
+
+        {/* Live Notification Toast */}
+        {toastMsg && (
+          <div
+            className={`p-4 rounded-xl border font-bold text-sm flex items-center justify-between shadow-md transition-all ${
+              toastMsg.type === 'success'
+                ? 'bg-emerald-100 text-emerald-950 border-emerald-400'
+                : 'bg-rose-100 text-rose-950 border-rose-400'
+            }`}
+          >
+            <span>{toastMsg.text}</span>
+            <button
+              type="button"
+              onClick={() => setToastMsg(null)}
+              className="text-slate-700 hover:text-slate-900 font-black ml-2"
+            >
+              ✕
+            </button>
+          </div>
+        )}
 
         {/* Filter Toolbar & Category Tabs */}
         <div className="bg-white p-4 rounded-xl border border-slate-300 shadow-sm flex flex-col md:flex-row items-center justify-between gap-3">

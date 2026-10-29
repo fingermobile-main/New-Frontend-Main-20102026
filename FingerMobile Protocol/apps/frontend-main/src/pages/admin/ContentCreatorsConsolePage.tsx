@@ -44,6 +44,12 @@ export const ContentCreatorsConsolePage: React.FC = () => {
   // Form edit states
   const [editTier, setEditTier] = useState('TIER_1');
   const [editStatus, setEditStatus] = useState('ACTIVE');
+  const [toastMsg, setToastMsg] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
+
+  const showToast = (text: string, type: 'success' | 'error' = 'success') => {
+    setToastMsg({ text, type });
+    setTimeout(() => setToastMsg(null), 4500);
+  };
 
   useEffect(() => {
     document.title = 'Content Creators Console | FingerMobile Protocol';
@@ -76,11 +82,11 @@ export const ContentCreatorsConsolePage: React.FC = () => {
         tier: editTier,
         status: editStatus
       });
-      alert(`Creator profile updated for ${selectedCreator.display_name || selectedCreator.username || 'Creator'}`);
+      showToast(`Creator profile updated for ${selectedCreator.display_name || selectedCreator.username || 'Creator'}`, 'success');
       setSelectedCreator(null);
       loadData();
     } catch (err: any) {
-      alert(`Error updating creator profile: ${err.message}`);
+      showToast(`Error updating creator profile: ${err.message}`, 'error');
     }
   };
 
@@ -212,6 +218,26 @@ export const ContentCreatorsConsolePage: React.FC = () => {
             </Link>
           </div>
         </div>
+
+        {/* Live Notification Toast */}
+        {toastMsg && (
+          <div
+            className={`p-4 rounded-xl border font-bold text-sm flex items-center justify-between shadow-md transition-all ${
+              toastMsg.type === 'success'
+                ? 'bg-emerald-100 text-emerald-950 border-emerald-400'
+                : 'bg-rose-100 text-rose-950 border-rose-400'
+            }`}
+          >
+            <span>{toastMsg.text}</span>
+            <button
+              type="button"
+              onClick={() => setToastMsg(null)}
+              className="text-slate-700 hover:text-slate-900 font-black ml-2"
+            >
+              ✕
+            </button>
+          </div>
+        )}
 
         {/* Top Operational Metrics */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

@@ -30,6 +30,12 @@ const CourseDetailPage: React.FC = () => {
   } = useCourseDetail(courseId || '');
 
   const [activeTab, setActiveTab] = useState('curriculum');
+  const [toastMsg, setToastMsg] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
+
+  const showToast = (text: string, type: 'success' | 'error' = 'success') => {
+    setToastMsg({ text, type });
+    setTimeout(() => setToastMsg(null), 4000);
+  };
 
   const currentUserId = localStorage.getItem('userId');
   const enrollment = enrollments?.find((enrollment) =>
@@ -52,12 +58,14 @@ const CourseDetailPage: React.FC = () => {
     try {
       const { elearningService } = await import('../services/elearningService');
       await elearningService.enrollInCourse(cId);
-      alert('Enrolled successfully!');
-      window.location.reload();
+      showToast('Enrolled successfully!', 'success');
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error('Failed to enroll:', err);
-      alert('Failed to enroll');
+      showToast('Failed to enroll in course. Please try again.', 'error');
     }
   };
 
@@ -135,6 +143,28 @@ const CourseDetailPage: React.FC = () => {
 
   return (
     <div className="bg-gray-50 min-h-screen pb-28 md:pb-12 w-full max-w-full overflow-x-hidden text-slate-900">
+      {/* Live Notification Toast */}
+      {toastMsg && (
+        <div className="fixed top-20 right-4 z-50 max-w-md w-full shadow-2xl">
+          <div
+            className={`p-4 rounded-xl border font-bold text-sm flex items-center justify-between shadow-md transition-all ${
+              toastMsg.type === 'success'
+                ? 'bg-emerald-100 text-emerald-950 border-emerald-400'
+                : 'bg-rose-100 text-rose-950 border-rose-400'
+            }`}
+          >
+            <span>{toastMsg.text}</span>
+            <button
+              type="button"
+              onClick={() => setToastMsg(null)}
+              className="text-slate-700 hover:text-slate-900 font-black ml-2"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <div className="bg-white p-4 sm:p-6 lg:p-8">
         <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">

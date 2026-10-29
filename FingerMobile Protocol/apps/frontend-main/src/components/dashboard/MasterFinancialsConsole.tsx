@@ -501,7 +501,8 @@ export const MasterFinancialsConsole: React.FC = () => {
         setTimeout(() => setTreasuryActionMsg(''), 6000);
       }
     } catch (err: any) {
-      alert(err.message || 'Failed to confirm request');
+      setTreasuryActionMsg(`Error: ${err.message || 'Failed to confirm request'}`);
+      setTimeout(() => setTreasuryActionMsg(''), 7000);
     } finally {
       setTreasuryActionLoading(false);
     }
@@ -522,7 +523,8 @@ export const MasterFinancialsConsole: React.FC = () => {
         setTimeout(() => setTreasuryActionMsg(''), 7000);
       }
     } catch (err: any) {
-      alert(err.message || 'CFO authorization failed');
+      setTreasuryActionMsg(`Error: ${err.message || 'CFO authorization failed'}`);
+      setTimeout(() => setTreasuryActionMsg(''), 7000);
     } finally {
       setTreasuryActionLoading(false);
     }
@@ -537,7 +539,8 @@ export const MasterFinancialsConsole: React.FC = () => {
     e.preventDefault();
     const amount = parseFloat(amountInput);
     if (!recipientInput.trim() || isNaN(amount) || amount <= 0) {
-      alert('Please provide a valid recipient address/email and FIC token amount.');
+      setAllocationSuccessMsg('Validation Error: Please provide a valid recipient address/email and FIC token amount.');
+      setTimeout(() => setAllocationSuccessMsg(''), 6000);
       return;
     }
 
@@ -595,7 +598,8 @@ export const MasterFinancialsConsole: React.FC = () => {
     e.preventDefault();
     const amount = parseFloat(purchaseFicAmount);
     if (!purchaseName.trim() || !purchaseEmail.trim() || isNaN(amount) || amount <= 0) {
-      alert('Please fill out all required purchase details.');
+      setAllocationSuccessMsg('Validation Error: Please fill out all required purchase details.');
+      setTimeout(() => setAllocationSuccessMsg(''), 6000);
       return;
     }
 
@@ -2730,11 +2734,11 @@ export const MasterFinancialsConsole: React.FC = () => {
               <button
                 onClick={() => {
                   if (selectedSigners.length < 3) {
-                    alert('At least 3 authorized Board signatures are required.');
+                    setMultiSigActionMessage('Validation Notice: At least 3 authorized Board signatures are required.');
                     return;
                   }
                   if (multiSigPinInput.length < 4) {
-                    alert('Please enter a valid PIN.');
+                    setMultiSigActionMessage('Validation Notice: Please enter a valid PIN.');
                     return;
                   }
                   setMultiSigActionMessage(

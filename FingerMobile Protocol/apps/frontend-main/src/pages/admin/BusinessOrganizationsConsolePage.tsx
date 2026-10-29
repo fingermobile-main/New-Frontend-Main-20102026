@@ -45,6 +45,12 @@ export const BusinessOrganizationsConsolePage: React.FC = () => {
   const [editTier, setEditTier] = useState('ENTERPRISE');
   const [editAdsCredit, setEditAdsCredit] = useState(10000);
   const [editSla, setEditSla] = useState('GOLD');
+  const [toastMsg, setToastMsg] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
+
+  const showToast = (text: string, type: 'success' | 'error' = 'success') => {
+    setToastMsg({ text, type });
+    setTimeout(() => setToastMsg(null), 4500);
+  };
 
   useEffect(() => {
     document.title = 'Business & Organizations Console | FingerMobile Protocol';
@@ -89,11 +95,11 @@ export const BusinessOrganizationsConsolePage: React.FC = () => {
         metadata: updatedMetadata
       });
 
-      alert(`Organization credentials updated for ${selectedOrg.name}`);
+      showToast(`Organization credentials updated for ${selectedOrg.name}`, 'success');
       setSelectedOrg(null);
       loadData();
     } catch (err: any) {
-      alert(`Error updating organization: ${err.message}`);
+      showToast(`Error updating organization: ${err.message}`, 'error');
     }
   };
 
@@ -217,6 +223,32 @@ export const BusinessOrganizationsConsolePage: React.FC = () => {
             <Link
               to="/admin/creators-console"
               className="px-4 py-2 text-xs font-black rounded-xl bg-purple-600 hover:bg-purple-700 text-white transition flex items-center gap-1.5 shadow-sm"
+            >
+              <Users className="w-3.5 h-3.5" />
+              Creators Console
+            </Link>
+          </div>
+        </div>
+
+        {/* Live Notification Toast */}
+        {toastMsg && (
+          <div
+            className={`p-4 rounded-xl border font-bold text-sm flex items-center justify-between shadow-md transition-all ${
+              toastMsg.type === 'success'
+                ? 'bg-emerald-100 text-emerald-950 border-emerald-400'
+                : 'bg-rose-100 text-rose-950 border-rose-400'
+            }`}
+          >
+            <span>{toastMsg.text}</span>
+            <button
+              type="button"
+              onClick={() => setToastMsg(null)}
+              className="text-slate-700 hover:text-slate-900 font-black ml-2"
+            >
+              ✕
+            </button>
+          </div>
+        )}
             >
               <Palette className="w-3.5 h-3.5" />
               Creators Console

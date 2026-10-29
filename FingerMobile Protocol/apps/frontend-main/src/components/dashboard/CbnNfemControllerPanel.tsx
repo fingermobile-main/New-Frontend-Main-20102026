@@ -61,6 +61,7 @@ export const CbnNfemControllerPanel: React.FC = () => {
   const [isIngesting, setIsIngesting] = useState(false);
   const [ingestStatusMsg, setIngestStatusMsg] = useState<string>('');
   const [isTradeModalOpen, setIsTradeModalOpen] = useState(false);
+  const [tradeError, setTradeError] = useState<string | null>(null);
   const [isSchedulerActive, setIsSchedulerActive] = useState(() =>
     cbnNfemIngestionService.isSchedulerRunning()
   );
@@ -136,10 +137,11 @@ export const CbnNfemControllerPanel: React.FC = () => {
   // Handle Trade Simulation Injection
   const handleSimulateTradeSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setTradeError(null);
     const p = parseFloat(simPrice);
     const v = parseFloat(simVolume);
     if (isNaN(p) || p <= 0 || isNaN(v) || v <= 0) {
-      alert('Please enter a valid price and trade volume.');
+      setTradeError('Please enter a valid price and trade volume greater than zero.');
       return;
     }
 
@@ -696,6 +698,11 @@ export const CbnNfemControllerPanel: React.FC = () => {
             </p>
 
             <form onSubmit={handleSimulateTradeSubmit} className="space-y-4">
+              {tradeError && (
+                <div className="p-3 bg-red-950/60 border border-red-500/60 rounded-xl text-red-200 text-xs font-bold">
+                  {tradeError}
+                </div>
+              )}
               <div>
                 <label className="block text-xs font-bold text-zinc-300 mb-1">
                   Counterparty / Interbank Dealer Name

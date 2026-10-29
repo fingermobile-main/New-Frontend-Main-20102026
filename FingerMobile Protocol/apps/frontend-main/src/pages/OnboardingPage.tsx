@@ -90,6 +90,12 @@ const OnboardingPage: React.FC = () => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const [mapInstance, setMapInstance] = useState<maplibregl.Map | null>(null);
   const [ageError, setAgeError] = useState<string>('');
+  const [onboardingNotice, setOnboardingNotice] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
+
+  const showNotice = (text: string, type: 'success' | 'error' = 'error') => {
+    setOnboardingNotice({ text, type });
+    setTimeout(() => setOnboardingNotice(null), 4500);
+  };
 
   // Regional Creator Quota & Capacity State
   const [selectedTier, setSelectedTier] = useState<CreatorTier>('TIER_3');
@@ -253,7 +259,7 @@ const OnboardingPage: React.FC = () => {
       });
       await nextStep();
     } else {
-      alert('Please select a 2FA method and enter the code, or check "Skip 2FA setup"');
+      showNotice('Please select a 2FA method and enter the 6-digit verification code, or check "Skip 2FA setup".', 'error');
     }
   };
 
@@ -289,7 +295,7 @@ const OnboardingPage: React.FC = () => {
       await setDemographics(tempData);
       await nextStep();
     } else {
-      alert('Please select at least 4 interests');
+      showNotice('Please select at least 4 interests to personalize your feed.', 'error');
     }
   };
 
