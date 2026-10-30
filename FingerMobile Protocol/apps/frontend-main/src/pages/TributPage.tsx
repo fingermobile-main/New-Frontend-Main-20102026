@@ -547,6 +547,14 @@ export const TributPage: React.FC = () => {
                     {isSelectMode ? 'Exit Batch Mode' : 'Batch Select & Multi-Delete'}
                   </button>
 
+                  <a
+                    href="/admin/tribut"
+                    className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-black transition flex items-center gap-1.5 shadow-md shadow-amber-500/20"
+                  >
+                    <BookmarkIcon className="w-4 h-4 text-slate-950" />
+                    <span>Manage Tribut Console</span>
+                  </a>
+
                   <div className="flex items-center gap-2 text-xs text-slate-300 font-medium">
                     <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                     <span>Shopping Engine Synced (MarketPlace, Storefront, OwnIt, Flamingo)</span>

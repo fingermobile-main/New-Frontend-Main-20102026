@@ -130,6 +130,7 @@ import MasterLoansQrConsole from '../components/dashboard/MasterLoansQrConsole';
 import MasterTrendsSwarmConsole from '../components/dashboard/MasterTrendsSwarmConsole';
 import MasterCommunicationsVoipConsole from '../components/dashboard/MasterCommunicationsVoipConsole';
 import MasterLuminaGalleryConsole from '../components/dashboard/MasterLuminaGalleryConsole';
+import MasterTributConsole from '../components/dashboard/MasterTributConsole';
 import MasterSoundOceanConsole from '../components/dashboard/MasterSoundOceanConsole';
 import MasterSoundRiverConsole from '../components/dashboard/MasterSoundRiverConsole';
 
@@ -2567,6 +2568,7 @@ const MasterDashboardPage: React.FC = () => {
               { id: 'loansqr-console', label: 'LoansQR Micro-Lending (Phase 11)', badge: 'Underwrite / Escrow / APR' },
               { id: 'trends-swarm-console', label: 'Trends & Swarms (Phase 12)', badge: 'Virality / NLP / GNN' },
               { id: 'comms-voip-console', label: 'Communications & VoIP (Phase 13)', badge: 'WebRTC / SFU / Relays' },
+              { id: 'tribut-console', label: 'Tribut Showcase & Media Pins (Phase 14)', badge: 'Pins / Moderation / Postgres' },
               { id: 'lumina-gallery-console', label: 'Lumina Gallery & Collectibles (Phase 14)', badge: 'NFTs / Provenance / FIC' },
               { id: 'beatwaveng-console', label: 'BeatwaveNG Audio Console', badge: 'Live Sync' },
               { id: 'discover-console', label: 'Discover Master Console', badge: 'Topics & Swarms' },
@@ -3014,10 +3016,10 @@ const MasterDashboardPage: React.FC = () => {
               </div>
             )}
 
-            {/* Dedicated Lumina Gallery & Digital Collectibles Console Tab (Phase 14) */}
-            {activeTab === 'lumina-gallery-console' && (
+            {/* Dedicated Tribut Showcase & Media Pins Console Tab (Phase 14) */}
+            {(activeTab === 'tribut-console' || activeTab === 'lumina-gallery-console') && (
               <div className="space-y-6">
-                <MasterLuminaGalleryConsole />
+                <MasterTributConsole />
               </div>
             )}
 
