@@ -86,6 +86,18 @@ export const commerceLuxuryConsoleService = {
   },
 
   /**
+   * Report an item to PostgreSQL compliance & moderation queue
+   */
+  async reportItem(
+    serviceKey: CommerceLuxuryServiceKey,
+    id: number,
+    reason: string
+  ): Promise<{ success: boolean; message: string }> {
+    const response = await api.post(`/commerce-luxury-console/service/${serviceKey}/${id}/report`, { reason });
+    return response.data;
+  },
+
+  /**
    * Upload media file (multipart/form-data to Express backend)
    */
   async uploadMedia(

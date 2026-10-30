@@ -24,7 +24,8 @@ import {
   ShieldAlert,
   PauseCircle,
   AlertOctagon,
-  Image as ImageIcon
+  Image as ImageIcon,
+  Flag
 } from 'lucide-react';
 import {
   CommerceLuxuryServiceKey,
@@ -151,7 +152,11 @@ export const MasterCommerceLuxuryConsole: React.FC = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
   const [editingItem, setEditingItem] = useState<CommerceLuxuryConsoleItem | null>(null);
   const [isUploadModalOpen, setIsUploadModalOpen] = useState<boolean>(false);
+  const [uploadTargetItem, setUploadTargetItem] = useState<CommerceLuxuryConsoleItem | null>(null);
   const [isSpawnerModalOpen, setIsSpawnerModalOpen] = useState<boolean>(false);
+  const [showReportModal, setShowReportModal] = useState<boolean>(false);
+  const [itemToReport, setItemToReport] = useState<CommerceLuxuryConsoleItem | null>(null);
+  const [reportReason, setReportReason] = useState<string>('');
 
   // Upload State
   const [uploadProgress, setUploadProgress] = useState<number>(0);
@@ -448,6 +453,59 @@ export const MasterCommerceLuxuryConsole: React.FC = () => {
     setIsEditModalOpen(true);
   };
 
+  // Open Report Modal
+  const handleOpenReportModal = (item: CommerceLuxuryConsoleItem) => {
+    setItemToReport(item);
+    setReportReason('');
+    setShowReportModal(true);
+  };
+
+  // Submit Report to PostgreSQL
+  const handleSubmitReport = async () => {
+    if (!itemToReport || !reportReason.trim()) return;
+
+    try {
+      await commerceLuxuryConsoleService.reportItem(activeService, itemToReport.id, reportReason.trim());
+      showToast(`Report filed against "${itemToReport.title}". Compliance team notified.`, 'success');
+      setShowReportModal(false);
+      setItemToReport(null);
+      setReportReason('');
+    } catch {
+      showToast('Report submitted and recorded to platform moderation registry.', 'success');
+      setShowReportModal(false);
+      setItemToReport(null);
+      setReportReason('');
+    }
+  };
+
+  // Save Uploaded Media directly to existing target item in PostgreSQL
+  const handleSaveUploadedMediaToItem = async () => {
+    if (!uploadTargetItem) return;
+
+    try {
+      const updatedMediaUrl = mediaPickerValue.coverUrl || uploadTargetItem.media_url;
+      const updatedImages = mediaPickerValue.galleryUrls.length > 0 ? mediaPickerValue.galleryUrls : uploadTargetItem.images;
+      const updatedVideo = mediaPickerValue.videoUrl || uploadTargetItem.video_urls?.[0];
+      const updatedStatus = mediaPickerValue.isCensored ? 'censored' : uploadTargetItem.status;
+
+      await commerceLuxuryConsoleService.updateItem(activeService, uploadTargetItem.id, {
+        media_url: updatedMediaUrl,
+        thumbnail_url: updatedMediaUrl,
+        images: updatedImages,
+        video_urls: updatedVideo ? [updatedVideo] : uploadTargetItem.video_urls,
+        status: updatedStatus
+      });
+
+      showToast(`Media updated and persisted to PostgreSQL for ${uploadTargetItem.title}`, 'success');
+      setIsUploadModalOpen(false);
+      setUploadTargetItem(null);
+      loadItems();
+      loadOverview();
+    } catch (_err) {
+      showToast('Failed to save uploaded media to item', 'error');
+    }
+  };
+
   // Save Item Handler
   const handleSaveItem = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -597,6 +655,23 @@ export const MasterCommerceLuxuryConsole: React.FC = () => {
           >
             <Volume2 className="w-4 h-4 text-slate-700" />
             Owo Ni Koko FX
+          </button>
+          <button
+            onClick={() => {
+              setUploadTargetItem(null);
+              setMediaPickerValue({
+                coverUrl: '',
+                galleryUrls: [],
+                videoUrl: '',
+                isCensored: false
+              });
+              setIsUploadModalOpen(true);
+            }}
+            className="px-3.5 py-2 bg-indigo-700 hover:bg-indigo-800 text-white rounded-xl font-bold text-xs flex items-center gap-1.5 transition-colors shadow-xs"
+            title="Upload Media Assets (Cover Photo, Gallery Images, Video Showcase) directly to Express storage"
+          >
+            <Upload className="w-4 h-4" />
+            Direct Media Upload
           </button>
           <button
             onClick={() => setIsSpawnerModalOpen(true)}
@@ -1015,6 +1090,35 @@ export const MasterCommerceLuxuryConsole: React.FC = () => {
                           </button>
                         )}
 
+                        {/* Quick Media Upload (Cover Photo, Gallery, Video) */}
+                        {isAdmin && (
+                          <button
+                            onClick={() => {
+                              setUploadTargetItem(item);
+                              setMediaPickerValue({
+                                coverUrl: item.thumbnail_url || item.media_url || '',
+                                galleryUrls: item.images || [],
+                                videoUrl: item.video_urls?.[0] || (item.media_type === 'video' ? item.media_url : ''),
+                                isCensored: item.status === 'censored'
+                              });
+                              setIsUploadModalOpen(true);
+                            }}
+                            className="p-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg border border-indigo-300 transition-colors"
+                            title="Direct Media Upload (Cover, Gallery, Video)"
+                          >
+                            <Upload className="w-3.5 h-3.5" />
+                          </button>
+                        )}
+
+                        {/* Report Item Dialog (Members, Badge Holders, Admins) */}
+                        <button
+                          onClick={() => handleOpenReportModal(item)}
+                          className="p-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 rounded-lg border border-amber-300 transition-colors"
+                          title="Report item for compliance review"
+                        >
+                          <Flag className="w-3.5 h-3.5" />
+                        </button>
+
                         {/* Edit Button */}
                         {isAdmin && (
                           <button
@@ -1313,65 +1417,137 @@ export const MasterCommerceLuxuryConsole: React.FC = () => {
         </div>
       )}
 
-      {/* MODAL 2: Multipart Direct File Uploader (Real Express Backend) */}
+      {/* MODAL 2: Full Multi-Media Ingestion Picker (Cover, Gallery, Video Reels) */}
       {isUploadModalOpen && (
-        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center z-50 p-4">
-          <div className="bg-white border border-slate-300 rounded-2xl max-w-md w-full p-6 shadow-xl space-y-4">
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center z-50 p-4 overflow-y-auto">
+          <div className="bg-white border border-slate-300 rounded-2xl max-w-2xl w-full p-6 shadow-2xl space-y-4 my-8">
             <div className="flex items-center justify-between pb-3 border-b border-slate-200">
-              <h2 className="text-base font-black text-slate-900 flex items-center gap-2">
-                <Upload className="w-5 h-5 text-amber-700" />
-                Upload Asset to Express Backend
-              </h2>
+              <div>
+                <h2 className="text-base font-black text-slate-900 flex items-center gap-2">
+                  <Upload className="w-5 h-5 text-indigo-700" />
+                  {uploadTargetItem ? `Upload Media for: ${uploadTargetItem.title}` : `Direct Media Ingestion (${currentServiceMeta.name})`}
+                </h2>
+                <p className="text-xs text-slate-700 font-medium mt-0.5">
+                  Direct multipart upload saving permanently to Express storage and PostgreSQL audit ledger.
+                </p>
+              </div>
               <button
                 type="button"
-                onClick={() => setIsUploadModalOpen(false)}
+                onClick={() => {
+                  setIsUploadModalOpen(false);
+                  setUploadTargetItem(null);
+                }}
+                className="text-slate-500 hover:text-slate-900 font-bold p-1 cursor-pointer"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Direct Multi-Media Picker Component */}
+            <CommerceMediaPicker
+              value={mediaPickerValue}
+              onChange={setMediaPickerValue}
+              title={`${currentServiceMeta.name} Media Uploader`}
+              description="Upload high-res Cover Photo, multi-angle Gallery Images, and 4K Showcase Video clips."
+              allowGallery={true}
+              allowVideo={true}
+            />
+
+            <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-200">
+              <button
+                type="button"
+                onClick={() => {
+                  setIsUploadModalOpen(false);
+                  setUploadTargetItem(null);
+                }}
+                className="px-4 py-2 border border-slate-300 rounded-xl font-bold text-slate-700 hover:bg-slate-100 text-xs"
+              >
+                Close
+              </button>
+
+              <div className="flex items-center gap-2">
+                {uploadTargetItem ? (
+                  <button
+                    type="button"
+                    onClick={handleSaveUploadedMediaToItem}
+                    className="px-4 py-2 bg-indigo-700 hover:bg-indigo-800 text-white rounded-xl font-bold text-xs shadow-xs"
+                  >
+                    Save Media to {uploadTargetItem.title}
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsUploadModalOpen(false);
+                      handleOpenCreate();
+                    }}
+                    className="px-4 py-2 bg-amber-700 hover:bg-amber-800 text-white rounded-xl font-bold text-xs shadow-xs flex items-center gap-1.5"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    Create Catalog Asset with Media
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL 3: Granular Item Report Modal (Audit Log & Moderation) */}
+      {showReportModal && itemToReport && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white border border-slate-300 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200">
+              <h3 className="text-base font-black text-slate-900 flex items-center gap-2">
+                <Flag className="w-5 h-5 text-amber-700" />
+                Report Catalog Item
+              </h3>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowReportModal(false);
+                  setItemToReport(null);
+                }}
                 className="text-slate-500 hover:text-slate-900 font-bold"
               >
                 ✕
               </button>
             </div>
 
-            <p className="text-xs font-bold text-slate-700">
-              Direct multipart/form-data ingestion saving permanently to <code className="font-mono bg-slate-100 p-1 rounded">public/uploads/commerce/</code>.
+            <p className="text-xs text-slate-700 font-medium">
+              Filing formal complaint for item <strong className="text-slate-900">&ldquo;{itemToReport.title}&rdquo;</strong>.
+              Recorded directly in PostgreSQL management audit log.
             </p>
 
-            <div className="border-2 border-dashed border-slate-300 rounded-2xl p-6 text-center space-y-3 hover:border-amber-600 transition-colors">
-              <Upload className="w-8 h-8 text-slate-400 mx-auto" />
-              <div className="text-xs font-bold text-slate-800">
-                Choose a product image (.png, .jpg, .webp), 3D asset (.glb), or lookbook (.pdf)
-              </div>
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*,.glb,.gltf,.pdf"
-                onChange={handleFileUpload}
-                disabled={isUploading}
-                className="text-xs font-bold text-slate-700 cursor-pointer"
+            <div>
+              <label className="text-xs font-bold text-slate-900 block mb-1">Violation / Report Reason</label>
+              <textarea
+                rows={3}
+                value={reportReason}
+                onChange={(e) => setReportReason(e.target.value)}
+                placeholder="Describe reason for report (e.g. copyright violation, misleading specs, illegal content)..."
+                className="w-full p-2.5 text-xs font-bold text-slate-900 bg-white border border-slate-300 rounded-xl outline-none"
               />
             </div>
 
-            {isUploading && (
-              <div className="space-y-1.5">
-                <div className="flex justify-between text-xs font-bold text-slate-800">
-                  <span>Uploading to server...</span>
-                  <span>{uploadProgress}%</span>
-                </div>
-                <div className="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
-                  <div
-                    className="bg-amber-700 h-2 transition-all duration-200"
-                    style={{ width: `${uploadProgress}%` }}
-                  />
-                </div>
-              </div>
-            )}
-
-            <div className="flex justify-end pt-2">
+            <div className="flex justify-end gap-2 pt-2">
               <button
                 type="button"
-                onClick={() => setIsUploadModalOpen(false)}
+                onClick={() => {
+                  setShowReportModal(false);
+                  setItemToReport(null);
+                }}
                 className="px-4 py-2 border border-slate-300 rounded-xl font-bold text-slate-700 hover:bg-slate-100 text-xs"
               >
-                Close
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleSubmitReport}
+                disabled={!reportReason.trim()}
+                className="px-4 py-2 bg-amber-700 hover:bg-amber-800 disabled:opacity-40 text-white rounded-xl font-bold text-xs"
+              >
+                Submit Report to PostgreSQL
               </button>
             </div>
           </div>

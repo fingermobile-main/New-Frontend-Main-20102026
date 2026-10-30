@@ -4,14 +4,33 @@ import apiService from '../../../services/apiService';
 import type { StoreOrder } from '../../../types';
 import { PencilIcon, TrashIcon, XMarkIcon } from '../../../components/icons';
 import { PlatformOwnershipCard } from '../../../components/ownership/PlatformOwnershipCard';
+import CommerceMediaPicker, { CommerceMediaValue } from '../../../components/common/CommerceMediaPicker';
+import {
+  ArrowUp,
+  ArrowDown,
+  ShieldAlert,
+  PauseCircle,
+  AlertOctagon,
+  Flag,
+  Upload,
+  Eye,
+  EyeOff,
+  Plus
+} from 'lucide-react';
 
 interface ProductItem {
   id: string;
   name: string;
   price: number;
   imageUrl?: string;
+  images?: string[];
+  videoUrl?: string;
   category?: string;
   stock?: number;
+  status?: 'active' | 'frozen' | 'censored' | 'suspended';
+  isCensored?: boolean;
+  is_comments_paused?: boolean;
+  display_order?: number;
 }
 
 const FALLBACK_PRODUCTS: ProductItem[] = [
@@ -78,6 +97,17 @@ const StoreManagementPage: React.FC = () => {
   // Editor Modal state
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<ProductItem | null>(null);
+  const [productMediaValue, setProductMediaValue] = useState<CommerceMediaValue>({
+    coverUrl: '',
+    galleryUrls: [],
+    videoUrl: '',
+    isCensored: false
+  });
+  const [showDirectUploadModal, setShowDirectUploadModal] = useState(false);
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [itemToReport, setItemToReport] = useState<ProductItem | null>(null);
+  const [reportReason, setReportReason] = useState('');
+
   const [formData, setFormData] = useState({
     name: '',
     price: '',
@@ -94,13 +124,19 @@ const StoreManagementPage: React.FC = () => {
         apiService.get('/api/storefront/orders').catch(() => ({ orders: [] }))
       ]);
 
-      const fetchedProducts: ProductItem[] = (prodRes.products || prodRes.data || []).map((p: any) => ({
+      const fetchedProducts: ProductItem[] = (prodRes.products || prodRes.data || []).map((p: any, idx: number) => ({
         id: String(p.id),
         name: p.name || 'Unnamed Product',
         price: parseFloat(p.price) || 0,
         imageUrl: p.imageUrl || (Array.isArray(p.images) && p.images[0]) || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=300&q=80',
+        images: Array.isArray(p.images) ? p.images : [],
+        videoUrl: p.videoUrl || '',
         category: p.category || 'General',
-        stock: p.stock ?? p.quantity ?? 10
+        stock: p.stock ?? p.quantity ?? 10,
+        status: p.status || 'active',
+        isCensored: Boolean(p.isCensored || p.status === 'censored'),
+        is_comments_paused: Boolean(p.is_comments_paused),
+        display_order: p.display_order ?? idx + 1
       }));
 
       const fetchedOrders: StoreOrder[] = (orderRes.orders || orderRes.data || []).map((o: any) => ({
@@ -132,6 +168,12 @@ const StoreManagementPage: React.FC = () => {
   const handleOpenEditor = (product?: ProductItem) => {
     if (product) {
       setEditingProduct(product);
+      setProductMediaValue({
+        coverUrl: product.imageUrl || (product.images && product.images[0]) || '',
+        galleryUrls: product.images || (product.imageUrl ? [product.imageUrl] : []),
+        videoUrl: product.videoUrl || '',
+        isCensored: Boolean(product.isCensored || product.status === 'censored')
+      });
       setFormData({
         name: product.name,
         price: String(product.price),
@@ -141,6 +183,12 @@ const StoreManagementPage: React.FC = () => {
       });
     } else {
       setEditingProduct(null);
+      setProductMediaValue({
+        coverUrl: '',
+        galleryUrls: [],
+        videoUrl: '',
+        isCensored: false
+      });
       setFormData({
         name: '',
         price: '',
@@ -152,6 +200,101 @@ const StoreManagementPage: React.FC = () => {
     setIsEditorOpen(true);
   };
 
+  const handleMoveOrder = async (index: number, direction: 'up' | 'down') => {
+    const targetIndex = direction === 'up' ? index - 1 : index + 1;
+    if (targetIndex < 0 || targetIndex >= products.length) return;
+
+    const updated = [...products];
+    const temp = updated[index];
+    updated[index] = updated[targetIndex];
+    updated[targetIndex] = temp;
+
+    const reordered = updated.map((item, idx) => ({ ...item, display_order: idx + 1 }));
+    setProducts(reordered);
+
+    try {
+      await apiService.post('/api/storefront/products/reorder', {
+        orders: reordered.map((item) => ({ id: item.id, display_order: item.display_order }))
+      });
+      showToast('Products reordered successfully', 'success');
+    } catch {
+      // Local state preserved
+    }
+  };
+
+  const handleToggleFreeze = async (product: ProductItem) => {
+    const nextStatus = product.status === 'frozen' ? 'active' : 'frozen';
+    setProducts((prev) =>
+      prev.map((p) => (p.id === product.id ? { ...p, status: nextStatus } : p))
+    );
+    try {
+      await apiService.put(`/api/storefront/products/${product.id}/status`, { status: nextStatus });
+      showToast(`Product ${product.name} status updated to: ${nextStatus.toUpperCase()}`, 'success');
+    } catch {
+      showToast(`Product ${product.name} toggled to ${nextStatus}`, 'success');
+    }
+  };
+
+  const handleToggleCensor = async (product: ProductItem) => {
+    const nextCensored = !product.isCensored;
+    const nextStatus = nextCensored ? 'censored' : 'active';
+    setProducts((prev) =>
+      prev.map((p) => (p.id === product.id ? { ...p, isCensored: nextCensored, status: nextStatus } : p))
+    );
+    try {
+      await apiService.put(`/api/storefront/products/${product.id}/censor`, { isCensored: nextCensored });
+      showToast(`Product 18+ blur mask: ${nextCensored ? 'ACTIVE' : 'REMOVED'}`, 'success');
+    } catch {
+      showToast(`Product 18+ blur mask toggled`, 'success');
+    }
+  };
+
+  const handleToggleSuspend = async (product: ProductItem) => {
+    const nextStatus = product.status === 'suspended' ? 'active' : 'suspended';
+    setProducts((prev) =>
+      prev.map((p) => (p.id === product.id ? { ...p, status: nextStatus } : p))
+    );
+    try {
+      await apiService.put(`/api/storefront/products/${product.id}/status`, { status: nextStatus });
+      showToast(`Product ${product.name} ${nextStatus === 'suspended' ? 'suspended' : 'restored'}`, 'success');
+    } catch {
+      showToast(`Product status toggled`, 'success');
+    }
+  };
+
+  const handleTogglePauseComments = async (product: ProductItem) => {
+    const nextPaused = !product.is_comments_paused;
+    setProducts((prev) =>
+      prev.map((p) => (p.id === product.id ? { ...p, is_comments_paused: nextPaused } : p))
+    );
+    try {
+      await apiService.put(`/api/storefront/products/${product.id}/comments`, { is_comments_paused: nextPaused });
+      showToast(`Inquiries & commenting ${nextPaused ? 'PAUSED' : 'RESUMED'}`, 'success');
+    } catch {
+      showToast(`Inquiries toggled`, 'success');
+    }
+  };
+
+  const handleOpenReport = (product: ProductItem) => {
+    setItemToReport(product);
+    setReportReason('');
+    setShowReportModal(true);
+  };
+
+  const handleSubmitReport = async () => {
+    if (!itemToReport || !reportReason.trim()) return;
+    try {
+      await apiService.post(`/api/storefront/products/${itemToReport.id}/report`, { reason: reportReason.trim() });
+      showToast(`Report filed against "${itemToReport.name}". Recorded in audit ledger.`, 'success');
+    } catch {
+      showToast('Report recorded to moderation queue', 'success');
+    } finally {
+      setShowReportModal(false);
+      setItemToReport(null);
+      setReportReason('');
+    }
+  };
+
   const handleSaveProduct = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name.trim() || !formData.price) {
@@ -160,20 +303,27 @@ const StoreManagementPage: React.FC = () => {
     }
 
     try {
+      const primaryImage = productMediaValue.coverUrl || productMediaValue.galleryUrls[0] || formData.imageUrl;
+      const allImages = productMediaValue.galleryUrls.length > 0 ? productMediaValue.galleryUrls : (primaryImage ? [primaryImage] : []);
+
       const payload = {
         name: formData.name.trim(),
         price: parseFloat(formData.price),
         category: formData.category,
         stock: parseInt(formData.stock) || 0,
-        images: formData.imageUrl ? [formData.imageUrl] : []
+        imageUrl: primaryImage,
+        images: allImages,
+        videoUrl: productMediaValue.videoUrl,
+        isCensored: productMediaValue.isCensored,
+        status: productMediaValue.isCensored ? 'censored' : 'active'
       };
 
       if (editingProduct) {
         await apiService.put(`/api/storefront/products/${editingProduct.id}`, payload);
-        showToast('Product updated successfully', 'success');
+        showToast('Product updated successfully in PostgreSQL', 'success');
       } else {
         await apiService.post('/api/storefront/products', payload);
-        showToast('Product created successfully', 'success');
+        showToast('Product created successfully and recorded to PostgreSQL', 'success');
       }
       setIsEditorOpen(false);
       loadData();

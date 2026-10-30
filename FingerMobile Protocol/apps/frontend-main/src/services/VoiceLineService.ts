@@ -468,14 +468,14 @@ class VoiceLineService {
       gainNode.gain.setValueAtTime(volume * 0.4, now);
       gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.95);
 
-      // Warm acoustic bass booster (+4.5dB shelf at 200Hz)
+      // Warm acoustic bass booster (+6.0dB shelf at 180Hz) for deep grounded human resonance
       let destinationNode: AudioNode = ctx.destination;
       if (typeof ctx.createBiquadFilter === 'function') {
         try {
           const bassFilter = ctx.createBiquadFilter();
           bassFilter.type = 'lowshelf';
-          bassFilter.frequency.setValueAtTime(200, now);
-          bassFilter.gain.setValueAtTime(4.5, now);
+          bassFilter.frequency.setValueAtTime(180, now);
+          bassFilter.gain.setValueAtTime(6.0, now);
           bassFilter.connect(ctx.destination);
           destinationNode = bassFilter;
         } catch {
@@ -484,23 +484,23 @@ class VoiceLineService {
       }
       gainNode.connect(destinationNode);
 
-      // Deep root note (E4: 329.63Hz) + Third (G#4: 415.30Hz) warm resonant African chime
+      // Deep root note (C4: 261.63Hz) + Third (E4: 329.63Hz) warm resonant African chime
       const osc1 = ctx.createOscillator();
       const osc2 = ctx.createOscillator();
 
       osc1.type = 'sine';
-      osc1.frequency.setValueAtTime(329.63, now); // E4 warm bass fundamental
+      osc1.frequency.setValueAtTime(261.63, now); // C4 rich bass fundamental
 
       osc2.type = 'triangle';
-      osc2.frequency.setValueAtTime(415.30, now + 0.08); // G#4 acoustic harmonic
+      osc2.frequency.setValueAtTime(329.63, now + 0.08); // E4 acoustic harmonic warm resonance
 
       osc1.connect(gainNode);
       osc2.connect(gainNode);
 
       osc1.start(now);
       osc2.start(now + 0.08);
-      osc1.stop(now + 0.95);
-      osc2.stop(now + 0.95);
+      osc1.stop(now + 1.10);
+      osc2.stop(now + 1.10);
     } catch {
       // AudioContext unavailable or denied
     }
@@ -508,7 +508,7 @@ class VoiceLineService {
 
   /**
    * Spoken speech synthesis fallback utilizing Web Speech API
-   * Calibrated with deliberate 0.52 cadence and warm bass resonance (pitch: 0.88)
+   * Calibrated with deliberate 0.46 cadence and warm rich bass resonance (pitch: 0.80)
    */
   private speakVoiceLineText(text: string, volume: number): void {
     if (typeof window === 'undefined' || !window.speechSynthesis) return;
@@ -518,7 +518,7 @@ class VoiceLineService {
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.volume = volume;
       utterance.rate = this.getUtteranceRate();
-      utterance.pitch = 0.88; // Deliberate warm bass vocal resonance (lowered from 1.0)
+      utterance.pitch = 0.80; // Rich warm bass vocal resonance (lowered for natural human body)
 
       // Select natural English voice if present
       const voices = window.speechSynthesis.getVoices();
